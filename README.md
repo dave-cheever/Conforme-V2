@@ -1,20 +1,269 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Conforme
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Getting started - development
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+To start developing for Conforme you are going to need a development environment setup and configured.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### Pre-requisites
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+- A development O365 tenant (speak to Lead Consultant if you don't have one)
+- Latest version of Python installed (for Windows development machines)
+- A copy of the env file for development. This will be updated for your own settings
+
+## Database
+
+### CosmosDB
+
+Conforme uses a CosmosDB service running in Azure the details should be in the standard env file so nothing needs to change here.
+
+### Your organization
+
+The idea of Conforme is to run multiple instances of the app for multiple organizations. In production environment there is one app running as a central server for all organizations, and client app per organization. To distinguish different organizations, we need to save organization's id in the database in organization's specific documents. Because every developer has his own developer's tenant, each needs to create his organization in the database. This is the data model of organization object in the database:
+
+```
+{
+  "id": <organization's id>,
+  "name": <organization's name>,
+  "domain": <domain>,
+  "logoUrl": <logo url>,
+  "theme": {
+    "colors": {
+      "brand": {
+        "primary": "#FFFFFF",
+        "secondary": "#A1A1A1",
+        "primaryFont": "#CCCCCCC",
+        "secondaryFont": "#434C52",
+        "active": "#B98474",
+        "lightGrey": "#E3E3E3"
+      }
+    }
+  },
+  "addons": {},
+  "allowedTenantsIds": [
+    <tenant id>
+  ],
+  "accessGroupId": <access group id>,
+  "readersGroupId": <reader's group id>,
+  "adminsGroupId": <admin's group id>,
+  "licenceExpirationDate": "2022-06-18T11:46:00.835Z",
+  "spSiteUrl": <sharepoint site url>,
+  "spLibraryId": <sharepoint library url>,
+  "tenantId": <tenant id>,
+  "clientId": <AAD app id>,
+  "secret": <AAD app secret>,
+  "metatags": {}
+}
+```
+
+In next steps in this instruction, you'll find some values that needs to be saved in your organization's object in the database. Please copy this data model and fill it with your data. If you'll see this kind of syntax: "`<organization's name> = Your organization's name`", that means that you need to overwrite your organization's name with specified value.
+Please fill the model with the following data: `<organization's id>`, `<organization's name>`, `<logo url>` (random logo).
+
+`<domain>` is a domain that you'll run the app locally, so it is `localhost`, and you have to add a port to is. Please take a look at the databse and scan `organizations` collection to see which ports are not already in use. Example of `<domain>` is: `localhost:3000`.
+
+## Azure AD application
+
+In order to authenticate with your local development site and also to be able to authorise your users to access the site (through group memberships) you will need to configure the Azure AD from your O365 dev tenant
+
+- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
+- Navigate to Azure Active Directory
+- Select 'App Registration'
+- Click on 'New registration'
+- Enter app name (i.e. 'conforme')
+- Select the option 'Accounts in this organizational directory only (Single tenant)'
+- Enter 'http://<API_URL>/auth/aad/callback' in redirect URL
+- Click on Register
+- Copy the Application (client) ID and add to your organization as `<AAD app id>`
+- Copy the Directory (tenant) ID and add to your organization as `<tenant id>`
+- Give app permissions
+  - Click on 'API permissions'
+  - Click on 'Add a permission'
+  - Select 'Microsoft Graph'
+  - Select 'Application permissions'
+  - Find and select 'Group.Read.All'
+  - Press 'Add permissions'
+  - Press 'Grant admin consent for ...' and then 'Yes'
+- Do the same for 'User.Read.All'
+- Do the same for 'Files.ReadWrite.All'
+- Grant required authentication data
+  - Click on 'Authentication'
+  - Under 'Implicit grant' select 'ID tokens'
+  - Press 'Save' button
+- Generate the Client Secret
+  - Click on 'Certificates & secrets'
+  - Click on 'New client secret'
+  - Select 'Never' for when the secret should expire
+  - Copy the value from Key and add to your organization as `<AAD app secret>`
+
+### Access Security Group
+
+In order to access the application you must configure a main security group to allow access.
+
+- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
+- Navigate to Azure Active Directory
+- Click on Groups
+- Select New group
+- Make sure 'Security' type is selected
+- Enter 'Conforme Access' as the group name
+- Click on Owners and add the admin user from your dev tenant
+- Click on Members and add any users from your dev tenant that you intend to use for testing locally
+- Click on create
+- Copy the Oject Id from the group and add to your organization as `<access group id>`
+
+Follow the same for Readers (`<reader's group id>`) and Admins (`<admin's group id>`) AD groups.
+
+## SharePoint
+
+- You will need to create a site on your development O365 tenant.
+
+### Creating the site
+
+Within any SharePoint site, click the "SharePoint" text on the top-left of your screen to get to home screen and follow these steps to create new one:
+
+- Click 'Create site' on top navitagion menu
+- Choose 'Team site' from the options provided
+- Name the site accordingly (i.e. Conforme)
+- Click 'Finish' when done
+  and your site will be ready for use.
+  Note - the sharepoint url must contain /sites/ to work correctly
+
+Update your organization with the URL of this site for the following field:
+
+`<sharepoint site url>` = https://TENANTNAME.sharepoint.com/sites/Conforme
+
+Then go to `<sharepoint site url>`/Shared%20Documents/
+
+- Click the settings Cog top right
+- Click libary settings
+- Take the library id value from the url params eg List=%7B`<library id>`%7D
+- Add `<library id>` to your organization
+
+### AD app permissions
+
+You must grant SharePoint permissions to the Azure AD app to allow it to upload documents to the SharePoint library.
+
+- Open app registration page (`<sharepoint site url>`/\_layouts/15/appinv.aspx)
+- In 'App Id' paste your `<AAD app id>`
+- Press 'Lookup' button
+- Type 'localhost' in 'App Domain'
+- Paste the following to 'Permission Request XML':
+
+```
+<AppPermissionRequests>
+  <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl"/>
+</AppPermissionRequests>
+```
+
+- Press 'Create'
+- Press 'Trust It'
+
+## Your organization's settings
+
+Every organization also needs its system settings to be configured in the database. In the Settings collection, please add the following data models to create required settings objects for your organization.
+
+Audit log limit:
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditLogLimit",
+  "label": "Count of elements on the audit log",
+  "value": "5",
+  "type": "configValue",
+  "description": "Use this setting to default to a specific count of the elements loaded in audit log",
+  "metatags": {}
+}
+```
+
+Response email reminder:
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "responseEmailReminders",
+  "label": "Days from due date email reminders are sent",
+  "value": [
+      90,
+      30,
+      7,
+      -1
+  ],
+  "type": "configValue",
+  "description": "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning compliance item responses.",
+  "metatags": {}
+}
+```
+
+Overview email:
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "overviewMail",
+  "label": "Weekly Summary",
+  "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Items Overview</strong></span></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 20px;\">Hospital Responses</span><br></p><p><span style=\"font-size: 20px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">%CorporateTable%</span></p><p><br></p><p><br></p><p><span style=\"font-size: 20px;\">Corporate Responses</span></p><p><span style=\"font-size: 20px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">%CorporateTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+  "type": "emailTemplate",
+  "options": [
+      "HospitalTable",
+      "CorporateTable"
+  ],
+  "description": "",
+  "metatags": {}
+}
+```
+
+Overview email address:
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "overviewEmailAddress",
+  "label": "Email adress for receving the weekly emails",
+  "value": [
+      "admin@ccbmidev.onmicrosoft.com"
+  ],
+  "type": "configValue",
+  "description": "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
+  "metatags": {},
+}
+```
+
+Due email:
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "dueMail",
+  "label": "Response reminders",
+  "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%, %DelegatesNames%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that compliance item %ComplianceItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+  "type": "emailTemplate",
+  "options": [
+      "FirstName",
+      "DeletagesNames",
+      "ComplianceItemName",
+      "DueText",
+      "Link"
+  ],
+  "description": "",
+  "metatags": {}
+}
+```
+
+Maximum delegates:
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "maxDelegates",
+  "label": "Maximum number of Delegates",
+  "value": "2",
+  "type": "configValue",
+  "description": "Use this setting to default to a specific maximum number of Delegates",
+  "metatags": {},
+}
+```
+
+## Run the app locally
+
+To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.
+
+Follow the instructions in the readme files for the API (Express) and Client (REACT) applications.
