@@ -2,7 +2,7 @@ import { createIcon } from "@chakra-ui/icons";
 
 // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
 
-export const QuestionIcon = createIcon({
+export const QuestionMarkIcon = createIcon({
   path: (
     <g>
       <circle
@@ -35,3 +35,5 @@ export const QuestionIcon = createIcon({
   ),
   viewBox: "0 0 22 21",
 });
+
+

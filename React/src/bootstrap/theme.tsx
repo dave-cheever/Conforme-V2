@@ -43,12 +43,74 @@ const getTheme = (organizationTheme?: any) => {
       },
       navigationLeft: {
         bg: "#1F1F1F",
+        menuList: {
+          activeIndicator: "#A2171E",
+        },
+      },
+      auditModal: {
+        title: {
+          text: '#434B4F'
+        },
+        avatar: {
+          bg: '#F69942',
+          text: '#9A9EA1'
+        },
+        location: {
+          text: '#9A9EA1'
+        },
+        menu: {
+          bg: 'transparent',
+          text: "#9A9EA1",
+          active: {
+            icon: "#1F1F1F",
+            text: "#1F1F1F",
+            indicator: "#A2171E"
+          },
+          inActive: {
+            icon: "#9A9EA1",
+            text: "#9A9EA1",
+            indicator: "transparent"
+          },
+        },
+        button: {
+          bg: '#A2171E',
+          hoverBg: '#CC242D',
+        },
+      },
+      homePage: {
+        button: {
+          bg: '#A2171E',
+          hoverBg: '#CC242D',
+        },
+      },
+      circularProgress: {
+        text: "#9A9EA1",
+        progress: '#A2171E',
       },
       brand: {
-        ...(organizationTheme?.colors?.brand || {}),
+        ...(organizationTheme?.colors?.brand || {})
       },
     },
     customStyles: {},
+    components: {
+      ...theme.components,
+      Modal: {
+        ...theme.components.Modal,
+        variants: {
+          "auditModal": {
+            dialogContainer: {
+              justifyContent: "flex-end"
+            },
+            overlay: {
+              background: "linear-gradient(to right, transparent 0%, black 200%)"
+            },
+            dialog: {
+              backgroundColor: "#F2F2F2"
+            }
+          },
+        }
+      }
+    }
   };
 
   return customTheme;

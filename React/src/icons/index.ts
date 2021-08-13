@@ -1,3 +1,21 @@
-import { QuestionIcon } from "./QuestionIcon";
+import { QuestionMarkIcon } from "./QuestionMarkIcon";
+import { RightArrowIcon } from "./RightArrowIcon";
+import { LocationIcon } from "./LocationIcon";
+import { AreaInfoIcon } from "./AreaInfoIcon";
+import { OpenMenuArrow } from "./OpenMenuArrow";
+import { AuditIcon } from "./AuditIcon";
+import { QuestionsIcon } from "./QuestionsIcon";
+import { AssetsIcon } from "./AssetsIcon";
+import { SearchIcon } from "./SearchIcon";
+import { EllipsisIcon } from "./EllipsisIcon";
 
-export { QuestionIcon };
+export { QuestionMarkIcon };
+export { RightArrowIcon };
+export { LocationIcon };
+export { AreaInfoIcon };
+export { OpenMenuArrow };
+export { AuditIcon };
+export { QuestionsIcon };
+export { AssetsIcon };
+export { SearchIcon };
+export { EllipsisIcon };

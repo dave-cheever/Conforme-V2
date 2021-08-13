@@ -15,7 +15,7 @@ import {
 import { useHistory } from "react-router-dom";
 
 import { IState, IStore, store } from "../bootstrap/store";
-import { QuestionIcon } from "../icons";
+import { QuestionMarkIcon } from "../icons";
 
 const NavigationTop = () => {
   const { state }: IStore = useContext(store);
@@ -74,7 +74,7 @@ const NavigationTop = () => {
         {/* <SearchBar /> */}
       </Stack>
       <Flex align="center">
-        <QuestionIcon
+        <QuestionMarkIcon
           _hover={{ color: "#ffffff", opacity: 0.7, cursor: "pointer" }}
           _active={{}}
           h="22px"
