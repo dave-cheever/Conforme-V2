@@ -1,8 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 
-// path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
-
-export const AreaInfoIcon = createIcon({
+const AreaInfoIcon = createIcon({
   path: (
     <>
       <path fill="none" d="M16.7499 6.309C16.7499 9.379 11.4999 14.25 11.4999 14.25C11.4999 14.25 6.24989 9.379 6.24989 6.309C6.21006 4.87595 6.74055 3.48567 7.72488 2.44341C8.70921 1.40115 10.0669 0.792102 11.4999 0.75C12.9328 0.792364 14.2903 1.40149 15.2746 2.44369C16.2589 3.48589 16.7895 4.87603 16.7499 6.309V6.309Z" stroke="#434B4F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -11,3 +9,5 @@ export const AreaInfoIcon = createIcon({
   ),
   viewBox: "0 0 23 24",
 });
+
+export default AreaInfoIcon;

@@ -1,8 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 
-// path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
-
-export const EllipsisIcon = createIcon({
+const EllipsisIcon = createIcon({
   path: (
     <ellipse rx="30" ry="30" fill="#9A9EA180" />
   ),
@@ -13,3 +11,5 @@ export const EllipsisIcon = createIcon({
     transformOrigin: "center",
   }
 });
+
+export default EllipsisIcon;

@@ -1,21 +1,45 @@
-import { QuestionMarkIcon } from "./QuestionMarkIcon";
-import { RightArrowIcon } from "./RightArrowIcon";
-import { LocationIcon } from "./LocationIcon";
-import { AreaInfoIcon } from "./AreaInfoIcon";
-import { OpenMenuArrow } from "./OpenMenuArrow";
-import { AuditIcon } from "./AuditIcon";
-import { QuestionsIcon } from "./QuestionsIcon";
-import { AssetsIcon } from "./AssetsIcon";
-import { SearchIcon } from "./SearchIcon";
-import { EllipsisIcon } from "./EllipsisIcon";
+import AssetsIcon from "./AssetsIcon";
+import AuditIcon from "./AuditIcon";
+import ActionsIcon from "./ActionsIcon";
+import InvestigationIcon from "./InvestigationIcon";
+import LicensesIcon from "./LicensesIcon";
+import AuditWhiteIcon from "./AuditWhiteIcon";
+import AtTheRateIcon from "./AtTheRateIcon";
+import MessageIcon from "./MessageIcon";
+import HealthKitIcon from "./HealthKitIcon";
+import InvestigationWhiteIcon from "./InvestigationWhiteIcon";
+import LicensesWhiteIcon from "./LicensesWhiteIcon";
+import FileRightIcon from "./FileRightIcon";
+import RedDotIcon from "./RedDotIcon";
+import RightArrowIcon from "./RightArrowIcon";
+import LocationIcon from "./LocationIcon";
+import AreaInfoIcon from "./AreaInfoIcon";
+import OpenMenuArrow from "./OpenMenuArrow";
+import QuestionsIcon from "./QuestionsIcon";
+import SearchIcon from "./SearchIcon";
+import EllipsisIcon from "./EllipsisIcon";
+import QuestionMarkIcon from "./QuestionMarkIcon";
 
-export { QuestionMarkIcon };
-export { RightArrowIcon };
-export { LocationIcon };
-export { AreaInfoIcon };
-export { OpenMenuArrow };
-export { AuditIcon };
-export { QuestionsIcon };
-export { AssetsIcon };
-export { SearchIcon };
-export { EllipsisIcon };
+export {
+  QuestionsIcon,
+  AssetsIcon,
+  AuditIcon,
+  ActionsIcon,
+  InvestigationIcon,
+  LicensesIcon,
+  AuditWhiteIcon,
+  AtTheRateIcon,
+  MessageIcon,
+  HealthKitIcon,
+  InvestigationWhiteIcon,
+  LicensesWhiteIcon,
+  FileRightIcon,
+  RedDotIcon,
+  RightArrowIcon,
+  LocationIcon,
+  AreaInfoIcon,
+  OpenMenuArrow,
+  SearchIcon,
+  EllipsisIcon,
+  QuestionMarkIcon,
+};

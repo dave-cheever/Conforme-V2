@@ -14,7 +14,7 @@ const Layout = ({ component: Component }: { component: any }) => {
         flexGrow={1}
       >
         <NavigationTop />
-        <Box h="calc(100vh - 80px)" overflow="none">
+        <Box h="calc(100vh - 80px)" overflow="none" bg="layout.bg">
           <Component />
         </Box>
       </Flex>

@@ -23,6 +23,7 @@ const getTheme = (organizationTheme?: any) => {
       ...theme.fontSizes,
       xs: "10px",
       sm: "12px",
+      smm: "14px",
       md: "16px",
       lg: "18px",
       xl: "20px",
@@ -39,7 +40,7 @@ const getTheme = (organizationTheme?: any) => {
       ...theme.colors,
       navigationTop: {
         bg: "#313233",
-        addButton: "#A2171E"
+        addButton: "#A2171E",
       },
       navigationLeft: {
         bg: "#1F1F1F",
@@ -49,46 +50,80 @@ const getTheme = (organizationTheme?: any) => {
       },
       auditModal: {
         title: {
-          text: '#434B4F'
+          text: "#434B4F",
         },
         avatar: {
-          bg: '#F69942',
-          text: '#9A9EA1'
+          bg: "#F69942",
+          text: "#9A9EA1",
         },
         location: {
-          text: '#9A9EA1'
+          text: "#9A9EA1",
         },
         menu: {
-          bg: 'transparent',
+          bg: "transparent",
           text: "#9A9EA1",
           active: {
             icon: "#1F1F1F",
             text: "#1F1F1F",
-            indicator: "#A2171E"
+            indicator: "#A2171E",
           },
           inActive: {
             icon: "#9A9EA1",
             text: "#9A9EA1",
-            indicator: "transparent"
+            indicator: "transparent",
           },
         },
         button: {
-          bg: '#A2171E',
-          hoverBg: '#CC242D',
+          bg: "#A2171E",
+          hoverBg: "#CC242D",
         },
       },
       homePage: {
         button: {
-          bg: '#A2171E',
-          hoverBg: '#CC242D',
+          bg: "#A2171E",
+          hoverBg: "#CC242D",
         },
       },
       circularProgress: {
         text: "#9A9EA1",
-        progress: '#A2171E',
+        progress: "#A2171E",
       },
+      layout: {
+        bg: "#E5E5E5",
+      },
+      dashboardFilters: {
+        active: "#FFFFFF",
+        inActive: "#1F1F1F",
+      },
+      auditPanel: {
+        header: "#9A9EA1",
+        bg: "#FFFFFF",
+        button: "#1F1F1F",
+        headerText: "#FFFFFF",
+        ribbon: "#F69942",
+        mentionHeader: "#A2171E",
+        mentionRibbon: "#A2171E",
+        text: "#313233",
+      },
+      licensesPanel: {
+        header: "#9A9EA1",
+        bg: "#FFFFFF",
+        button: "#1F1F1F",
+        headerText: "#FFFFFF",
+        ribbon: "#F69942",
+        text: "#313233",
+      },
+      investigationPanel: {
+        header: "#9A9EA1",
+        bg: "#FFFFFF",
+        button: "#1F1F1F",
+        headerText: "#FFFFFF",
+        ribbon: "#F69942",
+        text: "#313233",
+      },
+
       brand: {
-        ...(organizationTheme?.colors?.brand || {})
+        ...(organizationTheme?.colors?.brand || {}),
       },
     },
     customStyles: {},
@@ -97,20 +132,21 @@ const getTheme = (organizationTheme?: any) => {
       Modal: {
         ...theme.components.Modal,
         variants: {
-          "auditModal": {
+          auditModal: {
             dialogContainer: {
-              justifyContent: "flex-end"
+              justifyContent: "flex-end",
             },
             overlay: {
-              background: "linear-gradient(to right, transparent 0%, black 200%)"
+              background:
+                "linear-gradient(to right, transparent 0%, black 200%)",
             },
             dialog: {
-              backgroundColor: "#F2F2F2"
-            }
+              backgroundColor: "#F2F2F2",
+            },
           },
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   return customTheme;
