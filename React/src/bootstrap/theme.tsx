@@ -38,6 +38,7 @@ const getTheme = (organizationTheme?: any) => {
     },
     colors: {
       ...theme.colors,
+
       navigationTop: {
         bg: "#313233",
         addButton: "#A2171E",
@@ -60,6 +61,17 @@ const getTheme = (organizationTheme?: any) => {
         },
         location: {
           text: "#9A9EA1",
+        },
+        questionGroup: {
+          checked: "#41B916",
+          activeButton: {
+            500: "#A2171E",
+            600: "#A2171E",
+          },
+          nonActiveButton: {
+            500: "#FFF",
+            600: "#FFF",
+          },
         },
         menu: {
           bg: "transparent",
@@ -126,6 +138,13 @@ const getTheme = (organizationTheme?: any) => {
 
       brand: {
         ...(organizationTheme?.colors?.brand || {}),
+      },
+    },
+    styles: {
+      global: {
+        ".chakra-collapse": {
+          width: "100% !important",
+        },
       },
     },
     customStyles: {},

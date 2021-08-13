@@ -10,7 +10,6 @@ const AccidentInvestigationPanel = () => {
     <Box
       w="270px"
       h="312px"
-      borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
       boxShadow="0px 4px 10px rgba(0, 0, 0, 0.05)"

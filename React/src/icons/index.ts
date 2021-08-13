@@ -30,6 +30,7 @@ import Mentions from "./Mentions";
 import Note from "./Note";
 import Policies from "./Policies";
 
+export * from "./MinusIcon";
 
 export {
   QuestionsIcon,

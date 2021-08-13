@@ -19,13 +19,7 @@ interface IAuditPanel {
 
 const AuditPanel = ({ isMentioned, open }: IAuditPanel) => {
   return (
-    <Box
-      w="270px"
-      h="312px"
-      borderWidth="1px"
-      borderRadius="lg"
-      overflow="hidden"
-    >
+    <Box w="270px" h="312px" borderRadius="lg" overflow="hidden">
       <Flex
         bg={isMentioned ? "auditPanel.mentionHeader" : "auditPanel.header"}
         alignItems="center"
