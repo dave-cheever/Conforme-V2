@@ -19,6 +19,17 @@ import QuestionsIcon from "./QuestionsIcon";
 import SearchIcon from "./SearchIcon";
 import EllipsisIcon from "./EllipsisIcon";
 import QuestionMarkIcon from "./QuestionMarkIcon";
+import Accidents from "./Accidents";
+import Actions from "./Actions";
+import Assets from "./Assets";
+import Audits from "./Audits";
+import Bar from "./Bar";
+import Dashboard from "./Dashboard";
+import Licenses from "./Licenses";
+import Mentions from "./Mentions";
+import Note from "./Note";
+import Policies from "./Policies";
+
 
 export {
   QuestionsIcon,
@@ -42,4 +53,14 @@ export {
   SearchIcon,
   EllipsisIcon,
   QuestionMarkIcon,
+  Accidents,
+  Actions,
+  Assets,
+  Audits,
+  Bar,
+  Dashboard,
+  Licenses,
+  Mentions,
+  Note,
+  Policies
 };

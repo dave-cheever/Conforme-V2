@@ -34,10 +34,9 @@ const initialState: IState = {
   }),
   organizationConfig: {
     id: "",
-    name: "Cielo Costa",
+    name: "Conforme",
     domain: "",
-    logoUrl:
-      "https://images.squarespace-cdn.com/content/v1/576008fae321408871da4e79/1466173437770-3J6ODI1OEYPZRQB0V53C/CC+logo.png?format=1000w",
+    logoUrl: "https://i.ibb.co/RhxV422/Group.png",
     theme: {
       colors: {
         brand: {},

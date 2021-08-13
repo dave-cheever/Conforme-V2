@@ -46,6 +46,8 @@ const getTheme = (organizationTheme?: any) => {
         bg: "#1F1F1F",
         menuList: {
           activeIndicator: "#A2171E",
+          unselectedMenuItem: "#9A9EA1",
+          selectedMenuItem: "#FFFFFF",
         },
       },
       auditModal: {
