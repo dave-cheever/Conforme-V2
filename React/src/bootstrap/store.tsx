@@ -6,6 +6,7 @@ import { IOrganization } from "../interfaces/IOrganization";
 export interface IState {
   user: User;
   organizationConfig?: IOrganization;
+  mentionsCount: number;
 }
 
 export interface IAction {
@@ -45,6 +46,7 @@ const initialState: IState = {
     addons: {},
     allowedTenantsIds: [],
   },
+  mentionsCount: 0
 };
 const getInitialState = (): any => initialState;
 const store = createContext<IStore>(getInitialState());
@@ -65,6 +67,14 @@ const StateProvider = ({ children }: any) => {
         const newState = {
           ...state,
           organizationConfig: action.payload,
+        };
+        return newState;
+      }
+
+      case "setMentionsCount": {
+        const newState = {
+          ...state,
+          mentionsCount: action.payload,
         };
         return newState;
       }

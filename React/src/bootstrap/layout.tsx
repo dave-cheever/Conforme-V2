@@ -1,11 +1,11 @@
 import { Flex, Box } from "@chakra-ui/react";
 
-import NavigationLeft from "../components/NavigationLeft";
+import NavigationLeft from "../components/NavigationLeft/NavigationLeft";
 import NavigationTop from "../components/NavigationTop";
 
 const Layout = ({ component: Component }: { component: any }) => {
   return (
-    <Flex>
+    <Flex minH='100vh'>
       <NavigationLeft />
       <Flex
         w="calc(100% - 240px)"
@@ -14,7 +14,7 @@ const Layout = ({ component: Component }: { component: any }) => {
         flexGrow={1}
       >
         <NavigationTop />
-        <Box h="calc(100vh - 80px)" overflow="none" bg="layout.bg">
+        <Box h="full" overflow="none" bg="layout.bg">
           <Component />
         </Box>
       </Flex>

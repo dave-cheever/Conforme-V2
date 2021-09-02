@@ -27,8 +27,10 @@ import Bar from "./Bar";
 import Dashboard from "./Dashboard";
 import Licenses from "./Licenses";
 import Mentions from "./Mentions";
-import Note from "./Note";
 import Policies from "./Policies";
+import Admin from "./Admin";
+import Eye from "./Eye";
+import Bin from "./Bin";
 
 export * from "./MinusIcon";
 
@@ -62,6 +64,8 @@ export {
   Dashboard,
   Licenses,
   Mentions,
-  Note,
-  Policies
+  Policies,
+  Admin,
+  Eye,
+  Bin,
 };

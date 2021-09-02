@@ -1,6 +1,13 @@
+interface ISubSection {
+  label: string;
+  url: string;
+}
+
 export interface INavItem {
-    icon?: any;
-    title: string;
-    url: string;
-    isActive: boolean;
-  }
+  type: "mentions" | "seperator" | "menuItem";
+  icon?: any;
+  label: string;
+  url?: string;
+  isActive?: boolean;
+  subSections?: ISubSection[] | undefined;
+}

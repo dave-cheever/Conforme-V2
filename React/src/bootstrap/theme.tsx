@@ -50,6 +50,7 @@ const getTheme = (organizationTheme?: any) => {
           unselectedMenuItem: "#9A9EA1",
           selectedMenuItem: "#FFFFFF",
         },
+        mentionBackground: "#A2171E"
       },
       auditModal: {
         title: {
