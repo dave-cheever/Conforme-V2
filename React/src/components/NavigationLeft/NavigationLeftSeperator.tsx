@@ -4,7 +4,7 @@ import { INavItem } from "../../interfaces/INavItem";
 
 const NavigationLeftSeperator = ({ label }: INavItem) => {
   return (
-    <Box display="flex" flexDirection="row" alignContent="center" key={label}>
+    <Box display="flex" flexDirection="row" alignContent="center">
       <Bar
         width="46px"
         left="25px"

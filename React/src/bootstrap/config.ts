@@ -9,6 +9,7 @@ import {
   Actions,
   Admin
 } from "../icons";
+import IFilters from "../interfaces/IFilters";
 import { INavItem } from "../interfaces/INavItem";
 
 export const toastFailed: any = {
@@ -148,3 +149,66 @@ export const chartColors = [
   '#DBCFB0',
   '#545775'
 ];
+
+export const responseStatuses = {
+  "completed": "Completed",
+  "notStarted": "Not started",
+  "inProgress": "In progress",
+  "comingUp": "Coming up",
+  "overdue": "Overdue",
+  "noDueDate": "No due date",
+  "all": "All",
+  "compliant": "Compliant",
+  "nonCompliant": "Non-compliant"
+};
+
+export const initialFilters: IFilters = {
+  complianceItems: {
+    name: 'Compliance item(s)',
+    value: [],
+  },
+  category: {
+    name: 'Category',
+    value: [],
+  },
+  functionalAreas: {
+    name: 'Functional area(s)',
+    value: [],
+  },
+  businessUnits: {
+    name: 'Business unit(s)',
+    value: [],
+  },
+  itemStatus: {
+    name: 'Item status',
+    value: [],
+  },
+  regulatoryBody: {
+    name: 'Regulatory body',
+    value: [],
+  },
+  dueDate: {
+    name: 'Due date',
+    value: null,
+  },
+  isVerified: {
+    name: 'Verified',
+    value: null,
+  },
+  userRole: {
+    name: 'User role',
+    value: [],
+  },
+  collection: {
+    name: 'Data type',
+    value: []
+  },
+  action: {
+    name: 'Action',
+    value: []
+  },
+  users: {
+    name: 'Users',
+    value: [],
+  },
+};

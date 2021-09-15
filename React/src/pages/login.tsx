@@ -50,7 +50,7 @@ const Login = () => {
       align="center"
       direction={["column", "column", "row"]}
       h="100vh"
-      backgroundColor="brand.darkGrey"
+      backgroundColor="loginPage.bg"
       width="100%"
       overflow="hidden"
     >

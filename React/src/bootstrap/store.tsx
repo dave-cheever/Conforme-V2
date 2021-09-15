@@ -2,11 +2,16 @@ import { createContext, useReducer } from "react";
 
 import { User } from "../models";
 import { IOrganization } from "../interfaces/IOrganization";
+import { ISetting } from "../interfaces/ISettings";
+import IFilters from "../interfaces/IFilters";
+import { getFilters } from "../utils/helpers";
 
 export interface IState {
   user: User;
   organizationConfig?: IOrganization;
   mentionsCount: number;
+  settings: ISetting[];
+  filters: IFilters;
 }
 
 export interface IAction {
@@ -20,6 +25,8 @@ export interface IStore {
 }
 
 const initialState: IState = {
+  settings: [],
+  filters: getFilters({}),
   user: new User({
     id: "asdasd",
     organizationsIds: [],

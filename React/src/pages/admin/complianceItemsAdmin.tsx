@@ -1,9 +1,16 @@
-import React from 'react'
-import { Flex } from '@chakra-ui/react';
+import { Flex } from "@chakra-ui/react";
+
+import Header from "../../components/Header";
 
 const ComplianceItemsAdmin = () => {
   return (
-    <Flex>ComplianceItemsAdmin</Flex>
+    <>
+      <Header
+        breadcrumbs={["Admin", "Compliance items"]}
+        hideBreadcrumbsOnMobile
+      />
+      <Flex>ComplianceItemsAdmin</Flex>
+    </>
   );
 };
 

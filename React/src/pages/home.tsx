@@ -62,7 +62,7 @@ const Home = () => {
         alignContent={["center", "flex-start"]}
       >
         <Box w="full" h="full" fontSize="18px">
-          <Text fontWeight="700" fontSize="24px" color="brand.lightGrey">
+          <Text fontWeight="700" fontSize="24px">
             Your work
           </Text>
           <br />

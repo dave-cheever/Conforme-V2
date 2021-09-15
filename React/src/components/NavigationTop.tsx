@@ -88,12 +88,12 @@ const NavigationTop = () => {
             py={1}
             ml="1"
             mr={["0", "6"]}
-            color="brand.primaryFont"
+            color="white"
             w="50px"
           >
             <Avatar
               color="#FFFFFF"
-              bg="brand.primary"
+              bg="navigationTop.avatarBg"
               rounded="full"
               name={user?.getFullName()}
               size="sm"

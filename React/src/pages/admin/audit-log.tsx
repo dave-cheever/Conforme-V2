@@ -1,9 +1,13 @@
-import React from 'react'
-import { Flex } from '@chakra-ui/react';
+import { Flex } from "@chakra-ui/react";
+
+import Header from "../../components/Header";
 
 const AuditLog = () => {
   return (
-    <Flex>AuditLog</Flex>
+    <>
+      <Header breadcrumbs={["Admin", "Audit log"]} hideBreadcrumbsOnMobile />
+      <Flex>AuditLog</Flex>
+    </>
   );
 };
 

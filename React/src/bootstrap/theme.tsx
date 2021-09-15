@@ -42,6 +42,7 @@ const getTheme = (organizationTheme?: any) => {
       navigationTop: {
         bg: "#313233",
         addButton: "#A2171E",
+        avatarBg: "#A2171E",
       },
       navigationLeft: {
         bg: "#1F1F1F",
@@ -50,7 +51,7 @@ const getTheme = (organizationTheme?: any) => {
           unselectedMenuItem: "#9A9EA1",
           selectedMenuItem: "#FFFFFF",
         },
-        mentionBackground: "#A2171E"
+        mentionBackground: "#A2171E",
       },
       auditModal: {
         title: {
@@ -135,6 +136,48 @@ const getTheme = (organizationTheme?: any) => {
         headerText: "#FFFFFF",
         ribbon: "#F69942",
         text: "#313233",
+      },
+      header: {
+        bg: "#2B3236",
+        breadcrumbPrimary: "#FFFFFF",
+        breadcrumbSecondary: "#888A8D",
+        countFontColor: "#424B50",
+      },
+      settings: {
+        header: {
+          bg: "#2B3236",
+          tabPanels: "#424B50",
+          selectedTab: "#A2171E",
+        },
+      },
+      chart: {
+        labelFontColor: "#2B3236"
+      },
+      loginPage: {
+        bg: "#2B3236"
+      },
+      categories: {
+        fontColor:"#9A9EA1"
+      },
+      functionalAreas: {
+        fontColor:"#9A9EA1"
+      },
+      regulatoryBodies: {
+        fontColor:"#9A9EA1"
+      },
+      businessUnit: {
+        binIconColor: "#FC5960"
+      },
+      loader: {
+        color: "#A2171E"
+      },
+      complianceItems: {
+        header: {
+          menuButton: "#424B50",
+          rightIcon: "#9A9EA1",
+          menuItemFocus: "#FC5960",
+          menuItemFont: "#424B50"
+        }
       },
 
       brand: {

@@ -58,7 +58,7 @@ const Chart = ({ items, label }: { items: IChartItem[]; label: string }) => {
       position="fixed"
       right="30px"
     >
-      <Box mb="24px" fontWeight="bold" color="brand.darkGrey">
+      <Box mb="24px" fontWeight="bold" color="chart.labelFontColor">
         Responses by {label}
       </Box>
       <Box

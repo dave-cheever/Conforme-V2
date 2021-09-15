@@ -31,6 +31,19 @@ import Policies from "./Policies";
 import Admin from "./Admin";
 import Eye from "./Eye";
 import Bin from "./Bin";
+import ArrowRight from "./ArrowRight";
+import GridIcon from "./GridIcon";
+import ListIcon from "./ListIcon";
+import GroupIcon from "./GroupIcon";
+import ChevronRight from "./ChevronRight";
+import ComingUpIcon from "./ComingUpIcon";
+import Building from "./Building";
+import UploadedCross from "./UploadedCross";
+import UploadedTick from "./UploadedTick";
+import Briefcase from "./Briefcase";
+import QuestionIcon from "./QuestionIcon";
+import CircledTickBold from "./CircledTickBold";
+import CircledCross from "./CircledCross";
 
 export * from "./MinusIcon";
 
@@ -68,4 +81,17 @@ export {
   Admin,
   Eye,
   Bin,
+  ArrowRight,
+  GridIcon,
+  ListIcon,
+  GroupIcon,
+  ChevronRight,
+  ComingUpIcon,
+  Building,
+  UploadedCross,
+  UploadedTick,
+  Briefcase,
+  QuestionIcon,
+  CircledTickBold,
+  CircledCross,
 };

@@ -55,12 +55,15 @@ const NavigationLeft = () => {
       <Box ml="26px">
         {menuItems.map((menuItem) => {
           if (menuItem.type === "seperator") {
-            return <NavigationLeftSeperator {...menuItem} />;
+            return (
+              <NavigationLeftSeperator {...menuItem} key={menuItem.label} />
+            );
           } else {
             return (
               <NavigationLeftItem
                 {...menuItem}
                 isActive={activeMenu === menuItem.url}
+                key={menuItem.label}
               />
             );
           }
