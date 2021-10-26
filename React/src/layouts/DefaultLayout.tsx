@@ -3,7 +3,7 @@ import { Flex, Box } from "@chakra-ui/react";
 import NavigationLeft from "../components/NavigationLeft/NavigationLeft";
 import NavigationTop from "../components/NavigationTop";
 
-const Layout = ({ component: Component }: { component: any }) => {
+const DefaultLayout = ({ component: Component }: { component: any }) => {
   return (
     <Flex minH='100vh'>
       <NavigationLeft />
@@ -22,4 +22,4 @@ const Layout = ({ component: Component }: { component: any }) => {
   );
 };
 
-export default Layout;
+export default DefaultLayout;

@@ -1,7 +1,7 @@
 import Icon from '@chakra-ui/icon'
 import { Box, Text } from '@chakra-ui/layout'
 import { useContext, useMemo } from 'react';
-import { IAuditModalMenuItemProps } from '../../interfaces/AuditModalMenuItemProps'
+import { IAuditModalMenuItemProps } from '../../interfaces/IAuditModalMenuItemProps'
 import AuditModalContext from './AuditModalContext';
 
 const AuditModalMenuItem = ({ label, icon }: IAuditModalMenuItemProps) => {

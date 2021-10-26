@@ -18,9 +18,17 @@ import { IState, IStore, store } from "../bootstrap/store";
 import { QuestionMarkIcon } from "../icons";
 
 const NavigationTop = () => {
-  const { state }: IStore = useContext(store);
+  const { state, dispatch }: IStore = useContext(store);
   const { organizationConfig, user }: IState = state;
   const history = useHistory();
+
+  const logout = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
+      credentials: 'include',
+      mode: 'no-cors',
+    });
+    dispatch({ type: 'setUser', payload: null });
+  };
 
   const pageRedirect = (page: string) => {
     history.push(page);
@@ -95,7 +103,7 @@ const NavigationTop = () => {
               color="#FFFFFF"
               bg="navigationTop.avatarBg"
               rounded="full"
-              name={user?.getFullName()}
+              name={user?.displayName}
               size="sm"
               src=""
               mx={3}
@@ -103,7 +111,7 @@ const NavigationTop = () => {
           </MenuButton>
           <MenuList w="200px">
             <Text p="5px 12px" w="full" textOverflow="ellipsis" noOfLines={1}>
-              {user?.getFullName()}
+              {user?.displayName}
             </Text>
             <Text
               p="5px 12px"
@@ -112,10 +120,10 @@ const NavigationTop = () => {
               textOverflow="ellipsis"
               noOfLines={1}
             >
-              {user?.getJobTitle()}
+              {user?.jobTitle}
             </Text>
             <MenuItem
-            // onClick={() => logout()}
+              onClick={() => logout()}
             >
               Sign out
             </MenuItem>

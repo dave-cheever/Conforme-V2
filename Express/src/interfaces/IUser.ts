@@ -1,13 +1,13 @@
-import { IBase } from "./IBase";
+import { IBase } from "app-interfaces";
 
 export interface IUser extends IBase {
-  organizationsIds?: string[];
   firstName?: string;
   lastName?: string;
   displayName: string;
   email: string;
   jobTitle?: string;
-  role: "reader" | "systemAdmin" | "user";
+  role: string;
   imgUrl?: string;
   defaultPage?: string;
+  organizationsIds?: string[];
 }

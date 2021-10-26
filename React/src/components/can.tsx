@@ -1,14 +1,14 @@
 import { useContext } from "react";
 
 import { store, IStore, IState } from "../bootstrap/store";
-import { User } from "../models";
+import { IUser } from "../interfaces/IUser";
 
 export const isPermitted = ({
   user,
   action,
   data = {},
 }: {
-  user?: User;
+  user?: IUser;
   action?: string;
   data?: object;
 }): boolean => {
@@ -20,7 +20,7 @@ export const isPermitted = ({
     return false;
   }
 
-  const permission = globalThis.roles[user.getRole()];
+  const permission = globalThis.roles[user.role];
   if (!permission) {
     return false;
   }

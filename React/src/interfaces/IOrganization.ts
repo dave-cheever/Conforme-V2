@@ -3,12 +3,8 @@ import { IBase } from "./IBase";
 export interface IOrganization extends IBase {
   name: string;
   domain: string;
+  licenceExpirationDate: Date;
   logoUrl: string;
-  theme: {
-    colors: {
-      brand: object;
-    };
-  };
+  theme: object;
   addons: object;
-  allowedTenantsIds: string[]; // 'all' for all tenants
 }

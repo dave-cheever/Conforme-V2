@@ -1,74 +1,42 @@
-import { useContext, useEffect, useState } from "react";
-import { ChakraProvider, CSSReset } from "@chakra-ui/react";
+import { useContext } from "react";
+import { ChakraProvider, CSSReset, Flex, Spinner } from "@chakra-ui/react";
 import { Route, Switch } from "react-router-dom";
 
 import getTheme from "./theme";
-import { getRoutes, IRoute } from "./routes";
 import { IState, IStore, store } from "./store";
-import Layout from "./layout";
-
-declare global {
-  var roles: {
-    reader: {
-      normal: string[];
-      restricted: string[];
-    };
-    systemAdmin: {
-      normal: string[];
-      restricted: string[];
-    };
-    user: {
-      normal: string[];
-      restricted: string[];
-    };
-  };
-}
+import useAuth from "../hooks/useAuth";
+import useInit from "../hooks/useInit";
+import useRoutes from "../hooks/useRoutes";
+import IdleMonitor from "../components/IdleMonitor";
 
 function App() {
   const { state }: IStore = useContext(store);
   const { user, organizationConfig }: IState = state;
-  const [routes, setRoutes] = useState<IRoute[]>([]);
+  const loadingSettings = useInit();
+  const { loading: loadingUser } = useAuth();
+  const routes = useRoutes();
 
-  globalThis.roles = {
-    reader: {
-      normal: [],
-      restricted: [],
-    },
-    systemAdmin: {
-      normal: [],
-      restricted: [],
-    },
-    user: {
-      normal: [],
-      restricted: [],
-    },
-  };
-
-  useEffect(() => {
-    const routes = getRoutes(user);
-    setRoutes(routes);
-  }, [user]);
-
-  useEffect(() => {
-    const getOrganizationTheme = async () => {
-      document.title = `Conforme - ${organizationConfig?.name}`;
-    };
-    getOrganizationTheme();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const renderRoute = ({ key, path, exact, component }: IRoute) => {
+  if (loadingSettings || loadingUser) {
     return (
-      <Route key={key} exact={exact} path={path}>
-        <Layout component={component} />
-      </Route>
+      <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
+        <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="brand.primary"
+            size="xl"
+          />
+        </Flex>
+      </ChakraProvider>
     );
-  };
+  }
 
   return (
     <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
       <CSSReset />
-      <Switch>{routes.map((route) => renderRoute(route))}</Switch>
+      {user && <IdleMonitor />}
+      <Switch>{routes.map(props => <Route {...props} />)}</Switch>
     </ChakraProvider>
   );
 }

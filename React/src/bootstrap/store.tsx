@@ -1,16 +1,18 @@
 import { createContext, useReducer } from "react";
 
-import { User } from "../models";
 import { IOrganization } from "../interfaces/IOrganization";
-import { ISetting } from "../interfaces/ISettings";
+import { IRoles } from "../interfaces/IRoles";
+import { ISetting } from "../interfaces/ISetting";
+import { IUser } from "../interfaces/IUser";
 import IFilters from "../interfaces/IFilters";
 import { getFilters } from "../utils/helpers";
 
 export interface IState {
-  user: User;
+  roles?: IRoles;
+  settings: ISetting[];
+  user?: IUser;
   organizationConfig?: IOrganization;
   mentionsCount: number;
-  settings: ISetting[];
   filters: IFilters;
 }
 
@@ -25,35 +27,12 @@ export interface IStore {
 }
 
 const initialState: IState = {
+  roles: undefined,
   settings: [],
+  user: undefined,
+  organizationConfig: undefined,
+  mentionsCount: 0,
   filters: getFilters({}),
-  user: new User({
-    id: "asdasd",
-    organizationsIds: [],
-    image: "",
-    defaultPage: "",
-    metatags: {},
-    firstName: "Mat",
-    lastName: "",
-    displayName: "Mat",
-    email: "mat@gmail.com",
-    jobTitle: "job",
-    role: "systemAdmin",
-  }),
-  organizationConfig: {
-    id: "",
-    name: "Conforme",
-    domain: "",
-    logoUrl: "https://i.ibb.co/RhxV422/Group.png",
-    theme: {
-      colors: {
-        brand: {},
-      },
-    },
-    addons: {},
-    allowedTenantsIds: [],
-  },
-  mentionsCount: 0
 };
 const getInitialState = (): any => initialState;
 const store = createContext<IStore>(getInitialState());
@@ -62,10 +41,27 @@ const { Provider } = store;
 const StateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer((state: any, action: any) => {
     switch (action.type) {
+
+      case 'setRoles': {
+        const newState = {
+          ...state,
+          roles: action.payload
+        };
+        return newState;
+      }
+
+      case 'setSettings': {
+        const newState = {
+          ...state,
+          settings: action.payload
+        };
+        return newState;
+      }
+
       case "setUser": {
         const newState = {
           ...state,
-          user: action.payload && new User(action.payload),
+          user: action.payload,
         };
         return newState;
       }

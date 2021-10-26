@@ -1,6 +1,6 @@
+import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 
-import User from "../models/user";
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Can from "../components/can";
@@ -20,14 +20,10 @@ import BusinessUnits from "../pages/admin/business-units";
 import Users from "../pages/admin/users";
 import AuditLog from "../pages/admin/audit-log";
 import Settings from "../pages/admin/settings";
-
-export interface IRoute {
-  path: string;
-  key: string;
-  exact?: boolean;
-  component: (props?: any) => JSX.Element;
-  permission?: string;
-}
+import DefaultLayout from "../layouts/DefaultLayout";
+import PureLayout from "../layouts/PureLayout";
+import { IStore, store, IState } from "../bootstrap/store";
+import IRoute from "../interfaces/IRoute";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -36,11 +32,13 @@ const openRoutes: Array<IRoute> = [
     key: "login",
     exact: true,
     component: Login,
+    layout: PureLayout,
   },
   {
     path: "*",
     key: "not-allowed",
     component: () => <Redirect key="not-allowed" to={{ pathname: "/login" }} />,
+    layout: PureLayout,
   },
 ];
 
@@ -51,126 +49,149 @@ const protectedRoutes: Array<IRoute> = [
     key: "home",
     exact: true,
     component: Home,
+    layout: DefaultLayout,
   },
   {
     path: "/audits",
     key: "audits",
     exact: true,
     component: Audits,
+    layout: DefaultLayout,
   },
   {
     path: "/compliance-items",
     key: "compliance-items",
     exact: true,
     component: ComplianceItems,
+    layout: DefaultLayout,
   },
   {
     path: "/licenses",
     key: "licences",
     exact: true,
     component: Licenses,
+    layout: DefaultLayout,
   },
   {
     path: "/assets",
     key: "assets",
     exact: true,
     component: Assets,
+    layout: DefaultLayout,
   },
   {
     path: "/actions",
     key: "actions",
     exact: true,
     component: Actions,
+    layout: DefaultLayout,
   },
   {
     path: "/accidents",
     key: "accidents",
     exact: true,
     component: Accidents,
+    layout: DefaultLayout,
   },
   {
     path: "/policies",
     key: "policies",
     exact: true,
     component: Policies,
+    layout: DefaultLayout,
   },
   {
     path: "/mentions",
     key: "mentions",
     exact: true,
     component: Mentions,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/compliance-items",
     key: "compliance-items-admin",
     exact: true,
     component: ComplianceItemsAdmin,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/regulatory-bodies",
     key: "regulatory-bodies",
     exact: true,
     component: RegulatoryBodies,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/categories",
     key: "categories",
     exact: true,
     component: Categories,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/functional-areas",
     key: "functional-areas",
     exact: true,
     component: FunctionalAreas,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/business-units",
     key: "business-units",
     exact: true,
     component: BusinessUnits,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/users",
     key: "users",
     exact: true,
     component: Users,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/audit-log",
     key: "audit-log",
     exact: true,
     component: AuditLog,
+    layout: DefaultLayout,
   },
   {
     path: "/admin/settings",
     key: "settings",
     exact: true,
     component: Settings,
+    layout: DefaultLayout,
   },
   {
     path: "*",
     key: "not-found",
     component: () => <Redirect key="not-found" to={{ pathname: "/" }} />,
+    layout: DefaultLayout,
   },
 ];
 
-export const getRoutes = (user: User) => {
-  let routes: IRoute[];
+const useRoutes = () => {
+  const { state }: IStore = useContext(store);
+  const { user }: IState = state;
+
+  let routes: IRoute[] = [];
   if (!user) {
     routes = openRoutes;
   } else {
     routes = protectedRoutes;
   }
 
-  return routes.map((route) => ({
+  return routes.map(route => ({
     ...route,
     component: () => (
       <Can
         action={route.permission}
-        yes={route.component}
+        yes={() => <route.layout key={route.key} component={route.component} />}
         no={() => <Redirect key="not-found" to={{ pathname: "/" }} />}
       />
     ),
   }));
 };
+
+export default useRoutes;
