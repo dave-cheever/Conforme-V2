@@ -89,6 +89,32 @@ const getTheme = (organizationTheme?: any) => {
             indicator: "transparent",
           },
         },
+        participants: {
+          text: "#1F1F1F",
+          avatar: {
+            bg: '#F69942',
+            text: {
+              name: "#1F1F1F",
+              designation: "#9A9EA1"
+            }
+          },
+          customSearch: {
+            bg: "white",
+            border: "#9A9EA180"
+          },
+          inspect: {
+            text: "#1F1F1F",
+            area: {
+              text: {
+                name: "#1F1F1F",
+                location: "#9A9EA1"
+              }
+            }
+          },
+          auditType: {
+            text: "#1F1F1F"
+          }
+        },
         button: {
           bg: "#A2171E",
           hoverBg: "#CC242D",
@@ -209,9 +235,22 @@ const getTheme = (organizationTheme?: any) => {
               backgroundColor: "#F2F2F2",
             },
           },
-        },
+        }
       },
-    },
+      Input: {
+        ...theme.components.Input,
+        variants: {
+          auditModalSearchInput: {
+            field: {
+              top: "5px",
+              border: "none",
+              outline: "0",
+              bg: "white"
+            }
+          }
+        }
+      }
+    }
   };
 
   return customTheme;

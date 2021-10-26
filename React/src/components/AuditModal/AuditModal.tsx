@@ -13,7 +13,7 @@ import {
   Box,
   Avatar,
 } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AreaInfoIcon,
   AssetsIcon,
@@ -30,24 +30,85 @@ import AuditModalMenuItem from "./AuditModalMenuItem";
 import ParticipantsSection from "./ParticipantsSection";
 import QuestionsSection from "./QuestionsSection";
 import ReviewsSection from "./ReviewsSection";
+import { IAuditor } from "../../interfaces/IAuditor";
+
+let dummyAuditors = [
+  {
+    name: "Ali Sanaei ",
+    designation: "CEO",
+    imgSrc: ""
+  },
+  {
+    name: "Emma Head",
+    designation: "Corporate Lead",
+    imgSrc: ""
+  },
+  {
+    name: "Zunaib Imtiaz",
+    designation: "Trail Developer",
+    imgSrc: ""
+  },
+];
 
 const AuditModal = ({ onClose, isOpen }: IAuditModal) => {
+
+
+  const [auditorSearchText, setAuditorSearchText] = useState("");
+  const [auditors, setAuditors] = useState<IAuditor[]>([])
+  const [selectedAuditors, setSelectedAuditors] = useState<IAuditor[]>([])
   const [selectedArea, setSelectedArea] = useState("Surgery");
   const [activePage, setActivePage] = useState("Participants");
 
-  const participantsActive = useMemo(
-    () => activePage === "Participants",
-    [activePage]
-  );
-  const questionsActive = useMemo(
-    () => activePage === "Questions",
-    [activePage]
-  );
+  useEffect(() => {
+    //Replace with API
+    setAuditors(dummyAuditors)
+  }, [])
+
+  useEffect(() => {
+    let updatedAuditorsAfterSearch = dummyAuditors.filter(val =>
+      !selectedAuditors.includes(val));
+    setAuditors(updatedAuditorsAfterSearch);
+  }, [selectedAuditors]);
+
+  const updateAuditorSearchText = (searchedName: string) => {
+    searchedName.toLowerCase();
+    setAuditorSearchText(searchedName);
+    if (searchedName.length > 0) {
+      let temp = dummyAuditors.filter(({ name }: IAuditor) =>
+        name.toLowerCase().includes(searchedName))
+      setAuditors(temp);
+    }
+  }
+
+  const updateSelectedAuditors = (auditor: IAuditor, action: string) => {
+    if (action === "add") {
+      const currentAuditors =
+        auditors.filter((currAuditor: IAuditor) =>
+          currAuditor.name !== auditor.name);
+      setAuditors(currentAuditors)
+      setSelectedAuditors([...selectedAuditors, auditor])
+    } else if (action === "remove") {
+      const currentSelectedAuditors =
+        selectedAuditors.filter((currAuditor: IAuditor) =>
+          currAuditor.name !== auditor.name);
+      setSelectedAuditors(currentSelectedAuditors)
+      setAuditors([...auditors, auditor])
+    }
+  }
+
+
+  const participantsActive = useMemo(() => activePage === "Participants", [activePage]);
+  const questionsActive = useMemo(() => activePage === "Questions", [activePage]);
   const reviewActive = useMemo(() => activePage === "Review", [activePage]);
 
   return (
     <AuditModalContext.Provider
-      value={{ activePage, setActivePage, selectedArea, setSelectedArea }}
+      value={{
+        activePage, setActivePage,
+        selectedArea, setSelectedArea,
+        auditors, selectedAuditors, updateSelectedAuditors,
+        auditorSearchText, updateAuditorSearchText
+      }}
     >
       <Modal variant="auditModal" onClose={onClose} isOpen={isOpen}>
         <ModalOverlay />
@@ -92,35 +153,14 @@ const AuditModal = ({ onClose, isOpen }: IAuditModal) => {
               </Breadcrumb>
             </Box>
             <Box display="flex" justifyContent="start" alignItems="center">
-              <Box
-                display="flex"
-                justifyContent="start"
-                alignItems="center"
-                height="40px"
-                w="180px"
-              >
-                <Avatar
-                  size="xs"
-                  bg="auditModal.avatar.bg"
-                  name="Emma Head"
-                  // src="https://bit.ly/broken-link"
-                  mr="10px"
-                />
-                <Text
-                  fontWeight="400"
-                  fontSize="md"
-                  color="auditModal.avatar.text"
-                >
-                  Emma Head
-                </Text>
+              <Box display="flex" justifyContent="start"
+                alignItems="center" height="40px" w="180px" >
+                <Avatar size="xs" bg="auditModal.avatar.bg" name="Emma Head"
+                  src="https://bit.ly/broken-link" mr="10px" />
+                <Text fontWeight="400" fontSize="md" color="auditModal.avatar.text" >Emma Head</Text>
               </Box>
-              <Box
-                display="flex"
-                justifyContent="start"
-                alignItems="center"
-                height="40px"
-                w="230px"
-              >
+              <Box display="flex" justifyContent="start"
+                alignItems="center" height="40px" w="230px">
                 <LocationIcon mr="8px" boxSize={6} />
                 <Text
                   fontWeight="400"
@@ -130,18 +170,9 @@ const AuditModal = ({ onClose, isOpen }: IAuditModal) => {
                   The Meriden Hospital
                 </Text>
               </Box>
-              <Box
-                display="flex"
-                justifyContent="start"
-                alignItems="center"
-                height="40px"
-                w="180px"
-              >
-                <AreaInfoIcon
-                  boxSize={6}
-                  transformOrigin="center"
-                  transform="translate(0px, -2px)"
-                />
+              <Box display="flex" justifyContent="start"
+                alignItems="center" height="40px" w="180px" >
+                <AreaInfoIcon boxSize={6} transformOrigin="center" transform="translate(0px, -2px)" />
                 <SelectedArea />
               </Box>
             </Box>
@@ -153,15 +184,12 @@ const AuditModal = ({ onClose, isOpen }: IAuditModal) => {
                 <AuditModalMenuItem label="Participants" icon={<AuditIcon />} />
                 <AuditModalMenuItem
                   label="Questions"
-                  icon={<QuestionsIcon />}
-                />
-                <AuditModalMenuItem label="Review" icon={<AssetsIcon />} />
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  mt="50px"
-                >
+                  icon={<QuestionsIcon />} />
+                <AuditModalMenuItem
+                  label="Review"
+                  icon={<AssetsIcon />} />
+                <Box display="flex" justifyContent="center"
+                  alignItems="center" mt="50px">
                   <CircularProgress value={11} />
                 </Box>
               </Box>

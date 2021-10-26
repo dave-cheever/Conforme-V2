@@ -11,7 +11,8 @@ const AuditModalMenuItem = ({ label, icon }: IAuditModalMenuItemProps) => {
 
 
   return (
-    <Box display="flex" justifyContent="start" alignItems="center" cursor="pointer"
+    <Box display="flex" justifyContent="start"
+      alignItems="center" cursor="pointer"
       mb="20px"
       onClick={() => modalContext.setActivePage(label)}>
       <Box h="38px" display="inline" w="10px" mr="20px"
