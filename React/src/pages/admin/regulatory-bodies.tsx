@@ -1,24 +1,174 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from "react";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { Box, Flex, Stack, useToast } from "@chakra-ui/react";
+import { useForm } from 'react-hook-form';
 
+import { toastFailed, toastSuccess } from "../../bootstrap/config";
+import AdminModal from "../../components/AdminModal";
 import AdminTableRow from "../../components/AdminTableRow";
 import Chart from "../../components/Chart";
 import Header from "../../components/Header";
+import { IBaseWithName } from "../../interfaces/IBaseWithName";
+import { AdminContext } from "../../contexts/AdminProvider";
+import TextInput from "../../components/Forms/Text";
+import Loader from "../../components/Loader";
+
+const GET_REGULATORY_BODIES = gql`
+  query {
+    regulatoryBodies {
+      _id
+      name
+      count
+    }
+  }
+`;
+const CREATE_REGULATORY_BODY = gql`
+  mutation ($name: String!){
+    createRegulatoryBody(name: $name) {
+      _id
+      name
+    }
+  }
+`;
+const UPDATE_REGULATORY_BODY = gql`
+  mutation ($values: BaseWithNameInput!){
+    updateRegulatoryBody(regulatoryBodyInput: $values) {
+      _id
+      name
+    }
+  }
+`;
+const DELETE_REGULATORY_BODY = gql`
+  mutation ($_id: String!){
+    deleteRegulatoryBody(_id: $_id)
+  }
+`;
+
+const defaultValues = {
+  _id: '',
+  name: '',
+};
 
 const RegulatoryBodies = () => {
-  const bodies: { count: number; id: string; name: string }[] = [
-    {
-      count: 2,
-      id: "1",
-      name: "Reg 1",
-    },
-    {
-      count: 3,
-      id: "2",
-      name: "Reg 2",
-    },
-  ];
+  const toast = useToast();
+  const { adminModalState, setAdminModalState } = useContext(AdminContext);
+  const { data, loading, refetch } = useQuery(GET_REGULATORY_BODIES);
+  const [createFunction] = useMutation(CREATE_REGULATORY_BODY);
+  const [updateFunction] = useMutation(UPDATE_REGULATORY_BODY);
+  const [deleteFunction] = useMutation(DELETE_REGULATORY_BODY);
+  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>([]);
+
+  const { control, formState: { errors }, getValues, trigger, reset } = useForm({
+    mode: 'all',
+    defaultValues,
+  });
+
+  useEffect(() => {
+    if (data?.regulatoryBodies) {
+      setRegulatoryBodies([...data.regulatoryBodies].sort((a, b) => a.name.localeCompare(b.name)));
+    } else {
+      setRegulatoryBodies([]);
+    }
+  }, [data]);
+
+  // Reset the form after closing
+  useEffect(() => {
+    if (adminModalState === 'closed') {
+      reset(defaultValues);
+    }
+  }, [reset, adminModalState]);
+
+  // If modal opened in edit or delete mode, reset the form and set values of edited element
+  const openRegulatoryBodyModal = (action: 'edit' | 'delete', regulatoryBody: IBaseWithName) => {
+    setAdminModalState(action);
+    reset({
+      _id: regulatoryBody._id,
+      name: regulatoryBody.name,
+    });
+  };
+
+  const handleAddRegulatoryBody = async () => {
+    try {
+      if (Object.keys(errors).length === 0) {
+        const values = getValues();
+        await createFunction({ variables: values });
+        toast({ ...toastSuccess, description: 'Regulatory body added' });
+        refetch();
+      } else {
+        toast({ ...toastFailed, description: 'Please complete all the required fields' });
+      }
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    } finally {
+      setAdminModalState('closed');
+    }
+  };
+
+  const handleUpdateRegulatoryBody = async () => {
+    try {
+      if (Object.keys(errors).length === 0) {
+        const values = getValues();
+        await updateFunction({ variables: { values } });
+        toast({ ...toastSuccess, description: 'Regulatory body updated' });
+        refetch();
+      } else {
+        toast({ ...toastFailed, description: 'Please complete all the required fields' });
+      }
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    } finally {
+      setAdminModalState('closed');
+    }
+  };
+
+  const handleDeleteRegulatoryBody = async () => {
+    try {
+      const { _id } = getValues();
+      await deleteFunction({ variables: { _id } });
+      toast({ ...toastSuccess, description: 'Regulatory body deleted' });
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    } finally {
+      setAdminModalState('closed');
+    }
+  };
+
+  const handleAction = async (action) => {
+    const isFormValid = await trigger();
+    if (['add', 'edit'].includes(action) && !isFormValid) {
+      return toast({ ...toastFailed, description: 'Please complete all the required fields' });
+    }
+    switch (action) {
+      case 'add':
+        handleAddRegulatoryBody();
+        break;
+      case 'edit':
+        handleUpdateRegulatoryBody();
+        break;
+      case 'delete':
+        handleDeleteRegulatoryBody();
+        break;
+      default:
+        setAdminModalState('closed');
+    }
+  };
+
   return (
     <>
+      <AdminModal isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction} collection={"regulatory body"}>
+        <Flex w='full' align='flex-start' direction='column'>
+          <TextInput
+            name="name"
+            control={control}
+            label="Name"
+            placeholder='Regulatory body name'
+            validations={{
+              notEmpty: true,
+            }}
+          />
+        </Flex>
+      </AdminModal>
       <Header
         breadcrumbs={["Admin", "Regulatory bodies"]}
         hideBreadcrumbsOnMobile
@@ -38,22 +188,34 @@ const RegulatoryBodies = () => {
                 Actions
               </Box>
             </Flex>
-            <Stack
-              borderRadius={["0", "10px"]}
-              overflow="hidden"
-              spacing={["0", "1px"]}
-              mt={["20px", "0"]}
-            >
-              {bodies?.length > 0 ? (
-                bodies?.map((regulatoryBody, i) =>
-                  AdminTableRow(regulatoryBody, i)
-                )
-              ) : (
-                <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
-                  No regulatory body found
-                </Flex>
-              )}
-            </Stack>
+            {loading ? (
+              <Box mt={20}>
+                <Loader />
+              </Box>
+            ) : (
+              <Stack
+                borderRadius={["0", "10px"]}
+                overflow="hidden"
+                spacing={["0", "1px"]}
+                mt={["20px", "0"]}
+              >
+                {regulatoryBodies?.length > 0 ? (
+                  regulatoryBodies?.map((regulatoryBody, i) =>
+                    <AdminTableRow
+                      key={regulatoryBody._id}
+                      element={regulatoryBody}
+                      index={i}
+                      edit={() => openRegulatoryBodyModal('edit', regulatoryBody)}
+                      remove={() => openRegulatoryBodyModal('delete', regulatoryBody)}
+                    />
+                  )
+                ) : (
+                  <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
+                    No regulatory body found
+                  </Flex>
+                )}
+              </Stack>
+            )}
           </Box>
           <Flex
             flexDirection="column"
@@ -61,7 +223,7 @@ const RegulatoryBodies = () => {
             w={["100%", "220px"]}
           >
             <Box w="100%">
-              {bodies && <Chart items={bodies} label="regulatory body" />}
+              {regulatoryBodies && <Chart items={regulatoryBodies} label="regulatory body" />}
             </Box>
           </Flex>
         </Flex>

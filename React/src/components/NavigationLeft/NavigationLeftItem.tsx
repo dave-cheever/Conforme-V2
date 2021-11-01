@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import { Text, Box, Spacer, Icon, Flex, Avatar } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-import { IStore, store } from "../../bootstrap/store";
 import { INavItem } from "../../interfaces/INavItem";
 import SubSection from "./SubSection";
 
@@ -15,7 +13,6 @@ const NavigationLeftItem = ({
   subSections,
 }: INavItem) => {
   const history = useHistory();
-  const { state }: IStore = useContext(store);
 
   return (
     <Flex>
@@ -81,7 +78,7 @@ const NavigationLeftItem = ({
               top={-2}
             >
               <Text fontSize="11px" fontWeight="bold">
-                {state.mentionsCount}
+                2
               </Text>
             </Flex>
           )}

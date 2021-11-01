@@ -10,7 +10,7 @@ import {
 
 
 import { IResponse } from '../../interfaces/IResponse';
-import useResponseUtils from '../../hook/useResponseUtils';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { Building, CircledCross, CircledTickBold, ComingUpIcon, UploadedCross, UploadedTick } from '../../icons';
 import BriefcaseIcon from '../BriefcaseIcon';
 import MissingQuestions from '../MissingQuestions';
@@ -24,9 +24,9 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
 
     return (
       <Box
-        key={response.id}
+        key={response._id}
         cursor='pointer'
-        onClick={() => history.push(`/items/${response.id}`)}
+        onClick={() => history.push(`/items/${response._id}`)}
         boxShadow="sm"
         bg="white"
         roundedTop={i === 0 ? "lg" : "none"}

@@ -14,7 +14,7 @@ export const getUTCDate = (date?: Date): Moment => {
   return dateUTC;
 };
 
-export const getFilters = ({ usedFilters = [], oldFilters = {}, newFilters = {} }) => {
+export const getFilters = ({ usedFilters = [], oldFilters = {}, newFilters = {} } = {}) => {
   // Make a copy of initial filters
   const cleanFilters = JSON.parse(JSON.stringify(initialFilters));
 
@@ -34,4 +34,12 @@ export const getFilters = ({ usedFilters = [], oldFilters = {}, newFilters = {} 
   }
 
   return filters;
+};
+
+export const getFieldEmptyValue = (fieldType: string) => {
+  switch (fieldType) {
+    case 'text': {
+      return '';
+    }
+  }
 };

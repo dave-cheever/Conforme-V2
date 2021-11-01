@@ -1,19 +1,18 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
 
 import Chart from "../../components/Chart";
-import AdminTableRow from "../../components/AdminTableRow";
 import Header from "../../components/Header";
 
 const Categories = () => {
-  const categories: { count: number; id: string; name: string }[] = [
+  const categories: { count: number; _id: string; name: string }[] = [
     {
       count: 2,
-      id: "1",
+      _id: "1",
       name: "Accreditation",
     },
     {
       count: 3,
-      id: "2",
+      _id: "2",
       name: "Acreditation",
     },
   ];
@@ -42,13 +41,13 @@ const Categories = () => {
               spacing={["0", "1px"]}
               mt={["20px", "0"]}
             >
-              {categories?.length > 0 ? (
+              {/* {categories?.length > 0 ? (
                 categories?.map((category, i) => AdminTableRow(category, i))
               ) : (
                 <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
                   No categories found
                 </Flex>
-              )}
+              )} */}
             </Stack>
           </Box>
           <Flex

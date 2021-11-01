@@ -5,7 +5,7 @@ import {
 
 import ComplianceItemSquare from './ComplianceItemSquare';
 import { IResponse } from '../../interfaces/IResponse';
-import useResponseUtils from '../../hook/useResponseUtils';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { responseStatuses } from '../../bootstrap/config';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {

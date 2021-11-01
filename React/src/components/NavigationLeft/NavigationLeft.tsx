@@ -1,15 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-import { IStore, store } from "../../bootstrap/store";
 import NavigationLeftItem from "./NavigationLeftItem";
 import { menuItems } from "../../bootstrap/config";
 import NavigationLeftSeperator from "./NavigationLeftSeperator";
+import { useAppContext } from "../../contexts/AppProvider";
 
 const NavigationLeft = () => {
-  const { state }: IStore = useContext(store);
-  const { organizationConfig } = state;
+  const { organizationConfig } = useAppContext();
   const history = useHistory();
   const [activeMenu, setActiveMenu] = useState("/");
 

@@ -1,14 +1,13 @@
-import { useContext } from 'react';
 import moment from 'moment';
 import { isInteger } from "lodash";
 
-import { IStore, store } from '../bootstrap/store';
 import { IResponse } from '../interfaces/IResponse';
 import { getUTCDate } from "../utils/helpers";
+import { useAppContext } from '../contexts/AppProvider';
 
 const useResponseUtils = () => {
-  const { state }: IStore = useContext(store);
-  const comingUpTriggers = state.settings.find(
+  const { settings } = useAppContext();
+  const comingUpTriggers = settings.find(
     (el) => el.name === 'comingUpTriggers'
   );
 

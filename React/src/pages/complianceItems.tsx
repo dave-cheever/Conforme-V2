@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -10,23 +10,24 @@ import {
 
 import Header from "../components/Header";
 import { ChevronRight, GridIcon, GroupIcon, ListIcon } from "../icons";
-import { IState, IStore, store } from "../bootstrap/store";
 import Loader from "../components/Loader";
 import { IResponse } from "../interfaces/IResponse";
 import ComplianceItemSquare from "../components/ComplianceItem/ComplianceItemSquare";
 import ComplianceItemsList from "../components/ComplianceItem/ComplianceItemsList";
 import ComplianceItemsGroup from "../components/ComplianceItem/ComplianceItemsGroup";
-import useResponseUtils from "../hook/useResponseUtils";
+import useResponseUtils from "../hooks/useResponseUtils";
+import { useFiltersContext } from "../contexts/FiltersProvider";
+import { useAppContext } from "../contexts/AppProvider";
 
 const ComplianceItems = () => {
-  const { state }: IStore = useContext(store);
-  const { filters }: IState = state;
+  const { user } = useAppContext();
+  const { filters } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const [loading] = useState<number | undefined>();
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
   const responses: IResponse[] = [{
-    id:'aaa',
+    _id:'aaa',
     name: "aaa",
     actionPlanSubmitted: true,
     attachments: [{
@@ -44,7 +45,7 @@ const ComplianceItems = () => {
     }],
     comments: [
       {
-        id: "aaa",
+        _id: "aaa",
         responseId: "aaa",
         text: "aaa"
       }
@@ -58,7 +59,7 @@ const ComplianceItems = () => {
     status: "aaa",
     verified: true,
     businessUnit: {
-      id: "asdasd",
+      _id: "asdasd",
       name: "test",
       identifier: "identifier",
       type: "type",
@@ -86,7 +87,7 @@ const ComplianceItems = () => {
   }];
 
   const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(
-    state?.user?.role === "systemAdmin" ? "List" : "Grid"
+    user?.role === "admin" ? "List" : "Grid"
   );
   const viewIcon = useMemo(
     () => ({
@@ -196,7 +197,7 @@ const ComplianceItems = () => {
             {viewMode === "Grid" &&
               <Flex direction='row' w='full' p={8} wrap='wrap' justify={['center', 'flex-start']} alignContent={['center', 'flex-start']}>
                 {filteredResponses.length > 0
-                  ? filteredResponses.map((response) => <ComplianceItemSquare key={response.id} response={response} />)
+                  ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                   : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>
                 }
               </Flex>}

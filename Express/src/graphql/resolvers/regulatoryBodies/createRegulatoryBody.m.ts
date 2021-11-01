@@ -1,0 +1,30 @@
+import { v4 as uuidv4 } from 'uuid';
+
+import { IBaseWithName } from 'app-interfaces';
+import { RegulatoryBodies } from 'app-models';
+import { genMetatags, isPermitted } from 'app-utils';
+
+
+const createRegulatoryBody = async (_, { name }, { authorize }) => {
+  try {
+    const user = await authorize();
+
+    if (!isPermitted({ user, action: 'regulatoryBodies.add' })) {
+      throw new Error('User is not permitted');
+    }
+
+    const newRegulatoryBody = {
+      _id: uuidv4(),
+      name,
+      metatags: genMetatags('added', user._id),
+    };
+
+    await RegulatoryBodies.create(newRegulatoryBody);
+
+    return newRegulatoryBody;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+export default createRegulatoryBody;

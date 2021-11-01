@@ -39,6 +39,17 @@ const typeDefs = gql`
     organizationId: String!
   }
 
+  type BaseWithName {
+    _id: ID!
+    name: String!
+    count: Int
+  }
+
+  input BaseWithNameInput {
+    _id: ID!
+    name: String
+  }
+
   type User {
     _id: ID!
     firstName: String
@@ -62,13 +73,20 @@ const typeDefs = gql`
     settings(type: String): [Setting!]!
     roles: String!
 
+    # Regulatory bodies
+    regulatoryBodies: [BaseWithName!]!
+
     # Users
     session: Session!
   }
 
   # Mutations
-  # type Mutation {
-  # }
+  type Mutation {
+    # Regulatory bodies
+    createRegulatoryBody(name: String!): BaseWithName!
+    deleteRegulatoryBody(_id: String!): Boolean!
+    updateRegulatoryBody(regulatoryBodyInput: BaseWithNameInput!): BaseWithName!
+  }
 `;
 
 export default typeDefs;

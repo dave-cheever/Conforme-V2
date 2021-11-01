@@ -3,23 +3,18 @@ import { Doughnut } from "react-chartjs-2";
 import { Box, Flex } from "@chakra-ui/react";
 
 import { chartColors } from "../bootstrap/config";
+import { IBaseWithName } from "../interfaces/IBaseWithName";
 
-interface IChartItem {
-  id: string;
-  name: string;
-  count: number;
-}
-
-const Chart = ({ items, label }: { items: IChartItem[]; label: string }) => {
+const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
   const [chartData, setChartData] = useState<number[]>([]);
   const [chartLabels, setChartLabels] = useState<string[]>([]);
 
   useEffect(() => {
     const names: string[] = [];
     const numbers: number[] = [];
-    items.forEach(({ name, count }: IChartItem) => {
+    items.forEach(({ name, count }: IBaseWithName) => {
       names.push(name);
-      numbers.push(count);
+      numbers.push(count || 0);
     });
     setChartData(numbers);
     setChartLabels(names);

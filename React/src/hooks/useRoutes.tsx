@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import Home from "../pages/home";
@@ -22,8 +21,8 @@ import AuditLog from "../pages/admin/audit-log";
 import Settings from "../pages/admin/settings";
 import DefaultLayout from "../layouts/DefaultLayout";
 import PureLayout from "../layouts/PureLayout";
-import { IStore, store, IState } from "../bootstrap/store";
 import IRoute from "../interfaces/IRoute";
+import { useAppContext } from "../contexts/AppProvider";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -172,8 +171,7 @@ const protectedRoutes: Array<IRoute> = [
 ];
 
 const useRoutes = () => {
-  const { state }: IStore = useContext(store);
-  const { user }: IState = state;
+  const { user } = useAppContext();
 
   let routes: IRoute[] = [];
   if (!user) {

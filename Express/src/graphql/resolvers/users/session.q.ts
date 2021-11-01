@@ -9,7 +9,7 @@ const session = async (_, __, { req, authorize }) => {
       user,
       sessionExpiration,
     };
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(err);
   }
 };

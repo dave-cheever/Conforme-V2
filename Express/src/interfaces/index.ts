@@ -1,5 +1,6 @@
 
 import { IBase } from './IBase';
+import { IBaseWithName } from './IBaseWithName';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { ISession } from './ISession';
@@ -10,6 +11,7 @@ import { IUserModel } from './IUserModel';
 
 export {
   IBase,
+  IBaseWithName,
   IOrganization,
   IOrganizationModel,
   ISession,

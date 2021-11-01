@@ -21,7 +21,7 @@ const Users = () => {
     displayName: "displayName",
     email:"email",
     firstName:"firstName",
-    id:"id",
+    _id:"id",
     jobTitle:"jobTitle",
     lastName:"lastName",
     role:"reader"
@@ -30,7 +30,7 @@ const Users = () => {
   const EditableControls = ({ isEditing, onSubmit, onCancel, onEdit, user }: IEditableControls) => {
     return isEditing ? (
       <ButtonGroup justifyContent="center" size="sm" px={3}>
-        <IconButton name={user.id} aria-label='' icon={<CheckIcon name={user.id} />}
+        <IconButton name={user._id} aria-label='' icon={<CheckIcon name={user._id} />}
           onClick={() => {
             onSubmit();
             // updateDefaultPageDropdown(user);
@@ -61,7 +61,7 @@ const Users = () => {
   };
 
   const renderUserRow = (user: IUser, i: number) => (
-    <Flex key={user.id} w='full' h='73px' bg='#FFFFFF' mb="1px" alignItems='center' borderTopRadius={i === 0 ? [0, 'lg'] : ''} borderBottomRadius={(i === users.length - 1) ? [0, 'lg'] : ''} boxShadow="sm">
+    <Flex key={user._id} w='full' h='73px' bg='#FFFFFF' mb="1px" alignItems='center' borderTopRadius={i === 0 ? [0, 'lg'] : ''} borderBottomRadius={(i === users.length - 1) ? [0, 'lg'] : ''} boxShadow="sm">
       <Box w='35%' lineHeight="32px" fontWeight="bold" pl={3} pr={2}>
         <Avatar
           borderColor='brand.active'
@@ -93,7 +93,7 @@ const Users = () => {
         </Editable>
       </Box>
 
-      <Flex w='10%' align='center' justifyContent="flex-end" pr="30px">{getItemCount(user.id)}
+      <Flex w='10%' align='center' justifyContent="flex-end" pr="30px">{getItemCount(user._id)}
         <Tooltip label="Show Items" fontSize="md">
           <Eye color='#018587' cursor='pointer' ml={4} mt='2px' 
           // onClick={() => onEyeClick(user.id)} 

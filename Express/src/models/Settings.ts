@@ -21,6 +21,8 @@ const settingSchema = new Schema<ISetting, ISettingModel>({
   }
 });
 
+// Creating custom methods for every collection to manipulate th DB because we want to do some checks
+
 settingSchema.statics.getByType = async function (type: string): Promise<ISetting[]> {
   const settings = await this.find({ type });
   return settings.map(setting => setting._doc);

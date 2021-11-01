@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { useContext, useEffect } from "react";
-import { IStore, store } from "../bootstrap/store";
+import { useAppContext } from "../contexts/AppProvider";
 
 const USERS = gql`
   query {
@@ -16,24 +16,27 @@ const USERS = gql`
         imgUrl
         defaultPage
       }
-      sessionExpiration
     }
   }
 `;
 
 const useAuth = () => {
-  const { loading, data, refetch } = useQuery(USERS);
-  const { dispatch }: IStore = useContext(store);
-
+  const { loading, data, error } = useQuery(USERS);
+  const { setUser } = useAppContext();
+  
   useEffect(() => {
-    dispatch({ type: 'setUser', payload: data?.session.user || null });
-  }, [data?.session.user, dispatch]);
+    if (data) {
+      setUser(data.session.user);
+    }
+  }, [data?.session.user]); // eslint-disable-line react-hooks/exhaustive-deps
+  
+  useEffect(() => {
+    if (error?.message) {
+      setUser(null);
+    }
+  }, [error]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return {
-    loading,
-    sessionExpiration: data?.session.sessionExpiration,
-    refetch,
-  };
+  return loading;
 };
 
 export default useAuth;

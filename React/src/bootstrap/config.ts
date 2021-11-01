@@ -12,6 +12,14 @@ import {
 import IFilters from "../interfaces/IFilters";
 import { INavItem } from "../interfaces/INavItem";
 
+export const toastSuccess: any = {
+  title: "Success",
+  status: "success",
+  duration: 5000,
+  isClosable: true,
+  position: "top",
+};
+
 export const toastFailed: any = {
   title: "Failed",
   status: "error",

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Button,
   Flex,
@@ -12,13 +12,12 @@ import {
 // import backgroundImage from '../images/login-bg.png';
 import windowsWhite from "../images/windows-white.svg";
 import { toastFailed } from "../bootstrap/config";
-import { store } from "../bootstrap/store";
+import { useAppContext } from "../contexts/AppProvider";
 
 const Login = () => {
   const toast = useToast();
   const params = window.location.search.split("&");
-  const { state } = useContext(store);
-  const { organizationConfig } = state;
+  const { organizationConfig } = useAppContext();
   const redirectUrl = params
     .find((str) => str.includes("redirectUrl"))
     ?.split("=")[1];

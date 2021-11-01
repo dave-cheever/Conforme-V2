@@ -37,7 +37,7 @@ const roles = {
       'responses.edit': ({ user, response }) => user && (response?.delegateIds?.includes(user.id) || response.owner?.id === user.id),
     },
   },
-
+  
   reader: {
     normal: [
       ...defaultPermissions,
@@ -52,7 +52,7 @@ const roles = {
       'responses.edit': ({ user, response }) => user && (response?.delegateIds?.includes(user.id) || response.owner?.id === user.id),
     },
   },
-
+  
   admin: {
     normal: [
       ...defaultPermissions,
@@ -63,7 +63,8 @@ const roles = {
       'businessUnits',
       'users',
       'complianceItems',
-      'auditLogs.view',
+      'auditLogs',
+      'regulatoryBodies',
     ],
   },
 };

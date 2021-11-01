@@ -19,7 +19,9 @@ import {
   getAuditValueForLookup,
   getUTCDate,
   getNextDueDate,
-  getStatus
+  getStatus,
+  genMetatags,
+  doesPathExist,
 } from './helpers';
 
 import roles from './roles';
@@ -45,5 +47,7 @@ export {
   getUTCDate,
   getNextDueDate,
   getStatus,
+  genMetatags,
+  doesPathExist,
   roles
 };

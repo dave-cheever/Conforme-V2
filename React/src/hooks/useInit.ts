@@ -1,9 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import JSONfn from 'json-fn';
 
-import { IStore, store } from "../bootstrap/store";
 import { IRoles } from "../interfaces/IRoles";
+import { useAppContext } from "../contexts/AppProvider";
 
 declare global {
   var roles: {
@@ -49,7 +49,11 @@ const ORGANIZATION = gql`
 const useInit = () => {
   const { loading: loadingSettings, error: settingsError, data: settingsData } = useQuery(SETTINGS);
   const { loading: loadingOrganization, error: organizationError, data: organizationData } = useQuery(ORGANIZATION);
-  const { dispatch }: IStore = useContext(store);
+  const {
+    setRoles,
+    setSettings,
+    setOrganizationConfig,
+  } = useAppContext();
 
   useEffect(() => {
     if (settingsError) {
@@ -58,10 +62,10 @@ const useInit = () => {
     if (settingsData) {
       const parsedRoles = JSONfn.parse(settingsData.roles) as IRoles;
       globalThis.roles = parsedRoles;
-      dispatch({ type: 'setRoles', payload: parsedRoles });
-      dispatch({ type: 'setSettings', payload: settingsData.settings });
+      setRoles(parsedRoles);
+      setSettings(settingsData.settings);
     }
-  }, [settingsError, settingsData, dispatch]);
+  }, [settingsError, settingsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (organizationError) {
@@ -69,10 +73,10 @@ const useInit = () => {
     }
     if (organizationData) {
       const { organization } = organizationData;
-      dispatch({ type: 'setOrganizationConfig', payload: organization });
+      setOrganizationConfig(organization);
       document.title = `Conforme - ${organization.name}`;
     }
-  }, [organizationError, organizationData, dispatch]);
+  }, [organizationError, organizationData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return loadingSettings && loadingOrganization;
 };

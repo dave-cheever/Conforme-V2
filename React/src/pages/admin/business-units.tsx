@@ -8,7 +8,7 @@ import { IBusinessUnit } from "../../interfaces/IBusinessUnit";
 const BusinessUnits = () => {
 
   const businessUnits: IBusinessUnit[] = [{
-    id: "asdasd",
+    _id: "asdasd",
     name: "test",
     identifier: "identifier",
     type: "type",
@@ -35,7 +35,7 @@ const BusinessUnits = () => {
   }];
   const renderBusinessUnitRow = useCallback((businessUnit: IBusinessUnit, i: number) => (
     <Flex
-      key={businessUnit.id}
+      key={businessUnit._id}
       w='full'
       h='73px'
       bg='#FFFFFF'

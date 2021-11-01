@@ -2,17 +2,12 @@ import { Box, Flex, Tooltip } from "@chakra-ui/react";
 
 import { chartColors } from "../bootstrap/config";
 import { Bin, Eye } from "../icons";
+import { IBaseWithName } from "../interfaces/IBaseWithName";
 
-interface ITableElement {
-  id: string;
-  name: string;
-  count: number;
-}
-
-const AdminTableRow = (element: ITableElement, i: number) => (
+const AdminTableRow = ({ element, index, edit, remove }: { element: IBaseWithName, index: number, edit?: () => void, remove?: () => void }) => (
   <Flex
     flexWrap={["wrap", "nowrap"]}
-    key={element.id}
+    key={element._id}
     w="full"
     h={["80px", "73px"]}
     bg="#FFFFFF"
@@ -21,8 +16,8 @@ const AdminTableRow = (element: ITableElement, i: number) => (
     align="center"
     boxShadow={["0px 4px 10px rgba(0, 0, 0, 0.25)", "none"]}
   >
-    <Flex w="64%" fontWeight="bold" align="center" cursor="pointer">
-      <Box bg={chartColors[i]} h="10px" w="10px" borderRadius="5px" mr={2} />
+    <Flex w="64%" fontWeight="bold" align="center" cursor="pointer" onClick={edit}>
+      <Box bg={chartColors[index]} h="10px" w="10px" borderRadius="5px" mr={2} />
       {element.name}
     </Flex>
     <Flex
@@ -43,6 +38,7 @@ const AdminTableRow = (element: ITableElement, i: number) => (
       justifyContent={["flex-start", "flex-end"]}
       mb={["10px", "0"]}
       mr={["0", "20px"]}
+      onClick={remove}
     >
       <Bin cursor="pointer" />
     </Flex>

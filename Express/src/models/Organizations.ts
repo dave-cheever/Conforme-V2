@@ -31,6 +31,8 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   }
 });
 
+// Creating custom methods for every collection to manipulate th DB because we want to do some checks
+
 organizationSchema.statics.getById = async function (_id: string): Promise<IOrganization> {
   const organization = await this.findById(_id);
   if (!organization) {

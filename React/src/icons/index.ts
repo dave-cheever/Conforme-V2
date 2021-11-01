@@ -44,6 +44,7 @@ import Briefcase from "./Briefcase";
 import QuestionIcon from "./QuestionIcon";
 import CircledTickBold from "./CircledTickBold";
 import CircledCross from "./CircledCross";
+import CalendarIcon from "./CalendarIcon";
 
 export * from "./MinusIcon";
 
@@ -94,4 +95,5 @@ export {
   QuestionIcon,
   CircledTickBold,
   CircledCross,
+  CalendarIcon,
 };

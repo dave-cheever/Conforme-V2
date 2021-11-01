@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useAppContext } from "../contexts/AppProvider";
 
-import { store, IStore, IState } from "../bootstrap/store";
 import { IUser } from "../interfaces/IUser";
 
 export const isPermitted = ({
@@ -8,7 +7,7 @@ export const isPermitted = ({
   action,
   data = {},
 }: {
-  user?: IUser;
+  user: IUser | null | undefined;
   action?: string;
   data?: object;
 }): boolean => {
@@ -54,8 +53,7 @@ const Can = ({
   yes?: () => JSX.Element | true;
   no?: () => JSX.Element | false;
 }): any => {
-  const { state }: IStore = useContext(store);
-  const { user }: IState = state;
+  const { user } = useAppContext();
 
   if (isPermitted({ user, action, data })) {
     return yes();

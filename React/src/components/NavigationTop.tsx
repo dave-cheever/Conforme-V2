@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { AddIcon } from "@chakra-ui/icons";
 import {
   Flex,
@@ -14,12 +13,18 @@ import {
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-import { IState, IStore, store } from "../bootstrap/store";
 import { QuestionMarkIcon } from "../icons";
+import { useAppContext } from "../contexts/AppProvider";
+import { useAdminContext } from "../contexts/AdminProvider";
 
 const NavigationTop = () => {
-  const { state, dispatch }: IStore = useContext(store);
-  const { organizationConfig, user }: IState = state;
+  const {
+    organizationConfig,
+    user, setUser,
+  } = useAppContext();
+  const {
+    setAdminModalState,
+  } = useAdminContext();
   const history = useHistory();
 
   const logout = () => {
@@ -27,11 +32,23 @@ const NavigationTop = () => {
       credentials: 'include',
       mode: 'no-cors',
     });
-    dispatch({ type: 'setUser', payload: null });
+    setUser(null);
   };
 
   const pageRedirect = (page: string) => {
     history.push(page);
+  };
+
+  const handleAddButtonClick = () => {
+    setAdminModalState('add');
+    if ([
+      '/',
+      '/admin/users',
+      '/admin/audit-log',
+      '/admin/settings'
+    ].includes(history.location.pathname)) {
+      pageRedirect('/admin/compliance-items');
+    }
   };
 
   return (
@@ -65,7 +82,7 @@ const NavigationTop = () => {
           </Text>
         </Flex>
         <IconButton
-          // onClick={handleAddButtonClick}
+          onClick={handleAddButtonClick}
           _hover={{ opacity: 0.7 }}
           bg="navigationTop.addButton"
           h={["60px", "45px"]}

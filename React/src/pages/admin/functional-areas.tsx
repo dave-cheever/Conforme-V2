@@ -1,19 +1,18 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
-import AdminTableRow from "../../components/AdminTableRow";
 
 import Chart from "../../components/Chart";
 import Header from "../../components/Header";
 
 const FunctionalAreas = () => {
-  const areas: { count: number; id: string; name: string }[] = [
+  const areas: { count: number; _id: string; name: string }[] = [
     {
       count: 2,
-      id: "1",
+      _id: "1",
       name: "Area 1",
     },
     {
       count: 3,
-      id: "2",
+      _id: "2",
       name: "Area 2",
     },
   ];
@@ -45,13 +44,13 @@ const FunctionalAreas = () => {
               spacing={["0", "1px"]}
               mt={["20px", "0"]}
             >
-              {areas?.length > 0 ? (
+              {/* {areas?.length > 0 ? (
                 areas?.map((area, i) => AdminTableRow(area, i))
               ) : (
                 <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
                   No functional areas found
                 </Flex>
-              )}
+              )} */}
             </Stack>
           </Box>
           <Flex

@@ -264,8 +264,6 @@ export const getAuditValueForLookup = async ({ collection, labelField, oldValue,
   return value;
 };
 
-
-
 export const getUTCDate = (date?: Date): Moment => {
   const momentDate = moment(date);
   const dateUTC = moment()
@@ -276,7 +274,6 @@ export const getUTCDate = (date?: Date): Moment => {
     .startOf('day');
   return dateUTC;
 };
-
 
 export const getNextDueDate = (frequency: String, dueDate: Date) => {
 
@@ -311,16 +308,11 @@ export const getNextDueDate = (frequency: String, dueDate: Date) => {
       nextDueDate = null;
       break;
   }
-
   return nextDueDate;
-
 };
 
-
 export const getStatus = (frequency: String) => {
-
   let status = "";
-
   switch (frequency) {
     case "Monthly":
       status = "notStarted";
@@ -358,7 +350,30 @@ export const getStatus = (frequency: String) => {
       status = "";
       break;
   }
-
   return status;
+};
 
+export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: string) => {
+  return {
+    [`${action}By`]: userId,
+    [`${action}At`]: new Date(),
+  };
+};
+
+export const doesPathExist = (nodes, path) => {
+  if (!nodes) {
+    return false;
+  }
+
+  const node = nodes.find(x => x.name.value === path[0]);
+
+  if (!node) {
+    return false;
+  }
+
+  if (path.length === 1) {
+    return true;
+  }
+
+  return doesPathExist(node.selectionSet.selections, path.slice(1));
 };

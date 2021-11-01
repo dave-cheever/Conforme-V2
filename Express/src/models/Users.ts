@@ -29,6 +29,8 @@ const userSchema = new Schema<IUser, IUserModel>({
   }
 });
 
+// Creating custom methods for every collection to manipulate th DB because we want to do some checks
+
 userSchema.statics.getById = async function (userId: string): Promise<IUser> {
   const user = await this.findById(userId);
   if (!user) {
@@ -49,13 +51,13 @@ userSchema.statics.findByIdWithDetails = async function ({ userId, organization 
   const { givenName, surname, displayName, mail, jobTitle } = userDetails;
 
   let role = 'user';
-  const isSystemAdmin = await GraphService.checkMemberGroup({
+  const isAdmin = await GraphService.checkMemberGroup({
     userId,
     groupId: organization.adminsGroupId,
     organization,
   });
-  if (isSystemAdmin) {
-    role = 'systemAdmin';
+  if (isAdmin) {
+    role = 'admin';
   } else {
     const isReader = await GraphService.checkMemberGroup({
       userId,

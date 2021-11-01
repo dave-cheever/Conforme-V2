@@ -1,5 +1,5 @@
 export interface IBase {
-  id: string;
+  _id: string;
   metatags?: {
     addedBy?: string;
     addedAt?: Date;
@@ -13,6 +13,6 @@ export interface IBase {
 export interface IWithName extends IBase {
   organizationId?: string;
   name: string;
-  totalResponses?: number; // Injected number of total responses for item
-  overdueResponses?: number; // Injected number of overdue responses for item
+  // totalResponses?: number; // Injected number of total responses for item
+  // overdueResponses?: number; // Injected number of overdue responses for item
 }

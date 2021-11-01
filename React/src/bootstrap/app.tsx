@@ -1,22 +1,22 @@
-import { useContext } from "react";
 import { ChakraProvider, CSSReset, Flex, Spinner } from "@chakra-ui/react";
 import { Route, Switch } from "react-router-dom";
 
 import getTheme from "./theme";
-import { IState, IStore, store } from "./store";
 import useAuth from "../hooks/useAuth";
 import useInit from "../hooks/useInit";
 import useRoutes from "../hooks/useRoutes";
 import IdleMonitor from "../components/IdleMonitor";
+import AppProvider, { useAppContext } from "../contexts/AppProvider";
+import AdminProvider from "../contexts/AdminProvider";
+import FiltersProvider from "../contexts/FiltersProvider";
 
 function App() {
-  const { state }: IStore = useContext(store);
-  const { user, organizationConfig }: IState = state;
+  const { user, organizationConfig } = useAppContext();
   const loadingSettings = useInit();
-  const { loading: loadingUser } = useAuth();
+  const loadingUser = useAuth();
   const routes = useRoutes();
 
-  if (loadingSettings || loadingUser) {
+  if (user === undefined || loadingSettings || loadingUser) {
     return (
       <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
         <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center">
@@ -36,9 +36,15 @@ function App() {
     <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
       <CSSReset />
       {user && <IdleMonitor />}
-      <Switch>{routes.map(props => <Route {...props} />)}</Switch>
+      <AdminProvider>
+        <FiltersProvider>
+          <Switch>{routes.map(props => <Route {...props} />)}</Switch>
+        </FiltersProvider>
+      </AdminProvider>
     </ChakraProvider>
   );
 }
 
-export default App;
+const AppWithContext = () => <AppProvider><App /></AppProvider>;
+
+export default AppWithContext;

@@ -8,7 +8,7 @@ import { IResponse } from "../../interfaces/IResponse";
 import { responseStatuses } from "../../bootstrap/config";
 import BriefcaseIcon from "../BriefcaseIcon";
 import MissingQuestions from "../MissingQuestions";
-import useResponseUtils from "../../hook/useResponseUtils";
+import useResponseUtils from "../../hooks/useResponseUtils";
 
 const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
   const history = useHistory();
@@ -22,7 +22,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
     <Box
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)', transform: 'scale(1.02)' }}
       cursor='pointer'
-      onClick={() => history.push(`/items/${response.id}`)}
+      onClick={() => history.push(`/items/${response._id}`)}
       boxShadow="sm"
       bg="white"
       rounded="lg"

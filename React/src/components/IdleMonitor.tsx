@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import useInterval from 'react-useinterval';
 import { debounce } from 'lodash';
 import {
@@ -13,12 +13,12 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
-import { IStore, store } from '../bootstrap/store';
 import { toastFailed } from '../bootstrap/config';
 import { differenceInSeconds, parseISO } from 'date-fns';
-import useAuth from '../hooks/useAuth';
+import useSession from '../hooks/useSession';
+import { useAppContext } from '../contexts/AppProvider';
 
-const timeBeforeSessionEnds = 45; // Number(process.env.REACT_APP_TIME_BEFORE_SESSION_ENDS || 60);
+const timeBeforeSessionEnds = Number(process.env.REACT_APP_TIME_BEFORE_SESSION_ENDS || 60);
 const events = [
   'mousemove',
   'click',
@@ -29,10 +29,10 @@ let idleLogoutEvent: NodeJS.Timeout;
 
 const IdleMonitor = () => {
   const toast = useToast();
-  const { dispatch }: IStore = useContext(store);
+  const { setUser } = useAppContext();
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(timeBeforeSessionEnds);
-  const { refetch } = useAuth();
+  const refetch = useSession();
   useInterval(() => setSecondsLeft(secondsLeft - 1), secondsLeft ? 1000 : null);
 
   const checkUser = debounce(async () => {
@@ -50,7 +50,7 @@ const IdleMonitor = () => {
         title: "Signed out",
         description: "You have been signed out due to inactivity. Please login again.",
       });
-      dispatch({ type: 'setUser', payload: undefined });
+      setUser(undefined);
       return [];
     }
   }, timeBeforeSessionEnds * 100, {
@@ -109,7 +109,7 @@ const IdleMonitor = () => {
       credentials: 'include',
       mode: 'no-cors',
     });
-    dispatch({ type: 'setUser', payload: null });
+    setUser(null);
   };
 
   return (
