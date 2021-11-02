@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Box } from "@chakra-ui/layout";
+import QuestionAdditionalInformation from "./QuestionAdditionalInformation";
 import {
   groupQuestionsByCategory,
   groupQuestionsByKLOE,
@@ -53,7 +55,7 @@ const QuestionsSection = () => {
     );
   }, [selectedGroup]);
   return (
-    <>
+    <Box>
       <ButtonGroup spacing={2.5} pr={2}>
         <Button
           w="130px"
@@ -119,7 +121,9 @@ const QuestionsSection = () => {
           />
         ))}
       </VStack>
-    </>
+      <br />
+      <QuestionAdditionalInformation />
+    </Box>
   );
 };
 

@@ -3,6 +3,7 @@ import { Box, Collapse, Flex, Text } from "@chakra-ui/react";
 import { MinusIcon } from "../../icons";
 import { IGroupQuestion } from "../../interfaces/IGroupQuestion";
 import { CheckIcon } from "../../icons/CheckIcon";
+import QuestionAdditionalInformation from "./QuestionAdditionalInformation";
 
 export interface QuestionGroupProps {
   questionGroupItem: IGroupQuestion;
@@ -72,6 +73,10 @@ const QuestionGroup = ({
           >
             {description}
           </Text>
+          <br />
+          <Box pl={10}>
+            <QuestionAdditionalInformation />
+          </Box>
         </Box>
       </Collapse>
     </Box>

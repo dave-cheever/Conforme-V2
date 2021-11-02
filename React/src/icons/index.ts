@@ -19,6 +19,9 @@ import QuestionsIcon from "./QuestionsIcon";
 import SearchIcon from "./SearchIcon";
 import EllipsisIcon from "./EllipsisIcon";
 import QuestionMarkIcon from "./QuestionMarkIcon";
+import RequiredIcon from "./RequiredIcon";
+import DetailIcon from "./DetailIcon";
+import AttachmentIcon from "./AttachmentIcon";
 import Accidents from "./Accidents";
 import Actions from "./Actions";
 import Assets from "./Assets";
@@ -70,6 +73,9 @@ export {
   SearchIcon,
   EllipsisIcon,
   QuestionMarkIcon,
+  RequiredIcon,
+  DetailIcon,
+  AttachmentIcon,
   Accidents,
   Actions,
   Assets,

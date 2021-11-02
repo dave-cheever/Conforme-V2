@@ -120,6 +120,20 @@ const getTheme = (organizationTheme?: any) => {
           hoverBg: "#CC242D",
         },
       },
+      additionalQuestions: {
+        active: {
+          icon: "#1F1F1F",
+          requiredIcon: "#A2171E",
+          text: "#1F1F1F",
+          indicator: "#A2171E",
+        },
+        inActive: {
+          icon: "#9A9EA1",
+          text: "#9A9EA1",
+          indicator: "transparent",
+          requiredIcon: "#D08B90",
+        },
+      },
       homePage: {
         button: {
           bg: "#A2171E",
@@ -146,6 +160,7 @@ const getTheme = (organizationTheme?: any) => {
         mentionHeader: "#A2171E",
         mentionRibbon: "#A2171E",
         text: "#313233",
+        healthKitIcon: "#9A9EA1",
       },
       licensesPanel: {
         header: "#9A9EA1",

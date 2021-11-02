@@ -110,7 +110,7 @@ const AuditPanel = ({ isMentioned, open }: IAuditPanel) => {
         </Flex>
         <Flex>
           <Flex px="3" pt="4" w="100%" align="center" ml="3">
-            <HealthKitIcon />
+            <HealthKitIcon stroke="auditPanel.healthKitIcon" />
             <Text
               fontSize="14px"
               marginX="2"
