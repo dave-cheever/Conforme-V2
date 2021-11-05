@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
   scalar Any
@@ -76,6 +76,12 @@ const typeDefs = gql`
     # Regulatory bodies
     regulatoryBodies: [BaseWithName!]!
 
+    # Functional Areas
+    functionalAreas: [BaseWithName!]!
+
+    # Categories
+    categories: [BaseWithName!]!
+
     # Users
     session: Session!
   }
@@ -86,6 +92,16 @@ const typeDefs = gql`
     createRegulatoryBody(name: String!): BaseWithName!
     deleteRegulatoryBody(_id: String!): Boolean!
     updateRegulatoryBody(regulatoryBodyInput: BaseWithNameInput!): BaseWithName!
+
+    # Functional areas
+    createFunctionalArea(name: String!): BaseWithName!
+    deleteFunctionalArea(_id: String!): Boolean!
+    updateFunctionalArea(functionalAreaInput: BaseWithNameInput!): BaseWithName!
+
+    # Categories
+    createCategory(name: String!): BaseWithName!
+    deleteCategory(_id: String!): Boolean!
+    updateCategory(categoryInput: BaseWithNameInput!): BaseWithName!
   }
 `;
 

@@ -1,4 +1,4 @@
-// 
+//
 // This is permissions system created by Cielo Costa
 //
 // Every role has two type of permissions - normal and restricted
@@ -14,57 +14,69 @@
 //
 
 const defaultPermissions = [
-  'home.view',
-  'help.view',
-  'terms.view',
-  'contact.view',
-  'items.view',
-  'areas.view',
-  'categories.view',
-  'regulatoryBodies.view',
-  'settings.view',
-  'businessUnits.view',
+  "home.view",
+  "help.view",
+  "terms.view",
+  "contact.view",
+  "items.view",
+  "funcAreas.view",
+  "categories.view",
+  "regulatoryBodies.view",
+  "settings.view",
+  "businessUnits.view",
 ];
 
 const roles = {
   user: {
-    normal: [
-      ...defaultPermissions,
-    ],
+    normal: [...defaultPermissions],
     restricted: {
-      'auditLogs.view': ({ user, response }) => user && (response?.delegateIds?.includes(user.id) || response.owner?.id === user.id),
-      'responses.view': ({ user, response }) => user && (response?.delegateIds?.includes(user.id) || response.owner?.id === user.id),
-      'responses.edit': ({ user, response }) => user && (response?.delegateIds?.includes(user.id) || response.owner?.id === user.id),
+      "auditLogs.view": ({ user, response }) =>
+        user &&
+        (response?.delegateIds?.includes(user.id) ||
+          response.owner?.id === user.id),
+      "responses.view": ({ user, response }) =>
+        user &&
+        (response?.delegateIds?.includes(user.id) ||
+          response.owner?.id === user.id),
+      "responses.edit": ({ user, response }) =>
+        user &&
+        (response?.delegateIds?.includes(user.id) ||
+          response.owner?.id === user.id),
     },
   },
-  
+
   reader: {
     normal: [
       ...defaultPermissions,
-      'items.view',
-      'responses.viewAll',
-      'insights',
-      'auditLogs.view',
-      'responses.view',
-      'users.searchInAAD',
+      "items.view",
+      "responses.viewAll",
+      "insights",
+      "auditLogs.view",
+      "responses.view",
+      "users.searchInAAD",
     ],
     restricted: {
-      'responses.edit': ({ user, response }) => user && (response?.delegateIds?.includes(user.id) || response.owner?.id === user.id),
+      "responses.edit": ({ user, response }) =>
+        user &&
+        (response?.delegateIds?.includes(user.id) ||
+          response.owner?.id === user.id),
     },
   },
-  
+
   admin: {
     normal: [
       ...defaultPermissions,
-      'insights',
-      'settings',
-      'items',
-      'responses',
-      'businessUnits',
-      'users',
-      'complianceItems',
-      'auditLogs',
-      'regulatoryBodies',
+      "insights",
+      "settings",
+      "items",
+      "responses",
+      "businessUnits",
+      "users",
+      "complianceItems",
+      "auditLogs",
+      "regulatoryBodies",
+      "categories",
+      "funcAreas",
     ],
   },
 };

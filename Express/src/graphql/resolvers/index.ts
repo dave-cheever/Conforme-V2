@@ -1,9 +1,11 @@
-import organizationsResolvers from './ogranizations';
-import settingsResolvers from './settings';
-import regulatoryBodiesResolvers from './regulatoryBodies';
-import usersResolvers from './users';
+import organizationsResolvers from "./ogranizations";
+import settingsResolvers from "./settings";
+import regulatoryBodiesResolvers from "./regulatoryBodies";
+import functionalAreasResolvers from "./functionalAreas";
+import categoriesResolvers from "./categories";
+import usersResolvers from "./users";
 
-import scalars from '../scalars';
+import scalars from "../scalars";
 
 export default {
   Any: scalars.anyScalar,
@@ -13,8 +15,12 @@ export default {
     ...settingsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
     ...usersResolvers.Query,
+    ...functionalAreasResolvers.Query,
+    ...categoriesResolvers.Query,
   },
   Mutation: {
     ...regulatoryBodiesResolvers.Mutation,
-  }
+    ...functionalAreasResolvers.Mutation,
+    ...categoriesResolvers.Mutation,
+  },
 };
