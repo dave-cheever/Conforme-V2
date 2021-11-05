@@ -92,28 +92,28 @@ const getTheme = (organizationTheme?: any) => {
         participants: {
           text: "#1F1F1F",
           avatar: {
-            bg: '#F69942',
+            bg: "#F69942",
             text: {
               name: "#1F1F1F",
-              designation: "#9A9EA1"
-            }
+              designation: "#9A9EA1",
+            },
           },
           customSearch: {
             bg: "white",
-            border: "#9A9EA180"
+            border: "#9A9EA180",
           },
           inspect: {
             text: "#1F1F1F",
             area: {
               text: {
                 name: "#1F1F1F",
-                location: "#9A9EA1"
-              }
-            }
+                location: "#9A9EA1",
+              },
+            },
           },
           auditType: {
-            text: "#1F1F1F"
-          }
+            text: "#1F1F1F",
+          },
         },
         button: {
           bg: "#A2171E",
@@ -192,33 +192,56 @@ const getTheme = (organizationTheme?: any) => {
         },
       },
       chart: {
-        labelFontColor: "#2B3236"
+        labelFontColor: "#2B3236",
       },
       loginPage: {
-        bg: "#2B3236"
+        bg: "#2B3236",
       },
       categories: {
-        fontColor:"#9A9EA1"
+        fontColor: "#9A9EA1",
       },
       functionalAreas: {
-        fontColor:"#9A9EA1"
+        fontColor: "#9A9EA1",
       },
       regulatoryBodies: {
-        fontColor:"#9A9EA1"
+        fontColor: "#9A9EA1",
       },
       businessUnit: {
-        binIconColor: "#FC5960"
+        binIconColor: "#FC5960",
       },
       loader: {
-        color: "#A2171E"
+        color: "#A2171E",
       },
       complianceItems: {
         header: {
           menuButton: "#424B50",
           rightIcon: "#9A9EA1",
           menuItemFocus: "#FC5960",
-          menuItemFont: "#424B50"
-        }
+          menuItemFont: "#424B50",
+        },
+      },
+      adminModal: {
+        header: {
+          bg: "#171A1C",
+        },
+        footer: {
+          bg: "#777777",
+        },
+        body: {
+          bg: "#FFFFFF",
+        },
+        font: {
+          color: "#FFFFFF",
+        },
+        button: {
+          bg: "#777777",
+          keepBg: "rgba(67, 76, 81, 0.95)",
+          color: "#ffffff",
+          hoverBg: "#E6555C",
+        },
+        text: {
+          color: "#ffffff",
+        },
       },
 
       brand: {
@@ -250,7 +273,7 @@ const getTheme = (organizationTheme?: any) => {
               backgroundColor: "#F2F2F2",
             },
           },
-        }
+        },
       },
       Input: {
         ...theme.components.Input,
@@ -260,12 +283,12 @@ const getTheme = (organizationTheme?: any) => {
               top: "5px",
               border: "none",
               outline: "0",
-              bg: "white"
-            }
-          }
-        }
-      }
-    }
+              bg: "white",
+            },
+          },
+        },
+      },
+    },
   };
 
   return customTheme;
