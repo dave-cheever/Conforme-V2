@@ -224,17 +224,17 @@ const getTheme = (organizationTheme?: any) => {
         header: {
           bg: "#171A1C",
         },
+        content: {
+          bg: "#F0F0F0",
+        },
         footer: {
           bg: "#777777",
         },
         body: {
           bg: "#FFFFFF",
         },
-        font: {
-          color: "#FFFFFF",
-        },
         button: {
-          bg: "#777777",
+          bg: "#E6555C",
           keepBg: "rgba(67, 76, 81, 0.95)",
           color: "#ffffff",
           hoverBg: "#E6555C",

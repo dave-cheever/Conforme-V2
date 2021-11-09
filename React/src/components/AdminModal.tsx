@@ -44,7 +44,7 @@ const AdminModal = ({
       <ModalOverlay />
       {modalType !== "delete" && (
         <ModalContent
-          bg="brand.lightGrey"
+          bg="adminModal.content.bg"
           h={["100vh", "calc(100vh - 30px)"]}
           borderRadius={["0", "20px"]}
           position="absolute"
@@ -54,7 +54,6 @@ const AdminModal = ({
           <ModalHeader
             fontWeight="fontWeights.bold"
             fontSize="fontSizes.lg"
-            color="adminModal.font.color"
             pl="18px"
           >
             {modalType === "edit" ? `Edit ${collection}` : `Add ${collection}`}
@@ -68,9 +67,7 @@ const AdminModal = ({
               src={user?.imgUrl}
               mx={3}
             />
-            <Box fontSize="fontSizes.smm" color="adminModal.font.color">
-              {user?.displayName}
-            </Box>
+            <Box fontSize="fontSizes.smm">{user?.displayName}</Box>
           </Flex>
           <ModalCloseButton onClick={onAction} />
           <ModalBody bg="adminModal.body.bg" overflowY="auto">
