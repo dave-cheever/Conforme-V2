@@ -20,14 +20,14 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responses]);
 
-  const renderGroup = (group: any) => (
+  const renderGroup = (group: string) => (
     (filteredResults[group]?.length > 0) &&
     <Flex key={group} w='full' px={8} pt={8} direction='column'>
       <Flex
         w='180px'
         mb={4}
         h='50px'
-        bg={`brand.${group}`}
+        bg={`complianceGroup.${group}`}
         color='#FFFFFF'
         fontWeight='700'
         align='center'
@@ -54,10 +54,7 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
         </Flex>
       </Flex>
       <Flex direction={['column','row']} w='full' wrap='wrap' alignContent={['center', 'flex-start']}>
-
-
-        {(filteredResults[group].map((response: IResponse) => <ComplianceItemSquare key={response['id']} response={response} />))}
-        
+        {(filteredResults[group].map((response: IResponse) => <ComplianceItemSquare key={response['_id']} response={response} />))}
       </Flex>
     </Flex>
   );

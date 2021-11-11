@@ -13,7 +13,7 @@ const useResponseUtils = () => {
 
   const getRenewalStatus = (response: IResponse) => {
     const { daysToDueDate, status } = response;
-    if (status === 'completed' && daysToDueDate && response.frequency && daysToDueDate !== null && daysToDueDate <= comingUpTriggers?.value?.[response.frequency] && daysToDueDate >= 0) {
+    if (status === 'completed' && daysToDueDate && response.complianceItem.frequency && daysToDueDate !== null && daysToDueDate <= comingUpTriggers?.value?.[response.complianceItem.frequency] && daysToDueDate >= 0) {
       // If there is less then or equal comingUpTriggers value and at least 0 days to due date
       return 'comingUp';
     } else if (daysToDueDate && daysToDueDate < 0) {
@@ -77,7 +77,7 @@ const useResponseUtils = () => {
   };
 
   const getNextRenewalDate = (response: IResponse) => {
-    const { frequency, nextRenewalDate } = response;
+    const { complianceItem: { frequency }, nextRenewalDate } = response;
     const nextRenewalDateUTC = getUTCDate(nextRenewalDate);
     let newNextRenewalDate;
     switch (frequency) {
@@ -113,7 +113,7 @@ const useResponseUtils = () => {
   };
 
   const getPrevRenewalDate = (response: IResponse) => {
-    const { frequency, nextRenewalDate } = response;
+    const { complianceItem: { frequency }, nextRenewalDate } = response;
     const nextRenewalDateUTC = getUTCDate(nextRenewalDate);
     let newNextRenewalDate;
     switch (frequency) {

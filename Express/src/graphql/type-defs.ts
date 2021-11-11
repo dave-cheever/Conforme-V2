@@ -1,9 +1,13 @@
 import { gql } from "apollo-server-express";
+import { responseQueryDef, responseTypeDef } from "./resolvers/responses";
+import { settingsQueryDef } from "./resolvers/settings";
 
 const typeDefs = gql`
   scalar Any
   scalar Date
   scalar Object
+
+  ${responseTypeDef}
 
   type Metatags {
     addedAt: Date!
@@ -70,8 +74,7 @@ const typeDefs = gql`
     organization: Organization!
 
     # Settings
-    settings(type: String): [Setting!]!
-    roles: String!
+    ${settingsQueryDef}
 
     # Regulatory bodies
     regulatoryBodies: [BaseWithName!]!
@@ -84,6 +87,9 @@ const typeDefs = gql`
 
     # Users
     session: Session!
+
+    # Responses
+    ${responseQueryDef}
   }
 
   # Mutations

@@ -4,6 +4,7 @@ import RegulatoryBodies from "./RegulatoryBodies";
 import Users from "./Users";
 import FunctionalAreas from "./FunctionalAreas";
 import Categories from "./Categories";
+import Responses from "./Responses";
 
 export {
   Organizations,
@@ -12,4 +13,5 @@ export {
   Users,
   FunctionalAreas,
   Categories,
+  Responses,
 };

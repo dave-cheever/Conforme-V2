@@ -11,3 +11,13 @@ export interface IUser extends IBase {
   defaultPage?: string;
   organizationsIds?: string[];
 }
+
+export interface IGraphUser {
+  id: string;
+  firstName: string;
+  displayName: string;
+  lastName: string;
+  email: string;
+  jobTitle: string;
+  imgUrl: string;
+}

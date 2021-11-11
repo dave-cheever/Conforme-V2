@@ -33,8 +33,8 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
     >
       <Flex
         h='34px'
-        bgColor={`brand.${responseStatus}`}
-        color='brand.primaryFont'
+        bgColor={`complianceSquare.${responseStatus}`}
+        color='complianceSquare.fontColor'
         roundedTop="lg"
         fontSize='smd'
         pl='15px'
@@ -44,8 +44,8 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
       >
         {responseStatuses[responseStatus]}
         {getRenewalStatus(response) === 'comingUp' && responseStatus === 'compliant' && (
-          <Flex h='full' align='center' p={2} bgColor='brand.comingUp' roundedTopRight="lg">
-            <ComingUpIcon w='24px' h='24px' fill="brand.comingUp" />
+          <Flex h='full' align='center' p={2} bgColor='complianceSquare.comingUp' roundedTopRight="lg">
+            <ComingUpIcon w='24px' h='24px' fill="complianceSquare.comingUp" />
           </Flex>
         )}
       </Flex>
@@ -55,16 +55,16 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
           fontSize='14px'
           px={4}
           lineHeight='18px'
-          color='brand.darkGrey'
+          color='complianceSquare.fontColor'
           opacity='1'
           fontWeight='700'
           overflow='hidden'
           textOverflow='ellipsis'
           whiteSpace='nowrap'
         >
-          {response.name}
+          {response.complianceItem.name}
         </Box>
-        <ChevronRight color='brand.paleGrey' mr={4} />
+        <ChevronRight color='complianceSquare.rightIcon' mr={4} />
       </Flex>
       <Flex h='50px' w='full' px='5' pt={4} alignItems='flex-start'>
         <Flex alignItems='center'>
@@ -73,31 +73,43 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
             rounded='md'
             fit='cover'
             h='36px'
-            bg='brand.primaryFont'
+            bg='complianceSquare.imageBg'
             w='36px'
-            color='brand.darkGrey'
+            color='complianceList.fontColor'
             src={`${response.businessUnit?.imgUrl}`}
             fallback={
               <Flex
                 align='center'
                 justify='center'
-                bg='brand.primaryFont'
+                bg='complianceSquare.imageBg'
                 h='36px'
                 w='36px'
                 rounded='md'
-                color='brand.darkGrey'
+                color='complianceList.fontColor'
                 flexShrink={0}
               >
-                <Building h='18px' w='18px' color='brand.darkGrey' />
+                <Building h='18px' w='18px' color='complianceList.fontColor' />
               </Flex>} />
-          <Box w='200px' pl={3} lineHeight='17px' color='brand.secondary' opacity='0.75' fontSize='14px' overflow='hidden' textOverflow='ellipsis' whiteSpace='nowrap'>{response.businessUnit?.name}</Box>
+          <Box 
+            w='200px' 
+            pl={3} 
+            lineHeight='17px' 
+            color='complianceSquare.businessUnitFontColor' 
+            opacity='0.75' 
+            fontSize='14px' 
+            overflow='hidden' 
+            textOverflow='ellipsis' 
+            whiteSpace='nowrap'
+          >
+            {response.businessUnit?.name}
+          </Box>
         </Flex>
       </Flex>
       <Flex h='50px' w='full' p='5' alignItems='flex-start'>
-        <Box w='50%' color='brand.secondary' fontSize='12px'>
+        <Box w='50%' color='complianceSquare.categoryFontColor' fontSize='12px'>
           <Box opacity='0.75'>Category</Box>
           <Box
-            color='brand.darkGrey'
+            color='complianceSquare.fontColor'
             opacity='1'
             fontSize='14px'
             overflow='hidden'
@@ -107,10 +119,10 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
             {response.category?.name ? response.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
           </Box>
         </Box>
-        <Box w='50%' color='brand.secondary' fontSize='12px'>
+        <Box w='50%' color='complianceSquare.regulatoryFontColor' fontSize='12px'>
           <Box opacity='0.75'>Regulatory body</Box>
           <Box
-            color='brand.darkGrey'
+            color='complianceSquare.fontColor'
             opacity='1'
             fontSize='14px'
             overflow='hidden'
@@ -121,10 +133,10 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
           </Box>
         </Box>
       </Flex>
-      <Box color='brand.secondary' fontSize='12px' mt={5} pl={5}>
+      <Box color='complianceSquare.renewalFontColor' fontSize='12px' mt={5} pl={5}>
         <Box opacity='0.75'>Next renewal on</Box>
         <Box
-          color='brand.darkGrey'
+          color='complianceList.fontColor'
           opacity='1'
           fontSize='14px'
           overflow='hidden'
@@ -141,14 +153,14 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
         mt={2}
         px={5}
         fontSize='12px'
-        color='brand.secondary'
+        color='complianceSquare.evidenceFontColor'
         alignItems='center'
         justifyContent='space-between'
       >
         <Flex flexBasis="50%" align='center'>
-          {response?.evidenceExpected.find(({ uploaded }) => uploaded === undefined) ?
-            <><UploadedCross color='brand.primary' mr={2} /><Flex opacity='0.75'>Missing evidence</Flex></> :
-            <><UploadedTick color='brand.compliant' mr={2} /><Flex opacity='0.75'>Uploaded</Flex></>
+          {response?.evidenceExpected?.find(({ uploaded }) => uploaded === undefined) ?
+            <><UploadedCross color='complianceSquare.crossIcon' mr={2} /><Flex opacity='0.75'>Missing evidence</Flex></> :
+            <><UploadedTick color='complianceSquare.tickIcon' mr={2} /><Flex opacity='0.75'>Uploaded</Flex></>
           }
         </Flex>
         <Flex flexBasis="45%" align='center'>

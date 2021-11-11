@@ -11,14 +11,14 @@ import {
 
 import { IResponse } from '../../interfaces/IResponse';
 import useResponseUtils from '../../hooks/useResponseUtils';
-import { Building, CircledCross, CircledTickBold, ComingUpIcon, UploadedCross, UploadedTick } from '../../icons';
+import { Building, ComingUpIcon, UploadedCross, UploadedTick } from '../../icons';
 import BriefcaseIcon from '../BriefcaseIcon';
 import MissingQuestions from '../MissingQuestions';
 
 const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   const history = useHistory();
   const { getRenewalStatus, getStatus } = useResponseUtils();
-
+  
   const renderItem = (response: IResponse, i: number) => {
     const requiredQuestionsLeft = response?.questions?.filter(({ required, value }) => required && (value === undefined || value === ''));
 
@@ -40,7 +40,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
           <Flex
             h='full'
             w='25px'
-            bgColor={`brand.${getStatus(response)}`}
+            bgColor={`complianceList.${getStatus(response)}`}
             roundedTopRight={i === 0 ? "lg" : "none"}
             roundedBottomRight={i === (responses.length - 1) ? "lg" : "none"}
             roundedBottomLeft={i === (responses.length - 1) ? "lg" : "none"}
@@ -52,13 +52,13 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               <Flex
                 w='full'
                 justify='center'
-                bgColor='brand.comingUp'
+                bgColor='complianceList.comingUp'
                 roundedTopRight={i === 0 ? "lg" : "none"}
                 roundedBottomRight={i === (responses.length - 1) ? "lg" : "none"}
                 roundedBottomLeft={i === (responses.length - 1) ? "lg" : "none"}
                 roundedTopLeft={i === 0 ? "lg" : "none"}
               >
-                <ComingUpIcon w='24px' h='24px' fill="brand.comingUp" />
+                <ComingUpIcon w='24px' h='24px' fill="complianceList.comingUp" />
               </Flex>
             )}
           </Flex>
@@ -66,7 +66,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
             <Flex
               fontSize='14px'
               lineHeight='18px'
-              color='brand.darkGrey'
+              color='complianceList.fontColor'
               opacity='1'
               fontWeight='700'
               h='50%'
@@ -74,22 +74,23 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               pt="3px"
               pl={4}
             >
-              {response.name}
+              {response.complianceItem.name}
               {response?.businessUnit?.type === 'Corporate' && <Box ml={3}><BriefcaseIcon /></Box>}
             </Flex>
-            <Stack pl={4} direction={['column', 'row']} spacing={4} align={['flex-start', 'center']} mt={2} fontSize='12px' color='brand.secondary'>
+            <Stack 
+              pl={4} 
+              direction={['column', 'row']} 
+              spacing={4} 
+              align={['flex-start', 'center']} 
+              mt={2} 
+              fontSize='12px' 
+              color='complianceList.evidenceFontColor'
+            >
               <Flex opacity='0.75'>{response.category?.name ? response.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}</Flex>
-              {response.actionExpected &&
-                <>
-                  {response.verified ?
-                    <CircledTickBold h='12px' w='12px' mr={1} color='brand.completed' />
-                    : <CircledCross h='12px' w='12px' mr={1} />}
-                  <Flex opacity='0.75' mr={5}>Verified </Flex>
-                </>}
               <Flex align='center'>
                 {response?.evidenceExpected?.find(({ uploaded }) => uploaded === undefined) ?
-                  <><UploadedCross color='brand.primary' mr={1} /><Flex opacity='0.75'>Missing evidence</Flex></> :
-                  <><UploadedTick color='brand.completed' mr={1} /><Flex opacity='0.75'>Uploaded</Flex></>
+                  <><UploadedCross color='complianceList.crossIcon' mr={1} /><Flex opacity='0.75'>Missing evidence</Flex></> :
+                  <><UploadedTick color='complianceList.tickIcon' mr={1} /><Flex opacity='0.75'>Uploaded</Flex></>
                 }
               </Flex>
               <Flex align='center'>
@@ -98,13 +99,13 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
             </Stack>
           </Box>
           <Box w='15%' ml={3}>
-            <Box color='brand.darkGrey' opacity='1' fontSize='14px'>
+            <Box color='complianceList.fontColor' opacity='1' fontSize='14px'>
               {response?.nextRenewalDate ? moment(response?.nextRenewalDate).format('D MMM YYYY') : <Flex fontStyle='italic'>No due date</Flex>}
             </Box>
           </Box>
           <Box w='20%'>
             <Box
-              color='brand.darkGrey'
+              color='complianceList.fontColor'
               opacity='1'
               fontSize='14px'
               fontWeight='700'
@@ -119,28 +120,28 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
                 fit='cover'
                 rounded='md'
                 h='36px'
-                bg='brand.primaryFont'
+                bg='complianceList.imageBg'
                 w='36px'
-                color='brand.darkGrey'
+                color='complianceList.fontColor'
                 src={`${response.businessUnit?.imgUrl}`}
                 fallback={
                   <Flex
                     align='center'
                     justify='center'
-                    bg='brand.primaryFont'
+                    bg='complianceList.imageBg'
                     h='36px'
                     w='36px'
                     rounded='md'
-                    color='brand.darkGrey'
+                    color='complianceList.fontColor'
                     flexShrink={0}
                   >
-                    <Building h='18px' w='18px' color='brand.darkGrey' />
+                    <Building h='18px' w='18px' color='complianceList.buildingIcon' />
                   </Flex>} />
               <Text
                 w='full'
                 pl={3}
                 lineHeight='17px'
-                color='brand.darkGrey'
+                color='complianceList.fontColor'
                 opacity='1'
                 fontSize='13px'
                 overflow='hidden'

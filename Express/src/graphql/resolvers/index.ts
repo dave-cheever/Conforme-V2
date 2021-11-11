@@ -4,6 +4,7 @@ import regulatoryBodiesResolvers from "./regulatoryBodies";
 import functionalAreasResolvers from "./functionalAreas";
 import categoriesResolvers from "./categories";
 import usersResolvers from "./users";
+import responsesResolvers from "./responses";
 
 import scalars from "../scalars";
 
@@ -17,6 +18,7 @@ export default {
     ...usersResolvers.Query,
     ...functionalAreasResolvers.Query,
     ...categoriesResolvers.Query,
+    ...responsesResolvers.Query,
   },
   Mutation: {
     ...regulatoryBodiesResolvers.Mutation,

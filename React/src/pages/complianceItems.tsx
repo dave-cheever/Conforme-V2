@@ -6,6 +6,7 @@ import {
   Flex,
   MenuList,
   MenuItem,
+  Text
 } from "@chakra-ui/react";
 
 import Header from "../components/Header";
@@ -18,73 +19,41 @@ import ComplianceItemsGroup from "../components/ComplianceItem/ComplianceItemsGr
 import useResponseUtils from "../hooks/useResponseUtils";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
+import { gql, useQuery } from "@apollo/client";
 
 const ComplianceItems = () => {
   const { user } = useAppContext();
   const { filters } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
-  const [loading] = useState<number | undefined>();
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
-  const responses: IResponse[] = [{
-    _id:'aaa',
-    name: "aaa",
-    actionPlanSubmitted: true,
-    attachments: [{
-      id: "aaa",
-      name: "aaa",
-      addedAt: new Date(),
-    }],
-    businessUnitId: "aaa",
-    categoryId: "aaa",
-    complianceItemId: "aaa",
-    delegateIds: [],
-    evidenceExpected: [{
-      id: "aaa",
-      name: "aaa",
-    }],
-    comments: [
-      {
-        _id: "aaa",
-        responseId: "aaa",
-        text: "aaa"
-      }
-    ],
-    functionalAreaId: "aaa",
-    lastRenewalDate: new Date(),
-    nextRenewalDate: new Date(),
-    previousEvidence: [],
-    reference: "aaa",
-    regulatoryBodyId: "aaa",
-    status: "aaa",
-    verified: true,
-    businessUnit: {
-      _id: "asdasd",
-      name: "test",
-      identifier: "identifier",
-      type: "type",
-      communications: [{type: "communications", value: "a"}],
-      address: {
-        city:"city",
-        lineOne: "lineOne",
-        country: "country",
-        county: "county",
-        postcode: "postcode"
-      },
-      ed: {
-        firstName: "fist anem",
-        lastName: "lastNAme",
-        displayName: "dipla",
-        email: "email"
-      },
-       rd: {
-        firstName: "fist anem",
-        lastName: "lastNAme",
-        displayName: "dipla",
-        email: "email"
+  const GET_RESPONSES = gql`
+    query Responses {
+      responses {
+        _id
+        businessUnitId
+        delegateIds
+        lastRenewalDate
+        nextRenewalDate
+        published
+        status
+        complianceItem {
+          reference
+          description
+          name
+          categoryId
+        }
+        category {
+          name
+        }
+        functionalArea {
+          name
+        }
       }
     }
-  }];
+  `
+
+  const {data, loading, error} = useQuery(GET_RESPONSES);
 
   const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(
     user?.role === "admin" ? "List" : "Grid"
@@ -100,26 +69,29 @@ const ComplianceItems = () => {
 
   // Filter responses
   useEffect(() => {
-    if (responses.length === 0) {
-      setFilteredResponses(responses);
+    if (data?.responses?.length === 0 && !error) {
+      setFilteredResponses(data?.responses);
       return;
     }
-    let items = [...responses];
-    if (filters.itemStatus?.value && filters.itemStatus?.value?.length > 0) {
-      let statusFilteredResults: IResponse[] = [];
-      for (const filter of filters.itemStatus?.value) {
-        if (['notStarted', 'inProgress', 'completed', 'comingUp', 'overdue'].includes(filter)) {
-          statusFilteredResults.push(...items.filter(response => getRenewalStatus(response) === filter));
-        } else if (['compliant', 'nonCompliant'].includes(filter)) {
-          statusFilteredResults.push(...items.filter(response => getStatus(response) === filter));
-        } else if (filter === 'noDueDate') {
-          statusFilteredResults.push(...items.filter(response => response.daysToDueDate === null));
+
+    if (data && data?.responses?.length !== 0 && !error ){
+      let items = [...data?.responses];
+      if (filters.itemStatus?.value && filters.itemStatus?.value?.length > 0) {
+        let statusFilteredResults: IResponse[] = [];
+        for (const filter of filters.itemStatus?.value) {
+          if (['notStarted', 'inProgress', 'completed', 'comingUp', 'overdue'].includes(filter)) {
+            statusFilteredResults.push(...items.filter(response => getRenewalStatus(response) === filter));
+          } else if (['compliant', 'nonCompliant'].includes(filter)) {
+            statusFilteredResults.push(...items.filter(response => getStatus(response) === filter));
+          } else if (filter === 'noDueDate') {
+            statusFilteredResults.push(...items.filter(response => response.daysToDueDate === null));
+          }
         }
+        items = Array.from(new Set(statusFilteredResults.flat()));
       }
-      items = Array.from(new Set(statusFilteredResults.flat()));
+      setFilteredResponses(items);
     }
-    setFilteredResponses(items);
-  }, [responses, filters.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data?.responses, filters.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const changeViewMode = useCallback((viewMode: "Grid" | "List" | "Group") => {
     setViewMode(viewMode);
@@ -192,7 +164,7 @@ const ComplianceItems = () => {
         </Menu>
       </Header>
       <Flex h='calc(100vh - 150px)' overflow='auto'>
-        {loading ? <Loader center={true} /> :
+        {error ? <Text>{error.message}</Text> : loading ? <Loader center={true} /> :
           <>
             {viewMode === "Grid" &&
               <Flex direction='row' w='full' p={8} wrap='wrap' justify={['center', 'flex-start']} alignContent={['center', 'flex-start']}>
@@ -203,7 +175,8 @@ const ComplianceItems = () => {
               </Flex>}
             {viewMode === "List" && <ComplianceItemsList responses={filteredResponses} />}
             {viewMode === "Group" && <ComplianceItemsGroup responses={filteredResponses} />}
-          </>}
+          </>
+        } 
       </Flex>
     </>
   );

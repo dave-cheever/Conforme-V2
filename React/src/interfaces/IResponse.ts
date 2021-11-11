@@ -1,4 +1,5 @@
-import { IBase, IWithName } from "./IBase";
+import { IBase } from "./IBase";
+import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IComment } from "./IComment";
 import { IQuestion } from "./IQuestion";
@@ -20,13 +21,9 @@ export interface IEvidence {
 export interface IResponse extends IBase {
   complianceItemId: string;
   businessUnitId: string;
-  categoryId: string;
-  functionalAreaId: string;
-  regulatoryBodyId: string;
   delegateIds: string[];
   lastRenewalDate: Date;
   nextRenewalDate: Date;
-  reference: string;
   status: string;
   actionPlanSubmitted: boolean;
   evidenceExpected: IEvidence[];
@@ -34,16 +31,14 @@ export interface IResponse extends IBase {
   attachments: IDocument[];
   verified: boolean;
   comments: IComment[];
-  name?: string;
-  description?: string;
   daysToDueDate?: number;
   actionExpected?: boolean;
-  frequency?: string;
   businessUnit?: IBusinessUnit;
   owner?: IUser;
-  category?: IWithName;
-  regulatoryBody?: IWithName;
-  functionalArea?: IWithName;
+  category?: IBaseWithName;
+  regulatoryBody?: IBaseWithName;
+  functionalArea?: IBaseWithName;
   delegates?: IUser[];
   questions?: IQuestion[];
+  complianceItem: any;
 }

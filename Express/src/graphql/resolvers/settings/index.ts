@@ -10,4 +10,9 @@ const settingsResolvers = {
   },
 };
 
+export const settingsQueryDef = `
+  settings(type: String): [Setting!]!
+  roles: String!
+`;
+
 export default settingsResolvers;

@@ -28,5 +28,5 @@ settingSchema.statics.getByType = async function (type: string): Promise<ISettin
   return settings.map(setting => setting._doc);
 }
 
-const organizationModel = model<ISetting, ISettingModel>('Setting', settingSchema);
-export default organizationModel;
+const settingsModel = model<ISetting, ISettingModel>('Setting', settingSchema);
+export default settingsModel;

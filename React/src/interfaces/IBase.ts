@@ -9,10 +9,3 @@ export interface IBase {
     removedAt?: Date;
   };
 }
-
-export interface IWithName extends IBase {
-  organizationId?: string;
-  name: string;
-  // totalResponses?: number; // Injected number of total responses for item
-  // overdueResponses?: number; // Injected number of overdue responses for item
-}

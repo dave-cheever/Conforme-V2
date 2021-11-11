@@ -243,6 +243,36 @@ const getTheme = (organizationTheme?: any) => {
           color: "#ffffff",
         },
       },
+      complianceList: {
+        compliant: "#62c240",
+        nonCompliant: "#FC5960",
+        comingUp: "#FFA012",
+        fontColor: "#2B3236",
+        buildingIcon: "#2B3236",
+        crossIcon: "#FC5960",
+        tickIcon: "#41BA17",
+        imageBg: "#ffffff",
+        evidenceFontColor: "#424B50"
+      },
+      complianceSquare: {
+        compliant: "#62c240",
+        nonCompliant: "#FC5960",
+        comingUp: "#FFA012",
+        imageBg: "#ffffff",
+        rightIcon: "#9A9EA1",
+        crossIcon: "#FC5960",
+        tickIcon: "#41BA17",
+        fontColor: "#2B3236",
+        regulatoryFontColor: "#424B50",
+        renewalFontColor: "#424B50",
+        evidenceFontColor: "#424B50",
+        businessUnitFontColor: "#424B50",
+        categoryFontColor: "#424B50",
+      },
+      complianceGroup: {
+        compliant: "#62c240",
+        nonCompliant: "#FC5960",
+      },
 
       brand: {
         ...(organizationTheme?.colors?.brand || {}),
