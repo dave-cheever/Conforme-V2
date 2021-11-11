@@ -1,12 +1,12 @@
+import businessUnitsResolvers from "./businessUnits"
 import categoriesResolvers from "./categories";
 import complianceItemsResolvers from "./complianceItems";
 import functionalAreasResolvers from "./functionalAreas";
-import organizationsResolvers from "./ogranizations";
+import organizationsResolvers from "./organizations";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
+import responsesResolvers from "./responses";
 import settingsResolvers from "./settings";
 import usersResolvers from "./users";
-import businessUnitsResolvers from "./businessUnits"
-import responsesResolvers from "./responses";
 
 import scalars from "../scalars";
 
@@ -14,22 +14,22 @@ export default {
   Any: scalars.anyScalar,
   Date: scalars.dateScalar,
   Query: {
+    ...businessUnitsResolvers.Query,
     ...categoriesResolvers.Query,
     ...complianceItemsResolvers.Query,
     ...functionalAreasResolvers.Query,
     ...organizationsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
+    ...responsesResolvers.Query,
     ...settingsResolvers.Query,
     ...usersResolvers.Query,
-    ...functionalAreasResolvers.Query,
-    ...categoriesResolvers.Query,
-    ...responsesResolvers.Query,
   },
   Mutation: {
-    ...categoriesResolvers.Mutation,
     ...businessUnitsResolvers.Mutation,
+    ...categoriesResolvers.Mutation,
     ...functionalAreasResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
+    ...functionalAreasResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
   },
 };

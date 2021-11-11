@@ -9,7 +9,7 @@ const organization = async (_, __, { req, organization: sessionOrganization }) =
     
     const organization = await Organizations.getByDomain(getDomain(req));
     return sessionizeOrganization(organization);
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(err);
   }
 };

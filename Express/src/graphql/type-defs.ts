@@ -1,16 +1,19 @@
 import { gql } from "apollo-server-express";
-import { businessUnitQueryDef, businessUnitTypeDef } from "./resolvers/businessUnits";
-import { responseQueryDef, responseTypeDef } from "./resolvers/responses";
-import { settingsQueryDef } from "./resolvers/settings";
+
+import { businessUnitsTypeDefs, businessUnitsQueryDefs, businessUnitsMutationDefs } from "./resolvers/businessUnits";
+import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categories";
+import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutationDefs } from "./resolvers/complianceItems";
+import { functionalAreasQueryDefs, functionalAreasMutationDefs } from "./resolvers/functionalAreas";
+import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
+import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
+import { responsesTypeDefs, responsesQueryDefs } from "./resolvers/responses";
+import { settingsTypeDefs, settingsQueryDefs } from "./resolvers/settings";
+import { usersTypeDefs, usersQueryDefs } from "./resolvers/users";
 
 const typeDefs = gql`
   scalar Any
   scalar Date
   scalar Object
-
-  ${responseTypeDef}
-
-  ${businessUnitTypeDef}
 
   type Metatags {
     addedAt: Date!
@@ -21,107 +24,41 @@ const typeDefs = gql`
     removedBy: ID
   }
 
-  type Organization {
-    _id: ID!
-    name: String!
-    licenceExpirationDate: Date!
-    logoUrl: String!
-    theme: Object!
-    addons: Object
-  }
-
-  type Session {
-    user: User!
-    sessionExpiration: Date!
-  }
-
-  type Setting {
-    _id: ID!
-    name: String!
-    value: Any!
-    label: String!
-    type: String!
-    description: String!
-    options: [String]
-    organizationId: String!
-  }
-
   type BaseWithName {
     _id: ID!
     name: String!
     count: Int
   }
 
-  input BaseWithNameInput {
+  input BaseWithNameModifyInput {
     _id: ID!
     name: String
   }
-
-  type User {
-    _id: ID!
-    firstName: String
-    lastName: String
-    displayName: String!
-    email: String!
-    jobTitle: String
-    role: String!
-    imgUrl: String
-    defaultPage: String!
-    organizationsIds: [String!]
-    metatags: Metatags!
-  }
-
   
+  ${businessUnitsTypeDefs}
+  ${complianceItemsTypeDefs}
+  ${organizationsTypeDefs}
+  ${responsesTypeDefs}
+  ${settingsTypeDefs}
+  ${usersTypeDefs}
 
-
-  # Queries
   type Query {
-    # Organizations
-    organization: Organization!
-
-    # Settings
-    ${settingsQueryDef}
-
-    # Regulatory bodies
-    regulatoryBodies: [BaseWithName!]!
-
-    # Functional Areas
-    functionalAreas: [BaseWithName!]!
-
-    # Categories
-    categories: [BaseWithName!]!
-
-    #Business Units
-    ${businessUnitQueryDef}
-
-    # Users
-    session: Session!
-
-    # Responses
-    ${responseQueryDef}
+    ${businessUnitsQueryDefs}
+    ${categoriesQueryDefs}
+    ${complianceItemsQueryDefs}
+    ${functionalAreasQueryDefs}
+    ${organizationsQueryDefs}
+    ${regulatoryBodiesQueryDefs}
+    ${responsesQueryDefs}
+    ${settingsQueryDefs}
+    ${usersQueryDefs}
   }
-
-  # Mutations
   type Mutation {
-    # Regulatory bodies
-    createRegulatoryBody(name: String!): BaseWithName!
-    deleteRegulatoryBody(_id: String!): Boolean!
-    updateRegulatoryBody(regulatoryBodyInput: BaseWithNameInput!): BaseWithName!
-
-    # Functional areas
-    createFunctionalArea(name: String!): BaseWithName!
-    deleteFunctionalArea(_id: String!): Boolean!
-    updateFunctionalArea(functionalAreaInput: BaseWithNameInput!): BaseWithName!
-
-    # Categories
-    createCategory(name: String!): BaseWithName!
-    deleteCategory(_id: String!): Boolean!
-    updateCategory(categoryInput: BaseWithNameInput!): BaseWithName!
-
-    #Business Units
-    createBusinessUnit(businessUnitInput: BusinessUnitInput!): BusinessUnits!
-    deleteBusinessUnit(_id: String!): Boolean!
-    updateBusinessUnit(businessUnitInput: BusinessUnitUpdateInput!): BusinessUnits!
+    ${businessUnitsMutationDefs}
+    ${categoriesMutationDefs}
+    ${complianceItemsMutationDefs}
+    ${functionalAreasMutationDefs}
+    ${regulatoryBodiesMutationDefs}
   }
 `;
 

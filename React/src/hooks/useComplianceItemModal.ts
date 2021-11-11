@@ -5,6 +5,16 @@ import { toastFailed, toastSuccess } from "../bootstrap/config";
 import { AdminContext } from "../contexts/AdminProvider";
 import { initialDialogDetails, useComplianceItemModalContext } from "../contexts/ComplianceItemModalProvider";
 import { IComplianceItem } from "../interfaces/IComplianceItem";
+import { gql, useMutation } from "@apollo/client";
+
+const CREATE_COMPLIANCE_ITEM = gql`
+  mutation ($complianceItemInput: ComplianceItemInput!) {
+    createComplianceItem(complianceItemInput: $complianceItemInput) {
+      _id
+      name
+    }
+  }
+`;
 
 const useComplianceItemModal = () => {
   const toast = useToast();
@@ -13,10 +23,11 @@ const useComplianceItemModal = () => {
     setValue,
     setSavingDialogDetails,
   } = useComplianceItemModalContext();
+  const [create] = useMutation(CREATE_COMPLIANCE_ITEM);
 
   const closeModal = useCallback(() => setAdminModalState('closed'), []);
 
-  const saveComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
+  const saveComplianceItem = async (complianceItemInput: Partial<IComplianceItem>) => {
     try {
       setSavingDialogDetails(details => ({
         ...details,
@@ -44,18 +55,19 @@ const useComplianceItemModal = () => {
       //   questions: complianceItem.questions,
       //   published: complianceItem.published,
       // };
-      console.log('complianceItem', complianceItem);
+      // console.log('complianceItem', complianceItemInput);
       // console.log('pureComplianceItem', pureComplianceItem);
       
 
-      let savedComplianceItem: IComplianceItem;
-      if (complianceItem.hasOwnProperty('_id')) {
-        // savedComplianceItem = await ComplianceItemsService.update(complianceItem['id'], pureComplianceItem);
+      let savedComplianceItemId: string;
+      if (complianceItemInput.hasOwnProperty('_id')) {
+        // savedComplianceItemIs = await ComplianceItemsService.update(complianceItem['id'], pureComplianceItem);
       } else {
-        // savedComplianceItem = await ComplianceItemsService.create(pureComplianceItem);
-        // setValue('_id', savedComplianceItem._id);
+        const { data } = await create({ variables: { complianceItemInput } });
+        savedComplianceItemId = data.createComplianceItem._id;
+        setValue('_id', savedComplianceItemId);
       }
-      toast({ ...toastSuccess, description: `Compliance item ${complianceItem.name} ${complianceItem.hasOwnProperty('id') ? 'saved' : 'added'}` });
+      toast({ ...toastSuccess, description: `Compliance item ${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('id') ? 'saved' : 'added'}` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {

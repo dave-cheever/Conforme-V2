@@ -1,8 +1,12 @@
+import businessUnits from "./businessUnits.q";
 import createBusinessUnit from "./createBusinessUnits.m";
 import updateBusinessUnit from "./updateBusinessUnits.m";
 import deleteBusinessUnit from "./deleteBusinessUnits.m";
 
 const businessUnitsResolvers = {
+  Query: {
+    businessUnits,
+  },
   Mutation: {
     createBusinessUnit,
     deleteBusinessUnit,
@@ -10,12 +14,12 @@ const businessUnitsResolvers = {
   },
 };
 
-export const businessUnitTypeDef = `
+export const businessUnitsTypeDefs = `
 type BusinessUnitPerson {
   firstName: String!
   lastName: String!
   email: String!
-  id: String!
+  _id: String!
 }
 
 type BusinessUnitIdentifier {
@@ -79,8 +83,8 @@ input BusinessUnitInput {
   overdueResponses: Int
 }
 
-input BusinessUnitUpdateInput {
-  id: ID!
+input BusinessUnitModifyInput {
+  _id: ID!
   identifier: String
   name: String
   imgUrl: String
@@ -90,11 +94,17 @@ input BusinessUnitUpdateInput {
   totalResponses: Int
   overdueResponses: Int
 }
-`
+`;
 
-export const businessUnitQueryDef = `
+export const businessUnitsQueryDefs = `
   businessUnits: [BusinessUnits!]!
-`
+`;
+
+export const businessUnitsMutationDefs = `
+  createBusinessUnit(businessUnitInput: BusinessUnitInput!): BusinessUnits!
+  updateBusinessUnit(businessUnitModifyInput: BusinessUnitModifyInput!): BusinessUnits!
+  deleteBusinessUnit(_id: String!): Boolean!
+`;
 
 export default businessUnitsResolvers;
 

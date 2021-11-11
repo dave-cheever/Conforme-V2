@@ -3,10 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const createComplianceItem = async (_, complianceItem, { authorize }) => {
+const createComplianceItem = async (_, { complianceItemInput }, { authorize }) => {
   try {
-    console.log('complianceItem', complianceItem);
-    
     const user = await authorize();
 
     if (!isPermitted({ user, action: "complianceItems.add" })) {
@@ -15,7 +13,7 @@ const createComplianceItem = async (_, complianceItem, { authorize }) => {
 
     const newComplianceItem = {
       _id: uuidv4(),
-      ...complianceItem,
+      ...complianceItemInput,
       metatags: genMetatags("added", user._id),
     };
 

@@ -14,4 +14,14 @@ const regulatoryBodiesResolvers = {
   },
 };
 
+export const regulatoryBodiesQueryDefs = `
+  regulatoryBodies: [BaseWithName!]!
+`;
+
+export const regulatoryBodiesMutationDefs = `
+  createRegulatoryBody(name: String!): BaseWithName!
+  deleteRegulatoryBody(_id: String!): Boolean!
+  updateRegulatoryBody(regulatoryBodyInput: BaseWithNameModifyInput!): BaseWithName!
+`;
+
 export default regulatoryBodiesResolvers;

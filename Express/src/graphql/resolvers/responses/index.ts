@@ -8,40 +8,21 @@ const responsesResolvers = {
   },
 };
 
-export const responseTypeDef = `
-  type ComplianceItem {
-    reference: String!
-    name: String!
-    description: String!
-    categoryId: ID!
-    functionalAreaId: String!
-    regulatoryBodyId: String!
-    frequency: String!
-  }
-
-  type Category {
-    name: String!
-  }
-
-  type FunctionalArea {
-    name: String!
-  }
-
+export const responsesTypeDefs = `
   type Response {
     _id: ID!
-    businessUnitId: String!
-    delegateIds: [String!]
+    businessUnitId: ID!
+    delegateIds: [ID!]!
     lastRenewalDate: Date!
     nextRenewalDate: Date!
     status: String!
     published: Boolean!
-    complianceItem: ComplianceItem!
-    category: Category!
-    functionalArea: FunctionalArea!
+    complianceItemId: ID!
+    complianceItem: ComplianceItem
   }
 `;
 
-export const responseQueryDef = `
+export const responsesQueryDefs = `
   responses: [Response!]!
 `;
 
