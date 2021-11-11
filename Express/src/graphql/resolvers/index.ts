@@ -5,6 +5,7 @@ import organizationsResolvers from "./ogranizations";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
 import settingsResolvers from "./settings";
 import usersResolvers from "./users";
+import businessUnitsResolvers from "./businessUnits"
 import responsesResolvers from "./responses";
 
 import scalars from "../scalars";
@@ -26,6 +27,7 @@ export default {
   },
   Mutation: {
     ...categoriesResolvers.Mutation,
+    ...businessUnitsResolvers.Mutation,
     ...functionalAreasResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,

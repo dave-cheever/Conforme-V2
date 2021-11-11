@@ -6,6 +6,7 @@ import RegulatoryBodies from "./RegulatoryBodies";
 import Responses from "./Responses";
 import Settings from "./Settings";
 import Users from "./Users";
+import BusinessUnits from "./BusinessUnits";
 
 export {
   Categories,
@@ -16,4 +17,5 @@ export {
   Responses,
   Settings,
   Users,
+  BusinessUnits
 };

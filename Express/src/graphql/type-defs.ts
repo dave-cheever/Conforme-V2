@@ -1,4 +1,5 @@
 import { gql } from "apollo-server-express";
+import { businessUnitQueryDef, businessUnitTypeDef } from "./resolvers/businessUnits";
 import { responseQueryDef, responseTypeDef } from "./resolvers/responses";
 import { settingsQueryDef } from "./resolvers/settings";
 
@@ -8,6 +9,8 @@ const typeDefs = gql`
   scalar Object
 
   ${responseTypeDef}
+
+  ${businessUnitTypeDef}
 
   type Metatags {
     addedAt: Date!
@@ -68,6 +71,9 @@ const typeDefs = gql`
     metatags: Metatags!
   }
 
+  
+
+
   # Queries
   type Query {
     # Organizations
@@ -84,6 +90,9 @@ const typeDefs = gql`
 
     # Categories
     categories: [BaseWithName!]!
+
+    #Business Units
+    ${businessUnitQueryDef}
 
     # Users
     session: Session!
@@ -108,6 +117,11 @@ const typeDefs = gql`
     createCategory(name: String!): BaseWithName!
     deleteCategory(_id: String!): Boolean!
     updateCategory(categoryInput: BaseWithNameInput!): BaseWithName!
+
+    #Business Units
+    createBusinessUnit(businessUnitInput: BusinessUnitInput!): BusinessUnits!
+    deleteBusinessUnit(_id: String!): Boolean!
+    updateBusinessUnit(businessUnitInput: BusinessUnitUpdateInput!): BusinessUnits!
   }
 `;
 
