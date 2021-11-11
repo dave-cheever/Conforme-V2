@@ -1,0 +1,14 @@
+import { createIcon } from "@chakra-ui/icons";
+
+const ErrorSign = createIcon({
+  viewBox: '0 0 12 11',
+  path: (
+    <g>
+      <path d="M5.18166 1.46073L1.12826 8.22756C1.04469 8.37229 1.00047 8.53638 1 8.7035C0.999536 8.87062 1.04284 9.03495 1.1256 9.18015C1.20836 9.32534 1.32769 9.44633 1.47173 9.53109C1.61577 9.61584 1.77949 9.66141 1.9466 9.66324H10.0534C10.2205 9.66141 10.3842 9.61584 10.5283 9.53109C10.6723 9.44633 10.7916 9.32534 10.8744 9.18015C10.9572 9.03495 11.0005 8.87062 11 8.7035C10.9995 8.53638 10.9553 8.37229 10.8717 8.22756L6.81834 1.46073C6.73302 1.32008 6.6129 1.2038 6.46956 1.1231C6.32622 1.0424 6.1645 1 6 1C5.8355 1 5.67378 1.0424 5.53044 1.1231C5.3871 1.2038 5.26698 1.32008 5.18166 1.46073V1.46073Z" stroke="white" strokeLinecap="round" strokeLinejoin="round" fill="currentColor" />
+      <path d="M6 3.92041V5.83465" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 7.74902H6.00574" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+  )
+});
+
+export default ErrorSign;

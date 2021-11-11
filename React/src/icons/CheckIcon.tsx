@@ -1,6 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 
-export const CheckIcon = createIcon({
+const CheckIcon = createIcon({
   displayName: "CheckIcon",
   viewBox: "0 0 10 8",
   path: [
@@ -14,3 +14,5 @@ export const CheckIcon = createIcon({
     />,
   ],
 });
+
+export default CheckIcon;

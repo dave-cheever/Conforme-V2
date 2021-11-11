@@ -1,0 +1,30 @@
+import { v4 as uuidv4 } from "uuid";
+
+import { ComplianceItems } from "app-models";
+import { genMetatags, isPermitted } from "app-utils";
+
+const createComplianceItem = async (_, complianceItem, { authorize }) => {
+  try {
+    console.log('complianceItem', complianceItem);
+    
+    const user = await authorize();
+
+    if (!isPermitted({ user, action: "complianceItems.add" })) {
+      throw new Error("User is not permitted");
+    }
+
+    const newComplianceItem = {
+      _id: uuidv4(),
+      ...complianceItem,
+      metatags: genMetatags("added", user._id),
+    };
+
+    await ComplianceItems.create(newComplianceItem);
+
+    return newComplianceItem;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+export default createComplianceItem;

@@ -7,7 +7,7 @@ import AdminModal from "../../components/AdminModal";
 import AdminTableRow from "../../components/AdminTableRow";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
-import TextInput from "../../components/Forms/Text";
+import TextInput from "../../components/Forms/TextInput";
 import Loader from "../../components/Loader";
 
 import Chart from "../../components/Chart";

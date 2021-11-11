@@ -220,3 +220,15 @@ export const initialFilters: IFilters = {
     value: [],
   },
 };
+
+export const complianceItemFrequencies = [
+  "Monthly",
+  "Quarterly",
+  "6 months",
+  "Annual",
+  "2 years",
+  "3 years",
+  "5 years",
+  "Variable",
+  "Ad-hoc"
+];

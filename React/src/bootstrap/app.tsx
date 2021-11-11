@@ -1,6 +1,7 @@
 import { ChakraProvider, CSSReset, Flex, Spinner } from "@chakra-ui/react";
 import { Route, Switch } from "react-router-dom";
 
+import './styles.css';
 import getTheme from "./theme";
 import useAuth from "../hooks/useAuth";
 import useInit from "../hooks/useInit";

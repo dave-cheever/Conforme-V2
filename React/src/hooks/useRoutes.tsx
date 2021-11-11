@@ -11,7 +11,7 @@ import Accidents from "../pages/accidents";
 import Policies from "../pages/policies";
 import Mentions from "../pages/mentions";
 import ComplianceItems from "../pages/complianceItems";
-import ComplianceItemsAdmin from "../pages/admin/complianceItemsAdmin";
+import ComplianceItemsAdmin from "../pages/admin/compliance-items";
 import Categories from "../pages/admin/categories";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import FunctionalAreas from "../pages/admin/functional-areas";

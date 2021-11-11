@@ -73,7 +73,7 @@ const NavigationTop = () => {
           <Image ignoreFallback src={organizationConfig?.logoUrl} h="44px" />
           <Text
             w="full"
-            ml={3}
+            ml={6}
             fontWeight="700"
             fontSize="14px"
             color="#FFFFFF"

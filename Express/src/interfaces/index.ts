@@ -1,8 +1,11 @@
 
 import { IBase } from './IBase';
 import { IBaseWithName } from './IBaseWithName';
+import { IBaseWithNameModel } from './IBaseWithNameModel';
 import { IBusinessUnit } from './IBusinessUnit';
 import { IComment } from './IComment';
+import { IComplianceItem } from './IComplianceItem';
+import { IComplianceItemModel } from './IComplianceItemModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
@@ -17,17 +20,20 @@ import { IUserModel } from './IUserModel';
 export {
   IBase,
   IBaseWithName,
+  IBaseWithNameModel,
+  IBusinessUnit,
+  IComplianceItem,
+  IComplianceItemModel,
+  IComment,
+  IGraphUser,
   IOrganization,
   IOrganizationModel,
+  IQuestion,
+  IResponse,
+  IResponseModel,
   ISession,
   ISetting,
   ISettingModel,
   IUser,
   IUserModel,
-  IBusinessUnit,
-  IQuestion,
-  IGraphUser,
-  IComment,
-  IResponse,
-  IResponseModel,
 };

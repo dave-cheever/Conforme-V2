@@ -10,7 +10,7 @@ import Chart from "../../components/Chart";
 import Header from "../../components/Header";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
-import TextInput from "../../components/Forms/Text";
+import TextInput from "../../components/Forms/TextInput";
 import Loader from "../../components/Loader";
 
 const GET_REGULATORY_BODIES = gql`

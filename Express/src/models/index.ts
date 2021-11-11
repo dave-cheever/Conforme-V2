@@ -1,17 +1,19 @@
-import Organizations from "./Organizations";
-import Settings from "./Settings";
-import RegulatoryBodies from "./RegulatoryBodies";
-import Users from "./Users";
-import FunctionalAreas from "./FunctionalAreas";
 import Categories from "./Categories";
+import ComplianceItems from "./ComplianceItems";
+import FunctionalAreas from "./FunctionalAreas";
+import Organizations from "./Organizations";
+import RegulatoryBodies from "./RegulatoryBodies";
 import Responses from "./Responses";
+import Settings from "./Settings";
+import Users from "./Users";
 
 export {
-  Organizations,
-  Settings,
-  RegulatoryBodies,
-  Users,
-  FunctionalAreas,
   Categories,
+  ComplianceItems,
+  FunctionalAreas,
+  Organizations,
+  RegulatoryBodies,
   Responses,
+  Settings,
+  Users,
 };

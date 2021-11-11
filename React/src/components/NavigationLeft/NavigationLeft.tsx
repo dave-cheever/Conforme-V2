@@ -34,7 +34,6 @@ const NavigationLeft = () => {
           ignoreFallback
           src={organizationConfig?.logoUrl}
           h="42px"
-          w="36px"
           position="absolute"
           top="17px"
           left="17px"
@@ -45,7 +44,7 @@ const NavigationLeft = () => {
           lineHeight="132.1%"
           position="absolute"
           top="30px"
-          left="38px"
+          left="78px"
         >
           {organizationConfig?.name}
         </Text>

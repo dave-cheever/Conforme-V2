@@ -220,6 +220,126 @@ const getTheme = (organizationTheme?: any) => {
           menuItemFont: "#424B50",
         },
       },
+      businessUnitsSelector: {
+        label: '#777777',
+        border: {
+          normal: '#CBCCCD',
+          focus: '#777777',
+        },
+        note: '#424B50',
+        checkbox: {
+          border: '#CBCCCD',
+          500: '#A2171E',
+        },
+        list: {
+          checkbox: {
+            border: '#CBCCCD',
+            500: '#A2171E',
+          },
+          bg: {
+            normal: '#F2F2F2',
+            selected: '#A2171E',
+          },
+          font: {
+            normal: '#777777',
+            selected: '#FFFFFF',
+          }
+        },
+      },
+      businessUnitsCarousel: {
+        manyBg: '#FFFFFF',
+        elementBg: '#FFFFFF',
+      },
+      adminComplianceItemModal: {
+        bg: "#F2F2F2",
+        primaryButton: {
+          bg: "#A2171E",
+          hoverBg: "#CC242D",
+        },
+        secondaryButton: {
+          bg: "#424B50",
+        },
+        section: {
+          emptyCircle: '#9A9EA1',
+          fullCircle: {
+            error: "#E53E3E",
+            success: '#009400',
+          },
+          errorSign: '#E53E3E',
+          general: {
+            description: '#2B3236',
+          },
+          details: {
+            description: '#2B3236',
+          },
+          businessUnits: {
+            description: '#2B3236',
+          },
+          additionalDetails: {
+            description: '#2B3236',
+            evidence: {
+              bg: '#F2F2F2',
+              title: '#2B3236',
+              label: '#2B3236',
+              input: {
+                font: {
+                  normal: '#777777',
+                  focus: '#2B3236',
+                },
+                bg: '#FFFFFF',
+                border: '#CBCCCD',
+              },
+              remove: '#E53E3E',
+              add: {
+                bg: '#A2171E',
+                font: '#FFFFFF',
+              },
+            },
+          },
+          questions: {
+            description: '#2B3236',
+            tile: {
+              bg: '#F2F2F2',
+              icon: '#2B3236',
+              button: {
+                bg: '#A2171E',
+                font: '#FFFFFF',
+              },
+            },
+            form: {
+              bg: '#F2F2F2',
+              icon: '#2B3236',
+              button: {
+                primary: {
+                  bg: '#A2171E',
+                  font: '#FFFFFF',
+                },
+                secondary: {
+                  bg: '#9A9EA1',
+                  font: '#FFFFFF',
+                },
+              }
+            },
+            list: {
+              element: {
+                bg: '#F2F2F2',
+                icon: '#2B3236',
+                name: '#2B3236',
+                description: '#777777',
+                asterisk: '#A2171E',
+                remove: '#2B3236',
+              },
+            },
+          },
+          summary: {
+            label: '#9A9EA1',
+            value: '#2B3236',
+            section: '#2B3236',
+            questionBg: '#FFFFFF',
+            error: '#E53E3E',
+          },
+        },
+      },
       adminModal: {
         header: {
           bg: "#171A1C",
@@ -272,6 +392,134 @@ const getTheme = (organizationTheme?: any) => {
       complianceGroup: {
         compliant: "#62c240",
         nonCompliant: "#FC5960",
+      },
+      form: {
+        checkbox: {
+          icon: {
+            border: '#CBCCCD',
+            500: '#A2171E',
+          },
+          error: '#E53E3E',
+        },
+        datepicker: {
+          font: '#777777',
+          bg: '#FFFFFF',
+          labelFont: {
+            normal: '#2B3236',
+            error: '#E53E3E',
+          },
+          border: {
+            normal: '#CBCCCD',
+            error: '#E53E3E',
+            focus: {
+              normal: '#777777',
+              error: '#E53E3E',
+            },
+          },
+          activeBg: '#EEEEEE',
+          disabled: {
+            font: '#2B3236',
+            border: '#EEEEEE',
+            bg: '#f7f7f7',
+          },
+          error: '#E53E3E',
+        },
+        dropdown: {
+          font: '#777777',
+          bg: '#FFFFFF',
+          labelFont: {
+            normal: '#2B3236',
+            error: '#E53E3E',
+          },
+          border: {
+            normal: '#CBCCCD',
+            error: '#E53E3E',
+            focus: {
+              normal: '#777777',
+              error: '#E53E3E',
+            },
+          },
+          activeBg: '#EEEEEE',
+          disabled: {
+            font: '#2B3236',
+            border: '#EEEEEE',
+            bg: '#f7f7f7',
+          },
+          placeholder: '#CBCCCD',
+          error: '#E53E3E',
+        },
+        numberInput: {
+          font: '#777777',
+          bg: '#FFFFFF',
+          labelFont: {
+            normal: '#2B3236',
+            error: '#E53E3E',
+          },
+          border: {
+            normal: '#CBCCCD',
+            error: '#E53E3E',
+            focus: {
+              normal: '#777777',
+              error: '#E53E3E',
+            },
+          },
+          activeBg: '#EEEEEE',
+          disabled: {
+            font: '#2B3236',
+            border: '#EEEEEE',
+            bg: '#f7f7f7',
+          },
+          placeholder: '#CBCCCD',
+          error: '#E53E3E',
+        },
+        textarea: {
+          font: '#777777',
+          bg: '#FFFFFF',
+          labelFont: {
+            normal: '#2B3236',
+            error: '#E53E3E',
+          },
+          border: {
+            normal: '#CBCCCD',
+            error: '#E53E3E',
+            focus: {
+              normal: '#777777',
+              error: '#E53E3E',
+            },
+          },
+          activeBg: '#EEEEEE',
+          disabled: {
+            font: '#2B3236',
+            border: '#EEEEEE',
+            bg: '#f7f7f7',
+          },
+          placeholder: '#CBCCCD',
+          error: '#E53E3E',
+        },
+        textInput: {
+          font: '#777777',
+          bg: '#FFFFFF',
+          labelFont: {
+            normal: '#2B3236',
+            error: '#E53E3E',
+          },
+          border: {
+            normal: '#CBCCCD',
+            error: '#E53E3E',
+            focus: {
+              normal: '#777777',
+              error: '#E53E3E',
+            },
+          },
+          activeBg: '#EEEEEE',
+          disabled: {
+            font: '#2B3236',
+            border: '#EEEEEE',
+            bg: '#f7f7f7',
+          },
+          placeholder: '#CBCCCD',
+          error: '#E53E3E',
+        },
       },
 
       brand: {

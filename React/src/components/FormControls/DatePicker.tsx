@@ -95,7 +95,7 @@ const DatePicker = ({ name, label, showDot, tooltip, disabled, value, error, val
             onClose={() => onBlur({ target: { name } })}
             options={options}
             value={value}
-            ref={flatpickrRef}
+            // ref={flatpickrRef}
           />
         }
         <CalendarIcon

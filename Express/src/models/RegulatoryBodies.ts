@@ -1,7 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { IBaseWithName } from 'app-interfaces';
-import { IBaseWithNameModel } from 'src/interfaces/IBaseWithNameModel';
+import { IBaseWithName, IBaseWithNameModel } from 'app-interfaces';
 
 const regulatoryBodySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,

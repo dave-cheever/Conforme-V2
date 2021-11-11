@@ -2,7 +2,7 @@ import { createIcon } from "@chakra-ui/icons";
 
 // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
 
-export const MinusIcon = createIcon({
+const MinusIcon = createIcon({
   displayName: "MinusIcon",
   viewBox: "0 0 9 1",
   path: [
@@ -14,3 +14,5 @@ export const MinusIcon = createIcon({
     />,
   ],
 });
+
+export default MinusIcon;

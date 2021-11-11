@@ -6,7 +6,7 @@ import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
 
-interface ITextField extends IField {
+interface ITextInput extends IField {
   placeholder?: string;
   variant?: string;
 }
@@ -24,7 +24,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Text = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: ITextField) => {
+const TextInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: ITextInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
@@ -37,14 +37,13 @@ const Text = ({ control, name, label, placeholder = '', tooltip = '', variant, v
         return (
           <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mt={variant !== 'secondaryVariant' ? "-30px" : 'none'}>
+              <Flex pt={2} pb={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
                 <Box
-                  color={error ? "red.500" : "brand.darkGrey"}
+                  color={error ? "form.textInput.labelFont.error" : "form.textInput.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
                   position={variant !== 'secondaryVariant' ? "relative" : "static"}
                   left={variant !== 'secondaryVariant' ? "19px" : 'none'}
-                  top={variant !== 'secondaryVariant' ? "32px" : 'none'}
                   zIndex={2}
                 >
                   {label}
@@ -60,23 +59,29 @@ const Text = ({ control, name, label, placeholder = '', tooltip = '', variant, v
               pt={variant !== 'secondaryVariant' ? "16px" : 'none'}
               h={variant !== 'secondaryVariant' ? "55px" : "40px"}
               type="text"
-              color="gray.600"
+              color="form.textInput.font"
+              bg="form.textInput.bg"
               name={name}
               defaultValue={value}
-              borderColor={error ? "red.500" : "#CBCCCD"}
-              _active={{ bg: "#E2F4F4" }}
-              _focus={error ? { borderColor: "red.500" } : { borderColor: "gray.600" }}
+              borderColor={error ? "form.textInput.border.error" : "form.textInput.border.normal"}
+              _active={{ bg: disabled ? "form.textInput.disabled.bg" : "form.textInput.activeBg" }}
+              _focus={{ borderColor: error ? "form.textInput.border.focus.error" : "form.textInput.border.focus.normal" }}
               _hover={{ cursor: "auto" }}
               onChange={onChange}
               onBlur={onBlur}
               isDisabled={disabled}
               cursor="pointer"
-              _disabled={{ color: "gray.500", borderColor: "gray.200", cursor: "not-allowed" }}
+              _disabled={{
+                bg: "form.textInput.disabled.bg",
+                color: "form.textInput.disabled.font",
+                borderColor: "form.textInput.disabled.border",
+                cursor: "not-allowed",
+              }}
               maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
               placeholder={variant === 'secondaryVariant' ? '' : placeholder}
-              _placeholder={{ color: error ? "brand.darkGrey" : "gray.400" }}
+              _placeholder={{ color: 'form.textInput.placeholder' }}
             />
-            {error && <Box fontSize={14} ml={1} color='red.500'>{error.message}</Box>}
+            {error && <Box fontSize={14} ml={1} color='form.textInput.error'>{error.message}</Box>}
           </Box>
         );
       }}
@@ -84,4 +89,4 @@ const Text = ({ control, name, label, placeholder = '', tooltip = '', variant, v
   );
 };
 
-export default Text;
+export default TextInput;

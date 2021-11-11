@@ -11,6 +11,7 @@ export interface IBusinessUnitAddress {
 export interface IBusinessUnitPerson {
   firstName: string;
   lastName: string;
+  displayName: string;
   email: string;
   id: string;
 }
@@ -23,7 +24,7 @@ export interface IBusinessUnitIdentifier {
 export interface IBusinessUnit extends IBase {
   identifier: string;
   name: string;
-  type: 'Hospital' | 'Corporate';
+  type: string;
   region: string;
   identifiers?: IBusinessUnitIdentifier[];
   imgUrl?: string;
@@ -34,6 +35,5 @@ export interface IBusinessUnit extends IBase {
   address: IBusinessUnitAddress;
   ed: IBusinessUnitPerson;
   rd: IBusinessUnitPerson;
-  totalResponses?: number; // Injected number of total responses for business unit
-  overdueResponses?: number; // Injected number of overdue responses for business unit
+  responsesCount?: number;
 }

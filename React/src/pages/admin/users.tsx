@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import Header from "../../components/Header";
 import { Eye } from "../../icons";
-import Pencil from "../../icons/Pencil";
+import { Pencil } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
 
 interface IEditableControls {

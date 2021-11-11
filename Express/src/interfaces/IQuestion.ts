@@ -1,8 +1,9 @@
 export interface IQuestion {
-  type: 'textWithConfirm' | 'toggle' | 'datePicker';
+  type: 'text' | 'toggle' | 'datePicker';
   name: string;
   description?: string;
-  value?: string | boolean | Date;
-  required?: boolean;
+  value?: string | Boolean | Date;
+  required?: Boolean;
   outdated?: boolean;
 }
+
