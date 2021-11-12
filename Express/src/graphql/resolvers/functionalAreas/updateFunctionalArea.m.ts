@@ -22,11 +22,9 @@ const updateFunctionalArea = async (
       throw new Error("User is not permitted");
     }
 
-    const functionalArea = await FunctionalAreas.getById(
-      functionalAreaInput._id
-    );
+    const functionalArea = await FunctionalAreas.getById(functionalAreaInput._id);
     if (!functionalArea) {
-      throw new Error("Regulatory body doesn't exist");
+      throw new Error("Functional area doesn't exist");
     }
 
     const updatedFunctionalArea = {

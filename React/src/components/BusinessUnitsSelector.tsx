@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, Checkbox, Flex, Input, Stack, Text } from "@chakra-ui/react";
 
-// import Dropdown from "./form-controls/Dropdown";
 import { Magnifier } from "../icons";
 import { IBusinessUnit } from "../interfaces/IBusinessUnit";
 import BusinessUnitsSelectorList from "./BusinessUnitsSelectorList";
-import { useForm } from "react-hook-form";
-// import { compare } from "../utils/helpers";
 
 interface IBusinessUnitsSelector {
   businessUnits: IBusinessUnit[];
@@ -24,7 +21,7 @@ const BusinessUnitsSelector = ({
   handleChange,
 }: IBusinessUnitsSelector) => {
   const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<IBusinessUnit[]>([]);
-  const [selectedType, setSelectedType] = useState<string>('');
+  const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const areAllSelected = useMemo(() => filteredBusinessUnits.every(({ _id }) => selected.includes(_id)), [filteredBusinessUnits, selected]);
 

@@ -4,8 +4,7 @@ import { FunctionalAreas } from "app-models";
 import { doesPathExist } from "app-utils";
 
 const functionalAreas = async (_, __, ___, info: GraphQLResolveInfo) => {
-  const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ["functionalAreas", element]);
+  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["functionalAreas", element]);
   try {
     let functionalAreas = await FunctionalAreas.get();
 

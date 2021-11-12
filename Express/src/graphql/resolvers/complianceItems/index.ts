@@ -1,16 +1,16 @@
+import complianceItems from "./complianceItems.q";
 import createComplianceItem from "./createComplianceItem.m";
-// import deleteComplianceItem from "./deleteComplianceItem.m";
-// import updateComplianceItem from "./updateComplianceItem.m";
-// import complianceItems from "./complianceItems.q";
+import deleteComplianceItem from "./deleteComplianceItem.m";
+import updateComplianceItem from "./updateComplianceItem.m";
 
 const complianceItemsResolvers = {
   Query: {
-    // complianceItems,
+    complianceItems,
   },
   Mutation: {
     createComplianceItem,
-    // deleteComplianceItem,
-    // updateComplianceItem,
+    deleteComplianceItem,
+    updateComplianceItem,
   },
 };
 
@@ -26,21 +26,21 @@ export const complianceItemsTypeDefs = `
 
   type ComplianceItem {
     _id: ID!
-    name: String!
-    description: String!
-    categoryId: ID!
+    name: String
+    description: String
+    categoryId: ID
     category: BaseWithName
-    regulatoryBodyId: ID!
+    regulatoryBodyId: ID
     regulatoryBody: BaseWithName
-    functionalAreaId: ID!
+    functionalAreaId: ID
     functionalArea: BaseWithName
-    dueDate: Date!
-    frequency: String!
-    businessUnitsIds: [ID!]!
-    evidenceItems: [String!]!
-    retentionPeriod: Int!
+    dueDate: Date
+    frequency: String
+    businessUnitsIds: [ID!]
+    evidenceItems: [String!]
+    retentionPeriod: Int
     questions: [Question]
-    published: Boolean!
+    published: Boolean
     ref: String
   }
 
@@ -68,13 +68,33 @@ export const complianceItemsTypeDefs = `
     published: Boolean
     ref: String
   }
+
+  input ComplianceItemModifyInput {
+    _id: ID!
+    name: String
+    description: String
+    categoryId: ID
+    regulatoryBodyId: ID
+    functionalAreaId: ID
+    dueDate: Date
+    frequency: String
+    businessUnitsIds: [ID!]
+    evidenceItems: [String!]
+    retentionPeriod: Int
+    questions: [QuestionInput]
+    published: Boolean
+    ref: String
+  }
 `;
 
 export const complianceItemsQueryDefs = `
+  complianceItems: [ComplianceItem!]!
 `;
 
 export const complianceItemsMutationDefs = `
   createComplianceItem(complianceItemInput: ComplianceItemInput!): ComplianceItem!
+  updateComplianceItem(complianceItemModifyInput: ComplianceItemModifyInput!): ComplianceItem!
+  deleteComplianceItem(_id: String!): Boolean!
 `;
 
 export default complianceItemsResolvers;

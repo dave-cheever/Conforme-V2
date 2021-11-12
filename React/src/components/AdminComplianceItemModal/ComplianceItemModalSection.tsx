@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { AccordionItem, AccordionButton, AccordionPanel } from "@chakra-ui/accordion";
 import { Box, Spacer, Badge, Stack, Flex, Text } from "@chakra-ui/layout";
-import { useCallback, useEffect, useState } from "react";
 
 import { IComplianceItemModalSection, useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
 import { CircleEmpty, CircleChecked, ErrorSign } from "../../icons";
@@ -24,7 +24,7 @@ const ComplianceItemModalSection = (section: IComplianceItemModalSection, index:
         trigger(Object.keys(fields || []) as any);
       }
     }
-  }, [selectedSection.name === name]);
+  }, [selectedSection.name === name]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sectionErrorsCount = Object.keys(errors).reduce((acc, fieldName) => {
     if (Object.keys(fields || []).includes(fieldName)) {

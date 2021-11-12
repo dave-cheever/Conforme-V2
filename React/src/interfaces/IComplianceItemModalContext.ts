@@ -12,7 +12,7 @@ export interface IComplianceItemModalContext {
   errors: { [fieldName: string]: object };
   setValue: UseFormSetValue<IComplianceItem>;
   trigger: UseFormTrigger<IComplianceItem>;
-  reset: UseFormReset<IComplianceItem>;
+  reset: (complianceItem?: Partial<IComplianceItem>, setSection?: number) => void;
 
   complianceItem: Partial<IComplianceItem>;
 

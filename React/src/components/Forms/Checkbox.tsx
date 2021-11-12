@@ -49,7 +49,10 @@ const Checkbox = ({ control, name, label, placeholder = '', tooltip = '', varian
               py={3}
               isChecked={value}
               isDisabled={disabled}
-              onChange={onChange}
+              onChange={() => {
+                onChange();
+                onBlur();
+              }}
             >
               {label}{' '}{tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
             </ChakraCheckbox>

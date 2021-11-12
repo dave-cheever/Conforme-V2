@@ -6,11 +6,11 @@ export interface IComplianceItem extends IBase {
   categoryId: string;
   regulatoryBodyId: string;
   functionalAreaId: string;
-  dueDate: Date;
+  dueDate?: Date;
   frequency: string;
   businessUnitsIds: string[];
   evidenceItems: string[];
-  retentionPeriod: number;
+  retentionPeriod?: number;
   questions?: IQuestion[];
   published: boolean;
   ref?: string;

@@ -220,6 +220,25 @@ const getTheme = (organizationTheme?: any) => {
           menuItemFont: "#424B50",
         },
       },
+      adminTableRow: {
+        bg: '#FFFFFF',
+        font: '#272727',
+        eye: '#A2171E',
+      },
+      adminComplianceItems: {
+        headers: '#9A9EA1',
+        element: {
+          bg: '#FFFFFF',
+          font: '#272727',
+          unnamed: '#9A9EA1',
+          category: '#888888',
+          draft: {
+            bg: '#EAEAEB',
+            font: '#9A9EA1',
+          },
+          edit: '#A2171E',
+        },
+      },
       businessUnitsSelector: {
         label: '#777777',
         border: {
@@ -339,28 +358,37 @@ const getTheme = (organizationTheme?: any) => {
             error: '#E53E3E',
           },
         },
+        delete: {
+          bg: 'rgba(67, 76, 81, 0.95)',
+          font: '#FFFFFF',
+          keep: {
+            bg: "#A2171E",
+            hover: "#CC242D",
+            font: '#FFFFFF',
+          },
+        },
       },
       adminModal: {
-        header: {
-          bg: "#171A1C",
-        },
         content: {
-          bg: "#F0F0F0",
-        },
-        footer: {
-          bg: "#777777",
+          bg: "#FFFFFF",
         },
         body: {
           bg: "#FFFFFF",
         },
         button: {
-          bg: "#E6555C",
-          keepBg: "rgba(67, 76, 81, 0.95)",
+          bg: "#A2171E",
+          hover: "#CC242D",
+          keep: {
+            bg: "#A2171E",
+            hover: "#CC242D",
+          },
           color: "#ffffff",
-          hoverBg: "#E6555C",
         },
         text: {
           color: "#ffffff",
+        },
+        delete: {
+          bg: 'rgba(67, 76, 81, 0.95)',
         },
       },
       complianceList: {
@@ -539,16 +567,13 @@ const getTheme = (organizationTheme?: any) => {
       Modal: {
         ...theme.components.Modal,
         variants: {
-          auditModal: {
+          conformeModal: {
             dialogContainer: {
               justifyContent: "flex-end",
             },
             overlay: {
               background:
                 "linear-gradient(to right, transparent 0%, black 200%)",
-            },
-            dialog: {
-              backgroundColor: "#F2F2F2",
             },
           },
         },

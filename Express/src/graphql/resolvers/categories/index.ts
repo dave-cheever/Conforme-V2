@@ -20,8 +20,8 @@ export const categoriesQueryDefs = `
 
 export const categoriesMutationDefs = `
   createCategory(name: String!): BaseWithName!
-  deleteCategory(_id: String!): Boolean!
   updateCategory(categoryInput: BaseWithNameModifyInput!): BaseWithName!
+  deleteCategory(_id: String!): Boolean!
 `;
 
 export default categoriesResolvers;

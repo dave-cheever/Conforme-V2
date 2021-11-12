@@ -40,6 +40,7 @@ const AdminModal = ({
       size={"lg"}
       onOverlayClick={onAction}
       onEsc={onAction}
+      variant="conformeModal"
     >
       <ModalOverlay />
       {modalType !== "delete" && (
@@ -60,7 +61,6 @@ const AdminModal = ({
           </ModalHeader>
           <Flex pl="13px" pb="20px">
             <Avatar
-              borderColor="brand.active"
               rounded="full"
               name={user?.displayName}
               size="xs"
@@ -80,7 +80,7 @@ const AdminModal = ({
               color="adminModal.button.color"
               fontSize="font.md"
               fontWeight="fontWeights.bold"
-              _hover={{ bg: "adminModal.button.hoverBg" }}
+              _hover={{ bg: "adminModal.button.hover" }}
               onClick={() => onAction(modalType)}
             >
               {modalType === "edit" ? "Update" : "Add"}
@@ -90,7 +90,7 @@ const AdminModal = ({
       )}
       {modalType === "delete" && (
         <ModalContent
-          bg="rgba(67, 76, 81, 0.95)"
+          bg="adminModal.delete.bg"
           h={["100vh", "calc(100vh - 30px)"]}
           borderRadius={["0", "20px"]}
           position="absolute"
@@ -122,7 +122,8 @@ const AdminModal = ({
               <Button
                 color="adminModal.button.color"
                 p="10px 40px"
-                bg="adminModal.button.keepBg"
+                bg="adminModal.button.keep.bg"
+                _hover={{ backgroundColor: "adminModal.button.keep.hover" }}
                 borderRadius="4px"
                 mr="22px"
                 onClick={onAction}

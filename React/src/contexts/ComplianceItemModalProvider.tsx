@@ -1,7 +1,6 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { IBusinessUnit } from "../interfaces/IBusinessUnit";
 
 import { IComplianceItemModalContext } from "../interfaces/IComplianceItemModalContext";
 import { IComplianceItemModalDialogDetails } from "../interfaces/IComplianceItemModalDialogDetails";
@@ -127,7 +126,7 @@ const ComplianceItemModalProvider = (props) => {
   });
   const complianceItem = watch() as Partial<IComplianceItem>;
 
-  const [selectedSection, setSelectedSection] = useState<IComplianceItemModalSection>(complianceItem?.hasOwnProperty('_id') ? complianceItemModalSections[5] : complianceItemModalSections[0]);
+  const [selectedSection, setSelectedSection] = useState<IComplianceItemModalSection>(complianceItemModalSections[0]);
   const selectedSectionIndex = useMemo(() => complianceItemModalSections.findIndex(({ name }) => name === selectedSection.name), [selectedSection]);
 
   const setValue = (name, value) => {
@@ -135,9 +134,11 @@ const ComplianceItemModalProvider = (props) => {
     trigger(name, value);
   };
 
-  const reset = () => {
-    setSelectedSection(complianceItemModalSections[0]);
-    resetForm(defaultValues);
+  const reset = (complianceItem?: Partial<IComplianceItem>, setSection: number = 0) => {
+    if (setSection !== undefined) {
+      setSelectedSection(complianceItemModalSections[setSection]);
+    }
+    resetForm(complianceItem || defaultValues);
   };
 
   const businessUnits: any = [{

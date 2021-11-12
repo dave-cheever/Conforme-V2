@@ -1,8 +1,12 @@
+import { v4 as uuidv4 } from "uuid";
 import { model, Schema } from 'mongoose';
+import { isEqual } from 'date-fns';
 
-import { IComplianceItem, IComplianceItemModel } from 'app-interfaces';
+import { IComplianceItem, IComplianceItemModel, IResponse } from 'app-interfaces';
+import { Responses } from 'app-models';
+import { genMetatags } from 'app-utils';
 
-const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
+const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   _id: String,
   name: String,
   description: String,
@@ -15,6 +19,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   evidenceItems: [String],
   retentionPeriod: Number,
   questions: [{
+    _id: false,
     type: {
       type: String,
       enum: ['text', 'toggle', 'datePicker'],
@@ -39,13 +44,158 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-complianceItemSchema.statics.getById = async function (_id: string): Promise<IComplianceItem> {
+ComplianceItemSchema.statics.getById = async function (_id: string): Promise<IComplianceItem> {
   const complianceItem = await this.findById(_id);
   if (!complianceItem) {
     throw new Error('ComplianceItem not found');
   }
   return complianceItem._doc;
-}
+};
 
-const complianceItemModel = model<IComplianceItem, IComplianceItemModel>('ComplianceItem', complianceItemSchema);
+ComplianceItemSchema.statics.get = async function (selector: any = {}): Promise<IComplianceItem[]> {
+  const complianceItems = await this.find({
+    ...selector,
+    "metatags.removedAt": { $eq: null },
+  });
+  return complianceItems.map((complianceItem) => complianceItem._doc);
+};
+
+ComplianceItemSchema.methods.syncResponses = async function ({
+  userId,
+  prevDueDate,
+}: {
+  userId: string,
+  prevDueDate?: Date,
+}) {
+  const responses = await Responses.get({ complianceItemId: this._id });
+  const unprocessedBusinessUnitsIds = [...this.businessUnitsIds];
+
+  for (const response of responses) {
+    const index = unprocessedBusinessUnitsIds.findIndex(_id => _id === response.businessUnitId);
+    let isPublished = this.published;
+
+    if (index === -1) {
+      // If BU of Response is not selected in CI
+      // Do not publish it
+      isPublished = false;
+    } else {
+      // If BU of Response is selected in CI
+      // Set its publish state to same as CI - published or not published
+      // And remove from not processed array
+      unprocessedBusinessUnitsIds.splice(index, 1);
+    }
+
+    const updatedResponse: Pick<IResponse, 'published' | 'evidence' | 'questions' | 'status' | 'nextRenewalDate'> = {
+      published: isPublished,
+      evidence: [...response.evidence.filter(({ outdated }) => outdated)], // add all past evidence
+      questions: [...response.questions.filter(({ outdated }) => outdated)], // add all past questions
+      status: response.status,
+      nextRenewalDate: response.nextRenewalDate,
+    };
+
+    // Get not outdated evidence from response
+    const currentEvidence = response.evidence.filter(({ outdated }) => !outdated);
+
+    // Check if evidence was removed from CI
+    for (const evidence of currentEvidence) {
+      if (!this.evidenceItems.includes(evidence.name)) {
+        // If current evidence not exist in CI evidence items
+        // Set it to outdated
+        updatedResponse.evidence.push({
+          ...evidence,
+          outdated: true,
+        });
+      }
+    }
+
+    // Check if evidence was added to CI or re-ordered
+    for (const evidenceName of this.evidenceItems) {
+      const existingEvidence = currentEvidence.find(({ name }) => name === evidenceName);
+      if (existingEvidence) {
+        // If CI evidence exist in response, leave it
+        updatedResponse.evidence.push(existingEvidence);
+      } else {
+        // If CI evidence not exist in response, add it
+        updatedResponse.evidence.push({ name: evidenceName });
+      }
+    }
+
+    // Get not outdated questions from response
+    const currentQuestions = response.questions.filter(({ outdated }) => !outdated);
+
+    // Check if question was removed from CI
+    for (const question of currentQuestions) {
+      const existingQuestion = (this.questions || []).find(({ name, type }) => name === question.name && type === question.type);
+      if (!existingQuestion) {
+        // If current question not exist in CI questions
+        // Set it to outdated
+        updatedResponse.questions.push({
+          ...question,
+          outdated: true,
+        });
+      }
+    }
+
+    // Check if question was added to CI or re-ordered
+    for (const question of this.questions || []) {
+      const existingQuestion = currentQuestions.find(({ name, type }) => name === question.name && type === question.type);
+      if (existingQuestion) {
+        // If CI question exist in response, leave it but update with possible changes
+        updatedResponse.questions.push({
+          ...existingQuestion,
+          description: question.description,
+          required: question.required,
+        });
+      } else {
+        // If CI question not exist in response, add it
+        updatedResponse.questions.push(question);
+      }
+    }
+
+    // If questions or evidence has changed, set right status
+    const areRequiredQuestionsAnswered = updatedResponse.questions
+      .filter(({ required, outdated }) => !outdated && required)
+      .every(({ value }) => value || (typeof value === 'boolean' && value === false));
+    const isEvidenceUploaded = updatedResponse.evidence
+      .filter(({ outdated }) => !outdated)
+      .every(({ uploaded }) => uploaded && uploaded.id);
+    if (areRequiredQuestionsAnswered && isEvidenceUploaded) {
+      updatedResponse.status = 'completed';
+    } else if (response.status !== 'notStarted') {
+      updatedResponse.status = 'inProgress';
+    }
+
+    // If DueDate was updated in CI, check if should be updated in response
+    if (
+      (!response.nextRenewalDate && !prevDueDate) ||
+      (response.nextRenewalDate && prevDueDate && isEqual(response.nextRenewalDate, prevDueDate))
+    ) {
+      // If previous CI date was same as Response date
+      updatedResponse.nextRenewalDate = this.dueDate!;
+    }
+
+    await Responses.updateOne({ _id: response._id }, updatedResponse);
+  }
+
+  // Create selected that doesn't exist
+  for (const businessUnitId of unprocessedBusinessUnitsIds) {
+    await Responses.create({
+      _id: uuidv4(),
+      complianceItemId: this._id,
+      businessUnitId: businessUnitId,
+      delegateIds: [],
+      status: 'notStarted',
+      attachments: [],
+      lastCompletedDate: null,
+      lastRenewalDate: null,
+      nextRenewalDate: this.dueDate,
+      evidence: this.evidenceItems.map(name => ({ name })),
+      questions: this.questions,
+      published: this.published,
+      metatags: genMetatags('added', userId),
+    });
+  }
+};
+
+const complianceItemModel = model<IComplianceItem, IComplianceItemModel>('ComplianceItem', ComplianceItemSchema);
 export default complianceItemModel;

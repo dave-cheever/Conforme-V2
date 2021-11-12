@@ -10,8 +10,8 @@ const AdminTableRow = ({ element, index, edit, remove }: { element: IBaseWithNam
     key={element._id}
     w="full"
     h={["80px", "73px"]}
-    bg="#FFFFFF"
-    color="#272727"
+    bg="adminTableRow.bg"
+    color="adminTableRow.font"
     pl={5}
     align="center"
     boxShadow={["0px 4px 10px rgba(0, 0, 0, 0.25)", "none"]}
@@ -30,7 +30,7 @@ const AdminTableRow = ({ element, index, edit, remove }: { element: IBaseWithNam
     >
       {element.count ? element.count : "0"}
       <Tooltip label="Show Items" fontSize="md">
-        <Eye color="#018587" cursor="pointer" ml={4} mt="2px" />
+        <Eye color="adminTableRow.eye" cursor="pointer" ml={4} mt="2px" />
       </Tooltip>
     </Flex>
     <Flex

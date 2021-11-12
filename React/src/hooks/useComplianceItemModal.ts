@@ -11,21 +11,35 @@ const CREATE_COMPLIANCE_ITEM = gql`
   mutation ($complianceItemInput: ComplianceItemInput!) {
     createComplianceItem(complianceItemInput: $complianceItemInput) {
       _id
-      name
     }
   }
 `;
+const UPDATE_COMPLIANCE_ITEM = gql`
+  mutation ($complianceItemInput: ComplianceItemModifyInput!) {
+    updateComplianceItem(complianceItemModifyInput: $complianceItemInput) {
+      _id
+    }
+  }
+`;
+const DELETE_COMPLIANCE_ITEM = gql`
+  mutation ($_id: String!) {
+    deleteComplianceItem(_id: $_id)
+  }
+`;
 
-const useComplianceItemModal = () => {
+const useComplianceItemModal = (refetch = () => { }) => {
   const toast = useToast();
   const { setAdminModalState } = useContext(AdminContext);
   const {
-    setValue,
+    reset, setValue,
+    selectedSectionIndex,
     setSavingDialogDetails,
   } = useComplianceItemModalContext();
   const [create] = useMutation(CREATE_COMPLIANCE_ITEM);
+  const [update] = useMutation(UPDATE_COMPLIANCE_ITEM);
+  const [remove] = useMutation(DELETE_COMPLIANCE_ITEM);
 
-  const closeModal = useCallback(() => setAdminModalState('closed'), []);
+  const closeModal = useCallback(() => setAdminModalState('closed'), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const saveComplianceItem = async (complianceItemInput: Partial<IComplianceItem>) => {
     try {
@@ -41,33 +55,19 @@ const useComplianceItemModal = () => {
         clearTimeout(changeState);
       }, 1000);
 
-      // const pureComplianceItem = {
-      //   name: complianceItem.name,
-      //   description: complianceItem.description,
-      //   categoryId: complianceItem.categoryId,
-      //   regulatoryBodyId: complianceItem.regulatoryBodyId,
-      //   functionalAreaId: complianceItem.functionalAreaId,
-      //   dueDate: complianceItem.dueDate ? getUTCDate(complianceItem.dueDate).toDate() : complianceItem.dueDate,
-      //   frequency: complianceItem.frequency,
-      //   businessUnitsIds: complianceItem.businessUnitsIds,
-      //   evidenceItems: complianceItem.evidenceItems,
-      //   retentionPeriod: complianceItem.retentionPeriod,
-      //   questions: complianceItem.questions,
-      //   published: complianceItem.published,
-      // };
-      // console.log('complianceItem', complianceItemInput);
-      // console.log('pureComplianceItem', pureComplianceItem);
-      
-
       let savedComplianceItemId: string;
+
       if (complianceItemInput.hasOwnProperty('_id')) {
-        // savedComplianceItemIs = await ComplianceItemsService.update(complianceItem['id'], pureComplianceItem);
+        const { data } = await update({ variables: { complianceItemInput } });
+        savedComplianceItemId = data.updateComplianceItem._id;
+        reset(complianceItemInput, selectedSectionIndex);
       } else {
         const { data } = await create({ variables: { complianceItemInput } });
         savedComplianceItemId = data.createComplianceItem._id;
         setValue('_id', savedComplianceItemId);
       }
-      toast({ ...toastSuccess, description: `Compliance item ${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('id') ? 'saved' : 'added'}` });
+      refetch();
+      toast({ ...toastSuccess, description: `Compliance item ${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
@@ -75,9 +75,10 @@ const useComplianceItemModal = () => {
     }
   }
 
-  const deleteComplianceItem = async (complianceItem: IComplianceItem) => {
+  const deleteComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
     try {
-      // await ComplianceItemsService.remove(complianceItem.id);
+      await remove({ variables: { _id: complianceItem._id } });
+      refetch();
       toast({ ...toastSuccess, description: `${complianceItem.name} was deleted` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });

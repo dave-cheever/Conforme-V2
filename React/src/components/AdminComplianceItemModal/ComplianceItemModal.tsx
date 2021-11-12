@@ -21,7 +21,7 @@ import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import { useAppContext } from '../../contexts/AppProvider';
 import ComplianceItemModalSection from './ComplianceItemModalSection';
 
-const ComplianceItemModal = () => {
+const ComplianceItemModal = ({ refetch }) => {
   const toast = useToast();
   const { user } = useAppContext();
 
@@ -34,8 +34,7 @@ const ComplianceItemModal = () => {
   const {
     saveComplianceItem,
     closeModal,
-  } = useComplianceItemModal();
-
+  } = useComplianceItemModal(refetch);
 
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
   const isActionRequiredToComplete = useMemo(() => (complianceItem.evidenceItems || []).length > 0 ||
@@ -107,7 +106,7 @@ const ComplianceItemModal = () => {
         right={["0", "15px"]}
       >
         <ModalHeader fontWeight="bold" fontSize="lg" pl="18px">
-          {complianceItem.hasOwnProperty('id') ? 'View' : 'Add'} compliance item
+          {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} compliance item
         </ModalHeader>
         <Flex pl="13px" pb="20px">
           <Avatar

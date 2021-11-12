@@ -29,7 +29,6 @@ export default {
     ...categoriesResolvers.Mutation,
     ...functionalAreasResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
-    ...functionalAreasResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
   },
 };

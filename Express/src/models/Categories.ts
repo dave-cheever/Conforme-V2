@@ -17,9 +17,7 @@ const CategorySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-CategorySchema.statics.getById = async function (
-  _id: string
-): Promise<IBaseWithName> {
+CategorySchema.statics.getById = async function (_id: string): Promise<IBaseWithName> {
   const category = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },
@@ -30,9 +28,7 @@ CategorySchema.statics.getById = async function (
   return category._doc;
 };
 
-CategorySchema.statics.get = async function (
-  selector: any = {}
-): Promise<IBaseWithName[]> {
+CategorySchema.statics.get = async function (selector: any = {}): Promise<IBaseWithName[]> {
   const categories = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
@@ -40,8 +36,5 @@ CategorySchema.statics.get = async function (
   return categories.map((category) => category._doc);
 };
 
-const categoryModel = model<IBaseWithName, IBaseWithNameModel>(
-  "Category",
-  CategorySchema
-);
+const categoryModel = model<IBaseWithName, IBaseWithNameModel>("Category", CategorySchema);
 export default categoryModel;

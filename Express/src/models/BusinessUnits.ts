@@ -33,7 +33,6 @@ const businessUnitSchema  = new Schema<IBusinessUnit, IBusinessUnitModel>({
     email: String,
     id: String,
   },
-  responsesCount: Number, 
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -68,7 +67,7 @@ businessUnitSchema.statics.getById = async function (
   };
   
   const businessModel = model<IBusinessUnit, IBusinessUnitModel>(
-    "BusinessUnits",
+    "BusinessUnit",
     businessUnitSchema
   );
   export default businessModel;

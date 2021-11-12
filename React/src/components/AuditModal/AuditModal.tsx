@@ -110,7 +110,7 @@ const AuditModal = ({ onClose, isOpen }: IAuditModal) => {
         auditorSearchText, updateAuditorSearchText
       }}
     >
-      <Modal variant="auditModal" onClose={onClose} isOpen={isOpen}>
+      <Modal variant="conformeModal" onClose={onClose} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent
           m="15px 15px"

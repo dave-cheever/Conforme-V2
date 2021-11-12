@@ -17,7 +17,12 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize }) =
       metatags: genMetatags("added", user._id),
     };
 
-    await ComplianceItems.create(newComplianceItem);
+    const complianceItem = await ComplianceItems.create(newComplianceItem);
+
+    // @ts-ignore
+    complianceItem.syncResponses({
+      userId: user._id,
+    });
 
     return newComplianceItem;
   } catch (err: any) {
