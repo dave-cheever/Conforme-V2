@@ -1,4 +1,5 @@
 import Categories from "./Categories";
+import Comments from "./Comments";
 import ComplianceItems from "./ComplianceItems";
 import FunctionalAreas from "./FunctionalAreas";
 import Organizations from "./Organizations";
@@ -10,6 +11,7 @@ import BusinessUnits from "./BusinessUnits";
 
 export {
   Categories,
+  Comments,
   ComplianceItems,
   FunctionalAreas,
   Organizations,

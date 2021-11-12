@@ -30,3 +30,4 @@ const deleteBusinessUnit = async (_, { _id }, { authorize }) => {
   };
   
   export default deleteBusinessUnit;
+  

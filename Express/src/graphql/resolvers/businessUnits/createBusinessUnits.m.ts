@@ -27,3 +27,4 @@ const createBusinessUnit = async (_, {businessUnitInput}, { authorize }) => {
   };
   
   export default createBusinessUnit;
+  

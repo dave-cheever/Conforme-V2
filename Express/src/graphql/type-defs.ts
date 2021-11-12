@@ -2,6 +2,7 @@ import { gql } from "apollo-server-express";
 
 import { businessUnitsTypeDefs, businessUnitsQueryDefs, businessUnitsMutationDefs } from "./resolvers/businessUnits";
 import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categories";
+import { commentsMutationDefs, commentsQueryDefs, commnentsTypeDefs } from "./resolvers/comments";
 import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutationDefs } from "./resolvers/complianceItems";
 import { functionalAreasQueryDefs, functionalAreasMutationDefs } from "./resolvers/functionalAreas";
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
@@ -36,6 +37,7 @@ const typeDefs = gql`
   }
   
   ${businessUnitsTypeDefs}
+  ${commnentsTypeDefs}
   ${complianceItemsTypeDefs}
   ${organizationsTypeDefs}
   ${responsesTypeDefs}
@@ -45,6 +47,7 @@ const typeDefs = gql`
   type Query {
     ${businessUnitsQueryDefs}
     ${categoriesQueryDefs}
+    ${commentsQueryDefs}
     ${complianceItemsQueryDefs}
     ${functionalAreasQueryDefs}
     ${organizationsQueryDefs}
@@ -56,6 +59,7 @@ const typeDefs = gql`
   type Mutation {
     ${businessUnitsMutationDefs}
     ${categoriesMutationDefs}
+    ${commentsMutationDefs}
     ${complianceItemsMutationDefs}
     ${functionalAreasMutationDefs}
     ${regulatoryBodiesMutationDefs}

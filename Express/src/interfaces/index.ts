@@ -4,6 +4,7 @@ import { IBaseWithName } from './IBaseWithName';
 import { IBaseWithNameModel } from './IBaseWithNameModel';
 import { IBusinessUnit } from './IBusinessUnit';
 import { IComment } from './IComment';
+import { ICommentModel } from './ICommentModel';
 import { IComplianceItem } from './IComplianceItem';
 import { IComplianceItemModel } from './IComplianceItemModel';
 import { IOrganization } from './IOrganization';
@@ -25,6 +26,7 @@ export {
   IComplianceItem,
   IComplianceItemModel,
   IComment,
+  ICommentModel,
   IGraphUser,
   IOrganization,
   IOrganizationModel,

@@ -107,4 +107,3 @@ export const businessUnitsMutationDefs = `
 `;
 
 export default businessUnitsResolvers;
-
