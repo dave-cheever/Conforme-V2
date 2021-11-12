@@ -18,7 +18,7 @@ import MissingQuestions from '../MissingQuestions';
 const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   const history = useHistory();
   const { getRenewalStatus, getStatus } = useResponseUtils();
-  
+
   const renderItem = (response: IResponse, i: number) => {
     const requiredQuestionsLeft = response?.questions?.filter(({ required, value }) => required && (value === undefined || value === ''));
 
@@ -74,19 +74,21 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               pt="3px"
               pl={4}
             >
-              {response.complianceItem.name}
-              {response?.businessUnit?.type === 'Corporate' && <Box ml={3}><BriefcaseIcon /></Box>}
+              {response.complianceItem?.name}
+              {response.businessUnit?.type === 'Corporate' && <Box ml={3}><BriefcaseIcon /></Box>}
             </Flex>
-            <Stack 
-              pl={4} 
-              direction={['column', 'row']} 
-              spacing={4} 
-              align={['flex-start', 'center']} 
-              mt={2} 
-              fontSize='12px' 
+            <Stack
+              pl={4}
+              direction={['column', 'row']}
+              spacing={4}
+              align={['flex-start', 'center']}
+              mt={2}
+              fontSize='12px'
               color='complianceList.evidenceFontColor'
             >
-              <Flex opacity='0.75'>{response.category?.name ? response.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}</Flex>
+              <Flex opacity='0.75'>
+                {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
+              </Flex>
               <Flex align='center'>
                 {response?.evidenceExpected?.find(({ uploaded }) => uploaded === undefined) ?
                   <><UploadedCross color='complianceList.crossIcon' mr={1} /><Flex opacity='0.75'>Missing evidence</Flex></> :
@@ -110,7 +112,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               fontSize='14px'
               fontWeight='700'
             >
-              {response.regulatoryBody?.name ? response.regulatoryBody?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
+              {response.complianceItem?.regulatoryBody?.name ? response.complianceItem?.regulatoryBody?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
             </Box>
           </Box>
           <Box w='25%'>

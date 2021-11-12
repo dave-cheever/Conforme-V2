@@ -34,7 +34,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
       <Flex
         h='34px'
         bgColor={`complianceSquare.${responseStatus}`}
-        color='complianceSquare.fontColor'
+        color='complianceSquare.statusFontColor'
         roundedTop="lg"
         fontSize='smd'
         pl='15px'
@@ -62,7 +62,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
           textOverflow='ellipsis'
           whiteSpace='nowrap'
         >
-          {response.complianceItem.name}
+          {response.complianceItem?.name}
         </Box>
         <ChevronRight color='complianceSquare.rightIcon' mr={4} />
       </Flex>
@@ -116,7 +116,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
             textOverflow='ellipsis'
             whiteSpace='nowrap'
           >
-            {response.category?.name ? response.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
+            {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
           </Box>
         </Box>
         <Box w='50%' color='complianceSquare.regulatoryFontColor' fontSize='12px'>
@@ -129,7 +129,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
             textOverflow='ellipsis'
             whiteSpace='nowrap'
           >
-            {response.regulatoryBody?.name ? response.regulatoryBody?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
+            {response.complianceItem?.regulatoryBody?.name ? response.complianceItem?.regulatoryBody?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
           </Box>
         </Box>
       </Flex>

@@ -1,4 +1,4 @@
-import { IBase, IBaseWithName, IBusinessUnit, IUser, IQuestion, IComment } from 'app-interfaces';
+import { IBase, IBaseWithName, IBusinessUnit, IUser, IQuestion, IComment, IComplianceItem } from 'app-interfaces';
 
 export interface IDocument {
   id: string;
@@ -12,16 +12,6 @@ export interface IEvidence {
   outdated?: boolean;
 }
 
-interface IComplianceItem {
-  reference: string;
-  name: string;
-  description: string;
-  categoryId: string;
-  functionalAreaId: string;
-  regulatoryBodyId: string;
-  frequency: string;
-}
-
 export interface IResponse extends IBase {
   // Base fields - saved for response in database
   complianceItemId: string;
@@ -33,7 +23,7 @@ export interface IResponse extends IBase {
   evidence: IEvidence[];
   attachments: IDocument[];
   questions: IQuestion[];
-  published: boolean;
+  // published: boolean;
   
   // Comments - injected to response when getting from database
   // Taken from Comments collection
@@ -46,9 +36,9 @@ export interface IResponse extends IBase {
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
   owner?: IUser;
-  category?: IBaseWithName;
-  regulatoryBody?: IBaseWithName;
-  functionalArea?: IBaseWithName;
+  // category?: IBaseWithName;
+  // regulatoryBody?: IBaseWithName;
+  // functionalArea?: IBaseWithName;
   delegates?: IUser[];
 }
 

@@ -10,7 +10,7 @@ import Actions from "../pages/actions";
 import Accidents from "../pages/accidents";
 import Policies from "../pages/policies";
 import Mentions from "../pages/mentions";
-import ComplianceItems from "../pages/complianceItems";
+import ComplianceItems from "../pages/compliance-items";
 import ComplianceItemsAdmin from "../pages/admin/compliance-items";
 import Categories from "../pages/admin/categories";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";

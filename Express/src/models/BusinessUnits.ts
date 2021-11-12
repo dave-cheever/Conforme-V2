@@ -4,6 +4,7 @@ import { IBusinessUnit } from "app-interfaces";
 import { IBusinessUnitModel } from "src/interfaces/IBusinessUnitModel";
 
 const businessUnitSchema  = new Schema<IBusinessUnit, IBusinessUnitModel>({
+  _id: String,
   identifier: String,
   name: String,
   type: String,
@@ -66,10 +67,7 @@ businessUnitSchema.statics.getById = async function (
     return businessUnits;
   };
   
-  const businessModel = model<IBusinessUnit, IBusinessUnitModel>(
-    "BusinessUnit",
-    businessUnitSchema
-  );
+  const businessModel = model<IBusinessUnit, IBusinessUnitModel>("BusinessUnit", businessUnitSchema, 'businessUnits');
   export default businessModel;
 
 

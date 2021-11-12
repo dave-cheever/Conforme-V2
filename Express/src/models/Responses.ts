@@ -38,7 +38,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
     required: Boolean,
     outdated: Boolean,
   }],
-  published: Boolean,
+  // published: Boolean,
   metatags: {
     addedAt: Date,
     addedBy: String,

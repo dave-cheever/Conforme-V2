@@ -36,5 +36,5 @@ regulatoryBodySchema.statics.get = async function (selector: any = {}): Promise<
   return regulatoryBodies.map(regulatoryBody => regulatoryBody._doc);
 }
 
-const regulatoryBodyModel = model<IBaseWithName, IBaseWithNameModel>('RegulatoryBody', regulatoryBodySchema);
+const regulatoryBodyModel = model<IBaseWithName, IBaseWithNameModel>('RegulatoryBody', regulatoryBodySchema, 'regulatoryBodies');
 export default regulatoryBodyModel;

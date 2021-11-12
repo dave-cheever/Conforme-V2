@@ -406,6 +406,7 @@ const getTheme = (organizationTheme?: any) => {
         compliant: "#62c240",
         nonCompliant: "#FC5960",
         comingUp: "#FFA012",
+        statusFontColor: '#FFFFFF',
         imageBg: "#ffffff",
         rightIcon: "#9A9EA1",
         crossIcon: "#FC5960",

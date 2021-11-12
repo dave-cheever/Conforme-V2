@@ -4,8 +4,7 @@ import { BusinessUnits } from "app-models";
 import { doesPathExist } from "app-utils";
 
 const businessUnits = async (_, __, ___, info: GraphQLResolveInfo) => {
-  const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ["businessUnits", element]);
+  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
   try {
     let businessUnits = await BusinessUnits.get();
 

@@ -28,6 +28,10 @@ const GET_FORM_DATA = gql`
       _id
       name
     }
+    businessUnits {
+      _id
+      name
+    }
   }
 `;
 
@@ -141,34 +145,19 @@ const ComplianceItemModalProvider = (props) => {
     resetForm(complianceItem || defaultValues);
   };
 
-  const businessUnits: any = [{
-    "name": "Piotr's BU1",
-    "ed": {
-      "id": "a2472486-00dc-4f5a-85f1-91c28757030a",
-      "firstName": "Piotr",
-      "displayName": "Piotr Michalak",
-      "lastName": null,
-      "email": "admin@piotrccdev.onmicrosoft.com"
-    },
-    "type": "Corporate",
-    "region": "Head office",
-    "_id": "5d33059f-83fe-4426-9495-3a5dd7bacc0b",
-  }];
-
   const value = useMemo(() => ({
     control, errors, setValue, trigger, reset,
     complianceItem,
     categories: data?.categories || [],
     regulatoryBodies: data?.regulatoryBodies || [],
     functionalAreas: data?.functionalAreas || [],
-    businessUnits,
+    businessUnits: data?.businessUnits || [],
     selectedSection, selectedSectionIndex, setSelectedSection,
     savingDialogDetails, setSavingDialogDetails,
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     control, errors,
     complianceItem,
     data,
-    businessUnits,
     selectedSection, selectedSectionIndex,
     savingDialogDetails,
   ]);

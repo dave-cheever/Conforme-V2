@@ -16,13 +16,9 @@ export const responsesTypeDefs = `
     lastRenewalDate: Date
     nextRenewalDate: Date
     status: String!
-    published: Boolean!
     complianceItemId: ID!
     complianceItem: ComplianceItem
     businessUnit: BusinessUnits
-    functionalArea: BaseWithName
-    category: BaseWithName
-    regulatoryBody: BaseWithName
   }
 `;
 

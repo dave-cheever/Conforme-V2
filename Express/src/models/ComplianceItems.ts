@@ -82,12 +82,12 @@ ComplianceItemSchema.methods.syncResponses = async function ({
 
   for (const response of responses) {
     const index = unprocessedBusinessUnitsIds.findIndex(_id => _id === response.businessUnitId);
-    let isPublished = this.published;
+    // let isPublished = this.published;
 
     if (index === -1) {
       // If BU of Response is not selected in CI
       // Do not publish it
-      isPublished = false;
+      // isPublished = false;
     } else {
       // If BU of Response is selected in CI
       // Set its publish state to same as CI - published or not published
@@ -95,8 +95,8 @@ ComplianceItemSchema.methods.syncResponses = async function ({
       unprocessedBusinessUnitsIds.splice(index, 1);
     }
 
-    const updatedResponse: Pick<IResponse, 'published' | 'evidence' | 'questions' | 'status' | 'nextRenewalDate'> = {
-      published: isPublished,
+    const updatedResponse: Pick<IResponse, 'evidence' | 'questions' | 'status' | 'nextRenewalDate'> = {
+      // published: isPublished,
       evidence: [...response.evidence.filter(({ outdated }) => outdated)], // add all past evidence
       questions: [...response.questions.filter(({ outdated }) => outdated)], // add all past questions
       status: response.status,
@@ -201,11 +201,11 @@ ComplianceItemSchema.methods.syncResponses = async function ({
       nextRenewalDate: this.dueDate,
       evidence: this.evidenceItems.map(name => ({ name })),
       questions: this.questions,
-      published: this.published,
+      // published: this.published,
       metatags: genMetatags('added', userId),
     });
   }
 };
 
-const complianceItemModel = model<IComplianceItem, IComplianceItemModel>('ComplianceItem', ComplianceItemSchema);
+const complianceItemModel = model<IComplianceItem, IComplianceItemModel>('ComplianceItem', ComplianceItemSchema, 'complianceItems');
 export default complianceItemModel;

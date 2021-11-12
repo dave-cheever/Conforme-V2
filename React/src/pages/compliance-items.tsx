@@ -21,40 +21,34 @@ import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
 import { gql, useQuery } from "@apollo/client";
 
+const GET_RESPONSES = gql`
+  query Responses {
+    responses {
+      _id
+      nextRenewalDate
+      status
+      complianceItem {
+        name
+        category {
+          name
+        }
+        regulatoryBody {
+          name
+        }
+      }
+      businessUnit {
+        name
+        imgUrl
+      }
+    }
+  }
+`;
+
 const ComplianceItems = () => {
   const { user } = useAppContext();
   const { filters } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
-
-  const GET_RESPONSES = gql`
-    query Responses {
-      responses {
-        _id
-        businessUnitId
-        delegateIds
-        lastRenewalDate
-        nextRenewalDate
-        published
-        status
-        complianceItem {
-          description
-          name
-          categoryId
-        }
-        category {
-          name
-        }
-        functionalArea {
-          name
-        }
-        businessUnit {
-          name
-          imgUrl
-        }
-      }
-    }
-  `
 
   const {data, loading, error} = useQuery(GET_RESPONSES);
 

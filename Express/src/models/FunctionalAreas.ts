@@ -40,8 +40,5 @@ functionalAreaSchema.statics.get = async function (
   return functionalAreas.map((functionalArea) => functionalArea._doc);
 };
 
-const functionalAreaModel = model<IBaseWithName, IBaseWithNameModel>(
-  "FunctionalArea",
-  functionalAreaSchema
-);
+const functionalAreaModel = model<IBaseWithName, IBaseWithNameModel>("FunctionalArea", functionalAreaSchema, 'functionalAreas');
 export default functionalAreaModel;
