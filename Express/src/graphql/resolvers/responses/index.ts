@@ -13,12 +13,16 @@ export const responsesTypeDefs = `
     _id: ID!
     businessUnitId: ID!
     delegateIds: [ID!]!
-    lastRenewalDate: Date!
-    nextRenewalDate: Date!
+    lastRenewalDate: Date
+    nextRenewalDate: Date
     status: String!
     published: Boolean!
     complianceItemId: ID!
     complianceItem: ComplianceItem
+    businessUnit: BusinessUnits
+    functionalArea: BaseWithName
+    category: BaseWithName
+    regulatoryBody: BaseWithName
   }
 `;
 

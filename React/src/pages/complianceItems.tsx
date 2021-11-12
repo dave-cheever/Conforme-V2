@@ -38,7 +38,6 @@ const ComplianceItems = () => {
         published
         status
         complianceItem {
-          reference
           description
           name
           categoryId
@@ -48,6 +47,10 @@ const ComplianceItems = () => {
         }
         functionalArea {
           name
+        }
+        businessUnit {
+          name
+          imgUrl
         }
       }
     }

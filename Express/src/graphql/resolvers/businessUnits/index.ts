@@ -62,7 +62,7 @@ type BusinessUnits {
   type: String!
   region: String!
   identifiers:[BusinessUnitIdentifier!]
-  imgUrl: String!
+  imgUrl: String
   communications:[BusinessCommunications!]
   address: BusinessUnitAddress!
   ed: BusinessUnitPerson!

@@ -10,6 +10,32 @@ const responses = async (_, __, ___, info: any) => {
   try {
     const pipeline: any[] = [];
 
+    if (shouldJoin('complianceItem')) {
+      pipeline.push({
+        $lookup: {
+          from: 'complianceitems',
+          localField: 'complianceItemId',
+          foreignField: '_id',
+          as: 'complianceItem',
+        },
+      }, {
+        $unwind: '$complianceItem'
+      });
+    };
+
+    if (shouldJoin('businessUnit')) {
+      pipeline.push({
+        $lookup: {
+          from: 'businessunits',
+          localField: 'businessUnitId',
+          foreignField: '_id',
+          as: 'businessUnit',
+        },
+      }, {
+        $unwind: '$businessUnit'
+      });
+    };
+
     if (shouldJoin('category')) {
       pipeline.push({
         $lookup: {
@@ -35,6 +61,19 @@ const responses = async (_, __, ___, info: any) => {
         $unwind: '$functionalArea'
       });
     }
+
+    if (shouldJoin('regulatoryBody')) {
+      pipeline.push({
+        $lookup: {
+          from: 'regulatorybodies',
+          localField: 'complianceItem.regulatoryBodyId',
+          foreignField: '_id',
+          as: 'regulatoryBody',
+        },
+      }, {
+        $unwind: '$regulatoryBody'
+      });
+    }
     
     pipeline.push({
       $project: {
@@ -45,8 +84,10 @@ const responses = async (_, __, ___, info: any) => {
         status: 1,
         published: 1,
         complianceItem: 1,
-        "category.name": 1,
-        "functionalArea.name": 1
+        businessUnit: 1,
+        category: 1,
+        functionalArea: 1,
+        regulatoryBody: 1
       }
     });
     
