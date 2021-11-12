@@ -360,13 +360,14 @@ export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: str
   };
 };
 
+// This method is used to check if specified path exist in GraphQL query
+// It is used to know if specific field was selected to be returned
 export const doesPathExist = (nodes, path) => {
   if (!nodes) {
     return false;
   }
 
   const node = nodes.find(x => x.name.value === path[0]);
-
   if (!node) {
     return false;
   }
@@ -374,6 +375,48 @@ export const doesPathExist = (nodes, path) => {
   if (path.length === 1) {
     return true;
   }
-
   return doesPathExist(node.selectionSet.selections, path.slice(1));
+};
+
+// This method is used to build a MongoDB pipeline to join a collection item
+export const join = ({ pipeline, collection, from, to }: { pipeline, collection: string; from: string; to: string }) => {
+  pipeline.push({
+    $lookup: {
+      from: collection,
+      localField: from,
+      foreignField: '_id',
+      as: to,
+    },
+  }, {
+    $unwind: {
+      path: `$${to}`,
+      preserveNullAndEmptyArrays: true,
+    },
+  });
+};
+
+// 
+// This method is used to generate $project object for MongoDB aggregation
+// It selects only fields and objects selected in GraphQL query
+// It generates an object like
+// {
+//   _id: 1,
+//   name: 1
+// }
+//
+export const getProjectFields = (nodes: any, methodName: string) => {
+  const node = nodes.find(node => methodName === node.name.value);
+  const project = {};
+  const selections = node.selectionSet.selections;
+  for (const selection of selections) {
+    if (selection.name.value === '__typename') {
+      continue;
+    }
+    if (selection.selectionSet) {
+      project[selection.name.value] = getProjectFields([selection], selection.name.value);
+    } else {
+      project[selection.name.value] = 1;
+    }
+  }
+  return project;
 };

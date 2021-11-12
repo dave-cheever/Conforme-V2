@@ -10,10 +10,12 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize }) =
     if (!isPermitted({ user, action: "complianceItems.add" })) {
       throw new Error("User is not permitted");
     }
-
+    
+    const reference = await ComplianceItems.genReference();
     const newComplianceItem = {
       _id: uuidv4(),
       ...complianceItemInput,
+      reference,
       metatags: genMetatags("added", user._id),
     };
 

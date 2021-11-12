@@ -31,7 +31,7 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
     outdated: Boolean,
   }],
   published: Boolean,
-  ref: String,
+  reference: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -58,6 +58,16 @@ ComplianceItemSchema.statics.get = async function (selector: any = {}): Promise<
     "metatags.removedAt": { $eq: null },
   });
   return complianceItems.map((complianceItem) => complianceItem._doc);
+};
+
+ComplianceItemSchema.statics.genReference = async function (): Promise<string> {
+  let reference = "0000001";
+  const lastComplianceItem = await this.findOne({}).sort({ 'metatags.addedAt': -1 });
+  if (lastComplianceItem) {
+    const newReference = parseInt(lastComplianceItem.reference) + 1;
+    reference = ('000000' + newReference).slice(-7);
+  }
+  return reference;
 };
 
 ComplianceItemSchema.methods.syncResponses = async function ({

@@ -40,7 +40,6 @@ const GET_COMPLIANCE_ITEMS = gql`
         outdated
       }
       published
-      ref
       categoryId
       category {
         name
@@ -93,7 +92,6 @@ const ComplianceItemsAdmin = () => {
         outdated: question.outdated,
       })),
       published: complianceItem.published,
-      ref: complianceItem.ref,
     }, 5);
   };
 

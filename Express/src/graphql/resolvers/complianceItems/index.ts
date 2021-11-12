@@ -41,7 +41,7 @@ export const complianceItemsTypeDefs = `
     retentionPeriod: Int
     questions: [Question]
     published: Boolean
-    ref: String
+    reference: String
   }
 
   input QuestionInput {
@@ -66,7 +66,6 @@ export const complianceItemsTypeDefs = `
     retentionPeriod: Int
     questions: [QuestionInput]
     published: Boolean
-    ref: String
   }
 
   input ComplianceItemModifyInput {
@@ -83,7 +82,6 @@ export const complianceItemsTypeDefs = `
     retentionPeriod: Int
     questions: [QuestionInput]
     published: Boolean
-    ref: String
   }
 `;
 

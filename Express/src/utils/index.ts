@@ -22,6 +22,8 @@ import {
   getStatus,
   genMetatags,
   doesPathExist,
+  getProjectFields,
+  join,
 } from './helpers';
 
 import roles from './roles';
@@ -49,5 +51,7 @@ export {
   getStatus,
   genMetatags,
   doesPathExist,
-  roles
+  getProjectFields,
+  join,
+  roles,
 };

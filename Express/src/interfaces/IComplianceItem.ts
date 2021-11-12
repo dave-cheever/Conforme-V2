@@ -13,7 +13,7 @@ export interface IComplianceItem extends IBase {
   retentionPeriod?: number;
   questions?: IQuestion[];
   published: boolean;
-  ref?: string;
+  reference: string;
 }
 
 export interface IComplianceItemExtended extends IComplianceItem {
