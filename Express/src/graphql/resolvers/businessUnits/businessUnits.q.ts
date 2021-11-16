@@ -7,7 +7,6 @@ const businessUnits = async (_, __, ___, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
   try {
     let businessUnits = await BusinessUnits.get();
-
     if (shouldJoin("responsesCount")) {
       businessUnits = businessUnits.map((businessUnit) => {
         // TODO: fix me
@@ -15,7 +14,6 @@ const businessUnits = async (_, __, ___, info: GraphQLResolveInfo) => {
         return businessUnit;
       });
     }
-
     return businessUnits;
   } catch (err: any) {
     throw new Error(err);

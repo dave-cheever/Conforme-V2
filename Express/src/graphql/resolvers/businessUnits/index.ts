@@ -15,95 +15,44 @@ const businessUnitsResolvers = {
 };
 
 export const businessUnitsTypeDefs = `
-type BusinessUnitPerson {
-  firstName: String!
-  lastName: String!
-  email: String!
-  _id: String!
-}
-
-type BusinessUnitIdentifier {
-  system: String!
-  value: String!
-}
-
-type BusinessUnitAddress {
-  lineOne: String!
-  city: String!
-  county: String!
-  postcode: String!
-  country: String!
-}
-
-type BusinessCommunications {
-  type: String!
-  value: String!
-}
-
-input BusinessUnitPersonInput {
-  firstName: String
-  lastName: String
-  email: String
-  id: String!
-}
-
-input BusinessUnitAddressInput {
-  lineOne: String
-  city: String
-  county: String
-  postcode: String
-  country: String
-}
-
-type BusinessUnits {
+type BusinessUnit {
   _id: ID!
-  identifier: String!
+  identifier: String
   name: String!
   type: String!
   region: String!
-  identifiers:[BusinessUnitIdentifier!]
   imgUrl: String
-  communications:[BusinessCommunications!]
-  address: BusinessUnitAddress!
-  ed: BusinessUnitPerson!
-  rd: BusinessUnitPerson!
-  totalResponses: Int!
-  overdueResponses: Int!
+  ownerId: String!
+  owner: User!
+  responsesCount: Int
   metatags: Metatags!
 }
 
 input BusinessUnitInput {
   identifier: String
-  name: String
-  imgUrl: String
-  address: BusinessUnitAddressInput
-  ed: BusinessUnitPersonInput
-  rd: BusinessUnitPersonInput
-  totalResponses: Int
-  overdueResponses: Int
+  name: String!
+  type: String!
+  region: String!
+  ownerId: String!
 }
 
 input BusinessUnitModifyInput {
   _id: ID!
-  identifier: String
-  name: String
-  imgUrl: String
-  address: BusinessUnitAddressInput
-  ed: BusinessUnitPersonInput
-  rd: BusinessUnitPersonInput
-  totalResponses: Int
-  overdueResponses: Int
+  name: String!
+  type: String!
+  region: String!
+  ownerId: String!
 }
 `;
 
 export const businessUnitsQueryDefs = `
-  businessUnits: [BusinessUnits!]!
+  businessUnits: [BusinessUnit!]!
 `;
 
 export const businessUnitsMutationDefs = `
-  createBusinessUnit(businessUnitInput: BusinessUnitInput!): BusinessUnits!
-  updateBusinessUnit(businessUnitModifyInput: BusinessUnitModifyInput!): BusinessUnits!
-  deleteBusinessUnit(_id: String!): Boolean!
+  createBusinessUnit(businessUnitInput: BusinessUnitInput!): BusinessUnit!
+  updateBusinessUnit(businessUnitModifyInput: BusinessUnitModifyInput!): BusinessUnit!
+  deleteBusinessUnit(_id: String!): Boolean!  
 `;
 
 export default businessUnitsResolvers;

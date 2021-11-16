@@ -18,7 +18,7 @@ export const responsesTypeDefs = `
     status: String!
     complianceItemId: ID!
     complianceItem: ComplianceItem
-    businessUnit: BusinessUnits
+    businessUnit: BusinessUnit
   }
 `;
 

@@ -1,39 +1,14 @@
-import { IBase } from "app-interfaces";
-
-export interface IBusinessUnitAddress {
-  lineOne: string;
-  city: string;
-  county: string;
-  postcode: string;
-  country: string;
-}
-
-export interface IBusinessUnitPerson {
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  email: string;
-  id: string;
-}
-
-export interface IBusinessUnitIdentifier {
-  system: string;
-  value: string;
-}
+import { IBase, IUser } from "app-interfaces";
 
 export interface IBusinessUnit extends IBase {
   identifier: string;
   name: string;
   type: string;
   region: string;
-  identifiers?: IBusinessUnitIdentifier[];
+  ownerId: string;
   imgUrl?: string;
-  communications: {
-    type: string;
-    value: string;
-  }[],
-  address: IBusinessUnitAddress;
-  ed: IBusinessUnitPerson;
-  rd: IBusinessUnitPerson;
   responsesCount?: number;
+  
+  // Additional fields - can be added when getting from database
+  owner?: IUser;
 }

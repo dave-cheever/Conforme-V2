@@ -5,7 +5,7 @@ const deleteBusinessUnit = async (_, { _id }, { authorize }) => {
     try {
       const user = await authorize();
   
-      if (!isPermitted({ user, action: "businessUnit.delete", data: { _id } })) {
+      if (!isPermitted({ user, action: "businessUnits.delete", data: { _id } })) {
         throw new Error("User is not permitted");
       }
   
@@ -15,7 +15,7 @@ const deleteBusinessUnit = async (_, { _id }, { authorize }) => {
       }
   
       const deletedBusinessUnit = {
-        ...businessUnit,
+        ...businessUnit._doc,
         metatags: {
           ...businessUnit?.metatags,
           ...genMetatags("removed", user._id),

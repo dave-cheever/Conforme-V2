@@ -8,7 +8,7 @@ const createBusinessUnit = async (_, {businessUnitInput}, { authorize }) => {
     try {
       const user = await authorize();
   
-      if (!isPermitted({ user, action: "businessUnit.add" })) {
+      if (!isPermitted({ user, action: "businessUnits.add" })) {
         throw new Error("User is not permitted");
       }
   
