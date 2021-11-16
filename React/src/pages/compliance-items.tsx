@@ -46,7 +46,7 @@ const GET_RESPONSES = gql`
 
 const ComplianceItems = () => {
   const { user } = useAppContext();
-  const { filters } = useFiltersContext();
+  const { filtersValues, setUsedFilters } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
@@ -64,6 +64,10 @@ const ComplianceItems = () => {
     []
   );
 
+  useEffect(() => {
+    setUsedFilters(['itemStatus', 'complianceItems', 'regulatoryBody', 'category', 'functionalAreas', 'businessUnits', 'users', 'dueDate']);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Filter responses
   useEffect(() => {
     if (data?.responses?.length === 0 && !error) {
@@ -73,9 +77,9 @@ const ComplianceItems = () => {
 
     if (data && data?.responses?.length !== 0 && !error ){
       let items = [...data?.responses];
-      if (filters.itemStatus?.value && filters.itemStatus?.value?.length > 0) {
+      if (filtersValues.itemStatus?.value && filtersValues.itemStatus?.value?.length > 0) {
         let statusFilteredResults: IResponse[] = [];
-        for (const filter of filters.itemStatus?.value) {
+        for (const filter of filtersValues.itemStatus?.value) {
           if (['notStarted', 'inProgress', 'completed', 'comingUp', 'overdue'].includes(filter)) {
             statusFilteredResults.push(...items.filter(response => getRenewalStatus(response) === filter));
           } else if (['compliant', 'nonCompliant'].includes(filter)) {
@@ -88,7 +92,7 @@ const ComplianceItems = () => {
       }
       setFilteredResponses(items);
     }
-  }, [data?.responses, filters.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data?.responses, filtersValues.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const changeViewMode = useCallback((viewMode: "Grid" | "List" | "Group") => {
     setViewMode(viewMode);

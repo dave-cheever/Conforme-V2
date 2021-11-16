@@ -3,12 +3,12 @@ import { Box, Flex, Icon, Tooltip, Text } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
+import { format } from 'date-fns';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
 import { CalendarIcon } from '../../icons';
-import { format } from 'date-fns';
 
 interface IDatepicker extends IField {
   placeholder?: string;
@@ -78,7 +78,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
               }}
             >
               {disabled
-                ? <Text>{value ? format(value, 'D MMM YYYY') : ''}</Text>
+                ? <Text>{value ? format(value, 'd MMM yyyy') : ''}</Text>
                 : <Flatpickr
                   name={name}
                   onChange={e => onChange(e[0])}

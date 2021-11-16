@@ -5,8 +5,8 @@ import {
   Skeleton,
   Box,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
-import moment from 'moment';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import BusinessUnitsCarousel from '../BusinessUnitsCarousel';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
@@ -46,7 +46,7 @@ const Summary = () => {
 
   return (
     <Stack mt={2} spacing={4} direction={['column', 'row']} w='full'>
-      <BusinessUnitsCarousel selectedBusinessUnits={selectedBusinessUnits} businessUnits={businessUnits} />
+      <BusinessUnitsCarousel selectedBusinessUnits={selectedBusinessUnits} businessUnits={businessUnits as IBusinessUnit[]} />
       <Stack spacing={3} flexGrow={1} w={['full', 'calc(100% - 180px - 1rem)']}>
 
         <Stack >
@@ -76,7 +76,7 @@ const Summary = () => {
           </Stack>
           <Stack w='40%'>
             <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Due date (optional)</Text>
-            <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{complianceItem.dueDate && moment(complianceItem.dueDate).format('D MMM YYYY')}</Text>
+            <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')}</Text>
           </Stack>
         </Stack>
 

@@ -1,8 +1,31 @@
 import { Dispatch, SetStateAction } from "react";
 
+import { IBaseWithName } from "./IBaseWithName";
+import { IBusinessUnit } from "./IBusinessUnit";
+import { IComplianceItem } from "./IComplianceItem";
 import IFilters from "./IFilters";
 
 export interface IFiltersContext {
-  filters: IFilters;
-  setFilters: Dispatch<SetStateAction<IFilters>>,
+  filtersValues: IFilters;
+  setFiltersValues: Dispatch<SetStateAction<IFilters>>;
+
+  setFilters: (filters: object) => void;
+  cleanFilters: () => void;
+
+  usedFilters: string[];
+  setUsedFilters: Dispatch<SetStateAction<string[]>>;
+
+  showFiltersPanel: boolean;
+  setShowFiltersPanel: Dispatch<SetStateAction<boolean>>;
+  
+  openedFilterPanel: string | null;
+  setOpenedFilterPanel: Dispatch<SetStateAction<string | null>>;
+
+  numberOfSelectedFilters: number;
+
+  complianceItems: Partial<IComplianceItem>[];
+  categories: Partial<IBaseWithName>[];
+  regulatoryBodies: Partial<IBaseWithName>[];
+  functionalAreas: Partial<IBaseWithName>[];
+  businessUnits: Partial<IBusinessUnit>[];
 }

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
@@ -7,7 +6,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-
+import { format } from 'date-fns';
 
 import { IResponse } from '../../interfaces/IResponse';
 import useResponseUtils from '../../hooks/useResponseUtils';
@@ -102,7 +101,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
           </Box>
           <Box w='15%' ml={3}>
             <Box color='complianceList.fontColor' opacity='1' fontSize='14px'>
-              {response?.nextRenewalDate ? moment(response?.nextRenewalDate).format('D MMM YYYY') : <Flex fontStyle='italic'>No due date</Flex>}
+              {response?.nextRenewalDate ? format(new Date(response?.nextRenewalDate), 'd MMM yyyy') : <Flex fontStyle='italic'>No due date</Flex>}
             </Box>
           </Box>
           <Box w='20%'>

@@ -68,6 +68,10 @@ export const complianceItemsTypeDefs = `
     published: Boolean
   }
 
+  input ComplianceItemsQueryInput {
+    published: Boolean
+  }
+
   input ComplianceItemModifyInput {
     _id: ID!
     name: String
@@ -86,7 +90,7 @@ export const complianceItemsTypeDefs = `
 `;
 
 export const complianceItemsQueryDefs = `
-  complianceItems: [ComplianceItem!]!
+  complianceItems(complianceItemsQueryInput: ComplianceItemsQueryInput): [ComplianceItem!]!
 `;
 
 export const complianceItemsMutationDefs = `

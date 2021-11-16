@@ -1,4 +1,4 @@
-import { Categories, ComplianceItems } from "app-models";
+import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
 const deleteComplianceItem = async (_, { _id }, { authorize }) => {

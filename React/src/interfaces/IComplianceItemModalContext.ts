@@ -16,10 +16,10 @@ export interface IComplianceItemModalContext {
 
   complianceItem: Partial<IComplianceItem>;
 
-  categories: IBaseWithName[];
-  regulatoryBodies: IBaseWithName[];
-  functionalAreas: IBaseWithName[];
-  businessUnits: IBusinessUnit[];
+  categories: Partial<IBaseWithName>[];
+  regulatoryBodies: Partial<IBaseWithName>[];
+  functionalAreas: Partial<IBaseWithName>[];
+  businessUnits: Partial<IBusinessUnit>[];
 
   savingDialogDetails: IComplianceItemModalDialogDetails;
   setSavingDialogDetails: Dispatch<SetStateAction<IComplianceItemModalDialogDetails>>;

@@ -2,7 +2,9 @@ import { FunctionComponent } from "react";
 import { Flex, Text, Box } from "@chakra-ui/react";
 
 import { useHistory } from "react-router";
-import { ArrowRight } from "../icons";
+import { ArrowRight, Filter } from "../icons";
+import { useFiltersContext } from "../contexts/FiltersProvider";
+import FiltersPanel from "./Filters/FiltersPanel";
 
 interface IHeader {
   breadcrumbs: string[];
@@ -17,6 +19,11 @@ const Header: FunctionComponent<IHeader> = ({
   itemsCount,
 }) => {
   const history = useHistory();
+  const {
+    usedFilters,
+    showFiltersPanel, setShowFiltersPanel,
+    numberOfSelectedFilters,
+  } = useFiltersContext();
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex key={`bc-${i}`} align="center">
@@ -77,7 +84,35 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex w="full" justify="flex-end" mr="85px">
           {children}
         </Flex>
+        {usedFilters && usedFilters.length > 0 &&
+          <Flex
+            w='130px'
+            flexShrink={0}
+            h='36px'
+            mr={4}
+            mt={2}
+            borderTopRadius='lg'
+            borderBottomRadius={!showFiltersPanel ? 'lg' : ''}
+            bg={showFiltersPanel ? 'brand.primary' : '#424B50'}
+            lineHeight='36px'
+            cursor='pointer'
+            align='center'
+            justify='center'
+            fontSize='sm'
+            color='brand.primaryFont'
+            onClick={() => setShowFiltersPanel(!showFiltersPanel)}
+          >
+            <Filter opacity={showFiltersPanel ? 1 : 0.7} mr={1} />
+            <Flex opacity={showFiltersPanel ? 1 : 0.7}>Filters</Flex>
+            {numberOfSelectedFilters > 0 &&
+              <Box bg='brand.darkGrey' ml='2' align='center' w='20px' h='20px' lineHeight='20px' rounded='md' fontWeight='700'>
+                {numberOfSelectedFilters}
+              </Box>
+            }
+          </Flex>
+        }
       </Flex>
+      {usedFilters.length > 0 && <FiltersPanel />}
     </Box>
   );
 };

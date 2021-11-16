@@ -10,8 +10,8 @@ interface IDropdown extends IField {
   placeholder?: string;
   variant?: string;
   options?: {
-    label: string;
-    value: string;
+    label?: string;
+    value?: string;
   }[];
 }
 

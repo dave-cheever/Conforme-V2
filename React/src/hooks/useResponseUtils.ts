@@ -1,9 +1,32 @@
-import moment from 'moment';
 import { isInteger } from "lodash";
 
 import { IResponse } from '../interfaces/IResponse';
-import { getUTCDate } from "../utils/helpers";
 import { useAppContext } from '../contexts/AppProvider';
+import { addMonths, addYears, differenceInDays, startOfDay, subMonths, subYears } from "date-fns";
+
+export const responseStatuses = {
+  "completed": "Completed",
+  "notStarted": "Not started",
+  "inProgress": "In progress",
+  "comingUp": "Coming up",
+  "overdue": "Overdue",
+  "noDueDate": "No due date",
+  "all": "All",
+  "compliant": "Compliant",
+  "nonCompliant": "Non-compliant"
+};
+
+export const complianceItemFrequencies = [
+  "Monthly",
+  "Quarterly",
+  "6 months",
+  "Annual",
+  "2 years",
+  "3 years",
+  "5 years",
+  "Variable",
+  "Ad-hoc"
+];
 
 const useResponseUtils = () => {
   const { settings } = useAppContext();
@@ -47,7 +70,7 @@ const useResponseUtils = () => {
             return `Due in ${daysToDueDate} days`;
         }
       case 'completed':
-        const daysToNextRenewal = moment().startOf('day').diff(moment(response.nextRenewalDate).startOf('day'), 'days') * -1;
+        const daysToNextRenewal = differenceInDays(startOfDay(new Date()), startOfDay(response.nextRenewalDate ? new Date(response.nextRenewalDate) : new Date())) * -1;
         if (isInteger(daysToNextRenewal)) {
           return `Next due in ${daysToNextRenewal} days`;
         }
@@ -78,31 +101,30 @@ const useResponseUtils = () => {
 
   const getNextRenewalDate = (response: IResponse) => {
     const { complianceItem: { frequency }, nextRenewalDate } = response;
-    const nextRenewalDateUTC = getUTCDate(nextRenewalDate);
     let newNextRenewalDate;
     switch (frequency) {
       case "Monthly":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.add(1, 'month') : getUTCDate().add(1, 'month');
+        newNextRenewalDate = addMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
         break;
   
       case "Quarterly":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.add(3, 'months') : getUTCDate().add(3, 'months');
+        newNextRenewalDate = addMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 3);
         break;
   
       case "6 months":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.add(6, 'months') : getUTCDate().add(6, 'months');
+        newNextRenewalDate = addMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 6);
         break;
   
       case "Annual":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.add(1, 'year') : getUTCDate().add(1, 'year');
+        newNextRenewalDate = addYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
         break;
   
       case "2 years":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.add(2, 'years') : getUTCDate().add(2, 'years');
+        newNextRenewalDate = addYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 2);
         break;
   
       case "5 years":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.add(5, 'years') : getUTCDate().add(5, 'years');
+        newNextRenewalDate = addYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 5);
         break;
   
       default:
@@ -114,31 +136,30 @@ const useResponseUtils = () => {
 
   const getPrevRenewalDate = (response: IResponse) => {
     const { complianceItem: { frequency }, nextRenewalDate } = response;
-    const nextRenewalDateUTC = getUTCDate(nextRenewalDate);
     let newNextRenewalDate;
     switch (frequency) {
       case "Monthly":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.subtract(1, 'month') : getUTCDate().subtract(1, 'month');
+        newNextRenewalDate = subMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
         break;
   
       case "Quarterly":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.subtract(3, 'months') : getUTCDate().subtract(3, 'months');
+        newNextRenewalDate = subMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 3);
         break;
   
       case "6 months":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.subtract(6, 'months') : getUTCDate().subtract(6, 'months');
+        newNextRenewalDate = subMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 6);
         break;
   
       case "Annual":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.subtract(1, 'year') : getUTCDate().subtract(1, 'year');
+        newNextRenewalDate = subYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
         break;
   
       case "2 years":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.subtract(2, 'years') : getUTCDate().subtract(2, 'years');
+        newNextRenewalDate = subYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 2);
         break;
   
       case "5 years":
-        newNextRenewalDate = nextRenewalDate ? nextRenewalDateUTC.subtract(5, 'years') : getUTCDate().subtract(5, 'years');
+        newNextRenewalDate = subYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 5);
         break;
   
       default:

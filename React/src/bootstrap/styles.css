@@ -4,6 +4,7 @@
 .flatpickr-calendar {
   font-size: 14px;
   font-family: "Open Sans";
+  width: 100% !important;
 }
 .flatpickr-wrapper {
   width: 100%;
@@ -11,4 +12,8 @@
 .flatpickr-input + input {
   width: calc(100% - 16px);
   outline: none;
+}
+
+.flatpickr-input-hidden {
+  display: none;
 }

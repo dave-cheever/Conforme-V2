@@ -6,7 +6,7 @@ import {
 import ComplianceItemSquare from './ComplianceItemSquare';
 import { IResponse } from '../../interfaces/IResponse';
 import useResponseUtils from '../../hooks/useResponseUtils';
-import { responseStatuses } from '../../bootstrap/config';
+import { responseStatuses } from '../../hooks/useResponseUtils';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   const [ filteredResults, setFilteredResults ] = useState<any>({});

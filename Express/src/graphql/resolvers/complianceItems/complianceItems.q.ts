@@ -3,7 +3,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { ComplianceItems } from "app-models";
 import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
 
-const complianceItems = async (_, __, { authorize }, info: GraphQLResolveInfo) => {
+const complianceItems = async (_, { complianceItemsQueryInput }, { authorize }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["complianceItems", element]);
   try {
     const user = await authorize();
@@ -11,10 +11,11 @@ const complianceItems = async (_, __, { authorize }, info: GraphQLResolveInfo) =
     if (!isPermitted({ user, action: "complianceItems.view" })) {
       throw new Error("User is not permitted");
     }
-    
+
     const pipeline: any[] = [{
       $match: {
         "metatags.removedAt": { $eq: null },
+        ...complianceItemsQueryInput,
       },
     }];
     

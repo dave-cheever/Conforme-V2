@@ -32,6 +32,7 @@ import EllipsisIcon from "./EllipsisIcon";
 import ErrorSign from "./ErrorSign";
 import Eye from "./Eye";
 import FileRightIcon from "./FileRightIcon";
+import Filter from "./Filter";
 import GridIcon from "./GridIcon";
 import GroupIcon from "./GroupIcon";
 import HealthKitIcon from "./HealthKitIcon";
@@ -99,6 +100,7 @@ export {
   ErrorSign,
   Eye,
   FileRightIcon,
+  Filter,
   GridIcon,
   GroupIcon,
   HealthKitIcon,

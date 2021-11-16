@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import { Flex, Box, Tooltip, Icon, Text } from '@chakra-ui/react';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 import { IFieldComponent } from '../Field';
 import { CalendarIcon } from '../../icons';
@@ -88,7 +88,7 @@ const DatePicker = ({ name, label, showDot, tooltip, disabled, value, error, val
         }}
       >
         {disabled
-          ? <Text>{value ? moment(value).format('D MMM YYYY') : ' '}</Text>
+          ? <Text>{value ? format(new Date(value), 'd MMM yyyy') : ' '}</Text>
           : <Flatpickr
             name={name}
             onChange={e => onChange({ target: { name, value: e[0] } })}

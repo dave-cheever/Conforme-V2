@@ -7,7 +7,7 @@ import {
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import Dropdown from '../Forms/Dropdown';
 import Datepicker from '../Forms/Datepicker';
-import { complianceItemFrequencies } from '../../bootstrap/config';
+import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
 
 const DetailsForm = () => {
   const {

@@ -3,6 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 
 import BusinessUnitsSelector from '../BusinessUnitsSelector';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 
 const BusinessUnitsForm = () => {
   const {
@@ -23,7 +24,7 @@ const BusinessUnitsForm = () => {
           Please define the corresponding business unit(s) for this item.
         </Text>
         <BusinessUnitsSelector
-          businessUnits={businessUnits}
+          businessUnits={businessUnits as IBusinessUnit[]}
           selected={complianceItem.businessUnitsIds || []}
           note="Business unit owners of selected units will be assigned as responsible persons by default"
           handleChange={handleChange}

@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { Box, Flex, Image, Stack } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
-import moment from "moment";
+import { format } from "date-fns";
 
 import { Building, ChevronRight, ComingUpIcon, UploadedCross, UploadedTick } from "../../icons";
 import { IResponse } from "../../interfaces/IResponse";
-import { responseStatuses } from "../../bootstrap/config";
+import { responseStatuses } from "../../hooks/useResponseUtils";
 import BriefcaseIcon from "../BriefcaseIcon";
 import MissingQuestions from "../MissingQuestions";
 import useResponseUtils from "../../hooks/useResponseUtils";
@@ -143,7 +143,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
           textOverflow='ellipsis'
           whiteSpace='nowrap'
         >
-          {response?.nextRenewalDate ? moment(response?.nextRenewalDate).format('D MMM YYYY') : <Flex fontStyle='italic'>No due date</Flex>}
+          {response?.nextRenewalDate ? format(new Date(response?.nextRenewalDate), 'd MMM yyyy') : <Flex fontStyle='italic'>No due date</Flex>}
         </Box>
       </Box>
       <Stack
