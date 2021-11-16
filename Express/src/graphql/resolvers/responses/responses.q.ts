@@ -2,13 +2,22 @@ import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
 import { doesPathExist, getProjectFields, join } from "app-utils";
 
-const responses = async (_, __, ___, info: any) => {
+const responses = async (_, { responsesQueryInput }, ___, info: any) => {
+  
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
     'responses',
     ...elements,
   ]);
   try {
     const pipeline: any[] = [];
+
+    if(responsesQueryInput && responsesQueryInput._id) {
+      pipeline.push({
+        $match: {
+          _id: responsesQueryInput._id,
+        },
+      });
+    }
 
     if (shouldJoin(['complianceItem'])) {
       join({

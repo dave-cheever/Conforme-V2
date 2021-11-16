@@ -14,6 +14,7 @@ const graphSetup = async (organization: IOrganization) => {
     throw new Error('Wrong organization config');
   }
   const { clientId, tenantId, secret } = organization;
+  
   graph.setup({
     graph: {
       fetchClientFactory: () => new AdalFetchClient(tenantId || '', clientId || '', secret || ''),
@@ -114,28 +115,32 @@ const getBasicUser = async ({ userId, organization }: { userId: string, organiza
 //   }
 // };
 
-const getUsers = async ({ searchText, filterByJobTitle, organization }: { searchText: string, filterByJobTitle: string[], organization: IOrganization }) => {
-  await graphSetup(organization);
-  let res = await graph.users.filter(searchText ? `
-    startsWith(givenName,'${searchText}') or
-    startsWith(surname,'${searchText}') or
-    startsWith(displayName,'${searchText}') or
-    startsWith(userPrincipalName,'${searchText}') or
-    startsWith(mail,'${searchText}')
-  ` : '').get();
+const getUsers = async ({ searchText, filterByJobTitle, organization }: { searchText: string, filterByJobTitle?: string[], organization: IOrganization }) => {
+  try {
+    await graphSetup(organization);
+    let res = await graph.users.filter(searchText ? `
+      startsWith(givenName,'${searchText}') or
+      startsWith(surname,'${searchText}') or
+      startsWith(displayName,'${searchText}') or
+      startsWith(userPrincipalName,'${searchText}') or
+      startsWith(mail,'${searchText}')
+    ` : '').get();
 
-  if (filterByJobTitle && filterByJobTitle.length > 0) {
-    res = res.filter(el => el.jobTitle && filterByJobTitle.includes(el.jobTitle))
+    if (filterByJobTitle && filterByJobTitle.length > 0) {
+      res = res.filter(el => el.jobTitle && filterByJobTitle.includes(el.jobTitle))
+    }
+
+    return res.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle }) => ({
+      _id: id,
+      displayName,
+      firstName: givenName,
+      lastName: surname,
+      email: userPrincipalName,
+      jobTitle,
+    }));
+  } catch (error: any) {
+    throw new Error(error);
   }
-
-  return res.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle }) => ({
-    id,
-    displayName,
-    firstName: givenName,
-    lastName: surname,
-    email: userPrincipalName,
-    jobTitle,
-  }));
 };
 
 // const uploadDocuments = async (documents: Express.Multer.File[], responseId) => {

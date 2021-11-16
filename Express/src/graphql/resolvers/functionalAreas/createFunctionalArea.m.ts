@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { IBaseWithName } from "app-interfaces";
 import { FunctionalAreas } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 

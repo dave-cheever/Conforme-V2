@@ -34,5 +34,6 @@ export default {
     ...functionalAreasResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
+    ...responsesResolvers.Mutation
   },
 };

@@ -23,7 +23,7 @@ import { gql, useQuery } from "@apollo/client";
 
 const GET_RESPONSES = gql`
   query Responses {
-    responses {
+    responses(responsesQueryInput: null) {
       _id
       nextRenewalDate
       status

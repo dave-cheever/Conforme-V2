@@ -23,6 +23,7 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import PureLayout from "../layouts/PureLayout";
 import IRoute from "../interfaces/IRoute";
 import { useAppContext } from "../contexts/AppProvider";
+import ComplianceItemResponse from "../pages/complianceItemResponse";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -63,8 +64,13 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: ComplianceItems,
     layout: DefaultLayout,
-  },
-  {
+  },  {
+    path: '/complianceItem/:id',
+    key: 'complianceItem',
+    exact: true,
+    component: ComplianceItemResponse,
+    layout: DefaultLayout,
+  }, {
     path: "/licenses",
     key: "licences",
     exact: true,

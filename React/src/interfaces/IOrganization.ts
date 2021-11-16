@@ -7,4 +7,7 @@ export interface IOrganization extends IBase {
   logoUrl: string;
   theme: object;
   addons: object;
+  clientId: string;
+  tenantId: string;
+  secret:string;
 }

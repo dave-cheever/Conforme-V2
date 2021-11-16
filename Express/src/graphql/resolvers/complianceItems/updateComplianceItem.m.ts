@@ -1,10 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
-import { isEqual } from "date-fns";
-
-import { IComplianceItem, IResponse } from "app-interfaces";
-import { ComplianceItems, Responses } from "app-models";
+import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
-import complianceItemModel from "src/models/ComplianceItems";
 
 const updateComplianceItem = async (_, { complianceItemModifyInput }, { authorize }) => {
   try {

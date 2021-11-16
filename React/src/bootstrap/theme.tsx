@@ -550,6 +550,25 @@ const getTheme = (organizationTheme?: any) => {
           error: '#E53E3E',
         },
       },
+      response: {
+        leftNavigation: {
+          bg: "#424B50",
+          businessUnitBg: "#2B3236",
+          businessUnitImageBg: "#ffffff",
+          businessUnitImageFont: "#2B3236",
+          building: "#2B3236",
+          copy: "#FC5960",
+          avatar: "#FC5960",
+        },
+        expandButtonText: "#FC5960",
+        delegates: {
+          fontColor: "#2B3236",
+          avatar: "#2B3236",
+          button: "#2B3236",
+          addButton: "#1C8586",
+          inputFocusFont: "#2B3236"
+        }
+      },
 
       brand: {
         ...(organizationTheme?.colors?.brand || {}),

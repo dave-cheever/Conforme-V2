@@ -1,8 +1,10 @@
+import getGraphUsers from './getGraphUsers.q';
 import session from './session.q';
 
 const usersResolvers = {
   Query: {
     session,
+    getGraphUsers
   },
   Mutation: {
   },
@@ -27,10 +29,15 @@ export const usersTypeDefs = `
     user: User!
     sessionExpiration: Date!
   }
+
+  input UserQueryInput {
+    searchText: String
+  }
 `;
 
 export const usersQueryDefs = `
   session: Session!
+  getGraphUsers(userQueryInput: UserQueryInput): [User!]!
 `;
 
 export default usersResolvers;

@@ -42,6 +42,9 @@ const ORGANIZATION = gql`
       logoUrl
       theme
       licenceExpirationDate
+      clientId
+      tenantId
+      secret
     }
   }
 `;

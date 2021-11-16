@@ -21,8 +21,6 @@ const deleteComment = async (_, { _id }, { authorize }) => {
           ...genMetatags("removed", user._id),
         },
       };
-
-      console.log("deletedComment", deletedComment);
       
       await Comments.updateOne({ _id: comment._id }, deletedComment);
   

@@ -16,6 +16,9 @@ export const organizationsTypeDefs = `
     logoUrl: String!
     theme: Object!
     addons: Object
+    clientId: String
+    tenantId: String, 
+    secret: String
   }
 `;
 

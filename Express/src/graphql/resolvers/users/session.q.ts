@@ -1,7 +1,6 @@
-import { Users } from "app-models";
 import { add } from "date-fns";
 
-const session = async (_, __, { req, authorize }) => {
+const session = async (_, __, { authorize }) => {
   try {
     const user = await authorize();
     const sessionExpiration = add(new Date(), { minutes: Number(process.env.SESS_LIFETIME_IN_MINUTES || 15) });

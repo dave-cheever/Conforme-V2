@@ -7,7 +7,7 @@ import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutat
 import { functionalAreasQueryDefs, functionalAreasMutationDefs } from "./resolvers/functionalAreas";
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
-import { responsesTypeDefs, responsesQueryDefs } from "./resolvers/responses";
+import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
 import { settingsTypeDefs, settingsQueryDefs } from "./resolvers/settings";
 import { usersTypeDefs, usersQueryDefs } from "./resolvers/users";
 
@@ -63,6 +63,7 @@ const typeDefs = gql`
     ${complianceItemsMutationDefs}
     ${functionalAreasMutationDefs}
     ${regulatoryBodiesMutationDefs}
+    ${responsesMutationDefs}
   }
 `;
 

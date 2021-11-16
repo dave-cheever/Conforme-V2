@@ -25,6 +25,7 @@ import CircledTickBold from "./CircledTickBold";
 import CircleEmpty from './CircleEmpty';
 import CircleRemove from './CircleRemove';
 import ComingUpIcon from "./ComingUpIcon";
+import { Copy } from "./Copy";
 import Dashboard from "./Dashboard";
 import DetailIcon from "./DetailIcon";
 import EllipsisIcon from "./EllipsisIcon";
@@ -59,6 +60,7 @@ import RedDotIcon from "./RedDotIcon";
 import RequiredIcon from "./RequiredIcon";
 import RightArrowIcon from "./RightArrowIcon";
 import SearchIcon from "./SearchIcon";
+import { Share } from "./Share";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
 
@@ -90,6 +92,7 @@ export {
   CircleEmpty,
   CircleRemove,
   ComingUpIcon,
+  Copy,
   Dashboard,
   DetailIcon,
   EllipsisIcon,
@@ -124,6 +127,7 @@ export {
   RequiredIcon,
   RightArrowIcon,
   SearchIcon,
+  Share,
   UploadedCross,
   UploadedTick,
 };
