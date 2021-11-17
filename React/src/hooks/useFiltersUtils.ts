@@ -93,7 +93,8 @@ const useFiltersUtils = () => {
     categories,
     functionalAreas,
     regulatoryBodies,
-    businessUnits
+    businessUnits,
+    users,
   } = useFiltersContext();
 
   const getFilters = ({
@@ -176,10 +177,10 @@ const useFiltersUtils = () => {
         const value: any = filtersValues.action?.value;
         return actions[value[0]];
       }
-      // case 'users': {
-      //   const value: any = filtersValues.users?.value;
-      //   return users.find(f => f._id === value[0])?.firstName;
-      // }
+      case 'users': {
+        const value: any = filtersValues.users?.value;
+        return users.find(f => f._id === value[0])?.displayName;
+      }
     }
   };
 

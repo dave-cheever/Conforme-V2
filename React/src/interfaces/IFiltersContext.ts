@@ -4,6 +4,7 @@ import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IComplianceItem } from "./IComplianceItem";
 import IFilters from "./IFilters";
+import { IUser } from "./IUser";
 
 export interface IFiltersContext {
   filtersValues: IFilters;
@@ -28,4 +29,5 @@ export interface IFiltersContext {
   regulatoryBodies: Partial<IBaseWithName>[];
   functionalAreas: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];
+  users: Partial<IUser>[];
 }
