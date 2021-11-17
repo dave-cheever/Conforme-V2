@@ -1,10 +1,8 @@
-import { Users } from "app-models";
 import { GraphService } from "app-services";
-import { add } from "date-fns";
 
-const getGraphUsers = async (_, {userQueryInput}, { req, authorize }) => {
+const searchUsers = async (_, {searchQueryInput}, { req, authorize }) => {
   try {
-    const {searchText} = userQueryInput;
+    const {searchText} = searchQueryInput;
     const { organization } = req.session;
 
     const items = await GraphService.getUsers({searchText, organization});
@@ -15,4 +13,4 @@ const getGraphUsers = async (_, {userQueryInput}, { req, authorize }) => {
   }
 };
 
-export default getGraphUsers;
+export default searchUsers;

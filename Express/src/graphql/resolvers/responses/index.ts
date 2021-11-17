@@ -1,12 +1,16 @@
 import responses from './responses.q';
 import updateResponse from './updateResponse.m';
+import addDelegate from './addDelegate.m';
+import removeDelegate from './removeDelegate.m';
 
 const responsesResolvers = {
   Query: {
     responses
   },
   Mutation: {
-    updateResponse
+    updateResponse,
+    addDelegate,
+    removeDelegate
   },
 };
 
@@ -28,7 +32,12 @@ export const responsesTypeDefs = `
   }
 
   input ResponseModifyInput {
-    delegateIds: [ID!]
+    _id: String!
+  }
+
+  input ResponseDelegateModifyInput {
+    _id: String!
+    delegateId: ID!
   }
 `;
 
@@ -38,6 +47,8 @@ export const responsesQueryDefs = `
 
 export const responsesMutationDefs = `
   updateResponse(responseModifyInput: ResponseModifyInput!): Response!
+  addDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Response!
+  removeDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Boolean!
 `;
 
 export default responsesResolvers;

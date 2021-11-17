@@ -132,7 +132,6 @@ const BusinessUnits = () => {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
-        console.log(values);
         await updateFunction({ variables: { values } });
         toast({ ...toastSuccess, description: "Business Unit updated" });
         refetch();

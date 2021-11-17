@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import { responseStatuses } from '../../bootstrap/config';
+import { responseStatuses } from '../../hooks/useResponseUtils';
 
 const ResponseStatusBox = ({ status }) => {
   return (

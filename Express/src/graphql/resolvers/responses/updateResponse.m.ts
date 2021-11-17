@@ -2,9 +2,19 @@ import { Responses } from "app-models";
 
 const updateResponse = async (_, { responseModifyInput }, { authorize }) => {  
   try {
-    const response = await Responses.get({_id: "90292d33-383f-4639-8b00-b601d85596ab"});
+    const user = await authorize();
+
+    const {_id,} = responseModifyInput
+    const response = await Responses.getById(_id);
+
+    if (!response) {
+      throw new Error("Response doesn't exist");
+    }
+    let updatedResponse = {};
     
-    return response[0];
+    await Responses.updateOne({_id}, updatedResponse);
+    
+    return updatedResponse;
   } catch (error: any) {
     throw new Error(error);
   }

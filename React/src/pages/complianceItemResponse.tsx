@@ -34,9 +34,7 @@ const GET_RESPONSES = gql`
         businessUnit {
           name
           imgUrl
-          ed {
-            _id
-          }
+          ownerId
         }
       }
     }
@@ -45,8 +43,7 @@ const GET_RESPONSES = gql`
 
 const ComplianceItemResponse = () => {
   const { id }: {id: string} = useParams();
-  const {data, loading} = useQuery(GET_RESPONSES, {variables: {responsesQueryInput: {_id: id}}});
-
+  const {data, loading, refetch: refetchResponse} = useQuery(GET_RESPONSES, {variables: {responsesQueryInput: {_id: id}}});
   const response = useMemo(() => data?.responses[0], [data]);
   
   return (
@@ -60,7 +57,7 @@ const ComplianceItemResponse = () => {
         {response &&
           (
             <Flex w="full" direction='column' pb={['100px', '0px']} >
-              <ReasponseHeader response={response[0]}/>
+              <ReasponseHeader response={response}/>
               <Flex direction='column' h='full' overflow={['visible', 'auto']} mt='0' w={['full', 'calc(100% - 400px)']} fontSize='14px'>
                 <Flex
                   direction={['column', 'row']}
@@ -124,7 +121,7 @@ const ComplianceItemResponse = () => {
                       <DescriptionText response={response}/>
                     </Box>
                     <Box fontWeight='700' mt={12}>
-                      {response && <Delegates response={response} />}
+                      {response && <Delegates response={response} refetchResponse={refetchResponse} />}
                     </Box>
                   </Flex>
                   {/* <ResponseQuestions updateResponse={updateResponse} /> */}

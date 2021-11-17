@@ -93,6 +93,38 @@ const getBasicUser = async ({ userId, organization }: { userId: string, organiza
   };
 };
 
+const getBasicUsers = async ({usersIds, organization}: {usersIds: string[], organization: IOrganization}) => {
+  await graphSetup(organization);
+  if (usersIds.length === 0) {
+    return [];
+  }
+  // Graph API allows to search by maximum 15 child clauses using 'OR' operator
+  // so we need to divide usersIds array to chunks
+  const chunks = usersIds.reduce((acc, curr, i) => {
+    const chunkIndex = Math.floor(i / 15);
+    const chunk = [
+      ...(acc[chunkIndex] || []),
+      curr,
+    ];
+    const newAcc: string[][] = [...acc];
+    newAcc[chunkIndex] = chunk;
+    return newAcc;
+  }, [] as string[][]);
+
+  const users: any[] = [];
+  for (const chunk of chunks) {
+    const query = `id in (${chunk.map(id => `'${id}'`).join(', ')})`;
+    try {
+      const chunkUsers = await graph.users.filter(query).get();
+      users.push(...chunkUsers);
+    } catch (e: any) {
+      logger.error(e.message);
+      return [];
+    }
+  }
+  return users;
+};
+
 // const getFileDetails = async (id: string) => {
 //   const client = await getClient();
 //   const organization = await Organizations.findById(global.organizationId);
@@ -291,6 +323,7 @@ export default {
   getUsers,
   // uploadDocuments,
   getBasicUser,
+  getBasicUsers,
   addMemberToAccessGroup,
   // deleteDocument,
   // getFileDetails,
