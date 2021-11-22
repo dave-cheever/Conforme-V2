@@ -9,10 +9,10 @@ const RegulatoryBodyFilter = () => {
     setFilters,
     regulatoryBodies,
   } = useFiltersContext();
-  const value = useMemo(() => filtersValues.regulatoryBody?.value, [filtersValues]) as string[];
+  const value = useMemo(() => filtersValues.regulatoryBodiesIds?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup onChange={newValue => setFilters({ regulatoryBody: newValue })} value={value}>
+    <CheckboxGroup onChange={newValue => setFilters({ regulatoryBodiesIds: newValue })} value={value}>
       <Stack ml='4' direction="column" overflow='auto' h='calc(100vh - 230px)'>
         {regulatoryBodies.map(({ name, _id }) =>
           <Checkbox

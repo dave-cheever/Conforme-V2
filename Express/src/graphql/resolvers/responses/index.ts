@@ -29,6 +29,13 @@ export const responsesTypeDefs = `
 
   input ResponsesQueryInput {
     _id: String
+    complianceItemsIds: [String]
+    regulatoryBodiesIds: [String]
+    categoriesIds: [String]
+    functionalAreasIds: [String]
+    businessUnitsIds: [String]
+    usersIds: [String]
+    dueDate: [String]
   }
 
   input ResponseModifyInput {

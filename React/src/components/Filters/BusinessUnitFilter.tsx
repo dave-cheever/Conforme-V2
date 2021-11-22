@@ -11,10 +11,10 @@ const BusinessUnitFilter = () => {
     setFilters,
     businessUnits,
   } = useFiltersContext();
-  const value = useMemo(() => filtersValues.businessUnits?.value, [filtersValues]) as string[];
+  const value = useMemo(() => filtersValues.businessUnitsIds?.value, [filtersValues]) as string[];
 
   const handleChange = ({ target: { value } }) => {
-    setFilters( {businessUnits: value });
+    setFilters( {businessUnitsIds: value });
   };
 
   return (

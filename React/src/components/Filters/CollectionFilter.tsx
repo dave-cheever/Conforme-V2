@@ -9,10 +9,10 @@ const CollectionFilter = () => {
     filtersValues,
     setFilters,
   } = useFiltersContext();
-  const value = useMemo(() => filtersValues.category?.value, [filtersValues]) as string[];
+  const value = useMemo(() => filtersValues.collections?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup onChange={newValue => setFilters({ collection: newValue })} value={value}>
+    <CheckboxGroup onChange={newValue => setFilters({ collections: newValue })} value={value}>
       <Stack ml='4' direction="column">
         {Object.entries(collections).map(([key, label]) =>
           <Checkbox

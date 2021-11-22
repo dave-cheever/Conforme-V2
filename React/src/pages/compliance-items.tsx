@@ -22,8 +22,8 @@ import { useAppContext } from "../contexts/AppProvider";
 import { gql, useQuery } from "@apollo/client";
 
 const GET_RESPONSES = gql`
-  query Responses {
-    responses(responsesQueryInput: null) {
+  query Responses($responsesQueryInput: ResponsesQueryInput) {
+    responses(responsesQueryInput: $responsesQueryInput) {
       _id
       nextRenewalDate
       status
@@ -50,7 +50,7 @@ const ComplianceItems = () => {
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
-  const {data, loading, error} = useQuery(GET_RESPONSES);
+  const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
 
   const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(
     user?.role === "admin" ? "List" : "Grid"
@@ -65,17 +65,37 @@ const ComplianceItems = () => {
   );
 
   useEffect(() => {
-    setUsedFilters(['itemStatus', 'complianceItems', 'regulatoryBody', 'category', 'functionalAreas', 'businessUnits', 'users', 'dueDate']);
+    setUsedFilters(['itemStatus', 'complianceItemsIds', 'regulatoryBodiesIds', 'categoriesIds', 'functionalAreasIds', 'businessUnitsIds', 'usersIds', 'dueDate']);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Filter responses
+  // Filter responses (server side)
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, [key, value]) => {
+      if (key === 'itemStatus') {
+        // itemStatus is client side filter
+        return acc;
+      }
+      if (!value.value || (Array.isArray(value.value) && value.value.length === 0)) {
+        // Filter out empty filters
+        return acc;
+      }
+      return {
+        ...acc,
+        [key]: value.value,
+      };
+    }, {});
+    refetch({ responsesQueryInput: parsedFilters });
+  }, [filtersValues]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Filter responses by status (client side)
   useEffect(() => {
     if (data?.responses?.length === 0 && !error) {
       setFilteredResponses(data?.responses);
       return;
     }
 
-    if (data && data?.responses?.length !== 0 && !error ){
+    if (data && data?.responses?.length !== 0 && !error) {
       let items = [...data?.responses];
       if (filtersValues.itemStatus?.value && filtersValues.itemStatus?.value?.length > 0) {
         let statusFilteredResults: IResponse[] = [];
@@ -177,7 +197,7 @@ const ComplianceItems = () => {
             {viewMode === "List" && <ComplianceItemsList responses={filteredResponses} />}
             {viewMode === "Group" && <ComplianceItemsGroup responses={filteredResponses} />}
           </>
-        } 
+        }
       </Flex>
     </>
   );

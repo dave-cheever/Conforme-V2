@@ -1,9 +1,10 @@
 import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
 import { doesPathExist, getProjectFields, join } from "app-utils";
+import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek } from "date-fns";
 
 const responses = async (_, { responsesQueryInput }, ___, info: any) => {
-  
+
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
     'responses',
     ...elements,
@@ -11,7 +12,8 @@ const responses = async (_, { responsesQueryInput }, ___, info: any) => {
   try {
     const pipeline: any[] = [];
 
-    if(responsesQueryInput && responsesQueryInput._id) {
+    // Filter by response id
+    if (responsesQueryInput?._id) {
       pipeline.push({
         $match: {
           _id: responsesQueryInput._id,
@@ -19,15 +21,153 @@ const responses = async (_, { responsesQueryInput }, ___, info: any) => {
       });
     }
 
-    if (shouldJoin(['complianceItem'])) {
+    // Filter by compliance item id
+    if (responsesQueryInput?.complianceItemsIds) {
+      pipeline.push({
+        $match: {
+          complianceItemId: { $in: responsesQueryInput.complianceItemsIds },
+        },
+      });
+    }
+
+    // Filter by business unit id
+    if (responsesQueryInput?.businessUnitsIds) {
+      pipeline.push({
+        $match: {
+          businessUnitId: { $in: responsesQueryInput.businessUnitsIds },
+        },
+      });
+    }
+
+    // Filter by due date
+    if (responsesQueryInput?.dueDate) {
+      const [filter, startDate, endDate] = responsesQueryInput?.dueDate;
+      let $match;
+      switch (filter) {
+        case 'noDueDate':
+          $match = {
+            nextRenewalDate: {
+              $eq: null,
+            },
+          };
+          break;
+        case 'thisWeek':
+          $match = {
+            $and: [{
+              nextRenewalDate: {
+                $gte: startOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
+              }
+            }, {
+              nextRenewalDate: {
+                $lte: endOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
+              }
+            }],
+          };
+          break;
+        case 'thisMonth':
+          $match = {
+            $and: [{
+              nextRenewalDate: {
+                $gte: startOfMonth(new Date()).valueOf(),
+              }
+            }, {
+              nextRenewalDate: {
+                $lte: endOfMonth(new Date()).valueOf(),
+              }
+            }],
+          };
+          break;
+        case 'nextMonth':
+          $match = {
+            $and: [{
+              nextRenewalDate: {
+                $gte: startOfMonth(addMonths(new Date(), 1)).valueOf(),
+              }
+            }, {
+              nextRenewalDate: {
+                $lte: endOfMonth(addMonths(new Date(), 1)).valueOf(),
+              }
+            }],
+          };
+          break;
+        case 'exactDate':
+          $match = {
+            $and: [{
+              nextRenewalDate: {
+                $gte: startOfDay(new Date(startDate)).valueOf(),
+              }
+            }, {
+              nextRenewalDate: {
+                $lte: endOfDay(new Date(startDate)).valueOf(),
+              }
+            }],
+          };
+          break;
+        case 'dateRange':
+          if (startDate && endDate) {
+            $match = {
+              $and: [{
+                nextRenewalDate: {
+                  $gte: startOfDay(new Date(startDate)).valueOf(),
+                }
+              }, {
+                nextRenewalDate: {
+                  $lte: endOfDay(new Date(endDate)).valueOf(),
+                }
+              }],
+            };
+          }
+          break;
+      }
+      if ($match) {
+        pipeline.push({ $match });
+      }
+    }
+
+    // Join compliance item
+    if (
+      // Need to get Compliance Item if there are any dependant filters
+      responsesQueryInput?.categoriesIds ||
+      responsesQueryInput?.regulatoryBodiesIds ||
+      responsesQueryInput?.functionalAreasIds ||
+      shouldJoin(['complianceItem'])
+    ) {
       join({
         pipeline,
         collection: 'complianceItems',
         from: 'complianceItemId',
         to: 'complianceItem',
       });
-    };
+    }
 
+    // Filter by category id (in compliance item)
+    if (responsesQueryInput?.categoriesIds) {
+      pipeline.push({
+        $match: {
+          'complianceItem.categoryId': { $in: responsesQueryInput.categoriesIds },
+        },
+      });
+    }
+
+    // Filter by regulatory body id (in compliance item)
+    if (responsesQueryInput?.regulatoryBodiesIds) {
+      pipeline.push({
+        $match: {
+          'complianceItem.regulatoryBodyId': { $in: responsesQueryInput.regulatoryBodiesIds },
+        },
+      });
+    }
+
+    // Filter by functional area id (in compliance item)
+    if (responsesQueryInput?.functionalAreasIds) {
+      pipeline.push({
+        $match: {
+          'complianceItem.functionalAreaId': { $in: responsesQueryInput.functionalAreasIds },
+        },
+      });
+    }
+
+    // Join category
     if (shouldJoin(['complianceItem', 'category'])) {
       join({
         pipeline,
@@ -35,8 +175,9 @@ const responses = async (_, { responsesQueryInput }, ___, info: any) => {
         from: 'complianceItem.categoryId',
         to: 'complianceItem.category',
       });
-    };
+    }
 
+    // Join functional area
     if (shouldJoin(['complianceItem', 'functionalArea'])) {
       join({
         pipeline,
@@ -46,6 +187,7 @@ const responses = async (_, { responsesQueryInput }, ___, info: any) => {
       });
     }
 
+    // Join regulatory body
     if (shouldJoin(['complianceItem', 'regulatoryBody'])) {
       join({
         pipeline,
@@ -55,6 +197,7 @@ const responses = async (_, { responsesQueryInput }, ___, info: any) => {
       });
     }
 
+    // Join business unit
     if (shouldJoin(['businessUnit'])) {
       join({
         pipeline,
@@ -62,7 +205,21 @@ const responses = async (_, { responsesQueryInput }, ___, info: any) => {
         from: 'businessUnitId',
         to: 'businessUnit',
       });
-    };
+    }
+
+    // Filter by user id (in business unit)
+    // It looks at business unit owner and response delegates
+    if (responsesQueryInput?.usersIds) {
+      pipeline.push({
+        $match: {
+          $or: [{
+            'businessUnit.ownerId': { $in: responsesQueryInput.usersIds },
+          }, {
+            delegateIds: { $in: responsesQueryInput.usersIds },
+          }],
+        },
+      });
+    }
 
     pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
 

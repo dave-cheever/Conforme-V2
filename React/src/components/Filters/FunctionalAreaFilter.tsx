@@ -9,10 +9,10 @@ const FunctionalAreaFilter = () => {
     setFilters,
     functionalAreas,
   } = useFiltersContext();
-  const value = useMemo(() => filtersValues.functionalAreas?.value, [filtersValues]) as string[];
+  const value = useMemo(() => filtersValues.functionalAreasIds?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup onChange={newValue => setFilters({ functionalAreas: newValue })} value={value}>
+    <CheckboxGroup onChange={newValue => setFilters({ functionalAreasIds: newValue })} value={value}>
       <Stack ml='4' direction="column" overflow='auto' h='calc(100vh - 230px)' >
         {functionalAreas.map(({ name, _id }) =>
           <Checkbox

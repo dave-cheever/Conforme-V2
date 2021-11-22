@@ -9,10 +9,10 @@ const UserFilter = () => {
     setFilters,
     users,
   } = useFiltersContext();
-  const value = useMemo(() => filtersValues.users?.value, [filtersValues]) as string[];
+  const value = useMemo(() => filtersValues.usersIds?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup onChange={newValue => setFilters({ users: newValue })} value={value}>
+    <CheckboxGroup onChange={newValue => setFilters({ usersIds: newValue })} value={value}>
       <Stack overflow='auto' h='calc(100vh - 230px)' pl='4' pb={2} direction="column" w='full'>
         {users.map(({ _id, displayName, imgUrl }) =>
           <Checkbox

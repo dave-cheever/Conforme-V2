@@ -4,19 +4,19 @@ import IFilter from "../interfaces/IFilter";
 import IFilters from "../interfaces/IFilters";
 
 export const initialFilters: IFilters = {
-  complianceItems: {
+  complianceItemsIds: {
     name: 'Compliance item(s)',
     value: [],
   },
-  category: {
+  categoriesIds: {
     name: 'Category',
     value: [],
   },
-  functionalAreas: {
+  functionalAreasIds: {
     name: 'Functional area(s)',
     value: [],
   },
-  businessUnits: {
+  businessUnitsIds: {
     name: 'Business unit(s)',
     value: [],
   },
@@ -24,7 +24,7 @@ export const initialFilters: IFilters = {
     name: 'Item status',
     value: [],
   },
-  regulatoryBody: {
+  regulatoryBodiesIds: {
     name: 'Regulatory body',
     value: [],
   },
@@ -36,7 +36,7 @@ export const initialFilters: IFilters = {
     name: 'Verified',
     value: null,
   },
-  collection: {
+  collections: {
     name: 'Data type',
     value: []
   },
@@ -44,7 +44,7 @@ export const initialFilters: IFilters = {
     name: 'Action',
     value: []
   },
-  users: {
+  usersIds: {
     name: 'Users',
     value: [],
   },
@@ -130,37 +130,37 @@ const useFiltersUtils = () => {
   // Looks up friendly filter name for display
   const getFirstValue = (filterKey: string) => {
     switch (filterKey) {
-      case 'complianceItems': {
-        const value: any = filtersValues.complianceItems?.value;
+      case 'complianceItemsIds': {
+        const value: any = filtersValues.complianceItemsIds?.value;
         return complianceItems.find(f => f._id === value[0])?.name;
       }
-      case 'category': {
-        const value: any = filtersValues.category?.value;
+      case 'categoriesIds': {
+        const value: any = filtersValues.categoriesIds?.value;
         return categories.find(f => f._id === value[0])?.name;
       }
-      case 'functionalAreas': {
-        const value: any = filtersValues.functionalAreas?.value;
+      case 'functionalAreasIds': {
+        const value: any = filtersValues.functionalAreasIds?.value;
         return functionalAreas.find(f => f._id === value[0])?.name;
       }
-      case 'businessUnits': {
-        const value: any = filtersValues.businessUnits?.value;
+      case 'businessUnitsIds': {
+        const value: any = filtersValues.businessUnitsIds?.value;
         return businessUnits.find(f => f._id === value[0])?.name;
       }
       case 'itemStatus': {
         const value: any = filtersValues.itemStatus?.value;
         return complianceItemStatuses[value[0]];
       }
-      case 'regulatoryBody': {
-        const value: any = filtersValues.regulatoryBody?.value;
+      case 'regulatoryBodiesIds': {
+        const value: any = filtersValues.regulatoryBodiesIds?.value;
         return regulatoryBodies.find(f => f._id === value[0])?.name;
       }
       case 'dueDate': {
         const [value, startDate, endDate] = filtersValues.dueDate?.value || [];
         switch (value) {
           case 'exactDate':
-            return format(startDate ? new Date(startDate) : new Date(), 'Do MMM YY').toString();
+            return format(startDate ? new Date(startDate) : new Date(), 'd MMM yy').toString();
           case 'dateRange':
-            return `${format(startDate ? new Date(startDate) : new Date(), 'Do MMM YY').toString()} - ${format(endDate ? new Date(endDate) : new Date(), 'Do MMM YY').toString()}`;
+            return `${format(startDate ? new Date(startDate) : new Date(), 'd MMM yy').toString()} - ${format(endDate ? new Date(endDate) : new Date(), 'd MMM yy').toString()}`;
           default:
             return dates[value];
         }
@@ -169,16 +169,16 @@ const useFiltersUtils = () => {
         const value: any = filtersValues.isVerified?.value;
         return value === '1' ? 'Yes' : 'No';
       }
-      case 'collection': {
-        const value: any = filtersValues.collection?.value;
+      case 'collections': {
+        const value: any = filtersValues.collections?.value;
         return collections[value[0]];
       }
       case 'action': {
         const value: any = filtersValues.action?.value;
         return actions[value[0]];
       }
-      case 'users': {
-        const value: any = filtersValues.users?.value;
+      case 'usersIds': {
+        const value: any = filtersValues.usersIds?.value;
         return users.find(f => f._id === value[0])?.displayName;
       }
     }

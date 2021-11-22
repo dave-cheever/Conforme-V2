@@ -67,17 +67,17 @@ const FiltersPanel = () => {
           </Flex>
           {
             {
-              complianceItems: <ComplianceItemFilter />,
-              category: <CategoryFilter />,
-              functionalAreas: <FunctionalAreaFilter />,
-              businessUnits: <BusinessUnitFilter />,
+              complianceItemsIds: <ComplianceItemFilter />,
+              categoriesIds: <CategoryFilter />,
+              functionalAreasIds: <FunctionalAreaFilter />,
+              businessUnitsIds: <BusinessUnitFilter />,
               itemStatus: <ItemStatusFilter />,
-              regulatoryBody: <RegulatoryBodyFilter />,
+              regulatoryBodiesIds: <RegulatoryBodyFilter />,
               dueDate: <DueDateFilter />,
               isVerified: <IsVerifiedFilter />,
-              collection: <CollectionFilter />,
+              collections: <CollectionFilter />,
               action: <ActionFilter />,
-              users: <UserFilter />,
+              usersIds: <UserFilter />,
             }[openedFilterPanel]
           }
         </>}

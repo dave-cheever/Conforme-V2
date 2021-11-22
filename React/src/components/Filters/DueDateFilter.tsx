@@ -25,7 +25,7 @@ const DueDateFilter = () => {
             options={{
               inline: true,
             }}
-            onChange={(e: any) => setFilters({ dueDate: ['exactDate', e] })}
+            onChange={(e: any) => setFilters({ dueDate: ['exactDate', e[0]] })}
             value={startDate ? new Date(startDate) : new Date()}
           />
         }
@@ -37,8 +37,12 @@ const DueDateFilter = () => {
               inline: true,
               mode: 'range',
             }}
-            onChange={(e: any) => setFilters({ dueDate: ['dateRange', e[0], e[1]] })}
-            value={[startDate ? new Date(startDate) : new Date(), endDate ? new Date(endDate) : new Date()]}
+            onChange={(e: any) => {
+              if (e.length === 2) {
+                setFilters({ dueDate: ['dateRange', e[0], e[1]] })
+              }
+            }}
+            value={startDate ? (endDate ? [new Date(startDate), new Date(endDate)] : new Date(startDate)) : new Date()}
           />
         }
       </Stack>

@@ -5,16 +5,16 @@ interface IFilterString extends IFilter {
 }
 
 export default interface IFilters {
-  complianceItems?: IFilter,
-  category?: IFilter,
-  functionalAreas?: IFilter,
-  businessUnits?: IFilter,
+  complianceItemsIds?: IFilter,
+  categoriesIds?: IFilter,
+  functionalAreasIds?: IFilter,
+  businessUnitsIds?: IFilter,
   itemStatus?: IFilterString,
-  regulatoryBody?: IFilter,
+  regulatoryBodiesIds?: IFilter,
   dueDate?: IFilterString,
   isVerified?: IFilter | null,
-  userRole?: IFilter,
-  collection?: IFilter,
+  usersRoles?: IFilter,
+  collections?: IFilter,
   action?: IFilter,
-  users?: IFilterString,
+  usersIds?: IFilterString,
 };

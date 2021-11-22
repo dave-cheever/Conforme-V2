@@ -10,7 +10,7 @@ const ComplianceItemFilter = () => {
     setFilters,
     complianceItems,
   } = useFiltersContext();
-  const value = useMemo(() => filtersValues.complianceItems?.value, [filtersValues]) as string[];
+  const value = useMemo(() => filtersValues.complianceItemsIds?.value, [filtersValues]) as string[];
   const [search, setSearch] = useState<string>('');
 
   const isSelected = useCallback((_id: string) => value.includes(_id), [value]);
@@ -25,7 +25,7 @@ const ComplianceItemFilter = () => {
   }, [complianceItems, search, isSelected]);
 
   return (
-    <CheckboxGroup onChange={newValue => setFilters({ complianceItems: newValue })} value={value}>
+    <CheckboxGroup onChange={newValue => setFilters({ complianceItemsIds: newValue })} value={value}>
       <Stack m='4' direction="column" overflow='auto' h='calc(100vh - 230px)'>
         <InputGroup>
           <Input
