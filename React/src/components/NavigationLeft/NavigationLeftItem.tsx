@@ -1,137 +1,106 @@
-import { Text, Box, Spacer, Icon, Flex, Avatar } from "@chakra-ui/react";
+import {  useState } from "react";
+import { Box, Icon, Flex } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-import { INavItem } from "../../interfaces/INavItem";
 import SubSection from "./SubSection";
+import NavigationLeftFilters from "./NavigationLeftFilters";
 
-const NavigationLeftItem = ({
-  icon,
-  label,
-  url,
-  isActive,
-  type,
-  subSections,
-}: INavItem) => {
+const NavigationLeftItem = ({menuItem}) => {
+  const [menuOpen, setMenuOpen] = useState(true);
   const history = useHistory();
+  const filtersCount = {compliant: 0, nonCompliant: 2, comingUp: 2}
+  const { url, icon, label } = menuItem;
 
   return (
-    <Flex>
-      {isActive === true && (
-        <Flex
-          w="10px"
-          h="38px"
-          mt="-10px"
-          pos="absolute"
-          left="0"
-          bg="navigationLeft.menuList.activeIndicator"
-          borderRightRadius="4px"
-        />
-      )}
-
-      <Flex flexDir="column">
-        <Box
-          pos="relative"
-          display="flex"
-          flexDirection="row"
-          alignContent="center"
-          ml="-26px"
-          onClick={() => {
-            if (
-              subSections &&
-              url &&
-              !history.location.pathname.includes(url)
-            ) {
-              history.push(subSections[0].url);
-            } else if (
-              (url && !history.location.pathname.includes(url)) ||
-              url === "/"
-            ) {
-              history.push(url);
-            }
-          }}
-          cursor="pointer"
-        >
-          <Icon
-            as={icon}
-            width="22px"
-            height="22px"
-            left="25px"
-            top="10px"
-            mb="28px"
-            mr="22px"
-            ml="26px"
-            stroke={
-              isActive
-                ? "navigationLeft.menuList.selectedMenuItem"
-                : "navigationLeft.menuList.unselectedMenuItem"
-            }
-          />
-          {type === "mentions" && (
-            <Flex
-              justifyContent="center"
-              bg="navigationLeft.mentionBackground"
-              rounded="50%"
-              pos="absolute"
+    <>
+      <Box
+        display="flex"
+        h="42px"
+        mt="5px"
+        alignItems="center"
+        fontSize="md"
+        fontWeight="normal"
+        _hover={{
+          cursor: "pointer"
+        }}
+        w={["240px", "70px", "240px"]}
+        onClick={() => {
+          setMenuOpen(!menuOpen);
+          if (menuItem.subSections) {
+            history.push(menuItem.subSections[0].url);
+          } else {
+            history.push(url);
+          }
+        }}
+      >
+        <Flex h="100%" align="center">
+          <Flex 
+            bg={
+              menuItem.subSections
+                ? history.location.pathname.includes(url)
+                  ? "navigationLeftItem.selectedLabelBg"
+                  : "navigationLeftItem.unselectedLabelBg"
+                : history.location.pathname === url
+                  ? "navigationLeftItem.selectedLabelBg"
+                  : "navigationLeftItem.unselectedLabelBg"
+            } w="30px" h="30px" ml="25px" rounded="8px" alignItems="center" justifyContent="center">
+            <Icon
+              as={icon}
               w="15px"
               h="15px"
-              left={10}
-              top={-2}
-            >
-              <Text fontSize="11px" fontWeight="bold">
-                2
-              </Text>
-            </Flex>
-          )}
-          <Text
-            fontSize="16px"
-            lineHeight="19px"
-            mt="2px"
-            color={
-              isActive
-                ? "navigationLeft.menuList.selectedMenuItem"
-                : "navigationLeft.menuList.unselectedMenuItem"
-            }
-          >
-            {label}
-          </Text>
-          {type === "mentions" && (
-            <Flex ml='10px' width="74px" justifyContent="space-between">
-              <Avatar
-                name="Mention1"
-                src="https://i.ibb.co/V2RtVyN/Ellipse-3.png"
-                h="22px"
-                w="22px"
-              />
-              <Avatar
-                name="Mention2"
-                src="https://i.ibb.co/WtJM5B5/Ellipse-2.png"
-                h="22px"
-                w="22px"
-              />
-              <Avatar
-                name="Mention2"
-                src="https://i.ibb.co/8NrPHLD/Ellipse-1.png"
-                h="22px"
-                w="22px"
-              />
-            </Flex>
-          )}
-          <Spacer />
-        </Box>
-        {subSections && url && history.location.pathname.includes(url) && (
-          <Flex flexDir="column">
-            {subSections.map((section) => (
-              <SubSection
-                key={section.label}
-                url={section.url}
-                label={section.label}
-              />
-            ))}
+              stroke={
+                menuItem.subSections
+                  ? history.location.pathname.includes(url)
+                    ? "navigationLeftItem.selectedIconStroke"
+                    : "navigationLeftItem.unselectedIconStroke"
+                  : history.location.pathname === url
+                    ? "navigationLeftItem.selectedIconStroke"
+                    : "navigationLeftItem.unselectedIconStroke"
+              }
+            />
           </Flex>
-        )}
-      </Flex>
-    </Flex>
-  );
+        </Flex>
+        <Box
+          ml="5"
+          fontWeight="400"
+          display={["block", "none", "block"]}
+          color={
+            menuItem.subSections
+              ? history.location.pathname.includes(url)
+                ? "navigationLeftItem.selectedMenuItem"
+                : "navigationLeftItem.unselectedMenuItem"
+              : history.location.pathname === url
+                ? "navigationLeftItem.selectedMenuItem"
+                : "navigationLeftItem.unselectedMenuItem"
+          }
+        >
+          {label}
+        </Box>
+      </Box>
+      <Box display={["block", "none", "block"]}>
+        {history.location.pathname.includes(url) &&
+          menuItem.subSections?.map((subSection) => {
+            return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen}/>;
+          })}
+        {history.location.pathname === "/" && history.location.pathname === url && <>
+          {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} />}
+          {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} />)}
+        </>
+        }
+      </Box>
+    </>
+  )
 };
 
 export default NavigationLeftItem;
+
+export const navigationLeftItemStyles = {
+  navigationLeftItem: {
+    selectedMenuItem: "#1F1F1F",
+    unselectedMenuItem: "#818197",
+    selectedLabelBg: "#462AC4",
+    unselectedLabelBg: "#ffffff",
+    selectedIconStroke: "#ffffff",
+    unselectedIconStroke: "#818197",
+  }
+}

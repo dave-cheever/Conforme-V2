@@ -10,4 +10,5 @@ export interface INavItem {
   url?: string;
   isActive?: boolean;
   subSections?: ISubSection[] | undefined;
+  permission: string;
 }

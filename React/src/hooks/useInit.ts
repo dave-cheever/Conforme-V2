@@ -11,7 +11,7 @@ declare global {
       normal: string[];
       restricted: object;
     };
-    systemAdmin: {
+    admin: {
       normal: string[];
       restricted: object;
     };

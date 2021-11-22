@@ -1,13 +1,7 @@
 import {
-  Dashboard,
-  Accidents,
-  Assets,
-  Audits,
-  Licenses,
-  Mentions,
-  Policies,
-  Actions,
-  Admin
+  Admin,
+  Home,
+  Insights
 } from "../icons";
 import { INavItem } from "../interfaces/INavItem";
 
@@ -30,57 +24,23 @@ export const toastFailed: any = {
 export const menuItems: INavItem[] = [
   {
     type: "menuItem",
-    label: "Dashboard",
-    url: "/",
-    icon: Dashboard,
-  },
-  {
-    type: "menuItem",
-    label: "Audits",
-    url: "/audits",
-    icon: Audits,
-  },
-  {
-    type: "menuItem",
     label: "Compliance items",
-    url: "/compliance-items",
-    icon: Audits,
-  },
-  {
+    url: "/",
+    icon: Home,
+    permission: "home.view"
+  }, {
     type: "menuItem",
-    label: "Licenses",
-    url: "/licenses",
-    icon: Licenses,
-  },
-  {
-    type: "menuItem",
-    label: "Assets",
-    url: "/assets",
-    icon: Assets,
-  },
-  {
-    type: "menuItem",
-    label: "Actions",
-    url: "/actions",
-    icon: Actions,
-  },
-  {
-    type: "menuItem",
-    label: "Accident Investigation",
-    url: "/accidents",
-    icon: Accidents,
-  },
-  {
-    type: "menuItem",
-    label: "Policies",
-    url: "/policies",
-    icon: Policies,
+    label: "Insights",
+    url: "/insights",
+    icon: Insights,
+    permission: "insights.view"
   },
   {
     type: "menuItem",
     label: "Admin",
     url: "/admin",
     icon: Admin,
+    permission: "adminPanel.view",
     subSections: [
       { label: "Compliance items", url: "/admin/compliance-items" },
       { label: "Regulatory bodies", url: "/admin/regulatory-bodies" },
@@ -92,16 +52,6 @@ export const menuItems: INavItem[] = [
       { label: "Other settings", url: "/admin/settings" },
     ]
   },
-  {
-    type: "seperator",
-    label: "CHAT",
-  },
-  {
-    type: "mentions",
-    label: "Mentions",
-    url: "/mentions",
-    icon: Mentions,
-  }
 ];
 
 export const chartColors = [

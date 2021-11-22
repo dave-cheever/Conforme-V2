@@ -25,6 +25,7 @@ import CircledTickBold from "./CircledTickBold";
 import CircleEmpty from './CircleEmpty';
 import CircleRemove from './CircleRemove';
 import ComingUpIcon from "./ComingUpIcon";
+import { Conforme } from "./Conforme";
 import { Copy } from "./Copy";
 import Dashboard from "./Dashboard";
 import DetailIcon from "./DetailIcon";
@@ -36,6 +37,8 @@ import Filter from "./Filter";
 import GridIcon from "./GridIcon";
 import GroupIcon from "./GroupIcon";
 import HealthKitIcon from "./HealthKitIcon";
+import Home from "./Home";
+import Insights from "./Insights";
 import InvestigationIcon from "./InvestigationIcon";
 import InvestigationWhiteIcon from "./InvestigationWhiteIcon";
 import Licenses from "./Licenses";
@@ -94,6 +97,7 @@ export {
   CircleRemove,
   ComingUpIcon,
   Copy,
+  Conforme,
   Dashboard,
   DetailIcon,
   EllipsisIcon,
@@ -104,6 +108,8 @@ export {
   GridIcon,
   GroupIcon,
   HealthKitIcon,
+  Home,
+  Insights,
   InvestigationIcon,
   InvestigationWhiteIcon,
   Licenses,

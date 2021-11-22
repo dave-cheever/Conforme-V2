@@ -3,7 +3,7 @@ export interface IRoles {
     normal: string[];
     restricted: object;
   };
-  systemAdmin: {
+  admin: {
     normal: string[];
     restricted: object;
   };

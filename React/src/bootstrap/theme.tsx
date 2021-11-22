@@ -1,4 +1,8 @@
 import { theme } from "@chakra-ui/react";
+import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
+import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
+import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
+import { subSectionStyles } from "../components/NavigationLeft/SubSection";
 // http://chir.ag/projects/name-that-color - Get color names
 
 const getTheme = (organizationTheme?: any) => {
@@ -38,20 +42,15 @@ const getTheme = (organizationTheme?: any) => {
     },
     colors: {
       ...theme.colors,
+      ...navigationLeftStyles,
+      ...navigationLeftItemStyles,
+      ...navigationLeftFiltersStyles,
+      ...subSectionStyles,
 
       navigationTop: {
         bg: "#313233",
         addButton: "#A2171E",
         avatarBg: "#A2171E",
-      },
-      navigationLeft: {
-        bg: "#1F1F1F",
-        menuList: {
-          activeIndicator: "#A2171E",
-          unselectedMenuItem: "#9A9EA1",
-          selectedMenuItem: "#FFFFFF",
-        },
-        mentionBackground: "#A2171E",
       },
       auditModal: {
         title: {

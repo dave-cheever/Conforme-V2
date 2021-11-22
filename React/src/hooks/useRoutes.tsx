@@ -1,6 +1,5 @@
 import { Redirect } from "react-router-dom";
 
-import Home from "../pages/home";
 import Login from "../pages/login";
 import Can from "../components/can";
 import Audits from "../pages/audits";
@@ -24,6 +23,7 @@ import PureLayout from "../layouts/PureLayout";
 import IRoute from "../interfaces/IRoute";
 import { useAppContext } from "../contexts/AppProvider";
 import ComplianceItemResponse from "../pages/complianceItemResponse";
+import Insights from "../pages/insights";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -45,13 +45,6 @@ const openRoutes: Array<IRoute> = [
 // Routes visible for signed in, that accepted the Terms and Conditions
 const protectedRoutes: Array<IRoute> = [
   {
-    path: "/",
-    key: "home",
-    exact: true,
-    component: Home,
-    layout: DefaultLayout,
-  },
-  {
     path: "/audits",
     key: "audits",
     exact: true,
@@ -59,16 +52,22 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
-    path: "/compliance-items",
-    key: "compliance-items",
+    path: "/",
+    key: "home",
     exact: true,
     component: ComplianceItems,
     layout: DefaultLayout,
-  },  {
+  }, {
     path: '/complianceItem/:id',
     key: 'complianceItem',
     exact: true,
     component: ComplianceItemResponse,
+    layout: DefaultLayout,
+  }, {
+    path: '/insights',
+    key: 'insights',
+    exact: true,
+    component: Insights,
     layout: DefaultLayout,
   }, {
     path: "/licenses",

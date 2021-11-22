@@ -8,7 +8,6 @@ const ItemStatusFilter = () => {
   const {
     filtersValues,
     setFilters,
-    
   } = useFiltersContext();
   const value = useMemo(() => filtersValues.itemStatus?.value, [filtersValues]) as string[];
 

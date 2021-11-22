@@ -78,6 +78,7 @@ const roles = {
       "regulatoryBodies",
       "settings",
       "users",
+      "adminPanel" //permission to see admin items in menu
     ],
   },
 };

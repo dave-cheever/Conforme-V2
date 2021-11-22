@@ -1,74 +1,68 @@
-import { useEffect, useState } from "react";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { Box, Flex, Text, Icon } from "@chakra-ui/react";
 
-import NavigationLeftItem from "./NavigationLeftItem";
 import { menuItems } from "../../bootstrap/config";
-import NavigationLeftSeperator from "./NavigationLeftSeperator";
-import { useAppContext } from "../../contexts/AppProvider";
+import Can from "../can";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
+import NavigationLeftItem from "./NavigationLeftItem";
+import { Conforme } from "../../icons";
 
 const NavigationLeft = () => {
-  const { organizationConfig } = useAppContext();
   const history = useHistory();
-  const [activeMenu, setActiveMenu] = useState("/");
+  const {
+    cleanFilters
+  } = useFiltersContext();
 
-  useEffect(() => {
-    menuItems.map((menuItem) => {
-      if (menuItem.url && history.location.pathname.includes(menuItem.url)) {
-        setActiveMenu(menuItem.url);
-      }
-      return null;
-    });
-  });
+  useEffect(() => {    
+    if (!(history.location.pathname === '/' || history.location.pathname.includes('/items'))) {
+      cleanFilters();
+    }
+    // eslint-disable-next-line 
+  }, [history.location.pathname]);
 
   return (
-    <Flex
-      w="240px"
-      p="20px 0"
-      bg="navigationLeft.bg"
-      color="white"
-      direction="column"
-    >
-      <Box display="flex" h="80px" cursor="pointer">
-        <Image
-          ignoreFallback
-          src={organizationConfig?.logoUrl}
-          h="42px"
-          position="absolute"
-          top="17px"
-          left="17px"
-        />
-        <Text
-          fontWeight="bold"
-          fontSize="14px"
-          lineHeight="132.1%"
-          position="absolute"
-          top="30px"
-          left="78px"
+    <>
+      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={["70px", "70px", "240px"]} display={["none", "block"]}>
+        <Box
+          display="flex"
+          alignItems="center"
+          h="80px"
+          onClick={() => history.push('/')}
+          cursor="pointer"
         >
-          {organizationConfig?.name}
-        </Text>
-      </Box>
-
-      <Box ml="26px">
-        {menuItems.map((menuItem) => {
-          if (menuItem.type === "seperator") {
-            return (
-              <NavigationLeftSeperator {...menuItem} key={menuItem.label} />
-            );
-          } else {
-            return (
-              <NavigationLeftItem
-                {...menuItem}
-                isActive={activeMenu === menuItem.url}
-                key={menuItem.label}
+          <Text
+            w="80px"
+            ml="25px"
+            fontWeight="700"
+            fontSize="16px"
+            color="navigationLeft.organizationNameFontColor"
+          >
+            Gloratio
+          </Text>
+        </Box>
+        <Flex direction="column" justify="space-between" h="calc(100% - 80px)">
+          <Box>
+            {menuItems.map((menuItem: any, i) => (
+              <Can
+                key={`menu${i}`}
+                action={menuItem.permission}
+                yes={() => <NavigationLeftItem menuItem={menuItem} />}
               />
-            );
-          }
-        })}
+            ))}
+          </Box>
+        <Icon as={Conforme} w="103px" h="35px" ml="25px" mb="20px" />
+        </Flex>
       </Box>
-    </Flex>
+    </>
   );
 };
 
 export default NavigationLeft;
+
+export const navigationLeftStyles = {
+  navigationLeft: {
+    bg: "#E5E5E5",
+    organizationNameFontColor: "#282F36"
+  }
+}
