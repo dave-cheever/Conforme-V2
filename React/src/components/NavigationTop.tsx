@@ -4,36 +4,23 @@ import {
   Stack,
   Image,
   Text,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Avatar,
+  IconButton
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
 import { QuestionMarkIcon } from "../icons";
 import { useAppContext } from "../contexts/AppProvider";
 import { useAdminContext } from "../contexts/AdminProvider";
+import UserMenu from "./UserMenu";
 
 const NavigationTop = () => {
   const {
     organizationConfig,
-    user, setUser,
   } = useAppContext();
   const {
     setAdminModalState,
   } = useAdminContext();
   const history = useHistory();
-
-  const logout = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
-      credentials: 'include',
-      mode: 'no-cors',
-    });
-    setUser(null);
-  };
 
   const pageRedirect = (page: string) => {
     history.push(page);
@@ -106,49 +93,18 @@ const NavigationTop = () => {
           w="22px"
           onClick={() => pageRedirect("/help")}
         />
-        <Menu>
-          <MenuButton
-            display="flex"
-            alignItems="center"
-            py={1}
-            ml="1"
-            mr={["0", "6"]}
-            color="white"
-            w="50px"
-          >
-            <Avatar
-              color="#FFFFFF"
-              bg="navigationTop.avatarBg"
-              rounded="full"
-              name={user?.displayName}
-              size="sm"
-              src=""
-              mx={3}
-            />
-          </MenuButton>
-          <MenuList w="200px">
-            <Text p="5px 12px" w="full" textOverflow="ellipsis" noOfLines={1}>
-              {user?.displayName}
-            </Text>
-            <Text
-              p="5px 12px"
-              color="grey"
-              w="full"
-              textOverflow="ellipsis"
-              noOfLines={1}
-            >
-              {user?.jobTitle}
-            </Text>
-            <MenuItem
-              onClick={() => logout()}
-            >
-              Sign out
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        <UserMenu/>
       </Flex>
     </Flex>
   );
 };
 
 export default NavigationTop;
+
+
+export const navigationTopStyles = {
+  navigationTop: {
+    bg: "#E5E5E5",
+    addButton: "#462AC4"
+  }
+}

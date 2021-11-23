@@ -54,6 +54,26 @@ export const menuItems: INavItem[] = [
   },
 ];
 
+
+export const userMenus = [
+  {
+    label: "Terms and Conditions",
+    url: "/terms-and-conditions"
+  },
+  {
+    label: "Privacy Policy",
+    url: "/privacy-policy"
+  },
+  {
+    label: "Help",
+    url: "/help"
+  },
+  {
+    label: "Settings",
+    url: "/admin/settings"
+  }
+]
+
 export const chartColors = [
   '#336699',
   '#99CCFF',

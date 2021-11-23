@@ -3,6 +3,8 @@ import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLef
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
 import { subSectionStyles } from "../components/NavigationLeft/SubSection";
+import { navigationTopStyles } from "../components/NavigationTop";
+import { userMenuStyles } from "../components/UserMenu";
 // http://chir.ag/projects/name-that-color - Get color names
 
 const getTheme = (organizationTheme?: any) => {
@@ -46,12 +48,8 @@ const getTheme = (organizationTheme?: any) => {
       ...navigationLeftItemStyles,
       ...navigationLeftFiltersStyles,
       ...subSectionStyles,
-
-      navigationTop: {
-        bg: "#313233",
-        addButton: "#A2171E",
-        avatarBg: "#A2171E",
-      },
+      ...navigationTopStyles,
+      ...userMenuStyles,
       auditModal: {
         title: {
           text: "#434B4F",
