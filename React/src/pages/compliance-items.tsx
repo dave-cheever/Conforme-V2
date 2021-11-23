@@ -57,9 +57,9 @@ const ComplianceItems = () => {
   );
   const viewIcon = useMemo(
     () => ({
-      Grid: <GridIcon />,
-      List: <ListIcon />,
-      Group: <GroupIcon />,
+      Grid: <GridIcon boxSize="18px"/>,
+      List: <ListIcon boxSize="18px"/>,
+      Group: <GroupIcon boxSize="18px" />,
     }),
     []
   );
@@ -121,18 +121,17 @@ const ComplianceItems = () => {
 
   return (
     <>
-      <Header breadcrumbs={["Compliance items"]} itemsCount={6}>
+      <Header breadcrumbs={["Compliance items", "All"]}>
         <Menu autoSelect={false}>
           {
             // @ts-ignore: Issue inside ChakraUI
             <MenuButton
               as={Button}
               rounded="lg"
-              w="115px"
-              h="36px"
+              h="40px"
               mt={2}
               ml={["15px", "0"]}
-              bg="complianceItems.header.menuButton"
+              bg="complianceItems.header.menuButtonBg"
               fontWeight="700"
               fontSize="14px"
               _active={{}}
@@ -147,9 +146,8 @@ const ComplianceItems = () => {
                 />
               }
             >
-              <Flex align="center" color="white">
+              <Flex align="center" mr="1">
                 {viewIcon[viewMode]}
-                <Flex ml={2}>{viewMode}</Flex>
               </Flex>
             </MenuButton>
           }
@@ -157,7 +155,7 @@ const ComplianceItems = () => {
             <MenuItem
               fontSize="14px"
               _focus={{ color: "complianceItems.header.menuItemFocus" }}
-              color={viewMode === "Grid" ? "complianceItems.header.menuItemFont" : "#9A9EA1"}
+              color={viewMode === "Grid" ? "complianceItems.header.menuItemFontSelected" : "complianceItems.header.menuItemFont"}
               onClick={() => changeViewMode("Grid")}
             >
               <GridIcon mr={3} />
@@ -166,7 +164,7 @@ const ComplianceItems = () => {
             <MenuItem
               fontSize="14px"
               _focus={{ color: "complianceItems.header.menuItemFocus" }}
-              color={viewMode === "List" ? "complianceItems.header.menuItemFont" : "#9A9EA1"}
+              color={viewMode === "List" ? "complianceItems.header.menuItemFontSelected" : "complianceItems.header.menuItemFont"}
               onClick={() => changeViewMode("List")}
             >
               <ListIcon mr={3} />
@@ -175,7 +173,7 @@ const ComplianceItems = () => {
             <MenuItem
               fontSize="14px"
               _focus={{ color: "complianceItems.header.menuItemFocus" }}
-              color={viewMode === "Group" ? "complianceItems.header.menuItemFont" : "#9A9EA1"}
+              color={viewMode === "Group" ? "complianceItems.header.menuItemFontSelected" : "complianceItems.header.menuItemFont"}
               onClick={() => changeViewMode("Group")}
             >
               <GroupIcon mr={3} />
@@ -204,3 +202,15 @@ const ComplianceItems = () => {
 };
 
 export default ComplianceItems;
+
+export const complianceItemStyles = {
+  complianceItems: {
+    header: {
+      menuButtonBg: "white",
+      rightIcon: "#9A9EA1",
+      menuItemFocus: "#462AC4",
+      menuItemFontSelected: "#462AC4", 
+      menuItemFont:"#9A9EA1"
+    },
+  },
+}

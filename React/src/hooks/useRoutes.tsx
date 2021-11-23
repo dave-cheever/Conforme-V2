@@ -24,6 +24,7 @@ import IRoute from "../interfaces/IRoute";
 import { useAppContext } from "../contexts/AppProvider";
 import ComplianceItemResponse from "../pages/complianceItemResponse";
 import Insights from "../pages/insights";
+import Help from "../pages/help";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -165,6 +166,13 @@ const protectedRoutes: Array<IRoute> = [
     key: "settings",
     exact: true,
     component: Settings,
+    layout: DefaultLayout,
+  },
+  {
+    path: '/help',
+    key: "help",
+    exact: true,
+    component: Help,
     layout: DefaultLayout,
   },
   {

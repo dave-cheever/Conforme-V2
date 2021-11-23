@@ -5,6 +5,8 @@ import { navigationLeftItemStyles } from "../components/NavigationLeft/Navigatio
 import { subSectionStyles } from "../components/NavigationLeft/SubSection";
 import { navigationTopStyles } from "../components/NavigationTop";
 import { userMenuStyles } from "../components/UserMenu";
+import { headerStyles } from "../components/Header";
+import { complianceItemStyles } from "../pages/compliance-items";
 // http://chir.ag/projects/name-that-color - Get color names
 
 const getTheme = (organizationTheme?: any) => {
@@ -50,6 +52,8 @@ const getTheme = (organizationTheme?: any) => {
       ...subSectionStyles,
       ...navigationTopStyles,
       ...userMenuStyles,
+      ...headerStyles,
+      ...complianceItemStyles,
       auditModal: {
         title: {
           text: "#434B4F",
@@ -175,12 +179,6 @@ const getTheme = (organizationTheme?: any) => {
         ribbon: "#F69942",
         text: "#313233",
       },
-      header: {
-        bg: "#2B3236",
-        breadcrumbPrimary: "#FFFFFF",
-        breadcrumbSecondary: "#888A8D",
-        countFontColor: "#424B50",
-      },
       settings: {
         header: {
           bg: "#2B3236",
@@ -208,14 +206,6 @@ const getTheme = (organizationTheme?: any) => {
       },
       loader: {
         color: "#A2171E",
-      },
-      complianceItems: {
-        header: {
-          menuButton: "#424B50",
-          rightIcon: "#9A9EA1",
-          menuItemFocus: "#FC5960",
-          menuItemFont: "#424B50",
-        },
       },
       adminTableRow: {
         bg: '#FFFFFF',

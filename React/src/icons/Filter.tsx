@@ -1,9 +1,14 @@
 import { createIcon } from "@chakra-ui/icon";
 
 const Filter = createIcon({
-  viewBox: '0 0 16 15',
+  viewBox: '0 0 12 18',
   path: (
-    <path d="M15 1H1L6.6 7.83222V12.5556L9.4 14V7.83222L15 1Z" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+    <g>
+    <path d="M0.5 17L0.499999 1" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    <path d="M4.15381 15.2962L4.15381 2.70382" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"/>
+    <path d="M11.4612 11.3324L11.4612 6.66754" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    <path d="M7.80737 13.5916L7.80737 4.40836" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    </g>
   )
 });
 
