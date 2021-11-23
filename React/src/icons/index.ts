@@ -67,6 +67,7 @@ import SearchIcon from "./SearchIcon";
 import { Share } from "./Share";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
+import ArrowDownIcon from "./ArrowDown";
 
 export {
   Accidents,
@@ -138,4 +139,5 @@ export {
   Share,
   UploadedCross,
   UploadedTick,
+  ArrowDownIcon
 };
