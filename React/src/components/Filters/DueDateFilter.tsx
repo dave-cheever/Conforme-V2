@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Stack, RadioGroup, Radio } from '@chakra-ui/react';
+import { Stack, Box, Checkbox, Text } from '@chakra-ui/react';
 // import Calendar from 'react-calendar';
 import Flatpickr from 'react-flatpickr';
 
@@ -14,11 +14,45 @@ const DueDateFilter = () => {
   const value = useMemo(() => filtersValues.dueDate?.value, [filtersValues]);
   const [filterValue, startDate, endDate] = value || [];
 
-  return (
-    <RadioGroup ml='4' mb='4' onChange={newValue => setFilters({ dueDate: [newValue] })} value={filterValue}>
-      <Stack direction='column' overflow='auto' h='calc(100vh - 230px)'>
-        {Object.entries(dates).map(([key, label]) => <Radio key={key} value={key}>{label}</Radio>)}
+  const onChange = (e, key) => {
+    if(e.target.checked){
+      setFilters({ dueDate: [key] });
+    } else{
+      setFilters({ dueDate: []});
+    }
+  }
 
+  return (
+    <Box>
+      <Stack direction='column'>
+        {Object.entries(dates).map(([key, label]) => 
+            <Checkbox
+            css={{
+                ".chakra-checkbox__control": {
+                borderRadius: "50%",
+                width: "20px",
+                height: "20px",
+                background:"white",
+                borderWidth:"1px",
+                borderColor: "#81819750",
+                "&[data-checked]": {
+                    background: "#462AC4",
+                    borderColor: "#462AC4",
+                "&[data-hover]": {
+                    background: "#462AC4",
+                    borderColor: "#462AC4"
+                    }
+                }
+            }
+            }}
+            key={key}
+            onChange={(e) => onChange(e, key)}
+            isChecked={value?.includes(key)}
+            >
+            <Text fontSize="14px" color="filterPanel.checkboxLabelColor">{label}</Text>
+        </Checkbox>
+        )}
+      </Stack>
         {filterValue === 'exactDate' &&
           <Flatpickr
             className='flatpickr-input-hidden'
@@ -45,8 +79,7 @@ const DueDateFilter = () => {
             value={startDate ? (endDate ? [new Date(startDate), new Date(endDate)] : new Date(startDate)) : new Date()}
           />
         }
-      </Stack>
-    </RadioGroup>
+    </Box>
   )
 };
 

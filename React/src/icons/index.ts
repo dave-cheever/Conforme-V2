@@ -68,7 +68,11 @@ import SearchIcon from "./SearchIcon";
 import { Share } from "./Share";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
-import ArrowDownIcon from "./ArrowDown";
+import ArrowUpIcon from "./ArrowUpIcon";
+import ArrowDownIcon from "./ArrowDownIcon";
+import ResetIcon from "./Reset";
+import TickIcon from "./TickIcon";
+import ConformeSmall from "./ConformeSmall";
 
 export {
   Accidents,
@@ -85,6 +89,8 @@ export {
   AuditIcon,
   Audits,
   AuditWhiteIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
   Bar,
   Bin,
   BlankPage,
@@ -101,6 +107,7 @@ export {
   ComingUpIcon,
   Copy,
   Conforme,
+  ConformeSmall,
   Dashboard,
   DetailIcon,
   EllipsisIcon,
@@ -136,10 +143,11 @@ export {
   QuestionToggleIcon,
   RedDotIcon,
   RequiredIcon,
+  ResetIcon,
   RightArrowIcon,
   SearchIcon,
   Share,
+  TickIcon,
   UploadedCross,
-  UploadedTick,
-  ArrowDownIcon
+  UploadedTick
 };

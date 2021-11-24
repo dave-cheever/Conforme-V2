@@ -1,61 +1,97 @@
-import { CloseIcon } from "@chakra-ui/icons";
-import { Flex, Box, Wrap, WrapItem } from "@chakra-ui/layout";
+import { useMemo } from "react";
+import { Flex, Text, useDisclosure, Box } from "@chakra-ui/react";
 
 import { useFiltersContext } from "../../contexts/FiltersProvider";
-import useFiltersUtils, { initialFilters } from "../../hooks/useFiltersUtils";
-import { ChevronRight } from "../../icons";
+import {ArrowUpIcon,ArrowDownIcon,ResetIcon} from '../../icons';
 import IFilter from "../../interfaces/IFilter";
+import BusinessUnitFilter from "./BusinessUnitFilter";
+import CategoryFilter from "./CategoryFilter";
+import ComplianceItemFilter from "./ComplianceItemFilter";
+import DueDateFilter from "./DueDateFilter";
+import FunctionalAreaFilter from "./FunctionalAreaFilter";
+import ItemStatusFilter from "./ItemStatusFilter";
+import RegulatoryBodyFilter from "./RegulatoryBodyFilter";
+import UserFilter from "./UserFilter";
 
 const FiltersPanelItem = ({ name, filter }: { name: string, filter: IFilter }) => {
+  const {isOpen,onToggle} = useDisclosure();
   const {
     setFilters,
-    setOpenedFilterPanel,
+    filtersValues
   } = useFiltersContext();
-  const {
-    getFirstValue,
-  } = useFiltersUtils();
-  const filtersLength = Array.isArray(filter.value) ? filter.value.length : filter.value ? 1 : 0;
+
+  const filtersLength = useMemo(() => {
+    return filtersValues[name]?.value?.length || 0;
+  },[filtersValues, name]);
+
+  const renderPanel = () => {
+    switch (name) {
+      case "itemStatus":
+        return <ItemStatusFilter/>;
+    
+      case "businessUnitsIds":
+        return <BusinessUnitFilter/>;
+
+      case "categoriesIds":
+        return <CategoryFilter/>;
+
+      case "complianceItemsIds":
+        return <ComplianceItemFilter/>;
+
+      case "dueDate":
+        return <DueDateFilter/>;
+
+      case "functionalAreasIds":
+        return <FunctionalAreaFilter/>;
+
+      case "regulatoryBodiesIds":
+        return <RegulatoryBodyFilter/>;
+
+      case "usersIds":
+        return <UserFilter/>;
+
+      default:
+        break;
+    }
+  }
+
+  const resetFilter = () => {
+    let updatedFiltersValue = {...filtersValues};
+    updatedFiltersValue[name].value = [];
+
+    setFilters({filters: updatedFiltersValue});
+  }
 
   return (
     <Flex
       key={name}
-      cursor='pointer'
-      justify='space-between'
-      align='center'
-      h='70px' px='4'
-      borderBottomWidth='1px'
-      borderBottomColor='brand.divider'
-      onClick={() => setOpenedFilterPanel(name)}
+      justify="center"
+      p='3'
+      w="full"
+      bg="filtersPanelItem.bg"
+      borderRadius="10px"
+      my={2}
+      flexDir="column"
     >
-      <Box color='#2B3236' fontWeight='700'>
-        <Box color='#9A9EA1' fontWeight='400' fontSize='14px'>{filter.name}</Box>
-        <Wrap>
-          {filtersLength > 0 ?
-            <WrapItem>{getFirstValue(name)}</WrapItem> :
-            <WrapItem>All</WrapItem>
-          }
-        </Wrap>
-      </Box>
-      <Flex align='center'>
-        {filtersLength > 1 && <Flex alignItems='center' h='22px' px='5px' rounded='md' mr='3' bg='#9A9EA1' color='#FFFFFF' fontSize='11px'>+{filtersLength - 1}</Flex>}
-        {filtersLength > 0 &&
-          <CloseIcon
-            w={5}
-            h={5}
-            mr='4'
-            p={1}
-            color='#FC5960'
-            _hover={{ opacity: '0.7' }}
-            onClick={e => {
-              // Reset filter
-              setFilters({ [name]: initialFilters[name].value });
-              e.stopPropagation();
-            }}
-          />}
-        <ChevronRight color="#2B3236" mr='1' />
+      <Flex w="full" mb={isOpen ? "4" : "0"} align="center" justify="space-between" cursor="pointer">
+        <Text w="full" fontSize="14px" color="filtersPanelItem.fontColor" onClick={onToggle}>{filter.name}</Text>
+        <Flex>
+        {(filtersLength > 0) &&  <Box fontSize="12px" bg="white" color="filtersPanel.countColor" px="3" borderRadius="10px" fontWeight="bold" mr="2">{filtersLength}</Box>}
+        {(isOpen && filtersLength > 0) && <ResetIcon mr={3} onClick={resetFilter}/>}
+        {isOpen ?<ArrowUpIcon  onClick={onToggle}/> : <ArrowDownIcon  onClick={onToggle}/>}
+        </Flex>
       </Flex>
+      {isOpen && renderPanel()}
     </Flex>
   );
 };
 
 export default FiltersPanelItem;
+
+export const filtersPanelItemStyles = {
+  filtersPanelItem:{
+    bg: "#F0F2F580",
+    fontColor:"#282F36",
+    countColor: "#818197"
+  }
+}

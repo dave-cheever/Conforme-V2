@@ -3,7 +3,6 @@ import { Flex, Text, Box } from "@chakra-ui/react";
 
 import { ArrowRight, Filter } from "../icons";
 import { useFiltersContext } from "../contexts/FiltersProvider";
-import FiltersPanel from "./Filters/FiltersPanel";
 
 interface IHeader {
   breadcrumbs: string[];
@@ -100,7 +99,6 @@ const Header: FunctionComponent<IHeader> = ({
           </Flex>
         )}
       </Flex>
-      {usedFilters.length > 0 && <FiltersPanel />}
     </Box>
   );
 };

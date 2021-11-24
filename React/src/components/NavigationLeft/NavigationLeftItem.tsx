@@ -4,12 +4,18 @@ import { useHistory } from "react-router-dom";
 
 import SubSection from "./SubSection";
 import NavigationLeftFilters from "./NavigationLeftFilters";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
+import { ArrowRight } from "../../icons";
 
 const NavigationLeftItem = ({menuItem}) => {
   const [menuOpen, setMenuOpen] = useState(true);
   const history = useHistory();
   const filtersCount = {compliant: 0, nonCompliant: 2, comingUp: 2}
   const { url, icon, label } = menuItem;
+
+  const {
+    showFiltersPanel
+  } = useFiltersContext();
 
   return (
     <>
@@ -59,6 +65,7 @@ const NavigationLeftItem = ({menuItem}) => {
               }
             />
           </Flex>
+          { (showFiltersPanel && (menuItem.subSections?.length > 0 || (history.location.pathname === "/" && history.location.pathname === url) )) && <ArrowRight boxSize="10px" ml={1}/>}
         </Flex>
         <Box
           ml="5"
@@ -78,11 +85,11 @@ const NavigationLeftItem = ({menuItem}) => {
         </Box>
       </Box>
       <Box display={["block", "none", "block"]}>
-        {history.location.pathname.includes(url) &&
+        {(history.location.pathname.includes(url) && !showFiltersPanel) &&
           menuItem.subSections?.map((subSection) => {
             return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen}/>;
           })}
-        {history.location.pathname === "/" && history.location.pathname === url && <>
+        {history.location.pathname === "/" && history.location.pathname === url  && !showFiltersPanel && <>
           {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} />}
           {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} />)}
         </>

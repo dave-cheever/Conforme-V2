@@ -47,7 +47,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
           </Box>
         </Flex>
         <Flex align='center'>
-          {response?.evidenceExpected?.find(({ uploaded }) => uploaded === undefined) ?
+          {response?.evidence?.find(({ uploaded }) => uploaded === undefined) ?
             <UploadedTick color='complianceSquare.crossIcon'/> :
             <><Flex fontSize="11px" color='complianceSquare.tickIcon' >Uploaded</Flex><UploadedTick color='complianceSquare.tickIcon' ml={2} /></>
           }

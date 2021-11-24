@@ -25,6 +25,7 @@ import { useAppContext } from "../contexts/AppProvider";
 import ComplianceItemResponse from "../pages/complianceItemResponse";
 import Insights from "../pages/insights";
 import Help from "../pages/help";
+import FilterLayout from "../layouts/FilterLayout";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -57,7 +58,7 @@ const protectedRoutes: Array<IRoute> = [
     key: "home",
     exact: true,
     component: ComplianceItems,
-    layout: DefaultLayout,
+    layout: FilterLayout,
   }, {
     path: '/complianceItem/:id',
     key: 'complianceItem',

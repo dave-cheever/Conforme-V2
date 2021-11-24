@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Box, Checkbox, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Input, InputGroup, Stack, Text } from "@chakra-ui/react";
 
-import { Magnifier } from "../icons";
+import { Magnifier, MinusIcon } from "../icons";
 import { IBusinessUnit } from "../interfaces/IBusinessUnit";
 import BusinessUnitsSelectorList from "./BusinessUnitsSelectorList";
 
@@ -23,14 +23,14 @@ const BusinessUnitsSelector = ({
   const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<IBusinessUnit[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const areAllSelected = useMemo(() => filteredBusinessUnits.every(({ _id }) => selected.includes(_id)), [filteredBusinessUnits, selected]);
+  const areAllSelected = useMemo(() => filteredBusinessUnits?.every(({ _id }) => selected.includes(_id)), [filteredBusinessUnits, selected]);
 
   useEffect(() => {
     let filteredBusinessUnits: IBusinessUnit[] = [];
     if (disabled) {
-      filteredBusinessUnits = businessUnits.filter(({ _id }) => selected.includes(_id));
+      filteredBusinessUnits = businessUnits?.filter(({ _id }) => selected.includes(_id));
     } else {
-      filteredBusinessUnits = businessUnits.filter(({ type, name }) =>
+      filteredBusinessUnits = businessUnits?.filter(({ type, name }) =>
         (!selectedType || type === selectedType) && name.toLowerCase().includes(searchText.toLowerCase()));
     }
     setFilteredBusinessUnits(filteredBusinessUnits);
@@ -63,8 +63,8 @@ const BusinessUnitsSelector = ({
   }
 
   return (
-    <Stack w='full' spacing={4} pl={[0, 0, 3]}>
-      <Stack w='full' spacing={2} pb={3} overflow='auto'>
+    <Stack w='full'>
+      <Stack w='full' pb={3} overflow='auto'>
         <Box w='full' mt='-12px'>
           {/* <Dropdown
             name='type'
@@ -80,57 +80,55 @@ const BusinessUnitsSelector = ({
           /> */}
         </Box>
         <>
-          <Box pt='5px'>
-            <Flex py={2} align='center' justify="space-between" mb="-32px">
-              <Box color="businessUnitsSelector.label" fontWeight="bold" fontSize={11} position="relative" left="19px" zIndex={3}>
-                Search business units
-              </Box>
-              <Magnifier
-                position='relative'
-                top='12px'
-                right={4}
-                h='16px'
-                w='16px'
-                alt='Search'
-                zIndex={3}
+          <Box py='5px'>
+            <InputGroup>
+              <Input
+                borderWidth='1px'
+                borderColor='filterPanel.searchBoxBordercolor'
+                h='40px'
+                w='full'
+                pl={8}
+                color='brand.darkGrey'
+                placeholder='Search business units'
+                fontSize="14px"
+                value={searchText}
+                onChange={({ target: { value } }) => setSearchText(value)}
               />
-            </Flex>
-            <Input
-              borderWidth='2px'
-              borderRadius="8px"
-              borderColor='businessUnitsSelector.border.normal'
-              h='55px'
-              pt='15px'
-              mb={0}
-              zIndex={2}
-              value={searchText}
-              onChange={({ target: { value } }) => setSearchText(value)}
-              _focus={{ color: 'businessUnitsSelector.border.focus' }}
-            />
+              <Magnifier alt="Search" h="12px" w='12x' position="absolute" bottom="13px" left="14px" />
+            </InputGroup>
           </Box>
           {note &&
             <Text fontSize='12px' color='businessUnitsSelector.note' opacity='0.3' fontStyle='italic'>
               {note}
             </Text>
           }
-          {filteredBusinessUnits.length > 0 && (
+          {filteredBusinessUnits?.length > 0 && (
             <Checkbox
               isChecked={areAllSelected}
               onChange={toggleAll}
+              icon={<MinusIcon/>}
               css={{
                 ".chakra-checkbox__control": {
-                  borderRadius: "50%",
-                  borderWidth: '2px',
-                  width: "21px",
-                  height: "21px",
+                borderRadius: "50%",
+                width: "20px",
+                height: "20px",
+                background:"white",
+                borderWidth:"1px",
+                borderColor: "#81819750",
+                "&[data-checked]": {
+                    background: "#462AC4",
+                    borderColor: "#462AC4",
+                    "&[data-hover]": {
+                    background: "#462AC4",
+                    borderColor: "#462AC4"
+                    }
+                }
                 }
               }}
               borderColor="businessUnitsSelector.checkbox.border"
               colorScheme="businessUnitsSelector.checkbox"
             >
-              <Flex align='center' h='50px' fontSize='13px'>
-                Select all
-              </Flex>
+              <Text fontSize="14px" color="filterPanel.checkboxLabelColor">Select all</Text>
             </Checkbox>
           )}
           <BusinessUnitsSelectorList
@@ -146,3 +144,28 @@ const BusinessUnitsSelector = ({
 };
 
 export default BusinessUnitsSelector;
+
+export const businessUnitsSelectorStyles = {
+  businessUnitsSelector: {
+    label: '#777777',
+    border: {
+      normal: '#CBCCCD',
+      focus: '#777777',
+    },
+    note: '#424B50',
+    checkbox: {
+      border: '#CBCCCD',
+      500: '#462AC4',
+    },
+    list: {
+      checkbox: {
+        border: '#CBCCCD',
+        500: '#462AC4',
+      },
+      font: {
+        normal: '#777777',
+        selected: '#FFFFFF',
+      }
+    },
+  },
+}

@@ -1,4 +1,7 @@
 import { theme } from "@chakra-ui/react";
+import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
+import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
+import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
 import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
@@ -10,6 +13,7 @@ import { complianceItemStyles } from "../pages/compliance-items";
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
 // http://chir.ag/projects/name-that-color - Get color names
+// https://smart-swatch.netlify.app/#462AC4 - Get color schemes
 
 const getTheme = (organizationTheme?: any) => {
   const customTheme: any = {
@@ -58,6 +62,22 @@ const getTheme = (organizationTheme?: any) => {
       ...complianceItemStyles,
       ...complianceListItemsStyles,
       ...complianceItemsSquareStyles,
+      ...filtersPanelItemStyles,
+      ...filtersPanelStyles,
+      ...businessUnitsSelectorStyles,
+
+      purpleHeart: {
+        50: '#ede9ff',
+        100: '#c9bff7',
+        200: '#a596ea',
+        300: '#816ce1',
+        400: '#5d42d7',
+        500: '#462AC4',
+        600: '#342094',
+        700: '#24166b',
+        800: '#150d42',
+        900: '#07041c',
+      },
       auditModal: {
         title: {
           text: "#434B4F",

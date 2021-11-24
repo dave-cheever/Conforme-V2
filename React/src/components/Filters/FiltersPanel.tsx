@@ -1,20 +1,7 @@
 import React from 'react';
-import { Box, Flex, Button } from '@chakra-ui/react';
+import { Box, Flex, Button} from '@chakra-ui/react';
 
-import { ChevronRight } from '../../icons';
-import CategoryFilter from './CategoryFilter';
-import ItemStatusFilter from './ItemStatusFilter';
-import RegulatoryBodyFilter from './RegulatoryBodyFilter';
-import BusinessUnitFilter from './BusinessUnitFilter';
-import DueDateFilter from './DueDateFilter';
-import IsVerifiedFilter from './IsVerifiedFilter';
-import CollectionFilter from './CollectionFilter';
-import ActionFilter from './ActionFilter';
-import UserFilter from './UserFilter';
-import ComplianceItemFilter from './ComplianceItemFilter';
-import FunctionalAreaFilter from './FunctionalAreaFilter';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import { initialFilters } from '../../hooks/useFiltersUtils';
 import FiltersPanelItem from './FiltersPanelItem';
 
 const FiltersPanel = () => {
@@ -22,67 +9,42 @@ const FiltersPanel = () => {
     filtersValues,
     usedFilters,
     showFiltersPanel, setShowFiltersPanel,
-    openedFilterPanel, setOpenedFilterPanel,
-    setFilters, cleanFilters,
+    cleanFilters,
   } = useFiltersContext();
 
   if (!showFiltersPanel) {
     return null;
   }
+
   return (
-    <Box position='absolute' borderWidth={1} borderTopWidth={0} overflow='auto' borderColor='brand.divider' zIndex='10' h={['calc(100vh - 122px)', 'calc(100vh - 160px)']} w={['100%', '290px']} right={[0, 2]} mt='-18px' rounded={[0, 'lg']} flexShrink={0} bg='#FFFFFF'>
-      <Box w='10px' h='10px' mt='-6px' ml={['calc(100% - 85px)', '215px']} transform='rotate(45deg)' bg='brand.primary' />
-      {!openedFilterPanel ?
-        <>
-          <Flex justify='space-between' align='center' h='65px' px='4' borderBottomWidth={1} borderBottomColor='brand.divider'>
-            <Box color='brand.darkGrey' fontWeight='700'>Filters</Box>
-            <Flex>
-              <Button _hover={{ opacity: 0.7 }} color="brand.primaryFont" size='sm' h='27px' w='61px' bg='brand.paleGrey' onClick={cleanFilters}>Clear</Button>
-              <Button _hover={{ opacity: 0.7 }} color="brand.primaryFont" ml='10px' size='sm' h='27px' w='61px' bg='brand.bmiGreen' onClick={() => setShowFiltersPanel(false)}>Done</Button>
-            </Flex>
-          </Flex>
+    <Box overflow='auto' zIndex='10' h="100vh" w="290px" right="0" top="0" borderBottomStartRadius="20px" boxShadow="md" flexShrink={0} bg='filterPanel.bg'>
+        <Flex justify='space-between' align='center' h='65px' px='4'>
+          <Box color='brand.darkGrey' fontSize='16px' fontWeight='700'>Filters items</Box>
+        </Flex>
+        <Flex px="4" flexDir="column" h="calc(100vh - 115px)" overflow="auto">
           {Object.entries(filtersValues).map(([name, value]) => {
             if (usedFilters.includes(name)) {
-              return <FiltersPanelItem key={name} name={name} filter={value} />;
+              return (<FiltersPanelItem key={name} name={name} filter={value}/>)
             }
             return null
           })}
-        </>
-        :
-        <>
-          <Flex align='center' h='65px' px='4' cursor='pointer' onClick={() => setOpenedFilterPanel(null)}>
-            <ChevronRight transform='rotate(180deg)' />
-            <Box color='brand.darkGrey' fontWeight='700' pl='2'>{initialFilters[openedFilterPanel].name}</Box>
-            <Flex ml="auto">
-              <Button
-                _hover={{ opacity: 0.7 }}
-                color="brand.primaryFont"
-                size='sm'
-                h='27px'
-                w='61px'
-                bg='brand.paleGrey'
-                onClick={() => setFilters({ [openedFilterPanel]: initialFilters[openedFilterPanel].value })} // Reset filter
-              >Clear</Button>
-            </Flex>
-          </Flex>
-          {
-            {
-              complianceItemsIds: <ComplianceItemFilter />,
-              categoriesIds: <CategoryFilter />,
-              functionalAreasIds: <FunctionalAreaFilter />,
-              businessUnitsIds: <BusinessUnitFilter />,
-              itemStatus: <ItemStatusFilter />,
-              regulatoryBodiesIds: <RegulatoryBodyFilter />,
-              dueDate: <DueDateFilter />,
-              isVerified: <IsVerifiedFilter />,
-              collections: <CollectionFilter />,
-              action: <ActionFilter />,
-              usersIds: <UserFilter />,
-            }[openedFilterPanel]
-          }
-        </>}
+        </Flex>
+      <Flex w="290px" align="center" h="50px" justify="center" position="absolute" bottom="0px" py={2}>
+        <Button _hover={{ opacity: 0.9 }} color="filterPanel.resetButtonColor" fontSize="14px" h='35px' w='115px' onClick={cleanFilters}>Reset all</Button>
+        <Button _hover={{ opacity: 0.9 }} colorScheme="purpleHeart" ml='10px' fontSize="14px" h='35px' w='115px' onClick={() => setShowFiltersPanel(false)}>Done</Button>
+      </Flex>
     </Box>
   );
 };
 
 export default FiltersPanel;
+
+export const filtersPanelStyles = {
+  filterPanel:{
+    bg: "#FFFFFF",
+    resetButtonBg: "#F0F2F5",
+    resetButtonColor: "#818197",
+    checkboxLabelColor: "#818197",
+    searchBoxBordercolor: "#81819750"
+  },
+}

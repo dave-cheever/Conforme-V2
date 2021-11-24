@@ -65,7 +65,7 @@ const ComplianceItems = () => {
   );
 
   useEffect(() => {
-    setUsedFilters(['itemStatus', 'complianceItemsIds', 'regulatoryBodiesIds', 'categoriesIds', 'functionalAreasIds', 'businessUnitsIds', 'usersIds', 'dueDate']);
+    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'businessUnitsIds',  'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter responses (server side)

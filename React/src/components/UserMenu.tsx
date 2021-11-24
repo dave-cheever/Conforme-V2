@@ -5,7 +5,6 @@ import { Menu, MenuButton, Avatar, MenuList, Text, useDisclosure } from '@chakra
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 
-
 const UserMenu = () => {
 
     const { user, setUser } = useAppContext();
@@ -34,7 +33,6 @@ const UserMenu = () => {
           mr={["0", "6"]}
           color="white"
           w="50px"
-          matchWidth={true}
         >
           <Avatar
             color="userMenu.avatar.color"
@@ -69,6 +67,7 @@ const UserMenu = () => {
           </Text>
           {userMenus.map(({label, url}) => 
             <Text 
+            key={label}
             cursor="pointer"
             color="userMenu.text" 
             my="10px" 

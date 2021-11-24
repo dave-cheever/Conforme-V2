@@ -159,7 +159,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
 
   return (
     <Box p={[3, 6]} w='full' h='full'>
-      <Box bg="complianceList.bg" w="full" h="full" borderRadius="20px" pb="20px">
+      <Box bg="complianceList.bg" w="full" h="fit-content" borderRadius="20px" pb={7}>
       <Flex fontSize='12px' w='full' px={4} py={5} color="complianceList.headerTextColor" borderBottomWidth="1px" borderBottomColor="complianceList.headerBorderColor">
         <Flex w='30%' align='center'>
         <Box>

@@ -6,12 +6,13 @@ import { menuItems } from "../../bootstrap/config";
 import Can from "../can";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import NavigationLeftItem from "./NavigationLeftItem";
-import { Conforme } from "../../icons";
+import { Conforme, ConformeSmall } from "../../icons";
 
 const NavigationLeft = () => {
   const history = useHistory();
   const {
-    cleanFilters
+    cleanFilters,
+    showFiltersPanel
   } = useFiltersContext();
 
   useEffect(() => {    
@@ -21,9 +22,11 @@ const NavigationLeft = () => {
     // eslint-disable-next-line 
   }, [history.location.pathname]);
 
+  const organizationName = "Gloratio"
+
   return (
     <>
-      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={["70px", "70px", "240px"]} display={["none", "block"]}>
+      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={showFiltersPanel ? "70px" : "240px"} display={["none", "block"]}>
         <Box
           display="flex"
           alignItems="center"
@@ -34,11 +37,11 @@ const NavigationLeft = () => {
           <Text
             w="80px"
             ml="25px"
-            fontWeight="700"
+            fontWeight="bold"
             fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
           >
-            Gloratio
+            {showFiltersPanel ? organizationName.charAt(0): organizationName }
           </Text>
         </Box>
         <Flex direction="column" justify="space-between" h="calc(100% - 80px)">
@@ -51,7 +54,7 @@ const NavigationLeft = () => {
               />
             ))}
           </Box>
-        <Icon as={Conforme} w="103px" h="35px" ml="25px" mb="20px" />
+        <Icon as={showFiltersPanel ? ConformeSmall: Conforme} w={showFiltersPanel?"27px":"103px"} h="30px" ml="20px" mb="20px" />
         </Flex>
       </Box>
     </>

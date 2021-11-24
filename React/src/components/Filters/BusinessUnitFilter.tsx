@@ -18,7 +18,7 @@ const BusinessUnitFilter = () => {
   };
 
   return (
-    <Box w='270px'>
+    <Box w='full'>
       <BusinessUnitsSelector
         businessUnits={businessUnits as IBusinessUnit[]}
         selected={value}

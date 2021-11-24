@@ -5,7 +5,7 @@ import IFilters from "../interfaces/IFilters";
 
 export const initialFilters: IFilters = {
   complianceItemsIds: {
-    name: 'Compliance item(s)',
+    name: 'Compliance item',
     value: [],
   },
   categoriesIds: {
@@ -13,11 +13,11 @@ export const initialFilters: IFilters = {
     value: [],
   },
   functionalAreasIds: {
-    name: 'Functional area(s)',
+    name: 'Functional area',
     value: [],
   },
   businessUnitsIds: {
-    name: 'Business unit(s)',
+    name: 'Business unit',
     value: [],
   },
   itemStatus: {
