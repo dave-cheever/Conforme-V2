@@ -3,6 +3,7 @@ import categoriesResolvers from "./categories";
 import commentsResolvers from "./comments";
 import complianceItemsResolvers from "./complianceItems";
 import functionalAreasResolvers from "./functionalAreas";
+import graphResolvers from "./graph";
 import organizationsResolvers from "./organizations";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
 import responsesResolvers from "./responses";
@@ -21,6 +22,7 @@ export default {
     ...commentsResolvers.Query,
     ...complianceItemsResolvers.Query,
     ...functionalAreasResolvers.Query,
+    ...graphResolvers.Query,
     ...organizationsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
     ...responsesResolvers.Query,

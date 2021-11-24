@@ -17,9 +17,7 @@ export interface IComplianceItem extends IBase {
   questions?: IQuestion[];
   published: boolean;
   reference?: string;
-}
-
-export interface IComplianceItemExtended extends IComplianceItem {
+  
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;
   functionalArea?: IBaseWithName;

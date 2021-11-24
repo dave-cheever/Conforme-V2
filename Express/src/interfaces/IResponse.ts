@@ -4,6 +4,8 @@ export interface IDocument {
   id: string;
   name: string;
   addedAt: Date;
+  path?: string;
+  thumbnail?: string;
 }
 
 export interface IEvidence {
@@ -23,7 +25,6 @@ export interface IResponse extends IBase {
   evidence: IEvidence[];
   attachments: IDocument[];
   questions: IQuestion[];
-  // published: boolean;
   
   // Comments - injected to response when getting from database
   // Taken from Comments collection
@@ -36,9 +37,6 @@ export interface IResponse extends IBase {
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
   owner?: IUser;
-  // category?: IBaseWithName;
-  // regulatoryBody?: IBaseWithName;
-  // functionalArea?: IBaseWithName;
   delegates?: IUser[];
 }
 

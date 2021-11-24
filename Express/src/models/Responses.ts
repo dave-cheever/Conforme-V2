@@ -65,7 +65,7 @@ responseSchema.statics.getById = async function (_id: string): Promise<IResponse
     "metatags.removedAt": { $eq: null },
   });
   if (!response) {
-    throw new Error("Category not found");
+    throw new Error("Response not found");
   }
   return response._doc;
 };

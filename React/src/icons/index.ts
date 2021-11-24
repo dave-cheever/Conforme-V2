@@ -14,6 +14,7 @@ import Audits from "./Audits";
 import AuditWhiteIcon from "./AuditWhiteIcon";
 import Bar from "./Bar";
 import Bin from "./Bin";
+import BlankPage from "./BlankPage";
 import Briefcase from "./Briefcase";
 import Building from "./Building";
 import CalendarIcon from "./CalendarIcon";
@@ -86,6 +87,7 @@ export {
   AuditWhiteIcon,
   Bar,
   Bin,
+  BlankPage,
   Briefcase,
   Building,
   CalendarIcon,

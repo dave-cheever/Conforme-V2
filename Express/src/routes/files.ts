@@ -1,0 +1,99 @@
+import { logger } from 'app-shared';
+import { Request, Response, Router } from 'express';
+import StatusCodes from 'http-status-codes';
+
+import { genMetatags, isPermitted, isSignedIn } from 'app-utils';
+import { GraphService } from 'app-services';
+import { BusinessUnits, ComplianceItems, Responses } from 'app-models';
+import { IOrganization } from 'app-interfaces';
+
+const filesRouter = () => {
+  const router = Router();
+
+  router.post('/document',
+    isSignedIn,
+    GraphService.inMemoryStrategy.any(),
+    async (req: Request, res: Response) => {
+      try {
+        const { body, files, user } = req;
+        if (!user) {
+          return res.status(StatusCodes.FORBIDDEN).json({ message: 'Session is not valid' });
+        }
+
+        const { responseId, documentName, documentType } = body;
+        if (!responseId || !documentType || (documentType === 'evidence' && !documentName)) {
+          return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Please pass response id, document name and type' });
+        }
+
+        const response = await Responses.getById(responseId);
+        if (!response) {
+          return res.status(StatusCodes.NOT_FOUND).json({ message: 'Response doesn\'t exist' });
+        }
+        const complianceItem = await ComplianceItems.getById(response.complianceItemId);
+        const businessUnit = await BusinessUnits.getById(response.businessUnitId);
+        if (!businessUnit || !complianceItem || !complianceItem.published) {
+          return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Unexpected error occured' });
+        }
+
+        const isUserPermitted = isPermitted({ user, action: 'responses.edit', data: { response, businessUnitOwnerId: businessUnit.ownerId } })
+        if (!isUserPermitted) {
+          return res.status(StatusCodes.FORBIDDEN).json({ message: 'Access denied' });
+        }
+
+        let fileName = `${responseId}`;
+        if (documentType === 'evidence') {
+          fileName += `-${documentName.replace(/[^a-zA-Z ]+/g, '').trim().replace(' ', '-').toLowerCase()}`;
+        } else if (documentType === 'attachments') {
+          fileName += '-attachments';
+        }
+        let uploaded: { name: string; id: string }[] = [];
+        if (files && files.length > 0) {
+          uploaded = await GraphService.uploadDocuments(
+            req.session.organization as IOrganization,
+            files as Express.Multer.File[],
+            fileName,
+          );
+        }
+
+        const updatedResponse = {
+          ...response,
+          metatags: {
+            ...response.metatags,
+            ...genMetatags("updated", user._id),
+          },
+        };
+
+        if (documentType === 'evidence') {
+          const evidence = updatedResponse.evidence.find(evidence => evidence.name === documentName && !evidence.outdated);
+          if (!evidence) {
+            return res.status(StatusCodes.FORBIDDEN).json({ message: 'Evidence doesn\'t exist' });
+          }
+          evidence.uploaded = {
+            id: uploaded[0].id,
+            name: uploaded[0].name,
+            addedAt: new Date(),
+          };
+        } else if (documentType === 'attachments') {
+          uploaded.forEach(document => updatedResponse.attachments.push({
+            id: document.id,
+            name: document.name,
+            addedAt: new Date(),
+          }));
+        }
+
+        await Responses.updateOne({ _id: responseId }, updatedResponse);
+
+        return res.status(StatusCodes.OK).end('Files saved');
+      } catch (err: any) {
+        logger.error(err.message, err);
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          error: err.message,
+        });
+      }
+    }
+  );
+
+  return router;
+}
+
+export default filesRouter;

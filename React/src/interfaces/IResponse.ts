@@ -2,43 +2,46 @@ import { IBase } from "./IBase";
 import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IComment } from "./IComment";
+import { IComplianceItem } from "./IComplianceItem";
 import { IQuestion } from "./IQuestion";
 import { IUser } from "./IUser";
 
 export interface IDocument {
-  path?: string;
+  id: string;
   name: string;
   addedAt: Date;
-  id: string;
+  path?: string;
+  thumbnail?: string;
 }
 
 export interface IEvidence {
-  id: string;
   name: string;
   uploaded?: IDocument;
+  outdated?: boolean;
 }
 
 export interface IResponse extends IBase {
+  // Base fields - saved for response in database
   complianceItemId: string;
   businessUnitId: string;
   delegateIds: string[];
-  lastRenewalDate: Date;
-  nextRenewalDate: Date;
+  lastRenewalDate: Date | null;
+  nextRenewalDate: Date | null;
   status: string;
-  actionPlanSubmitted: boolean;
-  evidenceExpected: IEvidence[];
-  previousEvidence: IEvidence[];
+  evidence: IEvidence[];
   attachments: IDocument[];
-  verified: boolean;
+  questions: IQuestion[];
+  
+  // Comments - injected to response when getting from database
+  // Taken from Comments collection
   comments: IComment[];
+  
+  // Compliance items fields - injected to response when getting from database
+  complianceItem: IComplianceItem;
+
+  // Additional fields - can be added when getting from database
   daysToDueDate?: number;
-  actionExpected?: boolean;
   businessUnit?: IBusinessUnit;
   owner?: IUser;
-  category?: IBaseWithName;
-  regulatoryBody?: IBaseWithName;
-  functionalArea?: IBaseWithName;
   delegates?: IUser[];
-  questions?: IQuestion[];
-  complianceItem: any;
 }

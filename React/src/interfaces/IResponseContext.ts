@@ -3,11 +3,9 @@ import { Dispatch, SetStateAction } from "react";
 import { IResponse } from "./IResponse";
 
 export interface IResponseContext {
-  loading: boolean,
-  setLoading: Dispatch<SetStateAction<boolean>>,
-
   response: IResponse | undefined,
-  setResponse: Dispatch<SetStateAction<IResponse | undefined>>,
+  loading: boolean,
+  refetch: () => void;
 
   isShareOpen: boolean,
   handleShareOpen: () => void,

@@ -47,7 +47,8 @@ export const sessionizeUser = async ({ _id, firstName, lastName, displayName, em
   };
 };
 
-export const sessionizeOrganization = ({ _id, name, domain, logoUrl, theme, licenceExpirationDate, addons, clientId, tenantId, secret }: Partial<IOrganization>) => {
+export const sessionizeOrganization = ({ _id, name, domain, logoUrl, theme, licenceExpirationDate,
+  addons, clientId, tenantId, secret, spSiteUrl, spLibraryId }: Partial<IOrganization>) => {
   return {
     _id,
     name,
@@ -57,8 +58,10 @@ export const sessionizeOrganization = ({ _id, name, domain, logoUrl, theme, lice
     addons,
     domain,
     clientId,
-    tenantId, 
-    secret
+    tenantId,
+    secret,
+    spSiteUrl,
+    spLibraryId,
   }
 }
 

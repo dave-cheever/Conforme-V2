@@ -2,8 +2,9 @@ import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
 import { doesPathExist, getProjectFields, join } from "app-utils";
 import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek } from "date-fns";
+import { GraphService } from "app-services";
 
-const responses = async (_, { responsesQueryInput }, ___, info: any) => {
+const responses = async (_, { responsesQueryInput }, { organization }, info: any) => {
 
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
     'responses',

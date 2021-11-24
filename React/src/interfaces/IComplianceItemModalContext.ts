@@ -4,7 +4,7 @@ import { IComplianceItemModalSection } from "../contexts/ComplianceItemModalProv
 
 import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
-import { IComplianceItem, IComplianceItemExtended } from "./IComplianceItem";
+import { IComplianceItem } from "./IComplianceItem";
 import { IComplianceItemModalDialogDetails } from "./IComplianceItemModalDialogDetails";
 
 export interface IComplianceItemModalContext {

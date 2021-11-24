@@ -70,7 +70,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               </Flex>
               </Flex>
               <Flex align='center'>
-                {response?.evidenceExpected?.find(({ uploaded }) => uploaded === undefined) ?
+                {response?.evidence?.find(({ uploaded }) => uploaded === undefined) ?
                   <><UploadedCross color='complianceList.crossIcon' mr={2} /><Flex opacity='0.75' color='complianceList.crossIcon'>Missing evidence</Flex></> :
                   <><UploadedTick color='complianceList.tickIcon' mr={2} /><Flex opacity='0.75' color='complianceList.tickIcon' >Uploaded</Flex></>
                 }

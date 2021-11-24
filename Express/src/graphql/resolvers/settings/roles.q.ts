@@ -5,7 +5,7 @@ import { roles as definedRoles } from "app-utils";
 const roles = async () => {
   try {
     return JSONfn.stringify(definedRoles);
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(err);
   }
 };

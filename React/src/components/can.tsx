@@ -19,7 +19,11 @@ export const isPermitted = ({
     return false;
   }
 
-  const permission = globalThis?.roles[user?.role];
+  if (!globalThis.roles) {
+    return false;
+  }
+  
+  const permission = globalThis.roles[user.role];
   if (!permission) {
     return false;
   }

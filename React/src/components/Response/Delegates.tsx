@@ -7,12 +7,13 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-// import debounce from 'lodash.debounce';
+import { gql, useMutation, useQuery } from '@apollo/client';
+
 import { IUser } from '../../interfaces/IUser';
 import { useAppContext } from '../../contexts/AppProvider';
 import Can, { isPermitted } from '../can';
 import Loader from '../Loader';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useResponseContext } from '../../contexts/ResponseProvider';
 
 const SEARCH_USERS = gql`
   query ($searchQueryInput: SearchQueryInput) {
@@ -50,29 +51,33 @@ const REMOVE_DELEGATE = gql`
   }
 `;
 
-const Delegates = ({ response, refetchResponse }) => {
+const Delegates = () => {
   const { user: sessionUser } = useAppContext();
+  const {
+    response,
+    refetch: refetchResponse,
+  } = useResponseContext();
   const maxDelegates = 2;
   // const maxDelegates = settings?.find(({ name }) => name === 'maxDelegates').value;
   const [viewUserSearch, setViewUserSearch] = useState<boolean>(false);
   const [userSearchResults, setUserSearchResults] = useState<IUser[]>([]);
   const [showClearSearch, setShowClearSearch] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const {data, loading, refetch} = useQuery(SEARCH_USERS, {variables: {searchQueryInput: {searchText: searchQuery}}});
-  const {data:{usersById} = []} = useQuery(GET_USERS_BY_ID, {variables: {userQueryInput: {usersIds: response.delegateIds}}});
+  const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQueryInput: { searchText: searchQuery } } });
+  const { data: { usersById } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.delegateIds || [] } } });
   const [addDelegate] = useMutation(ADD_DELEGATE);
   const [removeDelegate] = useMutation(REMOVE_DELEGATE);
 
   useEffect(() => {
-    refetch();    
+    refetchUsers();
     if (data?.searchUsers && searchQuery) {
-      const filteredUsers = data.searchUsers.filter(({ _id }) => _id !== response?.businessUnit?.ownerId && !response.delegateIds.includes(_id));
-      
+      const filteredUsers = data.searchUsers.filter(({ _id }) => _id !== response?.businessUnit?.ownerId && !response?.delegateIds.includes(_id));
+
       setUserSearchResults(filteredUsers);
     } else {
       setUserSearchResults([]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, data])
 
   // const removeDelegate = (removedId) => {
@@ -91,14 +96,14 @@ const Delegates = ({ response, refetchResponse }) => {
       key={user._id}
       onClick={async () => {
         if (newUser) {
-          await addDelegate({ variables: { responseDelegateModifyInput: {_id: response._id, delegateId: user._id} } });
+          await addDelegate({ variables: { responseDelegateModifyInput: { _id: response?._id, delegateId: user._id } } });
           refetchResponse();
           setSearchQuery('');
           setUserSearchResults([]);
           setViewUserSearch(false);
         } else {
-          if (isPermitted({ user: sessionUser, data: { response }, action: 'responses.delegateEdit'})) {
-            await removeDelegate({ variables: { responseDelegateModifyInput: {_id: response._id, delegateId: user._id} } });
+          if (isPermitted({ user: sessionUser, data: { response }, action: 'responses.delegateEdit' })) {
+            await removeDelegate({ variables: { responseDelegateModifyInput: { _id: response?._id, delegateId: user._id } } });
             refetchResponse();
             setViewUserSearch(false);
           }
@@ -115,26 +120,26 @@ const Delegates = ({ response, refetchResponse }) => {
       justify='space-between'
       color='response.delegates.fontColor'
       role='group'
-      // _hover={newUser ? { cursor: 'pointer', bg: '#F2F2F2' } : isPermitted({ user: sessionUser, data: { response }, action: 'responses.delegateEdit'}) && { cursor: 'pointer', boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)', bg: '#FFFFFF' }}
+    // _hover={newUser ? { cursor: 'pointer', bg: '#F2F2F2' } : isPermitted({ user: sessionUser, data: { response }, action: 'responses.delegateEdit'}) && { cursor: 'pointer', boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)', bg: '#FFFFFF' }}
     >
       <Flex align='center'>
-        <Avatar color='response.delegates.avatar' borderColor='F2F2F2' borderWidth={1} bg='#ffffff' name={user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}` } src={user.imgUrl} size='sm' mx={4} />
+        <Avatar color='response.delegates.avatar' borderColor='F2F2F2' borderWidth={1} bg='#ffffff' name={user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`} src={user.imgUrl} size='sm' mx={4} />
         <Flex direction='column'>
-          <Flex>{user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}` } {user.role}</Flex>
+          <Flex>{user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`} {user.role}</Flex>
           <Flex fontSize='12px' opacity='0.6'>{user.jobTitle}</Flex>
         </Flex>
       </Flex>
       {newUser ? <CheckIcon color='green' mr={5} display='none' _groupHover={{ display: 'inline-block' }} /> :
-        isPermitted({ user: sessionUser, data: { response }, action: 'responses.delegateEdit'}) && <CloseIcon color='#FC5960' mr={5} display='none' _groupHover={{ display: 'inline-block' }} />}
+        isPermitted({ user: sessionUser, data: { response }, action: 'responses.delegateEdit' }) && <CloseIcon color='#FC5960' mr={5} display='none' _groupHover={{ display: 'inline-block' }} />}
     </Flex>
   );
 
   return (
     <>
       <Box mb={2}>Delegates</Box>
-      {response.delegateIds?.map((delegate) => {
-        const filteredUser = usersById?.find(({ _id }) => _id === delegate );
-        if (filteredUser){
+      {response?.delegateIds?.map((delegate) => {
+        const filteredUser = usersById?.find(({ _id }) => _id === delegate);
+        if (filteredUser) {
           return renderDelegate(filteredUser);
         } else {
           return null;
@@ -144,7 +149,7 @@ const Delegates = ({ response, refetchResponse }) => {
       <Can
         action='responses.delegateEdit'
         data={{ response }}
-        yes={() => (response?.delegateIds?.length < maxDelegates ? viewUserSearch ?
+        yes={() => (response?.delegateIds?.length! < maxDelegates ? viewUserSearch ?
           <Button onClick={() => {
             setViewUserSearch(false);
             setUserSearchResults([]);
@@ -174,11 +179,11 @@ const Delegates = ({ response, refetchResponse }) => {
             color='#FFFFFF'
             _hover={{ opacity: 0.7 }}
           >
-            {response.delegateIds?.length === 0 ? 'Add a delegate' : 'Add another'}
+            {response?.delegateIds?.length === 0 ? 'Add a delegate' : 'Add another'}
           </Button> : <></>)}
       />
 
-      {(response.delegateIds?.length < maxDelegates && viewUserSearch) &&
+      {(response?.delegateIds?.length! < maxDelegates && viewUserSearch) &&
         <Box maxWidth='400px'>
           <Input
             _focus={{ color: 'response.delegates.inputFocusFont' }}

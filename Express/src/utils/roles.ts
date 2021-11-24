@@ -30,18 +30,12 @@ const roles = {
   user: {
     normal: [...defaultPermissions],
     restricted: {
-      "auditLogs.view": ({ user, response }) =>
-        user &&
-        (response?.delegateIds?.includes(user.id) ||
-          response.owner?.id === user.id),
-      "responses.view": ({ user, response }) =>
-        user &&
-        (response?.delegateIds?.includes(user.id) ||
-          response.owner?.id === user.id),
-      "responses.edit": ({ user, response }) =>
-        user &&
-        (response?.delegateIds?.includes(user.id) ||
-          response.owner?.id === user.id),
+      "auditLogs.view": ({ user, response, businessUnitOwnerId }) =>
+        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
+      "responses.view": ({ user, response, businessUnitOwnerId }) =>
+        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
+      "responses.edit": ({ user, response, businessUnitOwnerId }) =>
+        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
     },
   },
 
@@ -56,10 +50,8 @@ const roles = {
       "users.searchInAAD",
     ],
     restricted: {
-      "responses.edit": ({ user, response }) =>
-        user &&
-        (response?.delegateIds?.includes(user.id) ||
-          response.owner?.id === user.id),
+      "responses.edit": ({ user, response, businessUnitOwnerId }) =>
+        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
     },
   },
 

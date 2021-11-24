@@ -1,20 +1,34 @@
 import responses from './responses.q';
-import updateResponse from './updateResponse.m';
 import addDelegate from './addDelegate.m';
 import removeDelegate from './removeDelegate.m';
+import removeDocument from './removeDocument.m';
 
 const responsesResolvers = {
   Query: {
     responses
   },
   Mutation: {
-    updateResponse,
     addDelegate,
-    removeDelegate
+    removeDelegate,
+    removeDocument,
   },
 };
 
 export const responsesTypeDefs = `
+  type ResponseDocument {
+    id: String!
+    name: String!
+    addedAt: Date!
+    thumbnail: String
+    path: String
+  }
+
+  type ResponseEvidence {
+    name: String!
+    uploaded: ResponseDocument
+    outdated: Boolean
+  }
+
   type Response {
     _id: ID!
     businessUnitId: ID!
@@ -25,26 +39,30 @@ export const responsesTypeDefs = `
     complianceItemId: ID!
     complianceItem: ComplianceItem
     businessUnit: BusinessUnit
+    evidence: [ResponseEvidence]
+    attachments: [ResponseDocument]
   }
 
   input ResponsesQueryInput {
-    _id: String
-    complianceItemsIds: [String]
-    regulatoryBodiesIds: [String]
-    categoriesIds: [String]
-    functionalAreasIds: [String]
-    businessUnitsIds: [String]
-    usersIds: [String]
+    _id: ID
+    complianceItemsIds: [ID]
+    regulatoryBodiesIds: [ID]
+    categoriesIds: [ID]
+    functionalAreasIds: [ID]
+    businessUnitsIds: [ID]
+    usersIds: [ID]
     dueDate: [String]
   }
 
-  input ResponseModifyInput {
-    _id: String!
+  input ResponseDelegateModifyInput {
+    _id: ID!
+    delegateId: ID!
   }
 
-  input ResponseDelegateModifyInput {
-    _id: String!
-    delegateId: ID!
+  input ResponseDocumentRemoveInput {
+    _id: ID!
+    documentId: ID!
+    documentType: String
   }
 `;
 
@@ -53,9 +71,9 @@ export const responsesQueryDefs = `
 `;
 
 export const responsesMutationDefs = `
-  updateResponse(responseModifyInput: ResponseModifyInput!): Response!
   addDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Response!
   removeDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Boolean!
+  removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
 `;
 
 export default responsesResolvers;

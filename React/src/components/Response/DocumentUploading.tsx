@@ -1,0 +1,39 @@
+import React from "react";
+import {
+  Box,
+  Flex
+} from "@chakra-ui/react";
+
+import Loader from "../Loader";
+
+const DocumentUploading = ({ documentName }: { documentName: string }) => (
+  <Flex
+    key={documentName}
+    w='full'
+    h='65px'
+    fontWeight='400'
+    bg='#F2F2F2'
+    rounded='md'
+    mb='2'
+    maxWidth='400px'
+    align='center'
+    justify='space-between'
+    color='brand.darkGrey'
+    role="group"
+  >
+    <Flex align='center'>
+      <Box w='55px' h='55px' bg='#FFFFFF' rounded='md' ml='5px' mr={2} fontSize='12px' flexShrink={0} align='center'>
+        <Flex align='center' justify='center' h='full'>
+          <Loader center={true} size='lg' />
+        </Flex>
+      </Box>
+      <Flex direction='column' fontSize='12px' mr={2}>
+        <Flex fontWeight='700'>{documentName}</Flex>
+        <Flex opacity='0.6'>Uploading ...</Flex>
+      </Flex>
+    </Flex>
+  </Flex>
+);
+
+
+export default DocumentUploading;

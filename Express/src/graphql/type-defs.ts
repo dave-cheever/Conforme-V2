@@ -5,6 +5,7 @@ import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categor
 import { commentsMutationDefs, commentsQueryDefs, commnentsTypeDefs } from "./resolvers/comments";
 import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutationDefs } from "./resolvers/complianceItems";
 import { functionalAreasQueryDefs, functionalAreasMutationDefs } from "./resolvers/functionalAreas";
+import { graphTypeDefs, graphQueryDefs } from "./resolvers/graph";
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
 import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
@@ -39,6 +40,7 @@ const typeDefs = gql`
   ${businessUnitsTypeDefs}
   ${commnentsTypeDefs}
   ${complianceItemsTypeDefs}
+  ${graphTypeDefs}
   ${organizationsTypeDefs}
   ${responsesTypeDefs}
   ${settingsTypeDefs}
@@ -50,6 +52,7 @@ const typeDefs = gql`
     ${commentsQueryDefs}
     ${complianceItemsQueryDefs}
     ${functionalAreasQueryDefs}
+    ${graphQueryDefs}
     ${organizationsQueryDefs}
     ${regulatoryBodiesQueryDefs}
     ${responsesQueryDefs}
