@@ -8,6 +8,7 @@ import { userMenuStyles } from "../components/UserMenu";
 import { headerStyles } from "../components/Header";
 import { complianceItemStyles } from "../pages/compliance-items";
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
+import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
 // http://chir.ag/projects/name-that-color - Get color names
 
 const getTheme = (organizationTheme?: any) => {
@@ -56,6 +57,7 @@ const getTheme = (organizationTheme?: any) => {
       ...headerStyles,
       ...complianceItemStyles,
       ...complianceListItemsStyles,
+      ...complianceItemsSquareStyles,
       auditModal: {
         title: {
           text: "#434B4F",
@@ -379,22 +381,6 @@ const getTheme = (organizationTheme?: any) => {
         delete: {
           bg: 'rgba(67, 76, 81, 0.95)',
         },
-      },
-      complianceSquare: {
-        compliant: "#62c240",
-        nonCompliant: "#FC5960",
-        comingUp: "#FFA012",
-        statusFontColor: '#FFFFFF',
-        imageBg: "#ffffff",
-        rightIcon: "#9A9EA1",
-        crossIcon: "#FC5960",
-        tickIcon: "#41BA17",
-        fontColor: "#2B3236",
-        regulatoryFontColor: "#424B50",
-        renewalFontColor: "#424B50",
-        evidenceFontColor: "#424B50",
-        businessUnitFontColor: "#424B50",
-        categoryFontColor: "#424B50",
       },
       complianceGroup: {
         compliant: "#62c240",
