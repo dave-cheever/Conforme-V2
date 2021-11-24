@@ -12,6 +12,8 @@ import { headerStyles } from "../components/Header";
 import { complianceItemStyles } from "../pages/compliance-items";
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
+import { complianceItemResponseStyles } from "../pages/complianceItemResponse";
+import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
 
@@ -65,6 +67,8 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelItemStyles,
       ...filtersPanelStyles,
       ...businessUnitsSelectorStyles,
+      ...complianceItemResponseStyles,
+      ...responseTabItemStyles,
 
       purpleHeart: {
         50: '#ede9ff',

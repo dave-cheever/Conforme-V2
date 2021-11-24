@@ -1,7 +1,10 @@
 import {
   Admin,
+  AttachmentIcon,
+  DetailIcon,
   Home,
-  Insights
+  Insights,
+  QuestionIcon
 } from "../icons";
 import { INavItem } from "../interfaces/INavItem";
 
@@ -71,6 +74,24 @@ export const userMenus = [
   {
     label: "Settings",
     url: "/admin/settings"
+  }
+];
+
+export const responseTabItems = [
+  {
+    index:0,
+    label:"Details",
+    icon: DetailIcon
+  },
+  { 
+    index:1,
+    label: "Attachments",
+    icon: AttachmentIcon
+  },
+  {
+    index:2,
+    label:"Questions",
+    icon: QuestionIcon
   }
 ]
 

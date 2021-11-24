@@ -8,7 +8,7 @@ const DescriptionText = ({response}) => {
     return (
       <Button
         fontWeight="700"
-        color="response.expandButtonText"
+        color="complianceItemResponse.expandButtonText"
         variant="ghost"
         _hover={{}}
         _active={{}}
@@ -22,12 +22,12 @@ const DescriptionText = ({response}) => {
   };
 
   return (
-    <Box lineHeight="31px">
-      {response?.complianceItem?.description?.length < 100 ? (
+    <Box lineHeight="20px" fontSize="14px" mt="5">
+      {response?.complianceItem?.description?.length < 300 ? (
         <Box whiteSpace="break-spaces">{response?.complianceItem?.description}</Box>
       ) : !expandDescription ? (
         <>
-          <Box whiteSpace="break-spaces">{response?.complianceItem?.description?.slice(0, 97)}...</Box>
+          <Box whiteSpace="break-spaces">{response?.complianceItem?.description?.slice(0, 297)}...</Box>
           {expandButton('more')}
         </>
       ) : (
