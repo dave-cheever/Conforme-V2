@@ -31,7 +31,7 @@ const CREATE_FUNCTIONAL_AREA = gql`
   }
 `;
 const UPDATE_FUNCTIONAL_AREA = gql`
-  mutation ($values: BaseWithNameInput!) {
+  mutation ($values: BaseWithNameModifyInput!) {
     updateFunctionalArea(functionalAreaInput: $values) {
       _id
       name

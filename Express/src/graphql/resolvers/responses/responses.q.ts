@@ -1,16 +1,16 @@
 import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
-import { doesPathExist, getProjectFields, join } from "app-utils";
+import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
 import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek } from "date-fns";
 import { GraphService } from "app-services";
 
-const responses = async (_, { responsesQueryInput }, { organization }, info: any) => {
-
+const responses = async (_, { responsesQueryInput }, { authorize }, info: any) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
     'responses',
     ...elements,
   ]);
   try {
+    const user = authorize();
     const pipeline: any[] = [];
 
     // Filter by response id
@@ -128,6 +128,7 @@ const responses = async (_, { responsesQueryInput }, { organization }, info: any
     // Join compliance item
     if (
       // Need to get Compliance Item if there are any dependant filters
+      responsesQueryInput?.includeNotPublished ||
       responsesQueryInput?.categoriesIds ||
       responsesQueryInput?.regulatoryBodiesIds ||
       responsesQueryInput?.functionalAreasIds ||
@@ -138,6 +139,15 @@ const responses = async (_, { responsesQueryInput }, { organization }, info: any
         collection: 'complianceItems',
         from: 'complianceItemId',
         to: 'complianceItem',
+      });
+    }
+
+    // Filter by published state
+    if (!(responsesQueryInput?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
+      pipeline.push({
+        $match: {
+          'complianceItem.published': true,
+        },
       });
     }
 

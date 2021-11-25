@@ -31,7 +31,7 @@ const CREATE_REGULATORY_BODY = gql`
   }
 `;
 const UPDATE_REGULATORY_BODY = gql`
-  mutation ($values: BaseWithNameInput!){
+  mutation ($values: BaseWithNameModifyInput!){
     updateRegulatoryBody(regulatoryBodyInput: $values) {
       _id
       name

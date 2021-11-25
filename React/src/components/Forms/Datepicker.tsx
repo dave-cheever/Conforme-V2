@@ -84,7 +84,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
                   onChange={e => onChange(e[0])}
                   onClose={onBlur}
                   value={value}
-                  defaultValue={value?.toISOString()}
+                  defaultValue={value && new Date(value).toISOString()}
                   ref={flatpickrRef as any}
                 />
               }

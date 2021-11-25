@@ -22,8 +22,8 @@ import { useAppContext } from "../contexts/AppProvider";
 import { gql, useQuery } from "@apollo/client";
 
 const GET_RESPONSES = gql`
-  query Responses($responsesQueryInput: ResponsesQueryInput) {
-    responses(responsesQueryInput: $responsesQueryInput) {
+  query Responses($responsesQuery: ResponsesQuery) {
+    responses(responsesQuery: $responsesQuery) {
       _id
       nextRenewalDate
       status

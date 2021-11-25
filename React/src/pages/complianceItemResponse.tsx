@@ -8,6 +8,7 @@ import ResponseProvider, { useResponseContext } from '../contexts/ResponseProvid
 import Details from '../components/Response/Details';
 import ResponseTabItem from '../components/Response/ResponseTabItem';
 import { responseTabItems } from '../bootstrap/config';
+import ResponseQuestions from '../components/Response/ResponseQuestions';
 
 const ComplianceItemResponse = () => {
   const {
@@ -20,13 +21,13 @@ const ComplianceItemResponse = () => {
   const renderSection = () => {
     switch (activeTab) {
       case 0:
-        return <Details  response={response}/>;
+        return <Details response={response}/>;
       
       case 1:
         return <p>Attachements</p>;
       
       case 2:
-        return <p>Questions</p>;
+        return <ResponseQuestions />;
     
       default:
         break;

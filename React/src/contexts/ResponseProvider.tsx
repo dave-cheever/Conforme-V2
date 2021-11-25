@@ -9,8 +9,8 @@ import { IResponseContext } from "../interfaces/IResponseContext";
 export const ResponseContext = createContext({} as IResponseContext);
 
 const GET_RESPONSES = gql`
-  query Responses($responsesQueryInput: ResponsesQueryInput) {
-    responses(responsesQueryInput: $responsesQueryInput) {
+  query Responses($responsesQuery: ResponsesQuery) {
+    responses(responsesQuery: $responsesQuery) {
       _id
       nextRenewalDate
       status
@@ -32,6 +32,14 @@ const GET_RESPONSES = gql`
         addedAt
         thumbnail
         path
+      }
+      questions {
+        type
+        name
+        description
+        value
+        required
+        outdated
       }
       complianceItem {
         name
@@ -68,7 +76,7 @@ export const useResponseContext = () => {
 
 const ResponseProvider = (props: any) => {
   const { id }: { id: string } = useParams();
-  const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQueryInput: { _id: id } } });
+  const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQuery: { _id: id } } });
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();

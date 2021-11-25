@@ -2,6 +2,7 @@ import responses from './responses.q';
 import addDelegate from './addDelegate.m';
 import removeDelegate from './removeDelegate.m';
 import removeDocument from './removeDocument.m';
+import updateQuestions from './updateQuestions.m';
 
 const responsesResolvers = {
   Query: {
@@ -11,6 +12,7 @@ const responsesResolvers = {
     addDelegate,
     removeDelegate,
     removeDocument,
+    updateQuestions,
   },
 };
 
@@ -29,6 +31,15 @@ export const responsesTypeDefs = `
     outdated: Boolean
   }
 
+  type ResponseQuestion {
+    type: String!
+    name: String!
+    description: String
+    value: Any
+    required: Boolean
+    outdated: Boolean
+  }
+
   type Response {
     _id: ID!
     businessUnitId: ID!
@@ -41,9 +52,10 @@ export const responsesTypeDefs = `
     businessUnit: BusinessUnit
     evidence: [ResponseEvidence]
     attachments: [ResponseDocument]
+    questions: [ResponseQuestion]
   }
 
-  input ResponsesQueryInput {
+  input ResponsesQuery {
     _id: ID
     complianceItemsIds: [ID]
     regulatoryBodiesIds: [ID]
@@ -52,6 +64,7 @@ export const responsesTypeDefs = `
     businessUnitsIds: [ID]
     usersIds: [ID]
     dueDate: [String]
+    includeNotPublished: Boolean
   }
 
   input ResponseDelegateModifyInput {
@@ -64,16 +77,22 @@ export const responsesTypeDefs = `
     documentId: ID!
     documentType: String
   }
+
+  input UpdateResponseQuestionsModify {
+    _id: ID!
+    answers: Any
+  }
 `;
 
 export const responsesQueryDefs = `
-  responses(responsesQueryInput: ResponsesQueryInput): [Response!]!
+  responses(responsesQuery: ResponsesQuery): [Response!]!
 `;
 
 export const responsesMutationDefs = `
   addDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Response!
   removeDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
+  updateQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
 `;
 
 export default responsesResolvers;

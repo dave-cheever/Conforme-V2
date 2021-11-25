@@ -31,7 +31,7 @@ const CREATE_CATEGORY = gql`
   }
 `;
 const UPDATE_CATEGORY = gql`
-  mutation ($values: BaseWithNameInput!) {
+  mutation ($values: BaseWithNameModifyInput!) {
     updateCategory(categoryInput: $values) {
       _id
       name
