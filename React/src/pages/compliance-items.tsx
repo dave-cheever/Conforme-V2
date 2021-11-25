@@ -182,7 +182,7 @@ const ComplianceItems = () => {
           </MenuList>
         </Menu>
       </Header>
-      <Flex h='calc(100vh - 150px)' overflow='auto'>
+      <Flex h='calc(100vh - 160px)' overflow='auto'>
         {error ? <Text>{error.message}</Text> : loading ? <Loader center={true} /> :
           <>
             {viewMode === "Grid" &&
@@ -213,4 +213,4 @@ export const complianceItemStyles = {
       menuItemFont:"#9A9EA1"
     },
   },
-}
+};

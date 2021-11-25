@@ -78,6 +78,7 @@ import DownloadIcon from "./DownloadIcon";
 import UploadIcon from "./UploadIcon";
 import TeamsIcon from "./TeamsIcon";
 import ProgressIcon from "./ProgressIcon";
+import ArrowCount from "./ArrowCount";
 
 export {
   Accidents,
@@ -86,6 +87,7 @@ export {
   Admin,
   AreaInfoIcon,
   ArrowDownIcon,
+  ArrowCount,
   ArrowRight,
   ArrowUpIcon,
   Assets,

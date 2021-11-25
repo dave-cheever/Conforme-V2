@@ -17,8 +17,9 @@ import DeleteComplianceItemModal from "../../components/AdminComplianceItemModal
 import useDevice from "../../hooks/useDevice";
 import Loader from "../../components/Loader";
 import { IComplianceItem } from "../../interfaces/IComplianceItem";
-import { Bin, Eye } from "../../icons";
 import { AdminModalState } from "../../interfaces/IAdminContext";
+import AdminTableHeader from "../../components/Admin/AdminTableHeader";
+import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 const GET_COMPLIANCE_ITEMS = gql`
   query {
@@ -119,55 +120,55 @@ const ComplianceItemsAdmin = () => {
           <Loader />
         </Box>
       ) : (
-        <Box p="30px" h='calc(100vh - 150px)' overflow="auto">
-          <Flex>
-            <Box w="100%">
-              <Flex fontWeight="semi_medium" color="adminComplianceItems.headers" mb="14px" fontSize="14px">
-                <Box w='40%'>Compliance items</Box>
-                <Box w='20%'>Frequency</Box>
-                <Box w='20%'>Regulatory body</Box>
-                <Box w='20%' align="right" mr="15px">Actions</Box>
-              </Flex>
-              <Stack borderRadius="10px" overflow="hidden" spacing="1px">
-                {complianceItems.map(complianceItem => (
-                  <Flex
-                    key={complianceItem._id}
-                    w='full'
-                    h='73px'
-                    bg='adminComplianceItems.element.bg'
-                    color='adminComplianceItems.element.font'
-                    pl={5}
-                    align='center'
-                    mt='0px'
-                    fontSize="14px">
-                    <Flex w='40%' flexDirection="column">
-                      <Box fontWeight="bold">{complianceItem.name || <Text fontStyle='italic' color='adminComplianceItems.element.unnamed'>Unnamed compliance item</Text>}</Box>
-                      <Flex fontWeight="semi-medium" fontSize="sm" alignItems="center">
-                        <Box color="adminComplianceItems.element.category" lineHeight='25px'>{complianceItem.category?.name}</Box>
-                        {!complianceItem.published && (
-                          <Box
-                            bg="adminComplianceItems.element.draft.bg"
-                            color="adminComplianceItems.element.draft.font"
-                            borderRadius="7px"
-                            p="3px 9px"
-                            ml={complianceItem.category ? 2 : 0}
-                          >
-                            Draft
-                          </Box>
-                        )}
-                      </Flex>
+        <Box p="0 25px 30px 30px" h='calc(100vh - 160px)' overflow="auto" rounded="10px">
+          <Box w="100%" h='calc(100% - 35px)'>
+            <AdminTableHeader>
+              <AdminTableHeaderElement w="calc(100% / 3)" label="Compliance items" />
+              <AdminTableHeaderElement w="calc(100% / 3)" label="Frequency" />
+              <AdminTableHeaderElement w="calc(100% / 3)" label="Regulatory body" />
+            </AdminTableHeader>
+            <Stack h="100%" bg="white" borderBottomRadius="10px" overflow="auto">
+              {complianceItems.map(complianceItem => (
+                <Flex
+                  key={complianceItem._id}
+                  flexShrink={0}
+                  w='full'
+                  h='73px'
+                  bg='adminComplianceItems.element.bg'
+                  color='adminComplianceItems.element.font'
+                  pl={5}
+                  align='center'
+                  mt='0px'
+                  fontSize="14px"
+                  cursor="pointer"
+                  borderBottom="1px solid"
+                  borderColor="adminTableHeader.border"
+                  onClick={() => openModal('edit', complianceItem)}
+                >
+                  <Flex fontWeight="semi_medium" w="calc(100% / 3)" flexDirection="column">
+                    <Box fontSize="smm">{complianceItem.name || <Text fontStyle='italic' color='adminComplianceItems.element.unnamed'>Unnamed compliance item</Text>}</Box>
+                    <Flex alignItems="center">
+                      <Box fontSize="11px" color="adminComplianceItems.element.category" lineHeight='25px'>{complianceItem.category?.name}</Box>
+                      {!complianceItem.published && (
+                        <Box
+                          bg="#818197"
+                          color="#FFFFFF"
+                          borderRadius="7px"
+                          fontSize="11px"
+                          p="3px 9px"
+                          ml={complianceItem.category ? 2 : 0}
+                        >
+                          Draft
+                        </Box>
+                      )}
                     </Flex>
-                    <Box w='20%' fontWeight="medium">{complianceItem.frequency}</Box>
-                    <Box w='20%' fontWeight="medium">{complianceItem.regulatoryBody?.name}</Box>
-                    <Box w='20%' fontWeight="medium" align="right" mr="30px">
-                      <Eye cursor='pointer' color='adminComplianceItems.element.edit' onClick={() => openModal('edit', complianceItem)} />
-                      <Bin cursor='pointer' ml="25px" onClick={() => openModal('delete', complianceItem)} />
-                    </Box>
                   </Flex>
-                ))}
-              </Stack>
-            </Box>
-          </Flex>
+                  <Box w="calc(100% / 3)">{complianceItem.frequency}</Box>
+                  <Box w="calc(100% / 3)">{complianceItem.regulatoryBody?.name}</Box>
+                </Flex>
+              ))}
+            </Stack>
+          </Box>
         </Box>
       )}
     </>

@@ -40,7 +40,7 @@ const complianceItems = async (_, { complianceItemsQueryInput }, { authorize }, 
     if (shouldJoin('regulatoryBody')) {
       join({ 
         pipeline,
-        collection: 'regulatorybodies', 
+        collection: 'regulatoryBodies', 
         from: 'regulatoryBodyId',
         to: 'regulatoryBody',
       });

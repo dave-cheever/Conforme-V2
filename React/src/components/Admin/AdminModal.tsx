@@ -12,8 +12,8 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useAppContext } from "../contexts/AppProvider";
-import { AdminModalState } from "../interfaces/IAdminContext";
+import { useAppContext } from "../../contexts/AppProvider";
+import { AdminModalState } from "../../interfaces/IAdminContext";
 
 interface IAdminModal {
   isOpenModal: boolean;

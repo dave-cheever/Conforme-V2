@@ -4,14 +4,16 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 
 import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/AdminModal";
-import AdminTableRow from "../../components/AdminTableRow";
+import AdminModal from "../../components/Admin/AdminModal";
+import AdminTableRow from "../../components/Admin/AdminTableRow";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
 import TextInput from "../../components/Forms/TextInput";
 import Loader from "../../components/Loader";
 import Chart from "../../components/Chart";
 import Header from "../../components/Header";
+import AdminTableHeader from "../../components/Admin/AdminTableHeader";
+import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 const GET_CATEGORIES = gql`
   query {
@@ -195,29 +197,23 @@ const Categories = () => {
         </Flex>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Categories"]} hideBreadcrumbsOnMobile />
-      <Box p={["0", "30px"]} h="calc(100vh - 150px)" overflow="auto">
-        <Flex flexDirection={["column-reverse", "row"]}>
-          <Box w={["100%", "calc(100% - 250px)"]} mr="50px">
-            <Flex
-              fontWeight="400"
-              color="categories.fontColor"
-              mb="14px"
-              display={["none", "flex"]}
-            >
-              <Flex w="64%">Category</Flex>
-              <Flex w="25%">Responses count</Flex>
-              <Box w="11%" textAlign="right">
-                Actions
-              </Box>
-            </Flex>
+      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
+        <Flex h="full" flexDirection={["column-reverse", "row"]}>
+          <Box w={["100%", "calc(100% - 250px)"]} h='calc(100% - 35px)' mr="50px">
+            <AdminTableHeader>
+              <AdminTableHeaderElement w="50%" label="Category" />
+              <AdminTableHeaderElement w="50%" label="Responses count" />
+            </AdminTableHeader>
             {loading ? (
               <Box mt={20}>
                 <Loader />
               </Box>
             ) : (
               <Stack
-                borderRadius={["0", "10px"]}
-                overflow="hidden"
+                h="full"
+                bg="white"
+                borderBottomRadius={["0", "10px"]}
+                overflow="auto"
                 spacing={["0", "1px"]}
                 mt={["20px", "0"]}
               >
@@ -228,7 +224,6 @@ const Categories = () => {
                       element={category}
                       index={i}
                       edit={() => openCategoryModal("edit", category)}
-                      remove={() => openCategoryModal("delete", category)}
                     />
                   ))
                 ) : (

@@ -24,7 +24,7 @@ const Header: FunctionComponent<IHeader> = ({
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex key={`bc-${i}`} align="center">
       {i > 0 && (
-        <ArrowRight ml={2} mr={1} display={["none", "flex"]} />
+        <ArrowRight stroke="#818197" ml={2} mr={1} display={["none", "flex"]} />
       )}
       <Text
         pl={[0, 2]}
@@ -43,7 +43,7 @@ const Header: FunctionComponent<IHeader> = ({
   );
 
   return (
-    <Box position="relative">
+    <Box position="relative" mb="10px">
       <Flex
         w="full"
         h={["60px", "70px"]}

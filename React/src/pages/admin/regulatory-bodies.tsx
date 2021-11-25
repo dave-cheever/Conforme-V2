@@ -4,14 +4,16 @@ import { Box, Flex, Stack, useToast } from "@chakra-ui/react";
 import { useForm } from 'react-hook-form';
 
 import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/AdminModal";
-import AdminTableRow from "../../components/AdminTableRow";
+import AdminModal from "../../components/Admin/AdminModal";
+import AdminTableRow from "../../components/Admin/AdminTableRow";
 import Chart from "../../components/Chart";
 import Header from "../../components/Header";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
 import TextInput from "../../components/Forms/TextInput";
 import Loader from "../../components/Loader";
+import AdminTableHeader from "../../components/Admin/AdminTableHeader";
+import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 const GET_REGULATORY_BODIES = gql`
   query {
@@ -173,30 +175,24 @@ const RegulatoryBodies = () => {
         breadcrumbs={["Admin", "Regulatory bodies"]}
         hideBreadcrumbsOnMobile
       />
-      <Box p={["0", "30px"]} h="calc(100vh - 150px)" overflow="auto">
-        <Flex flexDirection={["column-reverse", "row"]}>
-          <Box w={["100%", "calc(100% - 250px)"]} mr="50px">
-            <Flex
-              fontWeight="400"
-              color="regulatoryBodies.fontColor"
-              mb="14px"
-              display={["none", "flex"]}
-            >
-              <Flex w="64%">Regulatory body</Flex>
-              <Flex w="25%">Responses count</Flex>
-              <Box w="11%" textAlign="right">
-                Actions
-              </Box>
-            </Flex>
+      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
+        <Flex h="full" flexDirection={["column-reverse", "row"]}>
+          <Box w={["100%", "calc(100% - 250px)"]} h='calc(100% - 35px)' mr="50px">
+            <AdminTableHeader>
+              <AdminTableHeaderElement w="50%" label="Regulatory body" />
+              <AdminTableHeaderElement w="50%" label="Responses count" />
+            </AdminTableHeader>
             {loading ? (
               <Box mt={20}>
                 <Loader />
               </Box>
             ) : (
               <Stack
-                borderRadius={["0", "10px"]}
-                overflow="hidden"
-                spacing={["0", "1px"]}
+                h="full"
+                flexShrink={0}
+                bg="white"
+                borderBottomRadius={["0", "10px"]}
+                overflow="auto"
                 mt={["20px", "0"]}
               >
                 {regulatoryBodies?.length > 0 ? (
@@ -206,7 +202,6 @@ const RegulatoryBodies = () => {
                       element={regulatoryBody}
                       index={i}
                       edit={() => openRegulatoryBodyModal('edit', regulatoryBody)}
-                      remove={() => openRegulatoryBodyModal('delete', regulatoryBody)}
                     />
                   )
                 ) : (

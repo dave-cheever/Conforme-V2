@@ -21,6 +21,8 @@ import { settingsTabItemStyles } from "../components/Settings/TabItem";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
 
+import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
+import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
 
@@ -61,6 +63,8 @@ const getTheme = (organizationTheme?: any) => {
     },
     colors: {
       ...theme.colors,
+      ...adminTableHeaderStyles,
+      ...adminTableHeaderElementStyles,
       ...navigationLeftStyles,
       ...navigationLeftItemStyles,
       ...navigationLeftFiltersStyles,

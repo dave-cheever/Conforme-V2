@@ -1,16 +1,18 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { Box, Flex, Image, Text, Tooltip, useToast } from "@chakra-ui/react";
+import { Box, Flex, Text, Tooltip, useToast } from "@chakra-ui/react";
 
 import Loader from "../../components/Loader";
 import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/AdminModal";
+import AdminModal from "../../components/Admin/AdminModal";
 import { AdminContext } from "../../contexts/AdminProvider";
 import TextInput from "../../components/Forms/TextInput";
 import Header from "../../components/Header";
-import { Bin, Eye } from "../../icons";
+import { ArrowCount } from "../../icons";
 import { IBusinessUnit } from "../../interfaces/IBusinessUnit";
+import AdminTableHeader from "../../components/Admin/AdminTableHeader";
+import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 const GET_BUSINESS_UNITS = gql`
   query {
@@ -184,7 +186,7 @@ const BusinessUnits = () => {
     }
   };
 
-  const renderBusinessUnitRow = useCallback((businessUnit: IBusinessUnit, i: number) => (
+  const renderBusinessUnitRow = (businessUnit: IBusinessUnit, i: number) => (
     <Flex
       key={businessUnit._id}
       w='full'
@@ -193,41 +195,30 @@ const BusinessUnits = () => {
       mb="1px"
       p={4}
       alignItems='center'
-      borderTopRadius={i === 0 ? 'lg' : ''}
       borderBottomRadius={(i === businessUnits.length - 1) ? 'lg' : ''}
       boxShadow="sm"
+      flexShrink={0}
     >
       <Flex w='30%' pl={1} mr={4} align='center' cursor="pointer"
         onClick={() => openBusinessUnitModal('edit', businessUnit)}
       >
-        <Flex w='36px' h='36px' mr={4} rounded='md' bg="#F2F2F2" shrink={0}>
-          <Image fit='cover' rounded="md" src={businessUnit.imgUrl} />
-        </Flex>
         <Text
-          fontWeight='bold'
           overflow='hidden'
           textOverflow='ellipsis'
           whiteSpace='nowrap'
         >{businessUnit.name}</Text>
       </Flex>
-      <Box w='10%'>{businessUnit?.type}</Box>
-      <Box w='20%'>{businessUnit?.region}</Box>
-      <Box w='20%'>{businessUnit?.owner?.firstName && businessUnit?.owner?.lastName && `${businessUnit.owner.firstName} ${businessUnit.owner.lastName}`}</Box>
-      <Flex w='10%' align='center'>
+      <Box w='calc(70% / 4)'>{businessUnit?.type}</Box>
+      <Box w='calc(70% / 4)'>{businessUnit?.region}</Box>
+      <Box w='calc(70% / 4)'>{businessUnit?.owner?.firstName && businessUnit?.owner?.lastName && `${businessUnit.owner.firstName} ${businessUnit.owner.lastName}`}</Box>
+      <Flex w='calc(70% / 4)' align='center'>
         <Text>{businessUnit.responsesCount || 0}</Text>
         <Tooltip label="Show Items" fontSize="md">
-          <Eye color='#018587' cursor='pointer' ml={4} mt='2px'
-          // onClick={() => onEyeClick(businessUnit.id)} 
-          />
+          <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
         </Tooltip>
       </Flex>
-      <Box textAlign='right' w='10%' pr={6}>
-        <Bin w='20px' cursor='pointer' _hover={{ color: 'businessUnit.binIconColor' }} color='#424B50'
-          onClick={() => openBusinessUnitModal('delete', businessUnit)}
-        />
-      </Box>
     </Flex>
-  ), []); // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   return (
     <>
@@ -268,22 +259,21 @@ const BusinessUnits = () => {
         </Flex>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Business units"]} />
-      <Flex h='calc(100vh - 150px)'>
-        <Box w='full' h='full' overflow='auto' p={[0, 8]}>
-          <Flex pb={4} w='full' color="#9A9EA1" display={['none', "flex"]}>
-            <Box w='30%'>Business unit name</Box>
-            <Box w='10%'>Unit type</Box>
-            <Box w='20%'>Region name</Box>
-            <Box w='18%'>Owner</Box>
-            <Box w='12%'>Responses count</Box>
-            <Box textAlign='right' w='9%'>Actions</Box>
-          </Flex>
-          <Box w='full'>
+      <Flex h='calc(100vh - 160px)'>
+        <Box w='full' h='calc(100% - 35px)' p={[0, "0 25px 30px 30px"]}>
+          <AdminTableHeader>
+            <AdminTableHeaderElement w="30%" label="Unit name" />
+            <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" />
+            <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" />
+            <AdminTableHeaderElement w="calc(70% / 4)" label="Owner" />
+            <AdminTableHeaderElement w="calc(70% / 4)" label="# od responses" />
+          </AdminTableHeader>
+          <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="10px" fontSize="smm">
             {loading && <Loader />}
             {!loading && businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
               <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No business units found.</Flex>
             )}
-          </Box>
+          </Flex>
         </Box>
       </Flex>
     </>

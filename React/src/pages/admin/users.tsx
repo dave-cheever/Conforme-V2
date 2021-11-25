@@ -1,17 +1,27 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Avatar, Box, ButtonGroup, Editable, EditableInput, EditablePreview, Flex, IconButton, Tooltip } from "@chakra-ui/react";
+import { 
+  Avatar, 
+  Box, 
+  ButtonGroup, 
+  Editable, 
+  EditableInput, 
+  EditablePreview, 
+  Flex, 
+  IconButton, 
+  Tooltip, 
+} from "@chakra-ui/react";
 import { useState } from "react";
+import AdminTableHeader from "../../components/Admin/AdminTableHeader";
+import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 import Header from "../../components/Header";
-import { Eye } from "../../icons";
-import { Pencil } from "../../icons";
+import { ArrowCount, ArrowRight } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
 
 interface IEditableControls {
   isEditing: boolean, 
   onSubmit: any, 
   onCancel: any, 
-  onEdit: any, 
   user: IUser
 }
 
@@ -20,30 +30,28 @@ const Users = () => {
   const users: IUser[] = [{
     displayName: "displayName",
     email:"email",
-    firstName:"firstName",
+    firstName:"first",
     _id:"id",
     jobTitle:"jobTitle",
-    lastName:"lastName",
+    lastName:"last",
     role:"reader"
   }]
 
-  const EditableControls = ({ isEditing, onSubmit, onCancel, onEdit, user }: IEditableControls) => {
+  const EditableControls = ({ isEditing, onSubmit, onCancel, user }: IEditableControls) => {
     return isEditing ? (
       <ButtonGroup justifyContent="center" size="sm" px={3}>
         <IconButton name={user._id} aria-label='' icon={<CheckIcon name={user._id} />}
           onClick={() => {
             onSubmit();
-            // updateDefaultPageDropdown(user);
           }} _hover={{ bg: "#018587", color: "#FFFFFF" }} />
         <Box onClick={onCancel}>
           <IconButton aria-label='' icon={<CloseIcon />} 
-          // onClick={() => onCancell(user)} 
           _hover={{ bg: "brand.primary", color: "#FFFFFF" }} />
         </Box>
       </ButtonGroup>
     ) : (
       <Flex justifyContent="center" px={2}>
-        <IconButton _hover={{ color: "#018587" }} variant="ghost" aria-label='' size="md" icon={<Pencil mt="2px" />} onClick={onEdit} />
+        <IconButton _hover={{ color: "#018587" }} variant="ghost" aria-label='' size="md" icon={<ArrowRight stroke="#282F36" transform="rotate(90deg)" />} />
       </Flex>
     )
   };
@@ -61,20 +69,32 @@ const Users = () => {
   };
 
   const renderUserRow = (user: IUser, i: number) => (
-    <Flex key={user._id} w='full' h='73px' bg='#FFFFFF' mb="1px" alignItems='center' borderTopRadius={i === 0 ? [0, 'lg'] : ''} borderBottomRadius={(i === users.length - 1) ? [0, 'lg'] : ''} boxShadow="sm">
-      <Box w='35%' lineHeight="32px" fontWeight="bold" pl={3} pr={2}>
+    <Flex 
+      key={user._id} 
+      w='full' 
+      h='73px' 
+      flexShrink={0}
+      bg='#FFFFFF' 
+      px="25px"
+      mb="1px" 
+      fontSize="smm"
+      alignItems='center' 
+      borderBottomRadius={(i === users.length - 1) ? [0, 'lg'] : ''} 
+      boxShadow="sm"
+    >
+      <Box w='20%' lineHeight="32px">
         <Avatar
           borderColor='brand.active'
           rounded='full'
           name={user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
           size='sm'
           src={user.imgUrl}
-          mx={3}
+          mr={3}
         />
         {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
       </Box>
       <Box w='20%'>{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
-      <Box w='15%'>
+      <Box w='20%'>
         {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
       </Box>
       <Box w='20%'>
@@ -93,11 +113,9 @@ const Users = () => {
         </Editable>
       </Box>
 
-      <Flex w='10%' align='center' justifyContent="flex-end" pr="30px">{getItemCount(user._id)}
+      <Flex w='20%' align='center'>{getItemCount(user._id)}
         <Tooltip label="Show Items" fontSize="md">
-          <Eye color='#018587' cursor='pointer' ml={4} mt='2px' 
-          // onClick={() => onEyeClick(user.id)} 
-          />
+          <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
         </Tooltip>
         </Flex>
     </Flex>
@@ -115,20 +133,20 @@ const Users = () => {
   return (
     <>
       <Header breadcrumbs={["Admin", "Users"]} hideBreadcrumbsOnMobile />
-      <Flex h='calc(100vh - 150px)'>
-          <Box w='full' h='full' overflow='auto' p={[0, 8]}>
-            <Flex pb={4} w='full' color="#9A9EA1" display={["none", "flex"]}>
-              <Box w='35%'>User name</Box>
-              <Box w='20%'>Job title</Box>
-              <Box w='15%'>Role/permissions</Box>
-              <Box w='20%'>Default page</Box>
-              <Flex w='10%' justifyContent="flex-end">Items by user</Flex>
-            </Flex>
-            <Box w='full'>
-              {users?.map((user, i) => renderUserRow(user, i))}
-            </Box>
-          </Box>
-        </Flex>
+      <Flex h='calc(100vh - 160px)'>
+        <Box w='full' h='calc(100% - 35px)' p={[0, "0 25px 30px 30px"]}>
+          <AdminTableHeader>
+            <AdminTableHeaderElement w="20%" label="Name" />
+            <AdminTableHeaderElement w="20%" label="Job title" />
+            <AdminTableHeaderElement w="20%" label="Role" />
+            <AdminTableHeaderElement w="20%" label="Default page" />
+            <AdminTableHeaderElement w="20%" label="Items per user" />
+          </AdminTableHeader>
+          <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="10px" overflow="auto">
+            {users?.map((user, i) => renderUserRow(user, i))}
+          </Flex>
+        </Box>
+      </Flex>
     </>
   );
 };
