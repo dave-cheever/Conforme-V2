@@ -35,30 +35,30 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', varia
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
+          <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
+              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "form.textInput.labelFont.error" : "form.textInput.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
-                  position={variant !== 'secondaryVariant' ? "relative" : "static"}
-                  left={variant !== 'secondaryVariant' ? "19px" : 'none'}
+                  position="static"
+                  left='none'
                   zIndex={2}
                 >
                   {label}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
-                  {variant === 'secondaryVariant' && placeholder && <Box opacity={.5}>{placeholder}</Box>}
                 </Box>
               </Flex>
             )}
             <Input
               borderRadius="8px"
-              borderWidth="2px"
-              pt={variant !== 'secondaryVariant' ? "16px" : 'none'}
-              h={variant !== 'secondaryVariant' ? "55px" : "40px"}
+              borderWidth="1px"
+              pt='none'
+              h="40px"
               type="text"
+              fontSize= "smm"
               color="form.textInput.font"
               bg="form.textInput.bg"
               name={name}
@@ -78,8 +78,8 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', varia
                 cursor: "not-allowed",
               }}
               maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
-              placeholder={variant === 'secondaryVariant' ? '' : placeholder}
-              _placeholder={{ color: 'form.textInput.placeholder' }}
+              placeholder={placeholder}
+              _placeholder={{ fontSize: "smm", color: 'form.textInput.placeholder' }}
             />
             {error && <Box fontSize={14} ml={1} color='form.textInput.error'>{error.message}</Box>}
           </Box>

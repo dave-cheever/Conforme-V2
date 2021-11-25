@@ -34,12 +34,12 @@ const Checkbox = ({ control, name, label, placeholder = '', tooltip = '', varian
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
+          <Box w='full' id={name} mt='none'>
             <ChakraCheckbox
               css={{
                 ".chakra-checkbox__control": {
-                  borderRadius: "50%",
-                  borderWidth: '2px',
+                  borderRadius: '5px',
+                  borderWidth: '1px',
                   width: "21px",
                   height: "21px",
                 }

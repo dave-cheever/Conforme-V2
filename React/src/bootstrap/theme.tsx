@@ -1,29 +1,40 @@
 import { theme } from "@chakra-ui/react";
-import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
-import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
-import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
-import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
-import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
-import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
-import { subSectionStyles } from "../components/NavigationLeft/SubSection";
-import { navigationTopStyles } from "../components/NavigationTop";
-import { userMenuStyles } from "../components/UserMenu";
-import { headerStyles } from "../components/Header";
-import { complianceItemStyles } from "../pages/compliance-items";
-import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
-import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
-import { complianceItemResponseStyles } from "../pages/compliance-item/index";
-import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
-import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
-import { evidenceStyles } from "../components/Response/Evidence";
-import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
-import { settingsTabItemStyles } from "../components/Settings/TabItem";
-import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
-import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
 
+import { additionalDetailsStyles } from "../components/AdminComplianceItemModal/AdditionalDetails";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
+import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
+import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
 import { complianceGroupItemsStyles } from "../components/ComplianceItem/ComplianceItemsGroup";
+import { complianceItemModalStyles } from "../components/AdminComplianceItemModal/ComplianceItemModal";
+import { complianceItemResponseStyles } from "../pages/compliance-item/index";
+import { complianceItemStyles } from "../pages/compliance-items";
+import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
+import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
+import { customRadioButtonStyles } from "../components/CustomRadioButton";
+import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
+import { evidenceStyles } from "../components/Response/Evidence";
+import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
+import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
+import { headerStyles } from "../components/Header";
+import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
+import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
+import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
+import { navigationTopStyles } from "../components/NavigationTop";
+import { questionFormStyles } from "../components/Questions/QuestionForm";
+import { questionListElementStyles } from "../components/Questions/QuestionListElement";
+import { questionListStyles } from "../components/Questions/QuestionList";
+import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
+import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
+import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
+import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
+import { subSectionStyles } from "../components/NavigationLeft/SubSection";
+import { settingsTabItemStyles } from "../components/Settings/TabItem";
+import { summaryItemModalStyles } from "../components/AdminComplianceItemModal/SummaryItem";
+import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summary";
+import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
+import { userMenuStyles } from "../components/UserMenu";
+
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
 
@@ -64,30 +75,41 @@ const getTheme = (organizationTheme?: any) => {
     },
     colors: {
       ...theme.colors,
-      ...adminTableHeaderStyles,
+      ...additionalDetailsStyles,
       ...adminTableHeaderElementStyles,
-      ...navigationLeftStyles,
-      ...navigationLeftItemStyles,
-      ...navigationLeftFiltersStyles,
-      ...subSectionStyles,
-      ...navigationTopStyles,
-      ...userMenuStyles,
-      ...headerStyles,
+      ...adminTableHeaderStyles,
+      ...businessUnitsModalStyles,
+      ...businessUnitsSelectorStyles,
+      ...complianceGroupItemsStyles,
+      ...complianceItemModalStyles, 
+      ...complianceItemResponseStyles,
       ...complianceItemStyles,
-      ...complianceListItemsStyles,
       ...complianceItemsSquareStyles,
+      ...complianceListItemsStyles,
+      ...customRadioButtonStyles,
+      ...documentUploadedStyles,
+      ...evidenceStyles,
       ...filtersPanelItemStyles,
       ...filtersPanelStyles,
-      ...businessUnitsSelectorStyles,
-      ...complianceItemResponseStyles,
-      ...responseTabItemStyles,
-      ...textConfirmInputStyles,
-      ...evidenceStyles,
-      ...documentUploadedStyles,
-      ...settingsTabItemStyles,
+      ...headerStyles,
+      ...navigationLeftFiltersStyles,
+      ...navigationLeftItemStyles,
+      ...navigationLeftStyles,
+      ...navigationTopStyles,
+      ...questionFormStyles,
+      ...questionListElementStyles,
+      ...questionListStyles,
+      ...questionsModalStyles,
       ...responseLeftNavigationStyles,
+      ...responseTabItemStyles,
       ...responseLeftTabItemStyles,
-      ...complianceGroupItemsStyles,
+      ...settingsTabItemStyles,
+      ...subSectionStyles,
+      ...summaryItemModalStyles,
+      ...summaryModalStyles,
+      ...textConfirmInputStyles,
+      ...userMenuStyles,
+
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',
@@ -100,6 +122,7 @@ const getTheme = (organizationTheme?: any) => {
         800: '#150d42',
         900: '#07041c',
       },
+      
       auditModal: {
         title: {
           text: "#434B4F",
@@ -327,27 +350,6 @@ const getTheme = (organizationTheme?: any) => {
           businessUnits: {
             description: '#2B3236',
           },
-          additionalDetails: {
-            description: '#2B3236',
-            evidence: {
-              bg: '#F2F2F2',
-              title: '#2B3236',
-              label: '#2B3236',
-              input: {
-                font: {
-                  normal: '#777777',
-                  focus: '#2B3236',
-                },
-                bg: '#FFFFFF',
-                border: '#CBCCCD',
-              },
-              remove: '#E53E3E',
-              add: {
-                bg: '#A2171E',
-                font: '#FFFFFF',
-              },
-            },
-          },
           questions: {
             description: '#2B3236',
             tile: {
@@ -384,7 +386,7 @@ const getTheme = (organizationTheme?: any) => {
             },
           },
           summary: {
-            label: '#9A9EA1',
+            label: '#282F36',
             value: '#2B3236',
             section: '#2B3236',
             questionBg: '#FFFFFF',
@@ -428,7 +430,7 @@ const getTheme = (organizationTheme?: any) => {
         checkbox: {
           icon: {
             border: '#CBCCCD',
-            500: '#A2171E',
+            500: '#462AC4',
           },
           error: '#E53E3E',
         },
@@ -436,7 +438,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#777777',
           bg: '#FFFFFF',
           labelFont: {
-            normal: '#2B3236',
+            normal: '#818197',
             error: '#E53E3E',
           },
           border: {
@@ -459,7 +461,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#777777',
           bg: '#FFFFFF',
           labelFont: {
-            normal: '#2B3236',
+            normal: '#818197',
             error: '#E53E3E',
           },
           border: {
@@ -483,7 +485,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#777777',
           bg: '#FFFFFF',
           labelFont: {
-            normal: '#2B3236',
+            normal: '#818197',
             error: '#E53E3E',
           },
           border: {
@@ -507,7 +509,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#777777',
           bg: '#FFFFFF',
           labelFont: {
-            normal: '#2B3236',
+            normal: '#818197',
             error: '#E53E3E',
           },
           border: {
@@ -531,7 +533,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#777777',
           bg: '#FFFFFF',
           labelFont: {
-            normal: '#2B3236',
+            normal: '#818197',
             error: '#E53E3E',
           },
           border: {
@@ -591,7 +593,10 @@ const getTheme = (organizationTheme?: any) => {
         variants: {
           conformeModal: {
             dialogContainer: {
-              justifyContent: "flex-end",
+              justifyContent: "flex-end"
+            },
+            dialog: {
+              minWidth: "700px"
             },
             overlay: {
               background:

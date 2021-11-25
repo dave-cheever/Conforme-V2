@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Flex, Text } from '@chakra-ui/react';
 
-import QuestionIcon from './QuestionIcon';
 import { questionHeader } from '../../utils/helpers';
 import { useForm } from 'react-hook-form';
 import TextInput from '../Forms/TextInput';
@@ -28,18 +27,18 @@ const QuestionForm = ({ setShowQuestionForm, questionType, addQuestion }) => {
   const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
 
   return (
-    <Flex bg="adminComplianceItemModal.section.questions.form.bg" rounded="10px" p="37px 18px 18px 18px" flexDirection="column">
-      <Flex alignItems="center" mb='20px' ml={2}>
-        <QuestionIcon type={questionType} w='50px' h='50px' color='adminComplianceItemModal.section.questions.form.icon' />
-        <Text ml="17px" fontWeight="semi_medium" fontSize="md">
+    <Flex bg="questions.form.bg" rounded="10px" p="20px 25px" flexDirection="column" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
+      <Flex alignItems="center" mb='20px'>
+        <Text fontWeight="bold" fontSize="smm">
           {questionHeader(questionType)}
         </Text>
       </Flex>
       <TextInput
         control={control}
         name="name"
-        label="Question"
-        placeholder="Type your question"
+        label="Question title"
+        variant="secondaryVariant"
+        placeholder="e.g. where is the tv?"
         validations={{
           notEmpty: true,
         }}
@@ -47,18 +46,19 @@ const QuestionForm = ({ setShowQuestionForm, questionType, addQuestion }) => {
       <Textarea
         control={control}
         name="description"
+        variant="secondaryVariant"
         label="Description"
-        placeholder="Describe your question"
       />
       <Checkbox
         control={control}
         name="required"
-        label="Is answer required?"
+        variant="secondaryVariant"
+        label="Answer is required"
       />
       <Flex justifyContent="space-between" mt='15px'>
         <Button
-          bg="adminComplianceItemModal.section.questions.form.button.primary.bg"
-          color="adminComplianceItemModal.section.questions.form.button.primary.font"
+          bg="questions.form.button.primary.bg"
+          color="questions.form.button.primary.font"
           fontSize="sm"
           fontWeight="medium"
           h="27px"
@@ -74,8 +74,8 @@ const QuestionForm = ({ setShowQuestionForm, questionType, addQuestion }) => {
           Save question
         </Button>
         <Button
-          bg="adminComplianceItemModal.section.questions.form.button.secondary.bg"
-          color="adminComplianceItemModal.section.questions.form.button.secondary.font"
+          bg="questions.form.button.secondary.bg"
+          color="questions.form.button.secondary.font"
           opacity="0.5"
           fontSize="sm"
           fontWeight="medium"
@@ -91,3 +91,22 @@ const QuestionForm = ({ setShowQuestionForm, questionType, addQuestion }) => {
 };
 
 export default QuestionForm;
+
+export const questionFormStyles = {
+  questions: {
+    form: {
+      bg: 'white',
+      icon: '#2B3236',
+      button: {
+        primary: {
+          bg: '#462AC4',
+          font: '#FFFFFF',
+        },
+        secondary: {
+          bg: '#9A9EA1',
+          font: '#FFFFFF',
+        },
+      }
+    },
+  },
+};

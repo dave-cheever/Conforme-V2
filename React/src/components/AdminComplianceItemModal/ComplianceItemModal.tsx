@@ -4,37 +4,36 @@ import {
   ModalHeader,
   Flex,
   Avatar,
-  Box,
-  ModalCloseButton,
   ModalBody,
-  Accordion,
-  ModalFooter,
+  Text,
   Button,
-  Spacer,
   useToast,
+  Icon,
 } from '@chakra-ui/react';
 
 import AlertDialog from '../AlertDialog';
 import { toastFailed } from '../../bootstrap/config';
-import { complianceItemModalSections, initialDialogDetails, useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { initialDialogDetails, useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import { useAppContext } from '../../contexts/AppProvider';
-import ComplianceItemModalSection from './ComplianceItemModalSection';
+import { Close, OpenMenuArrow, Save } from '../../icons';
 
 const ComplianceItemModal = ({ refetch }) => {
   const toast = useToast();
   const { user } = useAppContext();
-
   const {
     complianceItem,
     errors, trigger,
     savingDialogDetails, setSavingDialogDetails,
-    selectedSection, selectedSectionIndex, setSelectedSection,
+    complianceItemModalSections, selectedSection, selectedSectionIndex, selectSection,
   } = useComplianceItemModalContext();
   const {
     saveComplianceItem,
     closeModal,
   } = useComplianceItemModal(refetch);
+
+  const { Component } = selectedSection;
+  
 
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
   const isActionRequiredToComplete = useMemo(() => (complianceItem.evidenceItems || []).length > 0 ||
@@ -77,9 +76,7 @@ const ComplianceItemModal = ({ refetch }) => {
       };
       return setSavingDialogDetails(savingDialogDetails);
     }
-
-    const nextPage = complianceItemModalSections[Object.keys(complianceItemModalSections)[selectedSectionIndex + 1]];
-    setSelectedSection(nextPage);
+    selectSection(selectedSectionIndex + 1);
   };
 
   const handleSecondaryButtonClick = () => {
@@ -98,67 +95,104 @@ const ComplianceItemModal = ({ refetch }) => {
   return (
     <>
       <ModalContent
-        bg="adminComplianceItemModal.bg"
-        h={["100vh", "calc(100vh - 30px)"]}
-        borderRadius={["0", "20px"]}
+        h="100%"
+        m="0"
+        p="35px"
+        rounded="0"
+        bg="complianceItemModal.bg"
         position="absolute"
-        top={["-60px", "-45px"]}
-        right={["0", "15px"]}
       >
-        <ModalHeader fontWeight="bold" fontSize="lg" pl="18px">
-          {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} compliance item
+        <ModalHeader p="0 0 20px 0" fontWeight="bold" fontSize="xxl" alignItems="center">
+          <Flex justifyContent="space-between">
+            <Flex alignItems="center">
+              <Avatar
+                rounded='full'
+                name={user?.displayName}
+                size='xs'
+                src={user?.imgUrl}
+                mr={3}
+              />
+              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} compliance item
+            </Flex>
+            <Flex alignItems="center">
+              <Button
+                leftIcon={<Icon as={Save} stroke="complianceItemModal.saveButton.icon"/>}
+                w="93px"
+                h="40px"
+                mr="26px"
+                bg="complianceItemModal.saveButton.bg"
+                color="complianceItemModal.saveButton.color"
+                fontSize="smm"
+                fontWeight="700"
+                onClick={handleSecondaryButtonClick}
+                disabled={(Object.keys(errors).length > 0 || !isActionRequiredToComplete) && complianceItem.published}
+              >Save</Button>
+              <Close w="15px" h="15px" stroke="complianceItemModal.closeIcon" onClick={closeModal} cursor="pointer" />
+            </Flex>
+          </Flex>
         </ModalHeader>
-        <Flex pl="13px" pb="20px">
-          <Avatar
-            rounded='full'
-            name={user?.displayName}
-            size='xs'
-            src={user?.imgUrl}
-            mx={3}
-          />
-          <Box fontSize="14px" color="brand.darkGrey">{user?.displayName}</Box>
-        </Flex>
-        <ModalCloseButton onClick={closeModal} />
-
-        <ModalBody p={[1.5, 4]} overflowY='auto'>
-          <Accordion index={selectedSectionIndex}>
-            {complianceItemModalSections.map(ComplianceItemModalSection)}
-          </Accordion>
+        <ModalBody h="calc(100% - 175px)" p="0">
+          <Flex>
+            <Flex flexDir="column" w="185px">
+              {complianceItemModalSections.map((el, i) => el.name !== "Summary" && 
+              <Flex key={el.name} mb="15px" alignItems="center" cursor="pointer" onClick={() => selectSection(i)}>
+                <Flex 
+                  w="37px" 
+                  h="28px" 
+                  bg={i === selectedSectionIndex 
+                    ? "complianceItemModal.section.selected.bg" 
+                    : "complianceItemModal.section.unselected.bg" 
+                  }
+                  color={i === selectedSectionIndex 
+                    ? "complianceItemModal.section.selected.color" 
+                    : "complianceItemModal.section.unselected.color" 
+                  }
+                  mr="15px" 
+                  fontSize="11px"
+                  fontWeight="bold"
+                  flexShrink={0} 
+                  rounded="10px" 
+                  alignItems="center" 
+                  justifyContent="center"
+                >
+                  {i+1}
+                </Flex>
+                <Text fontSize="smm" color="complianceItemModal.section.label" fontWeight={i === selectedSectionIndex ? "bold" : "semi_medium" }>
+                  {el.name}
+                </Text>
+              </Flex> 
+              )}
+            </Flex>  
+            <Flex flexDir="column" w="440px" p="25px" bg="complianceItemModal.tabs.bg" h="calc(100vh - 120px)" rounded="20px" justifyContent="space-between">
+              <Flex height="calc(100% - 60px)" mb="20px">
+                <Component />
+              </Flex>
+              <Button
+                w="124px"
+                h="40px"
+                rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)"/>}
+                bg="complianceItemModal.tabs.bottomButton.bg"
+                color="complianceItemModal.tabs.bottomButton.color"
+                fontSize="smm"
+                fontWeight="700"
+                _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
+                onClick={handlePrimaryButtonClick}
+                disabled={
+                  selectedSection.name === 'Summary' &&
+                  (Object.keys(errors).length > 0 || !isActionRequiredToComplete) &&
+                  !complianceItem.published
+                }
+              >
+                {selectedSection.name !== 'Summary' ?
+                  'Next step' :
+                  complianceItem.published ?
+                    'Unpublish' :
+                    'Publish'
+                }
+              </Button>
+            </Flex>
+          </Flex>
         </ModalBody>
-
-        <ModalFooter>
-          <Button
-            w="110px"
-            bg="white"
-            color="adminComplianceItemModal.secondaryButton.bg"
-            fontSize="md"
-            fontWeight="700"
-            onClick={handleSecondaryButtonClick}
-            disabled={(Object.keys(errors).length > 0 || !isActionRequiredToComplete) && complianceItem.published}
-          >Save</Button>
-          <Spacer />
-          <Button
-            w="110px"
-            bg="adminComplianceItemModal.primaryButton.bg"
-            color="white"
-            fontSize="md"
-            fontWeight="700"
-            _hover={{ bg: "adminComplianceItemModal.primaryButton.hoverBg" }}
-            onClick={handlePrimaryButtonClick}
-            disabled={
-              selectedSection.name === 'Summary' &&
-              (Object.keys(errors).length > 0 || !isActionRequiredToComplete) &&
-              !complianceItem.published
-            }
-          >
-            {selectedSection.name !== 'Summary' ?
-              'Next' :
-              complianceItem.published ?
-                'Unpublish' :
-                'Publish'
-            }
-          </Button>
-        </ModalFooter>
       </ModalContent>
 
       <AlertDialog
@@ -176,3 +210,35 @@ const ComplianceItemModal = ({ refetch }) => {
 };
 
 export default ComplianceItemModal;
+
+export const complianceItemModalStyles = {
+  complianceItemModal: {
+    bg: "#ffffff",
+    saveButton: {
+      bg: "#F0F2F5",
+      color: "#424B50",
+      icon: "#818197"
+    },
+    closeIcon: "#282F36",
+    section: {
+      label: "#818197",
+      selected: {
+        bg: "#462AC4",
+        color: "#ffffff"
+      },
+      unselected: {
+        bg: "#F0F2F5",
+        color: "#818197"
+      }
+    },
+    tabs: {
+      bg: "#F0F2F5",
+      bottomButton: {
+        bg: "#462AC4",
+        color: "#ffffff",
+        icon: "#ffffff",
+        hover: "#462AC4"
+      }
+    }
+  }
+};

@@ -45,16 +45,17 @@ const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange })
                   key={item.name}
                 >
                   {(provided, snapshot) => (
-                    <Box w="full" m={2}>
+                    <Box m={2}>
                       <Flex
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         align="center"
-                        ml="-28px"
+                        bg="questionList.bg"
+                        rounded="10px"
                       >
                         <Box {...provided.dragHandleProps} mr={disabled ? "20px" : "10px"}>
                           {!disabled &&
-                            <Move w="10px" mt="-4px" />
+                            <Move w="10px" ml="15px" mt="-4px" stroke="questionList.icon" />
                           }
                         </Box>
                         <QuestionListElement
@@ -75,3 +76,10 @@ const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange })
 };
 
 export default QuestionList;
+
+export const questionListStyles = {
+  questionList: {
+    bg: "#FFFFFF",
+    icon: "#818197"
+  }
+};

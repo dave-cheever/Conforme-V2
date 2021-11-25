@@ -1,9 +1,10 @@
-import React from 'react';
-import { Box, Flex, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react';
+import { Box, Checkbox, CheckboxGroup, Flex, Input, InputGroup, InputLeftElement, Select, VStack } from "@chakra-ui/react";
 
-import BusinessUnitsSelector from '../BusinessUnitsSelector';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
+import { SearchIcon } from '@chakra-ui/icons';
+import SectionHeader from './SectionHeader';
 
 const BusinessUnitsForm = () => {
   const {
@@ -12,26 +13,108 @@ const BusinessUnitsForm = () => {
     setValue, trigger,
   } = useComplianceItemModalContext();
 
-  const handleChange = ({ target: { value } }) => {
+  const [locations, setLocations] = useState<string[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string>();
+  const [searchText, setSearchText] = useState<string>("");
+  const [filteredBU, setFilteredBU] = useState<IBusinessUnit[]>([]);
+
+  const handleChange = (value) => {
     setValue('businessUnitsIds', value);
     trigger('businessUnitsIds');
   };
+  
+  useEffect(() => {
+    const tempLocations: string[] = []
+    businessUnits.forEach(businessUnit => {
+      if(businessUnit.region && !tempLocations.includes(businessUnit.region)) {
+        tempLocations.push(businessUnit.region)
+      } 
+    })
+    setLocations(tempLocations);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessUnits]);
+
+  useEffect(() => {
+    const filtered: any = businessUnits.filter(businessUnit => 
+      selectedLocation 
+        ? businessUnit.region === selectedLocation && businessUnit.name?.toLowerCase().includes(searchText.toLowerCase()) 
+        : businessUnit.name?.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredBU(filtered);
+  }, [businessUnits, searchText, selectedLocation]);
 
   return (
-    <Box w='full' px={[0, 0, 3]}>
+    <Box w='full'>
       <Flex direction='column'>
-        <Text pb={3} pl={3} fontSize='14px' color='adminComplianceItemModal.section.businessUnits.description' opacity='0.7'>
-          Please define the corresponding business unit(s) for this item.
-        </Text>
-        <BusinessUnitsSelector
-          businessUnits={businessUnits as IBusinessUnit[]}
-          selected={complianceItem.businessUnitsIds || []}
-          note="Business unit owners of selected units will be assigned as responsible persons by default"
-          handleChange={handleChange}
-        />
+        <SectionHeader label="Select business unit(s)" />
+        
+        <Flex justifyContent="space-between" mt="25px" mb="30px">
+          <Select 
+            w="190px" 
+            h="42px"
+            bg="businessUnitsModal.selectBg" 
+            border="1px solid" 
+            borderColor="rgba(129, 129, 151, 0.4)" 
+            placeholder="Location" 
+            onChange={(e)=> setSelectedLocation(e.target.value)}
+          >
+            {locations.map(location => <option key={location} value={location}>{location}</option>)}
+          </Select>
+          <InputGroup w="190px" h="42px" border="1px solid" borderColor="rgba(129, 129, 151, 0.4)" rounded="5px">
+            <InputLeftElement
+              pointerEvents="none"
+              children={<SearchIcon color="businessUnitsModal.searchIcon" />}
+            />
+            <Input fontSize="14px" placeholder="Search business unit" onChange={e => setSearchText(e.target.value)} />
+          </InputGroup>
+        </Flex>
+
+        <CheckboxGroup onChange={(e: any) => handleChange(e)} colorScheme="green" value={complianceItem.businessUnitsIds || []}>
+          <VStack alignItems="flex-start">
+            {filteredBU.map(businessUnit =>
+              <Checkbox 
+                key={businessUnit._id}
+                value={businessUnit._id}
+                borderColor="businessUnitsModal.checkbox.unchecked.border"
+                css={{
+                  ".chakra-checkbox__control": {
+                    borderRadius: "20%",
+                    borderWidth: '1px',
+                    width: "21px",
+                    height: "21px",
+                    background: "#FFFFFF",
+                    "&[data-checked]": {
+                      background: "#462AC4",
+                      borderColor: "#462AC4",
+                    }
+                  },
+                  ".chakra-checkbox__label": {
+                    flexGrow: 1,
+                    marginLeft: '1rem',
+                    fontWeight: 400,
+                    color: complianceItem?.businessUnitsIds?.includes(businessUnit._id) ? "#282F36" : "#818197"
+                  },
+                }}
+              >
+                {businessUnit.name}
+              </Checkbox>)}
+          </VStack>
+        </CheckboxGroup>
       </Flex>
     </Box>
   );
 };
 
 export default BusinessUnitsForm;
+
+export const businessUnitsModalStyles = {
+  businessUnitsModal: {
+    searchIcon: "#818197",
+    selectBg: "#ffffff",
+    checkbox: {
+      unchecked: {
+        border: "#CBCCCD"
+      }
+    }
+  }
+};

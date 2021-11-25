@@ -37,30 +37,30 @@ const Dropdown = ({ control, name, label, placeholder = '', tooltip = '', varian
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
+          <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
+              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "form.dropdown.labelFont.error" : "form.dropdown.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={14}
-                  position={variant !== 'secondaryVariant' ? "relative" : "static"}
-                  left={variant !== 'secondaryVariant' ? "19px" : 'none'}
+                  fontSize={11}
+                  position="static"
+                  left='none'
                   zIndex={1}
                 >
                   {label}
                   {' '}
-                  {variant === 'secondaryVariant' && help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
+                  {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
                 </Box>
               </Flex>
             )}
             <Select
-              css={{ paddingTop: variant !== 'secondaryVariant' ? "15px" : "0"} }
+              css={{ paddingTop: "0" }}
               borderRadius="8px"
               borderWidth="1px"
               top="5px"
               fontSize="smm"
-              h={variant !== 'secondaryVariant' ? "55px" : "42px"}
+              h="42px"
               color="form.dropdown.font"
               bg="form.dropdown.bg"
               borderColor={error ? "form.dropdown.border.error" : "form.dropdown.border.normal"}

@@ -5,12 +5,12 @@ import {
   Flex,
   Input,
   Stack,
-  Text,
 } from '@chakra-ui/react';
+import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 
-import { CircleRemove } from '../../icons';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import NumberInput from '../Forms/NumberInput';
+import SectionHeader from './SectionHeader';
 
 const AdditionalDetailsForm = () => {
   const {
@@ -36,71 +36,61 @@ const AdditionalDetailsForm = () => {
 
   return (
     <Stack w='full' spacing={4} px={[0, 0, 3]}>
-      <Text fontSize='14px' color='adminComplianceItemModal.section.additionalDetails.description' opacity='0.7'>
-        Please define the expected evidence and action for this compliance item.
-      </Text>
+      <SectionHeader label="Please define the expected evidence and action for this compliance item." />
       <Stack w='full' spacing={2} pb={3} overflow='auto'>
-        <Box w='full' bg="adminComplianceItemModal.section.additionalDetails.evidence.bg" borderRadius='4px'>
-          <Text color="adminComplianceItemModal.section.additionalDetails.evidence.title" mx={6} my={4} fontWeight="bold" fontSize={14}>Evidence items</Text>
+        <Box w='full' bg="additionalDetails.evidence.bg" borderRadius='4px'>
           {complianceItem.evidenceItems?.map((item, index) =>
-            <Stack key={`item-${index}`} pl={5} pr={5} mb={2} direction='row' spacing={4} align='center'>
+            <Stack key={`item-${index}`} pr={5} mb={2} direction='row' spacing={4} align='center'>
               <Box flexGrow={1}>
-                <Flex pt={2} pb={2} align='center' justify="space-between" mt="-30px">
-                  <Box
-                    color="adminComplianceItemModal.section.additionalDetails.evidence.label"
-                    fontWeight="bold"
-                    fontSize={11}
-                    position="relative"
-                    left="19px"
-                    top="32px"
-                    zIndex={2}
-                  >
-                    Evidence {index + 1}
-                  </Box>
+                <Box
+                  color="additionalDetails.evidence.label"
+                  fontWeight="bold"
+                  fontSize={11}
+                  mb="5px"
+                  zIndex={2}
+                >
+                  Evidence {index + 1}
+                </Box>
+                <Flex alignItems="center">                
+                  <Input
+                    name='evidenceItems'
+                    color="additionalDetails.evidence.input.font.normal"
+                    bg="additionalDetails.evidence.input.bg"
+                    borderWidth='2px'
+                    borderColor='additionalDetails.evidence.input.border'
+                    h='42px'
+                    fontSize="smm"
+                    mb={0}
+                    value={item}
+                    placeholder='Type in the evidence title'
+                    onChange={({ target }) => handleEvidenceItemChange(target.value, index)}
+                    _focus={{ color: 'additionalDetails.evidence.input.font.focus' }}
+                  />
+                  <CloseIcon ml="25px" color='additionalDetails.evidence.remove' cursor='pointer' onClick={() => removeEvidenceItem(index)}/>
                 </Flex>
-                <Input
-                  name='evidenceItems'
-                  color="adminComplianceItemModal.section.additionalDetails.evidence.input.font.normal"
-                  bg="adminComplianceItemModal.section.additionalDetails.evidence.input.bg"
-                  borderWidth='2px'
-                  borderColor='adminComplianceItemModal.section.additionalDetails.evidence.input.border'
-                  h='55px'
-                  pt='10px'
-                  mb={0}
-                  value={item}
-                  placeholder='Type of required evidence submission'
-                  onChange={({ target }) => handleEvidenceItemChange(target.value, index)}
-                  _focus={{ color: 'adminComplianceItemModal.section.additionalDetails.evidence.input.font.focus' }}
-                />
               </Box>
-              <CircleRemove
-                boxSize={4}
-                color='adminComplianceItemModal.section.additionalDetails.evidence.remove'
-                cursor='pointer'
-                onClick={() => removeEvidenceItem(index)}
-              />
             </Stack>
           )}
           {(complianceItem.evidenceItems || []).length < 5 &&
             <Button
               mt={complianceItem.evidenceItems?.length === 0 ? 0 : 3}
-              ml={5}
               mb={4}
               px={4}
               size='xs'
-              bgColor='adminComplianceItemModal.section.additionalDetails.evidence.add.bg'
-              color='adminComplianceItemModal.section.additionalDetails.evidence.add.font'
+              bgColor='additionalDetails.evidence.add.bg'
+              color='additionalDetails.evidence.add.font'
               fontWeight='400'
+              leftIcon={<AddIcon />}
               onClick={addEvidenceItem}
-            >{complianceItem.evidenceItems?.length === 0 ? 'Add' : 'Add another'}</Button>
+            >{complianceItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}</Button>
           }
         </Box>
         <Box w='full'>
           <NumberInput
             control={control}
+            variant="secondaryVariant"
             name="retentionPeriod"
             label="Retention period in years (optional)"
-            placeholder="Define the retention period"
           />
         </Box>
       </Stack>
@@ -109,3 +99,27 @@ const AdditionalDetailsForm = () => {
 };
 
 export default AdditionalDetailsForm;
+
+export const additionalDetailsStyles = {
+  additionalDetails: {
+    description: '#2B3236',
+    evidence: {
+      bg: '#F2F2F2',
+      title: '#2B3236',
+      label: '#2B3236',
+      input: {
+        font: {
+          normal: '#777777',
+          focus: '#2B3236',
+        },
+        bg: '#FFFFFF',
+        border: '#CBCCCD',
+      },
+      remove: '#E93C44',
+      add: {
+        bg: '#462AC4',
+        font: '#FFFFFF',
+      },
+    },
+  }
+};

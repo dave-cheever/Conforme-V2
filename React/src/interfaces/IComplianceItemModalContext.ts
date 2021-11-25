@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Control, FieldError, UseFormReset, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { IComplianceItemModalSection } from "../contexts/ComplianceItemModalProvider";
 
 import { IBaseWithName } from "./IBaseWithName";
@@ -24,7 +24,8 @@ export interface IComplianceItemModalContext {
   savingDialogDetails: IComplianceItemModalDialogDetails;
   setSavingDialogDetails: Dispatch<SetStateAction<IComplianceItemModalDialogDetails>>;
 
+  complianceItemModalSections: IComplianceItemModalSection[];
   selectedSection: IComplianceItemModalSection;
   selectedSectionIndex: number;
-  setSelectedSection: Dispatch<SetStateAction<IComplianceItemModalSection>>;
+  selectSection: (sectionIndex: number) => void;
 }

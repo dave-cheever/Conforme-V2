@@ -35,21 +35,20 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
+          <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
+              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "form.datepicker.labelFont.error" : "form.datepicker.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
-                  position={variant !== 'secondaryVariant' ? "relative" : "static"}
-                  left={variant !== 'secondaryVariant' ? "19px" : 'none'}
+                  position="static"
+                  left='none'
                   zIndex={2}
                 >
                   {label}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
-                  {variant === 'secondaryVariant' && placeholder && <Box opacity={.5}>{placeholder}</Box>}
                 </Box>
               </Flex>
             )}
@@ -57,9 +56,9 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
               pl={"16px"}
               align='center'
               borderRadius={"8px"}
-              borderWidth={"2px"}
-              pt={variant !== 'secondaryVariant' ? "16px" : 'none'}
-              h={variant !== 'secondaryVariant' ? "55px" : "40px"}
+              borderWidth={"1px"}
+              pt='none'
+              h="40px"
               mt="5px"
               mb={"-5px"}
               color="form.datepicker.font"
@@ -91,11 +90,11 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
               <CalendarIcon
                 w='14px'
                 h='16px'
-                mt={variant !== 'secondaryVariant' ? '-15px' : '-2px'}
+                mt='-2px'
                 mr='15px'
               />
             </Flex>
-            {error && <Box fontSize={14} ml={1} mt={1} color='form.datepicker.error'>{error.message}</Box>}
+            {error && <Box fontSize="smm" ml={1} mt={1} color='form.datepicker.error'>{error.message}</Box>}
           </Box>
         );
       }}

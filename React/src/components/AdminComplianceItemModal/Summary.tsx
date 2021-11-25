@@ -2,15 +2,17 @@ import React, { useMemo } from 'react';
 import {
   Stack,
   Text,
-  Skeleton,
+  Flex,
   Box,
+  Grid
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
-import BusinessUnitsCarousel from '../BusinessUnitsCarousel';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import QuestionListElement from '../Questions/QuestionListElement';
+import SectionHeader from './SectionHeader';
+import SummaryItem from './SummaryItem';
 
 export const details = {
   name: 'summary',
@@ -45,74 +47,68 @@ const Summary = () => {
   );
 
   return (
-    <Stack mt={2} spacing={4} direction={['column', 'row']} w='full'>
-      <BusinessUnitsCarousel selectedBusinessUnits={selectedBusinessUnits} businessUnits={businessUnits as IBusinessUnit[]} />
-      <Stack spacing={3} flexGrow={1} w={['full', 'calc(100% - 180px - 1rem)']}>
+      <Stack spacing={3} flexGrow={1} w={['full', 'calc(100% - 180px - 1rem)']} overflow="auto">
+        <Box mb="15px">
+          <SectionHeader label="Review compliance item" />
+        </Box>
+        <SectionHeader label="Details"/>
+          
+        <SummaryItem label="Name">{complianceItem.name || "Not provided"}</SummaryItem>
+        <SummaryItem label="Description">{complianceItem.description || "Not provided"}</SummaryItem>
 
-        <Stack >
-          <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Name</Text>
-          <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{complianceItem.name}</Text>
-        </Stack>
-        <Stack >
-          <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Description</Text>
-          <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{complianceItem.description}</Text>
-        </Stack>
+        <Grid gridTemplateColumns="1fr 1fr 1fr" gridGap="10px">
+          <SummaryItem label="Category">{selectedCategory?.name || "Not provided"}</SummaryItem>
+          <SummaryItem label="Regulatory body">{selectedRegulatoryBody?.name || "Not provided"}</SummaryItem>
+          <SummaryItem label="Functional area">{selectedFunctionalArea?.name || "Not provided"}</SummaryItem>
+          <SummaryItem label="Due date (optional)">{(complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')) || "Not provided"}</SummaryItem>
+          <SummaryItem label="Frequency">{complianceItem.frequency || "Not provided"}</SummaryItem>
+        </Grid>
 
-        <Stack spacing={3} direction='row' >
-          <Stack w='60%'>
-            <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Category</Text>
-            <Skeleton color='adminComplianceItemModal.section.summary.value' fontSize='md' isLoaded={!!selectedCategory}>{selectedCategory?.name}</Skeleton>
-          </Stack>
-          <Stack w='40%'>
-            <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Regulatory body</Text>
-            <Skeleton color='adminComplianceItemModal.section.summary.value' fontSize='md' isLoaded={!!selectedRegulatoryBody}>{selectedRegulatoryBody?.name}</Skeleton>
-          </Stack>
-        </Stack>
+        {selectedBusinessUnits.length !== 0 && <SectionHeader label="Business unit(s)"/> }
+        {selectedBusinessUnits.map(businessUnit => 
+          <Flex bg="summaryModal.tileBg" p="10px 15px" rounded="10px" flexDir="column">
+            <Text mb="3px" fontSize="smm" fontWeight="bold">{businessUnit.name}</Text>
+            <Text fontSize="11px" fontWeight="semi_medium" color="summaryModal.buColor">{businessUnit.region}</Text>
+          </Flex>)
+        }
 
-        <Stack spacing={3} direction='row' >
-          <Stack w='60%'>
-            <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Functional area</Text>
-            <Skeleton color='adminComplianceItemModal.section.summary.value' fontSize='md' isLoaded={!!selectedFunctionalArea}>{selectedFunctionalArea?.name}</Skeleton>
-          </Stack>
-          <Stack w='40%'>
-            <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Due date (optional)</Text>
-            <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')}</Text>
-          </Stack>
-        </Stack>
+        {complianceItem?.evidenceItems?.length !== 0 && <SectionHeader label="Additional details"/>}
 
-        <Stack >
-          <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Frequency</Text>
-          <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{complianceItem.frequency}</Text>
-        </Stack>
-
-        <Text mt='1.5rem !important' fontWeight='700' fontSize='14px' color='adminComplianceItemModal.section.summary.section'>Additional details</Text>
-
-        <Stack spacing={3} >
+        <Grid gridGap="10px" gridTemplateColumns="1fr 1fr">
           {(complianceItem.evidenceItems || []).map((item, index) => (
-            <Stack key={`evidence-item-${index}`} >
-              <Text color='adminComplianceItemModal.section.summary.label' fontSize='sm'>Evidence {index + 1}</Text>
-              <Text color='adminComplianceItemModal.section.summary.value' fontSize='md'>{item}</Text>
+            <Stack key={`evidence-item-${index}`} p="10px 15px" bg="summaryModal.tileBg" rounded="10px">
+              <Text color='summaryModal.label' fontSize='sm'>Evidence {index + 1}</Text>
+              <Text color='summaryModal.value' fontSize='md'>{item}</Text>
             </Stack>
           ))}
-        </Stack>
+        </Grid>
 
         {complianceItem.questions?.length !== 0 && <Box w='full'>
-          <Text mt='1.5rem !important' mb='1rem !important' fontWeight='700' fontSize='14px' color='adminComplianceItemModal.section.summary.section'>Added questions</Text>
-          <Stack spacing={2} w='full'>
+          <SectionHeader label="Questions"/>
+          <Stack spacing={2} w='full' mt="15px">
             {complianceItem.questions?.map(item => (
-              <QuestionListElement question={item} bgColor="adminComplianceItemModal.section.summary.questionBg" key={item.name} />
+              <QuestionListElement question={item} bgColor="summaryModal.tileBg" key={item.name} />
             ))}
           </Stack>
         </Box>}
 
         {complianceItem.evidenceItems?.length === 0 && complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 &&
-          <Text color="adminComplianceItemModal.section.summary.error">
+          <Text color="summaryModal.error">
             You must add at least one evidence item OR one mandatory question in order to have a valid compliance item.
           </Text>
         }
       </Stack>
-    </Stack>
   );
 };
 
 export default Summary;
+
+export const summaryModalStyles = {
+  summaryModal: {
+    tileBg: "#FFFFFF",
+    buColor: "#818197",
+    error: "#E53E3E",
+    label: "#282F36",
+    value: "#282F36"
+  }
+};

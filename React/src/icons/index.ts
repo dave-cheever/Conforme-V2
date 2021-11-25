@@ -25,6 +25,7 @@ import CircledCross from "./CircledCross";
 import CircledTickBold from "./CircledTickBold";
 import CircleEmpty from './CircleEmpty';
 import CircleRemove from './CircleRemove';
+import Close from "./Close";
 import ComingUpIcon from "./ComingUpIcon";
 import { Conforme } from "./Conforme";
 import { Copy } from "./Copy";
@@ -64,6 +65,7 @@ import QuestionToggleIcon from "./QuestionToggleIcon";
 import RedDotIcon from "./RedDotIcon";
 import RequiredIcon from "./RequiredIcon";
 import RightArrowIcon from "./RightArrowIcon";
+import Save from "./Save";
 import SearchIcon from "./SearchIcon";
 import { Share } from "./Share";
 import UploadedCross from "./UploadedCross";
@@ -111,6 +113,7 @@ export {
   CircledTickBold,
   CircleEmpty,
   CircleRemove,
+  Close,
   ComingUpIcon,
   Conforme,
   ConformeSmall,
@@ -155,6 +158,7 @@ export {
   RequiredIcon,
   ResetIcon,
   RightArrowIcon,
+  Save,
   SearchIcon,
   Share,
   TeamsIcon,

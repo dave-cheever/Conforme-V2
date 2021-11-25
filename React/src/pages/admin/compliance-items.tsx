@@ -27,6 +27,7 @@ const GET_COMPLIANCE_ITEMS = gql`
       _id
       name
       description
+      businessUnitsIds
       frequency
       dueDate
       published
@@ -93,7 +94,7 @@ const ComplianceItemsAdmin = () => {
         outdated: question.outdated,
       })),
       published: complianceItem.published,
-    }, 5);
+    }, 4);
   };
 
   return (
