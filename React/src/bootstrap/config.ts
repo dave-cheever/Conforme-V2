@@ -1,10 +1,13 @@
 import {
   Admin,
   AttachmentIcon,
+  AuditIcon,
   DetailIcon,
   Home,
   Insights,
-  QuestionIcon
+  ProgressIcon,
+  QuestionIcon,
+  TeamsIcon
 } from "../icons";
 import { INavItem } from "../interfaces/INavItem";
 
@@ -161,5 +164,23 @@ export const settingsTabs = [
   {
     index: 2,
     label:"Notifications"
+  }
+];
+
+export const navigationTabs = [
+  {
+    label: 'Progress',
+    url: '',
+    icon: ProgressIcon
+  },
+  {
+    label: 'Audit log',
+    url: '/audit-log',
+    icon: AuditIcon
+  },
+  {
+    label: 'Team',
+    url: '/team',
+    icon: TeamsIcon
   }
 ];

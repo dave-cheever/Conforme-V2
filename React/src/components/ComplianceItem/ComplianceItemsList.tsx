@@ -25,7 +25,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
       <Box
         key={response._id}
         cursor='pointer'
-        onClick={() => history.push(`/complianceItem/${response._id}`)}
+        onClick={() => history.push(`/compliance-item/${response._id}`)}
         bg="white"
         py={[1, 0]}
         w='full'

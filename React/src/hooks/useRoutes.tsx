@@ -22,10 +22,12 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import PureLayout from "../layouts/PureLayout";
 import IRoute from "../interfaces/IRoute";
 import { useAppContext } from "../contexts/AppProvider";
-import ComplianceItemResponse from "../pages/complianceItemResponse";
+import ComplianceItemResponse from "../pages/compliance-item/index";
 import Insights from "../pages/insights";
 import Help from "../pages/help";
 import FilterLayout from "../layouts/FilterLayout";
+import ResponseLayout from "../layouts/ResponseLayout";
+import Team from "../pages/compliance-item/team";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -60,11 +62,25 @@ const protectedRoutes: Array<IRoute> = [
     component: ComplianceItems,
     layout: FilterLayout,
   }, {
-    path: '/complianceItem/:id',
+    path: '/compliance-item/:id',
     key: 'complianceItem',
     exact: true,
     component: ComplianceItemResponse,
-    layout: DefaultLayout,
+    layout: ResponseLayout,
+  },
+  {
+    path: '/compliance-item/:id/audit-log',
+    key: 'complianceItem-audit',
+    exact: true,
+    component: AuditLog,
+    layout: ResponseLayout,
+  },
+  {
+    path: '/compliance-item/:id/team',
+    key: 'complianceItem-team',
+    exact: true,
+    component: Team,
+    layout: ResponseLayout,
   }, {
     path: '/insights',
     key: 'insights',

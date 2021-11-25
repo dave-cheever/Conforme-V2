@@ -76,6 +76,8 @@ import ConformeSmall from "./ConformeSmall";
 import CrossIcon from "./CrossIcon";
 import DownloadIcon from "./DownloadIcon";
 import UploadIcon from "./UploadIcon";
+import TeamsIcon from "./TeamsIcon";
+import ProgressIcon from "./ProgressIcon";
 
 export {
   Accidents,
@@ -140,6 +142,7 @@ export {
   OpenMenuArrow,
   Pencil,
   Policies,
+  ProgressIcon,
   QuestionDateIcon,
   QuestionIcon,
   QuestionMarkIcon,
@@ -152,6 +155,7 @@ export {
   RightArrowIcon,
   SearchIcon,
   Share,
+  TeamsIcon,
   TickIcon,
   UploadedCross,
   UploadedTick,

@@ -18,6 +18,8 @@ import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { evidenceStyles } from "../components/Response/Evidence";
 import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
 import { settingsTabItemStyles } from "../components/Settings/TabItem";
+import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
+import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -78,6 +80,8 @@ const getTheme = (organizationTheme?: any) => {
       ...evidenceStyles,
       ...documentUploadedStyles,
       ...settingsTabItemStyles,
+      ...responseLeftNavigationStyles,
+      ...responseLeftTabItemStyles,
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',

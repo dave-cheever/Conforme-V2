@@ -139,7 +139,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
           color={responseStatus === "nonCompliant" ? "white" : "complianceSquare.fontColor"}
           w="85px" h="28px"
           _hover={{bg: responseStatus === "nonCompliant" ? "complianceSquare.nonCompliant" : "complianceSquare.buttonBg"}}
-          onClick={() => history.push(`/complianceItem/${response._id}`)}>
+          onClick={() => history.push(`/compliance-item/${response._id}`)}>
             Details
         </Button>
         <Flex align="center" justify="center" flexDirection="column" color='complianceSquare.nameFontColor'>
