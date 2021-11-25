@@ -7,12 +7,12 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
-  ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
+
 import { useAppContext } from "../../contexts/AppProvider";
+import { ChevronRight, Close } from "../../icons";
 import { AdminModalState } from "../../interfaces/IAdminContext";
 
 interface IAdminModal {
@@ -37,7 +37,7 @@ const AdminModal = ({
     <Modal
       isOpen={isOpenModal}
       onClose={onClose}
-      size={"lg"}
+      size="xl"
       onOverlayClick={onAction}
       onEsc={onAction}
       variant="conformeModal"
@@ -46,46 +46,67 @@ const AdminModal = ({
       {modalType !== "delete" && (
         <ModalContent
           bg="adminModal.content.bg"
-          h={["100vh", "calc(100vh - 30px)"]}
-          borderRadius={["0", "20px"]}
+          h={["100vh"]}
           position="absolute"
-          top={["-60px", "-45px"]}
-          right={["0", "15px"]}
+          top={["-60px"]}
+          rounded="0"
         >
           <ModalHeader
-            fontWeight="fontWeights.bold"
-            fontSize="fontSizes.lg"
             pl="18px"
           >
-            {modalType === "edit" ? `Edit ${collection}` : `Add ${collection}`}
+            <Flex pt="10px" justifyContent="space-between" alignItems="center">
+              <Flex>
+                <Avatar
+                  rounded="full"
+                  name={user?.displayName}
+                  size="sm"
+                  src={user?.imgUrl}
+                  mx={3}
+                />
+                <Box fontSize="xxl" fontWeight="bold" >{modalType === "edit" ? `Edit ${collection}` : `Add ${collection}`}</Box>
+              </Flex>
+              <Close w="15px" h="15px" stroke="adminModal.closeIcon" onClick={onAction} cursor="pointer" />
+            </Flex>
           </ModalHeader>
-          <Flex pl="13px" pb="20px">
-            <Avatar
-              rounded="full"
-              name={user?.displayName}
-              size="xs"
-              src={user?.imgUrl}
-              mx={3}
-            />
-            <Box fontSize="fontSizes.smm">{user?.displayName}</Box>
-          </Flex>
-          <ModalCloseButton onClick={onAction} />
           <ModalBody bg="adminModal.body.bg" overflowY="auto">
-            {children}
+            <Box borderRadius={["0", "20px"]} bgColor="#F0F2F5" h={"98%"} p={25} position="relative" >
+              {children}
+
+
+              {(modalType === 'edit') &&
+                <Button
+                  mb="25"
+                  bottom={0}
+                  position="absolute"
+                  bg="adminModal.button.remove.bg"
+                  color="adminModal.button.remove.color"
+                  _hover={{ bg: "adminModal.button.remove.bg" }}
+                  fontSize="smm"
+                  fontWeight="bold"
+                  onClick={() => onAction("delete")}
+                >
+                  Remove
+                </Button>}
+              <Button
+                mb="25"
+                right={modalType === 'edit' ? 0 : ''}
+                bottom={0}
+                mr="25px"
+                position="absolute"
+                bg="adminModal.button.bg"
+                color="adminModal.button.color"
+                fontSize="smm"
+                fontWeight="bold"
+
+                _hover={{ bg: "adminModal.button.hover" }}
+                onClick={() => onAction(modalType)}
+              >
+                {modalType === "edit" ? "Update" : "Add"}
+                <ChevronRight ml="5px" />
+              </Button>
+
+            </Box>
           </ModalBody>
-          <ModalFooter>
-            <Button
-              w="110px"
-              bg="adminModal.button.bg"
-              color="adminModal.button.color"
-              fontSize="font.md"
-              fontWeight="fontWeights.bold"
-              _hover={{ bg: "adminModal.button.hover" }}
-              onClick={() => onAction(modalType)}
-            >
-              {modalType === "edit" ? "Update" : "Add"}
-            </Button>
-          </ModalFooter>
         </ModalContent>
       )}
       {modalType === "delete" && (
@@ -146,3 +167,37 @@ const AdminModal = ({
 };
 
 export default AdminModal;
+
+export const adminModalStyles = {
+  adminModal: {
+    content: {
+      bg: "#FFFFFF",
+    },
+    body: {
+      bg: "#FFFFFF",
+    },
+    closeIcon: "#282F36",
+    button: {
+      bg: "#462AC4",
+      hover: "#462AC4",
+      keep: {
+        bg: "#A2171E",
+        hover: "#462AC4",
+      },
+      remove: {
+        bg: "#E93C44",
+        color: "#ffffff",
+
+      },
+      color: "#ffffff",
+
+    },
+    text: {
+      color: "#ffffff",
+    },
+    delete: {
+      bg: 'rgba(67, 76, 81, 0.95)',
+    },
+  }
+}
+

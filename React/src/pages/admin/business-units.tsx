@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { Box, Flex, Text, Tooltip, useToast } from "@chakra-ui/react";
-
+import { Box, Flex, Text, Tooltip, useToast, Stack } from "@chakra-ui/react";
+import Dropdown from "../../components/Forms/Dropdown";
 import Loader from "../../components/Loader";
 import { toastFailed, toastSuccess } from "../../bootstrap/config";
 import AdminModal from "../../components/Admin/AdminModal";
@@ -102,11 +102,11 @@ const BusinessUnits = () => {
   ) => {
     setAdminModalState(action);
     reset({
-      _id: businessUnit._id,
-      name: businessUnit.name,
-      type: businessUnit.type,
-      region: businessUnit.region,
-      ownerId: businessUnit.ownerId,
+      _id: businessUnit?._id,
+      name: businessUnit?.name,
+      type: businessUnit?.type,
+      region: businessUnit?.region,
+      ownerId: businessUnit?.ownerId,
     });
   };
 
@@ -226,36 +226,54 @@ const BusinessUnits = () => {
         isOpenModal={adminModalState !== "closed"}
         modalType={adminModalState}
         onAction={handleAction}
-        collection={"businessUnit"}
+        collection={"business unit"}
       >
         <Flex w="full" align="flex-start" direction="column">
-          <TextInput
-            name="name"
-            control={control}
-            label="Name"
-            placeholder="Business Unit Name"
-            validations={{
-              notEmpty: true,
-            }}
-          />
-          <TextInput
-            name="type"
-            control={control}
-            label="Unit Type"
-            placeholder="Unit Type"
-            validations={{
-              notEmpty: true,
-            }}
-          />
-          <TextInput
-            name="region"
-            control={control}
-            label="Region"
-            placeholder="Region Name"
-            validations={{
-              notEmpty: true,
-            }}
-          />
+          <Text fontWeight="bold" fontSize="smm" pb={2}>Item attributes</Text>
+          <Stack w="full" spacing={2}>
+            <TextInput
+              name="name"
+              label="Name"
+              placeholder='Name'
+              control={control}
+              validations={{
+                notEmpty: true,
+              }}
+            />
+            <Dropdown
+              control={control}
+              name="type"
+              label="Unit Type"
+              placeholder="Select Unit Type"
+              validations={{
+                notEmpty: true,
+              }}
+              options={[{ label: "Unit Type 1", value: "unit type 1" }]}
+            />
+            <Dropdown
+              control={control}
+              name="region"
+              label="Region"
+              placeholder="Select Region"
+              validations={{
+                notEmpty: true,
+              }}
+              options={[{ label: "Head Office", value: "Head Office" }]}
+            />
+
+            <Dropdown
+              control={control}
+              name="owner"
+              label="Owner"
+              placeholder="Select Owner"
+              validations={{
+                notEmpty: true,
+              }}
+              options={[{ label: "Owner 1", value: "owner 1" }]}
+            />
+
+          </Stack>
+
         </Flex>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Business units"]} />
@@ -281,3 +299,10 @@ const BusinessUnits = () => {
 };
 
 export default BusinessUnits;
+
+export const businessUnitsStyles = {
+  businessUnit: {
+    binIconColor: "#FC5960",
+    fontColor: "#818197",
+  }
+}

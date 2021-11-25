@@ -187,9 +187,9 @@ const FunctionalAreas = () => {
         <Flex w="full" align="flex-start" direction="column">
           <TextInput
             name="name"
-            control={control}
             label="Name"
-            placeholder="Functional Area name"
+            placeholder="Functional area name"
+            control={control}
             validations={{
               notEmpty: true,
             }}
@@ -253,3 +253,8 @@ const FunctionalAreas = () => {
 };
 
 export default FunctionalAreas;
+
+export const functionalAreasStyles = {
+  functionalAreas: {
+  fontColor: "#818197",
+}}

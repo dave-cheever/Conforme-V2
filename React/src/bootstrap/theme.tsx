@@ -19,6 +19,10 @@ import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
+import { businessUnitsStyles } from "../pages/admin/business-units";
+import { categoriesStyles } from "../pages/admin/categories";
+import { functionalAreasStyles } from "../pages/admin/functional-areas";
+import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
 import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
 import { navigationTopStyles } from "../components/NavigationTop";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
@@ -34,6 +38,7 @@ import { summaryItemModalStyles } from "../components/AdminComplianceItemModal/S
 import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summary";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { userMenuStyles } from "../components/UserMenu";
+import { adminModalStyles } from "../components/Admin/AdminModal";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -59,6 +64,7 @@ const getTheme = (organizationTheme?: any) => {
     fontSizes: {
       ...theme.fontSizes,
       xs: "10px",
+      ssm:"11px",
       sm: "12px",
       smm: "14px",
       md: "16px",
@@ -75,6 +81,18 @@ const getTheme = (organizationTheme?: any) => {
     },
     colors: {
       ...theme.colors,
+      ...navigationLeftStyles,
+      ...navigationLeftItemStyles,
+      ...navigationLeftFiltersStyles,
+      ...subSectionStyles,
+      ...adminModalStyles,
+      ...categoriesStyles,
+      ...regulatoryBodiesStyles,
+      ...functionalAreasStyles,
+      ...businessUnitsStyles,
+      ...navigationTopStyles,
+      ...userMenuStyles,
+      ...headerStyles,
       ...additionalDetailsStyles,
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
@@ -261,18 +279,6 @@ const getTheme = (organizationTheme?: any) => {
       loginPage: {
         bg: "#2B3236",
       },
-      categories: {
-        fontColor: "#9A9EA1",
-      },
-      functionalAreas: {
-        fontColor: "#9A9EA1",
-      },
-      regulatoryBodies: {
-        fontColor: "#9A9EA1",
-      },
-      businessUnit: {
-        binIconColor: "#FC5960",
-      },
       loader: {
         color: "#A2171E",
       },
@@ -403,28 +409,16 @@ const getTheme = (organizationTheme?: any) => {
           },
         },
       },
-      adminModal: {
-        content: {
-          bg: "#FFFFFF",
-        },
-        body: {
-          bg: "#FFFFFF",
-        },
-        button: {
-          bg: "#A2171E",
-          hover: "#CC242D",
-          keep: {
-            bg: "#A2171E",
-            hover: "#CC242D",
-          },
-          color: "#ffffff",
-        },
-        text: {
-          color: "#ffffff",
-        },
-        delete: {
-          bg: 'rgba(67, 76, 81, 0.95)',
-        },
+      complianceList: {
+        compliant: "#62c240",
+        nonCompliant: "#FC5960",
+        comingUp: "#FFA012",
+        fontColor: "#2B3236",
+        buildingIcon: "#2B3236",
+        crossIcon: "#FC5960",
+        tickIcon: "#41BA17",
+        imageBg: "#ffffff",
+        evidenceFontColor: "#424B50"
       },
       form: {
         checkbox: {
@@ -594,9 +588,6 @@ const getTheme = (organizationTheme?: any) => {
           conformeModal: {
             dialogContainer: {
               justifyContent: "flex-end"
-            },
-            dialog: {
-              minWidth: "700px"
             },
             overlay: {
               background:

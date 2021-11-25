@@ -162,9 +162,9 @@ const RegulatoryBodies = () => {
         <Flex w='full' align='flex-start' direction='column'>
           <TextInput
             name="name"
-            control={control}
             label="Name"
             placeholder='Regulatory body name'
+            control={control}
             validations={{
               notEmpty: true,
             }}
@@ -228,3 +228,8 @@ const RegulatoryBodies = () => {
 };
 
 export default RegulatoryBodies;
+
+export const regulatoryBodiesStyles = {
+  regulatoryBodies: {
+  fontColor: "#818197",
+}}

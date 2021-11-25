@@ -187,9 +187,9 @@ const Categories = () => {
         <Flex w="full" align="flex-start" direction="column">
           <TextInput
             name="name"
-            control={control}
             label="Name"
             placeholder="Category name"
+            control={control}
             validations={{
               notEmpty: true,
             }}
@@ -250,3 +250,8 @@ const Categories = () => {
 };
 
 export default Categories;
+
+export const categoriesStyles = {
+  categories: {
+  fontColor: "#818197",
+}}
