@@ -1,15 +1,14 @@
 import React, { useMemo, useState } from 'react'
-import { Box, Button, Flex, useToast } from '@chakra-ui/react';
-import { AttachmentIcon } from '@chakra-ui/icons';
+import { Box, Flex, useToast, Text } from '@chakra-ui/react';
 import Dropzone, { FileRejection } from 'react-dropzone';
 import axios from 'axios';
 
-import { UploadedCross, UploadedTick } from '../../icons';
 import Can from '../can';
 import DocumentUploading from './DocumentUploading';
 import DocumentUploaded from './DocumentUploaded';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { toastFailed } from '../../bootstrap/config';
+import { UploadIcon } from '../../icons';
 
 const EvidenceExpected = ({ evidence }) => {
   const toast = useToast();
@@ -52,13 +51,11 @@ const EvidenceExpected = ({ evidence }) => {
     return null;
   }
   return (
-    <Flex direction='column' mb={2} >
+    <Flex direction='column' my={2} maxW="342px">
       <Flex align='center'>
-        {evidence.uploaded?.id ?
-          <UploadedTick h='13px' ml={1} mr={2} color='brand.bmiGreen' /> :
-          <UploadedCross h='13px' ml={1} mr={2} color='brand.primary' />
-        }
-        <Box fontWeight='400' my={2} width="300px">{evidence.name}</Box>
+        <Box fontWeight='700' mb={2} fontSize="12px" color="evidence.fontColor" width="300px">{evidence.name}
+        <Text color="evidence.requiredColor" ml={2} display="inline-block" fontSize="12px" fontWeight="bold">*</Text>
+        </Box>
       </Flex>
       {evidence.uploaded?.id ?
         <DocumentUploaded document={evidence.uploaded} isEvidence={true} /> :
@@ -75,18 +72,17 @@ const EvidenceExpected = ({ evidence }) => {
                   onDrop={(acceptedFiles, rejectedFiles) => upload({ acceptedFile: acceptedFiles[0], rejectedFile: rejectedFiles[0] })}
                 >
                   {({ getRootProps, getInputProps }) => (
-                    <Box {...getRootProps()} w='100px' align='center' h='207x'>
+                    <Box {...getRootProps()} w='full' align='center' h='65px' cursor="pointer">
                       <input {...getInputProps()} />
-                      <Button
-                        mt={1}
-                        rounded='lg'
-                        fontWeight='500'
-                        h='27px'
-                        fontSize='12px'
-                        bg='black'
-                        color='#FFFFFF'
-                        _hover={{ opacity: 0.7 }}
-                      ><AttachmentIcon mr={2} />Add evidence</Button>
+                      <Flex 
+                        fontSize="14px" justify="space-between" 
+                        color="evidence.uploadFontColor" align="center" 
+                        px={5} w="full" h="full" borderRadius="10px" 
+                        borderWidth="1px" borderStyle="dashed" borderColor="evidence.uploadBorderColor"
+                      >
+                        <Flex> Drag and drop or <Text ml={1} color="evidence.browseFontColor"> browse</Text></Flex>
+                        <UploadIcon w="21px" h="21px"/>
+                      </Flex>
                     </Box>
                   )}
                 </Dropzone>
@@ -107,3 +103,16 @@ const EvidenceExpected = ({ evidence }) => {
 };
 
 export default EvidenceExpected;
+
+
+export const evidenceStyles = {
+  evidence:{
+    fontColor: "#1F1F1F",
+    requiredColor:"#E93C44",
+    borderColor:"#D9D9E0",
+    uploadFontColor: "#818197",
+    uploadBorderColor: "#D9D9E0",
+    browseFontColor: "#462AC4",
+    uploadBg:"#FFFFFF"
+  }
+}

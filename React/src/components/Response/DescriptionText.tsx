@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button } from '@chakra-ui/react';
+import { useResponseContext } from '../../contexts/ResponseProvider';
 
-const DescriptionText = ({response}) => {
+const DescriptionText = () => {
+  const { response } = useResponseContext();
   const [expandDescription, setExpandDescription] = useState<boolean>(false);
 
   const expandButton = (text) => {
@@ -23,7 +25,7 @@ const DescriptionText = ({response}) => {
 
   return (
     <Box lineHeight="20px" fontSize="14px" mt="5">
-      {response?.complianceItem?.description?.length < 300 ? (
+      {response && response?.complianceItem?.description?.length < 300 ? (
         <Box whiteSpace="break-spaces">{response?.complianceItem?.description}</Box>
       ) : !expandDescription ? (
         <>

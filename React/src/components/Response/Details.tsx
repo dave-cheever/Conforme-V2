@@ -2,11 +2,11 @@ import React from 'react';
 import { Flex, Text } from '@chakra-ui/react';
 import DescriptionText from './DescriptionText';
 
-const Details = ({response}) => {
+const Details = () => {
     return (
-    <Flex flexDir="column">
+    <Flex h="full" flexDir="column">
         <Text color="complianceItemResponse.labelColor" fontSize="14px">Description</Text>
-        <DescriptionText response={response}/>
+        <DescriptionText/>
     </Flex>
     )
 }

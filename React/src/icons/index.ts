@@ -73,6 +73,9 @@ import ArrowDownIcon from "./ArrowDownIcon";
 import ResetIcon from "./Reset";
 import TickIcon from "./TickIcon";
 import ConformeSmall from "./ConformeSmall";
+import CrossIcon from "./CrossIcon";
+import DownloadIcon from "./DownloadIcon";
+import UploadIcon from "./UploadIcon";
 
 export {
   Accidents,
@@ -80,7 +83,9 @@ export {
   ActionsIcon,
   Admin,
   AreaInfoIcon,
+  ArrowDownIcon,
   ArrowRight,
+  ArrowUpIcon,
   Assets,
   AssetsIcon,
   Asterisk,
@@ -89,8 +94,6 @@ export {
   AuditIcon,
   Audits,
   AuditWhiteIcon,
-  ArrowDownIcon,
-  ArrowUpIcon,
   Bar,
   Bin,
   BlankPage,
@@ -105,11 +108,13 @@ export {
   CircleEmpty,
   CircleRemove,
   ComingUpIcon,
-  Copy,
   Conforme,
   ConformeSmall,
+  Copy,
+  CrossIcon,
   Dashboard,
   DetailIcon,
+  DownloadIcon,
   EllipsisIcon,
   ErrorSign,
   Eye,
@@ -149,5 +154,6 @@ export {
   Share,
   TickIcon,
   UploadedCross,
-  UploadedTick
+  UploadedTick,
+  UploadIcon
 };

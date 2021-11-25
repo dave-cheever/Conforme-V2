@@ -15,6 +15,9 @@ import { complianceItemsSquareStyles } from "../components/ComplianceItem/Compli
 import { complianceItemResponseStyles } from "../pages/complianceItemResponse";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
+import { evidenceStyles } from "../components/Response/Evidence";
+import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
+
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
 
@@ -71,7 +74,8 @@ const getTheme = (organizationTheme?: any) => {
       ...complianceItemResponseStyles,
       ...responseTabItemStyles,
       ...textConfirmInputStyles,
-
+      ...evidenceStyles,
+      ...documentUploadedStyles,
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',

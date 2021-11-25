@@ -14,14 +14,14 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { format } from "date-fns";
 
 import { IDocument } from "../../interfaces/IResponse";
 import Can from "../can";
 import { useResponseContext } from "../../contexts/ResponseProvider";
-import { BlankPage } from "../../icons";
-import { format } from "date-fns";
+import { BlankPage,CrossIcon, DownloadIcon } from "../../icons";
+
 
 const GET_DOCUMENT_DETAILS = gql`
   query FilesDetails($filesDetailsQuery: FilesDetailsQuery) {
@@ -39,8 +39,8 @@ const REMOVE_DOCUMENT = gql`
   }
 `;
 
-const DocumentUploaded = ({ document, isEvidence = false }: { document: IDocument, isEvidence?: boolean }) => {
-  const { data } = useQuery(GET_DOCUMENT_DETAILS, { variables: { filesDetailsQuery: { ids: [document.id] } } });
+const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false }: { document: IDocument | undefined, isEvidence?: boolean, enableDownload?: boolean }) => {
+  const { data } = useQuery(GET_DOCUMENT_DETAILS, { variables: { filesDetailsQuery: { ids: [document?.id] } } });
   const [removeDocument] = useMutation(REMOVE_DOCUMENT);
   const {
     response,
@@ -54,7 +54,7 @@ const DocumentUploaded = ({ document, isEvidence = false }: { document: IDocumen
       variables: {
         responseDocumentRemoveInput: {
           _id: response?._id,
-          documentId: document.id,
+          documentId: document?.id,
           documentType: isEvidence ? 'evidence' : 'attachment'
         },
       },
@@ -69,13 +69,12 @@ const DocumentUploaded = ({ document, isEvidence = false }: { document: IDocumen
         <ModalHeader>Delete file</ModalHeader>
         <ModalCloseButton />
         <ModalBody textAlign='center'>
-          Are you sure you wish to delete {document.name}? It will reset the status for the last iteration to non-compliant.
+          Are you sure you wish to delete {document?.name}? It will reset the status for the last iteration to non-compliant.
         </ModalBody>
         <ModalFooter >
           <Flex w='full' justify='center'>
             <Button
-              bg='brand.primary'
-              color='#FFFFFF'
+              colorScheme="purpleHeart"
               mr={3}
               onClick={() => {
                 remove();
@@ -89,8 +88,7 @@ const DocumentUploaded = ({ document, isEvidence = false }: { document: IDocumen
               onClick={() => {
                 handleDeleteClose();
               }}
-              bg='brand.bmiGreen'
-              color='#FFFFFF'
+              colorScheme="red"
               _hover={{ opacity: 0.7 }}
             >
               Cancel
@@ -105,28 +103,20 @@ const DocumentUploaded = ({ document, isEvidence = false }: { document: IDocumen
     <>
       {deleteIsOpen && renderDeleteModal()}
       <Flex
-        key={document.id}
+        key={document?.id}
         w='full'
         h='65px'
         fontWeight='400'
-        bg='#F2F2F2'
-        rounded='md'
-        mb='2'
+        bg="documentUploaded.bg"
+        borderRadius="10px"
         maxWidth='400px'
         align='center'
         justify='space-between'
         color='brand.darkGrey'
         role="group"
-        onClick={(e) => {
-          e.stopPropagation();
-          window.open(documentDetails?.path)
-        }}
-        _hover={{
-          cursor: 'pointer', boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)', bg: '#FFFFFF'
-        }}
       >
         <Flex align='center'>
-          <Box w='55px' h='55px' bg='#FFFFFF' rounded='md' ml='5px' mr={2} fontSize='12px' flexShrink={0} align='center'>
+          <Box w='55px' h='55px' bg='documentUploaded.thumbnailBg' borderRadius="10px" ml='5px' mr={2} fontSize='12px' flexShrink={0} align='center'>
             <Image
               maxWidth='55px'
               fallback={<Flex align='center' h='full'><BlankPage h='30px' w='55px' /></Flex>}
@@ -139,28 +129,51 @@ const DocumentUploaded = ({ document, isEvidence = false }: { document: IDocumen
             <Flex opacity='0.6'>Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
           </Flex>
         </Flex>
+        {enableDownload ? <Can
+          action='responses.edit'
+          data={{ response }}
+          yes={() => (
+            <IconButton
+              aria-label='delete evidence'
+              icon={<DownloadIcon color="documentUploaded.downloadIcon"  />}
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(documentDetails?.path)
+              }}
+              mr={3}
+              display="inline-block"
+            />
+          )}
+        /> :
         <Can
           action='responses.edit'
           data={{ response }}
           yes={() => (
             <IconButton
               aria-label='delete evidence'
-              icon={<CloseIcon color='#FC5960' />}
-              bg='#FFFFFF'
+              icon={<CrossIcon color="documentUploaded.crossIcon"  />}
               onClick={(e) => {
                 e.stopPropagation();
                 handleDeleteOpen();
               }}
               mr={3}
-              display={['block', 'none']}
-              _hover={{ bg: 'brand.borderColor' }}
-              _groupHover={{ display: 'inline-block' }}
+              display="inline-block"
             />
           )}
         />
+        }
       </Flex>
     </>
   )
 };
 
 export default DocumentUploaded;
+
+export const documentUploadedStyles ={
+  documentUploaded: {
+    bg: "#F2F2F2",
+    thumbnailBg: "#FFFFFF",
+    downloadIcon: "#282F36",
+    crossIcon : "#E93C44"
+  }
+}
