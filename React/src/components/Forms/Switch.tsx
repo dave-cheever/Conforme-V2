@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Select } from '@chakra-ui/react';
+import { Box, Flex, Switch as SwitchInput } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 
 import { Controller } from 'react-hook-form';
@@ -9,12 +9,7 @@ import { DefinedValidations } from '../../interfaces/Validations';
 
 
 interface IDropdown extends IField {
-  placeholder?: string;
   variant?: string;
-  options?: {
-    label?: string;
-    value?: string;
-  }[];
   help?: string;
 }
 
@@ -26,7 +21,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Dropdown = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, options = [], help = '' }: IDropdown) => {
+const Switch = ({ control, name, label, tooltip = '', variant, validations = {}, disabled = false, help = '' }: IDropdown) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
@@ -54,35 +49,22 @@ const Dropdown = ({ control, name, label, placeholder = '', tooltip = '', varian
                 </Box>
               </Flex>
             )}
-            <Select
-              css={{ paddingTop: variant !== 'secondaryVariant' ? "15px" : "0"} }
-              borderRadius="8px"
-              borderWidth="1px"
-              top="5px"
-              fontSize="smm"
-              h={variant !== 'secondaryVariant' ? "55px" : "42px"}
-              color="form.dropdown.font"
-              bg="form.dropdown.bg"
-              borderColor={error ? "form.dropdown.border.error" : "form.dropdown.border.normal"}
-              onBlur={onBlur}
-              value={value}
-              onChange={onChange}
-              name={name}
-              isDisabled={disabled}
-              cursor="pointer"
-              _active={{ bg: disabled ? "form.dropdown.disabled.bg" : "form.dropdown.activeBg" }}
-              _focus={{ borderColor: error ? "form.dropdown.border.focus.error" : "form.dropdown.border.focus.normal" }}
-              _disabled={{
-                bg: "form.dropdown.disabled.bg",
-                color: "form.dropdown.disabled.font",
-                borderColor: "form.dropdown.disabled.border",
-                cursor: "not-allowed",
-              }}
-              placeholder={placeholder}
-              _placeholder={{ color: 'form.dropdown.placeholder' }}
-            >
-              {options.map(option => <option key={`${name}-${option.value}`} value={option.value}>{option.label}</option>)}
-            </Select>
+            <SwitchInput
+                colorScheme="form.switch.color"
+                mt={3}
+                onBlur={onBlur}
+                value={value}
+                onChange={onChange}
+                name={name}
+                isDisabled={disabled}
+                css={{
+                    ".chakra-switch__thumb": {
+                        "&[data-checked]": {
+                        background: "#462AC4"
+                        }
+                    }
+                }}
+            />
             {error && <Box fontSize="smm" ml={1} mt={1} color='form.dropdown.error'>{error.message}</Box>}
             {tooltip && 
             <Flex  color='form.dropdown.tooltip' align='center' mt={3}>
@@ -96,4 +78,4 @@ const Dropdown = ({ control, name, label, placeholder = '', tooltip = '', varian
   );
 };
 
-export default Dropdown;
+export default Switch;

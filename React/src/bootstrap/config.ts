@@ -147,3 +147,19 @@ export const chartColors = [
   '#DBCFB0',
   '#545775'
 ];
+
+
+export const settingsTabs = [
+  {
+    index: 0,
+    label: "Defaults"
+  },
+  {
+    index: 1,
+    label: "Email templates"
+  },
+  {
+    index: 2,
+    label:"Notifications"
+  }
+];
