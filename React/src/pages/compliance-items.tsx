@@ -52,9 +52,21 @@ const ComplianceItems = () => {
 
   const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
 
-  const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(
-    user?.role === "admin" ? "List" : "Grid"
-  );
+  const initialViewMode = useMemo(() => {
+    const savedView = localStorage.getItem('viewMode');
+    if (savedView && (savedView === "Grid" || savedView === "List" || savedView === "Group")) {
+      return savedView;
+    }
+
+    if(user?.role === "admin"){
+      return "List";
+    }
+
+    return "Grid";
+  },[user]);
+
+  const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(initialViewMode);
+
   const viewIcon = useMemo(
     () => ({
       Grid: <GridIcon boxSize="18px"/>,

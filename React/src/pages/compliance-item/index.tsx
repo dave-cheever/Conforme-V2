@@ -45,3 +45,13 @@ const ComplianceItemResponse = () => {
 };
 
 export default ComplianceItemResponse;
+
+export const complianceItemResponseStyles = {
+  complianceItemResponse:{
+    bg: "white",
+    nextButtonColor:"#818197",
+    labelColor:"#818197",
+    expandButtonText: "#462AC4",
+    labelTextColor: "#1F1F1F"
+  }
+}

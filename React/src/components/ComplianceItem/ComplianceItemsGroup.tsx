@@ -6,7 +6,7 @@ import {
 import ComplianceItemSquare from './ComplianceItemSquare';
 import { IResponse } from '../../interfaces/IResponse';
 import useResponseUtils from '../../hooks/useResponseUtils';
-import { responseStatuses } from '../../hooks/useResponseUtils';
+import { responseStatusesGroup } from '../../hooks/useResponseUtils';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   const [ filteredResults, setFilteredResults ] = useState<any>({});
@@ -21,12 +21,11 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   }, [responses]);
 
   const renderGroup = (group: string) => (
-    (filteredResults[group]?.length > 0) &&
-    <Flex key={group} w='full' px={8} pt={8} direction='column'>
+    <Flex key={group} px={3} pt={8} minW='calc(347px + 1rem)' direction='column'>
       <Flex
-        w='180px'
+        w="full"
         mb={4}
-        h='50px'
+        minH='40px'
         bg={`complianceGroup.${group}`}
         color='#FFFFFF'
         fontWeight='700'
@@ -34,36 +33,30 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
         justify='space-between'
         pr={4}
         pl={5}
-        roundedBottomRight='10px'
-        roundedTopLeft='10px'
-        roundedTopRight='20px'
-        roundedBottomLeft='20px'
+        rounded="full"
       >
-        {responseStatuses[group]}
-        <Flex
-          w='22px'
-          h='22px'
-          bg='#000000'
-          color='#FFFFFF'
-          rounded='lg'
-          justify='center'
-          align='center'
-          fontSize='11px'
-        >
-          {filteredResults[group].length}
-        </Flex>
+        {responseStatusesGroup[group]}
       </Flex>
-      <Flex direction={['column','row']} w='full' wrap='wrap' alignContent={['center', 'flex-start']}>
-        {(filteredResults[group].map((response: IResponse) => <ComplianceItemSquare key={response['_id']} response={response} />))}
+      <Flex direction="column" w='full' align='center' >
+        {(filteredResults[group]?.map((response: IResponse) => <ComplianceItemSquare key={response['_id']} response={response} />))}
       </Flex>
     </Flex>
   );
 
   return (
-    <Flex direction='column' w='full'  h='full' overflow='auto'>
-      {Object.keys(responseStatuses).map(status => renderGroup(status))}
+    <Flex w="full" h='full' overflow='auto'>
+      {Object.keys(responseStatusesGroup).map(status => renderGroup(status))}
     </Flex>
   );
 };
 
 export default ComplianceGridItems;
+
+
+export const complianceGroupItemsStyles = {
+  complianceGroup: {
+    compliant: "#62c240",
+    nonCompliant: "#FC5960",
+    comingUp: "#FFA012"
+  },
+}

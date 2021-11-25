@@ -16,6 +16,12 @@ export const responseStatuses = {
   "nonCompliant": "Non-compliant"
 };
 
+export const responseStatusesGroup = {
+  "nonCompliant": "Non-compliant",
+  "comingUp": "Coming up",
+  "compliant": "Compliant"
+}
+
 export const complianceItemFrequencies = [
   "Monthly",
   "Quarterly",

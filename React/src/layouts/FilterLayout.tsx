@@ -19,6 +19,7 @@ const FilterLayout = ({ component: Component }: { component: any }) => {
         direction="column"
         flexBasis="auto"
         flexGrow={1}
+        overflow="auto"
       >
         <NavigationTop />
         <Box h="full" overflow="none" bg="layout.bg">

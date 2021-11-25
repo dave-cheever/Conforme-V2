@@ -12,7 +12,7 @@ import { headerStyles } from "../components/Header";
 import { complianceItemStyles } from "../pages/compliance-items";
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
-import { complianceItemResponseStyles } from "../pages/complianceItemResponse";
+import { complianceItemResponseStyles } from "../pages/compliance-item/index";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { evidenceStyles } from "../components/Response/Evidence";
@@ -23,6 +23,7 @@ import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTa
 
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
+import { complianceGroupItemsStyles } from "../components/ComplianceItem/ComplianceItemsGroup";
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
 
@@ -86,6 +87,7 @@ const getTheme = (organizationTheme?: any) => {
       ...settingsTabItemStyles,
       ...responseLeftNavigationStyles,
       ...responseLeftTabItemStyles,
+      ...complianceGroupItemsStyles,
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',
@@ -421,10 +423,6 @@ const getTheme = (organizationTheme?: any) => {
         delete: {
           bg: 'rgba(67, 76, 81, 0.95)',
         },
-      },
-      complianceGroup: {
-        compliant: "#62c240",
-        nonCompliant: "#FC5960",
       },
       form: {
         checkbox: {
