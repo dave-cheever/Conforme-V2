@@ -10,10 +10,10 @@ import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
 import TextInput from "../../components/Forms/TextInput";
 import Loader from "../../components/Loader";
-import Chart from "../../components/Chart";
 import Header from "../../components/Header";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
+import BarChart from "../../components/BarChart";
 
 const GET_CATEGORIES = gql`
   query {
@@ -240,7 +240,7 @@ const Categories = () => {
             w={["100%", "220px"]}
           >
             <Box w="100%">
-              {categories && <Chart items={categories} label="category" />}
+              {categories && <BarChart data={categories} label="Categories" />}
             </Box>
           </Flex>
         </Flex>

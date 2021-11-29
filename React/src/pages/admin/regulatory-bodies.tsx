@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { toastFailed, toastSuccess } from "../../bootstrap/config";
 import AdminModal from "../../components/Admin/AdminModal";
 import AdminTableRow from "../../components/Admin/AdminTableRow";
-import Chart from "../../components/Chart";
 import Header from "../../components/Header";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
@@ -14,6 +13,7 @@ import TextInput from "../../components/Forms/TextInput";
 import Loader from "../../components/Loader";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
+import BarChart from "../../components/BarChart";
 
 const GET_REGULATORY_BODIES = gql`
   query {
@@ -177,7 +177,7 @@ const RegulatoryBodies = () => {
       />
       <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
         <Flex h="full" flexDirection={["column-reverse", "row"]}>
-          <Box w={["100%", "calc(100% - 250px)"]} h='calc(100% - 35px)' mr="50px">
+          <Box w={["100%", "calc(100% - 250px)"]} h='calc(100% - 35px)' mr="42px">
             <AdminTableHeader>
               <AdminTableHeaderElement w="50%" label="Regulatory body" />
               <AdminTableHeaderElement w="50%" label="Responses count" />
@@ -217,9 +217,9 @@ const RegulatoryBodies = () => {
             alignItems="center"
             w={["100%", "220px"]}
           >
-            <Box w="100%">
-              {regulatoryBodies && <Chart items={regulatoryBodies} label="regulatory body" />}
-            </Box>
+            <Flex flexDir="column" w="100%" h="full">
+              <BarChart data={regulatoryBodies} label="Regulatory bodies" />
+            </Flex>
           </Flex>
         </Flex>
       </Box>

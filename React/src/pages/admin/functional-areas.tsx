@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import AdminTableRow from "../../components/Admin/AdminTableRow";
-import Chart from "../../components/Chart";
 import Header from "../../components/Header";
 import Loader from "../../components/Loader";
 import TextInput from "../../components/Forms/TextInput";
@@ -14,6 +13,7 @@ import { IBaseWithName } from "../../interfaces/IBaseWithName";
 import { AdminContext } from "../../contexts/AdminProvider";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminModal from "../../components/Admin/AdminModal";
+import BarChart from "../../components/BarChart";
 
 const GET_FUNCTIONAL_AREAS = gql`
   query {
@@ -243,7 +243,7 @@ const FunctionalAreas = () => {
             w={["100%", "220px"]}
           >
             <Box w="100%">
-              {areas && <Chart items={areas} label=" functional area" />}
+              {areas && <BarChart data={areas} label="Functional areas" />}
             </Box>
           </Flex>
         </Flex>

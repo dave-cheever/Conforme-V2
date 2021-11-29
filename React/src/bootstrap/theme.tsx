@@ -3,6 +3,7 @@ import { theme } from "@chakra-ui/react";
 import { additionalDetailsStyles } from "../components/AdminComplianceItemModal/AdditionalDetails";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
+import { barChartStyles } from "../components/BarChart";
 import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
 import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
 import { complianceGroupItemsStyles } from "../components/ComplianceItem/ComplianceItemsGroup";
@@ -96,6 +97,7 @@ const getTheme = (organizationTheme?: any) => {
       ...additionalDetailsStyles,
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
+      ...barChartStyles,
       ...businessUnitsModalStyles,
       ...businessUnitsSelectorStyles,
       ...complianceGroupItemsStyles,
