@@ -13,7 +13,7 @@ const usersById = async (_, {userQueryInput}, { req, authorize }) => {
       firstName: givenName,
       lastName: surname,
       email: userPrincipalName,
-      jobTitle,
+      jobTitle
     }));;
   } catch (err: any) {
     throw new Error(err);

@@ -11,7 +11,7 @@ import { useResponseContext } from '../../contexts/ResponseProvider';
 import ShareModal from '../../components/ShareModal';
 
 const ComplianceItemResponse = () => {
-  const [activeTab,setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
   const {response} = useResponseContext();
 
   const renderSection = () => {

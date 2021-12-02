@@ -1,8 +1,10 @@
 import { theme } from "@chakra-ui/react";
 
 import { additionalDetailsStyles } from "../components/AdminComplianceItemModal/AdditionalDetails";
+import { adminModalStyles } from "../components/Admin/AdminModal";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
+import { avatarUserStyles } from "../components/Team/AvatarUser";
 import { barChartStyles } from "../components/BarChart";
 import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
 import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
@@ -37,9 +39,9 @@ import { subSectionStyles } from "../components/NavigationLeft/SubSection";
 import { settingsTabItemStyles } from "../components/Settings/TabItem";
 import { summaryItemModalStyles } from "../components/AdminComplianceItemModal/SummaryItem";
 import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summary";
+import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { userMenuStyles } from "../components/UserMenu";
-import { adminModalStyles } from "../components/Admin/AdminModal";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -95,6 +97,7 @@ const getTheme = (organizationTheme?: any) => {
       ...additionalDetailsStyles,
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
+      ...avatarUserStyles,
       ...barChartStyles,
       ...businessUnitsModalStyles,
       ...businessUnitsSelectorStyles,
@@ -126,6 +129,7 @@ const getTheme = (organizationTheme?: any) => {
       ...subSectionStyles,
       ...summaryItemModalStyles,
       ...summaryModalStyles,
+      ...teamPageStyles,
       ...textConfirmInputStyles,
       ...userMenuStyles,
 
@@ -598,7 +602,16 @@ const getTheme = (organizationTheme?: any) => {
           shareModal: {
             dialog: {
               maxW: "330px"
-            },
+            }
+          },
+          teamModal: {
+            dialog: {
+              minWidth: "330px",
+              minH: "196px",
+              maxH: "356px",
+              boxShadow: "0px 0px 80px rgba(49, 50, 51, 0.25)",
+              rounded: "20px"
+            }
           },
         },
       },

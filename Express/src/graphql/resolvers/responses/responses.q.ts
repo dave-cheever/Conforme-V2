@@ -4,7 +4,7 @@ import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
 import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek } from "date-fns";
 import { GraphService } from "app-services";
 
-const responses = async (_, { responsesQueryInput }, { authorize }, info: any) => {
+const responses = async (_, { responsesQuery }, { authorize }, info: any) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
     'responses',
     ...elements,
@@ -14,35 +14,35 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
     const pipeline: any[] = [];
 
     // Filter by response id
-    if (responsesQueryInput?._id) {
+    if (responsesQuery?._id) {
       pipeline.push({
         $match: {
-          _id: responsesQueryInput._id,
+          _id: responsesQuery._id,
         },
       });
     }
 
     // Filter by compliance item id
-    if (responsesQueryInput?.complianceItemsIds) {
+    if (responsesQuery?.complianceItemsIds) {
       pipeline.push({
         $match: {
-          complianceItemId: { $in: responsesQueryInput.complianceItemsIds },
+          complianceItemId: { $in: responsesQuery.complianceItemsIds },
         },
       });
     }
 
     // Filter by business unit id
-    if (responsesQueryInput?.businessUnitsIds) {
+    if (responsesQuery?.businessUnitsIds) {
       pipeline.push({
         $match: {
-          businessUnitId: { $in: responsesQueryInput.businessUnitsIds },
+          businessUnitId: { $in: responsesQuery.businessUnitsIds },
         },
       });
     }
 
     // Filter by due date
-    if (responsesQueryInput?.dueDate) {
-      const [filter, startDate, endDate] = responsesQueryInput?.dueDate;
+    if (responsesQuery?.dueDate) {
+      const [filter, startDate, endDate] = responsesQuery?.dueDate;
       let $match;
       switch (filter) {
         case 'noDueDate':
@@ -128,9 +128,9 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
     // Join compliance item
     if (
       // Need to get Compliance Item if there are any dependant filters
-      responsesQueryInput?.includeNotPublished ||
-      responsesQueryInput?.categoriesIds ||
-      responsesQueryInput?.regulatoryBodiesIds ||
+      responsesQuery?.includeNotPublished ||
+      responsesQuery?.categoriesIds ||
+      responsesQuery?.regulatoryBodiesIds ||
       shouldJoin(['complianceItem'])
     ) {
       join({
@@ -142,7 +142,7 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
     }
 
     // Filter by published state
-    if (!(responsesQueryInput?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
+    if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
       pipeline.push({
         $match: {
           'complianceItem.published': true,
@@ -151,19 +151,19 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
     }
 
     // Filter by category id (in compliance item)
-    if (responsesQueryInput?.categoriesIds) {
+    if (responsesQuery?.categoriesIds) {
       pipeline.push({
         $match: {
-          'complianceItem.categoryId': { $in: responsesQueryInput.categoriesIds },
+          'complianceItem.categoryId': { $in: responsesQuery.categoriesIds },
         },
       });
     }
 
     // Filter by regulatory body id (in compliance item)
-    if (responsesQueryInput?.regulatoryBodiesIds) {
+    if (responsesQuery?.regulatoryBodiesIds) {
       pipeline.push({
         $match: {
-          'complianceItem.regulatoryBodyId': { $in: responsesQueryInput.regulatoryBodiesIds },
+          'complianceItem.regulatoryBodyId': { $in: responsesQuery.regulatoryBodiesIds },
         },
       });
     }
@@ -200,13 +200,13 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
 
     // Filter by user id (in business unit)
     // It looks at business unit owner and response delegates
-    if (responsesQueryInput?.usersIds) {
+    if (responsesQuery?.usersIds) {
       pipeline.push({
         $match: {
           $or: [{
-            'businessUnit.ownerId': { $in: responsesQueryInput.usersIds },
+            'businessUnit.ownerId': { $in: responsesQuery.usersIds },
           }, {
-            delegateIds: { $in: responsesQueryInput.usersIds },
+            delegateIds: { $in: responsesQuery.usersIds },
           }],
         },
       });
