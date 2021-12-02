@@ -8,6 +8,7 @@ import Attachments from '../../components/Response/Attachments';
 import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import ShareModal from '../../components/ShareModal';
 
 const ComplianceItemResponse = () => {
   const [activeTab,setActiveTab] = useState(0);
@@ -30,6 +31,7 @@ const ComplianceItemResponse = () => {
   }
   return (
     <Flex w="full" direction='column' pb={['100px', '0px']} >
+      <ShareModal />
       <ReasponseHeader response={response} />
       <Flex flexDir="column" h="calc(100vh - 190px)" p="25px 30px 25px 30px" w="calc(100% - 300px)" borderRadius="20px" bg="complianceItemResponse.bg">
         <Flex align='center' justify="space-between" mb="8">

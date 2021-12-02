@@ -31,6 +31,7 @@ import { questionListElementStyles } from "../components/Questions/QuestionListE
 import { questionListStyles } from "../components/Questions/QuestionList";
 import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
+import { shareModalStyles } from "../components/ShareModal";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
 import { subSectionStyles } from "../components/NavigationLeft/SubSection";
@@ -123,6 +124,7 @@ const getTheme = (organizationTheme?: any) => {
       ...responseLeftNavigationStyles,
       ...responseTabItemStyles,
       ...responseLeftTabItemStyles,
+      ...shareModalStyles,
       ...settingsTabItemStyles,
       ...subSectionStyles,
       ...summaryItemModalStyles,
@@ -594,6 +596,11 @@ const getTheme = (organizationTheme?: any) => {
             overlay: {
               background:
                 "linear-gradient(to right, transparent 0%, black 200%)",
+            },
+          },
+          shareModal: {
+            dialog: {
+              maxW: "330px"
             },
           },
         },

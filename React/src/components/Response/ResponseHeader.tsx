@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Grid, Flex, Heading, Box, Button } from '@chakra-ui/react';
 
 import useResponseUtils from '../../hooks/useResponseUtils';
@@ -6,10 +6,12 @@ import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import ResponseStatusBox from './ResponseStatusBox';
 import { Share, UploadedCross, UploadedTick } from '../../icons';
+import { ResponseContext } from '../../contexts/ResponseProvider';
 
 const ReasponseHeader = ({response}) => {
   const { getStatus, getRenewalStatus } = useResponseUtils();
   const { user } = useAppContext();
+  const { handleShareOpen } = useContext(ResponseContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const currentEvidenceItems = response?.complianceItem?.evidenceItems?.filter(({ outdated }) => !outdated);
@@ -44,7 +46,7 @@ const ReasponseHeader = ({response}) => {
             mr={2} 
             opacity='0.5' 
             color="white" 
-            // onClick={handleShareOpen} 
+            onClick={handleShareOpen} 
             _hover={{ opacity: 1, color: '#FFFFFF', cursor: 'pointer' }} 
           />
         </Flex>
