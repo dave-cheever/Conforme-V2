@@ -601,7 +601,8 @@ const getTheme = (organizationTheme?: any) => {
           },
           shareModal: {
             dialog: {
-              maxW: "330px"
+              maxW: "330px",
+              minW: ["calc(100% - 50px)", "330px"]
             }
           },
           teamModal: {
