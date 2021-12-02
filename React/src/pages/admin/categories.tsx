@@ -14,6 +14,7 @@ import Header from "../../components/Header";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import BarChart from "../../components/BarChart";
+import useDevice from "../../hooks/useDevice";
 
 const GET_CATEGORIES = gql`
   query {
@@ -59,6 +60,7 @@ const Categories = () => {
   const [updateFunction] = useMutation(UPDATE_CATEGORY);
   const [deleteFunction] = useMutation(DELETE_CATEGORY);
   const [categories, setCategories] = useState<IBaseWithName[]>([]);
+  const device = useDevice();
 
   const {
     control,
@@ -198,11 +200,11 @@ const Categories = () => {
       </AdminModal>
       <Header breadcrumbs={["Admin", "Categories"]} hideBreadcrumbsOnMobile />
       <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
-        <Flex h="full" flexDirection={["column-reverse", "row"]}>
-          <Box w={["100%", "calc(100% - 250px)"]} h='calc(100% - 35px)' mr="50px">
+        <Flex h="full" px={["25px", 0]}>
+          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
-              <AdminTableHeaderElement w="50%" label="Category" />
-              <AdminTableHeaderElement w="50%" label="Responses count" />
+              <AdminTableHeaderElement w={["80%", "50%"]} label="Category" />
+              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
             </AdminTableHeader>
             {loading ? (
               <Box mt={20}>
@@ -212,10 +214,9 @@ const Categories = () => {
               <Stack
                 h="full"
                 bg="white"
-                borderBottomRadius={["0", "10px"]}
+                borderBottomRadius="10px"
                 overflow="auto"
-                spacing={["0", "1px"]}
-                mt={["20px", "0"]}
+                spacing="1px"
               >
                 {categories?.length > 0 ? (
                   categories?.map((category, i) => (
@@ -234,15 +235,17 @@ const Categories = () => {
               </Stack>
             )}
           </Box>
-          <Flex
-            flexDirection="column"
-            alignItems="center"
-            w={["100%", "220px"]}
-          >
-            <Box w="100%">
-              {categories && <BarChart data={categories} label="Categories" />}
-            </Box>
-          </Flex>
+          {device === "desktop" && 
+            <Flex
+              flexDirection="column"
+              alignItems="center"
+              w={["100%", "220px"]}
+            >
+              <Box w="100%">
+                {categories && <BarChart data={categories} label="Categories" />}
+              </Box>
+            </Flex>
+          }
         </Flex>
       </Box>
     </>

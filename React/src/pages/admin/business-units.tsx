@@ -13,6 +13,7 @@ import { ArrowCount } from "../../icons";
 import { IBusinessUnit } from "../../interfaces/IBusinessUnit";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
+import useDevice from "../../hooks/useDevice";
 
 const GET_BUSINESS_UNITS = gql`
   query {
@@ -22,10 +23,6 @@ const GET_BUSINESS_UNITS = gql`
       type
       region
       ownerId
-      # owner {
-      #   firstName
-      #   lastName
-      # }
       imgUrl
     }
   }
@@ -66,6 +63,7 @@ const BusinessUnits = () => {
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>([]);
+  const device = useDevice();
 
   const {
     control,
@@ -199,7 +197,12 @@ const BusinessUnits = () => {
       boxShadow="sm"
       flexShrink={0}
     >
-      <Flex w='30%' pl={1} mr={4} align='center' cursor="pointer"
+      <Flex 
+        w={["80%", '30%']} 
+        flexDir="column"
+        pl={1} 
+        mr={4} 
+        cursor="pointer"
         onClick={() => openBusinessUnitModal('edit', businessUnit)}
       >
         <Text
@@ -207,11 +210,18 @@ const BusinessUnits = () => {
           textOverflow='ellipsis'
           whiteSpace='nowrap'
         >{businessUnit.name}</Text>
+        {device === "mobile" && <Text mt="3px" fontSize="11px" color="#818197">{businessUnit?.type}</Text>}
       </Flex>
-      <Box w='calc(70% / 4)'>{businessUnit?.type}</Box>
-      <Box w='calc(70% / 4)'>{businessUnit?.region}</Box>
-      <Box w='calc(70% / 4)'>{businessUnit?.owner?.firstName && businessUnit?.owner?.lastName && `${businessUnit.owner.firstName} ${businessUnit.owner.lastName}`}</Box>
-      <Flex w='calc(70% / 4)' align='center'>
+      {device !== "mobile" && 
+        <>
+          <Box w='calc(70% / 4)'>{businessUnit?.type}</Box>
+          <Box w='calc(70% / 4)'>{businessUnit?.region}</Box>
+          <Box w='calc(70% / 4)'>
+            {businessUnit?.owner?.firstName && businessUnit?.owner?.lastName && `${businessUnit.owner.firstName} ${businessUnit.owner.lastName}`}
+          </Box>
+        </>
+      }
+      <Flex w={["20%", 'calc(70% / 4)']} align='center'>
         <Text>{businessUnit.responsesCount || 0}</Text>
         <Tooltip label="Show Items" fontSize="md">
           <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
@@ -277,14 +287,18 @@ const BusinessUnits = () => {
         </Flex>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Business units"]} />
-      <Flex h='calc(100vh - 160px)'>
-        <Box w='full' h='calc(100% - 35px)' p={[0, "0 25px 30px 30px"]}>
+      <Flex h='calc(100vh - 160px)' px={["25px", 0]}>
+        <Box w='full' h={['calc(100% - 170px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
-            <AdminTableHeaderElement w="30%" label="Unit name" />
-            <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" />
-            <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" />
-            <AdminTableHeaderElement w="calc(70% / 4)" label="Owner" />
-            <AdminTableHeaderElement w="calc(70% / 4)" label="# od responses" />
+            <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" />
+            {device !== "mobile" && 
+              <>
+                <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" />
+                <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" />
+                <AdminTableHeaderElement w="calc(70% / 4)" label="Owner" />
+              </>
+            }
+            <AdminTableHeaderElement w={["20%", "calc(70% / 4)"]} label="# of responses" />
           </AdminTableHeader>
           <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="10px" fontSize="smm">
             {loading && <Loader />}

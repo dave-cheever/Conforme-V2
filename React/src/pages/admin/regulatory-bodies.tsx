@@ -14,6 +14,7 @@ import Loader from "../../components/Loader";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import BarChart from "../../components/BarChart";
+import useDevice from "../../hooks/useDevice";
 
 const GET_REGULATORY_BODIES = gql`
   query {
@@ -59,6 +60,7 @@ const RegulatoryBodies = () => {
   const [updateFunction] = useMutation(UPDATE_REGULATORY_BODY);
   const [deleteFunction] = useMutation(DELETE_REGULATORY_BODY);
   const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>([]);
+  const device = useDevice();
 
   const { control, formState: { errors }, getValues, trigger, reset } = useForm({
     mode: 'all',
@@ -176,11 +178,11 @@ const RegulatoryBodies = () => {
         hideBreadcrumbsOnMobile
       />
       <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
-        <Flex h="full" flexDirection={["column-reverse", "row"]}>
-          <Box w={["100%", "calc(100% - 250px)"]} h='calc(100% - 35px)' mr="42px">
+        <Flex h="full" px={["25px", 0]}>
+          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
-              <AdminTableHeaderElement w="50%" label="Regulatory body" />
-              <AdminTableHeaderElement w="50%" label="Responses count" />
+              <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" />
+              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
             </AdminTableHeader>
             {loading ? (
               <Box mt={20}>
@@ -189,11 +191,10 @@ const RegulatoryBodies = () => {
             ) : (
               <Stack
                 h="full"
-                flexShrink={0}
                 bg="white"
-                borderBottomRadius={["0", "10px"]}
+                borderBottomRadius="10px"
                 overflow="auto"
-                mt={["20px", "0"]}
+                spacing="1px"
               >
                 {regulatoryBodies?.length > 0 ? (
                   regulatoryBodies?.map((regulatoryBody, i) =>
@@ -212,15 +213,17 @@ const RegulatoryBodies = () => {
               </Stack>
             )}
           </Box>
-          <Flex
-            flexDirection="column"
-            alignItems="center"
-            w={["100%", "220px"]}
-          >
-            <Flex flexDir="column" w="100%" h="full">
-              <BarChart data={regulatoryBodies} label="Regulatory bodies" />
+          {device === "desktop" && 
+            <Flex
+              flexDirection="column"
+              alignItems="center"
+              w={["100%", "220px"]}
+            >
+              <Flex flexDir="column" w="100%" h="full">
+                <BarChart data={regulatoryBodies} label="Regulatory bodies" />
+              </Flex>
             </Flex>
-          </Flex>
+          }
         </Flex>
       </Box>
     </>

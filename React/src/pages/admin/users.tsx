@@ -15,6 +15,7 @@ import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 import Header from "../../components/Header";
+import useDevice from "../../hooks/useDevice";
 import { ArrowCount, ArrowRight } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
 
@@ -27,6 +28,8 @@ interface IEditableControls {
 
 const Users = () => {
   const [itemCount] = useState<any[]>([]);
+  const device = useDevice();
+
   const users: IUser[] = [{
     displayName: "displayName",
     email:"email",
@@ -82,7 +85,7 @@ const Users = () => {
       borderBottomRadius={(i === users.length - 1) ? [0, 'lg'] : ''} 
       boxShadow="sm"
     >
-      <Box w='20%' lineHeight="32px">
+      <Box w={["80%", "20%"]} lineHeight="32px">
         <Avatar
           borderColor='brand.active'
           rounded='full'
@@ -93,25 +96,29 @@ const Users = () => {
         />
         {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
       </Box>
-      <Box w='20%'>{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
-      <Box w='20%'>
-        {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
-      </Box>
-      <Box w='20%'>
-        <Editable
-          value={getDefaultPageName(user.defaultPage) || 'Homepage'}
-          isPreviewFocusable={false}
-          submitOnBlur={false}
-        >
-          {(props) => (
-            <Flex align="center">
-              <EditablePreview />
-              <EditableInput {...props} user={user} />
-              <EditableControls {...props} user={user} />
-            </Flex>
-          )}
-        </Editable>
-      </Box>
+      {
+        device !== "mobile" && <>
+        <Box w='20%'>{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
+        <Box w='20%'>
+          {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
+        </Box>
+        <Box w="20%">
+          <Editable
+            value={getDefaultPageName(user.defaultPage) || 'Homepage'}
+            isPreviewFocusable={false}
+            submitOnBlur={false}
+          >
+            {(props) => (
+              <Flex align="center">
+                <EditablePreview />
+                <EditableInput {...props} user={user} />
+                <EditableControls {...props} user={user} />
+              </Flex>
+            )}
+          </Editable>
+        </Box>
+        </>
+      }
 
       <Flex w='20%' align='center'>{getItemCount(user._id)}
         <Tooltip label="Show Items" fontSize="md">
@@ -133,13 +140,18 @@ const Users = () => {
   return (
     <>
       <Header breadcrumbs={["Admin", "Users"]} hideBreadcrumbsOnMobile />
-      <Flex h='calc(100vh - 160px)'>
-        <Box w='full' h='calc(100% - 35px)' p={[0, "0 25px 30px 30px"]}>
+      <Flex h='calc(100vh - 160px)' px={["25px", 0]}>
+        <Box w='full' h={['calc(100% - 170px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
-            <AdminTableHeaderElement w="20%" label="Name" />
-            <AdminTableHeaderElement w="20%" label="Job title" />
-            <AdminTableHeaderElement w="20%" label="Role" />
-            <AdminTableHeaderElement w="20%" label="Default page" />
+            <AdminTableHeaderElement w={["80%", "20%"]} label="Name" />
+            {
+              device !== "mobile" &&
+              <>
+                <AdminTableHeaderElement w="20%" label="Job title" />
+                <AdminTableHeaderElement w="20%" label="Role" />
+                <AdminTableHeaderElement w="20%" label="Default page" />
+              </>
+            }
             <AdminTableHeaderElement w="20%" label="Items per user" />
           </AdminTableHeader>
           <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="10px" overflow="auto">

@@ -117,11 +117,15 @@ const ComplianceItemsAdmin = () => {
         </Box>
       ) : (
         <Box p="0 25px 30px 30px" h='calc(100vh - 160px)' overflow="auto" rounded="10px">
-          <Box w="100%" h='calc(100% - 35px)'>
+          <Box w="100%" h={['calc(100% - 125px)', 'calc(100% - 35px)']}>
             <AdminTableHeader>
-              <AdminTableHeaderElement w="calc(100% / 3)" label="Compliance items" />
-              <AdminTableHeaderElement w="calc(100% / 3)" label="Frequency" />
-              <AdminTableHeaderElement w="calc(100% / 3)" label="Regulatory body" />
+              <AdminTableHeaderElement w={["80%", "calc(100% / 3)"]} label="Compliance items" />
+              {
+                device !== "mobile" && <>
+                  <AdminTableHeaderElement w="calc(100% / 3)" label="Frequency" />
+                  <AdminTableHeaderElement w="calc(100% / 3)" label="Regulatory body" />
+                </>
+              }
             </AdminTableHeader>
             <Stack h="100%" bg="white" borderBottomRadius="10px" overflow="auto">
               {complianceItems.map(complianceItem => (
@@ -141,7 +145,7 @@ const ComplianceItemsAdmin = () => {
                   borderColor="adminTableHeader.border"
                   onClick={() => openModal('edit', complianceItem)}
                 >
-                  <Flex fontWeight="semi_medium" w="calc(100% / 3)" flexDirection="column">
+                  <Flex fontWeight="semi_medium" w={["80%", "calc(100% / 3)"]} flexDirection="column">
                     <Box fontSize="smm">{complianceItem.name || <Text fontStyle='italic' color='adminComplianceItems.element.unnamed'>Unnamed compliance item</Text>}</Box>
                     <Flex alignItems="center">
                       <Box fontSize="11px" color="adminComplianceItems.element.category" lineHeight='25px'>{complianceItem.category?.name}</Box>
@@ -159,8 +163,12 @@ const ComplianceItemsAdmin = () => {
                       )}
                     </Flex>
                   </Flex>
-                  <Box w="calc(100% / 3)">{complianceItem.frequency}</Box>
-                  <Box w="calc(100% / 3)">{complianceItem.regulatoryBody?.name}</Box>
+                  {
+                    device !== "mobile" && <>
+                      <Box w="calc(100% / 3)">{complianceItem.frequency}</Box>
+                      <Box w="calc(100% / 3)">{complianceItem.regulatoryBody?.name}</Box>
+                    </>
+                  }
                 </Flex>
               ))}
             </Stack>

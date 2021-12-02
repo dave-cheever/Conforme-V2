@@ -6,7 +6,7 @@ import { IBaseWithName } from "../../interfaces/IBaseWithName";
 const AdminTableRow = ({ element, index, edit }: { element: IBaseWithName, index: number, edit?: () => void }) => (
   <Flex
     w="full"
-    h={["80px", "73px"]}
+    h={["60px", "73px"]}
     pl={5}
     flexWrap={["wrap", "nowrap"]}
     fontSize="smm"
@@ -15,15 +15,14 @@ const AdminTableRow = ({ element, index, edit }: { element: IBaseWithName, index
     bg="adminTableRow.bg"
     color="adminTableRow.font"
     align="center"
-    boxShadow={["0px 4px 10px rgba(0, 0, 0, 0.25)", "none"]}
     borderBottom="1px solid"
     borderColor="adminTableHeader.border"
   >
-    <Flex w="50%" align="center" cursor="pointer" onClick={edit}>
+    <Flex w={["80%", "50%"]} align="center" cursor="pointer" onClick={edit}>
       {element.name}
     </Flex>
     <Flex
-      w={["36%", "50%"]}
+      w={["20%", "50%"]}
       alignItems="center"
       mt={["5px", "0"]}
       justifyContent={["flex-end", "flex-start"]}
