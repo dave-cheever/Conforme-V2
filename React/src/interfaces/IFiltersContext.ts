@@ -27,7 +27,6 @@ export interface IFiltersContext {
   complianceItems: Partial<IComplianceItem>[];
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];
-  functionalAreas: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];
   users: Partial<IUser>[];
 }

@@ -2,7 +2,6 @@ import businessUnitsResolvers from "./businessUnits"
 import categoriesResolvers from "./categories";
 import commentsResolvers from "./comments";
 import complianceItemsResolvers from "./complianceItems";
-import functionalAreasResolvers from "./functionalAreas";
 import graphResolvers from "./graph";
 import organizationsResolvers from "./organizations";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
@@ -21,7 +20,6 @@ export default {
     ...categoriesResolvers.Query,
     ...commentsResolvers.Query,
     ...complianceItemsResolvers.Query,
-    ...functionalAreasResolvers.Query,
     ...graphResolvers.Query,
     ...organizationsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
@@ -33,7 +31,6 @@ export default {
     ...businessUnitsResolvers.Mutation,
     ...categoriesResolvers.Mutation,
     ...commentsResolvers.Mutation,
-    ...functionalAreasResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
     ...responsesResolvers.Mutation

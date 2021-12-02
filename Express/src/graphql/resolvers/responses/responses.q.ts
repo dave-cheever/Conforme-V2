@@ -131,7 +131,6 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
       responsesQueryInput?.includeNotPublished ||
       responsesQueryInput?.categoriesIds ||
       responsesQueryInput?.regulatoryBodiesIds ||
-      responsesQueryInput?.functionalAreasIds ||
       shouldJoin(['complianceItem'])
     ) {
       join({
@@ -169,15 +168,6 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
       });
     }
 
-    // Filter by functional area id (in compliance item)
-    if (responsesQueryInput?.functionalAreasIds) {
-      pipeline.push({
-        $match: {
-          'complianceItem.functionalAreaId': { $in: responsesQueryInput.functionalAreasIds },
-        },
-      });
-    }
-
     // Join category
     if (shouldJoin(['complianceItem', 'category'])) {
       join({
@@ -187,17 +177,7 @@ const responses = async (_, { responsesQueryInput }, { authorize }, info: any) =
         to: 'complianceItem.category',
       });
     }
-
-    // Join functional area
-    if (shouldJoin(['complianceItem', 'functionalArea'])) {
-      join({
-        pipeline,
-        collection: 'functionalAreas',
-        from: 'complianceItem.functionalAreaId',
-        to: 'complianceItem.functionalArea',
-      });
-    }
-
+    
     // Join regulatory body
     if (shouldJoin(['complianceItem', 'regulatoryBody'])) {
       join({

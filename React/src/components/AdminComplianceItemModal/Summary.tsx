@@ -24,7 +24,6 @@ const Summary = () => {
   const {
     complianceItem,
     categories,
-    functionalAreas,
     regulatoryBodies,
     businessUnits,
   } = useComplianceItemModalContext();
@@ -41,10 +40,6 @@ const Summary = () => {
     regulatoryBodies.find(({ _id }) => _id === complianceItem.regulatoryBodyId),
     [regulatoryBodies, complianceItem]
   );
-  const selectedFunctionalArea = useMemo(() =>
-    functionalAreas.find(({ _id }) => _id === complianceItem.functionalAreaId),
-    [functionalAreas, complianceItem]
-  );
 
   return (
       <Stack spacing={3} flexGrow={1} w={['full', 'calc(100% - 180px - 1rem)']} overflow="auto">
@@ -59,7 +54,6 @@ const Summary = () => {
         <Grid gridTemplateColumns="1fr 1fr 1fr" gridGap="10px">
           <SummaryItem label="Category">{selectedCategory?.name || "Not provided"}</SummaryItem>
           <SummaryItem label="Regulatory body">{selectedRegulatoryBody?.name || "Not provided"}</SummaryItem>
-          <SummaryItem label="Functional area">{selectedFunctionalArea?.name || "Not provided"}</SummaryItem>
           <SummaryItem label="Due date (optional)">{(complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')) || "Not provided"}</SummaryItem>
           <SummaryItem label="Frequency">{complianceItem.frequency || "Not provided"}</SummaryItem>
         </Grid>

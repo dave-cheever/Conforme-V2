@@ -32,8 +32,6 @@ export const complianceItemsTypeDefs = `
     category: BaseWithName
     regulatoryBodyId: ID
     regulatoryBody: BaseWithName
-    functionalAreaId: ID
-    functionalArea: BaseWithName
     dueDate: Date
     frequency: String
     businessUnitsIds: [ID!]
@@ -58,7 +56,6 @@ export const complianceItemsTypeDefs = `
     description: String
     categoryId: ID
     regulatoryBodyId: ID
-    functionalAreaId: ID
     dueDate: Date
     frequency: String
     businessUnitsIds: [ID!]
@@ -78,7 +75,6 @@ export const complianceItemsTypeDefs = `
     description: String
     categoryId: ID
     regulatoryBodyId: ID
-    functionalAreaId: ID
     dueDate: Date
     frequency: String
     businessUnitsIds: [ID!]

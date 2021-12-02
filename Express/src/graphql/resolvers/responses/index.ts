@@ -60,7 +60,6 @@ export const responsesTypeDefs = `
     complianceItemsIds: [ID]
     regulatoryBodiesIds: [ID]
     categoriesIds: [ID]
-    functionalAreasIds: [ID]
     businessUnitsIds: [ID]
     usersIds: [ID]
     dueDate: [String]

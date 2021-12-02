@@ -8,7 +8,6 @@ import BusinessUnitFilter from "./BusinessUnitFilter";
 import CategoryFilter from "./CategoryFilter";
 import ComplianceItemFilter from "./ComplianceItemFilter";
 import DueDateFilter from "./DueDateFilter";
-import FunctionalAreaFilter from "./FunctionalAreaFilter";
 import ItemStatusFilter from "./ItemStatusFilter";
 import RegulatoryBodyFilter from "./RegulatoryBodyFilter";
 import UserFilter from "./UserFilter";
@@ -40,9 +39,6 @@ const FiltersPanelItem = ({ name, filter }: { name: string, filter: IFilter }) =
 
       case "dueDate":
         return <DueDateFilter/>;
-
-      case "functionalAreasIds":
-        return <FunctionalAreaFilter/>;
 
       case "regulatoryBodiesIds":
         return <RegulatoryBodyFilter/>;

@@ -18,10 +18,6 @@ const GET_FILTERS_DATA = gql`
       _id
       name
     }
-    functionalAreas {
-      _id
-      name
-    }
     regulatoryBodies {
       _id
       name
@@ -93,7 +89,6 @@ const FiltersProvider = (props: any) => {
     complianceItems: data?.complianceItems,
     categories: data?.categories,
     regulatoryBodies: data?.regulatoryBodies,
-    functionalAreas: data?.functionalAreas,
     businessUnits: data?.businessUnits,
     users: [...(data?.searchUsers || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
   }), [ // eslint-disable-line react-hooks/exhaustive-deps

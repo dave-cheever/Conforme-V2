@@ -12,10 +12,6 @@ export const initialFilters: IFilters = {
     name: 'Category',
     value: [],
   },
-  functionalAreasIds: {
-    name: 'Functional area',
-    value: [],
-  },
   businessUnitsIds: {
     name: 'Business unit',
     value: [],
@@ -75,7 +71,6 @@ export const collections = {
   responses: 'Responses',
   'regulatory-bodies': 'Regulatory bodies',
   categories: 'Categories',
-  'functional-areas': 'Functional areas',
   'business-units': 'Business units',
   settings: 'Settings'
 };
@@ -91,7 +86,6 @@ const useFiltersUtils = () => {
     filtersValues,
     complianceItems,
     categories,
-    functionalAreas,
     regulatoryBodies,
     businessUnits,
     users,
@@ -137,10 +131,6 @@ const useFiltersUtils = () => {
       case 'categoriesIds': {
         const value: any = filtersValues.categoriesIds?.value;
         return categories.find(f => f._id === value[0])?.name;
-      }
-      case 'functionalAreasIds': {
-        const value: any = filtersValues.functionalAreasIds?.value;
-        return functionalAreas.find(f => f._id === value[0])?.name;
       }
       case 'businessUnitsIds': {
         const value: any = filtersValues.businessUnitsIds?.value;

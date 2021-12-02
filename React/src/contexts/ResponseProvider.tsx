@@ -53,9 +53,6 @@ const GET_RESPONSES = gql`
         regulatoryBody {
           name
         }
-        functionalArea {
-          name
-        }
       }
       businessUnit {
         name

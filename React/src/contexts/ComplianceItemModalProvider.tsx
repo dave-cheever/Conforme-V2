@@ -19,10 +19,6 @@ const GET_FORM_DATA = gql`
       _id
       name
     }
-    functionalAreas {
-      _id
-      name
-    }
     regulatoryBodies {
       _id
       name
@@ -72,7 +68,6 @@ const ComplianceItemModalProvider = (props) => {
       description: '',
       categoryId: undefined,
       regulatoryBodyId: undefined,
-      functionalAreaId: undefined,
       dueDate: undefined,
       frequency: undefined,
       published: false,
@@ -149,7 +144,6 @@ const ComplianceItemModalProvider = (props) => {
     complianceItem,
     categories: data?.categories || [],
     regulatoryBodies: data?.regulatoryBodies || [],
-    functionalAreas: data?.functionalAreas || [],
     businessUnits: data?.businessUnits || [],
     complianceItemModalSections, selectedSection, selectedSectionIndex, selectSection,
     savingDialogDetails, setSavingDialogDetails,

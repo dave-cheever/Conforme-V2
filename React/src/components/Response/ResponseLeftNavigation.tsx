@@ -81,10 +81,6 @@ const ResponseLeftNavigation = ({response}) => {
         <Flex align='center' fontSize='14px' minH='28px'>{response.complianceItem?.regulatoryBody?.name || "-"}</Flex>
       </Box>
       <Box h='50px' mt={2}>
-        <Box opacity={0.5} fontSize='11px'>Functional area</Box>
-        <Flex align='center' fontSize='14px' minH='28px'>{response.complianceItem?.functionalArea?.name || "-"}</Flex>
-      </Box>
-      <Box h='50px' mt={2}>
         <Box opacity={0.5} fontSize='11px'>Frequency</Box>
         <Flex align='center' fontSize='14px' minH='28px'>{response.complianceItem?.frequency || "-"}</Flex>
       </Box>

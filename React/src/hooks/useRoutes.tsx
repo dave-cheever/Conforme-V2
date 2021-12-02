@@ -13,7 +13,6 @@ import ComplianceItems from "../pages/compliance-items";
 import ComplianceItemsAdmin from "../pages/admin/compliance-items";
 import Categories from "../pages/admin/categories";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
-import FunctionalAreas from "../pages/admin/functional-areas";
 import BusinessUnits from "../pages/admin/business-units";
 import Users from "../pages/admin/users";
 import AuditLog from "../pages/admin/audit-log";
@@ -148,13 +147,6 @@ const protectedRoutes: Array<IRoute> = [
     key: "categories",
     exact: true,
     component: Categories,
-    layout: DefaultLayout,
-  },
-  {
-    path: "/admin/functional-areas",
-    key: "functional-areas",
-    exact: true,
-    component: FunctionalAreas,
     layout: DefaultLayout,
   },
   {

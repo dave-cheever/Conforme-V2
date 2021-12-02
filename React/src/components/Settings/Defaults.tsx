@@ -5,11 +5,10 @@ import { useSettingsContext } from '../../contexts/SettingsProvider';
 import Dropdown from '../Forms/Dropdown';
 
 const Defaults = () => {
-    const { control, categories, businessUnits, functionalAreas,regulatoryBodies, } = useSettingsContext();
+    const { control, categories, businessUnits,regulatoryBodies, } = useSettingsContext();
 
     const businessUnitsOptions = useMemo(() => businessUnits.map(({ _id, name }) => ({ value: _id, label: name })), [businessUnits]);
     const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
-    const functionalAreasOptions = useMemo(() => functionalAreas.map(({ _id, name }) => ({ value: _id, label: name })), [functionalAreas]);
     const regulatoryBodiesOptions = useMemo(() => regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })), [regulatoryBodies]);
     
     return (
@@ -43,16 +42,6 @@ const Defaults = () => {
           options={categoriesOptions}
           help="Define category"
           tooltip="Use this setting to default to a specific regulatory body when adding a compliance item"
-        />
-        <Dropdown
-          control={control}
-          name="defaultFunctionalArea"
-          label="Default functional area"
-          placeholder="Select"
-          help="Define functional area"
-          variant="secondaryVariant"
-          options={functionalAreasOptions}
-          tooltip="Use this setting to default to a specific functional area when adding a compliance item"
         />
     </Stack>
     )

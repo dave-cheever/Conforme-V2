@@ -28,15 +28,6 @@ const complianceItems = async (_, { complianceItemsQueryInput }, { authorize }, 
       });
     };
     
-    if (shouldJoin('functionalArea')) {
-      join({ 
-        pipeline,
-        collection: 'functionalareas', 
-        from: 'functionalAreaId',
-        to: 'functionalArea',
-      });
-    };
-    
     if (shouldJoin('regulatoryBody')) {
       join({ 
         pipeline,

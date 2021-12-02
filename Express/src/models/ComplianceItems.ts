@@ -12,7 +12,6 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   description: String,
   categoryId: String,
   regulatoryBodyId: String,
-  functionalAreaId: String,
   dueDate: Date,
   frequency: String,
   businessUnitsIds: [String],

@@ -46,10 +46,6 @@ const GET_COMPLIANCE_ITEMS = gql`
       category {
         name
       }
-      functionalAreaId
-      functionalArea {
-        name
-      }
       regulatoryBodyId
       regulatoryBody {
         name
@@ -79,7 +75,6 @@ const ComplianceItemsAdmin = () => {
       description: complianceItem.description,
       categoryId: complianceItem.categoryId,
       regulatoryBodyId: complianceItem.regulatoryBodyId,
-      functionalAreaId: complianceItem.functionalAreaId,
       dueDate: complianceItem.dueDate,
       frequency: complianceItem.frequency,
       businessUnitsIds: complianceItem.businessUnitsIds,

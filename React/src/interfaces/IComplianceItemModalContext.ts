@@ -18,7 +18,6 @@ export interface IComplianceItemModalContext {
 
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];
-  functionalAreas: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];
 
   savingDialogDetails: IComplianceItemModalDialogDetails;

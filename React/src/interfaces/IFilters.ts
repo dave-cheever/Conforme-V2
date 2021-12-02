@@ -7,7 +7,6 @@ interface IFilterString extends IFilter {
 export default interface IFilters {
   complianceItemsIds?: IFilter,
   categoriesIds?: IFilter,
-  functionalAreasIds?: IFilter,
   businessUnitsIds?: IFilter,
   itemStatus?: IFilterString,
   regulatoryBodiesIds?: IFilter,

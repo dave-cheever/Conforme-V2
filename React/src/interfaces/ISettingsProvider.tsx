@@ -16,7 +16,6 @@ export interface ISettingsContext {
   settings: Partial<ISetting>[];
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];
-  functionalAreas: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];
 
   activeTab: 0 | 1 | 2;

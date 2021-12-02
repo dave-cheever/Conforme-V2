@@ -5,7 +5,6 @@ export interface IComplianceItem extends IBase {
   description: string;
   categoryId: string;
   regulatoryBodyId: string;
-  functionalAreaId: string;
   dueDate?: Date;
   frequency: string;
   businessUnitsIds: string[];
@@ -17,6 +16,5 @@ export interface IComplianceItem extends IBase {
   
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;
-  functionalArea?: IBaseWithName;
   businessUnits?: IBusinessUnit[];
 }

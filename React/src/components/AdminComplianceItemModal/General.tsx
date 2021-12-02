@@ -15,12 +15,10 @@ const GeneralForm = () => {
   const {
     control,
     categories,
-    functionalAreas,
     regulatoryBodies,
   } = useComplianceItemModalContext();
 
   const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
-  const functionalAreasOptions = useMemo(() => functionalAreas.map(({ _id, name }) => ({ value: _id, label: name })), [functionalAreas]);
   const regulatoryBodiesOptions = useMemo(() => regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })), [regulatoryBodies]);
   const frequencyOptions = useMemo(() => complianceItemFrequencies.map(f => ({ value: f, label: f })), []);
 
@@ -73,17 +71,6 @@ const GeneralForm = () => {
             notEmpty: true,
           }}
           options={regulatoryBodiesOptions}
-        />
-        <Dropdown
-          control={control}
-          name="functionalAreaId"
-          label="Functional area"
-          placeholder="Select functional area"
-          variant="secondaryVariant"
-          validations={{
-            notEmpty: true,
-          }}
-          options={functionalAreasOptions}
         />
         <Datepicker
           control={control}

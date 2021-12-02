@@ -21,10 +21,6 @@ const GET_SETTINGS_DATA = gql`
         _id
         name
       }
-    functionalAreas {
-        _id
-        name
-    }
     regulatoryBodies {
         _id
         name
@@ -49,7 +45,6 @@ export const settingSections: settingsSection[] = [{
       defaultBusinessUnit : '',
       defaultRegulatoryBody: '',
       defaultCategory: '',
-      defaultFunctionalArea: '',
   },
 }, {
   name: 'Email templates',
@@ -101,7 +96,6 @@ const SettingsProvider = (props) => {
     settings: data?.settings || [],
     categories: data?.categories || [],
     regulatoryBodies: data?.regulatoryBodies || [],
-    functionalAreas: data?.functionalAreas || [],
     businessUnits: data?.businessUnits || [],
     activeTab, setActiveTab,
   }), [ // eslint-disable-line react-hooks/exhaustive-deps

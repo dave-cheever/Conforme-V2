@@ -22,7 +22,6 @@ import { navigationLeftFiltersStyles } from "../components/NavigationLeft/Naviga
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
 import { businessUnitsStyles } from "../pages/admin/business-units";
 import { categoriesStyles } from "../pages/admin/categories";
-import { functionalAreasStyles } from "../pages/admin/functional-areas";
 import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
 import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
 import { navigationTopStyles } from "../components/NavigationTop";
@@ -90,7 +89,6 @@ const getTheme = (organizationTheme?: any) => {
       ...adminModalStyles,
       ...categoriesStyles,
       ...regulatoryBodiesStyles,
-      ...functionalAreasStyles,
       ...businessUnitsStyles,
       ...navigationTopStyles,
       ...userMenuStyles,
