@@ -48,9 +48,8 @@ const getTheme = (organizationTheme?: any) => {
   const customTheme: any = {
     ...theme,
     breakpoints: {
-      mobile: "0",
-      tablet: "421px",
-      desktop: "769px",
+      tablet: "768px",
+      desktop: "1280px"
     },
     shadows: {
       ...theme.shadows,

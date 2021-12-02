@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { responseStatuses } from "../../hooks/useResponseUtils";
 
-const NavigationLeftFilters = ({filter, menuOpen}) => {
+const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen}) => {
   const {
     filtersValues,
     setFilters
@@ -36,7 +36,10 @@ const NavigationLeftFilters = ({filter, menuOpen}) => {
         fontSize="14px"
         fontWeight="400"
         lineHeight="40px"
-        onClick={() => updateFilters(filter[0])}
+        onClick={() => {
+          updateFilters(filter[0]);
+          setFiltersOpen(false);
+        }}
         color={( filter[0] === 'all') 
           ? (itemStatusFilterValue?.length === 0 
             ? "navigationLeftFilters.selectedFontColor" : "navigationLeftFilters.unselectedFontColor") 

@@ -6,12 +6,14 @@ import SubSection from "./SubSection";
 import NavigationLeftFilters from "./NavigationLeftFilters";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { ArrowRight } from "../../icons";
+import useDevice from "../../hooks/useDevice";
 
-const NavigationLeftItem = ({menuItem}) => {
+const NavigationLeftItem = ({menuItem, filtersOpen, setFiltersOpen, subsectionOpen, setSubsectionOpen }) => {
   const [menuOpen, setMenuOpen] = useState(true);
   const history = useHistory();
   const filtersCount = {compliant: 0, nonCompliant: 2, comingUp: 2}
   const { url, icon, label } = menuItem;
+  const device = useDevice();
 
   const {
     showFiltersPanel
@@ -21,6 +23,7 @@ const NavigationLeftItem = ({menuItem}) => {
     <>
       <Box
         display="flex"
+        pos="relative"
         h="42px"
         mt="5px"
         alignItems="center"
@@ -29,12 +32,12 @@ const NavigationLeftItem = ({menuItem}) => {
         _hover={{
           cursor: "pointer"
         }}
-        w={["240px", "70px", "240px"]}
+        w={[0, "90px", "240px"]}
         onClick={() => {
           setMenuOpen(!menuOpen);
-          if (menuItem.subSections) {
+          if (menuItem.subSections && device === "desktop") {
             history.push(menuItem.subSections[0].url);
-          } else {
+          } else if (device === "desktop") {
             history.push(url);
           }
         }}
@@ -49,7 +52,24 @@ const NavigationLeftItem = ({menuItem}) => {
                 : history.location.pathname === url
                   ? "navigationLeftItem.selectedLabelBg"
                   : "navigationLeftItem.unselectedLabelBg"
-            } w="30px" h="30px" ml="25px" rounded="8px" alignItems="center" justifyContent="center">
+            } 
+            w="30px" 
+            h="30px" 
+            ml="25px" 
+            rounded="8px" 
+            alignItems="center" 
+            justifyContent="center"
+            onClick={() => {
+              if(menuItem.url === "/" && device === "tablet") {
+                setFiltersOpen(!filtersOpen);
+                setSubsectionOpen(false);
+                history.push(url);
+              } else if (menuItem.url === "/admin" && device === "tablet") {
+                setSubsectionOpen(!subsectionOpen);
+                setFiltersOpen(false);
+              }
+            }}
+          >
             <Icon
               as={icon}
               w="15px"
@@ -83,15 +103,30 @@ const NavigationLeftItem = ({menuItem}) => {
         >
           {label}
         </Box>
+        {
+          device === "tablet" && filtersOpen && menuItem.url === "/" &&
+          <Box w="235px" bg="white" ml="80px" pos="absolute" top="0" zIndex="5" rounded="10px">
+            {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />}
+            {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />)}
+          </Box>
+        }
+        {
+          device === "tablet" && subsectionOpen && menuItem.url === "/admin" &&
+          <Box w="235px" bg="white" ml="80px" pos="absolute" top="0" zIndex="5" rounded="10px">
+            {menuItem.subSections?.map((subSection) => {
+              return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen}/>;
+            })}
+          </Box>
+        }
       </Box>
       <Box display={["block", "none", "block"]}>
-        {(history.location.pathname.includes(url) && !showFiltersPanel) &&
+        {history.location.pathname.includes(url) && !showFiltersPanel &&
           menuItem.subSections?.map((subSection) => {
             return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen}/>;
           })}
         {history.location.pathname === "/" && history.location.pathname === url  && !showFiltersPanel && <>
-          {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} />}
-          {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} />)}
+          {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />}
+          {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />)}
         </>
         }
       </Box>

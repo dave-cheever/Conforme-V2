@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Box, Flex, Text, Icon } from "@chakra-ui/react";
 
@@ -14,6 +14,8 @@ const NavigationLeft = () => {
     cleanFilters,
     showFiltersPanel
   } = useFiltersContext();
+  const [ subsectionOpen, setSubsectionOpen ] = useState(false);
+  const [ filtersOpen, setFiltersOpen ] = useState(false);
 
   useEffect(() => {    
     if (!(history.location.pathname === '/' || history.location.pathname.includes('/items'))) {
@@ -26,7 +28,7 @@ const NavigationLeft = () => {
 
   return (
     <>
-      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={showFiltersPanel ? "70px" : "240px"} display={["none", "block"]}>
+      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={showFiltersPanel ? "70px" : [0, "90px", "240px"]} display={["none", "block"]}>
         <Box
           display="flex"
           alignItems="center"
@@ -50,7 +52,14 @@ const NavigationLeft = () => {
               <Can
                 key={`menu${i}`}
                 action={menuItem.permission}
-                yes={() => <NavigationLeftItem menuItem={menuItem} />}
+                yes={() => 
+                  <NavigationLeftItem 
+                    menuItem={menuItem} 
+                    filtersOpen={filtersOpen} 
+                    setFiltersOpen={setFiltersOpen} 
+                    subsectionOpen={subsectionOpen}
+                    setSubsectionOpen={setSubsectionOpen}
+                  />}
               />
             ))}
           </Box>

@@ -8,7 +8,7 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
     <Flex minH='100vh'>
       <NavigationLeft />
       <Flex
-        w="calc(100% - 240px)"
+        w={[0, "calc(100% - 90px)", "calc(100% - 240px)"]}
         direction="column"
         flexBasis="auto"
         flexGrow={1}

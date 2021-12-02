@@ -22,7 +22,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
     <Flex minH='100vh'>
       <NavigationLeft />
       <Flex
-        w="calc(100% - 240px)"
+        w={[0, "calc(100% - 90px)", "calc(100% - 240px)"]}
         direction="column"
         flexBasis="auto"
         flexGrow={1}
@@ -31,7 +31,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
         <Box h="full" overflow="none" bg="layout.bg">
         <Flex direction={['column', 'row']} position={['relative', 'absolute']} left='0px' w='full' h='calc(100% - 75px)'>
             <ResponseLeftNavigation response={response} />
-            <Flex w="calc(100% - 240px)" h="full" flexDirection="column">
+            <Flex w={[0, "calc(100% - 90px)", "calc(100% - 240px)"]} h="full" flexDirection="column">
             {response && <Component/>}
             </Flex>
         </Flex>
