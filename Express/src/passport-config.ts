@@ -17,7 +17,7 @@ const initPassport = (passport: PassportStatic) => {
     responseMode: 'form_post',
     redirectUrl: `${global.apiUrl}/auth/aad/callback`,
     allowHttpForRedirectUrl: process.env.APPSETTING_NODE_ENV === 'dev',
-    validateIssuer: false,
+    validateIssuer: true,
     scope: ['email', 'profile'],
     loggingLevel: 'info',
     passReqToCallback: true,

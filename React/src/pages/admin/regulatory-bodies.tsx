@@ -21,7 +21,7 @@ const GET_REGULATORY_BODIES = gql`
     regulatoryBodies {
       _id
       name
-      count
+      complianceItemsResponsesCount
     }
   }
 `;
@@ -220,7 +220,10 @@ const RegulatoryBodies = () => {
               w={["100%", "220px"]}
             >
               <Flex flexDir="column" w="100%" h="full">
-                <BarChart data={regulatoryBodies} label="Regulatory bodies" />
+	              {regulatoryBodies && <BarChart
+	                data={regulatoryBodies.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
+	                label="Regulatory bodies"
+	              />}
               </Flex>
             </Flex>
           }

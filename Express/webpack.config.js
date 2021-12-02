@@ -1,5 +1,4 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
 
 module.exports = env => ({
   entry: './src/index.ts',
@@ -12,6 +11,7 @@ module.exports = env => ({
   resolve: {
     alias: {
       'node-fetch$': 'node-fetch/lib/index.js',
+      'graphql$': 'graphql/index.js',
       'app-interfaces': path.resolve(__dirname, 'src/interfaces/inedx.ts'),
       'app-utils': path.resolve(__dirname, 'src/utils/index.ts'),
       'app-services': path.resolve(__dirname, 'src/services/index.ts'),
@@ -33,5 +33,4 @@ module.exports = env => ({
   optimization: {
     minimize: false
   }
-  // externals: [ nodeExternals() ]
 });

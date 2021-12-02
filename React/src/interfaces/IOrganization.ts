@@ -5,6 +5,7 @@ export interface IOrganization extends IBase {
   domain: string;
   licenceExpirationDate: Date;
   logoUrl: string;
+  bgImageUrl: string;
   theme: object;
   addons: object;
   clientId: string;

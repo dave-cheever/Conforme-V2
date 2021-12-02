@@ -13,11 +13,12 @@ export const organizationsTypeDefs = `
     _id: ID!
     name: String!
     licenceExpirationDate: Date!
-    logoUrl: String!
+    logoUrl: String
+    bgImageUrl: String
     theme: Object!
     addons: Object
     clientId: String
-    tenantId: String, 
+    tenantId: String
     secret: String
   }
 `;

@@ -8,6 +8,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   domain: String,
   licenceExpirationDate: Date,
   logoUrl: String,
+  bgImageUrl: String,
   theme: Object,
   addons: Object,
   allowedTenantsIds: [String],

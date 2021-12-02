@@ -75,7 +75,7 @@ const Login = () => {
         </Stack>
       </Box>
       <Box h={["50vh", "50vh", "85vh"]} order={[1, 1, 2]} overflow="hidden">
-        {/* <Image h='full' maxW='max-content' borderRadius={30} src={backgroundImage} /> */}
+        <Image h='full' maxW='max-content' borderRadius={30} src={organizationConfig?.bgImageUrl} />
       </Box>
     </Flex>
   );

@@ -28,7 +28,7 @@ const AdminTableRow = ({ element, index, edit }: { element: IBaseWithName, index
       justifyContent={["flex-end", "flex-start"]}
       pr={["21px", "0"]}
     >
-      {element.count ? element.count : "0"}
+      {element.complianceItemsResponsesCount || "0"}
       <Tooltip label="Show Items" fontSize="md">
         <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
       </Tooltip>

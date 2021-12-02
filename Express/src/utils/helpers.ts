@@ -5,21 +5,24 @@ import { difference } from 'lodash';
 import { IOrganization, IUser } from 'app-interfaces';
 import roles from './roles';
 
-export const CORSConfig = ({
+export const CORSConfig = {
   credentials: true,
   origin: (origin, callback) => {
     if (process.env.APPSETTING_NODE_ENV === 'dev' && origin === 'https://studio.apollographql.com') {
       return callback(null, true);
     }
 
-    const whitelist = (process.env.ALLOWED_DOMAINS || '').split(';');
+    const whitelist = [
+      ...(process.env.ALLOWED_DOMAINS || '').split(';'),
+      'login.microsoftonline.com',
+    ];
     if (!origin || origin === 'null' || whitelist.indexOf(origin.replace(getProtocol(), '')) !== -1) {
       return callback(null, true);
     }
 
-    callback(new Error('Not allowed by CORS'));
+    callback(new Error(`${origin} is not allowed by CORS`));
   },
-});
+};
 
 export const getProtocol = () => {
   return process.env.APPSETTING_NODE_ENV === 'dev' ? 'http://' : 'https://';
@@ -47,12 +50,13 @@ export const sessionizeUser = async ({ _id, firstName, lastName, displayName, em
   };
 };
 
-export const sessionizeOrganization = ({ _id, name, domain, logoUrl, theme, licenceExpirationDate,
+export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl, theme, licenceExpirationDate,
   addons, clientId, tenantId, secret, spSiteUrl, spLibraryId }: Partial<IOrganization>) => {
   return {
     _id,
     name,
     logoUrl,
+    bgImageUrl,
     theme,
     licenceExpirationDate,
     addons,

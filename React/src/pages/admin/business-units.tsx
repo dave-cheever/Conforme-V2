@@ -23,7 +23,11 @@ const GET_BUSINESS_UNITS = gql`
       type
       region
       ownerId
+      owner {
+        displayName
+      }
       imgUrl
+      complianceItemsResponsesCount
     }
   }
 `;
@@ -216,13 +220,11 @@ const BusinessUnits = () => {
         <>
           <Box w='calc(70% / 4)'>{businessUnit?.type}</Box>
           <Box w='calc(70% / 4)'>{businessUnit?.region}</Box>
-          <Box w='calc(70% / 4)'>
-            {businessUnit?.owner?.firstName && businessUnit?.owner?.lastName && `${businessUnit.owner.firstName} ${businessUnit.owner.lastName}`}
-          </Box>
+          <Box w='calc(70% / 4)'>{businessUnit?.owner?.displayName}</Box>
         </>
       }
       <Flex w={["20%", 'calc(70% / 4)']} align='center'>
-        <Text>{businessUnit.responsesCount || 0}</Text>
+        <Text>{businessUnit.complianceItemsResponsesCount || 0}</Text>
         <Tooltip label="Show Items" fontSize="md">
           <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
         </Tooltip>
@@ -270,20 +272,7 @@ const BusinessUnits = () => {
               }}
               options={[{ label: "Head Office", value: "Head Office" }]}
             />
-
-            <Dropdown
-              control={control}
-              name="owner"
-              label="Owner"
-              placeholder="Select Owner"
-              validations={{
-                notEmpty: true,
-              }}
-              options={[{ label: "Owner 1", value: "owner 1" }]}
-            />
-
           </Stack>
-
         </Flex>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Business units"]} />

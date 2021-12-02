@@ -22,11 +22,3 @@ mongoose.connect(process.env.DB_CONNECTION_STRING || 'connection-string')
     return console.log(`Server is listening on ${port}`);
   })
   .catch(e => console.log(e));
-
-// const runServer = async () => {
-//   const app = await getApp();
-//   app.listen(port, () => {
-//     logger.info('Express server started on port: ' + port);
-//   });
-// };
-// runServer();

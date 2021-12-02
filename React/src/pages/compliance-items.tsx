@@ -97,7 +97,7 @@ const ComplianceItems = () => {
         [key]: value.value,
       };
     }, {});
-    refetch({ responsesQueryInput: parsedFilters });
+    refetch({ responsesQuery: parsedFilters });
   }, [filtersValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter responses by status (client side)

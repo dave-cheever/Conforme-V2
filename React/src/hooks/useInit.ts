@@ -40,6 +40,7 @@ const ORGANIZATION = gql`
       _id
       name
       logoUrl
+      bgImageUrl
       theme
       licenceExpirationDate
       clientId

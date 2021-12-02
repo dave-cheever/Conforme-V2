@@ -28,7 +28,7 @@ const typeDefs = gql`
   type BaseWithName {
     _id: ID!
     name: String!
-    count: Int
+    complianceItemsResponsesCount: Int
   }
 
   input BaseWithNameModifyInput {

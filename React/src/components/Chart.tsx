@@ -12,9 +12,9 @@ const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
   useEffect(() => {
     const names: string[] = [];
     const numbers: number[] = [];
-    items.forEach(({ name, count }: IBaseWithName) => {
+    items.forEach(({ name, complianceItemsResponsesCount }: IBaseWithName) => {
       names.push(name);
-      numbers.push(count || 0);
+      numbers.push(complianceItemsResponsesCount || 0);
     });
     setChartData(numbers);
     setChartLabels(names);

@@ -9,7 +9,6 @@ import responsesResolvers from "./responses";
 import settingsResolvers from "./settings";
 import usersResolvers from "./users";
 
-
 import scalars from "../scalars";
 
 export default {

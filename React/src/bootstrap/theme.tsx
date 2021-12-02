@@ -414,17 +414,6 @@ const getTheme = (organizationTheme?: any) => {
           },
         },
       },
-      complianceList: {
-        compliant: "#62c240",
-        nonCompliant: "#FC5960",
-        comingUp: "#FFA012",
-        fontColor: "#2B3236",
-        buildingIcon: "#2B3236",
-        crossIcon: "#FC5960",
-        tickIcon: "#41BA17",
-        imageBg: "#ffffff",
-        evidenceFontColor: "#424B50"
-      },
       form: {
         checkbox: {
           icon: {

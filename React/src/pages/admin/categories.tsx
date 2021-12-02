@@ -21,7 +21,7 @@ const GET_CATEGORIES = gql`
     categories {
       _id
       name
-      count
+      complianceItemsResponsesCount
     }
   }
 `;
@@ -242,7 +242,10 @@ const Categories = () => {
               w={["100%", "220px"]}
             >
               <Box w="100%">
-                {categories && <BarChart data={categories} label="Categories" />}
+	              {categories && <BarChart
+	                data={categories.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
+	                label="Categories"
+	              />}
               </Box>
             </Flex>
           }
@@ -256,5 +259,6 @@ export default Categories;
 
 export const categoriesStyles = {
   categories: {
-  fontColor: "#818197",
-}}
+    fontColor: "#818197",
+  }
+};

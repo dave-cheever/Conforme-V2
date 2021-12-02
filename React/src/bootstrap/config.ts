@@ -4,7 +4,7 @@ import {
   AuditIcon,
   DetailIcon,
   Home,
-  Insights,
+  // Insights,
   ProgressIcon,
   QuestionIcon,
   TeamsIcon
@@ -35,13 +35,12 @@ export const menuItems: INavItem[] = [
     icon: Home,
     permission: "home.view"
   }, {
-    type: "menuItem",
-    label: "Insights",
-    url: "/insights",
-    icon: Insights,
-    permission: "insights.view"
-  },
-  {
+  //   type: "menuItem",
+  //   label: "Insights",
+  //   url: "/insights",
+  //   icon: Insights,
+  //   permission: "insights.view"
+  // }, {
     type: "menuItem",
     label: "Admin",
     url: "/admin",
