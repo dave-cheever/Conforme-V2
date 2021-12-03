@@ -1,22 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 
 import Header from "../components/Header";
+import { useFiltersContext } from "../contexts/FiltersProvider";
 
 const Help = () => {
+  const { setUsedFilters } = useFiltersContext();
+
+  useEffect(() => {
+    setUsedFilters([]);
+  // eslint-disable-next-line
+  },[]);
+
   return (
-    <>
-      <Header breadcrumbs={["Home", "Help"]} hideBreadcrumbsOnMobile />
+    <Flex flexDirection="column" h="full" w="full">
+      <Header breadcrumbs={["Home", "Help"]} />
       <Flex
         flexDirection="column"
         bg="white"
+        h="full"
         minH="70vh"
-        w="full"
-        maxWidth="775px"
+        maxWidth={["full","full","775px"]}
         borderRadius="20px"
-        m="20px"
         ml="7"
         p="25px 30px 25px 30px"
+        mr="25px"
+        mb="25px"
       >
         <Text fontSize="24px" fontWeight="bold" mb="30px">
           Welcome to Tracker
@@ -46,7 +55,7 @@ const Help = () => {
           but exact tasteful far and darn well much oh the yikes and hey.
         </Text>
       </Flex>
-    </>
+    </Flex>
   );
 };
 
