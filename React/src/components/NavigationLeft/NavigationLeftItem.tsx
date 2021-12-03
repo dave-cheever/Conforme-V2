@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import SubSection from "./SubSection";
 import NavigationLeftFilters from "./NavigationLeftFilters";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
-import { ArrowRight } from "../../icons";
+import { ChevronRight } from "../../icons";
 import useDevice from "../../hooks/useDevice";
 
 const NavigationLeftItem = ({menuItem, filtersOpen, setFiltersOpen, subsectionOpen, setSubsectionOpen }) => {
@@ -85,9 +85,9 @@ const NavigationLeftItem = ({menuItem, filtersOpen, setFiltersOpen, subsectionOp
               }
             />
           </Flex>
-          { (showFiltersPanel && (menuItem.subSections?.length > 0 || (history.location.pathname === "/" && history.location.pathname === url) )) && <ArrowRight boxSize="10px" ml={1}/>}
+          { (showFiltersPanel && (menuItem.subSections?.length > 0 || (history.location.pathname === "/" && history.location.pathname === url) )) && <ChevronRight color="navigationLeftItem.unselectedMenuItem" boxSize="10px" ml={1}/>}
         </Flex>
-        <Box
+        {!showFiltersPanel && <Box
           ml="5"
           fontWeight="400"
           display={["block", "none", "block"]}
@@ -102,7 +102,7 @@ const NavigationLeftItem = ({menuItem, filtersOpen, setFiltersOpen, subsectionOp
           }
         >
           {label}
-        </Box>
+        </Box>}
         {
           device === "tablet" && filtersOpen && menuItem.url === "/" &&
           <Box w="235px" bg="white" ml="80px" pos="absolute" top="0" zIndex="5" rounded="10px">

@@ -4,6 +4,7 @@ import { Stack, Box, Checkbox, Text } from '@chakra-ui/react';
 import Flatpickr from 'react-flatpickr';
 
 import { dates } from "../../hooks/useFiltersUtils";
+import { MinusIcon } from "../../icons";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 
 const DueDateFilter = () => {
@@ -24,7 +25,7 @@ const DueDateFilter = () => {
 
   return (
     <Box>
-      <Stack direction='column'>
+      <Stack direction='column' mb={5}>
         {Object.entries(dates).map(([key, label]) => 
             <Checkbox
             css={{
@@ -45,6 +46,7 @@ const DueDateFilter = () => {
                 }
             }
             }}
+            icon={<MinusIcon/>}
             key={key}
             onChange={(e) => onChange(e, key)}
             isChecked={value?.includes(key)}

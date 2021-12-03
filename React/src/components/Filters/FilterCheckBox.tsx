@@ -1,6 +1,6 @@
 import { Checkbox, Text } from '@chakra-ui/react';
 
-import { TickIcon } from '../../icons'
+import { TickIcon } from '../../icons';
 
 const FilterCheckBox = ({value, label}) => {
     return (

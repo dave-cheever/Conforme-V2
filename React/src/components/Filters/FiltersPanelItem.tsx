@@ -86,7 +86,7 @@ export default FiltersPanelItem;
 
 export const filtersPanelItemStyles = {
   filtersPanelItem:{
-    bg: "#F0F2F580",
+    bg: "#F0F2F595",
     fontColor:"#282F36",
     countColor: "#818197"
   }

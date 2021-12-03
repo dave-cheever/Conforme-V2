@@ -21,7 +21,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
       boxShadow="sm"
       bg="white"
       borderRadius="20px"
-      w='325px'
+      w='300px'
       flexShrink={0}
       p="20px 25px 20px 25px"
       m={2}

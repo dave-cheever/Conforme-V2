@@ -28,7 +28,7 @@ const NavigationLeft = () => {
 
   return (
     <>
-      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={showFiltersPanel ? "70px" : [0, "90px", "240px"]} display={["none", "block"]}>
+      <Box h="100vh" bg="navigationLeft.bg" fontWeight="semibold" w={showFiltersPanel ? ["0px","80px","80px"] : ["0px","80px","240px"]} display={["none","block", "block"]}>
         <Box
           display="flex"
           alignItems="center"

@@ -26,9 +26,7 @@ const FilterLayout = ({ component: Component }: { component: any }) => {
           <Component />
         </Box>
       </Flex>
-      <Flex bg="#E5E5E5">
       {usedFilters.length > 0 && <FiltersPanel/>}
-      </Flex>
     </Flex>
   );
 };
