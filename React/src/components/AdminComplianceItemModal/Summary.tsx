@@ -66,7 +66,7 @@ const Summary = () => {
           </Flex>)
         }
 
-        {complianceItem?.evidenceItems?.length !== 0 && <SectionHeader label="Additional details"/>}
+        {complianceItem?.evidenceItems?.length !== 0 && <SectionHeader label="Evidence"/>}
 
         <Grid gridGap="10px" gridTemplateColumns="1fr 1fr">
           {(complianceItem.evidenceItems || []).map((item, index) => (

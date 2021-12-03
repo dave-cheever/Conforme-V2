@@ -16,7 +16,6 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   frequency: String,
   businessUnitsIds: [String],
   evidenceItems: [String],
-  retentionPeriod: Number,
   questions: [{
     _id: false,
     type: {

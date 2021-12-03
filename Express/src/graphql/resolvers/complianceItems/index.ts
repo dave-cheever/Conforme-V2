@@ -36,7 +36,6 @@ export const complianceItemsTypeDefs = `
     frequency: String
     businessUnitsIds: [ID!]
     evidenceItems: [String!]
-    retentionPeriod: Int
     questions: [Question]
     published: Boolean
     reference: String
@@ -60,7 +59,6 @@ export const complianceItemsTypeDefs = `
     frequency: String
     businessUnitsIds: [ID!]
     evidenceItems: [String!]
-    retentionPeriod: Int
     questions: [QuestionInput]
     published: Boolean
   }
@@ -79,7 +77,6 @@ export const complianceItemsTypeDefs = `
     frequency: String
     businessUnitsIds: [ID!]
     evidenceItems: [String!]
-    retentionPeriod: Int
     questions: [QuestionInput]
     published: Boolean
   }

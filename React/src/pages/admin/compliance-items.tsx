@@ -32,7 +32,6 @@ const GET_COMPLIANCE_ITEMS = gql`
       dueDate
       published
       evidenceItems
-      retentionPeriod
       questions {
         type
         name
@@ -79,7 +78,6 @@ const ComplianceItemsAdmin = () => {
       frequency: complianceItem.frequency,
       businessUnitsIds: complianceItem.businessUnitsIds,
       evidenceItems: complianceItem.evidenceItems,
-      retentionPeriod: complianceItem.retentionPeriod,
       questions: (complianceItem.questions || []).map(question => ({
         type: question.type,
         name: question.name,

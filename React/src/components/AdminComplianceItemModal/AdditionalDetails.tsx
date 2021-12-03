@@ -9,13 +9,12 @@ import {
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
-import NumberInput from '../Forms/NumberInput';
 import SectionHeader from './SectionHeader';
 
 const AdditionalDetailsForm = () => {
   const {
     complianceItem,
-    control, setValue,
+    setValue,
   } = useComplianceItemModalContext();
 
   const handleEvidenceItemChange = (value: string, index: number) => {
@@ -84,14 +83,6 @@ const AdditionalDetailsForm = () => {
               onClick={addEvidenceItem}
             >{complianceItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}</Button>
           }
-        </Box>
-        <Box w='full'>
-          <NumberInput
-            control={control}
-            variant="secondaryVariant"
-            name="retentionPeriod"
-            label="Retention period in years (optional)"
-          />
         </Box>
       </Stack>
     </Stack>

@@ -12,7 +12,6 @@ export interface IComplianceItem extends IBase {
   frequency: string;
   businessUnitsIds: string[];
   evidenceItems: string[];
-  retentionPeriod: number;
   questions?: IQuestion[];
   published: boolean;
   reference?: string;

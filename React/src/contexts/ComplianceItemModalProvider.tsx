@@ -80,10 +80,9 @@ const ComplianceItemModalProvider = (props) => {
     },
     Component: BusinessUnitsForm,
   }, {
-    name: 'Additional details',
+    name: 'Evidence',
     fields: {
       evidenceItems: [],
-      retentionPeriod: undefined,
     },
     Component: AdditionalDetailsForm,
   }, {
