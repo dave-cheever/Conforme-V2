@@ -2,7 +2,6 @@ import { AddIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Stack,
-  Image,
   Text,
   IconButton
 } from "@chakra-ui/react";
@@ -42,9 +41,10 @@ const NavigationTop = () => {
     <Flex
       justify="space-between"
       align="center"
-      w="full"
+      w={["100vw","full"]}
       h="80px"
       bg="navigationTop.bg"
+      position={["fixed","relative"]}
     >
       <Stack
         spacing={4}
@@ -57,10 +57,9 @@ const NavigationTop = () => {
         ml={5}
       >
         <Flex display={["flex", "none"]} alignItems="center">
-          <Image ignoreFallback src={organizationConfig?.logoUrl} h="44px" />
           <Text
             w="full"
-            ml={6}
+            ml={[0,6]}
             fontWeight="700"
             fontSize="14px"
             color="#FFFFFF"
@@ -78,14 +77,14 @@ const NavigationTop = () => {
           aria-label="Add to friends"
           icon={<AddIcon />}
           position={["fixed", "relative"]}
-          bottom={["15px", "0"]}
+          bottom={["0px", "0"]}
           right={["30px", "0"]}
           zIndex={5}
           flexShrink={0}
         />
         {/* <SearchBar /> */}
       </Stack>
-      <Flex align="center">
+      <Flex align="center" mr={3}>
         <QuestionMarkIcon
           _hover={{ color: "#ffffff", opacity: 0.7, cursor: "pointer" }}
           _active={{}}

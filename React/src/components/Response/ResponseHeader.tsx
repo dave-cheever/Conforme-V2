@@ -28,7 +28,7 @@ const ReasponseHeader = ({response}) => {
       w="full"
       minH="100px"
       bg="#2B3236"
-      zIndex={11}
+      zIndex={3}
     >
       <Grid gridTemplateColumns='1fr 250px'>
         <Flex alignItems='center'>

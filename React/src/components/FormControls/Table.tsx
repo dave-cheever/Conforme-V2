@@ -5,7 +5,7 @@ import {
   Input,
   Stack,
 } from '@chakra-ui/react';
-import { toast } from 'react-toastify';
+//import { toast } from 'react-toastify';
 
 import { IFieldComponent } from '../Field';
 
@@ -26,7 +26,7 @@ const Table = ({ name, label, disabled, headings, validations, value, error, tou
     if (value[value.length - 1]) {
       const rowIsEmpty = !Object.values(value[value.length - 1]).some((x: any) => x !== '');
       if (rowIsEmpty) {
-        toast.error('Please complete the last row before creating a new one');
+        //toast.error('Please complete the last row before creating a new one');
         return;
       }
     }
