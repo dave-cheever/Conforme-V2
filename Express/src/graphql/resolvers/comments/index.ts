@@ -18,16 +18,42 @@ export const commnentsTypeDefs = `
     responseId: String!
     text: String!
     metatags: Metatags
+    author: Author
+  }
+
+  type Author {
+    _id: String!
+    firstName: String
+    lastName: String
+    displayName: String!
+    email: String!
+    jobTitle: String
+    imgUrl: String
+    role: String!
+    defaultPage: String!
   }
 
   input CommentInput {
     responseId: ID!
     text: String!
+    author: AuthorInput!
   }
+
+  input AuthorInput {
+    _id: String!
+    firstName: String
+    lastName: String
+    displayName: String!
+    email: String!
+    jobTitle: String
+    imgUrl: String
+    role: String!
+    defaultPage: String!
+  } 
 `;
 
 export const commentsQueryDefs = `
-  comments: [Comment!]!
+  comments(_id:String!): [Comment!]!
 `;
 
 export const commentsMutationDefs = `

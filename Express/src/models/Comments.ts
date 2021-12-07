@@ -6,6 +6,21 @@ const commentSchema = new Schema<IComment, ICommentModel>({
   _id: String,
   responseId: String,
   text: String,
+  author: {
+    _id: String,
+    firstName: String,
+    lastName: String,
+    displayName: String,
+    email: String,
+    jobTitle: String,
+    imgUrl: String,
+    defaultPage: String,
+    role: {
+      type: String,
+      enum: ['user', 'reader', 'admin'],
+      default: 'user',
+    },
+  },
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -19,10 +34,10 @@ const commentSchema = new Schema<IComment, ICommentModel>({
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
 commentSchema.statics.get = async function (
-  selector: any = {}
+  _id: string
 ): Promise<IComment[]> {
   const comments = await this.find({
-    ...selector,
+    responseId:_id,
     "metatags.removedAt": { $eq: null },
   });
   return comments.map((comment) => comment._doc);

@@ -11,7 +11,7 @@ const deleteComment = async (_, { _id }, { authorize }) => {
   
       const comment = await Comments.getById(_id);
       if (!comment) {
-        throw new Error("Business Unit doesn't exist");
+        throw new Error("Comment doesn't exist");
       }
   
       const deletedComment = {

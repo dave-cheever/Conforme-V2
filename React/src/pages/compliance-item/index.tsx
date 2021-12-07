@@ -6,6 +6,8 @@ import Details from '../../components/Response/Details';
 import Attachments from '../../components/Response/Attachments';
 import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
+import ResponseChat from '../../components/Response/ResponseChat';
+import ShareModal from '../../components/ShareModal';
 
 const ComplianceItemResponse = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -27,6 +29,8 @@ const ComplianceItemResponse = () => {
   }
   return (
     <Flex w="full" direction='column' pb={['100px', '0px']} >
+      <ShareModal />
+      <Flex overflow="hidden"  >
       <Flex flexDir="column" h="calc(100vh - 190px)" p="25px 30px 25px 30px" w="calc(100% - 300px)" borderRadius="20px" bg="complianceItemResponse.bg">
         <Flex align='center' justify="space-between" mb="8">
           <Flex>
@@ -35,6 +39,8 @@ const ComplianceItemResponse = () => {
           {activeTab <2 && <Button display={["none","block"]} borderRadius="10px" w="80px" h="28px" fontSize="11px" fontWeight="bold" color="complianceItemResponse.nextButtonColor" onClick={() => setActiveTab(activeTab+1)}>Next step</Button>}
         </Flex>
         {renderSection()}
+      </Flex>
+      <ResponseChat/>
       </Flex>
     </Flex>
   );

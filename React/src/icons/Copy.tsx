@@ -1,6 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 
-export const Copy = createIcon({
+const Copy = createIcon({
   path: (
     <g>
       <path
@@ -19,3 +19,5 @@ export const Copy = createIcon({
   ),
   viewBox: "0 0 16 16",
 });
+
+export default Copy;

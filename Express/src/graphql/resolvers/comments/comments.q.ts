@@ -1,9 +1,8 @@
 import { Comments } from "app-models";
 
-const comments = async (_, __, ___) => {
+const comments = async (_, {_id}, ___) => {
   try {
-    const comments = await Comments.get();
-
+    const comments = await Comments.get(_id);
     return comments;
   } catch (err: any) {
     throw new Error(err);

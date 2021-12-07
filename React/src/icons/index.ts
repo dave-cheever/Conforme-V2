@@ -4,9 +4,10 @@ import ActionsIcon from "./ActionsIcon";
 import Admin from "./Admin";
 import AddIcon from "./AddIcon";
 import AreaInfoIcon from "./AreaInfoIcon";
+import ArrowCount from "./ArrowCount";
+import ArrowDownIcon from "./ArrowDownIcon";
 import ArrowRight from "./ArrowRight";
 import ArrowUpIcon from "./ArrowUpIcon";
-import ArrowDownIcon from "./ArrowDownIcon";
 import Assets from "./Assets";
 import AssetsIcon from "./AssetsIcon";
 import Asterisk from "./Asterisk";
@@ -21,19 +22,21 @@ import BlankPage from "./BlankPage";
 import Briefcase from "./Briefcase";
 import Building from "./Building";
 import CalendarIcon from "./CalendarIcon";
-import CheckIcon from './CheckIcon';
+import CheckIcon from "./CheckIcon";
 import ChevronRight from "./ChevronRight";
-import CircleChecked from './CircleChecked';
+import CircleChecked from "./CircleChecked";
 import CircledCross from "./CircledCross";
 import CircledTickBold from "./CircledTickBold";
-import CircleEmpty from './CircleEmpty';
-import CircleRemove from './CircleRemove';
+import CircleEmpty from "./CircleEmpty";
+import CircleRemove from "./CircleRemove";
 import Close from "./Close";
 import ComingUpIcon from "./ComingUpIcon";
 import CrossIcon from "./CrossIcon";
 import ConformeSmall from "./ConformeSmall";
 import { Conforme } from "./Conforme";
+import ConformeSmall from "./ConformeSmall";
 import { Copy } from "./Copy";
+import CrossIcon from "./CrossIcon";
 import Dashboard from "./Dashboard";
 import DetailIcon from "./DetailIcon";
 import DownloadIcon from "./DownloadIcon";
@@ -58,12 +61,13 @@ import LocationIcon from "./LocationIcon";
 import Magnifier from "./Magnifier";
 import Mentions from "./Mentions";
 import MessageIcon from "./MessageIcon";
-import MinusIcon from './MinusIcon';
+import MinusIcon from "./MinusIcon";
 import Move from "./Move";
 import NotificationIcon from "./NotificationIcon";
 import OpenMenuArrow from "./OpenMenuArrow";
 import Pencil from "./Pencil";
 import Policies from "./Policies";
+import ProgressIcon from "./ProgressIcon";
 import QuestionDateIcon from "./QuestionDateIcon";
 import QuestionIcon from "./QuestionIcon";
 import QuestionMarkIcon from "./QuestionMarkIcon";
@@ -72,19 +76,19 @@ import QuestionTextIcon from "./QuestionTextIcon";
 import QuestionToggleIcon from "./QuestionToggleIcon";
 import RedDotIcon from "./RedDotIcon";
 import RequiredIcon from "./RequiredIcon";
+import ResetIcon from "./Reset";
 import RightArrowIcon from "./RightArrowIcon";
 import ResetIcon from "./Reset";
 import Save from "./Save";
 import SearchIcon from "./SearchIcon";
+import SendMessageIcon from "./SendMessageIcon";
 import Share from "./Share";
 import ShareIcon from "./ShareIcon"
+import TeamsIcon from "./TeamsIcon";
 import TickIcon from "./TickIcon";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
 import UploadIcon from "./UploadIcon";
-import TeamsIcon from "./TeamsIcon";
-import ProgressIcon from "./ProgressIcon";
-import ArrowCount from "./ArrowCount";
 
 export {
   Accidents,
@@ -167,6 +171,7 @@ export {
   RightArrowIcon,
   Save,
   SearchIcon,
+  SendMessageIcon,
   Share,
   ShareIcon,
   TeamsIcon,

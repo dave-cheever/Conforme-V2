@@ -48,6 +48,10 @@ import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { toggleStyles } from "../components/Response/Toggle";
 import { userMenuStyles } from "../components/UserMenu";
+import { responseChatStyles } from "../components/Response/ResponseChat";
+import { responseChatSentStyles } from "../components/Response/ResponseChatSent";
+import { responseChatRecievedStyles } from "../components/Response/ResponseChatRecieved";
+import { messageInputStyles } from "../components/Response/MessageInput";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -113,6 +117,7 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelItemStyles,
       ...filtersPanelStyles,
       ...headerStyles,
+      ...messageInputStyles,
       ...navigationLeftFiltersStyles,
       ...navigationLeftItemStyles,
       ...navigationLeftStyles,
@@ -122,6 +127,9 @@ const getTheme = (organizationTheme?: any) => {
       ...questionListStyles,
       ...questionsModalStyles,
       ...regulatoryBodiesStyles,
+      ...responseChatRecievedStyles,
+      ...responseChatSentStyles,
+      ...responseChatStyles,
       ...responseLeftNavigationStyles,
       ...responseQuestionsStyles,
       ...responseTabItemStyles,
