@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 const AuditLog = () => {
   return (
     <>
-      <Header breadcrumbs={["Admin", "Audit log"]} hideBreadcrumbsOnMobile />
+      <Header breadcrumbs={["Admin", "Audit log"]} />
       <Flex>AuditLog</Flex>
     </>
   );

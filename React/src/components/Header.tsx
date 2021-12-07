@@ -1,18 +1,19 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useMemo } from "react";
 import { Flex, Text, Box } from "@chakra-ui/react";
 
 import { ArrowRight, Filter } from "../icons";
 import { useFiltersContext } from "../contexts/FiltersProvider";
+import useDevice from "../hooks/useDevice";
 
 interface IHeader {
   breadcrumbs: string[];
-  hideBreadcrumbsOnMobile?: boolean;
+  mobileBreadcrumbs?: string[];
 }
 
 const Header: FunctionComponent<IHeader> = ({
   children,
   breadcrumbs,
-  hideBreadcrumbsOnMobile,
+  mobileBreadcrumbs,
 }) => {
   const {
     usedFilters,
@@ -21,21 +22,31 @@ const Header: FunctionComponent<IHeader> = ({
     numberOfSelectedFilters,
   } = useFiltersContext();
 
+  const device = useDevice();
+
+  const breadCrumbs = useMemo(() => {
+    if(device === "mobile"){
+      return mobileBreadcrumbs || [];
+    }
+
+    return breadcrumbs;
+  },[device, breadcrumbs, mobileBreadcrumbs]);
+
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex key={`bc-${i}`} align="center">
       {i > 0 && (
-        <ArrowRight stroke="#818197" ml={2} mr={1} display={["none", "flex"]} />
+        <ArrowRight stroke="#818197" ml={2} mr={1} display="flex" />
       )}
       <Text
         pl={[0, 2]}
         mr={1}
         color={
-          i === breadcrumbs.length - 1
+          i === breadCrumbs.length - 1
             ? "header.breadcrumbPrimary"
             : "header.breadcrumbSecondary"
         }
-        display={i === breadcrumbs.length - 1 ? "flex" : ["none", "flex"]}
-        fontWeight={i === breadcrumbs.length - 1 ? "700" : "400"}
+        display={i === breadCrumbs.length - 1 ? "flex" : "flex"}
+        fontWeight={i === breadCrumbs.length - 1 ? "700" : "400"}
       >
         {breadcrumb}
       </Text>
@@ -43,7 +54,7 @@ const Header: FunctionComponent<IHeader> = ({
   );
 
   return (
-    <Box position="relative" mb="10px">
+    <Box position="relative">
       <Flex
         w="full"
         h={["60px", "70px"]}
@@ -53,9 +64,9 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex
           flexShrink={0}
           ml="6"
-          display={hideBreadcrumbsOnMobile ? "flex" : ["none", "flex"]}
+          display="flex"
         >
-          {breadcrumbs.map(renderBreadcrumb)}
+          {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
         <Flex w="full" justify="flex-end" mr="20px">
           {children}
@@ -65,10 +76,9 @@ const Header: FunctionComponent<IHeader> = ({
             w="120px"
             flexShrink={0}
             h="40px"
-            mr={4}
+            mr={[6, 6, 4]}
             mt={2}
-            borderTopRadius="lg"
-            borderBottomRadius="lg"
+            rounded="10px"
             bg="header.filterBackgroundColor"
             lineHeight="36px"
             cursor="pointer"

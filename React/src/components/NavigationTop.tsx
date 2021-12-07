@@ -90,7 +90,7 @@ const NavigationTop = () => {
             zIndex={5}
             flexShrink={0}
          	rounded={["20px", "8px"]}
-            display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
+            display={['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
           />}
         />
         {/* <SearchBar /> */}

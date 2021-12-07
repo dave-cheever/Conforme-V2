@@ -1,4 +1,4 @@
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import FiltersPanel from "../components/Filters/FiltersPanel";
 import NavigationBottomMobile from "../components/NavigationBottomMobile";
@@ -12,18 +12,24 @@ const FilterLayout = ({ component: Component }: { component: any }) => {
   const device = useDevice();
 
   return (
-    <Flex minH='100vh'>
+    <Flex minH='100vh' bg="layout.bg" >
       <NavigationLeft/>
       <Flex
+        w="full"
         direction="column"
-        flexBasis="auto"
-        flexGrow={1}
         overflow="auto"
+        position="relative"
       >
         <NavigationTop />
-        <Box h={["calc(100vh - 140px)", "full"]} mt={["80px", 0]} overflow="none" bg="layout.bg">
-          <Component />
-        </Box>
+        <Flex 
+          flexDirection="column" 
+          position="absolute" 
+          top="80px" w="full"
+          overflow="auto" 
+          h="calc(100vh - 80px)"
+          >
+            <Component />
+        </Flex>
         {device === "mobile" && <NavigationBottomMobile />}
       </Flex>
       {usedFilters.length > 0 && <FiltersPanel/>}

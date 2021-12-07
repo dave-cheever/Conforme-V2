@@ -107,7 +107,6 @@ const ComplianceItemsAdmin = () => {
       </Modal>
       <Header
         breadcrumbs={["Admin", "Compliance items"]}
-        hideBreadcrumbsOnMobile
       />
       {loading ? (
         <Box mt={20}>

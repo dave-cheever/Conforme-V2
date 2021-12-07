@@ -20,6 +20,7 @@ import useResponseUtils from "../hooks/useResponseUtils";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
 import { gql, useQuery } from "@apollo/client";
+import useDevice from "../hooks/useDevice";
 
 const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
@@ -51,6 +52,7 @@ const ComplianceItems = () => {
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
   const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
+  const device = useDevice();
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
@@ -66,6 +68,13 @@ const ComplianceItems = () => {
   },[user]);
 
   const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(initialViewMode);
+
+  // use Memo not working for hook, used this for mobile
+  useEffect(() => {
+    if(device === "mobile"){
+      setViewMode("Grid");
+    }
+  },[device]);
 
   const viewIcon = useMemo(
     () => ({
@@ -133,13 +142,13 @@ const ComplianceItems = () => {
 
   return (
     <>
-      <Header breadcrumbs={["Compliance items", "All"]}>
-        <Menu autoSelect={false}>
+      <Header breadcrumbs={["Compliance items", "All"]} mobileBreadcrumbs={["All compliance items"]}>
+        {device !== "mobile" && <Menu autoSelect={false}>
           {
             // @ts-ignore: Issue inside ChakraUI
             <MenuButton
               as={Button}
-              rounded="lg"
+              rounded="10px"
               h="40px"
               mt={2}
               ml={["15px", "0"]}
@@ -192,13 +201,13 @@ const ComplianceItems = () => {
               Group
             </MenuItem>
           </MenuList>
-        </Menu>
+        </Menu>}
       </Header>
-      <Flex h='calc(100vh - 300px)' overflow='auto'>
+      <Flex h='calc(100vh - 150px)' overflow='auto'>
         {error ? <Text>{error.message}</Text> : loading ? <Loader center={true} /> :
           <>
             {viewMode === "Grid" &&
-              <Flex direction='row' w='full' p={8} wrap='wrap' justify={['center', 'flex-start']} alignContent={['center', 'flex-start']}>
+              <Flex direction='row' w='full' pb={[0,8]} px={[0,8]} pt={-2} wrap='wrap' justify={["center","flex-start"]}>
                 {filteredResponses.length > 0
                   ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                   : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>

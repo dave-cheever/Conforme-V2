@@ -139,7 +139,7 @@ const Users = () => {
 
   return (
     <>
-      <Header breadcrumbs={["Admin", "Users"]} hideBreadcrumbsOnMobile />
+      <Header breadcrumbs={["Admin", "Users"]} />
       <Flex h='calc(100vh - 160px)' px={["25px", 0]}>
         <Box w='full' h={['calc(100% - 170px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>

@@ -12,8 +12,9 @@ import useResponseUtils from "../../hooks/useResponseUtils";
 const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
   const history = useHistory();
   const { getStatus, getRenewalStatus } = useResponseUtils();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const responseStatus = useMemo(() => getStatus(response), [response]);
+  const responseStatus = useMemo(() => getStatus(response), 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [response]);
 
   return (
     <Box
@@ -21,7 +22,7 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
       boxShadow="sm"
       bg="white"
       borderRadius="20px"
-      w='300px'
+      w={["calc(100% - 40px)","290px","320px"]}
       flexShrink={0}
       p="20px 25px 20px 25px"
       m={2}

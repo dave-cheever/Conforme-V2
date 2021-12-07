@@ -21,7 +21,7 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   }, [responses]);
 
   const renderGroup = (group: string) => (
-    <Flex key={group} px={3} pt={8} minW='calc(347px + 1rem)' direction='column'>
+    <Flex key={group} pl={8} pr={3} pt={2} minW='calc(347px + 1rem)' direction='column'>
       <Flex
         w="full"
         mb={4}

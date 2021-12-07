@@ -13,8 +13,8 @@ const Help = () => {
   },[]);
 
   return (
-    <Flex flexDirection="column" h="full" w="full">
-      <Header breadcrumbs={["Home", "Help"]} />
+    <Flex flexDirection="column" h="full" w="full" mt={["60px","0px"]}>
+      <Header breadcrumbs={["Home", "Help"]} mobileBreadcrumbs={["Help"]}/>
       <Flex
         flexDirection="column"
         bg="white"

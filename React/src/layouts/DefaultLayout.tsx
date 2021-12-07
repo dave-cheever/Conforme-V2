@@ -1,4 +1,4 @@
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import NavigationBottomMobile from "../components/NavigationBottomMobile";
 
 import NavigationLeft from "../components/NavigationLeft/NavigationLeft";
@@ -15,11 +15,18 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
         direction="column"
         flexBasis="auto"
         flexGrow={1}
+        position="relative"
       >
         <NavigationTop />
-        <Box h={["calc(100vh - 140px)", "full"]} mt={["80px", 0]} overflow="none" bg="layout.bg">
-          <Component />
-        </Box>
+        <Flex 
+          flexDirection="column" 
+          bg="layout.bg" position="absolute" 
+          top="80px" w="full"
+          overflow="auto" 
+          h="calc(100vh - 80px)"
+          >
+            <Component />
+        </Flex>
         {device === "mobile" && <NavigationBottomMobile />}
       </Flex>
     </Flex>
