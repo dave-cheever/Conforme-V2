@@ -89,7 +89,8 @@ const Team = () => {
   return (
     <Stack
       h="calc(100% - 25px)"
-      w="calc(100% - 400px)"
+      alignItems={["center", "flex-start"]}
+      w={["full", "calc(100% - 25px)", "calc(100% - 400px)"]}
       spacing="40px"
       p="25px 30px"
       bg="teamPage.bg"
@@ -171,15 +172,15 @@ const Team = () => {
         </ModalContent>
       </Modal>
       {owner && <Flex>
-        <Flex flexDir="column">
+        <Flex flexDir="column" alignItems={["center", "flex-start"]}>
           <Text mb="15px">Owner</Text>
-          <Flex>
+          <Flex ml={["30px", 0]}>
             <AvatarUser user={responseOwner} />
           </Flex>
         </Flex>
       </Flex>}
       <Flex>
-        <Flex flexDir="column">
+        <Flex flexDir="column" alignItems={["center", "flex-start"]}>
           <Flex alignItems="center" mb="15px">
             <Text>Delegates</Text>
             {response?.delegateIds?.length! < maxDelegates && 
@@ -197,7 +198,7 @@ const Team = () => {
               </Button>
             }
           </Flex>
-          <Flex>
+          <Flex ml={["30px", 0]}>
             {delegates?.map(delegate => 
               <AvatarUser key={delegate._id} user={delegate} removable={true}/>
             )}

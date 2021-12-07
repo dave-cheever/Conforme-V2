@@ -1,7 +1,9 @@
 import { Flex, Box, Text } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-const SubSection = ({ subsection, setMenuOpen, menuOpen }) => {
+import { ISubsection } from "../../interfaces/IMenu";
+
+const SubSection = ({ subsection, setMenuOpen, menuOpen }: {subsection: ISubsection, menuOpen?: boolean, setMenuOpen?: (value: boolean) => void }) => {
   const history = useHistory();
   const { url, label } = subsection;
 
@@ -15,7 +17,7 @@ const SubSection = ({ subsection, setMenuOpen, menuOpen }) => {
       alignItems="center"
       onClick={() => {
         history.push(url);
-        setMenuOpen(!menuOpen)
+        setMenuOpen && setMenuOpen(!menuOpen)
       }}
       color={history.location.pathname === url ? "subSection.selectedFontColor" : "subSection.unselectedFontColor"}
       cursor="pointer"
@@ -35,4 +37,4 @@ export const subSectionStyles = {
     selectedIndicator: "#462AC4",
     unselectedIndicator: "#ffffff",
   }
-}
+};

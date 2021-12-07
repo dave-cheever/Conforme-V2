@@ -32,8 +32,6 @@ const UserMenu = () => {
           ml="1"
           mr={["0", "6"]}
           color="white"
-          w="65px"
-          matchWidth={true}
         >
           <Avatar
             color="userMenu.avatar.color"

@@ -7,6 +7,9 @@ import Can from "../can";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import NavigationLeftItem from "./NavigationLeftItem";
 import { Conforme, ConformeSmall } from "../../icons";
+import useDevice from "../../hooks/useDevice";
+import NavigationLeftItemTablet from "./NavigationLeftItemTablet";
+import { useAppContext } from "../../contexts/AppProvider";
 
 const NavigationLeft = () => {
   const history = useHistory();
@@ -14,8 +17,10 @@ const NavigationLeft = () => {
     cleanFilters,
     showFiltersPanel
   } = useFiltersContext();
+  const { organizationConfig } = useAppContext();
   const [ subsectionOpen, setSubsectionOpen ] = useState(false);
   const [ filtersOpen, setFiltersOpen ] = useState(false);
+  const device = useDevice();
 
   useEffect(() => {    
     if (!(history.location.pathname === '/' || history.location.pathname.includes('/items'))) {
@@ -23,8 +28,6 @@ const NavigationLeft = () => {
     }
     // eslint-disable-next-line 
   }, [history.location.pathname]);
-
-  const organizationName = "Gloratio"
 
   return (
     <>
@@ -43,7 +46,7 @@ const NavigationLeft = () => {
             fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
           >
-            {showFiltersPanel ? organizationName.charAt(0): organizationName }
+            {showFiltersPanel || device === "tablet" ? organizationConfig?.name.charAt(0): organizationConfig?.name }
           </Text>
         </Box>
         <Flex direction="column" justify="space-between" h="calc(100% - 80px)">
@@ -53,17 +56,27 @@ const NavigationLeft = () => {
                 key={`menu${i}`}
                 action={menuItem.permission}
                 yes={() => 
-                  <NavigationLeftItem 
-                    menuItem={menuItem} 
-                    filtersOpen={filtersOpen} 
-                    setFiltersOpen={setFiltersOpen} 
-                    subsectionOpen={subsectionOpen}
-                    setSubsectionOpen={setSubsectionOpen}
-                  />}
+                  {if(device === "desktop") {
+                    return <NavigationLeftItem menuItem={menuItem} />
+                  } else if(device === "tablet") {
+                    return (
+                      <NavigationLeftItemTablet 
+                        menuItem={menuItem} 
+                        filtersOpen={filtersOpen} 
+                        setFiltersOpen={setFiltersOpen} 
+                        subsectionOpen={subsectionOpen} 
+                        setSubsectionOpen={setSubsectionOpen} 
+                      />
+                    )
+                  } else {
+                    return <></>
+                  }}
+                }
               />
             ))}
           </Box>
-        <Icon as={showFiltersPanel ? ConformeSmall: Conforme} w={showFiltersPanel?"27px":"103px"} h="30px" ml="20px" mb="20px" />
+        {device === "desktop" && <Icon as={showFiltersPanel ? ConformeSmall: Conforme} w={showFiltersPanel?"27px":"103px"} h="30px" ml="20px" mb="20px" />}
+        {device === "tablet" && <Icon as={ConformeSmall} w="27px" h="30px" ml="20px" mb="20px" />}
         </Flex>
       </Box>
     </>

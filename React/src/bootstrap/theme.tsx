@@ -26,6 +26,8 @@ import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
+import { navigationBottomMobileStyles } from "../components/NavigationBottomMobile";
+import { navigationLeftItemTabletStyles } from "../components/NavigationLeft/NavigationLeftItemTablet";
 import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
 import { navigationTopStyles } from "../components/NavigationTop";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
@@ -118,8 +120,10 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelStyles,
       ...headerStyles,
       ...messageInputStyles,
+      ...navigationBottomMobileStyles,
       ...navigationLeftFiltersStyles,
       ...navigationLeftItemStyles,
+      ...navigationLeftItemTabletStyles,
       ...navigationLeftStyles,
       ...navigationTopStyles,
       ...questionFormStyles,
@@ -626,7 +630,8 @@ const getTheme = (organizationTheme?: any) => {
           },
           teamModal: {
             dialog: {
-              minWidth: "330px",
+              minWidth: ["calc(100% - 50px)", "330px"],
+              maxWidth: ["calc(100% - 50px)", "330px"],
               minH: "196px",
               maxH: "356px",
               boxShadow: "0px 0px 80px rgba(49, 50, 51, 0.25)",

@@ -34,9 +34,10 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
         <Flex 
           flexDirection="column" 
           bg="layout.bg" position="absolute" 
-          top="80px" w={["full","calc(100% - 80px)","calc(100% - 240px)"]} 
+          top={[0, "80px"]} w={["full","calc(100% - 80px)","calc(100% - 240px)"]} 
           overflow="auto" 
           h={["calc(100vh - 140px)","calc(100vh - 80px)"]}
+          mt={["80px", 0]}
         >
           <ShareModal />
           <ReasponseHeader />

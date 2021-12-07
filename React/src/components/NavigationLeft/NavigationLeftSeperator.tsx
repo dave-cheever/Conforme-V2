@@ -1,4 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
+
 import { Bar } from "../../icons";
 import { INavItem } from "../../interfaces/INavItem";
 

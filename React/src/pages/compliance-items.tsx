@@ -194,7 +194,7 @@ const ComplianceItems = () => {
           </MenuList>
         </Menu>
       </Header>
-      <Flex h='calc(100vh - 160px)' overflow='auto'>
+      <Flex h='calc(100vh - 300px)' overflow='auto'>
         {error ? <Text>{error.message}</Text> : loading ? <Loader center={true} /> :
           <>
             {viewMode === "Grid" &&

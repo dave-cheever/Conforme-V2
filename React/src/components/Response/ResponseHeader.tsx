@@ -28,10 +28,9 @@ const ReasponseHeader = () => {
       direction='column'
       pl={6}
       w="full"
-      minH="100px"
+      minH="110px"
       bg="reasponseHeader.bg"
       zIndex={4}
-      mb="15px"
     >
       <Grid gridTemplateColumns='1fr 250px' pb="10px">
         <Flex alignItems='center' h="40px">

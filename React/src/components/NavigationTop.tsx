@@ -85,10 +85,11 @@ const NavigationTop = () => {
             aria-label="Add"
             icon={<AddIcon h="20px" w="20px"/>}
             position={['fixed', 'relative']}
-            bottom={['15px', '0']}
-            right={['30px', '0']}
+            bottom={['75px', '0']}
+            right={['16px', '0']}
             zIndex={5}
             flexShrink={0}
+         	rounded={["20px", "8px"]}
             display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
           />}
         />

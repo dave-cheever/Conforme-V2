@@ -1,9 +1,10 @@
 import { Flex, Box } from "@chakra-ui/layout";
 import { useMemo } from "react";
+
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { responseStatuses } from "../../hooks/useResponseUtils";
 
-const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen}) => {
+const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen} : {filter: any, menuOpen?: boolean, setFiltersOpen?: (value: boolean) => void}) => {
   const {
     filtersValues,
     setFilters
@@ -29,16 +30,17 @@ const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen}) => {
         <Flex ml="25px" w="30px" opacity="0.3" h="1px" rounded="lg" bg="navigationLeftFilters.seperator" />
       </Flex>}
       <Flex
+        w={["170px", "175px"]}
         position="relative"
-        right="37px"
+        right={[0, "37px"]}
         key={filter[0]}
-        ml={[menuOpen ? "90px" : "10px", "60px", "70px"]}
+        ml={["25px", "60px", "70px"]}
         fontSize="14px"
         fontWeight="400"
         lineHeight="40px"
         onClick={() => {
           updateFilters(filter[0]);
-          setFiltersOpen(false);
+          setFiltersOpen && setFiltersOpen(false);
         }}
         color={( filter[0] === 'all') 
           ? (itemStatusFilterValue?.length === 0 
