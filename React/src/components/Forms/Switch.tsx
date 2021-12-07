@@ -21,8 +21,9 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Switch = ({ control, name, label, tooltip = '', variant, validations = {}, disabled = false, help = '' }: IDropdown) => {
+const Switch = ({ control, name, label, tooltip = '', variant = 'secondaryVariant', validations = {}, disabled = false, help = '' }: IDropdown) => {
   const validate = useValidate(label || name, validations, definedValidations);
+  
   return (
     <Controller
       name={name}
@@ -49,22 +50,24 @@ const Switch = ({ control, name, label, tooltip = '', variant, validations = {},
                 </Box>
               </Flex>
             )}
-            <SwitchInput
-                colorScheme="form.switch.color"
-                mt={3}
-                onBlur={onBlur}
-                value={value}
-                onChange={onChange}
-                name={name}
-                isDisabled={disabled}
-                css={{
-                    ".chakra-switch__thumb": {
-                        "&[data-checked]": {
-                        background: "#462AC4"
-                        }
-                    }
-                }}
-            />
+            <Flex align="center" mt={3}>
+              <SwitchInput
+                  colorScheme="form.switch.color"
+                  onBlur={onBlur}
+                  isChecked={value}
+                  onChange={onChange}
+                  name={name}
+                  isDisabled={disabled}
+                  css={{
+                      ".chakra-switch__thumb": {
+                          "&[data-checked]": {
+                          background: "#462AC4"
+                          }
+                      }
+                  }}
+              />
+            <Flex ml={3} fontSize="14px" fontWeight="400" mt={-1} color={value ? "form.switch.enableColor" : "form.switch.disableColor"}>{value ? "Enabled": "Disabled"}</Flex>
+            </Flex>
             {error && <Box fontSize="smm" ml={1} mt={1} color='form.dropdown.error'>{error.message}</Box>}
             {tooltip && 
             <Flex  color='form.dropdown.tooltip' align='center' mt={3}>

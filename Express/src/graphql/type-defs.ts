@@ -8,7 +8,7 @@ import { graphTypeDefs, graphQueryDefs } from "./resolvers/graph";
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
 import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
-import { settingsTypeDefs, settingsQueryDefs } from "./resolvers/settings";
+import { settingsTypeDefs, settingsQueryDefs, settingsMutationDefs } from "./resolvers/settings";
 import { usersTypeDefs, usersQueryDefs } from "./resolvers/users";
 
 const typeDefs = gql`
@@ -64,6 +64,7 @@ const typeDefs = gql`
     ${complianceItemsMutationDefs}
     ${regulatoryBodiesMutationDefs}
     ${responsesMutationDefs}
+    ${settingsMutationDefs}
   }
 `;
 

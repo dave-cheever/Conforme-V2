@@ -1,5 +1,7 @@
+import generateThumbnail from './generateThumbnail.m';
 import roles from './roles.q';
 import settings from './settings.q';
+import updateSetting from './updateSetting.m';
 
 const settingsResolvers = {
   Query: {
@@ -7,11 +9,13 @@ const settingsResolvers = {
     settings,
   },
   Mutation: {
+    updateSetting,
+    generateThumbnail
   },
 };
 
 export const settingsTypeDefs = `
-  type Setting {
+  type SettingsGet {
     _id: ID!
     name: String!
     value: Any!
@@ -20,12 +24,31 @@ export const settingsTypeDefs = `
     description: String!
     options: [String]
     organizationId: String!
+    placeholder: String
+    inputType: String
+    help: String
+  }
+
+  input SettingsUpdate {
+    _id: ID!
+    name: String!
+    value: Any!
+  }
+
+  input ThumbnailCreate {
+    _id: ID!
+    html: Any!
   }
 `;
 
 export const settingsQueryDefs = `
-  settings(type: String): [Setting!]!
+  settings(type: String): [SettingsGet!]!
   roles: String!
+`;
+
+export const settingsMutationDefs = `
+  updateSetting(settingsUpdate: SettingsUpdate!): SettingsGet!
+  generateThumbnail(thumbnailCreate: ThumbnailCreate!): Boolean!
 `;
 
 export default settingsResolvers;

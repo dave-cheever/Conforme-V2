@@ -16,6 +16,8 @@ import { complianceItemsSquareStyles } from "../components/ComplianceItem/Compli
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { customRadioButtonStyles } from "../components/CustomRadioButton";
 import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
+import { emailTemplateStyles } from "../components/Settings/EmailTemplate";
+import { emailTemplatesStyles } from "../components/Settings/EmailTemplates";
 import { evidenceStyles } from "../components/Response/Evidence";
 import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
 import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
@@ -109,6 +111,8 @@ const getTheme = (organizationTheme?: any) => {
       ...complianceListItemsStyles,
       ...customRadioButtonStyles,
       ...documentUploadedStyles,
+      ...emailTemplateStyles,
+      ...emailTemplatesStyles,
       ...evidenceStyles,
       ...filtersPanelItemStyles,
       ...filtersPanelStyles,
@@ -449,7 +453,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#777777',
           bg: '#FFFFFF',
           labelFont: {
-            normal: '#818197',
+            normal: '#282F36',
             error: '#E53E3E',
           },
           border: {
@@ -468,6 +472,7 @@ const getTheme = (organizationTheme?: any) => {
           },
           placeholder: '#CBCCCD',
           error: '#E53E3E',
+          tooltip: "#9A9EA1"
         },
         numberInput: {
           font: '#777777',
@@ -541,6 +546,22 @@ const getTheme = (organizationTheme?: any) => {
           placeholder: '#CBCCCD',
           error: '#E53E3E',
         },
+        switch: {
+          enableColor:"#282F36",
+          disableColor:"#818197",
+          color: {
+            50: '#ede9ff',
+            100: '#c9bff7',
+            200: '#a596ea',
+            300: '#816ce1',
+            400: '#5d42d7',
+            500: '#c9bff7',
+            600: '#342094',
+            700: '#24166b',
+            800: '#150d42',
+            900: '#07041c',
+          }
+        }
       },
       response: {
         leftNavigation: {

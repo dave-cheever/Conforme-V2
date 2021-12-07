@@ -43,13 +43,12 @@ const Dropdown = ({ control, name, label, placeholder = '', tooltip = '', varian
                 <Box
                   color={error ? "form.dropdown.labelFont.error" : "form.dropdown.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={11}
+                  fontSize="14px"
                   position="static"
                   left='none'
                   zIndex={1}
                 >
                   {label}
-                  {' '}
                   {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
                 </Box>
               </Flex>

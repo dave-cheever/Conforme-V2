@@ -1,21 +1,34 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 
 import { ISettingsContext } from "../interfaces/ISettingsProvider";
-import { ISetting } from "../interfaces/ISettings";
 
 export const SettingsContext = createContext({} as ISettingsContext);
 
 const GET_SETTINGS_DATA = gql`
   query {
-    settings(type: "configValue") {
+    defaultSettings: settings(type: "defaultSettings") {
+        _id
         name
         value
         label
         type
         description
-        options
+        inputType
+        placeholder
+        help
+    }
+    notificationSettings: settings(type: "notificationSettings") {
+        _id
+        name
+        value
+        label
+        type
+        description
+        inputType
+        placeholder
+        help
     }
     categories {
         _id
@@ -44,26 +57,17 @@ export const settingSections: settingsSection[] = [{
   fields: {
       defaultBusinessUnit : '',
       defaultRegulatoryBody: '',
-      defaultCategory: '',
+      defaultCategory: ''
   },
 }, {
-  name: 'Email templates',
-  fields: {
-  },
+  name: 'Email templates'
 }, {
   name: 'Notifications',
   fields: {
       newItemAdded: false,
       actionOverDue: false,
-      actionChanges: true,
   }
 },];
-
-const defaultValues: Partial<ISetting> = {
-  ...settingSections[0].fields, // Defaults
-  ...settingSections[1].fields, // Email Templates
-  ...settingSections[2].fields, // Notifications
-};
 
 export const useSettingsContext = () => {
   const context = useContext(SettingsContext);
@@ -75,33 +79,79 @@ export const useSettingsContext = () => {
 
 const SettingsProvider = (props) => {
   const { data, loading } = useQuery(GET_SETTINGS_DATA);
+
+  const defaultSettingsValues:object = useMemo(() => {
+    let values = {};
+    data?.defaultSettings?.map(({name, value}) => {
+      return values = {...values, [name]: value};
+    });
+    return values;
+  // eslint-disable-next-line
+  },[data]);
+
+  const defaultNotificationValues:object = useMemo(() => {
+    let values = {};
+    data?.notificationSettings?.map(({name, value}) => {
+      return values = {...values, [name]: value};
+    });
+    return values;
+  // eslint-disable-next-line
+  },[data]);
+
+  const defaultValues = useMemo(() => {
+    return{
+    ...settingSections[0].fields, // Defaults
+    ...settingSections[1].fields, // Email Templates
+    ...settingSections[2].fields, // Notifications
+    ...defaultSettingsValues,
+    ...defaultNotificationValues
+  };},[defaultSettingsValues, defaultNotificationValues]);
+
   const {
     control,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     setValue: setFormValue,
     trigger,
+    reset, 
+    watch
   } = useForm({
     mode: "all",
     defaultValues,
   });
+
+  useEffect(() => {
+    reset(defaultValues);
+  },[// eslint-disable-line react-hooks/exhaustive-deps
+    defaultValues]);
+
   const [activeTab,setActiveTab] = useState<0|1|2>(0);
+  
   const setValue = (name, value) => {
     setFormValue(name, value);
     trigger(name, value);
   };
 
+  const formValues = watch();
+
   const value = useMemo(() => ({
     control, errors, setValue, trigger,
     loading,
-    settings: data?.settings || [],
+    defaultSettings: data?.defaultSettings || [],
+    notificationSettings: data?.notificationSettings || [],
     categories: data?.categories || [],
     regulatoryBodies: data?.regulatoryBodies || [],
     businessUnits: data?.businessUnits || [],
     activeTab, setActiveTab,
+    formValues,
+    dirtyFields,
+    reset,
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     control, errors,
     data,
     activeTab,
+    formValues,
+    dirtyFields,
+    reset
   ]);
 
   return (

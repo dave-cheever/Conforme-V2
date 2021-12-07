@@ -74,7 +74,7 @@ const getApp = async () => {
   // app.use(setOrganization);
   app.use('/', baseRouter(passport));
   app.use('/images', express.static('public'));
-  app.use('/images', (req, res) => res.status(StatusCodes.PERMANENT_REDIRECT).redirect(`${global.apiUrl}/images/placeholder.jpg`));
+  app.use('/images', (req, res) => res.status(StatusCodes.PERMANENT_REDIRECT).redirect(`${global.apiUrl}/images/placeholder.png`));
 
   server.applyMiddleware({
     app,

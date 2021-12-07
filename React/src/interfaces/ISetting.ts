@@ -8,4 +8,8 @@ export interface ISetting extends IBase {
   description: string;
   options?: string[];
   organizationId: string;
+  placeholder?: string;
+  inputType: string;
+  variant?: string;
+  help?: string;
 }

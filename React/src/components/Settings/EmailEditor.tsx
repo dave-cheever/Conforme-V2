@@ -11,19 +11,21 @@ const sunEditorOptions = {
     ['list', 'outdent', 'indent'],
     ['link', 'table', 'removeFormat'],
   ],
-  height: '100%',
-  minHeight: '300px',
-  maxHeight: 'calc(100vh - 520px)',
+  height: 'calc(100vh - 250px)',
   toolbarContainer: '#custom_toolbar',
 };
 
 const EmailEditor = ({ setHtml, value, options }) => {
   const editorRef = useRef();
 
+  const getSunEditorInstance = (sunEditor) => {
+    editorRef.current = sunEditor;
+};
+
   const insertTag = (tag: string) => {
     if (editorRef && editorRef.current) {
-      // @ts-expect-error
-      editorRef.current.editor.insertHTML(tag);
+       // @ts-expect-error
+      editorRef.current.insertHTML(tag);
     }
   }
 
@@ -39,11 +41,10 @@ const EmailEditor = ({ setHtml, value, options }) => {
           >{option}</Button>
         )}
       </Stack>
+      
       <SunEditor
-        //@ts-ignore
-        ref={editorRef}
+        getSunEditorInstance={getSunEditorInstance}
         setContents={value}
-        //@ts-ignore
         setOptions={sunEditorOptions}
         setDefaultStyle="font-family: Arial, sans-serif;"
         onChange={setHtml}

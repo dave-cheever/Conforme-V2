@@ -7,4 +7,8 @@ export interface IField {
   tooltip?: string;
   validations?: Validations;
   disabled?: boolean;
+  options?: any[];
+  variant?: string;
+  help?: string;
+  placeholder?: string;
 }

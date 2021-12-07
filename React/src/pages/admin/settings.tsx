@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -11,6 +12,7 @@ import Defaults from "../../components/Settings/Defaults";
 import Loader from "../../components/Loader";
 import Notification from "../../components/Settings/Notification";
 import EmailTemplates from "../../components/Settings/EmailTemplates";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
 
 const Settings = () => {
   const {
@@ -18,6 +20,14 @@ const Settings = () => {
     activeTab,
     setActiveTab
   } = useSettingsContext();
+
+  const { setUsedFilters} = useFiltersContext();
+
+  useEffect(() => {
+    //remove the filter, as no needed on admin settings.
+    setUsedFilters([]);
+    // eslint-disable-next-line
+  },[])
 
   const renderSections = () => {
     switch (activeTab) {
@@ -41,16 +51,17 @@ const Settings = () => {
         breadcrumbs={["Admin", "Other settings"]}
         hideBreadcrumbsOnMobile
       />
-      <Flex flexDirection="column" w="full" px="30px" h="calc( 100vh - 150px)" overflow="none">
-        <Flex bg="white" w={activeTab !== 1 ? "full" : "fit-content"} h="full" overflow="auto" borderRadius="20px" p="25px 30px" flexDirection="column">
+      <Flex flexDirection="column" w="full" px="30px" h="calc( 100vh - 160px)" overflow="none">
+        <Flex bg="white" w={activeTab === 1 ? "fit-content" : "full"} h="calc( 100vh - 160px)" overflow="auto" borderRadius="10px" p="25px 30px" flexDirection="column">
           {loading ? <Loader center={true}/>: 
-          <><Flex w="full">
+          <>
+          <Flex w="full">
             {settingsTabs.map(({label, index}) => <TabItem 
             key={index} setActiveTab={setActiveTab}
             index={index} 
             active={index===activeTab} label={label}/>)}
           </Flex>
-          <Flex mt="7">
+          <Flex mt="7" h="full" w="full">
             {renderSections()}
           </Flex>
           </>}

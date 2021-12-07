@@ -1,8 +1,20 @@
 import { Settings } from "app-models";
+import { isPermitted } from "app-utils";
 
-const settings = async (_, { type }) => {
+const settings = async (_, { type }, { authorize,organization}) => {
   try {
-    const settings = await Settings.getByType(type);
+    const user = await authorize();
+    if (
+      !isPermitted({ user, action: "settings.view"})
+    ) {
+      throw new Error("User is not permitted");
+    }
+
+    if(!organization){
+      throw new Error("User is not permitted");
+    }
+
+    const settings = await Settings.getByType(type, organization._id);
     return settings;
   } catch (err) {
     throw new Error(err);
