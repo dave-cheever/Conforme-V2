@@ -13,14 +13,14 @@ const ComplianceItemResponse = () => {
   const renderSection = () => {
     switch (activeTab) {
       case 0:
-        return <Details/>;
-      
+        return <Details />;
+
       case 1:
-        return <Attachments/>;
-      
+        return <Attachments />;
+
       case 2:
         return <ResponseQuestions />;
-    
+
       default:
         break;
     }
@@ -43,10 +43,10 @@ const ComplianceItemResponse = () => {
 export default ComplianceItemResponse;
 
 export const complianceItemResponseStyles = {
-  complianceItemResponse:{
+  complianceItemResponse: {
     bg: "white",
-    nextButtonColor:"#818197",
-    labelColor:"#818197",
+    nextButtonColor: "#818197",
+    labelColor: "#818197",
     expandButtonText: "#462AC4",
     labelTextColor: "#1F1F1F"
   }

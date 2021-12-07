@@ -13,6 +13,11 @@ import { CalendarIcon } from '../../icons';
 interface IDatepicker extends IField {
   placeholder?: string;
   variant?: string;
+  styles?:{
+    textInput ?: {
+      font?:string
+    }
+  }
 }
 
 const definedValidations: DefinedValidations = {
@@ -23,7 +28,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: IDatepicker) => {
+const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: IDatepicker) => {
   const flatpickrRef = useRef();
   const validate = useValidate(label || name, validations, definedValidations);
   return (
@@ -39,7 +44,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
             {label && (
               <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "form.datepicker.labelFont.error" : "form.datepicker.labelFont.normal"}
+                  color={error ? "form.datepicker.labelFont.error" : styles ? styles?.textInput?.font : "form.datepicker.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
                   position="static"

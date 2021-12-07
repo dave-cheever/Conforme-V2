@@ -9,6 +9,11 @@ import { DefinedValidations } from '../../interfaces/Validations';
 interface ITextInput extends IField {
   placeholder?: string;
   variant?: string;
+  styles?: {
+    textInput ?: {
+      font?:string
+    }
+  };
 }
 
 const definedValidations: DefinedValidations = {
@@ -24,7 +29,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const TextInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: ITextInput) => {
+const TextInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: ITextInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
@@ -39,7 +44,7 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', varia
             {label && (
               <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "form.textInput.labelFont.error" : "form.textInput.labelFont.normal"}
+                  color={error ? "form.textInput.labelFont.error" : styles ?  styles?.textInput?.font : "form.textInput.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
                   position="static"

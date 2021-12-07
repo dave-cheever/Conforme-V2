@@ -8,6 +8,8 @@ import { avatarUserStyles } from "../components/Team/AvatarUser";
 import { barChartStyles } from "../components/BarChart";
 import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
 import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
+import { businessUnitsStyles } from "../pages/admin/business-units";
+import { categoriesStyles } from "../pages/admin/categories";
 import { complianceGroupItemsStyles } from "../components/ComplianceItem/ComplianceItemsGroup";
 import { complianceItemModalStyles } from "../components/AdminComplianceItemModal/ComplianceItemModal";
 import { complianceItemResponseStyles } from "../pages/compliance-item/index";
@@ -24,27 +26,27 @@ import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
-import { businessUnitsStyles } from "../pages/admin/business-units";
-import { categoriesStyles } from "../pages/admin/categories";
-import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
 import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
 import { navigationTopStyles } from "../components/NavigationTop";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
 import { questionListElementStyles } from "../components/Questions/QuestionListElement";
 import { questionListStyles } from "../components/Questions/QuestionList";
 import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
+import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
 import { responseHeaderStyles } from "../components/Response/ResponseHeader";
 import { responseHeaderStatusStyles } from "../components/Response/ResponseHeaderStatus";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
-import { shareModalStyles } from "../components/ShareModal";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
+import { responseQuestionsStyles } from "../components/Response/ResponseQuestions";
+import { shareModalStyles } from "../components/ShareModal";
 import { subSectionStyles } from "../components/NavigationLeft/SubSection";
 import { settingsTabItemStyles } from "../components/Settings/TabItem";
 import { summaryItemModalStyles } from "../components/AdminComplianceItemModal/SummaryItem";
 import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summary";
 import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
+import { toggleStyles } from "../components/Response/Toggle";
 import { userMenuStyles } from "../components/UserMenu";
 
 // http://chir.ag/projects/name-that-color - Get color names
@@ -121,6 +123,7 @@ const getTheme = (organizationTheme?: any) => {
       ...questionsModalStyles,
       ...regulatoryBodiesStyles,
       ...responseLeftNavigationStyles,
+      ...responseQuestionsStyles,
       ...responseTabItemStyles,
       ...responseHeaderStyles,
       ...responseHeaderStatusStyles,
@@ -132,6 +135,7 @@ const getTheme = (organizationTheme?: any) => {
       ...summaryModalStyles,
       ...teamPageStyles,
       ...textConfirmInputStyles,
+      ...toggleStyles,
       ...userMenuStyles,
 
       purpleHeart: {

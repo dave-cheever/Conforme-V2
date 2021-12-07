@@ -3,6 +3,8 @@
 /* react-flatpickr */
 .flatpickr-calendar {
   font-size: 14px;
+}
+.flatpickr-calendar.inline {
   width: 100% !important;
 }
 .flatpickr-wrapper {
