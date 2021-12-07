@@ -33,6 +33,8 @@ import { questionFormStyles } from "../components/Questions/QuestionForm";
 import { questionListElementStyles } from "../components/Questions/QuestionListElement";
 import { questionListStyles } from "../components/Questions/QuestionList";
 import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
+import { responseHeaderStyles } from "../components/Response/ResponseHeader";
+import { responseHeaderStatusStyles } from "../components/Response/ResponseHeaderStatus";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
 import { shareModalStyles } from "../components/ShareModal";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
@@ -120,6 +122,8 @@ const getTheme = (organizationTheme?: any) => {
       ...regulatoryBodiesStyles,
       ...responseLeftNavigationStyles,
       ...responseTabItemStyles,
+      ...responseHeaderStyles,
+      ...responseHeaderStatusStyles,
       ...responseLeftTabItemStyles,
       ...shareModalStyles,
       ...settingsTabItemStyles,

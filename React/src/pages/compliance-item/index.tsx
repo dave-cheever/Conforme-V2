@@ -27,7 +27,7 @@ const ComplianceItemResponse = () => {
   }
   return (
     <Flex w="full" direction='column' pb={['100px', '0px']} >
-      <Flex flexDir="column" h="calc(100vh - 200px)" p="25px 30px 25px 30px" w={["full","calc(100% - 300px)"]} borderRadius="20px" bg="complianceItemResponse.bg">
+      <Flex flexDir="column" h="calc(100vh - 190px)" p="25px 30px 25px 30px" w="calc(100% - 300px)" borderRadius="20px" bg="complianceItemResponse.bg">
         <Flex align='center' justify="space-between" mb="8">
           <Flex>
             {responseTabItems.map(({index,label,icon}) => <ResponseTabItem setActiveTab={setActiveTab} index={index} active={activeTab === index} key={label} label={label} icon={icon}/>)}

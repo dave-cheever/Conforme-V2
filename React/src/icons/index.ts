@@ -42,6 +42,7 @@ import ErrorSign from "./ErrorSign";
 import Eye from "./Eye";
 import FileRightIcon from "./FileRightIcon";
 import Filter from "./Filter";
+import FollowIcon from "./FollowIcon";
 import GridIcon from "./GridIcon";
 import GroupIcon from "./GroupIcon";
 import HealthKitIcon from "./HealthKitIcon";
@@ -75,7 +76,8 @@ import RightArrowIcon from "./RightArrowIcon";
 import ResetIcon from "./Reset";
 import Save from "./Save";
 import SearchIcon from "./SearchIcon";
-import { Share } from "./Share";
+import Share from "./Share";
+import ShareIcon from "./ShareIcon"
 import TickIcon from "./TickIcon";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
@@ -130,6 +132,7 @@ export {
   Eye,
   FileRightIcon,
   Filter,
+  FollowIcon,
   GridIcon,
   GroupIcon,
   HealthKitIcon,
@@ -165,9 +168,10 @@ export {
   Save,
   SearchIcon,
   Share,
+  ShareIcon,
   TeamsIcon,
   TickIcon,
   UploadedCross,
   UploadedTick,
-  UploadIcon
+  UploadIcon,
 };

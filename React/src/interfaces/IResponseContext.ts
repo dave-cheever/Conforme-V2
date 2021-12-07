@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { IResponse } from "./IResponse";
 
 export interface IResponseContext {
-  response: IResponse | undefined,
+  response: IResponse,
   loading: boolean,
   refetch: () => void;
 

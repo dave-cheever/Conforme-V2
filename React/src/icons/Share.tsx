@@ -1,6 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 
-export const Share = createIcon({
+const Share = createIcon({
   path: (
     <path
       stroke="currentColor"
@@ -13,3 +13,5 @@ export const Share = createIcon({
   ),
   viewBox: '0 0 18 20'
 });
+
+export default Share;

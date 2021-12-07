@@ -39,7 +39,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           h={["calc(100vh - 140px)","calc(100vh - 80px)"]}
         >
           <ShareModal />
-          <ReasponseHeader response={response} />
+          <ReasponseHeader />
           {response && <Component />} 
         </Flex>
         <ResponseLeftNavigationMobile />
