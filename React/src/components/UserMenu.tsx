@@ -32,7 +32,8 @@ const UserMenu = () => {
           ml="1"
           mr={["0", "6"]}
           color="white"
-          w="50px"
+          w="65px"
+          matchWidth={true}
         >
           <Avatar
             color="userMenu.avatar.color"
@@ -41,7 +42,7 @@ const UserMenu = () => {
             name={user?.displayName}
             h="41px"
             w="41px"
-            src=""
+            src={user?.imgUrl}
             mx={3}
             borderWidth="5px"
             borderColor={isOpen ? "userMenu.avatar.borderColorOpened": "userMenu.avatar.borderColor"}

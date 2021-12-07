@@ -2,8 +2,11 @@ import Accidents from "./Accidents";
 import Actions from "./Actions";
 import ActionsIcon from "./ActionsIcon";
 import Admin from "./Admin";
+import AddIcon from "./AddIcon";
 import AreaInfoIcon from "./AreaInfoIcon";
 import ArrowRight from "./ArrowRight";
+import ArrowUpIcon from "./ArrowUpIcon";
+import ArrowDownIcon from "./ArrowDownIcon";
 import Assets from "./Assets";
 import AssetsIcon from "./AssetsIcon";
 import Asterisk from "./Asterisk";
@@ -27,10 +30,13 @@ import CircleEmpty from './CircleEmpty';
 import CircleRemove from './CircleRemove';
 import Close from "./Close";
 import ComingUpIcon from "./ComingUpIcon";
+import CrossIcon from "./CrossIcon";
+import ConformeSmall from "./ConformeSmall";
 import { Conforme } from "./Conforme";
 import { Copy } from "./Copy";
 import Dashboard from "./Dashboard";
 import DetailIcon from "./DetailIcon";
+import DownloadIcon from "./DownloadIcon";
 import EllipsisIcon from "./EllipsisIcon";
 import ErrorSign from "./ErrorSign";
 import Eye from "./Eye";
@@ -53,6 +59,7 @@ import Mentions from "./Mentions";
 import MessageIcon from "./MessageIcon";
 import MinusIcon from './MinusIcon';
 import Move from "./Move";
+import NotificationIcon from "./NotificationIcon";
 import OpenMenuArrow from "./OpenMenuArrow";
 import Pencil from "./Pencil";
 import Policies from "./Policies";
@@ -65,18 +72,13 @@ import QuestionToggleIcon from "./QuestionToggleIcon";
 import RedDotIcon from "./RedDotIcon";
 import RequiredIcon from "./RequiredIcon";
 import RightArrowIcon from "./RightArrowIcon";
+import ResetIcon from "./Reset";
 import Save from "./Save";
 import SearchIcon from "./SearchIcon";
 import { Share } from "./Share";
+import TickIcon from "./TickIcon";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
-import ArrowUpIcon from "./ArrowUpIcon";
-import ArrowDownIcon from "./ArrowDownIcon";
-import ResetIcon from "./Reset";
-import TickIcon from "./TickIcon";
-import ConformeSmall from "./ConformeSmall";
-import CrossIcon from "./CrossIcon";
-import DownloadIcon from "./DownloadIcon";
 import UploadIcon from "./UploadIcon";
 import TeamsIcon from "./TeamsIcon";
 import ProgressIcon from "./ProgressIcon";
@@ -87,6 +89,7 @@ export {
   Actions,
   ActionsIcon,
   Admin,
+  AddIcon,
   AreaInfoIcon,
   ArrowDownIcon,
   ArrowCount,
@@ -144,6 +147,7 @@ export {
   MessageIcon,
   MinusIcon,
   Move,
+  NotificationIcon,
   OpenMenuArrow,
   Pencil,
   Policies,

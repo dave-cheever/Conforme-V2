@@ -1,16 +1,20 @@
-import { AddIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Stack,
   Text,
-  IconButton
+  IconButton,
+  Badge,
+  Input, 
+  InputGroup, 
+  InputLeftElement
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-import { QuestionMarkIcon } from "../icons";
+import { AddIcon, SearchIcon, NotificationIcon } from "../icons";
 import { useAppContext } from "../contexts/AppProvider";
 import { useAdminContext } from "../contexts/AdminProvider";
 import UserMenu from "./UserMenu";
+import Can from "./can";
 
 const NavigationTop = () => {
   const {
@@ -50,8 +54,8 @@ const NavigationTop = () => {
         spacing={4}
         direction="row"
         align="center"
-        fontWeight="400"
-        fontSize="18px"
+        fontWeight="semi_medium"
+        fontSize="lg"
         w="full"
         mr={["0", "135px"]}
         ml={5}
@@ -60,38 +64,54 @@ const NavigationTop = () => {
           <Text
             w="full"
             ml={[0,6]}
-            fontWeight="700"
-            fontSize="14px"
-            color="#FFFFFF"
+            fontWeight="bold"
+            fontSize="md"
+            lineHeight= "19px"
+            color="navigationTop.organizationName"
           >
             {organizationConfig?.name}
           </Text>
         </Flex>
-        <IconButton
-          onClick={handleAddButtonClick}
-          _hover={{ opacity: 0.7 }}
-          bg="navigationTop.addButton"
-          h={["60px", "45px"]}
-          w={["60px", "45px"]}
-          color="white"
-          aria-label="Add to friends"
-          icon={<AddIcon />}
-          position={["fixed", "relative"]}
-          bottom={["0px", "0"]}
-          right={["30px", "0"]}
-          zIndex={5}
-          flexShrink={0}
+        <Can
+          action='adminPanel'
+          yes={() => <IconButton
+            onClick={handleAddButtonClick}
+            _hover={{ opacity: 0.7 }}
+            mr="30px"               
+            bg="navigationTop.addButton"
+            h={['60px', '45px']}
+            w={['60px', '45px']}
+            color="white"
+            aria-label="Add"
+            icon={<AddIcon h="20px" w="20px"/>}
+            position={['fixed', 'relative']}
+            bottom={['15px', '0']}
+            right={['30px', '0']}
+            zIndex={5}
+            flexShrink={0}
+            display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
+          />}
         />
         {/* <SearchBar /> */}
+      <Flex>
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            color="navigationTop.inputIconColor"
+            children={<SearchIcon fill="navigationTop.searchBarIcon" stroke="brand.outerSpace" opacity="1"/>}
+          />
+          <Input bg= "navigationTop.inputBg" rounded= "20px" placeholder="Search" fontWeight="semi_medium" fontSize="smm"></Input>
+        </InputGroup>
+      </Flex>
       </Stack>
-      <Flex align="center" mr={3}>
-        <QuestionMarkIcon
-          _hover={{ color: "#ffffff", opacity: 0.7, cursor: "pointer" }}
+      <Flex align="center">
+        <NotificationIcon
+          _hover={{ color: "navigationTop.notificationIconHover", opacity: 0.7, cursor: "pointer" }}
           _active={{}}
-          h="22px"
+          h="20px"
           w="22px"
-          onClick={() => pageRedirect("/help")}
         />
+        <Badge variant="solid" bg="navigationTop.notificationColorScheme" border="2px solid" borderColor="navigationTop.notificationBadgeBorder" borderRadius="5px" cursor="pointer">3</Badge>
         <UserMenu/>
       </Flex>
     </Flex>
@@ -100,10 +120,17 @@ const NavigationTop = () => {
 
 export default NavigationTop;
 
-
 export const navigationTopStyles = {
   navigationTop: {
     bg: "#E5E5E5",
-    addButton: "#462AC4"
+    inputBg: "#FFFFFF",
+    inputIconColor: "#282F36",
+    organizationName: "#FFFFFF",
+    addButton: "#462AC4",
+    avatarBg: "#A2171E",
+    searchBarIconFill: "#282F36",
+    notificationIconHover: "#FFFFFF",
+    notificationBadgeBorder: "#FFFFFF",
+    notificationColorScheme: "#E93C44",
   }
 }
