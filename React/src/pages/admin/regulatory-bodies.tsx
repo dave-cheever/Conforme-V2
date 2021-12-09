@@ -175,6 +175,7 @@ const RegulatoryBodies = () => {
       </AdminModal>
       <Header
         breadcrumbs={["Admin", "Regulatory bodies"]}
+        mobileBreadcrumbs={["Regulatory bodies"]}
       />
       <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
         <Flex h="full" px={["25px", 0]}>

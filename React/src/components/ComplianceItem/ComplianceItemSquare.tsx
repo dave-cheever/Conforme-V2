@@ -22,10 +22,10 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
       boxShadow="sm"
       bg="white"
       borderRadius="20px"
-      w={["calc(100% - 40px)","290px","320px"]}
+      w="full"
       flexShrink={0}
       p="20px 25px 20px 25px"
-      m={2}
+      h="290px"
     >
       <Flex align='center' justify="space-between">
         <Flex align='center'>

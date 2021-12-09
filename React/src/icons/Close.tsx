@@ -1,19 +1,11 @@
 import { createIcon } from "@chakra-ui/icons";
 
 const Close = createIcon({
-  viewBox: "0 0 16 15",
+  viewBox: "0 0 16 16",
   path: (
     <g>
-      <path
-        d="M15.5 0.5L0.5 15.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M0.5 0.5L15.5 15.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M14.75 1.25L1.25 14.75" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M1.25 1.25L14.75 14.75" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
     </g>
   ),
 });

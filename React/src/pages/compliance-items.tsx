@@ -6,8 +6,10 @@ import {
   Flex,
   MenuList,
   MenuItem,
-  Text
+  Text,
+  Grid
 } from "@chakra-ui/react";
+import { gql, useQuery } from "@apollo/client";
 
 import Header from "../components/Header";
 import { ChevronRight, GridIcon, GroupIcon, ListIcon } from "../icons";
@@ -19,7 +21,6 @@ import ComplianceItemsGroup from "../components/ComplianceItem/ComplianceItemsGr
 import useResponseUtils from "../hooks/useResponseUtils";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
-import { gql, useQuery } from "@apollo/client";
 import useDevice from "../hooks/useDevice";
 
 const GET_RESPONSES = gql`
@@ -172,7 +173,7 @@ const ComplianceItems = () => {
               </Flex>
             </MenuButton>
           }
-          <MenuList rounded="lg" w="100px" border='none'>
+          <MenuList zIndex={2} rounded="lg" w="100px" border='none'>
             <MenuItem
               fontSize="14px"
               _focus={{ color: "complianceItems.header.menuItemFocus" }}
@@ -203,16 +204,24 @@ const ComplianceItems = () => {
           </MenuList>
         </Menu>}
       </Header>
-      <Flex h='calc(100vh - 150px)' overflow='auto'>
+      <Flex h={["calc(100vh - 210px)" , "calc(100vh - 150px)"]} overflow='auto'>
         {error ? <Text>{error.message}</Text> : loading ? <Loader center={true} /> :
           <>
             {viewMode === "Grid" &&
-              <Flex direction='row' w='full' pb={[0,8]} px={[0,8]} pt={-2} wrap='wrap' justify={["center","flex-start"]}>
+              <Grid templateColumns={["repeat(1, 1fr)","repeat(2, 1fr)","repeat(3, 1fr)"]} h="fit-content" gap={6} w='full' pb={[0,8]} px={[4,8]}>
                 {filteredResponses.length > 0
                   ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                   : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>
                 }
-              </Flex>}
+                {filteredResponses.length > 0
+                  ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
+                  : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>
+                }
+                {filteredResponses.length > 0
+                  ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
+                  : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>
+                }
+              </Grid>}
             {viewMode === "List" && <ComplianceItemsList responses={filteredResponses} />}
             {viewMode === "Group" && <ComplianceItemsGroup responses={filteredResponses} />}
           </>

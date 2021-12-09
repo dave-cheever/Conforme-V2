@@ -172,7 +172,7 @@ const EmailTemplates = () => {
               colorScheme="purpleHeart"
               fontSize="14px"
               borderRadius="10px"
-              leftIcon={<TickIcon mt={1} />}
+              leftIcon={<TickIcon stroke="white" mt={1} />}
               h="35px"
               onClick={saveTemplate}
             >

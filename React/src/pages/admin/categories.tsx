@@ -198,7 +198,7 @@ const Categories = () => {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Categories"]} />
+      <Header breadcrumbs={["Admin", "Categories"]} mobileBreadcrumbs={["Categories"]}/>
       <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
         <Flex h="full" px={["25px", 0]}>
           <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>

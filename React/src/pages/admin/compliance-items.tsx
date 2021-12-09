@@ -107,6 +107,7 @@ const ComplianceItemsAdmin = () => {
       </Modal>
       <Header
         breadcrumbs={["Admin", "Compliance items"]}
+        mobileBreadcrumbs={["Compliance items"]}
       />
       {loading ? (
         <Box mt={20}>

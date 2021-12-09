@@ -1,6 +1,7 @@
 import { useEffect, useState} from 'react';
 import {
   Flex,
+  Stack
 } from '@chakra-ui/react';
 
 import ComplianceItemSquare from './ComplianceItemSquare';
@@ -37,9 +38,9 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
       >
         {responseStatusesGroup[group]}
       </Flex>
-      <Flex direction="column" w='full' align='center' >
+      <Stack spacing={6} direction="column" w='full' align='center' pb={5}>
         {(filteredResults[group]?.map((response: IResponse) => <ComplianceItemSquare key={response['_id']} response={response} />))}
-      </Flex>
+      </Stack>
     </Flex>
   );
 

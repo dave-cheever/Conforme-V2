@@ -49,6 +49,7 @@ const Settings = () => {
     <Box w="full" h="full">
       <Header
         breadcrumbs={["Admin", "Other settings"]}
+        mobileBreadcrumbs={["Other settings"]}
       />
       <Flex flexDirection="column" w="full" px="30px" h="calc( 100vh - 170px)">
         <Flex bg="white" w={activeTab === 1 ? "fit-content" : "full"} h="calc( 100vh - 170px)" overflow="auto" borderRadius="10px" p="25px 30px" flexDirection="column">

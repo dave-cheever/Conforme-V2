@@ -3,24 +3,22 @@ import {
   Box,
   Flex,
   Image,
-  Stack,
   Text,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { IResponse } from '../../interfaces/IResponse';
-import useResponseUtils from '../../hooks/useResponseUtils';
-import { Building, LocationIcon, UploadedCross, UploadedTick, ArrowDownIcon } from '../../icons';
+import { Building, Close, LocationIcon, TickIcon } from '../../icons';
 import BriefcaseIcon from '../BriefcaseIcon';
-import MissingQuestions from '../MissingQuestions';
+import AdminTableHeader from '../Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
+import useResponseUtils from '../../hooks/useResponseUtils';
 
 const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   const history = useHistory();
   const { getStatus } = useResponseUtils();
 
   const renderItem = (response: IResponse, i: number) => {
-    const requiredQuestionsLeft = response?.questions?.filter(({ required, value }) => required && (value === undefined || value === ''));
-
     return (
       <Box
         key={response._id}
@@ -29,63 +27,44 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
         bg="white"
         py={[1, 0]}
         w='full'
-        pr={[1, 4]}
         borderBottomWidth="1px"
         borderBottomColor="complianceList.headerBorderColor"
+        p="15px 25px"
       >
-        <Flex w='full' h={['full', '73px']} align="center" position='relative'>
-          <Box w='30%'>
+        <Flex w='full' h={['full', '73px']}  align="center" position='relative'>
+          <Flex w="20%" flexDir="column">
             <Flex
-              fontSize='16px'
-              lineHeight='20px'
+              fontSize='14px'
+              lineHeight='18px'
               color='complianceList.fontColor'
               opacity='1'
-              fontWeight='700'
+              fontWeight='400'
               h='50%'
               align='flex-start'
               pt="3px"
-              pl={4}
             >
               {response.complianceItem?.name}
               {response.businessUnit?.type === 'Corporate' && <Box ml={3}><BriefcaseIcon /></Box>}
             </Flex>
-            <Stack
-              pl={4}
-              direction={['column', 'row']}
-              spacing={4}
-              align={['flex-start', 'center']}
-              mt={2}
-              fontSize='12px'
-              color='complianceList.evidenceFontColor'
-            >
-              <Flex align='center'>
-              <Flex
-                h='12px'
-                w='12px'
-                mr={2}
-                bgColor={`complianceList.${getStatus(response)}`}
-                rounded="full"/>
-              <Flex opacity='0.75'>
-                {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
-              </Flex>
-              </Flex>
-              <Flex align='center'>
-                {response?.evidence?.find(({ uploaded }) => uploaded === undefined) ?
-                  <><UploadedCross color='complianceList.crossIcon' mr={2} /><Flex opacity='0.75' color='complianceList.crossIcon'>Missing evidence</Flex></> :
-                  <><UploadedTick color='complianceList.tickIcon' mr={2} /><Flex opacity='0.75' color='complianceList.tickIcon' >Uploaded</Flex></>
-                }
-              </Flex>
-              <Flex align='center'>
-                {requiredQuestionsLeft && requiredQuestionsLeft.length > 0 && <MissingQuestions questionsLeft={requiredQuestionsLeft.length} />}
-              </Flex>
-            </Stack>
-          </Box>
-          <Box w='15%' ml={3}>
-            <Box color='complianceList.fontColor' opacity='1' fontWeight="400" fontSize='14px'>
+          </Flex>
+          <Flex w='10%' ml={2}>
+            <Text color='complianceList.fontColor' opacity='1' fontWeight="400" fontSize='14px'>
               {response?.nextRenewalDate ? format(new Date(response?.nextRenewalDate), 'd MMM yyyy') : <Flex fontStyle='italic'>No due date</Flex>}
-            </Box>
+            </Text>
+          </Flex>
+          <Flex w='10%' ml={2} >
+            {response && getStatus(response) === "nonCompliant" ?
+                <Flex align="center"><Close stroke='complianceList.crossIcon' mr={2} /><Flex fontWeight="700" fontSize="14px" color='complianceList.crossIcon'>No</Flex></Flex> :
+                <Flex align="flex-end"><TickIcon stroke='complianceList.tickIcon' mr={2} /><Flex fontWeight="700" fontSize="14px"  color='complianceList.tickIcon' >Yes</Flex></Flex>
+              }
+          </Flex>
+          <Box w='15%' ml={2}>
+            {response?.evidence?.find(({ uploaded }) => uploaded === undefined) ?
+              <Flex align="center"><Close stroke='complianceList.crossIcon' mr={2} /><Flex fontWeight="700" fontSize="14px" color='complianceList.crossIcon'>Missing</Flex></Flex> :
+              <Flex align="flex-end"><TickIcon stroke='complianceList.tickIcon' mr={2} /><Flex fontWeight="700" fontSize="14px"  color='complianceList.tickIcon' >Uploaded</Flex></Flex>
+            }
           </Box>
-          <Box w='20%'>
+          <Box w='15%' ml={2}>
             <Box
               color='complianceList.fontColor'
               opacity='1'
@@ -95,8 +74,8 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               {response.complianceItem?.regulatoryBody?.name ? response.complianceItem?.regulatoryBody?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
             </Box>
           </Box>
-          <Box w='15%'>
-            <Flex direction={['column', 'row']} align='center'>
+          <Box w='15%'  ml={2}>
+            <Flex direction="row" align='center'>
               <Image
                 flexShrink={0}
                 fit='cover'
@@ -134,23 +113,23 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
               </Text>
             </Flex>
           </Box>
-          <Box w='20%'>
-            <Flex direction={['column', 'row']} align='center'>
-              <LocationIcon boxSize="12px"/>
-              <Text
-                w='full'
-                pl={3}
-                lineHeight='17px'
-                color='complianceList.fontColor'
-                opacity='1'
-                fontSize='13px'
-                overflow='hidden'
-                textOverflow='ellipsis'
-                whiteSpace='nowrap'
-              >
-                {response.businessUnit?.name}
-              </Text>
-            </Flex>
+          <Box w='15%' ml={3}>
+          <Flex>
+            <LocationIcon boxSize="12px"/>
+            <Text
+              w='full'
+              pl={3}
+              lineHeight='17px'
+              color='complianceList.fontColor'
+              opacity='1'
+              fontSize='13px'
+              overflow='hidden'
+              textOverflow='ellipsis'
+              whiteSpace='nowrap'
+            >
+              {response.businessUnit?.name}
+            </Text>
+          </Flex>
           </Box>
         </Flex>
       </Box>
@@ -158,41 +137,20 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   };
 
   return (
-    <Box pb= {[3,6]} px={[3, 6]}  w='full' h='full'>
-      <Box bg="complianceList.bg" w="full" minH="full" h="fit-content" borderRadius="20px" pb={7}>
-      <Flex fontSize='12px' w='full' px={4} py={5} color="complianceList.headerTextColor" borderBottomWidth="1px" borderBottomColor="complianceList.headerBorderColor">
-        <Flex w='30%' align='center'>
-        <Box>
-          Item name
-        </Box>
-        <ArrowDownIcon ml="3"/>
-        </Flex>
-        <Flex w='15%' align='center'>
-        <Box>
-          Due date
-        </Box>
-        <ArrowDownIcon ml="3"/>
-        </Flex>
-        <Flex w='20%' align='center'>
-          <Box>
-          Regulatory body
-          </Box>
-        <ArrowDownIcon ml="3"/>
-        </Flex>
-        <Flex w='15%' align='center'>
-          <Box>
-            Responsible
-          </Box>
-        <ArrowDownIcon ml="3"/>
-        </Flex>
-        <Flex w='20%' align='center'>
-          <Box>
-          Business unit
-          </Box>
-        <ArrowDownIcon ml="3"/>
-        </Flex>
-      </Flex>
+    <Box p={[3, 6]} pt={0} w='full' h='full' overflow="none" minW="1200px">
+      <Box bg="complianceList.bg" w="full" minH="full" h="fit-content" borderRadius="20px" pb={7} mb={7}>
+      <AdminTableHeader>
+        <AdminTableHeaderElement w="20%" label="Item name" />
+        <AdminTableHeaderElement w="10%" label="Due date" />
+        <AdminTableHeaderElement w="10%" label="Compliant" />
+        <AdminTableHeaderElement w="15%" label="Evidence" />
+        <AdminTableHeaderElement w="15%" label="Regulatory body" />
+        <AdminTableHeaderElement w="15%" label="Responsible" />
+        <AdminTableHeaderElement w="15%" label="Business unit" />
+      </AdminTableHeader>
+      <Flex flexDir="column" overflowY="auto" w="full" h={["full","calc(100vh - 280px)","calc(100vh - 270px)"]}>
       {responses?.map((response, i) => renderItem(response, i))}
+      </Flex>
       </Box>
     </Box>
   );
@@ -213,7 +171,6 @@ export const complianceListItemsStyles = {
     tickIcon: "#41BA17",
     imageBg: "#ffffff",
     evidenceFontColor: "#818197",
-    headerTextColor: "#818197",
     headerBorderColor: "#F0F0F0"
   },
 }

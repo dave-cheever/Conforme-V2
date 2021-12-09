@@ -5,7 +5,7 @@ import { TickIcon } from '../../icons';
 const FilterCheckBox = ({value, label}) => {
     return (
     <Checkbox
-        icon={<TickIcon />}
+        icon={<TickIcon stroke="white"/>}
         css={{
             ".chakra-checkbox__control": {
             borderRadius: "50%",

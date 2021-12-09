@@ -23,7 +23,7 @@ const USERS = gql`
 const useAuth = () => {
   const { loading, data, error } = useQuery(USERS);
   const { setUser } = useAppContext();
-  
+
   useEffect(() => {
     if (data) {
       setUser(data.session.user);
