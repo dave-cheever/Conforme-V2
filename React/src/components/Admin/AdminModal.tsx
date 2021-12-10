@@ -71,8 +71,6 @@ const AdminModal = ({
           <ModalBody bg="adminModal.body.bg" overflowY="auto">
             <Box borderRadius={["0", "20px"]} bgColor="#F0F2F5" h={"98%"} p={25} position="relative" >
               {children}
-
-
               {(modalType === 'edit') &&
                 <Button
                   mb="25"

@@ -97,7 +97,7 @@ const ComplianceItemsAdmin = () => {
         variant="conformeModal"
         isOpen={adminModalState !== 'closed'}
         onClose={() => { }}
-        size={device === 'desktop' ? '2xl' : 'md'}
+        size={(device === 'desktop' || device === 'tablet') ? '2xl' : 'full'}
       >
         <ModalOverlay />
         {adminModalState === 'delete' ?
