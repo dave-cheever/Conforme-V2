@@ -30,6 +30,7 @@ import CircledTickBold from "./CircledTickBold";
 import CircleEmpty from "./CircleEmpty";
 import CircleRemove from "./CircleRemove";
 import Close from "./Close";
+import CloneIcon from "./CloneIcon";
 import ComingUpIcon from "./ComingUpIcon";
 import Conforme from "./Conforme";
 import ConformeSmall from "./ConformeSmall";
@@ -125,6 +126,7 @@ export {
   ConformeSmall,
   Copy,
   CrossIcon,
+  CloneIcon,
   Dashboard,
   DetailIcon,
   DownloadIcon,

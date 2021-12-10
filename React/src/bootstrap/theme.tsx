@@ -1,5 +1,4 @@
 import { theme } from "@chakra-ui/react";
-
 import { additionalDetailsStyles } from "../components/AdminComplianceItemModal/AdditionalDetails";
 import { adminModalStyles } from "../components/Admin/AdminModal";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
@@ -35,8 +34,9 @@ import { questionListElementStyles } from "../components/Questions/QuestionListE
 import { questionListStyles } from "../components/Questions/QuestionList";
 import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
 import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
-import { responseHeaderStyles } from "../components/Response/ResponseHeader";
-import { responseHeaderStatusStyles } from "../components/Response/ResponseHeaderStatus";
+import { responseHeaderStyles } from "../components/Response/ResponseHeader/ResponseHeader";
+import { responseHeaderStatusStyles } from "../components/Response/ResponseHeader/ResponseHeaderStatus";
+import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
@@ -95,6 +95,7 @@ const getTheme = (organizationTheme?: any) => {
     },
     colors: {
       ...theme.colors,
+      ...adminModalStyles,
       ...additionalDetailsStyles,
       ...adminModalStyles,
       ...adminTableHeaderElementStyles,
@@ -139,6 +140,7 @@ const getTheme = (organizationTheme?: any) => {
       ...responseTabItemStyles,
       ...responseHeaderStyles,
       ...responseHeaderStatusStyles,
+      ...responseHeaderMenuItemStyles,
       ...responseLeftTabItemStyles,
       ...shareModalStyles,
       ...settingsTabItemStyles,

@@ -9,7 +9,7 @@ import ResponseProvider, {
 import ResponseLeftNavigationTablet from "../components/Response/ResponseLeftNavigation/ResponseLeftNavigationTablet";
 import ResponseLeftNavigationMobile from "../components/Response/ResponseLeftNavigation/ResponseLeftNavigationMobile";
 import ShareModal from "../components/ShareModal";
-import ReasponseHeader from "../components/Response/ResponseHeader";
+import ReasponseHeader from "../components/Response/ResponseHeader/ResponseHeader";
 
 const ResponseLayout = ({ component: Component }: { component: any }) => {
   const { loading, response } = useResponseContext();
@@ -30,7 +30,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
         w={["100%","calc(100% - 80px)","calc(100% - 240px)"]}
         direction="column"
       >
-        <NavigationTop />
+        <NavigationTop/>
         <Flex 
           flexDirection="column" 
           bg="layout.bg" position="absolute" 
@@ -38,6 +38,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           overflow="auto" 
           h={["calc(100vh - 140px)","calc(100vh - 80px)"]}
           mt={["80px", 0]}
+          zIndex={4}
         >
           <ShareModal />
           <ReasponseHeader />

@@ -1,6 +1,6 @@
 
-import { CheckIcon, CrossIcon } from '../../icons';
-import { Flex, Stack, Text } from '@chakra-ui/react';
+import { CheckIcon, CrossIcon } from '../../../icons';
+import { Flex, Stack, VStack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 
@@ -28,11 +28,13 @@ const ResponseHeaderStatus = ({ heading, status }) => {
   }
 
   return (
-    <Stack
+    <VStack
       direction="column"
       align="left"
-      pr="30px"
       spacing='3px'
+      w={["max-content","max-content"]}
+      pr={["0","30"]}
+      alignItems={["start","start"]}
     >
       <Flex fontStyle="normal" fontWeight="semi_medium" fontSize="ssm" lineHeight="16px" color="responseHeaderStatus.heading">{heading}</Flex>
       <Stack
@@ -44,7 +46,7 @@ const ResponseHeaderStatus = ({ heading, status }) => {
         {renderIcon()}
         <Text fontStyle="normal" fontWeight="bold" fontSize="ssm" lineHeight="20px" color={color}>{status}</Text>
       </Stack>
-    </Stack>
+    </VStack>
   );
 }
 

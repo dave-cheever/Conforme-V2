@@ -28,7 +28,7 @@ const ComplianceItemResponse = () => {
     }
   }
   return (
-    <Flex w="full" direction='column' pb={['100px', '0px']} >
+    <Flex w="full" direction='column' pb={['100px', '0px']} mt={["45px","0px"]}>
       <ShareModal />
       <Flex overflow="hidden"  >
       <Flex flexDir="column" h="calc(100vh - 190px)" p="25px 30px 25px 30px" w="calc(100% - 300px)" borderRadius="20px" bg="complianceItemResponse.bg">
