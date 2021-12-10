@@ -51,10 +51,10 @@ const getUserData = async ({ userId, organization }: { userId: string, organizat
 };
 
 // userId can be AAD ID or email
-const getUserPhoto = async ({ userId, organization }: { userId: string, organization: IOrganization }) => {
+const getUserPhoto = async ({ userId, organization }) => {
   try {
     await graphSetup(organization);
-    return await graph.users.getById(userId).photo.getBlob();
+    return await graph.users.getById(userId).photo.getBuffer();
   } catch (e) {
     return undefined;
   }

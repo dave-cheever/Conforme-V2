@@ -1,4 +1,4 @@
-import { emailPreview } from "src/utils/email/emailPreview";
+import { emailPreview } from "app-utils";
 
 const generateThumbnail = async (_, { thumbnailCreate }, { authorize }) => {
     try {

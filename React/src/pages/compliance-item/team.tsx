@@ -21,14 +21,13 @@ const GET_USERS_BY_ID = gql`
       firstName
       lastName
       displayName
-      imgUrl
     }
   }
 `;
 
 const SEARCH_USERS = gql`
-  query ($searchQueryInput: SearchQueryInput) {
-    searchUsers(searchQueryInput: $searchQueryInput) {
+  query ($searchQuery: SearchQuery) {
+    searchUsers(searchQuery: $searchQuery) {
       _id
       firstName
       lastName
@@ -52,7 +51,7 @@ const Team = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [userSearchResults, setUserSearchResults] = useState<IUser[]>([]);
   const [selectedRadio, setSelectedRadio] = useState<string>("");
-  const { data: { usersById: owner } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.businessUnit?.ownerId || [] } } });
+  const { data: { usersById: owner } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: [response?.businessUnit?.ownerId] || [] } } });
   const { data: { usersById: delegates } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.delegateIds || [] } } });
   const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQueryInput: { searchText: searchQuery } } });
   const [addDelegate] = useMutation(ADD_DELEGATE);

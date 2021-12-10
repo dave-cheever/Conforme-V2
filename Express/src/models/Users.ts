@@ -1,24 +1,15 @@
-import { Model, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 import { IOrganization, IUser, IUserModel } from 'app-interfaces';
 import { GraphService } from 'app-services';
-import { Organizations } from 'app-models';
+import { getProtocol } from 'app-utils';
 
 const userSchema = new Schema<IUser, IUserModel>({
   _id: String,
-  firstName: String,
-  lastName: String,
-  displayName: String,
-  email: String,
-  jobTitle: String,
-  role: {
-    type: String,
-    enum: ['user', 'reader', 'admin'],
-    default: 'user',
-  },
-  imgUrl: String,
   defaultPage: String,
   organizationsIds: [String],
+  userCreated: Date,
+  lastLogin: Date,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -31,6 +22,14 @@ const userSchema = new Schema<IUser, IUserModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
+userSchema.statics.get = async function ({organization}): Promise<IUser[]> {
+  const users = await this.find({
+    "organizationsIds": { $in: [organization._id] },
+    "metatags.removedAt": { $eq: null },
+  });
+  return users.map((user) => user._doc);
+};
+
 userSchema.statics.getById = async function (userId: string): Promise<IUser> {
   const user = await this.findById(userId);
   if (!user) {
@@ -39,8 +38,14 @@ userSchema.statics.getById = async function (userId: string): Promise<IUser> {
   return user._doc;
 }
 
-userSchema.statics.add = async function (userId: string): Promise<IUser> {
-  const user = await this.create({ _id: userId, defaultPage: "/", organizationsIds: [] });
+
+userSchema.statics.add = async function ({userId, organization}:{ userId: string, organization: IOrganization}): Promise<IUser> {
+  const user = await this.create({ 
+    _id: userId,
+    defaultPage: "/",
+    organizationsIds: [organization._id],
+    userCreated: Date.now(),  
+  });
   return user;
 }
 
@@ -77,7 +82,7 @@ userSchema.statics.findByIdWithDetails = async function ({ userId, organization 
     email: mail!,
     jobTitle: jobTitle!,
     role,
-    // image,
+    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`
   };
 }
 

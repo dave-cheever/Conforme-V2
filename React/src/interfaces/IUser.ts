@@ -10,4 +10,6 @@ export interface IUser extends IBase {
   role: "reader" | "admin" | "user";
   imgUrl?: string;
   defaultPage?: string;
+  lastLogin: Date;
+  userCreated?: Date;
 }

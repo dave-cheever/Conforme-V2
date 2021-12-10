@@ -124,7 +124,7 @@ const SettingsProvider = (props) => {
   },[// eslint-disable-line react-hooks/exhaustive-deps
     defaultValues]);
 
-  const [activeTab,setActiveTab] = useState<0|1|2>(0);
+  const [activeTab,setActiveTab] = useState<number>(0);
   
   const setValue = (name, value) => {
     setFormValue(name, value);

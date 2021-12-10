@@ -21,6 +21,6 @@ export interface ISettingsContext {
   reset: (setting?: Partial<ISetting>) => void;
 
   formValues: any;
-  activeTab: 0 | 1 | 2;
-  setActiveTab: Dispatch<SetStateAction<0 | 1 | 2>>;
+  activeTab: number;
+  setActiveTab: Dispatch<SetStateAction<number>>;
 }

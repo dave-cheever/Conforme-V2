@@ -1,76 +1,57 @@
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { 
   Avatar, 
-  Box, 
-  ButtonGroup, 
-  Editable, 
-  EditableInput, 
-  EditablePreview, 
-  Flex, 
-  IconButton, 
-  Tooltip, 
+  Box,
+  Flex,  
+  Select,  
+  Text
 } from "@chakra-ui/react";
-import { useState } from "react";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { defaultPages } from "../../bootstrap/config";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 
 import Header from "../../components/Header";
+import Loader from "../../components/Loader";
 import useDevice from "../../hooks/useDevice";
-import { ArrowCount, ArrowRight } from "../../icons";
+import {  ArrowDownIcon } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
 
-interface IEditableControls {
-  isEditing: boolean, 
-  onSubmit: any, 
-  onCancel: any, 
-  user: IUser
-}
+const GET_USERS = gql`
+  query {
+    users {
+      _id
+      firstName
+      lastName
+      displayName
+      role
+      jobTitle
+      lastLogin
+      imgUrl
+      defaultPage
+    }
+  }
+`;
+
+
+const UPDATE_USER = gql`
+  mutation ($values: UpdateUserModifyInput!) {
+    updateUser(updateUserModifyInput: $values) {
+      _id
+    }
+  }
+`;
 
 const Users = () => {
-  const [itemCount] = useState<any[]>([]);
   const device = useDevice();
+  const {data, loading, refetch} = useQuery(GET_USERS);
+  const [updateFunction] = useMutation(UPDATE_USER);
 
-  const users: IUser[] = [{
-    displayName: "displayName",
-    email:"email",
-    firstName:"first",
-    _id:"id",
-    jobTitle:"jobTitle",
-    lastName:"last",
-    role:"reader"
-  }]
-
-  const EditableControls = ({ isEditing, onSubmit, onCancel, user }: IEditableControls) => {
-    return isEditing ? (
-      <ButtonGroup justifyContent="center" size="sm" px={3}>
-        <IconButton name={user._id} aria-label='' icon={<CheckIcon name={user._id} />}
-          onClick={() => {
-            onSubmit();
-          }} _hover={{ bg: "#018587", color: "#FFFFFF" }} />
-        <Box onClick={onCancel}>
-          <IconButton aria-label='' icon={<CloseIcon />} 
-          _hover={{ bg: "brand.primary", color: "#FFFFFF" }} />
-        </Box>
-      </ButtonGroup>
-    ) : (
-      <Flex justifyContent="center" px={2}>
-        <IconButton _hover={{ color: "#018587" }} variant="ghost" aria-label='' size="md" icon={<ArrowRight stroke="#282F36" transform="rotate(90deg)" />} />
-      </Flex>
-    )
-  };
-
-  const getDefaultPageName = (defaultPage: string | undefined) => {
-    let name = 'Homepage';
-    switch (defaultPage) {
-      case '/admin/compliance-items':
-        name = 'Admin page'
-        break;
-      default:
-        name = 'Home page'
-    }
-    return name;
-  };
-
+  const onHomePageChange = async(e, userId) => {
+    await updateFunction({variables: { values: { _id: userId, defaultPage: e.target.value } }});
+    refetch();
+  }
+  
   const renderUserRow = (user: IUser, i: number) => (
     <Flex 
       key={user._id} 
@@ -82,10 +63,10 @@ const Users = () => {
       mb="1px" 
       fontSize="smm"
       alignItems='center' 
-      borderBottomRadius={(i === users.length - 1) ? [0, 'lg'] : ''} 
+      borderBottomRadius={(i === data?.users.length - 1) ? [0, 'lg'] : ''} 
       boxShadow="sm"
     >
-      <Box w={["80%", "20%"]} lineHeight="32px">
+      <Flex w={["80%", "20%"]} >
         <Avatar
           borderColor='brand.active'
           rounded='full'
@@ -94,48 +75,35 @@ const Users = () => {
           src={user.imgUrl}
           mr={3}
         />
+        <Text lineHeight="32px" textOverflow="ellipsis" noOfLines={1} pr={3}>
         {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
-      </Box>
+        </Text>
+      </Flex>
       {
         device !== "mobile" && <>
         <Box w='20%'>{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
         <Box w='20%'>
           {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
         </Box>
-        <Box w="20%">
-          <Editable
-            value={getDefaultPageName(user.defaultPage) || 'Homepage'}
-            isPreviewFocusable={false}
-            submitOnBlur={false}
-          >
-            {(props) => (
-              <Flex align="center">
-                <EditablePreview />
-                <EditableInput {...props} user={user} />
-                <EditableControls {...props} user={user} />
-              </Flex>
-            )}
-          </Editable>
-        </Box>
+        <Flex w="20%" flexDir="column">
+          <Select fontSize='smm'
+            onChange={(e) => onHomePageChange(e, user?._id)} 
+            variant='unstyled' 
+            placeholder='select page' 
+            value={user.defaultPage} 
+            w="fit-content" 
+            icon={<ArrowDownIcon ml={3}/>}
+            >
+            {defaultPages.map((page) => <option key={page.url} value={page.url}>{page.name}</option>)}
+          </Select>
+        </Flex>
         </>
       }
-
-      <Flex w='20%' align='center'>{getItemCount(user._id)}
-        <Tooltip label="Show Items" fontSize="md">
-          <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
-        </Tooltip>
-        </Flex>
+      <Flex w='20%' align='center'>
+        {formatDistanceToNow(new Date(user?.lastLogin),{ addSuffix: true })}
+      </Flex>
     </Flex>
   );
-  
-  const getItemCount = (id: string) => {
-    const userItemCount = itemCount[id];
-
-    if (userItemCount) {
-      return userItemCount;
-    }
-    return 0;
-  };
 
   return (
     <>
@@ -152,10 +120,10 @@ const Users = () => {
                 <AdminTableHeaderElement w="20%" label="Default page" />
               </>
             }
-            <AdminTableHeaderElement w="20%" label="Items per user" />
+            <AdminTableHeaderElement w="20%" label="Last login" />
           </AdminTableHeader>
           <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="10px" overflow="auto">
-            {users?.map((user, i) => renderUserRow(user, i))}
+            {loading? <Loader center={true}/>:data?.users?.map((user, i) => renderUserRow(user, i))}
           </Flex>
         </Box>
       </Flex>

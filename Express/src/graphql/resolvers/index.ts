@@ -33,6 +33,7 @@ export default {
     ...complianceItemsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
     ...responsesResolvers.Mutation,
-    ...settingsResolvers.Mutation
+    ...settingsResolvers.Mutation,
+    ...usersResolvers.Mutation
   },
 };

@@ -1,7 +1,8 @@
 import { Responses } from "app-models";
+import { GraphService } from "app-services";
 import { genMetatags } from "app-utils";
 
-const addDelegate = async (_, { responseDelegateModifyInput }, { authorize }) => {  
+const addDelegate = async (_, { responseDelegateModifyInput }, { authorize, organization }) => {  
   try {
     const user = await authorize();
 
@@ -26,6 +27,8 @@ const addDelegate = async (_, { responseDelegateModifyInput }, { authorize }) =>
     
     await Responses.updateOne({_id}, updatedResponse);
     
+    await GraphService.addMemberToAccessGroup({userId: delegateId, groupId: organization.accessGroupId, organization});
+
     return updatedResponse;
   } catch (error: any) {
     throw new Error(error);

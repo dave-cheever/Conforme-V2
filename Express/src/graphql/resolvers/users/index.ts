@@ -1,14 +1,18 @@
 import searchUsers from './searchUsers.q';
 import session from './session.q';
 import usersById from './usersById.q';
+import users from './users.q';
+import updateUser from './updateUser.m';
 
 const usersResolvers = {
   Query: {
     session,
+    users,
     searchUsers,
-    usersById
+    usersById,
   },
   Mutation: {
+    updateUser
   },
 };
 
@@ -25,6 +29,8 @@ export const usersTypeDefs = `
     defaultPage: String!
     organizationsIds: [String!]
     metatags: Metatags!
+    lastLogin: Date
+    userCreated: Date
   }
   
   type Session {
@@ -32,19 +38,29 @@ export const usersTypeDefs = `
     sessionExpiration: Date!
   }
 
-  input SearchQueryInput {
+  input SearchQuery {
     searchText: String
   }
 
   input UserQueryInput {
     usersIds: [String!]!
   }
+
+  input UpdateUserModifyInput {
+    _id: ID!
+    defaultPage: String
+  }
 `;
 
 export const usersQueryDefs = `
   session: Session!
-  searchUsers(searchQueryInput: SearchQueryInput): [User!]!
+  users: [User!]!
+  searchUsers(searchQuery: SearchQuery): [User!]!
   usersById(userQueryInput: UserQueryInput): [User!]!
+`;
+
+export const usersMutationsDefs = `
+  updateUser(updateUserModifyInput: UpdateUserModifyInput!): User
 `;
 
 export default usersResolvers;

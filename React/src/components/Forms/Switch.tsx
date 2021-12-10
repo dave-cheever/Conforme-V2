@@ -70,7 +70,7 @@ const Switch = ({ control, name, label, tooltip = '', variant = 'secondaryVarian
             </Flex>
             {error && <Box fontSize="smm" ml={1} mt={1} color='form.dropdown.error'>{error.message}</Box>}
             {tooltip && 
-            <Flex  color='form.dropdown.tooltip' align='center' mt={3}>
+            <Flex  color='form.dropdown.tooltip' mt={5}>
               <InfoOutlineIcon/>
               <Box fontSize="11px" ml={2}>{tooltip}</Box>
             </Flex>}

@@ -4,6 +4,7 @@ import { difference } from 'lodash';
 
 import { IOrganization, IUser } from 'app-interfaces';
 import roles from './roles';
+import { Users } from 'app-models';
 
 export const CORSConfig = {
   credentials: true,
@@ -36,7 +37,7 @@ export const getDomain = (req): string => {
   return getClientUrl(req)?.replace(getProtocol(), '');
 }
 
-export const sessionizeUser = async ({ _id, firstName, lastName, displayName, email, jobTitle, role, defaultPage, organizationsIds }: IUser) => {
+export const sessionizeUser = async ({ _id, firstName, lastName, displayName, email, jobTitle, role, defaultPage, organizationsIds, imgUrl }: IUser) => {
   return {
     _id,
     firstName,
@@ -46,12 +47,13 @@ export const sessionizeUser = async ({ _id, firstName, lastName, displayName, em
     jobTitle,
     role,
     defaultPage,
-    organizationsIds
+    organizationsIds,
+    imgUrl
   };
 };
 
 export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl, theme, licenceExpirationDate,
-  addons, clientId, tenantId, secret, spSiteUrl, spLibraryId }: Partial<IOrganization>) => {
+  addons, clientId, tenantId, secret, spSiteUrl, spLibraryId, accessGroupId, adminsGroupId, readersGroupId }: Partial<IOrganization>) => {
   return {
     _id,
     name,
@@ -66,6 +68,9 @@ export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl,
     secret,
     spSiteUrl,
     spLibraryId,
+    accessGroupId,
+    adminsGroupId,
+    readersGroupId
   }
 }
 
@@ -119,7 +124,7 @@ export const isRoutePermitted = (req, res, next, action, data?) => {
   next();
 };
 
-export const redirectAfterLogin = (req, res, errorMessage, organization) => {
+export const redirectAfterLogin = async (req, res, errorMessage, organization) => {
   let redirectUrl;
   const { user } = req;
   const clientUrl = `${getProtocol()}${organization.domain}`;
@@ -136,6 +141,9 @@ export const redirectAfterLogin = (req, res, errorMessage, organization) => {
   if (errorMessage) {
     redirectUrl += `/login?errorMessage=${errorMessage}`;
   }
+
+  //update the last Login of user
+  await Users.updateOne({_id:user._id}, {...user, lastLogin: Date.now()});
 
   return res.redirect(redirectUrl);
 };

@@ -10,6 +10,8 @@ export interface IUser extends IBase {
   imgUrl?: string;
   defaultPage?: string;
   organizationsIds?: string[];
+  userCreated?: Date;
+  lastLogin?: Date;
 }
 
 export interface IGraphUser {

@@ -35,7 +35,7 @@ const Notification = () => {
   }
 
   return (
-    <Stack w='full' spacing={7} h="full" pb={3}>
+    <Stack w='full' spacing={7} h="full" overflow="auto" pb={3}>
         {notificationSettings?.map(({_id, name,label, placeholder, variant, description, inputType, help, value, options  }) => 
         <Flex align='center' key={name}>
           <Flex maxW="280px"><Field

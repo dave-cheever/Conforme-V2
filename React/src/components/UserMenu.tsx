@@ -27,8 +27,6 @@ const UserMenu = () => {
       <Menu onOpen={onOpen} onClose={onClose} isOpen={isOpen}>
         <MenuButton
           display="flex"
-          alignItems="center"
-          py={1}
           ml="1"
           mr={["0", "6"]}
           color="white"

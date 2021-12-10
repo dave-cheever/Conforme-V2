@@ -58,7 +58,10 @@ const initPassport = (passport: PassportStatic) => {
     try {
       user = await Users.findByIdWithDetails(userQuery);
     } catch (e) {
-      await Users.add(_id);
+      await Users.add({
+        userId: _id,
+        organization
+      });
       user = await Users.findByIdWithDetails(userQuery);
     }
     if (!user) {

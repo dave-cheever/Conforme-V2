@@ -93,6 +93,40 @@ const filesRouter = () => {
     }
   );
 
+
+  router.get('/photo/:userId',
+    isSignedIn,
+    async (req: Request, res: Response) => {
+      try {
+        const { user } = req;
+        if (!user) {
+          return res.status(StatusCodes.FORBIDDEN).json({ message: 'Session is not valid' });
+        }
+
+        if(!req.params.userId) {
+          return res.status(StatusCodes.OK).end();
+        }
+
+        const photo = await GraphService.getUserPhoto({userId:req.params.userId, organization:req.session.organization});
+        if (!photo) {
+          return res.status(StatusCodes.OK).end();
+        }
+        const buffer = Buffer.from(photo);
+        return res
+          .status(StatusCodes.OK)
+          .set('Content-Type', 'image/jpeg')
+          .set('Content-Length', buffer.length.toString())
+          .end(buffer);
+
+      } catch (err:any) {
+        logger.error(err.message, err);
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          error: err.message,
+        });
+      }
+    }
+  );
+
   return router;
 }
 

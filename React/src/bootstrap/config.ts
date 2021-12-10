@@ -182,3 +182,17 @@ export const navigationTabs = [
     icon: TeamsIcon
   }
 ];
+
+export const defaultPages = [{
+  name: "Home Page",
+  url: "/"
+},
+{
+  name: "Admin Page",
+  url: "/admin/compliance-items"
+},
+{
+  name:"Insight Page",
+  url: "/insights"
+}
+]

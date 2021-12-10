@@ -9,7 +9,7 @@ import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organ
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
 import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
 import { settingsTypeDefs, settingsQueryDefs, settingsMutationDefs } from "./resolvers/settings";
-import { usersTypeDefs, usersQueryDefs } from "./resolvers/users";
+import { usersTypeDefs, usersQueryDefs,usersMutationsDefs } from "./resolvers/users";
 
 const typeDefs = gql`
   scalar Any
@@ -65,6 +65,7 @@ const typeDefs = gql`
     ${regulatoryBodiesMutationDefs}
     ${responsesMutationDefs}
     ${settingsMutationDefs}
+    ${usersMutationsDefs}
   }
 `;
 

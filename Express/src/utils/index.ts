@@ -28,8 +28,11 @@ import {
 
 import roles from './roles';
 
+import emailPreview from './email/emailPreview';
+
 export {
   CORSConfig,
+  emailPreview,
   getProtocol,
   getClientUrl,
   getDomain,
