@@ -23,6 +23,8 @@ import { evidenceStyles } from "../components/Response/Evidence";
 import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
 import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
+import { loginPageStyles } from "../pages/login";
+import { messageInputStyles } from "../components/Response/MessageInput";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
 import { navigationBottomMobileStyles } from "../components/NavigationBottomMobile";
@@ -36,6 +38,9 @@ import { questionListElementStyles } from "../components/Questions/QuestionListE
 import { questionListStyles } from "../components/Questions/QuestionList";
 import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
 import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
+import { responseChatStyles } from "../components/Response/ResponseChat";
+import { responseChatSentStyles } from "../components/Response/ResponseChatSent";
+import { responseChatRecievedStyles } from "../components/Response/ResponseChatRecieved";
 import { responseHeaderStyles } from "../components/Response/ResponseHeader/ResponseHeader";
 import { responseHeaderStatusStyles } from "../components/Response/ResponseHeader/ResponseHeaderStatus";
 import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
@@ -52,10 +57,6 @@ import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { toggleStyles } from "../components/Response/Toggle";
 import { userMenuStyles } from "../components/UserMenu";
-import { responseChatStyles } from "../components/Response/ResponseChat";
-import { responseChatSentStyles } from "../components/Response/ResponseChatSent";
-import { responseChatRecievedStyles } from "../components/Response/ResponseChatRecieved";
-import { messageInputStyles } from "../components/Response/MessageInput";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -122,6 +123,7 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelItemStyles,
       ...filtersPanelStyles,
       ...headerStyles,
+      ...loginPageStyles,
       ...messageInputStyles,
       ...navigationBottomMobileStyles,
       ...navigationLeftFiltersStyles,

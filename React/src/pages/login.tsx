@@ -4,20 +4,21 @@ import {
   Flex,
   Box,
   Image,
-  Stack,
   Text,
   useToast,
 } from "@chakra-ui/react";
 
-// import backgroundImage from '../images/login-bg.png';
-import windowsWhite from "../images/windows-white.svg";
 import { toastFailed } from "../bootstrap/config";
 import { useAppContext } from "../contexts/AppProvider";
+import { ArrowRight } from "../icons";
+import useDevice from "../hooks/useDevice";
 
 const Login = () => {
   const toast = useToast();
   const params = window.location.search.split("&");
   const { organizationConfig } = useAppContext();
+  const device = useDevice();
+  
   const redirectUrl = params
     .find((str) => str.includes("redirectUrl"))
     ?.split("=")[1];
@@ -45,40 +46,40 @@ const Login = () => {
   };
 
   return (
-    <Flex
-      align="center"
-      direction={["column", "column", "row"]}
-      h="100vh"
-      backgroundColor="loginPage.bg"
-      width="100%"
-      overflow="hidden"
-    >
-      <Box mx={2} order={[2, 2, 1]} w={["100%", "100%", "700px"]}>
-        <Stack spacing={7} align="center" mt={["10vh", "10vh", 0]}>
-          <Image src={organizationConfig?.logoUrl} h="80px" alt="Logo" />
-          <Text color="white" fontSize="2xl" fontFamily="Lato">
-            {organizationConfig?.name}
+    <Flex w="full" h="100vh" flexDir={["column","column","row"]}>
+      <Flex w={["full","full","30%"]} align="center" order={[2, 2, 1]} justify={["center","center","flex-end"]} h="full">
+        <Flex flexDir="column" textAlign={["center","center","start"]}>
+          <Text color="loginPage.organizationNameColor" noOfLines={2} textOverflow="ellipsis" w="240px" fontSize="36px" lineHeight="41px" fontWeight="bold" mb="50px">
+          {organizationConfig?.name}
           </Text>
           <Button
-            justifyContent="center"
-            w="auto"
-            colorScheme="#3167F9"
-            borderRadius="none"
-            backgroundColor="#3167F9"
+            w="240px"
+            colorScheme="purpleHeart"
             onClick={loginWithAzureAD}
+            borderRadius="10px"
+            fontSize="14px"
+            lineHeight="18px"
+            h="40px"
+            rightIcon={<ArrowRight mt={1}/>}
           >
-            <Image src={windowsWhite} h="20px" alt="Windows Logo" mr="1em" />
-            <Text fontSize="md" fontWeight="400" fontFamily="Lato">
-              Login with Azure AD
-            </Text>
+            Login with Azure AD
           </Button>
-        </Stack>
-      </Box>
-      <Box h={["50vh", "50vh", "85vh"]} order={[1, 1, 2]} overflow="hidden">
-        <Image h='full' maxW='max-content' borderRadius={30} src={organizationConfig?.bgImageUrl} />
-      </Box>
+        </Flex>
+      </Flex>
+      <Flex w={["full","full","70%"]} h="full" align="center" order={[1, 1, 2]} justify={["center","center","flex-end"]}>
+        <Box h={["30vh", "40vh", "95vh"]}  overflow="hidden" >
+        <Image h='full' maxW='max-content' src={device === "desktop" ? organizationConfig?.bgImageUrl: organizationConfig?.bgImageTabletUrl} />
+        </Box>
+      </Flex>
     </Flex>
   );
 };
 
 export default Login;
+
+export const loginPageStyles = {
+  loginPage:{
+    bg:"#E5E5E5",
+    organizationNameColor:"#282F36"
+  }
+}

@@ -33,6 +33,7 @@ const ORGANIZATION = gql`
       name
       logoUrl
       bgImageUrl
+      bgImageTabletUrl
       theme
       licenceExpirationDate
       clientId
@@ -51,9 +52,6 @@ const useInit = () => {
   } = useAppContext();
 
   useEffect(() => {
-    if (settingsError) {
-      throw settingsError;
-    }
     if (settingsData) {
       const parsedRoles = JSONfn.parse(settingsData.roles) as IRoles;
       globalThis.roles = parsedRoles;

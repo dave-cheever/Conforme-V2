@@ -52,13 +52,14 @@ export const sessionizeUser = async ({ _id, firstName, lastName, displayName, em
   };
 };
 
-export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl, theme, licenceExpirationDate,
+export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl,bgImageTabletUrl, theme, licenceExpirationDate,
   addons, clientId, tenantId, secret, spSiteUrl, spLibraryId, accessGroupId, adminsGroupId, readersGroupId }: Partial<IOrganization>) => {
   return {
     _id,
     name,
     logoUrl,
     bgImageUrl,
+    bgImageTabletUrl,
     theme,
     licenceExpirationDate,
     addons,

@@ -6,6 +6,7 @@ export interface IOrganization extends IBase {
   licenceExpirationDate: Date;
   logoUrl: string;
   bgImageUrl: string;
+  bgImageTabletUrl: string;
   theme: object;
   addons: object;
   allowedTenantsIds: string[]; // 'all' for all tenants

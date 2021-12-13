@@ -15,6 +15,7 @@ export const organizationsTypeDefs = `
     licenceExpirationDate: Date!
     logoUrl: String
     bgImageUrl: String
+    bgImageTabletUrl: String
     theme: Object!
     addons: Object
     clientId: String

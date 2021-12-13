@@ -9,6 +9,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   licenceExpirationDate: Date,
   logoUrl: String,
   bgImageUrl: String,
+  bgImageTabletUrl: String,
   theme: Object,
   addons: Object,
   allowedTenantsIds: [String],
