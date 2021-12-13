@@ -12,7 +12,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure
+  useDisclosure,
+  Text
 } from "@chakra-ui/react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
@@ -125,7 +126,7 @@ const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false
             />
           </Box>
           <Flex direction='column' overflow='hidden' textOverflow='ellipsis' maxW={['150px', '250px']} fontSize='12px' mr={2}>
-            <Flex fontWeight='700' >{document?.name}</Flex>
+            <Text fontWeight='700' noOfLines={1} textOverflow="ellipsis">{document?.name}</Text>
             <Flex opacity='0.6'>Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
           </Flex>
         </Flex>

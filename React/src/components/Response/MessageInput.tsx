@@ -42,6 +42,7 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
               borderWidth="1px"
               pt='none'
               h="40px"
+              mb="15px"
               type="text"
               fontSize="smm"
               color="messageInput.textInput.font"

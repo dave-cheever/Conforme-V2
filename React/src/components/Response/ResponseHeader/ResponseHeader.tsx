@@ -31,7 +31,7 @@ const ReasponseHeader = () => {
       w="full"
       minH="100px"
       bg="reasponseHeader.bg"
-      zIndex={4}
+      zIndex={1}
       mb="15px"
     >
       
@@ -123,7 +123,7 @@ const ReasponseHeader = () => {
                 fontSize="smm" 
                 fontFamily="Helvetica" 
                 lineHeight="18px" 
-                w="100%" 
+                w="full"
                 isActive={ isOpen } 
                 as={ Button } 
                 rightIcon={ <ArrowDownIcon /> } 
@@ -134,7 +134,7 @@ const ReasponseHeader = () => {
               
               <MenuList 
                 borderColor="reasponseHeader.optionsMenuBorderColor" 
-                minW={[ "calc(100vw - 57px)","325px" ]} 
+                minW={[ "calc(100vw - 50px)","325px" ]} 
                 w="100%" 
                 boxShadow= "0px 0px 80px" 
                 color= "reasponseHeader.optionsMenuBoxShadow" 

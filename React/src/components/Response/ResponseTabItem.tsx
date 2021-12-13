@@ -18,7 +18,7 @@ const ResponseTabItem = ({setActiveTab, index,active, label, icon}) => {
         color={active ? "responseTabItem.activeColor": "responseTabItem.color"}
         >
         <Icon as={icon} boxSize="15px" />
-        <Text fontSize="14px" mt={3} fontWeight="700">{label}</Text> 
+        <Text fontSize={["11px","14px"]} mt={3} fontWeight="700">{label}</Text> 
     </Flex>
     )
 }

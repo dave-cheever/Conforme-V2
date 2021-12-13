@@ -47,15 +47,16 @@ const Team = () => {
   
   return (
     <Stack
-      h="calc(100% - 25px)"
+      h="full"
       alignItems={["center", "flex-start"]}
-      w={["full", "calc(100% - 25px)", "calc(100% - 400px)"]}
+      w="full"
       spacing="40px"
       p="25px 30px"
       bg="teamPage.bg"
       rounded="20px"
       fontSize="smm"
       fontWeight="bold"
+      overflow="auto"
     >
       <TeamModal />
       <Flex>

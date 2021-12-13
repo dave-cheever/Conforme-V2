@@ -1,41 +1,62 @@
-import React, { useMemo } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import React, { useMemo } from "react";
+import { Flex } from "@chakra-ui/react";
 
-import { useResponseContext } from '../../contexts/ResponseProvider';
-import Attachment from './Attachment';
-import Evidence from './Evidence';
-import DocumentUploaded from './DocumentUploaded';
+import { useResponseContext } from "../../contexts/ResponseProvider";
+import Attachment from "./Attachment";
+import Evidence from "./Evidence";
+import DocumentUploaded from "./DocumentUploaded";
 
 const Attachments = () => {
-    const { response } = useResponseContext();
+  const { response } = useResponseContext();
 
-    const uploadedEvidences = useMemo(() => {
-        return response?.evidence.filter(({outdated, uploaded}) => outdated && uploaded) || [];
-    },[response]);
-
+  const uploadedEvidences = useMemo(() => {
     return (
-    <Flex w="full" h="full" overflow="auto">
-        <Flex flexDirection="column" mr={2} h="full" w="full">
-            <Box>
-                {response?.evidence.filter(({ outdated }) => !outdated).map((evidence, i) =>
-                    <Evidence key={i} evidence={evidence} />
-                )}
-            </Box>
-            <Box>
-            {uploadedEvidences?.length > 0 && 
-            <Box maxW="342px">
-            <Flex  color="complianceItemResponse.labelTextColor" fontWeight="700" fontSize="12px" my={2}>
-                Uploaded evidence
+      response?.evidence.filter(
+        ({ outdated, uploaded }) => outdated && uploaded
+      ) || []
+    );
+  }, [response]);
+
+  return (
+    <Flex w="full" h="full" overflow="auto" flexDirection={["column", "row"]} align={["center", "flex-start"]}>
+      <Flex flexDirection="column" mr={[0, 2]} h="full" w="full">
+        <Flex flexDirection="column" align={["center", "flex-start"]} w="full">
+          {response?.evidence
+            .filter(({ outdated }) => !outdated)
+            .map((evidence, i) => (
+              <Evidence key={i} evidence={evidence} />
+            ))}
+        </Flex>
+        {uploadedEvidences?.length > 0 && (
+          <Flex
+            flexDirection="column"
+            align={["center", "flex-start"]}
+            w="full"
+          >
+            <Flex
+              color="complianceItemResponse.labelTextColor"
+              fontWeight="700"
+              fontSize="12px"
+              my={2}
+            >
+              Uploaded evidence
             </Flex>
-             {uploadedEvidences.map((evidence, i) => <DocumentUploaded key={i} document={evidence?.uploaded} isEvidence={true} enableDownload={true} /> )} 
-            </Box>}
-            </Box>
-        </Flex>
-        <Flex ml={2} h="full" w="full">
-            <Attachment/>
-        </Flex>
+            {uploadedEvidences.map((evidence, i) => (
+              <DocumentUploaded
+                key={i}
+                document={evidence?.uploaded}
+                isEvidence={true}
+                enableDownload={true}
+              />
+            ))}
+          </Flex>
+        )}
+      </Flex>
+      <Flex ml={[0, 2]} h="full" w="full" justify={["center", "flex-start"]}>
+        <Attachment />
+      </Flex>
     </Flex>
-    )
-}
+  );
+};
 
 export default Attachments;

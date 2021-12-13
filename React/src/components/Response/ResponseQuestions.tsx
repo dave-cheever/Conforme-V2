@@ -59,7 +59,7 @@ const ResponseQuestions = () => {
     return null;
   }
   return (
-    <Stack w="full" mt={2}>
+    <Stack w="full" h="full" overflow="auto" mt={2}>
       <Grid templateColumns="1fr" gap={4} w="40%">
         {questions.map(({ type, name, description, value }, i) => (
           <Flex key={name}>

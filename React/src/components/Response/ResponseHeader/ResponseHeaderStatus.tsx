@@ -57,6 +57,6 @@ export const responseHeaderStatusStyles = {
     yes: "#41B916",
     no: "#E93C44",
     default: "#818197",
-    heading: "#282F36",
+    heading: "#282F3680",
   }
 }

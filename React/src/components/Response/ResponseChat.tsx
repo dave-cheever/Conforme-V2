@@ -146,7 +146,7 @@ const ResponseChat = () => {
 
   const users = [response?.businessUnit];
   return (
-    <Box px="25px" w='328px'>
+    <Box w="330px" h="full" pl="25px" display={["none","none","block"]}>
       <Flex alignItems="center" flexDirection="column">
         <Text color="responseChat.text" fontSize="ssm" my={2}>Chat</Text>
         <Flex mb={2}>

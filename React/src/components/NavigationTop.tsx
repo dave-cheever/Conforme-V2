@@ -49,6 +49,7 @@ const NavigationTop = () => {
       h="80px"
       bg="navigationTop.bg"
       position={["fixed","relative"]}
+      zIndex={10}
     >
       <Stack
         spacing={4}

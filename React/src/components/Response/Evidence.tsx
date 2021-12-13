@@ -51,7 +51,7 @@ const EvidenceExpected = ({ evidence }) => {
     return null;
   }
   return (
-    <Flex direction='column' my={2} maxW="342px">
+    <Flex direction='column' w="full" my={2} maxW="342px">
       <Flex align='center'>
         <Box fontWeight='700' mb={2} fontSize="12px" color="evidence.fontColor" width="300px">{evidence.name}
         <Text color="evidence.requiredColor" ml={2} display="inline-block" fontSize="12px" fontWeight="bold">*</Text>

@@ -45,7 +45,7 @@ const UserMenu = () => {
             size="sm"
           />
         </MenuButton>
-        <MenuList zIndex={5} border="0px" borderRadius="10px" minW="175px"  p="15px 20px 15px 20px" textAlign="right" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
+        <MenuList border="0px" borderRadius="10px" minW="175px"  p="15px 20px 15px 20px" textAlign="right" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
           <Text fontWeight="semibold" w="full" textOverflow="ellipsis" noOfLines={1}>
             {user?.displayName}
           </Text>
