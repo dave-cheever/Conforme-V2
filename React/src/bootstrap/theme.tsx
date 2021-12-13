@@ -28,6 +28,8 @@ import { navigationLeftItemStyles } from "../components/NavigationLeft/Navigatio
 import { navigationBottomMobileStyles } from "../components/NavigationBottomMobile";
 import { navigationLeftItemTabletStyles } from "../components/NavigationLeft/NavigationLeftItemTablet";
 import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
+import { navigationMobileModalStyles } from "../components/AdminComplianceItemModal/NavigationMobileModal";
+import { navigationModalStyles } from "../components/AdminComplianceItemModal/NavigationModal";
 import { navigationTopStyles } from "../components/NavigationTop";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
 import { questionListElementStyles } from "../components/Questions/QuestionListElement";
@@ -126,6 +128,8 @@ const getTheme = (organizationTheme?: any) => {
       ...navigationLeftItemStyles,
       ...navigationLeftItemTabletStyles,
       ...navigationLeftStyles,
+      ...navigationMobileModalStyles,
+      ...navigationModalStyles,
       ...navigationTopStyles,
       ...questionFormStyles,
       ...questionListElementStyles,
@@ -616,6 +620,21 @@ const getTheme = (organizationTheme?: any) => {
         ...theme.components.Modal,
         variants: {
           conformeModal: {
+            dialog: {
+              minW: ["100%", "700px"],
+            },
+            dialogContainer: {
+              justifyContent: "flex-end"
+            },
+            overlay: {
+              background:
+                "linear-gradient(to right, transparent 0%, black 200%)",
+            },
+          },
+          adminModal: {
+            dialog: {
+              minW: ["100%", "510px"],
+            },
             dialogContainer: {
               justifyContent: "flex-end"
             },

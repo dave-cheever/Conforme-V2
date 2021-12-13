@@ -37,10 +37,9 @@ const AdminModal = ({
     <Modal
       isOpen={isOpenModal}
       onClose={onClose}
-      size="xl"
       onOverlayClick={onAction}
       onEsc={onAction}
-      variant="conformeModal"
+      variant={collection ? "adminModal" : "conformeModal"}
     >
       <ModalOverlay />
       {modalType !== "delete" && (

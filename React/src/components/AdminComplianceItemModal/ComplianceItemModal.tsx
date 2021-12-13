@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   ModalBody,
-  Text,
   Button,
   useToast,
   Icon,
@@ -17,15 +16,19 @@ import { initialDialogDetails, useComplianceItemModalContext } from '../../conte
 import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import { useAppContext } from '../../contexts/AppProvider';
 import { Close, OpenMenuArrow, Save } from '../../icons';
+import NavigationModal from './NavigationModal';
+import useDevice from '../../hooks/useDevice';
+import NavigationMobileModal from './NavigationMobileModal';
 
 const ComplianceItemModal = ({ refetch }) => {
   const toast = useToast();
+  const device = useDevice();
   const { user } = useAppContext();
   const {
     complianceItem,
     errors, trigger,
     savingDialogDetails, setSavingDialogDetails,
-    complianceItemModalSections, selectedSection, selectedSectionIndex, selectSection,
+    selectedSection, selectedSectionIndex, selectSection,
   } = useComplianceItemModalContext();
   const {
     saveComplianceItem,
@@ -34,7 +37,6 @@ const ComplianceItemModal = ({ refetch }) => {
 
   const { Component } = selectedSection;
   
-
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
   const isActionRequiredToComplete = useMemo(() => (complianceItem.evidenceItems || []).length > 0 ||
     (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length > 0, [complianceItem]);
@@ -97,14 +99,14 @@ const ComplianceItemModal = ({ refetch }) => {
       <ModalContent
         h="100%"
         m="0"
-        p="35px"
+        p={["25px", "35px"]}
         rounded="0"
         bg="complianceItemModal.bg"
         position="absolute"
       >
         <ModalHeader p="0 0 20px 0" fontWeight="bold" fontSize="xxl" alignItems="center">
           <Flex justifyContent="space-between">
-            <Flex alignItems="center">
+            <Flex alignItems="center" fontSize={["14px", "24px"]}>
               <Avatar
                 rounded='full'
                 name={user?.displayName}
@@ -132,43 +134,15 @@ const ComplianceItemModal = ({ refetch }) => {
           </Flex>
         </ModalHeader>
         <ModalBody h="calc(100% - 175px)" p="0">
-          <Flex>
-            <Flex flexDir="column" w="185px">
-              {complianceItemModalSections.map((el, i) => el.name !== "Summary" && 
-              <Flex key={el.name} mb="15px" alignItems="center" cursor="pointer" onClick={() => selectSection(i)}>
-                <Flex 
-                  w="37px" 
-                  h="28px" 
-                  bg={i === selectedSectionIndex 
-                    ? "complianceItemModal.section.selected.bg" 
-                    : "complianceItemModal.section.unselected.bg" 
-                  }
-                  color={i === selectedSectionIndex 
-                    ? "complianceItemModal.section.selected.color" 
-                    : "complianceItemModal.section.unselected.color" 
-                  }
-                  mr="15px" 
-                  fontSize="11px"
-                  fontWeight="bold"
-                  flexShrink={0} 
-                  rounded="10px" 
-                  alignItems="center" 
-                  justifyContent="center"
-                >
-                  {i+1}
-                </Flex>
-                <Text fontSize="smm" color="complianceItemModal.section.label" fontWeight={i === selectedSectionIndex ? "bold" : "semi_medium" }>
-                  {el.name}
-                </Text>
-              </Flex> 
-              )}
-            </Flex>  
-            <Flex flexDir="column" w="440px" p="25px" bg="complianceItemModal.tabs.bg" h="calc(100vh - 120px)" rounded="20px" justifyContent="space-between">
+          <Flex height="100%" flexDir={["column", "row"]}>
+            {device !== "mobile" && <NavigationModal />}  
+            {device === "mobile" && <NavigationMobileModal />}  
+            <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h="calc(100vh - 120px)" rounded="20px" justifyContent="space-between">
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
               <Button
-                w="124px"
+                w={selectedSection.name === 'Summary' ? "full" : "109px"}
                 h="40px"
                 rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)"/>}
                 bg="complianceItemModal.tabs.bottomButton.bg"
@@ -176,7 +150,11 @@ const ComplianceItemModal = ({ refetch }) => {
                 fontSize="smm"
                 fontWeight="700"
                 _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
-                onClick={handlePrimaryButtonClick}
+                rounded="10px"
+                onClick={() => { 
+                  trigger(Object.keys(selectedSection.fields || []) as any);
+                  handlePrimaryButtonClick()
+                }}
                 disabled={
                   selectedSection.name === 'Summary' &&
                   (Object.keys(errors).length > 0 || !isActionRequiredToComplete) &&
@@ -187,7 +165,7 @@ const ComplianceItemModal = ({ refetch }) => {
                   'Next step' :
                   complianceItem.published ?
                     'Unpublish' :
-                    'Publish'
+                    !complianceItem.hasOwnProperty('_id') ? 'Add compliance item' : "Publish compliance item"
                 }
               </Button>
             </Flex>
@@ -220,17 +198,6 @@ export const complianceItemModalStyles = {
       icon: "#818197"
     },
     closeIcon: "#282F36",
-    section: {
-      label: "#818197",
-      selected: {
-        bg: "#462AC4",
-        color: "#ffffff"
-      },
-      unselected: {
-        bg: "#F0F2F5",
-        color: "#818197"
-      }
-    },
     tabs: {
       bg: "#F0F2F5",
       bottomButton: {

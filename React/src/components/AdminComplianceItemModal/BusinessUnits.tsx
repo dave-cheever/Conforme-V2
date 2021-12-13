@@ -48,10 +48,11 @@ const BusinessUnitsForm = () => {
       <Flex direction='column'>
         <SectionHeader label="Select business unit(s)" />
         
-        <Flex justifyContent="space-between" mt="25px" mb="30px">
+        <Flex flexDir={["column", "row"]} justifyContent="space-between" mt="25px" mb="30px">
           <Select 
-            w="190px" 
+            w={["full", "190px"]} 
             h="42px"
+            mb={["15px","0"]}
             bg="businessUnitsModal.selectBg" 
             border="1px solid" 
             borderColor="rgba(129, 129, 151, 0.4)" 
@@ -60,7 +61,7 @@ const BusinessUnitsForm = () => {
           >
             {locations.map(location => <option key={location} value={location}>{location}</option>)}
           </Select>
-          <InputGroup w="190px" h="42px" border="1px solid" borderColor="rgba(129, 129, 151, 0.4)" rounded="5px">
+          <InputGroup w={["full", "190px"]} h="42px" border="1px solid" borderColor="rgba(129, 129, 151, 0.4)" rounded="5px">
             <InputLeftElement
               pointerEvents="none"
               children={<SearchIcon color="businessUnitsModal.searchIcon" />}

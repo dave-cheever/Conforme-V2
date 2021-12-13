@@ -60,7 +60,7 @@ const Summary = () => {
 
         {selectedBusinessUnits.length !== 0 && <SectionHeader label="Business unit(s)"/> }
         {selectedBusinessUnits.map(businessUnit => 
-          <Flex bg="summaryModal.tileBg" p="10px 15px" rounded="10px" flexDir="column">
+          <Flex key={businessUnit.name} bg="summaryModal.tileBg" p="10px 15px" rounded="10px" flexDir="column">
             <Text mb="3px" fontSize="smm" fontWeight="bold">{businessUnit.name}</Text>
             <Text fontSize="11px" fontWeight="semi_medium" color="summaryModal.buColor">{businessUnit.region}</Text>
           </Flex>)

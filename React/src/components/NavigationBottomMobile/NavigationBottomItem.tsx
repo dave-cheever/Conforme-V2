@@ -29,7 +29,7 @@ const NavigationBottomItem = ({
       alignItems="center"
       pos="relative"
       css={{
-        ":not(:first-child)": {
+        ":not(:first-of-type)": {
           marginLeft: "25px"
         }
       }}

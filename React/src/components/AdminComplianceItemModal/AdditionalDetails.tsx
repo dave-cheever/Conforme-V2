@@ -55,7 +55,7 @@ const AdditionalDetailsForm = () => {
                     name='evidenceItems'
                     color="additionalDetails.evidence.input.font.normal"
                     bg="additionalDetails.evidence.input.bg"
-                    borderWidth='2px'
+                    borderWidth='1px'
                     borderColor='additionalDetails.evidence.input.border'
                     h='42px'
                     fontSize="smm"
