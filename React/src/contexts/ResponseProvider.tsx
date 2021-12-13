@@ -14,7 +14,10 @@ const GET_RESPONSES = gql`
       _id
       nextRenewalDate
       status
-      delegateIds
+      accountableId
+      responsibleId
+      contributorsIds
+      followersIds
       evidence {
         name
         uploaded {
@@ -57,7 +60,6 @@ const GET_RESPONSES = gql`
       businessUnit {
         name
         imgUrl
-        ownerId
       }
     }
   }

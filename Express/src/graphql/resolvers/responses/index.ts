@@ -1,16 +1,16 @@
 import responses from './responses.q';
-import addDelegate from './addDelegate.m';
-import removeDelegate from './removeDelegate.m';
+import addParticipant from './addParticipant.m';
 import removeDocument from './removeDocument.m';
 import updateQuestions from './updateQuestions.m';
+import removeParticipant from './removeParticipant.m';
 
 const responsesResolvers = {
   Query: {
     responses
   },
   Mutation: {
-    addDelegate,
-    removeDelegate,
+    addParticipant,
+    removeParticipant,
     removeDocument,
     updateQuestions,
   },
@@ -43,7 +43,10 @@ export const responsesTypeDefs = `
   type Response {
     _id: ID!
     businessUnitId: ID!
-    delegateIds: [ID!]!
+    accountableId: ID!
+    responsibleId: ID!
+    contributorsIds: [ID]
+    followersIds: [ID]
     lastRenewalDate: Date
     nextRenewalDate: Date
     status: String!
@@ -66,9 +69,16 @@ export const responsesTypeDefs = `
     includeNotPublished: Boolean
   }
 
-  input ResponseDelegateModifyInput {
+  input ResponseParticipantModify {
     _id: ID!
-    delegateId: ID!
+    participantIds: [ID]
+    permission: String!
+  }
+
+  input ResponseParticipantRemove {
+    _id: ID!
+    participantId: ID
+    permission: String!
   }
 
   input ResponseDocumentRemoveInput {
@@ -88,8 +98,8 @@ export const responsesQueryDefs = `
 `;
 
 export const responsesMutationDefs = `
-  addDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Response!
-  removeDelegate(responseDelegateModifyInput: ResponseDelegateModifyInput!): Boolean!
+  addParticipant(responseParticipantModify: ResponseParticipantModify!): Response!
+  removeParticipant(responseParticipantRemove: ResponseParticipantRemove!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
   updateQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
 `;

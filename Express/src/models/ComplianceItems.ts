@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 import { isEqual } from 'date-fns';
 
 import { IComplianceItem, IComplianceItemModel, IResponse } from 'app-interfaces';
-import { Responses } from 'app-models';
+import { BusinessUnits, Responses } from 'app-models';
 import { genMetatags } from 'app-utils';
 
 const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
@@ -187,11 +187,16 @@ ComplianceItemSchema.methods.syncResponses = async function ({
 
   // Create selected that doesn't exist
   for (const businessUnitId of unprocessedBusinessUnitsIds) {
+    const businessUnit = await BusinessUnits.getById(businessUnitId);
+    
     await Responses.create({
       _id: uuidv4(),
       complianceItemId: this._id,
       businessUnitId: businessUnitId,
-      delegateIds: [],
+      accountableId: businessUnit.ownerId,
+      responsibleId: businessUnit.ownerId,
+      contributorsIds: [],
+      followersIds: [],
       status: 'notStarted',
       attachments: [],
       lastCompletedDate: null,
@@ -199,7 +204,6 @@ ComplianceItemSchema.methods.syncResponses = async function ({
       nextRenewalDate: this.dueDate,
       evidence: this.evidenceItems.map(name => ({ name })),
       questions: this.questions,
-      // published: this.published,
       metatags: genMetatags('added', userId),
     });
   }

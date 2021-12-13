@@ -13,6 +13,19 @@
 // Next parameters you can define on restricted permission function definition.
 //
 
+const ifRACHasAccess = ({ user, response }) =>
+  user && (response?.contributorsIds?.includes(user._id) || response?.accountableId === user._id || response?.responsibleId === user._id);
+
+const ifRACFHasAccess = ({ user, response }) =>
+user && (
+  response?.contributorsIds?.includes(user._id) || 
+  response?.followersIds?.includes(user._id) || 
+  response?.accountableId === user._id || 
+  response?.responsibleId === user._id);
+
+const ifRAHasAccess = ({ user, response }) =>
+user && (response?.accountableId === user._id || response?.responsibleId === user._id);
+
 const defaultPermissions = [
   "home.view",
   "help.view",
@@ -29,12 +42,15 @@ const roles = {
   user: {
     normal: [...defaultPermissions],
     restricted: {
-      "auditLogs.view": ({ user, response, businessUnitOwnerId }) =>
-        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
-      "responses.view": ({ user, response, businessUnitOwnerId }) =>
-        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
-      "responses.edit": ({ user, response, businessUnitOwnerId }) =>
-        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
+      "auditLogs.view": ifRACHasAccess,
+      "responses.view": ifRACHasAccess,
+      "responses.edit": ifRACHasAccess,
+      "responses.manageResponsible": ({ user, response }) =>
+        user && response?.accountableId === user._id,
+      "responses.manageContributor": ifRAHasAccess,
+      "comments.add": ifRACFHasAccess,
+      "comments.delete": ({ user, comment }) => user._id === comment.author._id,
+      "responses.manageMultipleFollowers": ifRAHasAccess,
     },
   },
 
@@ -47,10 +63,16 @@ const roles = {
       "auditLogs.view",
       "responses.view",
       "users.searchInAAD",
+      "responses.manageFollower"
     ],
     restricted: {
-      "responses.edit": ({ user, response, businessUnitOwnerId }) =>
-        user && (response?.delegateIds?.includes(user.id) || businessUnitOwnerId === user.id),
+      "responses.edit": ifRACHasAccess,
+      "responses.manageResponsible": ({ user, response }) =>
+        user && response?.accountableId === user._id,
+      "responses.manageContributor": ifRAHasAccess,
+      "comments.add": ifRACFHasAccess,
+      "comments.delete": ({ user, comment }) => user._id === comment.author._id,
+      "responses.manageMultipleFollowers": ifRACHasAccess,
     },
   },
 

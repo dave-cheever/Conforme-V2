@@ -9,6 +9,20 @@ import ResponseLeftTabItem from "../ResponseLeftTabItem";
 import ResponseLeftItem from "../ResponseLeftItem";
 import { useResponseContext } from "../../../contexts/ResponseProvider";
 import { useFiltersContext } from "../../../contexts/FiltersProvider";
+import { gql, useQuery } from "@apollo/client";
+import { IUser } from "../../../interfaces/IUser";
+
+const GET_USERS_BY_ID = gql`
+  query ($userQueryInput: UserQueryInput) {
+    usersById(userQueryInput: $userQueryInput) {
+      _id
+      firstName
+      lastName
+      displayName
+      imgUrl
+    }
+  }
+`;
 
 const ResponseLeftNavigation = () => {
   const history = useHistory();
@@ -18,7 +32,9 @@ const ResponseLeftNavigation = () => {
   } = useFiltersContext();
 
   const { response } = useResponseContext();
+  const { data: { usersById: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.responsibleId || [] } } });
 
+  const responsible: IUser = responseResponsible && responseResponsible?.length !== 0 && responseResponsible[0];
   const organizationName = "Gloratio"
 
   return (
@@ -111,18 +127,18 @@ const ResponseLeftNavigation = () => {
               color="white"
               bg="responseLeftNavigation.avatar"
               name={
-                response?.owner?.firstName && response.owner?.lastName
-                  ? `${response?.owner?.firstName} ${response.owner?.lastName}`
-                  : `${response?.owner?.displayName}`
+                responsible && responsible.firstName && responsible.lastName
+                  ? `${responsible.firstName} ${responsible.lastName}`
+                  : `${responsible?.displayName}`
               }
-              src={response?.owner?.imgUrl}
+              src={responsible && responsible.imgUrl}
               size="xs"
               mr={2}
             />
             <Flex mr={2}>
-              {response?.owner?.firstName && response.owner?.lastName
-                ? `${response?.owner?.firstName} ${response.owner?.lastName}`
-                : `${response?.owner?.displayName || "-"}`}
+              {responsible && responsible.firstName && responsible.lastName
+                ? `${responsible.firstName} ${responsible.lastName}`
+                : `${responsible?.displayName || "-"}`}
             </Flex>
           </Flex>
         </Box>

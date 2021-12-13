@@ -74,7 +74,7 @@ export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl,
   }
 }
 
-export const isPermitted = ({ user, action, data = {} }: { user: IUser, action?: string, data?: object }): boolean => {
+export const isPermitted = ({ user, action, data = {} }: { user: IUser, action?: string, data?: any }): boolean => {
   if (!action) {
     return true;
   }

@@ -17,3 +17,16 @@ export const questionHeader = (questionType) => {
       return 'Date input';
   }
 };
+
+export const responsePermissionByFilterType = (filterType) => {
+  switch (filterType) {
+    case "accountableId":
+      return "accountable";
+    case "responsibleId":
+      return "responsible";
+    case "contributorsIds":
+      return "contributor";
+    case "followersIds":
+      return "follower";
+  }
+};

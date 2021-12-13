@@ -53,7 +53,7 @@ userSchema.statics.add = async function ({userId, organization}:{ userId: string
 userSchema.statics.findByIdWithDetails = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
   const user: IUser = await this.getById(userId);
   const userDetails = await GraphService.getUserData({ userId, organization });
-  const { givenName, surname, displayName, mail, jobTitle } = userDetails;
+  const { givenName, surname, displayName, mail, userPrincipalName, jobTitle } = userDetails;
 
   let role = 'user';
   const isAdmin = await GraphService.checkMemberGroup({
@@ -79,7 +79,7 @@ userSchema.statics.findByIdWithDetails = async function ({ userId, organization 
     firstName: givenName!,
     lastName: surname!,
     displayName: displayName!,
-    email: mail!,
+    email: mail || userPrincipalName!,
     jobTitle: jobTitle!,
     role,
     imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`

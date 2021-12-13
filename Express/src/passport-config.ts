@@ -40,13 +40,13 @@ const initPassport = (passport: PassportStatic) => {
 
     // Check if logged user belong to access group (if configured)
     if (organization.accessGroupId) {
-      const belongsToComplianceCheckerGroup = await GraphService.checkMemberGroup({
+      const belongsToConformeGroup = await GraphService.checkMemberGroup({
         userId: _id,
         groupId: organization.accessGroupId,
         organization,
       });
-      if (!belongsToComplianceCheckerGroup) {
-        return done(null, { organization }, 'User doesn\'t exist in Compliance Checker AAD group');
+      if (!belongsToConformeGroup) {
+        return done(null, { organization }, 'User doesn\'t exist in Conforme AAD group');
       }
     }
 

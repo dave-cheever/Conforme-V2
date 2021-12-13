@@ -1,14 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { Comments } from "app-models";
+import { Comments, Responses } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
 
 const createComment = async (_, { commentInput }, { authorize }) => {
     try {
       const user = await authorize();
+
+      const response = await Responses.getById(commentInput.responseId);
   
-      if (!isPermitted({ user, action: "comments.add" })) {
+      if (!isPermitted({ user, action: "comments.add", data: { response } })) {
         throw new Error("User is not permitted");
       }      
   

@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Box, Flex, Stack, Text, VStack } from "@chakra-ui/layout";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { Button } from "@chakra-ui/button";
-import { useDisclosure } from "@chakra-ui/hooks";
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader } from "@chakra-ui/modal";
-import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
-import { useRadioGroup } from "@chakra-ui/radio";
+import React, { useEffect } from "react";
+import {  Flex, Stack } from "@chakra-ui/react";
+import { gql, useQuery } from "@apollo/client";
 
 import AvatarUser from "../../components/Team/AvatarUser";
-import CustomRadioButton from "../../components/CustomRadioButton";
 import { IUser } from "../../interfaces/IUser";
-import Loader from "../../components/Loader";
 import { useResponseContext } from "../../contexts/ResponseProvider";
-import { SearchIcon } from "../../icons";
+import TeamHeader from "../../components/Team/TeamHeader";
+import TeamProvider, { useTeamContext } from "../../contexts/TeamProvider";
+import TeamModal from "../../components/Team/TeamModal";
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -25,65 +20,30 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const SEARCH_USERS = gql`
-  query ($searchQuery: SearchQuery) {
-    searchUsers(searchQuery: $searchQuery) {
-      _id
-      firstName
-      lastName
-      displayName
-    }
-  }
-`;
-
-const ADD_DELEGATE = gql`
-  mutation ($responseDelegateModifyInput: ResponseDelegateModifyInput!) {
-    addDelegate(responseDelegateModifyInput: $responseDelegateModifyInput) {
-      _id
-    }
-  }
-`;
-
 const Team = () => {
-  const { response, refetch: refetchResponse } = useResponseContext();
-  const maxDelegates = 2;
-  const {isOpen, onOpen, onClose} = useDisclosure();
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [userSearchResults, setUserSearchResults] = useState<IUser[]>([]);
-  const [selectedRadio, setSelectedRadio] = useState<string>("");
-  const { data: { usersById: owner } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: [response?.businessUnit?.ownerId] || [] } } });
-  const { data: { usersById: delegates } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.delegateIds || [] } } });
-  const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQueryInput: { searchText: searchQuery } } });
-  const [addDelegate] = useMutation(ADD_DELEGATE);
+  const { response } = useResponseContext();
+  const { data, filterType, searchQuery, onOpen, refetchUsers, setFilterType, setSelectedRadio, setUserSearchResults } = useTeamContext();
+  const maxDelegates = 5;
+  const { data: { usersById: responseAccountable } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.accountableId || [] } } });
+  const { data: { usersById: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.responsibleId || [] } } });
+  const { data: { usersById: contributors } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.contributorsIds || [] } } });
+  const { data: { usersById: followers } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.followersIds || [] } } });
 
   useEffect(() => {
     refetchUsers();
     setSelectedRadio("");
     if (data?.searchUsers && searchQuery) {
-      const filteredUsers = data.searchUsers.filter(({ _id }) => _id !== response?.businessUnit?.ownerId && !response?.delegateIds.includes(_id));
+      const filteredUsers = data.searchUsers.filter(({ _id }) => response && !response[filterType].includes(_id));
 
       setUserSearchResults(filteredUsers);
     } else {
       setUserSearchResults([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery, data])
-  ;
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "delegates",
-    value: selectedRadio,
-    onChange: setSelectedRadio
-  });
-
-  const group = getRootProps();
+  }, [searchQuery, data]);
   
-  const responseOwner: IUser = owner && owner?.length !== 0 && owner[0];
-
-  const handleClose = () => {
-    onClose();
-    setSelectedRadio("");
-    setSearchQuery("");
-  }
+  const accountable: IUser = responseAccountable && responseAccountable?.length !== 0 && responseAccountable[0];
+  const responsible: IUser = responseResponsible && responseResponsible?.length !== 0 && responseResponsible[0];
   
   return (
     <Stack
@@ -97,118 +57,80 @@ const Team = () => {
       fontSize="smm"
       fontWeight="bold"
     >
-      <Modal variant="teamModal" isOpen={isOpen} onClose={handleClose} isCentered>
-        <ModalContent>
-          <ModalHeader>
-            <Text>Add delegate</Text>
-            <ModalCloseButton />
-          </ModalHeader>
-
-          <ModalBody>
-            <InputGroup>
-              <InputLeftElement
-                zIndex={50}
-                children={<SearchIcon fill="teamPage.modal.searchIcon"/>}
-              />
-              <Input
-                borderWidth='1px'
-                borderColor='teamPage.modal.inputBorder'
-                h='40px'
-                mb={0}
-                zIndex={2}
-                fontSize="smm"
-                value={searchQuery}
-                rounded="10px"
-                onChange={({ target: { value } }) => {
-                  setSearchQuery(value)
-                }}
-              />
-            </InputGroup>
-            <Flex maxH="158px" mt="20px" direction='column'>
-              {loading 
-                ? <Flex w='full' h='50px' px={3} fontStyle='italic' align='center'>
-                    <Box w='40px' mr={3}>
-                      <Loader size='md' />
-                    </Box>
-                    Searching...
-                  </Flex> 
-                : userSearchResults.length > 0 
-                  ? <VStack h="full" {...group} alignItems="flex-start" mb="20px" overflow="auto" spacing="20px ">
-                      {userSearchResults.map((user) => {
-                        const radio = getRadioProps({ value: user._id });
-                        return (
-                          <CustomRadioButton key={user._id} {...radio}>
-                            <Text fontSize="smm" fontWeight="semi_medium" color="teamPage.radioButtonFont" >
-                              {user.firstName && user.lastName ?  `${user.firstName} ${user.lastName}` : `${user.displayName}`}
-                            </Text>
-                          </CustomRadioButton>
-                        )
-                      })}
-                    </VStack>
-                  : searchQuery && <Flex align='center' fontStyle='italic' pl={5} maxWidth='400px' h='50px'>No results found</Flex>}
-            </Flex>
-          </ModalBody>
-          <ModalFooter pt="0px">
-            <Button 
-              w="68px"  
-              h="38px" 
-              mr="1px" 
-              mb="6px" 
-              bg="teamPage.button.add.bg" 
-              color="teamPage.button.add.color" 
-              fontSize="smm" 
-              fontWeight="bold" 
-              _hover={{bg: "teamPage.button.add.bg"}}
-              onClick={async () => {
-                await addDelegate({ variables: { responseDelegateModifyInput: { _id: response?._id, delegateId: selectedRadio } }});
-                refetchResponse();
-                handleClose();
-              }}
-            >
-              Add
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {owner && <Flex>
-        <Flex flexDir="column" alignItems={["center", "flex-start"]}>
-          <Text mb="15px">Owner</Text>
-          <Flex ml={["30px", 0]}>
-            <AvatarUser user={responseOwner} />
-          </Flex>
-        </Flex>
-      </Flex>}
+      <TeamModal />
       <Flex>
-        <Flex flexDir="column" alignItems={["center", "flex-start"]}>
-          <Flex alignItems="center" mb="15px">
-            <Text>Delegates</Text>
-            {response?.delegateIds?.length! < maxDelegates && 
-              <Button 
-                w="52px" 
-                h="28px" 
-                ml="10px" 
-                bg="teamPage.button.addDelegates.bg" 
-                fontSize="11px" 
-                color="teamPage.button.addDelegates.color" 
-                rounded="10px" 
-                onClick={() => onOpen()}
-              >
-                Add
-              </Button>
-            }
-          </Flex>
-          <Flex ml={["30px", 0]}>
-            {delegates?.map(delegate => 
-              <AvatarUser key={delegate._id} user={delegate} removable={true}/>
+        <Flex flexDir="column">
+          <TeamHeader 
+            header="Accountable" 
+            onOpen={onOpen} 
+            setFilterType={() => setFilterType("accountableId")} 
+            isButtonVisible={!response?.accountableId}
+            action="responses"
+          />
+          {responseAccountable && responseAccountable.length !== 0 && 
+            <Flex>
+              <AvatarUser user={accountable} permission="accountable" action="responses" />
+            </Flex>
+          }
+        </Flex>
+        <Flex flexDir="column" ml="40px">
+          <TeamHeader 
+            header="Responsible" 
+            onOpen={onOpen} 
+            setFilterType={() => setFilterType("responsibleId")} 
+            isButtonVisible={!response?.responsibleId}
+            action="responses.manageResponsible"
+          />
+          {responseResponsible && responseResponsible.length !== 0 && 
+            <Flex>
+              <AvatarUser user={responsible} permission="responsible" action="responses.manageResponsible" />
+            </Flex>
+          }
+        </Flex>
+      </Flex>
+      <Flex>
+        <Flex flexDir="column">
+          <TeamHeader 
+            header="Contributors" 
+            onOpen={onOpen} 
+            setFilterType={() => setFilterType("contributorsIds")} 
+            isButtonVisible={response?.contributorsIds?.length! < maxDelegates}
+            action="responses.manageContributor"
+          />
+          <Flex>
+            {contributors?.map(contributor => 
+              <AvatarUser key={contributor._id} user={contributor} permission="contributor" action="responses.manageContributor" />
             )}
             </Flex>
+        </Flex>
+      </Flex>
+      <Flex>
+        <Flex flexDir="column">
+          <TeamHeader 
+            header="Followers" 
+            onOpen={onOpen} 
+            setFilterType={() => setFilterType("followersIds")} 
+            action="responses.manageMultipleFollowers"
+          />
+          <Flex>
+            {followers?.map(follower => 
+              <AvatarUser key={follower._id} user={follower} permission="follower" action="responses.manageMultipleFollowers" />
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </Stack>
   );
 };
 
-export default Team;
+const TeamWithContext = (props) => (
+  <TeamProvider {...props}>
+    <Team {...props} />
+  </TeamProvider>
+);
+
+export default TeamWithContext;
+
 
 export const teamPageStyles = {
   teamPage: {

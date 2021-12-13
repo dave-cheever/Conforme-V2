@@ -18,13 +18,16 @@ export interface IResponse extends IBase {
   // Base fields - saved for response in database
   complianceItemId: string;
   businessUnitId: string;
-  delegateIds: string[];
   lastRenewalDate: Date | null;
   nextRenewalDate: Date | null;
   status: string;
   evidence: IEvidence[];
   attachments: IDocument[];
   questions: IQuestion[];
+  accountableId: string;
+  responsibleId: string;
+  contributorsIds?: string[];
+  followersIds?: string[];
   
   // Comments - injected to response when getting from database
   // Taken from Comments collection
@@ -36,8 +39,6 @@ export interface IResponse extends IBase {
   // Additional fields - can be added when getting from database
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
-  owner?: IUser;
-  delegates?: IUser[];
 }
 
 export interface IAddtionalFields {
