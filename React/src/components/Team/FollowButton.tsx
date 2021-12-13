@@ -6,7 +6,7 @@ import { useResponseContext } from "../../contexts/ResponseProvider";
 import { useAppContext } from "../../contexts/AppProvider";
 import { toastFailed } from "../../bootstrap/config";
 import Can from "../can";
-import ResponseHeaderButton from "../Response/ResponseHeaderButton";
+import ResponseHeaderButton from "../Response/ResponseHeader/ResponseHeaderButton";
 import { FollowIcon } from "../../icons";
 
 const ADD_PARTICIPANT = gql`

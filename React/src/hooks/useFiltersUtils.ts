@@ -61,7 +61,8 @@ export const dates = {
   noDueDate: 'No due date',
   thisWeek: 'This week',
   thisMonth: 'This month',
-  exactDate: 'Exact date'
+  exactDate: 'Exact date',
+  dateRange: 'Date Range'
 };
 
 export const collections = {

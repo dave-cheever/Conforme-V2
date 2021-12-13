@@ -1,14 +1,13 @@
-import React, { useRef } from 'react';
 import { Box, Flex, Icon, Tooltip, Text } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
-import 'flatpickr/dist/themes/light.css';
-import Flatpickr from 'react-flatpickr';
+import DatePicker from "react-datepicker";
 import { format } from 'date-fns';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
 import { CalendarIcon } from '../../icons';
+import { useRef } from 'react';
 
 interface IDatepicker extends IField {
   placeholder?: string;
@@ -29,7 +28,7 @@ const definedValidations: DefinedValidations = {
 };
 
 const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: IDatepicker) => {
-  const flatpickrRef = useRef();
+  const datePickerRef = useRef();
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
@@ -58,7 +57,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
               </Flex>
             )}
             <Flex
-              pl={"16px"}
+              pl="3px"
               align='center'
               borderRadius={"8px"}
               borderWidth={"1px"}
@@ -72,24 +71,18 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
               cursor={disabled ? 'not-allowed' : 'pointer'}
               _active={{ bg: disabled ? "form.datepicker.disabled.bg" : "form.datepicker.activeBg" }}
               _focus={{ borderColor: error ? "form.datepicker.border.focus.error" : "form.datepicker.border.focus.normal" }}
-              justify='space-between'
-              onClick={() => {
-                if (disabled) {
-                  return;
-                }
-                // @ts-expect-error
-                flatpickrRef.current.flatpickr.open();
-              }}
+              justify="space-between"
             >
               {disabled
                 ? <Text>{value ? format(value, 'd MMM yyyy') : ''}</Text>
-                : <Flatpickr
-                  name={name}
-                  onChange={e => onChange(e[0])}
-                  onClose={onBlur}
-                  value={value}
-                  defaultValue={value && new Date(value).toISOString()}
-                  ref={flatpickrRef as any}
+                : <DatePicker
+                    dateFormat="d MMM yyyy"
+                    name={name}
+                    onChange={date => onChange(date)}
+                    onCalendarClose={onBlur}
+                    selected={value  ? new Date(value) : null}
+                    placeholderText={placeholder}
+                    ref={datePickerRef}
                 />
               }
               <CalendarIcon
@@ -97,6 +90,10 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
                 h='16px'
                 mt='-2px'
                 mr='15px'
+                onClick = {() => {
+                  // @ts-ignore
+                  datePickerRef.current.setOpen(true);
+                }}
               />
             </Flex>
             {error && <Box fontSize="smm" ml={1} mt={1} color='form.datepicker.error'>{error.message}</Box>}

@@ -64,7 +64,7 @@ const FiltersPanelItem = ({ name, filter }: { name: string, filter: IFilter }) =
       justify="center"
       p='3'
       w="full"
-      bg="filtersPanelItem.bg"
+      bg={isOpen ? "filtersPanelItem.openBg": "filtersPanelItem.closeBg"}
       borderRadius="10px"
       my={2}
       flexDir="column"
@@ -72,7 +72,7 @@ const FiltersPanelItem = ({ name, filter }: { name: string, filter: IFilter }) =
       <Flex w="full" mb={isOpen ? "4" : "0"} align="center" justify="space-between" cursor="pointer">
         <Text w="full" fontSize="14px" color="filtersPanelItem.fontColor" onClick={onToggle}>{filter.name}</Text>
         <Flex>
-        {(filtersLength > 0) &&  <Box fontSize="12px" bg="white" color="filtersPanel.countColor" px="3" borderRadius="10px" fontWeight="bold" mr="2">{filtersLength}</Box>}
+        {(filtersLength > 0) &&  <Box fontSize="12px" bg="filtersPanelItem.countBg" color="filtersPanelItem.countColor" px="10px" borderRadius="10px" fontWeight="400" mr="3">{filtersLength}</Box>}
         {(isOpen && filtersLength > 0) && <ResetIcon mr={3} onClick={resetFilter}/>}
         {isOpen ?<ArrowUpIcon  onClick={onToggle}/> : <ArrowDownIcon  onClick={onToggle}/>}
         </Flex>
@@ -86,8 +86,10 @@ export default FiltersPanelItem;
 
 export const filtersPanelItemStyles = {
   filtersPanelItem:{
-    bg: "#F0F2F595",
+    openBg: "#F0F2F5",
+    closeBg: "#F0F2F595",
     fontColor:"#282F36",
-    countColor: "#818197"
+    countColor: "#818197",
+    countBg: "white"
   }
 }

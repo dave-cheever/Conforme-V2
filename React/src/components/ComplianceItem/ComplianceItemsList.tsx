@@ -48,9 +48,9 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
             </Flex>
           </Flex>
           <Flex w='10%' ml={2}>
-            <Text color='complianceList.fontColor' opacity='1' fontWeight="400" fontSize='14px'>
+            <Flex color='complianceList.fontColor' opacity='1' fontWeight="400" fontSize='14px'>
               {response?.nextRenewalDate ? format(new Date(response?.nextRenewalDate), 'd MMM yyyy') : <Flex fontStyle='italic'>No due date</Flex>}
-            </Text>
+            </Flex>
           </Flex>
           <Flex w='10%' ml={2} >
             {response && getStatus(response) === "nonCompliant" ?

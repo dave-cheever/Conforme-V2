@@ -25,6 +25,7 @@ const FilterCheckBox = ({value, label}) => {
             }
         }
         }}
+        colorScheme="purpleHeart"
         value={value}
         >
         <Text fontSize="14px" color="filterPanel.checkboxLabelColor">{label}</Text>

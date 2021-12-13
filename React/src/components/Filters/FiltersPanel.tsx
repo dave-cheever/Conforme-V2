@@ -17,7 +17,7 @@ const FiltersPanel = () => {
   }
 
   return (
-    <Box overflow='auto' position={["absolute","absolute","relative"]} zIndex='10' h="100vh" w={["full","320px","290px"]} right="0" top="0" borderBottomStartRadius={["0px","20px"]} boxShadow="md" flexShrink={0} bg='filterPanel.bg'>
+    <Box overflow='auto' position={["absolute","absolute","relative"]} zIndex='10' h="100vh" w={["full","320px"]} right="0" top="0" borderBottomStartRadius={["0px","20px"]} boxShadow="md" flexShrink={0} bg='filterPanel.bg'>
         <Flex justify='space-between' align='center' h='65px' px='4'>
           <Box color='brand.darkGrey' fontSize='16px' fontWeight='700'>Filter items by</Box>
         </Flex>

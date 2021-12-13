@@ -73,14 +73,13 @@ const Header: FunctionComponent<IHeader> = ({
         </Flex>
         {usedFilters && usedFilters.length > 0 && (
           <Flex
-            w="120px"
+            minW="120px"
             flexShrink={0}
             h="40px"
             mr={[6, 6, 4]}
             mt={2}
-            rounded="10px"
+            borderRadius="10px"
             bg="header.filterBackgroundColor"
-            lineHeight="36px"
             cursor="pointer"
             align="center"
             p={4}
@@ -89,23 +88,25 @@ const Header: FunctionComponent<IHeader> = ({
             color="brand.primaryFont"
             onClick={() => setShowFiltersPanel(!showFiltersPanel)}
           >
-            <Flex color="white" fontWeight="bold" fontSize="sm">Filters</Flex>
+            <Flex color="white" fontWeight="bold" fontSize="14px">Filters</Flex>
             {numberOfSelectedFilters > 0 && (
-              <Box
+              <Flex
                 bg="header.selectedFilterColor"
-                ml="2"
+                mx="2"
                 align="center"
-                w="20px"
+                justify="center"
                 h="20px"
-                lineHeight="20px"
-                rounded="md"
-                fontWeight="700"
+                w="27px"
+                lineHeight="14px"
+                fontWeight="400"
                 color="white"
+                fontSize="12px"
+                borderRadius="10px"
               >
                 {numberOfSelectedFilters}
-              </Box>
+              </Flex>
             )}
-            <Filter ml={1} h="18px" />
+            <Filter ml={3} h="18px" transform={numberOfSelectedFilters > 0 ? "rotate(180deg)":""}/>
           </Flex>
         )}
       </Flex>
@@ -122,6 +123,6 @@ export const headerStyles = {
     breadcrumbSecondary: "#818197",
     countFontColor: "#424B50",
     filterBackgroundColor: "#282F36",
-    selectedFilterColor: "#462AC4"
+    selectedFilterColor: "#818197"
   }
 }
