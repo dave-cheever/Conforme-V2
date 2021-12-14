@@ -1,3 +1,5 @@
+import AuditLogs from "./AuditLogs";
+import BusinessUnits from "./BusinessUnits";
 import Categories from "./Categories";
 import Comments from "./Comments";
 import ComplianceItems from "./ComplianceItems";
@@ -6,9 +8,10 @@ import RegulatoryBodies from "./RegulatoryBodies";
 import Responses from "./Responses";
 import Settings from "./Settings";
 import Users from "./Users";
-import BusinessUnits from "./BusinessUnits";
 
 export {
+  AuditLogs,
+  BusinessUnits,
   Categories,
   Comments,
   ComplianceItems,
@@ -17,5 +20,4 @@ export {
   Responses,
   Settings,
   Users,
-  BusinessUnits
 };

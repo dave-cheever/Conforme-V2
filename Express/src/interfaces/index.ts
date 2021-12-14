@@ -1,5 +1,8 @@
 
+import { IAuditLog } from './IAuditLog';
+import { IAuditLogModel } from './IAuditLogModel';
 import { IBase } from './IBase';
+import { IBaseModel } from './IBaseModel';
 import { IBaseWithName } from './IBaseWithName';
 import { IBaseWithNameModel } from './IBaseWithNameModel';
 import { IBusinessUnit } from './IBusinessUnit';
@@ -19,7 +22,10 @@ import { IGraphUser, IUser } from './IUser';
 import { IUserModel } from './IUserModel';
 
 export {
+  IAuditLog,
+  IAuditLogModel,
   IBase,
+  IBaseModel,
   IBaseWithName,
   IBaseWithNameModel,
   IBusinessUnit,

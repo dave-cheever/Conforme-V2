@@ -1,11 +1,6 @@
-import { Model } from "mongoose";
+import { IBaseModel, IOrganization, IUser } from "app-interfaces";
 
-import { IUser } from "app-interfaces";
-import { IOrganization } from "./IOrganization";
-
-export interface IUserModel extends Model<IUser> {
-  get: ({organization: IOrganization}) => Promise<IUser[]>;
-  getById: (userId: string) => Promise<IUser>;
-  findByIdWithDetails: ({ userId, organization }: { userId: string, organization: IOrganization }) => Promise<IUser>;
-  add: ({ userId, organization }: { userId: string, organization: IOrganization }) => Promise<IUser>;
+export interface IUserModel extends IBaseModel<IUser> {
+  customFindByIdWithDetails: ({ userId, organization }: { userId: string, organization: IOrganization }) => Promise<IUser>;
+  customCreate: ({ userId, organization }: { userId: string, organization: IOrganization }) => Promise<IUser>;
 };

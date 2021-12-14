@@ -1,8 +1,5 @@
-import { Model } from "mongoose";
+import { IBaseModel, ISetting } from "app-interfaces";
 
-import { ISetting } from "app-interfaces";
-
-export interface ISettingModel extends Model<ISetting> {
-  getByType: (type: string, organizationId:string) => Promise<ISetting[]>;
-  getById: (name: string, organizationId: string) => Promise<ISetting>;
+export interface ISettingModel extends IBaseModel<ISetting> {
+  customFindByType: (type: string, organizationId: string) => Promise<ISetting[]>;
 };

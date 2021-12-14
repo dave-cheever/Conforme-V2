@@ -21,7 +21,7 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   },
 }, { typeKey: '$type' })
 
-businessUnitSchema.statics.getById = async function (
+businessUnitSchema.statics.customFindById = async function (
   _id: string
 ): Promise<IBusinessUnit> {
   const businessUnit = await this.findOne({
@@ -34,7 +34,7 @@ businessUnitSchema.statics.getById = async function (
   return businessUnit;
 };
 
-businessUnitSchema.statics.get = async function (
+businessUnitSchema.statics.customFind = async function (
   selector: any = {}
 ): Promise<IBusinessUnit[]> {
   const businessUnits = await this.find({

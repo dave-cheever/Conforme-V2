@@ -6,7 +6,7 @@ import { doesPathExist, join } from "app-utils";
 const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
   try {
-    let businessUnits = await BusinessUnits.get();
+    let businessUnits = await BusinessUnits.customFind();
 
     if (shouldJoin("complianceItemsResponsesCount")) {
       for (const businessUnit of businessUnits) {
@@ -35,7 +35,7 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
     if (shouldJoin("owner")) {
       for (const businessUnit of businessUnits) {
         try {
-          businessUnit.owner = await Users.findByIdWithDetails({ userId: businessUnit.ownerId, organization });
+          businessUnit.owner = await Users.customFindByIdWithDetails({ userId: businessUnit.ownerId, organization });
         } catch (e) {
           console.log(`Error occured for ${businessUnit._id}: ${e}`);
         }

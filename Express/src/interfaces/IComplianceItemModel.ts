@@ -1,10 +1,6 @@
-import { Model } from "mongoose";
+import { IBaseModel, IComplianceItem } from "app-interfaces";
 
-import { IComplianceItem } from "app-interfaces";
-
-export interface IComplianceItemModel extends Model<IComplianceItem> {
-  getById: (_id: string) => Promise<IComplianceItem>;
-  get: (selector?: any) => Promise<IComplianceItem[]>;
-  genReference: () => Promise<string>;
-  syncResponses: ({ userId, prevDueDate }: { userId: string, prevDueDate?: Date }) => Promise<void>;
+export interface IComplianceItemModel extends IBaseModel<IComplianceItem> {
+  customGenerateReference: () => Promise<string>;
+  customSynchronizeResponses: ({ userId, prevDueDate }: { userId: string, prevDueDate?: Date }) => Promise<void>;
 };

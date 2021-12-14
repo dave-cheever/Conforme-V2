@@ -9,7 +9,7 @@ const deleteBusinessUnit = async (_, { _id }, { authorize }) => {
         throw new Error("User is not permitted");
       }
   
-      const businessUnit = await BusinessUnits.getById(_id);
+      const businessUnit = await BusinessUnits.customFindById(_id);
       if (!businessUnit) {
         throw new Error("Business Unit doesn't exist");
       }

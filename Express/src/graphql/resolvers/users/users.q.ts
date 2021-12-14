@@ -10,7 +10,7 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
     ...elements,
   ]);
   try {
-    const users:IUser[] = await Users.get({organization});
+    const users:IUser[] = await Users.customFind({organization});
     const usersWithDetails:IUser[] = [];
 
     for (const user of users) {

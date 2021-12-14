@@ -35,7 +35,7 @@ const updateComplianceItem = async (_, { complianceItemModifyInput }, { authoriz
     complianceItemInstance.save();
 
     // @ts-ignore
-    complianceItemInstance.syncResponses({
+    complianceItemInstance.customSynchronizeResponses({
       userId: user._id,
       prevDueDate: complianceItem.dueDate,
     });

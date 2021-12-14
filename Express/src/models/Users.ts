@@ -22,7 +22,7 @@ const userSchema = new Schema<IUser, IUserModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-userSchema.statics.get = async function ({organization}): Promise<IUser[]> {
+userSchema.statics.customFind = async function ({ organization }): Promise<IUser[]> {
   const users = await this.find({
     "organizationsIds": { $in: [organization._id] },
     "metatags.removedAt": { $eq: null },
@@ -30,7 +30,7 @@ userSchema.statics.get = async function ({organization}): Promise<IUser[]> {
   return users.map((user) => user._doc);
 };
 
-userSchema.statics.getById = async function (userId: string): Promise<IUser> {
+userSchema.statics.customFindById = async function (userId: string): Promise<IUser> {
   const user = await this.findById(userId);
   if (!user) {
     throw new Error('User not found');
@@ -39,19 +39,22 @@ userSchema.statics.getById = async function (userId: string): Promise<IUser> {
 }
 
 
-userSchema.statics.add = async function ({userId, organization}:{ userId: string, organization: IOrganization}): Promise<IUser> {
-  const user = await this.create({ 
+userSchema.statics.customCreate = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
+  const user = await this.create({
     _id: userId,
     defaultPage: "/",
     organizationsIds: [organization._id],
-    userCreated: Date.now(),  
+    userCreated: Date.now(),
   });
   return user;
 }
 
 // This method includes user details from MS Graph
-userSchema.statics.findByIdWithDetails = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
-  const user: IUser = await this.getById(userId);
+userSchema.statics.customFindByIdWithDetails = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
+  const user = await this.customFindById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
   const userDetails = await GraphService.getUserData({ userId, organization });
   const { givenName, surname, displayName, mail, userPrincipalName, jobTitle } = userDetails;
 

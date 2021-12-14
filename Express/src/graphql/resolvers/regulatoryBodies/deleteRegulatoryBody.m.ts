@@ -13,7 +13,7 @@ const deleteRegulatoryBody = async (_, { _id }, { authorize }) => {
       throw new Error('User is not permitted');
     }
 
-    const regulatoryBody = await RegulatoryBodies.getById(_id);
+    const regulatoryBody = await RegulatoryBodies.customFindById(_id);
     if (!regulatoryBody) {
       throw new Error('Regulatory body doesn\'t exist');
     }

@@ -7,7 +7,7 @@ const categories = async (_, __, ___, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) =>
     doesPathExist(info.fieldNodes, ["categories", element]);
   try {
-    let categories = await Categories.get();
+    let categories = await Categories.customFind();
 
     if (shouldJoin("complianceItemsResponsesCount")) {
       for (const category of categories) {

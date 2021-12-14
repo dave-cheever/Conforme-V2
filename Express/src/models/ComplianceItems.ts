@@ -42,15 +42,15 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-ComplianceItemSchema.statics.getById = async function (_id: string): Promise<IComplianceItem> {
-  const complianceItem = await this.findById(_id);
+ComplianceItemSchema.statics.customFindById = async function (_id: string): Promise<IComplianceItem> {
+  const complianceItem = await this.customFindById(_id);
   if (!complianceItem) {
     throw new Error('ComplianceItem not found');
   }
   return complianceItem._doc;
 };
 
-ComplianceItemSchema.statics.get = async function (selector: any = {}): Promise<IComplianceItem[]> {
+ComplianceItemSchema.statics.customFind = async function (selector: any = {}): Promise<IComplianceItem[]> {
   const complianceItems = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
@@ -58,7 +58,7 @@ ComplianceItemSchema.statics.get = async function (selector: any = {}): Promise<
   return complianceItems.map((complianceItem) => complianceItem._doc);
 };
 
-ComplianceItemSchema.statics.genReference = async function (): Promise<string> {
+ComplianceItemSchema.statics.customGenerateReference = async function (): Promise<string> {
   let reference = "0000001";
   const lastComplianceItem = await this.findOne({}).sort({ 'metatags.addedAt': -1 });
   if (lastComplianceItem) {
@@ -68,14 +68,14 @@ ComplianceItemSchema.statics.genReference = async function (): Promise<string> {
   return reference;
 };
 
-ComplianceItemSchema.methods.syncResponses = async function ({
+ComplianceItemSchema.methods.customSynchronizeResponses = async function ({
   userId,
   prevDueDate,
 }: {
   userId: string,
   prevDueDate?: Date,
 }) {
-  const responses = await Responses.get({ complianceItemId: this._id });
+  const responses = await Responses.customFind({ complianceItemId: this._id });
   const unprocessedBusinessUnitsIds = [...this.businessUnitsIds];
 
   for (const response of responses) {
@@ -187,7 +187,7 @@ ComplianceItemSchema.methods.syncResponses = async function ({
 
   // Create selected that doesn't exist
   for (const businessUnitId of unprocessedBusinessUnitsIds) {
-    const businessUnit = await BusinessUnits.getById(businessUnitId);
+    const businessUnit = await BusinessUnits.customFindById(businessUnitId);
     
     await Responses.create({
       _id: uuidv4(),

@@ -20,7 +20,7 @@ const context = ({ req, res }) => {
     // And refresh organization in cookie once at 6 hours
     const { licenceLastChecked } = req.session.passport;
     if (!licenceLastChecked || isBefore(parseISO(licenceLastChecked), sub(new Date(), { hours: 6 }))) {
-      const latestOrganization = await Organizations.getById(organization._id);
+      const latestOrganization = await Organizations.customFindById(organization._id);
       const isLicenceValid = isAfter(new Date(latestOrganization.licenceExpirationDate), new Date());
       if (!isLicenceValid) {
         throw new AuthenticationError('Organization\'s licence expired');

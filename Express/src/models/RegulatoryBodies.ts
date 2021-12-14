@@ -17,7 +17,7 @@ const regulatoryBodySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-regulatoryBodySchema.statics.getById = async function (_id: string): Promise<IBaseWithName> {
+regulatoryBodySchema.statics.customFindById = async function (_id: string): Promise<IBaseWithName> {
   const regulatoryBody = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },
@@ -28,7 +28,7 @@ regulatoryBodySchema.statics.getById = async function (_id: string): Promise<IBa
   return regulatoryBody._doc;
 }
 
-regulatoryBodySchema.statics.get = async function (selector: any = {}): Promise<IBaseWithName[]> {
+regulatoryBodySchema.statics.customFind = async function (selector: any = {}): Promise<IBaseWithName[]> {
   const regulatoryBodies = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },

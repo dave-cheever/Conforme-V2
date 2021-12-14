@@ -6,7 +6,7 @@ const addParticipant = async (_, { responseParticipantModify }, { authorize }) =
     const user = await authorize();
 
     const {_id, participantIds, permission} = responseParticipantModify;
-    const response = await Responses.getById(_id);
+    const response = await Responses.customFindById(_id);
 
     if(!participantIds) {
       throw new Error("Invalid input");

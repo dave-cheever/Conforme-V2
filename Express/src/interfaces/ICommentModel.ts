@@ -1,8 +1,3 @@
-import { Model } from "mongoose";
+import { IBaseModel, IComment } from "app-interfaces";
 
-import { IComment } from "app-interfaces";
-
-export interface ICommentModel extends Model<IComment> {
-  get: (_id: string) => Promise<IComment[]>;
-  getById: (_id: string) => Promise<IComment>;
-};
+export interface ICommentModel extends IBaseModel<IComment> {};

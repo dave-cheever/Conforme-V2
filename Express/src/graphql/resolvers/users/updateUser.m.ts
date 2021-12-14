@@ -9,7 +9,7 @@ const updateUser = async (_, { updateUserModifyInput }, { authorize }) => {
       ) {
         throw new Error("User is not permitted");
       }
-      const updateUser = await Users.getById(updateUserModifyInput._id);
+      const updateUser = await Users.customFindById(updateUserModifyInput._id);
       if (!updateUser) {
         throw new Error("User doesn't exist");
       }

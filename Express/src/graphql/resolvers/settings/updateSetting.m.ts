@@ -9,7 +9,7 @@ const updateSetting = async (_, { settingsUpdate }, { authorize, organization })
         throw new Error("User is not permitted");
       }
 
-      const setting = await Settings.getById(settingsUpdate._id, organization._id);
+      const setting = await Settings.customFindById(settingsUpdate._id, organization._id);
       
       if (!setting) {
         throw new Error("Settings doesn't exist");

@@ -25,7 +25,7 @@ const initPassport = (passport: PassportStatic) => {
   const azureADCallback = async (req, profile, done) => {
     const { state: domain } = req.body;
     const { oid: _id, tid: tenantId } = profile._json;
-    const organization = await Organizations.getByDomain(domain);
+    const organization = await Organizations.customFindByDomain(domain);
 
     // Check if organization has valid licence
     if (isBefore(organization.licenceExpirationDate, new Date())) {
@@ -56,13 +56,13 @@ const initPassport = (passport: PassportStatic) => {
       organization,
     };
     try {
-      user = await Users.findByIdWithDetails(userQuery);
+      user = await Users.customFindByIdWithDetails(userQuery);
     } catch (e) {
-      await Users.add({
+      await Users.customCreate({
         userId: _id,
         organization
       });
-      user = await Users.findByIdWithDetails(userQuery);
+      user = await Users.customFindByIdWithDetails(userQuery);
     }
     if (!user) {
       return done(null, { organization }, 'Internal server error - Azure AD auth');

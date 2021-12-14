@@ -11,7 +11,7 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize }) =
       throw new Error("User is not permitted");
     }
     
-    const reference = await ComplianceItems.genReference();
+    const reference = await ComplianceItems.customGenerateReference();
     const newComplianceItem = {
       _id: uuidv4(),
       ...complianceItemInput,
@@ -22,7 +22,7 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize }) =
     const complianceItem = await ComplianceItems.create(newComplianceItem);
 
     // @ts-ignore
-    complianceItem.syncResponses({
+    complianceItem.customSynchronizeResponses({
       userId: user._id,
     });
 

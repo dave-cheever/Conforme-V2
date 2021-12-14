@@ -11,7 +11,7 @@ const updateBusinessUnit = async (_, { businessUnitModifyInput }, { authorize })
       ) {
         throw new Error("User is not permitted");
       }
-      const businessUnit = await BusinessUnits.getById(businessUnitModifyInput._id);
+      const businessUnit = await BusinessUnits.customFindById(businessUnitModifyInput._id);
       if (!businessUnit) {
         throw new Error("Business Unit doesn't exist");
       }

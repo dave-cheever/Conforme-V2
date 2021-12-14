@@ -9,7 +9,7 @@ const regulatoryBodies = async (_, __, ___, info: GraphQLResolveInfo) => {
     element,
   ]);
   try {
-    let regulatoryBodies = await RegulatoryBodies.get();
+    let regulatoryBodies = await RegulatoryBodies.customFind();
     
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const regulatoryBody of regulatoryBodies) {

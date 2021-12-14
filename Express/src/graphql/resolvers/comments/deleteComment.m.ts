@@ -4,7 +4,7 @@ import { genMetatags, isPermitted } from "app-utils";
 const deleteComment = async (_, { _id }, { authorize }) => {
     try {
       const user = await authorize();
-      const comment = await Comments.getById(_id);
+      const comment = await Comments.customFindById(_id);
   
       if (!isPermitted({ user, action: "comments.delete", data: { comment } })) {
         throw new Error("User is not permitted");

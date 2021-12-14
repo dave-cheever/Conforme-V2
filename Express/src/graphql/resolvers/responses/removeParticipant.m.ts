@@ -5,7 +5,7 @@ const removeParticipant = async (_, { responseParticipantRemove }, { authorize }
   try {
     const user = await authorize();
     const {_id, participantId, permission} = responseParticipantRemove;
-    const response = await Responses.getById(_id);
+    const response = await Responses.customFindById(_id);
 
     if(!participantId) {
       throw new Error("Invalid input");

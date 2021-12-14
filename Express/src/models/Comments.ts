@@ -33,7 +33,7 @@ const commentSchema = new Schema<IComment, ICommentModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-commentSchema.statics.get = async function (
+commentSchema.statics.customFind = async function (
   _id: string
 ): Promise<IComment[]> {
   const comments = await this.find({
@@ -43,7 +43,7 @@ commentSchema.statics.get = async function (
   return comments.map((comment) => comment._doc);
 };
 
-commentSchema.statics.getById = async function (
+commentSchema.statics.customFindById = async function (
   _id: string
 ): Promise<IComment> {
   const comment = await this.findOne({

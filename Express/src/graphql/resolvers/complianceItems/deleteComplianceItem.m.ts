@@ -9,7 +9,7 @@ const deleteComplianceItem = async (_, { _id }, { authorize }) => {
       throw new Error("User is not permitted");
     }
 
-    const complianceItem = await ComplianceItems.getById(_id);
+    const complianceItem = await ComplianceItems.customFindById(_id);
     if (!complianceItem) {
       throw new Error("Compliance item doesn't exist");
     }

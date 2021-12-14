@@ -13,7 +13,7 @@ const updateRegulatoryBody = async (_, { regulatoryBodyInput }, { authorize }) =
       throw new Error('User is not permitted');
     }
 
-    const regulatoryBody = await RegulatoryBodies.getById(regulatoryBodyInput._id);
+    const regulatoryBody = await RegulatoryBodies.customFindById(regulatoryBodyInput._id);
     if (!regulatoryBody) {
       throw new Error('Regulatory body doesn\'t exist');
     }

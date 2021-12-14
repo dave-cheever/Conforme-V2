@@ -1,8 +1,5 @@
-import { Model } from "mongoose";
+import { IBaseModel, IOrganization } from "app-interfaces";
 
-import { IOrganization } from "app-interfaces";
-
-export interface IOrganizationModel extends Model<IOrganization> {
-  getById: (_id: string) => Promise<IOrganization>;
-  getByDomain: (domain: string) => Promise<IOrganization>;
+export interface IOrganizationModel extends IBaseModel<IOrganization> {
+  customFindByDomain: (domain: string) => Promise<IOrganization>;
 };

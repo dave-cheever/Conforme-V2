@@ -9,7 +9,7 @@ const deleteCategory = async (_, { _id }, { authorize }) => {
       throw new Error("User is not permitted");
     }
 
-    const category = await Categories.getById(_id);
+    const category = await Categories.customFindById(_id);
     if (!category) {
       throw new Error("Category doesn't exist");
     }

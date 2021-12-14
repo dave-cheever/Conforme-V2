@@ -53,7 +53,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-responseSchema.statics.get = async function (selector: any = {}): Promise<IResponse[]> {
+responseSchema.statics.customFind = async function (selector: any = {}): Promise<IResponse[]> {
   const responses = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
@@ -61,7 +61,7 @@ responseSchema.statics.get = async function (selector: any = {}): Promise<IRespo
   return responses.map((response) => response._doc);
 };
 
-responseSchema.statics.getById = async function (_id: string): Promise<IResponse> {
+responseSchema.statics.customFindById = async function (_id: string): Promise<IResponse> {
   const response = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },

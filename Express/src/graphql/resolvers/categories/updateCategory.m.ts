@@ -13,7 +13,7 @@ const updateCategory = async (_, { categoryInput }, { authorize }) => {
       throw new Error("User is not permitted");
     }
 
-    const category = await Categories.getById(categoryInput._id);
+    const category = await Categories.customFindById(categoryInput._id);
     if (!category) {
       throw new Error("Category doesn't exist");
     }
@@ -26,7 +26,7 @@ const updateCategory = async (_, { categoryInput }, { authorize }) => {
         ...genMetatags("updated", user._id),
       },
     };
-    await Categories.updateOne({ _id: category._id }, updatedCategory);
+    await Categories.customUpdateOne({ _id: category._id }, updatedCategory, user._id);
 
     return updatedCategory;
   } catch (err: any) {

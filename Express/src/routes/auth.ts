@@ -13,7 +13,7 @@ const authRouter = (passport) => {
       if (!domain) {
         throw new Error('Organization doesn\'t exist');
       }
-      const organization = await Organizations.getByDomain(domain);
+      const organization = await Organizations.customFindByDomain(domain);
       passport.authenticate('azuread-openidconnect',
         {
           response: res,

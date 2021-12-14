@@ -25,7 +25,7 @@ const settingSchema = new Schema<ISetting, ISettingModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-settingSchema.statics.getById = async function (_id: string, organizationId: string): Promise<ISetting> {
+settingSchema.statics.customFindById = async function (_id: string, organizationId: string): Promise<ISetting> {
 
   const setting = await this.findOne({_id , organizationId,"metatags.removedAt": { $eq: null }});
   
@@ -35,7 +35,7 @@ settingSchema.statics.getById = async function (_id: string, organizationId: str
   return setting._doc;
 };
 
-settingSchema.statics.getByType = async function (type: string, organizationId: string): Promise<ISetting[]> {
+settingSchema.statics.customFindByType = async function (type: string, organizationId: string): Promise<ISetting[]> {
   const settings = await this.find({ type, organizationId });
   return settings.map(setting => setting._doc);
 }

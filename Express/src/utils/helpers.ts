@@ -245,7 +245,7 @@ export const getAuditValueForBoolean = (oldValue?: string, newValue?: string) =>
 export const getAuditValueForLookup = async ({ collection, labelField, oldValue, newValue }) => {
   let value = {};
   if (oldValue) {
-    const item = await collection.getById(oldValue);
+    const item = await collection.customFindById(oldValue);
 
     if (item) {
       // If a 'labelField' is an array of strings, concat them
@@ -263,7 +263,7 @@ export const getAuditValueForLookup = async ({ collection, labelField, oldValue,
     }
   }
   if (newValue) {
-    const item = await collection.getById(newValue);
+    const item = await collection.customFindById(newValue);
 
     if (item) {
       // If a 'labelField' is an array of strings, concat them

@@ -25,12 +25,12 @@ const filesRouter = () => {
           return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Please pass response id, document name and type' });
         }
 
-        const response = await Responses.getById(responseId);
+        const response = await Responses.customFindById(responseId);
         if (!response) {
           return res.status(StatusCodes.NOT_FOUND).json({ message: 'Response doesn\'t exist' });
         }
-        const complianceItem = await ComplianceItems.getById(response.complianceItemId);
-        const businessUnit = await BusinessUnits.getById(response.businessUnitId);
+        const complianceItem = await ComplianceItems.customFindById(response.complianceItemId);
+        const businessUnit = await BusinessUnits.customFindById(response.businessUnitId);
         if (!businessUnit || !complianceItem || !complianceItem.published) {
           return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Unexpected error occured' });
         }

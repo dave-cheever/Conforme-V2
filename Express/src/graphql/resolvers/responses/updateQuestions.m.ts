@@ -7,7 +7,7 @@ const updateQuestions = async (_, { updateResponseQuestionsModify }, { authorize
 
     const { _id, answers } = updateResponseQuestionsModify;
     
-    const response = await Responses.getById(_id);
+    const response = await Responses.customFindById(_id);
     if (!response) {
       throw new Error("Response doesn't exist");
     }

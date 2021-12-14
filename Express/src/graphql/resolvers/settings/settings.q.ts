@@ -14,7 +14,7 @@ const settings = async (_, { type }, { authorize,organization}) => {
       throw new Error("User is not permitted");
     }
 
-    const settings = await Settings.getByType(type, organization._id);
+    const settings = await Settings.customFindByType(type, organization._id);
     return settings;
   } catch (err) {
     throw new Error(err);
