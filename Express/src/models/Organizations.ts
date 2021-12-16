@@ -19,7 +19,6 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   spSiteUrl: String,
   spLibraryId: String,
   emailAddress: String,
-  emailPassword: String,
   tenantId: String,
   clientId: String,
   secret: String,

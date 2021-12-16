@@ -1,4 +1,5 @@
 import { GraphService } from "app-services";
+import { getProtocol } from "app-utils";
 
 const usersById = async (_, {userQueryInput}, { req, authorize }) => {
   try {    
@@ -13,7 +14,8 @@ const usersById = async (_, {userQueryInput}, { req, authorize }) => {
       firstName: givenName,
       lastName: surname,
       email: userPrincipalName,
-      jobTitle
+      jobTitle,
+      imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${id}`
     }));;
   } catch (err: any) {
     throw new Error(err);

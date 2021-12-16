@@ -52,7 +52,7 @@ export const sessionizeUser = async ({ _id, firstName, lastName, displayName, em
   };
 };
 
-export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl,bgImageTabletUrl, theme, licenceExpirationDate,
+export const sessionizeOrganization = ({ _id, name, domain, logoUrl, emailAddress, bgImageUrl,bgImageTabletUrl, theme, licenceExpirationDate,
   addons, clientId, tenantId, secret, spSiteUrl, spLibraryId, accessGroupId, adminsGroupId, readersGroupId }: Partial<IOrganization>) => {
   return {
     _id,
@@ -60,6 +60,7 @@ export const sessionizeOrganization = ({ _id, name, domain, logoUrl, bgImageUrl,
     logoUrl,
     bgImageUrl,
     bgImageTabletUrl,
+    emailAddress,
     theme,
     licenceExpirationDate,
     addons,
@@ -439,3 +440,18 @@ export const getProjectFields = (nodes: any, methodName: string) => {
   }
   return project;
 };
+
+export const mentionParser = (markup) => {
+  let array = markup.split("@@@");
+  let mentions: Array<string> = [];
+  for(const arr of array){
+    const id=arr.substring(
+      arr.lastIndexOf("[") + 1, 
+      arr.lastIndexOf("]"));
+    if(id !== ""){
+      mentions.push(id);
+    }
+  }
+  //make unique by id
+  return [...new Set(mentions) ];
+}

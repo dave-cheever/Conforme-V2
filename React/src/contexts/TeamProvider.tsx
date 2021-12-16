@@ -6,8 +6,8 @@ import { ITeamContext } from "../interfaces/ITeamContext";
 import { IUser } from "../interfaces/IUser";
 
 const SEARCH_USERS = gql`
-  query ($searchQueryInput: SearchQueryInput) {
-    searchUsers(searchQueryInput: $searchQueryInput) {
+  query ($searchQuery: SearchQuery) {
+    searchUsers(searchQuery: $searchQuery) {
       _id
       firstName
       lastName
@@ -32,7 +32,7 @@ const TeamProvider = (props: any) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRadio, setSelectedRadio] = useState<string>("");
   const [filterType, setFilterType] = useState("");
-  const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQueryInput: { searchText: searchQuery } } });
+  const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQuery: { searchText: searchQuery } } });
   
   const value = useMemo(() => ({
     data, loading, refetchUsers,

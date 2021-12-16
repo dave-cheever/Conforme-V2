@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { Comments, Responses } from "app-models";
-import { genMetatags, isPermitted } from "app-utils";
+import { genMetatags, isPermitted, mentionParser } from "app-utils";
+import { sendMentionedEmail } from "src/services/email";
 
-const createComment = async (_, { commentInput }, { authorize }) => {
+const createComment = async (_, { commentInput }, { authorize, organization }) => {
     try {
       const user = await authorize();
 
@@ -16,10 +17,18 @@ const createComment = async (_, { commentInput }, { authorize }) => {
       const newComment = {
         _id: uuidv4(),
         ...commentInput,
+        authorId: user._id,
         metatags: genMetatags("added", user._id),
       };
   
-      await Comments.create(newComment)
+      await Comments.create(newComment);
+
+      //handle mentioning on chat
+      const mentionedUserIds = mentionParser(newComment.text);
+
+      if(mentionedUserIds?.length > 0){
+        sendMentionedEmail({userIds: mentionedUserIds,organization, message: newComment.text });
+      }
   
       return newComment;
     } catch (err: any) {

@@ -16,7 +16,6 @@ export interface IOrganization extends IBase {
   spSiteUrl: string; // SharePoint site url
   spLibraryId: string; // SharePoint library url for storing the documents
   emailAddress: string; // Email address used to send emails
-  emailPassword: string; // Email password used to send emails
   tenantId: string; // Tenant ID of Azure App
   clientId: string; // Client ID of Azure App
   secret: string; // Secret of Azure App

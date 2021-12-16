@@ -1,12 +1,26 @@
-import { Avatar } from "@chakra-ui/avatar"
-import Icon from "@chakra-ui/icon";
-import { Flex, Text, Box } from "@chakra-ui/layout"
-import { Tooltip } from "@chakra-ui/tooltip";
+import { useEffect, useMemo } from "react";
+import { gql, useLazyQuery } from "@apollo/client";
+import { Avatar, Icon, Flex, Text, Box , Tooltip} from "@chakra-ui/react";
 import moment from "moment";
+import reactStringReplace from "react-string-replace";
+
 import { IComment } from "../../interfaces/IComment";
+import ChatMention from "./ChatMention";
 
+const GET_USERS_BY_ID = gql`
+  query (
+    $userQueryInput: UserQueryInput
+  ) {
+    author: usersById(userQueryInput: $userQueryInput) {
+      displayName
+      imgUrl
+    }
+  }
+`;
 
-const ResponseChatRecieved = ({ author, text, metatags, tooltip = '' }: IComment & { tooltip?: string }) => {
+const ResponseChatRecieved = ({ authorId, text, metatags, tooltip = '' }: IComment & { tooltip?: string }) => {
+
+  const [getParticipantDetailById, {data}] = useLazyQuery(GET_USERS_BY_ID);
   const dateFormat = () => {
     const date = moment(metatags?.addedAt, 'YYYY-MM-DDThh:mm')
     const currentDate = moment()
@@ -15,6 +29,18 @@ const ResponseChatRecieved = ({ author, text, metatags, tooltip = '' }: IComment
     }
     return date.format('hh:mm ddd/mm/yyyy')
   }
+
+  const chatAuthor = useMemo(() => {
+    return data?.author[0];
+  },[data]);
+
+  useEffect(() => {
+    if(authorId){
+      getParticipantDetailById({ variables: { userQueryInput: { userIds: [authorId] }}});
+    }
+  // eslint-disable-next-line
+  },[authorId]); 
+
   return (
     <Flex
       flexDirection="row-reverse"
@@ -24,15 +50,17 @@ const ResponseChatRecieved = ({ author, text, metatags, tooltip = '' }: IComment
     >
       <Avatar
         rounded='full'
-        name={author?.displayName}
+        name={chatAuthor?.displayName}
         size='xs'
-        src={author?.imgUrl}
+        src={chatAuthor?.imgUrl}
         ml={3}
       />
-      <Box bg="ResponseChatRecieved.bg" px="12px" borderRadius="10px" py="8px" w="full">
-        <Text fontSize="ssm" fontWeight="semi_medium" color="ResponseChatRecieved.dateColor" mb="10px">{dateFormat()}</Text>
+      <Box bg="responseChatRecieved.bg" px="12px" color="responseChatRecieved.textColor" borderRadius="10px" py="8px" w="full">
+        <Text fontSize="ssm" fontWeight="semi_medium" color="responseChatRecieved.dateColor" mb="10px">{dateFormat()}</Text>
         {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
-        <Text fontSize="smm" fontWeight="semi_medium">{text}</Text>
+        {reactStringReplace(text, /(@@@\([\w]+\)\[[\w-]+\])/g, (match, i) => (
+          <ChatMention key={i} tag={match} />
+        ))}
       </Box>
     </Flex>
   )
@@ -41,8 +69,9 @@ const ResponseChatRecieved = ({ author, text, metatags, tooltip = '' }: IComment
 export default ResponseChatRecieved
 
 export const responseChatRecievedStyles = {
-  ResponseChatRecieved: {
+  responseChatRecieved: {
     bg: "#FFFFFF",
     dateColor: "#818197",
+    textColor: "#282F36"
   }
 }

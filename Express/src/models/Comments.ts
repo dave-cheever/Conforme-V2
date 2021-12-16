@@ -6,21 +6,7 @@ const commentSchema = new Schema<IComment, ICommentModel>({
   _id: String,
   responseId: String,
   text: String,
-  author: {
-    _id: String,
-    firstName: String,
-    lastName: String,
-    displayName: String,
-    email: String,
-    jobTitle: String,
-    imgUrl: String,
-    defaultPage: String,
-    role: {
-      type: String,
-      enum: ['user', 'reader', 'admin'],
-      default: 'user',
-    },
-  },
+  authorId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -40,6 +26,7 @@ commentSchema.statics.customFind = async function (
     responseId:_id,
     "metatags.removedAt": { $eq: null },
   });
+  
   return comments.map((comment) => comment._doc);
 };
 

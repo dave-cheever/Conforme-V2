@@ -1,7 +1,7 @@
-import { IBase, IGraphUser } from "app-interfaces";
+import { IBase } from "app-interfaces";
 
 export interface IComment extends IBase {
   responseId: string;
   text: string;
-  author?: IGraphUser;
+  authorId: string;
 }

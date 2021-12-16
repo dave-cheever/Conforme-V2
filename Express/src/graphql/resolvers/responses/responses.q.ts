@@ -198,20 +198,6 @@ const responses = async (_, { responsesQuery }, { authorize }, info: any) => {
       });
     }
 
-    // Filter by user id (in business unit)
-    // It looks at business unit owner and response delegates
-    if (responsesQuery?.usersIds) {
-      pipeline.push({
-        $match: {
-          $or: [{
-            'businessUnit.ownerId': { $in: responsesQuery.usersIds },
-          }, {
-            delegateIds: { $in: responsesQuery.usersIds },
-          }],
-        },
-      });
-    }
-
     pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
 
     const responses = await Responses.aggregate(pipeline);

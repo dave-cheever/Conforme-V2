@@ -1,4 +1,3 @@
-
 import {
   CORSConfig,
   getProtocol,
@@ -24,15 +23,25 @@ import {
   doesPathExist,
   getProjectFields,
   join,
-} from './helpers';
+  mentionParser,
+} from "./helpers";
+import roles from "./roles";
 
-import roles from './roles';
-
-import emailPreview from './email/emailPreview';
+import {
+  getEmailSubject,
+  getEmailTemplate,
+  emailPreview,
+  MENTION_EMAIL,
+} from "./email";
 
 export {
-  CORSConfig,
   emailPreview,
+  getEmailTemplate,
+  getEmailSubject,
+  MENTION_EMAIL,
+
+  
+  CORSConfig,
   getProtocol,
   getClientUrl,
   getDomain,
@@ -57,4 +66,5 @@ export {
   getProjectFields,
   join,
   roles,
+  mentionParser
 };

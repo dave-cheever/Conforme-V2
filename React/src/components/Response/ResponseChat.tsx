@@ -1,17 +1,16 @@
-import { Avatar } from "@chakra-ui/avatar";
-import { Box, Flex, Text } from "@chakra-ui/layout"
+import React, { useEffect, useRef, useState }  from 'react';
+import {Avatar,Box, Flex, Text,useToast  } from '@chakra-ui/react';
 import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
+
 import MessageInput from "./MessageInput";
 import ResponseChatRecieved from "./ResponseChatRecieved";
 import ResponseChatSent from "./ResponseChatSent";
-import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../contexts/AppProvider";
 import { useResponseContext } from "../../contexts/ResponseProvider";
-import Loader from "../Loader";
 import { IComment } from "../../interfaces/IComment";
-import { useToast } from "@chakra-ui/react";
 import { toastFailed } from "../../bootstrap/config";
+import Loader from "../Loader";
 
 const GET_COMMENTS = gql`
   query ($_id: String!) {
@@ -19,17 +18,7 @@ const GET_COMMENTS = gql`
       _id
       responseId
       text
-      author{
-        _id
-        firstName
-        lastName
-        displayName
-        email
-        jobTitle
-        imgUrl
-        defaultPage
-        role
-      }
+      authorId
       metatags {
         addedAt
         addedBy
@@ -64,6 +53,7 @@ const ResponseChat = () => {
   const [deleteFunction] = useMutation(DELETE_COMMENT);
   const [comments, setComments] = useState<IComment[]>([]);
   const { user } = useAppContext();
+  const { users } = useResponseContext();
   const divRef: any = useRef()
 
   const scrollToBottom = () => {
@@ -99,23 +89,12 @@ const ResponseChat = () => {
     if (!isFormValid) {
       return;
     }
-
+    
     try {
       if (Object.keys(errors).length === 0) {
         const text = getValues();
         const values = {
           ...text,
-          author: {
-            _id: user?._id,
-            firstName: user?.firstName,
-            lastName: user?.lastName,
-            displayName: user?.displayName,
-            email: user?.email,
-            jobTitle: user?.jobTitle,
-            imgUrl: user?.imgUrl,
-            defaultPage: user?.defaultPage,
-            role: user?.role
-          },
           responseId: response?._id,
         };
         await createFunction({ variables: { values } });
@@ -143,13 +122,12 @@ const ResponseChat = () => {
       });
     }
   }
-
-  const users = [response?.businessUnit];
+  
   return (
     <Box w="330px" h="full" pl="25px" display={["none","none","block"]}>
       <Flex alignItems="center" flexDirection="column">
-        <Text color="responseChat.text" fontSize="ssm" my={2}>Chat</Text>
-        <Flex mb={2}>
+        <Text color="responseChat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">Chat</Text>
+        <Flex mb={2} w="full" justify="center">
           {users.slice(0, 3).map((user, i) => {
             return (
               <Avatar
@@ -158,22 +136,24 @@ const ResponseChat = () => {
                 borderWidth={0}
                 size="sm"
                 src={user?.imgUrl}
-                name={user?.name}
+                name={user?.displayName}
                 mr={users.length > 1 ? "10px" : ""}
               />
             )
           })}
           {users.length > 3 && (
-            <Box
+            <Flex
               bg="responseChat.image.bg"
               color="responseChat.image.color"
               fontSize="smm"
               fontWeight="bold"
-              px="8px"
-              py="6px"
-              rounded="full">
-              {users.length - 3}
-            </Box>
+              w="32px"
+              rounded="full"
+              align="center"
+              justify="center"
+              >
+              +{users.length - 3}
+            </Flex>
           )}
         </Flex>
       </Flex>
@@ -185,7 +165,7 @@ const ResponseChat = () => {
         pr='10px'>
         <Flex
           h="full"
-          overflowY={"auto"}
+          overflow="auto"
           flexDirection="column"
           ref={divRef}
           sx={{
@@ -210,8 +190,8 @@ const ResponseChat = () => {
             w='full'
           >
             {loading && <Loader />}
-            {comments.reverse().map((comment, i) =>
-              user?._id === comment?.author?._id ?
+            {comments.map((comment, i) =>
+              user?._id === comment?.authorId ?
                 <ResponseChatSent key={comment._id} isLast={comments.length === i + 1} onAction={deleteComment} {...comment} /> :
                 <ResponseChatRecieved {...comment} key={comment._id} />
             )}
@@ -236,7 +216,7 @@ export default ResponseChat
 
 export const responseChatStyles = {
   responseChat: {
-    text: '#282F36',
+    text: '#282F3680',
     scrollBar: {
       bg: "#E5E5E5",
       color: "#DDD",
@@ -245,5 +225,9 @@ export const responseChatStyles = {
       bg: "#818197",
       color: "#ffffff"
     }
+  },
+  mentionListItem:{
+    color: "#818197",
+    hoverColor: "#282F36"
   }
 }

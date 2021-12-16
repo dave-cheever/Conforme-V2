@@ -54,14 +54,14 @@ const ResponseDetail = ({ response }) => {
                   Item ID
                 </Box>
                 <Flex align="center" fontSize="14px" minH="28px">
-                  <Flex mr={2}>{response.complianceItem.reference}</Flex>
+                  <Flex mr={2}>{response?.complianceItem?.reference}</Flex>
                   <CopyToClipboard
-                    text={response.complianceItem.reference}
+                    text={response?.complianceItem?.reference}
                     onCopy={() =>
                       toast({
                         ...toastSuccess,
                         title: "Item ID copied",
-                        description: `${response.complianceItem.reference} was copied to clipboard`,
+                        description: `${response?.complianceItem?.reference} was copied to clipboard`,
                       })
                     }
                   >
@@ -77,7 +77,7 @@ const ResponseDetail = ({ response }) => {
               </Box>
               <ResponseLeftItem
                 heading="Business unit"
-                value={response.businessUnit.name || "-"}
+                value={response?.businessUnit?.name || "-"}
               />
               <Box h="50px" mt={1}>
                 <Box opacity={0.5} fontSize="11px">

@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useMemo } from "react";
-import { gql, useQuery } from "@apollo/client";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
+import { gql, useLazyQuery, useQuery } from "@apollo/client";
 import { useDisclosure } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
 import { IResponse } from "../interfaces/IResponse";
 import { IResponseContext } from "../interfaces/IResponseContext";
+import { IUser } from "../interfaces/IUser";
 
 export const ResponseContext = createContext({} as IResponseContext);
 
@@ -65,6 +66,22 @@ const GET_RESPONSES = gql`
   }
 `;
 
+const GET_PARTICIPANTS = gql`
+  query ($userQuery: UserQueryInput) {
+    participants: usersById(userQueryInput: $userQuery) {
+      id: _id
+      display: firstName
+      _id
+      firstName
+      lastName
+      displayName
+      imgUrl
+    }
+  }
+`;
+
+//Note: The display and id, is used for mentioned mapping
+
 export const useResponseContext = () => {
   const context = useContext(ResponseContext);
   if (!context) {
@@ -76,22 +93,51 @@ export const useResponseContext = () => {
 const ResponseProvider = (props: any) => {
   const { id }: { id: string } = useParams();
   const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQuery: { _id: id } } });
+  const [getParticipants, { data:participantsData, }] = useLazyQuery(GET_PARTICIPANTS);
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
   const { isOpen: isDueDateOpen, onOpen: handleDueDateOpen, onClose: handleDueDateClose } = useDisclosure();
 
+  console.log('participantsData', participantsData);
+  
   const response: IResponse = useMemo(() => data?.responses[0], [data]);
+  const participants : IUser[] = useMemo(() => participantsData?.participants || [],[participantsData]);
+
+  const getUpdatedDisplayName = (userId:string) => {
+    return participants?.filter((participant) => participant._id === userId)[0]?.displayName;
+  }
+
+  const getParticipantDetailById = (userId:string) =>{
+    return participants?.filter((participant) => participant._id === userId)[0];
+  }
+
+  useEffect(() => {
+    if(response){
+      let participants = [response.accountableId, response.responsibleId];
+      participants = participants.concat(response.followersIds || []);
+      participants = participants.concat(response.contributorsIds || []);
+      getParticipants({
+        variables: {
+          userQuery: { usersIds: participants }
+        }
+      });
+    }
+  // eslint-disable-next-line
+  },[response]);
 
   const value = useMemo(() => ({
-    response, loading, refetch,
+    response,users:participants, loading, refetch,
     isShareOpen, handleShareOpen, handleShareClose,
     isConfirmationOpen, handleConfirmationOpen, handleConfirmationClose,
     isRenewalOpen, handleRenewalOpen, handleRenewalClose,
     isDueDateOpen, handleDueDateOpen, handleDueDateClose,
+    getUpdatedDisplayName,
+    getParticipantDetailById
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     loading,
     response,
+    participantsData,
     isShareOpen,
     isConfirmationOpen,
     isRenewalOpen,

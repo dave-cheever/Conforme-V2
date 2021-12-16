@@ -5,6 +5,7 @@ import multer from 'multer';
 
 import { logger } from 'app-shared';
 import { IOrganization } from 'app-interfaces';
+import { getEmailSubject, getEmailTemplate } from 'app-utils';
 // import { getEmailSubject, getEmailTemplate } from 'app-utils';
 
 const inMemoryStorage = multer.memoryStorage();
@@ -256,33 +257,34 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
   }
 };
 
-// const sendEmail = async ({ emailType, emailData, from, to }: { emailType: number, emailData: any, from: string, to: string[] }) => {
-//   try {
-//     const client = await getClient();
-//     if (!to) {
-//       return logger.error('Graph error: Wrong Email configuration');
-//     }
-//     const toRecipients = to.map(address => ({
-//       emailAddress: {
-//         address,
-//       }
-//     }));
-//     const options = { // TODO: fix emails
-//       // message: {
-//       //   subject: getEmailSubject(emailType, emailData),
-//       //   body: {
-//       //     contentType: 'HTML',
-//       //     content: await getEmailTemplate(emailType, emailData),
-//       //   },
-//       //   toRecipients,
-//       // }
-//     };
-//     const sent = await client.post(`users/${from}/sendMail`, options);
-//     return sent.status === 202;
-//   } catch (error) {
-//     return false;
-//   }
-// };
+const sendEmail = async ({ emailType, organization,  emailData, from, to }: { emailType: number,organization: IOrganization, emailData: any, from: string, to: string[] }) => {
+  try {
+    const client = await getClient(organization);
+    if (!to) {
+      return logger.error('Graph error: Wrong Email configuration');
+    }
+    const toRecipients = to.map(address => ({
+      emailAddress: {
+        address,
+      }
+    }));
+
+    const options = {
+      message: {
+        subject: getEmailSubject(emailType, emailData),
+        body: {
+          contentType: 'HTML',
+          content: await getEmailTemplate(emailType, emailData),
+        },
+        toRecipients,
+      }
+    };
+    const sent = await client.post(`users/${from}/sendMail`, options);
+    return sent.status === 202;
+  } catch (error) {
+    return false;
+  }
+};
 
 export default {
   inMemoryStrategy,
@@ -296,5 +298,5 @@ export default {
   addMemberToAccessGroup,
   deleteDocument,
   getFileDetails,
-  // sendEmail,
+  sendEmail,
 };

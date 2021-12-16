@@ -1,11 +1,13 @@
 import React from 'react';
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
-
+import { Flex, Avatar, Text } from '@chakra-ui/react';
+import { Mention, MentionsInput } from "react-mentions";
 import { Controller } from 'react-hook-form';
+
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
 import { SendMessageIcon } from '../../icons';
+import { useResponseContext } from '../../contexts/ResponseProvider';
 
 interface IMessageInput extends IField {
   placeholder?: string;
@@ -28,48 +30,52 @@ const definedValidations: DefinedValidations = {
 
 const MessageInput = ({ control, name, label, placeholder = '', validations = {}, disabled = false, onAction }: IMessageInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
+  const { users } = useResponseContext();
+
+  const onKeyDown = (e) => {
+    if(e.shiftKey && e.key === "Enter"){
+        //This should change the line
+        return;
+    }
+
+    if(e.key === "Enter"){
+        onAction();
+    }
+  }
+
+  console.log(users);
+
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
       render={({ field }) => {
-        const { onChange, onBlur, value } = field;
+        const { onChange,onBlur, value } = field;
+
         return (
-          <InputGroup mt="5px">
-            <Input
-              borderRadius="8px"
-              borderWidth="1px"
-              pt='none'
-              h="40px"
-              mb="15px"
-              type="text"
-              fontSize="smm"
-              color="messageInput.textInput.font"
-              bg="messageInput.textInput.bg"
-              name={name}
-              value={value}
-              borderColor={"messageInput.textInput.border.normal"}
-              _active={{ bg: disabled ? "messageInput.textInput.disabled.bg" : "messageInput.textInput.activeBg" }}
-              _focus={{ borderColor: "messageInput.textInput.border.focus.normal" }}
-              _hover={{ cursor: "auto" }}
-              onChange={onChange}
-              onBlur={onBlur}
-              isDisabled={disabled}
-              cursor="pointer"
-              _disabled={{
-                bg: "messageInput.textInput.disabled.bg",
-                color: "messageInput.textInput.disabled.font",
-                borderColor: "messageInput.textInput.disabled.border",
-                cursor: "not-allowed",
-              }}
-              maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
-              placeholder={placeholder}
-              _placeholder={{ fontSize: "smm", color: 'messageInput.textInput.placeholder' }}
-              onKeyDown={(e) => e.key === 'Enter' && onAction()}
-            />
-            <InputRightElement children={<SendMessageIcon />} onClick={() => onAction()} cursor="pointer" />
-          </InputGroup>
+          <Flex w="full" align="center" position="relative" borderRadius="10px" mb="25px">
+            <MentionsInput allowSpaceInQuery={true} onBlur={onBlur} onKeyDown={onKeyDown} placeholder={placeholder} className="mentions" allowSuggestionsAboveCursor={true} value={value} onChange={onChange}>
+              <Mention
+                markup="@@@(__display__)[__id__]"
+                spellCheck={false}
+                trigger="@"
+                data={users}
+                className="mentions__mention"
+                renderSuggestion={(
+                  highlightedDisplay,
+                ) => {
+                  return(
+                    <Flex w="full" pl="13px" py="10px" color="mentionListItem.color" fontSize="14px" __hover={{color: "mentionListItem.hoverColor"}}>
+                      <Avatar size="xs" name={highlightedDisplay?.display}/>
+                      <Text ml={3} noOfLines={1} textOverflow="ellipsis">{highlightedDisplay?.display}</Text>
+                    </Flex>
+                  );
+                }}
+              />
+            </MentionsInput>
+            <Flex position="absolute" right="10px"><SendMessageIcon cursor="pointer" onClick={onAction}/></Flex>
+          </Flex>
         );
       }}
     />
@@ -106,4 +112,3 @@ export const messageInputStyles = {
     }
   }
 }
-

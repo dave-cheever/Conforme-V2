@@ -55,6 +55,27 @@ const TeamModal = () => {
 
   const group = getRootProps();
 
+  const handleAddParticipant =async () => {
+    try {
+      await addParticipant({ variables: { 
+        responseParticipantModify: { 
+          _id: response?._id, 
+          participantIds: [selectedRadio], 
+          permission: responsePermissionByFilterType(filterType) 
+        } 
+      }
+      });
+      refetch();
+      handleClose();
+    } catch (error: any) {
+      toast({
+        ...toastFailed,
+        title: 'Error',
+        description: error.message
+      });
+    }
+  }
+
   return (
     <Modal variant="teamModal" isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalContent>
@@ -118,25 +139,7 @@ const TeamModal = () => {
             fontSize="smm" 
             fontWeight="bold" 
             _hover={{bg: "teamPage.button.add.bg"}}
-            onClick={async () => { 
-              try {
-                await addParticipant({ variables: { 
-                  responseParticipantModify: { 
-                    _id: response?._id, 
-                    participantIds: [selectedRadio], 
-                    permission: responsePermissionByFilterType(filterType) 
-                  } 
-                }});
-                refetch();
-                handleClose();
-              } catch (error: any) {
-                toast({
-                  ...toastFailed,
-                  title: 'Error',
-                  description: error.message
-                });
-              }
-            }}
+            onClick={handleAddParticipant}
           >
             Add
           </Button>

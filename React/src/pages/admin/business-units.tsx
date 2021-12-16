@@ -290,10 +290,9 @@ const BusinessUnits = () => {
             <AdminTableHeaderElement w={["20%", "calc(70% / 4)"]} label="# of responses" />
           </AdminTableHeader>
           <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="10px" fontSize="smm">
-            {loading && <Loader />}
-            {!loading && businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
-              <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No business units found.</Flex>
-            )}
+            {loading ? <Loader center={true}/>: (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
+              <Flex w='full' h='full' fontSize='18px' fontStyle='italic' align='center' justify="center">No business units found.</Flex>
+            ))}
           </Flex>
         </Box>
       </Flex>

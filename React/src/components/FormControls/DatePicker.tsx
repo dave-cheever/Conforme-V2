@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import 'flatpickr/dist/themes/light.css';
-import Flatpickr from 'react-flatpickr';
+// import 'flatpickr/dist/themes/light.css';
+// import Flatpickr from 'react-flatpickr';
 import { Flex, Box, Tooltip, Icon, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
@@ -87,7 +87,7 @@ const DatePicker = ({ name, label, showDot, tooltip, disabled, value, error, val
           flatpickrRef.current.flatpickr.open();
         }}
       >
-        {disabled
+        {/* {disabled
           ? <Text>{value ? format(new Date(value), 'd MMM yyyy') : ' '}</Text>
           : <Flatpickr
             name={name}
@@ -97,7 +97,7 @@ const DatePicker = ({ name, label, showDot, tooltip, disabled, value, error, val
             value={value}
             // ref={flatpickrRef}
           />
-        }
+        } */}
         <CalendarIcon
           w='14px'
           h='16px'

@@ -1,42 +1,28 @@
-// import nodemailer, { SendMailOptions } from 'nodemailer';
+import { IOrganization } from "app-interfaces";
+import { Users } from "app-models";
+import { GraphService } from "app-services";
+import { MENTION_EMAIL } from "app-utils";
 
-import { logger } from 'app-shared';
-// import { getEmailSubject, getEmailTemplate } from 'app-utils';
+export const sendMentionedEmail = async ({
+ userIds,
+  organization,
+  message,
+}: {
+  userIds: any[];
+  organization: IOrganization;
+  message: String;
+}) => {
+  //get all information for user;
+  for (const id of userIds) {
+    
+    const user = await Users.customFindByIdWithDetails({ userId: id, organization });
 
-// const transporter = nodemailer.createTransport({
-//   host: 'smtp.office365.com',
-//   port: 587,
-//   secure: false,
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASSWORD
-//   },
-//   tls: {
-//     rejectUnauthorized: false
-//   }
-// });
-
-const sendEmail = async ({ emailType, emailData, from, to }: { emailType: number, emailData: any, from: string, to: string }) => {
-  // const mailOptions: SendMailOptions = {
-  //   from,
-  //   to,
-  //   subject: getEmailSubject(emailType, emailData),
-  //   html: await getEmailTemplate(emailType, emailData)
-  // };
-
-  // const response = new Promise((resolve, reject) => {
-  //   transporter.sendMail(mailOptions, error => {
-  //     if (error) {
-  //       logger.error(error);
-  //       resolve(false);
-  //     }
-  //     resolve(true);
-  //   });
-  // });
-
-  // return await response;
+    await GraphService.sendEmail({
+      emailType: MENTION_EMAIL,
+      emailData: { user, message },
+      organization,
+      from: organization.emailAddress,
+      to: [user.email],
+    });
 }
-
-export default {
-  sendEmail
-};
+}
