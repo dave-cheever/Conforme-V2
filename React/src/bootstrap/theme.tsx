@@ -4,6 +4,7 @@ import { addComplianceItemAttributeStyles } from "../components/AdminComplianceI
 import { adminModalStyles } from "../components/Admin/AdminModal";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
+import { alertDialogStyles } from "../components/AlertDialog";
 import { avatarUserStyles } from "../components/Team/AvatarUser";
 import { barChartStyles } from "../components/BarChart";
 import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
@@ -11,6 +12,8 @@ import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector
 import { businessUnitsStyles } from "../pages/admin/business-units";
 import { categoriesStyles } from "../pages/admin/categories";
 import { chatMentionStyles } from "../components/Response/ChatMention";
+import { cloneComplianceItemModalStyles } from "../components/AdminComplianceItemModal/CloneComplianceItemModal";
+import { complianceItemsAdminWithContextStyles } from "../pages/admin/compliance-items";
 import { complianceGroupItemsStyles } from "../components/ComplianceItem/ComplianceItemsGroup";
 import { complianceItemModalStyles } from "../components/AdminComplianceItemModal/ComplianceItemModal";
 import { complianceItemResponseStyles } from "../pages/compliance-item/index";
@@ -110,6 +113,7 @@ const getTheme = (organizationTheme?: any) => {
       ...adminModalStyles,
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
+      ...alertDialogStyles,
       ...avatarUserStyles,
       ...barChartStyles,
       ...businessUnitsModalStyles,
@@ -117,8 +121,10 @@ const getTheme = (organizationTheme?: any) => {
       ...businessUnitsStyles,
       ...categoriesStyles,
       ...chatMentionStyles,
+      ...cloneComplianceItemModalStyles,
       ...complianceGroupItemsStyles,
       ...complianceItemModalStyles,
+      ...complianceItemsAdminWithContextStyles,
       ...complianceItemResponseStyles,
       ...complianceItemStyles,
       ...complianceItemsSquareStyles,

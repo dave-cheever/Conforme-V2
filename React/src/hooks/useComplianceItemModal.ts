@@ -26,6 +26,13 @@ const DELETE_COMPLIANCE_ITEM = gql`
     deleteComplianceItem(_id: $_id)
   }
 `;
+const CLONE_COMPLIANCE_ITEM = gql`
+  mutation ($complianceId: String!) {
+    cloneComplianceItem(complianceId: $complianceId) {
+      _id
+    }
+  }
+`;
 
 const useComplianceItemModal = (refetch = () => { }) => {
   const toast = useToast();
@@ -38,6 +45,7 @@ const useComplianceItemModal = (refetch = () => { }) => {
   const [create] = useMutation(CREATE_COMPLIANCE_ITEM);
   const [update] = useMutation(UPDATE_COMPLIANCE_ITEM);
   const [remove] = useMutation(DELETE_COMPLIANCE_ITEM);
+  const [clone] = useMutation(CLONE_COMPLIANCE_ITEM);
 
   const closeModal = useCallback(() => setAdminModalState('closed'), []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -87,9 +95,37 @@ const useComplianceItemModal = (refetch = () => { }) => {
     }
   };
 
+  const cloneComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
+    try {
+      setSavingDialogDetails(details => ({
+        ...details,
+        state: 'Saving compliance item',
+      }));
+      const changeState = setTimeout(() => {
+        setSavingDialogDetails(details => ({
+          ...details,
+          state: 'Saving responses',
+        }));
+        clearTimeout(changeState);
+      }, 1000);
+
+      let savedComplianceItemId: string;
+      const { data } = await clone({ variables: { complianceId: complianceItem._id } });
+      savedComplianceItemId = data.cloneComplianceItem._id;
+      setValue('_id', savedComplianceItemId);
+      refetch();
+      toast({ ...toastSuccess, description: `${complianceItem.name} was cloned` });
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    } finally {
+      closeModal();
+    }
+  };
+
   return {
     saveComplianceItem,
     deleteComplianceItem,
+    cloneComplianceItem,
     closeModal,
   };
 };

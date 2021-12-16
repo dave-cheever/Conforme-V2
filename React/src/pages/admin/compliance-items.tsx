@@ -5,6 +5,7 @@ import {
   Box,
   Flex,
   Stack,
+  Spacer,
   Text,
 } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
@@ -20,6 +21,8 @@ import { IComplianceItem } from "../../interfaces/IComplianceItem";
 import { AdminModalState } from "../../interfaces/IAdminContext";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
+import { ArrowRight, Copy } from "../../icons";
+import CloneComplianceItemModal from "../../components/AdminComplianceItemModal/CloneComplianceItemModal";
 
 const GET_COMPLIANCE_ITEMS = gql`
   query {
@@ -100,10 +103,16 @@ const ComplianceItemsAdmin = () => {
         size={(device === 'desktop' || device === 'tablet') ? '2xl' : 'full'}
       >
         <ModalOverlay />
-        {adminModalState === 'delete' ?
+        {
+          adminModalState === 'delete' ? 
           <DeleteComplianceItemModal refetch={refetch} /> :
-          <ComplianceItemModal refetch={refetch} />
+          ( 
+            adminModalState === 'clone' ? 
+            <CloneComplianceItemModal refetch={refetch} /> : 
+            <ComplianceItemModal refetch={refetch} />
+          )
         }
+        
       </Modal>
       <Header
         breadcrumbs={["Admin", "Compliance items"]}
@@ -117,11 +126,16 @@ const ComplianceItemsAdmin = () => {
         <Box p="0 25px 30px 30px" h='calc(100vh - 160px)' overflow="auto" rounded="10px">
           <Box w="100%" h={['calc(100% - 125px)', 'calc(100% - 35px)']}>
             <AdminTableHeader>
-              <AdminTableHeaderElement w={["80%", "calc(100% / 3)"]} label="Compliance items" />
+              <AdminTableHeaderElement w={["80%", "calc(100% / 4)"]} label="Compliance items" />
               {
                 device !== "mobile" && <>
-                  <AdminTableHeaderElement w="calc(100% / 3)" label="Frequency" />
-                  <AdminTableHeaderElement w="calc(100% / 3)" label="Regulatory body" />
+                  <AdminTableHeaderElement w="calc(100% / 4)" label="Frequency" />
+                  <AdminTableHeaderElement w="calc(100% / 4)" label="Regulatory body" />
+                  <Flex w="calc(100% / 4)">
+                    <Spacer />
+                    <Text>Actions</Text>
+                    <ArrowRight ml="10px" stroke="adminTableHeaderElement.stroke" transform="rotate(90deg)" />
+                  </Flex>
                 </>
               }
             </AdminTableHeader>
@@ -130,6 +144,7 @@ const ComplianceItemsAdmin = () => {
                 <Flex
                   key={complianceItem._id}
                   flexShrink={0}
+                  zIndex={4}
                   w='full'
                   h='73px'
                   bg='adminComplianceItems.element.bg'
@@ -141,9 +156,8 @@ const ComplianceItemsAdmin = () => {
                   cursor="pointer"
                   borderBottom="1px solid"
                   borderColor="adminTableHeader.border"
-                  onClick={() => openModal('edit', complianceItem)}
                 >
-                  <Flex fontWeight="semi_medium" w={["80%", "calc(100% / 3)"]} flexDirection="column">
+                  <Flex fontWeight="semi_medium" w={["80%", "calc(100% / 4)"]} flexDirection="column" onClick={() => openModal('edit', complianceItem)}>
                     <Box fontSize="smm">{complianceItem.name || <Text fontStyle='italic' color='adminComplianceItems.element.unnamed'>Unnamed compliance item</Text>}</Box>
                     <Flex alignItems="center">
                       <Box fontSize="11px" color="adminComplianceItems.element.category" lineHeight='25px'>{complianceItem.category?.name}</Box>
@@ -163,10 +177,19 @@ const ComplianceItemsAdmin = () => {
                   </Flex>
                   {
                     device !== "mobile" && <>
-                      <Box w="calc(100% / 3)">{complianceItem.frequency}</Box>
-                      <Box w="calc(100% / 3)">{complianceItem.regulatoryBody?.name}</Box>
+                      <Box w="calc(100% / 4)" onClick={() => openModal('edit', complianceItem)}>{complianceItem.frequency} </Box>
+                      <Box w="calc(100% / 4)" onClick={() => openModal('edit', complianceItem)}>{complianceItem.regulatoryBody?.name}</Box>
                     </>
                   }
+                  <Box w="calc(100% / 4)" textAlign="end" mr="30" zIndex={5}>
+                    <Copy 
+                      fontSize="15px"
+                      stroke="complianceItemsAdminWithContext.stroke"
+                      fill='transparent'
+                      _hover={{ color: 'complianceItemsAdminWithContext.strokeHover', opacity: 0.7, cursor: "pointer" }}
+                      onClick={ ()=> {openModal('clone', complianceItem)} }
+                    />
+                  </Box>
                 </Flex>
               ))}
             </Stack>
@@ -184,3 +207,10 @@ const ComplianceItemsAdminWithContext = (props) => (
 );
 
 export default ComplianceItemsAdminWithContext;
+
+export const complianceItemsAdminWithContextStyles = {
+  complianceItemsAdminWithContext: {
+    stroke: "#282F36",
+    strokeHover: "#FFFFFF"
+  }
+}

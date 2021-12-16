@@ -1,3 +1,4 @@
+import cloneComplianceItem from "./cloneComplianceItem.m";
 import complianceItems from "./complianceItems.q";
 import createComplianceItem from "./createComplianceItem.m";
 import deleteComplianceItem from "./deleteComplianceItem.m";
@@ -11,6 +12,7 @@ const complianceItemsResolvers = {
     createComplianceItem,
     deleteComplianceItem,
     updateComplianceItem,
+    cloneComplianceItem
   },
 };
 
@@ -102,6 +104,7 @@ export const complianceItemsMutationDefs = `
   createComplianceItem(complianceItemInput: ComplianceItemInput!): ComplianceItem!
   updateComplianceItem(complianceItemModifyInput: ComplianceItemModifyInput!): ComplianceItem!
   deleteComplianceItem(_id: String!): Boolean!
+  cloneComplianceItem(complianceId: String!): ComplianceItem!
 `;
 
 export default complianceItemsResolvers;
