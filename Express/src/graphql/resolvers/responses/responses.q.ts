@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
 import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
-import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek } from "date-fns";
+import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, intervalToDuration } from "date-fns";
 import { GraphService } from "app-services";
 
 const responses = async (_, { responsesQuery }, { authorize }, info: any) => {
@@ -201,6 +201,13 @@ const responses = async (_, { responsesQuery }, { authorize }, info: any) => {
     pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
 
     const responses = await Responses.aggregate(pipeline);
+
+    if(shouldJoin(["daysToDueDate"])){
+      for(const response of responses) {
+        response.daysToDueDate = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date()}).days || 0;
+      }
+    }
+    
     return responses;
   } catch (err: any) {
     throw new Error(err);

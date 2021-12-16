@@ -1,5 +1,4 @@
 import wkhtmltoimage from 'wkhtmltoimage';
-
 import getEmailTemplate from './template';
 
 const emailPreview = async (name: string, html: string) => {

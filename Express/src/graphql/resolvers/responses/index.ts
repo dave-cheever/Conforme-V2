@@ -64,6 +64,8 @@ export const responsesTypeDefs = `
     evidence: [ResponseEvidence]
     attachments: [ResponseDocument]
     questions: [ResponseQuestion]
+    daysToDueDate: Int
+    metatags: Metatags
   }
 
   input ResponsesQuery {

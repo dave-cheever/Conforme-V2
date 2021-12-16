@@ -48,11 +48,12 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           <Flex w="full" h="full" px="25px">
             <Flex
               flexDirection="column"
-              mt={["20px", "0px"]}
-              maxH={["calc(100vh - 300px)", "calc(100vh - 200px)"]}
+              minH={["calc(100vh - 200px)","calc(100vh - 200px)"]}
+              maxH={["none", "calc(100vh - 200px)"]}
               w="full"
               h="full"
               pb="25px"
+              pt={["40px","0px"]}
             >
               <Component />
             </Flex>

@@ -13,12 +13,14 @@ const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
     responses(responsesQuery: $responsesQuery) {
       _id
+      lastRenewalDate
       nextRenewalDate
       status
       accountableId
       responsibleId
       contributorsIds
       followersIds
+      daysToDueDate
       evidence {
         name
         uploaded {
@@ -61,6 +63,9 @@ const GET_RESPONSES = gql`
       businessUnit {
         name
         imgUrl
+      }
+      metatags {
+        addedAt
       }
     }
   }

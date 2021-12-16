@@ -1,15 +1,155 @@
-import React from 'react';
-import { Flex, Text } from '@chakra-ui/react';
+import React, { useMemo } from "react";
+import { CircularProgress, Flex, Grid, Text } from "@chakra-ui/react";
+import format from "date-fns/format";
+import intervalToDuration from "date-fns/intervalToDuration"
 
-import DescriptionText from './DescriptionText';
+import DescriptionText from "./DescriptionText";
+import { ArrowDownIcon } from "../../icons";
+import { useResponseContext } from "../../contexts/ResponseProvider";
 
 const Details = () => {
+  const { response } = useResponseContext();
+
+  const progress = useMemo(() => {
+    if (!response.daysToDueDate) {
+      return -1;
+    }
+
+    if (response.lastRenewalDate && response.nextRenewalDate) {
+      const totalDays = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date(response.lastRenewalDate) }).days;
+      if (!totalDays) {
+        return -1;
+      }
+      if (totalDays === response.daysToDueDate) {
+        return 100;
+      }
+      return (((totalDays - response.daysToDueDate) / totalDays) * 100);
+    }
+
+    if (response.metatags?.addedAt && response.nextRenewalDate) {
+      const totalDays = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date(response.metatags.addedAt) }).days;
+      if (!totalDays) {
+        return -1;
+      }
+      if (totalDays === response.daysToDueDate) {
+        return 100;
+      }
+      return (((totalDays - response.daysToDueDate) / totalDays) * 100);
+    }
+
+    return -1;
+  }, [response]);
+
   return (
-    <Flex w="full" h="full" flexDir="column">
-      <Text color="complianceItemResponse.labelColor" fontSize="14px">Description</Text>
+    <Flex w="full" h="full" flexDir="column" overflow={["visible", "auto"]}>
+      <Grid
+        templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]}
+        mb={5}
+        gap={[3, 6]}
+      >
+        <Flex
+          w="full"
+          justify="space-between"
+          h="full"
+          flexDir={["column", "row"]}
+          align="center"
+        >
+          <Flex
+            w="full"
+            bg="responseRenewalDetails.bg"
+            p="10px 20px"
+            mb={[1, 0]}
+            mr={[0, 5]}
+            flexDir="column"
+            borderRadius="10px"
+          >
+            <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+              First completed
+            </Text>
+            <Text fontSize="14px" color="responseRenewalDetails.textColor">
+              {response.lastRenewalDate
+                ? format(new Date(response.lastRenewalDate), "dd MMMM yyyy")
+                : "N/A"}
+            </Text>
+          </Flex>
+          <ArrowDownIcon
+            color="responseRenewalDetails.labelColor"
+            transform={["", "rotate(270deg)"]}
+          />
+        </Flex>
+        <Flex
+          w="full"
+          justify="space-between"
+          h="full"
+          flexDir={["column", "row"]}
+          align="center"
+        >
+          <Flex
+            w="full"
+            bg="responseRenewalDetails.bg"
+            p="10px 20px"
+            mb={[1, 0]}
+            mr={[0, 5]}
+            flexDir="column"
+            borderRadius="10px"
+          >
+            <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+              Last completed
+            </Text>
+            <Text fontSize="14px" color="responseRenewalDetails.textColor">
+              {response.lastRenewalDate
+                ? format(new Date(response.lastRenewalDate), "dd MMMM yyyy")
+                : "N/A"}
+            </Text>
+          </Flex>
+          <ArrowDownIcon
+            color="responseRenewalDetails.labelColor"
+            transform={["", "rotate(270deg)"]}
+          />
+        </Flex>
+        <Flex
+          w="full"
+          bg="responseRenewalDetails.nextRenewalBg"
+          p="10px 20px"
+          borderRadius="10px"
+          justify="space-between"
+          h="full"
+          align="center"
+          position="relative"
+        >
+          {progress >= 0 && <CircularProgress
+            size="28px"
+            value={progress}
+            color={progress <= 10 ? "red" : "responseRenewalDetails.progressColor"}
+          />}
+          <Flex w="full" flexDir="column" ml={3}>
+            <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+              Due for renewal
+            </Text>
+            <Text fontSize="14px" color="responseRenewalDetails.textColor">
+              {response.nextRenewalDate
+                ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy")
+                : "N/A"}
+            </Text>
+          </Flex>
+        </Flex>
+      </Grid>
+      <Text color="responseRenewalDetails.labelColor" fontSize="14px">
+        Description
+      </Text>
       <DescriptionText />
     </Flex>
   );
 };
 
 export default Details;
+
+export const responseRenewalDetailsStyles = {
+  responseRenewalDetails: {
+    labelColor: "#818197",
+    textColor: "#282F36",
+    bg: "#F0F2F5",
+    nextRenewalBg: "rgba(65, 185, 22, 0.1)",
+    progressColor: "#41B916",
+  },
+};

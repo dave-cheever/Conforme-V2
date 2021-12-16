@@ -48,6 +48,7 @@ export const complianceItemResponseStyles = {
     nextButtonColor:"#818197",
     labelColor:"#818197",
     expandButtonText: "#462AC4",
-    labelTextColor: "#1F1F1F"
+    labelTextColor: "#1F1F1F",
+    textColor: "#282F36"
   }
 }

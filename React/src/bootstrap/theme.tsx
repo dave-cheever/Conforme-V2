@@ -47,15 +47,16 @@ import { questionsModalStyles } from "../components/AdminComplianceItemModal/Que
 import { questionMultiChoiceFormStyles } from "../components/Questions/QuestionMultiChoiceForm";
 import { questionSimpleFormStyles } from "../components/Questions/QuestionSimpleForm";
 import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
+import { responseChatRecievedStyles } from "../components/Response/ResponseChatRecieved";
 import { responseChatStyles } from "../components/Response/ResponseChat";
 import { responseChatSentStyles } from "../components/Response/ResponseChatSent";
-import { responseChatRecievedStyles } from "../components/Response/ResponseChatRecieved";
+import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
 import { responseHeaderStyles } from "../components/Response/ResponseHeader/ResponseHeader";
 import { responseHeaderStatusStyles } from "../components/Response/ResponseHeader/ResponseHeaderStatus";
-import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
-import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
+import { responseRenewalDetailsStyles } from "../components/Response/Details";
+import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { responseQuestionsStyles } from "../components/Response/ResponseQuestions";
 import { shareModalStyles } from "../components/ShareModal";
 import { subSectionStyles } from "../components/NavigationLeft/SubSection";
@@ -160,12 +161,13 @@ const getTheme = (organizationTheme?: any) => {
       ...responseChatSentStyles,
       ...responseChatStyles,
       ...responseLeftNavigationStyles,
-      ...responseQuestionsStyles,
-      ...responseTabItemStyles,
+      ...responseHeaderMenuItemStyles,
       ...responseHeaderStyles,
       ...responseHeaderStatusStyles,
-      ...responseHeaderMenuItemStyles,
       ...responseLeftTabItemStyles,
+      ...responseRenewalDetailsStyles,
+      ...responseTabItemStyles,
+      ...responseQuestionsStyles,
       ...shareModalStyles,
       ...settingsTabItemStyles,
       ...subSectionStyles,

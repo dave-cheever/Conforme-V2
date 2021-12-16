@@ -10,7 +10,7 @@ const Attachments = () => {
   const { response } = useResponseContext();
 
   return (
-    <Flex w="full" h="full" overflow="auto" flexDirection={["column", "row"]} align={["center", "flex-start"]}>
+    <Flex w="full" h="full" overflow={["visible","auto"]} flexDirection={["column", "row"]} align={["center", "flex-start"]}>
       <Flex flexDirection="column" mr={[0, 2]} h="full" w="full">
         <Stack spacing={2} align={["center", "flex-start"]} w="full">
           {response?.evidence

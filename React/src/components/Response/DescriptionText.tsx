@@ -24,7 +24,7 @@ const DescriptionText = () => {
   };
 
   return (
-    <Box lineHeight="20px" fontSize="14px" mt="5">
+    <Box lineHeight="20px" color="complianceItemResponse.textColor" fontSize="14px" mt="5">
       {response && response?.complianceItem?.description?.length < 300 ? (
         <Box whiteSpace="break-spaces">{response?.complianceItem?.description}</Box>
       ) : !expandDescription ? (
