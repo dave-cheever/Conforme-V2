@@ -58,7 +58,7 @@ export const useComplianceItemModalContext = () => {
 
 const ComplianceItemModalProvider = (props) => {
   
-  const { data } = useQuery(GET_FORM_DATA);
+  const { data, refetch } = useQuery(GET_FORM_DATA);
   const [savingDialogDetails, setSavingDialogDetails] = useState<IComplianceItemModalDialogDetails>(initialDialogDetails);
 
   const complianceItemModalSections: IComplianceItemModalSection[] = [{
@@ -140,6 +140,7 @@ const ComplianceItemModalProvider = (props) => {
 
   const value = useMemo(() => ({
     control, errors, setValue, trigger, reset,
+    refetch,
     complianceItem,
     categories: data?.categories || [],
     regulatoryBodies: data?.regulatoryBodies || [],

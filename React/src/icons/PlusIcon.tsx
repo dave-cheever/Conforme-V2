@@ -14,7 +14,6 @@ const PlusIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round" />
     </g>
-
   )
 });
 

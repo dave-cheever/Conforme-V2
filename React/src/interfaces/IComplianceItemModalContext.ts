@@ -15,6 +15,7 @@ export interface IComplianceItemModalContext {
   reset: (complianceItem?: Partial<IComplianceItem>, setSection?: number) => void;
 
   complianceItem: Partial<IComplianceItem>;
+  refetch: () => void;
 
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];

@@ -1,5 +1,6 @@
 import { theme } from "@chakra-ui/react";
 import { additionalDetailsStyles } from "../components/AdminComplianceItemModal/AdditionalDetails";
+import { addComplianceItemAttributeStyles } from "../components/AdminComplianceItemModal/AddComplianceItemAttribute";
 import { adminModalStyles } from "../components/Admin/AdminModal";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
@@ -17,6 +18,7 @@ import { complianceItemsSquareStyles } from "../components/ComplianceItem/Compli
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { customRadioButtonStyles } from "../components/CustomRadioButton";
 import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
+import { dropdownStyles } from '../components/Forms/Dropdown';
 import { emailTemplateStyles } from "../components/Settings/EmailTemplate";
 import { emailTemplatesStyles } from "../components/Settings/EmailTemplates";
 import { evidenceStyles } from "../components/Response/Evidence";
@@ -84,7 +86,7 @@ const getTheme = (organizationTheme?: any) => {
     fontSizes: {
       ...theme.fontSizes,
       xs: "10px",
-      ssm:"11px",
+      ssm: "11px",
       sm: "12px",
       smm: "14px",
       md: "16px",
@@ -103,6 +105,7 @@ const getTheme = (organizationTheme?: any) => {
       ...theme.colors,
       ...adminModalStyles,
       ...additionalDetailsStyles,
+      ...addComplianceItemAttributeStyles,
       ...adminModalStyles,
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
@@ -113,13 +116,14 @@ const getTheme = (organizationTheme?: any) => {
       ...businessUnitsStyles,
       ...categoriesStyles,
       ...complianceGroupItemsStyles,
-      ...complianceItemModalStyles, 
+      ...complianceItemModalStyles,
       ...complianceItemResponseStyles,
       ...complianceItemStyles,
       ...complianceItemsSquareStyles,
       ...complianceListItemsStyles,
       ...customRadioButtonStyles,
       ...documentUploadedStyles,
+      ...dropdownStyles,
       ...emailTemplateStyles,
       ...emailTemplatesStyles,
       ...evidenceStyles,
@@ -176,7 +180,7 @@ const getTheme = (organizationTheme?: any) => {
         800: '#150d42',
         900: '#07041c',
       },
-      
+
       auditModal: {
         title: {
           text: "#434B4F",
@@ -476,31 +480,6 @@ const getTheme = (organizationTheme?: any) => {
           },
           error: '#E53E3E',
         },
-        dropdown: {
-          font: '#777777',
-          bg: '#FFFFFF',
-          labelFont: {
-            normal: '#282F36',
-            error: '#E53E3E',
-          },
-          border: {
-            normal: '#CBCCCD',
-            error: '#E53E3E',
-            focus: {
-              normal: '#777777',
-              error: '#E53E3E',
-            },
-          },
-          activeBg: '#EEEEEE',
-          disabled: {
-            font: '#2B3236',
-            border: '#EEEEEE',
-            bg: '#f7f7f7',
-          },
-          placeholder: '#CBCCCD',
-          error: '#E53E3E',
-          tooltip: "#9A9EA1"
-        },
         numberInput: {
           font: '#777777',
           bg: '#FFFFFF',
@@ -574,8 +553,8 @@ const getTheme = (organizationTheme?: any) => {
           error: '#E53E3E',
         },
         switch: {
-          enableColor:"#282F36",
-          disableColor:"#818197",
+          enableColor: "#282F36",
+          disableColor: "#818197",
           color: {
             50: '#ede9ff',
             100: '#c9bff7',
