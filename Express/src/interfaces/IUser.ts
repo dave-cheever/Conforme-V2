@@ -12,6 +12,10 @@ export interface IUser extends IBase {
   organizationsIds?: string[];
   userCreated?: Date;
   lastLogin?: Date;
+  responsibleCount?: number;
+  accountableCount?: number;
+  contributorCount?: number;
+  followerCount?: number;
 }
 
 export interface IGraphUser {

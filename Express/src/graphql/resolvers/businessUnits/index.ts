@@ -22,7 +22,7 @@ type BusinessUnit {
   type: String!
   region: String!
   imgUrl: String
-  ownerId: String!
+  ownerId: String
   owner: User
   complianceItemsResponsesCount: Int
   metatags: Metatags!

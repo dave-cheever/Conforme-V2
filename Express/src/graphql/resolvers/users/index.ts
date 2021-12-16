@@ -31,6 +31,10 @@ export const usersTypeDefs = `
     metatags: Metatags!
     lastLogin: Date
     userCreated: Date
+    responsibleCount: Int
+    accountableCount: Int
+    contributorCount: Int
+    followerCount: Int
   }
   
   type Session {

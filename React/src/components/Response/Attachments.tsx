@@ -1,22 +1,13 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Flex, Stack } from "@chakra-ui/react";
 
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import Attachment from './Attachment';
 import Evidence from './Evidence';
-import DocumentUploaded from './DocumentUploaded';
 import EvidenceHistoryList from "./EvidenceHistoryList"
 
 const Attachments = () => {
   const { response } = useResponseContext();
-
-  const uploadedEvidences = useMemo(() => {
-    return (
-      response?.evidence.filter(
-        ({ outdated, uploaded }) => outdated && uploaded
-      ) || []
-    );
-  }, [response]);
 
   return (
     <Flex w="full" h="full" overflow="auto" flexDirection={["column", "row"]} align={["center", "flex-start"]}>

@@ -12,4 +12,8 @@ export interface IUser extends IBase {
   defaultPage?: string;
   lastLogin: Date;
   userCreated?: Date;
+  responsibleCount?: number;
+  accountableCount?: number;
+  contributorCount?: number;
+  followerCount?: number;
 }
