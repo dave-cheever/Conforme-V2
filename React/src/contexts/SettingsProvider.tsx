@@ -78,7 +78,7 @@ export const useSettingsContext = () => {
 };
 
 const SettingsProvider = (props) => {
-  const { data, loading } = useQuery(GET_SETTINGS_DATA);
+  const { data, loading, refetch } = useQuery(GET_SETTINGS_DATA);
 
   const defaultSettingsValues:object = useMemo(() => {
     let values = {};
@@ -136,6 +136,7 @@ const SettingsProvider = (props) => {
   const value = useMemo(() => ({
     control, errors, setValue, trigger,
     loading,
+    refetch,
     defaultSettings: data?.defaultSettings || [],
     notificationSettings: data?.notificationSettings || [],
     categories: data?.categories || [],

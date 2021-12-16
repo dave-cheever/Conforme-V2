@@ -39,7 +39,6 @@ export {
   getEmailTemplate,
   getEmailSubject,
   MENTION_EMAIL,
-
   
   CORSConfig,
   getProtocol,
@@ -66,5 +65,5 @@ export {
   getProjectFields,
   join,
   roles,
-  mentionParser
+  mentionParser,
 };

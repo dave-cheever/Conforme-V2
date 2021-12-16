@@ -274,7 +274,7 @@ const sendEmail = async ({ emailType, organization,  emailData, from, to }: { em
         subject: getEmailSubject(emailType, emailData),
         body: {
           contentType: 'HTML',
-          content: await getEmailTemplate(emailType, emailData),
+          content: await getEmailTemplate(emailType, emailData, organization),
         },
         toRecipients,
       }

@@ -15,83 +15,87 @@ const UPDATE_SETTINGS = gql`
 `;
 
 const Defaults = () => {
-    const [updateSetting] = useMutation(UPDATE_SETTINGS);
-    const { control, categories, businessUnits,regulatoryBodies, defaultSettings, formValues, dirtyFields, reset } = useSettingsContext();
+  const [updateSetting] = useMutation(UPDATE_SETTINGS);
+  const { control, categories, businessUnits, regulatoryBodies, defaultSettings, formValues, dirtyFields, reset, refetch } = useSettingsContext();
 
-    const businessUnitsOptions = useMemo(() => businessUnits.map(({ _id, name }) => ({ value: _id, label: name })), [businessUnits]);
-    const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
-    const regulatoryBodiesOptions = useMemo(() => regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })), [regulatoryBodies]);  
+  const businessUnitsOptions = useMemo(() => businessUnits.map(({ _id, name }) => ({ value: _id, label: name })), [businessUnits]);
+  const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
+  const regulatoryBodiesOptions = useMemo(() => regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })), [regulatoryBodies]);
 
-    const options = (name) => {
-      switch (name) {
-        case "defaultBusinessUnit":
-          return businessUnitsOptions;
+  const options = (name) => {
+    switch (name) {
+      case "defaultBusinessUnit":
+        return businessUnitsOptions;
 
-        case "defaultRegulatoryBody":
-          return regulatoryBodiesOptions;
+      case "defaultRegulatoryBody":
+        return regulatoryBodiesOptions;
 
-        case "defaultCategory":
-          return categoriesOptions;
-      
-        default:
-          break;
-      }
+      case "defaultCategory":
+        return categoriesOptions;
+
+      default:
+        break;
     }
+  }
 
-    const updateSettings = async({_id, name}) => {
-      const updatedValue = formValues[name] || "";
-      await updateSetting({ variables: { settingsUpdate: { _id, name, value: updatedValue } } });
-      reset(formValues);
-    }
+  const updateSettings = async ({ _id, name }) => {
+    const updatedValue = formValues[name] || "";
+    await updateSetting({ variables: { settingsUpdate: { _id, name, value: updatedValue } } });
+    refetch();
+    reset(formValues);
+  }
 
-    const isModified = (name) => {
-      return dirtyFields[name] || false;
-    };
+  const isModified = (name) => {
+    return dirtyFields[name] || false;
+  };
 
-    const resetValue = ({name, value}) => {
-      reset({
-        ...formValues,
-        [name]: value
-      });
-    }
+  const resetValue = ({ name, value }) => {
+    reset({
+      ...formValues,
+      [name]: value
+    });
+  }
 
-    return (
-    <Stack w='full' spacing={10} h="full" pb={3}>
-        {defaultSettings?.map(({_id, name,label, placeholder, variant, description, inputType, help, value }) => 
+  return (
+    <Stack w='full' spacing={7} h="full" pb={3}>
+      {defaultSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value }) =>
         <Flex align='center' key={name}>
-          <Flex maxW="280px"><Field
-          control={control}
-          name={name}
-          type={inputType}
-          label={label}
-          placeholder={placeholder}
-          variant={variant}
-          options={options(name)}
-          help={help}
-          tooltip={description}
-          value={value}
-        />
-        </Flex>
-        {isModified(name) && <HStack ml={3} spacing={3} mt={7}>
-        <IconButton
-          colorScheme="purpleHeart"
-          variant='outline'
-          aria-label='Confirm Icon'
-          size="sm"
-          icon={<CheckIcon />}
-          onClick={() => updateSettings({_id, name})}
-        />
-        <IconButton
-          colorScheme="red"
-          aria-label='Cross Icon'
-          size="sm"
-          icon={<CloseIcon />}
-          onClick={() => resetValue({name, value})}
-        />
-        </HStack>}
+          <Flex maxW="280px">
+            <Field
+              control={control}
+              name={name}
+              type={inputType}
+              label={label}
+              placeholder={placeholder}
+              variant={variant}
+              options={options(name)}
+              help={help}
+              tooltip={description}
+              value={value}
+            />
+          </Flex>
+          {isModified(name) && (
+            <HStack ml={3} spacing={3} mt={6}>
+              <IconButton
+                colorScheme="purpleHeart"
+                variant='outline'
+                aria-label='Confirm Icon'
+                size="sm"
+                icon={<CheckIcon />}
+                onClick={() => updateSettings({ _id, name })}
+              />
+              <IconButton
+                colorScheme="red"
+                aria-label='Cross Icon'
+                size="sm"
+                icon={<CloseIcon />}
+                onClick={() => resetValue({ name, value })}
+              />
+            </HStack>
+          )}
         </Flex>)}
     </Stack>
-    )
+  )
 }
 
 export default Defaults

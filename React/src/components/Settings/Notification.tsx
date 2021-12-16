@@ -14,7 +14,7 @@ const UPDATE_SETTINGS = gql`
 `;
 
 const Notification = () => {
-  const { control, notificationSettings, dirtyFields, formValues, reset } = useSettingsContext();
+  const { control, notificationSettings, dirtyFields, formValues, reset, refetch } = useSettingsContext();
   const [updateSetting] = useMutation(UPDATE_SETTINGS);
     
   const isModified = (name) => {
@@ -24,6 +24,7 @@ const Notification = () => {
   const updateSettings = async({_id, name}) => {
     const updatedValue = formValues[name];
     await updateSetting({ variables: { settingsUpdate: { _id, name, value: updatedValue } } });
+    refetch();
     reset(formValues);
   }
 

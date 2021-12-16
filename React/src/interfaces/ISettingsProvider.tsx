@@ -19,6 +19,7 @@ export interface ISettingsContext {
 
   dirtyFields: any;
   reset: (setting?: Partial<ISetting>) => void;
+  refetch: () => void;
 
   formValues: any;
   activeTab: number;

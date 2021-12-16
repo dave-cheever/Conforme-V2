@@ -1,5 +1,6 @@
 import getMentionEmail from "./mentionEmail";
 import emailPreview from "./emailPreview";
+import { IOrganization } from "app-interfaces";
 
 export const MENTION_EMAIL = 0;
 
@@ -10,10 +11,10 @@ const getEmailSubject = (emailType: number, emailData) => {
   }
 };
 
-const getEmailTemplate = async (emailType: number, emailData) => {
+const getEmailTemplate = async (emailType: number, emailData, organization: IOrganization) => {
   switch (emailType) {
     case 0:
-      return getMentionEmail(emailData);
+      return getMentionEmail(emailData, organization);
   }
 };
 

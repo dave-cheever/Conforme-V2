@@ -1,6 +1,6 @@
 import { emailPreview } from "app-utils";
 
-const generateThumbnail = async (_, { thumbnailCreate }, { authorize }) => {
+const generateThumbnail = async (_, { thumbnailCreate }, { authorize, organization }) => {
     try {
       const user = await authorize();
   
@@ -11,7 +11,7 @@ const generateThumbnail = async (_, { thumbnailCreate }, { authorize }) => {
       const { _id, html } = thumbnailCreate;
       
       if (html) {
-        await emailPreview(_id, html);
+        await emailPreview({templateId:_id, html, organization});
       }
       return true;
 
