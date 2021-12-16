@@ -7,9 +7,11 @@ import { navigationTabs } from "../../../bootstrap/config";
 import ResponseLeftTabItem from "../ResponseLeftTabItem";
 import ResponseDetail from "./ResponseDetail";
 import { useResponseContext } from "../../../contexts/ResponseProvider";
+import { useAppContext } from "../../../contexts/AppProvider";
 
 const ResponseLeftNavigationTablet = () => {
   const history = useHistory();
+  const { organizationConfig } = useAppContext();
 
   const { response } = useResponseContext();
 
@@ -41,7 +43,7 @@ const ResponseLeftNavigationTablet = () => {
             fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
           >
-            {"G"}
+            {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
         <Flex

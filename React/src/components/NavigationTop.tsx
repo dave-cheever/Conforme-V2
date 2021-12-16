@@ -127,7 +127,7 @@ export const navigationTopStyles = {
     bg: "#E5E5E5",
     inputBg: "#FFFFFF",
     inputIconColor: "#282F36",
-    organizationName: "#FFFFFF",
+    organizationName: "#282F36",
     addButton: "#462AC4",
     avatarBg: "#A2171E",
     searchBarIconFill: "#282F36",

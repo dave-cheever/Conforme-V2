@@ -11,6 +11,7 @@ import { useResponseContext } from "../../../contexts/ResponseProvider";
 import { useFiltersContext } from "../../../contexts/FiltersProvider";
 import { gql, useQuery } from "@apollo/client";
 import { IUser } from "../../../interfaces/IUser";
+import { useAppContext } from "../../../contexts/AppProvider";
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -27,6 +28,8 @@ const GET_USERS_BY_ID = gql`
 const ResponseLeftNavigation = () => {
   const history = useHistory();
   const toast = useToast();
+  const { organizationConfig } = useAppContext();
+
   const {
     showFiltersPanel
   } = useFiltersContext();
@@ -35,7 +38,7 @@ const ResponseLeftNavigation = () => {
   const { data: { usersById: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.responsibleId || [] } } });
 
   const responsible: IUser = responseResponsible && responseResponsible?.length !== 0 && responseResponsible[0];
-  const organizationName = "Gloratio"
+
 
   return (
     <Flex
@@ -51,19 +54,19 @@ const ResponseLeftNavigation = () => {
     >
       <Flex flexDirection="column">
         <Box
-            display="flex"
-            alignItems="center"
-            h="80px"
-            onClick={() => history.push('/')}
-            cursor="pointer"
-          >
+          display="flex"
+          alignItems="center"
+          h="80px"
+          onClick={() => history.push('/')}
+          cursor="pointer"
+        >
           <Text
             w="80px"
             fontWeight="bold"
             fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
           >
-            {showFiltersPanel ? organizationName.charAt(0): organizationName }
+            {showFiltersPanel ? organizationConfig?.name.charAt(0) : organizationConfig?.name}
           </Text>
         </Box>
         <Flex
@@ -172,6 +175,6 @@ export const responseLeftNavigationStyles = {
     building: "#2B3236",
     copy: "#FF9A00",
     avatar: "#462AC4",
-    responseDetailActiveColor:"#F0F0F0"
+    responseDetailActiveColor: "#F0F0F0"
   },
 };
