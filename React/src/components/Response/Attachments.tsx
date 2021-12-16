@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import Attachment from "./Attachment";
-import Evidence from "./Evidence";
-import DocumentUploaded from "./DocumentUploaded";
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import Attachment from './Attachment';
+import Evidence from './Evidence';
+import DocumentUploaded from './DocumentUploaded';
+import EvidenceHistoryList from "./EvidenceHistoryList"
 
 const Attachments = () => {
   const { response } = useResponseContext();
@@ -20,37 +21,14 @@ const Attachments = () => {
   return (
     <Flex w="full" h="full" overflow="auto" flexDirection={["column", "row"]} align={["center", "flex-start"]}>
       <Flex flexDirection="column" mr={[0, 2]} h="full" w="full">
-        <Flex flexDirection="column" align={["center", "flex-start"]} w="full">
+        <Stack spacing={2} align={["center", "flex-start"]} w="full">
           {response?.evidence
             .filter(({ outdated }) => !outdated)
             .map((evidence, i) => (
               <Evidence key={i} evidence={evidence} />
             ))}
-        </Flex>
-        {uploadedEvidences?.length > 0 && (
-          <Flex
-            flexDirection="column"
-            align={["center", "flex-start"]}
-            w="full"
-          >
-            <Flex
-              color="complianceItemResponse.labelTextColor"
-              fontWeight="700"
-              fontSize="12px"
-              my={2}
-            >
-              Uploaded evidence
-            </Flex>
-            {uploadedEvidences.map((evidence, i) => (
-              <DocumentUploaded
-                key={i}
-                document={evidence?.uploaded}
-                isEvidence={true}
-                enableDownload={true}
-              />
-            ))}
-          </Flex>
-        )}
+          <EvidenceHistoryList />
+        </Stack>
       </Flex>
       <Flex ml={[0, 2]} h="full" w="full" justify={["center", "flex-start"]}>
         <Attachment />

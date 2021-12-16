@@ -21,7 +21,7 @@ import { format } from "date-fns";
 import { IDocument } from "../../interfaces/IResponse";
 import Can from "../can";
 import { useResponseContext } from "../../contexts/ResponseProvider";
-import { BlankPage,CrossIcon, DownloadIcon } from "../../icons";
+import { Bin, BlankPage, DownloadIcon } from "../../icons";
 
 
 const GET_DOCUMENT_DETAILS = gql`
@@ -136,12 +136,13 @@ const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false
           yes={() => (
             <IconButton
               aria-label='delete evidence'
-              icon={<DownloadIcon color="documentUploaded.downloadIcon"  />}
+              icon={<DownloadIcon stroke="documentUploaded.downloadIcon"  />}
               onClick={(e) => {
                 e.stopPropagation();
                 window.open(documentDetails?.path)
               }}
               mr={3}
+              bg=""
               display="inline-block"
             />
           )}
@@ -152,12 +153,14 @@ const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false
           yes={() => (
             <IconButton
               aria-label='delete evidence'
-              icon={<CrossIcon color="documentUploaded.crossIcon"  />}
+              _hover={{bg:""}}
+              icon={<Bin stroke="documentUploaded.binIcon"  />}
               onClick={(e) => {
                 e.stopPropagation();
                 handleDeleteOpen();
               }}
               mr={3}
+              bg=""
               display="inline-block"
             />
           )}
@@ -175,6 +178,6 @@ export const documentUploadedStyles ={
     bg: "#F2F2F2",
     thumbnailBg: "#FFFFFF",
     downloadIcon: "#282F36",
-    crossIcon : "#E93C44"
+    binIcon : "black"
   }
 }

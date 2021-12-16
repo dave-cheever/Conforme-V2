@@ -52,7 +52,7 @@ const Attachment = () => {
     return null;
   }
   return (
-    <Flex mt={1}  w= "full" flexDirection="column" fontWeight="700" maxWidth="342px">
+    <Flex  w= "full" flexDirection="column" fontWeight="700" maxWidth="342px">
       <Flex fontSize="12px" mb={2}>
         Other attachments
       </Flex>
@@ -74,7 +74,7 @@ const Attachment = () => {
               <Box {...getRootProps()} w='full' align='center' minH='65px' cursor="pointer" mb={3}>
               <input {...getInputProps()} />
               <Flex 
-                fontSize="14px" justify="space-between" 
+                fontSize="14px" justify="space-between" fontWeight="semi_medium"
                 color="#818197" align="center" 
                 px={5} w="full" h="full" borderRadius="10px" 
                 borderWidth="1px" borderStyle="dashed" borderColor="#D9D9E0"
@@ -95,7 +95,7 @@ const Attachment = () => {
         </Flex>
       )}
 
-      {response.attachments.length > 0 && <Flex fontSize="12px" my={2}>
+      {response.attachments.length > 0 && <Flex fontSize="sm" fontWeight="bold" my={2}>
         Uploaded attachments
       </Flex>}
       

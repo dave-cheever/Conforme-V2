@@ -51,10 +51,10 @@ const EvidenceExpected = ({ evidence }) => {
     return null;
   }
   return (
-    <Flex direction='column' w="full" my={2} maxW="342px">
+    <Flex direction='column' w="full" maxW="342px">
       <Flex align='center'>
         <Box fontWeight='700' mb={2} fontSize="12px" color="evidence.fontColor" width="300px">{evidence.name}
-        <Text color="evidence.requiredColor" ml={2} display="inline-block" fontSize="12px" fontWeight="bold">*</Text>
+          <Text color="evidence.requiredColor" ml={2} display="inline-block" fontSize="12px" fontWeight="bold">*</Text>
         </Box>
       </Flex>
       {evidence.uploaded?.id ?
@@ -74,14 +74,14 @@ const EvidenceExpected = ({ evidence }) => {
                   {({ getRootProps, getInputProps }) => (
                     <Box {...getRootProps()} w='full' align='center' h='65px' cursor="pointer">
                       <input {...getInputProps()} />
-                      <Flex 
-                        fontSize="14px" justify="space-between" 
-                        color="evidence.uploadFontColor" align="center" 
-                        px={5} w="full" h="full" borderRadius="10px" 
+                      <Flex
+                        fontSize="14px" justify="space-between"
+                        color="evidence.uploadFontColor" align="center"
+                        px={5} w="full" h="full" borderRadius="10px"
                         borderWidth="1px" borderStyle="dashed" borderColor="evidence.uploadBorderColor"
                       >
                         <Flex> Drag and drop or <Text ml={1} color="evidence.browseFontColor"> browse</Text></Flex>
-                        <UploadIcon w="21px" h="21px"/>
+                        <UploadIcon w="21px" h="21px" />
                       </Flex>
                     </Box>
                   )}
@@ -106,13 +106,13 @@ export default EvidenceExpected;
 
 
 export const evidenceStyles = {
-  evidence:{
+  evidence: {
     fontColor: "#1F1F1F",
-    requiredColor:"#E93C44",
-    borderColor:"#D9D9E0",
+    requiredColor: "#E93C44",
+    borderColor: "#D9D9E0",
     uploadFontColor: "#818197",
     uploadBorderColor: "#D9D9E0",
     browseFontColor: "#462AC4",
-    uploadBg:"#FFFFFF"
+    uploadBg: "#FFFFFF"
   }
 }
