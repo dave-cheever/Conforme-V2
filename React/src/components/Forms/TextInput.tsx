@@ -27,6 +27,12 @@ const definedValidations: DefinedValidations = {
       return `${label} can be maximum ${validationValue} characters length`;
     }
   },
+  isEmail: (label, validationValue, value) => {
+    const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!value.match(regexEmail)) {
+      return "Invalid Email";
+    }
+  }
 };
 
 const TextInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: ITextInput) => {
@@ -63,7 +69,7 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', varia
               pt='none'
               h="40px"
               type="text"
-              fontSize= "smm"
+              fontSize="smm"
               color="form.textInput.font"
               bg="form.textInput.bg"
               name={name}

@@ -65,6 +65,7 @@ import Move from "./Move";
 import NotificationIcon from "./NotificationIcon";
 import OpenMenuArrow from "./OpenMenuArrow";
 import Pencil from "./Pencil";
+import PlusIcon from "./PlusIcon";
 import Policies from "./Policies";
 import ProgressIcon from "./ProgressIcon";
 import QuestionDateIcon from "./QuestionDateIcon";
@@ -156,6 +157,7 @@ export {
   NotificationIcon,
   OpenMenuArrow,
   Pencil,
+  PlusIcon,
   Policies,
   ProgressIcon,
   QuestionDateIcon,

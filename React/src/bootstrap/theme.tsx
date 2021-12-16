@@ -33,10 +33,13 @@ import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLef
 import { navigationMobileModalStyles } from "../components/AdminComplianceItemModal/NavigationMobileModal";
 import { navigationModalStyles } from "../components/AdminComplianceItemModal/NavigationModal";
 import { navigationTopStyles } from "../components/NavigationTop";
+import { questionEmailFormStyles } from "../components/Questions/QuestionEmailForm";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
 import { questionListElementStyles } from "../components/Questions/QuestionListElement";
 import { questionListStyles } from "../components/Questions/QuestionList";
 import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
+import { questionMultiChoiceFormStyles } from "../components/Questions/QuestionMultiChoiceForm";
+import { questionSimpleFormStyles } from "../components/Questions/QuestionSimpleForm";
 import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
 import { responseChatStyles } from "../components/Response/ResponseChat";
 import { responseChatSentStyles } from "../components/Response/ResponseChatSent";
@@ -133,10 +136,13 @@ const getTheme = (organizationTheme?: any) => {
       ...navigationMobileModalStyles,
       ...navigationModalStyles,
       ...navigationTopStyles,
+      ...questionEmailFormStyles,
       ...questionFormStyles,
       ...questionListElementStyles,
       ...questionListStyles,
       ...questionsModalStyles,
+      ...questionMultiChoiceFormStyles,
+      ...questionSimpleFormStyles,
       ...regulatoryBodiesStyles,
       ...responseChatRecievedStyles,
       ...responseChatSentStyles,

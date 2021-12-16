@@ -31,14 +31,37 @@ const QuestionsForm = () => {
 
   const questionTypes = [{
     value: "text",
-    label: "Single line of text"
+    label: "Text input"
   }, {
     value: "toggle",
     label: "Yes / No answer"
   }, {
     value: "datePicker",
     label: "Date input"
-  }];
+  }, {
+    value: "multipleChoice",
+    label: "Multiple choices"
+  }, 
+  // {
+  //   value: "singleChoice",
+  //   label: "Single choice"
+  // }, 
+  // {
+  //   value: "email",
+  //   label: "Email address"
+  // }, 
+  // {
+  //   value: "phoneNumber",
+  //   label: "Phone number"
+  // }, {
+  //   value: "url",
+  //   label: "URL"
+  // }
+  // {
+  //   value: "numeric",
+  //   label: "Numeric"
+  // }
+];
 
   const addQuestion = (question: IQuestion) => {
     const questions = [...(complianceItem.questions || []), question];
@@ -80,7 +103,7 @@ const QuestionsForm = () => {
       >Add question</Button>} 
       {isQuestionListOpen && 
         <Box w="204px" p="20px 25px" bg="questionsModal.questionsList.bg" rounded="20px">
-          <VStack {...group} alignItems="flex-start" mb="20px">
+          <VStack {...group} alignItems="flex-start" mb="20px" spacing="20px">
             {questionTypes.map(({value, label}) => {
               const radio = getRadioProps({ value });
               return (
@@ -91,7 +114,7 @@ const QuestionsForm = () => {
             })}
           </VStack>
           <Button
-            w="154px"
+            w="154px" 
             h="40px"
             bg='questionsModal.button.bg'
             color='questionsModal.button.color'

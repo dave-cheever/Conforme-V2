@@ -33,13 +33,18 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
     _id: false,
     type: {
       type: String,
-      enum: ['text', 'toggle', 'datePicker'],
+      enum: ['text', 'toggle', 'datePicker', 'multipleChoice'],
     },
     name: String,
     description: String,
     value: Schema.Types.Mixed,
     required: Boolean,
     outdated: Boolean,
+    choices: [{
+      _id: false,
+      label: String,
+      isCorrect: Boolean
+    }]
   }],
   metatags: {
     addedAt: Date,

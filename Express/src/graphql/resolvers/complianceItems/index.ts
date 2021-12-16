@@ -22,6 +22,7 @@ export const complianceItemsTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
+    choices: Choices
   }
 
   type ComplianceItem {
@@ -41,6 +42,16 @@ export const complianceItemsTypeDefs = `
     reference: String
   }
 
+  type Choices {
+    label: String
+    isCorrect:Boolean
+  }
+
+  input ChoicesInput {
+    label: String
+    isCorrect: Boolean
+  }
+
   input QuestionInput {
     type: String!
     name: String!
@@ -48,6 +59,7 @@ export const complianceItemsTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
+    choices: [ChoicesInput]
   }
 
   input ComplianceItemInput {

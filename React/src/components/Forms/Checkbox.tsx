@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Icon, Tooltip, Checkbox as ChakraCheckbox } from '@chakra-ui/react';
 
-import { Controller } from 'react-hook-form';
+import { Controller, useWatch } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
@@ -25,16 +25,20 @@ const definedValidations: DefinedValidations = {
 
 const Checkbox = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, options = [] }: ICheckbox) => {
   const validate = useValidate(label || name, validations, definedValidations);
+  const value = useWatch({
+    control,
+    name
+  })
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
       render={({ field, fieldState, formState }) => {
-        const { onChange, onBlur, value } = field;
+        const { onChange, onBlur } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt='none'>
+          <Box id={name} mt='none'>
             <ChakraCheckbox
               css={{
                 ".chakra-checkbox__control": {
@@ -49,8 +53,8 @@ const Checkbox = ({ control, name, label, placeholder = '', tooltip = '', varian
               py={3}
               isChecked={value}
               isDisabled={disabled}
-              onChange={() => {
-                onChange();
+              onChange={(e) => {
+                onChange(e.target.checked);
                 onBlur();
               }}
             >

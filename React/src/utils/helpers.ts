@@ -15,6 +15,14 @@ export const questionHeader = (questionType) => {
       return 'Yes / No question';
     case 'datePicker':
       return 'Date input';
+    case 'multipleChoice':
+      return 'Multiple choices'
+    case 'singleChoice':
+      return 'Single choices'
+    case 'numeric':
+      return "Numeric";
+    case 'email':
+      return "Require email"
   }
 };
 

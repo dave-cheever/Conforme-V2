@@ -8,7 +8,7 @@ const CustomRadioButton = (props) => {
   const checkbox = getCheckboxProps()
 
   return (
-    <Flex as="label" alignItems="center" cursor="pointer">
+    <Flex as="label" alignItems="center" cursor="pointer" color="customRadioButton.textColor">
       <input {...input} />
       <Flex
         {...checkbox}
@@ -32,7 +32,7 @@ const CustomRadioButton = (props) => {
       >
         {input.checked && <CheckIcon w="12px" h="12px" />}
       </Flex>
-        {props.children}
+      {props.children}
     </Flex>
   );
 };
@@ -43,6 +43,7 @@ export const customRadioButtonStyles = {
   customRadioButton: {
     checkedBg: "#462AC4",
     checkedBorder: "#462AC4",
-    checkedIcon: "white"
+    checkedIcon: "white",
+    textColor:"#818197"
   }
 };

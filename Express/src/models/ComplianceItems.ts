@@ -20,13 +20,18 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
     _id: false,
     type: {
       type: String,
-      enum: ['text', 'toggle', 'datePicker'],
+      enum: ['text', 'toggle', 'datePicker', 'multipleChoice'],
     },
     name: String,
     description: String,
     value: Schema.Types.Mixed,
     required: Boolean,
     outdated: Boolean,
+    choices: [{
+      _id: false,
+      label: String,
+      isCorrect: Boolean
+    }]
   }],
   published: Boolean,
   reference: String,

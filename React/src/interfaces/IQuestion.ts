@@ -5,4 +5,8 @@ export interface IQuestion {
   value?: string | Boolean | Date;
   required?: Boolean;
   outdated?: boolean;
+  choices?: {
+    label: string,
+    isCorrect: boolean
+  }[]
 }
