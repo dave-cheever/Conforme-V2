@@ -31,6 +31,7 @@ import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
 import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
 import { loginPageStyles } from "../pages/login";
+import { logoutPageStyles } from "../pages/logout";
 import { messageInputStyles } from "../components/Response/MessageInput";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
@@ -144,6 +145,7 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelStyles,
       ...headerStyles,
       ...loginPageStyles,
+      ...logoutPageStyles,
       ...messageInputStyles,
       ...navigationBottomMobileStyles,
       ...navigationLeftFiltersStyles,
@@ -331,9 +333,6 @@ const getTheme = (organizationTheme?: any) => {
       },
       chart: {
         labelFontColor: "#2B3236",
-      },
-      loginPage: {
-        bg: "#2B3236",
       },
       loader: {
         color: "#A2171E",

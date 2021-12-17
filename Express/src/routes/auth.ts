@@ -44,7 +44,7 @@ const authRouter = (passport) => {
     if (req.session) {
       req.session.passport = {};
     }
-    res.redirect(`${getProtocol()}${req.session.organization.domain}/login`);
+    res.redirect(`${getProtocol()}${req.session.organization.domain}/logout`);
   });
 
   return router;

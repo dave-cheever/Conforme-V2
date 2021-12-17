@@ -27,6 +27,7 @@ import Help from "../pages/help";
 import FilterLayout from "../layouts/FilterLayout";
 import ResponseLayout from "../layouts/ResponseLayout";
 import Team from "../pages/compliance-item/team";
+import Logout from "../pages/logout";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -35,6 +36,13 @@ const openRoutes: Array<IRoute> = [
     key: "login",
     exact: true,
     component: Login,
+    layout: PureLayout,
+  },
+  {
+    path: "/logout",
+    key: "logout",
+    exact: true,
+    component: Logout,
     layout: PureLayout,
   },
   {

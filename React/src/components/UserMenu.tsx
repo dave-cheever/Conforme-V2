@@ -1,6 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router';
 import { Menu, MenuButton, Avatar, MenuList, Text, useDisclosure } from '@chakra-ui/react';
+import addHours from 'date-fns/addHours';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
@@ -11,12 +12,22 @@ const UserMenu = () => {
     const history = useHistory();
     const {onOpen, onClose, isOpen} = useDisclosure();
 
-    const logout = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
+    const logout = async () => {
+        await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
           credentials: 'include',
           mode: 'no-cors',
         });
+
+        // logOut user is expired after 24 hours
+        const logOutUser = {
+          displayName: user?.displayName,
+          imgUrl: user?.imgUrl,
+          firstName: user?.firstName,
+          expiresAt: addHours(new Date(), 24)
+        }
+        await localStorage.setItem("logOutUser",JSON.stringify(logOutUser));
         setUser(null);
+        history.push("/logout");
     };
 
     const pageRedirect = (page: string) => {
