@@ -48,46 +48,68 @@ const GET_RESPONSES = gql`
 
 const ComplianceItems = () => {
   const { user } = useAppContext();
-  const { filtersValues, setUsedFilters } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setResponsesStatusesCounts } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
   const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
   const device = useDevice();
-  
+
+  useEffect(() => {
+    const responsesStatusesCounts = {
+      nonCompliant: 0,
+      compliant: 0,
+      comingUp: 0,
+    };
+    data?.responses.forEach(response => {
+      const status = getStatus(response);
+      if (status === 'compliant') {
+        responsesStatusesCounts.compliant++;
+      } else {
+        responsesStatusesCounts.nonCompliant++;
+      }
+
+      const renewalStatus = getRenewalStatus(response);
+      if (renewalStatus === 'comingUp') {
+        responsesStatusesCounts.comingUp++;
+      }
+    });
+    setResponsesStatusesCounts(responsesStatusesCounts);
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
     if (savedView && (savedView === "Grid" || savedView === "List" || savedView === "Group")) {
       return savedView;
     }
 
-    if(user?.role === "admin"){
+    if (user?.role === "admin") {
       return "List";
     }
 
     return "Grid";
-  },[user]);
+  }, [user]);
 
   const [viewMode, setViewMode] = useState<"Grid" | "List" | "Group">(initialViewMode);
 
   // use Memo not working for hook, used this for mobile
   useEffect(() => {
-    if(device === "mobile"){
+    if (device === "mobile") {
       setViewMode("Grid");
     }
-  },[device]);
+  }, [device]);
 
   const viewIcon = useMemo(
     () => ({
-      Grid: <GridIcon boxSize="18px"/>,
-      List: <ListIcon boxSize="18px"/>,
+      Grid: <GridIcon boxSize="18px" />,
+      List: <ListIcon boxSize="18px" />,
       Group: <GroupIcon boxSize="18px" />,
     }),
     []
   );
 
   useEffect(() => {
-    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'businessUnitsIds',  'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
+    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter responses (server side)
@@ -204,11 +226,11 @@ const ComplianceItems = () => {
           </MenuList>
         </Menu>}
       </Header>
-      <Flex h={["calc(100vh - 210px)" , "calc(100vh - 150px)"]} overflow='auto'>
+      <Flex h={["calc(100vh - 210px)", "calc(100vh - 150px)"]} overflow='auto'>
         {error ? <Text>{error.message}</Text> : loading ? <Loader center={true} /> :
           <>
             {viewMode === "Grid" &&
-              <Grid templateColumns={["repeat(1, 1fr)","repeat(2, 1fr)","repeat(3, 1fr)"]} h="fit-content" gap={6} w='full' pb={[0,8]} px={[4,8]}>
+              <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]} h="fit-content" gap={6} w='full' pb={[0, 8]} px={[4, 8]}>
                 {filteredResponses.length > 0
                   ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                   : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>
@@ -231,8 +253,8 @@ export const complianceItemStyles = {
       menuButtonBg: "white",
       rightIcon: "#9A9EA1",
       menuItemFocus: "#462AC4",
-      menuItemFontSelected: "#462AC4", 
-      menuItemFont:"#9A9EA1"
+      menuItemFontSelected: "#462AC4",
+      menuItemFont: "#9A9EA1"
     },
   },
 };

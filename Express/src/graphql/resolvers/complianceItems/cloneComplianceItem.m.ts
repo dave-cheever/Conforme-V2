@@ -26,9 +26,9 @@ const cloneComplianceItem = async (_, { _id: clonedId }, { authorize }) => {
     };
   
     const complianceItemReturn = await ComplianceItems.create(newComplianceItem);
-  
+
     // @ts-ignore
-    complianceItemReturn.syncResponses({
+    complianceItemReturn.customSynchronizeResponses({
      userId: user._id,
     });
 

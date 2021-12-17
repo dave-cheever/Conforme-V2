@@ -42,7 +42,7 @@ const ComplianceItemModal = ({ refetch }) => {
   }, [])
 
   const { Component } = selectedSection;
-  
+
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
   const isActionRequiredToComplete = useMemo(() => (complianceItem.evidenceItems || []).length > 0 ||
     (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length > 0, [complianceItem]);
@@ -124,7 +124,7 @@ const ComplianceItemModal = ({ refetch }) => {
             </Flex>
             <Flex alignItems="center">
               <Button
-                leftIcon={<Icon as={Save} stroke="complianceItemModal.saveButton.icon"/>}
+                leftIcon={<Icon as={Save} stroke="complianceItemModal.saveButton.icon" />}
                 w="93px"
                 h="40px"
                 mr="26px"
@@ -141,8 +141,8 @@ const ComplianceItemModal = ({ refetch }) => {
         </ModalHeader>
         <ModalBody h="calc(100% - 175px)" p="0">
           <Flex height="100%" flexDir={["column", "row"]}>
-            {device !== "mobile" && <NavigationModal />}  
-            {device === "mobile" && <NavigationMobileModal />}  
+            {device !== "mobile" && <NavigationModal />}
+            {device === "mobile" && <NavigationMobileModal />}
             <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h="calc(100vh - 120px)" rounded="20px" justifyContent="space-between">
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
@@ -150,14 +150,14 @@ const ComplianceItemModal = ({ refetch }) => {
               <Button
                 w={selectedSection.name === 'Summary' ? "full" : "109px"}
                 h="40px"
-                rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)"/>}
+                rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
                 bg="complianceItemModal.tabs.bottomButton.bg"
                 color="complianceItemModal.tabs.bottomButton.color"
                 fontSize="smm"
                 fontWeight="700"
                 _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
                 rounded="10px"
-                onClick={() => { 
+                onClick={() => {
                   trigger(Object.keys(selectedSection.fields || []) as any);
                   handlePrimaryButtonClick()
                 }}

@@ -22,12 +22,12 @@ const UPDATE_COMPLIANCE_ITEM = gql`
   }
 `;
 const DELETE_COMPLIANCE_ITEM = gql`
-  mutation ($_id: String!) {
+  mutation ($_id: ID!) {
     deleteComplianceItem(_id: $_id)
   }
 `;
 const CLONE_COMPLIANCE_ITEM = gql`
-  mutation ($_id: String!) {
+  mutation ($_id: ID!) {
     cloneComplianceItem(_id: $_id) {
       _id
     }

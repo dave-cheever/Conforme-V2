@@ -58,6 +58,7 @@ const FiltersProvider = (props: any) => {
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(null);
+  const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{ [statusName: string]: number }>({});
   const numberOfSelectedFilters = Object.values(filtersValues).filter(({ value }) => value && value.length > 0).length;
 
   const setFilters = (filters = {}) => {
@@ -85,6 +86,7 @@ const FiltersProvider = (props: any) => {
     setFilters, cleanFilters,
     showFiltersPanel, setShowFiltersPanel,
     openedFilterPanel, setOpenedFilterPanel,
+    responsesStatusesCounts, setResponsesStatusesCounts,
     numberOfSelectedFilters,
     complianceItems: data?.complianceItems,
     categories: data?.categories,
@@ -96,6 +98,7 @@ const FiltersProvider = (props: any) => {
     usedFilters,
     showFiltersPanel,
     openedFilterPanel,
+    responsesStatusesCounts,
     numberOfSelectedFilters,
     data,
   ]);

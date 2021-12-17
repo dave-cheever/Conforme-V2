@@ -39,11 +39,11 @@ userSchema.statics.customFindById = async function (userId: string): Promise<IUs
 }
 
 
-userSchema.statics.customCreate = async function (user: IUser, userId: string, organization: IOrganization): Promise<IUser> {
+userSchema.statics.customCreate = async function (user: IUser, userId: string, organizationId: string): Promise<IUser> {
   const newUser = await this.create({
     ...user,
     defaultPage: "/",
-    organizationsIds: [organization._id],
+    organizationsIds: [organizationId],
     userCreated: Date.now(),
   });
   return newUser;

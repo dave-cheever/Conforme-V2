@@ -12,10 +12,10 @@ const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
   const history = useHistory();
   const { url, icon, label } = menuItem;
   const [ menuOpen, setMenuOpen ] = useState(true);
-  const filtersCount = {compliant: 0, nonCompliant: 2, comingUp: 2};
 
   const {
-    showFiltersPanel
+    showFiltersPanel,
+    responsesStatusesCounts,
   } = useFiltersContext();
 
   return (
@@ -103,9 +103,9 @@ const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
         }
         {history.location.pathname === "/" && history.location.pathname === url  && !showFiltersPanel && 
           <>
-            {Object.keys(filtersCount).length !== 0 && 
-              <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} />}
-            {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} />)}
+            {Object.keys(responsesStatusesCounts).length !== 0 && 
+              <NavigationLeftFilters filter={["all", responsesStatusesCounts["compliant"] + responsesStatusesCounts["nonCompliant"]]} menuOpen={menuOpen} />}
+            {Object.entries(responsesStatusesCounts).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} />)}
           </>
         }
       </Box>

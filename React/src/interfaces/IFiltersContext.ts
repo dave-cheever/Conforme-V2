@@ -21,6 +21,9 @@ export interface IFiltersContext {
   
   openedFilterPanel: string | null;
   setOpenedFilterPanel: Dispatch<SetStateAction<string | null>>;
+  
+  responsesStatusesCounts: { [statusName: string]: number };
+  setResponsesStatusesCounts: Dispatch<SetStateAction<{ [statusName: string]: number }>>;
 
   numberOfSelectedFilters: number;
 

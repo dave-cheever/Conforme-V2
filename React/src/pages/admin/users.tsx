@@ -1,9 +1,9 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { 
-  Avatar, 
+import {
+  Avatar,
   Box,
-  Flex,  
-  Select,  
+  Flex,
+  Select,
   Text
 } from "@chakra-ui/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
@@ -14,7 +14,7 @@ import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElem
 import Header from "../../components/Header";
 import Loader from "../../components/Loader";
 import useDevice from "../../hooks/useDevice";
-import {  ArrowDownIcon } from "../../icons";
+import { ArrowDownIcon } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
 
 const GET_USERS = gql`
@@ -48,26 +48,26 @@ const UPDATE_USER = gql`
 
 const Users = () => {
   const device = useDevice();
-  const {data, loading, refetch} = useQuery(GET_USERS);
+  const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
 
-  const onHomePageChange = async(e, userId) => {
-    await updateFunction({variables: { values: { _id: userId, defaultPage: e.target.value } }});
+  const onHomePageChange = async (e, userId) => {
+    await updateFunction({ variables: { values: { _id: userId, defaultPage: e.target.value } } });
     refetch();
   }
-  
+
   const renderUserRow = (user: IUser, i: number) => (
-    <Flex 
-      key={user._id} 
-      w='full' 
-      h='73px' 
+    <Flex
+      key={user._id}
+      w='full'
+      h='73px'
       flexShrink={0}
-      bg='#FFFFFF' 
+      bg='#FFFFFF'
       px="25px"
-      mb="1px" 
+      mb="1px"
       fontSize="smm"
-      alignItems='center' 
-      borderBottomRadius={(i === data?.users.length - 1) ? [0, 'lg'] : ''} 
+      alignItems='center'
+      borderBottomRadius={(i === data?.users.length - 1) ? [0, 'lg'] : ''}
       boxShadow="sm"
     >
       <Flex w={["80%", "16%"]} >
@@ -80,27 +80,27 @@ const Users = () => {
           mr={3}
         />
         <Text lineHeight="32px" textOverflow="ellipsis" noOfLines={1} pr={3}>
-        {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
+          {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
         </Text>
       </Flex>
       {
         device !== "mobile" && <>
-        <Box w='16%'>{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
-        <Box w='16%'>
-          {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
-        </Box>
-        <Flex w="16%" flexDir="column">
-          <Select fontSize='smm'
-            onChange={(e) => onHomePageChange(e, user?._id)} 
-            variant='unstyled' 
-            placeholder='select page' 
-            value={user.defaultPage} 
-            w="fit-content" 
-            icon={<ArrowDownIcon ml={3}/>}
+          <Box w='16%'>{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
+          <Box w='16%'>
+            {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
+          </Box>
+          <Flex w="16%" flexDir="column">
+            <Select fontSize='smm'
+              onChange={(e) => onHomePageChange(e, user?._id)}
+              variant='unstyled'
+              placeholder='select page'
+              value={user.defaultPage}
+              w="fit-content"
+              icon={<ArrowDownIcon ml={3} />}
             >
-            {defaultPages.map((page) => <option key={page.url} value={page.url}>{page.name}</option>)}
-          </Select>
-        </Flex>
+              {defaultPages.map((page) => <option key={page.url} value={page.url}>{page.name}</option>)}
+            </Select>
+          </Flex>
         </>
       }
       <Flex w="20%" h="100%">
@@ -110,7 +110,7 @@ const Users = () => {
         <Flex w="calc(25% - 1px)" alignItems="center" justifyContent="center" h="calc(100% - 1px)" mt="1px" mr="1px" bg="#F0F2F5">{user.followerCount || 0}</Flex>
       </Flex>
       <Flex w="calc(16% - 20px)" ml="20px" align='center'>
-        {formatDistanceToNow(new Date(user?.lastLogin),{ addSuffix: true })}
+        {formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })}
       </Flex>
     </Flex>
   );
@@ -139,7 +139,7 @@ const Users = () => {
             <AdminTableHeaderElement w="calc(16% - 20px)" ml="20px" label="Last login" />
           </AdminTableHeader>
           <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="10px" overflow="auto">
-            {loading? <Loader center={true}/>:data?.users?.map((user, i) => renderUserRow(user, i))}
+            {loading ? <Loader center={true} /> : data?.users?.map((user, i) => renderUserRow(user, i))}
           </Flex>
         </Box>
       </Flex>
