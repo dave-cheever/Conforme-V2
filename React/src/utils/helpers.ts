@@ -38,3 +38,40 @@ export const responsePermissionByFilterType = (filterType) => {
       return "follower";
   }
 };
+
+export const generateLabelColor = (i, errors, complianceItem, visitedTab, selectedSectionIndex) => {
+  switch (i) {
+    case 0:
+      if(Object.keys(errors).length !== 0) {
+        return "navigationModal.section.error.bg"
+      }
+      break;
+    case 1:
+      if (complianceItem?.businessUnitsIds?.length === 0 && visitedTab > i) {
+        return "navigationModal.section.error.bg"
+      } 
+      break;
+    case 2:
+      if (complianceItem.evidenceItems?.length === 0 
+          && complianceItem.questions?.filter(({ required, outdated }) => required 
+          && !outdated)?.length === 0 
+          && visitedTab > i) {
+        return "navigationModal.section.error.bg"
+      }
+      break;
+    case 3:
+      if (complianceItem.evidenceItems?.length === 0 
+          && complianceItem.questions?.filter(({ required, outdated }) => required 
+          && !outdated)?.length === 0 
+          && visitedTab >= i) {
+        return "navigationModal.section.error.bg"
+      }
+      break;
+  }
+
+  if(i === selectedSectionIndex) {
+    return "navigationModal.section.selected.bg" 
+  } else {
+    return "navigationModal.section.unselected.bg"
+  }
+}

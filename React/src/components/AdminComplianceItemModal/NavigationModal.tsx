@@ -1,22 +1,45 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Flex, Text } from '@chakra-ui/react';
+
+import { generateLabelColor } from '../../utils/helpers';
+import { ErrorSign } from '../../icons';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 
 const NavigationModal = () => {
   const {
-    complianceItemModalSections, selectedSectionIndex, selectSection,
+    complianceItem, 
+    complianceItemModalSections, 
+    errors, 
+    selectedSectionIndex, 
+    visitedTab, 
+    selectSection, 
+    setVisitedTab, 
+    trigger
   } = useComplianceItemModalContext();
+
+  useEffect(() => {
+    if(selectedSectionIndex > visitedTab) {
+      setVisitedTab(selectedSectionIndex);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSectionIndex]);
+
   return (
     <Flex flexDir="column" w="185px">
       {complianceItemModalSections.map((el, i) => el.name !== "Summary" && 
-      <Flex key={el.name} mb="15px" alignItems="center" cursor="pointer" onClick={() => selectSection(i)}>
+      <Flex 
+        key={el.name} 
+        mb="15px" 
+        alignItems="center" 
+        cursor="pointer" 
+        onClick={() => {
+          trigger(Object.keys(complianceItemModalSections[selectedSectionIndex].fields || []) as any);
+          selectSection(i)}}
+      >
         <Flex 
           w="37px" 
           h="28px" 
-          bg={i === selectedSectionIndex 
-            ? "navigationModal.section.selected.bg" 
-            : "navigationModal.section.unselected.bg" 
-          }
+          bg={generateLabelColor(i, errors, complianceItem, visitedTab, selectedSectionIndex)}
           color={i === selectedSectionIndex 
             ? "navigationModal.section.selected.color" 
             : "navigationModal.section.unselected.color" 
@@ -29,7 +52,10 @@ const NavigationModal = () => {
           alignItems="center" 
           justifyContent="center"
         >
-          {i+1}
+          {generateLabelColor(i, errors, complianceItem, visitedTab, selectedSectionIndex) === "navigationModal.section.error.bg" 
+            ? <ErrorSign w="16px" h="14px" stroke="white" /> 
+            : i + 1 
+          }
         </Flex>
         <Text fontSize="smm" color="navigationModal.section.label" fontWeight={i === selectedSectionIndex ? "bold" : "semi_medium" }>
           {el.name}
@@ -53,6 +79,9 @@ export const navigationModalStyles = {
       unselected: {
         bg: "#F0F2F5",
         color: "#818197"
+      },
+      error: {
+        bg: "#E93C44"
       }
     },
   }

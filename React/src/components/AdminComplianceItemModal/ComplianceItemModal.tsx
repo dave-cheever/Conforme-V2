@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   ModalContent,
   ModalHeader,
@@ -29,11 +29,17 @@ const ComplianceItemModal = ({ refetch }) => {
     errors, trigger,
     savingDialogDetails, setSavingDialogDetails,
     selectedSection, selectedSectionIndex, selectSection,
+    setVisitedTab
   } = useComplianceItemModalContext();
   const {
     saveComplianceItem,
     closeModal,
   } = useComplianceItemModal(refetch);
+
+  useEffect(() => {
+    setVisitedTab(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { Component } = selectedSection;
   

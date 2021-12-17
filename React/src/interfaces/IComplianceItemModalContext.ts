@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
-import { IComplianceItemModalSection } from "../contexts/ComplianceItemModalProvider";
 
 import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IComplianceItem } from "./IComplianceItem";
 import { IComplianceItemModalDialogDetails } from "./IComplianceItemModalDialogDetails";
+import { IComplianceItemModalSection } from "../contexts/ComplianceItemModalProvider";
 
 export interface IComplianceItemModalContext {
   control: Control<IComplianceItem>;
@@ -16,6 +16,9 @@ export interface IComplianceItemModalContext {
 
   complianceItem: Partial<IComplianceItem>;
   refetch: () => void;
+
+  visitedTab: number;
+  setVisitedTab: (visitedTab: number) => void;
 
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];

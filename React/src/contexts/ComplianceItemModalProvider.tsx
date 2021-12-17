@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 
@@ -60,6 +60,7 @@ const ComplianceItemModalProvider = (props) => {
   
   const { data, refetch } = useQuery(GET_FORM_DATA);
   const [savingDialogDetails, setSavingDialogDetails] = useState<IComplianceItemModalDialogDetails>(initialDialogDetails);
+  const [visitedTab, setVisitedTab] = useState<number>(0);
 
   const complianceItemModalSections: IComplianceItemModalSection[] = [{
     name: 'General',
@@ -147,12 +148,14 @@ const ComplianceItemModalProvider = (props) => {
     businessUnits: data?.businessUnits || [],
     complianceItemModalSections, selectedSection, selectedSectionIndex, selectSection,
     savingDialogDetails, setSavingDialogDetails,
+    visitedTab, setVisitedTab
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     control, errors,
     complianceItem,
     data,
     selectedSection, selectedSectionIndex,
     savingDialogDetails,
+    visitedTab,
   ]);
 
   return (
