@@ -24,19 +24,19 @@ CategorySchema.statics.customFindById = async function (_id: string): Promise<IB
   const category = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },
-  });
+  }).lean();
   if (!category) {
     throw new Error("Category not found");
   }
-  return category._doc;
+  return category;
 };
 
 CategorySchema.statics.customFind = async function (selector: any = {}): Promise<IBaseWithName[]> {
   const categories = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
-  });
-  return categories.map((category) => category._doc);
+  }).lean();
+  return categories;
 };
 
 CategorySchema.statics.customUpdateOne = async function (selector: any = {}, updatedObject: IBaseWithName, userId: string): Promise<number> {

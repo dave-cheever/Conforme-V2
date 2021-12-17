@@ -25,10 +25,11 @@ const filesRouter = () => {
           return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Please pass response id, document name and type' });
         }
 
-        const response = await Responses.customFindById(responseId);
-        if (!response) {
+        const responseDocument = await Responses.findById(responseId);
+        if (!responseDocument?._doc) {
           return res.status(StatusCodes.NOT_FOUND).json({ message: 'Response doesn\'t exist' });
         }
+        const response = responseDocument._doc;
         const complianceItem = await ComplianceItems.customFindById(response.complianceItemId);
         const businessUnit = await BusinessUnits.customFindById(response.businessUnitId);
         if (!businessUnit || !complianceItem || !complianceItem.published) {
@@ -81,7 +82,10 @@ const filesRouter = () => {
           }));
         }
 
-        await Responses.updateOne({ _id: responseId }, updatedResponse);
+        responseDocument.overwrite(updatedResponse);
+        await responseDocument.save();
+        // @ts-ignore
+        await responseDocument.customRecalculateResponse();
 
         return res.status(StatusCodes.OK).end('Files saved');
       } catch (err: any) {
@@ -103,11 +107,11 @@ const filesRouter = () => {
           return res.status(StatusCodes.FORBIDDEN).json({ message: 'Session is not valid' });
         }
 
-        if(!req.params.userId) {
+        if (!req.params.userId) {
           return res.status(StatusCodes.OK).end();
         }
 
-        const photo = await GraphService.getUserPhoto({userId:req.params.userId, organization:req.session.organization});
+        const photo = await GraphService.getUserPhoto({ userId: req.params.userId, organization: req.session.organization });
         if (!photo) {
           return res.status(StatusCodes.OK).end();
         }
@@ -118,7 +122,7 @@ const filesRouter = () => {
           .set('Content-Length', buffer.length.toString())
           .end(buffer);
 
-      } catch (err:any) {
+      } catch (err: any) {
         logger.error(err.message, err);
         return res.status(StatusCodes.BAD_REQUEST).json({
           error: err.message,

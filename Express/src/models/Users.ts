@@ -26,27 +26,27 @@ userSchema.statics.customFind = async function ({ organization }): Promise<IUser
   const users = await this.find({
     "organizationsIds": { $in: [organization._id] },
     "metatags.removedAt": { $eq: null },
-  });
-  return users.map((user) => user._doc);
+  }).lean();
+  return users;
 };
 
 userSchema.statics.customFindById = async function (userId: string): Promise<IUser> {
-  const user = await this.findById(userId);
+  const user = await this.findById(userId).lean();
   if (!user) {
     throw new Error('User not found');
   }
-  return user._doc;
+  return user;
 }
 
 
-userSchema.statics.customCreate = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
-  const user = await this.create({
-    _id: userId,
+userSchema.statics.customCreate = async function (user: IUser, userId: string, organization: IOrganization): Promise<IUser> {
+  const newUser = await this.create({
+    ...user,
     defaultPage: "/",
     organizationsIds: [organization._id],
     userCreated: Date.now(),
   });
-  return user;
+  return newUser;
 }
 
 // This method includes user details from MS Graph

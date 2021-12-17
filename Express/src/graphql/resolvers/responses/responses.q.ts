@@ -145,7 +145,7 @@ const responses = async (_, { responsesQuery }, { authorize }, info: any) => {
     if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
       pipeline.push({
         $match: {
-          'complianceItem.published': true,
+          'published': true,
         },
       });
     }

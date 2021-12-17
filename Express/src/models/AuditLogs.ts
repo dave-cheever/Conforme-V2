@@ -37,8 +37,8 @@ AuditLogSchema.statics.customFind = async function (selector: any = {}): Promise
   const auditLogs = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
-  });
-  return auditLogs.map((auditLog) => auditLog._doc);
+  }).lean();
+  return auditLogs;
 };
 
 const auditLogModel = model<IAuditLog, IAuditLogModel>("AuditLog", AuditLogSchema, "auditLogs");

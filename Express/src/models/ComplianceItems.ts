@@ -6,7 +6,7 @@ import { IComplianceItem, IComplianceItemModel, IResponse } from 'app-interfaces
 import { BusinessUnits, Responses } from 'app-models';
 import { genMetatags } from 'app-utils';
 
-const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
+const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   _id: String,
   name: String,
   description: String,
@@ -20,7 +20,7 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
     _id: false,
     type: {
       type: String,
-      enum: ['text', 'toggle', 'datePicker', 'multipleChoice'],
+      enum: ['text', 'switch', 'datepicker', 'multipleChoice'],
     },
     name: String,
     description: String,
@@ -47,25 +47,25 @@ const ComplianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-ComplianceItemSchema.statics.customFindById = async function (_id: string): Promise<IComplianceItem> {
-  const complianceItem = await this.customFindById(_id);
+complianceItemSchema.statics.customFindById = async function (_id: string): Promise<IComplianceItem> {
+  const complianceItem = await this.findById(_id).lean();
   if (!complianceItem) {
     throw new Error('ComplianceItem not found');
   }
-  return complianceItem._doc;
+  return complianceItem;
 };
 
-ComplianceItemSchema.statics.customFind = async function (selector: any = {}): Promise<IComplianceItem[]> {
+complianceItemSchema.statics.customFind = async function (selector: any = {}): Promise<IComplianceItem[]> {
   const complianceItems = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
-  });
-  return complianceItems.map((complianceItem) => complianceItem._doc);
+  }).lean();
+  return complianceItems;
 };
 
-ComplianceItemSchema.statics.customGenerateReference = async function (): Promise<string> {
+complianceItemSchema.statics.customGenerateReference = async function (): Promise<string> {
   let reference = "0000001";
-  const lastComplianceItem = await this.findOne({}).sort({ 'metatags.addedAt': -1 });
+  const lastComplianceItem = await this.findOne({}).sort({ 'metatags.addedAt': -1 }).lean();
   if (lastComplianceItem) {
     const newReference = parseInt(lastComplianceItem.reference) + 1;
     reference = ('000000' + newReference).slice(-7);
@@ -73,7 +73,7 @@ ComplianceItemSchema.statics.customGenerateReference = async function (): Promis
   return reference;
 };
 
-ComplianceItemSchema.methods.customSynchronizeResponses = async function ({
+complianceItemSchema.methods.customSynchronizeResponses = async function ({
   userId,
   prevDueDate,
 }: {
@@ -85,12 +85,12 @@ ComplianceItemSchema.methods.customSynchronizeResponses = async function ({
 
   for (const response of responses) {
     const index = unprocessedBusinessUnitsIds.findIndex(_id => _id === response.businessUnitId);
-    // let isPublished = this.published;
+    let isPublished = this.published;
 
     if (index === -1) {
       // If BU of Response is not selected in CI
       // Do not publish it
-      // isPublished = false;
+      isPublished = false;
     } else {
       // If BU of Response is selected in CI
       // Set its publish state to same as CI - published or not published
@@ -98,8 +98,8 @@ ComplianceItemSchema.methods.customSynchronizeResponses = async function ({
       unprocessedBusinessUnitsIds.splice(index, 1);
     }
 
-    const updatedResponse: Pick<IResponse, 'evidence' | 'questions' | 'status' | 'nextRenewalDate'> = {
-      // published: isPublished,
+    const updatedResponse: Pick<IResponse, 'published' | 'evidence' | 'questions' | 'status' | 'nextRenewalDate'> = {
+      published: isPublished,
       evidence: [...response.evidence.filter(({ outdated }) => outdated)], // add all past evidence
       questions: [...response.questions.filter(({ outdated }) => outdated)], // add all past questions
       status: response.status,
@@ -193,7 +193,7 @@ ComplianceItemSchema.methods.customSynchronizeResponses = async function ({
   // Create selected that doesn't exist
   for (const businessUnitId of unprocessedBusinessUnitsIds) {
     const businessUnit = await BusinessUnits.customFindById(businessUnitId);
-    
+
     await Responses.create({
       _id: uuidv4(),
       complianceItemId: this._id,
@@ -214,5 +214,5 @@ ComplianceItemSchema.methods.customSynchronizeResponses = async function ({
   }
 };
 
-const complianceItemModel = model<IComplianceItem, IComplianceItemModel>('ComplianceItem', ComplianceItemSchema, 'complianceItems');
+const complianceItemModel = model<IComplianceItem, IComplianceItemModel>('ComplianceItem', complianceItemSchema, 'complianceItems');
 export default complianceItemModel;

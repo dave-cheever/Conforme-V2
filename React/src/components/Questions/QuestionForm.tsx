@@ -7,7 +7,7 @@ import QuestionEmailForm from './QuestionEmailForm';
 const QuestionForm = ({ setShowQuestionForm, questionType, addQuestion }) => {
    return (
     <Flex bg="questionForm.bg" maxH="calc(100% - 100px)" rounded="10px" p="20px 25px" flexDirection="column" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
-      {(questionType === 'text' || questionType === 'toggle' || questionType === 'datePicker')&& (
+      {(questionType === 'text' || questionType === 'switch' || questionType === 'datepicker')&& (
         <QuestionSimpleForm
           questionType={questionType}
           addQuestion={addQuestion}

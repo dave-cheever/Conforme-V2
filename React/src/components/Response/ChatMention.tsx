@@ -15,8 +15,6 @@ const ChatMention = ({ tag }) => {
       const userId = tag.split("@@@(")[1].split(")[")[1].slice(0, -1);
       setUserId(userId);
       const userName = getUpdatedDisplayName(userId);
-      console.log('userName', userName);
-      
       setUserName(userName);
     } catch (e) { }
   }, [getUpdatedDisplayName, tag]);

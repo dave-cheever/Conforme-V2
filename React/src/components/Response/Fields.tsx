@@ -1,23 +1,22 @@
-import Datepicker from "../Forms/Datepicker";
-import TextInput from "../Forms/TextInput";
-import Toggle from "./Toggle";
-
+import { Datepicker, Switch, TextConfirmInput } from "../Forms";
 
 interface IProps {
   name: string,
-  control: object,
   placeholder: string | undefined,
-  disabled: boolean,
+  control: object,
+  disabled?: boolean,
+  required?: boolean,
   label: string,
   defaultvalue?: string,
   styles?:object
 }
-interface IFileds {
+interface IFields {
   type: string,
   name: string,
   control: object,
   placeholder: string | undefined,
-  disabled: boolean,
+  disabled?: boolean,
+  required?: boolean,
   label: string
   defaultvalue?: string
   styles?:object
@@ -30,31 +29,33 @@ const Fields = ({
   control,
   placeholder,
   disabled,
+  required,
   defaultvalue,
   styles
-}: IFileds) => {
+}: IFields) => {
   const props: IProps = {
     name,
     control,
     placeholder,
     disabled,
+    required,
     label,
     defaultvalue,
     styles
-  }
+  };
   switch (type) {
     case 'text': {
-      return <TextInput  {...props} />
+      return <TextConfirmInput  {...props} />;
     }
-    case 'datePicker': {
+    case 'datepicker': {
       return <Datepicker {...props} />;
     }
-    case 'toggle': {
-      return <Toggle {...props} />;
+    case 'switch': {
+      return <Switch {...props} />;
     }
     default:
       return <div>Field not supported</div>;
   }
-}
+};
 
-export default Fields
+export default Fields;

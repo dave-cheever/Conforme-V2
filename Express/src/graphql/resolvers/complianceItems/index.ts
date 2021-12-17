@@ -103,8 +103,8 @@ export const complianceItemsQueryDefs = `
 export const complianceItemsMutationDefs = `
   createComplianceItem(complianceItemInput: ComplianceItemInput!): ComplianceItem!
   updateComplianceItem(complianceItemModifyInput: ComplianceItemModifyInput!): ComplianceItem!
-  deleteComplianceItem(_id: String!): Boolean!
-  cloneComplianceItem(complianceId: String!): ComplianceItem!
+  deleteComplianceItem(_id: ID!): Boolean!
+  cloneComplianceItem(_id: ID!): ComplianceItem!
 `;
 
 export default complianceItemsResolvers;

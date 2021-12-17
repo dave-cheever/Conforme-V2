@@ -21,6 +21,7 @@ import { complianceItemStyles } from "../pages/compliance-items";
 import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { customRadioButtonStyles } from "../components/CustomRadioButton";
+import { datepickerStyles } from "../components/Forms/Datepicker";
 import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
 import { dropdownStyles } from '../components/Forms/Dropdown';
 import { emailTemplateStyles } from "../components/Settings/EmailTemplate";
@@ -56,6 +57,7 @@ import { responseHeaderStatusStyles } from "../components/Response/ResponseHeade
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
 import { responseRenewalDetailsStyles } from "../components/Response/Details";
+import { responseRenewalModalStyles } from "../components/Response/RenewalModal";
 import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
 import { responseQuestionsStyles } from "../components/Response/ResponseQuestions";
 import { shareModalStyles } from "../components/ShareModal";
@@ -63,9 +65,10 @@ import { subSectionStyles } from "../components/NavigationLeft/SubSection";
 import { settingsTabItemStyles } from "../components/Settings/TabItem";
 import { summaryItemModalStyles } from "../components/AdminComplianceItemModal/SummaryItem";
 import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summary";
+import { switchStyles } from "../components/Forms/Switch";
 import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
-import { toggleStyles } from "../components/Response/Toggle";
+import { toggleStyles } from "../components/Forms/Toggle";
 import { userMenuStyles } from "../components/UserMenu";
 
 // http://chir.ag/projects/name-that-color - Get color names
@@ -131,6 +134,7 @@ const getTheme = (organizationTheme?: any) => {
       ...complianceItemsSquareStyles,
       ...complianceListItemsStyles,
       ...customRadioButtonStyles,
+      ...datepickerStyles,
       ...documentUploadedStyles,
       ...dropdownStyles,
       ...emailTemplateStyles,
@@ -166,6 +170,7 @@ const getTheme = (organizationTheme?: any) => {
       ...responseHeaderStatusStyles,
       ...responseLeftTabItemStyles,
       ...responseRenewalDetailsStyles,
+      ...responseRenewalModalStyles,
       ...responseTabItemStyles,
       ...responseQuestionsStyles,
       ...shareModalStyles,
@@ -173,6 +178,7 @@ const getTheme = (organizationTheme?: any) => {
       ...subSectionStyles,
       ...summaryItemModalStyles,
       ...summaryModalStyles,
+      ...switchStyles,
       ...teamPageStyles,
       ...textConfirmInputStyles,
       ...toggleStyles,
@@ -464,29 +470,6 @@ const getTheme = (organizationTheme?: any) => {
           icon: {
             border: '#CBCCCD',
             500: '#462AC4',
-          },
-          error: '#E53E3E',
-        },
-        datepicker: {
-          font: '#777777',
-          bg: '#FFFFFF',
-          labelFont: {
-            normal: '#818197',
-            error: '#E53E3E',
-          },
-          border: {
-            normal: '#CBCCCD',
-            error: '#E53E3E',
-            focus: {
-              normal: '#777777',
-              error: '#E53E3E',
-            },
-          },
-          activeBg: '#EEEEEE',
-          disabled: {
-            font: '#2B3236',
-            border: '#EEEEEE',
-            bg: '#f7f7f7',
           },
           error: '#E53E3E',
         },

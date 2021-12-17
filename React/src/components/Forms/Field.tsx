@@ -3,7 +3,7 @@ import React from 'react';
 import { 
   Checkbox,
   Dropdown,
-  DatePicker,
+  Datepicker,
   NumberInput,
   Switch,
   Textarea,
@@ -38,9 +38,9 @@ const Field = ({ control, ...field }) => {
       return <NumberInput key={name} {...props} />;
     }
     case 'date': {
-      return <DatePicker key={name} {...props} />;
+      return <Datepicker key={name} {...props} />;
     }
-    case 'Textarea': {
+    case 'textarea': {
       return <Textarea key={name} {...props} />;
     }
     case 'switch': {

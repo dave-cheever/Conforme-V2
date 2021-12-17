@@ -43,7 +43,6 @@ const GET_COMPLIANCE_ITEMS = gql`
         required
         outdated
       }
-      published
       categoryId
       category {
         name

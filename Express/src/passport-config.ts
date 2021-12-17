@@ -58,10 +58,10 @@ const initPassport = (passport: PassportStatic) => {
     try {
       user = await Users.customFindByIdWithDetails(userQuery);
     } catch (e) {
-      await Users.customCreate({
-        userId: _id,
-        organization
-      });
+      const newUser = {
+        _id,
+      };
+      await Users.customCreate(newUser as IUser, _id, organization._id);
       user = await Users.customFindByIdWithDetails(userQuery);
     }
     if (!user) {

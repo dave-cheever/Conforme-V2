@@ -6,7 +6,7 @@ const QuestionIcon = ({type, ...props}) => {
   switch (type) {
     case 'text':
       return <QuestionTextIcon {...props} />;
-    case 'toggle':
+    case 'switch':
       return <QuestionToggleIcon {...props} />;
     case 'datePicker':
       return <QuestionDateIcon {...props} />;

@@ -1,20 +1,19 @@
 import { Box, Flex, Icon, Tooltip, Text } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
-import DatePicker from "react-datepicker";
+import ReactDatepicker from "react-datepicker";
 import { format } from 'date-fns';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
-import { CalendarIcon } from '../../icons';
+import { Asterisk, CalendarIcon } from '../../icons';
 import { useRef } from 'react';
 
 interface IDatepicker extends IField {
   placeholder?: string;
-  variant?: string;
-  styles?:{
-    textInput ?: {
-      font?:string
+  styles?: {
+    textInput?: {
+      font?: string
     }
   }
 }
@@ -27,7 +26,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: IDatepicker) => {
+const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', required, validations = {}, disabled = false, styles }: IDatepicker) => {
   const datePickerRef = useRef();
   const validate = useValidate(label || name, validations, definedValidations);
   return (
@@ -39,11 +38,11 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt='none'>
+          <Box w='full' id={name}>
             {label && (
               <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "form.datepicker.labelFont.error" : styles ? styles?.textInput?.font : "form.datepicker.labelFont.normal"}
+                  color={error ? "datepicker.labelFont.error" : styles ? styles?.textInput?.font : "datepicker.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
                   position="static"
@@ -51,6 +50,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
                   zIndex={2}
                 >
                   {label}
+                  {required && <Asterisk ml="10px" stroke='datepicker.iconAsterisk' w='9px' h='9px' />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>
@@ -65,24 +65,24 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
               h="40px"
               mt="5px"
               mb={"-5px"}
-              color="form.datepicker.font"
-              bg="form.datepicker.bg"
-              borderColor={error ? "form.datepicker.border.error" : "form.datepicker.border.normal"}
+              color="datepicker.font"
+              bg="datepicker.bg"
+              borderColor={error ? "datepicker.border.error" : "datepicker.border.normal"}
               cursor={disabled ? 'not-allowed' : 'pointer'}
-              _active={{ bg: disabled ? "form.datepicker.disabled.bg" : "form.datepicker.activeBg" }}
-              _focus={{ borderColor: error ? "form.datepicker.border.focus.error" : "form.datepicker.border.focus.normal" }}
+              _active={{ bg: disabled ? "datepicker.disabled.bg" : "datepicker.activeBg" }}
+              _focus={{ borderColor: error ? "datepicker.border.focus.error" : "datepicker.border.focus.normal" }}
               justify="space-between"
             >
               {disabled
                 ? <Text>{value ? format(value, 'd MMM yyyy') : ''}</Text>
-                : <DatePicker
-                    dateFormat="d MMM yyyy"
-                    name={name}
-                    onChange={date => onChange(date)}
-                    onCalendarClose={onBlur}
-                    selected={value  ? new Date(value) : null}
-                    placeholderText={placeholder}
-                    ref={datePickerRef}
+                : <ReactDatepicker
+                  dateFormat="d MMM yyyy"
+                  name={name}
+                  onChange={date => onChange(date)}
+                  onCalendarClose={onBlur}
+                  selected={value ? new Date(value) : null}
+                  placeholderText={placeholder}
+                  ref={datePickerRef}
                 />
               }
               <CalendarIcon
@@ -90,18 +90,45 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', vari
                 h='16px'
                 mt='-2px'
                 mr='15px'
-                onClick = {() => {
+                onClick={() => {
                   // @ts-ignore
                   datePickerRef.current.setOpen(true);
                 }}
               />
             </Flex>
-            {error && <Box fontSize="smm" ml={1} mt={1} color='form.datepicker.error'>{error.message}</Box>}
+            {error && <Box fontSize="smm" ml={1} mt={1} color='datepicker.error'>{error.message}</Box>}
           </Box>
         );
       }}
     />
   );
+};
+
+export const datepickerStyles = {
+  datepicker: {
+    font: '#777777',
+    bg: '#FFFFFF',
+    labelFont: {
+      normal: '#818197',
+      error: '#E53E3E',
+    },
+    iconAsterisk: '#E93C44',
+    border: {
+      normal: '#CBCCCD',
+      error: '#E53E3E',
+      focus: {
+        normal: '#777777',
+        error: '#E53E3E',
+      },
+    },
+    activeBg: '#EEEEEE',
+    disabled: {
+      font: '#2B3236',
+      border: '#EEEEEE',
+      bg: '#f7f7f7',
+    },
+    error: '#E53E3E',
+  },
 };
 
 export default Datepicker;

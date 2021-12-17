@@ -53,10 +53,11 @@ const Toggle = ({ control, name, label, placeholder = '', tooltip = '', variant,
           </Box >
         )
       }}
-    />)
-}
+    />
+  );
+};
 
-export default Toggle
+export default Toggle;
 
 export const toggleStyles = {
   toggle: {
@@ -74,4 +75,4 @@ export const toggleStyles = {
       }
     }
   }
-}
+};

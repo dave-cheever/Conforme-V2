@@ -21,26 +21,22 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   },
 }, { typeKey: '$type' })
 
-businessUnitSchema.statics.customFindById = async function (
-  _id: string
-): Promise<IBusinessUnit> {
+businessUnitSchema.statics.customFindById = async function (_id: string): Promise<IBusinessUnit> {
   const businessUnit = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },
-  });
+  }).lean();
   if (!businessUnit) {
     throw new Error("Business Unit not found");
   }
   return businessUnit;
 };
 
-businessUnitSchema.statics.customFind = async function (
-  selector: any = {}
-): Promise<IBusinessUnit[]> {
+businessUnitSchema.statics.customFind = async function (selector: any = {}): Promise<IBusinessUnit[]> {
   const businessUnits = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
-  });
+  }).lean();
   return businessUnits;
 };
 

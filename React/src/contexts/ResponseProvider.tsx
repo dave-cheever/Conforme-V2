@@ -21,6 +21,7 @@ const GET_RESPONSES = gql`
       contributorsIds
       followersIds
       daysToDueDate
+      published
       evidence {
         name
         uploaded {
@@ -98,27 +99,25 @@ export const useResponseContext = () => {
 const ResponseProvider = (props: any) => {
   const { id }: { id: string } = useParams();
   const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQuery: { _id: id } } });
-  const [getParticipants, { data:participantsData, }] = useLazyQuery(GET_PARTICIPANTS);
+  const [getParticipants, { data: participantsData, }] = useLazyQuery(GET_PARTICIPANTS);
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
   const { isOpen: isDueDateOpen, onOpen: handleDueDateOpen, onClose: handleDueDateClose } = useDisclosure();
 
-  console.log('participantsData', participantsData);
-  
   const response: IResponse = useMemo(() => data?.responses[0], [data]);
-  const participants : IUser[] = useMemo(() => participantsData?.participants || [],[participantsData]);
+  const participants: IUser[] = useMemo(() => participantsData?.participants || [], [participantsData]);
 
-  const getUpdatedDisplayName = (userId:string) => {
+  const getUpdatedDisplayName = (userId: string) => {
     return participants?.filter((participant) => participant._id === userId)[0]?.displayName;
   }
 
-  const getParticipantDetailById = (userId:string) =>{
+  const getParticipantDetailById = (userId: string) => {
     return participants?.filter((participant) => participant._id === userId)[0];
   }
 
   useEffect(() => {
-    if(response){
+    if (response) {
       let participants = [response.accountableId, response.responsibleId];
       participants = participants.concat(response.followersIds || []);
       participants = participants.concat(response.contributorsIds || []);
@@ -128,11 +127,11 @@ const ResponseProvider = (props: any) => {
         }
       });
     }
-  // eslint-disable-next-line
-  },[response]);
+    // eslint-disable-next-line
+  }, [response]);
 
   const value = useMemo(() => ({
-    response,users:participants, loading, refetch,
+    response, users: participants, loading, refetch,
     isShareOpen, handleShareOpen, handleShareClose,
     isConfirmationOpen, handleConfirmationOpen, handleConfirmationClose,
     isRenewalOpen, handleRenewalOpen, handleRenewalClose,

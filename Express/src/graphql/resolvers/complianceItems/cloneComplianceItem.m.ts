@@ -2,14 +2,14 @@ import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 import { v4 as uuidv4 } from "uuid";
 
-const cloneComplianceItem = async (_, { complianceId }, { authorize }) => {
+const cloneComplianceItem = async (_, { _id: clonedId }, { authorize }) => {
   try {
     const user = await authorize();
-    if (!isPermitted({ user, action: "complianceItems.clone", data: { complianceId } })) {
+    if (!isPermitted({ user, action: "complianceItems.clone", data: { clonedId } })) {
       throw new Error("User is not permitted");
     }
 
-    const complianceItem = await ComplianceItems.customFindById(complianceId);
+    const complianceItem = await ComplianceItems.customFindById(clonedId);
     if (!complianceItem) {
       throw new Error("Compliance item doesn't exist");
     }

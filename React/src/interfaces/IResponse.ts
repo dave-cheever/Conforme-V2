@@ -32,6 +32,7 @@ export interface IResponse extends IBase {
   responsibleId: string;
   contributorsIds?: string[];
   followersIds?: string[];
+  published: boolean;
   
   // Comments - injected to response when getting from database
   // Taken from Comments collection

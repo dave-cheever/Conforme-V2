@@ -1,19 +1,12 @@
 import React from 'react';
 import { Box, Icon, Tooltip, Checkbox as ChakraCheckbox } from '@chakra-ui/react';
 
-import { Controller, useWatch } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
 
-interface ICheckbox extends IField {
-  placeholder?: string;
-  variant?: string;
-  options?: {
-    label: string;
-    value: string;
-  }[];
-}
+interface ICheckbox extends IField {}
 
 const definedValidations: DefinedValidations = {
   notEmpty: (label, validationValue, value) => {
@@ -23,19 +16,15 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Checkbox = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, options = [] }: ICheckbox) => {
+const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabled = false }: ICheckbox) => {
   const validate = useValidate(label || name, validations, definedValidations);
-  const value = useWatch({
-    control,
-    name
-  })
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
       render={({ field, fieldState, formState }) => {
-        const { onChange, onBlur } = field;
+        const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
           <Box id={name} mt='none'>
@@ -53,8 +42,8 @@ const Checkbox = ({ control, name, label, placeholder = '', tooltip = '', varian
               py={3}
               isChecked={value}
               isDisabled={disabled}
-              onChange={(e) => {
-                onChange(e.target.checked);
+              onChange={() => {
+                onChange(!value);
                 onBlur();
               }}
             >

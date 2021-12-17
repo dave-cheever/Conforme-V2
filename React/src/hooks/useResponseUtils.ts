@@ -2,7 +2,7 @@ import { isInteger } from "lodash";
 
 import { IResponse } from '../interfaces/IResponse';
 import { useAppContext } from '../contexts/AppProvider';
-import { addMonths, addYears, differenceInDays, startOfDay, subMonths, subYears } from "date-fns";
+import { differenceInDays, startOfDay } from "date-fns";
 
 export const responseStatuses = {
   "completed": "Completed",
@@ -105,77 +105,22 @@ const useResponseUtils = () => {
     return 'nonCompliant';
   };
 
-  const getNextRenewalDate = (response: IResponse) => {
-    const { complianceItem: { frequency }, nextRenewalDate } = response;
-    let newNextRenewalDate;
-    switch (frequency) {
-      case "Monthly":
-        newNextRenewalDate = addMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
-        break;
-  
-      case "Quarterly":
-        newNextRenewalDate = addMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 3);
-        break;
-  
-      case "6 months":
-        newNextRenewalDate = addMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 6);
-        break;
-  
-      case "Annual":
-        newNextRenewalDate = addYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
-        break;
-  
-      case "2 years":
-        newNextRenewalDate = addYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 2);
-        break;
-  
-      case "5 years":
-        newNextRenewalDate = addYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 5);
-        break;
-  
-      default:
-        newNextRenewalDate = null;
-        break;
-    }
-    return newNextRenewalDate;
+
+  const isEvidenceUploaded = (response: IResponse) => {
+    return response?.evidence?.filter(({ outdated }) => !outdated).every(({ uploaded }) => uploaded);
   };
 
-  const getPrevRenewalDate = (response: IResponse) => {
-    const { complianceItem: { frequency }, nextRenewalDate } = response;
-    let newNextRenewalDate;
-    switch (frequency) {
-      case "Monthly":
-        newNextRenewalDate = subMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
-        break;
-  
-      case "Quarterly":
-        newNextRenewalDate = subMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 3);
-        break;
-  
-      case "6 months":
-        newNextRenewalDate = subMonths(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 6);
-        break;
-  
-      case "Annual":
-        newNextRenewalDate = subYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 1);
-        break;
-  
-      case "2 years":
-        newNextRenewalDate = subYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 2);
-        break;
-  
-      case "5 years":
-        newNextRenewalDate = subYears(nextRenewalDate ? new Date(nextRenewalDate) : new Date(), 5);
-        break;
-  
-      default:
-        newNextRenewalDate = null;
-        break;
-    }
-    return newNextRenewalDate;
+  const areRequiredQuestionsAnswered = (response: IResponse) => {
+    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value }) => value || (typeof value === 'boolean' && value === false));
   };
 
-  return { getRenewalStatus, getRenewalStatusText, getStatus, getNextRenewalDate, getPrevRenewalDate };
+  return {
+    areRequiredQuestionsAnswered,
+    getRenewalStatus,
+    getRenewalStatusText,
+    getStatus,
+    isEvidenceUploaded,
+  };
 };
 
 export default useResponseUtils;

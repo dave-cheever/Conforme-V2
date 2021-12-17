@@ -1,8 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
 import moment, { Moment } from 'moment';
 import { difference } from 'lodash';
+import { addMonths, addYears, subMonths, subYears } from 'date-fns';
 
-import { IOrganization, IUser } from 'app-interfaces';
+import { IOrganization, IResponse, IUser } from 'app-interfaces';
 import roles from './roles';
 import { Users } from 'app-models';
 
@@ -454,4 +455,73 @@ export const mentionParser = (markup) => {
   }
   //make unique by id
   return [...new Set(mentions) ];
-}
+};
+
+export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => {
+  let newNextRenewalDate;
+  
+  switch (frequency) {
+    case "Monthly":
+      newNextRenewalDate = addMonths(nextRenewalDate, 1);
+      break;
+
+    case "Quarterly":
+      newNextRenewalDate = addMonths(nextRenewalDate, 3);
+      break;
+
+    case "6 months":
+      newNextRenewalDate = addMonths(nextRenewalDate, 6);
+      break;
+
+    case "Annual":
+      newNextRenewalDate = addYears(nextRenewalDate, 1);
+      break;
+
+    case "2 years":
+      newNextRenewalDate = addYears(nextRenewalDate, 2);
+      break;
+
+    case "5 years":
+      newNextRenewalDate = addYears(nextRenewalDate, 5);
+      break;
+
+    default:
+      newNextRenewalDate = null;
+      break;
+  }
+  return newNextRenewalDate;
+};
+
+export const getPrevRenewalDate = (nextRenewalDate: Date, frequency: string) => {
+  let newNextRenewalDate;
+  switch (frequency) {
+    case "Monthly":
+      newNextRenewalDate = subMonths(nextRenewalDate, 1);
+      break;
+
+    case "Quarterly":
+      newNextRenewalDate = subMonths(nextRenewalDate, 3);
+      break;
+
+    case "6 months":
+      newNextRenewalDate = subMonths(nextRenewalDate, 6);
+      break;
+
+    case "Annual":
+      newNextRenewalDate = subYears(nextRenewalDate, 1);
+      break;
+
+    case "2 years":
+      newNextRenewalDate = subYears(nextRenewalDate, 2);
+      break;
+
+    case "5 years":
+      newNextRenewalDate = subYears(nextRenewalDate, 5);
+      break;
+
+    default:
+      newNextRenewalDate = null;
+      break;
+  }
+  return newNextRenewalDate;
+};

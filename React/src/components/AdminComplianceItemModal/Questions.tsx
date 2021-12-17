@@ -33,10 +33,10 @@ const QuestionsForm = () => {
     value: "text",
     label: "Text input"
   }, {
-    value: "toggle",
+    value: "switch",
     label: "Yes / No answer"
   }, {
-    value: "datePicker",
+    value: "datepicker",
     label: "Date input"
   }, {
     value: "multipleChoice",

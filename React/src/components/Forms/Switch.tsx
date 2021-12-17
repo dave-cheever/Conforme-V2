@@ -1,16 +1,14 @@
-import React from 'react';
-import { Box, Flex, Switch as SwitchInput } from '@chakra-ui/react';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { Button } from "@chakra-ui/button"
+import { Box, Text, Flex } from "@chakra-ui/layout"
+import { Controller } from "react-hook-form"
+import useValidate from "../../hooks/useValidate"
+import { Asterisk } from "../../icons"
+import { IField } from "../../interfaces/IField"
+import { DefinedValidations } from "../../interfaces/Validations"
 
-import { Controller } from 'react-hook-form';
-import useValidate from '../../hooks/useValidate';
-import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
-
-
-interface IDropdown extends IField {
+interface ISwitch extends IField {
+  placeholder?: string;
   variant?: string;
-  help?: string;
 }
 
 const definedValidations: DefinedValidations = {
@@ -21,64 +19,65 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Switch = ({ control, name, label, tooltip = '', variant = 'secondaryVariant', validations = {}, disabled = false, help = '' }: IDropdown) => {
+const Switch = ({ control, name, label, required, validations = {}, disabled = false }: ISwitch) => {
   const validate = useValidate(label || name, validations, definedValidations);
-  
+
+  const RenderButton = ({ laterality, value, onchange, name }) => (
+    <Button
+      name={name}
+      color={!value ? "switch.btn.color" : "switch.activebtn.color"}
+      bg={!value ? "switch.btn.bg" : "switch.activebtn.bg"}
+      _hover={{ bg: "switch.activebtn.bg", color: "switch.activebtn.color" }}
+      fontWeight="bold"
+      fontSize="smm"
+      p="10px 20px"
+      onClick={() => onchange(laterality === 'left')}
+      disabled={disabled}
+    >{laterality === 'left' ? 'Yes' : 'No'}</Button>
+  )
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
       render={({ field, fieldState, formState }) => {
-        const { onChange, onBlur, value } = field;
+        const { onChange, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
-            {label && (
-              <Flex pt={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
-                <Box
-                  color={error ? "form.dropdown.labelFont.error" : "form.dropdown.labelFont.normal"}
-                  fontWeight="bold"
-                  fontSize={14}
-                  position={variant !== 'secondaryVariant' ? "relative" : "static"}
-                  left={variant !== 'secondaryVariant' ? "19px" : 'none'}
-                  zIndex={1}
-                >
-                  {label}
-                  {' '}
-                  {variant === 'secondaryVariant' && help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
-                </Box>
-              </Flex>
-            )}
-            <Flex align="center" mt={3}>
-              <SwitchInput
-                  colorScheme="form.switch.color"
-                  onBlur={onBlur}
-                  isChecked={value}
-                  onChange={onChange}
-                  name={name}
-                  isDisabled={disabled}
-                  css={{
-                      ".chakra-switch__thumb": {
-                          "&[data-checked]": {
-                          background: "#462AC4"
-                          }
-                      }
-                  }}
-              />
-            <Flex ml={3} fontSize="14px" fontWeight="400" mt={-1} color={value ? "form.switch.enableColor" : "form.switch.disableColor"}>{value ? "Enabled": "Disabled"}</Flex>
+          <Box>
+            <Text fontSize="ssm" fontWeight="bold" py="10px">
+              {label}
+              {required && <Asterisk ml="10px" stroke='switch.iconAsterisk' w='9px' h='9px' />}
+            </Text>
+            <Flex>
+              <RenderButton name={name} onchange={onChange} laterality="left" value={value === true} />
+              &nbsp;&nbsp;
+              <RenderButton name={name} onchange={onChange} laterality="right" value={value === false} />
             </Flex>
-            {error && <Box fontSize="smm" ml={1} mt={1} color='form.dropdown.error'>{error.message}</Box>}
-            {tooltip && 
-            <Flex  color='form.dropdown.tooltip' mt={5}>
-              <InfoOutlineIcon/>
-              <Box fontSize="11px" ml={2}>{tooltip}</Box>
-            </Flex>}
-          </Box>
-        );
+            {error && <Box fontSize={14} ml={1} color='switch.form.textInput.error'>{error.message}</Box>}
+          </Box >
+        )
       }}
-    />
-  );
-};
+    />)
+}
 
 export default Switch;
+
+export const switchStyles = {
+  switch: {
+    iconAsterisk: '#E93C44',
+    btn: {
+      bg: "#F0F2F5",
+      color: "#818197"
+    },
+    activebtn: {
+      bg: "#462AC4",
+      color: "#ffffff"
+    },
+    form: {
+      textInput: {
+        error: '#E53E3E',
+      }
+    }
+  }
+};

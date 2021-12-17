@@ -35,19 +35,19 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
 organizationSchema.statics.customFindById = async function (_id: string): Promise<IOrganization> {
-  const organization = await this.findById(_id);
+  const organization = await this.findById(_id).lean();
   if (!organization) {
     throw new Error('Organization not found');
   }
-  return organization._doc;
+  return organization;
 }
 
 organizationSchema.statics.customFindByDomain = async function (domain: string): Promise<IOrganization> {
-  const organization = await this.findOne({ domain });
+  const organization = await this.findOne({ domain }).lean();
   if (!organization) {
     throw new Error('Organization not found');
   }
-  return organization._doc;
+  return organization;
 }
 
 const organizationModel = model<IOrganization, IOrganizationModel>('Organization', organizationSchema);

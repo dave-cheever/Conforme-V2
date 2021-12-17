@@ -24,6 +24,8 @@ import {
   getProjectFields,
   join,
   mentionParser,
+  getNextRenewalDate,
+  getPrevRenewalDate,
 } from "./helpers";
 import roles from "./roles";
 
@@ -66,4 +68,6 @@ export {
   join,
   roles,
   mentionParser,
+  getNextRenewalDate,
+  getPrevRenewalDate,
 };

@@ -21,19 +21,19 @@ regulatoryBodySchema.statics.customFindById = async function (_id: string): Prom
   const regulatoryBody = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },
-  });
+  }).lean();
   if (!regulatoryBody) {
     throw new Error('Regulatory body not found');
   }
-  return regulatoryBody._doc;
+  return regulatoryBody;
 }
 
 regulatoryBodySchema.statics.customFind = async function (selector: any = {}): Promise<IBaseWithName[]> {
   const regulatoryBodies = await this.find({
     ...selector,
     "metatags.removedAt": { $eq: null },
-  });
-  return regulatoryBodies.map(regulatoryBody => regulatoryBody._doc);
+  }).lean();
+  return regulatoryBodies;
 }
 
 const regulatoryBodyModel = model<IBaseWithName, IBaseWithNameModel>('RegulatoryBody', regulatoryBodySchema, 'regulatoryBodies');

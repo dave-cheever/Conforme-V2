@@ -3,8 +3,8 @@ import { Users } from "app-models";
 import { GraphService } from "app-services";
 import { MENTION_EMAIL } from "app-utils";
 
-export const sendMentionedEmail = async ({
- userIds,
+const sendMentionedEmail = async ({
+  userIds,
   organization,
   message,
 }: {
@@ -14,7 +14,7 @@ export const sendMentionedEmail = async ({
 }) => {
   //get all information for user;
   for (const id of userIds) {
-    
+
     const user = await Users.customFindByIdWithDetails({ userId: id, organization });
 
     await GraphService.sendEmail({
@@ -24,5 +24,9 @@ export const sendMentionedEmail = async ({
       from: organization.emailAddress,
       to: [user.email],
     });
+  }
 }
-}
+
+export default {
+  sendMentionedEmail,
+};

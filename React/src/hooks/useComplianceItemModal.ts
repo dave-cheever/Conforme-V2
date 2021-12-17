@@ -27,8 +27,8 @@ const DELETE_COMPLIANCE_ITEM = gql`
   }
 `;
 const CLONE_COMPLIANCE_ITEM = gql`
-  mutation ($complianceId: String!) {
-    cloneComplianceItem(complianceId: $complianceId) {
+  mutation ($_id: String!) {
+    cloneComplianceItem(_id: $_id) {
       _id
     }
   }
@@ -110,7 +110,7 @@ const useComplianceItemModal = (refetch = () => { }) => {
       }, 1000);
 
       let savedComplianceItemId: string;
-      const { data } = await clone({ variables: { complianceId: complianceItem._id } });
+      const { data } = await clone({ variables: { _id: complianceItem._id } });
       savedComplianceItemId = data.cloneComplianceItem._id;
       setValue('_id', savedComplianceItemId);
       refetch();

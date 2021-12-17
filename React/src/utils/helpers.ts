@@ -11,9 +11,9 @@ export const questionHeader = (questionType) => {
   switch (questionType) {
     case 'text':
       return 'Text input question';
-    case 'toggle':
+    case 'switch':
       return 'Yes / No question';
-    case 'datePicker':
+    case 'datepicker':
       return 'Date input';
     case 'multipleChoice':
       return 'Multiple choices'

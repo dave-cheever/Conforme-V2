@@ -43,8 +43,6 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
     }
   }
 
-  console.log(users);
-
   return (
     <Controller
       name={name}

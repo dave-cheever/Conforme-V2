@@ -6,11 +6,10 @@ import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
-import { CheckIcon } from '../../icons';
+import { Asterisk, CheckIcon } from '../../icons';
 
 interface ItextConfirmInput extends IField {
   placeholder?: string;
-  variant?: string;
   defaultvalue?: string;
 }
 
@@ -27,7 +26,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const TextConfirmInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, defaultvalue }: ItextConfirmInput) => {
+const TextConfirmInput = ({ control, name, label, required, tooltip = '', validations = {}, disabled = false, defaultvalue }: ItextConfirmInput) => {
   const inputRef = useRef<any>();
   const [tempValue, setTempValue] = useState(defaultvalue || '');
   const validate = useValidate(label || name, validations, definedValidations);
@@ -42,21 +41,21 @@ const TextConfirmInput = ({ control, name, label, placeholder = '', tooltip = ''
 
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
+          <Box w='full' id={name}>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
+              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "textConfirmInput.labelFont.error" : "textConfirmInput.labelFont.normal"}
                   fontWeight="bold"
                   fontSize={11}
-                  position={variant !== 'secondaryVariant' ? "relative" : "static"}
-                  left={variant !== 'secondaryVariant' ? "19px" : 'none'}
+                  position="static"
+                  left='none'
                   zIndex={2}
                 >
                   {label}
+                  {required && <Asterisk ml="10px" stroke='textConfirmInput.iconAsterisk' w='9px' h='9px' />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
-                  {variant === 'secondaryVariant' && placeholder && <Box opacity={.5}>{placeholder}</Box>}
                 </Box>
               </Flex>
             )}
@@ -64,9 +63,8 @@ const TextConfirmInput = ({ control, name, label, placeholder = '', tooltip = ''
               <Input
                 ref={inputRef}
                 borderRadius={showButtons ? "8px 0 0 8px" : "8px"}
-                borderWidth={showButtons ? "2px 0 2px 2px" : "2px"}
-                pt={variant !== 'secondaryVariant' ? "16px" : 'none'}
-                h={variant !== 'secondaryVariant' ? "55px" : "40px"}
+                borderWidth={showButtons ? "1px 0 1px 1px" : "1px"}
+                h={"40px"}
                 type="text"
                 color="textConfirmInput.font"
                 bg="textConfirmInput.bg"
@@ -87,7 +85,6 @@ const TextConfirmInput = ({ control, name, label, placeholder = '', tooltip = ''
                   cursor: "not-allowed",
                 }}
                 maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
-                placeholder={variant === 'secondaryVariant' ? '' : placeholder}
                 _placeholder={{ color: 'textConfirmInput.placeholder' }}
               />
               {showButtons && (
@@ -104,7 +101,7 @@ const TextConfirmInput = ({ control, name, label, placeholder = '', tooltip = ''
                     bgColor='textConfirmInput.approve.bg'
                     color='textConfirmInput.approve.font'
                     onClick={() => onChange({ target: { name, value: inputRef.current?.value } })}
-                  ><CheckIcon /></Flex>
+                  ><CheckIcon stroke='textConfirmInput.approve.font' /></Flex>
                   <Flex
                     grow={1}
                     w={6}
@@ -141,6 +138,7 @@ export const textConfirmInputStyles = {
       normal: '#2B3236',
       error: '#E53E3E',
     },
+    iconAsterisk: '#E93C44',
     border: {
       normal: '#CBCCCD',
       error: '#E53E3E',

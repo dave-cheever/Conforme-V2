@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Stack, Box, Grid, Flex } from '@chakra-ui/react';
+import { Stack, Box, Grid, Flex, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
 
@@ -7,19 +7,21 @@ import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import Fields from './Fields';
+import { toastFailed } from '../../bootstrap/config';
 
 const UPDATE_QUESTIONS = gql`
   mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
-    updateQuestions(updateResponseQuestionsModify: $updateResponseQuestionsModify)
+    updateResponseQuestions(updateResponseQuestionsModify: $updateResponseQuestionsModify)
   }
 `;
 
 const styles = {
-  textInput:{
+  textInput: {
     font: 'black'
   }
 }
 const ResponseQuestions = () => {
+  const toast = useToast();
   const [update] = useMutation(UPDATE_QUESTIONS);
   const { user } = useAppContext();
   const { response, refetch } = useResponseContext();
@@ -41,18 +43,28 @@ const ResponseQuestions = () => {
 
   const answers = watch();
   useEffect(() => {
-    const wasQuestionUpdated = questions.find(({ name, value }) => value !== answers[name]);
-    if (wasQuestionUpdated) {
-      update({
-        variables: {
-          updateResponseQuestionsModify: {
-            _id: response?._id,
-            answers,
-          },
-        },
-      });
-      refetch();
-    }
+    const updateResponseQuestions = async () => {
+      const wasQuestionUpdated = questions.find(({ name, value }) => value !== answers[name]);
+      if (wasQuestionUpdated) {
+        try {
+          await update({
+            variables: {
+              updateResponseQuestionsModify: {
+                _id: response?._id,
+                answers,
+              },
+            },
+          });
+        } catch (e: any) {
+          toast({
+            ...toastFailed,
+            description: e.message,
+          });
+        }
+        refetch();
+      }
+    };
+    updateResponseQuestions();
   }, [JSON.stringify(answers)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!response) {
@@ -61,7 +73,7 @@ const ResponseQuestions = () => {
   return (
     <Stack w="full" h="full" overflow="auto" mt={2}>
       <Grid templateColumns="1fr" gap={4} w="40%">
-        {questions.map(({ type, name, description, value }, i) => (
+        {questions.map(({ type, name, description, required, value }, i) => (
           <Flex key={name}>
             <Box
               color="responseQuestions.sectionNumber.color"
@@ -85,6 +97,7 @@ const ResponseQuestions = () => {
               control={control}
               placeholder={description}
               disabled={!isUserPermitted}
+              required={!!required}
               defaultvalue={value as string}
               styles={styles}
             />

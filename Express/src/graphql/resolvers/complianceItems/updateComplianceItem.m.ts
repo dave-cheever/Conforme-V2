@@ -13,11 +13,11 @@ const updateComplianceItem = async (_, { complianceItemModifyInput }, { authoriz
       throw new Error("User is not permitted");
     }
 
-    const complianceItemInstance = await ComplianceItems.findById(complianceItemModifyInput._id);
-    if (!complianceItemInstance?._doc) {
+    const complianceItemDocument = await ComplianceItems.findById(complianceItemModifyInput._id);
+    if (!complianceItemDocument?._doc) {
       return false;
     }
-    const { _doc: complianceItem } = complianceItemInstance;
+    const { _doc: complianceItem } = complianceItemDocument;
     if (!complianceItem) {
       throw new Error("Compliance item doesn't exist");
     }
@@ -31,11 +31,11 @@ const updateComplianceItem = async (_, { complianceItemModifyInput }, { authoriz
       },
     };
 
-    complianceItemInstance.overwrite(updatedComplianceItem);
-    complianceItemInstance.save();
+    complianceItemDocument.overwrite(updatedComplianceItem);
+    complianceItemDocument.save();
 
     // @ts-ignore
-    complianceItemInstance.customSynchronizeResponses({
+    complianceItemDocument.customSynchronizeResponses({
       userId: user._id,
       prevDueDate: complianceItem.dueDate,
     });

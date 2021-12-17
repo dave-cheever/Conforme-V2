@@ -35,14 +35,14 @@ const definedValidations: DefinedValidations = {
   }
 };
 
-const TextInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: ITextInput) => {
+const TextInput = ({ control, name, label, placeholder = '', tooltip = '', validations = {}, disabled, required, styles }: ITextInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
-      render={({ field, fieldState, formState }) => {
+      render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
@@ -66,7 +66,6 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', varia
             <Input
               borderRadius="8px"
               borderWidth="1px"
-              pt='none'
               h="40px"
               type="text"
               fontSize="smm"

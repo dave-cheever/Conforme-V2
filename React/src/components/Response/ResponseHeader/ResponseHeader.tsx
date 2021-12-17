@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider , MenuList, Spacer} from '@chakra-ui/react';
+import { Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer } from '@chakra-ui/react';
 import { isPermitted } from '../../can';
 import { useAppContext } from '../../../contexts/AppProvider';
 import { FollowIcon, ShareIcon, CheckIcon, ArrowDownIcon } from '../../../icons';
@@ -12,8 +12,8 @@ import useResponseUtils from '../../../hooks/useResponseUtils';
 
 
 const ReasponseHeader = () => {
-  const { response } = useResponseContext();
-  const { getStatus, getRenewalStatus } = useResponseUtils();
+  const { response, handleRenewalOpen } = useResponseContext();
+  const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { user } = useAppContext();
   const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
   const { handleShareOpen } = useContext(ResponseContext);
@@ -23,7 +23,7 @@ const ReasponseHeader = () => {
       getRenewalStatus(response) === 'comingUp' ||
       (getRenewalStatus(response) === 'overdue' && response.status === 'completed')
     ) && isPermitted({ user, data: { response }, action: 'responses.edit' });
-  
+
   return (
     <Flex
       direction='column'
@@ -34,42 +34,42 @@ const ReasponseHeader = () => {
       zIndex={1}
       mb="15px"
     >
-      
+
       <Flex alignItems='center' w="full" h="40px" mb="15px">
         <Heading
           color="reasponseHeader.heading"
           fontSize="xxl"
           fontWeight="bold"
-          alignItems={[ 'flex-start', 'center' ]}
+          alignItems={['flex-start', 'center']}
         >
           {response?.complianceItem?.name}
         </Heading>
-        { getRenewalStatus(response) === "comingUp" ? <Badge 
-          ml="13" 
-          bg="reasponseHeader.badgeBg" 
-          padding="6px 15px" 
-          borderRadius="10px" 
-          fontSize="11px" 
-          lineHeight="16px" 
-          fontWeight="bold" 
-          colorScheme="reasponseHeader.badgeColorScheme" 
-          color="reasponseHeader.badge" 
-          textTransform="capitalize" 
+        {getRenewalStatus(response) === "comingUp" ? <Badge
+          ml="13"
+          bg="reasponseHeader.badgeBg"
+          padding="6px 15px"
+          borderRadius="10px"
+          fontSize="11px"
+          lineHeight="16px"
+          fontWeight="bold"
+          colorScheme="reasponseHeader.badgeColorScheme"
+          color="reasponseHeader.badge"
+          textTransform="capitalize"
         >
           Coming up
-        </Badge> : '' }
+        </Badge> : ''}
       </Flex>
       <Flex mb="15px">
-        <Flex  alignItems='center' w="full" maxW={[ "100vw","390px" ]} pl={["10px","0px"]} pr={["35px","0px"]}>   
-          <ResponseHeaderStatus heading="Compliant" status={ response && getStatus(response) === "nonCompliant" ? "No" : "Yes" } />
+        <Flex alignItems='center' w="full" maxW={["100vw", "390px"]} pl={["10px", "0px"]} pr={["35px", "0px"]}>
+          <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) !== "nonCompliant" ? "Yes" : "No"} />
           <Spacer />
-          { currentEvidenceItems?.length > 0 && <ResponseHeaderStatus heading="Evidence provided" status={ response?.evidence?.filter(({ outdated }) => !outdated).some(({ uploaded }) => !uploaded) ? 'No' : 'Yes' } /> }
+          {currentEvidenceItems?.length > 0 && <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />}
           <Spacer />
-          <ResponseHeaderStatus heading="Questions answered" status={ response?.complianceItem?.questions?.filter(({ required }) => required).find(({ value }) => value === undefined) ? 'No' : 'Yes' } />
+          <ResponseHeaderStatus heading="Questions answered" status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'} />
         </Flex>
-        <Spacer display={[ "none","flex" ]}/>
-        <Flex color='white' justify='flex-end' h='40px' mr="27px" display={[ "none","flex" ]}> 
-        <ResponseHeaderButton
+        <Spacer display={["none", "flex"]} />
+        <Flex color='white' justify='flex-end' h='40px' mr="27px" display={["none", "flex"]}>
+          <ResponseHeaderButton
             name="Follow"
             icon={
               <FollowIcon
@@ -79,7 +79,7 @@ const ReasponseHeader = () => {
                 _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
               />
             }
-            onClick={ undefined }
+            onClick={undefined}
           />
           <ResponseHeaderButton
             name="Share"
@@ -90,88 +90,88 @@ const ReasponseHeader = () => {
                 _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
               />
             }
-            onClick={ handleShareOpen }
+            onClick={handleShareOpen}
           />
           {!['Ad-hoc', 'Variable'].includes(response?.complianceItem?.frequency) &&
             <Button
               ml="15px"
               w='88px'
-              borderRadius="10px" 
+              borderRadius="10px"
               fontSize="smm"
-              fontWeight="bold" 
-              bg={ enableRenewalButton ? 'reasponseHeader.buttonDarkBg' : 'reasponseHeader.buttonDarkBg' }
-              color={ enableRenewalButton ? 'reasponseHeader.buttonDarkColor' : 'reasponseHeader.buttonDarkColor' }
-              _hover={{ bg: "reasponseHeader.buttonDarkBgHover", color: 'reasponseHeader.buttonDarkColorHover' }} 
-              // onClick={handleRenewOpen}
-              display={[ "none","flex" ]}
-              
+              fontWeight="bold"
+              bg={enableRenewalButton ? 'reasponseHeader.buttonDarkBg' : 'reasponseHeader.buttonDarkBg'}
+              color={enableRenewalButton ? 'reasponseHeader.buttonDarkColor' : 'reasponseHeader.buttonDarkColor'}
+              _hover={{ bg: "reasponseHeader.buttonDarkBgHover", color: 'reasponseHeader.buttonDarkColorHover' }}
+              onClick={handleRenewalOpen}
+              display={["none", "flex"]}
+              isDisabled={!enableRenewalButton}
             >Renew</Button>
           }
         </Flex>
       </Flex>
-      
-      <Flex alignItems='center' h='40px' mr="25px" display={[ "flex","none" ]}>  
+
+      <Flex alignItems='center' h='40px' mr="25px" display={["flex", "none"]}>
         <Menu>
           {({ isOpen }) => (
             <>
-              <MenuButton 
-                colorScheme='reasponseHeader.optionsMenuColorScheme' 
-                bg={ isOpen?"reasponseHeader.optionsMenuBgOpen": "reasponseHeader.optionsMenuBg" }
+              <MenuButton
+                colorScheme='reasponseHeader.optionsMenuColorScheme'
+                bg={isOpen ? "reasponseHeader.optionsMenuBgOpen" : "reasponseHeader.optionsMenuBg"}
                 color="reasponseHeader.optionsMenuButtonColor"
-                textAlign="left" 
-                fontWeight="bold" 
-                fontSize="smm" 
-                fontFamily="Helvetica" 
-                lineHeight="18px" 
+                textAlign="left"
+                fontWeight="bold"
+                fontSize="smm"
+                fontFamily="Helvetica"
+                lineHeight="18px"
                 w="full"
-                isActive={ isOpen } 
-                as={ Button } 
-                rightIcon={ <ArrowDownIcon /> } 
-                borderRadius= "10px">
-                { isOpen ? 'Options' : 'Options'}
-                
+                isActive={isOpen}
+                as={Button}
+                rightIcon={<ArrowDownIcon />}
+                borderRadius="10px">
+                {isOpen ? 'Options' : 'Options'}
+
               </MenuButton>
-              
-              <MenuList 
-                borderColor="reasponseHeader.optionsMenuBorderColor" 
-                minW={[ "calc(100vw - 50px)","325px" ]} 
-                w="100%" 
-                boxShadow= "0px 0px 80px" 
-                color= "reasponseHeader.optionsMenuBoxShadow" 
-                borderRadius= "10px"
+
+              <MenuList
+                borderColor="reasponseHeader.optionsMenuBorderColor"
+                minW={["calc(100vw - 50px)", "325px"]}
+                w="100%"
+                boxShadow="0px 0px 80px"
+                color="reasponseHeader.optionsMenuBoxShadow"
+                borderRadius="10px"
               >
-                <ResponseHeaderMenuItem 
-                  title="Follow" 
+                <ResponseHeaderMenuItem
+                  title="Follow"
                   icon={
-                    <FollowIcon 
+                    <FollowIcon
                       fontSize="15px"
                       stroke="reasponseHeader.buttonLightColor"
                       fill='transparent'
                       _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                    />} 
-                  onClick={ undefined }
+                    />}
+                  onClick={undefined}
                 />
-                <ResponseHeaderMenuItem 
-                  title="Share" 
+                <ResponseHeaderMenuItem
+                  title="Share"
                   icon={
-                    <ShareIcon 
+                    <ShareIcon
                       fontSize="15px"
                       stroke="reasponseHeader.buttonLightColor"
                       _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                    />} 
+                    />}
                   onClick={handleShareOpen}
                 />
-                <MenuDivider borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" border="1px"/>
-                <ResponseHeaderMenuItem 
-                  title="Renew" 
+                <MenuDivider borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" border="1px" />
+                <ResponseHeaderMenuItem
+                  title="Renew"
                   icon={
-                    <CheckIcon 
+                    <CheckIcon
                       fontSize="15px"
                       stroke="reasponseHeader.buttonLightColor"
                       fill='transparent'
                       _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                    />} 
-                  onClick={ undefined }
+                    />}
+                  onClick={handleRenewalOpen}
                 />
               </MenuList>
             </>
@@ -179,7 +179,7 @@ const ReasponseHeader = () => {
         </Menu>
       </Flex>
 
-    
+
     </Flex>
   );
 };
@@ -209,7 +209,7 @@ export const responseHeaderStyles = {
     optionsMenuDivider: "#F0F0F0",
     optionsMenuBoxShadow: "rgba(49, 50, 51, 0.25)",
     optionsMenuColor: "#818197",
-    
+
 
 
 

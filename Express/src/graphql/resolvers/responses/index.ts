@@ -1,8 +1,9 @@
 import responses from './responses.q';
 import addParticipant from './addParticipant.m';
 import removeDocument from './removeDocument.m';
-import updateQuestions from './updateQuestions.m';
 import removeParticipant from './removeParticipant.m';
+import renewResponse from './renewResponse.m';
+import updateResponseQuestions from './updateResponseQuestions.m';
 
 const responsesResolvers = {
   Query: {
@@ -12,7 +13,8 @@ const responsesResolvers = {
     addParticipant,
     removeParticipant,
     removeDocument,
-    updateQuestions,
+    renewResponse,
+    updateResponseQuestions,
   },
 };
 
@@ -58,6 +60,7 @@ export const responsesTypeDefs = `
     lastRenewalDate: Date
     nextRenewalDate: Date
     status: String!
+    published: Boolean!
     complianceItemId: ID!
     complianceItem: ComplianceItem
     businessUnit: BusinessUnit
@@ -111,7 +114,8 @@ export const responsesMutationDefs = `
   addParticipant(responseParticipantModify: ResponseParticipantModify!): Response!
   removeParticipant(responseParticipantRemove: ResponseParticipantRemove!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
-  updateQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
+  renewResponse(_id: ID!): Response!
+  updateResponseQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
 `;
 
 export default responsesResolvers;

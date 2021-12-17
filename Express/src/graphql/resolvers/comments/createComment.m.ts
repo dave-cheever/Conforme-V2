@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Comments, Responses } from "app-models";
 import { genMetatags, isPermitted, mentionParser } from "app-utils";
-import { sendMentionedEmail } from "src/services/email";
+import { EmailService } from "app-services";
 
 const createComment = async (_, { commentInput }, { authorize, organization }) => {
     try {
@@ -27,7 +27,7 @@ const createComment = async (_, { commentInput }, { authorize, organization }) =
       const mentionedUserIds = mentionParser(newComment.text);
 
       if(mentionedUserIds?.length > 0){
-        sendMentionedEmail({userIds: mentionedUserIds,organization, message: newComment.text });
+        EmailService.sendMentionedEmail({userIds: mentionedUserIds,organization, message: newComment.text });
       }
   
       return newComment;

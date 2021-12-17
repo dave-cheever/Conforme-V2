@@ -19,28 +19,23 @@ const commentSchema = new Schema<IComment, ICommentModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-commentSchema.statics.customFind = async function (
-  _id: string
-): Promise<IComment[]> {
+commentSchema.statics.customFind = async function (_id: string): Promise<IComment[]> {
   const comments = await this.find({
     responseId:_id,
     "metatags.removedAt": { $eq: null },
-  });
-  
-  return comments.map((comment) => comment._doc);
+  }).lean();
+  return comments;
 };
 
-commentSchema.statics.customFindById = async function (
-  _id: string
-): Promise<IComment> {
+commentSchema.statics.customFindById = async function (_id: string): Promise<IComment> {
   const comment = await this.findOne({
     _id,
     "metatags.removedAt": { $eq: null },
-  });
+  }).lean();
   if (!comment) {
     throw new Error("Comment not found");
   }
-  return comment._doc;
+  return comment;
 };
 
 const commentModel = model<IComment, ICommentModel>('Comment', commentSchema);
