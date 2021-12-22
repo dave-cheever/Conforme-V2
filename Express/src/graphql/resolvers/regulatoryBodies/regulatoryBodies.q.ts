@@ -3,13 +3,13 @@ import { GraphQLResolveInfo } from 'graphql';
 import { RegulatoryBodies, Responses } from "app-models";
 import { doesPathExist, join } from 'app-utils';
 
-const regulatoryBodies = async (_, __, ___, info: GraphQLResolveInfo) => {
+const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, [
     'regulatoryBodies',
     element,
   ]);
   try {
-    let regulatoryBodies = await RegulatoryBodies.customFind();
+    let regulatoryBodies = await RegulatoryBodies.customFind({}, organization._id);
     
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const regulatoryBody of regulatoryBodies) {

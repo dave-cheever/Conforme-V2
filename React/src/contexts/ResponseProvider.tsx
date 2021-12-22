@@ -99,7 +99,7 @@ export const useResponseContext = () => {
 const ResponseProvider = (props: any) => {
   const { id }: { id: string } = useParams();
   const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQuery: { _id: id } } });
-  const [getParticipants, { data: participantsData, }] = useLazyQuery(GET_PARTICIPANTS);
+  const [getParticipants, { data: participantsData,loading:participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
@@ -137,7 +137,8 @@ const ResponseProvider = (props: any) => {
     isRenewalOpen, handleRenewalOpen, handleRenewalClose,
     isDueDateOpen, handleDueDateOpen, handleDueDateClose,
     getUpdatedDisplayName,
-    getParticipantDetailById
+    getParticipantDetailById,
+    participantsLoading
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     loading,
     response,
@@ -146,6 +147,7 @@ const ResponseProvider = (props: any) => {
     isConfirmationOpen,
     isRenewalOpen,
     isDueDateOpen,
+    participantsLoading
   ]);
 
   return (

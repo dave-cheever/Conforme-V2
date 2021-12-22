@@ -19,5 +19,5 @@ export {
   RegulatoryBodies,
   Responses,
   Settings,
-  Users,
+  Users
 };

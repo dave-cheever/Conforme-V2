@@ -29,6 +29,7 @@ const GET_RESPONSES = gql`
       _id
       nextRenewalDate
       status
+      responsibleId
       complianceItem {
         name
         category {

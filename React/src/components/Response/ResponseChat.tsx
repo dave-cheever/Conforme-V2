@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState }  from 'react';
-import {Avatar,Box, Flex, Text,useToast  } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Avatar, Box, Flex, SkeletonCircle, Text, useToast } from '@chakra-ui/react';
 import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
@@ -53,7 +53,7 @@ const ResponseChat = () => {
   const [deleteFunction] = useMutation(DELETE_COMMENT);
   const [comments, setComments] = useState<IComment[]>([]);
   const { user } = useAppContext();
-  const { users } = useResponseContext();
+  const { users, participantsLoading } = useResponseContext();
   const divRef: any = useRef()
 
   const scrollToBottom = () => {
@@ -89,7 +89,7 @@ const ResponseChat = () => {
     if (!isFormValid) {
       return;
     }
-    
+
     try {
       if (Object.keys(errors).length === 0) {
         const text = getValues();
@@ -122,40 +122,42 @@ const ResponseChat = () => {
       });
     }
   }
-  
+
   return (
-    <Box w="330px" h="full" pl="25px" display={["none","none","block"]}>
+    <Box w="330px" h="full" pl="25px" display={["none", "none", "block"]}>
       <Flex alignItems="center" flexDirection="column">
         <Text color="responseChat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">Chat</Text>
-        <Flex mb={2} w="full" justify="center">
-          {users.slice(0, 3).map((user, i) => {
-            return (
-              <Avatar
-                key={i}
-                rounded='full'
-                borderWidth={0}
-                size="sm"
-                src={user?.imgUrl}
-                name={user?.displayName}
-                mr={users.length > 1 ? "10px" : ""}
-              />
-            )
-          })}
-          {users.length > 3 && (
-            <Flex
-              bg="responseChat.image.bg"
-              color="responseChat.image.color"
-              fontSize="smm"
-              fontWeight="bold"
-              w="32px"
-              rounded="full"
-              align="center"
-              justify="center"
+        {participantsLoading ? <SkeletonCircle size="32px" mb={2} /> :
+          <Flex mb={2} w="full" justify="center">
+            {users.slice(0, 3).map((user, i) => {
+              return (
+                <Avatar
+                  key={i}
+                  rounded='full'
+                  borderWidth={0}
+                  h="32px"
+                  w="32px"
+                  src={user?.imgUrl}
+                  name={user?.displayName}
+                  mr={users.length > 1 ? "10px" : ""}
+                />
+              )
+            })}
+            {users.length > 3 && (
+              <Flex
+                bg="responseChat.image.bg"
+                color="responseChat.image.color"
+                fontSize="smm"
+                fontWeight="bold"
+                w="32px"
+                rounded="full"
+                align="center"
+                justify="center"
               >
-              +{users.length - 3}
-            </Flex>
-          )}
-        </Flex>
+                +{users.length - 3}
+              </Flex>
+            )}
+          </Flex>}
       </Flex>
       <Flex
         h="calc(100vh - 280px)"
@@ -188,8 +190,9 @@ const ResponseChat = () => {
             alignSelf="flex-end"
             bottom="0"
             w='full'
+            h="full"
           >
-            {loading && <Loader />}
+            {loading && <Loader size="md" center={true} />}
             {comments.map((comment, i) =>
               user?._id === comment?.authorId ?
                 <ResponseChatSent key={comment._id} isLast={comments.length === i + 1} onAction={deleteComment} {...comment} /> :
@@ -226,7 +229,7 @@ export const responseChatStyles = {
       color: "#ffffff"
     }
   },
-  mentionListItem:{
+  mentionListItem: {
     color: "#818197",
     hoverColor: "#282F36"
   }

@@ -1,20 +1,47 @@
 import { useMemo } from "react";
-import { Box, Button, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Skeleton, Text, Tooltip } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import { format } from "date-fns";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-import { Building, LocationIcon, UploadedTick } from "../../icons";
+import { LocationIcon, UploadedTick } from "../../icons";
 import { responseStatuses } from "../../hooks/useResponseUtils";
 import { IResponse } from "../../interfaces/IResponse";
 import useResponseUtils from "../../hooks/useResponseUtils";
+import { gql, useQuery } from "@apollo/client";
+import { IUser } from "../../interfaces/IUser";
 
-const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
+const GET_USERS_BY_ID = gql`
+  query ($userQueryInput: UserQueryInput) {
+    usersById(userQueryInput: $userQueryInput) {
+      _id
+      displayName
+      imgUrl
+    }
+  }
+`;
+
+
+const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const history = useHistory();
   const { getStatus, getRenewalStatus } = useResponseUtils();
-  const responseStatus = useMemo(() => getStatus(response), 
+  const responseStatus = useMemo(() => getStatus(response),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [response]);
+
+
+  const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID,
+    {
+      variables: {
+        userQueryInput: { usersIds: response?.responsibleId || [] },
+      },
+    }
+  );
+
+  const responsible: IUser =
+    responseResponsible &&
+    responseResponsible?.length !== 0 &&
+    responseResponsible[0];
 
   return (
     <Box
@@ -49,36 +76,17 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
         </Flex>
         <Flex align='center'>
           {response?.evidence?.find(({ uploaded }) => uploaded === undefined) ?
-            <UploadedTick color='complianceSquare.crossIcon'/> :
+            <UploadedTick color='complianceSquare.crossIcon' /> :
             <><Flex fontSize="11px" color='complianceSquare.tickIcon' >Uploaded</Flex><UploadedTick color='complianceSquare.tickIcon' ml={2} /></>
           }
         </Flex>
       </Flex>
       <Flex h='52px' w='full' mt={2} align='center' position='relative'>
-      <Tooltip label={response.complianceItem?.name}>
-      <Image
-        flexShrink={0}
-        rounded='full'
-        fit='cover'
-        h='24px'
-        bg='complianceSquare.imageBg'
-        w='24px'
-        color='complianceSquare.fontColor'
-        src={`${response.businessUnit?.imgUrl}`}
-        fallback={
-          <Flex
-            align='center'
-            justify='center'
-            bg='complianceSquare.imageBg'
-            h='36px'
-            w='36px'
-            rounded='md'
-            color='complianceSquare.fontColor'
-            flexShrink={0}
-          >
-            <Building h='18px' w='18px' color='complianceSquare.fontColor' />
-          </Flex>} />
-        </Tooltip>
+        <Skeleton rounded="full" isLoaded={!responsibleLoading}>
+          <Tooltip label={responsible?.displayName}>
+            <Avatar boxSize="24px" size="sm" cursor="pointer" name={responsible?.displayName} src={responsible?.imgUrl} />
+          </Tooltip>
+        </Skeleton>
         <Text
           w='full'
           fontSize='16px'
@@ -93,14 +101,14 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
       </Flex>
       <Flex h='40px' w='full' align='center'>
         <LocationIcon color='complianceSquare.businessUnitFontColor' />
-        <Box 
-          w='200px' 
-          pl={3} 
-          lineHeight='20px' 
+        <Box
+          w='200px'
+          pl={3}
+          lineHeight='20px'
           color='complianceSquare.businessUnitFontColor'
-          fontSize='14px' 
-          overflow='hidden' 
-          textOverflow='ellipsis' 
+          fontSize='14px'
+          overflow='hidden'
+          textOverflow='ellipsis'
           whiteSpace='nowrap'
         >
           {response.businessUnit?.name}
@@ -133,15 +141,15 @@ const ComplianceItemSquare = ({ response }: {response: IResponse}) => {
         </Box>
       </Flex>
       <Flex pt="50px" w="full" align='center' justify="space-between">
-        <Button 
+        <Button
           bg={responseStatus === "nonCompliant" ? "complianceSquare.nonCompliant" : "complianceSquare.buttonBg"}
-          fontSize="11px" 
-          rightIcon={<ChevronRightIcon color={responseStatus === "nonCompliant" ? "white" : "complianceSquare.fontColor"} boxSize="20px"/>} 
+          fontSize="11px"
+          rightIcon={<ChevronRightIcon color={responseStatus === "nonCompliant" ? "white" : "complianceSquare.fontColor"} boxSize="20px" />}
           color={responseStatus === "nonCompliant" ? "white" : "complianceSquare.fontColor"}
           w="85px" h="28px"
-          _hover={{bg: responseStatus === "nonCompliant" ? "complianceSquare.nonCompliant" : "complianceSquare.buttonBg"}}
+          _hover={{ bg: responseStatus === "nonCompliant" ? "complianceSquare.nonCompliant" : "complianceSquare.buttonBg" }}
           onClick={() => history.push(`/compliance-item/${response._id}`)}>
-            Details
+          Details
         </Button>
         <Flex align="center" justify="center" flexDirection="column" color='complianceSquare.nameFontColor'>
           <Box fontSize="11px" fontWeight="700">

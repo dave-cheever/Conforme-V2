@@ -1,11 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { IBaseWithName } from 'app-interfaces';
 import { RegulatoryBodies } from 'app-models';
 import { genMetatags, isPermitted } from 'app-utils';
 
-
-const createRegulatoryBody = async (_, { name }, { authorize }) => {
+const createRegulatoryBody = async (_, { name }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -16,6 +14,7 @@ const createRegulatoryBody = async (_, { name }, { authorize }) => {
     const newRegulatoryBody = {
       _id: uuidv4(),
       name,
+      organizationId: organization._id,
       metatags: genMetatags('added', user._id),
     };
 

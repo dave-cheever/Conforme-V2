@@ -8,6 +8,7 @@ import { genMetatags } from "app-utils";
 const CategorySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,
   name: String,
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -31,9 +32,10 @@ CategorySchema.statics.customFindById = async function (_id: string): Promise<IB
   return category;
 };
 
-CategorySchema.statics.customFind = async function (selector: any = {}): Promise<IBaseWithName[]> {
+CategorySchema.statics.customFind = async function (selector: any = {}, organizationId): Promise<IBaseWithName[]> {
   const categories = await this.find({
     ...selector,
+    organizationId,
     "metatags.removedAt": { $eq: null },
   }).lean();
   return categories;

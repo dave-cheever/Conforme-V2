@@ -546,22 +546,6 @@ const getTheme = (organizationTheme?: any) => {
           placeholder: '#CBCCCD',
           error: '#E53E3E',
         },
-        switch: {
-          enableColor: "#282F36",
-          disableColor: "#818197",
-          color: {
-            50: '#ede9ff',
-            100: '#c9bff7',
-            200: '#a596ea',
-            300: '#816ce1',
-            400: '#5d42d7',
-            500: '#c9bff7',
-            600: '#342094',
-            700: '#24166b',
-            800: '#150d42',
-            900: '#07041c',
-          }
-        }
       },
       response: {
         leftNavigation: {

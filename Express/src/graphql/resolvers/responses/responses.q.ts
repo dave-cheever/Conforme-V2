@@ -2,16 +2,19 @@ import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
 import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
 import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, intervalToDuration } from "date-fns";
-import { GraphService } from "app-services";
 
-const responses = async (_, { responsesQuery }, { authorize }, info: any) => {
+const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
     'responses',
     ...elements,
   ]);
   try {
     const user = authorize();
-    const pipeline: any[] = [];
+    const pipeline: any[] = [{
+      $match: {
+        organizationId: organization._id
+      },
+    }];
 
     // Filter by response id
     if (responsesQuery?._id) {

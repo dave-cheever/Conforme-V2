@@ -6,7 +6,7 @@ import { doesPathExist, join } from "app-utils";
 const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
   try {
-    let businessUnits = await BusinessUnits.customFind();
+    let businessUnits = await BusinessUnits.customFind({}, organization._id);
 
     if (shouldJoin("complianceItemsResponsesCount")) {
       for (const businessUnit of businessUnits) {

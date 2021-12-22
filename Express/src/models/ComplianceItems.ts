@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { model, Schema } from 'mongoose';
 import { isEqual } from 'date-fns';
 
-import { IComplianceItem, IComplianceItemModel, IResponse } from 'app-interfaces';
+import { IComplianceItem, IComplianceItemModel, IOrganization, IResponse } from 'app-interfaces';
 import { BusinessUnits, Responses } from 'app-models';
 import { genMetatags } from 'app-utils';
 
@@ -16,6 +16,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   frequency: String,
   businessUnitsIds: [String],
   evidenceItems: [String],
+  organizationId: String,
   questions: [{
     _id: false,
     type: {
@@ -76,9 +77,11 @@ complianceItemSchema.statics.customGenerateReference = async function (): Promis
 complianceItemSchema.methods.customSynchronizeResponses = async function ({
   userId,
   prevDueDate,
+  organization
 }: {
   userId: string,
   prevDueDate?: Date,
+  organization: IOrganization
 }) {
   const responses = await Responses.customFind({ complianceItemId: this._id });
   const unprocessedBusinessUnitsIds = [...this.businessUnitsIds];
@@ -210,6 +213,7 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
       evidence: this.evidenceItems.map(name => ({ name })),
       questions: this.questions,
       metatags: genMetatags('added', userId),
+      organizationId: organization._id
     });
   }
 };

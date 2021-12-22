@@ -7,6 +7,7 @@ export interface IBusinessUnit extends IBase {
   region: string;
   ownerId: string;
   imgUrl?: string;
+  organizationId: string;
   
   // Additional fields - can be added when getting from database
   complianceItemsResponsesCount?: number;

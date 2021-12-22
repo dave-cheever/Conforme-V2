@@ -5,6 +5,7 @@ import { IBaseWithName, IBaseWithNameModel } from 'app-interfaces';
 const regulatoryBodySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,
   name: String,
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -28,9 +29,10 @@ regulatoryBodySchema.statics.customFindById = async function (_id: string): Prom
   return regulatoryBody;
 }
 
-regulatoryBodySchema.statics.customFind = async function (selector: any = {}): Promise<IBaseWithName[]> {
+regulatoryBodySchema.statics.customFind = async function (selector: any = {}, organizationId): Promise<IBaseWithName[]> {
   const regulatoryBodies = await this.find({
     ...selector,
+    organizationId,
     "metatags.removedAt": { $eq: null },
   }).lean();
   return regulatoryBodies;

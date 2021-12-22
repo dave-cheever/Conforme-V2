@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Categories } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const createCategory = async (_, { name }, { authorize }) => {
+const createCategory = async (_, { name }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -14,6 +14,7 @@ const createCategory = async (_, { name }, { authorize }) => {
     const newCategory = {
       _id: uuidv4(),
       name,
+      organizationId: organization._id,
       metatags: genMetatags("added", user._id),
     };
 

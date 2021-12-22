@@ -14,6 +14,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
   followersIds: [String],
   lastRenewalDate: Date,
   nextRenewalDate: Date,
+  organizationId: String,
   status: String,
   published: Boolean,
   evidence: [{

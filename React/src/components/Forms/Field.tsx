@@ -9,7 +9,8 @@ import {
   Textarea,
   TextConfirmInput,
   TextMultilineConfirmInput,
-  TextInput
+  TextInput,
+  Toggle,
 } from './index';
 import { IField } from '../../interfaces/IField';
 
@@ -49,6 +50,9 @@ const Field = ({ control, ...field }) => {
     }
     case 'switch': {
       return <Switch key={name} {...props} />
+    }
+    case 'toggle': {
+      return <Toggle key={name} {...props} />
     }
     case 'checkbox': {
       return <Checkbox key={name} {...props} />;

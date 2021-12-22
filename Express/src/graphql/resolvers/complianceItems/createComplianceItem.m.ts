@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const createComplianceItem = async (_, { complianceItemInput }, { authorize }) => {
+const createComplianceItem = async (_, { complianceItemInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -16,6 +16,7 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize }) =
       _id: uuidv4(),
       ...complianceItemInput,
       reference,
+      organizationId:organization._id,
       metatags: genMetatags("added", user._id),
     };
 
@@ -24,6 +25,7 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize }) =
     // @ts-ignore
     complianceItem.customSynchronizeResponses({
       userId: user._id,
+      organization
     });
 
     return newComplianceItem;

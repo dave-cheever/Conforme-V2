@@ -27,4 +27,6 @@ export interface IResponseContext {
   isDueDateOpen: boolean,
   handleDueDateOpen: () => void,
   handleDueDateClose: () => void,
+
+  participantsLoading: boolean,
 }

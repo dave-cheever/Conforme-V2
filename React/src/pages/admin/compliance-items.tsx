@@ -117,12 +117,7 @@ const ComplianceItemsAdmin = () => {
         breadcrumbs={["Admin", "Compliance items"]}
         mobileBreadcrumbs={["Compliance items"]}
       />
-      {loading ? (
-        <Box mt={20}>
-          <Loader />
-        </Box>
-      ) : (
-        <Box p="0 25px 30px 30px" h='calc(100vh - 160px)' overflow="auto" rounded="10px">
+        <Box p="0 25px 30px 30px" h='calc(100vh - 160px)' overflow="auto">
           <Box w="100%" h={['calc(100% - 125px)', 'calc(100% - 35px)']}>
             <AdminTableHeader>
               <AdminTableHeaderElement w={["80%", "calc(100% / 4)"]} label="Compliance items" />
@@ -138,8 +133,9 @@ const ComplianceItemsAdmin = () => {
                 </>
               }
             </AdminTableHeader>
-            <Stack h="100%" bg="white" borderBottomRadius="10px" overflow="auto">
-              {complianceItems.map(complianceItem => (
+            <Stack h="100%" bg="white" borderBottomRadius="20px" overflow="auto">
+              {loading ? <Loader center={true}/>: 
+              complianceItems.map(complianceItem => (
                 <Flex
                   key={complianceItem._id}
                   flexShrink={0}
@@ -194,7 +190,6 @@ const ComplianceItemsAdmin = () => {
             </Stack>
           </Box>
         </Box>
-      )}
     </>
   );
 };

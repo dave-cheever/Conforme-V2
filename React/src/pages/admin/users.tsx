@@ -7,10 +7,10 @@ import {
   Text
 } from "@chakra-ui/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+
 import { defaultPages } from "../../bootstrap/config";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-
 import Header from "../../components/Header";
 import Loader from "../../components/Loader";
 import useDevice from "../../hooks/useDevice";

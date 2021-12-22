@@ -54,7 +54,7 @@ export const responsesTypeDefs = `
     _id: ID!
     businessUnitId: ID!
     accountableId: ID!
-    responsibleId: ID!
+    responsibleId: ID
     contributorsIds: [ID]
     followersIds: [ID]
     lastRenewalDate: Date

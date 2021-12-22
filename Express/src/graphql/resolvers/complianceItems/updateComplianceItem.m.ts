@@ -1,7 +1,7 @@
 import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const updateComplianceItem = async (_, { complianceItemModifyInput }, { authorize }) => {
+const updateComplianceItem = async (_, { complianceItemModifyInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -38,6 +38,7 @@ const updateComplianceItem = async (_, { complianceItemModifyInput }, { authoriz
     complianceItemDocument.customSynchronizeResponses({
       userId: user._id,
       prevDueDate: complianceItem.dueDate,
+      organization
     });
 
     return updatedComplianceItem;

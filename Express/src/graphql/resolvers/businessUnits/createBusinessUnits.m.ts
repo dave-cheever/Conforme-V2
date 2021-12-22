@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { BusinessUnits } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-
-const createBusinessUnit = async (_, {businessUnitInput}, { authorize }) => {
+const createBusinessUnit = async (_, {businessUnitInput}, { authorize, organization }) => {
     try {
       const user = await authorize();
   
@@ -16,6 +15,7 @@ const createBusinessUnit = async (_, {businessUnitInput}, { authorize }) => {
         _id: uuidv4(),
         ...businessUnitInput,
         ownerId: user._id,
+        organizationId: organization._id,
         metatags: genMetatags("added", user._id),
       };
       await BusinessUnits.create(newBusinessUnit)

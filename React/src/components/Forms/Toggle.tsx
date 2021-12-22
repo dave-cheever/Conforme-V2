@@ -1,13 +1,16 @@
-import { Button } from "@chakra-ui/button"
-import { Box, Text, Flex } from "@chakra-ui/layout"
-import { Controller } from "react-hook-form"
-import useValidate from "../../hooks/useValidate"
-import { IField } from "../../interfaces/IField"
-import { DefinedValidations } from "../../interfaces/Validations"
+import React from 'react';
+import { Box, Flex, Switch as SwitchInput } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+
+import { Controller } from 'react-hook-form';
+import useValidate from '../../hooks/useValidate';
+import { IField } from '../../interfaces/IField';
+import { DefinedValidations } from '../../interfaces/Validations';
+
 
 interface IToggle extends IField {
-  placeholder?: string;
   variant?: string;
+  help?: string;
 }
 
 const definedValidations: DefinedValidations = {
@@ -18,40 +21,61 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Toggle = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: IToggle) => {
+const Toggle = ({ control, name, label, tooltip = '', variant = 'secondaryVariant', validations = {}, disabled = false, help = '' }: IToggle) => {
   const validate = useValidate(label || name, validations, definedValidations);
-
-  const RenderButton = ({ laterality, value, onchange, name }) => (
-    <Button
-      name={name}
-      color={!value ? "toggle.btn.color" : "toggle.activebtn.color"}
-      bg={!value ? "toggle.btn.bg" : "toggle.activebtn.bg"}
-      _hover={{ bg: "toggle.activebtn.bg", color: "toggle.activebtn.color" }}
-      fontWeight="bold"
-      fontSize="smm"
-      p="10px 20px"
-      onClick={() => onchange(laterality === 'left')}
-    >{laterality === 'left' ? 'Yes' : 'No'}</Button>
-  )
+  
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
       render={({ field, fieldState, formState }) => {
-        const { onChange, value } = field;
+        const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          < Box >
-            <Text fontSize="ssm" fontWeight="bold" py="10px">{label}</Text>
-            <Flex>
-              <RenderButton name={name} onchange={onChange} laterality="left" value={value} />
-              &nbsp;&nbsp;
-              <RenderButton name={name} onchange={onChange} laterality="right" value={!value} />
+          <Box w='full' id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'}>
+            {label && (
+              <Flex pt={2} align='center' justify="space-between" mb={variant !== 'secondaryVariant' ? "-32px" : 'none'}>
+                <Box
+                  color={error ? "switch.label.error" : "switch.label.normal"}
+                  fontWeight="bold"
+                  fontSize={14}
+                  position={variant !== 'secondaryVariant' ? "relative" : "static"}
+                  left={variant !== 'secondaryVariant' ? "19px" : 'none'}
+                  zIndex={1}
+                >
+                  {label}
+                  {' '}
+                  {variant === 'secondaryVariant' && help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
+                </Box>
+              </Flex>
+            )}
+            <Flex align="center" mt={3}>
+              <SwitchInput
+                  colorScheme="toogle.color"
+                  onBlur={onBlur}
+                  isChecked={value}
+                  onChange={onChange}
+                  name={name}
+                  isDisabled={disabled}
+                  css={{
+                      ".chakra-switch__thumb": {
+                          "&[data-checked]": {
+                          background: "#462AC4"
+                          }
+                      }
+                  }}
+              />
+            <Flex ml={3} fontSize="14px" fontWeight="400" mt={-1} color={value ? "toogle.enableColor" : "toogle.disableColor"}>{value ? "Enabled": "Disabled"}</Flex>
             </Flex>
-            {error && <Box fontSize={14} ml={1} color='toggle.form.textInput.error'>{error.message}</Box>}
-          </Box >
-        )
+            {error && <Box fontSize="smm" ml={1} mt={1} color='toogle.label.error'>{error.message}</Box>}
+            {tooltip && 
+            <Flex  color='toogle.tooltipColor' align='center' mt={3}>
+              <InfoOutlineIcon/>
+              <Box fontSize="11px" ml={2}>{tooltip}</Box>
+            </Flex>}
+          </Box>
+        );
       }}
     />
   );
@@ -60,19 +84,25 @@ const Toggle = ({ control, name, label, placeholder = '', tooltip = '', variant,
 export default Toggle;
 
 export const toggleStyles = {
-  toggle: {
-    btn: {
-      bg: "#F0F2F5",
-      color: "#818197"
+  toogle: {
+    label:{
+      normal: "#282F36",
+      error: "#E53E3E"
     },
-    activebtn: {
-      bg: "#462AC4",
-      color: "#ffffff"
+    enableColor: "#282F36",
+    disableColor: "#818197",
+    color: {
+      50: '#ede9ff',
+      100: '#c9bff7',
+      200: '#a596ea',
+      300: '#816ce1',
+      400: '#5d42d7',
+      500: '#c9bff7',
+      600: '#342094',
+      700: '#24166b',
+      800: '#150d42',
+      900: '#07041c',
     },
-    form: {
-      textInput: {
-        error: '#E53E3E',
-      }
-    }
+    tooltipColor: "#9A9EA1"
   }
 };

@@ -11,6 +11,7 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   region: String,
   ownerId: String,
   imgUrl: String,
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -32,9 +33,10 @@ businessUnitSchema.statics.customFindById = async function (_id: string): Promis
   return businessUnit;
 };
 
-businessUnitSchema.statics.customFind = async function (selector: any = {}): Promise<IBusinessUnit[]> {
+businessUnitSchema.statics.customFind = async function (selector: any = {}, organizationId): Promise<IBusinessUnit[]> {
   const businessUnits = await this.find({
     ...selector,
+    organizationId,
     "metatags.removedAt": { $eq: null },
   }).lean();
   return businessUnits;

@@ -184,19 +184,15 @@ const RegulatoryBodies = () => {
               <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" />
               <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
             </AdminTableHeader>
-            {loading ? (
-              <Box mt={20}>
-                <Loader />
-              </Box>
-            ) : (
               <Stack
                 h="full"
                 bg="white"
-                borderBottomRadius="10px"
+                borderBottomRadius="20px"
                 overflow="auto"
                 spacing="1px"
               >
-                {regulatoryBodies?.length > 0 ? (
+                {loading ? <Loader center={true} />: 
+                regulatoryBodies?.length > 0 ? (
                   regulatoryBodies?.map((regulatoryBody, i) =>
                     <AdminTableRow
                       key={regulatoryBody._id}
@@ -211,7 +207,6 @@ const RegulatoryBodies = () => {
                   </Flex>
                 )}
               </Stack>
-            )}
           </Box>
           {device === "desktop" && 
             <Flex

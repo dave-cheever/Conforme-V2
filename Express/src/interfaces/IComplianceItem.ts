@@ -12,6 +12,7 @@ export interface IComplianceItem extends IBase {
   questions?: IQuestion[];
   published: boolean;
   reference: string;
+  organizationId: string;
   
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;

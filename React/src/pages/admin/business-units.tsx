@@ -117,8 +117,8 @@ const BusinessUnits = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await createFunction({ variables: { values } });
+        await refetch();
         toast({ ...toastSuccess, description: "Business Unit added" });
-        refetch();
       } else {
         toast({
           ...toastFailed,
@@ -137,8 +137,8 @@ const BusinessUnits = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await updateFunction({ variables: { values } });
-        toast({ ...toastSuccess, description: "Business Unit updated" });
-        refetch();
+        await refetch();
+        toast({ ...toastSuccess, description: "Business Unit updated" }); 
       } else {
         toast({
           ...toastFailed,
@@ -156,8 +156,8 @@ const BusinessUnits = () => {
     try {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
+      await refetch();
       toast({ ...toastSuccess, description: "Business Unit deleted" });
-      refetch();
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
@@ -289,7 +289,7 @@ const BusinessUnits = () => {
             }
             <AdminTableHeaderElement w={["20%", "calc(70% / 4)"]} label="# of responses" />
           </AdminTableHeader>
-          <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="10px" fontSize="smm">
+          <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
             {loading ? <Loader center={true}/>: (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
               <Flex w='full' h='full' fontSize='18px' fontStyle='italic' align='center' justify="center">No business units found.</Flex>
             ))}

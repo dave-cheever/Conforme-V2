@@ -3,11 +3,11 @@ import { GraphQLResolveInfo } from "graphql";
 import { Categories, Responses } from "app-models";
 import { doesPathExist, join } from "app-utils";
 
-const categories = async (_, __, ___, info: GraphQLResolveInfo) => {
+const categories = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) =>
     doesPathExist(info.fieldNodes, ["categories", element]);
   try {
-    let categories = await Categories.customFind();
+    let categories = await Categories.customFind({}, organization._id);
 
     if (shouldJoin("complianceItemsResponsesCount")) {
       for (const category of categories) {

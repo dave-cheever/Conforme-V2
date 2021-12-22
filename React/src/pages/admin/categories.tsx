@@ -206,11 +206,6 @@ const Categories = () => {
               <AdminTableHeaderElement w={["80%", "50%"]} label="Category" />
               <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
             </AdminTableHeader>
-            {loading ? (
-              <Box mt={20}>
-                <Loader />
-              </Box>
-            ) : (
               <Stack
                 h="full"
                 bg="white"
@@ -218,7 +213,7 @@ const Categories = () => {
                 overflow="auto"
                 spacing="1px"
               >
-                {categories?.length > 0 ? (
+                {loading ? <Loader center={true}/>: categories?.length > 0 ? (
                   categories?.map((category, i) => (
                     <AdminTableRow
                       key={category._id}
@@ -233,7 +228,6 @@ const Categories = () => {
                   </Flex>
                 )}
               </Stack>
-            )}
           </Box>
           {device === "desktop" && 
             <Flex
