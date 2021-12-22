@@ -27,6 +27,7 @@ const ResponseQuestions = () => {
   const isUserPermitted = useMemo(() => isPermitted({ user, action: 'responses.edit', data: { response } }), [user, response]);
 
   const questions = (response?.questions || []).filter(({ outdated }) => !outdated);
+
   const {
     control,
     watch,
@@ -71,7 +72,10 @@ const ResponseQuestions = () => {
   }
   return (
     <Stack w="full" h="full" overflow="auto" mt={2}>
-      <Grid templateColumns="1fr" gap={4} w="40%">
+      <Grid
+        templateColumns="1fr"
+        gap={4}
+        w={['full', '80%', '50%']}>
         {questions.map(({ type, name, description, required, value }, i) => (
           <Flex key={name}>
             <Box
