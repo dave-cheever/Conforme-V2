@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   Icon,
-  Button, 
+  Button,
   Stack,
   Text,
   Box,
@@ -33,6 +33,9 @@ const QuestionsForm = () => {
     value: "text",
     label: "Text input"
   }, {
+    value: "textMultiline",
+    label: "Multiple lines of text"
+  }, {
     value: "switch",
     label: "Yes / No answer"
   }, {
@@ -41,27 +44,27 @@ const QuestionsForm = () => {
   }, {
     value: "multipleChoice",
     label: "Multiple choices"
-  }, 
-  // {
-  //   value: "singleChoice",
-  //   label: "Single choice"
-  // }, 
-  // {
-  //   value: "email",
-  //   label: "Email address"
-  // }, 
-  // {
-  //   value: "phoneNumber",
-  //   label: "Phone number"
-  // }, {
-  //   value: "url",
-  //   label: "URL"
-  // }
-  // {
-  //   value: "numeric",
-  //   label: "Numeric"
-  // }
-];
+  },
+    // {
+    //   value: "singleChoice",
+    //   label: "Single choice"
+    // }, 
+    // {
+    //   value: "email",
+    //   label: "Email address"
+    // }, 
+    // {
+    //   value: "phoneNumber",
+    //   label: "Phone number"
+    // }, {
+    //   value: "url",
+    //   label: "URL"
+    // }
+    // {
+    //   value: "numeric",
+    //   label: "Numeric"
+    // }
+  ];
 
   const addQuestion = (question: IQuestion) => {
     const questions = [...(complianceItem.questions || []), question];
@@ -74,11 +77,11 @@ const QuestionsForm = () => {
     onChange: setSelectedRadio
   })
 
-  const group = getRootProps();  
+  const group = getRootProps();
 
   return (
     <Stack w='full' spacing={4} pb={isDragging ? 'calc(65px + .5rem)' : 0}>
-      <SectionHeader label="Add questions"/>
+      <SectionHeader label="Add questions" />
       <Text fontSize='11px' color='adminComplianceItemModal.section.questions.description' opacity='0.7'>
         If you need to add any additional questions regarding this compliance item, you can use this section to create them.
       </Text>
@@ -100,27 +103,27 @@ const QuestionsForm = () => {
           bg: 'questionsModal.button.active'
         }}
         onClick={() => setIsQuestionListOpen(!isQuestionListOpen)}
-      >Add question</Button>} 
-      {isQuestionListOpen && 
-        <Box w="204px" p="20px 25px" bg="questionsModal.questionsList.bg" rounded="20px">
+      >Add question</Button>}
+      {isQuestionListOpen &&
+        <Box w="225px" p="20px 25px" bg="questionsModal.questionsList.bg" rounded="20px" textAlign="center" >
           <VStack {...group} alignItems="flex-start" mb="20px" spacing="20px">
-            {questionTypes.map(({value, label}) => {
+            {questionTypes.map(({ value, label }) => {
               const radio = getRadioProps({ value });
               return (
-                <CustomRadioButton key={value} {...radio}>
+                <CustomRadioButton key={value} {...radio} fontSize="smm">
                   {label}
                 </CustomRadioButton>
               )
             })}
           </VStack>
           <Button
-            w="154px" 
+            w="154px"
             h="40px"
             bg='questionsModal.button.bg'
             color='questionsModal.button.color'
             fontSize="smm"
             fontWeight='700'
-            rightIcon={<Icon as={OpenMenuArrow} stroke="questionsModal.button.icon" transform="rotate(270deg)"/>}
+            rightIcon={<Icon as={OpenMenuArrow} stroke="questionsModal.button.icon" transform="rotate(270deg)" />}
             _hover={{
               bg: 'questionsModal.button.hover'
             }}
@@ -166,7 +169,7 @@ export const questionsModalStyles = {
       color: "#ffffff",
       icon: "#ffffff"
     },
-    questionsList :{
+    questionsList: {
       bg: "#ffffff"
     }
   }

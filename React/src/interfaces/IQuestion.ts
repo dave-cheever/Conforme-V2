@@ -1,5 +1,5 @@
 export interface IQuestion {
-  type: 'text' | 'switch' | 'datepicker';
+  type: 'text' | 'textMultiline' | 'switch' | 'datepicker';
   name: string;
   description?: string;
   value?: string | Boolean | Date;

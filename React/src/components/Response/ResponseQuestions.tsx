@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from 'react';
 import { Stack, Box, Grid, Flex, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
-
 import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';

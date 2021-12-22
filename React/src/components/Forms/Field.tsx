@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { 
+import {
   Checkbox,
   Dropdown,
   Datepicker,
@@ -8,12 +8,13 @@ import {
   Switch,
   Textarea,
   TextConfirmInput,
+  TextMultilineConfirmInput,
   TextInput
 } from './index';
 import { IField } from '../../interfaces/IField';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip , disabled, options, validations, variant, placeholder, help } = field;
+  const { type, name, label, tooltip, disabled, options, validations, variant, placeholder, help } = field;
   const props: IField = {
     control,
     name,
@@ -30,6 +31,9 @@ const Field = ({ control, ...field }) => {
   switch (type) {
     case 'text': {
       return <TextInput key={name} {...props} />;
+    }
+    case 'textMultiline': {
+      return <TextMultilineConfirmInput key={name} {...props} />;
     }
     case 'dropdown': {
       return <Dropdown key={name} {...props} />;
@@ -51,6 +55,9 @@ const Field = ({ control, ...field }) => {
     }
     case 'textConfirmInput': {
       return <TextConfirmInput key={name} {...props} />;
+    }
+    case 'textMultilineConfirmInput': {
+      return <TextMultilineConfirmInput key={name} {...props} />;
     }
     default:
       return <div>Field not supported</div>;

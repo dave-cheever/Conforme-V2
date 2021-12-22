@@ -1,4 +1,4 @@
-import { Datepicker, Switch, TextConfirmInput } from "../Forms";
+import { Datepicker, Switch, TextConfirmInput, TextMultilineConfirmInput } from "../Forms";
 
 interface IProps {
   name: string,
@@ -8,7 +8,7 @@ interface IProps {
   required?: boolean,
   label: string,
   defaultvalue?: string,
-  styles?:object
+  styles?: object
 }
 interface IFields {
   type: string,
@@ -19,7 +19,7 @@ interface IFields {
   required?: boolean,
   label: string
   defaultvalue?: string
-  styles?:object
+  styles?: object
 }
 
 const Fields = ({
@@ -46,6 +46,9 @@ const Fields = ({
   switch (type) {
     case 'text': {
       return <TextConfirmInput  {...props} />;
+    }
+    case 'textMultiline': {
+      return <TextMultilineConfirmInput  {...props} />
     }
     case 'datepicker': {
       return <Datepicker {...props} />;

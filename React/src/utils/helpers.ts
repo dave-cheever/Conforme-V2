@@ -4,6 +4,9 @@ export const getFieldEmptyValue = (fieldType: string) => {
     case 'text': {
       return '';
     }
+    case 'textMultiline': {
+      return '';
+    }
   }
 };
 
@@ -11,6 +14,8 @@ export const questionHeader = (questionType) => {
   switch (questionType) {
     case 'text':
       return 'Text input question';
+    case 'textMultiline':
+      return 'Multiline Text input question';
     case 'switch':
       return 'Yes / No question';
     case 'datepicker':

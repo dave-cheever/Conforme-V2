@@ -5,6 +5,7 @@ import NumberInput from './NumberInput';
 import Switch from './Switch';
 import Textarea from './Textarea';
 import TextConfirmInput from './TextConfirmInput';
+import TextMultilineConfirmInput from './TextMultilineConfirmInput';
 import TextInput from './TextInput';
 import Toggle from './Toggle';
 
@@ -16,6 +17,7 @@ export {
   Switch,
   Textarea,
   TextConfirmInput,
+  TextMultilineConfirmInput,
   TextInput,
   Toggle,
 };
