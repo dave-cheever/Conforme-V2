@@ -7,7 +7,7 @@ import useDevice from "../hooks/useDevice";
 
 const DefaultLayout = ({ component: Component }: { component: any }) => {
   const device = useDevice();
-  
+
   return (
     <Flex minH='100vh'>
       <NavigationLeft />
@@ -18,14 +18,14 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
         position="relative"
       >
         <NavigationTop />
-        <Flex 
-          flexDirection="column" 
-          bg="layout.bg" position="absolute" 
+        <Flex
+          flexDirection="column"
+          bg="layout.bg" position="absolute"
           top="80px" w="full"
-          overflow="auto" 
+          overflow="auto"
           h="calc(100vh - 80px)"
-          >
-            <Component />
+        >
+          <Component />
         </Flex>
         {device === "mobile" && <NavigationBottomMobile />}
       </Flex>

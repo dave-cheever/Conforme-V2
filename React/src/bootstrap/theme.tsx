@@ -178,6 +178,7 @@ const getTheme = (organizationTheme?: any) => {
       ...responseQuestionsStyles,
       ...shareModalStyles,
       ...settingsTabItemStyles,
+      ...shareModalStyles,
       ...subSectionStyles,
       ...summaryItemModalStyles,
       ...summaryModalStyles,

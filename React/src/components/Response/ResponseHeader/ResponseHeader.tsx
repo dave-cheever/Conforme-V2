@@ -10,7 +10,6 @@ import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 
-
 const ReasponseHeader = () => {
   const { response, handleRenewalOpen } = useResponseContext();
   const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();

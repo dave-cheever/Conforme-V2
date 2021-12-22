@@ -40,7 +40,8 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           w={["full", "calc(100% - 80px)", "calc(100% - 240px)"]}
           overflow="auto"
           h={["calc(100vh - 140px)", "calc(100vh - 80px)"]}
-          mt={["80px", 0]}
+          mt={["65px", 0]}
+          pt={["25px", 0]}
           zIndex={4}
         >
           <ShareModal />
@@ -48,12 +49,12 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           <Flex w="full" h="full" px="25px">
             <Flex
               flexDirection="column"
-              minH={["calc(100vh - 200px)","calc(100vh - 200px)"]}
+              minH={["calc(100vh - 200px)", "calc(100vh - 200px)"]}
               maxH={["none", "calc(100vh - 200px)"]}
               w="full"
               h="full"
               pb="25px"
-              pt={["40px","0px"]}
+              pt={["40px", "0px"]}
             >
               <Component />
             </Flex>
