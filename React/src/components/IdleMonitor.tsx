@@ -12,9 +12,11 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
+import { differenceInSeconds, parseISO } from 'date-fns';
+import addHours from 'date-fns/addHours';
 
 import { toastFailed } from '../bootstrap/config';
-import { differenceInSeconds, parseISO } from 'date-fns';
 import useSession from '../hooks/useSession';
 import { useAppContext } from '../contexts/AppProvider';
 
@@ -29,7 +31,8 @@ let idleLogoutEvent: NodeJS.Timeout;
 
 const IdleMonitor = () => {
   const toast = useToast();
-  const { setUser } = useAppContext();
+  const history = useHistory();
+  const { user, setUser } = useAppContext();
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(timeBeforeSessionEnds);
   const refetch = useSession();
@@ -104,13 +107,23 @@ const IdleMonitor = () => {
     }
   }, [modalIsOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const logout = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
+  const logout = async () => {
+    await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
       credentials: 'include',
       mode: 'no-cors',
     });
+
+    // logOut user is expired after 24 hours
+    const logOutUser = {
+      displayName: user?.displayName,
+      imgUrl: user?.imgUrl,
+      firstName: user?.firstName,
+      expiresAt: addHours(new Date(), 24)
+    }
+    await localStorage.setItem("logOutUser",JSON.stringify(logOutUser));
     setUser(null);
-  };
+    history.push("/logout");
+};
 
   return (
     <Modal isOpen={modalIsOpen} onClose={() => { }}>
