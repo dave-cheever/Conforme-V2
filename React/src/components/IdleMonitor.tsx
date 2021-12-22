@@ -84,11 +84,6 @@ const IdleMonitor = () => {
         }
         idleLogoutEvent = setTimeout(async () => {
           await logout();
-          toast({
-            ...toastFailed,
-            title: "Signed out",
-            description: "You have been signed out due to inactivity. Please login again.",
-          });
         }, timeToLogout * 1000);
       }
     }
