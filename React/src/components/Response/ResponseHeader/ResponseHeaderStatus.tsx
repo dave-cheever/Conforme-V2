@@ -32,9 +32,9 @@ const ResponseHeaderStatus = ({ heading, status }) => {
       direction="column"
       align="left"
       spacing='3px'
-      w={["max-content","max-content"]}
-      pr={["0","30"]}
-      alignItems={["start","start"]}
+      w={["max-content", "max-content"]}
+      pr={["0", "30"]}
+      alignItems={["start", "start"]}
     >
       <Flex fontStyle="normal" fontWeight="semi_medium" fontSize="ssm" lineHeight="16px" color="responseHeaderStatus.heading">{heading}</Flex>
       <Stack
@@ -44,7 +44,7 @@ const ResponseHeaderStatus = ({ heading, status }) => {
         pr="10px"
       >
         {renderIcon()}
-        <Text fontStyle="normal" fontWeight="bold" fontSize="ssm" lineHeight="20px" color={color}>{status}</Text>
+        <Text fontStyle="normal" fontWeight="bold" fontSize="smm" lineHeight="20px" color={color}>{status}</Text>
       </Stack>
     </VStack>
   );
