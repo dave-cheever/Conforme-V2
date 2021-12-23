@@ -4,9 +4,7 @@ import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 import MessageInput from "./MessageInput";
-import ResponseChatRecieved from "./ResponseChatRecieved";
-import ResponseChatSent from "./ResponseChatSent";
-import { useAppContext } from "../../contexts/AppProvider";
+import ResponseChatSent from "./ResponseChatItem";
 import { useResponseContext } from "../../contexts/ResponseProvider";
 import { IComment } from "../../interfaces/IComment";
 import { toastFailed } from "../../bootstrap/config";
@@ -52,7 +50,6 @@ const ResponseChat = () => {
   const [createFunction] = useMutation(CREATE_COMMENT);
   const [deleteFunction] = useMutation(DELETE_COMMENT);
   const [comments, setComments] = useState<IComment[]>([]);
-  const { user } = useAppContext();
   const { users, participantsLoading } = useResponseContext();
   const divRef: any = useRef()
 
@@ -193,11 +190,7 @@ const ResponseChat = () => {
             h="full"
           >
             {loading && <Loader size="md" center={true} />}
-            {comments.map((comment, i) =>
-              user?._id === comment?.authorId ?
-                <ResponseChatSent key={comment._id} isLast={comments.length === i + 1} onAction={deleteComment} {...comment} /> :
-                <ResponseChatRecieved {...comment} key={comment._id} />
-            )}
+            {comments.map((comment) => <ResponseChatSent key={comment._id}  onAction={deleteComment} comment={comment}/>)}
           </Flex>
         </Flex>
         <MessageInput

@@ -33,7 +33,7 @@ const ChatMention = ({ tag }) => {
       <Text
         display="inline"
         cursor="pointer"
-        color="responseChatSent.mentionColor"
+        color="chatMention.mentionColor"
       >
         {displayTag}
       </Text>
@@ -47,6 +47,7 @@ export const chatMentionStyles = {
       bg: 'white',
       color: 'black',
     },
+    mentionColor: "#FF9A00"
   },
 };
 

@@ -50,9 +50,8 @@ import { questionsModalStyles } from "../components/AdminComplianceItemModal/Que
 import { questionMultiChoiceFormStyles } from "../components/Questions/QuestionMultiChoiceForm";
 import { questionSimpleFormStyles } from "../components/Questions/QuestionSimpleForm";
 import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
-import { responseChatRecievedStyles } from "../components/Response/ResponseChatRecieved";
 import { responseChatStyles } from "../components/Response/ResponseChat";
-import { responseChatSentStyles } from "../components/Response/ResponseChatSent";
+import { responseChatItemStyles } from "../components/Response/ResponseChatItem";
 import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
 import { responseHeaderStyles } from "../components/Response/ResponseHeader/ResponseHeader";
 import { responseHeaderStatusStyles } from "../components/Response/ResponseHeader/ResponseHeaderStatus";
@@ -166,8 +165,7 @@ const getTheme = (organizationTheme?: any) => {
       ...questionMultiChoiceFormStyles,
       ...questionSimpleFormStyles,
       ...regulatoryBodiesStyles,
-      ...responseChatRecievedStyles,
-      ...responseChatSentStyles,
+      ...responseChatItemStyles,
       ...responseChatStyles,
       ...responseLeftNavigationStyles,
       ...responseHeaderMenuItemStyles,
