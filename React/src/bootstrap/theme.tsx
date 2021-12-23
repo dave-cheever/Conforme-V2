@@ -23,7 +23,7 @@ import { complianceListItemsStyles } from "../components/ComplianceItem/Complian
 import { customRadioButtonStyles } from "../components/CustomRadioButton";
 import { datepickerStyles } from "../components/Forms/Datepicker";
 import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
-import { dropdownStyles } from '../components/Forms/Dropdown';
+import { dropdownStyles } from "../components/Forms/Dropdown";
 import { emailTemplateStyles } from "../components/Settings/EmailTemplate";
 import { emailTemplatesStyles } from "../components/Settings/EmailTemplates";
 import { evidenceStyles } from "../components/Response/Evidence";
@@ -41,6 +41,7 @@ import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLef
 import { navigationMobileModalStyles } from "../components/AdminComplianceItemModal/NavigationMobileModal";
 import { navigationModalStyles } from "../components/AdminComplianceItemModal/NavigationModal";
 import { navigationTopStyles } from "../components/NavigationTop";
+import { peoplePickerStyles } from "../components/Forms/PeoplePicker";
 import { questionEmailFormStyles } from "../components/Questions/QuestionEmailForm";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
 import { questionListElementStyles } from "../components/Questions/QuestionListElement";
@@ -156,6 +157,7 @@ const getTheme = (organizationTheme?: any) => {
       ...navigationMobileModalStyles,
       ...navigationModalStyles,
       ...navigationTopStyles,
+      ...peoplePickerStyles,
       ...questionEmailFormStyles,
       ...questionFormStyles,
       ...questionListElementStyles,

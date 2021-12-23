@@ -13,6 +13,7 @@ import { ArrowCount } from "../../icons";
 import { IBusinessUnit } from "../../interfaces/IBusinessUnit";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
+import PeoplePicker from "../../components/Forms/PeoplePicker";
 import useDevice from "../../hooks/useDevice";
 
 const GET_BUSINESS_UNITS = gql`
@@ -51,12 +52,14 @@ const DELETE_BUSINESS_UNIT = gql`
   }
 `;
 
+
+
 const defaultValues: Partial<IBusinessUnit> = {
   _id: undefined,
   name: "",
   type: "",
   region: "",
-  ownerId: "uuid"
+  ownerId: ""
 };
 
 const BusinessUnits = () => {
@@ -201,11 +204,11 @@ const BusinessUnits = () => {
       boxShadow="sm"
       flexShrink={0}
     >
-      <Flex 
-        w={["80%", '30%']} 
+      <Flex
+        w={["80%", '30%']}
         flexDir="column"
-        pl={1} 
-        mr={4} 
+        pl={1}
+        mr={4}
         cursor="pointer"
         onClick={() => openBusinessUnitModal('edit', businessUnit)}
       >
@@ -216,7 +219,7 @@ const BusinessUnits = () => {
         >{businessUnit.name}</Text>
         {device === "mobile" && <Text mt="3px" fontSize="11px" color="#818197">{businessUnit?.type}</Text>}
       </Flex>
-      {device !== "mobile" && 
+      {device !== "mobile" &&
         <>
           <Box w='calc(70% / 4)'>{businessUnit?.type}</Box>
           <Box w='calc(70% / 4)'>{businessUnit?.region}</Box>
@@ -240,47 +243,53 @@ const BusinessUnits = () => {
         onAction={handleAction}
         collection={"business unit"}
       >
-        <Flex w="full" align="flex-start" direction="column">
-          <Text fontWeight="bold" fontSize="smm" pb={2}>Item attributes</Text>
-          <Stack w="full" spacing={2}>
-            <TextInput
-              name="name"
-              label="Name"
-              placeholder='Name'
-              control={control}
-              validations={{
-                notEmpty: true,
-              }}
-            />
-            <Dropdown
-              control={control}
-              name="type"
-              label="Unit Type"
-              placeholder="Select Unit Type"
-              validations={{
-                notEmpty: true,
-              }}
-              options={[{ label: "Unit Type 1", value: "unit type 1" }]}
-            />
-            <Dropdown
-              control={control}
-              name="region"
-              label="Region"
-              placeholder="Select Region"
-              validations={{
-                notEmpty: true,
-              }}
-              options={[{ label: "Head Office", value: "Head Office" }]}
-            />
-          </Stack>
-        </Flex>
+        <Stack w={device === 'mobile' ? 'full' : "calc(100% - 150px)"} spacing={2}>
+          <TextInput
+            name="name"
+            label="Name"
+            placeholder='Name'
+            control={control}
+            validations={{
+              notEmpty: true,
+            }}
+          />
+          <Dropdown
+            control={control}
+            name="type"
+            label="Unit Type"
+            placeholder="Select Unit Type"
+            validations={{
+              notEmpty: true,
+            }}
+            options={[{ label: "Unit Type 1", value: "unit type 1" }]}
+          />
+          <Dropdown
+            control={control}
+            name="region"
+            label="Region"
+            placeholder="Select Region"
+            validations={{
+              notEmpty: true,
+            }}
+            options={[{ label: "Head Office", value: "Head Office" }]}
+          />
+          <PeoplePicker
+            control={control}
+            name="ownerId"
+            label="Owner"
+            placeholder="Select"
+            validations={{
+              notEmpty: true,
+            }}
+          />
+        </Stack>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Business units"]} mobileBreadcrumbs={["Business units"]}/>
+      <Header breadcrumbs={["Admin", "Business units"]} mobileBreadcrumbs={["Business units"]} />
       <Flex h='calc(100vh - 160px)' px={["25px", 0]}>
         <Box w='full' h={['calc(100% - 170px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
             <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" />
-            {device !== "mobile" && 
+            {device !== "mobile" &&
               <>
                 <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" />
                 <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" />

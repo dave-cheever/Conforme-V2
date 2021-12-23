@@ -6,6 +6,7 @@ import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
+import { ChevronRight } from '../../icons';
 
 interface IDropdown extends IField {
   placeholder?: string;
@@ -47,7 +48,7 @@ const Dropdown = ({ control, name, stroke, label, placeholder = '', tooltip = ''
                 <Box
                   color={error ? "dropdown.labelFont.error" : "dropdown.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize="14px"
+                  fontSize="ssm"
                   position="static"
                   left='none'
                   zIndex={1}
@@ -84,6 +85,7 @@ const Dropdown = ({ control, name, stroke, label, placeholder = '', tooltip = ''
                 }}
                 placeholder={placeholder}
                 _placeholder={{ color: 'dropdown.placeholder' }}
+                icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
               >
                 {options.map(option => <option key={`${name}-${option.value}`} value={option.value}>{option.label}</option>)}
               </Select>
@@ -135,6 +137,7 @@ export const dropdownStyles = {
     error: '#E53E3E',
     tooltip: "#9A9EA1",
     icon: '#818197',
+    chevronDownIcon: '#282F36',
   },
 };
 
