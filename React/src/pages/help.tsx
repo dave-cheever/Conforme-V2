@@ -13,19 +13,18 @@ const Help = () => {
   },[]);
 
   return (
-    <Flex flexDirection="column" h="full" w="full" mt={["60px","0px"]}>
+    <Flex flexDirection="column" h="full" w="full" overflow="auto">
       <Header breadcrumbs={["Home", "Help"]} mobileBreadcrumbs={["Help"]}/>
       <Flex
         flexDirection="column"
         bg="white"
-        h="full"
-        minH="70vh"
         maxWidth={["full","full","775px"]}
         borderRadius="20px"
         ml="7"
         p="25px 30px 25px 30px"
         mr="25px"
-        mb="25px"
+        mb={["25px","25px"]}
+        h="full"
       >
         <Text fontSize="24px" fontWeight="bold" mb="30px">
           Welcome to Tracker

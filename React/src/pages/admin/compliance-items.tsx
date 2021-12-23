@@ -117,8 +117,8 @@ const ComplianceItemsAdmin = () => {
         breadcrumbs={["Admin", "Compliance items"]}
         mobileBreadcrumbs={["Compliance items"]}
       />
-        <Box p="0 25px 30px 30px" h='calc(100vh - 160px)' overflow="auto">
-          <Box w="100%" h={['calc(100% - 125px)', 'calc(100% - 35px)']}>
+        <Box p="0 25px 30px 30px" h={["full","calc(100vh - 160px)"]} overflow="auto">
+          <Box w="100%" h={["calc(100% - 45px)", "calc(100% - 35px)"]}>
             <AdminTableHeader>
               <AdminTableHeaderElement w={["80%", "calc(100% / 4)"]} label="Compliance items" />
               {

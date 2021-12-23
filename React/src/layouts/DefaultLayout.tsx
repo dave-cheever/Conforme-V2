@@ -23,7 +23,7 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
           bg="layout.bg" position="absolute"
           top="80px" w="full"
           overflow="auto"
-          h="calc(100vh - 80px)"
+          h={["calc(100vh - 140px)","calc(100vh - 80px)"]}
         >
           <Component />
         </Flex>
