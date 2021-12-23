@@ -14,8 +14,15 @@ import { IUser } from "../../../interfaces/IUser";
 import { useAppContext } from "../../../contexts/AppProvider";
 
 const GET_USERS_BY_ID = gql`
-  query ($userQueryInput: UserQueryInput) {
-    usersById(userQueryInput: $userQueryInput) {
+  query ($responsibleQuery: UserQueryInput, $accountableQuery: UserQueryInput) {
+    responsible: usersById(userQueryInput: $responsibleQuery) {
+      _id
+      firstName
+      lastName
+      displayName
+      imgUrl
+    }
+    accountable: usersById(userQueryInput: $accountableQuery) {
       _id
       firstName
       lastName
@@ -30,15 +37,30 @@ const ResponseLeftNavigation = () => {
   const toast = useToast();
   const { organizationConfig } = useAppContext();
 
-  const {
-    showFiltersPanel
-  } = useFiltersContext();
+  const { showFiltersPanel } = useFiltersContext();
 
   const { response } = useResponseContext();
-  const { data: { usersById: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, { variables: { userQueryInput: { usersIds: response?.responsibleId || [] } } });
+  const {
+    data: {
+      accountable: responseAccountable,
+      responsible: responseResponsible,
+    } = [],
+  } = useQuery(GET_USERS_BY_ID, {
+    variables: {
+      accountableQuery: { usersIds: response?.accountableId || [] },
+      responsibleQuery: { usersIds: response?.responsibleId || [] },
+    },
+  });
 
-  const responsible: IUser = responseResponsible && responseResponsible?.length !== 0 && responseResponsible[0];
+  const accountable: IUser =
+    responseAccountable &&
+    responseAccountable?.length !== 0 &&
+    responseAccountable[0];
 
+  const responsible: IUser =
+    responseResponsible &&
+    responseResponsible?.length !== 0 &&
+    responseResponsible[0];
 
   return (
     <Flex
@@ -57,7 +79,7 @@ const ResponseLeftNavigation = () => {
           display="flex"
           alignItems="center"
           h="80px"
-          onClick={() => history.push('/')}
+          onClick={() => history.push("/")}
           cursor="pointer"
         >
           <Text
@@ -66,7 +88,9 @@ const ResponseLeftNavigation = () => {
             fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
           >
-            {showFiltersPanel ? organizationConfig?.name.charAt(0) : organizationConfig?.name}
+            {showFiltersPanel
+              ? organizationConfig?.name.charAt(0)
+              : organizationConfig?.name}
           </Text>
         </Box>
         <Flex
@@ -123,6 +147,30 @@ const ResponseLeftNavigation = () => {
         />
         <Box h="50px" mt={2}>
           <Box opacity={0.5} fontSize="11px">
+            Accountable
+          </Box>
+          <Flex align="center" fontSize="14px" minH="28px">
+            <Avatar
+              color="white"
+              bg="responseLeftNavigation.avatar"
+              name={
+                accountable && accountable.firstName && accountable.lastName
+                  ? `${accountable.firstName} ${accountable.lastName}`
+                  : `${accountable?.displayName}`
+              }
+              src={accountable && accountable.imgUrl}
+              size="xs"
+              mr={2}
+            />
+            <Flex mr={2}>
+              {accountable && accountable.firstName && accountable.lastName
+                ? `${accountable.firstName} ${accountable.lastName}`
+                : `${accountable?.displayName || "-"}`}
+            </Flex>
+          </Flex>
+        </Box>
+        <Box h="50px" mt={2}>
+          <Box opacity={0.5} fontSize="11px">
             Responsible
           </Box>
           <Flex align="center" fontSize="14px" minH="28px">
@@ -175,6 +223,6 @@ export const responseLeftNavigationStyles = {
     building: "#2B3236",
     copy: "#FF9A00",
     avatar: "#462AC4",
-    responseDetailActiveColor: "#F0F0F0"
+    responseDetailActiveColor: "#F0F0F0",
   },
 };
