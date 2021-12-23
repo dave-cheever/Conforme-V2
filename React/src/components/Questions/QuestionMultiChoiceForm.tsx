@@ -106,7 +106,21 @@ const QuestionMultiChoiceForm = ({
   }
 
   return (
-    <>
+    <Flex flexDir="column" h="full">
+      <Flex 
+        flexDir="column" h="full" 
+        overflowY="auto"
+        overflowX="hidden"
+        pb={isDragging ? 'calc(40px + .5rem)' : 0}
+        sx={{
+          '&::-webkit-scrollbar': {
+            backgroundColor: 'questionMultiChoiceForm.scrollBar.bg',
+            width: '2px'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'questionMultiChoiceForm.scrollBar.color',
+          },
+        }}>
       <Text fontWeight="bold" fontSize="smm" mb="20px">
         {questionHeader(questionType)}
       </Text>
@@ -129,20 +143,8 @@ const QuestionMultiChoiceForm = ({
         Mark the correct answers by clicking on the checkbox.
       </Text>
       <Box
-        maxH="200px"
-        overflowY="auto"
         w='calc(100% + 10px)'
         pr='10px'
-        pb={isDragging ? 'calc(40px + .5rem)' : 0}
-        sx={{
-          '&::-webkit-scrollbar': {
-            backgroundColor: 'questionMultiChoiceForm.scrollBar.bg',
-            width: '4px'
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'questionMultiChoiceForm.scrollBar.color',
-          },
-        }}
       >
         <DragDropContext
           onDragEnd={moveOptions}
@@ -185,7 +187,6 @@ const QuestionMultiChoiceForm = ({
                               value={inputValue[index]}
                               name={object.id}
                               placeholder="Option name"
-                              autoFocus
                             />
                           </Flex>
                           <Bin
@@ -217,7 +218,7 @@ const QuestionMultiChoiceForm = ({
           </Droppable>
         </DragDropContext>
       </Box>
-
+      </Flex>
       <Flex justifyContent="space-between" mt='51px'>
         <Button
           bg="questionMultiChoiceForm.button.secondary.bg"
@@ -251,7 +252,7 @@ const QuestionMultiChoiceForm = ({
           <ChevronRightIcon ml="5px" />
         </Button>
       </Flex>
-    </>
+    </Flex>
   )
 }
 
