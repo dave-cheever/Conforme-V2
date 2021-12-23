@@ -49,7 +49,7 @@ const NavigationLeft = () => {
             {showFiltersPanel || device === "tablet" ? organizationConfig?.name.charAt(0): organizationConfig?.name }
           </Text>
         </Box>
-        <Flex direction="column" justify="space-between" h="calc(100% - 80px)">
+        <Flex direction="column" justify="space-between" h="calc(100% - 80px)" pt={["0px","10px"]}>
           <Box>
             {menuItems.map((menuItem: any, i) => (
               <Can

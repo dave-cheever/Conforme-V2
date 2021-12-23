@@ -1,5 +1,5 @@
 import { FunctionComponent, useMemo } from "react";
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { ArrowRight, Filter } from "../icons";
 import { useFiltersContext } from "../contexts/FiltersProvider";
@@ -33,9 +33,9 @@ const Header: FunctionComponent<IHeader> = ({
   },[device, breadcrumbs, mobileBreadcrumbs]);
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
-    <Flex key={`bc-${i}`} align="center">
+    <Flex key={`bc-${i}`} h="full" align="center">
       {i > 0 && (
-        <ArrowRight stroke="#818197" ml={2} mr={1} display="flex" />
+        <ArrowRight color="#818197" ml={2} mt={["0px","5px"]} mr={1} display="flex" />
       )}
       <Text
         pl={[0, 2]}
@@ -54,11 +54,9 @@ const Header: FunctionComponent<IHeader> = ({
   );
 
   return (
-    <Box position="relative">
+    <Flex position="relative" align="center" h={["60px","70px"]}>
       <Flex
         w="full"
-        h={["60px", "70px"]}
-        pt={["0", "2"]}
         justify="space-between"
       >
         <Flex
@@ -77,7 +75,6 @@ const Header: FunctionComponent<IHeader> = ({
             flexShrink={0}
             h="40px"
             mr={[6, 6, 4]}
-            mt={2}
             borderRadius="10px"
             bg="header.filterBackgroundColor"
             cursor="pointer"
@@ -110,7 +107,7 @@ const Header: FunctionComponent<IHeader> = ({
           </Flex>
         )}
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 

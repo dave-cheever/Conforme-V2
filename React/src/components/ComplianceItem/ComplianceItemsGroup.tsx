@@ -45,7 +45,7 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   );
 
   return (
-    <Flex w="full" h='full' overflow='auto'>
+    <Flex w="full" h='full' overflow='auto' pt="3">
       {Object.keys(responseStatusesGroup).map(status => renderGroup(status))}
     </Flex>
   );
