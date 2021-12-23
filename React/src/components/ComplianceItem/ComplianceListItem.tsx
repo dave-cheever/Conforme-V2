@@ -169,8 +169,9 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             <SkeletonCircle boxSize="24px" />
             <Skeleton ml={3} w="50%" height="10px" />
           </Flex>:
+          responsible?
           <Flex direction="row" align="center">
-            <Avatar boxSize="24px" name={responsible?.displayName}
+            <Avatar size="xs" name={responsible?.displayName}
               src={responsible?.imgUrl} />
             <Text
               w="full"
@@ -185,7 +186,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             >
               {responsible?.displayName}
             </Text>
-          </Flex>}
+          </Flex>: <Flex fontStyle="italic" fontSize="13px">Unassigned</Flex>}
         </Box>
         <Box w="15%" ml={3}>
           <Flex>

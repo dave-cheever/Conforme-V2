@@ -202,7 +202,7 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
       complianceItemId: this._id,
       businessUnitId: businessUnitId,
       accountableId: businessUnit.ownerId,
-      responsibleId: businessUnit.ownerId,
+      responsibleId: "",
       contributorsIds: [],
       followersIds: [],
       status: 'notStarted',

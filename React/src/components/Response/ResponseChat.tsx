@@ -154,6 +154,9 @@ const ResponseChat = () => {
                 +{users.length - 3}
               </Flex>
             )}
+            {users.length === 0 && (
+              <Flex fontStyle="italic" fontSize="13px" mb="4">No participants</Flex>
+            )}
           </Flex>}
       </Flex>
       <Flex

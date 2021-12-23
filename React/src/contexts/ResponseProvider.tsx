@@ -118,7 +118,14 @@ const ResponseProvider = (props: any) => {
 
   useEffect(() => {
     if (response) {
-      let participants = [response.accountableId, response.responsibleId];
+      let participants:string[] = [];
+      //handle the empty responsible and accountable cases
+      if(response.accountableId !== ""){
+        participants.push(response?.accountableId);
+      }
+      if(response.responsibleId !== ""){
+        participants.push(response?.responsibleId);
+      }
       participants = participants.concat(response.followersIds || []);
       participants = participants.concat(response.contributorsIds || []);
       getParticipants({
