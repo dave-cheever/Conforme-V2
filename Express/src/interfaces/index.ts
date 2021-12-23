@@ -13,7 +13,6 @@ import { IComplianceItemModel } from './IComplianceItemModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
-import { IRegulatoryBodies } from './IRegulatoryBodies';
 import { IResponse } from './IResponse';
 import { IResponseModel } from './IResponseModel';
 import { ISession } from './ISession';
@@ -38,7 +37,6 @@ export {
   IOrganization,
   IOrganizationModel,
   IQuestion,
-  IRegulatoryBodies,
   IResponse,
   IResponseModel,
   ISession,
