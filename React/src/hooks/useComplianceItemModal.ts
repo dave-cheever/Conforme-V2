@@ -75,7 +75,7 @@ const useComplianceItemModal = (refetch = () => { }) => {
         setValue('_id', savedComplianceItemId);
       }
       refetch();
-      toast({ ...toastSuccess, description: `Compliance item ${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}` });
+      toast({ ...toastSuccess, description: `${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {

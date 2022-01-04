@@ -74,7 +74,7 @@ const ComplianceItemModal = ({ refetch }) => {
       const savingDialogDetails = {
         isOpen: true,
         title: `Publish ${complianceItem.name}`,
-        description: "Are you sure you wish to publish this compliance item? It will become available for completion by all relevant sites.",
+        description: "Are you sure you wish to publish this compliance item? It will become available for completion by all relevant business units.",
         state: undefined,
         showButtons: true,
         action: () => saveComplianceItem({
