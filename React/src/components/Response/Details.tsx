@@ -62,6 +62,7 @@ const Details = () => {
             mr={[0, 5]}
             flexDir="column"
             borderRadius="10px"
+            align={["center","flex-start"]}
           >
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               First completed
@@ -92,6 +93,7 @@ const Details = () => {
             mr={[0, 5]}
             flexDir="column"
             borderRadius="10px"
+            align={["center","flex-start"]}
           >
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               Last completed
@@ -122,7 +124,7 @@ const Details = () => {
             value={progress}
             color={progress <= 10 ? "red" : "responseRenewalDetails.progressColor"}
           />}
-          <Flex w="full" flexDir="column" ml={3}>
+          <Flex w="full" flexDir="column" ml={3} align={["center","flex-start"]}>
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               Due for renewal
             </Text>

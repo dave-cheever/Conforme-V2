@@ -72,17 +72,18 @@ const Settings = () => {
         <Flex
           bg="white"
           w={activeTab === 1 ? ["full","fit-content"] : "full"}
-          h={["calc( 100vh - 220px)","calc( 100vh - 190px)","calc( 100vh - 170px)",]}
+          h={["full","calc( 100vh - 190px)","calc( 100vh - 170px)",]}
           borderRadius="20px"
           p={["25px 30px","25px 30px"]}
           flexDirection="column"
+          mb={["25px","0px"]}
         >
           {loading ? (
             <Loader center={true} />
           ) : (
             <>
               <Tabs />
-              <Flex mt="7" h="full" overflowY="auto" w="full">
+              <Flex mt="7" h="full" w="full" overflowY={["visible","auto"]}>
                 {renderSections()}
               </Flex>
             </>
