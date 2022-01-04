@@ -2,10 +2,13 @@ import React, { useContext } from 'react';
 import {
   Box,
   Button,
+  Text,
   Flex,
   ModalContent,
   ModalCloseButton,
-  Spacer
+  Spacer,
+  UnorderedList,
+  ListItem
 } from '@chakra-ui/react';
 
 import { ComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -30,14 +33,14 @@ const CloneComplianceItemModal = ({ refetch }) => {
       p="20px  25px"
     >
       <Flex h="100%" flexDirection="column" justifyContent="left">
-        <Box 
-            textAlign="left" 
-            fontSize="smm" 
-            fontWeight="bold" 
-            color="cloneComplianceItemModal.heading" 
-            mb="15px"
+        <Box
+          textAlign="left"
+          fontSize="smm"
+          fontWeight="bold"
+          color="cloneComplianceItemModal.heading"
+          mb="15px"
         >Clone item?
-        <ModalCloseButton mt="5px" onClick={closeModal} />
+          <ModalCloseButton mt="5px" onClick={closeModal} />
         </Box>
         <Box
           whiteSpace="pre"
@@ -45,7 +48,19 @@ const CloneComplianceItemModal = ({ refetch }) => {
           textAlign="left"
           fontSize="smm"
         >
-          Create a clone of compliance item
+          <Text>Create a clone of {complianceItem.name}</Text>
+          <Text>The following fields will be copied to the new item:</Text>
+          <UnorderedList pl={3}>
+            <ListItem>Name</ListItem>
+            <ListItem>Description</ListItem>
+            <ListItem>Category</ListItem>
+            <ListItem>Regulatory Body</ListItem>
+            <ListItem>Due Date</ListItem>
+            <ListItem>Frequency</ListItem>
+            <ListItem>Business Unit</ListItem>
+            <ListItem>Evidence</ListItem>
+            <ListItem>Questions</ListItem>
+          </UnorderedList>
         </Box>
         <Flex mt="34px">
           <Button
@@ -56,17 +71,17 @@ const CloneComplianceItemModal = ({ refetch }) => {
             mr="22px"
             fontSize="smm"
             onClick={closeModal}
-            _hover={{ bg:"cloneComplianceItemModal.buttonCancelHoverBg", opacity:0.7}}
+            _hover={{ bg: "cloneComplianceItemModal.buttonCancelHoverBg", opacity: 0.7 }}
           >Cancel</Button>
-          <Spacer/>
-          <Button 
-            bg="cloneComplianceItemModal.buttonCloneBg" 
-            color="cloneComplianceItemModal.buttonCloneColor" 
-            p="10px 20px" 
-            fontSize="smm" 
-            borderRadius="10px" 
+          <Spacer />
+          <Button
+            bg="cloneComplianceItemModal.buttonCloneBg"
+            color="cloneComplianceItemModal.buttonCloneColor"
+            p="10px 20px"
+            fontSize="smm"
+            borderRadius="10px"
             onClick={() => cloneComplianceItem(complianceItem)}
-            _hover={{ bg:"cloneComplianceItemModal.buttonCloneHoverBg", opacity:0.7}}
+            _hover={{ bg: "cloneComplianceItemModal.buttonCloneHoverBg", opacity: 0.7 }}
           >Clone</Button>
         </Flex>
       </Flex>
