@@ -94,15 +94,16 @@ const NavigationTop = () => {
             _hover={{ opacity: 0.7 }}
             mr="30px"
             bg="navigationTop.addButton"
-            h={['60px', '45px']}
-            w={['60px', '45px']}
+            h={['52px', '45px']}
+            w={['52px', '45px']}
             color="white"
             aria-label="Add"
             icon={<AddIcon h="20px" w="20px" />}
             position={['fixed', 'relative']}
-            bottom={['20px', '0']}
-            right={['30px', '0']}
+            bottom={['75px', '0']}
+            right={['15px', '0']}
             zIndex={5}
+            boxShadow={["0px 0px 80px rgba(49, 50, 51, 0.25)","none"]}
             flexShrink={0}
             rounded={["20px", "8px"]}
             display={['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}

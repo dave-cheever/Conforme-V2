@@ -127,7 +127,7 @@ const ComplianceItemsAdmin = () => {
                   <AdminTableHeaderElement w="calc(100% / 4)" label="Regulatory body" />
                   <Flex w="calc(100% / 4)">
                     <Spacer />
-                    <Text>Actions</Text>
+                    <Text color="complianceItemsAdminWithContext.labelColor">Actions</Text>
                     <ArrowRight ml="10px" stroke="adminTableHeaderElement.stroke" transform="rotate(90deg)" />
                   </Flex>
                 </>
@@ -205,6 +205,7 @@ export default ComplianceItemsAdminWithContext;
 export const complianceItemsAdminWithContextStyles = {
   complianceItemsAdminWithContext: {
     stroke: "#282F36",
-    strokeHover: "#FFFFFF"
+    strokeHover: "#FFFFFF",
+    labelColor: "#818197"
   }
 }
