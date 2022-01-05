@@ -71,7 +71,7 @@ const Settings = () => {
       >
         <Flex
           bg="white"
-          w={activeTab === 1 ? ["full","fit-content"] : "full"}
+          w={activeTab === 1 ? ["full", selectedTemplate ? "fit-content":"full", "fit-content"] : "full"}
           h={["full","calc( 100vh - 190px)","calc( 100vh - 170px)",]}
           borderRadius="20px"
           p={["25px 30px","25px 30px"]}
@@ -94,7 +94,7 @@ const Settings = () => {
             p="25px 30px 25px 30px"
             flexDirection="column"
             minW={["100vw", "390px", "440px"]}
-            borderRadius={["0px","10px"]}
+            borderRadius={["0px","20px"]}
             ml={[0,5]}
             bg="white"
             h={["100vh","calc( 100vh - 190px)","calc( 100vh - 170px)"]}

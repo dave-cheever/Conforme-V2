@@ -83,9 +83,8 @@ const EmailTemplates = ({selectedTemplate,setSelectedTemplate, isOpen, onClose, 
 
   return (
     <Flex w="full">
-      <Grid w={["full","240px","550px"]} bg="white" h={["fit-content","fit-content","full"]} templateColumns={["repeat(1, 1fr)","repeat(1, 1fr)","repeat(3, 1fr)"]} gap={5}>
-        {loading && <Loader center={true} />}
-        {emailTemplates?.settings?.map((template) => (
+      <Grid w={["full","240px","550px"]} bg="white" h={["fit-content","fit-content","full"]} templateColumns={["repeat(1, 1fr)",selectedTemplate ? "repeat(1, 1fr)": "repeat(3, 1fr)","repeat(3, 1fr)"]} gap={5}>
+        {loading ? <Loader center={true} /> : emailTemplates?.settings?.map((template) => (
           <EmailTemplate
             active={selectedTemplate?._id === template?._id}
             setSelectedTemplate={setSelectedTemplate}

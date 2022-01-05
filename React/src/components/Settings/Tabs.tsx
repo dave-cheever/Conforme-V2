@@ -25,6 +25,7 @@ const Tabs = () => {
           bg="settingsTabItem.tabItemBg"
           h="40px"
           borderRadius="10px"
+          maxW="240px"
           as={Button}
           rightIcon={<ArrowDownIcon />}
           fontSize="14px"
