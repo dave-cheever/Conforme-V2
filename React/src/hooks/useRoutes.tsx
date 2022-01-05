@@ -48,7 +48,7 @@ const openRoutes: Array<IRoute> = [
   {
     path: "*",
     key: "not-allowed",
-    component: () => <Redirect key="not-allowed" to={{ pathname: "/login" }} />,
+    component: () => <Redirect key="not-allowed" to={{ pathname: "/login", state: { redirectUrl: window.location.pathname } }} />,
     layout: PureLayout,
   },
 ];

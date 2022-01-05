@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { ChakraProvider, CSSReset, Flex, Spinner } from "@chakra-ui/react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 import './styles.css';
 import getTheme from "./theme";
@@ -16,6 +17,17 @@ function App() {
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
+  const history = useHistory();
+
+  useEffect(() => {
+    const redirectUrl = localStorage.getItem('redirectUrl');
+    
+    if(redirectUrl){
+      localStorage.removeItem('redirectUrl');
+      history.push(redirectUrl);
+    }
+  // eslint-disable-next-line
+  },[]);
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (

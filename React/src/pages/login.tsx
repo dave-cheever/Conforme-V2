@@ -14,6 +14,11 @@ import { toastFailed } from "../bootstrap/config";
 import { useAppContext } from "../contexts/AppProvider";
 import { ArrowRight } from "../icons";
 import useDevice from "../hooks/useDevice";
+import { useLocation } from "react-router-dom";
+
+type StateProps = {
+  redirectUrl: string
+}
 
 const Login = () => {
   const toast = useToast();
@@ -21,6 +26,14 @@ const Login = () => {
   const { organizationConfig } = useAppContext();
   const device = useDevice();
   const [refresh,setRefresh] = useState(false);
+  const { state } = useLocation<StateProps>();
+
+  useEffect(() => {
+    if(state  && state.redirectUrl !== "/" && state.redirectUrl){
+      localStorage.setItem("redirectUrl",state.redirectUrl);
+      state.redirectUrl = "/";
+    }
+  },[state]);
 
   const user = useMemo(() => {
     const logOutUser = localStorage.getItem("logOutUser");
