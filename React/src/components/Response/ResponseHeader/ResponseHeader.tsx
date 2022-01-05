@@ -1,5 +1,7 @@
-import { useContext } from 'react';
-import { Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer } from '@chakra-ui/react';
+import { useContext, useEffect, useState } from 'react';
+import { Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer, useToast } from '@chakra-ui/react';
+import format from 'date-fns/format';
+
 import { isPermitted } from '../../can';
 import { useAppContext } from '../../../contexts/AppProvider';
 import { FollowIcon, ShareIcon, CheckIcon, ArrowDownIcon } from '../../../icons';
@@ -9,13 +11,27 @@ import ResponseHeaderStatus from './ResponseHeaderStatus';
 import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import useResponseUtils from '../../../hooks/useResponseUtils';
+import { toastSuccess } from '../../../bootstrap/config';
 
 const ReasponseHeader = () => {
   const { response, handleRenewalOpen } = useResponseContext();
+  const toast = useToast();
   const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { user } = useAppContext();
   const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
   const { handleShareOpen } = useContext(ResponseContext);
+  const [status,setStatus] = useState< "compliant" | "nonCompliant" | "">("");
+
+  useEffect(() => {
+    if(status === "nonCompliant" && getStatus(response) === "compliant"){
+      toast({...toastSuccess, 
+        title: "Response is Compliant", 
+        description: `Compliant until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy"): "N/A"}` });
+      return setStatus("compliant");
+    }
+    setStatus(getStatus(response));
+  // eslint-disable-next-line
+  },[response]);
 
   const enableRenewalButton =
     response && (
@@ -60,7 +76,7 @@ const ReasponseHeader = () => {
       </Flex>
       <Flex mb="15px">
         <Flex alignItems='center' w="full" maxW={["100vw", "390px"]} pl={["10px", "0px"]} pr={["35px", "0px"]}>
-          <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) !== "nonCompliant" ? "Yes" : "No"} />
+          <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) === "compliant" ? "Yes" : "No"} />
           <Spacer />
           {currentEvidenceItems?.length > 0 && <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />}
           <Spacer />
