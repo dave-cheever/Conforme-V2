@@ -100,6 +100,10 @@ const ComplianceItemModal = ({ refetch }) => {
     return setSavingDialogDetails(savingDialogDetails);
   };
 
+  const handlePreviousButtonClick = () => {
+    selectSection(selectedSectionIndex -1);
+  }
+
   return (
     <>
       <ModalContent
@@ -143,12 +147,27 @@ const ComplianceItemModal = ({ refetch }) => {
           <Flex height="100%" flexDir={["column", "row"]}>
             {device !== "mobile" && <NavigationModal />}
             {device === "mobile" && <NavigationMobileModal />}
-            <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h="calc(100vh - 120px)" rounded="20px" justifyContent="space-between">
+            <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h={["calc(100vh - 180px)","calc(100vh - 120px)"]} rounded="20px" justifyContent="space-between">
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
+              <Flex justifyContent="space-between" w="full">
               <Button
-                w={selectedSection.name === 'Summary' ? "full" : "109px"}
+                w="fit-content"
+                h="40px"
+                leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
+                fontSize="smm"
+                fontWeight="700"
+                rounded="10px"
+                colorScheme="red"
+                onClick={handlePreviousButtonClick}
+                disabled={selectedSection.name === "General"}
+              >
+                Back
+              </Button>
+              <Button
+                ml={3}
+                w="fit-content"
                 h="40px"
                 rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
                 bg="complianceItemModal.tabs.bottomButton.bg"
@@ -174,6 +193,7 @@ const ComplianceItemModal = ({ refetch }) => {
                     !complianceItem.hasOwnProperty('_id') ? 'Add compliance item' : "Publish compliance item"
                 }
               </Button>
+              </Flex>
             </Flex>
           </Flex>
         </ModalBody>
