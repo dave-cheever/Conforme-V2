@@ -7,7 +7,7 @@ import ComplianceListItem from "./ComplianceListItem";
 
 const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   return (
-    <Box p={[3, 6]} pt={0} w="full" h="full" overflow="none" minW="1400px">
+    <Box p={[3, 6]} ml="10px" w="full" h="full" overflow="none" minW="1400px">
       <Box
         bg="complianceList.bg"
         w="full"

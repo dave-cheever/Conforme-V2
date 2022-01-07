@@ -164,9 +164,10 @@ const ComplianceItems = () => {
     localStorage.setItem("viewMode", viewMode);
   }, []);
 
+
   return (
     <>
-      <Header breadcrumbs={["Compliance items", "All"]} mobileBreadcrumbs={["All compliance items"]}>
+      <Header breadcrumbs={["Compliance items"]} mobileBreadcrumbs={["Compliance items"]}>
         {device !== "mobile" && <Menu autoSelect={false}>
           {
             // @ts-ignore: Issue inside ChakraUI
