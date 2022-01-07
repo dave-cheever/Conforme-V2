@@ -101,7 +101,7 @@ const Attachment = () => {
       
       {response.attachments?.map((attachment, i) => (
         <Flex  key={i} flexDir="column" mb={2}>
-          <DocumentUploaded document={attachment} />
+          <DocumentUploaded document={attachment} isAttachment />
         </Flex>
       ))}
     </Flex>

@@ -40,7 +40,7 @@ const REMOVE_DOCUMENT = gql`
   }
 `;
 
-const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false }: { document: IDocument | undefined, isEvidence?: boolean, enableDownload?: boolean }) => {
+const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, enableDownload = false }: { document: IDocument | undefined, isAttachment?: boolean, isEvidence?: boolean, enableDownload?: boolean }) => {
   const { data } = useQuery(GET_DOCUMENT_DETAILS, { variables: { filesDetailsQuery: { ids: [document?.id] } } });
   const [removeDocument] = useMutation(REMOVE_DOCUMENT);
   const {
@@ -130,13 +130,31 @@ const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false
             <Flex opacity='0.6'>Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
           </Flex>
         </Flex>
+        {isAttachment && <Can
+          action='responses.edit'
+          data={{ response }}
+          yes={() => (
+            <IconButton
+              aria-label='delete evidence'
+              icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(documentDetails?.path)
+              }}
+              ml={3}
+              _hover={{bg:""}}
+              bg=""
+              display="inline-block"
+            />
+          )}
+        />}
         {enableDownload ? <Can
           action='responses.edit'
           data={{ response }}
           yes={() => (
             <IconButton
               aria-label='delete evidence'
-              icon={<DownloadIcon stroke="documentUploaded.downloadIcon"  />}
+              icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
               onClick={(e) => {
                 e.stopPropagation();
                 window.open(documentDetails?.path)
@@ -147,24 +165,24 @@ const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false
             />
           )}
         /> :
-        <Can
-          action='responses.edit'
-          data={{ response }}
-          yes={() => (
-            <IconButton
-              aria-label='delete evidence'
-              _hover={{bg:""}}
-              icon={<Bin stroke="documentUploaded.binIcon"  />}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteOpen();
-              }}
-              mr={3}
-              bg=""
-              display="inline-block"
-            />
-          )}
-        />
+          <Can
+            action='responses.edit'
+            data={{ response }}
+            yes={() => (
+              <IconButton
+                aria-label='delete evidence'
+                _hover={{ bg: "" }}
+                icon={<Bin stroke="documentUploaded.binIcon" />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteOpen();
+                }}
+                mr={3}
+                bg=""
+                display="inline-block"
+              />
+            )}
+          />
         }
       </Flex>
     </>
@@ -173,11 +191,11 @@ const DocumentUploaded = ({ document, isEvidence = false, enableDownload = false
 
 export default DocumentUploaded;
 
-export const documentUploadedStyles ={
+export const documentUploadedStyles = {
   documentUploaded: {
     bg: "#F2F2F2",
     thumbnailBg: "#FFFFFF",
     downloadIcon: "#282F36",
-    binIcon : "black"
+    binIcon: "black"
   }
 }
