@@ -64,8 +64,16 @@ const PeoplePicker = ({ control, name, label, placeholder = '', tooltip = '', va
       control={control}
       rules={{ validate }}
       render={({ field, fieldState, formState }) => {
-        const { onChange } = field;
+        const { onChange, value } = field;
         const { error } = fieldState;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+          if(value){
+            const user = users.find(user => user._id === value)
+            if(user) setSearchedInputValue(user.displayName)
+          }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        },[value,users])
         return (
           <Box w='full' id={name} mt='none'>
             <Box>

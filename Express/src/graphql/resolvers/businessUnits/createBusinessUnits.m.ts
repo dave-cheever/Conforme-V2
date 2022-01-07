@@ -14,7 +14,6 @@ const createBusinessUnit = async (_, {businessUnitInput}, { authorize, organizat
       const newBusinessUnit = {
         _id: uuidv4(),
         ...businessUnitInput,
-        ownerId: user._id,
         organizationId: organization._id,
         metatags: genMetatags("added", user._id),
       };

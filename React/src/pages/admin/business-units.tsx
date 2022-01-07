@@ -52,8 +52,6 @@ const DELETE_BUSINESS_UNIT = gql`
   }
 `;
 
-
-
 const defaultValues: Partial<IBusinessUnit> = {
   _id: undefined,
   name: "",

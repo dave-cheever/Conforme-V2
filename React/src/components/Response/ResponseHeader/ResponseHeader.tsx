@@ -20,20 +20,20 @@ const ReasponseHeader = () => {
   const { user } = useAppContext();
   const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
   const { handleShareOpen } = useContext(ResponseContext);
-  const [status,setStatus] = useState< "compliant" | "nonCompliant" | "">("");
-  console.log(getRenewalStatus(response));
-  
+  const [status, setStatus] = useState<"compliant" | "nonCompliant" | "">("");
 
   useEffect(() => {
-    if(status === "nonCompliant" && getStatus(response) === "compliant"){
-      toast({...toastSuccess, 
-        title: "Response is Compliant", 
-        description: `Compliant until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy"): "N/A"}` });
+    if (status === "nonCompliant" && getStatus(response) === "compliant") {
+      toast({
+        ...toastSuccess,
+        title: "Response is Compliant",
+        description: `Compliant until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy") : "N/A"}`
+      });
       return setStatus("compliant");
     }
     setStatus(getStatus(response));
-  // eslint-disable-next-line
-  },[response]);
+    // eslint-disable-next-line
+  }, [response]);
 
   const enableRenewalButton = useMemo(() => {
     if (!response) {
@@ -55,7 +55,7 @@ const ReasponseHeader = () => {
         action: "responses.edit",
       });
     }
-    
+
     return false;
 
     // eslint-disable-next-line
