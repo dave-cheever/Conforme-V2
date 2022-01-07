@@ -36,6 +36,7 @@ const NavigationTop = () => {
   const pageRedirect = (page: string) => {
     history.push(page);
   };
+  const isComplianceItemPage = history.location.pathname.split('/')[1] === "compliance-item"
 
   const handleAddButtonClick = () => {
     setAdminModalState('add');
@@ -87,7 +88,8 @@ const NavigationTop = () => {
             {showFiltersPanel ? organizationConfig?.name.charAt(0) : organizationConfig?.name}
           </Text>
         </Flex>
-        <Can
+
+        {!isComplianceItemPage && <Can
           action='adminPanel'
           yes={() => <IconButton
             onClick={handleAddButtonClick}
@@ -108,7 +110,7 @@ const NavigationTop = () => {
             rounded={["20px", "8px"]}
             display={['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
           />}
-        />
+        />}
         <Flex>
           <InputGroup display={["none", "block"]} w={["100%", "260px"]}>
             <InputLeftElement

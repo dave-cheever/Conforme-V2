@@ -99,11 +99,12 @@ export const useResponseContext = () => {
 const ResponseProvider = (props: any) => {
   const { id }: { id: string } = useParams();
   const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQuery: { _id: id } } });
-  const [getParticipants, { data: participantsData,loading:participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
+  const [getParticipants, { data: participantsData, loading: participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
   const { isOpen: isDueDateOpen, onOpen: handleDueDateOpen, onClose: handleDueDateClose } = useDisclosure();
+  const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
 
   const response: IResponse = useMemo(() => data?.responses[0], [data]);
   const participants: IUser[] = useMemo(() => participantsData?.participants || [], [participantsData]);
@@ -118,12 +119,12 @@ const ResponseProvider = (props: any) => {
 
   useEffect(() => {
     if (response) {
-      let participants:string[] = [];
+      let participants: string[] = [];
       //handle the empty responsible and accountable cases
-      if(response.accountableId !== ""){
+      if (response.accountableId !== "") {
         participants.push(response?.accountableId);
       }
-      if(response.responsibleId !== ""){
+      if (response.responsibleId !== "") {
         participants.push(response?.responsibleId);
       }
       participants = participants.concat(response.followersIds || []);
@@ -143,6 +144,7 @@ const ResponseProvider = (props: any) => {
     isConfirmationOpen, handleConfirmationOpen, handleConfirmationClose,
     isRenewalOpen, handleRenewalOpen, handleRenewalClose,
     isDueDateOpen, handleDueDateOpen, handleDueDateClose,
+    isOpenMessage, handleOpenMessage, handleCloseMessage,
     getUpdatedDisplayName,
     getParticipantDetailById,
     participantsLoading
@@ -154,6 +156,7 @@ const ResponseProvider = (props: any) => {
     isConfirmationOpen,
     isRenewalOpen,
     isDueDateOpen,
+    isOpenMessage,
     participantsLoading
   ]);
 

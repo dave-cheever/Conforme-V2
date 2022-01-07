@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 import { IResponse } from "./IResponse";
 import { IUser } from "./IUser";
 
@@ -28,5 +26,9 @@ export interface IResponseContext {
   handleDueDateOpen: () => void,
   handleDueDateClose: () => void,
 
+  isOpenMessage: boolean;
+  handleOpenMessage: () => void;
+  handleCloseMessage: () => void;
+  
   participantsLoading: boolean,
 }

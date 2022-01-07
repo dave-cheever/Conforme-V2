@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, IconButton } from "@chakra-ui/react";
 
 import NavigationTop from "../components/NavigationTop";
 import Loader from "../components/Loader";
@@ -11,9 +11,17 @@ import ResponseLeftNavigationMobile from "../components/Response/ResponseLeftNav
 import ShareModal from "../components/ShareModal";
 import ReasponseHeader from "../components/Response/ResponseHeader/ResponseHeader";
 import ResponseChat from "../components/Response/ResponseChat";
+import ResponseChatMobileAndTablet from "../components/Response/ResponseChatMobileAndTablet";
+import useDevice from "../hooks/useDevice";
+import { useHistory } from "react-router-dom";
+import { CrossIcon, MessageIcon } from "../icons";
 
 const ResponseLayout = ({ component: Component }: { component: any }) => {
-  const { loading, response } = useResponseContext();
+  const { loading, response, isOpenMessage, handleOpenMessage, handleCloseMessage } = useResponseContext();
+  const history = useHistory();
+  const device = useDevice()
+  const isTabletAndMobile = device === 'tablet' || device === 'mobile'
+  const isComplianceItemPage = history.location.pathname.split('/')[1] === "compliance-item"
 
   if (loading && !response) {
     return (
@@ -39,13 +47,35 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           top={[0, "80px"]}
           w={["full", "calc(100% - 80px)", "calc(100% - 240px)"]}
           overflow="auto"
-          h={["calc(100vh - 140px)", "calc(100vh - 80px)"]}
+          h={["calc(100vh - 126px)", "calc(100vh - 80px)"]}
           mt={["65px", 0]}
           pt={["25px", 0]}
           zIndex={4}
         >
           <ShareModal />
           <ReasponseHeader />
+          {isComplianceItemPage && isTabletAndMobile &&
+            <IconButton
+              onClick={() => isOpenMessage ? handleCloseMessage() : handleOpenMessage()}
+              _hover={{ opacity: 0.7 }}
+              mr="2px"
+              bg="responseLayout.iconBg"
+              h="52px"
+              w="52px"
+              alignItems="center"
+              color="white"
+              aria-label="Message"
+              icon={isOpenMessage ?
+                <CrossIcon ml="5px" h="21px" w="22px" stroke="white" /> :
+                <MessageIcon h="21px" w="22px" stroke="white" />
+              }
+              position='fixed'
+              bottom={['75px', '22px']}
+              right='16px'
+              zIndex={5}
+              flexShrink={0}
+              rounded="20px"
+            />}
           <Flex w="full" h="full" px="25px">
             <Flex
               flexDirection="column"
@@ -58,14 +88,22 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
             >
               <Component />
             </Flex>
-            <ResponseChat />
+            {device === "desktop" && <ResponseChat />}
           </Flex>
+          {isOpenMessage && isTabletAndMobile &&
+            <ResponseChatMobileAndTablet />}
         </Flex>
         <ResponseLeftNavigationMobile />
       </Flex>
     </Flex>
   );
 };
+
+export const ResponseLayoutStyles = {
+  responseLayout : {
+    iconBg: "#1E1E38"
+  }
+}
 
 const ResponseLayoutWithContext = (props) => (
   <ResponseProvider {...props}>

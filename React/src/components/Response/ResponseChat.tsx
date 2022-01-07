@@ -9,6 +9,7 @@ import { useResponseContext } from "../../contexts/ResponseProvider";
 import { IComment } from "../../interfaces/IComment";
 import { toastFailed } from "../../bootstrap/config";
 import Loader from "../Loader";
+import useDevice from '../../hooks/useDevice';
 
 const GET_COMMENTS = gql`
   query ($_id: String!) {
@@ -45,17 +46,27 @@ const defaultValues = {
 
 const ResponseChat = () => {
   const toast = useToast();
-  const { response } = useResponseContext();
+  const device = useDevice()
+  const { response, handleCloseMessage, users, participantsLoading } = useResponseContext();
   const { data, loading, refetch } = useQuery(GET_COMMENTS, { variables: { _id: response?._id } });
   const [createFunction] = useMutation(CREATE_COMMENT);
   const [deleteFunction] = useMutation(DELETE_COMMENT);
   const [comments, setComments] = useState<IComment[]>([]);
-  const { users, participantsLoading } = useResponseContext();
   const divRef: any = useRef()
 
   const scrollToBottom = () => {
     divRef.current.scrollTop = divRef.current.scrollHeight
   }
+
+  useEffect(() => {
+    return () => {
+      if (device === 'tablet' || device === 'mobile') {
+        handleCloseMessage()
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     scrollToBottom()
   })
@@ -69,7 +80,8 @@ const ResponseChat = () => {
     } else {
       setComments([]);
     }
-  }, [data]);
+  }, [data])
+
   const {
     control,
     formState: { errors },
@@ -121,7 +133,7 @@ const ResponseChat = () => {
   }
 
   return (
-    <Box w="330px" h="full" pl="25px" display={["none", "none", "block"]}>
+    <Box w={["calc(100vw - 30px)", "300px", "330px"]} h="full" pl="25px" pr={["25px", "25px", "0px"]}>
       <Flex alignItems="center" flexDirection="column">
         <Text color="responseChat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">Chat</Text>
         {participantsLoading ? <SkeletonCircle size="32px" mb={2} /> :
@@ -160,7 +172,7 @@ const ResponseChat = () => {
           </Flex>}
       </Flex>
       <Flex
-        h="calc(100vh - 280px)"
+        h={["calc(100vh - 390px)", "calc(100vh - 340px)", "calc(100vh - 280px)"]}
         overflow="hidden"
         flexDirection="column"
         w='calc(100% + 10px)'

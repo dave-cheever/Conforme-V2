@@ -72,6 +72,7 @@ import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { textMultilineConfirmInputStyles } from "../components/Forms/TextMultilineConfirmInput";
 import { toggleStyles } from "../components/Forms/Toggle";
 import { userMenuStyles } from "../components/UserMenu";
+import { ResponseLayoutStyles } from "../layouts/ResponseLayout";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -188,6 +189,7 @@ const getTheme = (organizationTheme?: any) => {
       ...textMultilineConfirmInputStyles,
       ...toggleStyles,
       ...userMenuStyles,
+      ...ResponseLayoutStyles,
 
       purpleHeart: {
         50: '#ede9ff',
