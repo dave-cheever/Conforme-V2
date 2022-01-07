@@ -35,7 +35,7 @@ const QuestionListElement = ({ question, bgColor, removeQuestion }: IQuestionLis
             textOverflow='ellipsis'
             whiteSpace='nowrap'
           >{question.name}</Box>
-           {question.required && <Asterisk ml="10px" stroke='questionListElement.iconAsterisk' w='9px' h='9px' />}
+           {question.required && <Asterisk ml="10px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w='9px' h='9px' />}
         </Flex>
       </Flex>
       {removeQuestion && 

@@ -12,4 +12,5 @@ export interface IField {
   variant?: string;
   help?: string;
   placeholder?: string;
+  styles?: object;
 }

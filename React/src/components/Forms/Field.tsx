@@ -15,7 +15,7 @@ import {
 import { IField } from '../../interfaces/IField';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip, disabled, options, validations, variant, placeholder, help } = field;
+  const { type, name, label, tooltip, disabled, options, validations, variant, placeholder, help, styles, required } = field;
   const props: IField = {
     control,
     name,
@@ -26,7 +26,9 @@ const Field = ({ control, ...field }) => {
     placeholder,
     variant,
     tooltip,
-    help
+    help,
+    styles,
+    required
   };
 
   switch (type) {
@@ -42,7 +44,7 @@ const Field = ({ control, ...field }) => {
     case 'number': {
       return <NumberInput key={name} {...props} />;
     }
-    case 'date': {
+    case 'datepicker': {
       return <Datepicker key={name} {...props} />;
     }
     case 'textarea': {

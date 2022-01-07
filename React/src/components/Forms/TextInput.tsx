@@ -5,6 +5,7 @@ import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
+import { Asterisk } from '../../icons';
 
 interface ITextInput extends IField {
   placeholder?: string;
@@ -58,6 +59,7 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
                   zIndex={2}
                 >
                   {label}
+                  {required && <Asterisk ml="5px" mb="10px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px"/>}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>

@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/button"
 import { Box, Text, Flex } from "@chakra-ui/layout"
 import { Controller } from "react-hook-form"
 import useValidate from "../../hooks/useValidate"
+import { Asterisk } from "../../icons"
 import { IField } from "../../interfaces/IField"
 import { DefinedValidations } from "../../interfaces/Validations"
 
@@ -18,7 +19,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Switch = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: ISwitch) => {
+const Switch = ({ control, name, label, required, validations = {} }: ISwitch) => {
   const validate = useValidate(label || name, validations, definedValidations);
 
   const RenderButton = ({ laterality, value, onchange, name }) => (
@@ -43,11 +44,13 @@ const Switch = ({ control, name, label, placeholder = '', tooltip = '', variant,
         const { error } = fieldState;
         return (
           < Box >
-            <Text fontSize="ssm" fontWeight="bold" py="10px">{label}</Text>
+            <Text fontSize="11px" fontWeight="700" pt="8px" pb="10px" color="switch.form.labelColor">{label}
+            {required && <Asterisk ml="5px" mb="10px"  fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px"/>}
+            </Text>
             <Flex>
               <RenderButton name={name} onchange={onChange} laterality="left" value={value} />
               &nbsp;&nbsp;
-              <RenderButton name={name} onchange={onChange} laterality="right" value={!value} />
+              <RenderButton name={name} onchange={onChange} laterality="right" value={value === false} />
             </Flex>
             {error && <Box fontSize={14} ml={1} color='switch.form.textInput.error'>{error.message}</Box>}
           </Box >
@@ -70,6 +73,7 @@ export const switchStyles = {
       color: "#ffffff"
     },
     form: {
+      labelColor:"#1F1F1F",
       textInput: {
         error: '#E53E3E',
       }

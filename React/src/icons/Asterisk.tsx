@@ -1,13 +1,11 @@
 import { createIcon } from "@chakra-ui/icons";
 
 const Asterisk = createIcon({
-  viewBox: '0 0 11 11',
+  viewBox: '0 0 9 10',
+  displayName: "Asterisk",
   path: (
     <g>
-      <path d="M5.5 1V10" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M10 5.5H1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M8.68179 2.31786L2.31836 8.68171" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M8.68179 8.68171L2.31836 2.31786" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M0.617518 2.79646L3.3635 3.69912V0.5H5.6365V3.69912L8.38248 2.79646L9 4.77434L6.20146 5.65044L8.02774 8.29204L6.34599 9.5L4.51971 7.00443L2.64088 9.5L0.959124 8.29204L2.79854 5.65044L0 4.77434L0.617518 2.79646Z" />
     </g>
   )
 });

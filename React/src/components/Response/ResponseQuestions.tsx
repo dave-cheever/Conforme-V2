@@ -5,7 +5,7 @@ import { gql, useMutation } from '@apollo/client';
 import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import Fields from './Fields';
+import Field from "../Forms/Field";
 import { toastFailed } from '../../bootstrap/config';
 
 const UPDATE_QUESTIONS = gql`
@@ -70,6 +70,7 @@ const ResponseQuestions = () => {
   if (!response) {
     return null;
   }
+
   return (
     <Stack w="full" h="full" overflow="auto" mt={2}>
       <Grid
@@ -90,17 +91,18 @@ const ResponseQuestions = () => {
               textAlign="center"
               px="13px"
               py="5px"
+              mt="2px"
             >
               {i + 1}
             </Box>
-            <Fields
+            <Field
               type={type}
               label={name}
               name={name}
               control={control}
               placeholder={description}
               disabled={!isUserPermitted}
-              required={!!required}
+              required={required}
               defaultvalue={value as string}
               styles={styles}
             />
