@@ -1,7 +1,7 @@
 import { isInteger } from "lodash";
 
 import { IResponse } from '../interfaces/IResponse';
-import { useAppContext } from '../contexts/AppProvider';
+// import { useAppContext } from '../contexts/AppProvider';
 import { differenceInDays, startOfDay } from "date-fns";
 
 export const responseStatuses = {
@@ -35,10 +35,25 @@ export const complianceItemFrequencies = [
 ];
 
 const useResponseUtils = () => {
-  const { settings } = useAppContext();
-  const comingUpTriggers = settings.find(
-    (el) => el.name === 'comingUpTriggers'
-  );
+  // const { settings } = useAppContext();
+  // const comingUpTriggers = settings.find(
+  //   (el) => el.name === 'comingUpTriggers'
+  // );
+
+  //TODO: Settings Config should be init and send this to app Context
+  const comingUpTriggers = {
+    value: {
+      "Monthly": 7,
+      "Quarterly": 14,
+      "6 months": 30,
+      "Annual": 30,
+      "2 years": 30,
+      "3 years": 60,
+      "5 years": 90,
+      "Variable": 7,
+      "Ad-hoc": 7
+    }
+  }
 
   const getRenewalStatus = (response: IResponse) => {
     const { daysToDueDate, status } = response;

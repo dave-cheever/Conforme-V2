@@ -1,6 +1,6 @@
 import { Button, IconButton } from '@chakra-ui/react';
 
-const ResponseHeaderButton  = ({icon, name, onClick}) => {
+const ResponseHeaderButton  = ({icon, name, onClick, loading=false}) => {
    return (
       <>
       <Button
@@ -9,6 +9,7 @@ const ResponseHeaderButton  = ({icon, name, onClick}) => {
          borderRadius="10px"
          fontSize="14px"
          fontWeight="bold"
+         isLoading={loading}
          bg="reasponseHeader.buttonLightBg"
          color="reasponseHeader.buttonLightColor"
          leftIcon={icon}

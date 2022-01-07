@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from "graphql";
 import { Responses } from "app-models";
 import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
-import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, intervalToDuration } from "date-fns";
+import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, intervalToDuration, isSameDay } from "date-fns";
 import { response } from "express";
 
 const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
@@ -16,15 +16,15 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
         organizationId: organization._id
       },
     }];
-    
-    if(!isPermitted({ user, action: 'responses.viewAll', data: { response } })){
+
+    if (!isPermitted({ user, action: 'responses.viewAll', data: { response } })) {
       pipeline.push({
         $match: {
           $or: [
             { accountableId: user._id },
             { responsibleId: user._id },
-            { contributorsIds: { $in: [ user._id ] } },
-            { followersIds: { $in: [ user._id ] } }
+            { contributorsIds: { $in: [user._id] } },
+            { followersIds: { $in: [user._id] } }
           ]
         }
       });
@@ -194,7 +194,7 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
         to: 'complianceItem.category',
       });
     }
-    
+
     // Join regulatory body
     if (shouldJoin(['complianceItem', 'regulatoryBody'])) {
       join({
@@ -219,12 +219,18 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     const responses = await Responses.aggregate(pipeline);
 
-    if(shouldJoin(["daysToDueDate"])){
-      for(const response of responses) {
-        response.daysToDueDate = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date()}).days || 0;
+    if (shouldJoin(["daysToDueDate"])) {
+      for (const response of responses) {
+        const start = new Date(response.nextRenewalDate);
+        const end = new Date();
+        if (isSameDay(start, end)) {
+          response.daysToDueDate = 0;
+        } else {
+          response.daysToDueDate = intervalToDuration({ start, end }).days || 1;
+        }
       }
     }
-    
+
     return responses;
   } catch (err: any) {
     throw new Error(err);

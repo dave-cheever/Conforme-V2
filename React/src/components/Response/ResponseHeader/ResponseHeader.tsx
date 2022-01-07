@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer, useToast } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
@@ -21,6 +21,8 @@ const ReasponseHeader = () => {
   const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
   const { handleShareOpen } = useContext(ResponseContext);
   const [status,setStatus] = useState< "compliant" | "nonCompliant" | "">("");
+  console.log(getRenewalStatus(response));
+  
 
   useEffect(() => {
     if(status === "nonCompliant" && getStatus(response) === "compliant"){
@@ -33,11 +35,31 @@ const ReasponseHeader = () => {
   // eslint-disable-next-line
   },[response]);
 
-  const enableRenewalButton =
-    response && (
-      getRenewalStatus(response) === 'comingUp' ||
-      (getRenewalStatus(response) === 'overdue' && response.status === 'completed')
-    ) && isPermitted({ user, data: { response }, action: 'responses.edit' });
+  const enableRenewalButton = useMemo(() => {
+    if (!response) {
+      return false;
+    }
+
+    if (getRenewalStatus(response) === "comingUp") {
+      return isPermitted({
+        user,
+        data: { response },
+        action: "responses.edit",
+      });
+    }
+
+    if (getRenewalStatus(response) === "overdue" && response.status === "completed") {
+      return isPermitted({
+        user,
+        data: { response },
+        action: "responses.edit",
+      });
+    }
+    
+    return false;
+
+    // eslint-disable-next-line
+  }, [response, user]);
 
   return (
     <Flex
