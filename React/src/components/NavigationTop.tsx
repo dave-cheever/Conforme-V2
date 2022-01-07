@@ -1,5 +1,4 @@
 import {
-  Badge,
   Flex,
   IconButton,
   Input,
@@ -11,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { AddIcon, SearchIcon, NotificationIcon, CrossIcon } from "../icons";
+import { AddIcon, SearchIcon, CrossIcon } from "../icons";
 import { useAdminContext } from "../contexts/AdminProvider";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
@@ -137,13 +136,13 @@ const NavigationTop = () => {
           display={["block", "none"]}
           onClick={() => { setDisplaySearch(true) }}
         />
-        <NotificationIcon
+        {/* <NotificationIcon
           _hover={{ color: "navigationTop.notificationIconHover", opacity: 0.7, cursor: "pointer" }}
           _active={{}}
           h="20px"
           w="22px"
         />
-        <Badge variant="solid" bg="navigationTop.notificationColorScheme" border="2px solid" borderColor="navigationTop.notificationBadgeBorder" borderRadius="5px" cursor="pointer">3</Badge>
+        <Badge variant="solid" bg="navigationTop.notificationColorScheme" border="2px solid" borderColor="navigationTop.notificationBadgeBorder" borderRadius="5px" cursor="pointer">3</Badge> */}
         <UserMenu />
       </Flex>
 

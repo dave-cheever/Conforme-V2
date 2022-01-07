@@ -92,7 +92,6 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
         py="8px"
         w="full"
         borderRadius="10px"
-        wordBreak="break-all"
         onMouseEnter={() => setShowDeleteBtn(true)}
         onMouseLeave={() => setShowDeleteBtn(false)}
         color={
