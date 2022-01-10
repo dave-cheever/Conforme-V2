@@ -6,6 +6,7 @@ import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categor
 import { commentsMutationDefs, commentsQueryDefs, commnentsTypeDefs } from "./resolvers/comments";
 import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutationDefs } from "./resolvers/complianceItems";
 import { graphTypeDefs, graphQueryDefs } from "./resolvers/graph";
+import { locationsTypeDefs, locationsQueryDefs, locationsMutationDefs } from "./resolvers/locations";
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
 import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
@@ -42,6 +43,7 @@ const typeDefs = gql`
   ${commnentsTypeDefs}
   ${complianceItemsTypeDefs}
   ${graphTypeDefs}
+  ${locationsTypeDefs}
   ${organizationsTypeDefs}
   ${responsesTypeDefs}
   ${settingsTypeDefs}
@@ -54,6 +56,7 @@ const typeDefs = gql`
     ${commentsQueryDefs}
     ${complianceItemsQueryDefs}
     ${graphQueryDefs}
+    ${locationsQueryDefs}
     ${organizationsQueryDefs}
     ${regulatoryBodiesQueryDefs}
     ${responsesQueryDefs}
@@ -65,6 +68,7 @@ const typeDefs = gql`
     ${categoriesMutationDefs}
     ${commentsMutationDefs}
     ${complianceItemsMutationDefs}
+    ${locationsMutationDefs}
     ${regulatoryBodiesMutationDefs}
     ${responsesMutationDefs}
     ${settingsMutationDefs}

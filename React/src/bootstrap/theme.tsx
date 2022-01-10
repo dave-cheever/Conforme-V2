@@ -34,6 +34,8 @@ import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
 import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
 import { loginPageStyles } from "../pages/login";
+import { locationsStyles } from "../pages/admin/locations";
+import { locationsFormModalStyles } from "../components/AdminComplianceItemModal/Locations";
 import { logoutPageStyles } from "../pages/logout";
 import { messageInputStyles } from "../components/Response/MessageInput";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
@@ -153,6 +155,8 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelStyles,
       ...headerStyles,
       ...loginPageStyles,
+      ...locationsStyles,
+      ...locationsFormModalStyles,
       ...logoutPageStyles,
       ...messageInputStyles,
       ...navigationBottomMobileStyles,

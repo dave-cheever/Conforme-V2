@@ -50,6 +50,7 @@ export const menuItems: INavItem[] = [
       { label: "Compliance items", url: "/admin/compliance-items" },
       { label: "Regulatory bodies", url: "/admin/regulatory-bodies" },
       { label: "Categories", url: "/admin/categories" },
+      { label: "Locations", url: "/admin/locations" },
       { label: "Business units", url: "/admin/business-units" },
       { label: "Users", url: "/admin/users" },
       { label: "Audit log", url: "/admin/audit-log" },

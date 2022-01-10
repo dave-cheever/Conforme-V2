@@ -5,9 +5,9 @@ import { diff } from "deep-object-diff";
 import { IAuditValues, IBusinessUnit, IBusinessUnitModel } from "app-interfaces";
 import {
   genMetatags, getBasicElement, removeDatabaseFields,
-  getAuditValueForString, getAuditValueForLookup, getAuditValueForUser,
+  getAuditValueForString, getAuditValueForUser,
 } from "app-utils";
-import { AuditLogs, Organizations, Users } from "app-models";
+import { AuditLogs, Organizations } from "app-models";
 import { GraphQLError } from "graphql";
 
 const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({

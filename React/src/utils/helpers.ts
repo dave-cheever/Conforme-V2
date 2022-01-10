@@ -54,7 +54,15 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
         };
       }
       break;
-    case 1:
+ 	case 1:
+      if (complianceItem?.locationsIds?.length === 0 && visitedTab > i) {
+        return {
+          bg: "navigationModal.section.error.bg",
+          color: "navigationModal.section.error.color"
+        };
+      } 
+      break;
+    case 2:
       if (complianceItem?.businessUnitsIds?.length === 0 && visitedTab > i) {
         return {
           bg: "navigationModal.section.error.bg",
@@ -62,7 +70,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
         };
       }
       break;
-    case 2:
+    case 3:
       if (complianceItem.evidenceItems?.length === 0
         && complianceItem.questions?.filter(({ required, outdated }) => required
           && !outdated)?.length === 0
@@ -73,7 +81,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
         };
       }
       break;
-    case 3:
+    case 4:
       if (complianceItem.evidenceItems?.length === 0
         && complianceItem.questions?.filter(({ required, outdated }) => required
           && !outdated)?.length === 0

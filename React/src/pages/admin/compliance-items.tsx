@@ -43,6 +43,7 @@ const GET_COMPLIANCE_ITEMS = gql`
         required
         outdated
       }
+      locationsIds
       categoryId
       category {
         name
@@ -79,6 +80,7 @@ const ComplianceItemsAdmin = () => {
       dueDate: complianceItem.dueDate,
       frequency: complianceItem.frequency,
       businessUnitsIds: complianceItem.businessUnitsIds,
+      locationsIds: complianceItem.locationsIds,
       evidenceItems: complianceItem.evidenceItems,
       questions: (complianceItem.questions || []).map(question => ({
         type: question.type,
@@ -89,7 +91,7 @@ const ComplianceItemsAdmin = () => {
         outdated: question.outdated,
       })),
       published: complianceItem.published,
-    }, 4);
+    }, 5);
   };
 
   return (
@@ -103,15 +105,15 @@ const ComplianceItemsAdmin = () => {
       >
         <ModalOverlay />
         {
-          adminModalState === 'delete' ? 
-          <DeleteComplianceItemModal refetch={refetch} /> :
-          ( 
-            adminModalState === 'clone' ? 
-            <CloneComplianceItemModal refetch={refetch} /> : 
-            <ComplianceItemModal refetch={refetch} />
-          )
+          adminModalState === 'delete' ?
+            <DeleteComplianceItemModal refetch={refetch} /> :
+            (
+              adminModalState === 'clone' ?
+                <CloneComplianceItemModal refetch={refetch} /> :
+                <ComplianceItemModal refetch={refetch} />
+            )
         }
-        
+
       </Modal>
       <Header
         breadcrumbs={["Admin", "Compliance items"]}
@@ -177,19 +179,19 @@ const ComplianceItemsAdmin = () => {
                     </>
                   }
                   <Box w="calc(100% / 4)" textAlign="end" mr="30" zIndex={5}>
-                    <Copy 
+                    <Copy
                       fontSize="15px"
                       stroke="complianceItemsAdminWithContext.stroke"
                       fill='transparent'
                       _hover={{ color: 'complianceItemsAdminWithContext.strokeHover', opacity: 0.7, cursor: "pointer" }}
-                      onClick={ ()=> {openModal('clone', complianceItem)} }
+                      onClick={() => { openModal('clone', complianceItem) }}
                     />
                   </Box>
                 </Flex>
               ))}
-            </Stack>
-          </Box>
+          </Stack>
         </Box>
+      </Box>
     </>
   );
 };

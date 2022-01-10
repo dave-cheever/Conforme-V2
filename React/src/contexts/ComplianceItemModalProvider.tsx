@@ -9,6 +9,7 @@ import AdditionalDetailsForm from "../components/AdminComplianceItemModal/Additi
 import BusinessUnitsForm from "../components/AdminComplianceItemModal/BusinessUnits";
 import GeneralForm from "../components/AdminComplianceItemModal/General";
 import QuestionsForm from "../components/AdminComplianceItemModal/Questions";
+import LocationsForm from "../components/AdminComplianceItemModal/Locations";
 import Summary from "../components/AdminComplianceItemModal/Summary";
 
 export const ComplianceItemModalContext = createContext({} as IComplianceItemModalContext);
@@ -16,6 +17,10 @@ export const ComplianceItemModalContext = createContext({} as IComplianceItemMod
 const GET_FORM_DATA = gql`
   query {
     categories {
+      _id
+      name
+    }
+    locations {
       _id
       name
     }
@@ -57,7 +62,7 @@ export const useComplianceItemModalContext = () => {
 };
 
 const ComplianceItemModalProvider = (props) => {
-  
+
   const { data, refetch } = useQuery(GET_FORM_DATA);
   const [savingDialogDetails, setSavingDialogDetails] = useState<IComplianceItemModalDialogDetails>(initialDialogDetails);
   const [visitedTab, setVisitedTab] = useState<number>(0);
@@ -74,6 +79,12 @@ const ComplianceItemModalProvider = (props) => {
       published: false,
     },
     Component: GeneralForm,
+  }, {
+    name: 'Locations',
+    fields: {
+      locationsIds: [],
+    },
+    Component: LocationsForm,
   }, {
     name: 'Business units',
     fields: {
@@ -102,9 +113,10 @@ const ComplianceItemModalProvider = (props) => {
 
   const defaultValues: Partial<IComplianceItem> = {
     ...complianceItemModalSections[0].fields, // General
-    ...complianceItemModalSections[1].fields, // Business units
-    ...complianceItemModalSections[2].fields, // Additional details
-    ...complianceItemModalSections[3].fields, // Questions
+    ...complianceItemModalSections[1].fields, // Locations
+    ...complianceItemModalSections[2].fields, // Business units
+    ...complianceItemModalSections[3].fields, // Additional details
+    ...complianceItemModalSections[4].fields, // Questions
   };
 
   const {
@@ -123,7 +135,7 @@ const ComplianceItemModalProvider = (props) => {
   const [selectedSection, setSelectedSection] = useState<IComplianceItemModalSection>(complianceItemModalSections[0]);
   const selectedSectionIndex = useMemo(
     () => complianceItemModalSections.findIndex(({ name }) => name === selectedSection.name)
-  , [selectedSection]); // eslint-disable-line react-hooks/exhaustive-deps
+    , [selectedSection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selectSection = (sectionIndex: number) => setSelectedSection(complianceItemModalSections[sectionIndex]);
 
@@ -144,6 +156,7 @@ const ComplianceItemModalProvider = (props) => {
     refetch,
     complianceItem,
     categories: data?.categories || [],
+    locations: data?.locations || [],
     regulatoryBodies: data?.regulatoryBodies || [],
     businessUnits: data?.businessUnits || [],
     complianceItemModalSections, selectedSection, selectedSectionIndex, selectSection,

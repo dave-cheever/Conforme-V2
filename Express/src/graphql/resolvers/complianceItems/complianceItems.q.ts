@@ -19,7 +19,7 @@ const complianceItems = async (_, { complianceItemsQueryInput }, { authorize, or
         organizationId: organization._id,
       },
     }];
-    
+  
     if (shouldJoin('category')) {
       join({ 
         pipeline,

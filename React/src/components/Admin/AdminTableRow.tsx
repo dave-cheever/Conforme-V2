@@ -1,5 +1,4 @@
 import { Flex, Tooltip } from "@chakra-ui/react";
-
 import { ArrowCount } from "../../icons";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 

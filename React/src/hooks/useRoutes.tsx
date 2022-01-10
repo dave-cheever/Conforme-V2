@@ -1,33 +1,33 @@
 import { Redirect } from "react-router-dom";
-
-import Login from "../pages/login";
-import Can from "../components/can";
-import Audits from "../pages/audits";
-import Licenses from "../pages/licenses";
-import Assets from "../pages/assets";
+import { useAppContext } from "../contexts/AppProvider";
 import Actions from "../pages/actions";
 import Accidents from "../pages/accidents";
-import Policies from "../pages/policies";
-import Mentions from "../pages/mentions";
+import Assets from "../pages/assets";
+import AuditLog from "../pages/admin/audit-log";
+import Audits from "../pages/audits";
+import BusinessUnits from "../pages/admin/business-units";
+import Can from "../components/can";
 import ComplianceItems from "../pages/compliance-items";
 import ComplianceItemsAdmin from "../pages/admin/compliance-items";
 import ComplianceItemAuditLog from "../pages/compliance-item/audit-log";
 import Categories from "../pages/admin/categories";
-import RegulatoryBodies from "../pages/admin/regulatory-bodies";
-import BusinessUnits from "../pages/admin/business-units";
-import Users from "../pages/admin/users";
-import AuditLog from "../pages/admin/audit-log";
-import Settings from "../pages/admin/settings";
-import DefaultLayout from "../layouts/DefaultLayout";
-import PureLayout from "../layouts/PureLayout";
-import IRoute from "../interfaces/IRoute";
-import { useAppContext } from "../contexts/AppProvider";
 import ComplianceItemResponse from "../pages/compliance-item/index";
-import Insights from "../pages/insights";
-import Help from "../pages/help";
+import DefaultLayout from "../layouts/DefaultLayout";
 import FilterLayout from "../layouts/FilterLayout";
+import Help from "../pages/help";
+import IRoute from "../interfaces/IRoute";
+import Insights from "../pages/insights";
+import Locations from "../pages/admin/locations";
+import Login from "../pages/login";
+import Licenses from "../pages/licenses";
+import Mentions from "../pages/mentions";
+import Policies from "../pages/policies";
+import PureLayout from "../layouts/PureLayout";
+import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import ResponseLayout from "../layouts/ResponseLayout";
+import Settings from "../pages/admin/settings";
 import Team from "../pages/compliance-item/team";
+import Users from "../pages/admin/users";
 import Logout from "../pages/logout";
 
 // Routes visible for not signed in
@@ -156,6 +156,13 @@ const protectedRoutes: Array<IRoute> = [
     key: "categories",
     exact: true,
     component: Categories,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/admin/locations",
+    key: "locations",
+    exact: true,
+    component: Locations,
     layout: DefaultLayout,
   },
   {

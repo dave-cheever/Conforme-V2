@@ -11,6 +11,8 @@ import { IComment } from './IComment';
 import { ICommentModel } from './ICommentModel';
 import { IComplianceItem } from './IComplianceItem';
 import { IComplianceItemModel } from './IComplianceItemModel';
+import { ILocation } from './ILocation';
+import { ILocationModel } from './ILocationModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
@@ -37,6 +39,8 @@ export {
   IComment,
   ICommentModel,
   IGraphUser,
+  ILocation,
+  ILocationModel,
   IOrganization,
   IOrganizationModel,
   IQuestion,

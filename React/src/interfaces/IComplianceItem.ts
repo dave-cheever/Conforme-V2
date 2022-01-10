@@ -2,6 +2,7 @@ import { IBase } from "./IBase";
 import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IQuestion } from "./IQuestion";
+import { ILocation } from "./ILocation";
 
 export interface IComplianceItem extends IBase {
   name: string;
@@ -13,9 +14,11 @@ export interface IComplianceItem extends IBase {
   businessUnitsIds: string[];
   evidenceItems: string[];
   questions?: IQuestion[];
+  locationsIds?: string[];
   published: boolean;
   reference?: string;
   
+  locations?: ILocation[];
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;
   businessUnits?: IBusinessUnit[];

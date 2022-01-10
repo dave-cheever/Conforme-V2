@@ -125,11 +125,12 @@ const PeoplePicker = ({ control, name, label, placeholder = '', tooltip = '', va
               </InputGroup>
               {showResults && (
                 <Flex
-                  position='relative'
+                  position='absolute'
                   bg="peoplePicker.bg"
                   direction='column'
                   boxShadow='lg'
                   rounded='lg'
+                  w={["calc(100% - 50px)", "calc(100% - 175px)"]}
                 >
                   {loading ? (
                     <Box p={4}>
@@ -170,7 +171,7 @@ const PeoplePicker = ({ control, name, label, placeholder = '', tooltip = '', va
                   )}
                 </Flex>
               )}
-              {error && <Box fontSize="smm" pl={3} mt={1} color='peoplePicker.error'>{error.message}</Box>}
+              {error && <Box fontSize="smm" pl={3} mt={1} color='peoplePicker.error' >{error.message}</Box>}
               {tooltip &&
                 <Flex color='peoplePicker.tooltip' align='center' mt={3}>
                   <InfoOutlineIcon />

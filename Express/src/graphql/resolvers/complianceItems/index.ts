@@ -26,7 +26,7 @@ export const complianceItemsTypeDefs = `
     outdated: Boolean
     choices: Choices
   }
-
+  
   type ComplianceItem {
     _id: ID!
     name: String
@@ -38,6 +38,8 @@ export const complianceItemsTypeDefs = `
     dueDate: Date
     frequency: String
     businessUnitsIds: [ID!]
+    locations: [Location]
+    locationsIds: [ID]
     evidenceItems: [String!]
     questions: [Question]
     published: Boolean
@@ -72,6 +74,7 @@ export const complianceItemsTypeDefs = `
     dueDate: Date
     frequency: String
     businessUnitsIds: [ID!]
+    locationsIds: [ID!]
     evidenceItems: [String!]
     questions: [QuestionInput]
     published: Boolean
@@ -90,6 +93,7 @@ export const complianceItemsTypeDefs = `
     dueDate: Date
     frequency: String
     businessUnitsIds: [ID!]
+    locationsIds: [ID!]
     evidenceItems: [String!]
     questions: [QuestionInput]
     published: Boolean

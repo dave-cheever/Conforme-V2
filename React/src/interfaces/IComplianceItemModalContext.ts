@@ -6,11 +6,12 @@ import { IBusinessUnit } from "./IBusinessUnit";
 import { IComplianceItem } from "./IComplianceItem";
 import { IComplianceItemModalDialogDetails } from "./IComplianceItemModalDialogDetails";
 import { IComplianceItemModalSection } from "../contexts/ComplianceItemModalProvider";
+import { ILocation } from "./ILocation";
 
 export interface IComplianceItemModalContext {
   control: Control<IComplianceItem>;
   errors: { [fieldName: string]: object };
-  setValue: UseFormSetValue<IComplianceItem>;
+  setValue: UseFormSetValue<Partial<IComplianceItem>>;
   trigger: UseFormTrigger<IComplianceItem>;
   reset: (complianceItem?: Partial<IComplianceItem>, setSection?: number) => void;
 
@@ -23,6 +24,7 @@ export interface IComplianceItemModalContext {
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];
+  locations: Partial<ILocation>[];
 
   savingDialogDetails: IComplianceItemModalDialogDetails;
   setSavingDialogDetails: Dispatch<SetStateAction<IComplianceItemModalDialogDetails>>;

@@ -77,7 +77,7 @@ const NavigationTop = () => {
           cursor="pointer"
         >
           <Text
-            w="full"//80px
+            w="full"
             ml={["26px", 0]}
             fontWeight="bold"
             fontSize="md"

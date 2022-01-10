@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Flex, Icon, Input, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Icon, Textarea, Tooltip } from '@chakra-ui/react';
+
 import { Controller } from 'react-hook-form';
+import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
-import { Asterisk } from '../../icons';
 
-interface ITextInput extends IField {
+interface ITextInputMultiline extends IField {
   placeholder?: string;
   variant?: string;
   styles?: {
@@ -26,22 +27,16 @@ const definedValidations: DefinedValidations = {
       return `${label} can be maximum ${validationValue} characters length`;
     }
   },
-  isEmail: (label, validationValue, value) => {
-    const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!value.match(regexEmail)) {
-      return "Invalid Email";
-    }
-  }
 };
 
-const TextInput = ({ control, name, label, placeholder = '', tooltip = '', validations = {}, disabled, required, styles }: ITextInput) => {
+const TextInputMultiline = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, styles }: ITextInputMultiline) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
-      render={({ field, fieldState }) => {
+      render={({ field, fieldState, formState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
@@ -57,18 +52,17 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="10px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px"/>}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>
               </Flex>
             )}
-            <Input
+            <Textarea
               borderRadius="8px"
               borderWidth="1px"
-              h="40px"
+              h="100px"
               type="text"
-              fontSize="smm"
+              fontSize= "smm"
               color="form.textInput.font"
               bg="form.textInput.bg"
               name={name}
@@ -99,4 +93,4 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
   );
 };
 
-export default TextInput;
+export default TextInputMultiline;

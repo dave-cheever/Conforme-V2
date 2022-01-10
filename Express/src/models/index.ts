@@ -3,6 +3,7 @@ import BusinessUnits from "./BusinessUnits";
 import Categories from "./Categories";
 import Comments from "./Comments";
 import ComplianceItems from "./ComplianceItems";
+import Locations from "./Locations";
 import Organizations from "./Organizations";
 import RegulatoryBodies from "./RegulatoryBodies";
 import Responses from "./Responses";
@@ -16,6 +17,7 @@ export {
   Comments,
   ComplianceItems,
   Organizations,
+  Locations,
   RegulatoryBodies,
   Responses,
   Settings,

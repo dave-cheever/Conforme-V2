@@ -46,6 +46,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
       isCorrect: Boolean
     }]
   }],
+  locationsIds: [String],
   published: Boolean,
   reference: String,
   metatags: {
