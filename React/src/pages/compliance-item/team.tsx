@@ -97,13 +97,13 @@ const Team = () => {
     racfData?.responseResponsible[0];
 
 
-  if(loading){
+  if (loading) {
     return (
       <Flex w="full" h="full" rounded="20px" bg="teamPage.bg">
-        <Loader center={true}/>
+        <Loader center={true} />
       </Flex>
     )
-  }  
+  }
 
   return (
     <Stack
@@ -135,6 +135,7 @@ const Team = () => {
                   user={accountable}
                   permission="accountable"
                   action="responses"
+                  isReplaceable
                 />
               </Flex>
             )}
@@ -189,7 +190,7 @@ const Team = () => {
             action="responses.manageMultipleFollowers"
           />
           <Flex>
-            {racfData?.followers?.map(follower => 
+            {racfData?.followers?.map(follower =>
               <AvatarUser key={follower._id} user={follower} permission="follower" action="responses.manageMultipleFollowers" />
             )}
           </Flex>
@@ -219,6 +220,10 @@ export const teamPageStyles = {
       add: {
         bg: "#462AC4",
         color: "#FFFFFF",
+      },
+      replace: {
+        bg: "#F0F2F5",
+        color: "#818197"
       },
       addDelegates: {
         bg: "#818197",

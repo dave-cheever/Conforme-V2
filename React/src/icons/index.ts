@@ -75,6 +75,7 @@ import QuestionsIcon from "./QuestionsIcon";
 import QuestionTextIcon from "./QuestionTextIcon";
 import QuestionToggleIcon from "./QuestionToggleIcon";
 import RedDotIcon from "./RedDotIcon";
+import ReplaceIcon from "./ReplaceIcon";
 import RequiredIcon from "./RequiredIcon";
 import ResetIcon from "./Reset";
 import RightArrowIcon from "./RightArrowIcon";
@@ -168,6 +169,7 @@ export {
   QuestionTextIcon,
   QuestionToggleIcon,
   RedDotIcon,
+  ReplaceIcon,
   RequiredIcon,
   ResetIcon,
   RightArrowIcon,

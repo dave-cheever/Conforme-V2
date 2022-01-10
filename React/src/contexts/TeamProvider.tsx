@@ -32,6 +32,7 @@ const TeamProvider = (props: any) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedRadio, setSelectedRadio] = useState<string>("");
   const [filterType, setFilterType] = useState("");
+  const [isReplaceAccountable,setIsReplaceAccountable] = useState<boolean>(false)
   const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQuery: { searchText: searchQuery } } });
   
   const value = useMemo(() => ({
@@ -40,7 +41,8 @@ const TeamProvider = (props: any) => {
     userSearchResults, setUserSearchResults,
     searchQuery, setSearchQuery,
     selectedRadio, setSelectedRadio,
-    filterType, setFilterType
+    filterType, setFilterType,
+    isReplaceAccountable,setIsReplaceAccountable
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     data, loading,
     filterType,

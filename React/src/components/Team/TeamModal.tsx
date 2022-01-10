@@ -1,21 +1,21 @@
 import React from 'react';
-import { 
-  Box, 
-  Button, 
-  Flex, 
-  Input, 
-  InputGroup, 
-  InputLeftElement, 
-  Modal, 
-  ModalBody, 
-  ModalCloseButton, 
-  ModalContent, 
-  ModalFooter, 
-  ModalHeader, 
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Text,
   useRadioGroup,
   useToast,
-  VStack 
+  VStack
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { gql, useMutation } from '@apollo/client';
@@ -38,13 +38,14 @@ const ADD_PARTICIPANT = gql`
 const TeamModal = () => {
   const toast = useToast();
   const { response, refetch } = useResponseContext();
-  const { filterType, isOpen, loading, userSearchResults, selectedRadio, searchQuery, onClose, setSearchQuery, setSelectedRadio } = useTeamContext();
+  const { filterType, isOpen, loading, userSearchResults, selectedRadio, searchQuery, onClose, setSearchQuery, setSelectedRadio, isReplaceAccountable, setIsReplaceAccountable } = useTeamContext();
   const [addParticipant] = useMutation(ADD_PARTICIPANT);
 
   const handleClose = () => {
     onClose();
     setSelectedRadio("");
     setSearchQuery("");
+    setIsReplaceAccountable(false)
   };
 
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -55,15 +56,16 @@ const TeamModal = () => {
 
   const group = getRootProps();
 
-  const handleAddParticipant =async () => {
+  const handleAddParticipant = async () => {
     try {
-      await addParticipant({ variables: { 
-        responseParticipantModify: { 
-          _id: response?._id, 
-          participantIds: [selectedRadio], 
-          permission: responsePermissionByFilterType(filterType) 
-        } 
-      }
+      await addParticipant({
+        variables: {
+          responseParticipantModify: {
+            _id: response?._id,
+            participantIds: [selectedRadio],
+            permission: responsePermissionByFilterType(filterType)
+          }
+        }
       });
       refetch();
       handleClose();
@@ -80,15 +82,14 @@ const TeamModal = () => {
     <Modal variant="teamModal" isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalContent>
         <ModalHeader>
-          <Text>Add {responsePermissionByFilterType(filterType)}</Text>
+          <Text>{isReplaceAccountable ? "Replace" : (!isReplaceAccountable && filterType === "accountableId") ? "Select" : "Add"} {responsePermissionByFilterType(filterType)}</Text>
           <ModalCloseButton />
         </ModalHeader>
-
         <ModalBody>
           <InputGroup>
             <InputLeftElement
               zIndex={50}
-              children={<SearchIcon fill="teamPage.modal.searchIcon"/>}
+              children={<SearchIcon fill="teamPage.modal.searchIcon" />}
             />
             <Input
               borderWidth='1px'
@@ -105,43 +106,43 @@ const TeamModal = () => {
             />
           </InputGroup>
           <Flex maxH="158px" mt="20px" direction='column'>
-            {loading 
+            {loading
               ? <Flex w='full' h='50px' px={3} fontStyle='italic' align='center'>
-                  <Box w='40px' mr={3}>
-                    <Loader size='md' />
-                  </Box>
-                  Searching...
-                </Flex> 
-              : userSearchResults.length > 0 
+                <Box w='40px' mr={3}>
+                  <Loader size='md' />
+                </Box>
+                Searching...
+              </Flex>
+              : userSearchResults.length > 0
                 ? <VStack h="full" {...group} alignItems="flex-start" mb="20px" overflow="auto" spacing="20px ">
-                    {userSearchResults.map((user) => {
-                      const radio = getRadioProps({ value: user._id });
-                      return (
-                        <CustomRadioButton key={user._id} {...radio}>
-                          <Text fontSize="smm" fontWeight="semi_medium" color="teamPage.radioButtonFont" >
-                            {user.firstName && user.lastName ?  `${user.firstName} ${user.lastName}` : `${user.displayName}`}
-                          </Text>
-                        </CustomRadioButton>
-                      )
-                    })}
-                  </VStack>
+                  {userSearchResults.map((user) => {
+                    const radio = getRadioProps({ value: user._id });
+                    return (
+                      <CustomRadioButton key={user._id} {...radio}>
+                        <Text fontSize="smm" fontWeight="semi_medium" color="teamPage.radioButtonFont" >
+                          {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
+                        </Text>
+                      </CustomRadioButton>
+                    )
+                  })}
+                </VStack>
                 : searchQuery && <Flex align='center' fontStyle='italic' pl={5} maxWidth='400px' h='50px'>No results found</Flex>}
           </Flex>
         </ModalBody>
         <ModalFooter pt="0px">
-          <Button 
-            w="68px"  
-            h="38px" 
-            mr="1px" 
-            mb="6px" 
-            bg="teamPage.button.add.bg" 
-            color="teamPage.button.add.color" 
-            fontSize="smm" 
-            fontWeight="bold" 
-            _hover={{bg: "teamPage.button.add.bg"}}
+          <Button
+            w="68px"
+            h="38px"
+            mr="1px"
+            mb="6px"
+            bg={isReplaceAccountable ? "teamPage.button.replace.bg" : "teamPage.button.add.bg"}
+            color={isReplaceAccountable ? "teamPage.button.replace.color" : "teamPage.button.add.color"}
+            fontSize="smm"
+            fontWeight="bold"
+            _hover={{ bg: isReplaceAccountable ? "teamPage.button.replace.bg" : "teamPage.button.add.bg" }}
             onClick={handleAddParticipant}
           >
-            Add
+            {isReplaceAccountable ? "Replace" : (!isReplaceAccountable && filterType === "accountableId") ? "Select" : "Add"}
           </Button>
         </ModalFooter>
       </ModalContent>

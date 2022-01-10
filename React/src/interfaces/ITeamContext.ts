@@ -8,7 +8,9 @@ export interface ITeamContext {
   userSearchResults: IUser[],
   searchQuery: string,
   selectedRadio: string, 
+  isReplaceAccountable: boolean,
   setFilterType: (value: string) => void,
+  setIsReplaceAccountable: (value: boolean) => void,
   onOpen: () => void,
   onClose: () => void,
   refetchUsers: () => void

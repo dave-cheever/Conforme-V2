@@ -1,4 +1,4 @@
-import locations from "./Locations.q";
+import locations from "./locations.q";
 import createLocation from "./createLocations.m";
 import deleteLocation from "./deleteLocations.m";
 import updateLocation from "./updateLocations.m";

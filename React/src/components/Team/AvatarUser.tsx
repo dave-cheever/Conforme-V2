@@ -2,24 +2,26 @@ import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { Avatar } from "@chakra-ui/avatar";
 import { CloseIcon } from "@chakra-ui/icons";
-import { 
+import { ReplaceIcon } from "../../icons";
+import {
   Button,
-  Flex, 
-  Modal, 
-  ModalBody, 
-  ModalCloseButton, 
-  ModalContent, 
-  ModalFooter, 
-  ModalHeader, 
-  Text, 
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Text,
   useDisclosure,
-  useToast, 
+  useToast,
 } from "@chakra-ui/react";
 
 import { useResponseContext } from "../../contexts/ResponseProvider";
 import { IUser } from "../../interfaces/IUser";
 import { toastFailed } from "../../bootstrap/config";
 import Can from "../can";
+import { useTeamContext } from "../../contexts/TeamProvider";
 
 const REMOVE_PARTICIPANT = gql`
   mutation ($responseParticipantRemove: ResponseParticipantRemove!) {
@@ -27,13 +29,23 @@ const REMOVE_PARTICIPANT = gql`
   }
 `;
 
-const AvatarUser = ({ user, permission, removable = true, action }: {user: IUser, permission: string, removable?: boolean, action: string}) => {
+const AvatarUser = ({ user, permission, removable = true, action, isReplaceable }: { user: IUser, permission: string, removable?: boolean, action: string, isReplaceable?: boolean }) => {
   const { response, refetch: refetchResponse } = useResponseContext();
+  const { onOpen: onReplace, setFilterType, setIsReplaceAccountable } = useTeamContext()
   const { firstName, lastName, displayName, imgUrl, _id } = user;
   const [showDelete, setShowDelete] = useState(false);
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const OpenReplaceOrDeleteModal = () => {
+    if (isReplaceable) {
+      onReplace()
+      setFilterType("accountableId")
+      setIsReplaceAccountable(true)
+    } else {
+      onOpen()
+    }
+  }
   const [removeParticipant] = useMutation(REMOVE_PARTICIPANT);
 
   return (
@@ -48,16 +60,16 @@ const AvatarUser = ({ user, permission, removable = true, action }: {user: IUser
             <Text color="avatarUser.modal.body">This action cannot be undone</Text>
           </ModalBody>
           <ModalFooter justifyContent="space-between">
-            <Button 
-              w="95px" 
-              h="38px" 
-              bg="avatarUser.modal.button.remove.bg" 
+            <Button
+              w="95px"
+              h="38px"
+              bg="avatarUser.modal.button.remove.bg"
               color="avatarUser.modal.button.remove.color"
               onClick={async () => {
                 try {
-                  await removeParticipant({ variables: { responseParticipantRemove: { _id: response?._id, participantId: _id, permission: permission } }});
+                  await removeParticipant({ variables: { responseParticipantRemove: { _id: response?._id, participantId: _id, permission: permission } } });
                   refetchResponse();
-                  onClose();  
+                  onClose();
                 } catch (error: any) {
                   toast({
                     ...toastFailed,
@@ -67,12 +79,12 @@ const AvatarUser = ({ user, permission, removable = true, action }: {user: IUser
                 }
               }}
             >Remove</Button>
-            <Button 
-              w="75px" 
-              h="38px" 
-              bg="avatarUser.modal.button.keep.bg" 
-              color="avatarUser.modal.button.keep.color" 
-              _hover={{opacity: "0.9"}} 
+            <Button
+              w="75px"
+              h="38px"
+              bg="avatarUser.modal.button.keep.bg"
+              color="avatarUser.modal.button.keep.color"
+              _hover={{ opacity: "0.9" }}
               onClick={onClose}
             >
               Keep
@@ -89,34 +101,34 @@ const AvatarUser = ({ user, permission, removable = true, action }: {user: IUser
           cursor={removable ? "pointer" : "default"}
           onMouseOver={() => setShowDelete(true)}
         />
-        <Can 
+        <Can
           action={action}
-          data={{response}}
-          yes={() => ( 
-              showDelete && removable ? 
-              <Flex 
-                pos="absolute" 
-                alignItems="center" 
-                justifyContent="center" 
+          data={{ response }}
+          yes={() => (
+            showDelete && removable ?
+              <Flex
+                pos="absolute"
+                alignItems="center"
+                justifyContent="center"
                 cursor="pointer"
-                onClick={async ()=> {
-                  if(removable) {
-                    onOpen();
+                onClick={async () => {
+                  if (removable) {
+                    OpenReplaceOrDeleteModal();
                     setShowDelete(false);
                   }
-                }}  
+                }}
               >
-                <Flex 
-                  w="64px" 
-                  h="64px" 
-                  bg="avatarUser.overlay" 
-                  opacity="0.85" 
-                  rounded="50%" 
+                <Flex
+                  w="64px"
+                  h="64px"
+                  bg="avatarUser.overlay"
+                  rounded="50%"
                   onMouseOut={() => setShowDelete(false)}
                 />
-                <CloseIcon w="20px" h="20px" color="avatarUser.closeIcon" pos="absolute" opacity="0.95" onMouseOver={() => setShowDelete(true)} />
-               
-            </Flex> : <></>
+                {isReplaceable ?
+                  <ReplaceIcon w="20px" h="20px" stroke="avatarUser.icon" pos="absolute" opacity="0.95" onMouseOver={() => setShowDelete(true)} /> :
+                  <CloseIcon w="20px" h="20px" color="avatarUser.icon" pos="absolute" opacity="0.95" onMouseOver={() => setShowDelete(true)} />}
+              </Flex> : <></>
           )}
         />
         <Text
@@ -146,7 +158,7 @@ export const avatarUserStyles = {
         }
       }
     },
-    overlay: "red",
-    closeIcon: "#FFFFFF"
+    overlay: "linear-gradient(0deg, rgba(232, 60, 67, 0.8), rgba(232, 60, 67, 0.8)), url(.png)",
+    icon: "#FFFFFF"
   }
 };
