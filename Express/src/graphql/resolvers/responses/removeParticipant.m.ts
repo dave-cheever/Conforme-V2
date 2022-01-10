@@ -1,13 +1,14 @@
+import { IResponse } from "app-interfaces";
 import { Responses } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const removeParticipant = async (_, { responseParticipantRemove }, { authorize }) => {  
+const removeParticipant = async (_, { responseParticipantRemove }, { authorize, organization }) => {
   try {
     const user = await authorize();
-    const {_id, participantId, permission} = responseParticipantRemove;
-    const response = await Responses.customFindById(_id);
+    const { _id, participantId, permission } = responseParticipantRemove;
+    const response = await Responses.customFindById(_id, organization._id);
 
-    if(!participantId) {
+    if (!participantId) {
       throw new Error("Invalid input");
     }
 
@@ -15,14 +16,7 @@ const removeParticipant = async (_, { responseParticipantRemove }, { authorize }
       throw new Error("Response doesn't exist");
     }
 
-    const updatedResponse = {
-      ...response,
-      metatags: {
-        ...response?.metatags,
-        ...genMetatags("updated", user._id),
-      },
-    };
-
+    const update: Partial<IResponse> = {};
     switch (permission) {
       case "accountable":
         if (!isPermitted({ user, action: "responses.manageAccountable", data: { response } })) {
@@ -30,9 +24,8 @@ const removeParticipant = async (_, { responseParticipantRemove }, { authorize }
         }
 
         if (response.accountableId === participantId) {
-          updatedResponse.accountableId = "";
+          update.accountableId = "";
         }
-        
         break;
       case "responsible":
         if (!isPermitted({ user, action: "responses.manageResponsible", data: { response } })) {
@@ -40,34 +33,30 @@ const removeParticipant = async (_, { responseParticipantRemove }, { authorize }
         }
 
         if (response.responsibleId === participantId) {
-          updatedResponse.responsibleId = "";
+          update.responsibleId = "";
         }
-
         break;
       case "contributor":
         if (!isPermitted({ user, action: "responses.manageContributor", data: { response } })) {
           throw new Error("User is not permitted to remove contributor");
         }
 
-        updatedResponse.contributorsIds = response.contributorsIds?.filter(_id => _id !== participantId);
-
+        update.contributorsIds = response.contributorsIds?.filter(_id => _id !== participantId);
         break;
       case "follower":
-        if (!isPermitted({ user, action: "responses.manageFollower", data: { response } }) && 
-        !isPermitted({ user, action: "responses.manageMultipleFollowers", data: { response }})) {
+        if (!isPermitted({ user, action: "responses.manageFollower", data: { response } }) &&
+          !isPermitted({ user, action: "responses.manageMultipleFollowers", data: { response } })) {
           throw new Error("User is not permitted to unfollow");
         }
 
-        updatedResponse.followersIds = response.followersIds?.filter(_id => _id !== participantId);
-
+        update.followersIds = response.followersIds?.filter(_id => _id !== participantId);
         break;
       default:
         break;
     }
-    
-    await Responses.updateOne({_id}, updatedResponse);
-    
-    return true;
+
+    const updatedResponse = await Responses.customUpdateOne({ _id }, update, user._id, organization._id);
+    return !!updatedResponse;
   } catch (error: any) {
     throw new Error(error);
   }

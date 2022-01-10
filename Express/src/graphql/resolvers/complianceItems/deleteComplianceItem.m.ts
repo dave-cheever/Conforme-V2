@@ -1,7 +1,7 @@
 import { ComplianceItems } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const deleteComplianceItem = async (_, { _id }, { authorize }) => {
+const deleteComplianceItem = async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -9,7 +9,7 @@ const deleteComplianceItem = async (_, { _id }, { authorize }) => {
       throw new Error("User is not permitted");
     }
 
-    const complianceItem = await ComplianceItems.customFindById(_id);
+    const complianceItem = await ComplianceItems.customFindById(_id, organization._id);
     if (!complianceItem) {
       throw new Error("Compliance item doesn't exist");
     }

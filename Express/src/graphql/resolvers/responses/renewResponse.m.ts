@@ -1,12 +1,11 @@
-import { IResponse } from "app-interfaces";
 import { ComplianceItems, Responses } from "app-models";
-import { genMetatags, getStatus, isPermitted } from "app-utils";
+import { getStatus, isPermitted } from "app-utils";
 
-const updateQuestions = async (_, { _id }, { authorize }) => {
+const renewResponse = async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
-    const response = await Responses.customFindById(_id);
+    const response = await Responses.customFindById(_id, organization._id);
     if (!response) {
       throw new Error("Response doesn't exist");
     }
@@ -15,7 +14,7 @@ const updateQuestions = async (_, { _id }, { authorize }) => {
       throw new Error('User is not permitted');
     }
 
-    const complianceItem = await ComplianceItems.customFindById(response.complianceItemId);
+    const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organization._id);
     if (!complianceItem) {
       throw new Error("Compliance item assigned to response doesn't exist");
     }
@@ -27,8 +26,8 @@ const updateQuestions = async (_, { _id }, { authorize }) => {
         .map(({ type, name, description, required }) => ({ type, name, description, required }))
     ];
     const nextStatus = getStatus(complianceItem.frequency || "");
-    const updatedResponse: IResponse = {
-      ...response,
+
+    const updatedResponse = await Responses.customUpdateOne({ _id }, {
       attachments: response.attachments,
       status: nextStatus,
       evidence: [
@@ -45,17 +44,11 @@ const updateQuestions = async (_, { _id }, { authorize }) => {
         })),
         ...newQuestions,
       ],
-      metatags: {
-        ...response.metatags,
-        ...genMetatags("updated", user._id),
-      },
-    };
-
-    await Responses.updateOne({ _id }, updatedResponse);
+    }, user._id, organization._id);
     return updatedResponse;
   } catch (error: any) {
     throw new Error(error);
   }
 }
 
-export default updateQuestions;
+export default renewResponse;

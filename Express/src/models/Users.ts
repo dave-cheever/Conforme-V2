@@ -39,7 +39,7 @@ userSchema.statics.customFindById = async function (userId: string): Promise<IUs
 }
 
 
-userSchema.statics.customCreate = async function (user: IUser, userId: string, organizationId: string): Promise<IUser> {
+userSchema.statics.customAdd = async function (user: IUser, userId: string, organizationId: string): Promise<IUser> {
   const newUser = await this.create({
     ...user,
     defaultPage: "/",
@@ -51,7 +51,7 @@ userSchema.statics.customCreate = async function (user: IUser, userId: string, o
 
 // This method includes user details from MS Graph
 userSchema.statics.customFindByIdWithDetails = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
-  const user = await this.customFindById(userId);
+  const user = await this.customFindById(userId, organization._id);
   if (!user) {
     throw new Error('User not found');
   }

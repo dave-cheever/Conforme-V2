@@ -1,12 +1,11 @@
-import { OIDCStrategy, IOIDCStrategyOptionWithoutRequest, IOIDCStrategyOptionWithRequest } from 'passport-azure-ad';
+import { PassportStatic } from 'passport';
+import { OIDCStrategy, IOIDCStrategyOptionWithRequest } from 'passport-azure-ad';
+import { isBefore } from 'date-fns';
 
 import { IUser } from 'app-interfaces';
 import { Organizations, Users } from 'app-models';
-import { sessionizeUser, getUserName } from 'app-utils';
+import { sessionizeUser } from 'app-utils';
 import { GraphService } from 'app-services';
-import moment from 'moment';
-import { isBefore } from 'date-fns';
-import { PassportStatic } from 'passport';
 
 const initPassport = (passport: PassportStatic) => {
   // Azure AD
@@ -61,7 +60,7 @@ const initPassport = (passport: PassportStatic) => {
       const newUser = {
         _id,
       };
-      await Users.customCreate(newUser as IUser, _id, organization._id);
+      await Users.customAdd(newUser, _id, organization._id);
       user = await Users.customFindByIdWithDetails(userQuery);
     }
     if (!user) {

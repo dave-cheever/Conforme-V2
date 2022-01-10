@@ -44,39 +44,200 @@ export const responsePermissionByFilterType = (filterType) => {
   }
 };
 
-export const generateLabelColor = (i, errors, complianceItem, visitedTab, selectedSectionIndex) => {
+export const generateTabColors = (i, errors, complianceItem, visitedTab, selectedSectionIndex): { bg: string; color: string; } => {
   switch (i) {
     case 0:
-      if(Object.keys(errors).length !== 0) {
-        return "navigationModal.section.error.bg"
+      if (Object.keys(errors).length !== 0) {
+        return {
+          bg: "navigationModal.section.error.bg",
+          color: "navigationModal.section.error.color"
+        };
       }
       break;
     case 1:
       if (complianceItem?.businessUnitsIds?.length === 0 && visitedTab > i) {
-        return "navigationModal.section.error.bg"
-      } 
+        return {
+          bg: "navigationModal.section.error.bg",
+          color: "navigationModal.section.error.color"
+        };
+      }
       break;
     case 2:
-      if (complianceItem.evidenceItems?.length === 0 
-          && complianceItem.questions?.filter(({ required, outdated }) => required 
-          && !outdated)?.length === 0 
-          && visitedTab > i) {
-        return "navigationModal.section.error.bg"
+      if (complianceItem.evidenceItems?.length === 0
+        && complianceItem.questions?.filter(({ required, outdated }) => required
+          && !outdated)?.length === 0
+        && visitedTab > i) {
+        return {
+          bg: "navigationModal.section.error.bg",
+          color: "navigationModal.section.error.color"
+        };
       }
       break;
     case 3:
-      if (complianceItem.evidenceItems?.length === 0 
-          && complianceItem.questions?.filter(({ required, outdated }) => required 
-          && !outdated)?.length === 0 
-          && visitedTab >= i) {
-        return "navigationModal.section.error.bg"
+      if (complianceItem.evidenceItems?.length === 0
+        && complianceItem.questions?.filter(({ required, outdated }) => required
+          && !outdated)?.length === 0
+        && visitedTab >= i) {
+        return {
+          bg: "navigationModal.section.error.bg",
+          color: "navigationModal.section.error.color"
+        };
       }
       break;
   }
 
-  if(i === selectedSectionIndex) {
-    return "navigationModal.section.selected.bg" 
+  if (i === selectedSectionIndex) {
+    return {
+      bg: "navigationModal.section.selected.bg",
+      color: "navigationModal.section.selected.color"
+    };
+  } else if (i < selectedSectionIndex) {
+    return {
+      bg: "navigationModal.section.correct.bg",
+      color: "navigationModal.section.correct.color"
+    };
   } else {
-    return "navigationModal.section.unselected.bg"
+    return {
+      bg: "navigationModal.section.unselected.bg",
+      color: "navigationModal.section.unselected.color"
+    };
   }
-}
+};
+
+export const getFieldNameByAction = (action: string) => {
+  let fieldAction = "";
+  switch (action) {
+    case "add":
+      fieldAction = "added new"
+      break;
+    case "delete":
+      fieldAction = "deleted"
+      break;
+    case "update":
+      fieldAction = "updated"
+      break;
+    default:
+      break;
+  }
+
+  return fieldAction;
+};
+
+export const getCollectionNameByAction = (collection: string) => {
+  let fieldCollection = "";
+  switch (collection) {
+    case "categories":
+      fieldCollection = "category"
+      break;
+    case "compliance-items":
+      fieldCollection = "compliance item"
+      break;
+    case "functional-areas":
+      fieldCollection = "functional area"
+      break;
+    case "regulatory-bodies":
+      fieldCollection = "regulatory body"
+      break;
+    case "responses":
+      fieldCollection = "response"
+      break;
+    case "settings":
+      fieldCollection = "setting"
+      break;
+    case "comments":
+      fieldCollection = "comment in"
+      break;
+    default:
+      break;
+  }
+
+  return fieldCollection;
+};
+
+export const getLabelByField = (field: string) => {
+  let fieldName = "";
+  switch (field) {
+    case "name":
+      fieldName = "Name"
+      break;
+    case "description":
+      fieldName = "Description"
+      break;
+    case "categoryId":
+      fieldName = "Category"
+      break;
+    case "regulatoryBodyId":
+      fieldName = "Regulatory body"
+      break;
+    case "functionalAreaId":
+      fieldName = "Functional area"
+      break;
+    case "frequency":
+      fieldName = "Frequency"
+      break;
+    case "businessUnitsIds":
+      fieldName = "Business units"
+      break;
+    case "evidenceItems":
+      fieldName = "Evidence items"
+      break;
+    case "retentionPeriod":
+      fieldName = "Retention period"
+      break;
+    case "published":
+      fieldName = "Published"
+      break;
+    case "status":
+      fieldName = "Status"
+      break;
+    case "comments":
+      fieldName = "Comments"
+      break;
+    case "reference":
+      fieldName = "Reference"
+      break;
+    case "delegateIds":
+      fieldName = "Delegates"
+      break;
+    case "evidence":
+      fieldName = "Evidence"
+      break;
+    case "ed":
+      fieldName = "Executive director"
+      break;
+    case "value":
+      fieldName = "Value"
+      break;
+    case "lastRenewalDate":
+      fieldName = "Date of Last Renewal"
+      break;
+    case "nextRenewalDate":
+      fieldName = "Date of Next Renewal"
+      break;
+    default:
+      fieldName = field;
+      break;
+  }
+
+  return fieldName;
+};
+
+export const getFieldNameByValues = (value: string) => {
+  let fieldValue = "";
+  switch (value) {
+    case "notStarted":
+      fieldValue = "Not started"
+      break;
+    case "inProgress":
+      fieldValue = "In progress"
+      break;
+    case "completed":
+      fieldValue = "Completed"
+      break;
+    default:
+      fieldValue = value;
+      break;
+  }
+
+  return fieldValue;
+};

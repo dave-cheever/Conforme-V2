@@ -1,3 +1,4 @@
+import auditLogsResolvers from "./auditLogs";
 import businessUnitsResolvers from "./businessUnits"
 import categoriesResolvers from "./categories";
 import commentsResolvers from "./comments";
@@ -15,6 +16,7 @@ export default {
   Any: scalars.anyScalar,
   Date: scalars.dateScalar,
   Query: {
+    ...auditLogsResolvers.Query,
     ...businessUnitsResolvers.Query,
     ...categoriesResolvers.Query,
     ...commentsResolvers.Query,

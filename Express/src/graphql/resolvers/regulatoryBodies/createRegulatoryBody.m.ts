@@ -11,16 +11,8 @@ const createRegulatoryBody = async (_, { name }, { authorize, organization }) =>
       throw new Error('User is not permitted');
     }
 
-    const newRegulatoryBody = {
-      _id: uuidv4(),
-      name,
-      organizationId: organization._id,
-      metatags: genMetatags('added', user._id),
-    };
-
-    await RegulatoryBodies.create(newRegulatoryBody);
-
-    return newRegulatoryBody;
+    const createdRegulatoryBody = await RegulatoryBodies.customCreate({ name }, user._id, organization._id);
+    return createdRegulatoryBody;
   } catch (err: any) {
     throw new Error(err);
   }

@@ -2,9 +2,21 @@ import { v4 as uuidv4 } from "uuid";
 import { model, Schema } from 'mongoose';
 import { isEqual } from 'date-fns';
 
-import { IComplianceItem, IComplianceItemModel, IOrganization, IResponse } from 'app-interfaces';
-import { BusinessUnits, Responses } from 'app-models';
-import { genMetatags } from 'app-utils';
+import { IAuditValues, IComplianceItem, IComplianceItemModel, IOrganization, IResponse } from 'app-interfaces';
+import { AuditLogs, BusinessUnits, Categories, Organizations, RegulatoryBodies, Responses } from 'app-models';
+import {
+  genMetatags,
+  getAuditValueForBoolean,
+  getAuditValueForDate,
+  getAuditValueForLookup,
+  getAuditValueForLookupsArray,
+  getAuditValueForString,
+  getAuditValueForStringsArray,
+  getBasicElement,
+  removeDatabaseFields,
+} from 'app-utils';
+import { diff } from "deep-object-diff";
+import { GraphQLError } from "graphql";
 
 const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   _id: String,
@@ -46,14 +58,109 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   }
 });
 
+// This method is used to prepare values object for audit log
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValuesPromise = fields.reduce(async (accP, field) => {
+    const acc = await accP;
+    let value = {};
+
+    switch (field) {
+      case 'dueDate':
+        value = getAuditValueForDate(oldValues[field], newValues[field]);
+        break;
+
+      // If updated 'categoryId' field, get category from database and set value as id and label as name
+      case 'categoryId':
+        value = await getAuditValueForLookup({
+          collection: Categories,
+          labelField: 'name',
+          oldValue: oldValues[field],
+          newValue: newValues[field],
+          organization,
+        });
+        break;
+
+      // If updated 'regulatoryBodyId' field, get regulatory body from database and set value as id and label as name
+      case 'regulatoryBodyId':
+        value = await getAuditValueForLookup({
+          collection: RegulatoryBodies,
+          labelField: 'name',
+          oldValue: oldValues[field],
+          newValue: newValues[field],
+          organization,
+        });
+        break;
+
+      // If updated 'businessUnitsIds' field, get business units from database and set value as array of ids and label as joined names
+      case 'businessUnitsIds':
+        value = await getAuditValueForLookupsArray({
+          collection: BusinessUnits,
+          labelField: 'name',
+          oldValue: oldValues[field],
+          newValue: newValues[field],
+          organization,
+        });
+        break;
+
+      // If updated 'evidenceItems' field, set value as array of names and label as joined names
+      case 'evidenceItems':
+        value = getAuditValueForStringsArray(oldValues[field], newValues[field]);
+        break;
+
+      // If updated 'published' field, set value as boolean and label as Yes/No
+      case 'published':
+        value = getAuditValueForBoolean(oldValues[field], newValues[field]);
+        break;
+
+      case 'questions':
+        // TODO: add audit log for questions
+        return acc;
+
+      default:
+        value = getAuditValueForString(oldValues[field], newValues[field]);
+    }
+    return {
+      ...acc,
+      [field]: value,
+    };
+  }, Promise.resolve({}));
+
+  const auditRecordValues = await auditRecordValuesPromise;
+  return auditRecordValues;
+};
+
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-complianceItemSchema.statics.customFindById = async function (_id: string): Promise<IComplianceItem> {
-  const complianceItem = await this.findById(_id).lean();
-  if (!complianceItem) {
-    throw new Error('ComplianceItem not found');
+complianceItemSchema.statics.customCreate = async function (complianceItem: IComplianceItem, userId: string, organizationId: string): Promise<IComplianceItem> {
+  const createdComplianceItem = await this.create({
+    ...complianceItem,
+    _id: uuidv4(),
+    organizationId,
+    metatags: genMetatags("added", userId),
+  });
+
+  if (createdComplianceItem?._doc) {
+    const addAuditLog = async () => {
+      const element = getBasicElement(createdComplianceItem._doc);
+      const newValues = removeDatabaseFields(createdComplianceItem._doc);
+      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const values = await getAuditRecordValues({ newValues, organization });
+      AuditLogs.customAudit({
+        coll: 'complianceItems',
+        action: "add",
+        element,
+        values,
+      }, userId, organizationId);
+    };
+    addAuditLog();
   }
-  return complianceItem;
+
+  return createdComplianceItem;
 };
 
 complianceItemSchema.statics.customFind = async function (selector: any = {}): Promise<IComplianceItem[]> {
@@ -62,6 +169,92 @@ complianceItemSchema.statics.customFind = async function (selector: any = {}): P
     "metatags.removedAt": { $eq: null },
   }).lean();
   return complianceItems;
+};
+
+complianceItemSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IComplianceItem | null> {
+  const complianceItem = await this.findOne({
+    ...selector,
+    organizationId,
+    "metatags.removedAt": { $eq: null },
+  }).lean();
+  return complianceItem;
+};
+
+complianceItemSchema.statics.customFindById = async function (_id: string): Promise<IComplianceItem> {
+  const complianceItem = await this.findOne({
+    _id,
+    "metatags.removedAt": { $eq: null },
+  }).lean();
+  if (!complianceItem) {
+    throw new Error("Compliance item not found");
+  }
+  return complianceItem;
+};
+
+complianceItemSchema.statics.customUpdateOne = async function (selector: object = {}, updates: Partial<IComplianceItem>, userId: string, organizationId: string): Promise<IComplianceItem> {
+  const complianceItem = await this.customFindOne(selector, organizationId);
+  if (!complianceItem) {
+    throw new GraphQLError('Compliance item doesn\'t exist');
+  }
+
+  const updatedComplianceItem = {
+    ...complianceItem,
+    ...updates,
+    metatags: {
+      ...complianceItem?.metatags,
+      ...genMetatags("updated", userId),
+    },
+  };
+  const updatedResult = await this.updateOne(selector, updatedComplianceItem);
+
+  if (updatedResult?.modifiedCount) {
+    const addAuditLog = async () => {
+      const element = getBasicElement(updatedComplianceItem);
+      const oldValues = removeDatabaseFields(complianceItem);
+      const newValues = removeDatabaseFields(updatedComplianceItem);
+      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const values = await getAuditRecordValues({ oldValues, newValues, organization });
+      AuditLogs.customAudit({
+        coll: 'complianceItems',
+        action: "update",
+        element,
+        values,
+      }, userId, organizationId);
+    };
+    addAuditLog();
+  }
+
+  return updatedComplianceItem;
+};
+
+complianceItemSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
+  const complianceItem = await this.customFindOne(selector, organizationId);
+  if (!complianceItem) {
+    throw new GraphQLError('Category doesn\'t exist');
+  }
+
+  const deletedResult = await this.deleteMany({
+    ...selector,
+    organizationId,
+  });
+
+  if (deletedResult?.deletedCount) {
+    const addAuditLog = async () => {
+      const element = getBasicElement(complianceItem);
+      const oldValues = removeDatabaseFields(complianceItem);
+      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const values = await getAuditRecordValues({ oldValues, organization });
+      AuditLogs.customAudit({
+        coll: 'complianceItems',
+        action: "delete",
+        element,
+        values,
+      }, userId, organizationId);
+    };
+    addAuditLog();
+  }
+
+  return deletedResult?.deletedCount;
 };
 
 complianceItemSchema.statics.customGenerateReference = async function (): Promise<string> {
@@ -74,21 +267,23 @@ complianceItemSchema.statics.customGenerateReference = async function (): Promis
   return reference;
 };
 
-complianceItemSchema.methods.customSynchronizeResponses = async function ({
+complianceItemSchema.statics.customSynchronizeResponses = async function ({
+  complianceItem,
   userId,
+  organizationId,
   prevDueDate,
-  organization
 }: {
+  complianceItem: IComplianceItem,
   userId: string,
+  organizationId: string
   prevDueDate?: Date,
-  organization: IOrganization
 }) {
-  const responses = await Responses.customFind({ complianceItemId: this._id });
-  const unprocessedBusinessUnitsIds = [...this.businessUnitsIds];
+  const responses = await Responses.customFind({ complianceItemId: complianceItem._id }, organizationId);
+  const unprocessedBusinessUnitsIds = [...complianceItem.businessUnitsIds];
 
   for (const response of responses) {
     const index = unprocessedBusinessUnitsIds.findIndex(_id => _id === response.businessUnitId);
-    let isPublished = this.published;
+    let isPublished = complianceItem.published;
 
     if (index === -1) {
       // If BU of Response is not selected in CI
@@ -114,7 +309,7 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
 
     // Check if evidence was removed from CI
     for (const evidence of currentEvidence) {
-      if (!this.evidenceItems.includes(evidence.name)) {
+      if (!complianceItem.evidenceItems.includes(evidence.name)) {
         // If current evidence not exist in CI evidence items
         // Set it to outdated
         updatedResponse.evidence.push({
@@ -125,7 +320,7 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
     }
 
     // Check if evidence was added to CI or re-ordered
-    for (const evidenceName of this.evidenceItems) {
+    for (const evidenceName of complianceItem.evidenceItems) {
       const existingEvidence = currentEvidence.find(({ name }) => name === evidenceName);
       if (existingEvidence) {
         // If CI evidence exist in response, leave it
@@ -141,7 +336,7 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
 
     // Check if question was removed from CI
     for (const question of currentQuestions) {
-      const existingQuestion = (this.questions || []).find(({ name, type }) => name === question.name && type === question.type);
+      const existingQuestion = (complianceItem.questions || []).find(({ name, type }) => name === question.name && type === question.type);
       if (!existingQuestion) {
         // If current question not exist in CI questions
         // Set it to outdated
@@ -153,7 +348,7 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
     }
 
     // Check if question was added to CI or re-ordered
-    for (const question of this.questions || []) {
+    for (const question of complianceItem.questions || []) {
       const existingQuestion = currentQuestions.find(({ name, type }) => name === question.name && type === question.type);
       if (existingQuestion) {
         // If CI question exist in response, leave it but update with possible changes
@@ -187,19 +382,19 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
       (response.nextRenewalDate && prevDueDate && isEqual(response.nextRenewalDate, prevDueDate))
     ) {
       // If previous CI date was same as Response date
-      updatedResponse.nextRenewalDate = this.dueDate!;
+      updatedResponse.nextRenewalDate = complianceItem.dueDate!;
     }
 
-    await Responses.updateOne({ _id: response._id }, updatedResponse);
+    await Responses.customUpdateOne({ _id: response._id }, updatedResponse, userId, organizationId);
   }
 
   // Create selected that doesn't exist
   for (const businessUnitId of unprocessedBusinessUnitsIds) {
-    const businessUnit = await BusinessUnits.customFindById(businessUnitId);
+    const businessUnit = await BusinessUnits.customFindById(businessUnitId, organizationId);
 
-    await Responses.create({
+    await Responses.customCreate({
       _id: uuidv4(),
-      complianceItemId: this._id,
+      complianceItemId: complianceItem._id,
       businessUnitId: businessUnitId,
       accountableId: businessUnit.ownerId,
       responsibleId: "",
@@ -209,12 +404,13 @@ complianceItemSchema.methods.customSynchronizeResponses = async function ({
       attachments: [],
       lastCompletedDate: null,
       lastRenewalDate: null,
-      nextRenewalDate: this.dueDate,
-      evidence: this.evidenceItems.map(name => ({ name })),
-      questions: this.questions,
+      nextRenewalDate: complianceItem.dueDate,
+      evidence: complianceItem.evidenceItems.map(name => ({ name })),
+      questions: complianceItem.questions,
+      organizationId,
+      // @ts-ignore
       metatags: genMetatags('added', userId),
-      organizationId: organization._id
-    });
+    }, userId, organizationId);
   }
 };
 

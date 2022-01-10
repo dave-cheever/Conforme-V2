@@ -1,5 +1,6 @@
 import { gql } from "apollo-server-express";
 
+import { auditLogsTypeDefs, auditLogsQueryDefs } from './resolvers/auditLogs';
 import { businessUnitsTypeDefs, businessUnitsQueryDefs, businessUnitsMutationDefs } from "./resolvers/businessUnits";
 import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categories";
 import { commentsMutationDefs, commentsQueryDefs, commnentsTypeDefs } from "./resolvers/comments";
@@ -36,6 +37,7 @@ const typeDefs = gql`
     name: String
   }
   
+  ${auditLogsTypeDefs}
   ${businessUnitsTypeDefs}
   ${commnentsTypeDefs}
   ${complianceItemsTypeDefs}
@@ -46,6 +48,7 @@ const typeDefs = gql`
   ${usersTypeDefs}
 
   type Query {
+    ${auditLogsQueryDefs}
     ${businessUnitsQueryDefs}
     ${categoriesQueryDefs}
     ${commentsQueryDefs}

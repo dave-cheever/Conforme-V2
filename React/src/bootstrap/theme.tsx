@@ -5,6 +5,9 @@ import { adminModalStyles } from "../components/Admin/AdminModal";
 import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
 import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
 import { alertDialogStyles } from "../components/AlertDialog";
+import { auditLogDayStyles } from "../components/AuditLog/AuditLogDay";
+import { auditLogRecordStyles } from "../components/AuditLog/AuditLogRecord";
+import { auditLogStyles } from "../components/AuditLog/AuditLog";
 import { avatarUserStyles } from "../components/Team/AvatarUser";
 import { barChartStyles } from "../components/BarChart";
 import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
@@ -121,6 +124,9 @@ const getTheme = (organizationTheme?: any) => {
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
       ...alertDialogStyles,
+      ...auditLogDayStyles,
+      ...auditLogRecordStyles,
+      ...auditLogStyles,
       ...avatarUserStyles,
       ...barChartStyles,
       ...businessUnitsModalStyles,

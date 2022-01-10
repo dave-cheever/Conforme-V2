@@ -1,11 +1,12 @@
 
-import { IAuditLog } from './IAuditLog';
+import { IAuditLog, IAuditValues } from './IAuditLog';
 import { IAuditLogModel } from './IAuditLogModel';
 import { IBase } from './IBase';
 import { IBaseModel } from './IBaseModel';
 import { IBaseWithName } from './IBaseWithName';
 import { IBaseWithNameModel } from './IBaseWithNameModel';
 import { IBusinessUnit } from './IBusinessUnit';
+import { IBusinessUnitModel } from './IBusinessUnitModel';
 import { IComment } from './IComment';
 import { ICommentModel } from './ICommentModel';
 import { IComplianceItem } from './IComplianceItem';
@@ -23,12 +24,14 @@ import { IUserModel } from './IUserModel';
 
 export {
   IAuditLog,
+  IAuditValues,
   IAuditLogModel,
   IBase,
   IBaseModel,
   IBaseWithName,
   IBaseWithNameModel,
   IBusinessUnit,
+  IBusinessUnitModel,
   IComplianceItem,
   IComplianceItemModel,
   IComment,

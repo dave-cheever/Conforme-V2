@@ -1,7 +1,7 @@
 import { BusinessUnits, Users } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const updateUser = async (_, { updateUserModifyInput }, { authorize }) => {
+const updateUser = async (_, { updateUserModifyInput }, { authorize, organization }) => {
     try {
       const user = await authorize();
       if (
@@ -9,7 +9,7 @@ const updateUser = async (_, { updateUserModifyInput }, { authorize }) => {
       ) {
         throw new Error("User is not permitted");
       }
-      const updateUser = await Users.customFindById(updateUserModifyInput._id);
+      const updateUser = await Users.customFindById(updateUserModifyInput._id, organization._id);
       if (!updateUser) {
         throw new Error("User doesn't exist");
       }

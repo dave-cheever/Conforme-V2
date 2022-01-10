@@ -1,14 +1,15 @@
+import { IResponse } from "app-interfaces";
 import { Responses } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const addParticipant = async (_, { responseParticipantModify }, { authorize }) => {  
+const addParticipant = async (_, { responseParticipantModify }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
-    const {_id, participantIds, permission} = responseParticipantModify;
-    const response = await Responses.customFindById(_id);
+    const { _id, participantIds, permission } = responseParticipantModify;
+    const response = await Responses.customFindById(_id, organization._id);
 
-    if(!participantIds) {
+    if (!participantIds) {
       throw new Error("Invalid input");
     }
 
@@ -16,52 +17,44 @@ const addParticipant = async (_, { responseParticipantModify }, { authorize }) =
       throw new Error("Response doesn't exist");
     }
 
-    const updatedResponse = {
-      ...response,
-      metatags: {
-        ...response?.metatags,
-        ...genMetatags("updated", user._id),
-      },
-    };
-
+    const update: Partial<IResponse> = {};
     switch (permission) {
       case "accountable":
         if (!isPermitted({ user, action: "responses.manageAccountable", data: { response } })) {
           throw new Error("User is not permitted to add accountable");
         }
-        updatedResponse.accountableId = participantIds[0];
-        
+        update.accountableId = participantIds[0];
+
         break;
       case "responsible":
         if (!isPermitted({ user, action: "responses.manageResponsible", data: { response } })) {
           throw new Error("User is not permitted to add responsible");
         }
-        updatedResponse.responsibleId = participantIds[0];
+        update.responsibleId = participantIds[0];
         break;
 
       case "contributor":
         if (!isPermitted({ user, action: "responses.manageContributor", data: { response } })) {
           throw new Error("User is not permitted to add contributor");
         }
-        updatedResponse.contributorsIds = response.contributorsIds?.concat(participantIds);
-        
+        update.contributorsIds = response.contributorsIds?.concat(participantIds);
+
         break;
       case "follower":
-        if (!isPermitted({ user, action: "responses.manageFollower", data: { response } }) && 
+        if (!isPermitted({ user, action: "responses.manageFollower", data: { response } }) &&
           !isPermitted({ user, action: "responses.manageMultipleFollowers", data: { response } })) {
           throw new Error("User is not permitted to follow");
         }
-        
-        updatedResponse.followersIds = response.followersIds?.concat(participantIds);
+
+        update.followersIds = response.followersIds?.concat(participantIds);
         break;
-    
+
       default:
         break;
     }
-    
-    
-    await Responses.updateOne({_id}, updatedResponse);
-    
+
+
+    const updatedResponse = await Responses.customUpdateOne({ _id }, update, user._id, organization._id);
     return updatedResponse;
   } catch (error: any) {
     throw new Error(error);

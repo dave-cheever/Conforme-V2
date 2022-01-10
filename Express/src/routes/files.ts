@@ -5,7 +5,7 @@ import StatusCodes from 'http-status-codes';
 import { genMetatags, isPermitted, isSignedIn } from 'app-utils';
 import { GraphService } from 'app-services';
 import { BusinessUnits, ComplianceItems, Responses } from 'app-models';
-import { IOrganization } from 'app-interfaces';
+import { IOrganization, IResponse } from 'app-interfaces';
 
 const filesRouter = () => {
   const router = Router();
@@ -15,7 +15,9 @@ const filesRouter = () => {
     GraphService.inMemoryStrategy.any(),
     async (req: Request, res: Response) => {
       try {
-        const { body, files, user } = req;
+        const { body, files, user, session } = req;
+        const { organization } = session;
+
         if (!user) {
           return res.status(StatusCodes.FORBIDDEN).json({ message: 'Session is not valid' });
         }
@@ -30,8 +32,8 @@ const filesRouter = () => {
           return res.status(StatusCodes.NOT_FOUND).json({ message: 'Response doesn\'t exist' });
         }
         const response = responseDocument._doc;
-        const complianceItem = await ComplianceItems.customFindById(response.complianceItemId);
-        const businessUnit = await BusinessUnits.customFindById(response.businessUnitId);
+        const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, response.organizationId);
+        const businessUnit = await BusinessUnits.customFindById(response.businessUnitId, response.organizationId);
         if (!businessUnit || !complianceItem || !complianceItem.published) {
           return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Unexpected error occured' });
         }
@@ -56,16 +58,12 @@ const filesRouter = () => {
           );
         }
 
-        const updatedResponse = {
-          ...response,
-          metatags: {
-            ...response.metatags,
-            ...genMetatags("updated", user._id),
-          },
+        const update: Partial<IResponse> = {
+          evidence: response.evidence,
+          attachments: response.attachments,
         };
-
         if (documentType === 'evidence') {
-          const evidence = updatedResponse.evidence.find(evidence => evidence.name === documentName && !evidence.outdated);
+          const evidence = update.evidence?.find(evidence => evidence.name === documentName && !evidence.outdated);
           if (!evidence) {
             return res.status(StatusCodes.FORBIDDEN).json({ message: 'Evidence doesn\'t exist' });
           }
@@ -75,15 +73,14 @@ const filesRouter = () => {
             addedAt: new Date(),
           };
         } else if (documentType === 'attachments') {
-          uploaded.forEach(document => updatedResponse.attachments.push({
+          uploaded.forEach(document => update.attachments?.push({
             id: document.id,
             name: document.name,
             addedAt: new Date(),
           }));
         }
 
-        responseDocument.overwrite(updatedResponse);
-        await responseDocument.save();
+        await Responses.customUpdateOne({ _id: response._id }, update, user._id, organization._id!);
         // @ts-ignore
         await responseDocument.customRecalculateResponse();
 

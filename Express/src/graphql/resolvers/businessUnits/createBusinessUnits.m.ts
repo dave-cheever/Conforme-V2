@@ -11,15 +11,8 @@ const createBusinessUnit = async (_, {businessUnitInput}, { authorize, organizat
         throw new Error("User is not permitted");
       }
   
-      const newBusinessUnit = {
-        _id: uuidv4(),
-        ...businessUnitInput,
-        organizationId: organization._id,
-        metatags: genMetatags("added", user._id),
-      };
-      await BusinessUnits.create(newBusinessUnit)
-  
-      return newBusinessUnit;
+      const createdBusinessUnit = await BusinessUnits.customCreate(businessUnitInput, user._id, organization._id)
+      return createdBusinessUnit;
     } catch (err: any) {
       throw new Error(err);
     }

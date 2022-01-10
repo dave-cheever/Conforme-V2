@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Categories } from "app-models";
 import { genMetatags, isPermitted } from "app-utils";
 
-const updateCategory = async (_, { categoryInput }, { authorize }) => {
+const updateCategory = async (_, { categoryInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -13,21 +13,12 @@ const updateCategory = async (_, { categoryInput }, { authorize }) => {
       throw new Error("User is not permitted");
     }
 
-    const category = await Categories.customFindById(categoryInput._id);
+    const category = await Categories.customFindById(categoryInput._id, organization._id);
     if (!category) {
       throw new Error("Category doesn't exist");
     }
 
-    const updatedCategory = {
-      ...category,
-      name: categoryInput.name,
-      metatags: {
-        ...category?.metatags,
-        ...genMetatags("updated", user._id),
-      },
-    };
-    await Categories.customUpdateOne({ _id: category._id }, updatedCategory, user._id);
-
+    const updatedCategory = await Categories.customUpdateOne({ _id: category._id }, { name: categoryInput.name }, user._id, organization._id);
     return updatedCategory;
   } catch (err: any) {
     throw new Error(err);

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Flex, Text } from '@chakra-ui/react';
 
-import { generateLabelColor } from '../../utils/helpers';
+import { generateTabColors } from '../../utils/helpers';
 import { ErrorSign } from '../../icons';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 
@@ -39,11 +39,8 @@ const NavigationModal = () => {
         <Flex 
           w="37px" 
           h="28px" 
-          bg={generateLabelColor(i, errors, complianceItem, visitedTab, selectedSectionIndex)}
-          color={i === selectedSectionIndex 
-            ? "navigationModal.section.selected.color" 
-            : "navigationModal.section.unselected.color" 
-          }
+          bg={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg}
+          color={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).color}
           mr="15px" 
           fontSize="11px"
           fontWeight="bold"
@@ -52,7 +49,7 @@ const NavigationModal = () => {
           alignItems="center" 
           justifyContent="center"
         >
-          {generateLabelColor(i, errors, complianceItem, visitedTab, selectedSectionIndex) === "navigationModal.section.error.bg" 
+          {generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg === "navigationModal.section.error.bg" 
             ? <ErrorSign w="16px" h="14px" stroke="white" /> 
             : i + 1 
           }
@@ -80,8 +77,13 @@ export const navigationModalStyles = {
         bg: "#F0F2F5",
         color: "#818197"
       },
+      correct: {
+        bg: "#41B916",
+        color: "#FFFFFF",
+      },
       error: {
-        bg: "#E93C44"
+        bg: "#E93C44",
+        color: "#FFFFFF",
       }
     },
   }

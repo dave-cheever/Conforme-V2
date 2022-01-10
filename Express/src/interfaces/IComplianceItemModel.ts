@@ -3,5 +3,5 @@ import { IOrganization } from "./IOrganization";
 
 export interface IComplianceItemModel extends IBaseModel<IComplianceItem> {
   customGenerateReference: () => Promise<string>;
-  customSynchronizeResponses: ({ userId, prevDueDate, organization }: { userId: string, prevDueDate?: Date, organization: IOrganization }) => Promise<void>;
+  customSynchronizeResponses: ({ complianceItem, userId, organizationId, prevDueDate }: { complianceItem: IComplianceItem, userId: string, organizationId: string, prevDueDate?: Date }) => Promise<void>;
 };

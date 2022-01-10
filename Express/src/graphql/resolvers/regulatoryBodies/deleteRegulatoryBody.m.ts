@@ -5,7 +5,7 @@ import { RegulatoryBodies } from 'app-models';
 import { genMetatags, isPermitted } from 'app-utils';
 
 
-const deleteRegulatoryBody = async (_, { _id }, { authorize }) => {
+const deleteRegulatoryBody = async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
     
@@ -13,21 +13,13 @@ const deleteRegulatoryBody = async (_, { _id }, { authorize }) => {
       throw new Error('User is not permitted');
     }
 
-    const regulatoryBody = await RegulatoryBodies.customFindById(_id);
+    const regulatoryBody = await RegulatoryBodies.customFindById(_id, organization._id);
     if (!regulatoryBody) {
       throw new Error('Regulatory body doesn\'t exist');
     }
 
-    const deletedRegulatoryBody = {
-      ...regulatoryBody,
-      metatags: {
-        ...regulatoryBody?.metatags,
-        ...genMetatags('removed', user._id),
-      },
-    };
-    await RegulatoryBodies.updateOne({ _id: regulatoryBody._id }, deletedRegulatoryBody);
-
-    return true;
+    const deletedResult = await RegulatoryBodies.customDelete({ _id }, user._id, organization._id);
+    return deletedResult;
   } catch (err: any) {
     throw new Error(err);
   }

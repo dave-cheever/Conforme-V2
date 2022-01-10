@@ -11,16 +11,8 @@ const createCategory = async (_, { name }, { authorize, organization }) => {
       throw new Error("User is not permitted");
     }
 
-    const newCategory = {
-      _id: uuidv4(),
-      name,
-      organizationId: organization._id,
-      metatags: genMetatags("added", user._id),
-    };
-
-    await Categories.create(newCategory);
-
-    return newCategory;
+    const createdCategory = await Categories.customCreate({ name }, user._id, organization._id);
+    return createdCategory;
   } catch (err: any) {
     throw new Error(err);
   }

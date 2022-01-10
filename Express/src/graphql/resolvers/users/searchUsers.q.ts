@@ -1,6 +1,6 @@
 import { GraphService } from "app-services";
 
-const searchUsers = async (_, {searchQuery}, { req, authorize }) => {
+const searchUsers = async (_, {searchQuery}, { req }) => {
   try {
     const {searchText} = searchQuery || {};
     const { organization } = req.session;

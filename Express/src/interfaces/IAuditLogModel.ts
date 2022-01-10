@@ -1,3 +1,5 @@
 import { IAuditLog, IBaseModel } from "app-interfaces";
 
-export interface IAuditLogModel extends IBaseModel<IAuditLog> {};
+export interface IAuditLogModel extends IBaseModel<IAuditLog> {
+  customAudit: (auditLog: Partial<IAuditLog>, userId: string, organizationId: string) => Promise<IAuditLog>;
+};

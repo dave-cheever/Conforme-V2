@@ -11,11 +11,12 @@ import Policies from "../pages/policies";
 import Mentions from "../pages/mentions";
 import ComplianceItems from "../pages/compliance-items";
 import ComplianceItemsAdmin from "../pages/admin/compliance-items";
+import ComplianceItemAuditLog from "../pages/compliance-item/audit-log";
 import Categories from "../pages/admin/categories";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import BusinessUnits from "../pages/admin/business-units";
 import Users from "../pages/admin/users";
-import AuditLog from "../pages/compliance-item/audit-log";
+import AuditLog from "../pages/admin/audit-log";
 import Settings from "../pages/admin/settings";
 import DefaultLayout from "../layouts/DefaultLayout";
 import PureLayout from "../layouts/PureLayout";
@@ -79,7 +80,7 @@ const protectedRoutes: Array<IRoute> = [
     path: '/compliance-item/:id/audit-log',
     key: 'complianceItem-audit',
     exact: true,
-    component: AuditLog,
+    component: ComplianceItemAuditLog,
     layout: ResponseLayout,
   },
   {

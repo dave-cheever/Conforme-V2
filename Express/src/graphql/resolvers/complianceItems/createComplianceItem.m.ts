@@ -13,22 +13,19 @@ const createComplianceItem = async (_, { complianceItemInput }, { authorize, org
     
     const reference = await ComplianceItems.customGenerateReference();
     const newComplianceItem = {
-      _id: uuidv4(),
       ...complianceItemInput,
       reference,
-      organizationId:organization._id,
-      metatags: genMetatags("added", user._id),
     };
 
-    const complianceItem = await ComplianceItems.create(newComplianceItem);
+    const createdComplianceItem = await ComplianceItems.customCreate(newComplianceItem, user._id, organization._id);
 
-    // @ts-ignore
-    complianceItem.customSynchronizeResponses({
+    ComplianceItems.customSynchronizeResponses({
+      complianceItem: createdComplianceItem,
       userId: user._id,
-      organization
+      organizationId: organization._id,
     });
 
-    return newComplianceItem;
+    return createdComplianceItem;
   } catch (err: any) {
     throw new Error(err);
   }

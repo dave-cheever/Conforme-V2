@@ -2,10 +2,12 @@ import { StatusCodes } from 'http-status-codes';
 import moment, { Moment } from 'moment';
 import { difference } from 'lodash';
 import { addMonths, addYears, subMonths, subYears } from 'date-fns';
+import { diff } from 'deep-object-diff';
 
-import { IOrganization, IResponse, IUser } from 'app-interfaces';
+import { IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import roles from './roles';
 import { Users } from 'app-models';
+import { GraphService } from 'app-services';
 
 export const CORSConfig = {
   credentials: true,
@@ -53,7 +55,7 @@ export const sessionizeUser = async ({ _id, firstName, lastName, displayName, em
   };
 };
 
-export const sessionizeOrganization = ({ _id, name, domain, logoUrl, emailAddress, bgImageUrl,bgImageTabletUrl, theme, licenceExpirationDate,
+export const sessionizeOrganization = ({ _id, name, domain, logoUrl, emailAddress, bgImageUrl, bgImageTabletUrl, theme, licenceExpirationDate,
   addons, clientId, tenantId, secret, spSiteUrl, spLibraryId, accessGroupId, adminsGroupId, readersGroupId }: Partial<IOrganization>) => {
   return {
     _id,
@@ -146,7 +148,7 @@ export const redirectAfterLogin = async (req, res, errorMessage, organization) =
   }
 
   //update the last Login of user
-  await Users.updateOne({_id:user._id}, {...user, lastLogin: Date.now()});
+  await Users.updateOne({ _id: user._id }, { ...user, lastLogin: Date.now() });
 
   return res.redirect(redirectUrl);
 };
@@ -161,145 +163,8 @@ export const getUserName = (fullName: string) => {
   };
 };
 
-export const removeDatabaseFields = item => {
-  const cleanItem = { ...item };
-  delete cleanItem.id;
-  delete cleanItem.metatags;
-  delete cleanItem._rid;
-  delete cleanItem._self;
-  delete cleanItem._etag;
-  delete cleanItem._attachments;
-  delete cleanItem._ts;
-  return cleanItem;
-};
-
-// This method works for strings and numbers
-export const getAuditValueForString = (oldValue?: string, newValue?: string) => {
-  let value = {};
-  if (oldValue) {
-    value['old'] = {
-      value: oldValue,
-      label: oldValue,
-    };
-  }
-  if (newValue) {
-    value['new'] = {
-      value: newValue,
-      label: newValue,
-    };
-  }
-  return value;
-};
-
-export const getAuditValueForStringsArray = (oldValue?: string[], newValue?: string[]) => {
-  let value = {};
-  const removed = difference(oldValue || [], newValue || []);
-  if (removed.length > 0) {
-    value['old'] = {
-      value: removed,
-      label: removed.join(', '),
-    };
-  }
-  const added = difference(newValue || [], oldValue || []);
-  if (added.length > 0) {
-    value['new'] = {
-      value: added,
-      label: added.join(', '),
-    };
-  }
-  return value;
-};
-
-export const getAuditValueForDate = (oldValue?: string, newValue?: string) => {
-  let value = {};
-  if (oldValue) {
-    value['old'] = {
-      value: oldValue,
-      label: moment(oldValue).format('D MMM YYYY'),
-    };
-  }
-  if (newValue) {
-    value['new'] = {
-      value: newValue,
-      label: moment(newValue).format('D MMM YYYY'),
-    };
-  }
-  return value;
-};
-
-export const getAuditValueForBoolean = (oldValue?: string, newValue?: string) => {
-  let value = {};
-  if (oldValue) {
-    value['old'] = {
-      value: oldValue,
-      label: oldValue ? 'Yes' : 'No',
-    };
-  }
-  if (newValue) {
-    value['new'] = {
-      value: newValue,
-      label: newValue ? 'Yes' : 'No',
-    };
-  }
-  return value;
-};
-
-export const getAuditValueForLookup = async ({ collection, labelField, oldValue, newValue }) => {
-  let value = {};
-  if (oldValue) {
-    const item = await collection.customFindById(oldValue);
-
-    if (item) {
-      // If a 'labelField' is an array of strings, concat them
-      let label;
-      if (typeof labelField === 'string') {
-        label = item[labelField];
-      } else {
-        label = labelField.map(field => item[field]).join(' ');
-      }
-
-      value['old'] = {
-        value: oldValue,
-        label,
-      };
-    }
-  }
-  if (newValue) {
-    const item = await collection.customFindById(newValue);
-
-    if (item) {
-      // If a 'labelField' is an array of strings, concat them
-      let label;
-      if (typeof labelField === 'string') {
-        label = item[labelField];
-      } else {
-        label = labelField.map(field => item[field]).join(' ');
-      }
-
-      value['new'] = {
-        value: newValue,
-        label,
-      };
-    }
-  }
-  return value;
-};
-
-export const getUTCDate = (date?: Date): Moment => {
-  const momentDate = moment(date);
-  const dateUTC = moment()
-    .utc()
-    .year(momentDate.year())
-    .month(momentDate.month())
-    .date(momentDate.date())
-    .startOf('day');
-  return dateUTC;
-};
-
 export const getNextDueDate = (frequency: String, dueDate: Date) => {
-
   let nextDueDate;
-
   switch (frequency) {
     case "Monthly":
       nextDueDate = moment(dueDate).add(1, 'month');
@@ -445,21 +310,21 @@ export const getProjectFields = (nodes: any, methodName: string) => {
 export const mentionParser = (markup) => {
   let array = markup.split("@@@");
   let mentions: Array<string> = [];
-  for(const arr of array){
-    const id=arr.substring(
-      arr.lastIndexOf("[") + 1, 
+  for (const arr of array) {
+    const id = arr.substring(
+      arr.lastIndexOf("[") + 1,
       arr.lastIndexOf("]"));
-    if(id !== ""){
+    if (id !== "") {
       mentions.push(id);
     }
   }
   //make unique by id
-  return [...new Set(mentions) ];
+  return [...new Set(mentions)];
 };
 
 export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => {
   let newNextRenewalDate;
-  
+
   switch (frequency) {
     case "Monthly":
       newNextRenewalDate = addMonths(nextRenewalDate, 1);
@@ -524,4 +389,241 @@ export const getPrevRenewalDate = (nextRenewalDate: Date, frequency: string) => 
       break;
   }
   return newNextRenewalDate;
+};
+
+// Audit log methods
+
+export const getBasicElement = ({ _id, name }: { _id: string, name: string }) => ({ _id, name });
+export const getForeignElement = ({ _id, name }: { _id: string, name: string }, self_id: string) => ({ _id, name, self_id });
+
+export const removeDatabaseFields = item => {
+  const cleanItem = { ...item };
+  delete cleanItem._id;
+  delete cleanItem.organizationId;
+  delete cleanItem.metatags;
+  delete cleanItem.__v;
+  return cleanItem;
+};
+
+// This method works for strings and numbers
+export const getAuditValueForString = (oldValue?: string, newValue?: string) => {
+  let value = {};
+  if (oldValue) {
+    value['old'] = {
+      value: oldValue,
+      label: oldValue,
+    };
+  }
+  if (newValue) {
+    value['new'] = {
+      value: newValue,
+      label: newValue,
+    };
+  }
+  return value;
+};
+
+export const getAuditValueForStringsArray = (oldValue?: string[], newValue?: string[]) => {
+  let value = {};
+  const removed = difference(oldValue || [], newValue || []);
+  if (removed.length > 0) {
+    value['old'] = {
+      value: removed,
+      label: removed.join(', '),
+    };
+  }
+  const added = difference(newValue || [], oldValue || []);
+  if (added.length > 0) {
+    value['new'] = {
+      value: added,
+      label: added.join(', '),
+    };
+  }
+  return value;
+};
+
+export const getAuditValueForDate = (oldValue?: string, newValue?: string) => {
+  let value = {};
+  if (oldValue) {
+    value['old'] = {
+      value: oldValue,
+      label: moment(oldValue).format('D MMM YYYY'),
+    };
+  }
+  if (newValue) {
+    value['new'] = {
+      value: newValue,
+      label: moment(newValue).format('D MMM YYYY'),
+    };
+  }
+  return value;
+};
+
+export const getAuditValueForBoolean = (oldValue?: string, newValue?: string) => {
+  let value = {};
+  if (oldValue) {
+    value['old'] = {
+      value: oldValue,
+      label: oldValue ? 'Yes' : 'No',
+    };
+  }
+  if (newValue) {
+    value['new'] = {
+      value: newValue,
+      label: newValue ? 'Yes' : 'No',
+    };
+  }
+  return value;
+};
+
+export const getAuditValueForLookup = async ({ collection, labelField, oldValue, newValue, organization }) => {
+  let value = {};
+  if (oldValue) {
+    let item;
+    if (collection === Users) {
+      item = await GraphService.getUserData({ userId: oldValue, organization });
+    } else {
+      item = await collection.customFindById(oldValue);
+    }
+
+    if (item) {
+      // If a 'labelField' is an array of strings, concat them
+      let label;
+      if (typeof labelField === 'string') {
+        label = item[labelField];
+      } else {
+        label = labelField.map(field => item[field]).join(' ');
+      }
+
+      value['old'] = {
+        value: oldValue,
+        label,
+      };
+    }
+  }
+  if (newValue) {
+    let item;
+    if (collection === Users) {
+      item = await GraphService.getUserData({ userId: newValue, organization });
+    } else {
+      item = await collection.customFindById(newValue);
+    }
+
+    if (item) {
+      // If a 'labelField' is an array of strings, concat them
+      let label;
+      if (typeof labelField === 'string') {
+        label = item[labelField];
+      } else {
+        label = labelField.map(field => item[field]).join(' ');
+      }
+
+      value['new'] = {
+        value: newValue,
+        label,
+      };
+    }
+  }
+  return value;
+};
+
+export const getAuditValueForLookupsArray = async ({ collection, labelField, oldValue, newValue, organization }) => {
+  let value = {};
+  const removedIds = difference(oldValue || [], newValue || []);
+  const addedIds = difference(newValue || [], oldValue || []);
+
+  let user;
+  if (collection === Users && (removedIds.length !== 0 && typeof removedIds[0] === 'string')) {
+    user = await GraphService.getUserData({ userId: removedIds[0], organization });
+  } else if (collection === Users && (addedIds.length !== 0 && typeof addedIds[0] === 'string')) {
+    user = await GraphService.getUserData({ userId: addedIds[0], organization });
+  }
+
+  if (removedIds.length > 0 && collection !== Users) {
+    const items = await collection.find({ _id: { $in: removedIds } });
+
+    // If a 'labelField' is an array of strings, concat them
+    let labels = [];
+    if (typeof labelField === 'string') {
+      labels = items.map(item => item[labelField]);
+    } else {
+      labels = items.map(item => labelField.map(field => item[field]).join(' '));
+    }
+
+    value['old'] = {
+      value: items.map(({ id }) => id),
+      label: labels.join(', '),
+    };
+  } else if (removedIds.length > 0 && collection === Users) {
+    value['old'] = {
+      value: user.id,
+      label: user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName,
+    };
+  }
+  if (addedIds.length > 0 && collection !== Users) {
+    const items = await collection.find({ _id: { $in: addedIds } });
+
+    // If a 'labelField' is an array of strings, concat them
+    let labels = [];
+    if (typeof labelField === 'string') {
+      labels = items.map(item => item[labelField]);
+    } else {
+      labels = items.map(item => labelField.map(field => item[field]).join(' '));
+    }
+
+    value['new'] = {
+      value: items.map(({ id }) => id),
+      label: labels.join(', '),
+    };
+  } else if (addedIds.length > 0 && collection === Users) {
+    value['new'] = {
+      value: user.id,
+      label: user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName,
+    };
+  }
+  return value;
+};
+
+export const getAuditValueForUser = async ({ oldValue, newValue, organization }) => {
+  let value = {};
+  if (oldValue) {
+    const item = await Users.customFindByIdWithDetails({ userId: oldValue, organization });
+    if (item) {
+      value['old'] = {
+        value: oldValue,
+        label: `${item.firstName} ${item.lastName}`,
+      };
+    }
+  }
+  if (newValue) {
+    const item = await Users.customFindByIdWithDetails({ userId: newValue, organization });
+    if (item) {
+      value['new'] = {
+        value: newValue,
+        label: `${item.firstName} ${item.lastName}`,
+      };
+    }
+  }
+  return value;
+};
+
+export const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValues = fields.reduce((acc, field) => {
+    if ((oldValues[field] && typeof oldValues[field] !== 'string') || (newValues[field] && typeof newValues[field] !== 'string')) {
+      console.warn(`Audit log method defaultGetAuditRecordValues works only on strings, please create custom method for ${field} field!`);
+      return acc;
+    }
+
+    return {
+      ...acc,
+      [field]: getAuditValueForString(oldValues[field], newValues[field]),
+    };
+  }, {});
+
+  return auditRecordValues;
 };

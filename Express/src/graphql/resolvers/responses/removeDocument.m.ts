@@ -1,3 +1,4 @@
+import { IResponse } from "app-interfaces";
 import { Responses } from "app-models";
 import { GraphService } from "app-services";
 import { genMetatags } from "app-utils";
@@ -6,7 +7,7 @@ const removeDocument = async (_, { responseDocumentRemoveInput }, { authorize, o
   try {
     const user = await authorize();
     const { _id, documentId, documentType } = responseDocumentRemoveInput;
-    const response = await Responses.customFindById(_id);
+    const response = await Responses.customFindById(_id, organization._id);
 
     if (!response) {
       throw new Error("Response doesn't exist");
@@ -17,16 +18,17 @@ const removeDocument = async (_, { responseDocumentRemoveInput }, { authorize, o
       throw new Error("Couldn't delete the document");
     }
     
-    const updatedResponse = {
-      ...response,
-      metatags: {
-        ...response?.metatags,
-        ...genMetatags("updated", user._id),
-      },
-    };
+    // const updatedResponse = {
+    //   ...response,
+    //   metatags: {
+    //     ...response?.metatags,
+    //     ...genMetatags("updated", user._id),
+    //   },
+    // };
 
+    const update: Partial<IResponse> = {};
     if (documentType === 'evidence') {
-      updatedResponse.evidence = updatedResponse.evidence.map(evidence => {
+      update.evidence = response.evidence.map(evidence => {
         if (evidence.uploaded?.id !== documentId) {
           return evidence;
         }
@@ -35,12 +37,11 @@ const removeDocument = async (_, { responseDocumentRemoveInput }, { authorize, o
         };
       });
     } else if (documentType === 'attachment') {
-      updatedResponse.attachments = updatedResponse.attachments.filter(attachment => attachment.id !== documentId);
+      update.attachments = response.attachments.filter(attachment => attachment.id !== documentId);
     }
 
-    await Responses.updateOne({ _id }, updatedResponse);
-
-    return true;
+    const updatedResponse = await Responses.customUpdateOne({ _id }, update, user._id, organization._id);
+    return !!updatedResponse;
   } catch (error: any) {
     throw new Error(error);
   }

@@ -13,32 +13,18 @@ const updateComplianceItem = async (_, { complianceItemModifyInput }, { authoriz
       throw new Error("User is not permitted");
     }
 
-    const complianceItemDocument = await ComplianceItems.findById(complianceItemModifyInput._id);
-    if (!complianceItemDocument?._doc) {
-      return false;
-    }
-    const { _doc: complianceItem } = complianceItemDocument;
+    const complianceItem = await ComplianceItems.customFindById(complianceItemModifyInput._id, organization._id);
     if (!complianceItem) {
       throw new Error("Compliance item doesn't exist");
     }
 
-    const updatedComplianceItem = {
-      ...complianceItem,
-      ...complianceItemModifyInput,
-      metatags: {
-        ...complianceItem.metatags,
-        ...genMetatags("updated", user._id),
-      },
-    };
+    const updatedComplianceItem = await ComplianceItems.customUpdateOne({ _id: complianceItem._id }, complianceItemModifyInput, user._id, organization._id);
 
-    complianceItemDocument.overwrite(updatedComplianceItem);
-    complianceItemDocument.save();
-
-    // @ts-ignore
-    complianceItemDocument.customSynchronizeResponses({
+    ComplianceItems.customSynchronizeResponses({
+      complianceItem: updatedComplianceItem,
       userId: user._id,
       prevDueDate: complianceItem.dueDate,
-      organization
+      organizationId: organization._id,
     });
 
     return updatedComplianceItem;

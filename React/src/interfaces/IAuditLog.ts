@@ -1,4 +1,4 @@
-import { IBase } from "app-interfaces";
+import { IBase } from "./IBase";
 
 export type IAuditLogAction = "add" | "update" | "delete" | "search";
 
@@ -20,9 +20,14 @@ export interface IAuditValues {
   };
 }
 
-export interface IAuditLog extends IBase {
+export interface IAuditLogRecord extends IBase {
   action: IAuditLogAction;
   element: IAuditLogElement;
   coll: string;
   values: IAuditValues;
+}
+
+export interface IAuditLog {
+  _id: string;
+  records: IAuditLogRecord[];
 }
