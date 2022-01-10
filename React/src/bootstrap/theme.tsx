@@ -38,6 +38,7 @@ import { locationsStyles } from "../pages/admin/locations";
 import { locationsFormModalStyles } from "../components/AdminComplianceItemModal/Locations";
 import { logoutPageStyles } from "../pages/logout";
 import { messageInputStyles } from "../components/Response/MessageInput";
+import { multipleChoicesStyles } from "../components/Forms/MultipleChoices";
 import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
 import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
 import { navigationBottomMobileStyles } from "../components/NavigationBottomMobile";
@@ -159,6 +160,7 @@ const getTheme = (organizationTheme?: any) => {
       ...locationsFormModalStyles,
       ...logoutPageStyles,
       ...messageInputStyles,
+      ...multipleChoicesStyles,
       ...navigationBottomMobileStyles,
       ...navigationLeftFiltersStyles,
       ...navigationLeftItemStyles,

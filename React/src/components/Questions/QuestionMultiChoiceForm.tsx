@@ -30,7 +30,7 @@ const QuestionMultiChoiceForm = ({
       name: "",
       description: "",
       required: false,
-      choices: [{ label: "", isCorrect: false }]
+      value: [{ label: "", isCorrect: false }]
     }
   });
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -40,7 +40,7 @@ const QuestionMultiChoiceForm = ({
   const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
   const { fields, append } = useFieldArray({
     control,
-    name: "choices"
+    name: "value"
   });
 
   useMemo(() => {
@@ -52,11 +52,10 @@ const QuestionMultiChoiceForm = ({
 
   const onSubmitInput = (index: number, value: string) => {
     if(inputValue[index] !== value){
-      const options = getValues("choices")
+      const options = [...getValues("value")]
       const option = options[index]
-      option['label'] = inputValue[index]
+      option['label'] = value
       options.splice(index, 1, option)
-      setValue("choices", options)
     }
   }
 
@@ -65,7 +64,7 @@ const QuestionMultiChoiceForm = ({
     if (!result.source || !result.destination) {
       return;
     }
-    const newOptions = [...getValues("choices")];
+    const newOptions = [...getValues("value")];    
     const newInputValue = [...inputValue]
     const [removed] = newOptions.splice(result.source.index, 1);
     const [inputRemoved] = newInputValue.splice(result.source.index, 1);
@@ -73,16 +72,18 @@ const QuestionMultiChoiceForm = ({
     newInputValue.splice(result.destination.index, 0, inputRemoved);
     reset({
       ...getValues(),
-      choices: newOptions
+      value: newOptions
     })
     setInputValue([...newInputValue])
   };
 
-  const requiredFieldAdd = () => {
-    const choices = getValues("choices")
-    if (choices.some(value => value.isCorrect === true)) {
+  const addRequiredFieldAndUpdateChoiceValue = () => {
+    const value = getValues("value")
+    if (value.some(value => value.isCorrect === true)) {
       setValue('required', true)
     }
+    value.map(choice => choice['isCorrect'] = false)
+    setValue('value',value)
     return
   }
 
@@ -94,13 +95,13 @@ const QuestionMultiChoiceForm = ({
 
   const removeChoice = (index: number) => {
     if (fields.length === 1) return
-    const choices = [...getValues("choices")]
+    const value = [...getValues("value")]
     const newInputsValue = [...inputValue]
-    choices.splice(index, 1)
+    value.splice(index, 1)
     newInputsValue.splice(index,1)
     reset({
       ...getValues(),
-      choices
+      value
     })
     setInputValue([...newInputsValue])
   }
@@ -176,12 +177,14 @@ const QuestionMultiChoiceForm = ({
                           <Flex w='full'>
                             <Checkbox
                               control={control}
-                              name={`choices.${index}.isCorrect`}
+                              name={`value.${index}.isCorrect`}
                               variant="secondaryVariant"
                             />
                             <Input
-                              onChange={(e) => handleInputChange(e, index)}
-                              onBlur={() => onSubmitInput(index, object.label)}
+                              onChange={(e) => {
+                                handleInputChange(e, index)
+                                setTimeout(() => onSubmitInput(index, e.target.value), 1200)
+                              }}
                               onKeyDown={(e) => e.key === 'Enter' && onSubmitInput(index, object.label)}
                               px="2px"
                               value={inputValue[index]}
@@ -242,7 +245,7 @@ const QuestionMultiChoiceForm = ({
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName}
           title={questionAlreadyExist ? "This question already exist" : ''}
           onClick={() => {
-            requiredFieldAdd()
+            addRequiredFieldAndUpdateChoiceValue()
             const values = getValues();
             addQuestion({ type: questionType, ...values });
             setShowQuestionForm(false);

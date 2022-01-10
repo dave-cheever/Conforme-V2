@@ -1,6 +1,7 @@
 import Checkbox from './Checkbox';
 import Datepicker from './Datepicker';
 import Dropdown from './Dropdown';
+import MultipleChoices from "./MultipleChoices"
 import NumberInput from './NumberInput';
 import Switch from './Switch';
 import Textarea from './Textarea';
@@ -13,6 +14,7 @@ export {
   Checkbox,
   Datepicker,
   Dropdown,
+  MultipleChoices,
   NumberInput,
   Switch,
   Textarea,

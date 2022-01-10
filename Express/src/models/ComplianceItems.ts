@@ -40,11 +40,6 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
     value: Schema.Types.Mixed,
     required: Boolean,
     outdated: Boolean,
-    choices: [{
-      _id: false,
-      label: String,
-      isCorrect: Boolean
-    }]
   }],
   locationsIds: [String],
   published: Boolean,

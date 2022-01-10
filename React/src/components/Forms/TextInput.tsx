@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Flex, Icon, Input, Tooltip } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
+
+import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
 import { Asterisk } from '../../icons';

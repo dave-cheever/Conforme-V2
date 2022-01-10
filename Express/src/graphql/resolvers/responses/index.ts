@@ -20,12 +20,6 @@ const responsesResolvers = {
 
 export const responsesTypeDefs = `
 
-  type Choices {
-    label: String
-    isCorrect: Boolean
-  }
-
-
   type ResponseDocument {
     id: String!
     name: String!
@@ -47,7 +41,6 @@ export const responsesTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
-    choices: Choices
   }
 
   type Response {

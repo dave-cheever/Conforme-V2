@@ -1,24 +1,24 @@
-import { Datepicker, Switch, TextConfirmInput, TextMultilineConfirmInput } from "../Forms";
+import { Datepicker, Switch, TextConfirmInput, TextMultilineConfirmInput, MultipleChoices } from "../Forms";
 
 interface IProps {
-  name: string,
-  placeholder: string | undefined,
-  control: object,
-  disabled?: boolean,
-  required?: boolean,
-  label: string,
-  defaultvalue?: string,
+  name: string
+  placeholder: string | undefined
+  control: object
+  disabled?: boolean
+  required?: boolean
+  label: string
+  defaultvalue?: any
   styles?: object
 }
 interface IFields {
-  type: string,
-  name: string,
-  control: object,
-  placeholder: string | undefined,
-  disabled?: boolean,
-  required?: boolean,
+  type: string
+  name: string
+  control: object
+  placeholder: string | undefined
+  disabled?: boolean
+  required?: boolean
   label: string
-  defaultvalue?: string
+  defaultvalue?: any
   styles?: object
 }
 
@@ -31,7 +31,7 @@ const Fields = ({
   disabled,
   required,
   defaultvalue,
-  styles
+  styles,
 }: IFields) => {
   const props: IProps = {
     name,
@@ -41,7 +41,7 @@ const Fields = ({
     required,
     label,
     defaultvalue,
-    styles
+    styles,
   };
   switch (type) {
     case 'text': {
@@ -55,6 +55,9 @@ const Fields = ({
     }
     case 'switch': {
       return <Switch {...props} />;
+    }
+    case 'multipleChoice': {
+      return <MultipleChoices {...props} />
     }
     default:
       return <div>Field not supported</div>;

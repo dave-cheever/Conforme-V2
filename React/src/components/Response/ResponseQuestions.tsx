@@ -5,8 +5,9 @@ import { gql, useMutation } from '@apollo/client';
 import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import Field from "../Forms/Field";
+import Fields from "./Fields";
 import { toastFailed } from '../../bootstrap/config';
+import { isEqual } from 'lodash';
 
 const UPDATE_QUESTIONS = gql`
   mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
@@ -25,26 +26,26 @@ const ResponseQuestions = () => {
   const { user } = useAppContext();
   const { response, refetch } = useResponseContext();
   const isUserPermitted = useMemo(() => isPermitted({ user, action: 'responses.edit', data: { response } }), [user, response]);
-
   const questions = (response?.questions || []).filter(({ outdated }) => !outdated);
-
   const {
     control,
     watch,
   } = useForm({
     mode: "all",
-    defaultValues: questions?.reduce((acc, { name, value }) => {
-      return {
-        ...acc,
-        [name]: value,
-      };
-    }, {}),
+    defaultValues:
+      questions?.reduce((acc, { name, value }) => {
+        return {
+          ...acc,
+          [name]: value,
+        };
+      }, {}),
   });
 
   const answers = watch();
   useEffect(() => {
     const updateResponseQuestions = async () => {
-      const wasQuestionUpdated = questions.find(({ name, value }) => value !== answers[name]);
+      const wasQuestionUpdated = questions.find(({ name, value }) => !isEqual(value, answers[name]));
+
       if (wasQuestionUpdated) {
         try {
           await update({
@@ -55,13 +56,13 @@ const ResponseQuestions = () => {
               },
             },
           });
+          refetch();
         } catch (e: any) {
           toast({
             ...toastFailed,
             description: e.message,
           });
         }
-        refetch();
       }
     };
     updateResponseQuestions();
@@ -95,15 +96,15 @@ const ResponseQuestions = () => {
             >
               {i + 1}
             </Box>
-            <Field
+            <Fields
               type={type}
               label={name}
               name={name}
               control={control}
               placeholder={description}
               disabled={!isUserPermitted}
-              required={required}
-              defaultvalue={value as string}
+              required={!!required}
+              defaultvalue={value}
               styles={styles}
             />
           </Flex>
