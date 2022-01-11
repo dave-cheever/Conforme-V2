@@ -16,8 +16,7 @@ export interface ISettingsContext {
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];
-
-  dirtyFields: any;
+  
   reset: (setting?: Partial<ISetting>) => void;
   refetch: () => void;
 

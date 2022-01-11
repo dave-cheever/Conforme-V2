@@ -109,7 +109,7 @@ const SettingsProvider = (props) => {
 
   const {
     control,
-    formState: { errors, dirtyFields },
+    formState: { errors },
     setValue: setFormValue,
     trigger,
     reset, 
@@ -144,14 +144,12 @@ const SettingsProvider = (props) => {
     businessUnits: data?.businessUnits || [],
     activeTab, setActiveTab,
     formValues,
-    dirtyFields,
     reset,
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     control, errors,
     data,
     activeTab,
     formValues,
-    dirtyFields,
     reset
   ]);
 
