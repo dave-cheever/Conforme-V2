@@ -134,7 +134,7 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
   }
   let spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || '';
   const spStart = spUrlStart[0].replace('https://', '').replace('.com', '.com:');
-  const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g);
+  const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g) || organization.spSiteUrl?.match(/teams\/.*/g);
   const client = await getClient(organization);
   try {
     const { data } = await client.get(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
@@ -247,7 +247,7 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
   const client = await getClient(organization);
   let spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || ''
   const spStart = spUrlStart[0].replace('https://', '').replace('.com', '.com:');
-  const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g);
+  const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g) || organization.spSiteUrl?.match(/teams\/.*/g);
   try {
     await client.delete(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
     return true;

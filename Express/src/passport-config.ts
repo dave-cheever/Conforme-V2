@@ -27,7 +27,7 @@ const initPassport = (passport: PassportStatic) => {
     const organization = await Organizations.customFindByDomain(domain);
 
     // Check if organization has valid licence
-    if (isBefore(organization.licenceExpirationDate, new Date())) {
+    if (isBefore(new Date(organization.licenceExpirationDate), new Date())) {
       return done(null, { organization }, 'Organization\'s licence expired');
     }
 

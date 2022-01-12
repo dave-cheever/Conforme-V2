@@ -148,8 +148,9 @@ export const redirectAfterLogin = async (req, res, errorMessage, organization) =
   }
 
   //update the last Login of user
-  await Users.updateOne({ _id: user._id }, { ...user, lastLogin: Date.now() });
-
+  if (user) {
+    await Users.updateOne({ _id: user._id }, { ...user, lastLogin: Date.now() });
+  }
   return res.redirect(redirectUrl);
 };
 

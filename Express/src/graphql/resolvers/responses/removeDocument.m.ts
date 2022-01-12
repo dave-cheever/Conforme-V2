@@ -17,14 +17,6 @@ const removeDocument = async (_, { responseDocumentRemoveInput }, { authorize, o
     if (!isFileRemoved) {
       throw new Error("Couldn't delete the document");
     }
-    
-    // const updatedResponse = {
-    //   ...response,
-    //   metatags: {
-    //     ...response?.metatags,
-    //     ...genMetatags("updated", user._id),
-    //   },
-    // };
 
     const update: Partial<IResponse> = {};
     if (documentType === 'evidence') {

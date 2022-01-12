@@ -243,7 +243,7 @@ responseSchema.statics.customCreate = async function (response: IResponse, userI
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdResponse._doc);
       const organization = await Organizations.customFindById(organizationId, organizationId);
-      const values = await getAuditRecordValues({ newValues, organization });      
+      const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit({
         coll: 'responses',
         action: "add",
@@ -328,43 +328,45 @@ responseSchema.statics.customUpdateOne = async function (selector: object = {}, 
 };
 
 responseSchema.methods.customRecalculateResponse = async function (): Promise<void> {
-  const complianceItem = await ComplianceItems.customFindById(this._doc.complianceItemId, this._doc.organizationId);
+  const response: IResponse = { ...this._doc };
+  const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, response.organizationId);
 
-  const areRequiredQuestionsAnswered = this._doc.questions
+  const areRequiredQuestionsAnswered = response.questions
     .filter(({ required, outdated }) => required && !outdated)
     .every(({ value }) => value || (typeof value === 'boolean' && value === false));
-  const isEvidenceUploaded = this._doc.evidence
+  const isEvidenceUploaded = response.evidence
     .filter(({ outdated }) => !outdated)
-    .every(({ uploaded }) => uploaded.id);
+    .every(({ uploaded }) => uploaded?.id);
   const isResponseCompleted = areRequiredQuestionsAnswered && isEvidenceUploaded;
 
   // any change triggers inProgress status from notStarted
   let newStatus;
-  if (this.status === 'notStarted') {
+  if (response.status === 'notStarted') {
     newStatus = 'inProgress';
   }
-  if (this.status === 'completed' && !isResponseCompleted) {
+  if (response.status === 'completed' && !isResponseCompleted) {
     newStatus = 'inProgress';
   }
-  if (this.status !== 'completed' && isResponseCompleted) {
+  if (response.status !== 'completed' && isResponseCompleted) {
     newStatus = 'completed';
   }
 
-  let nextRenewalDate = this.nextRenewalDate;
-  if (this.status === 'completed' && newStatus === 'inProgress') {
-    nextRenewalDate = getPrevRenewalDate(this.nextRenewalDate || new Date(), complianceItem.frequency);
-  } else if ((this.status === 'completed' && newStatus) || newStatus === 'completed') {
-    nextRenewalDate = getNextRenewalDate(this.nextRenewalDate || new Date(), complianceItem.frequency);
+  let nextRenewalDate = response.nextRenewalDate;
+  if (response.status === 'completed' && newStatus === 'inProgress') {
+    nextRenewalDate = getPrevRenewalDate(response.nextRenewalDate || new Date(), complianceItem.frequency);
+  } else if ((response.status === 'completed' && newStatus) || newStatus === 'completed') {
+    nextRenewalDate = getNextRenewalDate(response.nextRenewalDate || new Date(), complianceItem.frequency);
   }
-  this.nextRenewalDate = nextRenewalDate;
+  response.nextRenewalDate = nextRenewalDate;
 
   if (newStatus) {
-    this.status = newStatus;
+    response.status = newStatus;
     if (newStatus === 'completed') {
-      this.lastRenewalDate = new Date();
+      response.lastRenewalDate = new Date();
     }
   }
-  await this.save();
+
+  await responseModel.updateOne({ _id: this._id }, response);
 }
 
 const responseModel = model<IResponse, IResponseModel>('Response', responseSchema);
