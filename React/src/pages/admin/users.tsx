@@ -117,9 +117,9 @@ const Users = () => {
 
   return (
     <>
-      <Header breadcrumbs={["Admin", "Users"]} />
-      <Flex h='calc(100vh - 160px)' px={["25px", 0]}>
-        <Box w='full' h={['calc(100% - 170px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
+      <Header breadcrumbs={["Admin", "Users"]} mobileBreadcrumbs={["Users"]}/>
+      <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
+        <Box w='full' h={['calc(100% - 80px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
             <AdminTableHeaderElement w={["80%", "16%"]} label="Name" />
             {
@@ -138,7 +138,7 @@ const Users = () => {
             </Flex>
             <AdminTableHeaderElement w="calc(16% - 20px)" ml="20px" label="Last login" />
           </AdminTableHeader>
-          <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="10px" overflow="auto">
+          <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="20px" overflow="auto">
             {loading ? <Loader center={true} /> : data?.users?.map((user, i) => renderUserRow(user, i))}
           </Flex>
         </Box>

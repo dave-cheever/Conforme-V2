@@ -177,19 +177,20 @@ const RegulatoryBodies = () => {
         breadcrumbs={["Admin", "Regulatory bodies"]}
         mobileBreadcrumbs={["Regulatory bodies"]}
       />
-      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
+      <Box p={["0", "0 25px 30px 30px"]} h={["full","calc(100vh - 160px)"]} overflow="auto">
         <Flex h="full" px={["25px", 0]}>
-          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
+          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
               <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" />
               <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
             </AdminTableHeader>
               <Stack
-                h="full"
                 bg="white"
                 borderBottomRadius="20px"
-                overflow="auto"
                 spacing="1px"
+                pb="5"
+                h={loading ? "full": "fit-content"}
+                minH="full"
               >
                 {loading ? <Loader center={true} />: 
                 regulatoryBodies?.length > 0 ? (

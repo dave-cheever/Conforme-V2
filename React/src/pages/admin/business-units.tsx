@@ -283,8 +283,8 @@ const BusinessUnits = () => {
         </Stack>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Business units"]} mobileBreadcrumbs={["Business units"]} />
-      <Flex h='calc(100vh - 160px)' px={["25px", 0]}>
-        <Box w='full' h={['calc(100% - 170px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
+      <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
+        <Box w='full' h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
             <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" />
             {device !== "mobile" &&

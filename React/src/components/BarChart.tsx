@@ -25,18 +25,19 @@ const BarChart = ({ data, label }) => {
 
   return (
     <Flex flexDir="column">
-      <Text h="25px" mt="20px" color="barChart.headerColor" fontSize="11px">{label} rank by # of items</Text>
-      {maxCount !== -Infinity && 
-        <>
+      <Text h="25px" mt="20px" color="barChart.headerColor" fontSize="11px" mb="25px">{label} rank by # of items</Text>
+      {maxCount !== -Infinity && <>
+        <Flex flexDir="column" >
           {data.map(el => 
-            <Flex key={el._id} h="79px" alignItems="center">
-              <Box h="18px" w={`${newArr[el._id] / maxValueOnDivider * 100}%`} bg="barChart.bg" rounded="20px" />
+            <Flex key={el._id} alignItems="center">
+              <Box h="18px" mb="42px" w={`${newArr[el._id] / maxValueOnDivider * 100}%`} bg="barChart.bg" rounded="20px" />
             </Flex>)
           }
-          <Flex color="barChart.color" justifyContent="space-between" fontSize="11px">
-            {divider}
-          </Flex>
-        </>
+        </Flex>
+        <Flex color="barChart.color" justifyContent="space-between" fontSize="11px" mt="-15px">
+        {divider}
+      </Flex>
+      </>
       }
     </Flex>
   );

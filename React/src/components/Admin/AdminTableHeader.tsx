@@ -3,7 +3,7 @@ import { Flex, Box } from "@chakra-ui/react";
 
 const AdminTableHeader = ({children}) => {
   return (
-    <Box width="100%" bg="adminTableHeaderStyles.bg" pos="sticky" top={0} zIndex={1}>
+    <Box width="100%" bg="adminTableHeader.bg" pos="sticky" top={0} zIndex={1}>
       <Flex
         p="15px 25px"
         fontWeight="semi_medium"
@@ -11,7 +11,7 @@ const AdminTableHeader = ({children}) => {
         borderColor="adminTableHeader.border"
         borderTopRadius="20px"
         bg="white"
-        color="adminTableHeaderStyles.font"
+        color="adminTableHeader.font"
         fontSize="11px"
       >
         {children}

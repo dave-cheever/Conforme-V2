@@ -199,19 +199,20 @@ const Categories = () => {
         </Flex>
       </AdminModal>
       <Header breadcrumbs={["Admin", "Categories"]} mobileBreadcrumbs={["Categories"]}/>
-      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
+      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)" overflow="auto">
         <Flex h="full" px={["25px", 0]}>
-          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
+          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
               <AdminTableHeaderElement w={["80%", "50%"]} label="Category" />
               <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
             </AdminTableHeader>
               <Stack
-                h="full"
+                h={loading ? "full": "fit-content"}
                 bg="white"
-                borderBottomRadius="10px"
-                overflow="auto"
+                borderBottomRadius="20px"
                 spacing="1px"
+                pb="3"
+                minH="full"
               >
                 {loading ? <Loader center={true}/>: categories?.length > 0 ? (
                   categories?.map((category, i) => (

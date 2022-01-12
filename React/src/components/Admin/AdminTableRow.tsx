@@ -5,7 +5,7 @@ import { IBaseWithName } from "../../interfaces/IBaseWithName";
 const AdminTableRow = ({ element, index, edit }: { element: IBaseWithName, index: number, edit?: () => void }) => (
   <Flex
     w="full"
-    h={["60px", "73px"]}
+    h="60px"
     pl={5}
     flexWrap={["wrap", "nowrap"]}
     fontSize="smm"
