@@ -19,7 +19,8 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
         });
         pipeline.push({
           $match: {
-            'complianceItem.businessUnitId': businessUnit._id,
+            'complianceItem.businessUnitsIds': businessUnit._id,
+            published: true,
           },
         });
         pipeline.push({

@@ -1,11 +1,20 @@
 import React from 'react';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import { ArrowDownIcon } from '../../icons';
 
-const AdminTableHeaderElement = ({w, ml, label} : {w: any, ml?: string, label: string}) => {
+interface IProps {
+  w: any;
+  ml?: any;
+  label: string;
+  tooltip?: string;
+}
+
+const AdminTableHeaderElement = ({w, ml, label, tooltip = ""} : IProps) => {
   return (
     <Flex w={w} ml={ml ? ml : "0"} alignItems="center">
-      <Text color="adminTableHeaderElement.fontColor">{label}</Text>
+      <Tooltip hasArrow label={tooltip} isDisabled={tooltip === ""}>
+        <Text color="adminTableHeaderElement.fontColor"  cursor={tooltip === "" ? "auto":"pointer"}>{label}</Text>
+      </Tooltip>
       <ArrowDownIcon ml="10px" stroke="adminTableHeaderElement.stroke" />
     </Flex>
   );

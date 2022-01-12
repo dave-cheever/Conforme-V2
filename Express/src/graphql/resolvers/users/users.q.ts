@@ -47,6 +47,8 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         const responses = await Responses.aggregate([{
           $match: {
             'responsibleId': user._id,
+            published: true,
+            organizationId: organization._id
           }
         }, {
           $count: "count"
@@ -58,6 +60,8 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         const responses = await Responses.aggregate([{
           $match: {
             'accountableId': user._id,
+            published: true,
+            organizationId: organization._id
           }
         }, {
           $count: "count"
@@ -68,7 +72,9 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
       if (shouldJoin(["contributorCount"])) {
         const responses = await Responses.aggregate([{
           $match: {
-            'contributorsIds': user._id,
+            'contributorsIds':  user._id,
+            published: true,
+            organizationId: organization._id
           }
         }, {
           $count: "count"
@@ -80,6 +86,8 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         const responses = await Responses.aggregate([{
           $match: {
             'followersIds': user._id,
+            published: true,
+            organizationId: organization._id
           }
         }, {
           $count: "count"

@@ -99,7 +99,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
   );
 };
 
-export const ResponseLayoutStyles = {
+export const responseLayoutStyles = {
   responseLayout : {
     iconBg: "#1E1E38"
   }

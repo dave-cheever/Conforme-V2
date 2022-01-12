@@ -61,6 +61,7 @@ import { responseChatItemStyles } from "../components/Response/ResponseChatItem"
 import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
 import { responseHeaderStyles } from "../components/Response/ResponseHeader/ResponseHeader";
 import { responseHeaderStatusStyles } from "../components/Response/ResponseHeader/ResponseHeaderStatus";
+import { responseLayoutStyles } from "../layouts/ResponseLayout";
 import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
 import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
 import { responseRenewalDetailsStyles } from "../components/Response/Details";
@@ -77,8 +78,8 @@ import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
 import { textMultilineConfirmInputStyles } from "../components/Forms/TextMultilineConfirmInput";
 import { toggleStyles } from "../components/Forms/Toggle";
+import { userItemStyles } from "../pages/admin/users";
 import { userMenuStyles } from "../components/UserMenu";
-import { ResponseLayoutStyles } from "../layouts/ResponseLayout";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -184,6 +185,7 @@ const getTheme = (organizationTheme?: any) => {
       ...responseHeaderMenuItemStyles,
       ...responseHeaderStyles,
       ...responseHeaderStatusStyles,
+      ...responseLayoutStyles,
       ...responseLeftTabItemStyles,
       ...responseRenewalDetailsStyles,
       ...responseRenewalModalStyles,
@@ -200,9 +202,8 @@ const getTheme = (organizationTheme?: any) => {
       ...textConfirmInputStyles,
       ...textMultilineConfirmInputStyles,
       ...toggleStyles,
+      ...userItemStyles,
       ...userMenuStyles,
-      ...ResponseLayoutStyles,
-
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',

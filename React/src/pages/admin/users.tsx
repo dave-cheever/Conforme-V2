@@ -13,6 +13,7 @@ import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import Header from "../../components/Header";
 import Loader from "../../components/Loader";
+import UserResponseCount from "../../components/UserResponseCount";
 import useDevice from "../../hooks/useDevice";
 import { ArrowDownIcon } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
@@ -104,10 +105,10 @@ const Users = () => {
         </>
       }
       <Flex w="20%" h="100%">
-        <Flex w="calc(25% - 1px)" alignItems="center" justifyContent="center" h="calc(100% - 1px)" mt="1px" mr="1px" bg="#F0F2F5">{user.responsibleCount || 0}</Flex>
-        <Flex w="calc(25% - 1px)" alignItems="center" justifyContent="center" h="calc(100% - 1px)" mt="1px" mr="1px" bg="#F0F2F5">{user.accountableCount || 0}</Flex>
-        <Flex w="calc(25% - 1px)" alignItems="center" justifyContent="center" h="calc(100% - 1px)" mt="1px" mr="1px" bg="#F0F2F5">{user.contributorCount || 0}</Flex>
-        <Flex w="calc(25% - 1px)" alignItems="center" justifyContent="center" h="calc(100% - 1px)" mt="1px" mr="1px" bg="#F0F2F5">{user.followerCount || 0}</Flex>
+        <UserResponseCount responseCount={user.responsibleCount}/>
+        <UserResponseCount responseCount={user.accountableCount}/>
+        <UserResponseCount responseCount={user.contributorCount}/>
+        <UserResponseCount responseCount={user.followerCount}/>
       </Flex>
       <Flex w="calc(16% - 20px)" ml="20px" align='center'>
         {formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })}
@@ -131,10 +132,10 @@ const Users = () => {
               </>
             }
             <Flex w="20%">
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="R" />
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="A" />
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="C" />
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="F" />
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="R" tooltip="Responsible on number of responses" />
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="A" tooltip="Accountable on number of responses"/>
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="C" tooltip="Contributor on number of responses"/>
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="F" tooltip="Follower on number of responses"/>
             </Flex>
             <AdminTableHeaderElement w="calc(16% - 20px)" ml="20px" label="Last login" />
           </AdminTableHeader>
@@ -148,3 +149,10 @@ const Users = () => {
 };
 
 export default Users;
+
+
+export const userItemStyles = {
+  userItem:{
+    responseCountBg: "#F0F2F5"
+  }
+}
