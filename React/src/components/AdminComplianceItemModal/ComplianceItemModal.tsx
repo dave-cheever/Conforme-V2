@@ -104,6 +104,23 @@ const ComplianceItemModal = ({ refetch }) => {
     selectSection(selectedSectionIndex -1);
   }
 
+  const buttonText = useMemo(() => {
+    if(selectedSection.name !== "Summary") {
+      return "Next Step"
+    }
+
+    if(complianceItem.published){
+      return "Unpublish";
+    }
+
+    if(complianceItem.hasOwnProperty('_id')){
+      return "Publish compliance item";
+    }
+
+    return "Add compliance item";
+
+  },[ complianceItem, selectedSection ]);
+
   return (
     <>
       <ModalContent
@@ -186,12 +203,7 @@ const ComplianceItemModal = ({ refetch }) => {
                   !complianceItem.published
                 }
               >
-                {selectedSection.name !== 'Summary' ?
-                  'Next step' :
-                  complianceItem.published ?
-                    'Unpublish' :
-                    !complianceItem.hasOwnProperty('_id') ? 'Add compliance item' : "Publish compliance item"
-                }
+                {buttonText}
               </Button>
               </Flex>
             </Flex>

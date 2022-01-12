@@ -404,6 +404,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
       evidence: complianceItem.evidenceItems.map(name => ({ name })),
       questions: complianceItem.questions,
       organizationId,
+      published: complianceItem.published,
       // @ts-ignore
       metatags: genMetatags('added', userId),
     }, userId, organizationId);

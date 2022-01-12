@@ -19,7 +19,7 @@ const NavigationMobileModal = () => {
           bg="navigationMobileModal.section.bg"
           color="navigationMobileModal.section.color"
           mr="15px" 
-          fontSize="11px"
+          fontSize="14px"
           fontWeight="bold"
           flexShrink={0} 
           rounded="10px" 
@@ -28,7 +28,7 @@ const NavigationMobileModal = () => {
         >
           {selectedSectionIndex + 1}
         </Flex>
-        <Text fontSize="ssm" fontWeight="bold" color="navigationMobileModal.section.label">
+        <Text fontSize="14px" fontWeight="bold" color="navigationMobileModal.section.label">
           {complianceItemModalSections[selectedSectionIndex].name}
         </Text>
       </Flex>

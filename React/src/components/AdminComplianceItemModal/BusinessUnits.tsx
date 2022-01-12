@@ -46,9 +46,22 @@ const BusinessUnitsForm = () => {
   return (
     <Box w='full'>
       <Flex direction='column'>
-        <SectionHeader label="Select business unit(s)" />
+        <SectionHeader label="Select business unit(s)" display={["none","flex"]}/>
         
-        <Flex flexDir={["column", "row"]} justifyContent="space-between" mt="25px" mb="30px">
+        <Flex flexDir={["column", "row"]} justifyContent="space-between" mt={["0px","25px"]} mb="30px">
+          <Flex flexDir="column" >
+          <Flex pt={2} align='center' justify="space-between" mb='none'>
+            <Box
+              color={"dropdown.labelFont.secondaryVariant"}
+              fontWeight="bold"
+              fontSize="11px"
+              position="static"
+              left='none'
+              zIndex={1}
+            >
+              Select business unit(s)
+            </Box>
+          </Flex>
           <Select 
             w={["full", "190px"]} 
             h="42px"
@@ -61,6 +74,20 @@ const BusinessUnitsForm = () => {
           >
             {locations.map(location => <option key={location} value={location}>{location}</option>)}
           </Select>
+          </Flex>
+          <Flex flexDir="column">
+          <Flex pt={2} align='center' justify="space-between" mb='none'>
+            <Box
+              color={"dropdown.labelFont.secondaryVariant"}
+              fontWeight="bold"
+              fontSize="11px"
+              position="static"
+              left='none'
+              zIndex={1}
+            >
+              Search by business unit name
+            </Box>
+          </Flex>
           <InputGroup w={["full", "190px"]} h="42px" border="1px solid" borderColor="rgba(129, 129, 151, 0.4)" rounded="5px">
             <InputLeftElement
               pointerEvents="none"
@@ -68,6 +95,7 @@ const BusinessUnitsForm = () => {
             />
             <Input fontSize="14px" placeholder="Search business unit" onChange={e => setSearchText(e.target.value)} />
           </InputGroup>
+          </Flex>
         </Flex>
 
         <CheckboxGroup onChange={(e: any) => handleChange(e)} colorScheme="green" value={complianceItem.businessUnitsIds || []}>

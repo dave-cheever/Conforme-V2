@@ -68,7 +68,7 @@ const ComplianceItemModalProvider = (props) => {
   const [visitedTab, setVisitedTab] = useState<number>(0);
 
   const complianceItemModalSections: IComplianceItemModalSection[] = [{
-    name: 'General',
+    name: 'Details',
     fields: {
       name: '',
       description: '',

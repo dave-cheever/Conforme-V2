@@ -40,7 +40,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', requ
         return (
           <Box w='full' id={name}>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex pt={2} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "datepicker.labelFont.error" : styles ? styles?.textInput?.font : "datepicker.labelFont.normal"}
                   fontWeight="bold"

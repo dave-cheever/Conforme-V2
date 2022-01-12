@@ -44,11 +44,11 @@ const Dropdown = ({ control, name, stroke, label, placeholder = '', tooltip = ''
         return (
           <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex pt={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "dropdown.labelFont.error" : "dropdown.labelFont.normal"}
+                  color={error ? "dropdown.labelFont.error" : variant === "secondaryVariant" ? "dropdown.labelFont.secondaryVariant" :"dropdown.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize="ssm"
+                  fontSize={ variant === "secondaryVariant" ? "11px" : "14px" }
                   position="static"
                   left='none'
                   zIndex={1}
@@ -116,6 +116,7 @@ export const dropdownStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
+      secondaryVariant: "#818197",
       normal: '#282F36',
       error: '#E53E3E',
     },
