@@ -1,14 +1,27 @@
-import React, { useMemo } from "react";
-import { CircularProgress, Flex, Grid, Text } from "@chakra-ui/react";
+import React, { useMemo, useRef } from "react";
+import { Button, CircularProgress, Flex, Grid, Text } from "@chakra-ui/react";
 import format from "date-fns/format";
-import intervalToDuration from "date-fns/intervalToDuration"
+import intervalToDuration from "date-fns/intervalToDuration";
+import DatePicker from "react-datepicker";
+import { gql, useMutation } from "@apollo/client";
 
 import DescriptionText from "./DescriptionText";
 import { ArrowDownIcon } from "../../icons";
 import { useResponseContext } from "../../contexts/ResponseProvider";
+import EditButton from "./EditButton";
+
+const UPDATE_RESPONSE = gql`
+  mutation ($updateResponseModify: UpdateResponseModify!) {
+    updateResponse(updateResponseModify: $updateResponseModify) {
+      nextRenewalDate
+    }
+  }
+`;
 
 const Details = () => {
-  const { response } = useResponseContext();
+  const { response, refetch } = useResponseContext();
+  const [updateResponse] = useMutation(UPDATE_RESPONSE);
+  const startRef = useRef<DatePicker>();
 
   const progress = useMemo(() => {
     if (!response.daysToDueDate) {
@@ -39,6 +52,19 @@ const Details = () => {
 
     return -1;
   }, [response]);
+
+  const updateResponseDate = async (date) => {
+    await updateResponse({
+      variables: {
+        updateResponseModify: {
+          _id: response._id,
+          nextRenewalDate: date
+        }
+      },
+    });
+    startRef.current.setOpen(false);
+    refetch();
+  }
 
   return (
     <Flex w="full" h="full" flexDir="column" overflow={["visible", "auto"]}>
@@ -123,16 +149,30 @@ const Details = () => {
             size="28px"
             value={progress}
             color={progress <= 10 ? "red" : "responseRenewalDetails.progressColor"}
+            display={["none","block"]}
           />}
-          <Flex w="full" flexDir="column" ml={3} align={["center","flex-start"]}>
+          <Flex w="full" flexDir="column" ml={progress >= 0 ? 3 : 0} align={["center","flex-start"]}>
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               Due for renewal
             </Text>
-            <Text fontSize="14px" color="responseRenewalDetails.textColor">
-              {response.nextRenewalDate
-                ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy")
-                : "N/A"}
-            </Text>
+            <Flex>
+              <Text fontSize="14px" color="responseRenewalDetails.textColor">
+                {response.nextRenewalDate
+                  ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy")
+                  : "No due date"}
+              </Text>
+              <Flex align="center">
+                <DatePicker
+                  ref={startRef}
+                  selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
+                  onChange={(date) => updateResponseDate(date)}
+                  customInput={<EditButton />}
+                  disabledKeyboardNavigation
+                  >
+                    <Button colorScheme="purpleHeart" w="full" size="sm" onClick={() => updateResponseDate(null)}>No due date</Button>
+                  </DatePicker>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       </Grid>
@@ -153,5 +193,6 @@ export const responseRenewalDetailsStyles = {
     bg: "#F0F2F5",
     nextRenewalBg: "rgba(65, 185, 22, 0.1)",
     progressColor: "#41B916",
+    editButtonColor: "#818197"
   },
 };

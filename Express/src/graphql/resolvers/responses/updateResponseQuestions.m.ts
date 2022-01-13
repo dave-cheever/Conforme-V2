@@ -8,8 +8,8 @@ const updateResponseQuestions = async (_, { updateResponseQuestionsModify }, { a
 
     const { _id, answers } = updateResponseQuestionsModify;
 
-    const responseDocument = await Responses.findById(_id);
-    if (!responseDocument?._doc) {
+    const responseDocument = await Responses.findOne({ _id , organizationId: organization._id});
+    if (!responseDocument) {
       throw new Error("Response doesn't exist");
     }
     const response = responseDocument._doc;

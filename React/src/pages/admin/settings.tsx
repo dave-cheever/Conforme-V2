@@ -93,7 +93,7 @@ const Settings = () => {
           <Flex
             p="25px 30px 25px 30px"
             flexDirection="column"
-            minW={["100vw", "390px", "440px"]}
+            minW={["100vw", "100px", "440px"]}
             borderRadius={["0px","20px"]}
             ml={[0,5]}
             bg="white"

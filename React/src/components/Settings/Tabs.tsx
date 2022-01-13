@@ -25,10 +25,11 @@ const Tabs = () => {
           bg="settingsTabItem.tabItemBg"
           h="40px"
           borderRadius="10px"
-          maxW="240px"
+          maxW="24vw"
           as={Button}
           rightIcon={<ArrowDownIcon />}
           fontSize="14px"
+          w="full"
         >
           Email templates
         </MenuButton>

@@ -19,7 +19,7 @@ const EmailTemplate = ({
   };
 
   return (
-    <Flex w="full" flexDirection="column" minW={["80px","240px","full"]} onClick={onClick}>
+    <Flex w="full" flexDirection="column" minW={["80px","155px","full"]} onClick={onClick}>
       <Flex
         borderWidth="2px"
         borderColor={

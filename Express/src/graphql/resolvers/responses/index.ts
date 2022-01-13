@@ -4,6 +4,7 @@ import removeDocument from './removeDocument.m';
 import removeParticipant from './removeParticipant.m';
 import renewResponse from './renewResponse.m';
 import updateResponseQuestions from './updateResponseQuestions.m';
+import updateResponse from './updateResponse.m';
 
 const responsesResolvers = {
   Query: {
@@ -15,6 +16,7 @@ const responsesResolvers = {
     removeDocument,
     renewResponse,
     updateResponseQuestions,
+    updateResponse
   },
 };
 
@@ -98,6 +100,11 @@ export const responsesTypeDefs = `
     _id: ID!
     answers: Any
   }
+
+  input UpdateResponseModify {
+    _id: ID!
+    nextRenewalDate: Date
+  }
 `;
 
 export const responsesQueryDefs = `
@@ -110,6 +117,7 @@ export const responsesMutationDefs = `
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
   renewResponse(_id: ID!): Response!
   updateResponseQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
+  updateResponse(updateResponseModify: UpdateResponseModify!): Response!
 `;
 
 export default responsesResolvers;
