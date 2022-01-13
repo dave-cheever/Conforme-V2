@@ -17,14 +17,14 @@ const ifRACHasAccess = ({ user, response }) =>
   user && (response?.contributorsIds?.includes(user._id) || response?.accountableId === user._id || response?.responsibleId === user._id);
 
 const ifRACFHasAccess = ({ user, response }) =>
-user && (
-  response?.contributorsIds?.includes(user._id) || 
-  response?.followersIds?.includes(user._id) || 
-  response?.accountableId === user._id || 
-  response?.responsibleId === user._id);
+  user && (
+    response?.contributorsIds?.includes(user._id) ||
+    response?.followersIds?.includes(user._id) ||
+    response?.accountableId === user._id ||
+    response?.responsibleId === user._id);
 
 const ifRAHasAccess = ({ user, response }) =>
-user && (response?.accountableId === user._id || response?.responsibleId === user._id);
+  user && (response?.accountableId === user._id || response?.responsibleId === user._id);
 
 const defaultPermissions = [
   "home.view",
@@ -73,7 +73,7 @@ const roles = {
       "responses.manageContributor": ifRAHasAccess,
       "comments.add": ifRACFHasAccess,
       "comments.delete": ({ user, comment }) => user._id === comment.authorId,
-      "responses.manageMultipleFollowers": ifRACHasAccess,
+      "responses.manageMultipleFollowers": ifRAHasAccess,
     },
   },
 
