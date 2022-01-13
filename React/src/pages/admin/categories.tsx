@@ -59,8 +59,30 @@ const Categories = () => {
   const [createFunction] = useMutation(CREATE_CATEGORY);
   const [updateFunction] = useMutation(UPDATE_CATEGORY);
   const [deleteFunction] = useMutation(DELETE_CATEGORY);
-  const [categories, setCategories] = useState<IBaseWithName[]>([]);
   const device = useDevice();
+  const [categories, setCategories] = useState<IBaseWithName[]>([]);
+  const [sortType, setSortType] = useState("name");
+  const [sortOrder, setSortOrder] = useState(true);
+
+  useEffect(() => {
+    if (data?.categories)
+      setCategories([...data.categories].sort((a, b) => a.name.localeCompare(b.name)));
+    else
+      setCategories([]);
+  }, [data]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      setCategories([...categories].sort((a, b) => {
+        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())
+      }));
+    }
+    else {
+      setCategories([...categories].sort((a, b) => {
+        return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())
+      }));
+    }
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,
@@ -72,16 +94,6 @@ const Categories = () => {
     mode: "all",
     defaultValues,
   });
-
-  useEffect(() => {
-    if (data?.categories) {
-      setCategories(
-        [...data.categories].sort((a, b) => a.name.localeCompare(b.name))
-      );
-    } else {
-      setCategories([]);
-    }
-  }, [data]);
 
   // Reset the form after closing
   useEffect(() => {
@@ -198,49 +210,49 @@ const Categories = () => {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Categories"]} mobileBreadcrumbs={["Categories"]}/>
+      <Header breadcrumbs={["Admin", "Categories"]} mobileBreadcrumbs={["Categories"]} />
       <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)" overflow="auto">
         <Flex h="full" px={["25px", 0]}>
           <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
-              <AdminTableHeaderElement w={["80%", "50%"]} label="Category" />
-              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
+              <AdminTableHeaderElement w={["80%", "50%"]} label="Category" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
+              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
-              <Stack
-                h={loading ? "full": "fit-content"}
-                bg="white"
-                borderBottomRadius="20px"
-                spacing="1px"
-                pb="3"
-                minH="full"
-              >
-                {loading ? <Loader center={true}/>: categories?.length > 0 ? (
-                  categories?.map((category, i) => (
-                    <AdminTableRow
-                      key={category._id}
-                      element={category}
-                      index={i}
-                      edit={() => openCategoryModal("edit", category)}
-                    />
-                  ))
-                ) : (
-                  <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
-                    No category found
-                  </Flex>
-                )}
-              </Stack>
+            <Stack
+              h={loading ? "full": "fit-content"}
+              bg="white"
+              borderBottomRadius="20px"
+              spacing="1px"
+              pb="3"
+              minH="full"
+            >
+              {loading ? <Loader center={true} /> : categories?.length > 0 ? (
+                categories?.map((category, i) => (
+                  <AdminTableRow
+                    key={category._id}
+                    element={category}
+                    index={i}
+                    edit={() => openCategoryModal("edit", category)}
+                  />
+                ))
+              ) : (
+                <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
+                  No category found
+                </Flex>
+              )}
+            </Stack>
           </Box>
-          {device === "desktop" && 
+          {device === "desktop" &&
             <Flex
               flexDirection="column"
               alignItems="center"
               w={["100%", "220px"]}
             >
               <Box w="100%">
-	              {categories && <BarChart
-	                data={categories.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
-	                label="Categories"
-	              />}
+                {categories && <BarChart
+                  data={categories.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
+                  label="Categories"
+                />}
               </Box>
             </Flex>
           }

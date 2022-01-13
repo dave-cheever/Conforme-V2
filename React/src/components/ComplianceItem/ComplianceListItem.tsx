@@ -1,38 +1,14 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
-import { Box, Flex, Text, Avatar, SkeletonCircle, Skeleton } from "@chakra-ui/react";
+import { Box, Flex, Text, Avatar } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
 
 import useResponseUtils from "../../hooks/useResponseUtils";
 import { Close, TickIcon, LocationIcon } from "../../icons";
 import { IResponse } from "../../interfaces/IResponse";
-import { IUser } from "../../interfaces/IUser";
 import BriefcaseIcon from "../BriefcaseIcon";
 
-const GET_USERS_BY_ID = gql`
-  query ($userQueryInput: UserQueryInput) {
-    usersById(userQueryInput: $userQueryInput) {
-      _id
-      displayName
-      imgUrl
-    }
-  }
-`;
-
 const ComplianceListItem = ({ response }: { response: IResponse }) => {
-  const { data: { usersById: responseResponsible } = [], loading:responsibleLoading } = useQuery(
-    GET_USERS_BY_ID,
-    {
-      variables: {
-        userQueryInput: { usersIds: response?.responsibleId || [] },
-      },
-    }
-  );
-  const responsible: IUser =
-    responseResponsible &&
-    responseResponsible?.length !== 0 &&
-    responseResponsible[0];
 
   const history = useHistory();
   const { getStatus } = useResponseUtils();
@@ -109,7 +85,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             </Flex>
           )}
         </Flex>
-        <Box w="10%" ml={2}>
+        <Box w="15%" ml={2}>
           {response?.evidence?.find(
             ({ uploaded }) => uploaded === undefined
           ) ? (
@@ -138,19 +114,19 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
         </Box>
         <Box w="10%" ml={2}>
           <Flex
-              fontSize="14px"
-              lineHeight="18px"
-              color="complianceList.fontColor"
-              opacity="1"
-              fontWeight="400"
-              h="50%"
-              align="flex-start"
-              pt="3px"
-            >
-              {response?.complianceItem?.category?.name || "N/A"}
-            </Flex>
+            fontSize="14px"
+            lineHeight="18px"
+            color="complianceList.fontColor"
+            opacity="1"
+            fontWeight="400"
+            h="50%"
+            align="flex-start"
+            pt="3px"
+          >
+            {response?.complianceItem?.category?.name || "N/A"}
+          </Flex>
         </Box>
-        <Box w="10%" ml={2}>
+        <Box w="15%" ml={2}>
           <Box
             color="complianceList.fontColor"
             opacity="1"
@@ -165,28 +141,24 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
           </Box>
         </Box>
         <Box w="15%" ml={2}>
-          {responsibleLoading ? <Flex align="center">
-            <SkeletonCircle boxSize="24px" />
-            <Skeleton ml={3} w="50%" height="10px" />
-          </Flex>:
-          responsible?
-          <Flex direction="row" align="center">
-            <Avatar size="xs" name={responsible?.displayName}
-              src={responsible?.imgUrl} />
-            <Text
-              w="full"
-              pl={3}
-              lineHeight="17px"
-              color="complianceList.fontColor"
-              opacity="1"
-              fontSize="13px"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-            >
-              {responsible?.displayName}
-            </Text>
-          </Flex>: <Flex fontStyle="italic" fontSize="13px">Unassigned</Flex>}
+          {response?.responsible ?
+            <Flex direction="row" align="center">
+              <Avatar size="xs" name={response?.responsible?.displayName}
+                src={response?.responsible?.imgUrl} />
+              <Text
+                w="full"
+                pl={3}
+                lineHeight="17px"
+                color="complianceList.fontColor"
+                opacity="1"
+                fontSize="13px"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+              >
+                {response?.responsible?.displayName}
+              </Text>
+            </Flex> : <Flex fontStyle="italic" fontSize="13px">Unassigned</Flex>}
         </Box>
         <Box w="15%" ml={3}>
           <Flex>

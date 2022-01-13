@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer, useDisclosure } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
 import { isPermitted } from '../../can';
@@ -17,12 +17,12 @@ const ReasponseHeader = () => {
   const { response, handleRenewalOpen } = useResponseContext();
   const history = useHistory();
   const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
-  const { user, organizationConfig } = useAppContext();
+  const { user } = useAppContext();
   const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
   const { handleShareOpen } = useContext(ResponseContext);
   const [status, setStatus] = useState<"compliant" | "nonCompliant" | "">("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef:any = useRef();
+  const cancelRef: any = useRef();
 
   useEffect(() => {
     if (status === "nonCompliant" && getStatus(response) === "compliant") {
@@ -65,186 +65,186 @@ const ReasponseHeader = () => {
 
   return (
     <>
-    <AlertDialog
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-      isOpen={isOpen}
-    >
-      <AlertDialogOverlay />
-      <AlertDialogContent>
-        <AlertDialogHeader>Response completed</AlertDialogHeader>
-        <AlertDialogCloseButton />
-        <AlertDialogBody >
-          Thank you for submitting the required information to complete <b>{response.complianceItem.name}</b> for <b>{response.businessUnit?.name}</b>. <br/>
+      <AlertDialog
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+          <AlertDialogHeader>Response completed</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody >
+            Thank you for submitting the required information to complete <b>{response.complianceItem.name}</b> for <b>{response.businessUnit?.name}</b>. <br />
 
-          This will now be considered compliant until <b>{response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy") : "N/A"}</b>. <br/><br/>
+            This will now be considered compliant until <b>{response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy") : "N/A"}</b>. <br /><br />
 
-          If the date above is not correct, then you are able to go back and edit the due date as needed.
-        </AlertDialogBody>
-        <AlertDialogFooter bg="renewResponseModal.footer.bg" roundedBottom='0.375rem'>
-          <Button w="full" colorScheme="red" onClick={goToHomePage} fontSize="13px">
-            Return to homepage
-          </Button>
-          <Button  w="full"  ref={cancelRef}  colorScheme="purpleHeart" ml={3} onClick={onClose} fontSize="13px">
-            Go back and edit
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-    <Flex
-      direction='column'
-      pl={6}
-      w="full"
-      minH="100px"
-      bg="reasponseHeader.bg"
-      zIndex={1}
-      mb="15px"
-    >
+            If the date above is not correct, then you are able to go back and edit the due date as needed.
+          </AlertDialogBody>
+          <AlertDialogFooter bg="renewResponseModal.footer.bg" roundedBottom='0.375rem'>
+            <Button w="full" colorScheme="red" onClick={goToHomePage} fontSize="13px">
+              Return to homepage
+            </Button>
+            <Button w="full" ref={cancelRef} colorScheme="purpleHeart" ml={3} onClick={onClose} fontSize="13px">
+              Go back and edit
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Flex
+        direction='column'
+        pl={6}
+        w="full"
+        minH="100px"
+        bg="reasponseHeader.bg"
+        zIndex={1}
+        mb="15px"
+      >
 
-      <Flex alignItems='center' w="full" h="40px" mb="15px">
-        <Heading
-          color="reasponseHeader.heading"
-          fontSize="xxl"
-          fontWeight="bold"
-          alignItems={['flex-start', 'center']}
-        >
-          {response?.complianceItem?.name}
-        </Heading>
-        {getRenewalStatus(response) === "comingUp" ? <Badge
-          ml="13"
-          bg="reasponseHeader.badgeBg"
-          padding="6px 15px"
-          borderRadius="10px"
-          fontSize="11px"
-          lineHeight="16px"
-          fontWeight="bold"
-          colorScheme="reasponseHeader.badgeColorScheme"
-          color="reasponseHeader.badge"
-          textTransform="capitalize"
-        >
-          Coming up
-        </Badge> : ''}
-      </Flex>
-      <Flex mb="15px">
-        <Flex alignItems='center' w="full" maxW={["100vw", "390px"]} pl={["10px", "0px"]} pr={["35px", "0px"]}>
-          <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) === "compliant" ? "Yes" : "No"} />
-          <Spacer />
-          {currentEvidenceItems?.length > 0 && <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />}
-          <Spacer />
-          <ResponseHeaderStatus heading="Questions answered" status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'} />
+        <Flex alignItems='center' w="full" h="40px" mb="15px">
+          <Heading
+            color="reasponseHeader.heading"
+            fontSize="xxl"
+            fontWeight="bold"
+            alignItems={['flex-start', 'center']}
+          >
+            {response?.complianceItem?.name}
+          </Heading>
+          {getRenewalStatus(response) === "comingUp" ? <Badge
+            ml="13"
+            bg="reasponseHeader.badgeBg"
+            padding="6px 15px"
+            borderRadius="10px"
+            fontSize="11px"
+            lineHeight="16px"
+            fontWeight="bold"
+            colorScheme="reasponseHeader.badgeColorScheme"
+            color="reasponseHeader.badge"
+            textTransform="capitalize"
+          >
+            Coming up
+          </Badge> : ''}
         </Flex>
-        <Spacer display={["none", "flex"]} />
-        <Flex color='white' justify='flex-end' h='40px' mr="27px" display={["none", "flex"]}>
-          <ResponseHeaderButton
-            name="Follow"
-            icon={
-              <FollowIcon
-                fontSize="15px"
-                stroke="reasponseHeader.buttonLightColor"
-                fill='transparent'
-                _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-              />
-            }
-            onClick={undefined}
-          />
-          <ResponseHeaderButton
-            name="Share"
-            icon={
-              <ShareIcon
-                fontSize="15px"
-                stroke="reasponseHeader.buttonLightColor"
-                _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-              />
-            }
-            onClick={handleShareOpen}
-          />
-          {!['Ad-hoc', 'Variable'].includes(response?.complianceItem?.frequency) &&
-            <Button
-              ml="15px"
-              w='88px'
-              borderRadius="10px"
-              fontSize="smm"
-              fontWeight="bold"
-              bg={enableRenewalButton ? 'reasponseHeader.buttonDarkBg' : 'reasponseHeader.buttonDarkBg'}
-              color={enableRenewalButton ? 'reasponseHeader.buttonDarkColor' : 'reasponseHeader.buttonDarkColor'}
-              _hover={{ bg: "reasponseHeader.buttonDarkBgHover", color: 'reasponseHeader.buttonDarkColorHover' }}
-              onClick={handleRenewalOpen}
-              display={["none", "flex"]}
-              isDisabled={!enableRenewalButton}
-            >Renew</Button>
-          }
-        </Flex>
-      </Flex>
-
-      <Flex alignItems='center' h='40px' mr="25px" display={["flex", "none"]}>
-        <Menu>
-          {({ isOpen }) => (
-            <>
-              <MenuButton
-                colorScheme='reasponseHeader.optionsMenuColorScheme'
-                bg={isOpen ? "reasponseHeader.optionsMenuBgOpen" : "reasponseHeader.optionsMenuBg"}
-                color="reasponseHeader.optionsMenuButtonColor"
-                textAlign="left"
-                fontWeight="bold"
-                fontSize="smm"
-                fontFamily="Helvetica"
-                lineHeight="18px"
-                w="full"
-                isActive={isOpen}
-                as={Button}
-                rightIcon={<ArrowDownIcon />}
-                borderRadius="10px">
-                {isOpen ? 'Options' : 'Options'}
-
-              </MenuButton>
-
-              <MenuList
-                borderColor="reasponseHeader.optionsMenuBorderColor"
-                minW={["calc(100vw - 50px)", "325px"]}
-                w="100%"
-                boxShadow="0px 0px 80px"
-                color="reasponseHeader.optionsMenuBoxShadow"
+        <Flex mb="15px">
+          <Flex alignItems='center' w="full" maxW={["100vw", "390px"]} pl={["10px", "0px"]} pr={["35px", "0px"]}>
+            <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) === "compliant" ? "Yes" : "No"} />
+            <Spacer />
+            {currentEvidenceItems?.length > 0 && <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />}
+            <Spacer />
+            <ResponseHeaderStatus heading="Questions answered" status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'} />
+          </Flex>
+          <Spacer display={["none", "flex"]} />
+          <Flex color='white' justify='flex-end' h='40px' mr="27px" display={["none", "flex"]}>
+            <ResponseHeaderButton
+              name="Follow"
+              icon={
+                <FollowIcon
+                  fontSize="15px"
+                  stroke="reasponseHeader.buttonLightColor"
+                  fill='transparent'
+                  _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+                />
+              }
+              onClick={undefined}
+            />
+            <ResponseHeaderButton
+              name="Share"
+              icon={
+                <ShareIcon
+                  fontSize="15px"
+                  stroke="reasponseHeader.buttonLightColor"
+                  _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+                />
+              }
+              onClick={handleShareOpen}
+            />
+            {!['Ad-hoc', 'Variable'].includes(response?.complianceItem?.frequency) &&
+              <Button
+                ml="15px"
+                w='88px'
                 borderRadius="10px"
-              >
-                <ResponseHeaderMenuItem
-                  title="Follow"
-                  icon={
-                    <FollowIcon
-                      fontSize="15px"
-                      stroke="reasponseHeader.buttonLightColor"
-                      fill='transparent'
-                      _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                    />}
-                  onClick={undefined}
-                />
-                <ResponseHeaderMenuItem
-                  title="Share"
-                  icon={
-                    <ShareIcon
-                      fontSize="15px"
-                      stroke="reasponseHeader.buttonLightColor"
-                      _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                    />}
-                  onClick={handleShareOpen}
-                />
-                <MenuDivider borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" border="1px" />
-                <ResponseHeaderMenuItem
-                  title="Renew"
-                  icon={
-                    <CheckIcon
-                      fontSize="15px"
-                      stroke="reasponseHeader.buttonLightColor"
-                      fill='transparent'
-                      _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                    />}
-                  onClick={handleRenewalOpen}
-                />
-              </MenuList>
-            </>
-          )}
-        </Menu>
+                fontSize="smm"
+                fontWeight="bold"
+                bg={enableRenewalButton ? 'reasponseHeader.buttonDarkBg' : 'reasponseHeader.buttonDarkBg'}
+                color={enableRenewalButton ? 'reasponseHeader.buttonDarkColor' : 'reasponseHeader.buttonDarkColor'}
+                _hover={{ bg: "reasponseHeader.buttonDarkBgHover", color: 'reasponseHeader.buttonDarkColorHover' }}
+                onClick={handleRenewalOpen}
+                display={["none", "flex"]}
+                isDisabled={!enableRenewalButton}
+              >Renew</Button>
+            }
+          </Flex>
+        </Flex>
+
+        <Flex alignItems='center' h='40px' mr="25px" display={["flex", "none"]}>
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  colorScheme='reasponseHeader.optionsMenuColorScheme'
+                  bg={isOpen ? "reasponseHeader.optionsMenuBgOpen" : "reasponseHeader.optionsMenuBg"}
+                  color="reasponseHeader.optionsMenuButtonColor"
+                  textAlign="left"
+                  fontWeight="bold"
+                  fontSize="smm"
+                  fontFamily="Helvetica"
+                  lineHeight="18px"
+                  w="full"
+                  isActive={isOpen}
+                  as={Button}
+                  rightIcon={<ArrowDownIcon />}
+                  borderRadius="10px">
+                  {isOpen ? 'Options' : 'Options'}
+
+                </MenuButton>
+
+                <MenuList
+                  borderColor="reasponseHeader.optionsMenuBorderColor"
+                  minW={["calc(100vw - 50px)", "325px"]}
+                  w="100%"
+                  boxShadow="0px 0px 80px"
+                  color="reasponseHeader.optionsMenuBoxShadow"
+                  borderRadius="10px"
+                >
+                  <ResponseHeaderMenuItem
+                    title="Follow"
+                    icon={
+                      <FollowIcon
+                        fontSize="15px"
+                        stroke="reasponseHeader.buttonLightColor"
+                        fill='transparent'
+                        _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+                      />}
+                    onClick={undefined}
+                  />
+                  <ResponseHeaderMenuItem
+                    title="Share"
+                    icon={
+                      <ShareIcon
+                        fontSize="15px"
+                        stroke="reasponseHeader.buttonLightColor"
+                        _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+                      />}
+                    onClick={handleShareOpen}
+                  />
+                  <MenuDivider borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" border="1px" />
+                  <ResponseHeaderMenuItem
+                    title="Renew"
+                    icon={
+                      <CheckIcon
+                        fontSize="15px"
+                        stroke="reasponseHeader.buttonLightColor"
+                        fill='transparent'
+                        _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+                      />}
+                    onClick={handleRenewalOpen}
+                  />
+                </MenuList>
+              </>
+            )}
+          </Menu>
+        </Flex>
       </Flex>
-    </Flex>
     </>
   );
 };

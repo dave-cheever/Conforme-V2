@@ -60,6 +60,7 @@ export const responsesTypeDefs = `
     evidence: [ResponseEvidence]
     attachments: [ResponseDocument]
     questions: [ResponseQuestion]
+    responsible: User
     daysToDueDate: Int
     metatags: Metatags
   }

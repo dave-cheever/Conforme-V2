@@ -3,6 +3,7 @@ import { IBusinessUnit } from "./IBusinessUnit";
 import { IComment } from "./IComment";
 import { IComplianceItem } from "./IComplianceItem";
 import { IQuestion } from "./IQuestion";
+import { IUser } from "./IUser";
 
 export interface IDocument {
   id: string;
@@ -44,4 +45,5 @@ export interface IResponse extends IBase {
   // Additional fields - can be added when getting from database
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
+  responsible?: IUser;
 }

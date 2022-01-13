@@ -67,8 +67,38 @@ const BusinessUnits = () => {
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
-  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>([]);
   const device = useDevice();
+  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>([]);
+  const [sortType, setSortType] = useState("name");
+  const [sortOrder, setSortOrder] = useState(true);
+
+  useEffect(() => {
+    if (data?.businessUnits)
+      setBusinessUnits([...data.businessUnits].sort((a, b) => a.name.localeCompare(b.name)));
+    else
+      setBusinessUnits([]);
+  }, [data]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      setBusinessUnits([...businessUnits].sort((a, b) => {
+        if (sortType === 'owner')
+          return (a.owner?.displayName!).localeCompare(b.owner?.displayName!);
+        else {
+          return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+        }
+
+      }));
+    }
+    else {
+      setBusinessUnits([...businessUnits].sort((a, b) => {
+        if (sortType === 'owner')
+          return (b.owner?.displayName!).localeCompare(a.owner?.displayName!);
+        else
+          return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString());
+      }));
+    }
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,
@@ -80,16 +110,6 @@ const BusinessUnits = () => {
     mode: "all",
     defaultValues,
   });
-
-  useEffect(() => {
-    if (data?.businessUnits) {
-      setBusinessUnits(
-        [...data.businessUnits].sort((a, b) => a.name.localeCompare(b.name))
-      );
-    } else {
-      setBusinessUnits([]);
-    }
-  }, [data]);
 
   // Reset the form after closing
   useEffect(() => {
@@ -139,7 +159,7 @@ const BusinessUnits = () => {
         const values = getValues();
         await updateFunction({ variables: { values } });
         await refetch();
-        toast({ ...toastSuccess, description: "Business Unit updated" }); 
+        toast({ ...toastSuccess, description: "Business Unit updated" });
       } else {
         toast({
           ...toastFailed,
@@ -286,18 +306,18 @@ const BusinessUnits = () => {
       <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
         <Box w='full' h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
-            <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" />
+            <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
             {device !== "mobile" &&
               <>
-                <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" />
-                <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" />
-                <AdminTableHeaderElement w="calc(70% / 4)" label="Owner" />
+                <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" onClick={() => { setSortType("type"); setSortOrder(!sortOrder); }} sortOrder={sortType === "type" && !sortOrder} showSortingIcon={sortType === "type"} />
+                <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" onClick={() => { setSortType("region"); setSortOrder(!sortOrder); }} sortOrder={sortType === "region" && !sortOrder} showSortingIcon={sortType === "region"} />
+                <AdminTableHeaderElement w="calc(70% / 4)" label="Owner" onClick={() => { setSortType("owner"); setSortOrder(!sortOrder); }} sortOrder={sortType === "owner" && !sortOrder} showSortingIcon={sortType === "owner"} />
               </>
             }
-            <AdminTableHeaderElement w={["20%", "calc(70% / 4)"]} label="# of responses" />
+            <AdminTableHeaderElement w={["20%", "calc(70% / 4)"]} label="# of responses" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
           </AdminTableHeader>
           <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
-            {loading ? <Loader center={true}/>: (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
+            {loading ? <Loader center={true} /> : (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
               <Flex w='full' h='full' fontSize='18px' fontStyle='italic' align='center' justify="center">No business units found.</Flex>
             ))}
           </Flex>

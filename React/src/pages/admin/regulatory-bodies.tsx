@@ -59,21 +59,35 @@ const RegulatoryBodies = () => {
   const [createFunction] = useMutation(CREATE_REGULATORY_BODY);
   const [updateFunction] = useMutation(UPDATE_REGULATORY_BODY);
   const [deleteFunction] = useMutation(DELETE_REGULATORY_BODY);
-  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>([]);
   const device = useDevice();
+  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>([]);
+  const [sortType, setSortType] = useState("name");
+  const [sortOrder, setSortOrder] = useState(true);
+
+  useEffect(() => {
+    if (data?.regulatoryBodies)
+      setRegulatoryBodies([...data.regulatoryBodies].sort((a, b) => a.name.localeCompare(b.name)));
+    else
+      setRegulatoryBodies([]);
+  }, [data]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      setRegulatoryBodies([...regulatoryBodies].sort((a, b) => {
+        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())
+      }));
+    }
+    else {
+      setRegulatoryBodies([...regulatoryBodies].sort((a, b) => {
+        return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())
+      }));
+    }
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { control, formState: { errors }, getValues, trigger, reset } = useForm({
     mode: 'all',
     defaultValues,
   });
-
-  useEffect(() => {
-    if (data?.regulatoryBodies) {
-      setRegulatoryBodies([...data.regulatoryBodies].sort((a, b) => a.name.localeCompare(b.name)));
-    } else {
-      setRegulatoryBodies([]);
-    }
-  }, [data]);
 
   // Reset the form after closing
   useEffect(() => {
@@ -181,8 +195,8 @@ const RegulatoryBodies = () => {
         <Flex h="full" px={["25px", 0]}>
           <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
-              <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" />
-              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" />
+              <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
+              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
               <Stack
                 bg="white"
@@ -207,19 +221,19 @@ const RegulatoryBodies = () => {
                     No regulatory body found
                   </Flex>
                 )}
-              </Stack>
+            </Stack>
           </Box>
-          {device === "desktop" && 
+          {device === "desktop" &&
             <Flex
               flexDirection="column"
               alignItems="center"
               w={["100%", "220px"]}
             >
               <Flex flexDir="column" w="100%" h="full">
-	              {regulatoryBodies && <BarChart
-	                data={regulatoryBodies.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
-	                label="Regulatory bodies"
-	              />}
+                {regulatoryBodies && <BarChart
+                  data={regulatoryBodies.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
+                  label="Regulatory bodies"
+                />}
               </Flex>
             </Flex>
           }
@@ -233,5 +247,6 @@ export default RegulatoryBodies;
 
 export const regulatoryBodiesStyles = {
   regulatoryBodies: {
-  fontColor: "#818197",
-}}
+    fontColor: "#818197",
+  }
+}

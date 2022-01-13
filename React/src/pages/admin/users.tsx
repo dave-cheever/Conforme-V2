@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -51,6 +52,29 @@ const Users = () => {
   const device = useDevice();
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [sortType, setSortType] = useState("displayName");
+  const [sortOrder, setSortOrder] = useState(true);
+
+  useEffect(() => {
+    if (data?.users)
+      setUsers([...data.users].sort((a, b) => a.displayName.localeCompare(b.displayName)));
+    else
+      setUsers([]);
+  }, [data]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      setUsers([...users].sort((a, b) => {
+        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())
+      }));
+    }
+    else {
+      setUsers([...users].sort((a, b) => {
+        return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())
+      }));
+    }
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onHomePageChange = async (e, userId) => {
     await updateFunction({ variables: { values: { _id: userId, defaultPage: e.target.value } } });
@@ -122,25 +146,25 @@ const Users = () => {
       <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
         <Box w='full' h={['calc(100% - 80px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
-            <AdminTableHeaderElement w={["80%", "16%"]} label="Name" />
+            <AdminTableHeaderElement w={["80%", "16%"]} label="Name" onClick={() => { setSortType("displayName"); setSortOrder(!sortOrder); }} sortOrder={sortType === "displayName" && !sortOrder} showSortingIcon={sortType === "displayName"} />
             {
               device !== "mobile" &&
               <>
-                <AdminTableHeaderElement w="16%" label="Job title" />
-                <AdminTableHeaderElement w="16%" label="Role" />
-                <AdminTableHeaderElement w="16%" label="Default page" />
+                <AdminTableHeaderElement w="16%" label="Job title" onClick={() => { setSortType("jobTitle"); setSortOrder(!sortOrder); }} sortOrder={sortType === "jobTitle" && !sortOrder} showSortingIcon={sortType === "jobTitle"} />
+                <AdminTableHeaderElement w="16%" label="Role" onClick={() => { setSortType("role"); setSortOrder(!sortOrder); }} sortOrder={sortType === "role" && !sortOrder} showSortingIcon={sortType === "role"} />
+                <AdminTableHeaderElement w="16%" label="Default page" onClick={() => { setSortType("defaultPage"); setSortOrder(!sortOrder); }} sortOrder={sortType === "defaultPage" && !sortOrder} showSortingIcon={sortType === "defaultPage"} />
               </>
             }
             <Flex w="20%">
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="R" tooltip="Responsible on number of responses" />
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="A" tooltip="Accountable on number of responses"/>
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="C" tooltip="Contributor on number of responses"/>
-              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="F" tooltip="Follower on number of responses"/>
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="R" tooltip="Responsible on number of responses" onClick={() => { setSortType("responsibleCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "responsibleCount" && !sortOrder} showSortingIcon={sortType === "responsibleCount"} />
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="A" tooltip="Accountable on number of responses" onClick={() => { setSortType("accountableCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "accountableCount" && !sortOrder} showSortingIcon={sortType === "accountableCount"} />
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="C" tooltip="Contributor on number of responses" onClick={() => { setSortType("contributorCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "contributorCount" && !sortOrder} showSortingIcon={sortType === "contributorCount"} />
+              <AdminTableHeaderElement w="calc(25% - 13px)" ml="13px" label="F" tooltip="Follower on number of responses" onClick={() => { setSortType("followerCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "followerCount" && !sortOrder} showSortingIcon={sortType === "followerCount"} />
             </Flex>
-            <AdminTableHeaderElement w="calc(16% - 20px)" ml="20px" label="Last login" />
+            <AdminTableHeaderElement w="calc(16% - 20px)" ml="20px" label="Last login" onClick={() => { setSortType("lastLogin"); setSortOrder(!sortOrder); }} sortOrder={sortType === "lastLogin" && !sortOrder} showSortingIcon={sortType === "lastLogin"} />
           </AdminTableHeader>
-          <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="20px" overflow="auto">
-            {loading ? <Loader center={true} /> : data?.users?.map((user, i) => renderUserRow(user, i))}
+          <Flex w='full' flexDir="column" h="full" bg="white" borderBottomRadius="10px" overflow="auto">
+            {loading ? <Loader center={true} /> : users.map((user, i) => renderUserRow(user, i))}
           </Flex>
         </Box>
       </Flex>

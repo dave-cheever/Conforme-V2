@@ -43,6 +43,11 @@ const GET_RESPONSES = gql`
         name
         imgUrl
       }
+      responsible {
+        _id
+        displayName
+        imgUrl
+      }
     }
   }
 `;

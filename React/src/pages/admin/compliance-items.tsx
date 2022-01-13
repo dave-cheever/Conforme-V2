@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -21,7 +21,7 @@ import { IComplianceItem } from "../../interfaces/IComplianceItem";
 import { AdminModalState } from "../../interfaces/IAdminContext";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import { ArrowRight, Copy } from "../../icons";
+import { Copy } from "../../icons";
 import CloneComplianceItemModal from "../../components/AdminComplianceItemModal/CloneComplianceItemModal";
 
 const GET_COMPLIANCE_ITEMS = gql`
@@ -62,6 +62,32 @@ const ComplianceItemsAdmin = () => {
   const { data, loading, refetch } = useQuery(GET_COMPLIANCE_ITEMS);
   const { complianceItem, reset } = useComplianceItemModalContext();
   const complianceItems = useMemo(() => [...(data?.complianceItems || [])].sort((a, b) => a.name.localeCompare(b.name)), [data]);
+  const [sortType, setSortType] = useState("name");
+  const [sortOrder, setSortOrder] = useState(true);
+  const [sortedData, setSortedData] = useState<any>([]);
+
+  useEffect(() => {
+    setSortedData([...complianceItems].sort((a, b) => a.name.localeCompare(b.name)));
+  }, [complianceItems]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      setSortedData([...complianceItems].sort((a, b) => {
+        if (sortType === 'regulatoryBody')
+          return (a.regulatoryBody?.name.toString()).localeCompare(b.regulatoryBody?.name.toString())
+        else
+          return a[sortType].localeCompare(b[sortType])
+      }));
+    }
+    else {
+      setSortedData([...complianceItems].sort((a, b) => {
+        if (sortType === 'regulatoryBody')
+          return (b.regulatoryBody?.name.toString()).localeCompare(a.regulatoryBody?.name.toString())
+        else
+          return b[sortType].localeCompare(a[sortType])
+      }));
+    }
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (adminModalState === 'closed') {
@@ -119,25 +145,24 @@ const ComplianceItemsAdmin = () => {
         breadcrumbs={["Admin", "Compliance items"]}
         mobileBreadcrumbs={["Compliance items"]}
       />
-        <Box p="0 25px 30px 30px" h={["full","calc(100vh - 160px)"]} overflow="auto">
-          <Box w="100%" h={["calc(100% - 45px)", "calc(100% - 35px)"]}>
-            <AdminTableHeader>
-              <AdminTableHeaderElement w={["80%", "calc(100% / 4)"]} label="Compliance items" />
-              {
-                device !== "mobile" && <>
-                  <AdminTableHeaderElement w="calc(100% / 4)" label="Frequency" />
-                  <AdminTableHeaderElement w="calc(100% / 4)" label="Regulatory body" />
-                  <Flex w="calc(100% / 4)">
-                    <Spacer />
-                    <Text color="complianceItemsAdminWithContext.labelColor">Actions</Text>
-                    <ArrowRight ml="10px" stroke="adminTableHeaderElement.stroke" transform="rotate(90deg)" />
-                  </Flex>
-                </>
-              }
-            </AdminTableHeader>
-            <Stack h="100%" bg="white" borderBottomRadius="20px" overflow="auto">
-              {loading ? <Loader center={true}/>: 
-              complianceItems.map(complianceItem => (
+      <Box p="0 25px 30px 30px" h={["full", "calc(100vh - 160px)"]} overflow="auto">
+        <Box w="100%" h={["calc(100% - 45px)", "calc(100% - 35px)"]}>
+          <AdminTableHeader>
+            <AdminTableHeaderElement w={["80%", "calc(100% / 4)"]} label="Compliance items" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
+            {
+              device !== "mobile" && <>
+                <AdminTableHeaderElement w="calc(100% / 4)" label="Frequency" onClick={() => { setSortType("frequency"); setSortOrder(!sortOrder); }} sortOrder={sortType === "frequency" && !sortOrder} showSortingIcon={sortType === "frequency"} />
+                <AdminTableHeaderElement w="calc(100% / 4)" label="Regulatory body" onClick={() => { setSortType("regulatoryBody"); setSortOrder(!sortOrder); }} sortOrder={sortType === "regulatoryBody" && !sortOrder} showSortingIcon={sortType === "regulatoryBody"} />
+                <Flex w="calc(100% / 4)">
+                  <Spacer />
+                  <Text color="complianceItemsAdminWithContext.labelColor">Actions</Text>
+                </Flex>
+              </>
+            }
+          </AdminTableHeader>
+          <Stack h="100%" bg="white" borderBottomRadius="20px" overflow="auto">
+            {loading ? <Loader center={true} /> :
+              sortedData.map(complianceItem => (
                 <Flex
                   key={complianceItem._id}
                   flexShrink={0}

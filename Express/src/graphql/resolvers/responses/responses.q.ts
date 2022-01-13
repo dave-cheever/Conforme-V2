@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from "graphql";
-import { Responses } from "app-models";
+import { Responses, Users } from "app-models";
 import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
 import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, intervalToDuration, isSameDay } from "date-fns";
 import { response } from "express";
@@ -218,6 +218,17 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
     pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
 
     const responses = await Responses.aggregate(pipeline);
+
+    // Join responsible
+    if (shouldJoin(['responsible'])) {
+      for (const response of responses) {
+        try {
+          response.responsible = await Users.customFindByIdWithDetails({ userId: response.responsibleId, organization });
+        } catch (e) {
+          console.log(`Error occured for ${response._id}: ${e}`);
+        }
+      }
+    }
 
     if (shouldJoin(["daysToDueDate"])) {
       for (const response of responses) {

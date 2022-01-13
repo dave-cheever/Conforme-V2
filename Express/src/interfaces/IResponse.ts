@@ -41,6 +41,7 @@ export interface IResponse extends IBase {
   // Additional fields - can be added when getting from database
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
+  responsible?: IUser;
 }
 
 export interface IAddtionalFields {

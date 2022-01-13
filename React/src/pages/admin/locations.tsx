@@ -68,6 +68,39 @@ const Locations = () => {
   const [deleteFunction] = useMutation(DELETE_LOCATION);
   const device = useDevice();
   const [locations, setLocations] = useState<ILocation[]>([]);
+  const [sortType, setSortType] = useState("name");
+  const [sortOrder, setSortOrder] = useState(true);
+
+  useEffect(() => {
+    if (data?.locations)
+      setLocations([...data.locations].sort((a, b) => a.name.localeCompare(b.name)));
+    else
+      setLocations([]);
+  }, [data]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      setLocations([...locations].sort((a, b) => {
+        if (sortType === 'owner')
+          return (a.owner?.displayName!).localeCompare(b.owner?.displayName!);
+        else if (sortType === 'notes')
+          return (a.notes || '-').localeCompare(b.notes || '-');
+        else
+          return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+
+      }));
+    }
+    else {
+      setLocations([...locations].sort((a, b) => {
+        if (sortType === 'owner')
+          return (b.owner?.displayName!).localeCompare(a.owner?.displayName!)
+        else if (sortType === 'notes')
+          return (b.notes || '-').localeCompare(a.notes || '-')
+        else
+          return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString());
+      }));
+    }
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,
@@ -79,16 +112,6 @@ const Locations = () => {
     mode: "all",
     defaultValues,
   });
-
-  useEffect(() => {
-    if (data?.locations) {
-      setLocations(
-        [...data.locations].sort((a, b) => a.name.localeCompare(b.name))
-      );
-    } else {
-      setLocations([]);
-    }
-  }, [data]);
 
   // Reset the form after closing
   useEffect(() => {
@@ -231,21 +254,16 @@ const Locations = () => {
             mr={[0, 0, "50px"]}
           >
             <AdminTableHeader>
-              <AdminTableHeaderElement
-                w={["max-content", "50%"]}
-                label="Location name"
-              />
+              <AdminTableHeaderElement w={["max-content", "50%"]} label="Location name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
               {device !== "mobile" && device !== "tablet" && (
                 <>
-                  <AdminTableHeaderElement w={["100%", "50%"]} label="Notes" />
-                  <AdminTableHeaderElement w={["100%", "50%"]} label="Owner" />
+
+                  <AdminTableHeaderElement w={["100%", "50%"]} label="Notes" onClick={() => { setSortType("notes"); setSortOrder(!sortOrder); }} sortOrder={sortType === "notes" && !sortOrder} showSortingIcon={sortType === "notes"} />
+                  <AdminTableHeaderElement w={["100%", "50%"]} label="Owner" onClick={() => { setSortType("owner"); setSortOrder(!sortOrder); }} sortOrder={sortType === "owner" && !sortOrder} showSortingIcon={sortType === "owner"} />
                 </>
               )}
               <Spacer display={["block", "none"]} />
-              <AdminTableHeaderElement
-                w={["max-content", "50%"]}
-                label="No. of responses"
-              />
+              <AdminTableHeaderElement w={["max-content", "50%"]} label="No. of responses" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
 
             {loading ? (
