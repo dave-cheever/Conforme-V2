@@ -45,7 +45,7 @@ const Switch = ({ control, name, label, required, validations = {} }: ISwitch) =
         return (
           < Box >
             <Text fontSize="11px" fontWeight="700" pt="8px" pb="10px" color="switch.form.labelColor">{label}
-            {required && <Asterisk ml="5px" mb="10px"  fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px"/>}
+            {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px"/>}
             </Text>
             <Flex>
               <RenderButton name={name} onchange={onChange} laterality="left" value={value} />

@@ -99,7 +99,7 @@ const NavigationTop = () => {
             w={['52px', '45px']}
             color="white"
             aria-label="Add"
-            icon={<AddIcon h="20px" w="20px" />}
+            icon={<AddIcon stroke="navigationTop.addIcon" h="20px" w="20px" />}
             position={['fixed', 'relative']}
             bottom={['75px', '0']}
             right={['15px', '0']}
@@ -198,6 +198,7 @@ export const navigationTopStyles = {
     notificationIconHover: "#FFFFFF",
     notificationBadgeBorder: "#FFFFFF",
     notificationColorScheme: "#E93C44",
-    searchCrossIconStroke: "#282F36"
+    searchCrossIconStroke: "#282F36",
+    addIcon: "#FFFFFF",
   }
 }

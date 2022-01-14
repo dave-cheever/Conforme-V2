@@ -95,7 +95,7 @@ const QuestionsForm = () => {
         color='questionsModal.button.color'
         fontSize="11px"
         fontWeight='400'
-        leftIcon={<AddIcon />}
+        leftIcon={<AddIcon stroke="questionsModal.button.icon"/>}
         _hover={{
           bg: 'questionsModal.button.hover'
         }}

@@ -37,7 +37,7 @@ const Textarea = ({ control, name, label, placeholder = '', tooltip = '', varian
         return (
           <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex pt={2} pb={1} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "form.textarea.labelFont.error" : "form.textarea.labelFont.normal"}
                   fontWeight="bold"

@@ -12,7 +12,7 @@ const Attachments = () => {
   return (
     <Flex w="full" h="full" overflow={["visible","auto"]} flexDirection={["column", "row"]} align={["center", "flex-start"]}>
       <Flex flexDirection="column" mr={[0, 2]} h="full" w="full">
-        <Stack spacing={2} align={["center", "flex-start"]} w="full">
+        <Stack spacing={4} align={["center", "flex-start"]} w="full">
           {response?.evidence
             .filter(({ outdated }) => !outdated)
             .map((evidence, i) => (

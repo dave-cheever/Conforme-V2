@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 
 import { IQuestion } from "../../interfaces/IQuestion";
-import { Asterisk, Bin } from "../../icons";
+import { AsteriskQuestion, Bin } from "../../icons";
 import { questionHeader } from "../../utils/helpers";
 
 interface IQuestionListElement {
@@ -35,7 +35,7 @@ const QuestionListElement = ({ question, bgColor, removeQuestion }: IQuestionLis
             textOverflow='ellipsis'
             whiteSpace='nowrap'
           >{question.name}</Box>
-           {question.required && <Asterisk ml="10px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w='9px' h='9px' />}
+           {question.required && <AsteriskQuestion ml="5px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w="12px" h="12px" />}
         </Flex>
       </Flex>
       {removeQuestion && 

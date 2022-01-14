@@ -68,7 +68,7 @@ const GeneralForm = () => {
             <TextInput
               control={control}
               name="name"
-              label="Name"
+              label="Item name"
               placeholder="Compliance item name"
               variant="secondaryVariant"
               validations={{

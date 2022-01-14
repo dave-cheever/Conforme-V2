@@ -20,29 +20,62 @@ import {
 } from "@chakra-ui/react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { toastSuccess } from "../bootstrap/config";
+import { toastFailed, toastSuccess } from "../bootstrap/config";
 import { ResponseContext } from "../contexts/ResponseProvider";
 import { useAppContext } from "../contexts/AppProvider";
-import { Copy } from "../icons";
+import { AddIcon, Copy, CrossIcon } from "../icons";
 
 const ShareModal = () => {
   const toast = useToast();
   const { user } = useAppContext();
   const { response, isShareOpen, handleShareClose } = useContext(ResponseContext);
-  const [mailTo, setMailTo] = useState<string>();
+  const [mails, setMails] = useState<string[]>([]);
+  const [mail,setMail] = useState<string>("");
 
   const getFullName = (user) => {
     const { firstName, lastName, displayName } = user;
     return firstName && lastName ? `${firstName} ${lastName}` : `${displayName}`;
   };
+  
 
   const email = useMemo(() => 
-  `mailto:${mailTo}?subject=${getFullName(user)} has shared
+  `mailto:${[...mails,mail].join(",")}?subject=${getFullName(user)} has shared
   ${response?.complianceItem.name} with you&body=${getFullName(user)} has shared compliance item
   '${response?.complianceItem.name}' with you. You can view it at the following
   link:%0A%0A${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}%0A%0ACielo Costa`
   // eslint-disable-next-line 
-  , [response, mailTo]);
+  , [response, mail , mails]);
+
+  const updateMails = () => {
+    if(mail === ""){
+      return toast({
+        ...toastFailed,
+        title : "Error",
+        description: "Email cannot be empty"
+      });
+    }
+    setMails([...mails, mail]);
+    setMail("");
+  }
+
+  const removeMail = (mail) => {
+    const removedMails = [...mails].filter(m => m !== mail);
+    setMails(removedMails);
+  }
+
+  const isSendDisabled = useMemo(() => {
+    return mails.length === 0 && mail === "";
+  },[ mails, mail ]);
+
+  const updateMail = (mail, index) => {
+    const updatedMail = [...mails];
+    updatedMail[index] = mail;
+    //if mail is empty, remove
+    if(mail === ""){
+      updatedMail.splice(index, 1);
+    }
+    setMails(updatedMail);
+  }
 
   return (
     <Modal variant="shareModal" isOpen={isShareOpen} onClose={handleShareClose} isCentered>
@@ -84,7 +117,7 @@ const ShareModal = () => {
                     })
                     }>
                     <Flex cursor='pointer' direction='column'>
-                      <InputGroup cursor='pointer'>
+                      <InputGroup cursor='pointer' my="2">
                         <Input 
                           disabled
                           _disabled={{ cursor: 'pointer' }} 
@@ -118,25 +151,41 @@ const ShareModal = () => {
               </TabPanel>
               <TabPanel p="0" mt="20px">
                 <Flex flexDir="column">
-                  <Input 
-                    h='40px' 
-                    fontSize="smm" 
-                    borderColor='shareModal.border' 
-                    borderWidth='1px' 
-                    rounded="10px" 
-                    onChange={(e) => setMailTo(e.target.value)} 
-                  />
-                  <Link alignSelf="flex-end" _hover={{}} disabled={!mailTo} href={email} isExternal>
+                  {mails.map((m, index) => <InputGroup cursor='pointer' key={index} my="1">
+                    <Input 
+                      h='40px' 
+                      fontSize="smm" 
+                      borderColor='shareModal.border' 
+                      borderWidth='1px' 
+                      rounded="10px" 
+                      value={m}
+                      onChange={(e) => updateMail(e.target.value, index)} 
+                    />
+                    <InputRightElement h='40px'><CrossIcon stroke="shareModal.crossIcon" mr={2} onClick={() => removeMail(m)}/></InputRightElement>
+                  </InputGroup>)}
+                  <InputGroup cursor='pointer'  my="1">
+                    <Input 
+                      h='40px' 
+                      fontSize="smm" 
+                      borderColor='shareModal.border' 
+                      borderWidth='1px' 
+                      rounded="10px" 
+                      value={mail}
+                      type='email'
+                      onChange={(e) => setMail(e.target.value)} 
+                    />
+                    <InputRightElement h='40px'><AddIcon stroke="shareModal.addIcon" mr={2} onClick={updateMails}/></InputRightElement>
+                  </InputGroup>
+                  
+                  <Link alignSelf="flex-end" _hover={{}} disabled={isSendDisabled} href={email} isExternal>
                     <Button 
                       h='38px' 
                       w='75px' 
                       mt="35px" 
                       mb="14px"
                       rounded="10px"
-                      bg='shareModal.button.email' 
-                      color='shareModal.button.emailColor' 
-                      disabled={!mailTo} 
-                      _hover={{ opacity: '0.8' }} 
+                      colorScheme="purpleHeart"
+                      disabled={isSendDisabled}
                       border='10px'
                     >
                       Send
@@ -159,6 +208,8 @@ export const shareModalStyles = {
     header: "#313233",
     border: "#cdcdd5",
     copyIcon: "#462AC4",
+    addIcon: "#282F36",
+    crossIcon: "#E93C44",
     button: {
       copy: "#462AC4",
       copyColor: "#FFFFFF",

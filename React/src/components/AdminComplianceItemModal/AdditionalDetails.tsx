@@ -79,7 +79,7 @@ const AdditionalDetailsForm = () => {
               bgColor='additionalDetails.evidence.add.bg'
               color='additionalDetails.evidence.add.font'
               fontWeight='400'
-              leftIcon={<AddIcon />}
+              leftIcon={<AddIcon stroke="additionalDetails.addIcon"/>}
               onClick={addEvidenceItem}
             >{complianceItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}</Button>
           }
@@ -94,6 +94,7 @@ export default AdditionalDetailsForm;
 export const additionalDetailsStyles = {
   additionalDetails: {
     description: '#2B3236',
+    addIcon: "#FFFFFF",
     evidence: {
       bg: '#F2F2F2',
       title: '#2B3236',

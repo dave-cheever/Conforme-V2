@@ -48,7 +48,7 @@ const BusinessUnitsForm = () => {
       <Flex direction='column'>
         <SectionHeader label="Select business unit(s)" display={["none","flex"]}/>
         
-        <Flex flexDir={["column", "row"]} justifyContent="space-between" mt={["0px","25px"]} mb="30px">
+        <Flex flexDir={["column", "row"]} justifyContent="space-between" mt={["0px","10px"]} mb="30px">
           <Flex flexDir="column" >
           <Flex pt={2} align='center' justify="space-between" mb='none'>
             <Box

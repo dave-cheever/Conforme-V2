@@ -53,7 +53,7 @@ const Attachment = () => {
   }
   return (
     <Flex  w= "full" flexDirection="column" fontWeight="700" maxWidth="342px">
-      <Flex fontSize="12px" mb={2}>
+      <Flex fontSize="11px" mb={2}>
         Other attachments
       </Flex>
       {uploading.length > 0 ? uploading.map(name => (
@@ -95,7 +95,7 @@ const Attachment = () => {
         </Flex>
       )}
 
-      {response.attachments.length > 0 && <Flex fontSize="sm" fontWeight="bold" my={2}>
+      {response.attachments.length > 0 && <Flex fontSize="11px" fontWeight="bold" my={2}>
         Uploaded attachments
       </Flex>}
       

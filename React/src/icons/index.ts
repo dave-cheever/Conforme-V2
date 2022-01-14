@@ -11,6 +11,7 @@ import ArrowUpIcon from "./ArrowUpIcon";
 import Assets from "./Assets";
 import AssetsIcon from "./AssetsIcon";
 import Asterisk from "./Asterisk";
+import AsteriskQuestion from "./AsteriskQuestion";
 import AttachmentIcon from "./AttachmentIcon";
 import AtTheRateIcon from "./AtTheRateIcon";
 import AuditIcon from "./AuditIcon";
@@ -105,6 +106,7 @@ export {
   Assets,
   AssetsIcon,
   Asterisk,
+  AsteriskQuestion,
   AttachmentIcon,
   AtTheRateIcon,
   AuditIcon,

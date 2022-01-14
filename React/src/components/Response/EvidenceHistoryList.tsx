@@ -7,7 +7,7 @@ const EvidenceHistoryList = () => {
   return (
     <Flex maxW="342px" direction="column">
       {response?.evidence?.filter(({ outdated }) => outdated).length > 0 && (
-        <Flex fontSize="sm" fontWeight="bold" my={3}>
+        <Flex fontSize="11px" fontWeight="bold" my={3}>
           Evidence history
         </Flex>
       )}

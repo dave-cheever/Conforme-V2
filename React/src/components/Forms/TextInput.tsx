@@ -49,17 +49,17 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
         return (
           <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex pt={2} pb={1} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "form.textInput.labelFont.error" : styles ? styles?.textInput?.font : "form.textInput.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize="smm"
+                  fontSize="11px"
                   position="static"
                   left='none'
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="10px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px" />}
+                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk'/>}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>

@@ -8,7 +8,7 @@ import DocumentUploading from './DocumentUploading';
 import DocumentUploaded from './DocumentUploaded';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { toastFailed } from '../../bootstrap/config';
-import { UploadIcon } from '../../icons';
+import { Asterisk, UploadIcon } from '../../icons';
 
 const EvidenceExpected = ({ evidence }) => {
   const toast = useToast();
@@ -52,10 +52,9 @@ const EvidenceExpected = ({ evidence }) => {
   }
   return (
     <Flex direction='column' w="full" maxW="342px">
-      <Flex align='center'>
-        <Box fontWeight='700' mb={2} fontSize="12px" color="evidence.fontColor" width="300px">{evidence.name}
-          <Text color="evidence.requiredColor" ml={2} display="inline-block" fontSize="12px" fontWeight="bold">*</Text>
-        </Box>
+      <Flex align='center' mb={2} >
+        <Box fontWeight='700' fontSize={11} color="evidence.fontColor" width="300px" lineHeight="16px">{evidence.name} 
+        <Asterisk ml="5px" mb="5px" fill="questionListElement.iconAsterisk" stroke='datepicker.iconAsterisk' w="9px" h="9px" /></Box>
       </Flex>
       {evidence.uploaded?.id ?
         <DocumentUploaded document={evidence.uploaded} isEvidence={true} /> :
