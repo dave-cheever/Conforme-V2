@@ -4,6 +4,18 @@ interface IFilterString extends IFilter {
   value: string[] | null;
 }
 
+interface IUserFilterObject {
+  responsibleIds: string[] | null,
+  accountableIds: string[] | null,
+  contributorIds: string[] | null,
+  followerIds: string[] | null
+}
+
+interface IUserFilter {
+  name: string;
+  value: IUserFilterObject | null;
+}
+
 export default interface IFilters {
   complianceItemsIds?: IFilter,
   categoriesIds?: IFilter,
@@ -15,5 +27,6 @@ export default interface IFilters {
   usersRoles?: IFilter,
   collections?: IFilter,
   action?: IFilter,
-  usersIds?: IFilterString,
+  usersIds?: IUserFilter,
+  locationsIds?: IFilter,
 };

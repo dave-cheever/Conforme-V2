@@ -197,3 +197,17 @@ export const defaultPages = [{
   url: "/insights"
 }
 ]
+
+export const userRoles = [{ 
+  value: "responsible", 
+  label: "Responsible" 
+},{ 
+  value: "accountable", 
+  label: "Accountable" 
+},{ 
+  value: "contributor", 
+  label: "Contributor" 
+},{ 
+  value: "follower", 
+  label: "Follower" 
+}]

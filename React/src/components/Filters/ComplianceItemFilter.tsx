@@ -26,29 +26,29 @@ const ComplianceItemFilter = () => {
   }, [complianceItems, search, isSelected]);
 
   return (
-    
-      <Stack direction="column" overflow='auto'>
-        <InputGroup>
-          <Input
-            borderWidth='1px'
-            borderColor='filterPanel.searchBoxBordercolor'
-            h='40px'
-            w='full'
-            mb={3}
-            pl={8}
-            color='brand.darkGrey'
-            placeholder='Search compliance item'
-            value={search}
-            fontSize="14px"
-            onChange={({ target: { value } }) => setSearch(value)}
-          />
-          <Magnifier alt="Search" h="12px" w='12x' position="absolute" bottom="25px" left="14px" />
-        </InputGroup>
-        <CheckboxGroup onChange={newValue => setFilters({ complianceItemsIds: newValue })} value={value}>
-        {selectedComplianceItems?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id}/> )}
-        {filteredComplianceItems?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id}/> )}
-        </CheckboxGroup>
-      </Stack>
+
+    <Stack direction="column" overflow='auto'>
+      <InputGroup>
+        <Input
+          borderWidth='1px'
+          borderColor='filterPanel.searchBoxBordercolor'
+          h='40px'
+          w='full'
+          mb={3}
+          pl={8}
+          color='brand.darkGrey'
+          placeholder='Search compliance item'
+          value={search}
+          fontSize="14px"
+          onChange={({ target: { value } }) => setSearch(value)}
+        />
+        <Magnifier alt="Search" h="12px" w='12x' position="absolute" bottom="25px" left="14px" />
+      </InputGroup>
+      <CheckboxGroup onChange={newValue => setFilters({ complianceItemsIds: newValue })} value={value}>
+        {selectedComplianceItems?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
+        {filteredComplianceItems?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
+      </CheckboxGroup>
+    </Stack>
   );
 };
 

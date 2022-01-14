@@ -43,6 +43,9 @@ const GET_RESPONSES = gql`
         name
         imgUrl
       }
+      metatags {
+        addedBy
+      }
       responsible {
         _id
         displayName
@@ -115,7 +118,7 @@ const ComplianceItems = () => {
   );
 
   useEffect(() => {
-    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
+    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'usersIds', 'locationsIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter responses (server side)
@@ -126,8 +129,17 @@ const ComplianceItems = () => {
         // itemStatus is client side filter
         return acc;
       }
-      if (!value.value || (Array.isArray(value.value) && value.value.length === 0)) {
-        // Filter out empty filters
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (
+          key === 'usersIds' &&
+          value.value.responsibleIds.length === 0 &&
+          value.value.accountableIds.length === 0 &&
+          value.value.contributorIds.length === 0 &&
+          value.value.followerIds.length === 0
+        )
+      ) {
         return acc;
       }
       return {

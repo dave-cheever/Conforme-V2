@@ -67,13 +67,21 @@ export const responsesTypeDefs = `
     metatags: Metatags
   }
 
+  input UserRoleIds {
+    responsibleIds: [String]
+    accountableIds: [String]
+    contributorIds: [String]
+    followerIds: [String]
+  }
+
   input ResponsesQuery {
     _id: ID
     complianceItemsIds: [ID]
     regulatoryBodiesIds: [ID]
     categoriesIds: [ID]
     businessUnitsIds: [ID]
-    usersIds: [ID]
+    locationsIds: [ID]
+    usersIds: UserRoleIds
     dueDate: [String]
     includeNotPublished: Boolean
   }

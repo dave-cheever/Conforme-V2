@@ -36,6 +36,7 @@ import { headerStyles } from "../components/Header";
 import { loginPageStyles } from "../pages/login";
 import { locationsStyles } from "../pages/admin/locations";
 import { locationsFormModalStyles } from "../components/AdminComplianceItemModal/Locations";
+import { locationsSelectorStyles } from "../components/LocationsSelector";
 import { logoutPageStyles } from "../pages/logout";
 import { messageInputStyles } from "../components/Response/MessageInput";
 import { multipleChoicesStyles } from "../components/Forms/MultipleChoices";
@@ -80,6 +81,7 @@ import { textMultilineConfirmInputStyles } from "../components/Forms/TextMultili
 import { toggleStyles } from "../components/Forms/Toggle";
 import { userItemStyles } from "../pages/admin/users";
 import { userMenuStyles } from "../components/UserMenu";
+import { userSelectorStyles } from "../components/UsersSelector";
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -159,6 +161,7 @@ const getTheme = (organizationTheme?: any) => {
       ...loginPageStyles,
       ...locationsStyles,
       ...locationsFormModalStyles,
+      ...locationsSelectorStyles,
       ...logoutPageStyles,
       ...messageInputStyles,
       ...multipleChoicesStyles,
@@ -204,6 +207,8 @@ const getTheme = (organizationTheme?: any) => {
       ...toggleStyles,
       ...userItemStyles,
       ...userMenuStyles,
+      ...userSelectorStyles,
+
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',

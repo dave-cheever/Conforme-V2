@@ -11,8 +11,8 @@ interface ITextInput extends IField {
   placeholder?: string;
   variant?: string;
   styles?: {
-    textInput ?: {
-      font?:string
+    textInput?: {
+      font?: string
     }
   };
 }
@@ -51,7 +51,7 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
             {label && (
               <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "form.textInput.labelFont.error" : styles ?  styles?.textInput?.font : "form.textInput.labelFont.normal"}
+                  color={error ? "form.textInput.labelFont.error" : styles ? styles?.textInput?.font : "form.textInput.labelFont.normal"}
                   fontWeight="bold"
                   fontSize="smm"
                   position="static"
@@ -59,7 +59,7 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="10px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px"/>}
+                  {required && <Asterisk ml="5px" mb="10px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px" />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>

@@ -41,7 +41,16 @@ export const initialFilters: IFilters = {
     value: []
   },
   usersIds: {
-    name: 'Users',
+    name: 'User',
+    value: {
+      responsibleIds: [],
+      accountableIds: [],
+      contributorIds: [],
+      followerIds: []
+    },
+  },
+  locationsIds: {
+    name: 'Location',
     value: [],
   },
 };
@@ -88,6 +97,7 @@ const useFiltersUtils = () => {
     regulatoryBodies,
     businessUnits,
     users,
+    locations,
   } = useFiltersContext();
 
   const getFilters = ({
@@ -131,6 +141,10 @@ const useFiltersUtils = () => {
         const value: any = filtersValues.categoriesIds?.value;
         return categories.find(f => f._id === value[0])?.name;
       }
+      case 'locationIds': {
+        const value: any = filtersValues.locationsIds?.value;
+        return locations.find(f => f._id === value[0])?.name;
+      }
       case 'businessUnitsIds': {
         const value: any = filtersValues.businessUnitsIds?.value;
         return businessUnits.find(f => f._id === value[0])?.name;
@@ -167,9 +181,10 @@ const useFiltersUtils = () => {
         return actions[value[0]];
       }
       case 'usersIds': {
-        const value: any = filtersValues.usersIds?.value;
+        const value: any = filtersValues.usersIds?.value?.responsibleIds;
         return users.find(f => f._id === value[0])?.displayName;
       }
+      
     }
   };
 

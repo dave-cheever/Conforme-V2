@@ -1,60 +1,58 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, Checkbox, Input, InputGroup, Stack, Text } from "@chakra-ui/react";
 
-import { Magnifier, MinusIcon } from "../icons";
-import { IBusinessUnit } from "../interfaces/IBusinessUnit";
-import BusinessUnitsSelectorList from "./BusinessUnitsSelectorList";
+import { MinusIcon, SearchIcon } from "../icons";
+import { ILocation } from "../interfaces/ILocation";
+import LocationsSelectorList from "./LocationsSelectorList";
 
-interface IBusinessUnitsSelector {
-  businessUnits: IBusinessUnit[];
+interface ILocationsSelector {
+  locations: ILocation[];
   selected: string[];
   note?: string;
   disabled?: boolean;
   handleChange: (any) => void;
 }
 
-const BusinessUnitsSelector = ({
-  businessUnits,
+const LocationsSelector = ({
+  locations,
   selected,
   note,
   disabled,
   handleChange,
-}: IBusinessUnitsSelector) => {
-  const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<IBusinessUnit[]>([]);
+}: ILocationsSelector) => {
+  const [filteredLocations, setFilteredLocations] = useState<ILocation[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const areAllSelected = useMemo(() => filteredBusinessUnits?.every(({ _id }) => selected.includes(_id)), [filteredBusinessUnits, selected]);
+  const areAllSelected = useMemo(() => filteredLocations?.every(({ _id }) => selected.includes(_id)), [filteredLocations, selected]);
 
   useEffect(() => {
-    let filteredBusinessUnits: IBusinessUnit[] = [];
+    let filteredLocations: ILocation[] = [];
     if (disabled) {
-      filteredBusinessUnits = businessUnits?.filter(({ _id }) => selected.includes(_id));
+      filteredLocations = locations?.filter(({ _id }) => selected.includes(_id));
     } else {
-      filteredBusinessUnits = businessUnits?.filter(({ type, name }) =>
-        (!selectedType || type === selectedType) && name.toLowerCase().includes(searchText.toLowerCase()));
+      filteredLocations = locations?.filter(({ name }) =>
+        name.toLowerCase().includes(searchText.toLowerCase()));
     }
-    setFilteredBusinessUnits(filteredBusinessUnits);
-  }, [businessUnits, selectedType, searchText, disabled, selected]);
-
-  // filteredBusinessUnits.sort( (a, b) => compare(a.name, b.name));
+    setFilteredLocations(filteredLocations);
+  }, [locations, selectedType, searchText, disabled, selected]);
 
   const toggleAll = useCallback((event) => {
-    const currentViewIds = filteredBusinessUnits.map(({ _id }) => _id);
+    const currentViewIds = filteredLocations.map(({ _id }) => _id);
     if (event.target.checked) {
-      // Add all filtered business units to selection
+      // Add all filtered locations to selection
       const value = Array.from(new Set([...selected, ...currentViewIds]));
-      handleChange({ target: { name: 'businessUnitsIds', value } });
+      handleChange({ target: { name: 'locationsIds', value } });
     } else {
-      // Remove all filtered business units from selection
+      // Remove all filtered locations from selection
       const value = selected.filter(_id => !currentViewIds.includes(_id));
-      handleChange({ target: { name: 'businessUnitsIds', value } });
+      handleChange({ target: { name: 'locationsIds', value } });
     }
-  }, [filteredBusinessUnits, selected]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filteredLocations, selected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (disabled) {
     return (
-      <BusinessUnitsSelectorList
-        filteredBusinessUnits={filteredBusinessUnits}
+      <LocationsSelectorList
+        filteredLocations={filteredLocations}
         selected={selected}
         disabled={disabled}
         handleChange={handleChange}
@@ -65,20 +63,6 @@ const BusinessUnitsSelector = ({
   return (
     <Stack w='full'>
       <Stack w='full' pb={3} overflow='auto'>
-        <Box w='full' mt='-12px'>
-          {/* <Dropdown
-            name='type'
-            label='Select type'
-            value={selectedType}
-            options={[
-              { value: "", label: "Show all" },
-              { value: "Hospital", label: "Show hospitals only" },
-              { value: "Corporate", label: "Show corporate only" }
-            ]}
-            onChange={({ target: { value } }) => setSelectedType(value)}
-            style={{ width: 'full' }}
-          /> */}
-        </Box>
         <>
           <Box py='5px'>
             <InputGroup>
@@ -87,23 +71,24 @@ const BusinessUnitsSelector = ({
                 borderColor='filterPanel.searchBoxBordercolor'
                 h='40px'
                 w='full'
-                pl={8}
-                color='brand.darkGrey'
-                placeholder='Search business units'
-                fontSize="14px"
+                pl={10}
+                color='locationsSelector.search.label'
+                placeholder='Search'
+                fontSize="smm"
                 value={searchText}
                 onChange={({ target: { value } }) => setSearchText(value)}
               />
-              <Magnifier alt="Search" h="12px" w='12x' position="absolute" bottom="13px" left="14px" />
+              <SearchIcon alt="Search" h="15px" w='15x' position="absolute" bottom="13px" left="14px" stroke="locationsSelector.search.icon" />
             </InputGroup>
           </Box>
           {note &&
-            <Text fontSize='12px' color='businessUnitsSelector.note' opacity='0.3' fontStyle='italic'>
+            <Text fontSize='12px' color='locationsSelector.note' opacity='0.3' fontStyle='italic' pl="12px">
               {note}
             </Text>
           }
-          {filteredBusinessUnits?.length > 0 && (
+          {filteredLocations?.length > 0 && (
             <Checkbox
+              py="20px"
               isChecked={areAllSelected}
               onChange={toggleAll}
               icon={<MinusIcon />}
@@ -125,14 +110,14 @@ const BusinessUnitsSelector = ({
                   }
                 }
               }}
-              borderColor="businessUnitsSelector.checkbox.border"
-              colorScheme="businessUnitsSelector.checkbox"
+              borderColor="locationsSelector.checkbox.border"
+              colorScheme="locationsSelector.checkbox"
             >
               <Text fontSize="14px" color="filterPanel.checkboxLabelColor">Select all</Text>
             </Checkbox>
           )}
-          <BusinessUnitsSelectorList
-            filteredBusinessUnits={filteredBusinessUnits}
+          <LocationsSelectorList
+            filteredLocations={filteredLocations}
             selected={selected}
             disabled={disabled}
             handleChange={handleChange}
@@ -143,11 +128,15 @@ const BusinessUnitsSelector = ({
   );
 };
 
-export default BusinessUnitsSelector;
+export default LocationsSelector;
 
-export const businessUnitsSelectorStyles = {
-  businessUnitsSelector: {
+export const locationsSelectorStyles = {
+  locationsSelector: {
     label: '#777777',
+    search: {
+      icon: '818197',
+      label: '818197'
+    },
     border: {
       normal: '#CBCCCD',
       focus: '#777777',

@@ -18,6 +18,10 @@ const GET_FILTERS_DATA = gql`
       _id
       name
     }
+    locations {
+      _id
+      name
+    }
     regulatoryBodies {
       _id
       name
@@ -90,6 +94,7 @@ const FiltersProvider = (props: any) => {
     numberOfSelectedFilters,
     complianceItems: data?.complianceItems,
     categories: data?.categories,
+    locations: data?.locations,
     regulatoryBodies: data?.regulatoryBodies,
     businessUnits: data?.businessUnits,
     users: [...(data?.searchUsers || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
