@@ -68,15 +68,19 @@ const BusinessUnits = () => {
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const device = useDevice();
-  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>([]);
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
 
+  const getBusinessUnits = (businessUnitsArray: IBusinessUnit[]) => {
+    if (!businessUnitsArray) {
+      return [];
+    }
+    return [...businessUnitsArray].sort((a, b) => a.name.localeCompare(b.name));
+  }
+  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>(getBusinessUnits(data?.businessUnits));
+
   useEffect(() => {
-    if (data?.businessUnits)
-      setBusinessUnits([...data.businessUnits].sort((a, b) => a.name.localeCompare(b.name)));
-    else
-      setBusinessUnits([]);
+    setBusinessUnits(getBusinessUnits(data?.businessUnits));
   }, [data]);
 
   useEffect(() => {
@@ -313,7 +317,9 @@ const BusinessUnits = () => {
           </AdminTableHeader>
           <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
             {loading ? <Loader center={true} /> : (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (
-              <Flex w='full' h='full' fontSize='18px' fontStyle='italic' align='center' justify="center">No business units found.</Flex>
+              <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+                No business units found
+              </Flex>
             ))}
           </Flex>
         </Box>

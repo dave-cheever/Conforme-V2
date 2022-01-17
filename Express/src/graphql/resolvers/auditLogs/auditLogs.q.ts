@@ -7,6 +7,7 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
 
     const pipeline: any = [{
       $match: {
+        organizationId: organization._id,
         'metatags.addedAt': {
           $lte: new Date(dateLimit),
         },
@@ -19,13 +20,13 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
       $skip: skip || 0
     }];
 
-    if (fields.length > 0) {
+    if (fields?.length > 0) {
       const fieldsPipeline: object[] = [];
       fields.forEach(field => {
         fieldsPipeline.push({
-            [`values.${field}`]: {
-              $exists: true,
-            },
+          [`values.${field}`]: {
+            $exists: true,
+          },
         });
       });
       pipeline.push({

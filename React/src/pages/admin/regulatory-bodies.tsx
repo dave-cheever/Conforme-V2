@@ -60,15 +60,19 @@ const RegulatoryBodies = () => {
   const [updateFunction] = useMutation(UPDATE_REGULATORY_BODY);
   const [deleteFunction] = useMutation(DELETE_REGULATORY_BODY);
   const device = useDevice();
-  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>([]);
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
 
+  const getRegulatoryBodies = (regulatoryBodiesArray: IBaseWithName[]) => {
+    if (!regulatoryBodiesArray) {
+      return [];
+    }
+    return [...regulatoryBodiesArray].sort((a, b) => a.name.localeCompare(b.name));
+  }
+  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>(getRegulatoryBodies(data?.regulatoryBodies));
+
   useEffect(() => {
-    if (data?.regulatoryBodies)
-      setRegulatoryBodies([...data.regulatoryBodies].sort((a, b) => a.name.localeCompare(b.name)));
-    else
-      setRegulatoryBodies([]);
+    setRegulatoryBodies(getRegulatoryBodies(data?.regulatoryBodies));
   }, [data]);
 
   useEffect(() => {
@@ -191,22 +195,22 @@ const RegulatoryBodies = () => {
         breadcrumbs={["Admin", "Regulatory bodies"]}
         mobileBreadcrumbs={["Regulatory bodies"]}
       />
-      <Box p={["0", "0 25px 30px 30px"]} h={["full","calc(100vh - 160px)"]} overflow="auto">
+      <Box p={["0", "0 25px 30px 30px"]} h={["full", "calc(100vh - 160px)"]} overflow="auto">
         <Flex h="full" px={["25px", 0]}>
           <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
               <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
               <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
-              <Stack
-                bg="white"
-                borderBottomRadius="20px"
-                spacing="1px"
-                pb="5"
-                h={loading ? "full": "fit-content"}
-                minH="full"
-              >
-                {loading ? <Loader center={true} />: 
+            <Stack
+              bg="white"
+              borderBottomRadius="20px"
+              spacing="1px"
+              pb="5"
+              h={loading ? "full" : "fit-content"}
+              minH="full"
+            >
+              {loading ? <Loader center={true} /> :
                 regulatoryBodies?.length > 0 ? (
                   regulatoryBodies?.map((regulatoryBody, i) =>
                     <AdminTableRow
@@ -217,8 +221,8 @@ const RegulatoryBodies = () => {
                     />
                   )
                 ) : (
-                  <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
-                    No regulatory body found
+                  <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+                    No regulatory bodies found
                   </Flex>
                 )}
             </Stack>

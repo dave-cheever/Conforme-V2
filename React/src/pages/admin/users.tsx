@@ -52,15 +52,19 @@ const Users = () => {
   const device = useDevice();
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
-  const [users, setUsers] = useState<IUser[]>([]);
   const [sortType, setSortType] = useState("displayName");
   const [sortOrder, setSortOrder] = useState(true);
 
+  const getUsers = (usersArray: IUser[]) => {
+    if (!usersArray) {
+      return [];
+    }
+    return [...usersArray].sort((a, b) => a.displayName.localeCompare(b.displayName));
+  }
+  const [users, setUsers] = useState<IUser[]>(getUsers(data?.users));
+
   useEffect(() => {
-    if (data?.users)
-      setUsers([...data.users].sort((a, b) => a.displayName.localeCompare(b.displayName)));
-    else
-      setUsers([]);
+    setUsers(getUsers(data?.users));
   }, [data]);
 
   useEffect(() => {
@@ -129,10 +133,10 @@ const Users = () => {
         </>
       }
       <Flex w="20%" h="100%">
-        <UserResponseCount responseCount={user.responsibleCount}/>
-        <UserResponseCount responseCount={user.accountableCount}/>
-        <UserResponseCount responseCount={user.contributorCount}/>
-        <UserResponseCount responseCount={user.followerCount}/>
+        <UserResponseCount responseCount={user.responsibleCount} />
+        <UserResponseCount responseCount={user.accountableCount} />
+        <UserResponseCount responseCount={user.contributorCount} />
+        <UserResponseCount responseCount={user.followerCount} />
       </Flex>
       <Flex w="calc(16% - 20px)" ml="20px" align='center'>
         {formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })}
@@ -142,7 +146,7 @@ const Users = () => {
 
   return (
     <>
-      <Header breadcrumbs={["Admin", "Users"]} mobileBreadcrumbs={["Users"]}/>
+      <Header breadcrumbs={["Admin", "Users"]} mobileBreadcrumbs={["Users"]} />
       <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
         <Box w='full' h={['calc(100% - 80px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
@@ -176,7 +180,7 @@ export default Users;
 
 
 export const userItemStyles = {
-  userItem:{
+  userItem: {
     responseCountBg: "#F0F2F5"
   }
 }

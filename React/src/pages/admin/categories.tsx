@@ -60,15 +60,19 @@ const Categories = () => {
   const [updateFunction] = useMutation(UPDATE_CATEGORY);
   const [deleteFunction] = useMutation(DELETE_CATEGORY);
   const device = useDevice();
-  const [categories, setCategories] = useState<IBaseWithName[]>([]);
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
+  
+  const getCategories = (categoriesArray: IBaseWithName[]) => {
+    if (!categoriesArray) {
+      return [];
+    }
+    return [...categoriesArray].sort((a, b) => a.name.localeCompare(b.name));
+  }
+  const [categories, setCategories] = useState<IBaseWithName[]>(getCategories(data?.categories));
 
   useEffect(() => {
-    if (data?.categories)
-      setCategories([...data.categories].sort((a, b) => a.name.localeCompare(b.name)));
-    else
-      setCategories([]);
+    setCategories(getCategories(data?.categories));
   }, [data]);
 
   useEffect(() => {
@@ -236,8 +240,8 @@ const Categories = () => {
                   />
                 ))
               ) : (
-                <Flex w="full" h="full" fontSize="18px" fontStyle="italic">
-                  No category found
+                <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+                  No categories found
                 </Flex>
               )}
             </Stack>

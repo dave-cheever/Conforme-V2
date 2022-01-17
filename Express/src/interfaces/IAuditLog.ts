@@ -25,4 +25,5 @@ export interface IAuditLog extends IBase {
   element: IAuditLogElement;
   coll: string;
   values: IAuditValues;
+  organizationId: string;
 }

@@ -67,15 +67,19 @@ const Locations = () => {
   const [updateFunction] = useMutation(UPDATE_LOCATION);
   const [deleteFunction] = useMutation(DELETE_LOCATION);
   const device = useDevice();
-  const [locations, setLocations] = useState<ILocation[]>([]);
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
 
+  const getLocations = (locationsArray: ILocation[]) => {
+    if (!locationsArray) {
+      return [];
+    }
+    return [...locationsArray].sort((a, b) => a.name.localeCompare(b.name));
+  }
+  const [locations, setLocations] = useState<ILocation[]>(getLocations(data?.locations));
+
   useEffect(() => {
-    if (data?.locations)
-      setLocations([...data.locations].sort((a, b) => a.name.localeCompare(b.name)));
-    else
-      setLocations([]);
+    setLocations(getLocations(data?.locations));
   }, [data]);
 
   useEffect(() => {
@@ -281,7 +285,7 @@ const Locations = () => {
                     />
                   ))
                 ) : (
-                  <Flex w="full" h="full" fontSize="18px" fontStyle="italic" justify="center">
+                  <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
                     No locations found
                   </Flex>
                 )}

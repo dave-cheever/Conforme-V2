@@ -17,6 +17,7 @@ const AuditLogSchema = new Schema<IAuditLog, IAuditLogModel>({
   },
   coll: String,
   values: Schema.Types.Mixed,
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
