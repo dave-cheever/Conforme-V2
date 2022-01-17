@@ -25,6 +25,7 @@ import { complianceItemsSquareStyles } from "../components/ComplianceItem/Compli
 import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
 import { customRadioButtonStyles } from "../components/CustomRadioButton";
 import { datepickerStyles } from "../components/Forms/Datepicker";
+import { deleteComplianceItemModalStyles } from "../components/AdminComplianceItemModal/DeleteComplianceItemModal";
 import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
 import { dropdownStyles } from "../components/Forms/Dropdown";
 import { emailTemplateStyles } from "../components/Settings/EmailTemplate";
@@ -150,6 +151,7 @@ const getTheme = (organizationTheme?: any) => {
       ...complianceListItemsStyles,
       ...customRadioButtonStyles,
       ...datepickerStyles,
+      ...deleteComplianceItemModalStyles,
       ...documentUploadedStyles,
       ...dropdownStyles,
       ...emailTemplateStyles,
@@ -608,6 +610,18 @@ const getTheme = (organizationTheme?: any) => {
           conformeModal: {
             dialog: {
               minW: ["100%", "700px"],
+            },
+            dialogContainer: {
+              justifyContent: "flex-end"
+            },
+            overlay: {
+              background:
+                "linear-gradient(to right, transparent 0%, black 200%)",
+            },
+          },
+          deleteModal: {
+            dialog: {
+              minW: "330px",
             },
             dialogContainer: {
               justifyContent: "flex-end"

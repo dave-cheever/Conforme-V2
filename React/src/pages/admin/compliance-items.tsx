@@ -21,7 +21,7 @@ import { IComplianceItem } from "../../interfaces/IComplianceItem";
 import { AdminModalState } from "../../interfaces/IAdminContext";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import { Copy } from "../../icons";
+import { Bin, Copy } from "../../icons";
 import CloneComplianceItemModal from "../../components/AdminComplianceItemModal/CloneComplianceItemModal";
 
 const GET_COMPLIANCE_ITEMS = gql`
@@ -124,10 +124,10 @@ const ComplianceItemsAdmin = () => {
     <>
       <Modal
         key={complianceItem._id}
-        variant="conformeModal"
+        variant={(adminModalState === 'delete') ? "deleteModal" : "conformeModal"}
         isOpen={adminModalState !== 'closed'}
         onClose={() => { }}
-        size={(device === 'desktop' || device === 'tablet') ? '2xl' : 'full'}
+        size={(device === 'desktop' || device === 'tablet' || adminModalState === 'delete') ? '2xl' : 'full'}
       >
         <ModalOverlay />
         {
@@ -139,7 +139,6 @@ const ComplianceItemsAdmin = () => {
                 <ComplianceItemModal refetch={refetch} />
             )
         }
-
       </Modal>
       <Header
         breadcrumbs={["Admin", "Compliance items"]}
@@ -211,6 +210,14 @@ const ComplianceItemsAdmin = () => {
                       _hover={{ color: 'complianceItemsAdminWithContext.strokeHover', opacity: 0.7, cursor: "pointer" }}
                       onClick={() => { openModal('clone', complianceItem) }}
                     />
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <Bin
+                      fontSize="15px"
+                      stroke="complianceItemsAdminWithContext.binStroke"
+                      fill='transparent'
+                      _hover={{ color: 'complianceItemsAdminWithContext.strokeHover', opacity: 0.7, cursor: "pointer" }}
+                      onClick={() => { openModal('delete', complianceItem) }}
+                    />
                   </Box>
                 </Flex>
               ))}
@@ -232,6 +239,7 @@ export default ComplianceItemsAdminWithContext;
 export const complianceItemsAdminWithContextStyles = {
   complianceItemsAdminWithContext: {
     stroke: "#282F36",
+    binStroke: "red",
     strokeHover: "#FFFFFF",
     labelColor: "#818197"
   }

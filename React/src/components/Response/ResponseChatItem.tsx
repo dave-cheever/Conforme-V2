@@ -9,6 +9,7 @@ import { IComment } from "../../interfaces/IComment";
 import ChatMention from "./ChatMention";
 import { useAppContext } from "../../contexts/AppProvider";
 import Can from "../can";
+import useDevice from "../../hooks/useDevice"
 
 
 interface IResponseChat {
@@ -30,6 +31,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   const [getParticipantDetailById, { data, loading }] =
     useLazyQuery(GET_USERS_BY_ID);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
+  const device = useDevice()
   const { user } = useAppContext();
 
   const dateFormat = () => {
@@ -86,52 +88,52 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
         bg={
           isChatOwner
             ? "responseChatItem.sentBg"
-            : "responseChatItem.receivedBg"
+            : (device === "mobile" || device === "tablet") ? "responseChatItem.receivedBgTM" : "responseChatItem.receivedBg"
         }
-        px="12px"
-        py="8px"
-        w="full"
-        borderRadius="10px"
-        onMouseEnter={() => setShowDeleteBtn(true)}
-        onMouseLeave={() => setShowDeleteBtn(false)}
-        color={
-          isChatOwner
-            ? "responseChatItem.sentColor"
-            : "responseChatItem.receivedColor"
-        }
+      px="12px"
+      py="8px"
+      w="full"
+      borderRadius="10px"
+      onMouseEnter={() => setShowDeleteBtn(true)}
+      onMouseLeave={() => setShowDeleteBtn(false)}
+      color={
+        isChatOwner
+          ? "responseChatItem.sentColor"
+          : "responseChatItem.receivedColor"
+      }
       >
-        <Flex justify="space-between" h={6}>
-          <Text
-            fontSize="ssm"
-            fontWeight="semi_medium"
-            color="responseChatItem.dateColor"
-            mb="10px"
-          >
-            {dateFormat()}
-          </Text>
-          <Can
-            action="comments.delete"
-            data={{ comment }}
-            yes={() => (
-              <Button
-                display={showDeleteBtn ? "block" : "none"}
-                rightIcon={<DeleteIcon />}
-                colorScheme="red"
-                onClick={() => onAction(_id)}
-                size="xs"
-                mb={2}
-                mr="-4px"
-              >
-                Delete
-              </Button>
-            )}
-          />
-        </Flex>
-        {reactStringReplace(text, /(@@@\([\w]+\)\[[\w-]+\])/g, (match, i) => (
-          <ChatMention key={i} tag={match} />
-        ))}
-      </Box>
-    </Flex>
+      <Flex justify="space-between" h={6}>
+        <Text
+          fontSize="ssm"
+          fontWeight="semi_medium"
+          color="responseChatItem.dateColor"
+          mb="10px"
+        >
+          {dateFormat()}
+        </Text>
+        <Can
+          action="comments.delete"
+          data={{ comment }}
+          yes={() => (
+            <Button
+              display={showDeleteBtn ? "block" : "none"}
+              rightIcon={<DeleteIcon />}
+              colorScheme="red"
+              onClick={() => onAction(_id)}
+              size="xs"
+              mb={2}
+              mr="-4px"
+            >
+              Delete
+            </Button>
+          )}
+        />
+      </Flex>
+      {reactStringReplace(text, /(@@@\([\w]+\)\[[\w-]+\])/g, (match, i) => (
+        <ChatMention key={i} tag={match} />
+      ))}
+    </Box>
+    </Flex >
   );
 };
 
@@ -141,6 +143,7 @@ export const responseChatItemStyles = {
   responseChatItem: {
     sentBg: "#1E1E38",
     receivedBg: "#FFFFFF",
+    receivedBgTM: "#F0F0F0",
     sentColor: "#FFFFFF",
     receivedColor: "#282F36",
     dateColor: "#818197",
