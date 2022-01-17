@@ -45,7 +45,7 @@ const filesRouter = () => {
 
         let fileName = `${responseId}`;
         if (documentType === 'evidence') {
-          fileName += `-${documentName.replace(/[^a-zA-Z ]+/g, '').trim().replace(' ', '-').toLowerCase()}`;
+          fileName += `-${documentName.replace(/[^a-zA-Z0-9 ]+/g, '').trim().replace(' ', '-').toLowerCase()}`;
         } else if (documentType === 'attachments') {
           fileName += '-attachments';
         }

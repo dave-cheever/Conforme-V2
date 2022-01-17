@@ -28,8 +28,8 @@ const Details = () => {
       return -1;
     }
 
-    if (response.lastRenewalDate && response.nextRenewalDate) {
-      const totalDays = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date(response.lastRenewalDate) }).days;
+    if (response.lastCompletionDate && response.nextRenewalDate) {
+      const totalDays = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date(response.lastCompletionDate) }).days;
       if (!totalDays) {
         return -1;
       }
@@ -94,8 +94,8 @@ const Details = () => {
               First completed
             </Text>
             <Text fontSize="14px" color="responseRenewalDetails.textColor">
-              {response.lastRenewalDate
-                ? format(new Date(response.lastRenewalDate), "dd MMMM yyyy")
+              {response.firstCompletionDate
+                ? format(new Date(response.firstCompletionDate), "dd MMMM yyyy")
                 : "N/A"}
             </Text>
           </Flex>
@@ -125,8 +125,8 @@ const Details = () => {
               Last completed
             </Text>
             <Text fontSize="14px" color="responseRenewalDetails.textColor">
-              {response.lastRenewalDate
-                ? format(new Date(response.lastRenewalDate), "dd MMMM yyyy")
+              {response.lastCompletionDate
+                ? format(new Date(response.lastCompletionDate), "dd MMMM yyyy")
                 : "N/A"}
             </Text>
           </Flex>

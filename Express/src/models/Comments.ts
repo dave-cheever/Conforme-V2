@@ -35,7 +35,7 @@ commentSchema.statics.customCreate = async function (comment: IComment, userId: 
     const addAuditLog = async () => {
       const response = await Responses.customFindById(comment.responseId, organizationId);
       const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organizationId);
-      const element = getForeignElement(complianceItem, createdComment._doc._id);
+      const element = getForeignElement({ _id: response._id , name: complianceItem.name }, createdComment._doc._id);
       const newValues = removeDatabaseFields(createdComment._doc);
       const values = await getAuditRecordValues({ newValues });
       AuditLogs.customAudit({
@@ -94,7 +94,7 @@ commentSchema.statics.customDelete = async function (selector: object = {}, user
     const addAuditLog = async () => {
       const response = await Responses.customFindById(comment.responseId, organizationId);
       const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organizationId);
-      const element = getForeignElement(complianceItem, comment._id);
+      const element = getForeignElement({ _id: response._id, name: complianceItem.name }, comment._id);
       const oldValues = removeDatabaseFields(comment);
       const values = await getAuditRecordValues({ oldValues });
       AuditLogs.customAudit({

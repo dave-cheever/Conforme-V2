@@ -28,6 +28,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
     const nextStatus = getStatus(complianceItem.frequency || "");
 
     const updatedResponse = await Responses.customUpdateOne({ _id }, {
+      lastRenewalDate: new Date(),
       attachments: response.attachments,
       status: nextStatus,
       evidence: [

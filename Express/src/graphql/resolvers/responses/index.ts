@@ -52,6 +52,8 @@ export const responsesTypeDefs = `
     responsibleId: ID
     contributorsIds: [ID]
     followersIds: [ID]
+    firstCompletionDate: Date
+    lastCompletionDate: Date
     lastRenewalDate: Date
     nextRenewalDate: Date
     status: String!

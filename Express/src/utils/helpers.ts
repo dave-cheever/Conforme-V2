@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import moment, { Moment } from 'moment';
 import { difference } from 'lodash';
-import { addMonths, addYears, subMonths, subYears } from 'date-fns';
+import { addMonths, addYears, format, subMonths, subYears } from 'date-fns';
 import { diff } from 'deep-object-diff';
 
 import { IAuditValues, IOrganization, IUser } from 'app-interfaces';
@@ -448,13 +448,13 @@ export const getAuditValueForDate = (oldValue?: string, newValue?: string) => {
   if (oldValue) {
     value['old'] = {
       value: oldValue,
-      label: moment(oldValue).format('D MMM YYYY'),
+      label: format(new Date(oldValue), 'dd MMMM yyyy'),
     };
   }
   if (newValue) {
     value['new'] = {
       value: newValue,
-      label: moment(newValue).format('D MMM YYYY'),
+      label: format(new Date(newValue), 'dd MMMM yyyy'),
     };
   }
   return value;
@@ -462,13 +462,13 @@ export const getAuditValueForDate = (oldValue?: string, newValue?: string) => {
 
 export const getAuditValueForBoolean = (oldValue?: string, newValue?: string) => {
   let value = {};
-  if (oldValue) {
+  if (oldValue !== undefined) {
     value['old'] = {
       value: oldValue,
       label: oldValue ? 'Yes' : 'No',
     };
   }
-  if (newValue) {
+  if (newValue !== undefined) {
     value['new'] = {
       value: newValue,
       label: newValue ? 'Yes' : 'No',
@@ -488,9 +488,12 @@ export const getAuditValueForLookup = async ({ collection, labelField, oldValue,
     }
 
     if (item) {
-      // If a 'labelField' is an array of strings, concat them
       let label;
-      if (typeof labelField === 'string') {
+      if (collection === Users) {
+        // If a collection is Users, get his name
+        label = item.givenName !== null || item.surname !== null ? `${item.givenName} ${item.surname}` : item.displayName;
+      } else if (typeof labelField === 'string') {
+        // If a 'labelField' is an array of strings, concat them
         label = item[labelField];
       } else {
         label = labelField.map(field => item[field]).join(' ');
@@ -511,9 +514,12 @@ export const getAuditValueForLookup = async ({ collection, labelField, oldValue,
     }
 
     if (item) {
-      // If a 'labelField' is an array of strings, concat them
       let label;
-      if (typeof labelField === 'string') {
+      if (collection === Users) {
+        // If a collection is Users, get his name
+        label = item.givenName !== null || item.surname !== null ? `${item.givenName} ${item.surname}` : item.displayName;
+      } else if (typeof labelField === 'string') {
+        // If a 'labelField' is an array of strings, concat them
         label = item[labelField];
       } else {
         label = labelField.map(field => item[field]).join(' ');

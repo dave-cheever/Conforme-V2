@@ -166,6 +166,21 @@ export const settingsTabs = [
   }
 ];
 
+export const auditTabs = [
+  {
+    index: 0,
+    label: "All logs"
+  },
+  {
+    index: 1,
+    label: "Renewals"
+  },
+  {
+    index: 2,
+    label:"Team changes"
+  }
+];
+
 export const navigationTabs = [
   {
     label: 'Progress',

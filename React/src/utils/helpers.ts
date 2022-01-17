@@ -54,13 +54,13 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
         };
       }
       break;
- 	case 1:
+    case 1:
       if (complianceItem?.locationsIds?.length === 0 && visitedTab > i) {
         return {
           bg: "navigationModal.section.error.bg",
           color: "navigationModal.section.error.color"
         };
-      } 
+      }
       break;
     case 2:
       if (complianceItem?.businessUnitsIds?.length === 0 && visitedTab > i) {
@@ -116,13 +116,13 @@ export const getFieldNameByAction = (action: string) => {
   let fieldAction = "";
   switch (action) {
     case "add":
-      fieldAction = "added new"
+      fieldAction = "Added new"
       break;
     case "delete":
-      fieldAction = "deleted"
+      fieldAction = "Deleted"
       break;
     case "update":
-      fieldAction = "updated"
+      fieldAction = "Updated"
       break;
     default:
       break;
@@ -153,7 +153,7 @@ export const getCollectionNameByAction = (collection: string) => {
       fieldCollection = "setting"
       break;
     case "comments":
-      fieldCollection = "comment in"
+      fieldCollection = "comment"
       break;
     default:
       break;
@@ -215,6 +215,9 @@ export const getLabelByField = (field: string) => {
       break;
     case "value":
       fieldName = "Value"
+      break;
+    case "lastCompletionDate":
+      fieldName = "Date of Last Completion"
       break;
     case "lastRenewalDate":
       fieldName = "Date of Last Renewal"

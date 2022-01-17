@@ -26,6 +26,8 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
   responsibleId: String,
   contributorsIds: [String],
   followersIds: [String],
+  firstCompletionDate: Date,
+  lastCompletionDate: Date,
   lastRenewalDate: Date,
   nextRenewalDate: Date,
   organizationId: String,
@@ -188,19 +190,48 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
 
       // If updated 'questions' field, set value as question value and label as question name
       case 'questions':
-        const getAnswersArray = arr => arr.map(({ value }, index) => `${index}-${value}`);
+        const getAnswersArray = arr => arr.map(({ value }, index) => {
+          if (Array.isArray(value)) {
+            return `${index}-${JSON.stringify(value)}`;
+          }
+          return `${index}-${value}`;
+        });
         const updatedQuestion = _difference(getAnswersArray(oldValue || []), getAnswersArray(newValue || [])) as string[];
         if (updatedQuestion.length === 1) {
           const [questionIndex] = updatedQuestion[0].split('-');
           const questionOld = (oldValue || [])[questionIndex];
           const questionNew = (newValue || [])[questionIndex];
-          let value: object = getAuditValueForString(questionOld.value, questionNew.value);
+          let value: object = {};
+
           switch (questionOld.type) {
-            case 'toggle':
+            case 'text':
+            case 'textMultiline':
+              value = getAuditValueForString(questionOld.value, questionNew.value);
+              break;
+            case 'switch':
               value = getAuditValueForBoolean(questionOld.value, questionNew.value);
               break;
-            case 'datePicker':
+            case 'datepicker':
               value = getAuditValueForDate(questionOld.value, questionNew.value);
+              break;
+            case 'multipleChoice':
+              const oldChoices = questionOld.value.map((option, index) => `${index}-${option.isCorrect}`);
+              const newChoices = questionNew.value.map((option, index) => `${index}-${option.isCorrect}`);
+              const updatedChoice = _difference(oldChoices, newChoices)[0];
+              const [choiceIndex, choiceValue] = updatedChoice.split('-');
+
+              // choiceValue keeps the previous value of the choice
+              if (choiceValue === 'true') {
+                value['old'] = {
+                  label: questionOld.value[choiceIndex].label,
+                  value: questionOld.value,
+                };
+              } else {
+                value['new'] = {
+                  label: questionNew.value[choiceIndex].label,
+                  value: questionNew.value,
+                };
+              }
               break;
           }
           return {
@@ -208,7 +239,6 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
             [questionOld.name]: value,
           };
         }
-
         break;
 
       default:
@@ -328,7 +358,7 @@ responseSchema.statics.customUpdateOne = async function (selector: object = {}, 
 };
 
 responseSchema.methods.customRecalculateResponse = async function (): Promise<void> {
-  const response: IResponse = { ...this._doc };
+  const response: IResponse = await responseModel.findById(this._id).lean();
   const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, response.organizationId);
 
   const areRequiredQuestionsAnswered = response.questions
@@ -362,7 +392,10 @@ responseSchema.methods.customRecalculateResponse = async function (): Promise<vo
   if (newStatus) {
     response.status = newStatus;
     if (newStatus === 'completed') {
-      response.lastRenewalDate = new Date();
+      response.lastCompletionDate = new Date();
+    }
+    if (!response.firstCompletionDate) {
+      response.firstCompletionDate = new Date();
     }
   }
 

@@ -13,7 +13,8 @@ const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
     responses(responsesQuery: $responsesQuery) {
       _id
-      lastRenewalDate
+      firstCompletionDate
+      lastCompletionDate
       nextRenewalDate
       status
       accountableId
@@ -49,6 +50,7 @@ const GET_RESPONSES = gql`
         outdated
       }
       complianceItem {
+        _id
         name
         reference
         description

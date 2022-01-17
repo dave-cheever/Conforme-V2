@@ -6,7 +6,7 @@ const updateResponse = async (_, { updateResponseModify }, { authorize, organiza
     const user = await authorize();
     const { _id, nextRenewalDate } = updateResponseModify;
 
-    const response = await Responses.findOne({ _id , organizationId: organization._id});
+    const response = await Responses.findOne({ _id, organizationId: organization._id });
     if (!response) {
       throw new Error("Response doesn't exist");
     }
@@ -15,7 +15,7 @@ const updateResponse = async (_, { updateResponseModify }, { authorize, organiza
       throw new Error('User is not permitted');
     }
 
-    const updatedResponse = await Responses.customUpdateOne({ _id }, { nextRenewalDate }, user._id, organization._id);
+    const updatedResponse = await Responses.customUpdateOne({ _id }, { nextRenewalDate: new Date(nextRenewalDate) }, user._id, organization._id);
 
     // @ts-ignore
     await response.customRecalculateResponse();

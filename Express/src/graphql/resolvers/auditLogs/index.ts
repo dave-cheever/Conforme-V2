@@ -33,6 +33,8 @@ input AuditLogsQuery {
   skip: Int
   limit: Int
   dateLimit: Date
+  elementId: String
+  fields: [String]
 }
 `;
 
