@@ -79,26 +79,20 @@ const Locations = () => {
   }, [data]);
 
   useEffect(() => {
-    if (sortOrder) {
-      setLocations([...locations].sort((a, b) => {
-        if (sortType === 'owner')
-          return (a.owner?.displayName!).localeCompare(b.owner?.displayName!);
-        else if (sortType === 'notes')
-          return (a.notes || '-').localeCompare(b.notes || '-');
-        else
-          return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+    const sort = (a, b) => {
+      if (sortType === 'owner')
+        return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      else if (sortType === 'notes')
+        return (a.notes || '-').localeCompare(b.notes || '-');
+      else
+        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
 
-      }));
+    };
+    if (sortOrder) {
+      setLocations([...locations].sort((a, b) => sort(a, b)));
     }
     else {
-      setLocations([...locations].sort((a, b) => {
-        if (sortType === 'owner')
-          return (b.owner?.displayName!).localeCompare(a.owner?.displayName!)
-        else if (sortType === 'notes')
-          return (b.notes || '-').localeCompare(a.notes || '-')
-        else
-          return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString());
-      }));
+      setLocations([...locations].sort((a, b) => sort(b, a)));
     }
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 

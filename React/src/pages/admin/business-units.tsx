@@ -80,23 +80,18 @@ const BusinessUnits = () => {
   }, [data]);
 
   useEffect(() => {
+    const sort = (a, b) => {
+      if (sortType === 'owner')
+        return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      else {
+        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      }
+    };
     if (sortOrder) {
-      setBusinessUnits([...businessUnits].sort((a, b) => {
-        if (sortType === 'owner')
-          return (a.owner?.displayName!).localeCompare(b.owner?.displayName!);
-        else {
-          return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
-        }
-
-      }));
+      setBusinessUnits([...businessUnits].sort((a, b) => sort(a, b)));
     }
     else {
-      setBusinessUnits([...businessUnits].sort((a, b) => {
-        if (sortType === 'owner')
-          return (b.owner?.displayName!).localeCompare(a.owner?.displayName!);
-        else
-          return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString());
-      }));
+      setBusinessUnits([...businessUnits].sort((a, b) => sort(b, a)));
     }
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
