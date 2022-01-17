@@ -40,6 +40,7 @@ import CrossIcon from "./CrossIcon";
 import Dashboard from "./Dashboard";
 import DetailIcon from "./DetailIcon";
 import DownloadIcon from "./DownloadIcon";
+import EditIcon from "./EditIcon"
 import EllipsisIcon from "./EllipsisIcon";
 import ErrorSign from "./ErrorSign";
 import Eye from "./Eye";
@@ -65,7 +66,6 @@ import MinusIcon from "./MinusIcon";
 import Move from "./Move";
 import NotificationIcon from "./NotificationIcon";
 import OpenMenuArrow from "./OpenMenuArrow";
-import Pencil from "./Pencil";
 import PlusIcon from "./PlusIcon";
 import Policies from "./Policies";
 import ProgressIcon from "./ProgressIcon";
@@ -135,6 +135,7 @@ export {
   Dashboard,
   DetailIcon,
   DownloadIcon,
+  EditIcon,
   EllipsisIcon,
   ErrorSign,
   Eye,
@@ -160,7 +161,6 @@ export {
   Move,
   NotificationIcon,
   OpenMenuArrow,
-  Pencil,
   PlusIcon,
   Policies,
   ProgressIcon,

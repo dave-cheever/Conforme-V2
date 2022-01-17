@@ -1,22 +1,24 @@
 import React from "react";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 
-import { IQuestion } from "../../interfaces/IQuestion";
-import { AsteriskQuestion, Bin } from "../../icons";
+import { IQuestion, IQuestionValue } from "../../interfaces/IQuestion";
+import { AsteriskQuestion, Bin, EditIcon }  from "../../icons";
 import { questionHeader } from "../../utils/helpers";
 
 interface IQuestionListElement {
-  question: IQuestion;
+  question: IQuestion<IQuestionValue>;
+  isEditable?: boolean;
   bgColor?: string;
   removeQuestion?: () => void;
+  editQuestion?: () => void;
 }
-const QuestionListElement = ({ question, bgColor, removeQuestion }: IQuestionListElement) => {
+const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, editQuestion }: IQuestionListElement) => {
   return (
     <Stack
       w='calc(100% - 2rem)'
       h='65px'
       direction='row'
-      spacing={4}
+      spacing={2}
       px={4}
       align='center'
       bg={bgColor ? bgColor : 'questionListElement.bg'}
@@ -38,12 +40,19 @@ const QuestionListElement = ({ question, bgColor, removeQuestion }: IQuestionLis
            {question.required && <AsteriskQuestion ml="5px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w="12px" h="12px" />}
         </Flex>
       </Flex>
-      {removeQuestion && 
-        <Bin 
-          w='20px' 
-          stroke="questionListElement.iconBin" 
-          cursor='pointer' 
-          onClick={removeQuestion} 
+      {editQuestion && !isEditable &&
+        <EditIcon
+          w='20px'
+          stroke="questionListElement.icon"
+          cursor='pointer'
+          onClick={editQuestion}
+        />}
+      {removeQuestion &&
+        <Bin
+          w='20px'
+          stroke="questionListElement.icon"
+          cursor='pointer'
+          onClick={removeQuestion}
         />}
     </Stack>
   );
@@ -58,6 +67,6 @@ export const questionListElementStyles = {
     name: "#2B3236",
     label: "#818197",
     iconAsterisk: "#E93C44",
-    iconBin: "#818197"
+    icon: "#818197"
   }
 };

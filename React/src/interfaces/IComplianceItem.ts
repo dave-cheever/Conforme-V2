@@ -1,7 +1,7 @@
 import { IBase } from "./IBase";
 import { IBaseWithName } from "./IBaseWithName";
 import { IBusinessUnit } from "./IBusinessUnit";
-import { IQuestion } from "./IQuestion";
+import { IQuestion, IQuestionValue } from "./IQuestion";
 import { ILocation } from "./ILocation";
 
 export interface IComplianceItem extends IBase {
@@ -13,7 +13,7 @@ export interface IComplianceItem extends IBase {
   frequency: string;
   businessUnitsIds: string[];
   evidenceItems: string[];
-  questions?: IQuestion[];
+  questions?: IQuestion<IQuestionValue>[];
   locationsIds?: string[];
   published: boolean;
   reference?: string;

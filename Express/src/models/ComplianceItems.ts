@@ -291,7 +291,6 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
       // And remove from not processed array
       unprocessedBusinessUnitsIds.splice(index, 1);
     }
-
     const updatedResponse: Pick<IResponse, 'published' | 'evidence' | 'questions' | 'status' | 'nextRenewalDate'> = {
       published: isPublished,
       evidence: [...response.evidence.filter(({ outdated }) => outdated)], // add all past evidence
@@ -350,6 +349,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
         // If CI question exist in response, leave it but update with possible changes
         updatedResponse.questions.push({
           ...existingQuestion,
+          value:question.value,
           description: question.description,
           required: question.required,
         });

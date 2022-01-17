@@ -9,7 +9,7 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 
-import { IQuestion } from '../../interfaces/IQuestion';
+import { IQuestion, IQuestionValue } from '../../interfaces/IQuestion';
 import QuestionForm from '../Questions/QuestionForm';
 import QuestionList from '../Questions/QuestionList';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -28,6 +28,9 @@ const QuestionsForm = () => {
   const [isQuestionListOpen, setIsQuestionListOpen] = useState<boolean>(false);
   const [selectedQuestionType, setSelectedQuestionType] = useState<string>("");
   const [selectedRadio, setSelectedRadio] = useState<string>("");
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editQuestionIndex, setEditQuestionIndex] = useState<number>();
+  const [editQuestion, setEditQuestion] = useState<IQuestion<IQuestionValue>>();
 
   const questionTypes = [{
     value: "text",
@@ -66,16 +69,27 @@ const QuestionsForm = () => {
     // }
   ];
 
-  const addQuestion = (question: IQuestion) => {
-    const questions = [...(complianceItem.questions || []), question];
-    setValue('questions', questions);
+  const addOrUpdateQuestion = (question: IQuestion<IQuestionValue>) => {
+    if (isEdit) {
+      const questions = [...(complianceItem.questions || [])];
+      if (typeof editQuestionIndex === "number") {
+        questions.splice(editQuestionIndex, 1, question);
+        setValue('questions', questions);
+      }
+      setIsEdit(false);
+      setEditQuestionIndex(undefined);
+      setEditQuestion(undefined);
+    } else {
+      const questions = [...(complianceItem.questions || []), question];
+      setValue('questions', questions);
+    }
   };
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "questions",
     value: selectedRadio,
-    onChange: setSelectedRadio
-  })
+    onChange: setSelectedRadio,
+  });
 
   const group = getRootProps();
 
@@ -131,7 +145,7 @@ const QuestionsForm = () => {
               bg: 'questionsModal.button.active'
             }}
             onClick={() => {
-              setSelectedQuestionType(selectedRadio)
+              setSelectedQuestionType(selectedRadio);
               setIsQuestionListOpen(!isQuestionListOpen);
               setShowQuestionForm(true);
               setSelectedRadio("");
@@ -143,7 +157,12 @@ const QuestionsForm = () => {
         <QuestionForm
           setShowQuestionForm={setShowQuestionForm}
           questionType={selectedQuestionType}
-          addQuestion={addQuestion}
+          addOrUpdateQuestion={addOrUpdateQuestion}
+          value={editQuestion}
+          setIsEdit={setIsEdit}
+          editQuestionIndex={editQuestionIndex}
+          setEditQuestionIndex={setEditQuestionIndex}
+          setEditQuestion={setEditQuestion}
         />
       }
       {!showQuestionForm &&
@@ -152,6 +171,14 @@ const QuestionsForm = () => {
           complianceItem={complianceItem}
           handleChange={questions => setValue('questions', questions)}
           disabled={false}
+          handleEdit={(index, item) => {
+            setIsQuestionListOpen(false);
+            setShowQuestionForm(true);
+            setIsEdit(true);
+            setEditQuestionIndex(index);
+            setEditQuestion(item);
+            setSelectedQuestionType(item?.type);
+          }}
         />
       }
     </Stack>

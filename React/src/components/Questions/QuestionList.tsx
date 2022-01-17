@@ -7,7 +7,7 @@ import {
   Move
 } from '../../icons';
 
-const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange }) => {
+const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange, handleEdit }) => {
   const moveQuestion = (result) => {
     setIsDragging(false);
     if (!result.source || !result.destination) {
@@ -61,6 +61,8 @@ const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange })
                         <QuestionListElement
                           question={item}
                           removeQuestion={disabled ? undefined : () => removeQuestion(index)}
+                          editQuestion={() => handleEdit(index, item)}
+                          isEditable={complianceItem.published}
                         />
                       </Flex>
                     </Box>

@@ -9,8 +9,12 @@ import { useForm } from "react-hook-form";
 
 const QuestionEmailForm = ({
   questionType,
-  addQuestion,
-  setShowQuestionForm }: IQuestionFormBase) => {
+  addOrUpdateQuestion,
+  setShowQuestionForm,
+  setIsEdit,
+  setEditQuestionIndex,
+  setEditQuestion
+}: IQuestionFormBase<string>) => {
 
   const { complianceItem } = useComplianceItemModalContext();
   const {
@@ -62,7 +66,7 @@ const QuestionEmailForm = ({
           p="17px"
           onClick={() => {
             const question = getValues();
-            addQuestion({ type: questionType, ...question });
+            addOrUpdateQuestion({ type: questionType, ...question });
             setShowQuestionForm(false);
           }}
           disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
@@ -78,7 +82,12 @@ const QuestionEmailForm = ({
           fontWeight="medium"
           h="27px"
           p="17px"
-          onClick={() => setShowQuestionForm(false)}
+          onClick={() => {
+            setShowQuestionForm(false);
+            setIsEdit(false);
+            setEditQuestionIndex(undefined);
+            setEditQuestion('');
+          }}
         >
           Cancel
         </Button>

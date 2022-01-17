@@ -2,7 +2,7 @@ import { IBase } from "./IBase";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IComment } from "./IComment";
 import { IComplianceItem } from "./IComplianceItem";
-import { IQuestion } from "./IQuestion";
+import { IQuestion, IQuestionValue } from "./IQuestion";
 import { IUser } from "./IUser";
 
 export interface IDocument {
@@ -30,7 +30,7 @@ export interface IResponse extends IBase {
   status: string;
   evidence: IEvidence[];
   attachments: IDocument[];
-  questions: IQuestion[];
+  questions: IQuestion<IQuestionValue>[];
   accountableId: string;
   responsibleId: string;
   contributorsIds?: string[];

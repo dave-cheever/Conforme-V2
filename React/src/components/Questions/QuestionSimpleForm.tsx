@@ -7,11 +7,19 @@ import Checkbox from '../Forms/Checkbox';
 import Textarea from '../Forms/Textarea';
 import { useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
 import { useForm } from "react-hook-form";
+import { isEmpty } from "lodash";
+import { useEffect } from "react";
 
 const QuestionSimpleForm = ({
   questionType,
-  addQuestion,
-  setShowQuestionForm }: IQuestionFormBase) => {
+  editQuestionIndex,
+  editableValue,
+  addOrUpdateQuestion,
+  setShowQuestionForm,
+  setIsEdit,
+  setEditQuestionIndex,
+  setEditQuestion,
+}: IQuestionFormBase<string>) => {
 
   const { complianceItem } = useComplianceItemModalContext();
   const {
@@ -19,6 +27,7 @@ const QuestionSimpleForm = ({
     formState: { errors },
     watch,
     getValues,
+    reset
   } = useForm({
     mode: "all",
     defaultValues: {
@@ -28,7 +37,21 @@ const QuestionSimpleForm = ({
     },
   });
   const questionName = watch('name');
-  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
+  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }, index) => {
+    if (editQuestionIndex === index && name === questionName) return false;
+    return name === questionName;
+  }) > -1;
+
+  useEffect(() => {
+    if (!isEmpty(editableValue)) {
+      reset({
+        name: editableValue.name,
+        description: editableValue.description,
+        required: editableValue.required,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(editableValue)])
 
   return (
     <>
@@ -69,7 +92,7 @@ const QuestionSimpleForm = ({
           p="17px"
           onClick={() => {
             const question = getValues();
-            addQuestion({ type: questionType, ...question });
+            addOrUpdateQuestion({ type: questionType, ...question });
             setShowQuestionForm(false);
           }}
           disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
@@ -85,7 +108,12 @@ const QuestionSimpleForm = ({
           fontWeight="medium"
           h="27px"
           p="17px"
-          onClick={() => setShowQuestionForm(false)}
+          onClick={() => {
+            setShowQuestionForm(false);
+            setIsEdit(false);
+            setEditQuestionIndex(undefined);
+            setEditQuestion('');
+          }}
         >
           Cancel
         </Button>
