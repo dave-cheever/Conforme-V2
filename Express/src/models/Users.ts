@@ -30,11 +30,8 @@ userSchema.statics.customFind = async function ({ organization }): Promise<IUser
   return users;
 };
 
-userSchema.statics.customFindById = async function (userId: string): Promise<IUser> {
+userSchema.statics.customFindById = async function (userId: string): Promise<IUser | null> {
   const user = await this.findById(userId).lean();
-  if (!user) {
-    throw new Error('User not found');
-  }
   return user;
 }
 

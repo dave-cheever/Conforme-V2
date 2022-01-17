@@ -17,17 +17,7 @@ const updateLocation = async (_, { locationModifyInput }, { authorize, organizat
       throw new Error("Location doesn't exist");
     }
 
-    const updatedLocation = {
-        ...location,
-        ...locationModifyInput,
-        metatags: {
-          ...location?.metatags,
-          ...genMetatags("updated", user._id),
-        },
-    };
-
-    await Locations.updateOne({ _id: _id }, updatedLocation);
-
+    const updatedLocation = await Locations.customUpdateOne({ _id: location._id }, locationModifyInput, user._id, organization._id);
     return updatedLocation;
   } catch (err: any) {
     throw new Error(err);

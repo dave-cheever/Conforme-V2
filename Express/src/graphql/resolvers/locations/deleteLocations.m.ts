@@ -1,7 +1,7 @@
 import { genMetatags, isPermitted } from "app-utils";
 import { Locations } from "app-models";
 
-const deleteLocation= async (_, { _id }, { authorize }) => {
+const deleteLocation= async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -14,16 +14,8 @@ const deleteLocation= async (_, { _id }, { authorize }) => {
       throw new Error("Location doesn't exist");
     }
 
-    const deletedLocation = {
-      ...location,
-      metatags: {
-        ...location?.metatags,
-        ...genMetatags("removed", user._id),
-      },
-    };
-    await Locations.updateOne({ _id: location._id }, deletedLocation);
-
-    return true;
+    const deletedResult = await Locations.customDelete({ _id }, user._id, organization._id);
+    return deletedResult;
   } catch (err: any) {
     throw new Error(err);
   }

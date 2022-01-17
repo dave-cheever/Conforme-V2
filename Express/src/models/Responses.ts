@@ -321,7 +321,7 @@ responseSchema.statics.customFindById = async function (_id: string): Promise<IR
 responseSchema.statics.customUpdateOne = async function (selector: object = {}, updates: Partial<IResponse>, userId: string, organizationId: string): Promise<IResponse> {
   const response = await this.customFindOne(selector, organizationId);
   if (!response) {
-    throw new GraphQLError('Category doesn\'t exist');
+    throw new GraphQLError('Response doesn\'t exist');
   }
 
   const updatedResponse = {
@@ -333,6 +333,26 @@ responseSchema.statics.customUpdateOne = async function (selector: object = {}, 
     },
   };
   const updatedResult = await this.updateOne(selector, updatedResponse);
+
+  const assertAttendees = async () => {
+    const usersIds = [
+      ...(updates.contributorsIds || []),
+      ...(updates.followersIds || []),
+    ];
+    if (updates.responsibleId) {
+      usersIds.push(updates.responsibleId);
+    }
+    if (updates.accountableId) {
+      usersIds.push(updates.accountableId);
+    }
+    for (const userId of usersIds) {
+      const user = await Users.customFindById(userId, organizationId);
+      if (!user) {
+        await Users.customAdd({ _id: userId }, userId, organizationId);
+      }
+    }
+  };
+  assertAttendees();
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {

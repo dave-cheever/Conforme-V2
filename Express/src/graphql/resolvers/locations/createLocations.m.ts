@@ -17,7 +17,7 @@ const createLocation = async (_, { locationInput }, { authorize, organization })
       metatags: genMetatags("added", user._id),
     };
 
-    const location = await Locations.create(newLocation);
+    const location = await Locations.customCreate(newLocation, user._id, organization._id)
 
     return location;
   } catch (err: any) {

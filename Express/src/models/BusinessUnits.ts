@@ -7,7 +7,7 @@ import {
   genMetatags, getBasicElement, removeDatabaseFields,
   getAuditValueForString, getAuditValueForUser,
 } from "app-utils";
-import { AuditLogs, Organizations } from "app-models";
+import { AuditLogs, Organizations, Users } from "app-models";
 import { GraphQLError } from "graphql";
 
 const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
@@ -73,6 +73,15 @@ businessUnitSchema.statics.customCreate = async function (businessUnit: IBusines
     metatags: genMetatags("added", userId),
   });
 
+  // Add owner to the database if doesn't exist
+  const { ownerId } = businessUnit;
+  if (ownerId) {
+    const owner = await Users.customFindById(ownerId, organizationId);
+    if (!owner) {
+      await Users.customAdd({ _id: ownerId }, userId, organizationId);
+    }
+  }
+
   if (createdBusinessUnit?._doc) {
     const addAuditLog = async () => {
       const element = getBasicElement(createdBusinessUnit._doc);
@@ -135,6 +144,15 @@ businessUnitSchema.statics.customUpdateOne = async function (selector: object = 
     },
   };
   const updatedResult = await this.updateOne(selector, updatedBusinessUnit);
+
+  // Add owner to the database if doesn't exist
+  const { ownerId } = updatedBusinessUnit;
+  if (ownerId) {
+    const owner = await Users.customFindById(ownerId, organizationId);
+    if (!owner) {
+      await Users.customAdd({ _id: ownerId }, userId, organizationId);
+    }
+  }
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
