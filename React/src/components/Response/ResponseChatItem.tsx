@@ -1,15 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { Flex, Avatar, Button, Text, Box, Skeleton } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import moment from "moment";
 import reactStringReplace from "react-string-replace";
 import { gql, useLazyQuery } from "@apollo/client";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import format from "date-fns/format";
+import isToday from "date-fns/isToday";
 
 import { IComment } from "../../interfaces/IComment";
 import ChatMention from "./ChatMention";
 import { useAppContext } from "../../contexts/AppProvider";
 import Can from "../can";
 import useDevice from "../../hooks/useDevice"
+import differenceInDays from "date-fns/differenceInDays";
 
 
 interface IResponseChat {
@@ -35,17 +38,21 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   const { user } = useAppContext();
 
   const dateFormat = () => {
-    const date = moment(metatags?.addedAt, "YYYY-MM-DDThh:mm");
-    const currentDate = moment();
-    if (currentDate.diff(date, "hours") <= 24) {
-      return date.format("hh:mm");
-    } else if (
-      currentDate.diff(date, "hours") > 24 &&
-      currentDate.diff(date, "hours") <= 48
-    ) {
-      return date.fromNow();
+    if(!metatags?.addedAt){
+      return "";
     }
-    return date.format("hh:mm ddd/mm/yyyy");
+
+    if(isToday(new Date(metatags?.addedAt))){
+      return format(new Date(metatags?.addedAt), "h:mm a");
+    }
+    
+    const days = differenceInDays(new Date(metatags?.addedAt), new Date());
+
+    if(days <= 7){
+      return formatDistanceToNow(new Date(metatags?.addedAt), { addSuffix: true });
+    }
+
+    return format(new Date(metatags?.addedAt), "dd/MM/yyyy h:mm a");
   };
 
   const chatAuthor = useMemo(() => {
