@@ -127,7 +127,7 @@ const getBasicUsers = async ({ usersIds, organization }: { usersIds: string[], o
   return users;
 };
 
-const getFileDetails = async (id: string, organization: IOrganization): Promise<{ thumbnail: string, path: string }> => {
+const getFileDetails = async (id: string, organization: IOrganization): Promise<{ thumbnail: string, path: string,preview: string }> => {
   if (!organization.spSiteUrl || !organization.spLibraryId) {
     logger.error('Graph error: Wrong SharePoint configuration');
     throw new Error('Graph error: Wrong SharePoint configuration');
@@ -142,6 +142,7 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
     return {
       thumbnail: res.data.url,
       path: data['@microsoft.graph.downloadUrl'],
+      preview: data['webUrl']
     };
   } catch (e: any) {
     throw new Error(e.response?.data?.error?.message || 'Unknown error');

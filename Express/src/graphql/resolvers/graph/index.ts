@@ -11,6 +11,7 @@ export const graphTypeDefs = `
     id: String!
     thumbnail: String
     path: String
+    preview: String
   }
 
   input FilesDetailsQuery {

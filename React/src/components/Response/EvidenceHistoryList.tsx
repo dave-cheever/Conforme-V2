@@ -14,7 +14,7 @@ const EvidenceHistoryList = () => {
 
       {response.evidence?.filter(({ outdated }) => outdated).filter(({ uploaded }) => uploaded?.id).map((evidence, i) => (
         <Flex key={i} flexDir="column" mb={3}>
-          <DocumentUploaded document={evidence.uploaded} isEvidence={true} enableDownload={true} />
+          <DocumentUploaded document={evidence.uploaded} isEvidence={true} outDated />
         </Flex>
       ))}
     </Flex>

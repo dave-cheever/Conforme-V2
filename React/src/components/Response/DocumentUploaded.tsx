@@ -30,6 +30,7 @@ const GET_DOCUMENT_DETAILS = gql`
       id
       thumbnail
       path
+      preview
     }
   }
 `;
@@ -40,7 +41,7 @@ const REMOVE_DOCUMENT = gql`
   }
 `;
 
-const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, enableDownload = false }: { document: IDocument | undefined, isAttachment?: boolean, isEvidence?: boolean, enableDownload?: boolean }) => {
+const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, outDated = false }: { document: IDocument | undefined, isAttachment?: boolean, isEvidence?: boolean, outDated?: boolean }) => {
   const { data } = useQuery(GET_DOCUMENT_DETAILS, { variables: { filesDetailsQuery: { ids: [document?.id] } } });
   const [removeDocument] = useMutation(REMOVE_DOCUMENT);
   const {
@@ -126,29 +127,51 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
             />
           </Box>
           <Flex direction='column' overflow='hidden' textOverflow='ellipsis' maxW={['150px', '250px']} fontSize='12px' mr={2}>
-            <Text fontWeight='700' noOfLines={1} textOverflow="ellipsis">{document?.name}</Text>
+            <Text fontWeight='700' noOfLines={1} textOverflow="ellipsis" cursor="pointer" onClick={() => {if(documentDetails?.preview) window.open(documentDetails?.preview)}}>{document?.name}</Text>
             <Flex opacity='0.6'>Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
           </Flex>
         </Flex>
-        {isAttachment && <Can
-          action='responses.edit'
-          data={{ response }}
-          yes={() => (
-            <IconButton
-              aria-label='delete evidence'
-              icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(documentDetails?.path)
-              }}
-              ml={3}
-              _hover={{bg:""}}
-              bg=""
-              display="inline-block"
+        {(isAttachment || isEvidence) && !outDated && (
+          <Flex>
+            <Can
+              action='responses.edit'
+              data={{ response }}
+              yes={() => (
+                <IconButton
+                  aria-label='delete evidence'
+                  icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(documentDetails?.path)
+                  }}
+                  ml={3}
+                  _hover={{ bg: "" }}
+                  bg=""
+                  display="inline-block"
+                />
+              )}
             />
-          )}
-        />}
-        {enableDownload ? <Can
+            <Can
+              action='responses.edit'
+              data={{ response }}
+              yes={() => (
+                <IconButton
+                  aria-label='delete evidence'
+                  _hover={{ bg: "" }}
+                  icon={<Bin stroke="documentUploaded.binIcon" />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteOpen();
+                  }}
+                  mr={3}
+                  bg=""
+                  display="inline-block"
+                />
+              )}
+            />
+          </Flex>
+        )}
+        {outDated && <Can
           action='responses.edit'
           data={{ response }}
           yes={() => (
@@ -164,26 +187,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
               display="inline-block"
             />
           )}
-        /> :
-          <Can
-            action='responses.edit'
-            data={{ response }}
-            yes={() => (
-              <IconButton
-                aria-label='delete evidence'
-                _hover={{ bg: "" }}
-                icon={<Bin stroke="documentUploaded.binIcon" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteOpen();
-                }}
-                mr={3}
-                bg=""
-                display="inline-block"
-              />
-            )}
-          />
-        }
+        />}
       </Flex>
     </>
   )
