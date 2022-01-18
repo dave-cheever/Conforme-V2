@@ -42,11 +42,11 @@ const TextInputMultiline = ({ control, name, label, placeholder = '', tooltip = 
         return (
           <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex pt={2} pb={1} align='center' justify="space-between" mb='none'>
                 <Box
                   color={error ? "form.textInput.labelFont.error" : styles ?  styles?.textInput?.font : "form.textInput.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize="smm"
+                  fontSize="11px"
                   position="static"
                   left='none'
                   zIndex={2}
