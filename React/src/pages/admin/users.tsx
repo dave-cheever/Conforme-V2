@@ -18,6 +18,7 @@ import UserResponseCount from "../../components/UserResponseCount";
 import useDevice from "../../hooks/useDevice";
 import { ArrowDownIcon } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
+import { upperFirst } from "lodash";
 
 const GET_USERS = gql`
   query {
@@ -133,13 +134,13 @@ const Users = () => {
         </>
       }
       <Flex w="20%" h="100%">
-        <UserResponseCount userId={user._id} role="responsible" responseCount={user.responsibleCount}/>
-        <UserResponseCount userId={user._id} role="accountable" responseCount={user.accountableCount}/>
-        <UserResponseCount userId={user._id} role="contributor" responseCount={user.contributorCount}/>
-        <UserResponseCount userId={user._id} role="follower" responseCount={user.followerCount}/>
+        <UserResponseCount userId={user._id} role="responsible" responseCount={user.responsibleCount} />
+        <UserResponseCount userId={user._id} role="accountable" responseCount={user.accountableCount} />
+        <UserResponseCount userId={user._id} role="contributor" responseCount={user.contributorCount} />
+        <UserResponseCount userId={user._id} role="follower" responseCount={user.followerCount} />
       </Flex>
       <Flex w="calc(16% - 20px)" ml="20px" align='center'>
-        {formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })}
+        {user?.lastLogin ? upperFirst(formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })) : 'Never'}
       </Flex>
     </Flex>
   );

@@ -30,7 +30,7 @@ const GET_FILTERS_DATA = gql`
       _id
       name
     }
-    searchUsers {
+    users {
       _id
       firstName
       lastName
@@ -97,7 +97,7 @@ const FiltersProvider = (props: any) => {
     locations: data?.locations,
     regulatoryBodies: data?.regulatoryBodies,
     businessUnits: data?.businessUnits,
-    users: [...(data?.searchUsers || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
+    users: [...(data?.users || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     filtersValues,
     usedFilters,
