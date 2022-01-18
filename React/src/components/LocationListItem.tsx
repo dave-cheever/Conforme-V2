@@ -10,6 +10,7 @@ import {
 import useDevice from "../hooks/useDevice";
 import { ArrowCount } from "../icons";
 import { ILocation } from "../interfaces/ILocation";
+import { useHistory } from "react-router-dom";
 
 const LocationListItem = ({
   location,
@@ -19,6 +20,7 @@ const LocationListItem = ({
   openLocationModal;
 }) => {
   const device = useDevice();
+  const history = useHistory()
 
   return (
     <Flex
@@ -74,6 +76,12 @@ const LocationListItem = ({
             stroke="locations.tooltipStroke"
             cursor="pointer"
             ml="13px"
+            onClick={() => {
+              history.push({
+                pathname: "/",
+                state: { "locationsIds": [location._id] }
+              })
+            }}
           />
         </Tooltip>
       </Flex>

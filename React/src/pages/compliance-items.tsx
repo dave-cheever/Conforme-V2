@@ -22,6 +22,7 @@ import useResponseUtils from "../hooks/useResponseUtils";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
 import useDevice from "../hooks/useDevice";
+import { useLocation } from "react-router-dom";
 
 const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
@@ -57,12 +58,22 @@ const GET_RESPONSES = gql`
 
 const ComplianceItems = () => {
   const { user } = useAppContext();
-  const { filtersValues, setUsedFilters, setResponsesStatusesCounts } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setFilters, setResponsesStatusesCounts } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
   const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
   const device = useDevice();
+  const location = useLocation()
+
+  useEffect(() => {
+    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'usersIds', 'locationsIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
+    if (location.state && typeof location.state === "object") {
+      setFilters(location.state)
+      window.history.replaceState(null, '')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const responsesStatusesCounts = {
@@ -116,10 +127,6 @@ const ComplianceItems = () => {
     }),
     []
   );
-
-  useEffect(() => {
-    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'usersIds', 'locationsIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter responses (server side)
   useEffect(() => {

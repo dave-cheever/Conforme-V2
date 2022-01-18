@@ -235,6 +235,7 @@ const Categories = () => {
                   <AdminTableRow
                     key={category._id}
                     element={category}
+                    responseToEdit="categoriesIds"
                     index={i}
                     edit={() => openCategoryModal("edit", category)}
                   />

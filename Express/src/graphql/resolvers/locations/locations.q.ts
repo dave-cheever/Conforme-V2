@@ -20,7 +20,8 @@ const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         });
         pipeline.push({
           $match: {
-            'complianceItem.locationsIds': { $in: [ location._id ]}
+            'complianceItem.locationsIds': { $in: [ location._id ]},
+            published: true,
           },
         });
         pipeline.push({

@@ -216,6 +216,7 @@ const RegulatoryBodies = () => {
                     <AdminTableRow
                       key={regulatoryBody._id}
                       element={regulatoryBody}
+                      responseToEdit="regulatoryBodiesIds"
                       index={i}
                       edit={() => openRegulatoryBodyModal('edit', regulatoryBody)}
                     />

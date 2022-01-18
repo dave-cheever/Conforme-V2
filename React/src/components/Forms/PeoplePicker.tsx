@@ -68,12 +68,12 @@ const PeoplePicker = ({ control, name, label, placeholder = '', tooltip = '', va
         const { error } = fieldState;
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-          if(value){
+          if (value) {
             const user = users.find(user => user._id === value)
-            if(user) setSearchedInputValue(user.displayName)
+            if (user) setSearchedInputValue(user.displayName)
           }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        },[value,users])
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [value, users])
         return (
           <Box w='full' id={name} mt='none'>
             <Box>
@@ -130,6 +130,8 @@ const PeoplePicker = ({ control, name, label, placeholder = '', tooltip = '', va
                   direction='column'
                   boxShadow='lg'
                   rounded='lg'
+                  zIndex={1}
+                  maxH="20%"
                   w={["calc(100% - 50px)", "calc(100% - 175px)"]}
                 >
                   {loading ? (

@@ -15,6 +15,8 @@ import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import PeoplePicker from "../../components/Forms/PeoplePicker";
 import useDevice from "../../hooks/useDevice";
+import { useHistory } from "react-router-dom";
+
 
 const GET_BUSINESS_UNITS = gql`
   query {
@@ -68,6 +70,7 @@ const BusinessUnits = () => {
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const device = useDevice();
+  const history = useHistory()
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
 
@@ -246,7 +249,12 @@ const BusinessUnits = () => {
       <Flex w={["20%", 'calc(70% / 4)']} align='center'>
         <Text>{businessUnit.complianceItemsResponsesCount || 0}</Text>
         <Tooltip label="Show Items" fontSize="md">
-          <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" />
+          <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" onClick={() => {
+            history.push({
+              pathname: "/",
+              state: { "businessUnitsIds": [businessUnit._id] }
+            })
+          }} />
         </Tooltip>
       </Flex>
     </Flex>
