@@ -132,6 +132,7 @@ const PeoplePicker = ({ control, name, label, placeholder = '', tooltip = '', va
                   rounded='lg'
                   zIndex={1}
                   maxH="20%"
+                  overflowY="auto"
                   w={["calc(100% - 50px)", "calc(100% - 175px)"]}
                 >
                   {loading ? (
