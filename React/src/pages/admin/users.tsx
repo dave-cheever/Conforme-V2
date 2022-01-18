@@ -133,10 +133,10 @@ const Users = () => {
         </>
       }
       <Flex w="20%" h="100%">
-        <UserResponseCount responseCount={user.responsibleCount} />
-        <UserResponseCount responseCount={user.accountableCount} />
-        <UserResponseCount responseCount={user.contributorCount} />
-        <UserResponseCount responseCount={user.followerCount} />
+        <UserResponseCount userId={user._id} role="responsible" responseCount={user.responsibleCount}/>
+        <UserResponseCount userId={user._id} role="accountable" responseCount={user.accountableCount}/>
+        <UserResponseCount userId={user._id} role="contributor" responseCount={user.contributorCount}/>
+        <UserResponseCount userId={user._id} role="follower" responseCount={user.followerCount}/>
       </Flex>
       <Flex w="calc(16% - 20px)" ml="20px" align='center'>
         {formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })}

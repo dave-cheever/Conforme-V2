@@ -1,7 +1,58 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 
-const UserResponseCount = ({ responseCount }) => {
+import { useFiltersContext } from "../contexts/FiltersProvider";
+
+const UserResponseCount = ({ userId, role, responseCount }) => {
+
+  const {  filtersValues,  setFilters, } = useFiltersContext();
+  const history = useHistory();
+
+  const handleUserChange = ({ userRole, value}) => {
+    let userIdsFilter = filtersValues.usersIds?.value;
+    switch (userRole) {
+      case 'responsible':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            'responsibleIds': value,
+          }
+        });
+        break;
+      case 'accountable':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            'accountableIds': value,
+          }
+        });
+        break;
+      case 'contributor':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            'contributorIds': value,
+          }
+        });
+        break;
+      case 'follower':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            'followerIds': value,
+          }
+        });
+        break;
+    }
+  };
+
+  const handleClick = () => {
+    localStorage.setItem("viewMode", "Grid");
+    history.push("/");
+    handleUserChange({ userRole : role, value : [userId] });
+  }
+
   return (
     <Flex
       w="calc(25% - 1px)"
@@ -12,6 +63,7 @@ const UserResponseCount = ({ responseCount }) => {
       mt="1px"
       mr="1px"
       bg="userItem.responseCountBg"
+      onClick={handleClick}
     >
       {responseCount || 0}
     </Flex>

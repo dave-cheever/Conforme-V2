@@ -20,7 +20,7 @@ const UserFilter = () => {
     setFilters,
     users,
   } = useFiltersContext();
-
+  
   const [searchText, setSearchText] = useState<string>('');
   const [selectedRole, setSelectedRole] = useState<string>("responsible");
   const selectedRoleUsers = useMemo(() => [
