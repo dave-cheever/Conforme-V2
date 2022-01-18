@@ -1,3 +1,4 @@
+import { IFormFieldHeadings } from "./IForm";
 import { Validations } from "./Validations";
 
 export interface IField {
@@ -9,6 +10,7 @@ export interface IField {
   disabled?: boolean;
   required?: boolean;
   options?: any[];
+  headings?: IFormFieldHeadings;
   variant?: string;
   help?: string;
   placeholder?: string;

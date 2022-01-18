@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Box, Icon, Flex } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
@@ -6,24 +6,27 @@ import SubSection from "./SubSection";
 import NavigationLeftFilters from "./NavigationLeftFilters";
 import { ArrowRight } from "../../icons";
 import { IMenuItem } from "../../interfaces/IMenu";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
 
-const NavigationLeftItemTablet = ({ 
-  menuItem, 
-  filtersOpen, 
-  setFiltersOpen, 
-  subsectionOpen, 
-  setSubsectionOpen 
-} : {
-  menuItem: IMenuItem, 
-  filtersOpen: boolean, 
-  setFiltersOpen: (value: boolean) => void, 
-  subsectionOpen: boolean, 
+const NavigationLeftItemTablet = ({
+  menuItem,
+  filtersOpen,
+  setFiltersOpen,
+  subsectionOpen,
+  setSubsectionOpen
+}: {
+  menuItem: IMenuItem,
+  filtersOpen: boolean,
+  setFiltersOpen: (value: boolean) => void,
+  subsectionOpen: boolean,
   setSubsectionOpen: (value: boolean) => void
 }) => {
   const [menuOpen, setMenuOpen] = useState(true);
   const history = useHistory();
-  const filtersCount = {compliant: 0, nonCompliant: 2, comingUp: 2};
   const { url, icon } = menuItem;
+  const {
+    responsesStatusesCounts,
+  } = useFiltersContext();
 
   return (
     <>
@@ -41,11 +44,11 @@ const NavigationLeftItemTablet = ({
         }}
       >
         <Flex h="100%" align="center">
-          <Flex 
-            w="30px" 
-            h="30px" 
+          <Flex
+            w="30px"
+            h="30px"
             ml="25px"
-            alignItems="center" 
+            alignItems="center"
             justifyContent="center"
             bg={
               menuItem.subSections
@@ -55,10 +58,10 @@ const NavigationLeftItemTablet = ({
                 : history.location.pathname === url
                   ? "navigationLeftItemTablet.selectedLabelBg"
                   : "navigationLeftItemTablet.unselectedLabelBg"
-            }  
-            rounded="8px" 
+            }
+            rounded="8px"
             onClick={() => {
-              if(menuItem.url === "/") {
+              if (menuItem.url === "/") {
                 setFiltersOpen(!filtersOpen);
                 setSubsectionOpen(false);
                 history.push(url);
@@ -88,15 +91,15 @@ const NavigationLeftItemTablet = ({
         {
           filtersOpen && menuItem.url === "/" &&
           <Box w="235px" bg="white" py="15px" ml="80px" pos="absolute" top="0" zIndex="5" rounded="10px" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
-            {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />}
-            {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />)}
+            {Object.keys(responsesStatusesCounts).length !== 0 && <NavigationLeftFilters filter={["all", responsesStatusesCounts["compliant"] + responsesStatusesCounts["nonCompliant"]]} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />}
+            {Object.entries(responsesStatusesCounts).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />)}
           </Box>
         }
         {
           subsectionOpen && menuItem.url === "/admin" &&
           <Box w="235px" bg="white" py="15px" ml="80px" pos="absolute" top="0" zIndex="5" rounded="10px" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
             {menuItem.subSections?.map((subSection) => {
-              return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen}/>;
+              return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen} />;
             })}
           </Box>
         }

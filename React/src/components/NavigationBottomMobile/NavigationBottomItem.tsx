@@ -6,26 +6,29 @@ import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from '../NavigationLeft/NavigationLeftFilters';
 import { ArrowRight } from '../../icons';
 import SubSection from '../NavigationLeft/SubSection';
+import { useFiltersContext } from '../../contexts/FiltersProvider';
 
-const NavigationBottomItem = ({ 
-  menuItem, 
-  filtersOpen, 
-  setFiltersOpen, 
-  subsectionOpen, 
-  setSubsectionOpen 
-} : {
-  menuItem: IMenuItem, 
-  filtersOpen: boolean, 
-  setFiltersOpen: (value: boolean) => void, 
-  subsectionOpen: boolean, 
+const NavigationBottomItem = ({
+  menuItem,
+  filtersOpen,
+  setFiltersOpen,
+  subsectionOpen,
+  setSubsectionOpen
+}: {
+  menuItem: IMenuItem,
+  filtersOpen: boolean,
+  setFiltersOpen: (value: boolean) => void,
+  subsectionOpen: boolean,
   setSubsectionOpen: (value: boolean) => void
 }) => {
   const history = useHistory();
   const { url, icon, label } = menuItem;
-  const filtersCount = {compliant: 0, nonCompliant: 2, comingUp: 2};
+  const {
+    responsesStatusesCounts,
+  } = useFiltersContext();
 
   return (
-    <Flex 
+    <Flex
       alignItems="center"
       pos="relative"
       css={{
@@ -41,9 +44,9 @@ const NavigationBottomItem = ({
           : history.location.pathname === url
             ? 1
             : 0
-      } 
+      }
       onClick={() => {
-        if(menuItem.url === "/") {
+        if (menuItem.url === "/") {
           setFiltersOpen(!filtersOpen);
           setSubsectionOpen(false);
           history.push(url);
@@ -53,10 +56,10 @@ const NavigationBottomItem = ({
         }
       }}
     >
-      <Flex 
-        w="30px" 
-        h="30px" 
-        alignItems="center" 
+      <Flex
+        w="30px"
+        h="30px"
+        alignItems="center"
         justifyContent="center"
         bg={
           menuItem.subSections
@@ -66,7 +69,7 @@ const NavigationBottomItem = ({
             : history.location.pathname === url
               ? "navigationLeftItemTablet.selectedLabelBg"
               : "navigationLeftItemTablet.unselectedLabelBg"
-        }  
+        }
         rounded="8px"
       >
         <Icon
@@ -93,16 +96,16 @@ const NavigationBottomItem = ({
       {
         filtersOpen && menuItem.url === "/" &&
         <Box w="220px" bg="white" py="15px" left="0" pos="absolute" bottom="45px" zIndex="5" rounded="10px" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
-          {Object.keys(filtersCount).length !== 0 && <NavigationLeftFilters filter={["all", filtersCount["compliant"] + filtersCount["nonCompliant"]]} setFiltersOpen={setFiltersOpen} />}
-          {Object.entries(filtersCount).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} setFiltersOpen={setFiltersOpen} />)}
+          {Object.keys(responsesStatusesCounts).length !== 0 && <NavigationLeftFilters filter={["all", responsesStatusesCounts["compliant"] + responsesStatusesCounts["nonCompliant"]]} setFiltersOpen={setFiltersOpen} />}
+          {Object.entries(responsesStatusesCounts).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} setFiltersOpen={setFiltersOpen} />)}
         </Box>
       }
       {
         subsectionOpen && menuItem.url === "/admin" &&
-        <Box 
-          w="235px" 
-          bg="white" 
-          py="15px" 
+        <Box
+          w="235px"
+          bg="white"
+          py="15px"
           left={
             menuItem.subSections
               ? history.location.pathname.includes(url)
@@ -112,10 +115,10 @@ const NavigationBottomItem = ({
                 ? "0"
                 : "-200px"
           }
-          pos="absolute" 
-          bottom="45px" 
-          zIndex="5" 
-          rounded="10px" 
+          pos="absolute"
+          bottom="45px"
+          zIndex="5"
+          rounded="10px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
         >
           {menuItem.subSections?.map((subSection) => {

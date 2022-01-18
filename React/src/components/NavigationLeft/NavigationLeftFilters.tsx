@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { responseStatuses } from "../../hooks/useResponseUtils";
 
-const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen} : {filter: any, menuOpen?: boolean, setFiltersOpen?: (value: boolean) => void}) => {
+const NavigationLeftFilters = ({ filter, menuOpen, setFiltersOpen }: { filter: any, menuOpen?: boolean, setFiltersOpen?: (value: boolean) => void }) => {
   const {
     filtersValues,
     setFilters
@@ -23,8 +23,8 @@ const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen} : {filter: any
     }
     setFilters({ itemStatus: newValue });
   };
-  
-  return(
+
+  return (
     <Flex direction="column" key={filter[0]}>
       {(filter[0] === "comingUp") && <Flex py={2}>
         <Flex ml="25px" w="30px" opacity="0.3" h="1px" rounded="lg" bg="navigationLeftFilters.seperator" />
@@ -42,11 +42,11 @@ const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen} : {filter: any
           updateFilters(filter[0]);
           setFiltersOpen && setFiltersOpen(false);
         }}
-        color={( filter[0] === 'all') 
-          ? (itemStatusFilterValue?.length === 0 
-            ? "navigationLeftFilters.selectedFontColor" : "navigationLeftFilters.unselectedFontColor") 
-              : itemStatusFilterValue?.includes(filter[0]) 
-              ? "navigationLeftFilters.selectedFontColor" : "navigationLeftFilters.unselectedFontColor"
+        color={(filter[0] === 'all')
+          ? (itemStatusFilterValue?.length === 0
+            ? "navigationLeftFilters.selectedFontColor" : "navigationLeftFilters.unselectedFontColor")
+          : itemStatusFilterValue?.includes(filter[0])
+            ? "navigationLeftFilters.selectedFontColor" : "navigationLeftFilters.unselectedFontColor"
         }
         cursor="pointer"
         justify="space-between"
@@ -56,28 +56,28 @@ const NavigationLeftFilters = ({filter, menuOpen, setFiltersOpen} : {filter: any
           <Box h="8px" w="8px" mr={8} rounded="full" bg={`navigationLeftFilters.${filter[0]}`}></Box>
           {responseStatuses[filter[0]]}
         </Flex>
-        <Flex 
-          position="relative" 
-          left="10px" 
-          w="34px" 
-          h="20px"  
-          rounded="10px" 
-          color={(filter[0] === "all" && itemStatusFilterValue?.length === 0) 
+        <Flex
+          position="relative"
+          left="10px"
+          w="34px"
+          h="20px"
+          rounded="10px"
+          color={(filter[0] === "all" && itemStatusFilterValue?.length === 0)
+            ? "navigationLeftFilters.selectedLabelFontColor"
+            : (itemStatusFilterValue?.includes(filter[0])
               ? "navigationLeftFilters.selectedLabelFontColor"
-              : (itemStatusFilterValue?.includes(filter[0]) 
-                ? "navigationLeftFilters.selectedLabelFontColor"
-                : "navigationLeftFilters.unselectedLabelFontColor"
-          )} 
-          fontSize="11px" 
-          fontWeight="700" 
-          align="center" 
+              : "navigationLeftFilters.unselectedLabelFontColor"
+            )}
+          fontSize="11px"
+          fontWeight="700"
+          align="center"
           justify="center"
-          bg={(filter[0] === "all" && itemStatusFilterValue?.length === 0) 
+          bg={(filter[0] === "all" && itemStatusFilterValue?.length === 0)
+            ? "navigationLeftFilters.selectedLabelBg"
+            : (itemStatusFilterValue?.includes(filter[0])
               ? "navigationLeftFilters.selectedLabelBg"
-              : (itemStatusFilterValue?.includes(filter[0]) 
-                ? "navigationLeftFilters.selectedLabelBg"
-                : "navigationLeftFilters.unselectedLabelBg"
-          )}
+              : "navigationLeftFilters.unselectedLabelBg"
+            )}
         >{filter[1]}</Flex>
       </Flex>
     </Flex>

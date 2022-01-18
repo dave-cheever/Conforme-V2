@@ -13,9 +13,11 @@ import {
   Toggle,
 } from './index';
 import { IField } from '../../interfaces/IField';
+import Table from './Table';
+import DataGrid from './DataGrid';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip, disabled, options, validations, variant, placeholder, help, styles, required } = field;
+  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required } = field;
   const props: IField = {
     control,
     name,
@@ -23,6 +25,7 @@ const Field = ({ control, ...field }) => {
     disabled,
     options,
     validations,
+    headings,
     placeholder,
     variant,
     tooltip,
@@ -65,8 +68,14 @@ const Field = ({ control, ...field }) => {
     case 'textMultilineConfirmInput': {
       return <TextMultilineConfirmInput key={name} {...props} />;
     }
+    case 'table': {
+      return <Table key={name} {...props} />;
+    }
+    case 'dataGrid': {
+      return <DataGrid key={name} {...props} />;
+    }
     default:
-      return <div>Field not supported</div>;
+      return <div>Field "{name}" of type "{type}" is not supported</div>;
   }
 };
 

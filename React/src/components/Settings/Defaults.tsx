@@ -69,8 +69,13 @@ const Defaults = () => {
     });
   };
 
-  const wasFieldChanged = (name, initialValue) => {
+  const wasFieldChanged = (inputType, name, initialValue) => {
     let currentValue = formValues[name];
+    if (inputType === 'table') {
+      return JSON.stringify(currentValue) !== JSON.stringify(initialValue);
+    } else if (inputType === 'dataGrid') {
+      return JSON.stringify(currentValue) !== JSON.stringify(initialValue);
+    }
     return currentValue !== initialValue;
   };
 
@@ -114,7 +119,7 @@ const Defaults = () => {
                 value={value}
               />
             </Flex>
-            {wasFieldChanged(name, value) && (
+            {wasFieldChanged(inputType, name, value) && (
               <HStack ml={3} spacing={3} mt={7}>
                 <IconButton
                   colorScheme="purpleHeart"

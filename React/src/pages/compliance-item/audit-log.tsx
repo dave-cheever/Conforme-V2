@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
 import { isEqual } from "date-fns";
@@ -8,6 +8,7 @@ import { IAuditLog } from "../../interfaces/IAuditLog";
 import { useResponseContext } from "../../contexts/ResponseProvider";
 import { auditTabs } from "../../bootstrap/config";
 import TabItem from "../../components/Settings/TabItem";
+import { useAppContext } from "../../contexts/AppProvider";
 
 const GET_AUDIT_LOGS = gql`
   query AuditLogs($auditLogsQuery: AuditLogsQuery) {
@@ -33,11 +34,28 @@ const GET_AUDIT_LOGS = gql`
 const AuditLog = () => {
   const [dateLimit, setDateLimit] = useState(new Date());
   const { response } = useResponseContext();
+  const { settings } = useAppContext();
+
+  const auditLogLimit = useMemo(() => {  
+    if(settings.length === 0){
+      return 5;
+    }
+    if(settings?.filter(settings => settings.name === "auditLogLimit").length === 0){
+      return 5;
+    }
+
+    if(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value){
+      return Number(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value);
+    }
+
+    return 5;
+  },[settings]);
+
   const { data, loading, refetch } = useQuery(GET_AUDIT_LOGS, {
     variables: {
       auditLogsQuery: {
         skip: 0,
-        limit: 5,
+        limit: auditLogLimit,
         dateLimit,
         elementId: response._id,
         fields: [] as string[],
@@ -53,13 +71,13 @@ const AuditLog = () => {
     refetch({
       auditLogsQuery: {
         skip,
-        limit: 5,
+        limit: auditLogLimit,
         dateLimit,
         elementId: response._id,
         fields: fieldsFilter,
       },
     });
-  }, [skip, dateLimit, fieldsFilter, refetch, response]);
+  }, [skip, dateLimit, fieldsFilter, refetch, response, auditLogLimit]);
 
   useEffect(() => {
     if (data) {

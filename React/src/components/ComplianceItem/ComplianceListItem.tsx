@@ -86,8 +86,8 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
           )}
         </Flex>
         <Box w="15%" ml={2}>
-          {response?.evidence?.find(
-            ({ uploaded }) => uploaded === undefined
+          {response?.evidence?.some(
+            ({ uploaded }) => !uploaded
           ) ? (
             <Flex align="center">
               <Close stroke="complianceList.crossIcon" mr={2} />

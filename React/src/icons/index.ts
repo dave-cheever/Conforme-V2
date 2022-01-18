@@ -87,6 +87,7 @@ import Share from "./Share";
 import ShareIcon from "./ShareIcon"
 import TeamsIcon from "./TeamsIcon";
 import TickIcon from "./TickIcon";
+import Trashcan from "./Bin";
 import UnFollowIcon from "./UnFollowIcon";
 import UploadedCross from "./UploadedCross";
 import UploadedTick from "./UploadedTick";
@@ -182,6 +183,7 @@ export {
   ShareIcon,
   TeamsIcon,
   TickIcon,
+  Trashcan,
   UnFollowIcon,
   UploadedCross,
   UploadedTick,

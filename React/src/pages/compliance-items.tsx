@@ -31,8 +31,21 @@ const GET_RESPONSES = gql`
       nextRenewalDate
       status
       responsibleId
+      daysToDueDate
+      evidence {
+        name
+        uploaded {
+          id
+          name
+          addedAt
+          thumbnail
+          path
+        }
+        outdated
+      }
       complianceItem {
         name
+        frequency
         category {
           name
         }

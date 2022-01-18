@@ -4,6 +4,7 @@ import { IResponse } from '../interfaces/IResponse';
 // import { useAppContext } from '../contexts/AppProvider';
 import { differenceInDays, startOfDay } from "date-fns";
 import { IChoice, IQuestion, IQuestionValue } from "../interfaces/IQuestion";
+import { useAppContext } from "../contexts/AppProvider";
 
 export const responseStatuses = {
   "completed": "Completed",
@@ -36,29 +37,14 @@ export const complianceItemFrequencies = [
 ];
 
 const useResponseUtils = () => {
-  // const { settings } = useAppContext();
-  // const comingUpTriggers = settings.find(
-  //   (el) => el.name === 'comingUpTriggers'
-  // );
-
-  //TODO: Settings Config should be init and send this to app Context
-  const comingUpTriggers = {
-    value: {
-      "Monthly": 7,
-      "Quarterly": 14,
-      "6 months": 30,
-      "Annual": 30,
-      "2 years": 30,
-      "3 years": 60,
-      "5 years": 90,
-      "Variable": 7,
-      "Ad-hoc": 7
-    }
-  }
+  const { settings } = useAppContext();
+  const comingUpTriggers = settings.find(
+    (el) => el.name === 'comingUpTriggers'
+  );
 
   const getRenewalStatus = (response: IResponse) => {
     const { daysToDueDate, status } = response;
-    if (status === 'completed' && daysToDueDate && response.complianceItem.frequency && daysToDueDate !== null && daysToDueDate <= comingUpTriggers?.value?.[response.complianceItem.frequency] && daysToDueDate >= 0) {
+    if (status === 'completed' && daysToDueDate && response.complianceItem.frequency && daysToDueDate !== null && daysToDueDate < comingUpTriggers?.value?.[response.complianceItem.frequency] && daysToDueDate >= 0) {
       // If there is less then or equal comingUpTriggers value and at least 0 days to due date
       return 'comingUp';
     } else if (daysToDueDate && daysToDueDate < 0) {

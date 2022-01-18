@@ -81,10 +81,18 @@ const EmailTemplates = ({selectedTemplate,setSelectedTemplate, isOpen, onClose, 
     });
   };
 
+  if( loading ){
+    return (
+      <Flex w={["full","full","550px"]} h="full">
+        <Loader center={true} />
+      </Flex>
+    );
+  }
+
   return (
     <Flex w="full">
-      <Grid w={["full","full","550px"]} bg="white" h={["fit-content","fit-content","full"]} templateColumns={["repeat(1, 1fr)",selectedTemplate ? "repeat(1, 1fr)": "repeat(3, 1fr)","repeat(3, 1fr)"]} gap={7}>
-        {loading ? <Loader center={true} /> : emailTemplates?.settings?.map((template) => (
+      <Grid w={["full","full","550px"]} h={["fit-content","fit-content","full"]} templateColumns={["repeat(1, 1fr)",selectedTemplate ? "repeat(1, 1fr)": "repeat(3, 1fr)","repeat(3, 1fr)"]} gap={7}>
+        {emailTemplates?.settings?.map((template) => (
           <EmailTemplate
             active={selectedTemplate?._id === template?._id}
             setSelectedTemplate={setSelectedTemplate}

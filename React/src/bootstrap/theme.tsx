@@ -49,6 +49,7 @@ import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLef
 import { navigationMobileModalStyles } from "../components/AdminComplianceItemModal/NavigationMobileModal";
 import { navigationModalStyles } from "../components/AdminComplianceItemModal/NavigationModal";
 import { navigationTopStyles } from "../components/NavigationTop";
+import { numberInputStyles } from "../components/Forms/NumberInput";
 import { peoplePickerStyles } from "../components/Forms/PeoplePicker";
 import { questionEmailFormStyles } from "../components/Questions/QuestionEmailForm";
 import { questionFormStyles } from "../components/Questions/QuestionForm";
@@ -175,6 +176,7 @@ const getTheme = (organizationTheme?: any) => {
       ...navigationMobileModalStyles,
       ...navigationModalStyles,
       ...navigationTopStyles,
+      ...numberInputStyles,
       ...peoplePickerStyles,
       ...questionEmailFormStyles,
       ...questionFormStyles,
@@ -495,30 +497,6 @@ const getTheme = (organizationTheme?: any) => {
             border: '#CBCCCD',
             500: '#462AC4',
           },
-          error: '#E53E3E',
-        },
-        numberInput: {
-          font: '#777777',
-          bg: '#FFFFFF',
-          labelFont: {
-            normal: '#818197',
-            error: '#E53E3E',
-          },
-          border: {
-            normal: '#CBCCCD',
-            error: '#E53E3E',
-            focus: {
-              normal: '#777777',
-              error: '#E53E3E',
-            },
-          },
-          activeBg: '#EEEEEE',
-          disabled: {
-            font: '#2B3236',
-            border: '#EEEEEE',
-            bg: '#f7f7f7',
-          },
-          placeholder: '#CBCCCD',
           error: '#E53E3E',
         },
         textarea: {

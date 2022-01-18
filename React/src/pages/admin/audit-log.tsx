@@ -6,6 +6,7 @@ import { isEqual } from "date-fns";
 import Header from "../../components/Header";
 import AuditLogComponent from "../../components/AuditLog/AuditLog";
 import { IAuditLog } from "../../interfaces/IAuditLog";
+import { useAppContext } from "../../contexts/AppProvider";
 
 const GET_AUDIT_LOGS = gql`
   query AuditLogs($auditLogsQuery: AuditLogsQuery) {
@@ -30,11 +31,27 @@ const GET_AUDIT_LOGS = gql`
 
 const AuditLog = () => {
   const dateLimit = useMemo(() => new Date(), []);
+  const { settings } = useAppContext();
+  const auditLogLimit = useMemo(() => {
+    if(settings.length === 0){
+      return 5;
+    }
+    if(settings?.filter(settings => settings.name === "auditLogLimit").length === 0){
+      return 5;
+    }
+
+    if(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value){
+      return Number(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value);
+    }
+
+    return 5;
+  },[settings]);
+
   const { data, loading, refetch } = useQuery(GET_AUDIT_LOGS, {
     variables: {
       auditLogsQuery: {
         skip: 0,
-        limit: 5,
+        limit: auditLogLimit,
         dateLimit,
       },
     },
@@ -46,11 +63,11 @@ const AuditLog = () => {
     refetch({
       auditLogsQuery: {
         skip,
-        limit: 5,
+        limit: auditLogLimit,
         dateLimit,
       },
     });
-  }, [skip, dateLimit, refetch]);
+  }, [skip, dateLimit, refetch, auditLogLimit]);
 
   useEffect(() => {
     if (data) {

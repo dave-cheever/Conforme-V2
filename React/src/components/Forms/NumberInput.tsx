@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Flex, Icon, Input, Tooltip } from '@chakra-ui/react';
-
+import { Box, Flex, Input } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Controller } from 'react-hook-form';
+
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
 import { DefinedValidations } from '../../interfaces/Validations';
@@ -19,7 +20,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const NumberInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false }: INumberInput) => {
+const NumberInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, help }: INumberInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
@@ -32,56 +33,90 @@ const NumberInput = ({ control, name, label, placeholder = '', tooltip = '', var
         return (
           <Box w='full' id={name} mt='none'>
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex pt={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "form.numberInput.labelFont.error" : "form.numberInput.labelFont.normal"}
+                  color={error ? "numberInput.labelFont.error" : variant === "secondaryVariant" ? "numberInput.labelFont.secondaryVariant" :"numberInput.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={11}
+                  fontSize={ variant === "secondaryVariant" ? "11px" : "14px" }
                   position="static"
                   left='none'
-                  zIndex={2}
+                  zIndex={1}
                 >
                   {label}
-                  {' '}
-                  {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
-                  {variant === 'secondaryVariant' && placeholder && <Box opacity={.5}>{placeholder}</Box>}
+                  {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
                 </Box>
               </Flex>
             )}
             <Input
+              mt="3"
               borderRadius="8px"
               borderWidth="1px"
               pt='none'
-              h="40px"
+              h="42px"
               type="number"
-              color="form.numberInput.font"
-              bg="form.numberInput.bg"
+              color="numberInput.font"
+              bg="numberInput.bg"
               name={name}
               defaultValue={value}
-              borderColor={error ? "form.numberInput.border.error" : "form.numberInput.border.normal"}
-              _active={{ bg: disabled ? "form.numberInput.disabled.bg" : "form.numberInput.activeBg" }}
-              _focus={{ borderColor: error ? "form.numberInput.border.focus.error" : "form.numberInput.border.focus.normal" }}
+              borderColor={error ? "numberInput.border.error" : "numberInput.border.normal"}
+              _active={{ bg: disabled ? "numberInput.disabled.bg" : "numberInput.activeBg" }}
+              _focus={{ borderColor: error ? "numberInput.border.focus.error" : "numberInput.border.focus.normal" }}
               _hover={{ cursor: "auto" }}
               onChange={onChange}
               onBlur={onBlur}
               isDisabled={disabled}
               cursor="pointer"
               _disabled={{
-                bg: "form.numberInput.disabled.bg",
-                color: "form.numberInput.disabled.font",
-                borderColor: "form.numberInput.disabled.border",
+                bg: "numberInput.disabled.bg",
+                color: "numberInput.disabled.font",
+                borderColor: "numberInput.disabled.border",
                 cursor: "not-allowed",
               }}
               maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
               placeholder={variant === 'secondaryVariant' ? '' : placeholder}
-              _placeholder={{ color: 'form.numberInput.placeholder' }}
+              _placeholder={{ color: 'numberInput.placeholder' }}
             />
-            {error && <Box fontSize={14} ml={1} color='form.numberInput.error'>{error.message}</Box>}
+            {error && <Box fontSize={14} ml={1} color='numberInput.error'>{error.message}</Box>}
+            {tooltip &&
+              <Flex color='dropdown.tooltip' align='center' mt={3}>
+                <InfoOutlineIcon />
+                <Box fontSize="11px" ml={2}>{tooltip}</Box>
+              </Flex>}
           </Box>
         );
       }}
     />
   );
+};
+
+export const numberInputStyles = {
+  numberInput: {
+    font: '#777777',
+    bg: '#FFFFFF',
+    labelFont: {
+      secondaryVariant: "#818197",
+      normal: '#282F36',
+      error: '#E53E3E',
+    },
+    border: {
+      normal: '#CBCCCD',
+      error: '#E53E3E',
+      focus: {
+        normal: '#777777',
+        error: '#E53E3E',
+      },
+    },
+    activeBg: '#EEEEEE',
+    disabled: {
+      font: '#2B3236',
+      border: '#EEEEEE',
+      bg: '#f7f7f7',
+    },
+    placeholder: '#CBCCCD',
+    error: '#E53E3E',
+    tooltip: "#9A9EA1",
+    icon: '#818197'
+  },
 };
 
 export default NumberInput;

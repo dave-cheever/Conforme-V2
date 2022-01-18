@@ -24,6 +24,17 @@ declare global {
 const SETTINGS = gql`
   query {
     roles
+    settings(type: "defaultSettings") {
+        _id
+        name
+        value
+        label
+        type
+        description
+        inputType
+        placeholder
+        help
+    }
   }
 `;
 const ORGANIZATION = gql`
@@ -49,6 +60,7 @@ const useInit = () => {
   const {
     setRoles,
     setOrganizationConfig,
+    setSettings
   } = useAppContext();
 
   useEffect(() => {
@@ -56,6 +68,7 @@ const useInit = () => {
       const parsedRoles = JSONfn.parse(settingsData.roles) as IRoles;
       globalThis.roles = parsedRoles;
       setRoles(parsedRoles);
+      setSettings(settingsData?.settings || []);
     }
   }, [settingsError, settingsData]); // eslint-disable-line react-hooks/exhaustive-deps
 

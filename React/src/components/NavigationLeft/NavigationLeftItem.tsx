@@ -8,10 +8,10 @@ import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { ArrowRight } from "../../icons";
 import { IMenuItem } from "../../interfaces/IMenu";
 
-const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
+const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
   const history = useHistory();
   const { url, icon, label } = menuItem;
-  const [ menuOpen, setMenuOpen ] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(true);
 
   const {
     showFiltersPanel,
@@ -42,11 +42,11 @@ const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
         }}
       >
         <Flex h="100%" align="center">
-          <Flex 
-            w="30px" 
-            h="30px" 
-            ml="25px" 
-            alignItems="center" 
+          <Flex
+            w="30px"
+            h="30px"
+            ml="25px"
+            alignItems="center"
             justifyContent="center"
             bg={
               menuItem.subSections
@@ -56,8 +56,8 @@ const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
                 : history.location.pathname === url
                   ? "navigationLeftItem.selectedLabelBg"
                   : "navigationLeftItem.unselectedLabelBg"
-            } 
-            rounded="8px" 
+            }
+            rounded="8px"
           >
             <Icon
               w="15px"
@@ -74,7 +74,7 @@ const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
               }
             />
           </Flex>
-          {(showFiltersPanel && (menuItem.subSections?.length > 0 || (history.location.pathname === "/" && history.location.pathname === url) )) 
+          {(showFiltersPanel && (menuItem.subSections?.length > 0 || (history.location.pathname === "/" && history.location.pathname === url)))
             && <ArrowRight boxSize="10px" ml={1} />
           }
         </Flex>
@@ -98,12 +98,12 @@ const NavigationLeftItem = ({ menuItem } : { menuItem : IMenuItem}) => {
       <Box>
         {history.location.pathname.includes(url) && !showFiltersPanel &&
           menuItem.subSections?.map((subSection) => {
-            return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen}/>;
+            return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen} />;
           })
         }
-        {history.location.pathname === "/" && history.location.pathname === url  && !showFiltersPanel && 
+        {history.location.pathname === "/" && history.location.pathname === url && !showFiltersPanel &&
           <>
-            {Object.keys(responsesStatusesCounts).length !== 0 && 
+            {Object.keys(responsesStatusesCounts).length !== 0 &&
               <NavigationLeftFilters filter={["all", responsesStatusesCounts["compliant"] + responsesStatusesCounts["nonCompliant"]]} menuOpen={menuOpen} />}
             {Object.entries(responsesStatusesCounts).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} menuOpen={menuOpen} />)}
           </>
