@@ -3,6 +3,7 @@ import { isInteger } from "lodash";
 import { IResponse } from '../interfaces/IResponse';
 // import { useAppContext } from '../contexts/AppProvider';
 import { differenceInDays, startOfDay } from "date-fns";
+import { IChoice, IQuestion, IQuestionValue } from "../interfaces/IQuestion";
 
 export const responseStatuses = {
   "completed": "Completed",
@@ -126,7 +127,12 @@ const useResponseUtils = () => {
   };
 
   const areRequiredQuestionsAnswered = (response: IResponse) => {
-    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value }) => value || (typeof value === 'boolean' && value === false));
+    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value, type }: IQuestion<IQuestionValue>) => {
+      if (type === "multipleChoice") {
+        return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+      }
+      return value || (typeof value === 'boolean' && value === false);
+    });
   };
 
   return {

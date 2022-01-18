@@ -17,6 +17,7 @@ import {
 } from 'app-utils';
 import { diff } from "deep-object-diff";
 import { GraphQLError } from "graphql";
+import { IChoice } from "src/interfaces/IQuestion";
 
 const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   _id: String,
@@ -349,7 +350,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
         // If CI question exist in response, leave it but update with possible changes
         updatedResponse.questions.push({
           ...existingQuestion,
-          value:question.value,
+          value: question.value,
           description: question.description,
           required: question.required,
         });
@@ -362,7 +363,12 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
     // If questions or evidence has changed, set right status
     const areRequiredQuestionsAnswered = updatedResponse.questions
       .filter(({ required, outdated }) => !outdated && required)
-      .every(({ value }) => value || (typeof value === 'boolean' && value === false));
+      .every(({ value, type }) => {
+        if (type === "multipleChoice") {
+          return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+        }
+        return value || (typeof value === 'boolean' && value === false);
+      });
     const isEvidenceUploaded = updatedResponse.evidence
       .filter(({ outdated }) => !outdated)
       .every(({ uploaded }) => uploaded && uploaded.id);

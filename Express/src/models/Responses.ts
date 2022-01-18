@@ -17,6 +17,7 @@ import {
 } from 'app-utils';
 import { AuditLogs, BusinessUnits, ComplianceItems, Organizations, Users } from 'app-models';
 import { GraphQLError } from 'graphql';
+import { IChoice } from 'src/interfaces/IQuestion';
 
 const responseSchema = new Schema<IResponse, IResponseModel>({
   _id: String,
@@ -383,7 +384,12 @@ responseSchema.methods.customRecalculateResponse = async function (): Promise<vo
 
   const areRequiredQuestionsAnswered = response.questions
     .filter(({ required, outdated }) => required && !outdated)
-    .every(({ value }) => value || (typeof value === 'boolean' && value === false));
+    .every(({ value, type }) => {
+      if (type === "multipleChoice") {
+        return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+      }
+      return value || (typeof value === 'boolean' && value === false);
+    });
   const isEvidenceUploaded = response.evidence
     .filter(({ outdated }) => !outdated)
     .every(({ uploaded }) => uploaded?.id);

@@ -1,4 +1,5 @@
 import { IBase, IBaseWithName, IBusinessUnit, IUser, IQuestion, IComment, IComplianceItem } from 'app-interfaces';
+import { IQuestionValue } from './IQuestion';
 
 export interface IDocument {
   id: string;
@@ -25,7 +26,7 @@ export interface IResponse extends IBase {
   status: string;
   evidence: IEvidence[];
   attachments: IDocument[];
-  questions: IQuestion[];
+  questions: IQuestion<IQuestionValue>[];
   accountableId: string;
   responsibleId: string;
   contributorsIds?: string[];
