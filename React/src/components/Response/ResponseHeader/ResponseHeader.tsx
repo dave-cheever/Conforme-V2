@@ -12,6 +12,7 @@ import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 import { useHistory } from 'react-router-dom';
+import FollowButton from '../../Team/FollowButton';
 
 const ReasponseHeader = () => {
   const { response, handleRenewalOpen } = useResponseContext();
@@ -135,18 +136,7 @@ const ReasponseHeader = () => {
           </Flex>
           <Spacer display={["none", "flex"]} />
           <Flex color='white' justify='flex-end' h='40px' mr="27px" display={["none", "flex"]}>
-            <ResponseHeaderButton
-              name="Follow"
-              icon={
-                <FollowIcon
-                  fontSize="15px"
-                  stroke="reasponseHeader.buttonLightColor"
-                  fill='transparent'
-                  _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                />
-              }
-              onClick={undefined}
-            />
+            <FollowButton/>
             <ResponseHeaderButton
               name="Share"
               icon={
@@ -206,17 +196,7 @@ const ReasponseHeader = () => {
                   color="reasponseHeader.optionsMenuBoxShadow"
                   borderRadius="10px"
                 >
-                  <ResponseHeaderMenuItem
-                    title="Follow"
-                    icon={
-                      <FollowIcon
-                        fontSize="15px"
-                        stroke="reasponseHeader.buttonLightColor"
-                        fill='transparent'
-                        _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-                      />}
-                    onClick={undefined}
-                  />
+                  <FollowButton isMobile={true}/>
                   <ResponseHeaderMenuItem
                     title="Share"
                     icon={
