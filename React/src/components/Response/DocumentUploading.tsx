@@ -1,7 +1,8 @@
 import React from "react";
 import {
   Box,
-  Flex
+  Flex,
+  Text
 } from "@chakra-ui/react";
 
 import Loader from "../Loader";
@@ -26,8 +27,8 @@ const DocumentUploading = ({ documentName }: { documentName: string }) => (
           <Loader center={true} size='lg' />
         </Flex>
       </Box>
-      <Flex direction='column' fontSize='12px' mr={2}>
-        <Flex fontWeight='700'>{documentName}</Flex>
+      <Flex direction='column' fontSize='12px' mr={2}  width="250px">
+        <Text fontWeight='700' noOfLines={1} textOverflow="ellipsis">{documentName}</Text>
         <Flex opacity='0.6'>Uploading ...</Flex>
       </Flex>
     </Flex>

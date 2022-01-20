@@ -116,8 +116,9 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
         justify='space-between'
         color='brand.darkGrey'
         role="group"
+        minW={["none","342px"]}
       >
-        <Flex align='center'>
+        <Flex align='center' w="full" justify="space-between">
           <Box w='55px' h='55px' bg='documentUploaded.thumbnailBg' borderRadius="10px" ml='5px' mr={2} fontSize='12px' flexShrink={0} align='center'>
             <Image
               maxWidth='55px'
@@ -126,11 +127,10 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
               src={documentDetails?.thumbnail}
             />
           </Box>
-          <Flex direction='column' overflow='hidden' textOverflow='ellipsis' maxW={['150px', '250px']} fontSize='12px' mr={2}>
+          <Flex direction='column' overflow='hidden' textOverflow='ellipsis' fontSize='12px' mr={2}>
             <Text fontWeight='700' noOfLines={1} textOverflow="ellipsis" cursor="pointer" onClick={() => {if(documentDetails?.preview) window.open(documentDetails?.preview)}}>{document?.name}</Text>
             <Flex opacity='0.6'>Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
           </Flex>
-        </Flex>
         {(isAttachment || isEvidence) && !outDated && (
           <Flex>
             <Can
@@ -188,6 +188,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
             />
           )}
         />}
+        </Flex>
       </Flex>
     </>
   )

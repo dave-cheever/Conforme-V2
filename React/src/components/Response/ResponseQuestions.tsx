@@ -5,9 +5,9 @@ import { gql, useMutation } from '@apollo/client';
 import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import Fields from "./Fields";
 import { toastFailed } from '../../bootstrap/config';
 import { isEqual } from 'lodash';
+import Field from '../Forms/Field';
 
 const UPDATE_QUESTIONS = gql`
   mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
@@ -73,7 +73,7 @@ const ResponseQuestions = () => {
   }
 
   return (
-    <Stack w="full" h="full" overflow="auto" mt={2}>
+    <Stack w="full" h="full" minH={["50vh","none"]} overflow={["visible", "auto"]} mt={2}>
       <Grid
         templateColumns="1fr"
         gap={4}
@@ -100,7 +100,7 @@ const ResponseQuestions = () => {
             >
               {i + 1}
             </Box>
-            <Fields
+            <Field
               type={type}
               label={name}
               name={name}
@@ -108,7 +108,7 @@ const ResponseQuestions = () => {
               placeholder={description}
               disabled={!isUserPermitted}
               required={!!required}
-              defaultvalue={value}
+              defaultValues={value}
               styles={styles}
             />
           </Flex>

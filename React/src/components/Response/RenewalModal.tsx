@@ -21,6 +21,7 @@ import { gql, useMutation } from '@apollo/client';
 const RENEW_RESPONSE = gql`
   mutation ($_id: ID!) {
     renewResponse(_id: $_id) {
+      _id
       nextRenewalDate
     }
   }
@@ -29,7 +30,7 @@ const RENEW_RESPONSE = gql`
 const RenewalModal = () => {
   const history = useHistory();
   const [renewResponse] = useMutation(RENEW_RESPONSE);
-  const { response, isRenewalOpen, handleRenewalClose, refetch } = useContext(ResponseContext);
+  const { response, isRenewalOpen, handleRenewalClose, refetch, setActiveTab } = useContext(ResponseContext);
   const [loading, setLoading] = useState(false);
   const [renewedResponse, setRenewedResponse] = useState<IResponse | undefined>(undefined);
 
@@ -46,10 +47,15 @@ const RenewalModal = () => {
         _id: response._id,
       },
     });
-    refetch();
+    await refetch();
     setRenewedResponse(renewed.data.renewResponse);
     setLoading(false);
   };
+
+  const handleViewRenewed = async () => {
+    handleRenewalClose();
+    setActiveTab(0);
+  }
 
   return (
     <Modal
@@ -109,9 +115,8 @@ const RenewalModal = () => {
                   Return to homepage
                 </Button>
                 <Button
-                  color="renewResponseModal.buttons.primary.color"
-                  bg="renewResponseModal.buttons.primary.bg"
-                  onClick={handleRenewalClose}
+                  colorScheme="purpleHeart"
+                  onClick={handleViewRenewed}
                 >
                   View renewed response
                 </Button>

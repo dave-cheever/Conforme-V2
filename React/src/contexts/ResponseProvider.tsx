@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
 import { useDisclosure } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
@@ -101,6 +101,7 @@ export const useResponseContext = () => {
 const ResponseProvider = (props: any) => {
   const { id }: { id: string } = useParams();
   const { data, loading, refetch } = useQuery(GET_RESPONSES, { variables: { responsesQuery: { _id: id } } });
+  const [activeTab, setActiveTab] = useState(0);
   const [getParticipants, { data: participantsData, loading: participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
@@ -141,6 +142,7 @@ const ResponseProvider = (props: any) => {
   }, [response]);
 
   const value = useMemo(() => ({
+    activeTab, setActiveTab ,
     response, users: participants, loading, refetch,
     isShareOpen, handleShareOpen, handleShareClose,
     isConfirmationOpen, handleConfirmationOpen, handleConfirmationClose,
@@ -152,6 +154,7 @@ const ResponseProvider = (props: any) => {
     participantsLoading
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
     loading,
+    activeTab,
     response,
     participantsData,
     isShareOpen,

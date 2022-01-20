@@ -67,7 +67,7 @@ const Details = () => {
   }
 
   return (
-    <Flex w="full" h="full" flexDir="column" overflow={["visible", "auto"]}>
+    <Flex w="full" h="full" minH={["50vh","none"]} flexDir="column" overflow={["visible", "auto"]}>
       <Grid
         templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]}
         mb={5}

@@ -5,10 +5,9 @@ import { Asterisk } from '../../icons';
 
 interface IMultipleChoices extends IField {
   placeholder?: string;
-  defaultvalue?: any;
 }
 
-const MultipleChoices = ({ control, name, label, required, tooltip = '', validations = {}, disabled = false, defaultvalue }: IMultipleChoices) => {
+const MultipleChoices = ({ control, name, label, required, tooltip = '', disabled = false, defaultValues }: IMultipleChoices) => {
   return (
     <Box w='full' id={name}>
       {label && (
@@ -28,13 +27,13 @@ const MultipleChoices = ({ control, name, label, required, tooltip = '', validat
           </Box>
         </Flex>
       )}
-      {defaultvalue.map(({ label }: { label: string, isCorrect: boolean }, index) => {
+      {defaultValues?.map(({ label }: { label: string, isCorrect: boolean }, index) => {
         return (
           <Controller
             key={index}
             name={`${name}.${index}.isCorrect`}
             control={control}
-            render={({ field, fieldState, formState }) => {
+            render={({ field }) => {
               const { onChange, value } = field;
               return (
                 <Stack direction="column">

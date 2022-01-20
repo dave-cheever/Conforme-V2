@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Flex } from '@chakra-ui/react';
 
 import { responseTabItems } from '../../bootstrap/config';
@@ -7,9 +7,10 @@ import Attachments from '../../components/Response/Attachments';
 import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
 import RenewalModal from '../../components/Response/RenewalModal';
+import { useResponseContext } from '../../contexts/ResponseProvider';
 
 const ComplianceItemResponse = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const { activeTab, setActiveTab } = useResponseContext();
 
   const renderSection = () => {
     switch (activeTab) {
@@ -30,7 +31,7 @@ const ComplianceItemResponse = () => {
     <>
       <RenewalModal />
       <Flex w="full" h="full" direction="column">
-        <Flex flexDir="column" h="full" p={["15px 20px 20px 20px", "25px 30px 25px 30px"]} w="full" borderRadius="20px" bg="complianceItemResponse.bg">
+        <Flex flexDir="column" h={["fit-content", "full"]} p={["15px 20px 20px 20px", "25px 30px 25px 30px"]} w="full" borderRadius="20px" bg="complianceItemResponse.bg">
           <Flex align='center' justify="space-between" mb="8">
             <Flex justify={["center", "flex-start"]} w="full">
               {responseTabItems.map(({ index, label, icon }) => <ResponseTabItem setActiveTab={setActiveTab} index={index} active={activeTab === index} key={label} label={label} icon={icon} />)}

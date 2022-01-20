@@ -11,13 +11,14 @@ import {
   TextMultilineConfirmInput,
   TextInput,
   Toggle,
+  MultipleChoices,
 } from './index';
 import { IField } from '../../interfaces/IField';
 import Table from './Table';
 import DataGrid from './DataGrid';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required } = field;
+  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required,defaultValues } = field;
   const props: IField = {
     control,
     name,
@@ -31,7 +32,8 @@ const Field = ({ control, ...field }) => {
     tooltip,
     help,
     styles,
-    required
+    required,
+    defaultValues
   };
 
   switch (type) {
@@ -55,6 +57,9 @@ const Field = ({ control, ...field }) => {
     }
     case 'switch': {
       return <Switch key={name} {...props} />
+    }
+    case 'multipleChoice': {
+      return <MultipleChoices {...props} />
     }
     case 'toggle': {
       return <Toggle key={name} {...props} />

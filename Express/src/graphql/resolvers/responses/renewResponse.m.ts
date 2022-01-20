@@ -1,5 +1,6 @@
 import { ComplianceItems, Responses } from "app-models";
 import { getStatus, isPermitted } from "app-utils";
+import { IChoice } from "src/interfaces/IQuestion";
 
 const renewResponse = async (_, { _id }, { authorize, organization }) => {
   try {
@@ -23,7 +24,19 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
     const newQuestions = [
       ...response.questions
         .filter(({ outdated }) => !outdated)
-        .map(({ type, name, description, required }) => ({ type, name, description, required }))
+        .map(({ type, name, description, required, value }) => 
+          {
+            if(type === "multipleChoice") {
+              return { type, 
+                name, 
+                description, 
+                required, 
+                value : (value as IChoice[])?.map(choice => ({...choice, isCorrect: false}))
+              };
+            }
+
+            return { type, name, description, required };
+          })
     ];
     const nextStatus = getStatus(complianceItem.frequency || "");
 

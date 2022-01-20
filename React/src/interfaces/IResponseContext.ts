@@ -7,6 +7,9 @@ export interface IResponseContext {
   loading: boolean,
   refetch: () => void;
 
+  activeTab: number;
+  setActiveTab(tab: number): void;
+
   isShareOpen: boolean,
   handleShareOpen: () => void,
   handleShareClose: () => void,

@@ -60,12 +60,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
     description: String,
     value: Schema.Types.Mixed,
     required: Boolean,
-    outdated: Boolean,
-    choices: [{
-      _id: false,
-      label: String,
-      isCorrect: Boolean
-    }]
+    outdated: Boolean
   }],
   metatags: {
     addedAt: Date,
@@ -219,7 +214,7 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
               const oldChoices = questionOld.value.map((option, index) => `${index}-${option.isCorrect}`);
               const newChoices = questionNew.value.map((option, index) => `${index}-${option.isCorrect}`);
               const updatedChoice = _difference(oldChoices, newChoices)[0];
-              const [choiceIndex, choiceValue] = updatedChoice.split('-');
+              const [choiceIndex, choiceValue] = updatedChoice?.split('-');
 
               // choiceValue keeps the previous value of the choice
               if (choiceValue === 'true') {
