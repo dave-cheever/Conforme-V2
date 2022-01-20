@@ -35,7 +35,8 @@ const ComplianceItemResponse = () => {
             <Flex justify={["center", "flex-start"]} w="full">
               {responseTabItems.map(({ index, label, icon }) => <ResponseTabItem setActiveTab={setActiveTab} index={index} active={activeTab === index} key={label} label={label} icon={icon} />)}
             </Flex>
-            {activeTab < 2 && <Button display={["none", "block"]} borderRadius="10px" h="28px" fontSize="11px" fontWeight="bold" color="complianceItemResponse.nextButtonColor" onClick={() => setActiveTab(activeTab + 1)}>Next step</Button>}
+            {activeTab > 0 && <Button mr={activeTab === 2 ? '132px' : '12px'} display={["none", "block"]} flexShrink={0} w='120px' borderRadius="10px" h="28px" fontSize="11px" fontWeight="bold" color="complianceItemResponse.nextButtonColor" onClick={() => setActiveTab(activeTab - 1)}>Previous step</Button>}
+            {activeTab < 2 && <Button display={["none", "block"]} w='120px' flexShrink={0} borderRadius="10px" h="28px" fontSize="11px" fontWeight="bold" color="complianceItemResponse.nextButtonColor" onClick={() => setActiveTab(activeTab + 1)}>Next step</Button>}          
           </Flex>
           {renderSection()}
         </Flex>
