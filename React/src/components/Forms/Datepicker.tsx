@@ -83,6 +83,9 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', requ
                   selected={value ? new Date(value) : null}
                   placeholderText={placeholder}
                   ref={datePickerRef}
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormatCalendar="MMMM"
                 />
               }
               <CalendarIcon

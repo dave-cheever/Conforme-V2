@@ -167,7 +167,9 @@ const Details = () => {
                   selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
                   onChange={(date) => updateResponseDate(date)}
                   customInput={<EditButton />}
-                  disabledKeyboardNavigation
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormatCalendar="MMMM"
                   >
                     <Button colorScheme="purpleHeart" w="full" size="sm" onClick={() => updateResponseDate(null)}>No due date</Button>
                   </DatePicker>
