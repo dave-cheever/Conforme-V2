@@ -21,7 +21,7 @@ import Locations from "../pages/admin/locations";
 import Login from "../pages/login";
 import Licenses from "../pages/licenses";
 import Mentions from "../pages/mentions";
-import Policies from "../pages/policies";
+import PrivacyPolicy from "../pages/privacy-policy";
 import PureLayout from "../layouts/PureLayout";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import ResponseLayout from "../layouts/ResponseLayout";
@@ -29,6 +29,7 @@ import Settings from "../pages/admin/settings";
 import Team from "../pages/compliance-item/team";
 import Users from "../pages/admin/users";
 import Logout from "../pages/logout";
+import Terms from "../pages/terms";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -124,10 +125,17 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
-    path: "/policies",
-    key: "policies",
+    path: "/privacy-policy",
+    key: "privacy-policy",
     exact: true,
-    component: Policies,
+    component: PrivacyPolicy,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/terms-and-conditions",
+    key: "terms",
+    exact: true,
+    component: Terms,
     layout: DefaultLayout,
   },
   {

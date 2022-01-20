@@ -18,7 +18,7 @@ const Help = () => {
       <Flex
         flexDirection="column"
         bg="white"
-        maxWidth={["full","full","775px"]}
+        maxWidth={"full"}
         borderRadius="20px"
         ml="7"
         p="25px 30px 25px 30px"
