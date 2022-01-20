@@ -11,7 +11,7 @@ const ListIcon = createIcon({
       <path d="M1 10.7432H3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     </g>
   ),
-  viewBox: "0 0 21 16",
+  viewBox: "0 0 21 10",
 });
 
 export default ListIcon;
