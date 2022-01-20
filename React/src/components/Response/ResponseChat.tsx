@@ -194,19 +194,9 @@ const ResponseChat = () => {
           pr='10px'
           w='calc(100% + 10px)'
         >
-          <Flex
-            flex='1'
-            alignItems="flex-end"
-            justifyContent="flex-end"
-            flexDirection='column'
-            alignSelf="flex-end"
-            bottom="0"
-            w='full'
-            h="full"
-          >
-            {loading && <Loader size="md" center={true} />}
-            {comments.map((comment) => <ResponseChatSent key={comment._id}  onAction={deleteComment} comment={comment}/>)}
-          </Flex>
+
+          {loading && <Loader size="md" center={true} />}
+          {comments.map((comment) => <ResponseChatSent key={comment._id}  onAction={deleteComment} comment={comment}/>)}
         </Flex>
         <MessageInput
           name="text"
