@@ -65,8 +65,8 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
                 ) => {
                   return(
                     <Flex w="full" pl="13px" py="10px" color="mentionListItem.color" fontSize="14px" __hover={{color: "mentionListItem.hoverColor"}}>
-                      <Avatar size="xs" name={highlightedDisplay?.display}/>
-                      <Text ml={3} noOfLines={1} textOverflow="ellipsis">{highlightedDisplay?.display}</Text>
+                      <Avatar size="xs" name={highlightedDisplay?.displayName}/>
+                      <Text ml={3} noOfLines={1} textOverflow="ellipsis">{highlightedDisplay?.displayName}</Text>
                     </Flex>
                   );
                 }}
