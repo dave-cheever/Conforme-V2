@@ -282,6 +282,7 @@ const BusinessUnits = () => {
             control={control}
             name="type"
             label="Unit Type"
+            variant="secondaryVariant"
             placeholder="Select Unit Type"
             validations={{
               notEmpty: true,
@@ -292,6 +293,7 @@ const BusinessUnits = () => {
             control={control}
             name="region"
             label="Region"
+            variant="secondaryVariant"
             placeholder="Select Region"
             validations={{
               notEmpty: true,

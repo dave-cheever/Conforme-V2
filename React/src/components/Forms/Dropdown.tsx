@@ -134,7 +134,7 @@ export const dropdownStyles = {
       border: '#EEEEEE',
       bg: '#f7f7f7',
     },
-    placeholder: '#CBCCCD',
+    placeholder: '#282F36',
     error: '#E53E3E',
     tooltip: "#9A9EA1",
     icon: '#818197',
