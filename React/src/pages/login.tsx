@@ -130,7 +130,7 @@ const Login = () => {
             lineHeight="18px"
             h="40px"
           >
-            Log as {user?.firstName}
+            Login as {user?.firstName}
           </Button>
           <Flex flexDir="column" color="loginPage.descriptionColor" align="center" fontSize="11px">
             <Flex>Not {user?.firstName}?</Flex>
