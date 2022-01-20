@@ -15,7 +15,7 @@ const updateResponse = async (_, { updateResponseModify }, { authorize, organiza
       throw new Error('User is not permitted');
     }
 
-    const updatedResponse = await Responses.customUpdateOne({ _id }, { nextRenewalDate: new Date(nextRenewalDate) }, user._id, organization._id);
+    const updatedResponse = await Responses.customUpdateOne({ _id }, { nextRenewalDate: nextRenewalDate === null ? null : new Date(nextRenewalDate) }, user._id, organization._id);
 
     // @ts-ignore
     await response.customRecalculateResponse();
