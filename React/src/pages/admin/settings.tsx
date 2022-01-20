@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Flex, useDisclosure, Image } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 
 import Header from "../../components/Header";
-import SettingsProvider, {
-  useSettingsContext,
-} from "../../contexts/SettingsProvider";
+import SettingsProvider, { useSettingsContext } from "../../contexts/SettingsProvider";
 import Defaults from "../../components/Settings/Defaults";
 import Loader from "../../components/Loader";
-import Notification from "../../components/Settings/Notification";
+// import Notification from "../../components/Settings/Notification";
 import EmailTemplates from "../../components/Settings/EmailTemplates";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { ISetting } from "../../interfaces/ISettings";
 import Tabs from "../../components/Settings/Tabs";
 import useDevice from "../../hooks/useDevice";
-import { CloseIcon } from "@chakra-ui/icons";
 
 const Settings = () => {
   const { loading, activeTab } = useSettingsContext();
@@ -50,8 +48,8 @@ const Settings = () => {
           />
         );
 
-      case 2:
-        return <Notification />;
+      // case 2:
+      //   return <Notification />;
 
       default:
         return null;

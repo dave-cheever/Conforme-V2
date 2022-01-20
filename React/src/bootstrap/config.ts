@@ -160,10 +160,10 @@ export const settingsTabs = [
     index: 1,
     label: "Email templates"
   },
-  {
-    index: 2,
-    label:"Notifications"
-  }
+  // {
+  //   index: 2,
+  //   label:"Notifications"
+  // }
 ];
 
 export const auditTabs = [
