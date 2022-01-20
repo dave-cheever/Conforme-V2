@@ -26,9 +26,6 @@ const updateResponseQuestions = async (_, { updateResponseQuestionsModify }, { a
     }
 
     await Responses.customUpdateOne({ _id }, { questions }, user._id, organization._id);
-
-    // @ts-ignore
-    await responseDocument.customRecalculateResponse();
     return true;
   } catch (error: any) {
     throw new Error(error);

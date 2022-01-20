@@ -329,6 +329,7 @@ responseSchema.statics.customUpdateOne = async function (selector: object = {}, 
     },
   };
   const updatedResult = await this.updateOne(selector, updatedResponse);
+  await this.customRecalculateResponse(response._id);
 
   const assertAttendees = async () => {
     const usersIds = [
@@ -373,8 +374,8 @@ responseSchema.statics.customUpdateOne = async function (selector: object = {}, 
   return updatedResponse;
 };
 
-responseSchema.methods.customRecalculateResponse = async function (): Promise<void> {
-  const response: IResponse = await responseModel.findById(this._id).lean();
+responseSchema.statics.customRecalculateResponse = async function (responseId: string): Promise<void> {
+  const response: IResponse = await responseModel.findById(responseId).lean();
   const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, response.organizationId);
 
   const areRequiredQuestionsAnswered = response.questions
@@ -420,7 +421,7 @@ responseSchema.methods.customRecalculateResponse = async function (): Promise<vo
     }
   }
 
-  await responseModel.updateOne({ _id: this._id }, response);
+  await responseModel.updateOne({ _id: responseId }, response);
 }
 
 const responseModel = model<IResponse, IResponseModel>('Response', responseSchema);

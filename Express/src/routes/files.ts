@@ -81,8 +81,6 @@ const filesRouter = () => {
         }
 
         await Responses.customUpdateOne({ _id: response._id }, update, user._id, organization._id!);
-        // @ts-ignore
-        await responseDocument.customRecalculateResponse();
 
         return res.status(StatusCodes.OK).end('Files saved');
       } catch (err: any) {

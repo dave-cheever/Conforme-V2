@@ -7,8 +7,8 @@ const removeDocument = async (_, { responseDocumentRemoveInput }, { authorize, o
   try {
     const user = await authorize();
     const { _id, documentId, documentType } = responseDocumentRemoveInput;
-    const response = await Responses.customFindById(_id, organization._id);
 
+    const response = await Responses.customFindById(_id, organization._id);
     if (!response) {
       throw new Error("Response doesn't exist");
     }

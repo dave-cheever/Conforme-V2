@@ -17,9 +17,6 @@ const updateResponse = async (_, { updateResponseModify }, { authorize, organiza
 
     const updatedResponse = await Responses.customUpdateOne({ _id }, { nextRenewalDate: nextRenewalDate === null ? null : new Date(nextRenewalDate) }, user._id, organization._id);
 
-    // @ts-ignore
-    await response.customRecalculateResponse();
-
     return updatedResponse;
   } catch (error: any) {
     throw new Error(error);
