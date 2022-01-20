@@ -1,17 +1,17 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer, useDisclosure } from '@chakra-ui/react';
 import format from 'date-fns/format';
+import { useHistory } from 'react-router-dom';
 
 import { isPermitted } from '../../can';
 import { useAppContext } from '../../../contexts/AppProvider';
-import { FollowIcon, ShareIcon, CheckIcon, ArrowDownIcon } from '../../../icons';
+import { ShareIcon, CheckIcon, ArrowDownIcon } from '../../../icons';
 import { useResponseContext } from '../../../contexts/ResponseProvider';
 import { ResponseContext } from '../../../contexts/ResponseProvider';
 import ResponseHeaderStatus from './ResponseHeaderStatus';
 import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import useResponseUtils from '../../../hooks/useResponseUtils';
-import { useHistory } from 'react-router-dom';
 import FollowButton from '../../Team/FollowButton';
 
 const ReasponseHeader = () => {

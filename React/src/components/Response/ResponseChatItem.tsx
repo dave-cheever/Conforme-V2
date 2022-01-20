@@ -86,6 +86,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
             rounded="full"
             name={chatAuthor?.displayName}
             size="xs"
+            p="2px"
             src={chatAuthor?.imgUrl}
             loading="lazy"
           />
