@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Stack, Box, Grid, Flex, useToast } from '@chakra-ui/react';
+import { Stack, Box, Grid, Text, Flex, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
 import { isPermitted } from '../can';
@@ -78,6 +78,10 @@ const ResponseQuestions = () => {
         templateColumns="1fr"
         gap={4}
         w={['full', '80%', '50%']}>
+        {questions.length === 0 &&
+          <Text
+            fontSize="smm"
+          >No questions</Text>}
         {questions.map(({ type, name, description, required, value }, i) => (
           <Flex key={name}>
             <Box
@@ -121,6 +125,6 @@ export const responseQuestionsStyles = {
     sectionNumber: {
       bg: "#F0F2F5",
       color: "#282F36",
-    }
+    },
   }
 }
