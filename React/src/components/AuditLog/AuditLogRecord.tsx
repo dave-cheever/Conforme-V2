@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Flex, Box, Avatar, Text } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
-import moment from "moment";
+import format from "date-fns/format";
 import { useHistory } from "react-router-dom";
 import reactStringReplace from "react-string-replace";
 
@@ -91,7 +91,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
   return (
     <Flex mb="18px" flexDir="column" ml="20px">
       <Text fontSize="11px" color="auditLogRecordStyles.info.color">
-        {moment(audit?.metatags?.addedAt).format("HH:mm A")}
+        {format(new Date(audit?.metatags?.addedAt!), "h:mm a")}
       </Text>
       <Flex align="center" mt="3">
         <Avatar
