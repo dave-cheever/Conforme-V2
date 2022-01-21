@@ -37,6 +37,7 @@ const defaultPermissions = [
   "regulatoryBodies.view",
   "settings.view",
   "businessUnits.view",
+  "complianceItems.view"
 ];
 
 const roles = {
