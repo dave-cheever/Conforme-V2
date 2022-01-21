@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from "graphql";
 import { Responses, Users } from "app-models";
 import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
-import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, intervalToDuration, isSameDay } from "date-fns";
+import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, isSameDay, differenceInCalendarDays } from "date-fns";
 import { response } from "express";
 
 const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
@@ -263,8 +263,8 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
         const end = new Date();
         if (isSameDay(start, end)) {
           response.daysToDueDate = 0;
-        } else {
-          response.daysToDueDate = intervalToDuration({ start, end }).days || 1;
+        }else {
+          response.daysToDueDate = differenceInCalendarDays(start, end);
         }
       }
     }

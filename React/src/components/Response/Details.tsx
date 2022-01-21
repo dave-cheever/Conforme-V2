@@ -1,9 +1,10 @@
 import React, { useMemo, useRef } from "react";
 import { Button, CircularProgress, Flex, Grid, Text } from "@chakra-ui/react";
 import format from "date-fns/format";
-import intervalToDuration from "date-fns/intervalToDuration";
+import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import DatePicker from "react-datepicker";
 import { gql, useMutation } from "@apollo/client";
+import isToday from "date-fns/isToday";
 
 import DescriptionText from "./DescriptionText";
 import { ArrowDownIcon } from "../../icons";
@@ -24,30 +25,26 @@ const Details = () => {
   const startRef = useRef<DatePicker>();
 
   const progress = useMemo(() => {
-    if (!response.daysToDueDate) {
+    if(response.daysToDueDate === undefined) {
       return -1;
     }
 
     if (response.lastCompletionDate && response.nextRenewalDate) {
-      const totalDays = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date(response.lastCompletionDate) }).days;
-      if (!totalDays) {
-        return -1;
+      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate),new Date(response.lastCompletionDate));
+
+      if(isToday(new Date(response.nextRenewalDate))){
+        return ((1 / totalDays) * 100);
       }
-      if (totalDays === response.daysToDueDate) {
-        return 100;
-      }
-      return (((totalDays - response.daysToDueDate) / totalDays) * 100);
+      return ((response.daysToDueDate / totalDays) * 100);
     }
 
     if (response.metatags?.addedAt && response.nextRenewalDate) {
-      const totalDays = intervalToDuration({ start: new Date(response.nextRenewalDate), end: new Date(response.metatags.addedAt) }).days;
-      if (!totalDays) {
-        return -1;
+      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.metatags.addedAt));
+
+      if( isToday(new Date(response.nextRenewalDate)) ){
+        return ((1 / totalDays) * 100);
       }
-      if (totalDays === response.daysToDueDate) {
-        return 100;
-      }
-      return (((totalDays - response.daysToDueDate) / totalDays) * 100);
+      return ((response.daysToDueDate / totalDays) * 100);
     }
 
     return -1;
