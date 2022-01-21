@@ -25,7 +25,7 @@ const BarChart = ({ data, label }) => {
 
   return (
     <Flex flexDir="column">
-      <Text h="25px" mt="20px" color="barChart.headerColor" fontSize="11px" mb="25px">{label} rank by # of items</Text>
+      <Text h="25px" mt="20px" color="barChart.headerColor" fontSize="11px" mb="25px">{label} rank by # of responses</Text>
       {maxCount !== -Infinity && <>
         <Flex flexDir="column" >
           {data.map(el => 

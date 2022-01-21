@@ -38,7 +38,7 @@ const ComplianceItemModal = ({ refetch }) => {
 
   useEffect(() => {
     setVisitedTab(0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const { Component } = selectedSection;
@@ -101,25 +101,25 @@ const ComplianceItemModal = ({ refetch }) => {
   };
 
   const handlePreviousButtonClick = () => {
-    selectSection(selectedSectionIndex -1);
+    selectSection(selectedSectionIndex - 1);
   }
 
   const buttonText = useMemo(() => {
-    if(selectedSection.name !== "Summary") {
+    if (selectedSection.name !== "Summary") {
       return "Next Step"
     }
 
-    if(complianceItem.published){
+    if (complianceItem.published) {
       return "Unpublish";
     }
 
-    if(complianceItem.hasOwnProperty('_id')){
+    if (complianceItem.hasOwnProperty('_id')) {
       return "Publish compliance item";
     }
 
     return "Add compliance item";
 
-  },[ complianceItem, selectedSection ]);
+  }, [complianceItem, selectedSection]);
 
   return (
     <>
@@ -164,47 +164,49 @@ const ComplianceItemModal = ({ refetch }) => {
           <Flex height="100%" flexDir={["column", "row"]}>
             {device !== "mobile" && <NavigationModal />}
             {device === "mobile" && <NavigationMobileModal />}
-            <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h={["calc(100vh - 180px)","calc(100vh - 120px)"]} rounded="20px" justifyContent="space-between">
+            <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h={["calc(100vh - 180px)", "calc(100vh - 120px)"]} rounded="20px" justifyContent="space-between">
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
-              <Flex justifyContent="space-between" w="full">
-              <Button
-                w="fit-content"
-                h="40px"
-                leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
-                fontSize="smm"
-                fontWeight="700"
-                rounded="10px"
-                colorScheme="red"
-                onClick={handlePreviousButtonClick}
-                disabled={selectedSection.name === "General"}
-              >
-                Back
-              </Button>
-              <Button
-                ml={3}
-                w="fit-content"
-                h="40px"
-                rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
-                bg="complianceItemModal.tabs.bottomButton.bg"
-                color="complianceItemModal.tabs.bottomButton.color"
-                fontSize="smm"
-                fontWeight="700"
-                _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
-                rounded="10px"
-                onClick={() => {
-                  trigger(Object.keys(selectedSection.fields || []) as any);
-                  handlePrimaryButtonClick()
-                }}
-                disabled={
-                  selectedSection.name === 'Summary' &&
-                  (Object.keys(errors).length > 0 || !isActionRequiredToComplete) &&
-                  !complianceItem.published
-                }
-              >
-                {buttonText}
-              </Button>
+              <Flex justifyContent={selectedSection.name !== "Details" ? "space-between": "flex-end"} w="full">
+                {selectedSection.name !== "Details" &&
+                  <Button
+                    w="fit-content"
+                    h="40px"
+                    leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
+                    fontSize="smm"
+                    fontWeight="700"
+                    rounded="10px"
+                    bg="complianceItemModal.tabs.bottomButton.bg"
+                    color="complianceItemModal.tabs.bottomButton.color"
+                    _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
+                    onClick={handlePreviousButtonClick}
+                  >
+                    Back
+                  </Button>}
+                <Button
+                  ml={3}
+                  w="fit-content"
+                  h="40px"
+                  rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
+                  bg="complianceItemModal.tabs.bottomButton.bg"
+                  color="complianceItemModal.tabs.bottomButton.color"
+                  fontSize="smm"
+                  fontWeight="700"
+                  _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
+                  rounded="10px"
+                  onClick={() => {
+                    trigger(Object.keys(selectedSection.fields || []) as any);
+                    handlePrimaryButtonClick()
+                  }}
+                  disabled={
+                    selectedSection.name === 'Summary' &&
+                    (Object.keys(errors).length > 0 || !isActionRequiredToComplete) &&
+                    !complianceItem.published
+                  }
+                >
+                  {buttonText}
+                </Button>
               </Flex>
             </Flex>
           </Flex>
