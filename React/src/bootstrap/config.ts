@@ -35,12 +35,12 @@ export const menuItems: INavItem[] = [
     icon: Home,
     permission: "home.view"
   }, {
-  //   type: "menuItem",
-  //   label: "Insights",
-  //   url: "/insights",
-  //   icon: Insights,
-  //   permission: "insights.view"
-  // }, {
+    //   type: "menuItem",
+    //   label: "Insights",
+    //   url: "/insights",
+    //   icon: Insights,
+    //   permission: "insights.view"
+    // }, {
     type: "menuItem",
     label: "Admin",
     url: "/admin",
@@ -81,18 +81,18 @@ export const userMenus = [
 
 export const responseTabItems = [
   {
-    index:0,
-    label:"Details",
+    index: 0,
+    label: "Details",
     icon: DetailIcon
   },
-  { 
-    index:1,
+  {
+    index: 1,
     label: "Attachments",
     icon: AttachmentIcon
   },
   {
-    index:2,
-    label:"Questions",
+    index: 2,
+    label: "Questions",
     icon: QuestionIcon
   }
 ]
@@ -177,7 +177,7 @@ export const auditTabs = [
   },
   {
     index: 2,
-    label:"Team changes"
+    label: "Team changes"
   }
 ];
 
@@ -199,30 +199,16 @@ export const navigationTabs = [
   }
 ];
 
-export const defaultPages = [{
-  name: "Home Page",
-  url: "/"
-},
-{
-  name: "Admin Page",
-  url: "/admin/compliance-items"
-},
-{
-  name:"Insight Page",
-  url: "/insights"
-}
-]
-
-export const userRoles = [{ 
-  value: "responsible", 
-  label: "Responsible" 
-},{ 
-  value: "accountable", 
-  label: "Accountable" 
-},{ 
-  value: "contributor", 
-  label: "Contributor" 
-},{ 
-  value: "follower", 
-  label: "Follower" 
-}]
+export const userRoles = [{
+  value: "responsible",
+  label: "Responsible"
+}, {
+  value: "accountable",
+  label: "Accountable"
+}, {
+  value: "contributor",
+  label: "Contributor"
+}, {
+  value: "follower",
+  label: "Follower"
+}];

@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
-import { defaultPages } from "../../bootstrap/config";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import Header from "../../components/Header";
@@ -19,6 +18,7 @@ import useDevice from "../../hooks/useDevice";
 import { ArrowDownIcon } from "../../icons";
 import { IUser } from "../../interfaces/IUser";
 import { upperFirst } from "lodash";
+import { isPermitted } from "../../components/can";
 
 const GET_USERS = gql`
   query {
@@ -53,6 +53,7 @@ const Users = () => {
   const device = useDevice();
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
+  const [loadingUsers, setLoadingUsers] = useState<string[]>([]);
   const [sortType, setSortType] = useState("displayName");
   const [sortOrder, setSortOrder] = useState(true);
 
@@ -82,9 +83,27 @@ const Users = () => {
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onHomePageChange = async (e, userId) => {
+    setLoadingUsers(currentLoadingUsers => [...currentLoadingUsers, userId]);
     await updateFunction({ variables: { values: { _id: userId, defaultPage: e.target.value } } });
-    refetch();
-  }
+    await refetch();
+    setLoadingUsers(currentLoadingUsers => currentLoadingUsers.filter(id => id !== userId));
+  };
+
+  const getDefaultPages = (userId) => {
+    const pages = [{
+      name: "Home Page",
+      url: "/"
+    }];
+    const user = users.find(({ _id }) => _id === userId);
+
+    if (isPermitted({ user, action: 'adminPanel' })) {
+      pages.push({
+        name: "Admin Page",
+        url: "/admin/compliance-items"
+      });
+    }
+    return pages;
+  };
 
   const renderUserRow = (user: IUser, i: number) => (
     <Flex
@@ -120,16 +139,25 @@ const Users = () => {
             {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
           </Box>
           <Flex w="16%" flexDir="column">
-            <Select fontSize='smm'
-              onChange={(e) => onHomePageChange(e, user?._id)}
-              variant='unstyled'
-              placeholder='select page'
-              value={user.defaultPage}
-              w="fit-content"
-              icon={<ArrowDownIcon ml={3} />}
-            >
-              {defaultPages.map((page) => <option key={page.url} value={page.url}>{page.name}</option>)}
-            </Select>
+            {getDefaultPages(user._id).length === 1 ? (
+              <Box>{getDefaultPages(user._id).find(({ url }) => url === user.defaultPage)?.name}</Box>
+            ) : (
+              loadingUsers.includes(user._id) ? (
+                <Flex w="130px">
+                  <Loader size='sm' />
+                </Flex>
+              ) : (
+                <Select fontSize='smm'
+                  onChange={(e) => onHomePageChange(e, user._id)}
+                  variant='unstyled'
+                  value={user.defaultPage}
+                  w="130px"
+                  icon={<ArrowDownIcon ml={3} />}
+                >
+                  {getDefaultPages(user._id).map((page) => <option key={page.url} value={page.url}>{page.name}</option>)}
+                </Select>
+              )
+            )}
           </Flex>
         </>
       }
@@ -142,7 +170,7 @@ const Users = () => {
       <Flex w="calc(16% - 20px)" ml="20px" align='center'>
         {user?.lastLogin ? upperFirst(formatDistanceToNow(new Date(user?.lastLogin), { addSuffix: true })) : 'Never'}
       </Flex>
-    </Flex>
+    </Flex >
   );
 
   return (
