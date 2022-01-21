@@ -180,6 +180,15 @@ export const getLabelByField = (field: string) => {
     case "functionalAreaId":
       fieldName = "Functional area"
       break;
+    case "contributorsIds":
+      fieldName = "Contributor"
+      break;
+    case "responsibleId":
+      fieldName = "Responsible"
+      break;
+    case "followersIds":
+      fieldName = "Follower"
+      break;
     case "frequency":
       fieldName = "Frequency"
       break;

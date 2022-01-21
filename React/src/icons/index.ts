@@ -62,6 +62,7 @@ import LocationIcon from "./LocationIcon";
 import Magnifier from "./Magnifier";
 import Mentions from "./Mentions";
 import MessageIcon from "./MessageIcon";
+import MessageSquareIcon from "./MessageSquareIcon"
 import MinusIcon from "./MinusIcon";
 import Move from "./Move";
 import NotificationIcon from "./NotificationIcon";
@@ -158,6 +159,7 @@ export {
   Magnifier,
   Mentions,
   MessageIcon,
+  MessageSquareIcon,
   MinusIcon,
   Move,
   NotificationIcon,

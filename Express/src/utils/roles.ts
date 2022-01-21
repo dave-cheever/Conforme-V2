@@ -83,7 +83,7 @@ const roles = {
       "auditLogs",
       "businessUnits",
       "categories",
-      "comments",
+      "comments.add",
       "complianceItems",
       "insights",
       "items",
@@ -94,6 +94,9 @@ const roles = {
       "users",
       "adminPanel" //permission to see admin items in menu
     ],
+    restricted: {
+      "comments.delete": ({ user, comment }) => user._id === comment.authorId,
+    }
   },
 };
 

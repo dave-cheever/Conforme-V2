@@ -7,6 +7,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { toastFailed } from '../../bootstrap/config';
 import { isEqual } from 'lodash';
+import { MessageSquareIcon } from '../../icons';
 import Field from '../Forms/Field';
 
 const UPDATE_QUESTIONS = gql`
@@ -81,7 +82,14 @@ const ResponseQuestions = () => {
         {questions.length === 0 &&
           <Text
             fontSize="smm"
-          >No questions</Text>}
+            color="responseQuestions.NoQuestion.color"
+          ><MessageSquareIcon
+              stroke="responseQuestions.NoQuestion.icon"
+              w="16px"
+              h="16px" />&nbsp;
+            This item has no questions yet
+          </Text>
+        }
         {questions.map(({ type, name, description, required, value }, i) => (
           <Flex key={name}>
             <Box
@@ -126,5 +134,9 @@ export const responseQuestionsStyles = {
       bg: "#F0F2F5",
       color: "#282F36",
     },
+    NoQuestion: {
+      icon: "#818197",
+      color: "#818197"
+    }
   }
 }
