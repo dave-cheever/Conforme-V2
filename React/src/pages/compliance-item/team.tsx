@@ -57,7 +57,7 @@ const Team = () => {
     onOpen,
     refetchUsers,
     setFilterType,
-    setSelectedRadio,
+    setSelectedParticipants,
     setUserSearchResults,
   } = useTeamContext();
 
@@ -74,7 +74,9 @@ const Team = () => {
 
   useEffect(() => {
     refetchUsers();
-    setSelectedRadio("");
+    if(filterType === "responsible" || filterType === "accountable"){
+      setSelectedParticipants([]);
+    }
     if (data?.searchUsers && searchQuery) {
       const filteredUsers = data.searchUsers.filter(
         ({ _id }) => response && !response[filterType].includes(_id)
@@ -86,6 +88,12 @@ const Team = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, data]);
+
+
+  useEffect(() => {
+    setSelectedParticipants([]);
+  // eslint-disable-next-line
+  },[filterType]);
 
   const accountable: IUser =
     racfData?.responseAccountable &&

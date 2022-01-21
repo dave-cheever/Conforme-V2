@@ -16,7 +16,7 @@ const addParticipant = async (_, { responseParticipantModify }, { authorize, org
     if (!response) {
       throw new Error("Response doesn't exist");
     }
-
+    
     const update: Partial<IResponse> = {};
     switch (permission) {
       case "accountable":

@@ -538,12 +538,21 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
   let value = {};
   const removedIds = difference(oldValue || [], newValue || []);
   const addedIds = difference(newValue || [], oldValue || []);
+  
 
   let user;
   if (collection === Users && (removedIds.length !== 0 && typeof removedIds[0] === 'string')) {
     user = await GraphService.getUserData({ userId: removedIds[0], organization });
-  } else if (collection === Users && (addedIds.length !== 0 && typeof addedIds[0] === 'string')) {
+  } else if (collection === Users && (addedIds.length === 1 && typeof addedIds[0] === 'string')) {
     user = await GraphService.getUserData({ userId: addedIds[0], organization });
+  }
+
+  let users:any[] = [];
+  if (collection === Users && (addedIds.length > 1)) {
+    for (const addedId of addedIds) {
+      let data = await GraphService.getUserData({ userId: addedId, organization });
+      users.push(data);
+    }
   }
 
   if (removedIds.length > 0 && collection !== Users) {
@@ -582,6 +591,12 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
       value: items.map(({ id }) => id),
       label: labels.join(', '),
     };
+  } else if( addedIds.length > 1 && collection === Users) {
+      value['new'] = {
+        value: users.map(({ id }) => id),
+        label: users.map((user) => user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName).join(', '),
+      };
+
   } else if (addedIds.length > 0 && collection === Users) {
     value['new'] = {
       value: user.id,

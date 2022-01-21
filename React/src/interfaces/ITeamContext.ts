@@ -7,7 +7,7 @@ export interface ITeamContext {
   isOpen: boolean,
   userSearchResults: IUser[],
   searchQuery: string,
-  selectedRadio: string, 
+  selectedParticipants: IUser[], 
   isReplaceAccountable: boolean,
   setFilterType: (value: string) => void,
   setIsReplaceAccountable: (value: boolean) => void,
@@ -16,5 +16,5 @@ export interface ITeamContext {
   refetchUsers: () => void
   setUserSearchResults: (value: IUser[]) => void,
   setSearchQuery: (value: string) => void,
-  setSelectedRadio: (value: string) => void
+  setSelectedParticipants: (value: IUser[]) => void
 }

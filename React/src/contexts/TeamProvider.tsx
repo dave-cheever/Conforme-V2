@@ -30,7 +30,7 @@ const TeamProvider = (props: any) => {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [userSearchResults, setUserSearchResults] = useState<IUser[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedRadio, setSelectedRadio] = useState<string>("");
+  const [selectedParticipants, setSelectedParticipants] = useState<IUser[]>([]);
   const [filterType, setFilterType] = useState("");
   const [isReplaceAccountable,setIsReplaceAccountable] = useState<boolean>(false)
   const { data, loading, refetch: refetchUsers } = useQuery(SEARCH_USERS, { variables: { searchQuery: { searchText: searchQuery } } });
@@ -40,7 +40,7 @@ const TeamProvider = (props: any) => {
     isOpen, onOpen, onClose,
     userSearchResults, setUserSearchResults,
     searchQuery, setSearchQuery,
-    selectedRadio, setSelectedRadio,
+    selectedParticipants, setSelectedParticipants,
     filterType, setFilterType,
     isReplaceAccountable,setIsReplaceAccountable
   }), [ // eslint-disable-line react-hooks/exhaustive-deps
@@ -49,7 +49,7 @@ const TeamProvider = (props: any) => {
     isOpen,
     userSearchResults,
     searchQuery,
-    selectedRadio
+    selectedParticipants
   ]);
 
   return (

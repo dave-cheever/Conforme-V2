@@ -1,5 +1,23 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Button, Flex, Heading, Menu, MenuButton, MenuDivider, MenuList, Spacer, useDisclosure } from '@chakra-ui/react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Badge,
+  Button,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuList,
+  Spacer,
+  useDisclosure,
+} from '@chakra-ui/react';
 import format from 'date-fns/format';
 import { useHistory } from 'react-router-dom';
 
@@ -136,7 +154,7 @@ const ReasponseHeader = () => {
           </Flex>
           <Spacer display={["none", "flex"]} />
           <Flex color='white' justify='flex-end' h='40px' mr="27px" display={["none", "flex"]}>
-            <FollowButton/>
+            <FollowButton />
             <ResponseHeaderButton
               name="Share"
               icon={
@@ -196,7 +214,7 @@ const ReasponseHeader = () => {
                   color="reasponseHeader.optionsMenuBoxShadow"
                   borderRadius="10px"
                 >
-                  <FollowButton isMobile={true}/>
+                  <FollowButton isMobile={true} />
                   <ResponseHeaderMenuItem
                     title="Share"
                     icon={
