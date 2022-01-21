@@ -43,6 +43,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
     responseResponsible?.length !== 0 &&
     responseResponsible[0];
 
+  const comingUp = getRenewalStatus(response) === 'comingUp' && responseStatus === 'compliant';
   return (
     <Box
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)' }}
@@ -58,22 +59,22 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
         <Flex align='center'>
           <Flex
             h='12px'
-            bgColor={`complianceSquare.${responseStatus}`}
+            bgColor={comingUp ? 'complianceSquare.comingUp' : `complianceSquare.${responseStatus}`}
             w='12px'
             rounded="full"
           />
-          <Box
-            color='complianceSquare.fontColor'
-            opacity='1'
-            fontSize='11px'
-            overflow='hidden'
-            textOverflow='ellipsis'
-            whiteSpace='nowrap'
-            ml={2}
-          >
-            {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
-          </Box>
-        </Flex>
+            <Box
+              color='complianceSquare.fontColor'
+              opacity='1'
+              fontSize='11px'
+              overflow='hidden'
+              textOverflow='ellipsis'
+              whiteSpace='nowrap'
+              ml={2}
+            >
+              {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
+            </Box>
+          </Flex>
         <Flex align='center'>
           {response?.evidence?.find(({ uploaded }) => uploaded === undefined) ?
             <UploadedTick color='complianceSquare.crossIcon' /> :
@@ -100,10 +101,10 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
         </Text>
       </Flex>
       <Flex h='40px' w='full' align='center'>
-        <LocationIcon color='complianceSquare.businessUnitFontColor' />
+        <LocationIcon ml={1} color='complianceSquare.businessUnitFontColor' />
         <Box
           w='200px'
-          pl={3}
+          pl={2}
           lineHeight='20px'
           color='complianceSquare.businessUnitFontColor'
           fontSize='14px'
@@ -155,7 +156,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           <Box fontSize="11px" fontWeight="700">
             {responseStatuses[responseStatus]}
           </Box>
-          {getRenewalStatus(response) === 'comingUp' && responseStatus === 'compliant' && (
+          {comingUp && (
             <Box fontSize="11px" fontWeight="700">
               Coming up
             </Box>

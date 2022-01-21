@@ -46,7 +46,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             )}
           </Flex>
         </Flex>
-        <Flex w="10%" ml={2}>
+        <Flex w="12%" >
           <Flex
             color="complianceList.fontColor"
             opacity="1"
@@ -60,7 +60,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             )}
           </Flex>
         </Flex>
-        <Flex w="10%" ml={2}>
+        <Flex w="10%">
           {response && getStatus(response) === "nonCompliant" ? (
             <Flex align="center">
               <Close stroke="complianceList.crossIcon" mr={2} />
@@ -85,48 +85,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             </Flex>
           )}
         </Flex>
-        <Box w="15%" ml={2}>
-          {response?.evidence?.some(
-            ({ uploaded }) => !uploaded
-          ) ? (
-            <Flex align="center">
-              <Close stroke="complianceList.crossIcon" mr={2} />
-              <Flex
-                fontWeight="700"
-                fontSize="14px"
-                color="complianceList.crossIcon"
-              >
-                Missing
-              </Flex>
-            </Flex>
-          ) : (
-            <Flex align="flex-end">
-              <TickIcon stroke="complianceList.tickIcon" mr={2} />
-              <Flex
-                fontWeight="700"
-                fontSize="14px"
-                color="complianceList.tickIcon"
-              >
-                Uploaded
-              </Flex>
-            </Flex>
-          )}
-        </Box>
-        <Box w="10%" ml={2}>
-          <Flex
-            fontSize="14px"
-            lineHeight="18px"
-            color="complianceList.fontColor"
-            opacity="1"
-            fontWeight="400"
-            h="50%"
-            align="flex-start"
-            pt="3px"
-          >
-            {response?.complianceItem?.category?.name || "N/A"}
-          </Flex>
-        </Box>
-        <Box w="15%" ml={2}>
+        <Box w="18%">
           <Box
             color="complianceList.fontColor"
             opacity="1"
@@ -140,7 +99,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             )}
           </Box>
         </Box>
-        <Box w="15%" ml={2}>
+        <Box w="20%">
           {response?.responsible ?
             <Flex direction="row" align="center">
               <Avatar size="xs" name={response?.responsible?.displayName}
@@ -160,12 +119,12 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
               </Text>
             </Flex> : <Flex fontStyle="italic" fontSize="13px">Unassigned</Flex>}
         </Box>
-        <Box w="15%" ml={3}>
+        <Box w="20%">
           <Flex>
-            <LocationIcon boxSize="12px" />
+            <LocationIcon boxSize="12px" mt="2px"/>
             <Text
               w="full"
-              pl={3}
+              pl={2}
               lineHeight="17px"
               color="complianceList.fontColor"
               opacity="1"
