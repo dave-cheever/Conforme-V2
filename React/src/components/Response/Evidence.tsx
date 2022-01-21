@@ -52,7 +52,9 @@ const EvidenceExpected = ({ evidence }) => {
   }
   return (
     <Flex direction='column' w="full" maxW="342px">
-      <Flex align='center' mb={2} >
+      <Text fontSize="sm" fontWeight="medium">Evidence Expected <Box as="span" color="red">(required)</Box></Text>
+      <Text fontSize="sm" mt={1}>Upload all expected evidence and complete any required question to record this compliance item as complete.</Text>
+      <Flex align='center' mb={2} mt={3} >
         <Box fontWeight='700' fontSize={11} color="evidence.fontColor" width="300px" lineHeight="16px">{evidence.name} 
         <Asterisk ml="5px" mb="5px" fill="questionListElement.iconAsterisk" stroke='datepicker.iconAsterisk' w="9px" h="9px" /></Box>
       </Flex>
