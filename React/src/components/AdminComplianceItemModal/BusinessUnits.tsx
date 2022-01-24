@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Checkbox, CheckboxGroup, Flex, Input, InputGroup, InputLeftElement, Select, VStack } from "@chakra-ui/react";
+import { Box, Checkbox, CheckboxGroup, Flex, Input, InputGroup, InputLeftElement, VStack } from "@chakra-ui/react";
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
@@ -12,9 +12,6 @@ const BusinessUnitsForm = () => {
     complianceItem,
     setValue, trigger,
   } = useComplianceItemModalContext();
-
-  const [locations, setLocations] = useState<string[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
   const [filteredBU, setFilteredBU] = useState<IBusinessUnit[]>([]);
 
@@ -22,26 +19,12 @@ const BusinessUnitsForm = () => {
     setValue('businessUnitsIds', value);
     trigger('businessUnitsIds');
   };
-  
-  useEffect(() => {
-    const tempLocations: string[] = []
-    businessUnits.forEach(businessUnit => {
-      if(businessUnit.region && !tempLocations.includes(businessUnit.region)) {
-        tempLocations.push(businessUnit.region)
-      } 
-    })
-    setLocations(tempLocations);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [businessUnits]);
 
   useEffect(() => {
-    const filtered: any = businessUnits.filter(businessUnit => 
-      selectedLocation 
-        ? businessUnit.region === selectedLocation && businessUnit.name?.toLowerCase().includes(searchText.toLowerCase()) 
-        : businessUnit.name?.toLowerCase().includes(searchText.toLowerCase())
+    const filtered: any = businessUnits.filter(businessUnit => businessUnit.name?.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredBU(filtered);
-  }, [businessUnits, searchText, selectedLocation]);
+  }, [businessUnits, searchText]);
 
   return (
     <Box w='full'>
@@ -49,32 +32,6 @@ const BusinessUnitsForm = () => {
         <SectionHeader label="Select business unit(s)" display={["none","flex"]}/>
         
         <Flex flexDir={["column", "row"]} justifyContent="space-between" mt={["0px","10px"]} mb="30px">
-          <Flex flexDir="column" >
-          <Flex pt={2} align='center' justify="space-between" mb='none'>
-            <Box
-              color={"dropdown.labelFont.secondaryVariant"}
-              fontWeight="bold"
-              fontSize="11px"
-              position="static"
-              left='none'
-              zIndex={1}
-            >
-              Select business unit(s)
-            </Box>
-          </Flex>
-          <Select 
-            w={["full", "190px"]} 
-            h="42px"
-            mb={["15px","0"]}
-            bg="businessUnitsModal.selectBg" 
-            border="1px solid" 
-            borderColor="rgba(129, 129, 151, 0.4)" 
-            placeholder="Location" 
-            onChange={(e)=> setSelectedLocation(e.target.value)}
-          >
-            {locations.map(location => <option key={location} value={location}>{location}</option>)}
-          </Select>
-          </Flex>
           <Flex flexDir="column">
           <Flex pt={2} align='center' justify="space-between" mb='none'>
             <Box

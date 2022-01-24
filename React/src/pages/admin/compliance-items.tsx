@@ -239,7 +239,7 @@ export default ComplianceItemsAdminWithContext;
 export const complianceItemsAdminWithContextStyles = {
   complianceItemsAdminWithContext: {
     stroke: "#282F36",
-    binStroke: "red",
+    binStroke: "#282F36",
     strokeHover: "#FFFFFF",
     labelColor: "#818197"
   }
