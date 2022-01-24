@@ -92,10 +92,10 @@ const AvatarUser = ({ user, permission, removable = true, action, isReplaceable 
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Flex mr="30px" flexDirection="column" alignItems="center">
+      <Flex mr="30px" position="relative" flexDirection="column" align="center" textAlign="center">
         <Avatar
-          w="64px"
-          h="64px"
+          w={["55px","64px"]}
+          h={["55px","64px"]}
           name={firstName || lastName ? `${firstName} ${lastName}` : displayName}
           src={imgUrl}
           cursor={removable ? "pointer" : "default"}

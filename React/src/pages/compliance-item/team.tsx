@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Flex, Stack } from "@chakra-ui/react";
+import { Flex, Grid, Stack } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
 
 import AvatarUser from "../../components/Team/AvatarUser";
@@ -115,7 +115,7 @@ const Team = () => {
 
   return (
     <Stack
-      h="full"
+      h={["fit-content","full"]}
       alignItems={["center", "flex-start"]}
       w="full"
       spacing="40px"
@@ -124,7 +124,7 @@ const Team = () => {
       rounded="20px"
       fontSize="smm"
       fontWeight="bold"
-      overflow="auto"
+      overflow={["visible","auto"]}
     >
       <TeamModal />
       <Flex>
@@ -168,8 +168,8 @@ const Team = () => {
             )}
         </Flex>
       </Flex>
-      <Flex>
-        <Flex flexDir="column">
+      <Flex w="full" >
+        <Flex w="full" flexDir="column" justifyContent="center">
           <TeamHeader
             header="Contributors"
             onOpen={onOpen}
@@ -177,7 +177,7 @@ const Team = () => {
             isButtonVisible={response?.contributorsIds?.length! < maxDelegates}
             action="responses.manageContributor"
           />
-          <Flex>
+          <Grid w="full" templateColumns={["repeat(3, 1fr)","repeat(4, 1fr)","repeat(6, 1fr)"]} gap={[2,6]}>
             {racfData?.contributors?.map((contributor) => (
               <AvatarUser
                 key={contributor._id}
@@ -186,7 +186,7 @@ const Team = () => {
                 action="responses.manageContributor"
               />
             ))}
-          </Flex>
+          </Grid>
         </Flex>
       </Flex>
       <Flex>
@@ -197,11 +197,16 @@ const Team = () => {
             setFilterType={() => setFilterType("followersIds")}
             action="responses.manageMultipleFollowers"
           />
-          <Flex>
-            {racfData?.followers?.map(follower =>
-              <AvatarUser key={follower._id} user={follower} permission="follower" action="responses.manageMultipleFollowers" />
-            )}
-          </Flex>
+          <Grid w="full" templateColumns={["repeat(3, 1fr)","repeat(4, 1fr)","repeat(6, 1fr)"]} gap={[0,6]}>
+            {racfData?.followers?.map((follower) => (
+              <AvatarUser
+                key={follower._id}
+                user={follower}
+                permission="follower"
+                action="responses.manageMultipleFollowers"
+              />
+            ))}
+          </Grid>
         </Flex>
       </Flex>
     </Stack>

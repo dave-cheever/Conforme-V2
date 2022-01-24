@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flex, Text, Button } from '@chakra-ui/react';
+
 import Can from '../can';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 
@@ -20,7 +21,7 @@ const TeamHeader = ({
 
   return (
     
-    <Flex alignItems="center" mb="15px">
+    <Flex alignItems="center" mb="15px" justify={["center","flex-start"]}>
       <Text>{header}</Text>
         <Can 
         action={action}
