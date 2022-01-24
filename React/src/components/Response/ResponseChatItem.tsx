@@ -110,37 +110,37 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
             : "responseChatItem.receivedColor"
         }
       >
-        <Flex justify="space-between" h={6}>
-          <Text
-            fontSize="ssm"
-            fontWeight="semi_medium"
-            color="responseChatItem.dateColor"
-            mb="10px"
-          >
-            {dateFormat()}
-          </Text>
-          <Can
-            action="comments.delete"
-            data={{ comment }}
-            yes={() => (
-              <Button
-                display={showDeleteBtn ? "block" : "none"}
-                rightIcon={<DeleteIcon />}
-                colorScheme="red"
-                onClick={() => onAction(_id)}
-                size="xs"
-                mb={2}
-                mr="-4px"
-              >
-                Delete
-              </Button>
-            )}
-          />
-        </Flex>
-        {reactStringReplace(text, /(@@@\([\w]+\)\[[\w-]+\])/g, (match, i) => (
-          <ChatMention key={i} tag={match} />
-        ))}
-      </Box>
+      <Flex justify="space-between" h={6}>
+        <Text
+          fontSize="ssm"
+          fontWeight="semi_medium"
+          color="responseChatItem.dateColor"
+          mb="10px"
+        >
+          {dateFormat()}
+        </Text>
+        <Can
+          action="comments.delete"
+          data={{ comment }}
+          yes={() => (
+            <Button
+              display={showDeleteBtn ? "block" : "none"}
+              rightIcon={<DeleteIcon />}
+              colorScheme="red"
+              onClick={() => onAction(_id)}
+              size="xs"
+              mb={2}
+              mr="-4px"
+            >
+              Delete
+            </Button>
+          )}
+        />
+      </Flex>
+      {reactStringReplace(text, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+        <ChatMention key={i} tag={match} />
+      ))}
+    </Box>
     </Flex >
   );
 };

@@ -136,8 +136,8 @@ const TeamModal = () => {
               ? "Replace"
               : !isReplaceAccountable && filterType === "accountableId"
               ? "Select"
-              : "Add"}{" "}
-            {responsePermissionByFilterType(filterType)}
+              : `Add ${responsePermissionByFilterType(filterType)}s`
+            }
           </Text>
           <ModalCloseButton />
         </ModalHeader>
@@ -208,16 +208,17 @@ const TeamModal = () => {
                     >
                       <TickIcon w="10px" h="10px" stroke="white" />
                     </Flex>
-                    <Text
-                      ml="2"
-                      fontSize="smm"
-                      fontWeight="semi_medium"
-                      color="teamPage.radioButtonFont"
-                    >
-                      {user.firstName && user.lastName
-                        ? `${user.firstName} ${user.lastName}`
-                        : `${user.displayName}`}
-                    </Text>
+                    <Flex ml="2" direction='column' >
+                      <Text
+                        fontSize="smm"
+                        fontWeight='semibold'
+                        color="black" 
+                        direction='column'
+                      >
+                        {user.displayName}
+                      </Text>
+                      <Box w='290px' overflow='hidden' textOverflow='ellipsis' position='relative' top='-4px' fontSize='sm'>{user.email}</Box>
+                    </Flex>
                   </Flex>
                 ))}
               </VStack>

@@ -78,7 +78,7 @@ const GET_PARTICIPANTS = gql`
   query ($userQuery: UserQueryInput) {
     participants: usersById(userQueryInput: $userQuery) {
       id: _id
-      display: firstName
+      display: displayName
       _id
       firstName
       lastName

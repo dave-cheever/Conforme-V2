@@ -164,6 +164,7 @@ const Details = () => {
                   selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
                   onChange={(date) => updateResponseDate(date)}
                   customInput={<EditButton />}
+                  disabledKeyboardNavigation
                   showYearDropdown
                   dropdownMode="select"
                   dateFormatCalendar="MMMM"
