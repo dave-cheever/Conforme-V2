@@ -11,11 +11,12 @@ import { responseStatusesGroup } from '../../hooks/useResponseUtils';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   const [ filteredResults, setFilteredResults ] = useState<any>({});
-  const { getStatus } = useResponseUtils();
+  const { getStatus, getRenewalStatus } = useResponseUtils();
 
   useEffect(() => {
     let filteredResponses: any = {}
-    filteredResponses['compliant'] = responses.filter(response => getStatus(response) === 'compliant');
+    filteredResponses['compliant'] = responses.filter(response => getStatus(response) === 'compliant' && getRenewalStatus(response) !== 'comingUp');
+    filteredResponses['comingUp'] = responses.filter(response => getStatus(response) === 'compliant' && getRenewalStatus(response) === 'comingUp');
     filteredResponses['nonCompliant'] = responses.filter(response => getStatus(response) === 'nonCompliant');
     setFilteredResults(filteredResponses)
   // eslint-disable-next-line react-hooks/exhaustive-deps
