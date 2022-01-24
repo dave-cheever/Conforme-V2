@@ -1,17 +1,51 @@
-import React from "react";
-import { Box, Flex, Text, Avatar } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Box, Flex, Text, Avatar, Skeleton } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
+import { useLazyQuery, gql } from "@apollo/client";
 
 import useResponseUtils from "../../hooks/useResponseUtils";
 import { Close, TickIcon, LocationIcon } from "../../icons";
 import { IResponse } from "../../interfaces/IResponse";
 import BriefcaseIcon from "../BriefcaseIcon";
+import { IUser } from "../../interfaces/IUser";
+
+const GET_USERS_BY_ID = gql`
+  query ($userQueryInput: UserQueryInput) {
+    usersById(userQueryInput: $userQueryInput) {
+      _id
+      displayName
+      imgUrl
+    }
+  }
+`;
 
 const ComplianceListItem = ({ response }: { response: IResponse }) => {
-
   const history = useHistory();
   const { getStatus } = useResponseUtils();
+  const [
+    getResponsible,
+    {
+      data: { usersById: responseResponsible } = [],
+      loading: responsibleLoading,
+    },
+  ] = useLazyQuery(GET_USERS_BY_ID);
+
+  useEffect(() => {
+    if (response?.responsibleId && response?.responsibleId.length > 0) {
+      getResponsible({
+        variables: {
+          userQueryInput: { usersIds: response?.responsibleId || [] },
+        },
+      });
+    }
+    // eslint-disable-next-line
+  }, [response]);
+
+  const responsible: IUser =
+    responseResponsible &&
+    responseResponsible?.length !== 0 &&
+    responseResponsible[0];
 
   return (
     <Box
@@ -46,7 +80,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             )}
           </Flex>
         </Flex>
-        <Flex w="12%" >
+        <Flex w="12%">
           <Flex
             color="complianceList.fontColor"
             opacity="1"
@@ -100,28 +134,38 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
           </Box>
         </Box>
         <Box w="20%">
-          {response?.responsible ?
-            <Flex direction="row" align="center">
-              <Avatar size="xs" name={response?.responsible?.displayName}
-                src={response?.responsible?.imgUrl} />
-              <Text
-                w="full"
-                pl={3}
-                lineHeight="17px"
-                color="complianceList.fontColor"
-                opacity="1"
-                fontSize="13px"
-                overflow="hidden"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-              >
-                {response?.responsible?.displayName}
-              </Text>
-            </Flex> : <Flex fontStyle="italic" fontSize="13px">Unassigned</Flex>}
+          <Skeleton rounded="full" isLoaded={!responsibleLoading}>
+            {responsible ? (
+              <Flex direction="row" align="center">
+                <Avatar
+                  size="xs"
+                  name={responsible?.displayName}
+                  src={responsible?.imgUrl}
+                />
+                <Text
+                  w="full"
+                  pl={3}
+                  lineHeight="17px"
+                  color="complianceList.fontColor"
+                  opacity="1"
+                  fontSize="13px"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                >
+                  {responsible?.displayName}
+                </Text>
+              </Flex>
+            ) : (
+              <Flex fontStyle="italic" fontSize="13px">
+                Unassigned
+              </Flex>
+            )}
+          </Skeleton>
         </Box>
         <Box w="20%">
           <Flex>
-            <LocationIcon boxSize="12px" mt="2px"/>
+            <LocationIcon boxSize="12px" mt="2px" />
             <Text
               w="full"
               pl={2}

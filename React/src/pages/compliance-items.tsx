@@ -60,11 +60,6 @@ const GET_RESPONSES = gql`
       metatags {
         addedBy
       }
-      responsible {
-        _id
-        displayName
-        imgUrl
-      }
     }
   }
 `;
@@ -233,7 +228,7 @@ const ComplianceItems = () => {
               </Flex>
             </MenuButton>
           }
-          <MenuList zIndex={2} rounded="lg" w="100px" border='none' >
+          <MenuList zIndex={2} rounded="lg" w="100px" border='none'>
             <MenuItem
               fontSize="14px"
               _focus={{ color: "complianceItems.header.menuItemFocus" }}
@@ -241,7 +236,7 @@ const ComplianceItems = () => {
               onClick={() => changeViewMode("Grid")}
             >
               <GridIcon mr={3} />
-              Card
+              Grid
             </MenuItem>
             <MenuItem
               fontSize="14px"
