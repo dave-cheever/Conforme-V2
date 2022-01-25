@@ -632,7 +632,7 @@ const getTheme = (organizationTheme?: any) => {
               minWidth: ["calc(100% - 50px)", "380px"],
               maxWidth: ["calc(100% - 50px)", "380px"],
               minH: "196px",
-              maxH: "356px",
+              maxH: "500px",
               boxShadow: "0px 0px 80px rgba(49, 50, 51, 0.25)",
               rounded: "20px"
             }
