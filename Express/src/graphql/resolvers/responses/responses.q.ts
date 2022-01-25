@@ -187,15 +187,15 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     // Filter by user id (in compliance item)
     if (responsesQuery?.usersIds) {
-      let conds : any = []
+      let conds: any = []
       if (responsesQuery?.usersIds.responsibleIds.length > 0)
-        conds.push({ responsibleId: { $in: responsesQuery.usersIds.responsibleIds }})
+        conds.push({ responsibleId: { $in: responsesQuery.usersIds.responsibleIds } })
       if (responsesQuery?.usersIds.accountableIds.length > 0)
-        conds.push({ accountableId: { $in: responsesQuery.usersIds.accountableIds }})
+        conds.push({ accountableId: { $in: responsesQuery.usersIds.accountableIds } })
       if (responsesQuery?.usersIds.contributorIds.length > 0)
-        conds.push({ contributorsIds: { $in: responsesQuery.usersIds.contributorIds }})
+        conds.push({ contributorsIds: { $in: responsesQuery.usersIds.contributorIds } })
       if (responsesQuery?.usersIds.followerIds.length > 0)
-        conds.push({ followersIds: { $in: responsesQuery.usersIds.followerIds }})
+        conds.push({ followersIds: { $in: responsesQuery.usersIds.followerIds } })
       pipeline.push({
         $match: {
           $and: conds,
@@ -259,11 +259,14 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     if (shouldJoin(["daysToDueDate"])) {
       for (const response of responses) {
+        if (!response.nextRenewalDate) {
+          continue;
+        }
         const start = new Date(response.nextRenewalDate);
         const end = new Date();
         if (isSameDay(start, end)) {
           response.daysToDueDate = 0;
-        }else {
+        } else {
           response.daysToDueDate = differenceInCalendarDays(start, end);
         }
       }

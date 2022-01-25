@@ -61,7 +61,6 @@ export const useComplianceItemModalContext = () => {
 };
 
 const ComplianceItemModalProvider = (props) => {
-
   const { data, refetch } = useQuery(GET_FORM_DATA);
   const [savingDialogDetails, setSavingDialogDetails] = useState<IComplianceItemModalDialogDetails>(initialDialogDetails);
   const [visitedTab, setVisitedTab] = useState<number>(0);
@@ -75,7 +74,6 @@ const ComplianceItemModalProvider = (props) => {
       regulatoryBodyId: undefined,
       dueDate: undefined,
       frequency: undefined,
-      published: false,
     },
     Component: GeneralForm,
   }, {
@@ -107,6 +105,7 @@ const ComplianceItemModalProvider = (props) => {
     Component: Summary,
     fields: {
       _id: undefined,
+      published: false,
     },
   }];
 
@@ -132,22 +131,31 @@ const ComplianceItemModalProvider = (props) => {
   const complianceItem = watch() as Partial<IComplianceItem>;
 
   const [selectedSection, setSelectedSection] = useState<IComplianceItemModalSection>(complianceItemModalSections[0]);
-  const selectedSectionIndex = useMemo(
-    () => complianceItemModalSections.findIndex(({ name }) => name === selectedSection.name)
-    , [selectedSection]); // eslint-disable-line react-hooks/exhaustive-deps
+  const selectedSectionIndex = useMemo(() => {
+    return complianceItemModalSections.findIndex(({ name }) => name === selectedSection.name);
+  }, [selectedSection]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const selectSection = (sectionIndex: number) => setSelectedSection(complianceItemModalSections[sectionIndex]);
+  const selectSection = async (sectionIndex: number) => {
+    setSelectedSection(complianceItemModalSections[sectionIndex]);
+    if (sectionIndex > visitedTab) {
+      setVisitedTab(sectionIndex);
+    }
+  };
 
   const setValue = (name, value) => {
     setFormValue(name, value);
     trigger(name, value);
   };
 
-  const reset = (complianceItem?: Partial<IComplianceItem>, setSection: number = 0) => {
-    if (setSection !== undefined) {
-      setSelectedSection(complianceItemModalSections[setSection]);
-    }
+  const reset = (complianceItem?: Partial<IComplianceItem>, sectionIndex: number = 0) => {
     resetForm(complianceItem || defaultValues);
+    setTimeout(() => {
+      if (sectionIndex) { // Validate first page when opening the form in other page
+        trigger(Object.keys(complianceItemModalSections[0].fields || []) as any);
+      }
+      setSelectedSection(complianceItemModalSections[sectionIndex]);
+      setVisitedTab(sectionIndex);
+    }, 1);
   };
 
   const value = useMemo(() => ({

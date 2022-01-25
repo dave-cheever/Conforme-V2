@@ -30,18 +30,15 @@ const LocationsForm = () => {
     trigger("locationsIds");
   };
 
-  const handleAllCheckBoxSelectedLocations = (value) => {
-    if (value) {
-      setIsAllChecked(true);
+  const handleAllCheckBoxSelectedLocations = (event) => {
+    setIsAllChecked(event.target.checked);
+    let localCheckedLocationsIds: string[] = [];
+    if (checkedLocationIds.length !== locations.length) {
+      localCheckedLocationsIds = locations.map((location) => location._id!);
     }
-    if (checkedLocationIds.length === locations.length) {
-      setCheckedLocationIds([]);
-    } else {
-      setCheckedLocationIds(locations
-        .map((location) => location._id!));
-      setValue("locationsIds", value);
-      trigger("locationsIds");
-    }
+    setCheckedLocationIds(localCheckedLocationsIds);
+    setValue("locationsIds", localCheckedLocationsIds);
+    trigger("locationsIds");
   };
 
   return (

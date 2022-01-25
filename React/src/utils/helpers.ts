@@ -99,7 +99,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       bg: "navigationModal.section.selected.bg",
       color: "navigationModal.section.selected.color"
     };
-  } else if (i < selectedSectionIndex) {
+  } else if (i < visitedTab) {
     return {
       bg: "navigationModal.section.correct.bg",
       color: "navigationModal.section.correct.color"

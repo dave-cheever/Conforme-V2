@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   ModalContent,
   ModalHeader,
@@ -29,18 +29,11 @@ const ComplianceItemModal = ({ refetch }) => {
     errors, trigger,
     savingDialogDetails, setSavingDialogDetails,
     selectedSection, selectedSectionIndex, selectSection,
-    setVisitedTab
   } = useComplianceItemModalContext();
   const {
     saveComplianceItem,
     closeModal,
   } = useComplianceItemModal(refetch);
-
-  useEffect(() => {
-    setVisitedTab(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const { Component } = selectedSection;
 
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
@@ -168,22 +161,21 @@ const ComplianceItemModal = ({ refetch }) => {
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
-              <Flex justifyContent={selectedSection.name !== "Details" ? "space-between": "flex-end"} w="full">
-                {selectedSection.name !== "Details" &&
-                  <Button
-                    w="fit-content"
-                    h="40px"
-                    leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
-                    fontSize="smm"
-                    fontWeight="700"
-                    rounded="10px"
-                    bg="complianceItemModal.tabs.bottomButton.bg"
-                    color="complianceItemModal.tabs.bottomButton.color"
-                    _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
-                    onClick={handlePreviousButtonClick}
-                  >
-                    Back
-                  </Button>}
+              <Flex justifyContent="space-between" w="full">
+                <Button
+                  w="fit-content"
+                  h="40px"
+                  leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
+                  fontSize="smm"
+                  fontWeight="700"
+                  rounded="10px"
+                  bg="complianceItemModal.tabs.bottomButton.bg"
+                  color="complianceItemModal.tabs.bottomButton.color"
+                  _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
+                  onClick={handlePreviousButtonClick}
+                >
+                  Back
+                </Button>
                 <Button
                   ml={3}
                   w="fit-content"

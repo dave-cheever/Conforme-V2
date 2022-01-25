@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Flex, Text } from '@chakra-ui/react';
 
 import { generateTabColors } from '../../utils/helpers';
@@ -7,57 +6,50 @@ import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModa
 
 const NavigationModal = () => {
   const {
-    complianceItem, 
-    complianceItemModalSections, 
-    errors, 
-    selectedSectionIndex, 
-    visitedTab, 
-    selectSection, 
-    setVisitedTab, 
+    complianceItem,
+    complianceItemModalSections,
+    errors,
+    selectedSectionIndex,
+    visitedTab,
+    selectSection,
     trigger
   } = useComplianceItemModalContext();
 
-  useEffect(() => {
-    if(selectedSectionIndex > visitedTab) {
-      setVisitedTab(selectedSectionIndex);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSectionIndex]);
-
   return (
     <Flex flexDir="column" w="185px">
-      {complianceItemModalSections.map((el, i) => el.name !== "Summary" && 
-      <Flex 
-        key={el.name} 
-        mb="15px" 
-        alignItems="center" 
-        cursor="pointer" 
-        onClick={() => {
-          trigger(Object.keys(complianceItemModalSections[selectedSectionIndex].fields || []) as any);
-          selectSection(i)}}
-      >
-        <Flex 
-          w="37px" 
-          h="28px" 
-          bg={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg}
-          color={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).color}
-          mr="15px" 
-          fontSize="11px"
-          fontWeight="bold"
-          flexShrink={0} 
-          rounded="10px" 
-          alignItems="center" 
-          justifyContent="center"
+      {complianceItemModalSections.map((el, i) => el.name !== "Summary" &&
+        <Flex
+          key={el.name}
+          mb="15px"
+          alignItems="center"
+          cursor="pointer"
+          onClick={() => {
+            trigger(Object.keys(complianceItemModalSections[selectedSectionIndex].fields || []) as any);
+            selectSection(i);
+          }}
         >
-          {generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg === "navigationModal.section.error.bg" 
-            ? <ErrorSign w="16px" h="14px" stroke="white" /> 
-            : i + 1 
-          }
+          <Flex
+            w="37px"
+            h="28px"
+            bg={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg}
+            color={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).color}
+            mr="15px"
+            fontSize="11px"
+            fontWeight="bold"
+            flexShrink={0}
+            rounded="10px"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg === "navigationModal.section.error.bg"
+              ? <ErrorSign w="16px" h="14px" stroke="white" />
+              : i + 1
+            }
+          </Flex>
+          <Text fontSize="smm" color="navigationModal.section.label" fontWeight={i === selectedSectionIndex ? "bold" : "semi_medium"}>
+            {el.name}
+          </Text>
         </Flex>
-        <Text fontSize="smm" color="navigationModal.section.label" fontWeight={i === selectedSectionIndex ? "bold" : "semi_medium" }>
-          {el.name}
-        </Text>
-      </Flex> 
       )}
     </Flex>
   );
