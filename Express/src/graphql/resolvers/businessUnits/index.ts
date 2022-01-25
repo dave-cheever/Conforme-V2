@@ -19,8 +19,6 @@ type BusinessUnit {
   _id: ID!
   identifier: String
   name: String!
-  type: String!
-  region: String!
   imgUrl: String
   ownerId: String
   owner: User
@@ -31,16 +29,12 @@ type BusinessUnit {
 input BusinessUnitInput {
   identifier: String
   name: String!
-  type: String!
-  region: String!
   ownerId: String!
 }
 
 input BusinessUnitModifyInput {
   _id: ID!
   name: String!
-  type: String!
-  region: String!
   ownerId: String!
 }
 `;

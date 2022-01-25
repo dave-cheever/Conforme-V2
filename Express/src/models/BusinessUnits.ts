@@ -14,8 +14,6 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   _id: String,
   identifier: String,
   name: String,
-  type: String,
-  region: String,
   ownerId: String,
   imgUrl: String,
   organizationId: String,
@@ -27,7 +25,7 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
     removedAt: Date,
     removedBy: String,
   },
-}, { typeKey: '$type' });
+});
 
 // This method is used to prepare values object for audit log
 const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {

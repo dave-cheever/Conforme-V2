@@ -4,8 +4,6 @@ import { IUser } from "./IUser";
 export interface IBusinessUnit extends IBase {
   identifier: string;
   name: string;
-  type: string;
-  region: string;
   ownerId: string;
   imgUrl?: string;
   

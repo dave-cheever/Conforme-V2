@@ -31,7 +31,6 @@ const GET_FORM_DATA = gql`
     businessUnits {
       _id
       name
-      region
     }
   }
 `;

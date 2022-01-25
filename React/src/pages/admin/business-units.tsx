@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { Box, Flex, Text, Tooltip, useToast, Stack } from "@chakra-ui/react";
-import Dropdown from "../../components/Forms/Dropdown";
 import Loader from "../../components/Loader";
 import { toastFailed, toastSuccess } from "../../bootstrap/config";
 import AdminModal from "../../components/Admin/AdminModal";
@@ -23,8 +22,6 @@ const GET_BUSINESS_UNITS = gql`
     businessUnits {
       _id
       name
-      type
-      region
       ownerId
       owner {
         displayName
@@ -57,8 +54,6 @@ const DELETE_BUSINESS_UNIT = gql`
 const defaultValues: Partial<IBusinessUnit> = {
   _id: undefined,
   name: "",
-  type: "",
-  region: "",
   ownerId: ""
 };
 
@@ -129,8 +124,6 @@ const BusinessUnits = () => {
     reset({
       _id: businessUnit?._id,
       name: businessUnit?.name,
-      type: businessUnit?.type,
-      region: businessUnit?.region,
       ownerId: businessUnit?.ownerId,
     });
   };
@@ -236,17 +229,15 @@ const BusinessUnits = () => {
           overflow='hidden'
           textOverflow='ellipsis'
           whiteSpace='nowrap'
-        >{businessUnit.name}</Text>
-        {device === "mobile" && <Text mt="3px" fontSize="11px" color="#818197">{businessUnit?.type}</Text>}
+        >{businessUnit.name}
+        </Text>
       </Flex>
       {device !== "mobile" &&
         <>
-          <Box w='calc(70% / 4)'>{businessUnit?.type}</Box>
-          <Box w='calc(70% / 4)'>{businessUnit?.region}</Box>
-          <Box w='calc(70% / 4)'>{businessUnit?.owner?.displayName}</Box>
+          <Box w='calc(70% / 2)'>{businessUnit?.owner?.displayName}</Box>
         </>
       }
-      <Flex w={["20%", 'calc(70% / 4)']} align='center'>
+      <Flex w={["20%", 'calc(70% / 2)']} align='center'>
         <Text>{businessUnit.complianceItemsResponsesCount || 0}</Text>
         <Tooltip label="Show Items" fontSize="md">
           <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" onClick={() => {
@@ -278,28 +269,6 @@ const BusinessUnits = () => {
               notEmpty: true,
             }}
           />
-          <Dropdown
-            control={control}
-            name="type"
-            label="Unit Type"
-            variant="secondaryVariant"
-            placeholder="Select Unit Type"
-            validations={{
-              notEmpty: true,
-            }}
-            options={[{ label: "Unit Type 1", value: "unit type 1" }]}
-          />
-          <Dropdown
-            control={control}
-            name="region"
-            label="Region"
-            variant="secondaryVariant"
-            placeholder="Select Region"
-            validations={{
-              notEmpty: true,
-            }}
-            options={[{ label: "Head Office", value: "Head Office" }]}
-          />
           <PeoplePicker
             control={control}
             name="ownerId"
@@ -316,14 +285,8 @@ const BusinessUnits = () => {
         <Box w='full' h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
           <AdminTableHeader>
             <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
-            {device !== "mobile" &&
-              <>
-                <AdminTableHeaderElement w="calc(70% / 4)" label="Unit type" onClick={() => { setSortType("type"); setSortOrder(!sortOrder); }} sortOrder={sortType === "type" && !sortOrder} showSortingIcon={sortType === "type"} />
-                <AdminTableHeaderElement w="calc(70% / 4)" label="Region name" onClick={() => { setSortType("region"); setSortOrder(!sortOrder); }} sortOrder={sortType === "region" && !sortOrder} showSortingIcon={sortType === "region"} />
-                <AdminTableHeaderElement w="calc(70% / 4)" label="Owner" onClick={() => { setSortType("owner"); setSortOrder(!sortOrder); }} sortOrder={sortType === "owner" && !sortOrder} showSortingIcon={sortType === "owner"} />
-              </>
-            }
-            <AdminTableHeaderElement w={["20%", "calc(70% / 4)"]} label="# of responses" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+            {device !== "mobile" && <AdminTableHeaderElement w="calc(70% / 2)" label="Owner" onClick={() => { setSortType("owner"); setSortOrder(!sortOrder); }} sortOrder={sortType === "owner" && !sortOrder} showSortingIcon={sortType === "owner"} />}
+            <AdminTableHeaderElement w={["20%", "calc(70% / 2)"]} label="# of responses" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
           </AdminTableHeader>
           <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
             {loading ? <Loader center={true} /> : (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (

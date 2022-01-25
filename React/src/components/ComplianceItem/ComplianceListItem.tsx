@@ -7,7 +7,6 @@ import { useLazyQuery, gql } from "@apollo/client";
 import useResponseUtils from "../../hooks/useResponseUtils";
 import { Close, TickIcon, LocationIcon } from "../../icons";
 import { IResponse } from "../../interfaces/IResponse";
-import BriefcaseIcon from "../BriefcaseIcon";
 import { IUser } from "../../interfaces/IUser";
 
 const GET_USERS_BY_ID = gql`
@@ -73,11 +72,6 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
             textOverflow="ellipsis"
           >
             {response.complianceItem?.name}
-            {response.businessUnit?.type === "Corporate" && (
-              <Box ml={3}>
-                <BriefcaseIcon />
-              </Box>
-            )}
           </Flex>
         </Flex>
         <Flex w="12%">

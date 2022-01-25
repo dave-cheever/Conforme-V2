@@ -29,9 +29,6 @@ const BusinessUnitsSelector = ({
     let filteredBusinessUnits: IBusinessUnit[] = [];
     if (disabled) {
       filteredBusinessUnits = businessUnits?.filter(({ _id }) => selected.includes(_id));
-    } else {
-      filteredBusinessUnits = businessUnits?.filter(({ type, name }) =>
-        (!selectedType || type === selectedType) && name.toLowerCase().includes(searchText.toLowerCase()));
     }
     setFilteredBusinessUnits(filteredBusinessUnits);
   }, [businessUnits, selectedType, searchText, disabled, selected]);

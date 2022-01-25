@@ -21,8 +21,7 @@ const BusinessUnitsForm = () => {
   };
 
   useEffect(() => {
-    const filtered: any = businessUnits.filter(businessUnit => businessUnit.name?.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const filtered: any = businessUnits.filter(businessUnit => businessUnit.name?.toLowerCase().includes(searchText.toLowerCase()));
     setFilteredBU(filtered);
   }, [businessUnits, searchText]);
 
