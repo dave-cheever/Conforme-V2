@@ -73,7 +73,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
       >
         <AdminTableHeader>
           <AdminTableHeaderElement w="20%" label="Item name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
-          <AdminTableHeaderElement w="12%" label="Due date" onClick={() => { setSortType("nextRenewalDate"); setSortOrder(!sortOrder); }} sortOrder={sortType === "nextRenewalDate" && !sortOrder} showSortingIcon={sortType === "nextRenewalDate"} />
+          <AdminTableHeaderElement w="12%" label="Expires on" onClick={() => { setSortType("nextRenewalDate"); setSortOrder(!sortOrder); }} sortOrder={sortType === "nextRenewalDate" && !sortOrder} showSortingIcon={sortType === "nextRenewalDate"} />
           <AdminTableHeaderElement w="10%" label="Compliant" onClick={() => { setSortType("compliant"); setSortOrder(!sortOrder); }} sortOrder={sortType === "compliant" && !sortOrder} showSortingIcon={sortType === "compliant"} />
           <AdminTableHeaderElement w="18%" label="Regulatory body" onClick={() => { setSortType("regulatoryBody"); setSortOrder(!sortOrder); }} sortOrder={sortType === "regulatoryBody" && !sortOrder} showSortingIcon={sortType === "regulatoryBody"} />
           <AdminTableHeaderElement w="20%" label="Responsible" onClick={() => { setSortType("responsible"); setSortOrder(!sortOrder); }} sortOrder={sortType === "responsible" && !sortOrder} showSortingIcon={sortType === "responsible"} />

@@ -54,7 +54,7 @@ const Summary = () => {
         <Grid gridTemplateColumns="1fr 1fr 1fr" gridGap="10px">
           <SummaryItem label="Category">{selectedCategory?.name || "Not provided"}</SummaryItem>
           <SummaryItem label="Regulatory body">{selectedRegulatoryBody?.name || "Not provided"}</SummaryItem>
-          <SummaryItem label="Due date (optional)">{(complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')) || "Not provided"}</SummaryItem>
+          <SummaryItem label="Expires on (optional)">{(complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')) || "Not provided"}</SummaryItem>
           <SummaryItem label="Frequency">{complianceItem.frequency || "Not provided"}</SummaryItem>
         </Grid>
 

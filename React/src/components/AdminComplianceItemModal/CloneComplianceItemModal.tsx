@@ -55,7 +55,7 @@ const CloneComplianceItemModal = ({ refetch }) => {
             <ListItem>Description</ListItem>
             <ListItem>Category</ListItem>
             <ListItem>Regulatory Body</ListItem>
-            <ListItem>Due Date</ListItem>
+            <ListItem>Expires on</ListItem>
             <ListItem>Frequency</ListItem>
             <ListItem>Business Unit</ListItem>
             <ListItem>Evidence</ListItem>

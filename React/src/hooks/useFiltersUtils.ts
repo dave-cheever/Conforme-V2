@@ -25,7 +25,7 @@ export const initialFilters: IFilters = {
     value: [],
   },
   dueDate: {
-    name: 'Due date',
+    name: 'Expires on',
     value: null,
   },
   isVerified: {

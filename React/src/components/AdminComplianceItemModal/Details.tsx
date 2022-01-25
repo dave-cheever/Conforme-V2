@@ -47,7 +47,7 @@ const DetailsForm = () => {
         <Datepicker
           control={control}
           name="dueDate"
-          label="Due date (optional)"
+          label="Expires on (optional)"
           placeholder="Define when the compliance item is due"
         />
         <Dropdown
