@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   Avatar,
   Box,
@@ -11,7 +11,7 @@ import {
 import { useHistory } from "react-router-dom";
 import format from "date-fns/format";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 import { LocationIcon, UploadedTick } from "../../icons";
 import { responseStatuses } from "../../hooks/useResponseUtils";
@@ -32,35 +32,19 @@ const GET_USERS_BY_ID = gql`
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const history = useHistory();
   const { getStatus, getRenewalStatus } = useResponseUtils();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const responseStatus = useMemo(() => getStatus(response), [response]);
-
-  const [
-    getResponsible,
-    {
-      data: { usersById: responseResponsible } = [],
-      loading: responsibleLoading,
+  const responseStatus = useMemo(() => getStatus(response), [getStatus, response]);
+  const {
+    data: { usersById: responseResponsible } = [],
+    loading: responsibleLoading,
+  } = useQuery(GET_USERS_BY_ID, {
+    variables: {
+      userQueryInput: {
+        usersIds: response?.responsibleId || [],
+      },
     },
-  ] = useLazyQuery(GET_USERS_BY_ID);
+  });
+  const responsible: IUser = responseResponsible && responseResponsible.length !== 0 && responseResponsible[0];
 
-  useEffect(() => {
-    if (response?.responsibleId && response?.responsibleId.length > 0) {
-      getResponsible({
-        variables: {
-          userQueryInput: { usersIds: response?.responsibleId || [] },
-        },
-      });
-    }
-    // eslint-disable-next-line
-  }, [response]);
-
-  const responsible: IUser =
-    responseResponsible &&
-    responseResponsible?.length !== 0 &&
-    responseResponsible[0];
-
-  const comingUp =
-    getRenewalStatus(response) === "comingUp" && responseStatus === "compliant";
   return (
     <Box
       _hover={{ boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.18)" }}
@@ -75,44 +59,28 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       <Flex align="center" justify="space-between">
         <Flex align="center">
           <Flex
-            h="12px"
-            bgColor={
-              comingUp
-                ? "complianceSquare.comingUp"
-                : `complianceSquare.${responseStatus}`
-            }
-            w="12px"
+            h='12px'
+            bgColor={getRenewalStatus(response) === 'comingUp' ? 'complianceSquare.comingUp' : `complianceSquare.${responseStatus}`}
+            w='12px'
             rounded="full"
           />
           <Box
-            color="complianceSquare.fontColor"
-            opacity="1"
-            fontSize="11px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
+            color='complianceSquare.fontColor'
+            opacity='1'
+            fontSize='11px'
+            overflow='hidden'
+            textOverflow='ellipsis'
+            whiteSpace='nowrap'
             ml={2}
           >
-            {response.complianceItem?.category?.name ? (
-              response.complianceItem?.category?.name
-            ) : (
-              <Flex fontStyle="italic">Unassigned</Flex>
-            )}
+            {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
           </Box>
         </Flex>
-        <Flex align="center">
-          {response?.evidence?.find(
-            ({ uploaded }) => uploaded === undefined
-          ) ? (
-            <UploadedTick color="complianceSquare.crossIcon" />
-          ) : (
-            <>
-              <Flex fontSize="11px" color="complianceSquare.tickIcon">
-                Uploaded
-              </Flex>
-              <UploadedTick color="complianceSquare.tickIcon" ml={2} />
-            </>
-          )}
+        <Flex align='center'>
+          {response.evidence?.some(({ uploaded }) => !uploaded) ?
+            <UploadedTick color='complianceSquare.crossIcon' /> :
+            <><Flex fontSize="11px" color='complianceSquare.tickIcon' >Uploaded</Flex><UploadedTick color='complianceSquare.tickIcon' ml={2} /></>
+          }
         </Flex>
       </Flex>
       <Flex h="52px" w="full" mt={2} align="center" position="relative">
@@ -236,7 +204,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           <Box fontSize="11px" fontWeight="700">
             {responseStatuses[responseStatus]}
           </Box>
-          {comingUp && (
+          {getRenewalStatus(response) === 'comingUp' && (
             <Box fontSize="11px" fontWeight="700">
               Coming up
             </Box>
