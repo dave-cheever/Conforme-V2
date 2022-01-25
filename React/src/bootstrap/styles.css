@@ -151,6 +151,10 @@
   overflow: auto;
 }
 
+.mentions__input:disabled{
+  cursor: not-allowed;
+}
+
 .mentions__suggestions__list {
   background-color: white;
   box-shadow: 0px 0px 80px rgba(49, 50, 51, 0.25);

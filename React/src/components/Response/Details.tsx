@@ -10,6 +10,7 @@ import DescriptionText from "./DescriptionText";
 import { ArrowDownIcon } from "../../icons";
 import { useResponseContext } from "../../contexts/ResponseProvider";
 import EditButton from "./EditButton";
+import Can from "../can";
 
 const UPDATE_RESPONSE = gql`
   mutation ($updateResponseModify: UpdateResponseModify!) {
@@ -25,14 +26,14 @@ const Details = () => {
   const startRef = useRef<DatePicker>();
 
   const progress = useMemo(() => {
-    if(response.daysToDueDate === undefined) {
+    if (response.daysToDueDate === undefined) {
       return -1;
     }
 
     if (response.lastCompletionDate && response.nextRenewalDate) {
-      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate),new Date(response.lastCompletionDate));
+      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.lastCompletionDate));
 
-      if(isToday(new Date(response.nextRenewalDate))){
+      if (isToday(new Date(response.nextRenewalDate))) {
         return ((1 / totalDays) * 100);
       }
       return ((response.daysToDueDate / totalDays) * 100);
@@ -41,7 +42,7 @@ const Details = () => {
     if (response.metatags?.addedAt && response.nextRenewalDate) {
       const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.metatags.addedAt));
 
-      if( isToday(new Date(response.nextRenewalDate)) ){
+      if (isToday(new Date(response.nextRenewalDate))) {
         return ((1 / totalDays) * 100);
       }
       return ((response.daysToDueDate / totalDays) * 100);
@@ -64,7 +65,7 @@ const Details = () => {
   }
 
   return (
-    <Flex w="full" h="full" minH={["50vh","none"]} flexDir="column" overflow={["visible", "auto"]}>
+    <Flex w="full" h="full" minH={["50vh", "none"]} flexDir="column" overflow={["visible", "auto"]}>
       <Grid
         templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]}
         mb={5}
@@ -85,7 +86,7 @@ const Details = () => {
             mr={[0, 5]}
             flexDir="column"
             borderRadius="10px"
-            align={["center","flex-start"]}
+            align={["center", "flex-start"]}
           >
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               First completed
@@ -116,7 +117,7 @@ const Details = () => {
             mr={[0, 5]}
             flexDir="column"
             borderRadius="10px"
-            align={["center","flex-start"]}
+            align={["center", "flex-start"]}
           >
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               Last completed
@@ -146,9 +147,9 @@ const Details = () => {
             size="28px"
             value={progress}
             color={progress <= 10 ? "red" : "responseRenewalDetails.progressColor"}
-            display={["none","block"]}
+            display={["none", "block"]}
           />}
-          <Flex w="full" flexDir="column" ml={progress >= 0 ? 3 : 0} align={["center","flex-start"]}>
+          <Flex w="full" flexDir="column" ml={progress >= 0 ? 3 : 0} align={["center", "flex-start"]}>
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               Due for renewal
             </Text>
@@ -158,20 +159,26 @@ const Details = () => {
                   ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy")
                   : "No due date"}
               </Text>
-              <Flex align="center">
-                <DatePicker
-                  ref={startRef}
-                  selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
-                  onChange={(date) => updateResponseDate(date)}
-                  customInput={<EditButton />}
-                  disabledKeyboardNavigation
-                  showYearDropdown
-                  dropdownMode="select"
-                  dateFormatCalendar="MMMM"
-                  >
-                    <Button colorScheme="purpleHeart" w="full" size="sm" onClick={() => updateResponseDate(null)}>No due date</Button>
-                  </DatePicker>
-              </Flex>
+              <Can
+                action="responses.edit"
+                data={{ response }}
+                yes={() => (
+                  <Flex align="center">
+                    <DatePicker
+                      ref={startRef}
+                      selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
+                      onChange={(date) => updateResponseDate(date)}
+                      customInput={<EditButton />}
+                      disabledKeyboardNavigation
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormatCalendar="MMMM"
+                    >
+                      <Button colorScheme="purpleHeart" w="full" size="sm" onClick={() => updateResponseDate(null)}>No due date</Button>
+                    </DatePicker>
+                  </Flex>
+                )}
+              />
             </Flex>
           </Flex>
         </Flex>

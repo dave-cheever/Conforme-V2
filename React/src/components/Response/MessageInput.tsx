@@ -33,13 +33,13 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
   const { users } = useResponseContext();
 
   const onKeyDown = (e) => {
-    if(e.shiftKey && e.key === "Enter"){
-        //This should change the line
-        return;
+    if (e.shiftKey && e.key === "Enter") {
+      //This should change the line
+      return;
     }
 
-    if(e.key === "Enter"){
-        onAction();
+    if (e.key === "Enter") {
+      onAction();
     }
   }
 
@@ -49,11 +49,20 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
       control={control}
       rules={{ validate }}
       render={({ field }) => {
-        const { onChange,onBlur, value } = field;
+        const { onChange, onBlur, value } = field;
 
         return (
           <Flex w="full" align="center" position="relative" borderRadius="10px" mb="25px">
-            <MentionsInput allowSpaceInQuery={true} onBlur={onBlur} onKeyDown={onKeyDown} placeholder={placeholder} className="mentions" allowSuggestionsAboveCursor={true} value={value} onChange={onChange}>
+            <MentionsInput
+              disabled={disabled}
+              allowSpaceInQuery={true}
+              onBlur={onBlur}
+              onKeyDown={onKeyDown}
+              placeholder={placeholder}
+              className="mentions"
+              allowSuggestionsAboveCursor={true}
+              value={value}
+              onChange={onChange}>
               <Mention
                 markup="@@@(__display__)[__id__]"
                 spellCheck={false}
@@ -63,16 +72,16 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
                 renderSuggestion={(
                   highlightedDisplay,
                 ) => {
-                  return(
-                    <Flex w="full" pl="13px" py="10px" color="mentionListItem.color" fontSize="14px" __hover={{color: "mentionListItem.hoverColor"}}>
-                      <Avatar size="xs" name={highlightedDisplay?.displayName}/>
+                  return (
+                    <Flex w="full" pl="13px" py="10px" color="mentionListItem.color" fontSize="14px" __hover={{ color: "mentionListItem.hoverColor" }}>
+                      <Avatar size="xs" name={highlightedDisplay?.displayName} />
                       <Text ml={3} noOfLines={1} textOverflow="ellipsis">{highlightedDisplay?.displayName}</Text>
                     </Flex>
                   );
                 }}
               />
             </MentionsInput>
-            <Flex position="absolute" right="10px"><SendMessageIcon cursor="pointer" onClick={onAction}/></Flex>
+            <Flex position="absolute" right="10px"><SendMessageIcon cursor={disabled ? "not-allowed" : "pointer"} onClick={onAction} /></Flex>
           </Flex>
         );
       }}

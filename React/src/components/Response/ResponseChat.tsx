@@ -24,6 +24,7 @@ import { IComment } from "../../interfaces/IComment";
 import { toastFailed } from "../../bootstrap/config";
 import Loader from "../Loader";
 import useDevice from "../../hooks/useDevice";
+import Can from "../can";
 
 const GET_COMMENTS = gql`
   query ($_id: String!) {
@@ -294,14 +295,20 @@ const ResponseChat = () => {
               />
             ))}
           </Flex>
-          <MessageInput
-            name="text"
-            placeholder="Send message"
-            control={control}
-            onAction={addComment}
-            validations={{
-              notEmpty: true,
-            }}
+          <Can
+            action="comments.add"
+            data={{ response }}
+            yes={() => (
+              <MessageInput
+                name="text"
+                placeholder="Send message"
+                control={control}
+                onAction={addComment}
+                validations={{
+                  notEmpty: true,
+                }}
+              />)}
+            no={() => <Box h="20px" />}
           />
         </Flex>
       </Box>
