@@ -116,7 +116,7 @@ const ResponseQuestions = () => {
               placeholder={description}
               disabled={!isUserPermitted}
               required={!!required}
-              defaultValues={value}
+              defaultvalue={value}
               styles={styles}
             />
           </Flex>

@@ -1,10 +1,10 @@
 
 export const getFieldEmptyValue = (fieldType: string) => {
   switch (fieldType) {
-    case 'text': {
+    case 'textConfirm': {
       return '';
     }
-    case 'textMultiline': {
+    case 'textMultilineConfirm': {
       return '';
     }
   }
@@ -12,10 +12,10 @@ export const getFieldEmptyValue = (fieldType: string) => {
 
 export const questionHeader = (questionType) => {
   switch (questionType) {
-    case 'text':
+    case 'textConfirm':
       return 'Text input question';
-    case 'textMultiline':
-      return 'Multiline Text input question';
+    case 'textMultilineConfirm':
+      return 'Multiline text input question';
     case 'switch':
       return 'Yes / No question';
     case 'datepicker':

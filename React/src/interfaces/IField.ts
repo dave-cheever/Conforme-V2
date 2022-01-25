@@ -15,5 +15,5 @@ export interface IField {
   help?: string;
   placeholder?: string;
   styles?: object;
-  defaultValues?: any;
+  defaultvalue?: any;
 }

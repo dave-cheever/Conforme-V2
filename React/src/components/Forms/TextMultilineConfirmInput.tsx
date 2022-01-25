@@ -9,7 +9,6 @@ import useValidate from '../../hooks/useValidate';
 
 interface ItextMultilineConfirmInput extends IField {
   placeholder?: string;
-  defaultvalue?: string;
 }
 
 const definedValidations: DefinedValidations = {
@@ -52,7 +51,7 @@ const TextMultilineConfirmInput = ({ control, name, label, required, tooltip = '
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px"  mb="8px" fill="questionListElement.iconAsterisk" stroke='textMultilineConfirmInput.iconAsterisk'/>}
+                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='textMultilineConfirmInput.iconAsterisk' />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>

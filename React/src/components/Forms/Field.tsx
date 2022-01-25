@@ -18,7 +18,7 @@ import Table from './Table';
 import DataGrid from './DataGrid';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required,defaultValues } = field;
+  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required, defaultvalue } = field;
   const props: IField = {
     control,
     name,
@@ -33,15 +33,12 @@ const Field = ({ control, ...field }) => {
     help,
     styles,
     required,
-    defaultValues
+    defaultvalue,
   };
 
   switch (type) {
     case 'text': {
       return <TextInput key={name} {...props} />;
-    }
-    case 'textMultiline': {
-      return <TextMultilineConfirmInput key={name} {...props} />;
     }
     case 'dropdown': {
       return <Dropdown key={name} {...props} />;
@@ -67,10 +64,10 @@ const Field = ({ control, ...field }) => {
     case 'checkbox': {
       return <Checkbox key={name} {...props} />;
     }
-    case 'textConfirmInput': {
+    case 'textConfirm': {
       return <TextConfirmInput key={name} {...props} />;
     }
-    case 'textMultilineConfirmInput': {
+    case 'textMultilineConfirm': {
       return <TextMultilineConfirmInput key={name} {...props} />;
     }
     case 'table': {

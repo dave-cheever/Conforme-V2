@@ -4,12 +4,12 @@ import { QuestionDateIcon, QuestionTextIcon, QuestionToggleIcon } from '../../ic
 
 const QuestionIcon = ({ type, ...props }) => {
   switch (type) {
-    case 'text':
+    case 'textConfirm':
+      return <QuestionTextIcon {...props} />;
+    case 'textMultilineConfirm':
       return <QuestionTextIcon {...props} />;
     case 'switch':
       return <QuestionToggleIcon {...props} />;
-    case 'textMultiline':
-      return <QuestionTextIcon {...props} />;
     case 'datePicker':
       return <QuestionDateIcon {...props} />;
     default:

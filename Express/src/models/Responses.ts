@@ -54,7 +54,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
     _id: false,
     type: {
       type: String,
-      enum: ['text', 'textMultiline', 'switch', 'datepicker', 'multipleChoice'],
+      enum: ['textConfirm', 'textMultilineConfirm', 'switch', 'datepicker', 'multipleChoice'],
     },
     name: String,
     description: String,
@@ -200,8 +200,8 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
           let value: object = {};
 
           switch (questionOld.type) {
-            case 'text':
-            case 'textMultiline':
+            case 'textConfirm':
+            case 'textMultilineConfirm':
               value = getAuditValueForString(questionOld.value, questionNew.value);
               break;
             case 'switch':

@@ -7,7 +7,7 @@ interface IMultipleChoices extends IField {
   placeholder?: string;
 }
 
-const MultipleChoices = ({ control, name, label, required, tooltip = '', disabled = false, defaultValues }: IMultipleChoices) => {
+const MultipleChoices = ({ control, name, label, required, tooltip = '', disabled = false, defaultvalue }: IMultipleChoices) => {
   return (
     <Box w='full' id={name}>
       {label && (
@@ -27,7 +27,7 @@ const MultipleChoices = ({ control, name, label, required, tooltip = '', disable
           </Box>
         </Flex>
       )}
-      {defaultValues?.map(({ label }: { label: string, isCorrect: boolean }, index) => {
+      {defaultvalue?.map(({ label }: { label: string, isCorrect: boolean }, index) => {
         return (
           <Controller
             key={index}

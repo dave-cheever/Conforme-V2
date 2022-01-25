@@ -34,7 +34,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
     _id: false,
     type: {
       type: String,
-      enum: ['text', 'textMultiline', 'switch', 'datepicker', 'multipleChoice'],
+      enum: ['textConfirm', 'textMultilineConfirm', 'switch', 'datepicker', 'multipleChoice'],
     },
     name: String,
     description: String,
