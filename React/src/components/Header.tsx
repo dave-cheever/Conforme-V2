@@ -4,6 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { ArrowRight, Filter } from "../icons";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import useDevice from "../hooks/useDevice";
+import { useHistory } from "react-router-dom";
 
 interface IHeader {
   breadcrumbs: string[];
@@ -23,7 +24,7 @@ const Header: FunctionComponent<IHeader> = ({
   } = useFiltersContext();
 
   const device = useDevice();
-
+  const history = useHistory();
   const breadCrumbs = useMemo(() => {
     if(device === "mobile"){
       return mobileBreadcrumbs || [];
@@ -32,6 +33,7 @@ const Header: FunctionComponent<IHeader> = ({
     return breadcrumbs;
   },[device, breadcrumbs, mobileBreadcrumbs]);
 
+  const isAdminPage = history.location.pathname.split('/')[1] === "admin";
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex key={`bc-${i}`} h="full" align="center">
       {i > 0 && (
@@ -69,7 +71,7 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex w="full" justify="flex-end" mr="20px">
           {children}
         </Flex>
-        {usedFilters && usedFilters.length > 0 && (
+        {usedFilters && !isAdminPage && usedFilters.length > 0 && (
           <Flex
             minW="120px"
             flexShrink={0}
