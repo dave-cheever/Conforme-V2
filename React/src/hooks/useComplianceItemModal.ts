@@ -72,8 +72,7 @@ const useComplianceItemModal = (refetch = () => { }) => {
       } else {
         const { data } = await create({ variables: { complianceItemInput } });
         savedComplianceItemId = data.createComplianceItem._id;
-        setValue('_id', savedComplianceItemId);
-        reset(complianceItemInput, selectedSectionIndex);
+        reset({ ...complianceItemInput, _id: savedComplianceItemId }, selectedSectionIndex);
       }
       refetch();
       toast({ ...toastSuccess, description: `${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}` });
