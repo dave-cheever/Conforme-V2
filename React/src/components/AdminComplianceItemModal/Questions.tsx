@@ -137,6 +137,7 @@ const QuestionsForm = () => {
             color='questionsModal.button.color'
             fontSize="smm"
             fontWeight='700'
+            disabled={selectedRadio === ""}
             rightIcon={<Icon as={OpenMenuArrow} stroke="questionsModal.button.icon" transform="rotate(270deg)" />}
             _hover={{
               bg: 'questionsModal.button.hover'
