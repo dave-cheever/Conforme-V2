@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import React, { useRef, useEffect, useState } from "react";
+import { Flex, Stack, Text, Tooltip } from "@chakra-ui/react";
 
 import { IQuestion, IQuestionValue } from "../../interfaces/IQuestion";
 import { AsteriskQuestion, Bin, EditIcon }  from "../../icons";
@@ -13,10 +13,22 @@ interface IQuestionListElement {
   editQuestion?: () => void;
 }
 const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, editQuestion }: IQuestionListElement) => {
+
+  const ref:any = useRef(null);
+  const [isTextOverflown, setIsTextOverflown] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current!;
+    if(element){
+      //only show tooltip if text overflow is happening.
+      setIsTextOverflown(element.scrollHeight > element.clientHeight);
+    }
+  }, []);
+
   return (
     <Stack
       w='calc(100% - 2rem)'
-      h='65px'
+      minH='65px'
       direction='row'
       spacing={2}
       px={4}
@@ -28,15 +40,16 @@ const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, ed
     >
       <Flex w="calc(100% - 40px)" flexDir="column">
         <Text fontSize="11px" color="questionListElement.label">{questionHeader(question.type)}</Text>
-        <Flex flexGrow={1} maxW='calc(100% - 60px - 2rem)' alignItems="center">
-          <Box
-            color='questionListElement.name'
-            fontSize='smm'
-            fontWeight="bold"
-            overflow='hidden'
-            textOverflow='ellipsis'
-            whiteSpace='nowrap'
-          >{question.name}</Box>
+        <Flex flexGrow={1} w="full" alignItems="center">
+          <Tooltip hasArrow label={question.name} isDisabled={!isTextOverflown} bg="questionListElement.tooltipBg" color="questionListElement.tooltipColor" placement="top">
+            <Text
+              color='questionListElement.name'
+              fontSize='smm'
+              fontWeight="bold"
+              noOfLines={4}
+              ref={ref}
+            >{question.name}</Text>
+          </Tooltip>
            {question.required && <AsteriskQuestion ml="5px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w="12px" h="12px" />}
         </Flex>
       </Flex>
@@ -67,6 +80,8 @@ export const questionListElementStyles = {
     name: "#2B3236",
     label: "#818197",
     iconAsterisk: "#E93C44",
-    icon: "#818197"
+    icon: "#818197",
+    tooltipColor: "black",
+    tooltipBg:"white"
   }
 };
