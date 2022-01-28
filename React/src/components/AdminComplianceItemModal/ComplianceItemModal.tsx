@@ -161,21 +161,22 @@ const ComplianceItemModal = ({ refetch }) => {
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
-              <Flex justifyContent="space-between" w="full">
-                <Button
-                  w="fit-content"
-                  h="40px"
-                  leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
-                  fontSize="smm"
-                  fontWeight="700"
-                  rounded="10px"
-                  bg="complianceItemModal.tabs.bottomButton.bg"
-                  color="complianceItemModal.tabs.bottomButton.color"
-                  _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
-                  onClick={handlePreviousButtonClick}
-                >
-                  Back
-                </Button>
+              <Flex justifyContent={selectedSection.name !== "Details" ? "space-between": "flex-end"} w="full">
+                {selectedSection.name !== 'Details' &&
+                  <Button
+                    w="fit-content"
+                    h="40px"
+                    leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
+                    fontSize="smm"
+                    fontWeight="700"
+                    rounded="10px"
+                    bg="complianceItemModal.tabs.bottomButton.bg"
+                    color="complianceItemModal.tabs.bottomButton.color"
+                    _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
+                    onClick={handlePreviousButtonClick}
+                  >
+                    Back
+                  </Button>}
                 <Button
                   ml={3}
                   w="fit-content"
