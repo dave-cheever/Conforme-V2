@@ -10,101 +10,103 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
     ...elements,
   ]);
   try {
+    // Lookup all users in organisation
     const users: IUser[] = await Users.customFind({ organization }, organization._id);
     const usersWithDetails: IUser[] = [];
 
-    for (const user of users) {
-      const userDetails = await GraphService.getUserData({ userId: user._id, organization });
-      const { givenName, surname, displayName, mail, jobTitle, userPrincipalName } = userDetails;
+    // Lookup info for users in parallel using promise.all
+    await Promise.all(
+      users.map(async (user) => {
+        const userDetails = await GraphService.getUserData({ userId: user._id, organization });
+        const { givenName, surname, displayName, mail, jobTitle, userPrincipalName } = userDetails;
+        if (shouldJoin(["role"])) {
+          user.role = "user";
 
-      if (shouldJoin(["role"])) {
-        user.role = "user";
-
-        const isAdmin = await GraphService.checkMemberGroup({
-          userId: user._id,
-          groupId: organization.adminsGroupId,
-          organization,
-        });
-        if (isAdmin) {
-          user.role = 'admin';
-        } else {
-          const isReader = await GraphService.checkMemberGroup({
+          const isAdmin = await GraphService.checkMemberGroup({
             userId: user._id,
-            groupId: organization.readersGroupId,
+            groupId: organization.adminsGroupId,
             organization,
           });
-          if (isReader) {
-            user.role = 'reader';
+          if (isAdmin) {
+            user.role = 'admin';
+          } else {
+            const isReader = await GraphService.checkMemberGroup({
+              userId: user._id,
+              groupId: organization.readersGroupId,
+              organization,
+            });
+            if (isReader) {
+              user.role = 'reader';
+            }
           }
         }
-      }
 
-      if (shouldJoin(["imgUrl"])) {
-        user.imgUrl = `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`;
-      }
+        if (shouldJoin(["imgUrl"])) {
+          user.imgUrl = `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`;
+        }
 
-      if (shouldJoin(["responsibleCount"])) {
-        const responses = await Responses.aggregate([{
-          $match: {
-            'responsibleId': user._id,
-            published: true,
-            organizationId: organization._id
-          }
-        }, {
-          $count: "count"
-        }]);
-        user.responsibleCount = responses[0].count;
-      }
+        if (shouldJoin(["responsibleCount"])) {
+          const responses = await Responses.aggregate([{
+            $match: {
+              'responsibleId': user._id,
+              published: true,
+              organizationId: organization._id
+            }
+          }, {
+            $count: "count"
+          }]);
+          user.responsibleCount = responses[0].count;
+        }
 
-      if (shouldJoin(["accountableCount"])) {
-        const responses = await Responses.aggregate([{
-          $match: {
-            'accountableId': user._id,
-            published: true,
-            organizationId: organization._id
-          }
-        }, {
-          $count: "count"
-        }]);
-        user.accountableCount = responses[0].count;
-      }
+        if (shouldJoin(["accountableCount"])) {
+          const responses = await Responses.aggregate([{
+            $match: {
+              'accountableId': user._id,
+              published: true,
+              organizationId: organization._id
+            }
+          }, {
+            $count: "count"
+          }]);
+          user.accountableCount = responses[0].count;
+        }
 
-      if (shouldJoin(["contributorCount"])) {
-        const responses = await Responses.aggregate([{
-          $match: {
-            'contributorsIds':  user._id,
-            published: true,
-            organizationId: organization._id
-          }
-        }, {
-          $count: "count"
-        }]);
-        user.contributorCount = responses[0].count;
-      }
+        if (shouldJoin(["contributorCount"])) {
+          const responses = await Responses.aggregate([{
+            $match: {
+              'contributorsIds':  user._id,
+              published: true,
+              organizationId: organization._id
+            }
+          }, {
+            $count: "count"
+          }]);
+          user.contributorCount = responses[0].count;
+        }
 
-      if (shouldJoin(["followerCount"])) {
-        const responses = await Responses.aggregate([{
-          $match: {
-            'followersIds': user._id,
-            published: true,
-            organizationId: organization._id
-          }
-        }, {
-          $count: "count"
-        }]);
-        user.followerCount = responses[0].count;
-      }
+        if (shouldJoin(["followerCount"])) {
+          const responses = await Responses.aggregate([{
+            $match: {
+              'followersIds': user._id,
+              published: true,
+              organizationId: organization._id
+            }
+          }, {
+            $count: "count"
+          }]);
+          user.followerCount = responses[0].count;
+        }
 
-      usersWithDetails.push({
-        ...user,
-        firstName: givenName!,
-        lastName: surname!,
-        displayName: displayName!,
-        email: mail || userPrincipalName!,
-        jobTitle: jobTitle!,
-      });
-    };
-
+        usersWithDetails.push({
+          ...user,
+          firstName: givenName!,
+          lastName: surname!,
+          displayName: displayName!,
+          email: mail || userPrincipalName!,
+          jobTitle: jobTitle!,
+        });
+      })
+    );
     return usersWithDetails;
   } catch (err: any) {
     throw new Error(err);
