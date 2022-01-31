@@ -21,14 +21,18 @@ const BusinessUnitsSelector = ({
   handleChange,
 }: IBusinessUnitsSelector) => {
   const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<IBusinessUnit[]>([]);
+
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const areAllSelected = useMemo(() => filteredBusinessUnits?.every(({ _id }) => selected.includes(_id)), [filteredBusinessUnits, selected]);
 
   useEffect(() => {
-    let filteredBusinessUnits: IBusinessUnit[] = [];
+    let filteredBusinessUnits: IBusinessUnit[] = businessUnits || [];
+    if(searchText !== ""){
+      filteredBusinessUnits = filteredBusinessUnits?.filter(({ name }) => name.includes(searchText));
+    }
     if (disabled) {
-      filteredBusinessUnits = businessUnits?.filter(({ _id }) => selected.includes(_id));
+      filteredBusinessUnits = filteredBusinessUnits?.filter(({ _id }) => selected.includes(_id));
     }
     setFilteredBusinessUnits(filteredBusinessUnits);
   }, [businessUnits, selectedType, searchText, disabled, selected]);
