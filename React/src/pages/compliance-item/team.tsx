@@ -74,7 +74,7 @@ const Team = () => {
 
   useEffect(() => {
     refetchUsers();
-    if(filterType === "responsible" || filterType === "accountable"){
+    if (filterType === "responsible" || filterType === "accountable") {
       setSelectedParticipants([]);
     }
     if (data?.searchUsers && searchQuery) {
@@ -92,8 +92,8 @@ const Team = () => {
 
   useEffect(() => {
     setSelectedParticipants([]);
-  // eslint-disable-next-line
-  },[filterType]);
+    // eslint-disable-next-line
+  }, [filterType]);
 
   const accountable: IUser =
     racfData?.responseAccountable &&
@@ -115,7 +115,7 @@ const Team = () => {
 
   return (
     <Stack
-      h={["fit-content","full"]}
+      h={["fit-content", "full"]}
       alignItems={["center", "flex-start"]}
       w="full"
       spacing="40px"
@@ -124,7 +124,7 @@ const Team = () => {
       rounded="20px"
       fontSize="smm"
       fontWeight="bold"
-      overflow={["visible","auto"]}
+      overflow={["visible", "auto"]}
     >
       <TeamModal />
       <Flex>
@@ -168,8 +168,8 @@ const Team = () => {
             )}
         </Flex>
       </Flex>
-      <Flex w="full" >
-        <Flex w="full" flexDir="column" justifyContent="center">
+      <Flex>
+        <Flex flexDir="column">
           <TeamHeader
             header="Contributors"
             onOpen={onOpen}
@@ -177,7 +177,7 @@ const Team = () => {
             isButtonVisible={response?.contributorsIds?.length! < maxDelegates}
             action="responses.manageContributor"
           />
-          <Grid w="full" templateColumns={["repeat(3, 1fr)","repeat(4, 1fr)","repeat(6, 1fr)"]} gap={[2,6]}>
+          <Grid w="full" templateColumns={["repeat(3, 1fr)", "repeat(4, 1fr)", "repeat(6, 1fr)"]} gap={[0, 6]}>
             {racfData?.contributors?.map((contributor) => (
               <AvatarUser
                 key={contributor._id}
@@ -197,7 +197,7 @@ const Team = () => {
             setFilterType={() => setFilterType("followersIds")}
             action="responses.manageMultipleFollowers"
           />
-          <Grid w="full" templateColumns={["repeat(3, 1fr)","repeat(4, 1fr)","repeat(6, 1fr)"]} gap={[0,6]}>
+          <Grid w="full" templateColumns={["repeat(3, 1fr)", "repeat(4, 1fr)", "repeat(6, 1fr)"]} gap={[0, 6]}>
             {racfData?.followers?.map((follower) => (
               <AvatarUser
                 key={follower._id}

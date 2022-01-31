@@ -76,6 +76,12 @@ const Summary = () => {
           ))}
         </Grid>
 
+        {complianceItem.evidenceItems && complianceItem.evidenceItems?.length > 0 && complianceItem.evidenceItems?.some(evidence => evidence === "") &&
+          <Text color="summaryModal.error">
+            Evidence title cannot be empty in order to have a valid compliance item.
+          </Text>
+        }
+
         {complianceItem.questions?.length !== 0 && <Box w='full'>
           <SectionHeader label="Questions"/>
           <Stack spacing={2} w='full' mt="15px">
@@ -90,6 +96,7 @@ const Summary = () => {
             You must add at least one evidence item OR one mandatory question in order to have a valid compliance item.
           </Text>
         }
+        
       </Stack>
   );
 };

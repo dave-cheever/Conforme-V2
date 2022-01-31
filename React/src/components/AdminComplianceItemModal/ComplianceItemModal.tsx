@@ -37,8 +37,8 @@ const ComplianceItemModal = ({ refetch }) => {
   const { Component } = selectedSection;
 
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
-  const isActionRequiredToComplete = useMemo(() => (complianceItem.evidenceItems || []).length > 0 ||
-    (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length > 0, [complianceItem]);
+  const isActionRequiredToComplete = useMemo(() => (((complianceItem.evidenceItems || []).length > 0 ? complianceItem.evidenceItems?.some(evidence => evidence !== "") : true) &&
+    (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length > 0), [complianceItem]);
 
   const handlePrimaryButtonClick = () => {
     if (selectedSection.name === 'Summary') {

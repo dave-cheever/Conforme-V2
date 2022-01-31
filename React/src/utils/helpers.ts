@@ -71,9 +71,10 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       }
       break;
     case 3:
-      if (complianceItem.evidenceItems?.length === 0
-        && complianceItem.questions?.filter(({ required, outdated }) => required
-          && !outdated)?.length === 0
+      if (
+        (complianceItem.evidenceItems?.length === 0 || complianceItem.evidenceItems?.some(evidence => evidence === ""))
+        && (complianceItem.questions?.filter(({ required, outdated }) => required
+          && !outdated)?.length === 0 || complianceItem.evidenceItems?.some(evidence => evidence === ""))
         && visitedTab > i) {
         return {
           bg: "navigationModal.section.error.bg",
@@ -82,7 +83,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       }
       break;
     case 4:
-      if (complianceItem.evidenceItems?.length === 0
+      if (complianceItem.evidenceItems?.length === 0 
         && complianceItem.questions?.filter(({ required, outdated }) => required
           && !outdated)?.length === 0
         && visitedTab >= i) {
