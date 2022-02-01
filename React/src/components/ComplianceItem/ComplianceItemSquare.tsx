@@ -51,7 +51,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       boxShadow="sm"
       bg="white"
       borderRadius="20px"
-      w="full"
+      w={["full", "full", "350px"]}
       flexShrink={0}
       p="20px 25px 20px 25px"
       h="290px"
@@ -78,8 +78,8 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
         </Flex>
         <Flex align='center'>
           {response.evidence?.some(({ uploaded }) => !uploaded) ?
-            <UploadedTick color='complianceSquare.crossIcon' /> :
-            <><Flex fontSize="11px" color='complianceSquare.tickIcon' >Uploaded</Flex><UploadedTick color='complianceSquare.tickIcon' ml={2} /></>
+            <Tooltip label='Evidence required' placement='top' hasArrow><UploadedTick color='complianceSquare.crossIcon' /></Tooltip> :
+            <Tooltip label='Evidence uploaded' placement='top' hasArrow><UploadedTick color='complianceSquare.tickIcon' ml={2} /></Tooltip>
           }
         </Flex>
       </Flex>
@@ -140,6 +140,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           </Box>
         </Box>
         <Box
+          ml={3}
           w="50%"
           color="complianceSquare.regulatoryFontColor"
           fontSize="11px"
@@ -200,6 +201,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           justify="center"
           flexDirection="column"
           color="complianceSquare.nameFontColor"
+          mr={1}
         >
           <Box fontSize="11px" fontWeight="700">
             {responseStatuses[responseStatus]}

@@ -147,7 +147,7 @@ const ComplianceItemModal = ({ refetch }) => {
                 fontSize="smm"
                 fontWeight="700"
                 onClick={handleSecondaryButtonClick}
-                disabled={(Object.keys(errors).length > 0 || !isActionRequiredToComplete) && complianceItem.published}
+                disabled={(Object.keys(errors).length > 0 || isActionRequiredToComplete) && complianceItem.published}
               >Save</Button>
               <Close w="15px" h="15px" stroke="complianceItemModal.closeIcon" onClick={closeModal} cursor="pointer" />
             </Flex>
@@ -161,7 +161,7 @@ const ComplianceItemModal = ({ refetch }) => {
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
-              <Flex justifyContent={selectedSection.name !== "Details" ? "space-between": "flex-end"} w="full">
+              <Flex justifyContent={selectedSection.name !== "Details" ? "space-between" : "flex-end"} w="full">
                 {selectedSection.name !== 'Details' &&
                   <Button
                     w="fit-content"
@@ -194,7 +194,7 @@ const ComplianceItemModal = ({ refetch }) => {
                   }}
                   disabled={
                     selectedSection.name === 'Summary' &&
-                    (Object.keys(errors).length > 0 || !isActionRequiredToComplete) &&
+                    (Object.keys(errors).length > 0 || isActionRequiredToComplete) &&
                     !complianceItem.published
                   }
                 >
