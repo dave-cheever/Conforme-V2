@@ -236,7 +236,7 @@ const ComplianceItems = () => {
               onClick={() => changeViewMode("Grid")}
             >
               <GridIcon mr={3} />
-              Grid
+              Card
             </MenuItem>
             <MenuItem
               fontSize="14px"

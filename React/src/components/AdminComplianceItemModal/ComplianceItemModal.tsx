@@ -37,8 +37,19 @@ const ComplianceItemModal = ({ refetch }) => {
   const { Component } = selectedSection;
 
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
-  const isActionRequiredToComplete = useMemo(() => (((complianceItem.evidenceItems || []).length > 0 ? complianceItem.evidenceItems?.some(evidence => evidence !== "") : true) &&
-    (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length > 0), [complianceItem]);
+  const isActionRequiredToComplete = useMemo(() => {
+    // If evidence with no title exists
+    if (complianceItem.evidenceItems?.some(evidence => evidence === "")) {
+      return true
+    }
+    // If no evidence or no questions
+    if ((complianceItem.evidenceItems || []).length === 0 && (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length === 0) {
+      return true
+    }
+   return false
+  }, [complianceItem]);
+
+  
 
   const handlePrimaryButtonClick = () => {
     if (selectedSection.name === 'Summary') {
@@ -147,7 +158,14 @@ const ComplianceItemModal = ({ refetch }) => {
                 fontSize="smm"
                 fontWeight="700"
                 onClick={handleSecondaryButtonClick}
-                disabled={(Object.keys(errors).length > 0 || isActionRequiredToComplete) && complianceItem.published}
+                disabled={(
+                  Object.keys(errors).length > 0 || 
+                  isActionRequiredToComplete || 
+                  complianceItem?.locationsIds?.length === 0 || 
+                  complianceItem?.businessUnitsIds?.length === 0
+                  ) && 
+                  complianceItem.published 
+                }
               >Save</Button>
               <Close w="15px" h="15px" stroke="complianceItemModal.closeIcon" onClick={closeModal} cursor="pointer" />
             </Flex>
@@ -192,10 +210,13 @@ const ComplianceItemModal = ({ refetch }) => {
                     trigger(Object.keys(selectedSection.fields || []) as any);
                     handlePrimaryButtonClick()
                   }}
-                  disabled={
-                    selectedSection.name === 'Summary' &&
-                    (Object.keys(errors).length > 0 || isActionRequiredToComplete) &&
-                    !complianceItem.published
+                  disabled={(
+                    Object.keys(errors).length > 0 || 
+                    isActionRequiredToComplete || 
+                    complianceItem?.locationsIds?.length === 0 || 
+                    complianceItem?.businessUnitsIds?.length === 0
+                    ) && selectedSection.name === 'Summary' 
+                    && buttonText !== 'Unpublish'
                   }
                 >
                   {buttonText}
