@@ -148,7 +148,7 @@ const Team = () => {
               </Flex>
             )}
         </Flex>
-        <Flex flexDir="column" ml="40px">
+        <Flex flexDir="column" ml="26px">
           <TeamHeader
             header="Responsible"
             onOpen={onOpen}
