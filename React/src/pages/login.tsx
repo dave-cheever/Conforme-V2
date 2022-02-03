@@ -114,7 +114,8 @@ const Login = () => {
             borderColor="loginPage.avatarBorderColor"
           >
             <Avatar
-              size="md"
+              h="75px"
+              w="75px"
               borderWidth="4px"
               borderColor="white"
               src={user?.imgUrl}
