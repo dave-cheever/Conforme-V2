@@ -66,7 +66,7 @@ const GET_RESPONSES = gql`
 
 const ComplianceItems = () => {
   const { user } = useAppContext();
-  const { filtersValues, setUsedFilters, setFilters, setResponsesStatusesCounts } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setFilters, setResponsesStatusesCounts, setShowFiltersPanel } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
@@ -80,6 +80,7 @@ const ComplianceItems = () => {
       setFilters(location.state)
       window.history.replaceState(null, '')
     }
+    return () => setShowFiltersPanel(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
