@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import moment, { Moment } from 'moment';
 import { difference } from 'lodash';
-import { addMonths, addYears, format, subMonths, subYears } from 'date-fns';
+import { addMonths, addDays, addWeeks, addYears, format, subMonths, subDays, subWeeks, subYears } from 'date-fns';
 import { diff } from 'deep-object-diff';
 
 import { IAuditValues, IOrganization, IUser } from 'app-interfaces';
@@ -167,6 +167,14 @@ export const getUserName = (fullName: string) => {
 export const getNextDueDate = (frequency: String, dueDate: Date) => {
   let nextDueDate;
   switch (frequency) {
+    case "Daily":
+      nextDueDate = moment(dueDate).add(1, 'day');
+      break;
+
+    case "Weekly":
+      nextDueDate = moment(dueDate).add(1, 'week');
+      break;
+
     case "Monthly":
       nextDueDate = moment(dueDate).add(1, 'month');
       break;
@@ -201,6 +209,14 @@ export const getNextDueDate = (frequency: String, dueDate: Date) => {
 export const getStatus = (frequency: String) => {
   let status = "";
   switch (frequency) {
+    case "Daily":
+      status = "notStarted";
+      break;
+
+    case "Weekly":
+      status = "notStarted";
+      break;
+
     case "Monthly":
       status = "notStarted";
       break;
@@ -327,6 +343,14 @@ export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => 
   let newNextRenewalDate;
 
   switch (frequency) {
+    case "Daily":
+      newNextRenewalDate = addDays(nextRenewalDate, 1);
+      break;
+
+    case "Weekly":
+      newNextRenewalDate = addWeeks(nextRenewalDate, 1);
+      break;
+
     case "Monthly":
       newNextRenewalDate = addMonths(nextRenewalDate, 1);
       break;
@@ -361,6 +385,14 @@ export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => 
 export const getPrevRenewalDate = (nextRenewalDate: Date, frequency: string) => {
   let newNextRenewalDate;
   switch (frequency) {
+    case "Daily":
+      newNextRenewalDate = subDays(nextRenewalDate, 1);
+      break;
+
+    case "Weekly":
+      newNextRenewalDate = subWeeks(nextRenewalDate, 1);
+      break;
+
     case "Monthly":
       newNextRenewalDate = subMonths(nextRenewalDate, 1);
       break;
@@ -538,7 +570,7 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
   let value = {};
   const removedIds = difference(oldValue || [], newValue || []);
   const addedIds = difference(newValue || [], oldValue || []);
-  
+
 
   let user;
   if (collection === Users && (removedIds.length !== 0 && typeof removedIds[0] === 'string')) {
@@ -547,7 +579,7 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
     user = await GraphService.getUserData({ userId: addedIds[0], organization });
   }
 
-  let users:any[] = [];
+  let users: any[] = [];
   if (collection === Users && (addedIds.length > 1)) {
     for (const addedId of addedIds) {
       let data = await GraphService.getUserData({ userId: addedId, organization });
@@ -591,11 +623,11 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
       value: items.map(({ id }) => id),
       label: labels.join(', '),
     };
-  } else if( addedIds.length > 1 && collection === Users) {
-      value['new'] = {
-        value: users.map(({ id }) => id),
-        label: users.map((user) => user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName).join(', '),
-      };
+  } else if (addedIds.length > 1 && collection === Users) {
+    value['new'] = {
+      value: users.map(({ id }) => id),
+      label: users.map((user) => user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName).join(', '),
+    };
 
   } else if (addedIds.length > 0 && collection === Users) {
     value['new'] = {

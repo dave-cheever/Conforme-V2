@@ -25,6 +25,8 @@ export const responseStatusesGroup = {
 }
 
 export const complianceItemFrequencies = [
+  "Daily",
+  "Weekly",
   "Monthly",
   "Quarterly",
   "6 months",
