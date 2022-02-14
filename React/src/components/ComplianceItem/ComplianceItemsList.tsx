@@ -30,8 +30,15 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
           return (a.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded').localeCompare(b.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded')
         else if (sortType === 'responsible')
           return (a.responsible?.displayName || 'unassigned').localeCompare(b.responsible?.displayName || 'unassigned')
-        else
-          return a[sortType].localeCompare(b[sortType])
+        else {
+          if (a[sortType] === null) {
+            return 1;
+          }
+          else if (b[sortType] === null) {
+            return -1;
+          }
+          return a[sortType] ? a[sortType].localeCompare(b[sortType]) : 0
+        }
       }));
     }
     else {
@@ -50,8 +57,15 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
           return (b.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded').localeCompare(a.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded')
         else if (sortType === 'responsible')
           return (b.responsible?.displayName || 'unassigned').localeCompare(a.responsible?.displayName || 'unassigned')
-        else
-          return b[sortType].localeCompare(a[sortType])
+        else {
+          if (a[sortType] === null) {
+            return 1;
+          }
+          else if (b[sortType] === null) {
+            return -1;
+          }
+          return b[sortType] ? b[sortType].localeCompare(a[sortType]) : 0
+        }
       }));
     }
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
