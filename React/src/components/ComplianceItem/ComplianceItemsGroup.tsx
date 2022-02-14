@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   Flex,
   Stack
@@ -10,7 +10,7 @@ import useResponseUtils from '../../hooks/useResponseUtils';
 import { responseStatusesGroup } from '../../hooks/useResponseUtils';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
-  const [ filteredResults, setFilteredResults ] = useState<any>({});
+  const [filteredResults, setFilteredResults] = useState<any>({});
   const { getStatus, getRenewalStatus } = useResponseUtils();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
     filteredResponses['comingUp'] = responses.filter(response => getStatus(response) === 'compliant' && getRenewalStatus(response) === 'comingUp');
     filteredResponses['nonCompliant'] = responses.filter(response => getStatus(response) === 'nonCompliant');
     setFilteredResults(filteredResponses)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responses]);
 
   const renderGroup = (group: string) => (
@@ -40,7 +40,15 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
         {responseStatusesGroup[group]}
       </Flex>
       <Stack spacing={6} direction="column" w='full' align='center' pb={5}>
-        {(filteredResults[group]?.map((response: IResponse) => <ComplianceItemSquare key={response['_id']} response={response} />))}
+        {(filteredResults[group]?.sort((a, b) => {
+          if (a["nextRenewalDate"] === null) {
+            return 1;
+          }
+          else if (b["nextRenewalDate"] === null) {
+            return -1;
+          }
+          return a["nextRenewalDate"] && b["nextRenewalDate"] ? a["nextRenewalDate"].toString().localeCompare(b["nextRenewalDate"].toString()) : 0
+        })?.map((response: IResponse) => <ComplianceItemSquare key={response['_id']} response={response} />))}
       </Stack>
     </Flex>
   );

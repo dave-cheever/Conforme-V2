@@ -266,7 +266,15 @@ const ComplianceItems = () => {
             {viewMode === "Grid" &&
               <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", ""]} display={["grid", "grid", "flex"]} flexWrap='wrap' h="fit-content" gap={6} w='full' pb={[0, 8]} px={[4, 8]} pt="3">
                 {filteredResponses.length > 0
-                  ? filteredResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
+                  ? [...filteredResponses]?.sort((a, b) => {
+                    if (a["nextRenewalDate"] === null) {
+                      return 1;
+                    }
+                    else if (b["nextRenewalDate"] === null) {
+                      return -1;
+                    }
+                    return a["nextRenewalDate"] && b["nextRenewalDate"] ? a["nextRenewalDate"].toString().localeCompare(b["nextRenewalDate"].toString()) : 0
+                  })?.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                   : <Flex w='full' h='full' fontSize='18px' fontStyle='italic'>No compliance items found</Flex>
                 }
               </Grid>}
