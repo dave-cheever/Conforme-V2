@@ -16,8 +16,6 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
       $sort: {
         'metatags.addedAt': -1,
       },
-    }, {
-      $skip: skip || 0
     }];
 
     if (fields?.length > 0) {
@@ -42,6 +40,12 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
           "element._id": elementId,
         }
       })
+    }
+
+    if (skip) {
+      pipeline.push({
+        $skip: skip,
+      });
     }
 
     if (limit) {
