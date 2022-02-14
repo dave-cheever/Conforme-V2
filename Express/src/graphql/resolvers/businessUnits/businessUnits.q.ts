@@ -7,7 +7,7 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
   try {
     let businessUnits = await BusinessUnits.customFind({}, organization._id);
-    
+
     if (shouldJoin("complianceItemsResponsesCount")) {
       for (const businessUnit of businessUnits) {
         let pipeline: any[] = [];
@@ -43,7 +43,7 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
       }
     }
 
-    return businessUnits;
+    return businessUnits.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }

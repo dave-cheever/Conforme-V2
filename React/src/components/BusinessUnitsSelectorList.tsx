@@ -21,7 +21,7 @@ const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, disabled, 
       onChange={value => handleChange({ target: { name: 'businessUnitsIds', value } })}
     >
       <Stack w='full' direction="column">
-        {filteredBusinessUnits?.map(({ name, _id }) =><FilterCheckBox label={name} key={_id} value={_id}/> )}
+        {filteredBusinessUnits?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
       </Stack>
     </CheckboxGroup>
   );

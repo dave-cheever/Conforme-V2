@@ -15,7 +15,7 @@ const CategoryFilter = () => {
   return (
     <CheckboxGroup onChange={newValue => setFilters({ categoriesIds: newValue })} value={value}>
       <Stack direction="column" overflow='auto' >
-        {categories?.map(({ name, _id }) =><FilterCheckBox label={name} key={_id} value={_id}/> )}
+        {categories?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
       </Stack>
     </CheckboxGroup>
   );

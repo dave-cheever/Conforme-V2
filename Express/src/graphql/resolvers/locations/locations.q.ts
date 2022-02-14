@@ -20,7 +20,7 @@ const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         });
         pipeline.push({
           $match: {
-            'complianceItem.locationsIds': { $in: [ location._id ]},
+            'complianceItem.locationsIds': { $in: [location._id] },
             published: true,
           },
         });
@@ -29,7 +29,7 @@ const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         });
         const responses = await Responses.aggregate(pipeline);
         if (responses && responses.length > 0) {
-            location.complianceItemsResponsesCount = responses[0].count;
+          location.complianceItemsResponsesCount = responses[0].count;
         }
       }
     }
@@ -44,7 +44,7 @@ const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
       }
     }
 
-    return locations;
+    return locations?.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }

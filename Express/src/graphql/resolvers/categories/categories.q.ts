@@ -34,7 +34,7 @@ const categories = async (_, __, { organization }, info: GraphQLResolveInfo) => 
       }
     }
 
-    return categories;
+    return categories.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }

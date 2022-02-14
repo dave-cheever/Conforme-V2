@@ -15,8 +15,7 @@ const RegulatoryBodyFilter = () => {
   return (
     <CheckboxGroup onChange={newValue => setFilters({ regulatoryBodiesIds: newValue })} value={value}>
       <Stack direction="column">
-        {regulatoryBodies?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id}/> )}
-
+        {regulatoryBodies?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
       </Stack>
     </CheckboxGroup>
   );

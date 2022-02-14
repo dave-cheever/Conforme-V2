@@ -10,7 +10,7 @@ const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInf
   ]);
   try {
     let regulatoryBodies = await RegulatoryBodies.customFind({}, organization._id);
-    
+
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const regulatoryBody of regulatoryBodies) {
         let pipeline: any[] = [];
@@ -36,7 +36,7 @@ const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInf
       }
     }
 
-    return regulatoryBodies;
+    return regulatoryBodies.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }
