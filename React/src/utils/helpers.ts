@@ -83,7 +83,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       }
       break;
     case 4:
-      if (complianceItem.evidenceItems?.length === 0 
+      if (complianceItem.evidenceItems?.length === 0
         && complianceItem.questions?.filter(({ required, outdated }) => required
           && !outdated)?.length === 0
         && visitedTab >= i) {
@@ -138,14 +138,17 @@ export const getCollectionNameByAction = (collection: string) => {
     case "categories":
       fieldCollection = "category"
       break;
-    case "compliance-items":
+    case "complianceItems":
       fieldCollection = "compliance item"
       break;
-    case "functional-areas":
+    case "functionalAreas":
       fieldCollection = "functional area"
       break;
-    case "regulatory-bodies":
+    case "regulatoryBodies":
       fieldCollection = "regulatory body"
+      break;
+    case "businessUnits":
+      fieldCollection = "business unit"
       break;
     case "responses":
       fieldCollection = "response"
@@ -155,6 +158,9 @@ export const getCollectionNameByAction = (collection: string) => {
       break;
     case "comments":
       fieldCollection = "comment"
+      break;
+    case "locations":
+      fieldCollection = "location"
       break;
     default:
       break;
