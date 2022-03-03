@@ -118,12 +118,16 @@ categorySchema.statics.customDelete = async function (selector: object = {}, use
     throw new GraphQLError('Category doesn\'t exist');
   }
 
-  const deletedResult = await this.deleteMany({
-    ...selector,
-    organizationId,
-  });
+  const updatedCategory = {
+    ...category,
+    metatags: {
+      ...category?.metatags,
+      ...genMetatags("removed", userId),
+    },
+  };
+  const deletedResult = await this.updateOne(selector, updatedCategory);
 
-  if (deletedResult?.deletedCount) {
+  if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const element = getBasicElement(category);
       const oldValues = removeDatabaseFields(category);
@@ -138,7 +142,7 @@ categorySchema.statics.customDelete = async function (selector: object = {}, use
     addAuditLog();
   }
 
-  return deletedResult?.deletedCount;
+  return deletedResult?.modifiedCount;
 };
 
 const categoryModel = model<IBaseWithName, IBaseWithNameModel>("Category", categorySchema);

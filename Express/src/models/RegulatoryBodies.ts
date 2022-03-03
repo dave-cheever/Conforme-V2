@@ -118,12 +118,16 @@ regulatoryBodySchema.statics.customDelete = async function (selector: object = {
     throw new GraphQLError('Regulatory body doesn\'t exist');
   }
 
-  const deletedResult = await this.deleteMany({
-    ...selector,
-    organizationId,
-  });
+  const updatedRegulatoryBody = {
+    ...regulatoryBody,
+    metatags: {
+      ...regulatoryBody?.metatags,
+      ...genMetatags("removed", userId),
+    },
+  };
+  const deletedResult = await this.updateOne(selector, updatedRegulatoryBody);
 
-  if (deletedResult?.deletedCount) {
+  if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const element = getBasicElement(regulatoryBody);
       const oldValues = removeDatabaseFields(regulatoryBody);
@@ -138,7 +142,7 @@ regulatoryBodySchema.statics.customDelete = async function (selector: object = {
     addAuditLog();
   }
 
-  return deletedResult?.deletedCount;
+  return deletedResult?.modifiedCount;
 };
 
 const regulatoryBodyModel = model<IBaseWithName, IBaseWithNameModel>('RegulatoryBody', regulatoryBodySchema, 'regulatoryBodies');

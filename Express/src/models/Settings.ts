@@ -50,7 +50,11 @@ settingSchema.statics.customFindById = async function (_id: string, organization
 };
 
 settingSchema.statics.customFindByType = async function (type: string, organizationId: string): Promise<ISetting[]> {
-  const settings = await this.find({ type, organizationId }).lean();
+  const settings = await this.find({
+    type,
+    organizationId,
+    "metatags.removedAt": { $eq: null }
+  }).lean();
   return settings;
 };
 

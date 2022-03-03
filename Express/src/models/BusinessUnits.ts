@@ -178,12 +178,16 @@ businessUnitSchema.statics.customDelete = async function (selector: object = {},
     throw new GraphQLError('Business Unit doesn\'t exist');
   }
 
-  const deletedResult = await this.deleteMany({
-    ...selector,
-    organizationId,
-  });
+  const updatedBusinessUnit = {
+    ...businessUnit,
+    metatags: {
+      ...businessUnit?.metatags,
+      ...genMetatags("removed", userId),
+    },
+  };
+  const deletedResult = await this.updateOne(selector, updatedBusinessUnit);
 
-  if (deletedResult?.deletedCount) {
+  if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const element = getBasicElement(businessUnit);
       const oldValues = removeDatabaseFields(businessUnit);
@@ -199,7 +203,7 @@ businessUnitSchema.statics.customDelete = async function (selector: object = {},
     addAuditLog();
   }
 
-  return deletedResult?.deletedCount;
+  return deletedResult?.modifiedCount;
 };
 
 const businessModel = model<IBusinessUnit, IBusinessUnitModel>("BusinessUnit", businessUnitSchema, 'businessUnits');

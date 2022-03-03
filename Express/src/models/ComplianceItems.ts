@@ -230,12 +230,16 @@ complianceItemSchema.statics.customDelete = async function (selector: object = {
     throw new GraphQLError('Category doesn\'t exist');
   }
 
-  const deletedResult = await this.deleteMany({
-    ...selector,
-    organizationId,
-  });
+  const updatedComplianceItem = {
+    ...complianceItem,
+    metatags: {
+      ...complianceItem?.metatags,
+      ...genMetatags("removed", userId),
+    },
+  };
+  const deletedResult = await this.updateOne(selector, updatedComplianceItem);
 
-  if (deletedResult?.deletedCount) {
+  if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const element = getBasicElement(complianceItem);
       const oldValues = removeDatabaseFields(complianceItem);
@@ -251,7 +255,7 @@ complianceItemSchema.statics.customDelete = async function (selector: object = {
     addAuditLog();
   }
 
-  return deletedResult?.deletedCount;
+  return deletedResult?.modifiedCount;
 };
 
 complianceItemSchema.statics.customGenerateReference = async function (): Promise<string> {

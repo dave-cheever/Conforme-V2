@@ -85,12 +85,16 @@ commentSchema.statics.customDelete = async function (selector: object = {}, user
     throw new GraphQLError('Comment doesn\'t exist');
   }
 
-  const deletedResult = await this.deleteMany({
-    ...selector,
-    organizationId,
-  });
+  const updatedComment = {
+    ...comment,
+    metatags: {
+      ...comment?.metatags,
+      ...genMetatags("removed", userId),
+    },
+  };
+  const deletedResult = await this.updateOne(selector, updatedComment);
 
-  if (deletedResult?.deletedCount) {
+  if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const response = await Responses.customFindById(comment.responseId, organizationId);
       const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organizationId);
@@ -107,7 +111,7 @@ commentSchema.statics.customDelete = async function (selector: object = {}, user
     addAuditLog();
   }
 
-  return deletedResult?.deletedCount;
+  return deletedResult?.modifiedCount;
 };
 
 const commentModel = model<IComment, ICommentModel>('Comment', commentSchema);

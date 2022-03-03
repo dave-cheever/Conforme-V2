@@ -124,8 +124,8 @@ locationsSchema.statics.customFindById = async function (_id: string): Promise<I
   return location._doc;
 };
 
-locationsSchema.statics.customFindByOwnerId = async function (ownerId: string): Promise<ILocation> {
-  const location = await this.findOne({ ownerId });
+locationsSchema.statics.customFindByOwnerId = async function (ownerId: string, organizationId: string): Promise<ILocation> {
+  const location = await this.customFindOne({ ownerId }, organizationId);
   if (!location) {
     throw new Error('Location not found');
   }
@@ -133,7 +133,7 @@ locationsSchema.statics.customFindByOwnerId = async function (ownerId: string): 
 };
 
 locationsSchema.statics.customFindByOrganizationId = async function (organizationId: string): Promise<ILocation> {
-  const location = await this.findOne({ organizationId });
+  const location = await this.customFindOne({ organizationId }, organizationId);
   if (!location) {
     throw new Error('Location not found');
   }
@@ -191,12 +191,16 @@ locationsSchema.statics.customDelete = async function (selector: object = {}, us
     throw new GraphQLError('Location doesn\'t exist');
   }
 
-  const deletedResult = await this.deleteMany({
-    ...selector,
-    organizationId,
-  });
+  const updatedLocation = {
+    ...location,
+    metatags: {
+      ...location?.metatags,
+      ...genMetatags("removed", userId),
+    },
+  };
+  const deletedResult = await this.updateOne(selector, updatedLocation);
 
-  if (deletedResult?.deletedCount) {
+  if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const element = getBasicElement(location);
       const oldValues = removeDatabaseFields(location);
@@ -212,7 +216,7 @@ locationsSchema.statics.customDelete = async function (selector: object = {}, us
     addAuditLog();
   }
 
-  return deletedResult?.deletedCount;
+  return deletedResult?.modifiedCount;
 };
 
 const locationModel = model<ILocation, ILocationModel>("Location", locationsSchema);
