@@ -14,59 +14,35 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   const [sortedData, setSortedData] = useState<any>([]);
 
   useEffect(() => {
+    const sort = (a, b) => {
+      if (sortType === 'name')
+        return a.complianceItem?.name.localeCompare(b.complianceItem?.name)
+      else if (sortType === 'regulatoryBody')
+        return (a.complianceItem.regulatoryBody?.name!).localeCompare(b.complianceItem.regulatoryBody?.name!)
+      else if (sortType === 'businessUnit')
+        return (a.businessUnit?.name!).localeCompare(b.businessUnit?.name!)
+      else if (sortType === 'category')
+        return (a.complianceItem?.category?.name).localeCompare(b.complianceItem?.category?.name)
+      else if (sortType === 'compliant')
+        return (getStatus(a) === "nonCompliant" ? 'Yes' : 'No').localeCompare(getStatus(b) === "nonCompliant" ? 'Yes' : 'No')
+      else if (sortType === 'evidence')
+        return (a.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded').localeCompare(b.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded')
+      else if (sortType === 'responsible')
+        return (a.responsible?.displayName || 'unassigned').localeCompare(b.responsible?.displayName || 'unassigned')
+      else {
+        if (a[sortType] === null) {
+          return 1;
+        }
+        else if (b[sortType] === null) {
+          return -1;
+        }
+        return a[sortType] ? a[sortType].localeCompare(b[sortType]) : 0
+      }
+    };
     if (sortOrder) {
-      setSortedData([...sortedData].sort((a, b) => {
-        if (sortType === 'name')
-          return a.complianceItem?.name.localeCompare(b.complianceItem?.name)
-        else if (sortType === 'regulatoryBody')
-          return (a.complianceItem.regulatoryBody?.name!).localeCompare(b.complianceItem.regulatoryBody?.name!)
-        else if (sortType === 'businessUnit')
-          return (a.businessUnit?.name!).localeCompare(b.businessUnit?.name!)
-        else if (sortType === 'category')
-          return (a.complianceItem?.category?.name).localeCompare(b.complianceItem?.category?.name)
-        else if (sortType === 'compliant')
-          return (getStatus(a) === "nonCompliant" ? 'Yes' : 'No').localeCompare(getStatus(b) === "nonCompliant" ? 'Yes' : 'No')
-        else if (sortType === 'evidence')
-          return (a.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded').localeCompare(b.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded')
-        else if (sortType === 'responsible')
-          return (a.responsible?.displayName || 'unassigned').localeCompare(b.responsible?.displayName || 'unassigned')
-        else {
-          if (a[sortType] === null) {
-            return 1;
-          }
-          else if (b[sortType] === null) {
-            return -1;
-          }
-          return a[sortType] ? a[sortType].localeCompare(b[sortType]) : 0
-        }
-      }));
-    }
-    else {
-      setSortedData([...sortedData].sort((a, b) => {
-        if (sortType === 'name')
-          return b.complianceItem?.name.localeCompare(a.complianceItem?.name)
-        else if (sortType === 'regulatoryBody')
-          return (b.complianceItem.regulatoryBody?.name!).localeCompare(a.complianceItem.regulatoryBody?.name!)
-        else if (sortType === 'businessUnit')
-          return (b.businessUnit?.name!).localeCompare(a.businessUnit?.name!)
-        else if (sortType === 'category')
-          return (b.complianceItem?.category?.name).localeCompare(a.complianceItem?.category?.name)
-        else if (sortType === 'compliant')
-          return (getStatus(b) === "nonCompliant" ? 'Yes' : 'No').localeCompare(getStatus(a) === "nonCompliant" ? 'Yes' : 'No')
-        else if (sortType === 'evidence')
-          return (b.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded').localeCompare(a.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded')
-        else if (sortType === 'responsible')
-          return (b.responsible?.displayName || 'unassigned').localeCompare(a.responsible?.displayName || 'unassigned')
-        else {
-          if (a[sortType] === null) {
-            return 1;
-          }
-          else if (b[sortType] === null) {
-            return -1;
-          }
-          return b[sortType] ? b[sortType].localeCompare(a[sortType]) : 0
-        }
-      }));
+      setSortedData([...sortedData].sort((a, b) => sort(a, b)));
+    } else {
+      setSortedData([...sortedData].sort((a, b) => sort(b, a)));
     }
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -57,6 +57,9 @@ const GET_RESPONSES = gql`
         name
         imgUrl
       }
+      responsible {
+        displayName
+      }
       metatags {
         addedBy
       }
@@ -196,7 +199,6 @@ const ComplianceItems = () => {
     setViewMode(viewMode);
     localStorage.setItem("viewMode", viewMode);
   }, []);
-
 
   return (
     <>
