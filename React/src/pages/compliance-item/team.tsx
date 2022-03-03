@@ -192,7 +192,7 @@ const Team = () => {
             action="responses.manageContributor"
           />
           <Grid w="full" templateColumns={["repeat(3, 1fr)", "repeat(4, 1fr)", "repeat(6, 1fr)"]} gap={[0, 6]}>
-            {[...racfData?.contributors].sort((a, b) => a.displayName.localeCompare(b.displayName)).map((contributor) => (
+            {(racfData?.contributors || []).sort((a, b) => a.displayName.localeCompare(b.displayName)).map((contributor) => (
               <AvatarUser
                 key={contributor._id}
                 user={contributor}
@@ -212,7 +212,7 @@ const Team = () => {
             action="responses.manageMultipleFollowers"
           />
           <Grid w="full" templateColumns={["repeat(3, 1fr)", "repeat(4, 1fr)", "repeat(6, 1fr)"]} gap={[0, 6]}>
-            {[...racfData?.followers]?.sort((a, b) => a.displayName.localeCompare(b.displayName)).map((follower) => (
+            {(racfData?.followers || []).sort((a, b) => a.displayName.localeCompare(b.displayName)).map((follower) => (
               <AvatarUser
                 key={follower._id}
                 user={follower}

@@ -55,8 +55,8 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
                 lastRenewalDate: new Date(),
                 responsible: users.find(({ _id }) => _id === response.responsibleId),
                 accountable: users.find(({ _id }) => _id === response.accountableId),
-                contributors: users.filter(({ _id }) => _id === response.contributorsIds?.includes(_id)),
-                followers: users.filter(({ _id }) => _id === response.followersIds?.includes(_id)),
+                contributors: users.filter(({ _id }) => response.contributorsIds?.includes(_id)),
+                followers: users.filter(({ _id }) => response.followersIds?.includes(_id)),
               },
               label: complianceItem.name,
             }
