@@ -26,7 +26,7 @@ const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange, h
   };
 
   return (
-    <Stack>
+    <Stack overflowY="auto">
       <DragDropContext
         onDragEnd={moveQuestion}
         onDragStart={() => setIsDragging(true)}

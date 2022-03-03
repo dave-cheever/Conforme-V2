@@ -105,6 +105,7 @@ const QuestionsForm = () => {
         mt={complianceItem.evidenceItems?.length === 0 ? 0 : 3}
         mb={4}
         px={4}
+        py={2}
         bg="questionsModal.button.bg"
         color='questionsModal.button.color'
         fontSize="11px"
@@ -166,7 +167,7 @@ const QuestionsForm = () => {
           setEditQuestion={setEditQuestion}
         />
       }
-      {!showQuestionForm &&
+      {!showQuestionForm && !isQuestionListOpen &&
         <QuestionList
           setIsDragging={setIsDragging}
           complianceItem={complianceItem}
