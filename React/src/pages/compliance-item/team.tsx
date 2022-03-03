@@ -176,6 +176,7 @@ const Team = () => {
                   user={responsible}
                   permission="responsible"
                   action="responses.manageResponsible"
+                  isReplaceable
                 />
               </Flex>
             )}

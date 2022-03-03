@@ -40,7 +40,7 @@ const AvatarUser = ({ user, permission, removable = true, action, isReplaceable 
   const OpenReplaceOrDeleteModal = () => {
     if (isReplaceable) {
       onReplace()
-      setFilterType("accountableId")
+      setFilterType(`${permission}Id`)
       setIsReplaceAccountable(true)
     } else {
       onOpen()

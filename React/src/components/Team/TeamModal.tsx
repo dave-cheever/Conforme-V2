@@ -57,6 +57,7 @@ const TeamModal = () => {
   const handleClose = () => {
     onClose();
     setSelectedParticipants([]);
+    setSearchText("")
     setSearchQuery("");
     setIsReplaceAccountable(false);
   };
@@ -135,8 +136,8 @@ const TeamModal = () => {
             {isReplaceAccountable
               ? "Replace"
               : !isReplaceAccountable && filterType === "accountableId"
-              ? "Select"
-              : `Add ${responsePermissionByFilterType(filterType)}s`
+                ? "Select"
+                : `Add ${responsePermissionByFilterType(filterType)}s`
             }
           </Text>
           <ModalCloseButton />
@@ -162,13 +163,13 @@ const TeamModal = () => {
             />
           </InputGroup>
           <Flex>
-          {(filterType === "contributorsIds" || filterType === "followersIds") && <Text
-            ml="2"
-            mt={2}
-            fontSize="smm"
-            fontWeight="semi_medium"
-            color="teamPage.radioButtonFont"
-          >{selectedParticipants.length} users selected</Text>}
+            {(filterType === "contributorsIds" || filterType === "followersIds") && <Text
+              ml="2"
+              mt={2}
+              fontSize="smm"
+              fontWeight="semi_medium"
+              color="teamPage.radioButtonFont"
+            >{selectedParticipants.length} users selected</Text>}
           </Flex>
           <Flex maxH="258px" mt="20px" direction="column">
             {loading ? (
@@ -212,7 +213,7 @@ const TeamModal = () => {
                       <Text
                         fontSize="smm"
                         fontWeight='semibold'
-                        color="black" 
+                        color="black"
                         direction='column'
                       >
                         {user.displayName}
@@ -265,8 +266,8 @@ const TeamModal = () => {
             {isReplaceAccountable
               ? "Replace"
               : !isReplaceAccountable && filterType === "accountableId"
-              ? "Select"
-              : "Add"}
+                ? "Select"
+                : "Add"}
           </Button>
         </ModalFooter>
       </ModalContent>
