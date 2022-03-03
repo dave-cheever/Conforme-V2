@@ -74,7 +74,7 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', requ
               justify="space-between"
             >
               {disabled
-                ? <Text>{value ? format(value, 'd MMM yyyy') : ''}</Text>
+                ? <Text>{value ? format(new Date(value), 'd MMM yyyy') : ''}</Text>
                 : <ReactDatepicker
                   dateFormat="d MMM yyyy"
                   name={name}

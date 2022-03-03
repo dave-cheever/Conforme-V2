@@ -360,7 +360,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
         });
       } else {
         // If CI question not exist in response, add it
-        updatedResponse.questions.push({ ...question, value: null });
+        updatedResponse.questions.push({ ...question, value: question.value || null });
       }
     }
 

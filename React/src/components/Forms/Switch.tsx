@@ -19,7 +19,7 @@ const definedValidations: DefinedValidations = {
   },
 };
 
-const Switch = ({ control, name, label, required, validations = {} }: ISwitch) => {
+const Switch = ({ control, name, label, required, disabled, validations = {} }: ISwitch) => {
   const validate = useValidate(label || name, validations, definedValidations);
 
   const RenderButton = ({ laterality, value, onchange, name }) => (
@@ -31,7 +31,8 @@ const Switch = ({ control, name, label, required, validations = {} }: ISwitch) =
       fontWeight="bold"
       fontSize="smm"
       p="10px 20px"
-      onClick={() => onchange(laterality === 'left')}
+      disabled={disabled}
+      onClick={() => !disabled && onchange(laterality === 'left')}
     >{laterality === 'left' ? 'Yes' : 'No'}</Button>
   )
   return (
