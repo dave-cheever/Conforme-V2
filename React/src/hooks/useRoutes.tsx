@@ -15,6 +15,7 @@ import ComplianceItemResponse from "../pages/compliance-item/index";
 import DefaultLayout from "../layouts/DefaultLayout";
 import FilterLayout from "../layouts/FilterLayout";
 import Help from "../pages/help";
+import History from "../pages/compliance-item/history";
 import IRoute from "../interfaces/IRoute";
 import Insights from "../pages/insights";
 import Locations from "../pages/admin/locations";
@@ -70,7 +71,8 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: ComplianceItems,
     layout: FilterLayout,
-  }, {
+  },
+  {
     path: '/compliance-item/:id',
     key: 'complianceItem',
     exact: true,
@@ -90,13 +92,22 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Team,
     layout: ResponseLayout,
-  }, {
+  },
+  {
+    path: '/compliance-item/:id/history',
+    key: 'complianceItem-history',
+    exact: true,
+    component: History,
+    layout: ResponseLayout,
+  },
+  {
     path: '/insights',
     key: 'insights',
     exact: true,
     component: Insights,
     layout: DefaultLayout,
-  }, {
+  },
+  {
     path: "/licenses",
     key: "licences",
     exact: true,

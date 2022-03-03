@@ -34,6 +34,8 @@ import { evidenceStyles } from "../components/Response/Evidence";
 import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
 import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
 import { headerStyles } from "../components/Header";
+import { historicalListItemStyles } from "../components/Response/HistoricalListItem";
+import { historyPageStyles } from "../pages/compliance-item/history";
 import { loginPageStyles } from "../pages/login";
 import { locationsStyles } from "../pages/admin/locations";
 import { locationsFormModalStyles } from "../components/AdminComplianceItemModal/Locations";
@@ -161,6 +163,8 @@ const getTheme = (organizationTheme?: any) => {
       ...filtersPanelItemStyles,
       ...filtersPanelStyles,
       ...headerStyles,
+      ...historicalListItemStyles,
+      ...historyPageStyles,
       ...loginPageStyles,
       ...locationsStyles,
       ...locationsFormModalStyles,

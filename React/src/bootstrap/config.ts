@@ -1,3 +1,4 @@
+import { RepeatClockIcon } from "@chakra-ui/icons";
 import {
   Admin,
   AttachmentIcon,
@@ -196,6 +197,11 @@ export const navigationTabs = [
     label: 'Team',
     url: '/team',
     icon: TeamsIcon
+  },
+  {
+    label: 'History',
+    url: '/history',
+    icon: RepeatClockIcon
   }
 ];
 

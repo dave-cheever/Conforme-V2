@@ -204,7 +204,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           mr={1}
         >
           <Box fontSize="11px" fontWeight="700">
-            {responseStatuses[responseStatus]}
+            {responseStatus && responseStatuses[responseStatus]}
           </Box>
           {getRenewalStatus(response) === 'comingUp' && (
             <Box fontSize="11px" fontWeight="700">

@@ -3,20 +3,33 @@ import { AuditLogs } from "app-models";
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
-    const { skip, limit, dateLimit, elementId, fields } = auditLogsQuery;
+    const { skip, limit, action, dateLimit, elementId, fields } = auditLogsQuery;
 
     const pipeline: any = [{
       $match: {
         organizationId: organization._id,
-        'metatags.addedAt': {
-          $lte: new Date(dateLimit),
-        },
       },
     }, {
       $sort: {
         'metatags.addedAt': -1,
       },
     }];
+
+    if (dateLimit) {
+      pipeline.push({
+        $match: {
+          'metatags.addedAt': {
+            $lte: new Date(dateLimit),
+          },
+        },
+      });
+    }
+
+    if (action) {
+      pipeline.push({
+        $match: { action },
+      });
+    }
 
     if (fields?.length > 0) {
       const fieldsPipeline: object[] = [];

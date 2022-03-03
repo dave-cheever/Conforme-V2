@@ -1,6 +1,6 @@
 import { IBase } from "app-interfaces";
 
-export type IAuditLogAction = "add" | "update" | "delete" | "search";
+export type IAuditLogAction = "add" | "update" | "delete" | "search" | "snapshot";
 
 export interface IAuditLogElement {
   _id: string;
@@ -9,7 +9,7 @@ export interface IAuditLogElement {
 }
 
 export interface IAuditValue {
-  value: string | string[];
+  value: string | string[] | object;
   label: string;
 }
 

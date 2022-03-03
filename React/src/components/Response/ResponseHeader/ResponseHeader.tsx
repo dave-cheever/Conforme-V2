@@ -16,8 +16,12 @@ import {
   MenuDivider,
   MenuList,
   Spacer,
+  Stack,
+  Text,
+  Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
+import { SmallCloseIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import format from 'date-fns/format';
 import { useHistory } from 'react-router-dom';
 
@@ -33,7 +37,7 @@ import useResponseUtils from '../../../hooks/useResponseUtils';
 import FollowButton from '../../Team/FollowButton';
 
 const ReasponseHeader = () => {
-  const { response, handleRenewalOpen } = useResponseContext();
+  const { response, snapshot, handleRenewalOpen, setActiveTab } = useResponseContext();
   const history = useHistory();
   const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { user } = useAppContext();
@@ -44,11 +48,11 @@ const ReasponseHeader = () => {
   const cancelRef: any = useRef();
 
   useEffect(() => {
-    if (status === "nonCompliant" && getStatus(response) === "compliant") {
+    if (status === "nonCompliant" && getStatus(response) === "compliant" && !snapshot) {
       onOpen();
       return setStatus("compliant");
     }
-    setStatus(getStatus(response));
+    setStatus(getStatus(response) || '');
     // eslint-disable-next-line
   }, [response]);
 
@@ -74,12 +78,15 @@ const ReasponseHeader = () => {
     }
 
     return false;
-
     // eslint-disable-next-line
   }, [response, user]);
 
   const goToHomePage = () => {
     history.push("/");
+  }
+
+  if (!response) {
+    return null;
   }
 
   return (
@@ -119,8 +126,7 @@ const ReasponseHeader = () => {
         zIndex={1}
         mb="15px"
       >
-
-        <Flex alignItems='center' w="full" h="40px" mb="15px">
+        <Stack direction='row' spacing={4} alignItems='center' w="full" h="40px" mb="15px">
           <Heading
             color="reasponseHeader.heading"
             fontSize="xxl"
@@ -143,7 +149,19 @@ const ReasponseHeader = () => {
           >
             Coming up
           </Badge> : ''}
-        </Flex>
+          {snapshot && (
+            <Stack direction='row' spacing={1} color="reasponseHeader.snapshot.color" align='center'>
+              <WarningTwoIcon />
+              <Text>You are seeing snapshot from {format(parseInt(snapshot), 'd LLLL yyyy, HH:mm')}</Text>
+              <Tooltip label="Close snapshot preview">
+                <SmallCloseIcon onClick={() => {
+                  setActiveTab(0);
+                  history.push(`/compliance-item/${response._id}`);
+                }} cursor='pointer' />
+              </Tooltip>
+            </Stack>
+          )}
+        </Stack>
         <Flex mb="15px">
           <Flex alignItems='center' w="full" maxW={["100vw", "390px"]} pl={["10px", "0px"]} pr={["35px", "0px"]}>
             <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) === "compliant" ? "Yes" : "No"} />
@@ -272,10 +290,8 @@ export const responseHeaderStyles = {
     optionsMenuDivider: "#F0F0F0",
     optionsMenuBoxShadow: "rgba(49, 50, 51, 0.25)",
     optionsMenuColor: "#818197",
-
-
-
-
-
-  }
-}
+    snapshot: {
+      color: "#ff7000",
+    },
+  },
+};

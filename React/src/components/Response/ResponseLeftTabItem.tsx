@@ -17,7 +17,7 @@ const ResponseLeftTabItem = ({
   }, [id, url, history]);
 
   const redirectPage = () => {
-    history.push(`/compliance-item/${id}${url}`);
+    history.push(`/compliance-item/${id}${url}${history.location.search}`);
   };
 
   return (

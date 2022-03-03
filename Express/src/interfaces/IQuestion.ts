@@ -1,4 +1,4 @@
-export type IQuestionValue = string | Date | Boolean | IChoice[];
+export type IQuestionValue = string | Date | Boolean | IChoice[] | null;
 
 export interface IChoice { label: string, isCorrect: boolean }
 

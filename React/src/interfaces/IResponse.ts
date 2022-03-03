@@ -48,4 +48,7 @@ export interface IResponse extends IBase {
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
   responsible?: IUser;
+  accountable?: IUser;
+  contributors?: IUser[];
+  followers?: IUser[];
 }

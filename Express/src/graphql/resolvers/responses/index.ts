@@ -1,14 +1,14 @@
-import responses from './responses.q';
 import addParticipant from './addParticipant.m';
 import removeDocument from './removeDocument.m';
 import removeParticipant from './removeParticipant.m';
 import renewResponse from './renewResponse.m';
-import updateResponseQuestions from './updateResponseQuestions.m';
+import responses from './responses.q';
 import updateResponse from './updateResponse.m';
+import updateResponseQuestions from './updateResponseQuestions.m';
 
 const responsesResolvers = {
   Query: {
-    responses
+    responses,
   },
   Mutation: {
     addParticipant,

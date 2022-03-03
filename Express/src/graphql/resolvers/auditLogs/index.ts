@@ -32,6 +32,7 @@ type AuditLog {
 input AuditLogsQuery {
   skip: Int
   limit: Int
+  action: String
   dateLimit: Date
   elementId: String
   fields: [String]

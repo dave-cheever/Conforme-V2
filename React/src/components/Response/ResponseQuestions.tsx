@@ -2,13 +2,15 @@ import React, { useEffect, useMemo } from 'react';
 import { Stack, Box, Grid, Text, Flex, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
+import { isEqual } from 'lodash';
+
 import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { toastFailed } from '../../bootstrap/config';
-import { isEqual } from 'lodash';
 import { MessageSquareIcon } from '../../icons';
 import Field from '../Forms/Field';
+import { IQuestionValue } from '../../interfaces/IQuestion';
 
 const UPDATE_QUESTIONS = gql`
   mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
@@ -25,9 +27,10 @@ const ResponseQuestions = () => {
   const toast = useToast();
   const [update] = useMutation(UPDATE_QUESTIONS);
   const { user } = useAppContext();
-  const { response, refetch } = useResponseContext();
+  const { response, snapshot, refetch } = useResponseContext();
   const isUserPermitted = useMemo(() => isPermitted({ user, action: 'responses.edit', data: { response } }), [user, response]);
   const questions = (response?.questions || []).filter(({ outdated }) => !outdated);
+
   const {
     control,
     watch,
@@ -38,8 +41,8 @@ const ResponseQuestions = () => {
         return {
           ...acc,
           [name]: value,
-        };
-      }, {}),
+        } as { [name: string]: IQuestionValue };
+      }, {} as { [name: string]: IQuestionValue }),
   });
 
   const answers = watch();
@@ -74,7 +77,7 @@ const ResponseQuestions = () => {
   }
 
   return (
-    <Stack w="full" h="full" minH={["50vh","none"]} overflow={["visible", "auto"]} mt={2}>
+    <Stack w="full" h="full" minH={["50vh", "none"]} overflow={["visible", "auto"]} mt={2}>
       <Grid
         templateColumns="1fr"
         gap={4}
@@ -114,7 +117,7 @@ const ResponseQuestions = () => {
               name={name}
               control={control}
               placeholder={description}
-              disabled={!isUserPermitted}
+              disabled={!isUserPermitted || !!snapshot}
               required={!!required}
               defaultvalue={value}
               styles={styles}

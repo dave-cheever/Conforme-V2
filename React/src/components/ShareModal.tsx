@@ -28,7 +28,7 @@ import { AddIcon, Copy, CrossIcon } from "../icons";
 const ShareModal = () => {
   const toast = useToast();
   const { user } = useAppContext();
-  const { response, isShareOpen, handleShareClose } = useContext(ResponseContext);
+  const { response, snapshot, isShareOpen, handleShareClose } = useContext(ResponseContext);
   const [mails, setMails] = useState<string[]>([]);
   const [mail,setMail] = useState<string>("");
 
@@ -37,12 +37,13 @@ const ShareModal = () => {
     return firstName && lastName ? `${firstName} ${lastName}` : `${displayName}`;
   };
   
+  const URL = `${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`;
 
   const email = useMemo(() => 
   `mailto:${[...mails,mail].join(",")}?subject=${getFullName(user)} has shared
   ${response?.complianceItem.name} with you&body=${getFullName(user)} has shared compliance item
   '${response?.complianceItem.name}' with you. You can view it at the following
-  link:%0A%0A${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}%0A%0ACielo Costa`
+  link:%0A%0A${URL}%0A%0ACielo Costa`
   // eslint-disable-next-line 
   , [response, mail , mails]);
 
@@ -109,7 +110,7 @@ const ShareModal = () => {
               <TabPanel p="0" mt="20px">
                 <Flex flexDir="column">
                   <CopyToClipboard
-                    text={`${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}`}
+                    text={URL}
                     onCopy={() => toast({
                       ...toastSuccess,
                       title: 'Success',
@@ -126,7 +127,7 @@ const ShareModal = () => {
                           fontSize="smm"
                           borderWidth='1px' 
                           rounded="10px"
-                          value={`${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}`} 
+                          value={URL} 
                         />
                         <InputRightElement h='40px'><Copy stroke="shareModal.copyIcon" mr={2} /></InputRightElement>
                       </InputGroup>

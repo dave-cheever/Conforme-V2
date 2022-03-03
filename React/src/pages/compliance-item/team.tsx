@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Flex, Grid, Stack } from "@chakra-ui/react";
 import { gql, useQuery } from "@apollo/client";
 
@@ -49,7 +49,7 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const Team = () => {
-  const { response } = useResponseContext();
+  const { response, snapshot } = useResponseContext();
   const {
     data,
     filterType,
@@ -63,14 +63,27 @@ const Team = () => {
 
   const maxDelegates = 5;
 
-  const { data: racfData, loading } = useQuery(GET_USERS_BY_ID, {
+  const { data: racf, loading } = useQuery(GET_USERS_BY_ID, {
     variables: {
       userAccountableQuery: { usersIds: response?.accountableId || [] },
       userResponsibleQuery: { usersIds: response?.responsibleId || [] },
       userContibuterQuery: { usersIds: response?.contributorsIds || [] },
       userFollowersQuery: { usersIds: response?.followersIds || [] },
     },
+    skip: !!snapshot,
   });
+
+  let racfData = useMemo(() => {
+    if (snapshot) {
+      return {
+        responseAccountable: response?.accountable && [response.accountable],
+        responseResponsible: response?.responsible && [response.responsible],
+        contributors: response?.contributors,
+        followers: response?.followers,
+      }
+    }
+    return racf;
+  }, [racf, response, snapshot]);
 
   useEffect(() => {
     refetchUsers();

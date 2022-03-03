@@ -45,6 +45,9 @@ const useResponseUtils = () => {
   );
 
   const getRenewalStatus = (response: IResponse) => {
+    if (!response) {
+      return;
+    }
     const { daysToDueDate, status } = response;
     if (status === 'completed' && daysToDueDate !== undefined && response.complianceItem.frequency && daysToDueDate !== null && daysToDueDate < comingUpTriggers?.value?.[response.complianceItem.frequency] && daysToDueDate >= 0) {
       // If there is less then or equal comingUpTriggers value and at least 0 days to due date
@@ -59,6 +62,9 @@ const useResponseUtils = () => {
   };
 
   const getRenewalStatusText = (response: IResponse) => {
+    if (!response) {
+      return;
+    }
     const renewalStatus = getRenewalStatus(response);
     const { daysToDueDate } = response;
     switch (renewalStatus) {
@@ -102,6 +108,9 @@ const useResponseUtils = () => {
   };
 
   const getStatus = (response: IResponse) => {
+    if (!response) {
+      return;
+    }
     if (response.status === 'completed' && (!response.daysToDueDate || response.daysToDueDate >= 0)) {
       // If status is "completed" and (there is no due date or response is not overdue)
       return 'compliant';
@@ -111,10 +120,16 @@ const useResponseUtils = () => {
 
 
   const isEvidenceUploaded = (response: IResponse) => {
+    if (!response) {
+      return;
+    }
     return response?.evidence?.filter(({ outdated }) => !outdated).every(({ uploaded }) => uploaded);
   };
 
   const areRequiredQuestionsAnswered = (response: IResponse) => {
+    if (!response) {
+      return;
+    }
     return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value, type }: IQuestion<IQuestionValue>) => {
       if (type === "multipleChoice") {
         return (value as IChoice[]).some(choice => choice["isCorrect"] === true);

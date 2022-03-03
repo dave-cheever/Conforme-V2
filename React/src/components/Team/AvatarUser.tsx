@@ -30,7 +30,7 @@ const REMOVE_PARTICIPANT = gql`
 `;
 
 const AvatarUser = ({ user, permission, removable = true, action, isReplaceable }: { user: IUser, permission: string, removable?: boolean, action: string, isReplaceable?: boolean }) => {
-  const { response, refetch: refetchResponse } = useResponseContext();
+  const { response, snapshot, refetch: refetchResponse } = useResponseContext();
   const { onOpen: onReplace, setFilterType, setIsReplaceAccountable } = useTeamContext()
   const { firstName, lastName, displayName, imgUrl, _id } = user;
   const [showDelete, setShowDelete] = useState(false);
@@ -99,7 +99,7 @@ const AvatarUser = ({ user, permission, removable = true, action, isReplaceable 
           name={firstName || lastName ? `${firstName} ${lastName}` : displayName}
           src={imgUrl}
           cursor={removable ? "pointer" : "default"}
-          onMouseOver={() => setShowDelete(true)}
+          onMouseOver={() => !snapshot && setShowDelete(true)}
         />
         <Can
           action={action}

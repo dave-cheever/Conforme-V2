@@ -21,12 +21,12 @@ const UPDATE_RESPONSE = gql`
 `;
 
 const Details = () => {
-  const { response, refetch } = useResponseContext();
+  const { response, snapshot, refetch } = useResponseContext();
   const [updateResponse] = useMutation(UPDATE_RESPONSE);
   const startRef = useRef<DatePicker>();
 
   const progress = useMemo(() => {
-    if (response.daysToDueDate === undefined) {
+    if (response?.daysToDueDate === undefined) {
       return -1;
     }
 
@@ -62,6 +62,10 @@ const Details = () => {
     });
     startRef.current.setOpen(false);
     refetch();
+  }
+
+  if (!response) {
+    return null;
   }
 
   return (
@@ -159,7 +163,7 @@ const Details = () => {
                   ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy")
                   : "No due date"}
               </Text>
-              <Can
+              {!snapshot && <Can
                 action="responses.edit"
                 data={{ response }}
                 yes={() => (
@@ -178,7 +182,7 @@ const Details = () => {
                     </DatePicker>
                   </Flex>
                 )}
-              />
+              />}
             </Flex>
           </Flex>
         </Flex>

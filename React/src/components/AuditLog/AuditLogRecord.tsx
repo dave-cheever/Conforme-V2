@@ -116,14 +116,14 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
             {getCollectionNameByAction(audit.coll)}{" "}
             {audit.action === "add" && audit.coll === "comments" && (
               <Text as="span" pl={2} fontWeight="light">
-                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w]+\)\[[\w-]+\])/g, (match, i) => (
+                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
                   <ChatMention key={i} tag={match} />
                 ))}
               </Text>
             )}
             {audit.action === "delete" && audit.coll === "comments" && (
               <Text as="span" pl={2} fontWeight="light">
-                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w]+\)\[[\w-]+\])/g, (match, i) => (
+                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
                   <ChatMention key={i} tag={match} />
                 ))}
               </Text>

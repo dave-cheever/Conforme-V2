@@ -36,20 +36,18 @@ const AuditLog = () => {
   const { response } = useResponseContext();
   const { settings } = useAppContext();
 
-  const auditLogLimit = useMemo(() => {  
-    if(settings.length === 0){
+  const auditLogLimit = useMemo(() => {
+    if (settings.length === 0) {
       return 5;
     }
-    if(settings?.filter(settings => settings.name === "auditLogLimit").length === 0){
+    if (settings?.filter(settings => settings.name === "auditLogLimit").length === 0) {
       return 5;
     }
-
-    if(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value){
+    if (settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value) {
       return Number(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value);
     }
-
     return 5;
-  },[settings]);
+  }, [settings]);
 
   const { data, loading, refetch } = useQuery(GET_AUDIT_LOGS, {
     variables: {
@@ -57,10 +55,11 @@ const AuditLog = () => {
         skip: 0,
         limit: auditLogLimit,
         dateLimit,
-        elementId: response._id,
+        elementId: response?._id,
         fields: [] as string[],
       },
     },
+    fetchPolicy: 'network-only',
   });
   const [skip, setSkip] = useState<number>(0);
   const [activeTab, setActiveTab] = useState(0);
@@ -73,7 +72,7 @@ const AuditLog = () => {
         skip,
         limit: auditLogLimit,
         dateLimit,
-        elementId: response._id,
+        elementId: response?._id,
         fields: fieldsFilter,
       },
     });
@@ -125,7 +124,7 @@ const AuditLog = () => {
       case 1:
         setFieldsFilter(['lastRenewalDate']);
         break;
-        
+
       case 2:
         setFieldsFilter(['responsibleId', 'accountableId', 'contributorsIds', 'followersIds']);
         break;

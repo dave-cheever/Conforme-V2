@@ -125,6 +125,9 @@ export const getFieldNameByAction = (action: string) => {
     case "update":
       fieldAction = "Updated"
       break;
+    case "snapshot":
+      fieldAction = "Created snapshot of"
+      break;
     default:
       break;
   }

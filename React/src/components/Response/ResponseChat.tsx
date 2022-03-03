@@ -65,6 +65,7 @@ const ResponseChat = () => {
   const { response, handleCloseMessage, users, participantsLoading } = useResponseContext();
   const { data, loading, refetch } = useQuery(GET_COMMENTS, {
     variables: { _id: response?._id },
+    skip: !response,
   });
   const [createFunction] = useMutation(CREATE_COMMENT);
   const [deleteFunction] = useMutation(DELETE_COMMENT);

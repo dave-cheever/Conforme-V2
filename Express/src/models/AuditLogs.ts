@@ -8,7 +8,7 @@ const AuditLogSchema = new Schema<IAuditLog, IAuditLogModel>({
   _id: String,
   action: {
     type: String,
-    enum: ["add", "update", "delete", "search"],
+    enum: ["add", "update", "delete", "search", "snapshot"],
   },
   element: {
     _id: String,

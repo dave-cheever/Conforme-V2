@@ -5,7 +5,7 @@ import multer from 'multer';
 
 import { logger } from 'app-shared';
 import { IOrganization } from 'app-interfaces';
-import { getEmailSubject, getEmailTemplate } from 'app-utils';
+import { getEmailSubject, getEmailTemplate, getProtocol } from 'app-utils';
 // import { getEmailSubject, getEmailTemplate } from 'app-utils';
 
 const inMemoryStorage = multer.memoryStorage();
@@ -124,10 +124,18 @@ const getBasicUsers = async ({ usersIds, organization }: { usersIds: string[], o
       return [];
     }
   }
-  return users;
+  return users.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle }) => ({
+    _id: id,
+    displayName,
+    firstName: givenName,
+    lastName: surname,
+    email: userPrincipalName,
+    jobTitle,
+    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${id}`
+  }));
 };
 
-const getFileDetails = async (id: string, organization: IOrganization): Promise<{ thumbnail: string, path: string,preview: string }> => {
+const getFileDetails = async (id: string, organization: IOrganization): Promise<{ thumbnail: string, path: string, preview: string }> => {
   if (!organization.spSiteUrl || !organization.spLibraryId) {
     logger.error('Graph error: Wrong SharePoint configuration');
     throw new Error('Graph error: Wrong SharePoint configuration');
@@ -258,7 +266,7 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
   }
 };
 
-const sendEmail = async ({ emailType, organization,  emailData, from, to }: { emailType: number,organization: IOrganization, emailData: any, from: string, to: string[] }) => {
+const sendEmail = async ({ emailType, organization, emailData, from, to }: { emailType: number, organization: IOrganization, emailData: any, from: string, to: string[] }) => {
   try {
     const client = await getClient(organization);
     if (!to) {

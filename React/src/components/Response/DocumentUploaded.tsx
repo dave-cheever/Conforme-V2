@@ -46,6 +46,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
   const [removeDocument] = useMutation(REMOVE_DOCUMENT);
   const {
     response,
+    snapshot,
     refetch,
   } = useResponseContext();
   const { onOpen: handleDeleteOpen, onClose: handleDeleteClose, isOpen: deleteIsOpen } = useDisclosure();
@@ -75,7 +76,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
         </ModalBody>
         <ModalFooter >
           <Flex w='full' justify='center'>
-            <Button
+            {!snapshot && <Button
               colorScheme="purpleHeart"
               mr={3}
               onClick={() => {
@@ -85,7 +86,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
               _hover={{ opacity: 0.7 }}
             >
               Delete
-            </Button>
+            </Button>}
             <Button
               onClick={() => {
                 handleDeleteClose();
@@ -151,7 +152,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
                 />
               )}
             />
-            <Can
+            {!snapshot && <Can
               action='responses.edit'
               data={{ response }}
               yes={() => (
@@ -168,7 +169,7 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
                   display="inline-block"
                 />
               )}
-            />
+            />}
           </Flex>
         )}
         {outDated && <Can
