@@ -56,22 +56,19 @@ userSchema.statics.customFindByIdWithDetails = async function ({ userId, organiz
   const { givenName, surname, displayName, mail, userPrincipalName, jobTitle } = userDetails;
 
   let role = 'user';
-  const isAdmin = await GraphService.checkMemberGroup({
+  const roles = await GraphService.checkMemberGroups({
     userId,
-    groupId: organization.adminsGroupId,
+    groups: {
+      admin: organization.adminsGroupId || '',
+      reader: organization.readersGroupId || '',
+    },
     organization,
   });
-  if (isAdmin) {
+
+  if (roles['admin']) {
     role = 'admin';
-  } else {
-    const isReader = await GraphService.checkMemberGroup({
-      userId,
-      groupId: organization.readersGroupId,
-      organization,
-    });
-    if (isReader) {
-      role = 'reader';
-    }
+  } else if (roles['reader']) {
+    role = 'reader';
   }
 
   return {

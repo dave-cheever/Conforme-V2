@@ -133,7 +133,7 @@ const BusinessUnits = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await createFunction({ variables: { values } });
-        await refetch();
+        refetch();
         toast({ ...toastSuccess, description: "Business Unit added" });
       } else {
         toast({
@@ -153,7 +153,7 @@ const BusinessUnits = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await updateFunction({ variables: { values } });
-        await refetch();
+        refetch();
         toast({ ...toastSuccess, description: "Business Unit updated" });
       } else {
         toast({
@@ -172,7 +172,7 @@ const BusinessUnits = () => {
     try {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
-      await refetch();
+      refetch();
       toast({ ...toastSuccess, description: "Business Unit deleted" });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });

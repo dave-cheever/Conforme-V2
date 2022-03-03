@@ -34,13 +34,15 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
     }
 
     if (shouldJoin("owner")) {
-      for (const businessUnit of businessUnits) {
+      await Promise.all(businessUnits.map(businessUnit => new Promise<void>(async (resolve, reject) => {
         try {
           businessUnit.owner = await Users.customFindByIdWithDetails({ userId: businessUnit.ownerId, organization });
+          resolve();
         } catch (e) {
           console.log(`Error occured for ${businessUnit._id}: ${e}`);
+          reject();
         }
-      }
+      })));
     }
 
     return businessUnits.sort((a, b) => a.name.localeCompare(b.name));

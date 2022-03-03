@@ -62,13 +62,13 @@ const getUserPhoto = async ({ userId, organization }) => {
 };
 
 // userId can be AAD ID or email
-const checkMemberGroup = async ({ userId, groupId, organization }: { userId: string, groupId?: string, organization: IOrganization }) => {
-  if (!groupId) {
-    return false;
-  }
+const checkMemberGroups = async ({ userId, groups, organization }: { userId: string, groups: { [name: string]: string }, organization: IOrganization }) => {
   await graphSetup(organization);
-  const res = await graph.users.getById(userId).checkMemberGroups([groupId]);
-  return res.length === 1;
+  const res = await graph.users.getById(userId).checkMemberGroups(Object.values(groups));
+  return Object.keys(groups).reduce((acc, curr) => ({
+    ...acc,
+    [curr]: res.includes(groups[curr]),
+  }), {});
 };
 
 const addMemberToAccessGroup = async ({ userId, groupId, organization }: { userId: string, groupId: string, organization: IOrganization }) => {
@@ -299,7 +299,7 @@ export default {
   inMemoryStrategy,
   getUserData,
   getUserPhoto,
-  checkMemberGroup,
+  checkMemberGroups,
   getUsers,
   uploadDocuments,
   getBasicUser,

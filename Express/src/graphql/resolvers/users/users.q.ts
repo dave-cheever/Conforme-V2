@@ -22,22 +22,19 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         if (shouldJoin(["role"])) {
           user.role = "user";
 
-          const isAdmin = await GraphService.checkMemberGroup({
+          const roles = await GraphService.checkMemberGroups({
             userId: user._id,
-            groupId: organization.adminsGroupId,
+            groups: {
+              admin: organization.adminsGroupId || '',
+              reader: organization.readersGroupId || '',
+            },
             organization,
           });
-          if (isAdmin) {
+
+          if (roles['admin']) {
             user.role = 'admin';
-          } else {
-            const isReader = await GraphService.checkMemberGroup({
-              userId: user._id,
-              groupId: organization.readersGroupId,
-              organization,
-            });
-            if (isReader) {
-              user.role = 'reader';
-            }
+          } else if (roles['reader']) {
+            user.role = 'reader';
           }
         }
 
@@ -74,7 +71,7 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         if (shouldJoin(["contributorCount"])) {
           const responses = await Responses.aggregate([{
             $match: {
-              'contributorsIds':  user._id,
+              'contributorsIds': user._id,
               published: true,
               organizationId: organization._id
             }
