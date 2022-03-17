@@ -26,18 +26,21 @@ const Header: FunctionComponent<IHeader> = ({
   const device = useDevice();
   const history = useHistory();
   const breadCrumbs = useMemo(() => {
-    if(device === "mobile"){
+    if (device === "mobile") {
       return mobileBreadcrumbs || [];
     }
 
     return breadcrumbs;
-  },[device, breadcrumbs, mobileBreadcrumbs]);
+  }, [device, breadcrumbs, mobileBreadcrumbs]);
 
-  const isAdminPage = history.location.pathname.split('/')[1] === "admin";
+
+
+  const isComplianceItemsAdminPage = history.location.pathname === "/admin/compliance-items";
+  const isHomePage = history.location.pathname === "/"
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex key={`bc-${i}`} h="full" align="center">
       {i > 0 && (
-        <ArrowRight color="#818197" ml={2} mt={["0px","5px"]} mr={1} display="flex" />
+        <ArrowRight color="#818197" ml={2} mt={["0px", "5px"]} mr={1} display="flex" />
       )}
       <Text
         pl={[0, 2]}
@@ -56,7 +59,7 @@ const Header: FunctionComponent<IHeader> = ({
   );
 
   return (
-    <Flex position="relative" align="center" h={["60px","70px"]}>
+    <Flex position="relative" align="center" h={["60px", "70px"]}>
       <Flex
         w="full"
         justify="space-between"
@@ -71,7 +74,7 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex w="full" justify="flex-end" mr="20px">
           {children}
         </Flex>
-        {usedFilters && !isAdminPage && usedFilters.length > 0 && (
+        {usedFilters && (isComplianceItemsAdminPage || isHomePage) && usedFilters.length > 0 && (
           <Flex
             minW="120px"
             flexShrink={0}
@@ -105,7 +108,7 @@ const Header: FunctionComponent<IHeader> = ({
                 {numberOfSelectedFilters}
               </Flex>
             )}
-            <Filter ml={3} h="18px" transform={numberOfSelectedFilters > 0 ? "rotate(180deg)":""}/>
+            <Filter ml={3} h="18px" transform={numberOfSelectedFilters > 0 ? "rotate(180deg)" : ""} />
           </Flex>
         )}
       </Flex>
@@ -116,7 +119,7 @@ const Header: FunctionComponent<IHeader> = ({
 export default Header;
 
 export const headerStyles = {
-  header:{
+  header: {
     bg: "#2B3236",
     breadcrumbPrimary: "#282F36",
     breadcrumbSecondary: "#818197",

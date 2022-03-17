@@ -67,11 +67,16 @@ export const complianceItemsTypeDefs = `
     questions: [QuestionInput]
     published: Boolean
   }
-
+  
   input ComplianceItemsQueryInput {
     published: Boolean
+    complianceItemsIds: [ID]
+    regulatoryBodiesIds: [ID]
+    categoriesIds: [ID]
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
   }
-
+  
   input ComplianceItemModifyInput {
     _id: ID!
     name: String

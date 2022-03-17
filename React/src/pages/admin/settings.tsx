@@ -27,7 +27,7 @@ const Settings = () => {
     // eslint-disable-next-line
   }, []);
 
-  const closeTemplatePreview = () =>{
+  const closeTemplatePreview = () => {
     setSelectedTemplate(null);
   }
 
@@ -69,19 +69,19 @@ const Settings = () => {
       >
         <Flex
           bg="white"
-          w={activeTab === 1 ? ["full", selectedTemplate ? "fit-content":"full", "fit-content"] : "full"}
-          h={["full","calc( 100vh - 190px)","calc( 100vh - 170px)",]}
+          w={activeTab === 1 ? ["full", selectedTemplate ? "fit-content" : "full", "fit-content"] : "full"}
+          h={["full", "calc( 100vh - 190px)", "calc( 100vh - 170px)",]}
           borderRadius="20px"
-          p={["25px 30px","25px 30px"]}
+          p={["25px 30px", "25px 30px"]}
           flexDirection="column"
-          mb={["25px","0px"]}
+          mb={["25px", "0px"]}
         >
           {loading ? (
             <Loader center={true} />
           ) : (
             <>
               <Tabs />
-              <Flex mt="7" h="full" w="full" overflowY={["visible","auto"]}>
+              <Flex mt="7" h="full" w="full" overflowY={["visible", "auto"]}>
                 {renderSections()}
               </Flex>
             </>
@@ -92,18 +92,18 @@ const Settings = () => {
             p="25px 30px 25px 30px"
             flexDirection="column"
             minW={["100vw", "100px", "440px"]}
-            borderRadius={["0px","20px"]}
-            ml={[0,5]}
+            borderRadius={["0px", "20px"]}
+            ml={[0, 5]}
             bg="white"
-            h={["100vh","calc( 100vh - 190px)","calc( 100vh - 170px)"]}
-            position={["fixed","relative"]}
+            h={["100vh", "calc( 100vh - 190px)", "calc( 100vh - 170px)"]}
+            position={["fixed", "relative"]}
             zIndex={10}
             top="0px"
             left="0px"
           >
             <Flex align="center" w="full" justify="space-between">
               <Flex fontWeight="700">Template Preview</Flex>
-              {device === "mobile" ? <CloseIcon onClick={closeTemplatePreview}/>:<Button
+              {device === "mobile" ? <CloseIcon onClick={closeTemplatePreview} /> : <Button
                 colorScheme="purpleHeart"
                 h="28px"
                 w="51px"

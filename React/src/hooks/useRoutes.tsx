@@ -161,7 +161,7 @@ const protectedRoutes: Array<IRoute> = [
     key: "compliance-items-admin",
     exact: true,
     component: ComplianceItemsAdmin,
-    layout: DefaultLayout,
+    layout: FilterLayout,
   },
   {
     path: "/admin/regulatory-bodies",

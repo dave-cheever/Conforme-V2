@@ -23,10 +23,11 @@ import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import { Bin, Copy } from "../../icons";
 import CloneComplianceItemModal from "../../components/AdminComplianceItemModal/CloneComplianceItemModal";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
 
 const GET_COMPLIANCE_ITEMS = gql`
-  query {
-    complianceItems {
+  query ($complianceItemsQueryInput: ComplianceItemsQueryInput){
+    complianceItems(complianceItemsQueryInput: $complianceItemsQueryInput) {
       _id
       name
       description
@@ -58,6 +59,7 @@ const GET_COMPLIANCE_ITEMS = gql`
 
 const ComplianceItemsAdmin = () => {
   const device = useDevice();
+  const { filtersValues, setUsedFilters, setShowFiltersPanel, cleanFilters } = useFiltersContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_COMPLIANCE_ITEMS);
   const { complianceItem, reset } = useComplianceItemModalContext();
@@ -66,9 +68,42 @@ const ComplianceItemsAdmin = () => {
   const [sortOrder, setSortOrder] = useState(true);
   const [sortedData, setSortedData] = useState<any>([]);
 
+
+  useEffect(() => {
+    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'locationsIds', 'businessUnitsIds', 'regulatoryBodiesIds']);
+    return () => {
+      setShowFiltersPanel(false)
+      cleanFilters()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     setSortedData([...complianceItems].sort((a, b) => a.name.localeCompare(b.name)));
   }, [complianceItems]);
+
+  useEffect(() => {
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, [key, value]) => {
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (
+          key === 'usersIds' &&
+          value.value.responsibleIds.length === 0 &&
+          value.value.accountableIds.length === 0 &&
+          value.value.contributorIds.length === 0 &&
+          value.value.followerIds.length === 0
+        )
+      ) {
+        return acc;
+      }
+      return {
+        ...acc,
+        [key]: value.value,
+      };
+    }, {});
+    refetch({ complianceItemsQueryInput: parsedFilters });
+  }, [filtersValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (sortOrder) {
