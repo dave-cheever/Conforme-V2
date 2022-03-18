@@ -248,13 +248,15 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     // Join responsible
     if (shouldJoin(['responsible'])) {
-      for (const response of responses) {
+      Promise.all(responses.map(response => new Promise<void>(async (resolve, reject) => {
         try {
           response.responsible = await Users.customFindByIdWithDetails({ userId: response.responsibleId, organization });
+          resolve()
         } catch (e) {
           console.log(`Error occured for ${response._id}: ${e}`);
+          reject()
         }
-      }
+      })))
     }
 
     if (shouldJoin(["daysToDueDate"])) {

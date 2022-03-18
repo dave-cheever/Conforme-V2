@@ -11,7 +11,6 @@ const LocationsForm = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [filteredLocations, setFilteredLocations] = useState<IBusinessUnit[]>([]);
   const [checkedLocationIds, setCheckedLocationIds] = useState<string[]>([]);
-  const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 
   useEffect(() => {
     setCheckedLocationIds(complianceItem?.locationsIds || []);
@@ -31,7 +30,6 @@ const LocationsForm = () => {
   };
 
   const handleAllCheckBoxSelectedLocations = (event) => {
-    setIsAllChecked(event.target.checked);
     let localCheckedLocationsIds: string[] = [];
     if (checkedLocationIds.length !== locations.length) {
       localCheckedLocationsIds = locations.map((location) => location._id!);
@@ -45,12 +43,11 @@ const LocationsForm = () => {
     <Box w="full">
       <Flex direction="column">
         <SectionHeader label="Select location" />
-
         <Flex
           flexDir={["column", "row"]}
           justifyContent="space-between"
           mt="25px"
-          mb="30px"
+          mb="32px"
         >
           <Flex flexDir="column">
             <Text
@@ -68,7 +65,7 @@ const LocationsForm = () => {
               h="42px"
               border="1px solid"
               borderColor="locationsFormModal.inputBorderColor"
-              rounded="5px"
+              rounded="10px"
             >
               <InputLeftElement
                 pointerEvents="none"
@@ -78,17 +75,18 @@ const LocationsForm = () => {
                 fontSize="smm"
                 lineHeight="18px"
                 color="locationsFormModal.searchBarText"
+                rounded="10px"
                 placeholder="Search"
                 onChange={(e) => setSearchText(e.target.value)}
               />
             </InputGroup>
           </Flex>
         </Flex>
-        <Flex mb="30px">
+        <Flex mb="33px">
           <Checkbox
             key={"all"}
             value={"all"}
-            borderColor="locationsModal.checkbox.unchecked.border"
+            borderColor="locationsFormModal.checkbox.unchecked.border"
             css={{
               ".chakra-checkbox__control": {
                 borderRadius: "20%",
@@ -107,17 +105,18 @@ const LocationsForm = () => {
               },
               ".chakra-checkbox__label": {
                 flexGrow: 1,
-                marginLeft: "1rem",
+                marginLeft: "10px",
                 fontWeight: 400,
-                color: { isAllChecked } ? "#282F36" : "#818197",
+                fontSize: "14px",
+                color: checkedLocationIds.length === locations.length ? "#282F36" : "#818197",
               },
             }}
             colorScheme="purpleHeart"
-            icon={<MinusIcon />}
-            isChecked={checkedLocationIds.length === locations.length}
+            icon={checkedLocationIds.length === locations.length ? <CheckIcon stroke="white" strokeWidth="1.5" /> : <MinusIcon />}
+            isChecked={checkedLocationIds.length > 0}
             onChange={(e: any) => handleAllCheckBoxSelectedLocations(e)}
           >
-            All
+            Select all
           </Checkbox>
         </Flex>
         <CheckboxGroup
@@ -132,7 +131,7 @@ const LocationsForm = () => {
                 key={index}
                 value={location._id}
                 icon={<CheckIcon stroke="white" strokeWidth="1.5" />}
-                borderColor="locationsModal.checkbox.unchecked.border"
+                borderColor="locationsFormModal.checkbox.unchecked.border"
                 css={{
                   ".chakra-checkbox__control": {
                     borderRadius: "20%",
@@ -147,8 +146,9 @@ const LocationsForm = () => {
                   },
                   ".chakra-checkbox__label": {
                     flexGrow: 1,
-                    marginLeft: "1rem",
+                    marginLeft: "10px",
                     fontWeight: 400,
+                    fontSize: "14px",
                     color: checkedLocationIds?.includes(location._id!)
                       ? "#282F36"
                       : "#818197",

@@ -1,11 +1,12 @@
-import { createIcon } from "@chakra-ui/icons";
+import { Icon } from "@chakra-ui/icons";
 
-const CheckIcon = createIcon({
-  displayName: "CheckIcon",
-  viewBox: "0 0 18 13",
-  path: (
-    <path d="M17 1L6 12L1 7" fill="transparent" strokeLinecap="round" strokeLinejoin="round"/>
-  ),
-});
+const CheckIcon = (props) => {
+  const { isIndeterminate, isChecked, ...rest } = props
+  return (
+    <Icon viewBox="0 0 18 13" {...rest}>
+      <path fill="transparent" strokeLinecap="round" strokeLinejoin="round" d="M17 1L6 12L1 7" />
+    </Icon>
+  )
+};
 
 export default CheckIcon;

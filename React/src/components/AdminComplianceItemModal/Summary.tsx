@@ -42,62 +42,62 @@ const Summary = () => {
   );
 
   return (
-      <Stack spacing={3} flexGrow={1} w={['full', 'calc(100% - 180px - 1rem)']} overflow="auto">
-        <Box mb="15px">
-          <SectionHeader label="Review compliance item" />
-        </Box>
-        <SectionHeader label="Details"/>
-          
-        <SummaryItem label="Name">{complianceItem.name || "Not provided"}</SummaryItem>
-        <SummaryItem label="Description">{complianceItem.description || "Not provided"}</SummaryItem>
+    <Stack spacing={3} flexGrow={1} w={['full', 'calc(100% - 180px - 1rem)']} overflow="auto">
+      <Box mb="15px">
+        <SectionHeader label="Review compliance item" />
+      </Box>
+      <SectionHeader label="Details" />
 
-        <Grid gridTemplateColumns="1fr 1fr 1fr" gridGap="10px">
-          <SummaryItem label="Category">{selectedCategory?.name || "Not provided"}</SummaryItem>
-          <SummaryItem label="Regulatory body">{selectedRegulatoryBody?.name || "Not provided"}</SummaryItem>
-          <SummaryItem label="Expires on (optional)">{(complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')) || "Not provided"}</SummaryItem>
-          <SummaryItem label="Frequency">{complianceItem.frequency || "Not provided"}</SummaryItem>
-        </Grid>
+      <SummaryItem label="Name">{complianceItem.name || "Not provided"}</SummaryItem>
+      <SummaryItem label="Description">{complianceItem.description || "Not provided"}</SummaryItem>
 
-        {selectedBusinessUnits.length !== 0 && <SectionHeader label="Business unit(s)"/> }
-        {selectedBusinessUnits?.map(businessUnit => 
-          <Flex key={businessUnit?.name} bg="summaryModal.tileBg" p="10px 15px" rounded="10px" flexDir="column">
-            <Text mb="3px" fontSize="smm" fontWeight="bold">{businessUnit?.name}</Text>
-          </Flex>)
-        }
+      <Grid gridTemplateColumns="1fr 1fr 1fr" gridGap="10px">
+        <SummaryItem label="Category">{selectedCategory?.name || "Not provided"}</SummaryItem>
+        <SummaryItem label="Regulatory body">{selectedRegulatoryBody?.name || "Not provided"}</SummaryItem>
+        <SummaryItem label="Expires on (optional)">{(complianceItem.dueDate && format(new Date(complianceItem.dueDate), 'd MMM yyyy')) || "Not provided"}</SummaryItem>
+        <SummaryItem label="Frequency">{complianceItem.frequency || "Not provided"}</SummaryItem>
+      </Grid>
 
-        {complianceItem?.evidenceItems?.length !== 0 && <SectionHeader label="Evidence"/>}
+      {selectedBusinessUnits.length !== 0 && <SectionHeader label="Business unit(s)" />}
+      {selectedBusinessUnits?.map(businessUnit =>
+        <Flex key={businessUnit?.name} w="calc(100% - 1rem)" bg="summaryModal.tileBg" p="10px 15px" rounded="10px" flexDir="column">
+          <Text mb="3px" fontSize="smm" fontWeight="bold" color='summaryModal.label'>{businessUnit?.name}</Text>
+        </Flex>)
+      }
 
-        <Grid gridGap="10px" gridTemplateColumns="1fr 1fr">
-          {(complianceItem.evidenceItems || []).map((item, index) => (
-            <Stack key={`evidence-item-${index}`} p="10px 15px" bg="summaryModal.tileBg" rounded="10px">
-              <Text color='summaryModal.label' fontSize='sm'>Evidence {index + 1}</Text>
-              <Text color='summaryModal.value' fontSize='md'>{item}</Text>
-            </Stack>
-          ))}
-        </Grid>
+      {complianceItem?.evidenceItems?.length !== 0 && <SectionHeader label="Evidence" />}
 
-        {complianceItem.evidenceItems && complianceItem.evidenceItems?.length > 0 && complianceItem.evidenceItems?.some(evidence => evidence === "") &&
-          <Text color="summaryModal.error">
-            Evidence title cannot be empty in order to have a valid compliance item.
-          </Text>
-        }
-
-        {complianceItem.questions?.length !== 0 && <Box w='full'>
-          <SectionHeader label="Questions"/>
-          <Stack spacing={2} w='full' mt="15px">
-            {complianceItem.questions?.map(item => (
-              <QuestionListElement question={item} bgColor="summaryModal.tileBg" key={item.name} />
-            ))}
+      <Grid gridGap="10px" gridTemplateColumns={complianceItem.evidenceItems?.length === 1 ? "1fr" : "1fr 1fr"} w="calc(100% - 1rem)">
+        {(complianceItem.evidenceItems || []).map((item, index) => (
+          <Stack key={`evidence-item-${index}`} p="10px 15px" bg="summaryModal.tileBg" rounded="10px">
+            <Text color='summaryModal.label' fontSize='sm'>Evidence {index + 1}</Text>
+            <Text color='summaryModal.value' fontSize='md'>{item}</Text>
           </Stack>
-        </Box>}
+        ))}
+      </Grid>
 
-        {complianceItem.evidenceItems?.length === 0 && complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 &&
-          <Text color="summaryModal.error">
-            You must add at least one evidence item OR one mandatory question in order to have a valid compliance item.
-          </Text>
-        }
-        
-      </Stack>
+      {complianceItem.evidenceItems && complianceItem.evidenceItems?.length > 0 && complianceItem.evidenceItems?.some(evidence => evidence === "") &&
+        <Text color="summaryModal.error">
+          Evidence title cannot be empty in order to have a valid compliance item.
+        </Text>
+      }
+
+      {complianceItem.questions?.length !== 0 && <Box w='full'>
+        <SectionHeader label="Questions" />
+        <Stack spacing={2} w='full' mt="15px">
+          {complianceItem.questions?.map(item => (
+            <QuestionListElement question={item} bgColor="summaryModal.tileBg" key={item.name} />
+          ))}
+        </Stack>
+      </Box>}
+
+      {complianceItem.evidenceItems?.length === 0 && complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 &&
+        <Text color="summaryModal.error">
+          You must add at least one evidence item OR one mandatory question in order to have a valid compliance item.
+        </Text>
+      }
+
+    </Stack>
   );
 };
 

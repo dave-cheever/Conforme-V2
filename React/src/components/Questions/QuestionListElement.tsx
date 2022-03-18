@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Flex, Stack, Text, Tooltip } from "@chakra-ui/react";
 
 import { IQuestion, IQuestionValue } from "../../interfaces/IQuestion";
-import { AsteriskQuestion, Bin, EditIcon }  from "../../icons";
+import { AsteriskQuestion, Bin, EditIcon } from "../../icons";
 import { questionHeader } from "../../utils/helpers";
 
 interface IQuestionListElement {
@@ -14,12 +14,12 @@ interface IQuestionListElement {
 }
 const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, editQuestion }: IQuestionListElement) => {
 
-  const ref:any = useRef(null);
+  const ref: any = useRef(null);
   const [isTextOverflown, setIsTextOverflown] = useState(false);
 
   useEffect(() => {
     const element = ref.current!;
-    if(element){
+    if (element) {
       //only show tooltip if text overflow is happening.
       setIsTextOverflown(element.scrollHeight > element.clientHeight);
     }
@@ -27,7 +27,7 @@ const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, ed
 
   return (
     <Stack
-      w='calc(100% - 2rem)'
+      w='calc(100% - 1rem)'
       minH='65px'
       direction='row'
       spacing={2}
@@ -50,7 +50,7 @@ const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, ed
               ref={ref}
             >{question.name}</Text>
           </Tooltip>
-           {question.required && <AsteriskQuestion ml="5px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w="12px" h="12px" />}
+          {question.required && <AsteriskQuestion ml="5px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w="12px" h="12px" />}
         </Flex>
       </Flex>
       {editQuestion && !isEditable &&
@@ -82,6 +82,6 @@ export const questionListElementStyles = {
     iconAsterisk: "#E93C44",
     icon: "#818197",
     tooltipColor: "black",
-    tooltipBg:"white"
+    tooltipBg: "white"
   }
 };

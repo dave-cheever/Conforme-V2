@@ -248,10 +248,6 @@ export const teamPageStyles = {
         bg: "#462AC4",
         color: "#FFFFFF",
       },
-      replace: {
-        bg: "#F0F2F5",
-        color: "#818197"
-      },
       addDelegates: {
         bg: "#818197",
         color: "#FFFFFF",

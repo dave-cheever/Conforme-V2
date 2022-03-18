@@ -157,6 +157,7 @@ const TeamModal = () => {
               fontSize="smm"
               value={searchText}
               rounded="10px"
+              autoFocus
               onChange={({ target: { value } }) => {
                 onQueryChanged(value);
               }}
@@ -244,23 +245,11 @@ const TeamModal = () => {
             h="38px"
             mr="1px"
             mb="6px"
-            bg={
-              isReplaceAccountable
-                ? "teamPage.button.replace.bg"
-                : "teamPage.button.add.bg"
-            }
-            color={
-              isReplaceAccountable
-                ? "teamPage.button.replace.color"
-                : "teamPage.button.add.color"
-            }
+            bg="teamPage.button.add.bg"
+            color="teamPage.button.add.color"
             fontSize="smm"
             fontWeight="bold"
-            _hover={{
-              bg: isReplaceAccountable
-                ? "teamPage.button.replace.bg"
-                : "teamPage.button.add.bg",
-            }}
+            _hover={{ bg: "teamPage.button.add.bg" }}
             onClick={handleAddParticipant}
           >
             {isReplaceAccountable
