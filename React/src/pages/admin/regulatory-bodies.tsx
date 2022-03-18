@@ -62,6 +62,8 @@ const RegulatoryBodies = () => {
   const device = useDevice();
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
+  const [currentRegulatoryBodyName, setCurrentRegulatoryBodyName] = useState<string>("");
+
 
   const getRegulatoryBodies = (regulatoryBodiesArray: IBaseWithName[]) => {
     if (!regulatoryBodiesArray) {
@@ -97,12 +99,14 @@ const RegulatoryBodies = () => {
   useEffect(() => {
     if (adminModalState === 'closed') {
       reset(defaultValues);
+      setCurrentRegulatoryBodyName("");
     }
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openRegulatoryBodyModal = (action: 'edit' | 'delete', regulatoryBody: IBaseWithName) => {
     setAdminModalState(action);
+    setCurrentRegulatoryBodyName(regulatoryBody.name);
     reset({
       _id: regulatoryBody._id,
       name: regulatoryBody.name,
@@ -185,8 +189,10 @@ const RegulatoryBodies = () => {
             label="Name"
             placeholder='Regulatory body name'
             control={control}
+            initialValue={currentRegulatoryBodyName.toLowerCase()}
             validations={{
               notEmpty: true,
+              uniqueValue: regulatoryBodies.map(({ name }) => name.toLowerCase())
             }}
           />
         </Flex>

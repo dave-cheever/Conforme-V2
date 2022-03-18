@@ -62,7 +62,6 @@ const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange, h
                           question={item}
                           removeQuestion={disabled ? undefined : () => removeQuestion(index)}
                           editQuestion={() => handleEdit(index, item)}
-                          isEditable={complianceItem.published}
                         />
                       </Flex>
                     </Box>

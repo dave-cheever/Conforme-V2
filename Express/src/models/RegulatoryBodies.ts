@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
 import { v4 as uuidv4 } from "uuid";
 
 import { IBaseWithName, IBaseWithNameModel } from 'app-interfaces';
@@ -8,7 +8,10 @@ import { GraphQLError } from 'graphql';
 
 const regulatoryBodySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,
-  name: String,
+  name: {
+    type: String,
+    validate: [validateUniqueName, "Regulatory body name already exists"]
+  },
   organizationId: String,
   metatags: {
     addedAt: Date,
@@ -19,6 +22,16 @@ const regulatoryBodySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
     removedBy: String
   }
 });
+
+//custom validation for unique name
+async function validateUniqueName(this: any, name: string) {
+  const regulatoryBodyCount = await models.RegulatoryBody.find({
+    name,
+    organizationId: this.organizationId,
+    "metatags.removedAt": { $eq: null },
+  }).count();
+  return !regulatoryBodyCount;
+}
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 

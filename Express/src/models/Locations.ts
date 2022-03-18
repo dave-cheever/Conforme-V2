@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, models, Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { diff } from "deep-object-diff";
 
@@ -43,7 +43,10 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
 
 const locationsSchema = new Schema<ILocation, ILocationModel>({
   _id: String,
-  name: String,
+  name: {
+    type: String,
+    validate: [validateUniqueName, "Location name already exists"]
+  },
   ownerId: String,
   organizationId: String,
   notes: String,
@@ -56,6 +59,16 @@ const locationsSchema = new Schema<ILocation, ILocationModel>({
     removedBy: String,
   }
 });
+
+//custom validation for unique name
+async function validateUniqueName(this: any, name: string) {
+  const locationsCount = await models.Location.find({
+    name,
+    "metatags.removedAt": { $eq: null },
+  }).count()
+  return !locationsCount
+}
+
 
 locationsSchema.statics.customCreate = async function (location: ILocation, userId: string, organizationId: string): Promise<ILocation> {
   const createdLocation = await this.create({

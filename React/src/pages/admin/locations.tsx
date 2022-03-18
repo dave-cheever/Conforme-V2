@@ -69,6 +69,8 @@ const Locations = () => {
   const device = useDevice();
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
+  const [currentLocationName, setCurrentLocationName] = useState<string>("");
+
 
   const getLocations = (locationsArray: ILocation[]) => {
     if (!locationsArray) {
@@ -115,6 +117,7 @@ const Locations = () => {
   useEffect(() => {
     if (adminModalState === "closed") {
       reset(defaultValues);
+      setCurrentLocationName("");
     }
   }, [reset, adminModalState]);
 
@@ -124,6 +127,7 @@ const Locations = () => {
     location: ILocation
   ) => {
     setAdminModalState(action);
+    setCurrentLocationName(location.name);
     reset({
       _id: location._id,
       name: location.name,
@@ -222,8 +226,10 @@ const Locations = () => {
             label="Location name"
             placeholder="e.g. London"
             control={control}
+            initialValue={currentLocationName.toLowerCase()}
             validations={{
               notEmpty: true,
+              uniqueValue: locations.map(({ name }) => name.toLowerCase())
             }}
           />
           <TextInputMultiline

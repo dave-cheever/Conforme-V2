@@ -62,7 +62,8 @@ const Categories = () => {
   const device = useDevice();
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
-  
+  const [currentCategoryName, setCurrentCategoryName] = useState('');
+
   const getCategories = (categoriesArray: IBaseWithName[]) => {
     if (!categoriesArray) {
       return [];
@@ -103,6 +104,7 @@ const Categories = () => {
   useEffect(() => {
     if (adminModalState === "closed") {
       reset(defaultValues);
+      setCurrentCategoryName("");
     }
   }, [reset, adminModalState]);
 
@@ -112,6 +114,7 @@ const Categories = () => {
     category: IBaseWithName
   ) => {
     setAdminModalState(action);
+    setCurrentCategoryName(category.name);
     reset({
       _id: category._id,
       name: category.name,
@@ -208,8 +211,10 @@ const Categories = () => {
             label="Name"
             placeholder="Category name"
             control={control}
+            initialValue={currentCategoryName.toLowerCase()}
             validations={{
               notEmpty: true,
+              uniqueValue: categories.map(({ name }) => name.toLowerCase())
             }}
           />
         </Flex>
@@ -223,7 +228,7 @@ const Categories = () => {
               <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
             <Stack
-              h={loading ? "full": "fit-content"}
+              h={loading ? "full" : "fit-content"}
               bg="white"
               borderBottomRadius="20px"
               spacing="1px"

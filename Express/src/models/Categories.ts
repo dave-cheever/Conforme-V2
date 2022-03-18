@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, models, Schema } from "mongoose";
 import { GraphQLError } from "graphql";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,7 +8,10 @@ import { genMetatags, getAuditRecordValues, getBasicElement, removeDatabaseField
 
 const categorySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,
-  name: String,
+  name: {
+    type: String,
+    validate: [validateUniqueName, "Category name already exists"]
+  },
   organizationId: String,
   metatags: {
     addedAt: Date,
@@ -20,6 +23,15 @@ const categorySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   },
 });
 
+//custom validation for unique name
+async function validateUniqueName(this: any, name: string) {
+  const categoryCount = await models.Category.find({
+    name,
+    "metatags.removedAt": { $eq: null },
+  }).count()
+  return !categoryCount
+}
+
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
 categorySchema.statics.customCreate = async function (category: IBaseWithName, userId: string, organizationId: string): Promise<IBaseWithName> {
@@ -29,6 +41,7 @@ categorySchema.statics.customCreate = async function (category: IBaseWithName, u
     organizationId,
     metatags: genMetatags("added", userId),
   });
+
 
   if (createdCategory?._doc) {
     const addAuditLog = async () => {

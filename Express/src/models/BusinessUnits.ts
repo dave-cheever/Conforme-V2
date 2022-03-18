@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, models, Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { diff } from "deep-object-diff";
 
@@ -13,7 +13,10 @@ import { GraphQLError } from "graphql";
 const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   _id: String,
   identifier: String,
-  name: String,
+  name: {
+    type: String,
+    validate: [validateUniqueName, "Business unit name already exists"]
+  },
   ownerId: String,
   imgUrl: String,
   organizationId: String,
@@ -60,6 +63,15 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
   const auditRecordValues = await auditRecordValuesPromise;
   return auditRecordValues;
 };
+
+//custom validation for unique name
+async function validateUniqueName(this: any, name: string) {
+  const buCount = await models.BusinessUnit.find({
+    name,
+    "metatags.removedAt": { $eq: null },
+  }).count()
+  return !buCount
+}
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 

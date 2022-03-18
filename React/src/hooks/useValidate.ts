@@ -1,6 +1,6 @@
 import { DefinedValidations, Validations } from "../interfaces/Validations";
 
-const useValidate = (label: string, validations: Validations, definedValidations: DefinedValidations) => {
+const useValidate = (label: string, validations: Validations, definedValidations: DefinedValidations, initialValue?: string) => {
   const validationsTypes = Object.keys(validations);
   if (validationsTypes.length === 0) {
     return undefined;
@@ -27,13 +27,12 @@ const useValidate = (label: string, validations: Validations, definedValidations
     }
 
     // Get validation function defined for field
-    const validationFunction = value => definedValidation(label, validationValue, value);
+    const validationFunction = value => definedValidation(label, validationValue, value, initialValue);
     return {
       ...acc,
       [validationType]: validationFunction,
     };
   }, {});
-
   return validate;
 };
 

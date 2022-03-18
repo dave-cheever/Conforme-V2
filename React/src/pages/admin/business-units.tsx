@@ -68,6 +68,7 @@ const BusinessUnits = () => {
   const history = useHistory()
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState(true);
+  const [currentBusinessUnitName, setCurrentBusinessUnitName] = useState<string>("");
 
   const getBusinessUnits = (businessUnitsArray: IBusinessUnit[]) => {
     if (!businessUnitsArray) {
@@ -112,6 +113,7 @@ const BusinessUnits = () => {
   useEffect(() => {
     if (adminModalState === "closed") {
       reset(defaultValues);
+      setCurrentBusinessUnitName("");
     }
   }, [reset, adminModalState]);
 
@@ -121,6 +123,7 @@ const BusinessUnits = () => {
     businessUnit: IBusinessUnit
   ) => {
     setAdminModalState(action);
+    setCurrentBusinessUnitName(businessUnit?.name);
     reset({
       _id: businessUnit?._id,
       name: businessUnit?.name,
@@ -265,8 +268,10 @@ const BusinessUnits = () => {
             label="Name"
             placeholder='Name'
             control={control}
+            initialValue={currentBusinessUnitName.toLowerCase()}
             validations={{
               notEmpty: true,
+              uniqueValue: businessUnits.map(({ name }) => name.toLowerCase())
             }}
           />
           <PeoplePicker

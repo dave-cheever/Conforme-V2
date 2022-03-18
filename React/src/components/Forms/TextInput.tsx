@@ -10,6 +10,7 @@ import { Asterisk } from '../../icons';
 interface ITextInput extends IField {
   placeholder?: string;
   variant?: string;
+  initialValue?: string;
   styles?: {
     textInput?: {
       font?: string
@@ -21,6 +22,11 @@ const definedValidations: DefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;
+    }
+  },
+  uniqueValue: (label, validationValue, value, initialValue) => {
+    if (validationValue && value && initialValue !== value.toLowerCase() && (validationValue as string[]).includes(value.toLowerCase())) {
+      return `${label} already taken`;
     }
   },
   maxLength: (label, validationValue, value = '') => {
@@ -36,8 +42,9 @@ const definedValidations: DefinedValidations = {
   }
 };
 
-const TextInput = ({ control, name, label, placeholder = '', tooltip = '', validations = {}, disabled, required, styles }: ITextInput) => {
-  const validate = useValidate(label || name, validations, definedValidations);
+
+const TextInput = ({ control, name, label, placeholder = '', tooltip = '', validations = {}, disabled, required, styles, initialValue }: ITextInput) => {
+  const validate = useValidate(label || name, validations, definedValidations, initialValue);
   return (
     <Controller
       name={name}
@@ -59,7 +66,7 @@ const TextInput = ({ control, name, label, placeholder = '', tooltip = '', valid
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk'/>}
+                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>

@@ -7,12 +7,11 @@ import { questionHeader } from "../../utils/helpers";
 
 interface IQuestionListElement {
   question: IQuestion<IQuestionValue>;
-  isEditable?: boolean;
   bgColor?: string;
   removeQuestion?: () => void;
   editQuestion?: () => void;
 }
-const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, editQuestion }: IQuestionListElement) => {
+const QuestionListElement = ({ question, bgColor, removeQuestion, editQuestion }: IQuestionListElement) => {
 
   const ref: any = useRef(null);
   const [isTextOverflown, setIsTextOverflown] = useState(false);
@@ -53,7 +52,7 @@ const QuestionListElement = ({ question, bgColor, isEditable, removeQuestion, ed
           {question.required && <AsteriskQuestion ml="5px" fill='questionListElement.iconAsterisk' stroke='questionListElement.iconAsterisk' w="12px" h="12px" />}
         </Flex>
       </Flex>
-      {editQuestion && !isEditable &&
+      {editQuestion &&
         <EditIcon
           w='20px'
           stroke="questionListElement.icon"
