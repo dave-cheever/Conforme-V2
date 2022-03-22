@@ -1,41 +1,33 @@
 import {
   Flex,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { AddIcon, SearchIcon, CrossIcon } from "../icons";
+
+import { AddIcon, SearchIcon } from "../icons";
 import { useAdminContext } from "../contexts/AdminProvider";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
 import Can from "./can";
 import UserMenu from "./UserMenu";
+import SearchBar from "./SearchBar";
+import NavigationTopProvider, { useNavigationTopContext } from "../contexts/NavigationTopProvider";
+import useDevice from "../hooks/useDevice";
 
 const NavigationTop = () => {
-  const [displaySearch, setDisplaySearch] = useState(false);
-  const {
-    organizationConfig
-  } = useAppContext();
-
-  const {
-    showFiltersPanel
-  } = useFiltersContext();
-
-  const {
-    setAdminModalState,
-  } = useAdminContext();
+  const device = useDevice();
   const history = useHistory();
+  const { organizationConfig } = useAppContext();
+  const { setAdminModalState } = useAdminContext();
+  const { showFiltersPanel } = useFiltersContext();
+  const { isSearchBarOpen, setIsSearchBarOpen } = useNavigationTopContext();
 
   const pageRedirect = (page: string) => {
     history.push(page);
   };
-  const isComplianceItemPage = history.location.pathname.split('/')[1] === "compliance-item"
+  const isComplianceItemPage = history.location.pathname.split('/')[1] === "compliance-item";
 
   const handleAddButtonClick = () => {
     setAdminModalState('add');
@@ -67,14 +59,14 @@ const NavigationTop = () => {
         fontSize="md"
         w="full"
         mr={["0", "20px"]}
-        display={displaySearch ? "none" : "flex"}
+        display="flex"
       >
         <Flex
-          display={["flex", "none"]}
           alignItems="center"
           h="80px"
           onClick={() => history.push('/')}
           cursor="pointer"
+          display={device !== "mobile" || isSearchBarOpen ? "none" : "flex"}
         >
           <Text
             w="full"
@@ -87,7 +79,6 @@ const NavigationTop = () => {
             {showFiltersPanel ? organizationConfig?.name.charAt(0) : organizationConfig?.name}
           </Text>
         </Flex>
-
         {!isComplianceItemPage && <Can
           action='adminPanel'
           yes={() => <IconButton
@@ -104,37 +95,31 @@ const NavigationTop = () => {
             bottom={['75px', '0']}
             right={['15px', '0']}
             zIndex={5}
-            boxShadow={["0px 0px 80px rgba(49, 50, 51, 0.25)","none"]}
+            boxShadow={["0px 0px 80px rgba(49, 50, 51, 0.25)", "none"]}
             flexShrink={0}
             rounded={["20px", "8px"]}
             display={['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
           />}
         />}
-        <Flex>
-          <InputGroup display={["none", "block"]} w={["100%", "260px"]}>
-            <InputLeftElement
-              pointerEvents="none"
-              color="navigationTop.inputIconColor"
-              children={<SearchIcon fill="navigationTop.searchBarIcon" stroke="brand.outerSpace" opacity="1" />}
-            />
-            <Input bg="navigationTop.inputBg" rounded="20px" placeholder="Search" fontWeight="semi_medium" fontSize="smm"></Input>
-          </InputGroup>
+
+        <Flex display={device !== "mobile" || (device === "mobile" && isSearchBarOpen) ? "block" : "none"}>
+          <SearchBar />
         </Flex>
       </Stack>
 
       <Flex
         align="center"
-        display={displaySearch ? "none" : "flex"}
+        display={device === "mobile" && isSearchBarOpen ? "none" : "flex"}
       >
         <IconButton
           mr="27.5px"
           align="center"
           bg="navigationTop.searchIconBackground"
-          aria-label='Search database'
+          aria-label='Search responses'
           borderRadius="20px"
           icon={<SearchIcon h="22px" w="18px" fill="navigationTop.searchBarIcon" stroke="brand.outerSpace" opacity="1" />}
           display={["block", "none"]}
-          onClick={() => { setDisplaySearch(true) }}
+          onClick={() => setIsSearchBarOpen(true)}
         />
         {/* <NotificationIcon
           _hover={{ color: "navigationTop.notificationIconHover", opacity: 0.7, cursor: "pointer" }}
@@ -146,43 +131,29 @@ const NavigationTop = () => {
         <UserMenu />
       </Flex>
 
-      <Stack
+      {/* <Stack
         spacing={4}
         direction="row"
         align="center"
         fontWeight="semi_medium"
         fontSize="md"
         w="full"
-        mr={["0", "20px"]}
         ml={5}
-        display={displaySearch ? "block" : "none"}
+        display={device === "mobile" && isSearchBarOpen ? "block" : "none"}
       >
-        <Flex>
-          <InputGroup display={["block", "none"]} w={["calc(100vw - 50px)"]}>
-            <InputLeftElement
-              pointerEvents="none"
-              color="navigationTop.inputIconColor"
-              children={<SearchIcon fill="navigationTop.searchBarIcon" stroke="brand.outerSpace" opacity="1" />}
-            />
-            <InputRightElement width='10px'>
-              <CrossIcon
-                _hover={{ color: "navigationTop.notificationIconHover", opacity: 0.7, cursor: "pointer" }}
-                _active={{}}
-                h="13.5px"
-                w="13.5px"
-                onClick={() => { setDisplaySearch(false) }}
-                stroke="navigationTop.searchCrossIconStroke"
-              />
-            </InputRightElement>
-            <Input bg="navigationTop.inputBg" rounded="20px" placeholder="Search" fontWeight="semi_medium" fontSize="smm"></Input>
-          </InputGroup>
-        </Flex>
-      </Stack>
-    </Flex>
+        <SearchBar />
+      </Stack> */}
+    </Flex >
   );
 };
 
-export default NavigationTop;
+const NavigationTopWithContext = (props) => (
+  <NavigationTopProvider {...props}>
+    <NavigationTop />
+  </NavigationTopProvider>
+);
+
+export default NavigationTopWithContext;
 
 export const navigationTopStyles = {
   navigationTop: {

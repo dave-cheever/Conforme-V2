@@ -142,6 +142,15 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       }
     }
 
+    // Filter by published state
+    if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
+      pipeline.push({
+        $match: {
+          'published': true,
+        },
+      });
+    }
+
     // Join compliance item
     if (
       // Need to get Compliance Item if there are any dependant filters
@@ -155,15 +164,6 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
         collection: 'complianceItems',
         from: 'complianceItemId',
         to: 'complianceItem',
-      });
-    }
-
-    // Filter by published state
-    if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
-      pipeline.push({
-        $match: {
-          'published': true,
-        },
       });
     }
 

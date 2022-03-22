@@ -10,6 +10,7 @@ import { locationsTypeDefs, locationsQueryDefs, locationsMutationDefs } from "./
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
 import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
+import { searchQueryDefs, searchTypeDefs } from "./resolvers/search";
 import { settingsTypeDefs, settingsQueryDefs, settingsMutationDefs } from "./resolvers/settings";
 import { usersTypeDefs, usersQueryDefs,usersMutationsDefs } from "./resolvers/users";
 
@@ -46,6 +47,7 @@ const typeDefs = gql`
   ${locationsTypeDefs}
   ${organizationsTypeDefs}
   ${responsesTypeDefs}
+  ${searchTypeDefs}
   ${settingsTypeDefs}
   ${usersTypeDefs}
 
@@ -60,6 +62,7 @@ const typeDefs = gql`
     ${organizationsQueryDefs}
     ${regulatoryBodiesQueryDefs}
     ${responsesQueryDefs}
+    ${searchQueryDefs}
     ${settingsQueryDefs}
     ${usersQueryDefs}
   }

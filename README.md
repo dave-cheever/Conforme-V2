@@ -11,6 +11,17 @@ To start developing for Conforme you are going to need a development environment
 - A copy of the env file for development. This will be updated for your own settings
 
 ## Database
+### Collections indexes
+
+You need to add some indexes to the database to allow collections to be sorted by these indexes. When you run the app, collections should be created.
+To add an index, open the database in Data Explorer, select the collection and get to 'Settings', then switch to 'Indexing Policy' tab. Under 'Current index(es)' in new row paste the field name in 'Definition' column and select 'Single Field' in 'Type' column. Press 'Save' button at the top bar.
+Add the following indexes:
+
+In complianceItems collection:
+- metatags.addedAt
+
+In auditLogs collection:
+- metatags.addedAt
 
 ### CosmosDB
 

@@ -10472,9 +10472,9 @@
   "version" "17.0.2"
 
 "react-mentions@^4.3.0":
-  "integrity" "sha512-qr60FhczwzDX/0ZHWKaV8nriDx0a/+totqa7z1jGiz8YipNMp3ReAJMfA+UUlIVj1lnbCzpFUAo/bTQBW0IVlg=="
-  "resolved" "https://registry.npmjs.org/react-mentions/-/react-mentions-4.3.0.tgz"
-  "version" "4.3.0"
+  "integrity" "sha512-yNq3qpjQ9/kaYIhCgx2D+9h228gMd6sxfbyKUY8TUWLxDr38q0FnNpCga/EhuuGqnVhOt8fb39p0c+xVRRgSpw=="
+  "resolved" "https://registry.npmjs.org/react-mentions/-/react-mentions-4.3.1.tgz"
+  "version" "4.3.1"
   dependencies:
     "@babel/runtime" "7.4.5"
     "invariant" "^2.2.4"

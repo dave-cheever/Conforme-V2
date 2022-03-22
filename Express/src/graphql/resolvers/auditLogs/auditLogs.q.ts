@@ -3,7 +3,7 @@ import { AuditLogs } from "app-models";
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
-    const { skip, limit, action, dateLimit, elementId, fields } = auditLogsQuery;
+    const { skip, limit, action, dateLimit, elementId, userId, fields } = auditLogsQuery;
 
     const pipeline: any = [{
       $match: {
@@ -52,7 +52,15 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
         $match: {
           "element._id": elementId,
         }
-      })
+      });
+    }
+
+    if (userId) {
+      pipeline.push({
+        $match: {
+          "metatags.addedBy": userId,
+        }
+      });
     }
 
     if (skip) {

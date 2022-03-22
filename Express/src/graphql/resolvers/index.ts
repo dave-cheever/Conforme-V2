@@ -8,9 +8,10 @@ import locationsResolvers from "./locations";
 import organizationsResolvers from "./organizations";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
 import responsesResolvers from "./responses";
+import scalars from "../scalars";
+import searchResolvers from "./search";
 import settingsResolvers from "./settings";
 import usersResolvers from "./users";
-import scalars from "../scalars";
 
 export default {
   Any: scalars.anyScalar,
@@ -26,6 +27,7 @@ export default {
     ...organizationsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
     ...responsesResolvers.Query,
+    ...searchResolvers.Query,
     ...settingsResolvers.Query,
     ...usersResolvers.Query,
   },
