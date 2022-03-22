@@ -51,7 +51,7 @@ const Field = ({ control, ...field }) => {
     case 'datepicker': {
       return <Datepicker key={name} {...props} />;
     }
-    case 'textarea': {
+    case 'textMultiline': {
       return <Textarea key={name} {...props} />;
     }
     case 'switch': {

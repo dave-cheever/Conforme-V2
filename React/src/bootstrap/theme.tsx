@@ -81,7 +81,9 @@ import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summa
 import { switchStyles } from "../components/Forms/Switch";
 import { teamPageStyles } from "../pages/compliance-item/team";
 import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
+import { textInputStyles } from "../components/Forms/TextInput";
 import { textMultilineConfirmInputStyles } from "../components/Forms/TextMultilineConfirmInput";
+import { textMultilineInputStyles } from "../components/Forms/Textarea";
 import { toggleStyles } from "../components/Forms/Toggle";
 import { userItemStyles } from "../pages/admin/users";
 import { userMenuStyles } from "../components/UserMenu";
@@ -211,11 +213,14 @@ const getTheme = (organizationTheme?: any) => {
       ...switchStyles,
       ...teamPageStyles,
       ...textConfirmInputStyles,
+      ...textInputStyles,
       ...textMultilineConfirmInputStyles,
+      ...textMultilineInputStyles,
       ...toggleStyles,
       ...userItemStyles,
       ...userMenuStyles,
       ...userSelectorStyles,
+
 
       purpleHeart: {
         50: '#ede9ff',

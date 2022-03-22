@@ -33,10 +33,10 @@ const QuestionsForm = () => {
   const [editQuestion, setEditQuestion] = useState<IQuestion<IQuestionValue>>();
 
   const questionTypes = [{
-    value: "textConfirm",
+    value: "text",
     label: "Text input"
   }, {
-    value: "textMultilineConfirm",
+    value: "textMultiline",
     label: "Multiple lines of text"
   }, {
     value: "switch",

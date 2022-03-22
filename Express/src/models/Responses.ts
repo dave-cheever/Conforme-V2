@@ -54,7 +54,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
     _id: false,
     type: {
       type: String,
-      enum: ['textConfirm', 'textMultilineConfirm', 'switch', 'datepicker', 'multipleChoice'],
+      enum: ['text', 'textMultiline', 'switch', 'datepicker', 'multipleChoice'],
     },
     name: String,
     description: String,

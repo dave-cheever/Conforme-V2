@@ -3,7 +3,7 @@ export type IQuestionValue = string | Date | Boolean | IChoice[] | null;
 export interface IChoice { label: string, isCorrect: boolean }
 
 export interface IQuestion<IValue> {
-  type: 'textConfirm' | 'textMultilineConfirm' | 'datepicker' | 'multipleChoice' | "switch";
+  type: 'text' | 'textMultiline' | 'switch' | 'datepicker' | 'multipleChoice';
   name: string;
   description?: string;
   value?: IValue;

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { Stack, Box, Grid, Text, Flex, useToast } from '@chakra-ui/react';
+import React, { useMemo } from 'react';
+import { Stack, Box, Grid, Text, Flex, useToast, Button } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
 import { isEqual } from 'lodash';
@@ -8,7 +8,7 @@ import { isPermitted } from '../can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { toastFailed } from '../../bootstrap/config';
-import { MessageSquareIcon } from '../../icons';
+import { ChevronRight, MessageSquareIcon } from '../../icons';
 import Field from '../Forms/Field';
 import { IQuestionValue } from '../../interfaces/IQuestion';
 
@@ -46,31 +46,28 @@ const ResponseQuestions = () => {
   });
 
   const answers = watch();
-  useEffect(() => {
-    const updateResponseQuestions = async () => {
-      const wasQuestionUpdated = questions.find(({ name, value }) => !isEqual(value, answers[name]));
 
-      if (wasQuestionUpdated) {
-        try {
-          await update({
-            variables: {
-              updateResponseQuestionsModify: {
-                _id: response?._id,
-                answers,
-              },
+  const updateResponseQuestions = async () => {
+    const wasQuestionUpdated = questions.find(({ name, value }) => !isEqual(value, answers[name]));
+    if (wasQuestionUpdated) {
+      try {
+        await update({
+          variables: {
+            updateResponseQuestionsModify: {
+              _id: response?._id,
+              answers,
             },
-          });
-          refetch();
-        } catch (e: any) {
-          toast({
-            ...toastFailed,
-            description: e.message,
-          });
-        }
+          },
+        });
+        refetch();
+      } catch (e: any) {
+        toast({
+          ...toastFailed,
+          description: e.message,
+        });
       }
-    };
-    updateResponseQuestions();
-  }, [JSON.stringify(answers)]); // eslint-disable-line react-hooks/exhaustive-deps
+    }
+  };
 
   if (!response) {
     return null;
@@ -127,6 +124,20 @@ const ResponseQuestions = () => {
           </Flex>
         ))}
       </Grid>
+      <br />
+      <Flex>
+        <Button
+          bg="responseQuestions.button.bg"
+          color="responseQuestions.button.color"
+          fontSize="smm"
+          fontWeight="bold"
+          _hover={{ bg: "responseQuestions.button.hover" }}
+          onClick={() => updateResponseQuestions()}
+        >
+          Submit
+          <ChevronRight ml="5px" />
+        </Button>
+      </Flex>
     </Stack>
   );
 };
@@ -142,6 +153,11 @@ export const responseQuestionsStyles = {
     NoQuestion: {
       icon: "#818197",
       color: "#818197"
+    },
+    button: {
+      bg: "#462AC4",
+      hover: "#462AC4",
+      color: "#ffffff",
     }
   }
 }
