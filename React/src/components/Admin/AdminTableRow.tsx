@@ -1,10 +1,12 @@
 import { Flex, Tooltip } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { ArrowCount } from "../../icons";
 import { IBaseWithName } from "../../interfaces/IBaseWithName";
 
 const AdminTableRow = ({ element, index, responseToEdit, edit }: { element: IBaseWithName, responseToEdit: "regulatoryBodiesIds" | "categoriesIds", index: number, edit?: () => void }) => {
-  const history = useHistory()
+  const history = useHistory();
+  const { setResponseFiltersValue } = useFiltersContext();
   return (
     <Flex
       w="full"
@@ -33,10 +35,8 @@ const AdminTableRow = ({ element, index, responseToEdit, edit }: { element: IBas
         {element.complianceItemsResponsesCount || "0"}
         <Tooltip label="Show Items" fontSize="md">
           <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" onClick={() => {
-            history.push({
-              pathname: "/",
-              state: { [responseToEdit]: [element._id] }
-            })
+            setResponseFiltersValue({ [responseToEdit]: [element._id] });
+            history.push("/");
           }} />
         </Tooltip>
       </Flex>

@@ -21,6 +21,7 @@ const categories = async (_, __, { organization }, info: GraphQLResolveInfo) => 
         pipeline.push({
           $match: {
             'complianceItem.categoryId': category._id,
+            "complianceItem.metatags.removedAt": { $eq: null },
             published: true,
           },
         });

@@ -23,6 +23,7 @@ const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInf
         pipeline.push({
           $match: {
             'complianceItem.regulatoryBodyId': regulatoryBody._id,
+            "complianceItem.metatags.removedAt": { $eq: null },
             published: true,
           },
         });

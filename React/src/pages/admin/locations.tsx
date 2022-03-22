@@ -267,7 +267,7 @@ const Locations = () => {
                 </>
               )}
               <Spacer display={["block", "none"]} />
-              <AdminTableHeaderElement w={["max-content", "50%"]} label="No. of responses" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+              <AdminTableHeaderElement w={["max-content", "50%"]} label="Responses count" tooltip="Only published items" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
 
             {loading ? (

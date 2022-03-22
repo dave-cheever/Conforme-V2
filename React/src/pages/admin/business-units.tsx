@@ -15,6 +15,7 @@ import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElem
 import PeoplePicker from "../../components/Forms/PeoplePicker";
 import useDevice from "../../hooks/useDevice";
 import { useHistory } from "react-router-dom";
+import { useFiltersContext } from "../../contexts/FiltersProvider";
 
 
 const GET_BUSINESS_UNITS = gql`
@@ -60,6 +61,7 @@ const defaultValues: Partial<IBusinessUnit> = {
 const BusinessUnits = () => {
   const toast = useToast();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
+  const { setResponseFiltersValue } = useFiltersContext();
   const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS);
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
@@ -244,10 +246,8 @@ const BusinessUnits = () => {
         <Text>{businessUnit.complianceItemsResponsesCount || 0}</Text>
         <Tooltip label="Show Items" fontSize="md">
           <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" onClick={() => {
-            history.push({
-              pathname: "/",
-              state: { "businessUnitsIds": [businessUnit._id] }
-            })
+            setResponseFiltersValue({ "businessUnitsIds": [businessUnit._id] });
+            history.push("/");
           }} />
         </Tooltip>
       </Flex>
@@ -291,7 +291,7 @@ const BusinessUnits = () => {
           <AdminTableHeader>
             <AdminTableHeaderElement w={["80%", "30%"]} label="Unit name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
             {device !== "mobile" && <AdminTableHeaderElement w="calc(70% / 2)" label="Owner" onClick={() => { setSortType("owner"); setSortOrder(!sortOrder); }} sortOrder={sortType === "owner" && !sortOrder} showSortingIcon={sortType === "owner"} />}
-            <AdminTableHeaderElement w={["20%", "calc(70% / 2)"]} label="# of responses" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+            <AdminTableHeaderElement w={["20%", "calc(70% / 2)"]} label="Responses count" tooltip="Only published items" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
           </AdminTableHeader>
           <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
             {loading ? <Loader center={true} /> : (businessUnits?.length > 0 ? businessUnits?.map(renderBusinessUnitRow) : (

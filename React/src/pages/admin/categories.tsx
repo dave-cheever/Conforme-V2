@@ -225,7 +225,7 @@ const Categories = () => {
           <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
             <AdminTableHeader>
               <AdminTableHeaderElement w={["80%", "50%"]} label="Category" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
-              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" tooltip="Only published items" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
             </AdminTableHeader>
             <Stack
               h={loading ? "full" : "fit-content"}

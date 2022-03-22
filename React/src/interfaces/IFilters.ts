@@ -16,6 +16,13 @@ interface IUserFilter {
   value: IUserFilterObject | null;
 }
 
+export interface IResponseFilters {
+  locationsIds?: string[] | undefined,
+  categoriesIds?: string[] | undefined,
+  businessUnitsIds?: string[] | undefined,
+  regulatoryBodiesIds?: string[] | undefined,
+}
+
 export default interface IFilters {
   complianceItemsIds?: IFilter,
   categoriesIds?: IFilter,

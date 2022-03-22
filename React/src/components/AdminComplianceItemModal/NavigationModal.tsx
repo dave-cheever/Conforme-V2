@@ -17,7 +17,7 @@ const NavigationModal = () => {
 
   return (
     <Flex flexDir="column" w="185px">
-      {complianceItemModalSections.map((el, i) => el.name !== "Summary" &&
+      {complianceItemModalSections.map((el, i) =>
         <Flex
           key={el.name}
           mb="15px"

@@ -11,6 +11,7 @@ import useDevice from "../hooks/useDevice";
 import { ArrowCount } from "../icons";
 import { ILocation } from "../interfaces/ILocation";
 import { useHistory } from "react-router-dom";
+import { useFiltersContext } from "../contexts/FiltersProvider";
 
 const LocationListItem = ({
   location,
@@ -20,7 +21,8 @@ const LocationListItem = ({
   openLocationModal;
 }) => {
   const device = useDevice();
-  const history = useHistory()
+  const history = useHistory();
+  const { setResponseFiltersValue } = useFiltersContext();
 
   return (
     <Flex
@@ -77,10 +79,8 @@ const LocationListItem = ({
             cursor="pointer"
             ml="13px"
             onClick={() => {
-              history.push({
-                pathname: "/",
-                state: { "locationsIds": [location._id] }
-              })
+              setResponseFiltersValue({ "locationsIds": [location._id] });
+              history.push("/");
             }}
           />
         </Tooltip>

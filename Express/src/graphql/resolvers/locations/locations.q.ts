@@ -21,6 +21,7 @@ const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
         pipeline.push({
           $match: {
             'complianceItem.locationsIds': { $in: [location._id] },
+            "complianceItem.metatags.removedAt": { $eq: null },
             published: true,
           },
         });

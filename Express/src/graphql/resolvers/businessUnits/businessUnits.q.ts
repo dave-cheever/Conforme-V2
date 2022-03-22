@@ -2,6 +2,7 @@ import { GraphQLResolveInfo } from "graphql";
 
 import { BusinessUnits, Responses, Users } from "app-models";
 import { doesPathExist, join } from "app-utils";
+import { IBusinessUnit } from "app-interfaces";
 
 const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
@@ -9,8 +10,12 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
     let businessUnits = await BusinessUnits.customFind({}, organization._id);
 
     if (shouldJoin("complianceItemsResponsesCount")) {
-      for (const businessUnit of businessUnits) {
-        let pipeline: any[] = [];
+      businessUnits = await Promise.all(businessUnits.map(businessUnit => new Promise<IBusinessUnit>(async res => {
+        let pipeline: any[] = [{
+          $match: {
+            businessUnitId: businessUnit._id,
+          },
+        }];
         join({
           pipeline,
           collection: 'complianceItems',
@@ -19,7 +24,7 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
         });
         pipeline.push({
           $match: {
-            'complianceItem.businessUnitsIds': businessUnit._id,
+            'complianceItem.metatags.removedAt': { $eq: null },
             published: true,
           },
         });
@@ -30,7 +35,8 @@ const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) 
         if (responses && responses.length > 0) {
           businessUnit.complianceItemsResponsesCount = responses[0].count;
         }
-      }
+        return res(businessUnit);
+      })));
     }
 
     if (shouldJoin("owner")) {

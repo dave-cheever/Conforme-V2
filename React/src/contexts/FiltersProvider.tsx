@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import { gql, useQuery } from "@apollo/client";
 
 import { IFiltersContext } from "../interfaces/IFiltersContext";
-import IFilters from "../interfaces/IFilters";
+import IFilters, { IResponseFilters } from "../interfaces/IFilters";
 import useFiltersUtils from "../hooks/useFiltersUtils";
 
 export const FiltersContext = createContext({} as IFiltersContext);
@@ -60,6 +60,7 @@ const FiltersProvider = (props: any) => {
   } = useFiltersUtils();
   const [filtersValues, setFiltersValues] = useState<IFilters>(getFilters());
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
+  const [responseFiltersValue, setResponseFiltersValue] = useState<IResponseFilters>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(null);
   const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{ [statusName: string]: number }>({});
@@ -91,6 +92,7 @@ const FiltersProvider = (props: any) => {
     showFiltersPanel, setShowFiltersPanel,
     openedFilterPanel, setOpenedFilterPanel,
     responsesStatusesCounts, setResponsesStatusesCounts,
+    responseFiltersValue, setResponseFiltersValue,
     numberOfSelectedFilters,
     complianceItems: data?.complianceItems,
     categories: data?.categories,
@@ -105,6 +107,8 @@ const FiltersProvider = (props: any) => {
     openedFilterPanel,
     responsesStatusesCounts,
     numberOfSelectedFilters,
+    responseFiltersValue,
+    setResponseFiltersValue,
     data,
   ]);
 

@@ -22,7 +22,7 @@ import useResponseUtils from "../hooks/useResponseUtils";
 import { useFiltersContext } from "../contexts/FiltersProvider";
 import { useAppContext } from "../contexts/AppProvider";
 import useDevice from "../hooks/useDevice";
-import { useLocation } from "react-router-dom";
+import { isEmpty } from "lodash";
 
 const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
@@ -69,23 +69,25 @@ const GET_RESPONSES = gql`
 
 const ComplianceItems = () => {
   const { user } = useAppContext();
-  const { filtersValues, setUsedFilters, setFilters, setResponsesStatusesCounts, setShowFiltersPanel } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setFilters, setResponsesStatusesCounts, setShowFiltersPanel, responseFiltersValue, setResponseFiltersValue, usedFilters } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
 
   const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
   const device = useDevice();
-  const location = useLocation()
 
   useEffect(() => {
     setUsedFilters(['complianceItemsIds', 'categoriesIds', 'usersIds', 'locationsIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
-    if (location.state && typeof location.state === "object") {
-      setFilters(location.state)
-      window.history.replaceState(null, '')
-    }
     return () => setShowFiltersPanel(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (responseFiltersValue && !isEmpty(responseFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      setFilters(responseFiltersValue);
+      setResponseFiltersValue({});
+    }
+  }, [filtersValues, usedFilters, setResponseFiltersValue, responseFiltersValue, setFilters])
 
   useEffect(() => {
     const responsesStatusesCounts = {
