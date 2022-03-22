@@ -7,8 +7,11 @@ import NavigationLeftFilters from "./NavigationLeftFilters";
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 import { ArrowRight } from "../../icons";
 import { IMenuItem } from "../../interfaces/IMenu";
+import { useAppContext } from "../../contexts/AppProvider";
 
 const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
+  const { organizationConfig } = useAppContext();
+  const isTrackerComponent = organizationConfig?.addons.find(({ name }) => name === 'tracker');
   const history = useHistory();
   const { url, icon, label } = menuItem;
   const [menuOpen, setMenuOpen] = useState(true);
@@ -101,7 +104,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
             return <SubSection key={subSection.label} subsection={subSection} setMenuOpen={setMenuOpen} menuOpen={menuOpen} />;
           })
         }
-        {history.location.pathname === "/" && history.location.pathname === url && !showFiltersPanel &&
+        {history.location.pathname === "/" && history.location.pathname === url && !showFiltersPanel && isTrackerComponent &&
           <>
             {Object.keys(responsesStatusesCounts).length !== 0 &&
               <NavigationLeftFilters filter={["all", responsesStatusesCounts["compliant"] + responsesStatusesCounts["nonCompliant"]]} menuOpen={menuOpen} />}

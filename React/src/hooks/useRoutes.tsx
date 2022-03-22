@@ -1,25 +1,26 @@
 import { Redirect } from "react-router-dom";
 import { useAppContext } from "../contexts/AppProvider";
-import Actions from "../pages/actions";
 import Accidents from "../pages/accidents";
+import Actions from "../pages/actions";
+import Areas from "../pages/admin/areas";
 import Assets from "../pages/assets";
 import AuditLog from "../pages/admin/audit-log";
 import Audits from "../pages/audits";
 import BusinessUnits from "../pages/admin/business-units";
 import Can from "../components/can";
-import ComplianceItems from "../pages/compliance-items";
-import ComplianceItemsAdmin from "../pages/admin/compliance-items";
 import ComplianceItemAuditLog from "../pages/compliance-item/audit-log";
+import ComplianceItemsAdmin from "../pages/admin/compliance-items";
 import Categories from "../pages/admin/categories";
 import ComplianceItemResponse from "../pages/compliance-item/index";
 import DefaultLayout from "../layouts/DefaultLayout";
 import FilterLayout from "../layouts/FilterLayout";
 import Help from "../pages/help";
 import History from "../pages/compliance-item/history";
-import IRoute from "../interfaces/IRoute";
 import Insights from "../pages/insights";
+import IRoute from "../interfaces/IRoute";
 import Locations from "../pages/admin/locations";
 import Login from "../pages/login";
+import Logout from "../pages/logout";
 import Licenses from "../pages/licenses";
 import Mentions from "../pages/mentions";
 import PrivacyPolicy from "../pages/privacy-policy";
@@ -27,10 +28,11 @@ import PureLayout from "../layouts/PureLayout";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import ResponseLayout from "../layouts/ResponseLayout";
 import Settings from "../pages/admin/settings";
+import Sites from "../pages/admin/sites";
 import Team from "../pages/compliance-item/team";
-import Users from "../pages/admin/users";
-import Logout from "../pages/logout";
 import Terms from "../pages/terms";
+import Users from "../pages/admin/users";
+import Dashboard from "../pages/dashboard";
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -67,9 +69,9 @@ const protectedRoutes: Array<IRoute> = [
   },
   {
     path: "/",
-    key: "home",
+    key: "dashboard",
     exact: true,
-    component: ComplianceItems,
+    component: Dashboard,
     layout: FilterLayout,
   },
   {
@@ -185,10 +187,24 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
+    path: "/admin/sites",
+    key: "sites",
+    exact: true,
+    component: Sites,
+    layout: DefaultLayout,
+  },
+  {
     path: "/admin/business-units",
     key: "business-units",
     exact: true,
     component: BusinessUnits,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/admin/areas",
+    key: "areas",
+    exact: true,
+    component: Areas,
     layout: DefaultLayout,
   },
   {

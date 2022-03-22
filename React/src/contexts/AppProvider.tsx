@@ -11,7 +11,7 @@ export const AppContext = createContext({} as IAppContext);
 export const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error ('useAppContext must be used within the AppProvider');
+    throw new Error('useAppContext must be used within the AppProvider');
   }
   return context;
 };
@@ -21,7 +21,7 @@ const AppProvider = (props: any) => {
   const [settings, setSettings] = useState<ISetting[]>([]);
   const [organizationConfig, setOrganizationConfig] = useState<IOrganization>();
   const [user, setUser] = useState<IUser | null>();
-  
+
   const value = useMemo(() => ({
     roles, setRoles,
     settings, setSettings,

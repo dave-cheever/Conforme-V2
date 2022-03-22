@@ -9,6 +9,7 @@ import useInit from "../hooks/useInit";
 import useRoutes from "../hooks/useRoutes";
 import IdleMonitor from "../components/IdleMonitor";
 import AppProvider, { useAppContext } from "../contexts/AppProvider";
+import ConfigProvider from "../contexts/ConfigProvider";
 import AdminProvider from "../contexts/AdminProvider";
 import FiltersProvider from "../contexts/FiltersProvider";
 
@@ -21,13 +22,13 @@ function App() {
 
   useEffect(() => {
     const redirectUrl = localStorage.getItem('redirectUrl');
-    
-    if(redirectUrl){
+
+    if (redirectUrl) {
       localStorage.removeItem('redirectUrl');
       history.push(redirectUrl);
     }
-  // eslint-disable-next-line
-  },[]);
+    // eslint-disable-next-line
+  }, []);
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (
@@ -58,6 +59,6 @@ function App() {
   );
 }
 
-const AppWithContext = () => <AppProvider><App /></AppProvider>;
+const AppWithContext = () => <AppProvider><ConfigProvider><App /></ConfigProvider></AppProvider>;
 
 export default AppWithContext;

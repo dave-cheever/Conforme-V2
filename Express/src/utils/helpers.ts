@@ -63,19 +63,19 @@ export const sessionizeOrganization = ({ _id, name, domain, logoUrl, emailAddres
     logoUrl,
     bgImageUrl,
     bgImageTabletUrl,
-    emailAddress,
+    // emailAddress,
     theme,
-    licenceExpirationDate,
+    // licenceExpirationDate,
     addons,
     domain,
-    clientId,
-    tenantId,
-    secret,
-    spSiteUrl,
-    spLibraryId,
+    // clientId,
+    // tenantId,
+    // secret,
+    // spSiteUrl,
+    // spLibraryId,
     accessGroupId,
     adminsGroupId,
-    readersGroupId
+    readersGroupId,
   }
 }
 

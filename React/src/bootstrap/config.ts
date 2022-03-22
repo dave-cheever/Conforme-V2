@@ -3,6 +3,7 @@ import {
   Admin,
   AttachmentIcon,
   AuditIcon,
+  CalendarIcon,
   DetailIcon,
   Home,
   // Insights,
@@ -28,7 +29,7 @@ export const toastFailed: any = {
   position: "top",
 };
 
-export const menuItems: INavItem[] = [
+export const trackerMenuItems: INavItem[] = [
   {
     type: "menuItem",
     label: "Compliance items",
@@ -60,6 +61,32 @@ export const menuItems: INavItem[] = [
   },
 ];
 
+export const auditsMenuItems: INavItem[] = [{
+  type: "menuItem",
+  label: "Audits",
+  url: "/",
+  icon: Home,
+  permission: "home.view"
+}, {
+  type: "menuItem",
+  label: "Actions",
+  url: "/actions",
+  icon: CalendarIcon,
+  permission: "actions.view"
+}, {
+  type: "menuItem",
+  label: "Admin",
+  url: "/admin",
+  icon: Admin,
+  permission: "adminPanel.view",
+  subSections: [
+    { label: "Sites", url: "/admin/sites" },
+    { label: "Areas", url: "/admin/areas" },
+    { label: "Users", url: "/admin/users" },
+    { label: "Audit log", url: "/admin/audit-log" },
+    { label: "Other settings", url: "/admin/settings" },
+  ]
+}];
 
 export const userMenus = [
   {

@@ -49,7 +49,11 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
       }
     }
   },
-  "addons": {},
+  "addons": [{
+    "name": "audits"
+  }, {
+    "name": "tracker"
+  }],
   "allowedTenantsIds": [
     <tenant id>
   ],

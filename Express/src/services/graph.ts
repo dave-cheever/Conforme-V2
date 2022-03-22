@@ -6,17 +6,21 @@ import multer from 'multer';
 import { logger } from 'app-shared';
 import { IOrganization } from 'app-interfaces';
 import { getEmailSubject, getEmailTemplate, getProtocol } from 'app-utils';
+import { Organizations } from 'app-models';
 // import { getEmailSubject, getEmailTemplate } from 'app-utils';
 
 const inMemoryStorage = multer.memoryStorage();
 const inMemoryStrategy = multer({ storage: inMemoryStorage });
 
-const graphSetup = async (organization: IOrganization) => {
-  if (!organization) {
+const graphSetup = async (organizationId: string) => {
+  if (!organizationId) {
+    throw new Error('No organization id');
+  }
+  const organization = await Organizations.customFindById(organizationId, organizationId);
+  if (!organizationId) {
     throw new Error('Wrong organization config');
   }
   const { clientId, tenantId, secret } = organization;
-
   graph.setup({
     graph: {
       fetchClientFactory: () => new AdalFetchClient(tenantId || '', clientId || '', secret || ''),
@@ -24,8 +28,12 @@ const graphSetup = async (organization: IOrganization) => {
   });
 }
 
-const getClient = async (organization: IOrganization) => {
-  if (!organization) {
+const getClient = async (organizationId: string) => {
+  if (!organizationId) {
+    throw new Error('No organization id');
+  }
+  const organization = await Organizations.customFindById(organizationId, organizationId);
+  if (!organizationId) {
     throw new Error('Wrong organization config');
   }
   const { clientId, tenantId, secret } = organization;
@@ -42,9 +50,9 @@ const getClient = async (organization: IOrganization) => {
 
 // userId can be AAD ID or email
 const getUserData = async ({ userId, organization }: { userId: string, organization: IOrganization }) => {
-  await graphSetup(organization);
+  await graphSetup(organization._id);
   const userData = await graph.users.getById(userId)();
-  const userGroups = await graph.users.getById(userId).memberOf();
+  // const userGroups = await graph.users.getById(userId).memberOf();
   return {
     ...userData,
     // groups: userGroups.map(({ id, displayName }) => ({ id, displayName })) // TODO: fix me
@@ -63,7 +71,7 @@ const getUserPhoto = async ({ userId, organization }) => {
 
 // userId can be AAD ID or email
 const checkMemberGroups = async ({ userId, groups, organization }: { userId: string, groups: { [name: string]: string }, organization: IOrganization }) => {
-  await graphSetup(organization);
+  await graphSetup(organization._id);
   const res = await graph.users.getById(userId).checkMemberGroups(Object.values(groups));
   return Object.keys(groups).reduce((acc, curr) => ({
     ...acc,
@@ -73,7 +81,7 @@ const checkMemberGroups = async ({ userId, groups, organization }: { userId: str
 
 const addMemberToAccessGroup = async ({ userId, groupId, organization }: { userId: string, groupId: string, organization: IOrganization }) => {
   try {
-    const client = await getClient(organization);
+    const client = await getClient(organization._id);
     const user = {
       "@odata.id": `https://graph.microsoft.com/v1.0/directoryObjects/${userId}`
     };
@@ -86,7 +94,7 @@ const addMemberToAccessGroup = async ({ userId, groupId, organization }: { userI
 }
 
 const getBasicUser = async ({ userId, organization }: { userId: string, organization: IOrganization }) => {
-  await graphSetup(organization);
+  await graphSetup(organization._id);
   const userData = await graph.users.getById(userId)();
   const image = await getUserPhoto({ userId, organization });
   return {
@@ -96,7 +104,7 @@ const getBasicUser = async ({ userId, organization }: { userId: string, organiza
 };
 
 const getBasicUsers = async ({ usersIds, organization }: { usersIds: string[], organization: IOrganization }) => {
-  await graphSetup(organization);
+  await graphSetup(organization._id);
   if (usersIds.length === 0) {
     return [];
   }
@@ -143,7 +151,7 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
   let spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || '';
   const spStart = spUrlStart[0].replace('https://', '').replace('.com', '.com:');
   const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g) || organization.spSiteUrl?.match(/teams\/.*/g);
-  const client = await getClient(organization);
+  const client = await getClient(organization._id);
   try {
     const { data } = await client.get(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
     const res = await client.get(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/thumbnails/0/small`);
@@ -159,7 +167,7 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
 
 const getUsers = async ({ searchText, filterByJobTitle, organization }: { searchText: string, filterByJobTitle?: string[], organization: IOrganization }) => {
   try {
-    await graphSetup(organization);
+    await graphSetup(organization._id);
     let res = await graph.users.filter(searchText ? `
       startsWith(givenName,'${searchText}') or
       startsWith(surname,'${searchText}') or
@@ -196,7 +204,7 @@ const uploadDocuments = async (
   }
   const spSiteId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
 
-  const client = await getClient(organization);
+  const client = await getClient(organization._id);
   const site = await client.get(spSiteId);
   const { id } = site.data;
   if (!id) {
@@ -253,7 +261,7 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
     logger.error('Graph error: Wrong SharePoint configuration');
     return false;
   }
-  const client = await getClient(organization);
+  const client = await getClient(organization._id);
   let spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || ''
   const spStart = spUrlStart[0].replace('https://', '').replace('.com', '.com:');
   const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g) || organization.spSiteUrl?.match(/teams\/.*/g);
@@ -268,7 +276,7 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
 
 const sendEmail = async ({ emailType, organization, emailData, from, to }: { emailType: number, organization: IOrganization, emailData: any, from: string, to: string[] }) => {
   try {
-    const client = await getClient(organization);
+    const client = await getClient(organization._id);
     if (!to) {
       return logger.error('Graph error: Wrong Email configuration');
     }

@@ -25,7 +25,7 @@ const UserMenu = () => {
       firstName: user?.firstName,
       expiresAt: addHours(new Date(), 24)
     }
-    await localStorage.setItem("logOutUser", JSON.stringify(logOutUser));
+    localStorage.setItem("logOutUser", JSON.stringify(logOutUser));
     setUser(null);
   };
 

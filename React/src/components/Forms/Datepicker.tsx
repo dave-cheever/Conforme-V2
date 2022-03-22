@@ -93,7 +93,9 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', requ
                 w='14px'
                 h='16px'
                 mt='-2px'
-                mr='15px'
+                mr='10px'
+                ml="5px"
+                stroke="datepicker.font"
                 onClick={() => {
                   // @ts-ignore
                   datePickerRef.current.setOpen(true);

@@ -20,7 +20,8 @@ declare global {
       restricted: object;
     };
   };
-}
+};
+
 const SETTINGS = gql`
   query {
     roles
@@ -37,6 +38,7 @@ const SETTINGS = gql`
     }
   }
 `;
+
 const ORGANIZATION = gql`
   query {
     organization {
@@ -46,10 +48,7 @@ const ORGANIZATION = gql`
       bgImageUrl
       bgImageTabletUrl
       theme
-      licenceExpirationDate
-      clientId
-      tenantId
-      secret
+      addons
     }
   }
 `;

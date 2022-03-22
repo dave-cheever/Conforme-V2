@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Flex } from "@chakra-ui/react";
 
+import { useConfigContext } from "../../contexts/ConfigProvider";
 import Can from "./../can";
-import { menuItems } from "../../bootstrap/config";
 import NavigationBottomItem from "./NavigationBottomItem";
 
 const NavigationBottomMobile = () => {
+  const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
 

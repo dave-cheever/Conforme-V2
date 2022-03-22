@@ -17,5 +17,4 @@ export interface IAppContext {
   
   user: IUser | null | undefined;
   setUser: Dispatch<SetStateAction<IUser | null | undefined>>;
-
 }
