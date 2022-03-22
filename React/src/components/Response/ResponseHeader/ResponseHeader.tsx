@@ -1,12 +1,5 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Badge,
   Button,
   Flex,
@@ -19,7 +12,7 @@ import {
   Stack,
   Text,
   Tooltip,
-  useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { SmallCloseIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import format from 'date-fns/format';
@@ -35,21 +28,25 @@ import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 import FollowButton from '../../Team/FollowButton';
+import { toastSuccess } from '../../../bootstrap/config';
 
 const ReasponseHeader = () => {
   const { response, snapshot, handleRenewalOpen, setActiveTab } = useResponseContext();
   const history = useHistory();
+  const toast = useToast();
   const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { user } = useAppContext();
   const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
   const { handleShareOpen } = useContext(ResponseContext);
   const [status, setStatus] = useState<"compliant" | "nonCompliant" | "">("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef: any = useRef();
 
   useEffect(() => {
     if (status === "nonCompliant" && getStatus(response) === "compliant" && !snapshot) {
-      onOpen();
+      toast({
+        ...toastSuccess,
+        title: "Response completed",
+        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is compliant until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy") : "N/A"} `
+      })
       return setStatus("compliant");
     }
     setStatus(getStatus(response) || '');
@@ -81,9 +78,6 @@ const ReasponseHeader = () => {
     // eslint-disable-next-line
   }, [response, user]);
 
-  const goToHomePage = () => {
-    history.push("/");
-  }
 
   if (!response) {
     return null;
@@ -91,32 +85,6 @@ const ReasponseHeader = () => {
 
   return (
     <>
-      <AlertDialog
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isOpen={isOpen}
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader>Response completed</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody >
-            Thank you for submitting the required information to complete <b>{response.complianceItem.name}</b> for <b>{response.businessUnit?.name}</b>. <br />
-
-            This will now be considered compliant until <b>{response.nextRenewalDate ? format(new Date(response.nextRenewalDate), "dd MMMM yyyy") : "N/A"}</b>. <br /><br />
-
-            If the date above is not correct, then you are able to go back and edit the due date as needed.
-          </AlertDialogBody>
-          <AlertDialogFooter bg="renewResponseModal.footer.bg" roundedBottom='0.375rem'>
-            <Button w="full" colorScheme="red" onClick={goToHomePage} fontSize="13px">
-              Return to homepage
-            </Button>
-            <Button w="full" ref={cancelRef} colorScheme="purpleHeart" ml={3} onClick={onClose} fontSize="13px">
-              Go back and edit
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
       <Flex
         direction='column'
         pl={6}
