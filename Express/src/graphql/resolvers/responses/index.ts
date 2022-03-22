@@ -43,6 +43,8 @@ export const responsesTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
+    requiredAnswer: String
+    notApplicable: Boolean
   }
 
   type Response {

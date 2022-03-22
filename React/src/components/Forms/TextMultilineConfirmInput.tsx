@@ -45,13 +45,13 @@ const TextMultilineConfirmInput = ({ control, name, label, required, tooltip = '
                 <Box
                   color={error ? "textMultilineConfirmInput.labelFont.error" : "textMultilineConfirmInput.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={11}
+                  fontSize="ssm"
                   position="static"
                   left='none'
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='textMultilineConfirmInput.iconAsterisk' />}
+                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='textMultilineConfirmInput.iconAsterisk' w='9px' h='9px' />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>
@@ -134,7 +134,7 @@ export const textMultilineConfirmInputStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
-      normal: '#2B3236',
+      normal: '#1F1F1F',
       error: '#E53E3E',
     },
     iconAsterisk: '#E93C44',

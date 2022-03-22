@@ -9,6 +9,8 @@ export interface IField {
   validations?: Validations;
   disabled?: boolean;
   required?: boolean;
+  requiredAnswer?: string;
+  notApplicable?: boolean;
   options?: any[];
   headings?: IFormFieldHeadings;
   variant?: string;

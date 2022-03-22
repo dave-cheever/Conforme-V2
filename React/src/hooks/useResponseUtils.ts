@@ -130,9 +130,12 @@ const useResponseUtils = () => {
     if (!response) {
       return;
     }
-    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value, type }: IQuestion<IQuestionValue>) => {
+    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value, type, requiredAnswer }: IQuestion<IQuestionValue>) => {
       if (type === "multipleChoice") {
         return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+      }
+      if (type === "switch" && requiredAnswer) {
+        return (value === "yes" && requiredAnswer === "yes") || (value === "no" && requiredAnswer === "no");
       }
       return value || (typeof value === 'boolean' && value === false);
     });

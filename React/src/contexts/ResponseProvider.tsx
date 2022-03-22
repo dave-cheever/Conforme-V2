@@ -50,6 +50,8 @@ const GET_RESPONSES = gql`
         value
         required
         outdated
+        requiredAnswer
+        notApplicable
       }
       complianceItem {
         _id

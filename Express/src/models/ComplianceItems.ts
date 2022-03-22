@@ -40,7 +40,9 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
     description: String,
     value: Schema.Types.Mixed,
     required: Boolean,
+    requiredAnswer: String,
     outdated: Boolean,
+    notApplicable: Boolean
   }],
   locationsIds: [String],
   published: Boolean,
@@ -357,6 +359,8 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
           value: question.value,
           description: question.description,
           required: question.required,
+          requiredAnswer: question.requiredAnswer,
+          notApplicable: question.notApplicable,
         });
       } else {
         // If CI question not exist in response, add it

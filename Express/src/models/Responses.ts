@@ -60,7 +60,9 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
     description: String,
     value: Schema.Types.Mixed,
     required: Boolean,
-    outdated: Boolean
+    outdated: Boolean,
+    requiredAnswer: String,
+    notApplicable: Boolean
   }],
   metatags: {
     addedAt: Date,
@@ -380,9 +382,12 @@ responseSchema.statics.customRecalculateResponse = async function (responseId: s
 
   const areRequiredQuestionsAnswered = response.questions
     .filter(({ required, outdated }) => required && !outdated)
-    .every(({ value, type }) => {
+    .every(({ value, type, requiredAnswer }) => {
       if (type === "multipleChoice") {
         return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+      }
+      if (type === "switch") {
+        return (value === "yes" && requiredAnswer === "yes") || (value === "no" && requiredAnswer === "no");
       }
       return value || (typeof value === 'boolean' && value === false);
     });

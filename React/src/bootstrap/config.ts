@@ -218,3 +218,15 @@ export const userRoles = [{
   value: "follower",
   label: "Follower"
 }];
+
+
+export const SwitchOptions = [
+  {
+    label: "Yes",
+    value: "yes"
+  },
+  {
+    label: "No",
+    value: "no"
+  },
+];

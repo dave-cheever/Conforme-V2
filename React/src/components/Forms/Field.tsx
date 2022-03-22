@@ -18,7 +18,7 @@ import Table from './Table';
 import DataGrid from './DataGrid';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required, defaultvalue } = field;
+  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required, defaultvalue, requiredAnswer, notApplicable } = field;
   const props: IField = {
     control,
     name,
@@ -33,7 +33,9 @@ const Field = ({ control, ...field }) => {
     help,
     styles,
     required,
+    requiredAnswer,
     defaultvalue,
+    notApplicable
   };
 
   switch (type) {

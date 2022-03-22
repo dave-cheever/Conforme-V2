@@ -24,6 +24,8 @@ export const complianceItemsTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
+    requiredAnswer: String
+    notApplicable: Boolean
   }
   
   type ComplianceItem {
@@ -52,6 +54,8 @@ export const complianceItemsTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
+    requiredAnswer : String
+    notApplicable: Boolean
   }
 
   input ComplianceItemInput {

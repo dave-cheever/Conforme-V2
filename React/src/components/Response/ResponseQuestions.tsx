@@ -20,7 +20,7 @@ const UPDATE_QUESTIONS = gql`
 
 const styles = {
   textInput: {
-    font: 'black'
+    font: '#1F1F1F'
   }
 }
 const ResponseQuestions = () => {
@@ -93,7 +93,7 @@ const ResponseQuestions = () => {
             This item has no questions yet
           </Text>
         }
-        {questions.map(({ type, name, description, required, value }, i) => (
+        {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable }, i) => (
           <Flex key={name}>
             <Box
               color="responseQuestions.sectionNumber.color"
@@ -119,6 +119,8 @@ const ResponseQuestions = () => {
               placeholder={description}
               disabled={!isUserPermitted || !!snapshot}
               required={!!required}
+              requiredAnswer={requiredAnswer}
+              notApplicable={notApplicable}
               defaultvalue={value}
               styles={styles}
             />

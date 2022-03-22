@@ -8,5 +8,7 @@ export interface IQuestion<IValue> {
   description?: string;
   value?: IValue;
   required?: boolean;
+  requiredAnswer?: string;
+  notApplicable?: boolean;
   outdated?: boolean;
 }

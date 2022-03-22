@@ -5,7 +5,7 @@ import { DefinedValidations } from '../../interfaces/Validations';
 import { IField } from '../../interfaces/IField';
 import useValidate from '../../hooks/useValidate';
 
-interface ICheckbox extends IField {}
+interface ICheckbox extends IField { }
 
 const definedValidations: DefinedValidations = {
   notEmpty: (label, validationValue, value) => {
@@ -17,14 +17,13 @@ const definedValidations: DefinedValidations = {
 
 const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabled = false }: ICheckbox) => {
   const validate = useValidate(label || name, validations, definedValidations);
-
   return (
     <Controller
       name={name}
       control={control}
       rules={{ validate }}
       render={({ field, fieldState, formState }) => {
-        const { onChange, onBlur, value } = field;
+        const { onChange, value } = field;
         const { error } = fieldState;
         return (
           <Box id={name} mt='none'>
@@ -42,15 +41,12 @@ const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabl
               py={3}
               isChecked={value}
               isDisabled={disabled}
-              onChange={() => {
-                onChange(!value);
-                onBlur();
-              }}
+              onChange={() => onChange(!value)}
             >
               {label}{' '}{tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
             </ChakraCheckbox>
             {error && <Box fontSize={14} ml={1} mt={1} color='form.checkbox.error'>{error.message}</Box>}
-          </Box>
+          </Box >
         );
       }}
     />

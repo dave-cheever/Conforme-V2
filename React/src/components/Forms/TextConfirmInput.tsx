@@ -47,13 +47,13 @@ const TextConfirmInput = ({ control, name, label, required, tooltip = '', valida
                 <Box
                   color={error ? "textConfirmInput.labelFont.error" : "textConfirmInput.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={11}
+                  fontSize="ssm"
                   position="static"
                   left='none'
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px"  mb="8px" fill="questionListElement.iconAsterisk" stroke='textConfirmInput.iconAsterisk' w='9px' h='9px' />}
+                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='textConfirmInput.iconAsterisk' w='9px' h='9px' />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>
@@ -135,7 +135,7 @@ export const textConfirmInputStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
-      normal: '#2B3236',
+      normal: '#1F1F1F',
       error: '#E53E3E',
     },
     iconAsterisk: '#E93C44',

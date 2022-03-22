@@ -15,7 +15,7 @@ const MultipleChoices = ({ control, name, label, required, tooltip = '', disable
           <Box
             color="multipleChoices.labelFont.normal"
             fontWeight="bold"
-            fontSize={11}
+            fontSize="ssm"
             position="static"
             left='none'
             zIndex={2}
@@ -74,7 +74,7 @@ export default MultipleChoices
 export const multipleChoicesStyles = {
   multipleChoices: {
     labelFont: {
-      normal: '#2B3236',
+      normal: '#1F1F1F',
     },
     iconAsterisk: '#E93C44',
     icon: {

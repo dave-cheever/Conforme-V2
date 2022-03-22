@@ -44,13 +44,13 @@ const Datepicker = ({ control, name, label, placeholder = '', tooltip = '', requ
                 <Box
                   color={error ? "datepicker.labelFont.error" : styles ? styles?.textInput?.font : "datepicker.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={11}
+                  fontSize="ssm"
                   position="static"
                   left='none'
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='datepicker.iconAsterisk' />}
+                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='datepicker.iconAsterisk' w="9px" h="9px" />}
                   {' '}
                   {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
                 </Box>

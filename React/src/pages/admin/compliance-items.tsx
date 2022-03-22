@@ -43,6 +43,8 @@ const GET_COMPLIANCE_ITEMS = gql`
         value
         required
         outdated
+        requiredAnswer
+        notApplicable
       }
       locationsIds
       categoryId
@@ -150,6 +152,8 @@ const ComplianceItemsAdmin = () => {
         value: question.value,
         required: question.required,
         outdated: question.outdated,
+        requiredAnswer: question.requiredAnswer,
+        notApplicable: question.notApplicable,
       })),
       published: complianceItem.published,
     }, 5);
