@@ -1,13 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
-import { IQuestion, IQuestionValue } from "./IQuestion";
+
+import { TQuestionValue } from "./TQuestionValue";
+import { ITrackerQuestion } from "./ITrackerQuestion";
 
 export interface IQuestionFormBase<IEditableValue> {
   questionType: string;
   editQuestionIndex: number | undefined;
   addOrUpdateQuestion: (arg: object) => void;
   setShowQuestionForm: (arg: boolean) => void;
-  editableValue: Partial<IQuestion<IEditableValue>>;
+  editableValue: Partial<ITrackerQuestion<IEditableValue>>;
   setIsEdit: Dispatch<SetStateAction<boolean | undefined>>;
   setEditQuestionIndex: Dispatch<SetStateAction<number | undefined>>;
-  setEditQuestion: Dispatch<SetStateAction<IQuestionValue>>;
+  setEditQuestion: Dispatch<SetStateAction<TQuestionValue>>;
 }

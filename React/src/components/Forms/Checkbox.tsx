@@ -1,13 +1,13 @@
 import { Box, Icon, Tooltip, Checkbox as ChakraCheckbox } from '@chakra-ui/react';
 
 import { Controller } from 'react-hook-form';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { IField } from '../../interfaces/IField';
 import useValidate from '../../hooks/useValidate';
 
 interface ICheckbox extends IField { }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

@@ -1,5 +1,11 @@
-import { IBase, IBaseWithName, IBusinessUnit, ILocation, IQuestion } from "app-interfaces";
-import { IQuestionValue } from "./IQuestion";
+import {
+  IBase,
+  IBaseWithName,
+  IBusinessUnit,
+  ILocation,
+  IQuestionValue,
+  ITrackerQuestion,
+} from "app-interfaces";
 
 export interface IComplianceItem extends IBase {
   name: string;
@@ -14,7 +20,7 @@ export interface IComplianceItem extends IBase {
   reference: string;
   organizationId: string;
   dueDate?: Date;
-  questions?: IQuestion<IQuestionValue>[];
+  questions?: ITrackerQuestion<IQuestionValue>[];
 
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;

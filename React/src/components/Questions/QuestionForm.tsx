@@ -3,7 +3,8 @@ import { Flex } from '@chakra-ui/layout';
 import QuestionMultiChoiceForm from './QuestionMultiChoiceForm';
 import QuestionSimpleForm from './QuestionSimpleForm';
 import QuestionEmailForm from './QuestionEmailForm';
-import { IQuestion, IChoice } from '../../interfaces/IQuestion';
+import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
+import { IQuestionChoice } from '../../interfaces/IQuestionChoice';
 
 const QuestionForm = ({
   setShowQuestionForm,
@@ -22,7 +23,7 @@ const QuestionForm = ({
           questionType={questionType}
           addOrUpdateQuestion={addOrUpdateQuestion}
           setShowQuestionForm={setShowQuestionForm}
-          editableValue={value as IQuestion<string>}
+          editableValue={value as ITrackerQuestion<string>}
           setIsEdit={setIsEdit}
           setEditQuestionIndex={setEditQuestionIndex}
           setEditQuestion={setEditQuestion}
@@ -33,7 +34,7 @@ const QuestionForm = ({
           questionType={questionType}
           addOrUpdateQuestion={addOrUpdateQuestion}
           setShowQuestionForm={setShowQuestionForm}
-          editableValue={value as IQuestion<IChoice[]>}
+          editableValue={value as ITrackerQuestion<IQuestionChoice[]>}
           setIsEdit={setIsEdit}
           setEditQuestionIndex={setEditQuestionIndex}
           setEditQuestion={setEditQuestion}
@@ -45,7 +46,7 @@ const QuestionForm = ({
           questionType={questionType}
           addOrUpdateQuestion={addOrUpdateQuestion}
           setShowQuestionForm={setShowQuestionForm}
-          editableValue={value as IQuestion<string>}
+          editableValue={value as ITrackerQuestion<string>}
           setIsEdit={setIsEdit}
           setEditQuestionIndex={setEditQuestionIndex}
           setEditQuestion={setEditQuestion}

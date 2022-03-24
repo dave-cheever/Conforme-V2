@@ -1,7 +1,7 @@
 import { AuditLogs, BusinessUnits, Categories, ComplianceItems, RegulatoryBodies, Responses } from "app-models";
 import { GraphService } from "app-services";
+import { IQuestionChoice } from "app-interfaces";
 import { getStatus, isPermitted } from "app-utils";
-import { IChoice } from "src/interfaces/IQuestion";
 
 const renewResponse = async (_, { _id }, { authorize, organization }) => {
   try {
@@ -77,7 +77,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
               name,
               description,
               required,
-              value: (value as IChoice[])?.map(choice => ({ ...choice, isCorrect: false }))
+              value: (value as IQuestionChoice[])?.map(choice => ({ ...choice, isCorrect: false }))
             };
           }
           return { type, name, description, required, value: null };

@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { SendMessageIcon } from '../../icons';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 
@@ -15,7 +15,7 @@ interface IMessageInput extends IField {
   onAction: () => void
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

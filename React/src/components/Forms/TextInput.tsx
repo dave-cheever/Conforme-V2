@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { Asterisk } from '../../icons';
 
 interface ITextInput extends IField {
@@ -18,7 +18,7 @@ interface ITextInput extends IField {
   };
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

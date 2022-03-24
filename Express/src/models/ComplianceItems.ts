@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { model, Schema } from 'mongoose';
 import { isEqual } from 'date-fns';
 
-import { IAuditValues, IComplianceItem, IComplianceItemModel, IOrganization, IResponse } from 'app-interfaces';
+import { IAuditValues, IComplianceItem, IComplianceItemModel, IResponse, IQuestionChoice } from 'app-interfaces';
 import { AuditLogs, BusinessUnits, Categories, Organizations, RegulatoryBodies, Responses } from 'app-models';
 import {
   genMetatags,
@@ -17,7 +17,6 @@ import {
 } from 'app-utils';
 import { diff } from "deep-object-diff";
 import { GraphQLError } from "graphql";
-import { IChoice } from "src/interfaces/IQuestion";
 
 const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   _id: String,
@@ -373,7 +372,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
       .filter(({ required, outdated }) => !outdated && required)
       .every(({ value, type }) => {
         if (type === "multipleChoice") {
-          return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+          return (value as IQuestionChoice[]).some(choice => choice["isCorrect"] === true);
         }
         return value || (typeof value === 'boolean' && value === false);
       });

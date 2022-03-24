@@ -5,7 +5,7 @@ import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { ChevronRight } from '../../icons';
 
 interface IDropdown extends IField {
@@ -22,7 +22,7 @@ interface IDropdown extends IField {
   onAction?: (type?: "Category" | "Regulatory body") => void;
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

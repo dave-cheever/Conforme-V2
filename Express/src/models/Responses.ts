@@ -3,7 +3,7 @@ import { diff } from 'deep-object-diff';
 import _difference from 'lodash/difference';
 import { v4 as uuidv4 } from "uuid";
 
-import { IAuditValues, IResponse, IResponseModel } from 'app-interfaces';
+import { IAuditValues, IResponse, IResponseModel, IQuestionChoice } from 'app-interfaces';
 import {
   genMetatags,
   getAuditValueForBoolean,
@@ -17,7 +17,6 @@ import {
 } from 'app-utils';
 import { AuditLogs, BusinessUnits, ComplianceItems, Organizations, Users } from 'app-models';
 import { GraphQLError } from 'graphql';
-import { IChoice } from 'src/interfaces/IQuestion';
 
 const responseSchema = new Schema<IResponse, IResponseModel>({
   _id: String,
@@ -384,9 +383,9 @@ responseSchema.statics.customRecalculateResponse = async function (responseId: s
     .filter(({ required, outdated }) => required && !outdated)
     .every(({ value, type, requiredAnswer }) => {
       if (type === "multipleChoice") {
-        return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+        return (value as IQuestionChoice[]).some(choice => choice["isCorrect"] === true);
       }
-      if (type === "switch") {
+      if (type === "switch" && requiredAnswer) {
         return (value === "yes" && requiredAnswer === "yes") || (value === "no" && requiredAnswer === "no");
       }
       return value || (typeof value === 'boolean' && value === false);

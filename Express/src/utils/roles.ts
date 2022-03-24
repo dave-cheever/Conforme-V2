@@ -82,6 +82,7 @@ const roles = {
   admin: {
     normal: [
       ...defaultPermissions,
+      "adminPanel", //permission to see admin items in menu
       "auditLogs",
       "businessUnits",
       "categories",
@@ -89,12 +90,12 @@ const roles = {
       "complianceItems",
       "insights",
       "items",
-      "responses",
       "locations",
+      "questions",
+      "responses",
       "regulatoryBodies",
       "settings",
       "users",
-      "adminPanel" //permission to see admin items in menu
     ],
     restricted: {
       "comments.delete": ({ user, comment }) => user._id === comment.authorId,

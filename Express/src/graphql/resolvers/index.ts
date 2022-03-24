@@ -6,6 +6,7 @@ import complianceItemsResolvers from "./complianceItems";
 import graphResolvers from "./graph";
 import locationsResolvers from "./locations";
 import organizationsResolvers from "./organizations";
+import questionsResolvers from "./questions";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
 import responsesResolvers from "./responses";
 import scalars from "../scalars";
@@ -25,6 +26,7 @@ export default {
     ...graphResolvers.Query,
     ...locationsResolvers.Query,
     ...organizationsResolvers.Query,
+    ...questionsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
     ...responsesResolvers.Query,
     ...searchResolvers.Query,
@@ -37,6 +39,7 @@ export default {
     ...commentsResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
     ...locationsResolvers.Mutation,
+    ...questionsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
     ...responsesResolvers.Mutation,
     ...settingsResolvers.Mutation,

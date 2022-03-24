@@ -1,4 +1,4 @@
-import { IOrganization } from "./IOrganization";
+import { IOrganization } from "app-interfaces";
 
 export interface ISession {
   passport: any;

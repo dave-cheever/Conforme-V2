@@ -1,6 +1,6 @@
-import { DefinedValidations, Validations } from "../interfaces/Validations";
+import { TDefinedValidations, TValidations } from "../interfaces/TValidations";
 
-const useValidate = (label: string, validations: Validations, definedValidations: DefinedValidations, initialValue?: string) => {
+const useValidate = (label: string, validations: TValidations, definedValidations: TDefinedValidations, initialValue?: string) => {
   const validationsTypes = Object.keys(validations);
   if (validationsTypes.length === 0) {
     return undefined;

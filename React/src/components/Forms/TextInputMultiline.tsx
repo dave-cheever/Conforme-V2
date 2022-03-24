@@ -4,7 +4,7 @@ import { Box, Flex, Icon, Textarea, Tooltip } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 
 interface ITextInputMultiline extends IField {
   placeholder?: string;
@@ -16,7 +16,7 @@ interface ITextInputMultiline extends IField {
   };
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;
@@ -44,7 +44,7 @@ const TextInputMultiline = ({ control, name, label, placeholder = '', tooltip = 
             {label && (
               <Flex pt={2} pb={1} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "form.textInput.labelFont.error" : styles ?  styles?.textInput?.font : "form.textInput.labelFont.normal"}
+                  color={error ? "textInput.labelFont.error" : styles ?  styles?.textInput?.font : "textInput.labelFont.normal"}
                   fontWeight="bold"
                   fontSize="11px"
                   position="static"
@@ -63,29 +63,29 @@ const TextInputMultiline = ({ control, name, label, placeholder = '', tooltip = 
               h="100px"
               type="text"
               fontSize= "smm"
-              color="form.textInput.font"
-              bg="form.textInput.bg"
+              color="textInput.font"
+              bg="textInput.bg"
               name={name}
               defaultValue={value}
-              borderColor={error ? "form.textInput.border.error" : "form.textInput.border.normal"}
-              _active={{ bg: disabled ? "form.textInput.disabled.bg" : "form.textInput.activeBg" }}
-              _focus={{ borderColor: error ? "form.textInput.border.focus.error" : "form.textInput.border.focus.normal" }}
+              borderColor={error ? "textInput.border.error" : "textInput.border.normal"}
+              _active={{ bg: disabled ? "textInput.disabled.bg" : "textInput.activeBg" }}
+              _focus={{ borderColor: error ? "textInput.border.focus.error" : "textInput.border.focus.normal" }}
               _hover={{ cursor: "auto" }}
               onChange={onChange}
               onBlur={onBlur}
               isDisabled={disabled}
               cursor="pointer"
               _disabled={{
-                bg: "form.textInput.disabled.bg",
-                color: "form.textInput.disabled.font",
-                borderColor: "form.textInput.disabled.border",
+                bg: "textInput.disabled.bg",
+                color: "textInput.disabled.font",
+                borderColor: "textInput.disabled.border",
                 cursor: "not-allowed",
               }}
               maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
               placeholder={placeholder}
-              _placeholder={{ fontSize: "smm", color: 'form.textInput.placeholder' }}
+              _placeholder={{ fontSize: "smm", color: 'textInput.placeholder' }}
             />
-            {error && <Box fontSize={14} ml={1} color='form.textInput.error'>{error.message}</Box>}
+            {error && <Box fontSize={14} ml={1} color='textInput.error'>{error.message}</Box>}
           </Box>
         );
       }}

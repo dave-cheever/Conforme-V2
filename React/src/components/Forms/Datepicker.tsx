@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { Asterisk, CalendarIcon } from '../../icons';
 import { useRef } from 'react';
 
@@ -18,7 +18,7 @@ interface IDatepicker extends IField {
   }
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

@@ -6,7 +6,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import Loader from '../Loader';
 import { IUser } from '../../interfaces/IUser';
 import { ChevronRight } from '../../icons';
@@ -28,7 +28,7 @@ const SEARCH_USERS = gql`
   }
 `;
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

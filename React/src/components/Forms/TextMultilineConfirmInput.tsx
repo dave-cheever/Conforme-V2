@@ -4,14 +4,14 @@ import { Controller } from 'react-hook-form';
 import { CloseIcon } from '@chakra-ui/icons';
 import { Asterisk, CheckIcon } from '../../icons';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import useValidate from '../../hooks/useValidate';
 
 interface ItextMultilineConfirmInput extends IField {
   placeholder?: string;
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

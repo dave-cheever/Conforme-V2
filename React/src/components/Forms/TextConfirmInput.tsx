@@ -5,7 +5,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { Asterisk, CheckIcon } from '../../icons';
 
 interface ItextConfirmInput extends IField {
@@ -13,7 +13,7 @@ interface ItextConfirmInput extends IField {
   defaultvalue?: string;
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

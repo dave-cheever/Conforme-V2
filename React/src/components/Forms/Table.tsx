@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { PlusIcon, Trashcan } from '../../icons';
 import { IFormFieldHeadings } from '../../interfaces/IForm';
 import { toastFailed } from '../../bootstrap/config';
@@ -21,7 +21,7 @@ interface ITable extends IField {
   headings?: IFormFieldHeadings;
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

@@ -82,6 +82,7 @@ export const auditsMenuItems: INavItem[] = [{
   subSections: [
     { label: "Sites", url: "/admin/sites" },
     { label: "Areas", url: "/admin/areas" },
+    { label: "Questions", url: "/admin/questions" },
     { label: "Users", url: "/admin/users" },
     { label: "Audit log", url: "/admin/audit-log" },
     { label: "Other settings", url: "/admin/settings" },
@@ -246,6 +247,42 @@ export const userRoles = [{
   label: "Follower"
 }];
 
+export const questionTypes = [{
+  value: "text",
+  label: "Text input"
+}, {
+  value: "textMultiline",
+  label: "Multiple lines of text"
+}, {
+  value: "switch",
+  label: "Yes / No answer"
+}, {
+  value: "datepicker",
+  label: "Date input"
+}, {
+  value: "multipleChoice",
+  label: "Multiple choices"
+},
+  // {
+  //   value: "singleChoice",
+  //   label: "Single choice"
+  // }, 
+  // {
+  //   value: "email",
+  //   label: "Email address"
+  // }, 
+  // {
+  //   value: "phoneNumber",
+  //   label: "Phone number"
+  // }, {
+  //   value: "url",
+  //   label: "URL"
+  // }
+  // {
+  //   value: "numeric",
+  //   label: "Numeric"
+  // }
+];
 
 export const SwitchOptions = [
   {

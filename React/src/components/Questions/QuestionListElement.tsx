@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Flex, Stack, Text, Tooltip } from "@chakra-ui/react";
 
-import { IQuestion, IQuestionValue } from "../../interfaces/IQuestion";
-import { Asterisk, Bin, EditIcon } from "../../icons";
+import { ITrackerQuestion } from "../../interfaces/ITrackerQuestion";
+import { Asterisk, Bin, EditIcon }  from "../../icons";
 import { questionHeader } from "../../utils/helpers";
+import { TQuestionValue } from "../../interfaces/TQuestionValue";
 
 interface IQuestionListElement {
-  question: IQuestion<IQuestionValue>;
+  question: ITrackerQuestion<TQuestionValue>;
   bgColor?: string;
   removeQuestion?: () => void;
   editQuestion?: () => void;

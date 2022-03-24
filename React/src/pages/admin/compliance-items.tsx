@@ -70,7 +70,6 @@ const ComplianceItemsAdmin = () => {
   const [sortOrder, setSortOrder] = useState(true);
   const [sortedData, setSortedData] = useState<any>([]);
 
-
   useEffect(() => {
     setUsedFilters(['complianceItemsIds', 'categoriesIds', 'locationsIds', 'businessUnitsIds', 'regulatoryBodiesIds']);
     return () => {

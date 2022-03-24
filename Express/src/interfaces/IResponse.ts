@@ -1,5 +1,12 @@
-import { IBase, IBaseWithName, IBusinessUnit, IUser, IQuestion, IComment, IComplianceItem } from 'app-interfaces';
-import { IQuestionValue } from './IQuestion';
+import {
+  IBase,
+  IBusinessUnit,
+  IComment,
+  IComplianceItem,
+  IQuestionValue,
+  ITrackerQuestion,
+  IUser,
+} from 'app-interfaces';
 
 export interface IDocument {
   id: string;
@@ -26,18 +33,18 @@ export interface IResponse extends IBase {
   status: string;
   evidence: IEvidence[];
   attachments: IDocument[];
-  questions: IQuestion<IQuestionValue>[];
+  questions: ITrackerQuestion<IQuestionValue>[];
   accountableId: string;
   responsibleId: string;
   contributorsIds?: string[];
   followersIds?: string[];
   published: boolean;
   organizationId: string;
-  
+
   // Comments - injected to response when getting from database
   // Taken from Comments collection
   comments: IComment[];
-  
+
   // Compliance items fields - injected to response when getting from database
   complianceItem: IComplianceItem;
 

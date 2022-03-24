@@ -16,13 +16,20 @@ import { ILocationModel } from './ILocationModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
+import { IQuestionChoice } from './IQuestionChoice';
+import { IQuestionModel } from './IQuestionModel';
 import { IResponse } from './IResponse';
 import { IResponseModel } from './IResponseModel';
 import { ISession } from './ISession';
 import { ISetting } from './ISetting';
 import { ISettingModel } from './ISettingModel';
+import { ITrackerQuestion } from './ITrackerQuestion';
 import { IGraphUser, IUser } from './IUser';
 import { IUserModel } from './IUserModel';
+import { TCollection } from './TCollection';
+import { TComponent } from './TComponent';
+import { TQuestionType } from './TQuestionType';
+import { TQuestionValue } from './TQuestionValue';
 
 export {
   IAuditLog,
@@ -44,11 +51,18 @@ export {
   IOrganization,
   IOrganizationModel,
   IQuestion,
+  IQuestionChoice,
+  IQuestionModel,
   IResponse,
   IResponseModel,
   ISession,
   ISetting,
   ISettingModel,
+  ITrackerQuestion,
   IUser,
   IUserModel,
+  TCollection,
+  TComponent,
+  TQuestionType,
+  TQuestionValue,
 };

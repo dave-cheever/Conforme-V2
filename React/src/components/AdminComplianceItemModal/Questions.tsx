@@ -9,7 +9,8 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 
-import { IQuestion, IQuestionValue } from '../../interfaces/IQuestion';
+import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
+import { TQuestionValue } from '../../interfaces/TQuestionValue';
 import QuestionForm from '../Questions/QuestionForm';
 import QuestionList from '../Questions/QuestionList';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -17,6 +18,7 @@ import SectionHeader from './SectionHeader';
 import { AddIcon } from '@chakra-ui/icons';
 import { OpenMenuArrow } from '../../icons';
 import CustomRadioButton from '../CustomRadioButton';
+import { questionTypes } from '../../bootstrap/config';
 
 const QuestionsForm = () => {
   const {
@@ -30,46 +32,9 @@ const QuestionsForm = () => {
   const [selectedRadio, setSelectedRadio] = useState<string>("");
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editQuestionIndex, setEditQuestionIndex] = useState<number>();
-  const [editQuestion, setEditQuestion] = useState<IQuestion<IQuestionValue>>();
+  const [editQuestion, setEditQuestion] = useState<ITrackerQuestion<TQuestionValue>>();
 
-  const questionTypes = [{
-    value: "text",
-    label: "Text input"
-  }, {
-    value: "textMultiline",
-    label: "Multiple lines of text"
-  }, {
-    value: "switch",
-    label: "Yes / No answer"
-  }, {
-    value: "datepicker",
-    label: "Date input"
-  }, {
-    value: "multipleChoice",
-    label: "Multiple choices"
-  },
-    // {
-    //   value: "singleChoice",
-    //   label: "Single choice"
-    // }, 
-    // {
-    //   value: "email",
-    //   label: "Email address"
-    // }, 
-    // {
-    //   value: "phoneNumber",
-    //   label: "Phone number"
-    // }, {
-    //   value: "url",
-    //   label: "URL"
-    // }
-    // {
-    //   value: "numeric",
-    //   label: "Numeric"
-    // }
-  ];
-
-  const addOrUpdateQuestion = (question: IQuestion<IQuestionValue>) => {
+  const addOrUpdateQuestion = (question: ITrackerQuestion<TQuestionValue>) => {
     if (isEdit) {
       const questions = [...(complianceItem.questions || [])];
       if (typeof editQuestionIndex === "number") {

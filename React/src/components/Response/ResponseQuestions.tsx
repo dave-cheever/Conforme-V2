@@ -10,7 +10,7 @@ import { useResponseContext } from '../../contexts/ResponseProvider';
 import { toastFailed } from '../../bootstrap/config';
 import { ChevronRight, MessageSquareIcon } from '../../icons';
 import Field from '../Forms/Field';
-import { IQuestionValue } from '../../interfaces/IQuestion';
+import { TQuestionValue } from '../../interfaces/TQuestionValue';
 
 const UPDATE_QUESTIONS = gql`
   mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
@@ -41,8 +41,8 @@ const ResponseQuestions = () => {
         return {
           ...acc,
           [name]: value,
-        } as { [name: string]: IQuestionValue };
-      }, {} as { [name: string]: IQuestionValue }),
+        } as { [name: string]: TQuestionValue };
+      }, {} as { [name: string]: TQuestionValue }),
   });
 
   const answers = watch();

@@ -9,7 +9,7 @@ import {
 
 import { IField } from '../../interfaces/IField';
 import useValidate from '../../hooks/useValidate';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { Controller } from 'react-hook-form';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 
@@ -42,7 +42,7 @@ interface IDataGrid extends IField {
   headings?: IFormFieldHeadings;
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

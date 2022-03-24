@@ -1,14 +1,20 @@
-export type IQuestionValue = string | Date | Boolean | IChoice[];
+import { IBase } from "./IBase";
+import { TComponent } from "./TComponent";
+import { TQuestionType } from "./TQuestionType";
 
-export interface IChoice { label: string, isCorrect: boolean }
-
-export interface IQuestion<IValue> {
-  type: 'text' | 'textMultiline' | 'switch' | 'datepicker' | 'multipleChoice';
-  name: string;
+export interface IQuestion<ValueType> extends IBase {
+  type: TQuestionType;
+  question: string;
   description?: string;
-  value?: IValue;
+  category?: string;
   required?: boolean;
-  requiredAnswer?: string;
   notApplicable?: boolean;
-  outdated?: boolean;
+  positiveValue?: ValueType;
+  negativeValue?: ValueType;
+  scope: {
+    component: TComponent;
+    type?: string;
+    _id?: string;
+  };
+  organizationId: string;
 }

@@ -12,9 +12,10 @@ import { TextInput } from "../Forms";
 import { useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { isEmpty } from "lodash";
-import { IChoice, IQuestion } from "../../interfaces/IQuestion";
+import { ITrackerQuestion } from "../../interfaces/ITrackerQuestion";
+import { IQuestionChoice } from "../../interfaces/IQuestionChoice";
 
-const defaultValues: Partial<IQuestion<IChoice[]>> = {
+const defaultValues: Partial<ITrackerQuestion<IQuestionChoice[]>> = {
   name: "",
   description: "",
   required: false,
@@ -30,7 +31,7 @@ const QuestionMultiChoiceForm = ({
   setIsEdit,
   setEditQuestionIndex,
   setEditQuestion
-}: IQuestionFormBase<IChoice[]>) => {
+}: IQuestionFormBase<IQuestionChoice[]>) => {
   const { complianceItem } = useComplianceItemModalContext();
   const {
     control,

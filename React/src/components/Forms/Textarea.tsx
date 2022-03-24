@@ -4,7 +4,7 @@ import { Box, Flex, Icon, Textarea as ChakraTextarea, Tooltip } from '@chakra-ui
 import { Controller } from 'react-hook-form';
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
-import { DefinedValidations } from '../../interfaces/Validations';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 import { Asterisk } from '../../icons';
 
 interface ITextarea extends IField {
@@ -12,7 +12,7 @@ interface ITextarea extends IField {
   variant?: string;
 }
 
-const definedValidations: DefinedValidations = {
+const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
     if (validationValue && !value) {
       return `${label} cannot be empty`;

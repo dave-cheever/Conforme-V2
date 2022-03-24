@@ -1,12 +1,12 @@
 import { IFormFieldHeadings } from "./IForm";
-import { Validations } from "./Validations";
+import { TValidations } from "./TValidations";
 
 export interface IField {
   control: any;
   name: string;
   label?: string;
   tooltip?: string;
-  validations?: Validations;
+  validations?: TValidations;
   disabled?: boolean;
   required?: boolean;
   requiredAnswer?: string;

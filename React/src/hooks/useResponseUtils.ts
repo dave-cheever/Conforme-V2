@@ -3,8 +3,10 @@ import { isInteger } from "lodash";
 import { IResponse } from '../interfaces/IResponse';
 // import { useAppContext } from '../contexts/AppProvider';
 import { differenceInDays, startOfDay } from "date-fns";
-import { IChoice, IQuestion, IQuestionValue } from "../interfaces/IQuestion";
+import { ITrackerQuestion } from "../interfaces/ITrackerQuestion";
 import { useAppContext } from "../contexts/AppProvider";
+import { IQuestionChoice } from "../interfaces/IQuestionChoice";
+import { TQuestionValue } from "../interfaces/TQuestionValue";
 
 export const responseStatuses = {
   "completed": "Completed",
@@ -130,9 +132,9 @@ const useResponseUtils = () => {
     if (!response) {
       return;
     }
-    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value, type, requiredAnswer }: IQuestion<IQuestionValue>) => {
+    return response?.questions?.filter(({ outdated, required }) => !outdated && required).every(({ value, type, requiredAnswer }: ITrackerQuestion<TQuestionValue>) => {
       if (type === "multipleChoice") {
-        return (value as IChoice[]).some(choice => choice["isCorrect"] === true);
+        return (value as IQuestionChoice[]).some(choice => choice["isCorrect"] === true);
       }
       if (type === "switch" && requiredAnswer) {
         return (value === "yes" && requiredAnswer === "yes") || (value === "no" && requiredAnswer === "no");
