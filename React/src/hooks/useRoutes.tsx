@@ -25,6 +25,7 @@ import Licenses from "../pages/licenses";
 import Mentions from "../pages/mentions";
 import PrivacyPolicy from "../pages/privacy-policy";
 import PureLayout from "../layouts/PureLayout";
+import QuestionCategories from "../pages/admin/question-categories";
 import Questions from "../pages/admin/questions";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import ResponseLayout from "../layouts/ResponseLayout";
@@ -206,6 +207,13 @@ const protectedRoutes: Array<IRoute> = [
     key: "areas",
     exact: true,
     component: Areas,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/admin/question-categories",
+    key: "questionCategories",
+    exact: true,
+    component: QuestionCategories,
     layout: DefaultLayout,
   },
   {

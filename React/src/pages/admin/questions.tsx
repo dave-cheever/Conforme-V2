@@ -195,7 +195,7 @@ const Questions = () => {
       const _id = getValues('_id');
       await deleteFunction({ variables: { _id } });
       refetch();
-      toast({ ...toastSuccess, description: "Area deleted" });
+      toast({ ...toastSuccess, description: "Question deleted" });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {

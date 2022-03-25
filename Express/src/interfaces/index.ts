@@ -1,4 +1,3 @@
-
 import { IAuditLog, IAuditValues } from './IAuditLog';
 import { IAuditLogModel } from './IAuditLogModel';
 import { IBase } from './IBase';
@@ -16,6 +15,8 @@ import { ILocationModel } from './ILocationModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
+import { IQuestionCategory } from './IQuestionCategory';
+import { IQuestionCategoryModel } from './IQuestionCategoryModel';
 import { IQuestionChoice } from './IQuestionChoice';
 import { IQuestionModel } from './IQuestionModel';
 import { IResponse } from './IResponse';
@@ -32,37 +33,39 @@ import { TQuestionType } from './TQuestionType';
 import { TQuestionValue } from './TQuestionValue';
 
 export {
-  IAuditLog,
-  IAuditValues,
-  IAuditLogModel,
-  IBase,
-  IBaseModel,
-  IBaseWithName,
-  IBaseWithNameModel,
-  IBusinessUnit,
-  IBusinessUnitModel,
-  IComplianceItem,
-  IComplianceItemModel,
-  IComment,
-  ICommentModel,
-  IGraphUser,
-  ILocation,
-  ILocationModel,
-  IOrganization,
-  IOrganizationModel,
-  IQuestion,
-  IQuestionChoice,
-  IQuestionModel,
-  IResponse,
-  IResponseModel,
-  ISession,
-  ISetting,
-  ISettingModel,
-  ITrackerQuestion,
-  IUser,
-  IUserModel,
-  TCollection,
-  TComponent,
-  TQuestionType,
-  TQuestionValue,
+	IAuditLog,
+	IAuditValues,
+	IAuditLogModel,
+	IBase,
+	IBaseModel,
+	IBaseWithName,
+	IBaseWithNameModel,
+	IBusinessUnit,
+	IBusinessUnitModel,
+	IComplianceItem,
+	IComplianceItemModel,
+	IComment,
+	ICommentModel,
+	IGraphUser,
+	ILocation,
+	ILocationModel,
+	IOrganization,
+	IOrganizationModel,
+	IQuestion,
+	IQuestionCategory,
+	IQuestionCategoryModel,
+	IQuestionChoice,
+	IQuestionModel,
+	IResponse,
+	IResponseModel,
+	ISession,
+	ISetting,
+	ISettingModel,
+	ITrackerQuestion,
+	IUser,
+	IUserModel,
+	TCollection,
+	TComponent,
+	TQuestionType,
+	TQuestionValue
 };

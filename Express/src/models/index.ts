@@ -5,6 +5,7 @@ import Comments from "./Comments";
 import ComplianceItems from "./ComplianceItems";
 import Locations from "./Locations";
 import Organizations from "./Organizations";
+import QuestionCategories from "./QuestionCategories";
 import Questions from "./Questions";
 import RegulatoryBodies from "./RegulatoryBodies";
 import Responses from "./Responses";
@@ -19,6 +20,7 @@ export {
   ComplianceItems,
   Locations,
   Organizations,
+  QuestionCategories,
   Questions,
   RegulatoryBodies,
   Responses,

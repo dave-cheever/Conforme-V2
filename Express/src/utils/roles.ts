@@ -92,6 +92,7 @@ const roles = {
       "items",
       "locations",
       "questions",
+      "questionCategories",
       "responses",
       "regulatoryBodies",
       "settings",
