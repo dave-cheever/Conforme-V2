@@ -84,6 +84,7 @@ const roles = {
       ...defaultPermissions,
       "adminPanel", //permission to see admin items in menu
       "auditLogs",
+      "auditTypes",
       "businessUnits",
       "categories",
       "comments.add",
@@ -92,7 +93,7 @@ const roles = {
       "items",
       "locations",
       "questions",
-      "questionCategories",
+      "questionsCategories",
       "responses",
       "regulatoryBodies",
       "settings",

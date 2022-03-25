@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import { GraphQLError } from 'graphql';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IQuestionCategory, IQuestionCategoryModel } from 'app-interfaces';
+import { IQuestionsCategory, IQuestionsCategoryModel } from 'app-interfaces';
 import { AuditLogs } from 'app-models';
 import {
   genMetatags,
@@ -11,7 +11,7 @@ import {
   removeDatabaseFields
 } from 'app-utils';
 
-const questionCategoriesSchema = new Schema<IQuestionCategory, IQuestionCategoryModel>({
+const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCategoryModel>({
   _id: String,
   name: String,
   auditType: String,
@@ -39,11 +39,11 @@ const questionCategoriesSchema = new Schema<IQuestionCategory, IQuestionCategory
   }
 });
 
-questionCategoriesSchema.statics.customCreate = async function (
-  questionCategory: IQuestionCategory,
+questionsCategoriesSchema.statics.customCreate = async function (
+  questionCategory: IQuestionsCategory,
   userId: string,
   organizationId: string
-): Promise<IQuestionCategory> {
+): Promise<IQuestionsCategory> {
   const createdQuestionCategory = await this.create({
     ...questionCategory,
     _id: uuidv4(),
@@ -54,10 +54,10 @@ questionCategoriesSchema.statics.customCreate = async function (
   return createdQuestionCategory;
 };
 
-questionCategoriesSchema.statics.customFind = async function (
+questionsCategoriesSchema.statics.customFind = async function (
   selector: any = {},
   organizationId: string
-): Promise<IQuestionCategory[]> {
+): Promise<IQuestionsCategory[]> {
   const questionsCategories = await this.find({
     ...selector,
     organizationId,
@@ -66,10 +66,10 @@ questionCategoriesSchema.statics.customFind = async function (
   return questionsCategories;
 };
 
-questionCategoriesSchema.statics.customFindOne = async function (
+questionsCategoriesSchema.statics.customFindOne = async function (
   selector: any = {},
   organizationId: string
-): Promise<IQuestionCategory | null> {
+): Promise<IQuestionsCategory | null> {
   const questionCategory = await this.findOne({
     ...selector,
     organizationId,
@@ -78,9 +78,9 @@ questionCategoriesSchema.statics.customFindOne = async function (
   return questionCategory;
 };
 
-questionCategoriesSchema.statics.customFindById = async function (
+questionsCategoriesSchema.statics.customFindById = async function (
   _id: string
-): Promise<IQuestionCategory> {
+): Promise<IQuestionsCategory> {
   const questionCategory = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null }
@@ -91,12 +91,12 @@ questionCategoriesSchema.statics.customFindById = async function (
   return questionCategory;
 };
 
-questionCategoriesSchema.statics.customUpdateOne = async function (
+questionsCategoriesSchema.statics.customUpdateOne = async function (
   selector: object = {},
-  updates: Partial<IQuestionCategory>,
+  updates: Partial<IQuestionsCategory>,
   userId: string,
   organizationId: string
-): Promise<IQuestionCategory> {
+): Promise<IQuestionsCategory> {
   const questionCategory = await this.customFindOne(selector, organizationId);
   if (!questionCategory) {
     throw new GraphQLError("Question category doesn't exist");
@@ -137,7 +137,7 @@ questionCategoriesSchema.statics.customUpdateOne = async function (
   return updatedQuestion;
 };
 
-questionCategoriesSchema.statics.customDelete = async function (
+questionsCategoriesSchema.statics.customDelete = async function (
   selector: object = {},
   userId: string,
   organizationId: string
@@ -180,8 +180,8 @@ questionCategoriesSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
-const questionCategoryModel = model<IQuestionCategory, IQuestionCategoryModel>(
-  'QuestionCategory',
-  questionCategoriesSchema
+const questionsCategoryModel = model<IQuestionsCategory, IQuestionsCategoryModel>(
+  'QuestionsCategory',
+  questionsCategoriesSchema
 );
-export default questionCategoryModel;
+export default questionsCategoryModel;

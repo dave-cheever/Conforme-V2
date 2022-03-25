@@ -1,5 +1,8 @@
 import { IAuditLog, IAuditValues } from './IAuditLog';
 import { IAuditLogModel } from './IAuditLogModel';
+import { IAuditSection } from './IAuditSection';
+import { IAuditType } from './IAuditType';
+import { IAuditTypeModel } from './IAuditTypeModel';
 import { IBase } from './IBase';
 import { IBaseModel } from './IBaseModel';
 import { IBaseWithName } from './IBaseWithName';
@@ -15,8 +18,8 @@ import { ILocationModel } from './ILocationModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
-import { IQuestionCategory } from './IQuestionCategory';
-import { IQuestionCategoryModel } from './IQuestionCategoryModel';
+import { IQuestionsCategory } from './IQuestionsCategory';
+import { IQuestionsCategoryModel } from './IQuestionsCategoryModel';
 import { IQuestionChoice } from './IQuestionChoice';
 import { IQuestionModel } from './IQuestionModel';
 import { IResponse } from './IResponse';
@@ -29,43 +32,48 @@ import { IGraphUser, IUser } from './IUser';
 import { IUserModel } from './IUserModel';
 import { TCollection } from './TCollection';
 import { TComponent } from './TComponent';
+import { TFrequency } from "./TFrequency";
 import { TQuestionType } from './TQuestionType';
 import { TQuestionValue } from './TQuestionValue';
 
 export {
-	IAuditLog,
-	IAuditValues,
-	IAuditLogModel,
-	IBase,
-	IBaseModel,
-	IBaseWithName,
-	IBaseWithNameModel,
-	IBusinessUnit,
-	IBusinessUnitModel,
-	IComplianceItem,
-	IComplianceItemModel,
-	IComment,
-	ICommentModel,
-	IGraphUser,
-	ILocation,
-	ILocationModel,
-	IOrganization,
-	IOrganizationModel,
-	IQuestion,
-	IQuestionCategory,
-	IQuestionCategoryModel,
-	IQuestionChoice,
-	IQuestionModel,
-	IResponse,
-	IResponseModel,
-	ISession,
-	ISetting,
-	ISettingModel,
-	ITrackerQuestion,
-	IUser,
-	IUserModel,
-	TCollection,
-	TComponent,
-	TQuestionType,
-	TQuestionValue
+  IAuditLog,
+  IAuditValues,
+  IAuditLogModel,
+  IAuditSection,
+  IAuditType,
+  IAuditTypeModel,
+  IBase,
+  IBaseModel,
+  IBaseWithName,
+  IBaseWithNameModel,
+  IBusinessUnit,
+  IBusinessUnitModel,
+  IComplianceItem,
+  IComplianceItemModel,
+  IComment,
+  ICommentModel,
+  IGraphUser,
+  ILocation,
+  ILocationModel,
+  IOrganization,
+  IOrganizationModel,
+  IQuestion,
+  IQuestionsCategory,
+  IQuestionsCategoryModel,
+  IQuestionChoice,
+  IQuestionModel,
+  IResponse,
+  IResponseModel,
+  ISession,
+  ISetting,
+  ISettingModel,
+  ITrackerQuestion,
+  IUser,
+  IUserModel,
+  TCollection,
+  TComponent,
+  TFrequency,
+  TQuestionType,
+  TQuestionValue,
 };

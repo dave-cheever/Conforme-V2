@@ -1,7 +1,7 @@
 import { IBase } from "./IBase";
 import { TComponent } from "./TComponent";
 
-export interface IQuestionCategory extends IBase {
+export interface IQuestionsCategory extends IBase {
   name: string;
   auditType?: string;
   withAnswers: boolean;

@@ -11,15 +11,15 @@ import NumberInput from "../../components/Forms/NumberInput";
 import Toggle from "../../components/Forms/Toggle";
 import TextInput from "../../components/Forms/TextInput";
 import Header from "../../components/Header";
-import { IQuestionCategory } from "../../interfaces/IQuestionCategory";
+import { IQuestionsCategory } from "../../interfaces/IQuestionsCategory";
 import AdminTableHeader from "../../components/Admin/AdminTableHeader";
 import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
 import useDevice from "../../hooks/useDevice";
 
 
-const GET_QUESTION_CATEGORIES = gql`
+const GET_QUESTIONS_CATEGORIES = gql`
 query {
-	questionCategories {
+	questionsCategories {
 		_id
 		auditType
 		name
@@ -32,27 +32,27 @@ query {
 	}
 }
 `;
-const CREATE_QUESTION_CATEGORY = gql`
-mutation ($questionCategory: QuestionCategoryCreateInput!) {
-	createQuestionCategory(questionCategory: $questionCategory) {
+const CREATE_QUESTIONS_CATEGORY = gql`
+mutation ($questionsCategory: QuestionsCategoryCreateInput!) {
+	createQuestionsCategory(questionsCategory: $questionsCategory) {
 		_id
 	}
 }
 `;
-const UPDATE_QUESTION_CATEGORY = gql`
-mutation ($questionCategoryInput: QuestionCategoryModifyInput!) {
-	updateQuestionCategory(questionCategoryInput: $questionCategoryInput) {
+const UPDATE_QUESTIONS_CATEGORY = gql`
+mutation ($questionsCategoryInput: QuestionsCategoryModifyInput!) {
+	updateQuestionsCategory(questionsCategoryInput: $questionsCategoryInput) {
 		_id
 	}
 }
 `;
 const DELETE_QUESTION_CATEGORY = gql`
 mutation ($_id: String!) {
-	deleteQuestionCategory(_id: $_id)
+	deleteQuestionsCategory(_id: $_id)
 }
 `;
 
-const defaultValues: Partial<IQuestionCategory> = {
+const defaultValues: Partial<IQuestionsCategory> = {
 	_id: undefined,
 	auditType: "",
 	name: "",
@@ -64,27 +64,27 @@ const defaultValues: Partial<IQuestionCategory> = {
 	}
 };
 
-const QuestionCategories = () => {
+const QuestionsCategories = () => {
 	const toast = useToast();
 	const { adminModalState, setAdminModalState } = useContext(AdminContext);
-	const { data, loading, refetch } = useQuery(GET_QUESTION_CATEGORIES);
-	const [createFunction] = useMutation(CREATE_QUESTION_CATEGORY);
-	const [updateFunction] = useMutation(UPDATE_QUESTION_CATEGORY);
+	const { data, loading, refetch } = useQuery(GET_QUESTIONS_CATEGORIES);
+	const [createFunction] = useMutation(CREATE_QUESTIONS_CATEGORY);
+	const [updateFunction] = useMutation(UPDATE_QUESTIONS_CATEGORY);
 	const [deleteFunction] = useMutation(DELETE_QUESTION_CATEGORY);
 	const device = useDevice();
-	const [sortType, setSortType] = useState("questionCategory");
+	const [sortType, setSortType] = useState("questionsCategory");
 	const [sortOrder, setSortOrder] = useState(true);
 
-	const getQuestionCategories = (questionCategoriesArray: IQuestionCategory[]) => {
-		if (!questionCategoriesArray) {
+	const getQuestionsCategories = (questionsCategoriesArray: IQuestionsCategory[]) => {
+		if (!questionsCategoriesArray) {
 			return [];
 		}
-		return [...questionCategoriesArray].sort((a, b) => a.name.localeCompare(b.name));
+		return [...questionsCategoriesArray].sort((a, b) => a.name.localeCompare(b.name));
 	}
-	const [questionCategories, setQuestionCategories] = useState<IQuestionCategory[]>(getQuestionCategories(data?.questionCategories));
+	const [questionsCategories, setQuestionsCategories] = useState<IQuestionsCategory[]>(getQuestionsCategories(data?.questionsCategories));
 
 	useEffect(() => {
-		setQuestionCategories(getQuestionCategories(data?.questionCategories));
+		setQuestionsCategories(getQuestionsCategories(data?.questionsCategories));
 	}, [data]);
 
 	useEffect(() => {
@@ -96,10 +96,10 @@ const QuestionCategories = () => {
 			}
 		};
 		if (sortOrder) {
-			setQuestionCategories([...questionCategories].sort((a, b) => sort(a, b)));
+			setQuestionsCategories([...questionsCategories].sort((a, b) => sort(a, b)));
 		}
 		else {
-			setQuestionCategories([...questionCategories].sort((a, b) => sort(b, a)));
+			setQuestionsCategories([...questionsCategories].sort((a, b) => sort(b, a)));
 		}
 	}, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -122,29 +122,29 @@ const QuestionCategories = () => {
 	}, [reset, adminModalState]);
 
 	// If modal opened in edit or delete mode, reset the form and set values of edited element
-	const openQuestionModal = (
+	const openQuestionsCategoryModal = (
 		action: "edit" | "delete",
-		questionCategory: IQuestionCategory,
+		questionsCategory: IQuestionsCategory,
 	) => {
 		setAdminModalState(action);
 		reset({
-			_id: questionCategory?._id,
-			auditType: questionCategory?.auditType,
-			name: questionCategory?.name,
-			withAnswers: questionCategory?.withAnswers,
-			allowCustomQuestions: questionCategory?.allowCustomQuestions,
-			maxQuestionsNumber: questionCategory?.maxQuestionsNumber,
-			scope: questionCategory?.scope,
+			_id: questionsCategory?._id,
+			auditType: questionsCategory?.auditType,
+			name: questionsCategory?.name,
+			withAnswers: questionsCategory?.withAnswers,
+			allowCustomQuestions: questionsCategory?.allowCustomQuestions,
+			maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+			scope: questionsCategory?.scope,
 		});
 	};
 
-	const handleAddQuestionCategory = async () => {
+	const handleAddQuestionsCategory = async () => {
 		try {
 			if (Object.keys(errors).length === 0) {
-				const questionCategory = getValues();
-				await createFunction({ variables: { questionCategory } });
+				const questionsCategory = getValues();
+				await createFunction({ variables: { questionsCategory } });
 				refetch();
-				toast({ ...toastSuccess, description: "Question category added" });
+				toast({ ...toastSuccess, description: "Questions category added" });
 			} else {
 				toast({
 					...toastFailed,
@@ -158,24 +158,24 @@ const QuestionCategories = () => {
 		}
 	};
 
-	const handleUpdateQuestionCategory = async () => {
+	const handleUpdateQuestionsCategory = async () => {
 		try {
 			if (Object.keys(errors).length === 0) {
-				const questionCategory = getValues();
+				const questionsCategory = getValues();
 				await updateFunction({
 					variables: {
-						questionCategoryInput: {
-							_id: questionCategory?._id,
-							auditType: questionCategory?.auditType,
-							name: questionCategory?.name,
-							withAnswers: questionCategory?.withAnswers,
-							allowCustomQuestions: questionCategory?.allowCustomQuestions,
-							maxQuestionsNumber: questionCategory?.maxQuestionsNumber,
+						questionsCategoryInput: {
+							_id: questionsCategory?._id,
+							auditType: questionsCategory?.auditType,
+							name: questionsCategory?.name,
+							withAnswers: questionsCategory?.withAnswers,
+							allowCustomQuestions: questionsCategory?.allowCustomQuestions,
+							maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
 						},
 					},
 				});
 				refetch();
-				toast({ ...toastSuccess, description: "Question category updated" });
+				toast({ ...toastSuccess, description: "Questions category updated" });
 			} else {
 				toast({
 					...toastFailed,
@@ -189,12 +189,12 @@ const QuestionCategories = () => {
 		}
 	};
 
-	const handleDeleteQuestionCategory = async () => {
+	const handleDeleteQuestionsCategory = async () => {
 		try {
 			const _id = getValues('_id');
 			await deleteFunction({ variables: { _id } });
 			refetch();
-			toast({ ...toastSuccess, description: "Question category deleted" });
+			toast({ ...toastSuccess, description: "Questions category deleted" });
 		} catch (e: any) {
 			toast({ ...toastFailed, description: e.message });
 		} finally {
@@ -212,29 +212,29 @@ const QuestionCategories = () => {
 		}
 		switch (action) {
 			case "add":
-				handleAddQuestionCategory();
+				handleAddQuestionsCategory();
 				break;
 			case "edit":
-				handleUpdateQuestionCategory();
+				handleUpdateQuestionsCategory();
 				break;
 			case "delete":
-				handleDeleteQuestionCategory();
+				handleDeleteQuestionsCategory();
 				break;
 			default:
 				setAdminModalState("closed");
 		}
 	};
 
-	const renderQuestionCategoryRow = (questionCategory: IQuestionCategory, i: number) => (
+	const renderQuestionsCategoryRow = (questionsCategory: IQuestionsCategory, i: number) => (
 		<Flex
-			key={questionCategory._id}
+			key={questionsCategory._id}
 			w='full'
 			h='73px'
 			bg='#FFFFFF'
 			mb="1px"
 			p={4}
 			alignItems='center'
-			borderBottomRadius={(i === questionCategories.length - 1) ? 'lg' : ''}
+			borderBottomRadius={(i === questionsCategories.length - 1) ? 'lg' : ''}
 			boxShadow="sm"
 			flexShrink={0}
 		>
@@ -244,13 +244,13 @@ const QuestionCategories = () => {
 				pl={1}
 				mr={4}
 				cursor="pointer"
-				onClick={() => openQuestionModal('edit', questionCategory)}
+				onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
 			>
 				<Text
 					overflow='hidden'
 					textOverflow='ellipsis'
 					whiteSpace='nowrap'
-				>{questionCategory.name}
+				>{questionsCategory.name}
 				</Text>
 			</Flex>
 		</Flex>
@@ -262,7 +262,7 @@ const QuestionCategories = () => {
 				isOpenModal={adminModalState !== "closed"}
 				modalType={adminModalState}
 				onAction={handleAction}
-				collection={"questions"}
+				collection={"questions category"}
 			>
 				<Stack w={device === 'mobile' ? 'full' : "calc(100% - 150px)"} spacing={2}>
 					<TextInput
@@ -270,53 +270,43 @@ const QuestionCategories = () => {
 						label="Name"
 						placeholder='Name'
 						control={control}
-						required={true}
 						validations={{
 							notEmpty: true,
 						}}
-					/>
-					<TextInput
-						name="auditType"
-						label="Audit Type"
-						placeholder='Audit Type'
-						control={control}
 					/>
 					<Toggle
 						name="withAnswers"
 						label="Allow answers"
 						placeholder='Allow answers'
 						control={control}
-						required={true}
 					/>
 					<Toggle
 						name="allowCustomQuestions"
 						label="Allow custom questions"
 						placeholder='Allow custom questions'
 						control={control}
-						required={true}
 					/>
 					<NumberInput
 						name="maxQuestionsNumber"
 						label="Max number of questions"
 						placeholder='Max number of questions'
 						control={control}
-						required={true}
 						validations={{
 							notEmpty: true,
 						}}
 					/>
 				</Stack>
 			</AdminModal>
-			<Header breadcrumbs={["Admin", "Question Categories"]} mobileBreadcrumbs={["Question Categories"]} />
+			<Header breadcrumbs={["Admin", "Questions categories"]} mobileBreadcrumbs={["Questions categories"]} />
 			<Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
 				<Box w='full' h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
 					<AdminTableHeader>
 						<AdminTableHeaderElement w='full' label="Question Categories" onClick={() => { setSortType("questionCategory"); setSortOrder(!sortOrder); }} sortOrder={sortType === "questionCategory" && !sortOrder} showSortingIcon={sortType === "questionCategory"} />
 					</AdminTableHeader>
 					<Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
-						{loading ? <Loader center={true} /> : (questionCategories?.length > 0 ? questionCategories?.map(renderQuestionCategoryRow) : (
+						{loading ? <Loader center={true} /> : (questionsCategories?.length > 0 ? questionsCategories?.map(renderQuestionsCategoryRow) : (
 							<Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
-								No question categories found
+								No questions categories found
 							</Flex>
 						))}
 					</Flex>
@@ -326,4 +316,4 @@ const QuestionCategories = () => {
 	);
 };
 
-export default QuestionCategories;
+export default QuestionsCategories;

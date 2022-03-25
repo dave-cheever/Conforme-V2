@@ -1,4 +1,5 @@
 import auditLogsResolvers from "./auditLogs";
+import auditTypesResolvers from "./auditTypes";
 import businessUnitsResolvers from "./businessUnits"
 import categoriesResolvers from "./categories";
 import commentsResolvers from "./comments";
@@ -7,7 +8,7 @@ import graphResolvers from "./graph";
 import locationsResolvers from "./locations";
 import organizationsResolvers from "./organizations";
 import questionsResolvers from "./questions";
-import questionCategoriesResolvers from "./questionCategories";
+import questionsCategoriesResolvers from "./questionsCategories";
 import regulatoryBodiesResolvers from "./regulatoryBodies";
 import responsesResolvers from "./responses";
 import scalars from "../scalars";
@@ -20,6 +21,7 @@ export default {
   Date: scalars.dateScalar,
   Query: {
     ...auditLogsResolvers.Query,
+    ...auditTypesResolvers.Query,
     ...businessUnitsResolvers.Query,
     ...categoriesResolvers.Query,
     ...commentsResolvers.Query,
@@ -27,7 +29,7 @@ export default {
     ...graphResolvers.Query,
     ...locationsResolvers.Query,
     ...organizationsResolvers.Query,
-    ...questionCategoriesResolvers.Query,
+    ...questionsCategoriesResolvers.Query,
     ...questionsResolvers.Query,
     ...regulatoryBodiesResolvers.Query,
     ...responsesResolvers.Query,
@@ -36,12 +38,13 @@ export default {
     ...usersResolvers.Query,
   },
   Mutation: {
+    ...auditTypesResolvers.Mutation,
     ...businessUnitsResolvers.Mutation,
     ...categoriesResolvers.Mutation,
     ...commentsResolvers.Mutation,
     ...complianceItemsResolvers.Mutation,
     ...locationsResolvers.Mutation,
-    ...questionCategoriesResolvers.Mutation,
+    ...questionsCategoriesResolvers.Mutation,
     ...questionsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
     ...responsesResolvers.Mutation,

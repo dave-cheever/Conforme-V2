@@ -271,7 +271,6 @@ const Questions = () => {
             label="Question"
             placeholder='Question'
             control={control}
-            required={true}
             validations={{
               notEmpty: true,
             }}

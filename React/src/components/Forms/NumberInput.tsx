@@ -35,9 +35,9 @@ const NumberInput = ({ control, name, label, placeholder = '', tooltip = '', var
             {label && (
               <Flex pt={2} align='center' justify="space-between" mb='none'>
                 <Box
-                  color={error ? "numberInput.labelFont.error" : variant === "secondaryVariant" ? "numberInput.labelFont.secondaryVariant" :"numberInput.labelFont.normal"}
+                  color={error ? "numberInput.labelFont.error" : variant === "secondaryVariant" ? "numberInput.labelFont.secondaryVariant" : "numberInput.labelFont.normal"}
                   fontWeight="bold"
-                  fontSize={ variant === "secondaryVariant" ? "11px" : "14px" }
+                  fontSize={variant === "secondaryVariant" ? "11px" : "14px"}
                   position="static"
                   left='none'
                   zIndex={1}
@@ -62,7 +62,7 @@ const NumberInput = ({ control, name, label, placeholder = '', tooltip = '', var
               _active={{ bg: disabled ? "numberInput.disabled.bg" : "numberInput.activeBg" }}
               _focus={{ borderColor: error ? "numberInput.border.focus.error" : "numberInput.border.focus.normal" }}
               _hover={{ cursor: "auto" }}
-              onChange={onChange}
+              onChange={e => onChange(parseInt(e.target.value))}
               onBlur={onBlur}
               isDisabled={disabled}
               cursor="pointer"

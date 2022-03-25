@@ -3,8 +3,8 @@ import {
   IBaseWithName,
   IBusinessUnit,
   ILocation,
-  IQuestionValue,
   ITrackerQuestion,
+  TQuestionValue,
 } from "app-interfaces";
 
 export interface IComplianceItem extends IBase {
@@ -20,7 +20,7 @@ export interface IComplianceItem extends IBase {
   reference: string;
   organizationId: string;
   dueDate?: Date;
-  questions?: ITrackerQuestion<IQuestionValue>[];
+  questions?: ITrackerQuestion<TQuestionValue>[];
 
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;

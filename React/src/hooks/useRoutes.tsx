@@ -6,6 +6,7 @@ import Areas from "../pages/admin/areas";
 import Assets from "../pages/assets";
 import AuditLog from "../pages/admin/audit-log";
 import Audits from "../pages/audits";
+import AuditTypes from "../pages/admin/audit-types";
 import BusinessUnits from "../pages/admin/business-units";
 import Can from "../components/can";
 import ComplianceItemAuditLog from "../pages/compliance-item/audit-log";
@@ -25,7 +26,7 @@ import Licenses from "../pages/licenses";
 import Mentions from "../pages/mentions";
 import PrivacyPolicy from "../pages/privacy-policy";
 import PureLayout from "../layouts/PureLayout";
-import QuestionCategories from "../pages/admin/question-categories";
+import QuestionsCategories from "../pages/admin/questions-categories";
 import Questions from "../pages/admin/questions";
 import RegulatoryBodies from "../pages/admin/regulatory-bodies";
 import ResponseLayout from "../layouts/ResponseLayout";
@@ -210,10 +211,10 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
-    path: "/admin/question-categories",
-    key: "questionCategories",
+    path: "/admin/questions-categories",
+    key: "questions-categories",
     exact: true,
-    component: QuestionCategories,
+    component: QuestionsCategories,
     layout: DefaultLayout,
   },
   {
@@ -221,6 +222,13 @@ const protectedRoutes: Array<IRoute> = [
     key: "questions",
     exact: true,
     component: Questions,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/admin/audit-types",
+    key: "audit-types",
+    exact: true,
+    component: AuditTypes,
     layout: DefaultLayout,
   },
   {

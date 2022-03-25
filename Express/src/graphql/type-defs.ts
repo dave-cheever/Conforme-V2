@@ -1,6 +1,7 @@
 import { gql } from "apollo-server-express";
 
 import { auditLogsTypeDefs, auditLogsQueryDefs } from './resolvers/auditLogs';
+import { auditTypesMutationDefs, auditTypesQueryDefs, auditTypesTypeDefs } from "./resolvers/auditTypes";
 import { businessUnitsTypeDefs, businessUnitsQueryDefs, businessUnitsMutationDefs } from "./resolvers/businessUnits";
 import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categories";
 import { commentsMutationDefs, commentsQueryDefs, commnentsTypeDefs } from "./resolvers/comments";
@@ -8,7 +9,7 @@ import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutat
 import { graphTypeDefs, graphQueryDefs } from "./resolvers/graph";
 import { locationsTypeDefs, locationsQueryDefs, locationsMutationDefs } from "./resolvers/locations";
 import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
-import { questionCategoriesTypeDefs, questionCategoriesQueryDefs, questionCategoriesMutationDefs } from "./resolvers/questionCategories";
+import { questionsCategoriesTypeDefs, questionsCategoriesQueryDefs, questionsCategoriesMutationDefs } from "./resolvers/questionsCategories";
 import { questionsTypeDefs, questionsQueryDefs, questionsMutationDefs } from "./resolvers/questions";
 import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
 import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
@@ -42,6 +43,7 @@ const typeDefs = gql`
   }
   
   ${auditLogsTypeDefs}
+  ${auditTypesTypeDefs}
   ${businessUnitsTypeDefs}
   ${commnentsTypeDefs}
   ${complianceItemsTypeDefs}
@@ -49,7 +51,7 @@ const typeDefs = gql`
   ${locationsTypeDefs}
   ${organizationsTypeDefs}
   ${questionsTypeDefs}
-  ${questionCategoriesTypeDefs}
+  ${questionsCategoriesTypeDefs}
   ${responsesTypeDefs}
   ${searchTypeDefs}
   ${settingsTypeDefs}
@@ -57,6 +59,7 @@ const typeDefs = gql`
 
   type Query {
     ${auditLogsQueryDefs}
+    ${auditTypesQueryDefs}
     ${businessUnitsQueryDefs}
     ${categoriesQueryDefs}
     ${commentsQueryDefs}
@@ -64,7 +67,7 @@ const typeDefs = gql`
     ${graphQueryDefs}
     ${locationsQueryDefs}
     ${organizationsQueryDefs}
-    ${questionCategoriesQueryDefs}
+    ${questionsCategoriesQueryDefs}
     ${questionsQueryDefs}
     ${regulatoryBodiesQueryDefs}
     ${responsesQueryDefs}
@@ -73,12 +76,13 @@ const typeDefs = gql`
     ${usersQueryDefs}
   }
   type Mutation {
+    ${auditTypesMutationDefs}
     ${businessUnitsMutationDefs}
     ${categoriesMutationDefs}
     ${commentsMutationDefs}
     ${complianceItemsMutationDefs}
     ${locationsMutationDefs}
-    ${questionCategoriesMutationDefs}
+    ${questionsCategoriesMutationDefs}
     ${questionsMutationDefs}
     ${regulatoryBodiesMutationDefs}
     ${responsesMutationDefs}
