@@ -3,9 +3,9 @@ import {
   IBusinessUnit,
   IComment,
   IComplianceItem,
-  IQuestionValue,
   ITrackerQuestion,
   IUser,
+  TQuestionValue,
 } from 'app-interfaces';
 
 export interface IDocument {
@@ -33,7 +33,7 @@ export interface IResponse extends IBase {
   status: string;
   evidence: IEvidence[];
   attachments: IDocument[];
-  questions: ITrackerQuestion<IQuestionValue>[];
+  questions: ITrackerQuestion<TQuestionValue>[];
   accountableId: string;
   responsibleId: string;
   contributorsIds?: string[];
