@@ -117,7 +117,6 @@ const BusinessUnitsSelector = ({
                 w="full"
               />
               <Magnifier
-                alt="Search"
                 bottom="13px"
                 h="12px"
                 left="14px"

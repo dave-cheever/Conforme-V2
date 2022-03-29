@@ -34,6 +34,7 @@ const GET_AUDIT_TYPES = gql`
       _id
       name
       frequency
+      view
       sections {
         type
         _id
@@ -155,6 +156,7 @@ const AuditTypes = () => {
       name: auditType.name,
       frequency: auditType.frequency,
       sections: auditType.sections,
+      view: auditType.view,
     });
   };
 
@@ -189,6 +191,7 @@ const AuditTypes = () => {
               name: auditType.name,
               frequency: auditType.frequency,
               sections: auditType.sections,
+              view: auditType.view,
             },
           },
         });

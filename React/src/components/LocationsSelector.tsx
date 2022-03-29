@@ -97,7 +97,6 @@ const LocationsSelector = ({
                 w="full"
               />
               <SearchIcon
-                alt="Search"
                 bottom="13px"
                 h="15px"
                 left="14px"

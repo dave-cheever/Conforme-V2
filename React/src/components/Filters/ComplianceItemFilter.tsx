@@ -46,7 +46,6 @@ const ComplianceItemFilter = () => {
           w="full"
         />
         <Magnifier
-          alt="Search"
           bottom="25px"
           h="12px"
           left="14px"

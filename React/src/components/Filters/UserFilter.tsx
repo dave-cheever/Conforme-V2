@@ -187,7 +187,6 @@ const UserFilter = () => {
           w="full"
         />
         <Magnifier
-          alt="Search"
           h="12px"
           ml="14px"
           mt="22px"
