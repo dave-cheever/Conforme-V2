@@ -198,5 +198,6 @@ auditTypesSchema.statics.customDelete = async function (
 const auditTypeModel = model<IAuditType, IAuditTypeModel>(
   'AuditType',
   auditTypesSchema,
+  'auditTypes',
 );
 export default auditTypeModel;

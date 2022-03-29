@@ -182,5 +182,5 @@ questionsCategoriesSchema.statics.customDelete = async function (
 const questionsCategoryModel = model<
   IQuestionsCategory,
   IQuestionsCategoryModel
->('QuestionsCategory', questionsCategoriesSchema);
+>('QuestionsCategory', questionsCategoriesSchema, 'questionsCategories');
 export default questionsCategoryModel;

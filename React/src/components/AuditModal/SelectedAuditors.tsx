@@ -16,7 +16,7 @@ const SelectedUsers = () => {
   );
 
   return (
-    <SimpleGrid columns={2} mb="20px" SimpleGrid spacing={2}>
+    <SimpleGrid columns={2} mb="20px" spacing={2}>
       {selectedAuditors.map((auditor: IAuditor) => (
         <Box>
           <SelectedAuditor

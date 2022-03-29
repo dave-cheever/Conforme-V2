@@ -23,6 +23,9 @@ const GET_QUESTIONS = gql`
       _id
       type
       question
+      description
+      positiveValue
+      negativeValue
       scope {
         component
       }

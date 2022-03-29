@@ -9,14 +9,14 @@ const updateQuestion = async (
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: 'questions.edit', data: questionInput })) 
+    if (!isPermitted({ user, action: 'questions.edit', data: questionInput }))
       throw new Error('User is not permitted');
 
     const question = await Questions.customFindById(
       questionInput._id,
       organization._id,
     );
-    if (!question) 
+    if (!question)
       throw new Error("Question doesn't exist");
 
     const updatedQuestion = await Questions.customUpdateOne(
