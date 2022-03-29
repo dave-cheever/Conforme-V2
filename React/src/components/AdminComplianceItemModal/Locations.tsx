@@ -1,42 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Box, Checkbox, CheckboxGroup, Flex, Input, InputGroup, InputLeftElement, Text, VStack } from "@chakra-ui/react";
-import { useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
-import { IBusinessUnit } from "../../interfaces/IBusinessUnit";
-import { SearchIcon } from "@chakra-ui/icons";
-import { CheckIcon, MinusIcon } from "../../icons";
-import SectionHeader from "./SectionHeader";
+import React, { useEffect, useState } from 'react';
+
+import { SearchIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Checkbox,
+  CheckboxGroup,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+
+import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { CheckIcon, MinusIcon } from '../../icons';
+import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
+import SectionHeader from './SectionHeader';
 
 const LocationsForm = () => {
-  const { locations, complianceItem, setValue, trigger } = useComplianceItemModalContext();
-  const [searchText, setSearchText] = useState<string>("");
-  const [filteredLocations, setFilteredLocations] = useState<IBusinessUnit[]>([]);
+  const { locations, complianceItem, setValue, trigger } =
+    useComplianceItemModalContext();
+  const [searchText, setSearchText] = useState<string>('');
+  const [filteredLocations, setFilteredLocations] = useState<IBusinessUnit[]>(
+    [],
+  );
   const [checkedLocationIds, setCheckedLocationIds] = useState<string[]>([]);
 
   useEffect(() => {
     setCheckedLocationIds(complianceItem?.locationsIds || []);
-  }, [locations]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [locations]);
 
   useEffect(() => {
     const filtered: any = locations.filter((location) =>
-      location.name?.toLowerCase().includes(searchText.toLowerCase())
+      location.name?.toLowerCase().includes(searchText.toLowerCase()),
     );
     setFilteredLocations(filtered);
-  }, [locations, searchText]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [locations, searchText]);
 
   const handleCheckBoxGroupChange = (value) => {
     setCheckedLocationIds([...value]);
-    setValue("locationsIds", value);
-    trigger("locationsIds");
+    setValue('locationsIds', value);
+    trigger('locationsIds');
   };
 
-  const handleAllCheckBoxSelectedLocations = (event) => {
+  const handleAllCheckBoxSelectedLocations = () => {
     let localCheckedLocationsIds: string[] = [];
-    if (checkedLocationIds.length !== locations.length) {
+    if (checkedLocationIds.length !== locations.length)
       localCheckedLocationsIds = locations.map((location) => location._id!);
-    }
+
     setCheckedLocationIds(localCheckedLocationsIds);
-    setValue("locationsIds", localCheckedLocationsIds);
-    trigger("locationsIds");
+    setValue('locationsIds', localCheckedLocationsIds);
+    trigger('locationsIds');
   };
 
   return (
@@ -44,116 +59,124 @@ const LocationsForm = () => {
       <Flex direction="column">
         <SectionHeader label="Select location" />
         <Flex
-          flexDir={["column", "row"]}
+          flexDir={['column', 'row']}
           justifyContent="space-between"
-          mt="25px"
           mb="32px"
+          mt="25px"
         >
           <Flex flexDir="column">
             <Text
-              fontFamily="Helvetica"
-              fontWeight="bold"
-              fontSize="ssm"
-              lineHeight="16px"
               color="locationsFormModal.filterTextColor"
+              fontFamily="Helvetica"
+              fontSize="ssm"
+              fontWeight="bold"
+              lineHeight="16px"
               mb="5px"
             >
               Search location by name
             </Text>
             <InputGroup
-              w={["full", "190px"]}
-              h="42px"
               border="1px solid"
               borderColor="locationsFormModal.inputBorderColor"
+              h="42px"
               rounded="10px"
+              w={['full', '190px']}
             >
-              <InputLeftElement
-                pointerEvents="none"
-                children={<SearchIcon color="locationsFormModal.searchIcon" />}
-              />
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon color="locationsFormModal.searchIcon" />
+              </InputLeftElement>
               <Input
+                color="locationsFormModal.searchBarText"
                 fontSize="smm"
                 lineHeight="18px"
-                color="locationsFormModal.searchBarText"
-                rounded="10px"
-                placeholder="Search"
                 onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Search"
+                rounded="10px"
               />
             </InputGroup>
           </Flex>
         </Flex>
         <Flex mb="33px">
           <Checkbox
-            key={"all"}
-            value={"all"}
             borderColor="locationsFormModal.checkbox.unchecked.border"
+            colorScheme="purpleHeart"
             css={{
-              ".chakra-checkbox__control": {
-                borderRadius: "20%",
-                borderWidth: "1px",
-                width: "21px",
-                height: "21px",
-                background: "#FFFFFF",
-                "&[data-checked]": {
-                  background: "#462AC4",
-                  borderColor: "#462AC4",
+              '.chakra-checkbox__control': {
+                borderRadius: '20%',
+                borderWidth: '1px',
+                width: '21px',
+                height: '21px',
+                background: '#FFFFFF',
+                '&[data-checked]': {
+                  background: '#462AC4',
+                  borderColor: '#462AC4',
                 },
-                "&[data-indeterminate]": {
-                  background: "#462AC4",
-                  borderColor: "#462AC4",
+                '&[data-indeterminate]': {
+                  background: '#462AC4',
+                  borderColor: '#462AC4',
                 },
               },
-              ".chakra-checkbox__label": {
+              '.chakra-checkbox__label': {
                 flexGrow: 1,
-                marginLeft: "10px",
+                marginLeft: '10px',
                 fontWeight: 400,
-                fontSize: "14px",
-                color: checkedLocationIds.length === locations.length ? "#282F36" : "#818197",
+                fontSize: '14px',
+                color:
+                  checkedLocationIds.length === locations.length
+                    ? '#282F36'
+                    : '#818197',
               },
             }}
-            colorScheme="purpleHeart"
-            icon={checkedLocationIds.length === locations.length ? <CheckIcon stroke="white" strokeWidth="1.5" /> : <MinusIcon />}
+            icon={
+              checkedLocationIds.length === locations.length ? (
+                <CheckIcon stroke="white" strokeWidth="1.5" />
+              ) : (
+                <MinusIcon />
+              )
+            }
             isChecked={checkedLocationIds.length > 0}
-            onChange={(e: any) => handleAllCheckBoxSelectedLocations(e)}
+            key="all"
+            onChange={() => handleAllCheckBoxSelectedLocations()}
+            value="all"
           >
             Select all
           </Checkbox>
         </Flex>
         <CheckboxGroup
-          onChange={(e: any) => handleCheckBoxGroupChange(e)}
           colorScheme="green"
+          onChange={(e: any) => handleCheckBoxGroupChange(e)}
           value={checkedLocationIds || []}
         >
           <VStack alignItems="flex-start">
             {filteredLocations.map((location, index) => (
               <Checkbox
-                colorScheme="purpleHeart"
-                key={index}
-                value={location._id}
-                icon={<CheckIcon stroke="white" strokeWidth="1.5" />}
                 borderColor="locationsFormModal.checkbox.unchecked.border"
+                colorScheme="purpleHeart"
                 css={{
-                  ".chakra-checkbox__control": {
-                    borderRadius: "20%",
-                    borderWidth: "1px",
-                    width: "21px",
-                    height: "21px",
-                    background: "#FFFFFF",
-                    "&[data-checked]": {
-                      background: "#462AC4",
-                      borderColor: "#462AC4",
+                  '.chakra-checkbox__control': {
+                    borderRadius: '20%',
+                    borderWidth: '1px',
+                    width: '21px',
+                    height: '21px',
+                    background: '#FFFFFF',
+                    '&[data-checked]': {
+                      background: '#462AC4',
+                      borderColor: '#462AC4',
                     },
                   },
-                  ".chakra-checkbox__label": {
+                  '.chakra-checkbox__label': {
                     flexGrow: 1,
-                    marginLeft: "10px",
+                    marginLeft: '10px',
                     fontWeight: 400,
-                    fontSize: "14px",
+                    fontSize: '14px',
                     color: checkedLocationIds?.includes(location._id!)
-                      ? "#282F36"
-                      : "#818197",
+                      ? '#282F36'
+                      : '#818197',
                   },
                 }}
+                icon={<CheckIcon stroke="white" strokeWidth="1.5" />}
+                key={index}
+                value={location._id}
               >
                 {location.name}
               </Checkbox>
@@ -169,15 +192,15 @@ export default LocationsForm;
 
 export const locationsFormModalStyles = {
   locationsFormModal: {
-    filterTextColor: "#818197",
-    searchIcon: "#818197",
-    searchBarText: "#818197",
-    selectBg: "#FFFFFF",
-    selectBorderColor: "rgba(129, 129, 151, 0.4)",
-    inputBorderColor: "rgba(129, 129, 151, 0.4)",
+    filterTextColor: '#818197',
+    searchIcon: '#818197',
+    searchBarText: '#818197',
+    selectBg: '#FFFFFF',
+    selectBorderColor: 'rgba(129, 129, 151, 0.4)',
+    inputBorderColor: 'rgba(129, 129, 151, 0.4)',
     checkbox: {
       unchecked: {
-        border: "#CBCCCD",
+        border: '#CBCCCD',
       },
     },
   },

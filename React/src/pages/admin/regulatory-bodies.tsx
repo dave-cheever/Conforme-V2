@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { Box, Flex, Stack, useToast } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/Admin/AdminModal";
-import AdminTableRow from "../../components/Admin/AdminTableRow";
-import Header from "../../components/Header";
-import { IBaseWithName } from "../../interfaces/IBaseWithName";
-import { AdminContext } from "../../contexts/AdminProvider";
-import TextInput from "../../components/Forms/TextInput";
-import Loader from "../../components/Loader";
-import AdminTableHeader from "../../components/Admin/AdminTableHeader";
-import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import BarChart from "../../components/BarChart";
-import useDevice from "../../hooks/useDevice";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Flex, Stack, useToast } from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import AdminModal from '../../components/Admin/AdminModal';
+import AdminTableHeader from '../../components/Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import AdminTableRow from '../../components/Admin/AdminTableRow';
+import BarChart from '../../components/BarChart';
+import TextInput from '../../components/Forms/TextInput';
+import Header from '../../components/Header';
+import Loader from '../../components/Loader';
+import { AdminContext } from '../../contexts/AdminProvider';
+import useDevice from '../../hooks/useDevice';
+import { IBaseWithName } from '../../interfaces/IBaseWithName';
 
 const GET_REGULATORY_BODIES = gql`
   query {
@@ -26,7 +27,7 @@ const GET_REGULATORY_BODIES = gql`
   }
 `;
 const CREATE_REGULATORY_BODY = gql`
-  mutation ($name: String!){
+  mutation ($name: String!) {
     createRegulatoryBody(name: $name) {
       _id
       name
@@ -34,7 +35,7 @@ const CREATE_REGULATORY_BODY = gql`
   }
 `;
 const UPDATE_REGULATORY_BODY = gql`
-  mutation ($values: BaseWithNameModifyInput!){
+  mutation ($values: BaseWithNameModifyInput!) {
     updateRegulatoryBody(regulatoryBodyInput: $values) {
       _id
       name
@@ -42,7 +43,7 @@ const UPDATE_REGULATORY_BODY = gql`
   }
 `;
 const DELETE_REGULATORY_BODY = gql`
-  mutation ($_id: String!){
+  mutation ($_id: String!) {
     deleteRegulatoryBody(_id: $_id)
   }
 `;
@@ -60,18 +61,21 @@ const RegulatoryBodies = () => {
   const [updateFunction] = useMutation(UPDATE_REGULATORY_BODY);
   const [deleteFunction] = useMutation(DELETE_REGULATORY_BODY);
   const device = useDevice();
-  const [sortType, setSortType] = useState("name");
+  const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState(true);
-  const [currentRegulatoryBodyName, setCurrentRegulatoryBodyName] = useState<string>("");
-
+  const [currentRegulatoryBodyName, setCurrentRegulatoryBodyName] =
+    useState<string>('');
 
   const getRegulatoryBodies = (regulatoryBodiesArray: IBaseWithName[]) => {
-    if (!regulatoryBodiesArray) {
-      return [];
-    }
-    return [...regulatoryBodiesArray].sort((a, b) => a.name.localeCompare(b.name));
-  }
-  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>(getRegulatoryBodies(data?.regulatoryBodies));
+    if (!regulatoryBodiesArray) return [];
+
+    return [...regulatoryBodiesArray].sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
+  };
+  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>(
+    getRegulatoryBodies(data?.regulatoryBodies),
+  );
 
   useEffect(() => {
     setRegulatoryBodies(getRegulatoryBodies(data?.regulatoryBodies));
@@ -79,18 +83,31 @@ const RegulatoryBodies = () => {
 
   useEffect(() => {
     if (sortOrder) {
-      setRegulatoryBodies([...regulatoryBodies].sort((a, b) => {
-        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())
-      }));
-    }
-    else {
-      setRegulatoryBodies([...regulatoryBodies].sort((a, b) => {
-        return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())
-      }));
+      setRegulatoryBodies(
+        [...regulatoryBodies].sort((a, b) =>
+          (a[sortType] || 0)
+            .toString()
+            .localeCompare((b[sortType] || 0).toString()),
+        ),
+      );
+    } else {
+      setRegulatoryBodies(
+        [...regulatoryBodies].sort((a, b) =>
+          (b[sortType] || 0)
+            .toString()
+            .localeCompare((a[sortType] || 0).toString()),
+        ),
+      );
     }
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { control, formState: { errors }, getValues, trigger, reset } = useForm({
+  const {
+    control,
+    formState: { errors },
+    getValues,
+    trigger,
+    reset,
+  } = useForm({
     mode: 'all',
     defaultValues,
   });
@@ -99,12 +116,15 @@ const RegulatoryBodies = () => {
   useEffect(() => {
     if (adminModalState === 'closed') {
       reset(defaultValues);
-      setCurrentRegulatoryBodyName("");
+      setCurrentRegulatoryBodyName('');
     }
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openRegulatoryBodyModal = (action: 'edit' | 'delete', regulatoryBody: IBaseWithName) => {
+  const openRegulatoryBodyModal = (
+    action: 'edit' | 'delete',
+    regulatoryBody: IBaseWithName,
+  ) => {
     setAdminModalState(action);
     setCurrentRegulatoryBodyName(regulatoryBody.name);
     reset({
@@ -121,7 +141,10 @@ const RegulatoryBodies = () => {
         toast({ ...toastSuccess, description: 'Regulatory body added' });
         refetch();
       } else {
-        toast({ ...toastFailed, description: 'Please complete all the required fields' });
+        toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
@@ -138,7 +161,10 @@ const RegulatoryBodies = () => {
         toast({ ...toastSuccess, description: 'Regulatory body updated' });
         refetch();
       } else {
-        toast({ ...toastFailed, description: 'Please complete all the required fields' });
+        toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
@@ -163,7 +189,10 @@ const RegulatoryBodies = () => {
   const handleAction = async (action) => {
     const isFormValid = await trigger();
     if (['add', 'edit'].includes(action) && !isFormValid) {
-      return toast({ ...toastFailed, description: 'Please complete all the required fields' });
+      return toast({
+        ...toastFailed,
+        description: 'Please complete all the required fields',
+      });
     }
     switch (action) {
       case 'add':
@@ -182,72 +211,121 @@ const RegulatoryBodies = () => {
 
   return (
     <>
-      <AdminModal isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction} collection={"regulatory body"}>
-        <Flex w='full' align='flex-start' direction='column'>
+      <AdminModal
+        collection="regulatory body"
+        isOpenModal={adminModalState !== 'closed'}
+        modalType={adminModalState}
+        onAction={handleAction}
+      >
+        <Flex align="flex-start" direction="column" w="full">
           <TextInput
-            name="name"
-            label="Name"
-            placeholder='Regulatory body name'
             control={control}
             initialValue={currentRegulatoryBodyName.toLowerCase()}
+            label="Name"
+            name="name"
+            placeholder="Regulatory body name"
             validations={{
               notEmpty: true,
-              uniqueValue: regulatoryBodies.map(({ name }) => name.toLowerCase())
+              uniqueValue: regulatoryBodies.map(({ name }) =>
+                name.toLowerCase(),
+              ),
             }}
           />
         </Flex>
       </AdminModal>
       <Header
-        breadcrumbs={["Admin", "Regulatory bodies"]}
-        mobileBreadcrumbs={["Regulatory bodies"]}
+        breadcrumbs={['Admin', 'Regulatory bodies']}
+        mobileBreadcrumbs={['Regulatory bodies']}
       />
-      <Box p={["0", "0 25px 30px 30px"]} h={["full", "calc(100vh - 160px)"]} overflow="auto">
-        <Flex h="full" px={["25px", 0]}>
-          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
+      <Box
+        h={['full', 'calc(100vh - 160px)']}
+        overflow="auto"
+        p={['0', '0 25px 30px 30px']}
+      >
+        <Flex h="full" px={['25px', 0]}>
+          <Box
+            h={['calc(100% - 90px)', 'calc(100% - 35px)']}
+            mr={[0, 0, '50px']}
+            w={['full', 'full', 'calc(100% - 250px)']}
+          >
             <AdminTableHeader>
-              <AdminTableHeaderElement w={["80%", "50%"]} label="Regulatory body" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
-              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count (only published items)" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+              <AdminTableHeaderElement
+                label="Regulatory body"
+                onClick={() => {
+                  setSortType('name');
+                  setSortOrder(!sortOrder);
+                }}
+                showSortingIcon={sortType === 'name'}
+                sortOrder={sortType === 'name' && !sortOrder}
+                w={['80%', '50%']}
+              />
+              <AdminTableHeaderElement
+                label="Responses count (only published items)"
+                onClick={() => {
+                  setSortType('complianceItemsResponsesCount');
+                  setSortOrder(!sortOrder);
+                }}
+                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
+                sortOrder={
+                  sortType === 'complianceItemsResponsesCount' && !sortOrder
+                }
+                w={['20%', '50%']}
+              />
             </AdminTableHeader>
             <Stack
               bg="white"
               borderBottomRadius="20px"
-              spacing="1px"
-              pb="5"
-              h={loading ? "full" : "fit-content"}
+              h={loading ? 'full' : 'fit-content'}
               minH="full"
+              pb="5"
+              spacing="1px"
             >
-              {loading ? <Loader center={true} /> :
-                regulatoryBodies?.length > 0 ? (
-                  regulatoryBodies?.map((regulatoryBody, i) =>
-                    <AdminTableRow
-                      key={regulatoryBody._id}
-                      element={regulatoryBody}
-                      responseToEdit="regulatoryBodiesIds"
-                      index={i}
-                      edit={() => openRegulatoryBodyModal('edit', regulatoryBody)}
-                    />
-                  )
-                ) : (
-                  <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
-                    No regulatory bodies found
-                  </Flex>
-                )}
+              {loading ? (
+                <Loader center />
+              ) : regulatoryBodies?.length > 0 ? (
+                regulatoryBodies?.map((regulatoryBody) => (
+                  <AdminTableRow
+                    edit={() => openRegulatoryBodyModal('edit', regulatoryBody)}
+                    element={regulatoryBody}
+                    key={regulatoryBody._id}
+                    responseToEdit="regulatoryBodiesIds"
+                  />
+                ))
+              ) : (
+                <Flex
+                  fontSize="18px"
+                  fontStyle="italic"
+                  h="full"
+                  justify="center"
+                  mt={4}
+                  w="full"
+                >
+                  No regulatory bodies found
+                </Flex>
+              )}
             </Stack>
           </Box>
-          {device === "desktop" &&
+          {device === 'desktop' && (
             <Flex
-              flexDirection="column"
               alignItems="center"
-              w={["100%", "220px"]}
+              flexDirection="column"
+              w={['100%', '220px']}
             >
-              <Flex flexDir="column" w="100%" h="full">
-                {regulatoryBodies && <BarChart
-                  data={regulatoryBodies.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
-                  label="Regulatory bodies"
-                />}
+              <Flex flexDir="column" h="full" w="100%">
+                {regulatoryBodies && (
+                  <BarChart
+                    data={regulatoryBodies.map(
+                      ({ _id, complianceItemsResponsesCount }) => ({
+                        _id,
+                        count: complianceItemsResponsesCount,
+                      }),
+                    )}
+                    label="Regulatory bodies"
+                  />
+                )}
               </Flex>
             </Flex>
-          }
+          )}
         </Flex>
       </Box>
     </>
@@ -258,6 +336,6 @@ export default RegulatoryBodies;
 
 export const regulatoryBodiesStyles = {
   regulatoryBodies: {
-    fontColor: "#818197",
-  }
-}
+    fontColor: '#818197',
+  },
+};

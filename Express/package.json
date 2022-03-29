@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "nodemon --config nodemon.json"
+    "start": "nodemon --config nodemon.json",
+    "lint:check": "eslint src/ --ext .js,.ts",
+    "lint:fix": "eslint src/ --ext .js,.ts --fix",
+    "format:check": "prettier --check \"**/*.{js,ts,json,md}\"",
+    "format:fix": "prettier --write \"**/*.{js,ts,json,md}\""
   },
   "_moduleAliases": {
     "app-interfaces": "./interfaces",
@@ -46,7 +50,17 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^16.4.13",
     "@types/passport": "^1.0.7",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import-helpers": "^1.2.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15",
+    "prettier": "^2.4.1",
     "ts-loader": "^9.2.5",
     "ts-node": "^10.2.0",
     "tsconfig-paths": "^3.10.1",

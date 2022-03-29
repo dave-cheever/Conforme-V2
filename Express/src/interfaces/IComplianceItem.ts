@@ -5,7 +5,7 @@ import {
   ILocation,
   ITrackerQuestion,
   TQuestionValue,
-} from "app-interfaces";
+} from 'app-interfaces';
 
 export interface IComplianceItem extends IBase {
   name: string;
@@ -26,5 +26,4 @@ export interface IComplianceItem extends IBase {
   regulatoryBody?: IBaseWithName;
   businessUnits?: IBusinessUnit[];
   locations?: ILocation[];
-
 }

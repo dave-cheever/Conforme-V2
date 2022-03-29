@@ -1,11 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import axios from "axios";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import App from "./bootstrap/app";
-import reportWebVitals from "./reportWebVitals";
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import axios from 'axios';
+
+import App from './bootstrap/app';
+import reportWebVitals from './reportWebVitals';
 
 axios.defaults.withCredentials = true;
 const client = new ApolloClient({
@@ -22,7 +23,7 @@ ReactDOM.render(
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

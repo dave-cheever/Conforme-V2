@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
-import { Box, Flex, Text, Avatar, Skeleton } from "@chakra-ui/react";
-import { format, getTime } from "date-fns";
-import { useHistory } from "react-router-dom";
-import { useLazyQuery, gql } from "@apollo/client";
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { IResponse } from "../../interfaces/IResponse";
-import { IUser } from "../../interfaces/IUser";
-import { useResponseContext } from "../../contexts/ResponseProvider";
+import { gql, useLazyQuery } from '@apollo/client';
+import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { format, getTime } from 'date-fns';
+
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import { IResponse } from '../../interfaces/IResponse';
+import { IUser } from '../../interfaces/IUser';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -32,106 +33,120 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
   useEffect(() => {
     getUsers({
       variables: {
-        userQueryInput: { usersIds: [response.responsibleId, response.metatags?.updatedBy] },
+        userQueryInput: {
+          usersIds: [response.responsibleId, response.metatags?.updatedBy],
+        },
       },
     });
-    // eslint-disable-next-line
   }, [response]);
 
-  const lastUpdatedBy: IUser = responseUsers.find(({ _id }) => _id === response.metatags?.updatedBy);
-  const active = getTime(new Date(response.lastRenewalDate!)).toString() === snapshot;
+  const lastUpdatedBy: IUser = responseUsers.find(
+    ({ _id }) => _id === response.metatags?.updatedBy,
+  );
+  const active =
+    getTime(new Date(response.lastRenewalDate!)).toString() === snapshot;
 
   return (
     <Box
-      cursor="pointer"
-      onClick={() => history.push(`/compliance-item/${response._id}?snapshot=${getTime(new Date(response.lastRenewalDate!))}`)}
       bg="historicalListItem.bg"
+      borderBottomColor="historicalListItem.borderColor"
+      borderBottomWidth="1px"
+      cursor="pointer"
+      onClick={() =>
+        history.push(
+          `/compliance-item/${response._id}?snapshot=${getTime(
+            new Date(response.lastRenewalDate!),
+          )}`,
+        )
+      }
+      p="15px 25px"
       py={[1, 0]}
       w="full"
-      borderBottomWidth="1px"
-      borderBottomColor="historicalListItem.borderColor"
-      p="15px 25px"
     >
-      <Flex w="full" h={["full", "73px"]} align="center" position="relative">
+      <Flex align="center" h={['full', '73px']} position="relative" w="full">
         <Flex
-          w="30%"
-          fontSize="14px"
-          lineHeight="18px"
-          color="historicalListItem.fontColor"
-          opacity="1"
-          fontWeight={active ? "700" : "400"}
           align="flex-start"
+          color="historicalListItem.fontColor"
+          fontSize="14px"
+          fontWeight={active ? '700' : '400'}
+          lineHeight="18px"
           noOfLines={1}
+          opacity="1"
           textOverflow="ellipsis"
+          w="30%"
         >
           {response.complianceItem.name}
         </Flex>
         <Flex
-          w="20%"
           color="historicalListItem.fontColor"
-          opacity="1"
-          fontWeight={active ? "700" : "400"}
           fontSize="14px"
+          fontWeight={active ? '700' : '400'}
+          opacity="1"
+          w="20%"
         >
-          {format(new Date(response.lastRenewalDate!), "d MMM yyyy")}
+          {format(new Date(response.lastRenewalDate!), 'd MMM yyyy')}
         </Flex>
-        <Box w="25%" pr='20px'>
-          <Skeleton rounded="full" isLoaded={!responsibleLoading}>
+        <Box pr="20px" w="25%">
+          <Skeleton isLoaded={!responsibleLoading} rounded="full">
             {response.responsible ? (
-              <Flex direction="row" align="center">
+              <Flex align="center" direction="row">
                 <Avatar
-                  size="xs"
                   name={response.responsible?.displayName}
+                  size="xs"
                   src={response.responsible?.imgUrl}
                 />
                 <Text
-                  w="full"
-                  pl={3}
-                  lineHeight="17px"
                   color="historicalListItem.fontColor"
-                  opacity="1"
                   fontSize="13px"
+                  fontWeight={active ? '700' : '400'}
+                  lineHeight="17px"
+                  opacity="1"
                   overflow="hidden"
+                  pl={3}
                   textOverflow="ellipsis"
+                  w="full"
                   whiteSpace="nowrap"
-                  fontWeight={active ? "700" : "400"}
                 >
                   {response.responsible?.displayName}
                 </Text>
               </Flex>
             ) : (
-              <Flex fontStyle="italic" fontSize="13px">
+              <Flex fontSize="13px" fontStyle="italic">
                 Unassigned
               </Flex>
             )}
           </Skeleton>
         </Box>
-        <Box w='25%' pr='20px'>
-          <Skeleton rounded="full" isLoaded={!responsibleLoading}>
+        <Box pr="20px" w="25%">
+          <Skeleton isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
-              <Flex direction="row" align="center">
+              <Flex align="center" direction="row">
                 <Avatar
-                  size="xs"
                   name={lastUpdatedBy?.displayName}
+                  size="xs"
                   src={lastUpdatedBy?.imgUrl}
                 />
                 <Text
-                  w="full"
-                  pl={3}
-                  lineHeight="17px"
                   color="historicalListItem.fontColor"
-                  opacity="1"
                   fontSize="13px"
+                  fontWeight={active ? '700' : '400'}
+                  lineHeight="17px"
+                  opacity="1"
                   overflow="hidden"
+                  pl={3}
                   textOverflow="ellipsis"
+                  w="full"
                   whiteSpace="nowrap"
-                  fontWeight={active ? "700" : "400"}
                 >
                   {lastUpdatedBy?.displayName}
                 </Text>
               </Flex>
             ) : (
-              <Flex fontStyle="italic" fontSize="13px" fontWeight={active ? "700" : "400"}>
+              <Flex
+                fontSize="13px"
+                fontStyle="italic"
+                fontWeight={active ? '700' : '400'}
+              >
                 Unassigned
               </Flex>
             )}
@@ -144,9 +159,9 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
 
 export const historicalListItemStyles = {
   historicalListItem: {
-    bg: "#FFFFFF",
-    borderColor: "#F0F0F0",
-    fontColor: "#282F36",
+    bg: '#FFFFFF',
+    borderColor: '#F0F0F0',
+    fontColor: '#282F36',
   },
 };
 

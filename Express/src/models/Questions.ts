@@ -1,10 +1,14 @@
-import { model, models, Schema } from "mongoose";
-import { GraphQLError } from "graphql";
-import { v4 as uuidv4 } from "uuid";
+import { GraphQLError } from 'graphql';
+import { model, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-import { IQuestion, IQuestionModel, TQuestionValue } from "app-interfaces";
-import { AuditLogs } from "app-models";
-import { genMetatags, getAuditRecordValues, getBasicElement, removeDatabaseFields } from "app-utils";
+import { IQuestion, IQuestionModel, TQuestionValue } from 'app-interfaces';
+import { AuditLogs } from 'app-models';
+import {
+  genMetatags,
+  getAuditRecordValues,
+  removeDatabaseFields,
+} from 'app-utils';
 
 const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   _id: String,
@@ -42,12 +46,16 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-questionsSchema.statics.customCreate = async function (question: IQuestion<TQuestionValue>, userId: string, organizationId: string): Promise<IQuestion<TQuestionValue>> {
+questionsSchema.statics.customCreate = async function (
+  question: IQuestion<TQuestionValue>,
+  userId: string,
+  organizationId: string,
+): Promise<IQuestion<TQuestionValue>> {
   const createdQuestion = await this.create({
     ...question,
     _id: uuidv4(),
     organizationId,
-    metatags: genMetatags("added", userId),
+    metatags: genMetatags('added', userId),
   });
 
   // if (createdQuestion?._doc) {
@@ -70,47 +78,57 @@ questionsSchema.statics.customCreate = async function (question: IQuestion<TQues
   return createdQuestion;
 };
 
-questionsSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IQuestion<TQuestionValue>[]> {
+questionsSchema.statics.customFind = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<IQuestion<TQuestionValue>[]> {
   const questions = await this.find({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return questions;
 };
 
-questionsSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IQuestion<TQuestionValue> | null> {
+questionsSchema.statics.customFindOne = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<IQuestion<TQuestionValue> | null> {
   const question = await this.findOne({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return question;
 };
 
-questionsSchema.statics.customFindById = async function (_id: string): Promise<IQuestion<TQuestionValue>> {
+questionsSchema.statics.customFindById = async function (
+  _id: string,
+): Promise<IQuestion<TQuestionValue>> {
   const question = await this.findOne({
     _id,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
-  if (!question) {
-    throw new Error("Question not found");
-  }
+  if (!question) throw new Error('Question not found');
+
   return question;
 };
 
-questionsSchema.statics.customUpdateOne = async function (selector: object = {}, updates: Partial<IQuestion<TQuestionValue>>, userId: string, organizationId: string): Promise<IQuestion<TQuestionValue>> {
+questionsSchema.statics.customUpdateOne = async function (
+  selector: object = {},
+  updates: Partial<IQuestion<TQuestionValue>>,
+  userId: string,
+  organizationId: string,
+): Promise<IQuestion<TQuestionValue>> {
   const question = await this.customFindOne(selector, organizationId);
-  if (!question) {
-    throw new GraphQLError('Question doesn\'t exist');
-  }
+  if (!question) throw new GraphQLError("Question doesn't exist");
 
   const updatedQuestion = {
     ...question,
     ...updates,
     metatags: {
       ...question?.metatags,
-      ...genMetatags("updated", userId),
+      ...genMetatags('updated', userId),
     },
   };
   const updatedResult = await this.updateOne(selector, updatedQuestion);
@@ -120,15 +138,19 @@ questionsSchema.statics.customUpdateOne = async function (selector: object = {},
       const oldValues = removeDatabaseFields(question);
       const newValues = removeDatabaseFields(updatedQuestion);
       const values = await getAuditRecordValues({ oldValues, newValues });
-      AuditLogs.customAudit({
-        coll: 'questions',
-        action: "update",
-        element: {
-          _id: question._id,
-          name: question.question,
+      AuditLogs.customAudit(
+        {
+          coll: 'questions',
+          action: 'update',
+          element: {
+            _id: question._id,
+            name: question.question,
+          },
+          values,
         },
-        values,
-      }, userId, organizationId);
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -136,17 +158,19 @@ questionsSchema.statics.customUpdateOne = async function (selector: object = {},
   return updatedQuestion;
 };
 
-questionsSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
+questionsSchema.statics.customDelete = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<number> {
   const question = await this.customFindOne(selector, organizationId);
-  if (!question) {
-    throw new GraphQLError('Question doesn\'t exist');
-  }
+  if (!question) throw new GraphQLError("Question doesn't exist");
 
   const updatedQuestion = {
     ...question,
     metatags: {
       ...question?.metatags,
-      ...genMetatags("removed", userId),
+      ...genMetatags('removed', userId),
     },
   };
   const deletedResult = await this.updateOne(selector, updatedQuestion);
@@ -155,15 +179,19 @@ questionsSchema.statics.customDelete = async function (selector: object = {}, us
     const addAuditLog = async () => {
       const oldValues = removeDatabaseFields(question);
       const values = await getAuditRecordValues({ oldValues });
-      AuditLogs.customAudit({
-        coll: 'questions',
-        action: "delete",
-        element: {
-          _id: question._id,
-          name: question.question,
+      AuditLogs.customAudit(
+        {
+          coll: 'questions',
+          action: 'delete',
+          element: {
+            _id: question._id,
+            name: question.question,
+          },
+          values,
         },
-        values,
-      }, userId, organizationId);
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -171,5 +199,8 @@ questionsSchema.statics.customDelete = async function (selector: object = {}, us
   return deletedResult?.modifiedCount;
 };
 
-const questionModel = model<IQuestion<TQuestionValue>, IQuestionModel>("Question", questionsSchema);
+const questionModel = model<IQuestion<TQuestionValue>, IQuestionModel>(
+  'Question',
+  questionsSchema,
+);
 export default questionModel;

@@ -1,37 +1,45 @@
-import { GraphQLResolveInfo } from "graphql";
-import { AuditLogs, Responses, Users } from "app-models";
-import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
-import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, isSameDay, differenceInCalendarDays } from "date-fns";
-import { response } from "express";
+import { response } from 'express';
+
+import { AuditLogs, Responses } from 'app-models';
+import { isPermitted, join } from 'app-utils';
 
 const search = async (_, { searchQuery }, { authorize, organization }) => {
   try {
     const user = await authorize();
     const { searchText } = searchQuery;
-    const pipeline: any[] = [{
-      $match: {
-        organizationId: organization._id
+    const pipeline: any[] = [
+      {
+        $match: {
+          organizationId: organization._id,
+        },
       },
-    }];
+    ];
 
-    if (!isPermitted({ user, action: 'responses.viewAll', data: { response } })) {
+    if (
+      !isPermitted({ user, action: 'responses.viewAll', data: { response } })
+    ) {
       pipeline.push({
         $match: {
           $or: [
             { accountableId: user._id },
             { responsibleId: user._id },
             { contributorsIds: { $in: [user._id] } },
-            { followersIds: { $in: [user._id] } }
-          ]
-        }
+            { followersIds: { $in: [user._id] } },
+          ],
+        },
       });
     }
 
     // Filter by published state
-    if (!(searchQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
+    if (
+      !(
+        searchQuery?.includeNotPublished &&
+        isPermitted({ user, action: 'responses.viewAll' })
+      )
+    ) {
       pipeline.push({
         $match: {
-          'published': true,
+          published: true,
         },
       });
     }
@@ -69,27 +77,31 @@ const search = async (_, { searchQuery }, { authorize, organization }) => {
         primaryText: '$complianceItem.name',
         secondaryText: '$businessUnit.name',
         type: 'compliance-item',
-      }
+      },
     });
 
     const responses = await Responses.aggregate(pipeline);
 
-    AuditLogs.customAudit({
-      coll: 'responses',
-      action: 'search',
-      element: {
-        _id: 'null',
-        name: 'search',
-      },
-      values: {
-        searchText: {
-          new: {
-            value: searchText,
-            label: searchText,
+    AuditLogs.customAudit(
+      {
+        coll: 'responses',
+        action: 'search',
+        element: {
+          _id: 'null',
+          name: 'search',
+        },
+        values: {
+          searchText: {
+            new: {
+              value: searchText,
+              label: searchText,
+            },
           },
         },
       },
-    }, user._id, organization._id);
+      user._id,
+      organization._id,
+    );
 
     return responses;
   } catch (err: any) {

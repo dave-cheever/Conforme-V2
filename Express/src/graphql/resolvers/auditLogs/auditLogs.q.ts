@@ -1,19 +1,22 @@
-
-import { AuditLogs } from "app-models";
+import { AuditLogs } from 'app-models';
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
-    const { skip, limit, action, dateLimit, elementId, userId, fields } = auditLogsQuery;
+    const { skip, limit, action, dateLimit, elementId, userId, fields } =
+      auditLogsQuery;
 
-    const pipeline: any = [{
-      $match: {
-        organizationId: organization._id,
+    const pipeline: any = [
+      {
+        $match: {
+          organizationId: organization._id,
+        },
       },
-    }, {
-      $sort: {
-        'metatags.addedAt': -1,
+      {
+        $sort: {
+          'metatags.addedAt': -1,
+        },
       },
-    }];
+    ];
 
     if (dateLimit) {
       pipeline.push({
@@ -33,7 +36,7 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
 
     if (fields?.length > 0) {
       const fieldsPipeline: object[] = [];
-      fields.forEach(field => {
+      fields.forEach((field) => {
         fieldsPipeline.push({
           [`values.${field}`]: {
             $exists: true,
@@ -50,16 +53,16 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
     if (elementId) {
       pipeline.push({
         $match: {
-          "element._id": elementId,
-        }
+          'element._id': elementId,
+        },
       });
     }
 
     if (userId) {
       pipeline.push({
         $match: {
-          "metatags.addedBy": userId,
-        }
+          'metatags.addedBy': userId,
+        },
       });
     }
 
@@ -85,16 +88,16 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
         metatags: 1,
         date: {
           $dateToString: {
-            format: "%Y-%m-%d",
-            date: "$metatags.addedAt",
-          }
-        }
-      }
+            format: '%Y-%m-%d',
+            date: '$metatags.addedAt',
+          },
+        },
+      },
     });
 
     pipeline.push({
       $group: {
-        _id: "$date",
+        _id: '$date',
         records: {
           $push: {
             _id: '$_id',
@@ -103,8 +106,8 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
             element: '$element',
             values: '$values',
             metatags: '$metatags',
-          }
-        }
+          },
+        },
       },
     });
 

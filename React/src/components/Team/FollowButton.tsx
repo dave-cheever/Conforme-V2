@@ -1,14 +1,15 @@
-import React, { useMemo } from "react";
-import { useToast } from "@chakra-ui/react";
-import { gql, useMutation } from "@apollo/client";
+import React, { useMemo } from 'react';
 
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import { useAppContext } from "../../contexts/AppProvider";
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import Can from "../can";
-import ResponseHeaderButton from "../Response/ResponseHeader/ResponseHeaderButton";
-import { FollowIcon, UnFollowIcon } from "../../icons";
-import ResponseHeaderMenuItem from "../Response/ResponseHeader/ResponseHeaderMenuItem";
+import { gql, useMutation } from '@apollo/client';
+import { useToast } from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import { FollowIcon, UnFollowIcon } from '../../icons';
+import Can from '../can';
+import ResponseHeaderButton from '../Response/ResponseHeader/ResponseHeaderButton';
+import ResponseHeaderMenuItem from '../Response/ResponseHeader/ResponseHeaderMenuItem';
 
 const ADD_PARTICIPANT = gql`
   mutation ($responseParticipantModify: ResponseParticipantModify!) {
@@ -25,20 +26,18 @@ const REMOVE_PARTICIPANT = gql`
 `;
 
 const FollowButton = ({ isMobile = false }) => {
-
   const { response, refetch } = useResponseContext();
   const { user } = useAppContext();
   const toast = useToast();
   const [addParticipant, { loading }] = useMutation(ADD_PARTICIPANT);
-  const [removeParticipant, { loading: unFollowLoading }] = useMutation(REMOVE_PARTICIPANT);
+  const [removeParticipant, { loading: unFollowLoading }] =
+    useMutation(REMOVE_PARTICIPANT);
 
   const isFollower = useMemo(() => {
-    if (!user?._id) {
-      return false;
-    }
-    if (response.followersIds?.length === 0) {
-      return false;
-    }
+    if (!user?._id) return false;
+
+    if (response.followersIds?.length === 0) return false;
+
     return response?.followersIds?.includes(user?._id);
   }, [response, user]);
 
@@ -49,20 +48,20 @@ const FollowButton = ({ isMobile = false }) => {
           responseParticipantModify: {
             _id: response?._id,
             participantIds: [user?._id],
-            permission: "follower",
+            permission: 'follower',
           },
         },
       });
       refetch();
       toast({
         ...toastSuccess,
-        title: "Success",
-        description: "Response follow success",
+        title: 'Success',
+        description: 'Response follow success',
       });
     } catch (error: any) {
       toast({
         ...toastFailed,
-        title: "Error",
+        title: 'Error',
         description: error.message,
       });
     }
@@ -75,20 +74,20 @@ const FollowButton = ({ isMobile = false }) => {
           responseParticipantRemove: {
             _id: response?._id,
             participantId: user?._id,
-            permission: "follower",
+            permission: 'follower',
           },
         },
       });
       refetch();
       toast({
         ...toastSuccess,
-        title: "Success",
-        description: "Response Unfollow success",
+        title: 'Success',
+        description: 'Response Unfollow success',
       });
     } catch (error: any) {
       toast({
         ...toastFailed,
-        title: "Error",
+        title: 'Error',
         description: error.message,
       });
     }
@@ -98,20 +97,20 @@ const FollowButton = ({ isMobile = false }) => {
     if (isFollower) {
       return (
         <UnFollowIcon
+          _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+          fill="transparent"
           fontSize="15px"
           stroke="reasponseHeader.buttonLightColor"
-          fill="transparent"
-          _groupHover={{ stroke: "reasponseHeader.buttonLightColorHover" }}
         />
       );
     }
 
     return (
       <FollowIcon
+        _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+        fill="transparent"
         fontSize="15px"
         stroke="reasponseHeader.buttonLightColor"
-        fill="transparent"
-        _groupHover={{ stroke: "reasponseHeader.buttonLightColorHover" }}
       />
     );
   }, [isFollower]);
@@ -121,11 +120,12 @@ const FollowButton = ({ isMobile = false }) => {
       <Can
         action="responses.manageFollower"
         yes={() => (
-        <ResponseHeaderMenuItem
-          title={isFollower ? "Unfollow" : "Follow"}
-          icon={Icon}
-          onClick={isFollower ? handleUnFollow : handleFollow}
-        />)}
+          <ResponseHeaderMenuItem
+            icon={Icon}
+            onClick={isFollower ? handleUnFollow : handleFollow}
+            title={isFollower ? 'Unfollow' : 'Follow'}
+          />
+        )}
       />
     );
   }
@@ -135,9 +135,9 @@ const FollowButton = ({ isMobile = false }) => {
       action="responses.manageFollower"
       yes={() => (
         <ResponseHeaderButton
-          name={isFollower ? "Unfollow" : "Follow"}
           icon={Icon}
           loading={loading || unFollowLoading}
+          name={isFollower ? 'Unfollow' : 'Follow'}
           onClick={isFollower ? handleUnFollow : handleFollow}
         />
       )}

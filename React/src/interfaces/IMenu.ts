@@ -3,9 +3,9 @@ export interface ISubsection {
   label: string;
 }
 
-export interface IMenuItem  {
+export interface IMenuItem {
   url: string;
   icon: any;
   label: string;
-  subSections: ISubsection[]
+  subSections: ISubsection[];
 }

@@ -1,5 +1,6 @@
-import { createContext } from "react";
-import { IAuditor } from "../../interfaces/IAuditor";
+import { createContext } from 'react';
+
+import { IAuditor } from '../../interfaces/IAuditor';
 
 export interface AuditModalContextType {
   activePage: string;
@@ -14,11 +15,11 @@ export interface AuditModalContextType {
 }
 
 export const initialState: AuditModalContextType = {
-  activePage: "",
+  activePage: '',
   setActivePage: () => undefined,
-  selectedArea: "",
+  selectedArea: '',
   setSelectedArea: () => undefined,
-  auditorSearchText: "",
+  auditorSearchText: '',
   updateAuditorSearchText: () => undefined,
   auditors: [],
   selectedAuditors: [],

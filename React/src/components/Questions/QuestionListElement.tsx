@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Flex, Stack, Text, Tooltip } from "@chakra-ui/react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import { ITrackerQuestion } from "../../interfaces/ITrackerQuestion";
-import { Asterisk, Bin, EditIcon }  from "../../icons";
-import { questionHeader } from "../../utils/helpers";
-import { TQuestionValue } from "../../interfaces/TQuestionValue";
+import { Flex, Stack, Text, Tooltip } from '@chakra-ui/react';
+
+import { Asterisk, EditIcon, Trashcan } from '../../icons';
+import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
+import { TQuestionValue } from '../../interfaces/TQuestionValue';
+import { questionHeader } from '../../utils/helpers';
 
 interface IQuestionListElement {
   question: ITrackerQuestion<TQuestionValue>;
@@ -12,76 +13,102 @@ interface IQuestionListElement {
   removeQuestion?: () => void;
   editQuestion?: () => void;
 }
-const QuestionListElement = ({ question, bgColor, removeQuestion, editQuestion }: IQuestionListElement) => {
-
+const QuestionListElement = ({
+  question,
+  bgColor,
+  removeQuestion,
+  editQuestion,
+}: IQuestionListElement) => {
   const ref: any = useRef(null);
   const [isTextOverflown, setIsTextOverflown] = useState(false);
 
   useEffect(() => {
     const element = ref.current!;
     if (element) {
-      //only show tooltip if text overflow is happening.
+      // only show tooltip if text overflow is happening.
       setIsTextOverflown(element.scrollHeight > element.clientHeight);
     }
   }, []);
 
   return (
     <Stack
-      w='calc(100% - 1rem)'
-      minH='65px'
-      direction='row'
-      spacing={2}
+      align="center"
+      bg={bgColor || 'questionListElement.bg'}
+      borderColor="questionListElement.border"
+      borderWidth="2px"
+      direction="row"
+      minH="65px"
       px={4}
-      align='center'
-      bg={bgColor ? bgColor : 'questionListElement.bg'}
-      rounded='10px'
-      borderWidth='2px'
-      borderColor='questionListElement.border'
+      rounded="10px"
+      spacing={2}
+      w="calc(100% - 1rem)"
     >
-      <Flex w="calc(100% - 40px)" flexDir="column">
-        <Text fontSize="11px" color="questionListElement.label">{questionHeader(question.type)}</Text>
-        <Flex flexGrow={1} w="full" alignItems="center">
-          <Tooltip hasArrow label={question.name} isDisabled={!isTextOverflown} bg="questionListElement.tooltipBg" color="questionListElement.tooltipColor" placement="top">
+      <Flex flexDir="column" w="calc(100% - 40px)">
+        <Text color="questionListElement.label" fontSize="11px">
+          {questionHeader(question.type)}
+        </Text>
+        <Flex alignItems="center" flexGrow={1} w="full">
+          <Tooltip
+            bg="questionListElement.tooltipBg"
+            color="questionListElement.tooltipColor"
+            hasArrow
+            isDisabled={!isTextOverflown}
+            label={question.name}
+            placement="top"
+          >
             <Text
-              color='questionListElement.name'
-              fontSize='smm'
+              color="questionListElement.name"
+              fontSize="smm"
               fontWeight="bold"
               noOfLines={4}
               ref={ref}
-            >{question.name}</Text>
+            >
+              {question.name}
+            </Text>
           </Tooltip>
-          {question.required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='questionListElement.iconAsterisk' w="9px" h="9px" />}
+          {question.required && (
+            <Asterisk
+              fill="questionListElement.iconAsterisk"
+              h="9px"
+              mb="8px"
+              ml="5px"
+              stroke="questionListElement.iconAsterisk"
+              w="9px"
+            />
+          )}
         </Flex>
       </Flex>
-      {editQuestion &&
+      {editQuestion && (
         <EditIcon
-          w='20px'
-          stroke="questionListElement.icon"
-          cursor='pointer'
+          cursor="pointer"
           onClick={editQuestion}
-        />}
-      {removeQuestion &&
-        <Bin
-          w='20px'
           stroke="questionListElement.icon"
-          cursor='pointer'
+          w="20px"
+        />
+      )}
+      {removeQuestion && (
+        <Trashcan
+          cursor="pointer"
           onClick={removeQuestion}
-        />}
+          stroke="questionListElement.icon"
+          w="20px"
+        />
+      )}
     </Stack>
   );
-}
+};
 
 export default QuestionListElement;
 
 export const questionListElementStyles = {
   questionListElement: {
-    bg: "#FFFFFF",
-    border: "#FFFFFF",
-    name: "#2B3236",
-    label: "#818197",
-    iconAsterisk: "#E93C44",
-    icon: "#818197",
-    tooltipColor: "black",
-    tooltipBg: "white"
-  }
+    bg: '#FFFFFF',
+    border: '#FFFFFF',
+    name: '#2B3236',
+    label: '#818197',
+    iconAsterisk: '#E93C44',
+    icon: '#818197',
+    tooltipColor: 'black',
+    tooltipBg: 'white',
+  },
 };

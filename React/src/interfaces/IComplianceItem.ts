@@ -1,9 +1,9 @@
-import { IBase } from "./IBase";
-import { IBaseWithName } from "./IBaseWithName";
-import { IBusinessUnit } from "./IBusinessUnit";
-import { ITrackerQuestion } from "./ITrackerQuestion";
-import { ILocation } from "./ILocation";
-import { TQuestionValue } from "./TQuestionValue";
+import { IBase } from './IBase';
+import { IBaseWithName } from './IBaseWithName';
+import { IBusinessUnit } from './IBusinessUnit';
+import { ILocation } from './ILocation';
+import { ITrackerQuestion } from './ITrackerQuestion';
+import { TQuestionValue } from './TQuestionValue';
 
 export interface IComplianceItem extends IBase {
   name: string;
@@ -18,7 +18,7 @@ export interface IComplianceItem extends IBase {
   locationsIds?: string[];
   published: boolean;
   reference?: string;
-  
+
   locations?: ILocation[];
   category?: IBaseWithName;
   regulatoryBody?: IBaseWithName;

@@ -1,10 +1,10 @@
-import { IBase } from "./IBase";
-import { IBusinessUnit } from "./IBusinessUnit";
-import { IComment } from "./IComment";
-import { IComplianceItem } from "./IComplianceItem";
-import { TQuestionValue } from "./TQuestionValue";
-import { ITrackerQuestion } from "./ITrackerQuestion";
-import { IUser } from "./IUser";
+import { IBase } from './IBase';
+import { IBusinessUnit } from './IBusinessUnit';
+import { IComment } from './IComment';
+import { IComplianceItem } from './IComplianceItem';
+import { ITrackerQuestion } from './ITrackerQuestion';
+import { IUser } from './IUser';
+import { TQuestionValue } from './TQuestionValue';
 
 export interface IDocument {
   id: string;
@@ -37,11 +37,11 @@ export interface IResponse extends IBase {
   contributorsIds?: string[];
   followersIds?: string[];
   published: boolean;
-  
+
   // Comments - injected to response when getting from database
   // Taken from Comments collection
   comments: IComment[];
-  
+
   // Compliance items fields - injected to response when getting from database
   complianceItem: IComplianceItem;
 

@@ -1,13 +1,14 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { Flex, Icon, Box, Text } from "@chakra-ui/react";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { ChevronRight, ConformeSmall } from "../../../icons";
-import { navigationTabs } from "../../../bootstrap/config";
-import ResponseLeftTabItem from "../ResponseLeftTabItem";
-import ResponseDetail from "./ResponseDetail";
-import { useResponseContext } from "../../../contexts/ResponseProvider";
-import { useAppContext } from "../../../contexts/AppProvider";
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+
+import { navigationTabs } from '../../../bootstrap/config';
+import { useAppContext } from '../../../contexts/AppProvider';
+import { useResponseContext } from '../../../contexts/ResponseProvider';
+import { ChevronRight, ConformeSmall } from '../../../icons';
+import ResponseLeftTabItem from '../ResponseLeftTabItem';
+import ResponseDetail from './ResponseDetail';
 
 const ResponseLeftNavigationTablet = () => {
   const history = useHistory();
@@ -17,62 +18,62 @@ const ResponseLeftNavigationTablet = () => {
 
   return (
     <Flex
-      color="responseLeftNavigation.color"
       bg="responseLeftNavigation.bg"
-      fontWeight="400"
+      color="responseLeftNavigation.color"
       direction="column"
-      w="80px"
-      h="100vh"
-      overflow="auto"
+      display={['none', 'flex', 'none']}
       flexShrink={0}
-      px={6}
+      fontWeight="400"
+      h="100vh"
       justifyContent="space-between"
-      display={["none", "flex", "none"]}
+      overflow="auto"
+      px={6}
+      w="80px"
     >
       <Flex flexDirection="column">
         <Box
-          display="flex"
           alignItems="center"
-          h="80px"
-          onClick={() => history.push('/')}
           cursor="pointer"
+          display="flex"
+          h="80px"
           justifyContent="center"
-          >
+          onClick={() => history.push('/')}
+        >
           <Text
-            fontWeight="bold"
-            fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
+            fontSize="16px"
+            fontWeight="bold"
           >
             {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
         <Flex
-          w="full"
-          cursor="pointer"
           align="center"
-          onClick={() => history.push("/compliance-items")}
           color="responseLeftNavigation.goBackColor"
+          cursor="pointer"
           fontSize="14px"
           h="30px"
           mb="20px"
+          onClick={() => history.push('/compliance-items')}
+          w="full"
         >
-          <ChevronRight transform="Rotate(180deg)" ml={2} />
+          <ChevronRight ml={2} transform="Rotate(180deg)" />
         </Flex>
         <Flex flexDirection="column" mb={2}>
           {navigationTabs.map(({ label, icon, url }) => (
             <ResponseLeftTabItem
+              icon={icon}
               isDesktop={false}
               key={url}
               label={label}
-              icon={icon}
               url={url}
             />
           ))}
         </Flex>
         <ResponseDetail response={response} />
       </Flex>
-      <Flex display={["none", "flex"]}>
-        <Icon as={ConformeSmall} w="27px" h="30px" mb="20px" />
+      <Flex display={['none', 'flex']}>
+        <Icon as={ConformeSmall} h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

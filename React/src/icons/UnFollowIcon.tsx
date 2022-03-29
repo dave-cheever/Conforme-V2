@@ -1,4 +1,4 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const UnFollowIcon = createIcon({
   path: (
@@ -30,8 +30,8 @@ const UnFollowIcon = createIcon({
       />
     </>
   ),
-  viewBox: "0 0 15 16",
-  displayName: "UnFollow",
+  viewBox: '0 0 15 16',
+  displayName: 'UnFollow',
 });
 
 export default UnFollowIcon;

@@ -1,84 +1,120 @@
-import { useMemo } from "react";
-import { Flex, Text, useDisclosure, Box } from "@chakra-ui/react";
+import { useMemo } from 'react';
 
-import { useFiltersContext } from "../../contexts/FiltersProvider";
-import { ArrowUpIcon, ArrowDownIcon, ResetIcon } from '../../icons';
-import IFilter from "../../interfaces/IFilter";
-import BusinessUnitFilter from "./BusinessUnitFilter";
-import CategoryFilter from "./CategoryFilter";
-import ComplianceItemFilter from "./ComplianceItemFilter";
-import DueDateFilter from "./DueDateFilter";
-import ItemStatusFilter from "./ItemStatusFilter";
-import LocationFilter from "./LocationFilter";
-import RegulatoryBodyFilter from "./RegulatoryBodyFilter";
-import UserFilter from "./UserFilter";
+import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
 
-const FiltersPanelItem = ({ name, filter }: { name: string, filter: IFilter }) => {
+import { useFiltersContext } from '../../contexts/FiltersProvider';
+import { ArrowDownIcon, ArrowUpIcon, ResetIcon } from '../../icons';
+import IFilter from '../../interfaces/IFilter';
+import BusinessUnitFilter from './BusinessUnitFilter';
+import CategoryFilter from './CategoryFilter';
+import ComplianceItemFilter from './ComplianceItemFilter';
+import DueDateFilter from './DueDateFilter';
+import ItemStatusFilter from './ItemStatusFilter';
+import LocationFilter from './LocationFilter';
+import RegulatoryBodyFilter from './RegulatoryBodyFilter';
+import UserFilter from './UserFilter';
+
+const FiltersPanelItem = ({
+  name,
+  filter,
+}: {
+  name: string;
+  filter: IFilter;
+}) => {
   const { isOpen, onToggle } = useDisclosure();
-  const {
-    setFilters,
-    filtersValues
-  } = useFiltersContext();
+  const { setFilters, filtersValues } = useFiltersContext();
 
-  const filtersLength = useMemo(() => {
-    return filtersValues[name]?.value?.length || 0;
-  }, [filtersValues, name]);
+  const filtersLength = useMemo(
+    () => filtersValues[name]?.value?.length || 0,
+    [filtersValues, name],
+  );
 
   const renderPanel = () => {
     switch (name) {
-      case "itemStatus":
+      case 'itemStatus':
         return <ItemStatusFilter />;
 
-      case "businessUnitsIds":
+      case 'businessUnitsIds':
         return <BusinessUnitFilter />;
 
-      case "categoriesIds":
+      case 'categoriesIds':
         return <CategoryFilter />;
 
-      case "complianceItemsIds":
+      case 'complianceItemsIds':
         return <ComplianceItemFilter />;
 
-      case "dueDate":
+      case 'dueDate':
         return <DueDateFilter />;
 
-      case "locationsIds":
+      case 'locationsIds':
         return <LocationFilter />;
 
-      case "regulatoryBodiesIds":
+      case 'regulatoryBodiesIds':
         return <RegulatoryBodyFilter />;
 
-      case "usersIds":
+      case 'usersIds':
         return <UserFilter />;
 
       default:
         break;
     }
-  }
+  };
 
   const resetFilter = () => {
-    let updatedFiltersValue = { ...filtersValues };
+    const updatedFiltersValue = { ...filtersValues };
     updatedFiltersValue[name].value = [];
 
     setFilters({ filters: updatedFiltersValue });
-  }
+  };
 
   return (
     <Flex
-      key={name}
-      justify="center"
-      p='3'
-      w="full"
-      bg={isOpen ? "filtersPanelItem.openBg" : "filtersPanelItem.closeBg"}
+      bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
       borderRadius="10px"
-      my={2}
       flexDir="column"
+      justify="center"
+      key={name}
+      my={2}
+      p="3"
+      w="full"
     >
-      <Flex w="full" mb={isOpen ? "4" : "0"} align="center" justify="space-between" cursor="pointer">
-        <Text w="full" fontSize="14px" color="filtersPanelItem.fontColor" onClick={onToggle}>{filter.name}</Text>
+      <Flex
+        align="center"
+        cursor="pointer"
+        justify="space-between"
+        mb={isOpen ? '4' : '0'}
+        w="full"
+      >
+        <Text
+          color="filtersPanelItem.fontColor"
+          fontSize="14px"
+          onClick={onToggle}
+          w="full"
+        >
+          {filter.name}
+        </Text>
         <Flex>
-          {(filtersLength > 0) && <Box fontSize="12px" bg="filtersPanelItem.countBg" color="filtersPanelItem.countColor" px="10px" borderRadius="10px" fontWeight="400" mr="3">{filtersLength}</Box>}
-          {(isOpen && filtersLength > 0) && <ResetIcon mr={3} onClick={resetFilter} />}
-          {isOpen ? <ArrowUpIcon onClick={onToggle} /> : <ArrowDownIcon onClick={onToggle} />}
+          {filtersLength > 0 && (
+            <Box
+              bg="filtersPanelItem.countBg"
+              borderRadius="10px"
+              color="filtersPanelItem.countColor"
+              fontSize="12px"
+              fontWeight="400"
+              mr="3"
+              px="10px"
+            >
+              {filtersLength}
+            </Box>
+          )}
+          {isOpen && filtersLength > 0 && (
+            <ResetIcon mr={3} onClick={resetFilter} />
+          )}
+          {isOpen ? (
+            <ArrowUpIcon onClick={onToggle} />
+          ) : (
+            <ArrowDownIcon onClick={onToggle} />
+          )}
         </Flex>
       </Flex>
       {isOpen && renderPanel()}
@@ -90,10 +126,10 @@ export default FiltersPanelItem;
 
 export const filtersPanelItemStyles = {
   filtersPanelItem: {
-    openBg: "#F0F2F5",
-    closeBg: "#F0F2F595",
-    fontColor: "#282F36",
-    countColor: "#818197",
-    countBg: "white"
-  }
-}
+    openBg: '#F0F2F5',
+    closeBg: '#F0F2F595',
+    fontColor: '#282F36',
+    countColor: '#818197',
+    countBg: 'white',
+  },
+};

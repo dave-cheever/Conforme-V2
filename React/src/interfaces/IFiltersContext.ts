@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
-import { IBaseWithName } from "./IBaseWithName";
-import { IBusinessUnit } from "./IBusinessUnit";
-import { IComplianceItem } from "./IComplianceItem";
-import IFilters, { IResponseFilters } from "./IFilters";
-import { ILocation } from "./ILocation";
-import { IUser } from "./IUser";
+import { IBaseWithName } from './IBaseWithName';
+import { IBusinessUnit } from './IBusinessUnit';
+import { IComplianceItem } from './IComplianceItem';
+import IFilters, { IResponseFilters } from './IFilters';
+import { ILocation } from './ILocation';
+import { IUser } from './IUser';
 
 export interface IFiltersContext {
   filtersValues: IFilters;
@@ -24,7 +24,9 @@ export interface IFiltersContext {
   setOpenedFilterPanel: Dispatch<SetStateAction<string | null>>;
 
   responsesStatusesCounts: { [statusName: string]: number };
-  setResponsesStatusesCounts: Dispatch<SetStateAction<{ [statusName: string]: number }>>;
+  setResponsesStatusesCounts: Dispatch<
+    SetStateAction<{ [statusName: string]: number }>
+  >;
 
   responseFiltersValue: IResponseFilters;
   setResponseFiltersValue: Dispatch<SetStateAction<IResponseFilters>>;

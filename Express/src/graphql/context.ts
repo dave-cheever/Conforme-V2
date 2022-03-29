@@ -1,9 +1,9 @@
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError } from 'apollo-server-express';
+import { isAfter, isBefore, parseISO, sub } from 'date-fns';
 
-import { IUser } from "app-interfaces";
-import { Organizations } from "app-models";
-import { sessionizeOrganization } from "app-utils";
-import { isAfter, isBefore, parseISO, sub } from "date-fns";
+import { IUser } from 'app-interfaces';
+import { Organizations } from 'app-models';
+import { sessionizeOrganization } from 'app-utils';
 
 const context = ({ req, res }) => {
   const { organization } = req.session;
@@ -12,19 +12,27 @@ const context = ({ req, res }) => {
   // Throws an error if session is not valid
   const authorize = async (): Promise<IUser> => {
     const { user } = req;
-    if (!user) {
+    if (!user) 
       throw new AuthenticationError('Invalid session');
-    }
 
     // Check organization licence
     // And refresh organization in cookie once at 6 hours
     const { licenceLastChecked } = req.session.passport;
-    if (!licenceLastChecked || isBefore(parseISO(licenceLastChecked), sub(new Date(), { hours: 6 }))) {
-      const latestOrganization = await Organizations.customFindById(organization._id, '');
-      const isLicenceValid = isAfter(new Date(latestOrganization.licenceExpirationDate), new Date());
-      if (!isLicenceValid) {
-        throw new AuthenticationError('Organization\'s licence expired');
-      }
+    if (
+      !licenceLastChecked ||
+      isBefore(parseISO(licenceLastChecked), sub(new Date(), { hours: 6 }))
+    ) {
+      const latestOrganization = await Organizations.customFindById(
+        organization._id,
+        '',
+      );
+      const isLicenceValid = isAfter(
+        new Date(latestOrganization.licenceExpirationDate),
+        new Date(),
+      );
+      if (!isLicenceValid) 
+        throw new AuthenticationError("Organization's licence expired");
+      
       req.session.passport.licenceLastChecked = new Date();
       req.session.organization = sessionizeOrganization(latestOrganization);
     }

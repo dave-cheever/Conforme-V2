@@ -1,4 +1,4 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const UploadedCross = createIcon({
   path: (
@@ -21,7 +21,7 @@ const UploadedCross = createIcon({
       />
     </g>
   ),
-  viewBox: "0 0 10 12",
+  viewBox: '0 0 10 12',
 });
 
 export default UploadedCross;

@@ -1,3 +1,3 @@
-import { IQuestionChoice } from "./IQuestionChoice";
+import { IQuestionChoice } from './IQuestionChoice';
 
-export type TQuestionValue = string | Date | Boolean | IQuestionChoice[] | null;
+export type TQuestionValue = string | Date | boolean | IQuestionChoice[] | null;

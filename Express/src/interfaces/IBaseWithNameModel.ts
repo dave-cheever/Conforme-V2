@@ -1,3 +1,3 @@
-import { IBaseModel, IBaseWithName } from "app-interfaces";
+import { IBaseModel, IBaseWithName } from 'app-interfaces';
 
-export interface IBaseWithNameModel extends IBaseModel<IBaseWithName> {};
+export interface IBaseWithNameModel extends IBaseModel<IBaseWithName> {}

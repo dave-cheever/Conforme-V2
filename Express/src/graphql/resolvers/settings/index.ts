@@ -10,7 +10,7 @@ const settingsResolvers = {
   },
   Mutation: {
     updateSetting,
-    generateThumbnail
+    generateThumbnail,
   },
 };
 

@@ -1,10 +1,23 @@
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 
 export interface IBaseModel<I> extends Model<I> {
-  customCreate: (document: Partial<I>, userId: string, organizationId: string) => Promise<I>;
+  customCreate: (
+    document: Partial<I>,
+    userId: string,
+    organizationId: string
+  ) => Promise<I>;
   customFindById: (_id: string, organizationId: string) => Promise<I>;
   customFind: (selector: object, organizationId: string) => Promise<I[]>;
   customFindOne: (selector: object, organizationId: string) => Promise<I>;
-  customUpdateOne: (selector: object, updatedDocument: Partial<I>, userId: string, organizationId: string) => Promise<I>;
-  customDelete: (selector: object, userId: string, organizationId: string) => Promise<number>;
-};
+  customUpdateOne: (
+    selector: object,
+    updatedDocument: Partial<I>,
+    userId: string,
+    organizationId: string
+  ) => Promise<I>;
+  customDelete: (
+    selector: object,
+    userId: string,
+    organizationId: string
+  ) => Promise<number>;
+}

@@ -1,22 +1,26 @@
-import { v4 as uuidv4 } from "uuid";
+import { BusinessUnits } from 'app-models';
+import { isPermitted } from 'app-utils';
 
-import { BusinessUnits } from "app-models";
-import { genMetatags, isPermitted } from "app-utils";
+const createBusinessUnit = async (
+  _,
+  { businessUnitInput },
+  { authorize, organization },
+) => {
+  try {
+    const user = await authorize();
 
-const createBusinessUnit = async (_, {businessUnitInput}, { authorize, organization }) => {
-    try {
-      const user = await authorize();
-  
-      if (!isPermitted({ user, action: "businessUnits.add" })) {
-        throw new Error("User is not permitted");
-      }
-  
-      const createdBusinessUnit = await BusinessUnits.customCreate(businessUnitInput, user._id, organization._id);
-      return createdBusinessUnit;
-    } catch (err: any) {
-      throw new Error(err);
-    }
-  };
-  
-  export default createBusinessUnit;
-  
+    if (!isPermitted({ user, action: 'businessUnits.add' }))
+      throw new Error('User is not permitted');
+
+    const createdBusinessUnit = await BusinessUnits.customCreate(
+      businessUnitInput,
+      user._id,
+      organization._id,
+    );
+    return createdBusinessUnit;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+export default createBusinessUnit;

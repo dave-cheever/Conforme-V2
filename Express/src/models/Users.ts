@@ -16,47 +16,60 @@ const userSchema = new Schema<IUser, IUserModel>({
     updatedAt: Date,
     updatedBy: String,
     removedAt: Date,
-    removedBy: String
-  }
+    removedBy: String,
+  },
 });
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-userSchema.statics.customFind = async function ({ organization }): Promise<IUser[]> {
+userSchema.statics.customFind = async function ({
+  organization,
+}): Promise<IUser[]> {
   const users = await this.find({
-    "organizationsIds": { $in: [organization._id] },
-    "metatags.removedAt": { $eq: null },
+    organizationsIds: { $in: [organization._id] },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return users;
 };
 
-userSchema.statics.customFindById = async function (userId: string): Promise<IUser | null> {
+userSchema.statics.customFindById = async function (
+  userId: string,
+): Promise<IUser | null> {
   const user = await this.findById(userId).lean();
   return user;
-}
+};
 
-
-userSchema.statics.customAdd = async function (user: IUser, userId: string, organizationId: string): Promise<IUser> {
+userSchema.statics.customAdd = async function (
+  user: IUser,
+  userId: string,
+  organizationId: string,
+): Promise<IUser> {
   const newUser = await this.create({
     ...user,
-    defaultPage: "/",
+    defaultPage: '/',
     organizationsIds: [organizationId],
     userCreated: Date.now(),
   });
   return newUser;
-}
+};
 
 // This method includes user details from MS Graph
-userSchema.statics.customFindByIdWithDetails = async function ({ userId, organization }: { userId: string, organization: IOrganization }): Promise<IUser> {
+userSchema.statics.customFindByIdWithDetails = async function ({
+  userId,
+  organization,
+}: {
+  userId: string;
+  organization: IOrganization;
+}): Promise<IUser> {
   const user = await this.customFindById(userId, organization._id);
-  if (!user) {
-    throw new Error('User not found');
-  }
+  if (!user) throw new Error('User not found');
+
   const userDetails = await GraphService.getUserData({ userId, organization });
-  const { givenName, surname, displayName, mail, userPrincipalName, jobTitle } = userDetails;
+  const { givenName, surname, displayName, mail, userPrincipalName, jobTitle } =
+    userDetails;
 
   let role = 'user';
-  const roles = await GraphService.checkMemberGroups({
+  const roles: any = await GraphService.checkMemberGroups({
     userId,
     groups: {
       admin: organization.adminsGroupId || '',
@@ -65,11 +78,8 @@ userSchema.statics.customFindByIdWithDetails = async function ({ userId, organiz
     organization,
   });
 
-  if (roles['admin']) {
-    role = 'admin';
-  } else if (roles['reader']) {
-    role = 'reader';
-  }
+  if (roles.admin) role = 'admin';
+  else if (roles.reader) role = 'reader';
 
   return {
     ...user,
@@ -79,9 +89,9 @@ userSchema.statics.customFindByIdWithDetails = async function ({ userId, organiz
     email: mail || userPrincipalName!,
     jobTitle: jobTitle!,
     role,
-    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`
+    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`,
   };
-}
+};
 
 const userModel = model<IUser, IUserModel>('User', userSchema);
 export default userModel;

@@ -1,40 +1,38 @@
 import React from 'react';
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+
+import { useFiltersContext } from '../../contexts/FiltersProvider';
+import { ArrowRight } from '../../icons';
 import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from '../NavigationLeft/NavigationLeftFilters';
-import { ArrowRight } from '../../icons';
 import SubSection from '../NavigationLeft/SubSection';
-import { useFiltersContext } from '../../contexts/FiltersProvider';
 
 const NavigationBottomItem = ({
   menuItem,
   filtersOpen,
   setFiltersOpen,
   subsectionOpen,
-  setSubsectionOpen
+  setSubsectionOpen,
 }: {
-  menuItem: IMenuItem,
-  filtersOpen: boolean,
-  setFiltersOpen: (value: boolean) => void,
-  subsectionOpen: boolean,
-  setSubsectionOpen: (value: boolean) => void
+  menuItem: IMenuItem;
+  filtersOpen: boolean;
+  setFiltersOpen: (value: boolean) => void;
+  subsectionOpen: boolean;
+  setSubsectionOpen: (value: boolean) => void;
 }) => {
   const history = useHistory();
   const { url, icon, label } = menuItem;
-  const {
-    responsesStatusesCounts,
-  } = useFiltersContext();
+  const { responsesStatusesCounts } = useFiltersContext();
 
   return (
     <Flex
       alignItems="center"
-      pos="relative"
       css={{
-        ":not(:first-of-type)": {
-          marginLeft: "25px"
-        }
+        ':not(:first-of-type)': {
+          marginLeft: '25px',
+        },
       }}
       flexGrow={
         menuItem.subSections
@@ -42,90 +40,122 @@ const NavigationBottomItem = ({
             ? 1
             : 0
           : history.location.pathname === url
-            ? 1
-            : 0
+          ? 1
+          : 0
       }
       onClick={() => {
-        if (menuItem.url === "/") {
+        if (menuItem.url === '/') {
           setFiltersOpen(!filtersOpen);
           setSubsectionOpen(false);
           history.push(url);
-        } else if (menuItem.url === "/admin") {
+        } else if (menuItem.url === '/admin') {
           setSubsectionOpen(!subsectionOpen);
           setFiltersOpen(false);
         }
       }}
+      pos="relative"
     >
       <Flex
-        w="30px"
-        h="30px"
         alignItems="center"
-        justifyContent="center"
         bg={
           menuItem.subSections
             ? history.location.pathname.includes(url)
-              ? "navigationLeftItemTablet.selectedLabelBg"
-              : "navigationLeftItemTablet.unselectedLabelBg"
+              ? 'navigationLeftItemTablet.selectedLabelBg'
+              : 'navigationLeftItemTablet.unselectedLabelBg'
             : history.location.pathname === url
-              ? "navigationLeftItemTablet.selectedLabelBg"
-              : "navigationLeftItemTablet.unselectedLabelBg"
+            ? 'navigationLeftItemTablet.selectedLabelBg'
+            : 'navigationLeftItemTablet.unselectedLabelBg'
         }
+        h="30px"
+        justifyContent="center"
         rounded="8px"
+        w="30px"
       >
         <Icon
           as={icon}
-          w="15px"
           h="15px"
           stroke={
             menuItem.subSections
               ? history.location.pathname.includes(url)
-                ? "navigationLeftItemTablet.selectedIconStroke"
-                : "navigationLeftItemTablet.unselectedIconStroke"
+                ? 'navigationLeftItemTablet.selectedIconStroke'
+                : 'navigationLeftItemTablet.unselectedIconStroke'
               : history.location.pathname === url
-                ? "navigationLeftItemTablet.selectedIconStroke"
-                : "navigationLeftItemTablet.unselectedIconStroke"
+              ? 'navigationLeftItemTablet.selectedIconStroke'
+              : 'navigationLeftItemTablet.unselectedIconStroke'
           }
+          w="15px"
         />
       </Flex>
-      {((menuItem.subSections && history.location.pathname.includes(url)) || (!menuItem.subSections && history.location.pathname === url)) &&
+      {((menuItem.subSections && history.location.pathname.includes(url)) ||
+        (!menuItem.subSections && history.location.pathname === url)) && (
         <>
-          <Text ml="15px" color="#818197" fontSize="11px">{label}</Text>
-          <ArrowRight boxSize="10px" stroke="#818197" ml="15px" transform="rotate(270deg)" />
+          <Text color="#818197" fontSize="11px" ml="15px">
+            {label}
+          </Text>
+          <ArrowRight
+            boxSize="10px"
+            ml="15px"
+            stroke="#818197"
+            transform="rotate(270deg)"
+          />
         </>
-      }
-      {
-        filtersOpen && menuItem.url === "/" &&
-        <Box w="220px" bg="white" py="15px" left="0" pos="absolute" bottom="45px" zIndex="5" rounded="10px" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
-          {Object.keys(responsesStatusesCounts).length !== 0 && <NavigationLeftFilters filter={["all", responsesStatusesCounts["compliant"] + responsesStatusesCounts["nonCompliant"]]} setFiltersOpen={setFiltersOpen} />}
-          {Object.entries(responsesStatusesCounts).map((filter) => <NavigationLeftFilters key={filter[0]} filter={filter} setFiltersOpen={setFiltersOpen} />)}
-        </Box>
-      }
-      {
-        subsectionOpen && menuItem.url === "/admin" &&
+      )}
+      {filtersOpen && menuItem.url === '/' && (
         <Box
-          w="235px"
           bg="white"
+          bottom="45px"
+          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          left="0"
+          pos="absolute"
           py="15px"
+          rounded="10px"
+          w="220px"
+          zIndex="5"
+        >
+          {Object.keys(responsesStatusesCounts).length !== 0 && (
+            <NavigationLeftFilters
+              filter={[
+                'all',
+                responsesStatusesCounts.compliant +
+                  responsesStatusesCounts.nonCompliant,
+              ]}
+              setFiltersOpen={setFiltersOpen}
+            />
+          )}
+          {Object.entries(responsesStatusesCounts).map((filter) => (
+            <NavigationLeftFilters
+              filter={filter}
+              key={filter[0]}
+              setFiltersOpen={setFiltersOpen}
+            />
+          ))}
+        </Box>
+      )}
+      {subsectionOpen && menuItem.url === '/admin' && (
+        <Box
+          bg="white"
+          bottom="45px"
+          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
           left={
             menuItem.subSections
               ? history.location.pathname.includes(url)
-                ? "0"
-                : "-200px"
+                ? '0'
+                : '-200px'
               : history.location.pathname === url
-                ? "0"
-                : "-200px"
+              ? '0'
+              : '-200px'
           }
           pos="absolute"
-          bottom="45px"
-          zIndex="5"
+          py="15px"
           rounded="10px"
-          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          w="235px"
+          zIndex="5"
         >
-          {menuItem.subSections?.map((subSection) => {
-            return <SubSection key={subSection.label} subsection={subSection} />;
-          })}
+          {menuItem.subSections?.map((subSection) => (
+            <SubSection key={subSection.label} subsection={subSection} />
+          ))}
         </Box>
-      }
+      )}
     </Flex>
   );
 };

@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
-import { Flex, IconButton, Stack, HStack } from "@chakra-ui/react";
-import { useMutation, gql } from "@apollo/client";
+import React, { useMemo } from 'react';
 
-import { useSettingsContext } from "../../contexts/SettingsProvider";
-import Field from "../Forms/Field";
-import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
+import { gql, useMutation } from '@apollo/client';
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import { Flex, HStack, IconButton, Stack } from '@chakra-ui/react';
+
+import { useSettingsContext } from '../../contexts/SettingsProvider';
+import Field from '../Forms/Field';
 
 const UPDATE_SETTINGS = gql`
   mutation ($settingsUpdate: SettingsUpdate!) {
@@ -29,27 +30,27 @@ const Defaults = () => {
 
   const businessUnitsOptions = useMemo(
     () => businessUnits.map(({ _id, name }) => ({ value: _id, label: name })),
-    [businessUnits]
+    [businessUnits],
   );
   const categoriesOptions = useMemo(
     () => categories.map(({ _id, name }) => ({ value: _id, label: name })),
-    [categories]
+    [categories],
   );
   const regulatoryBodiesOptions = useMemo(
     () =>
       regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })),
-    [regulatoryBodies]
+    [regulatoryBodies],
   );
 
   const options = (name) => {
     switch (name) {
-      case "defaultBusinessUnit":
+      case 'defaultBusinessUnit':
         return businessUnitsOptions;
 
-      case "defaultRegulatoryBody":
+      case 'defaultRegulatoryBody':
         return regulatoryBodiesOptions;
 
-      case "defaultCategory":
+      case 'defaultCategory':
         return categoriesOptions;
 
       default:
@@ -58,7 +59,7 @@ const Defaults = () => {
   };
 
   const updateSettings = async ({ _id, name }) => {
-    const updatedValue = formValues[name] || "";
+    const updatedValue = formValues[name] || '';
     await updateSetting({
       variables: { settingsUpdate: { _id, name, value: updatedValue } },
     });
@@ -70,12 +71,13 @@ const Defaults = () => {
   };
 
   const wasFieldChanged = (inputType, name, initialValue) => {
-    let currentValue = formValues[name];
-    if (inputType === 'table') {
+    const currentValue = formValues[name];
+    if (inputType === 'table')
       return JSON.stringify(currentValue) !== JSON.stringify(initialValue);
-    } else if (inputType === 'dataGrid') {
+
+    if (inputType === 'dataGrid')
       return JSON.stringify(currentValue) !== JSON.stringify(initialValue);
-    }
+
     return currentValue !== initialValue;
   };
 
@@ -87,7 +89,7 @@ const Defaults = () => {
   };
 
   return (
-    <Stack w="full" spacing={7} h="full" pb={3}>
+    <Stack h="full" pb={3} spacing={7} w="full">
       {defaultSettings?.map(
         ({
           _id,
@@ -101,45 +103,45 @@ const Defaults = () => {
           value,
         }) => (
           <Flex
-            align={["flex-start", "center"]}
+            align={['flex-start', 'center']}
+            flexDirection={['column', 'row']}
             key={name}
-            flexDirection={["column", "row"]}
           >
             <Flex maxW="280px">
               <Field
                 control={control}
-                name={name}
-                type={inputType}
-                label={label}
-                placeholder={placeholder}
-                variant={variant}
-                options={options(name)}
                 help={help}
+                label={label}
+                name={name}
+                options={options(name)}
+                placeholder={placeholder}
                 tooltip={description}
+                type={inputType}
                 value={value}
+                variant={variant}
               />
             </Flex>
             {wasFieldChanged(inputType, name, value) && (
-              <HStack ml={3} spacing={3} mt={7}>
+              <HStack ml={3} mt={7} spacing={3}>
                 <IconButton
-                  colorScheme="purpleHeart"
-                  variant="outline"
                   aria-label="Confirm Icon"
-                  size="sm"
+                  colorScheme="purpleHeart"
                   icon={<CheckIcon />}
                   onClick={() => updateSettings({ _id, name })}
+                  size="sm"
+                  variant="outline"
                 />
                 <IconButton
-                  colorScheme="red"
                   aria-label="Cross Icon"
-                  size="sm"
+                  colorScheme="red"
                   icon={<CloseIcon />}
                   onClick={() => resetValue({ name, value })}
+                  size="sm"
                 />
               </HStack>
             )}
           </Flex>
-        )
+        ),
       )}
     </Stack>
   );

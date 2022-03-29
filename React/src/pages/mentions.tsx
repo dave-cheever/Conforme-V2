@@ -1,8 +1,7 @@
-import React from "react";
-import { Flex } from "@chakra-ui/react";
+import React from 'react';
 
-const Mentions = () => {
-  return <Flex>Mentions</Flex>;
-};
+import { Flex } from '@chakra-ui/react';
+
+const Mentions = () => <Flex>Mentions</Flex>;
 
 export default Mentions;

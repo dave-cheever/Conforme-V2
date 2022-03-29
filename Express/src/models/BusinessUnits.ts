@@ -1,21 +1,37 @@
-import { model, models, Schema } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
-import { diff } from "deep-object-diff";
+import { diff } from 'deep-object-diff';
+import { GraphQLError } from 'graphql';
+import { model, models, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-import { IAuditValues, IBusinessUnit, IBusinessUnitModel } from "app-interfaces";
 import {
-  genMetatags, getBasicElement, removeDatabaseFields,
-  getAuditValueForString, getAuditValueForUser,
-} from "app-utils";
-import { AuditLogs, Organizations, Users } from "app-models";
-import { GraphQLError } from "graphql";
+  IAuditValues,
+  IBusinessUnit,
+  IBusinessUnitModel,
+} from 'app-interfaces';
+import { AuditLogs, Organizations, Users } from 'app-models';
+import {
+  genMetatags,
+  getAuditValueForString,
+  getAuditValueForUser,
+  getBasicElement,
+  removeDatabaseFields,
+} from 'app-utils';
+
+// custom validation for unique name
+async function validateUniqueName(this: any, name: string) {
+  const buCount = await models.BusinessUnit.find({
+    name,
+    'metatags.removedAt': { $eq: null },
+  }).count();
+  return !buCount;
+}
 
 const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   _id: String,
   identifier: String,
   name: {
     type: String,
-    validate: [validateUniqueName, "Business unit name already exists"]
+    validate: [validateUniqueName, 'Business unit name already exists'],
   },
   ownerId: String,
   imgUrl: String,
@@ -31,7 +47,11 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+  organization,
+}): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -64,93 +84,103 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
   return auditRecordValues;
 };
 
-//custom validation for unique name
-async function validateUniqueName(this: any, name: string) {
-  const buCount = await models.BusinessUnit.find({
-    name,
-    "metatags.removedAt": { $eq: null },
-  }).count()
-  return !buCount
-}
-
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-businessUnitSchema.statics.customCreate = async function (businessUnit: IBusinessUnit, userId: string, organizationId: string): Promise<IBusinessUnit> {
+businessUnitSchema.statics.customCreate = async function (
+  businessUnit: IBusinessUnit,
+  userId: string,
+  organizationId: string,
+): Promise<IBusinessUnit> {
   const createdBusinessUnit = await this.create({
     ...businessUnit,
     _id: uuidv4(),
     organizationId,
-    metatags: genMetatags("added", userId),
+    metatags: genMetatags('added', userId),
   });
 
   // Add owner to the database if doesn't exist
   const { ownerId } = businessUnit;
   if (ownerId) {
     const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) {
-      await Users.customAdd({ _id: ownerId }, userId, organizationId);
-    }
+    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
   }
 
   if (createdBusinessUnit?._doc) {
     const addAuditLog = async () => {
       const element = getBasicElement(createdBusinessUnit._doc);
       const newValues = removeDatabaseFields(createdBusinessUnit._doc);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
       const values = await getAuditRecordValues({ newValues, organization });
-      AuditLogs.customAudit({
-        coll: 'businessUnits',
-        action: "add",
-        element,
-        values,
-      }, userId, organizationId);
+      AuditLogs.customAudit(
+        {
+          coll: 'businessUnits',
+          action: 'add',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
   return createdBusinessUnit;
 };
 
-businessUnitSchema.statics.customFind = async function (selector: any = {}, organizationId): Promise<IBusinessUnit[]> {
+businessUnitSchema.statics.customFind = async function (
+  selector: any = {},
+  organizationId,
+): Promise<IBusinessUnit[]> {
   const businessUnits = await this.find({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return businessUnits;
 };
 
-businessUnitSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IBusinessUnit | null> {
+businessUnitSchema.statics.customFindOne = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<IBusinessUnit | null> {
   const businessUnit = await this.findOne({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return businessUnit;
 };
 
-businessUnitSchema.statics.customFindById = async function (_id: string): Promise<IBusinessUnit> {
+businessUnitSchema.statics.customFindById = async function (
+  _id: string,
+): Promise<IBusinessUnit> {
   const businessUnit = await this.findOne({
     _id,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
-  if (!businessUnit) {
-    throw new Error("Business Unit not found");
-  }
+  if (!businessUnit) throw new Error('Business Unit not found');
+
   return businessUnit;
 };
 
-businessUnitSchema.statics.customUpdateOne = async function (selector: object = {}, updates: Partial<IBusinessUnit>, userId: string, organizationId: string): Promise<IBusinessUnit> {
+businessUnitSchema.statics.customUpdateOne = async function (
+  selector: object = {},
+  updates: Partial<IBusinessUnit>,
+  userId: string,
+  organizationId: string,
+): Promise<IBusinessUnit> {
   const businessUnit = await this.customFindOne(selector, organizationId);
-  if (!businessUnit) {
-    throw new GraphQLError('Business Unit doesn\'t exist');
-  }
+  if (!businessUnit) throw new GraphQLError("Business Unit doesn't exist");
 
   const updatedBusinessUnit = {
     ...businessUnit,
     ...updates,
     metatags: {
       ...businessUnit?.metatags,
-      ...genMetatags("updated", userId),
+      ...genMetatags('updated', userId),
     },
   };
   const updatedResult = await this.updateOne(selector, updatedBusinessUnit);
@@ -159,9 +189,7 @@ businessUnitSchema.statics.customUpdateOne = async function (selector: object = 
   const { ownerId } = updatedBusinessUnit;
   if (ownerId) {
     const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) {
-      await Users.customAdd({ _id: ownerId }, userId, organizationId);
-    }
+    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
   }
 
   if (updatedResult?.modifiedCount) {
@@ -169,14 +197,25 @@ businessUnitSchema.statics.customUpdateOne = async function (selector: object = 
       const element = getBasicElement(updatedBusinessUnit);
       const oldValues = removeDatabaseFields(businessUnit);
       const newValues = removeDatabaseFields(updatedBusinessUnit);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
-      const values = await getAuditRecordValues({ oldValues, newValues, organization });
-      AuditLogs.customAudit({
-        coll: 'businessUnits',
-        action: "update",
-        element,
-        values,
-      }, userId, organizationId);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({
+        oldValues,
+        newValues,
+        organization,
+      });
+      AuditLogs.customAudit(
+        {
+          coll: 'businessUnits',
+          action: 'update',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -184,17 +223,19 @@ businessUnitSchema.statics.customUpdateOne = async function (selector: object = 
   return updatedBusinessUnit;
 };
 
-businessUnitSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
+businessUnitSchema.statics.customDelete = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<number> {
   const businessUnit = await this.customFindOne(selector, organizationId);
-  if (!businessUnit) {
-    throw new GraphQLError('Business Unit doesn\'t exist');
-  }
+  if (!businessUnit) throw new GraphQLError("Business Unit doesn't exist");
 
   const updatedBusinessUnit = {
     ...businessUnit,
     metatags: {
       ...businessUnit?.metatags,
-      ...genMetatags("removed", userId),
+      ...genMetatags('removed', userId),
     },
   };
   const deletedResult = await this.updateOne(selector, updatedBusinessUnit);
@@ -203,14 +244,21 @@ businessUnitSchema.statics.customDelete = async function (selector: object = {},
     const addAuditLog = async () => {
       const element = getBasicElement(businessUnit);
       const oldValues = removeDatabaseFields(businessUnit);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
       const values = await getAuditRecordValues({ oldValues, organization });
-      AuditLogs.customAudit({
-        coll: 'businessUnits',
-        action: "delete",
-        element,
-        values,
-      }, userId, organizationId);
+      AuditLogs.customAudit(
+        {
+          coll: 'businessUnits',
+          action: 'delete',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -218,7 +266,9 @@ businessUnitSchema.statics.customDelete = async function (selector: object = {},
   return deletedResult?.modifiedCount;
 };
 
-const businessModel = model<IBusinessUnit, IBusinessUnitModel>("BusinessUnit", businessUnitSchema, 'businessUnits');
+const businessModel = model<IBusinessUnit, IBusinessUnitModel>(
+  'BusinessUnit',
+  businessUnitSchema,
+  'businessUnits',
+);
 export default businessModel;
-
-

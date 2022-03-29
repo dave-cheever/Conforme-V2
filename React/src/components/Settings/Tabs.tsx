@@ -1,34 +1,35 @@
-import React from "react";
+import React from 'react';
+
 import {
+  Button,
+  Flex,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-  Flex,
-  Button,
-} from "@chakra-ui/react";
+  MenuList,
+} from '@chakra-ui/react';
 
-import { settingsTabs } from "../../bootstrap/config";
-import TabItem from "./TabItem";
-import { useSettingsContext } from "../../contexts/SettingsProvider";
-import { ArrowDownIcon } from "../../icons";
-import useDevice from "../../hooks/useDevice";
+import { settingsTabs } from '../../bootstrap/config';
+import { useSettingsContext } from '../../contexts/SettingsProvider';
+import useDevice from '../../hooks/useDevice';
+import { ArrowDownIcon } from '../../icons';
+import TabItem from './TabItem';
 
 const Tabs = () => {
   const { activeTab, setActiveTab } = useSettingsContext();
   const device = useDevice();
 
-  if (activeTab === 1 && device === "tablet") {
+  if (activeTab === 1 && device === 'tablet') {
     return (
       <Menu>
         <MenuButton
-          bg="settingsTabItem.tabItemBg"
-          h="40px"
-          borderRadius="10px"
-          maxW="24vw"
           as={Button}
-          rightIcon={<ArrowDownIcon />}
+          bg="settingsTabItem.tabItemBg"
+          borderRadius="10px"
           fontSize="14px"
+          h="40px"
+          maxW="24vw"
+          rightIcon={<ArrowDownIcon />}
           w="full"
         >
           Email templates
@@ -37,11 +38,8 @@ const Tabs = () => {
           borderWidth="0px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
         >
-          {settingsTabs.map(({label, index}) => (
-            <MenuItem
-              key={index}
-              onClick={() => setActiveTab(index)}
-            >
+          {settingsTabs.map(({ label, index }) => (
+            <MenuItem key={index} onClick={() => setActiveTab(index)}>
               {label}
             </MenuItem>
           ))}
@@ -54,11 +52,11 @@ const Tabs = () => {
     <Flex w="full">
       {settingsTabs.map(({ label, index }) => (
         <TabItem
-          key={index}
-          setActiveTab={setActiveTab}
-          index={index}
           active={index === activeTab}
+          index={index}
+          key={index}
           label={label}
+          setActiveTab={setActiveTab}
         />
       ))}
     </Flex>

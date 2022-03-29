@@ -1,19 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
-import { Flex, Avatar, Button, Text, Box, Skeleton } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
-import reactStringReplace from "react-string-replace";
-import { gql, useLazyQuery } from "@apollo/client";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import format from "date-fns/format";
-import isToday from "date-fns/isToday";
+import { useEffect, useMemo, useState } from 'react';
+import reactStringReplace from 'react-string-replace';
 
-import { IComment } from "../../interfaces/IComment";
-import ChatMention from "./ChatMention";
-import { useAppContext } from "../../contexts/AppProvider";
-import Can from "../can";
-import useDevice from "../../hooks/useDevice"
-import differenceInDays from "date-fns/differenceInDays";
+import { gql, useLazyQuery } from '@apollo/client';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Avatar, Box, Button, Flex, Skeleton, Text } from '@chakra-ui/react';
+import differenceInDays from 'date-fns/differenceInDays';
+import format from 'date-fns/format';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import isToday from 'date-fns/isToday';
 
+import { useAppContext } from '../../contexts/AppProvider';
+import useDevice from '../../hooks/useDevice';
+import { IComment } from '../../interfaces/IComment';
+import Can from '../can';
+import ChatMention from './ChatMention';
 
 interface IResponseChat {
   comment: IComment;
@@ -34,31 +34,28 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   const [getParticipantDetailById, { data, loading }] =
     useLazyQuery(GET_USERS_BY_ID);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
-  const device = useDevice()
+  const device = useDevice();
   const { user } = useAppContext();
 
   const dateFormat = () => {
-    if (!metatags?.addedAt) {
-      return "";
-    }
+    if (!metatags?.addedAt) return '';
 
-    if (isToday(new Date(metatags?.addedAt))) {
-      return format(new Date(metatags?.addedAt), "h:mm a");
-    }
+    if (isToday(new Date(metatags?.addedAt)))
+      return format(new Date(metatags?.addedAt), 'h:mm a');
 
     const days = differenceInDays(new Date(metatags?.addedAt), new Date());
 
     if (days <= 7) {
-      return formatDistanceToNow(new Date(metatags?.addedAt), { addSuffix: true });
+      return formatDistanceToNow(new Date(metatags?.addedAt), {
+        addSuffix: true,
+      });
     }
 
-    return format(new Date(metatags?.addedAt), "dd/MM/yyyy h:mm a");
+    return format(new Date(metatags?.addedAt), 'dd/MM/yyyy h:mm a');
   };
 
   const chatAuthor = useMemo(() => {
-    if (authorId === user?._id) {
-      return user;
-    }
+    if (authorId === user?._id) return user;
 
     return data?.author[0];
   }, [data, user, authorId]);
@@ -69,79 +66,85 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
         variables: { userQueryInput: { usersIds: [authorId] } },
       });
     }
-    // eslint-disable-next-line
   }, [authorId]);
 
-  const isChatOwner = useMemo(() => {
-    return user?._id === chatAuthor?._id;
-  }, [user, chatAuthor]);
+  const isChatOwner = useMemo(
+    () => user?._id === chatAuthor?._id,
+    [user, chatAuthor],
+  );
 
   return (
-    <Flex w="full" mb={3} flexDirection={isChatOwner ? "row" : "row-reverse"}>
-      <Box mr={isChatOwner ? 3 : 0} ml={isChatOwner ? 0 : 3}>
+    <Flex flexDirection={isChatOwner ? 'row' : 'row-reverse'} mb={3} w="full">
+      <Box ml={isChatOwner ? 0 : 3} mr={isChatOwner ? 3 : 0}>
         {loading ? (
-          <Skeleton minW="24px" h="24px" rounded="full" />
+          <Skeleton h="24px" minW="24px" rounded="full" />
         ) : (
           <Avatar
-            rounded="full"
-            name={chatAuthor?.displayName}
-            size="xs"
-            p="2px"
-            src={chatAuthor?.imgUrl}
             loading="lazy"
+            name={chatAuthor?.displayName}
+            p="2px"
+            rounded="full"
+            size="xs"
+            src={chatAuthor?.imgUrl}
           />
         )}
       </Box>
       <Box
         bg={
           isChatOwner
-            ? "responseChatItem.sentBg"
-            : (device === "mobile" || device === "tablet") ? "responseChatItem.receivedBgTM" : "responseChatItem.receivedBg"
+            ? 'responseChatItem.sentBg'
+            : device === 'mobile' || device === 'tablet'
+            ? 'responseChatItem.receivedBgTM'
+            : 'responseChatItem.receivedBg'
         }
+        borderRadius="10px"
+        color={
+          isChatOwner
+            ? 'responseChatItem.sentColor'
+            : 'responseChatItem.receivedColor'
+        }
+        onMouseEnter={() => setShowDeleteBtn(true)}
+        onMouseLeave={() => setShowDeleteBtn(false)}
         px="12px"
         py="8px"
         w="full"
-        borderRadius="10px"
-        onMouseEnter={() => setShowDeleteBtn(true)}
-        onMouseLeave={() => setShowDeleteBtn(false)}
-        color={
-          isChatOwner
-            ? "responseChatItem.sentColor"
-            : "responseChatItem.receivedColor"
-        }
       >
-      <Flex justify="space-between" h={6}>
-        <Text
-          fontSize="ssm"
-          fontWeight="semi_medium"
-          color="responseChatItem.dateColor"
-          mb="10px"
-        >
-          {dateFormat()}
-        </Text>
-        <Can
-          action="comments.delete"
-          data={{ comment }}
-          yes={() => (
-            <Button
-              display={showDeleteBtn ? "block" : "none"}
-              rightIcon={<DeleteIcon />}
-              colorScheme="red"
-              onClick={() => onAction(_id)}
-              size="xs"
-              mb={2}
-              mr="-4px"
-            >
-              Delete
-            </Button>
-          )}
-        />
-      </Flex>
-      {reactStringReplace(text, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
-        <ChatMention key={i} tag={match} />
-      ))}
-    </Box>
-    </Flex >
+        <Flex h={6} justify="space-between">
+          <Text
+            color="responseChatItem.dateColor"
+            fontSize="ssm"
+            fontWeight="semi_medium"
+            mb="10px"
+          >
+            {dateFormat()}
+          </Text>
+          <Can
+            action="comments.delete"
+            data={{ comment }}
+            yes={() => (
+              <Button
+                colorScheme="red"
+                display={showDeleteBtn ? 'block' : 'none'}
+                mb={2}
+                mr="-4px"
+                onClick={() => onAction(_id)}
+                rightIcon={<DeleteIcon />}
+                size="xs"
+              >
+                Delete
+              </Button>
+            )}
+          />
+        </Flex>
+        {reactStringReplace(
+          text,
+          /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g,
+          (match, i) => (
+            <ChatMention key={i} tag={match} />
+          ),
+        )}
+      </Box>
+    </Flex>
   );
 };
 
@@ -149,16 +152,16 @@ export default ResponseChatItem;
 
 export const responseChatItemStyles = {
   responseChatItem: {
-    sentBg: "#1E1E38",
-    receivedBg: "#FFFFFF",
-    receivedBgTM: "#F0F0F0",
-    sentColor: "#FFFFFF",
-    receivedColor: "#282F36",
-    dateColor: "#818197",
-    mentionColor: "#FF9A00",
+    sentBg: '#1E1E38',
+    receivedBg: '#FFFFFF',
+    receivedBgTM: '#F0F0F0',
+    sentColor: '#FFFFFF',
+    receivedColor: '#282F36',
+    dateColor: '#818197',
+    mentionColor: '#FF9A00',
     delete: {
-      bg: "red",
-      color: "#ffffff",
+      bg: 'red',
+      color: '#ffffff',
     },
   },
 };

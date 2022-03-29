@@ -1,21 +1,26 @@
-import React, { useMemo } from "react"
+import React, { useMemo } from 'react';
+
 import { CheckboxGroup, Stack } from '@chakra-ui/react';
 
-import { useFiltersContext } from "../../contexts/FiltersProvider";
-import FilterCheckBox from "./FilterCheckBox";
+import { useFiltersContext } from '../../contexts/FiltersProvider';
+import FilterCheckBox from './FilterCheckBox';
 
 const CategoryFilter = () => {
-  const {
-    filtersValues,
-    setFilters,
-    categories,
-  } = useFiltersContext();
-  const value = useMemo(() => filtersValues.categoriesIds?.value, [filtersValues]) as string[];
+  const { filtersValues, setFilters, categories } = useFiltersContext();
+  const value = useMemo(
+    () => filtersValues.categoriesIds?.value,
+    [filtersValues],
+  ) as string[];
 
   return (
-    <CheckboxGroup onChange={newValue => setFilters({ categoriesIds: newValue })} value={value}>
-      <Stack direction="column" overflow='auto' >
-        {categories?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
+    <CheckboxGroup
+      onChange={(newValue) => setFilters({ categoriesIds: newValue })}
+      value={value}
+    >
+      <Stack direction="column" overflow="auto">
+        {categories?.map(({ name, _id }) => (
+          <FilterCheckBox key={_id} label={name} value={_id} />
+        ))}
       </Stack>
     </CheckboxGroup>
   );

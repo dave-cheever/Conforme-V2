@@ -1,9 +1,9 @@
-import { Flex, HStack, IconButton, Stack } from "@chakra-ui/react";
-import { useMutation, gql } from "@apollo/client";
+import { gql, useMutation } from '@apollo/client';
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import { Flex, HStack, IconButton, Stack } from '@chakra-ui/react';
 
-import { useSettingsContext } from "../../contexts/SettingsProvider";
-import Field from "../Forms/Field";
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { useSettingsContext } from '../../contexts/SettingsProvider';
+import Field from '../Forms/Field';
 
 const UPDATE_SETTINGS = gql`
   mutation ($settingsUpdate: SettingsUpdate!) {
@@ -19,7 +19,7 @@ const Notification = () => {
   const [updateSetting] = useMutation(UPDATE_SETTINGS);
 
   const wasFieldChanged = (name, initialValue) => {
-    let currentValue = formValues[name];
+    const currentValue = formValues[name];
     return currentValue !== initialValue;
   };
 
@@ -43,7 +43,7 @@ const Notification = () => {
   };
 
   return (
-    <Stack w="full" spacing={7} h="full" overflow="auto" pb={3}>
+    <Stack h="full" overflow="auto" pb={3} spacing={7} w="full">
       {notificationSettings?.map(
         ({
           _id,
@@ -58,45 +58,45 @@ const Notification = () => {
           options,
         }) => (
           <Flex
-            align={["flex-start", "center"]}
+            align={['flex-start', 'center']}
+            flexDirection={['column', 'row']}
             key={name}
-            flexDirection={["column", "row"]}
           >
             <Flex maxW="280px">
               <Field
                 control={control}
-                name={name}
-                type={inputType}
-                label={label}
-                placeholder={placeholder}
-                variant={variant}
                 help={help}
-                tooltip={description}
-                value={value}
+                label={label}
+                name={name}
                 options={options}
+                placeholder={placeholder}
+                tooltip={description}
+                type={inputType}
+                value={value}
+                variant={variant}
               />
             </Flex>
             {wasFieldChanged(name, value) && (
-              <HStack ml={3} spacing={3} mt={7}>
+              <HStack ml={3} mt={7} spacing={3}>
                 <IconButton
-                  colorScheme="purpleHeart"
-                  variant="outline"
                   aria-label="Confirm Icon"
-                  size="sm"
+                  colorScheme="purpleHeart"
                   icon={<CheckIcon />}
                   onClick={() => updateSettings({ _id, name })}
+                  size="sm"
+                  variant="outline"
                 />
                 <IconButton
-                  colorScheme="red"
                   aria-label="Cross Icon"
-                  size="sm"
+                  colorScheme="red"
                   icon={<CloseIcon />}
                   onClick={() => resetValue({ name, value })}
+                  size="sm"
                 />
               </HStack>
             )}
           </Flex>
-        )
+        ),
       )}
     </Stack>
   );

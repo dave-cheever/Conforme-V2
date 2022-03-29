@@ -1,20 +1,22 @@
-import { Box, Flex, Stack, Spacer, useToast } from "@chakra-ui/react";
-import { AdminContext } from "../../contexts/AdminProvider";
-import { ILocation } from "../../interfaces/ILocation";
-import { useContext, useEffect, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useForm } from "react-hook-form";
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/Admin/AdminModal";
-import AdminTableHeader from "../../components/Admin/AdminTableHeader";
-import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import Header from "../../components/Header";
-import Loader from "../../components/Loader";
-import PeoplePicker from "../../components/Forms/PeoplePicker";
-import TextInput from "../../components/Forms/TextInput";
-import TextInputMultiline from "../../components/Forms/TextInputMultiline";
-import useDevice from "../../hooks/useDevice";
-import LocationListItem from "../../components/LocationListItem";
+import { useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Flex, Spacer, Stack, useToast } from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import AdminModal from '../../components/Admin/AdminModal';
+import AdminTableHeader from '../../components/Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import PeoplePicker from '../../components/Forms/PeoplePicker';
+import TextInput from '../../components/Forms/TextInput';
+import TextInputMultiline from '../../components/Forms/TextInputMultiline';
+import Header from '../../components/Header';
+import Loader from '../../components/Loader';
+import LocationListItem from '../../components/LocationListItem';
+import { AdminContext } from '../../contexts/AdminProvider';
+import useDevice from '../../hooks/useDevice';
+import { ILocation } from '../../interfaces/ILocation';
 
 const GET_LOCATIONS = gql`
   query {
@@ -54,9 +56,9 @@ const DELETE_LOCATION = gql`
 
 const defaultValues: Partial<ILocation> = {
   _id: undefined,
-  name: "",
-  ownerId: "",
-  notes: "",
+  name: '',
+  ownerId: '',
+  notes: '',
 };
 
 const Locations = () => {
@@ -67,18 +69,18 @@ const Locations = () => {
   const [updateFunction] = useMutation(UPDATE_LOCATION);
   const [deleteFunction] = useMutation(DELETE_LOCATION);
   const device = useDevice();
-  const [sortType, setSortType] = useState("name");
+  const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState(true);
-  const [currentLocationName, setCurrentLocationName] = useState<string>("");
-
+  const [currentLocationName, setCurrentLocationName] = useState<string>('');
 
   const getLocations = (locationsArray: ILocation[]) => {
-    if (!locationsArray) {
-      return [];
-    }
+    if (!locationsArray) return [];
+
     return [...locationsArray].sort((a, b) => a.name.localeCompare(b.name));
-  }
-  const [locations, setLocations] = useState<ILocation[]>(getLocations(data?.locations));
+  };
+  const [locations, setLocations] = useState<ILocation[]>(
+    getLocations(data?.locations),
+  );
 
   useEffect(() => {
     setLocations(getLocations(data?.locations));
@@ -86,20 +88,19 @@ const Locations = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner')
-        return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-      else if (sortType === 'notes')
+      if (sortType === 'owner') {
+        return (a.owner?.displayName || '').localeCompare(
+          b.owner?.displayName || '',
+        );
+      }
+      if (sortType === 'notes')
         return (a.notes || '-').localeCompare(b.notes || '-');
-      else
-        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
-
+      return (a[sortType] || 0)
+        .toString()
+        .localeCompare((b[sortType] || 0).toString());
     };
-    if (sortOrder) {
-      setLocations([...locations].sort((a, b) => sort(a, b)));
-    }
-    else {
-      setLocations([...locations].sort((a, b) => sort(b, a)));
-    }
+    if (sortOrder) setLocations([...locations].sort((a, b) => sort(a, b)));
+    else setLocations([...locations].sort((a, b) => sort(b, a)));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
@@ -109,22 +110,22 @@ const Locations = () => {
     trigger,
     reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues,
   });
 
   // Reset the form after closing
   useEffect(() => {
-    if (adminModalState === "closed") {
+    if (adminModalState === 'closed') {
       reset(defaultValues);
-      setCurrentLocationName("");
+      setCurrentLocationName('');
     }
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openLocationModal = (
-    action: "edit" | "delete",
-    location: ILocation
+    action: 'edit' | 'delete',
+    location: ILocation,
   ) => {
     setAdminModalState(action);
     setCurrentLocationName(location.name);
@@ -141,18 +142,18 @@ const Locations = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await createFunction({ variables: { values } });
-        toast({ ...toastSuccess, description: "Location added" });
+        toast({ ...toastSuccess, description: 'Location added' });
         refetch();
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -161,18 +162,18 @@ const Locations = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await updateFunction({ variables: { values } });
-        toast({ ...toastSuccess, description: "Location updated" });
+        toast({ ...toastSuccess, description: 'Location updated' });
         refetch();
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -180,68 +181,68 @@ const Locations = () => {
     try {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
-      toast({ ...toastSuccess, description: "Location deleted" });
+      toast({ ...toastSuccess, description: 'Location deleted' });
       refetch();
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
   const handleAction = async (action) => {
     const isFormValid = await trigger();
-    if (["add", "edit"].includes(action) && !isFormValid) {
+    if (['add', 'edit'].includes(action) && !isFormValid) {
       return toast({
         ...toastFailed,
-        description: "Please complete all the required fields",
+        description: 'Please complete all the required fields',
       });
     }
     switch (action) {
-      case "add":
+      case 'add':
         handleAddLocation();
         break;
-      case "edit":
+      case 'edit':
         handleUpdateLocation();
         break;
-      case "delete":
+      case 'delete':
         handleDeleteLocation();
         break;
       default:
-        setAdminModalState("closed");
+        setAdminModalState('closed');
     }
   };
 
   return (
     <>
       <AdminModal
-        isOpenModal={adminModalState !== "closed"}
+        collection="location"
+        isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
-        collection={"location"}
       >
-        <Flex align="flex-start" direction="column" w={["full", "70%"]}>
+        <Flex align="flex-start" direction="column" w={['full', '70%']}>
           <TextInput
-            name="name"
-            label="Location name"
-            placeholder="e.g. London"
             control={control}
             initialValue={currentLocationName.toLowerCase()}
+            label="Location name"
+            name="name"
+            placeholder="e.g. London"
             validations={{
               notEmpty: true,
-              uniqueValue: locations.map(({ name }) => name.toLowerCase())
+              uniqueValue: locations.map(({ name }) => name.toLowerCase()),
             }}
           />
           <TextInputMultiline
-            name="notes"
-            label="Notes"
-            placeholder="Add your notes here"
             control={control}
+            label="Notes"
+            name="notes"
+            placeholder="Add your notes here"
           />
           <PeoplePicker
             control={control}
-            name="ownerId"
             label="Owner"
+            name="ownerId"
             placeholder="Select"
             validations={{
               notEmpty: true,
@@ -249,36 +250,74 @@ const Locations = () => {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Locations"]} />
-      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)">
-        <Flex h="full" px={["25px", 0]}>
+      <Header breadcrumbs={['Admin', 'Locations']} />
+      <Box h="calc(100vh - 160px)" p={['0', '0 25px 30px 30px']}>
+        <Flex h="full" px={['25px', 0]}>
           <Box
-            w={["full", "full", "calc(100%)"]}
-            h={["calc(100% - 170px)", "calc(100% - 35px)"]}
-            mr={[0, 0, "50px"]}
+            h={['calc(100% - 170px)', 'calc(100% - 35px)']}
+            mr={[0, 0, '50px']}
+            w={['full', 'full', 'calc(100%)']}
           >
             <AdminTableHeader>
-              <AdminTableHeaderElement w={["max-content", "50%"]} label="Location name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
-              {device !== "mobile" && device !== "tablet" && (
+              <AdminTableHeaderElement
+                label="Location name"
+                onClick={() => {
+                  setSortType('name');
+                  setSortOrder(!sortOrder);
+                }}
+                showSortingIcon={sortType === 'name'}
+                sortOrder={sortType === 'name' && !sortOrder}
+                w={['max-content', '50%']}
+              />
+              {device !== 'mobile' && device !== 'tablet' && (
                 <>
-
-                  <AdminTableHeaderElement w={["100%", "50%"]} label="Notes" onClick={() => { setSortType("notes"); setSortOrder(!sortOrder); }} sortOrder={sortType === "notes" && !sortOrder} showSortingIcon={sortType === "notes"} />
-                  <AdminTableHeaderElement w={["100%", "50%"]} label="Owner" onClick={() => { setSortType("owner"); setSortOrder(!sortOrder); }} sortOrder={sortType === "owner" && !sortOrder} showSortingIcon={sortType === "owner"} />
+                  <AdminTableHeaderElement
+                    label="Notes"
+                    onClick={() => {
+                      setSortType('notes');
+                      setSortOrder(!sortOrder);
+                    }}
+                    showSortingIcon={sortType === 'notes'}
+                    sortOrder={sortType === 'notes' && !sortOrder}
+                    w={['100%', '50%']}
+                  />
+                  <AdminTableHeaderElement
+                    label="Owner"
+                    onClick={() => {
+                      setSortType('owner');
+                      setSortOrder(!sortOrder);
+                    }}
+                    showSortingIcon={sortType === 'owner'}
+                    sortOrder={sortType === 'owner' && !sortOrder}
+                    w={['100%', '50%']}
+                  />
                 </>
               )}
-              <Spacer display={["block", "none"]} />
-              <AdminTableHeaderElement w={["max-content", "50%"]} label="Responses count" tooltip="Only published items" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+              <Spacer display={['block', 'none']} />
+              <AdminTableHeaderElement
+                label="Responses count"
+                onClick={() => {
+                  setSortType('complianceItemsResponsesCount');
+                  setSortOrder(!sortOrder);
+                }}
+                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
+                sortOrder={
+                  sortType === 'complianceItemsResponsesCount' && !sortOrder
+                }
+                tooltip="Only published items"
+                w={['max-content', '50%']}
+              />
             </AdminTableHeader>
 
             {loading ? (
-              <Box w="full" h="full" bg="white" borderBottomRadius="10px">
-                <Loader center={true} />
+              <Box bg="white" borderBottomRadius="10px" h="full" w="full">
+                <Loader center />
               </Box>
             ) : (
               <Stack
-                h="full"
                 bg="white"
                 borderBottomRadius="10px"
+                h="full"
                 overflow="auto"
                 spacing="1px"
               >
@@ -291,7 +330,14 @@ const Locations = () => {
                     />
                   ))
                 ) : (
-                  <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+                  <Flex
+                    fontSize="18px"
+                    fontStyle="italic"
+                    h="full"
+                    justify="center"
+                    mt={4}
+                    w="full"
+                  >
                     No locations found
                   </Flex>
                 )}
@@ -308,7 +354,7 @@ export default Locations;
 
 export const locationsStyles = {
   locations: {
-    fontColor: "#818197",
-    tooltipStroke: "#282F36",
+    fontColor: '#818197',
+    tooltipStroke: '#282F36',
   },
 };

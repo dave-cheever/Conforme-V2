@@ -4,7 +4,7 @@ interface ISubSection {
 }
 
 export interface INavItem {
-  type: "mentions" | "seperator" | "menuItem";
+  type: 'mentions' | 'seperator' | 'menuItem';
   icon?: any;
   label: string;
   url?: string;

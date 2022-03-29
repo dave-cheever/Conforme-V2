@@ -1,17 +1,17 @@
-import questionsCategories from "./questionsCategories.q";
-import createQuestionsCategory from "./createQuestionsCategory.m";
-import deleteQuestionsCategory from "./deleteQuestionsCategory.m";
-import updateQuestionsCategory from "./updateQuestionsCategory.m";
+import createQuestionsCategory from './createQuestionsCategory.m';
+import deleteQuestionsCategory from './deleteQuestionsCategory.m';
+import questionsCategories from './questionsCategories.q';
+import updateQuestionsCategory from './updateQuestionsCategory.m';
 
 const questionsCategoryResolvers = {
-    Query: {
-        questionsCategories,
-    },
-    Mutation: {
-        createQuestionsCategory,
-        deleteQuestionsCategory,
-        updateQuestionsCategory,
-    },
+  Query: {
+    questionsCategories,
+  },
+  Mutation: {
+    createQuestionsCategory,
+    deleteQuestionsCategory,
+    updateQuestionsCategory,
+  },
 };
 
 export const questionsCategoriesTypeDefs = `

@@ -4,11 +4,11 @@ import deleteComment from './deleteComment.m';
 
 const commnetsResolvers = {
   Query: {
-    comments
+    comments,
   },
   Mutation: {
     createComment,
-    deleteComment
+    deleteComment,
   },
 };
 

@@ -1,4 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from 'react';
+
+import { gql, useMutation } from '@apollo/client';
+import { SearchIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -15,17 +18,15 @@ import {
   Text,
   useToast,
   VStack,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
-import { gql, useMutation } from "@apollo/client";
-import debounce from "lodash.debounce";
+} from '@chakra-ui/react';
+import { debounce } from 'lodash';
 
-import { responsePermissionByFilterType } from "../../utils/helpers";
-import Loader from "../Loader";
-import { useTeamContext } from "../../contexts/TeamProvider";
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import { toastFailed } from "../../bootstrap/config";
-import { TickIcon } from "../../icons";
+import { toastFailed } from '../../bootstrap/config';
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import { useTeamContext } from '../../contexts/TeamProvider';
+import { TickIcon } from '../../icons';
+import { responsePermissionByFilterType } from '../../utils/helpers';
+import Loader from '../Loader';
 
 const ADD_PARTICIPANT = gql`
   mutation ($responseParticipantModify: ResponseParticipantModify!) {
@@ -52,13 +53,13 @@ const TeamModal = () => {
     selectedParticipants,
   } = useTeamContext();
   const [addParticipant] = useMutation(ADD_PARTICIPANT);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
 
   const handleClose = () => {
     onClose();
     setSelectedParticipants([]);
-    setSearchText("")
-    setSearchQuery("");
+    setSearchText('');
+    setSearchQuery('');
     setIsReplaceAccountable(false);
   };
 
@@ -69,7 +70,7 @@ const TeamModal = () => {
           responseParticipantModify: {
             _id: response?._id,
             participantIds: selectedParticipants.map(
-              (participant) => participant._id
+              (participant) => participant._id,
             ),
             permission: responsePermissionByFilterType(filterType),
           },
@@ -80,19 +81,19 @@ const TeamModal = () => {
     } catch (error: any) {
       toast({
         ...toastFailed,
-        title: "Error",
+        title: 'Error',
         description: error.message,
       });
     }
   };
 
-  //debounce query to make less request on server.
-  // eslint-disable-next-line
+  // debounce query to make less request on server.
+
   const setDelayQuery = useCallback(
     debounce((q) => {
       setSearchQuery(q);
     }, 1000),
-    []
+    [],
   );
 
   const onQueryChanged = (query: string) => {
@@ -101,9 +102,8 @@ const TeamModal = () => {
   };
 
   const isSelected = (userId: string) => {
-    if (selectedParticipants.length === 0) {
-      return false;
-    }
+    if (selectedParticipants.length === 0) return false;
+
     return (
       selectedParticipants.filter((participant) => participant._id === userId)
         ?.length > 0
@@ -112,15 +112,15 @@ const TeamModal = () => {
 
   const handleSelectParticipant = (user) => {
     if (!isSelected(user._id)) {
-      if (filterType === "contributorsIds" || filterType === "followersIds") {
+      if (filterType === 'contributorsIds' || filterType === 'followersIds')
         return setSelectedParticipants([...selectedParticipants, user]);
-      }
+
       setSelectedParticipants([user]);
     } else {
-      if (filterType === "contributorsIds" || filterType === "followersIds") {
+      if (filterType === 'contributorsIds' || filterType === 'followersIds') {
         return setSelectedParticipants([
           ...selectedParticipants.filter(
-            (participant) => participant._id !== user._id
+            (participant) => participant._id !== user._id,
           ),
         ]);
       }
@@ -129,97 +129,109 @@ const TeamModal = () => {
   };
 
   return (
-    <Modal variant="teamModal" isOpen={isOpen} onClose={handleClose} isCentered>
+    <Modal isCentered isOpen={isOpen} onClose={handleClose} variant="teamModal">
       <ModalContent>
         <ModalHeader>
           <Text>
             {isReplaceAccountable
-              ? "Replace"
-              : !isReplaceAccountable && filterType === "accountableId"
-                ? "Select"
-                : `Add ${responsePermissionByFilterType(filterType)}s`
-            }
+              ? 'Replace'
+              : !isReplaceAccountable && filterType === 'accountableId'
+              ? 'Select'
+              : `Add ${responsePermissionByFilterType(filterType)}s`}
           </Text>
           <ModalCloseButton />
         </ModalHeader>
         <ModalBody>
           <InputGroup>
-            <InputLeftElement
-              zIndex={50}
-              children={<SearchIcon fill="teamPage.modal.searchIcon" />}
-            />
+            <InputLeftElement zIndex={50}>
+              <SearchIcon fill="teamPage.modal.searchIcon" />
+            </InputLeftElement>
             <Input
-              borderWidth="1px"
+              autoFocus
               borderColor="teamPage.modal.inputBorder"
+              borderWidth="1px"
+              fontSize="smm"
               h="40px"
               mb={0}
-              zIndex={2}
-              fontSize="smm"
-              value={searchText}
-              rounded="10px"
-              autoFocus
               onChange={({ target: { value } }) => {
                 onQueryChanged(value);
               }}
+              rounded="10px"
+              value={searchText}
+              zIndex={2}
             />
           </InputGroup>
           <Flex>
-            {(filterType === "contributorsIds" || filterType === "followersIds") && <Text
-              ml="2"
-              mt={2}
-              fontSize="smm"
-              fontWeight="semi_medium"
-              color="teamPage.radioButtonFont"
-            >{selectedParticipants.length} users selected</Text>}
+            {(filterType === 'contributorsIds' ||
+              filterType === 'followersIds') && (
+              <Text
+                color="teamPage.radioButtonFont"
+                fontSize="smm"
+                fontWeight="semi_medium"
+                ml="2"
+                mt={2}
+              >
+                {selectedParticipants.length} users selected
+              </Text>
+            )}
           </Flex>
-          <Flex maxH="258px" mt="20px" direction="column">
+          <Flex direction="column" maxH="258px" mt="20px">
             {loading ? (
-              <Flex w="full" h="50px" px={3} fontStyle="italic" align="center">
-                <Box w="40px" mr={3}>
+              <Flex align="center" fontStyle="italic" h="50px" px={3} w="full">
+                <Box mr={3} w="40px">
                   <Loader size="md" />
                 </Box>
                 Searching...
               </Flex>
             ) : userSearchResults.length > 0 ? (
               <VStack
-                h="full"
                 alignItems="flex-start"
+                h="full"
                 mb="20px"
                 overflow="auto"
                 spacing="10px"
               >
                 {userSearchResults.map((user) => (
-                  <Flex key={user._id} align="center">
+                  <Flex align="center" key={user._id}>
                     {/* added this instead of checkbox, because of console error on checkbox */}
                     <Flex
-                      w="20px"
-                      h="20px"
-                      borderRadius="full"
-                      borderWidth="1px"
-                      borderColor="#81819750"
-                      cursor="pointer"
-                      onClick={() => handleSelectParticipant(user)}
+                      align="center"
                       bg={
                         isSelected(user._id)
-                          ? "teamPage.button.add.bg"
-                          : "white"
+                          ? 'teamPage.button.add.bg'
+                          : 'white'
                       }
-                      pt="1"
-                      align="center"
+                      borderColor="#81819750"
+                      borderRadius="full"
+                      borderWidth="1px"
+                      cursor="pointer"
+                      h="20px"
                       justify="center"
+                      onClick={() => handleSelectParticipant(user)}
+                      pt="1"
+                      w="20px"
                     >
-                      <TickIcon w="10px" h="10px" stroke="white" />
+                      <TickIcon h="10px" stroke="white" w="10px" />
                     </Flex>
-                    <Flex ml="2" direction='column' >
+                    <Flex direction="column" ml="2">
                       <Text
-                        fontSize="smm"
-                        fontWeight='semibold'
                         color="black"
-                        direction='column'
+                        direction="column"
+                        fontSize="smm"
+                        fontWeight="semibold"
                       >
                         {user.displayName}
                       </Text>
-                      <Box w='290px' overflow='hidden' textOverflow='ellipsis' position='relative' top='-4px' fontSize='sm'>{user.email}</Box>
+                      <Box
+                        fontSize="sm"
+                        overflow="hidden"
+                        position="relative"
+                        textOverflow="ellipsis"
+                        top="-4px"
+                        w="290px"
+                      >
+                        {user.email}
+                      </Box>
                     </Flex>
                   </Flex>
                 ))}
@@ -229,9 +241,9 @@ const TeamModal = () => {
                 <Flex
                   align="center"
                   fontStyle="italic"
-                  pl={5}
-                  maxWidth="400px"
                   h="50px"
+                  maxWidth="400px"
+                  pl={5}
                 >
                   No results found
                 </Flex>
@@ -241,22 +253,22 @@ const TeamModal = () => {
         </ModalBody>
         <ModalFooter pt="0px">
           <Button
-            w="68px"
-            h="38px"
-            mr="1px"
-            mb="6px"
+            _hover={{ bg: 'teamPage.button.add.bg' }}
             bg="teamPage.button.add.bg"
             color="teamPage.button.add.color"
             fontSize="smm"
             fontWeight="bold"
-            _hover={{ bg: "teamPage.button.add.bg" }}
+            h="38px"
+            mb="6px"
+            mr="1px"
             onClick={handleAddParticipant}
+            w="68px"
           >
             {isReplaceAccountable
-              ? "Replace"
-              : !isReplaceAccountable && filterType === "accountableId"
-                ? "Select"
-                : "Add"}
+              ? 'Replace'
+              : !isReplaceAccountable && filterType === 'accountableId'
+              ? 'Select'
+              : 'Add'}
           </Button>
         </ModalFooter>
       </ModalContent>

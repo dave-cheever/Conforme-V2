@@ -1,8 +1,8 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const ArrowCount = createIcon({
-  displayName: "Admin",
-  viewBox: "0 0 10 10",
+  displayName: 'Admin',
+  viewBox: '0 0 10 10',
   path: (
     <g>
       <path

@@ -1,6 +1,6 @@
-import JSONfn from "json-fn";
+import JSONfn from 'json-fn';
 
-import { roles as definedRoles } from "app-utils";
+import { roles as definedRoles } from 'app-utils';
 
 const roles = async () => {
   try {

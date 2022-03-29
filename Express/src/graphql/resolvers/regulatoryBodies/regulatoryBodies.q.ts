@@ -1,19 +1,26 @@
+
 import { GraphQLResolveInfo } from 'graphql';
 
-import { RegulatoryBodies, Responses } from "app-models";
+import { RegulatoryBodies, Responses } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
 
-const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInfo) => {
-  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, [
-    'regulatoryBodies',
-    element,
-  ]);
+const regulatoryBodies = async (
+  _,
+  __,
+  { organization },
+  info: GraphQLResolveInfo,
+) => {
+  const shouldJoin = (element: string) =>
+    doesPathExist(info.fieldNodes, ['regulatoryBodies', element]);
   try {
-    let regulatoryBodies = await RegulatoryBodies.customFind({}, organization._id);
+    const regulatoryBodies = await RegulatoryBodies.customFind(
+      {},
+      organization._id,
+    );
 
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const regulatoryBody of regulatoryBodies) {
-        let pipeline: any[] = [];
+        const pipeline: any[] = [];
         join({
           pipeline,
           collection: 'complianceItems',
@@ -23,7 +30,7 @@ const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInf
         pipeline.push({
           $match: {
             'complianceItem.regulatoryBodyId': regulatoryBody._id,
-            "complianceItem.metatags.removedAt": { $eq: null },
+            'complianceItem.metatags.removedAt': { $eq: null },
             published: true,
           },
         });
@@ -31,9 +38,9 @@ const regulatoryBodies = async (_, __, { organization }, info: GraphQLResolveInf
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) {
+        if (responses && responses.length > 0) 
           regulatoryBody.complianceItemsResponsesCount = responses[0].count;
-        }
+        
       }
     }
 

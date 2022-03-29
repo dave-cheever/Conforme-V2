@@ -1,46 +1,63 @@
-import { Flex, Tooltip } from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
-import { useFiltersContext } from "../../contexts/FiltersProvider";
-import { ArrowCount } from "../../icons";
-import { IBaseWithName } from "../../interfaces/IBaseWithName";
+import { useHistory } from 'react-router-dom';
 
-const AdminTableRow = ({ element, index, responseToEdit, edit }: { element: IBaseWithName, responseToEdit: "regulatoryBodiesIds" | "categoriesIds", index: number, edit?: () => void }) => {
+import { Flex, Tooltip } from '@chakra-ui/react';
+
+import { useFiltersContext } from '../../contexts/FiltersProvider';
+import { ArrowCount } from '../../icons';
+import { IBaseWithName } from '../../interfaces/IBaseWithName';
+
+const AdminTableRow = ({
+  element,
+  responseToEdit,
+  edit,
+}: {
+  element: IBaseWithName;
+  responseToEdit: 'regulatoryBodiesIds' | 'categoriesIds';
+  edit?: () => void;
+}) => {
   const history = useHistory();
   const { setResponseFiltersValue } = useFiltersContext();
   return (
     <Flex
-      w="full"
-      h="60px"
-      pl={5}
-      flexWrap={["wrap", "nowrap"]}
-      fontSize="smm"
-      flexShrink={0}
-      key={element._id}
-      bg="adminTableRow.bg"
-      color="adminTableRow.font"
       align="center"
+      bg="adminTableRow.bg"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
+      color="adminTableRow.font"
+      flexShrink={0}
+      flexWrap={['wrap', 'nowrap']}
+      fontSize="smm"
+      h="60px"
+      key={element._id}
+      pl={5}
+      w="full"
     >
-      <Flex w={["80%", "50%"]} align="center" cursor="pointer" onClick={edit}>
+      <Flex align="center" cursor="pointer" onClick={edit} w={['80%', '50%']}>
         {element.name}
       </Flex>
       <Flex
-        w={["20%", "50%"]}
         alignItems="center"
-        mt={["5px", "0"]}
-        justifyContent={["flex-end", "flex-start"]}
-        pr={["21px", "0"]}
+        justifyContent={['flex-end', 'flex-start']}
+        mt={['5px', '0']}
+        pr={['21px', '0']}
+        w={['20%', '50%']}
       >
-        {element.complianceItemsResponsesCount || "0"}
-        <Tooltip label="Show Items" fontSize="md">
-          <ArrowCount w="10px" h="10px" stroke="#282F36" cursor="pointer" ml="13px" onClick={() => {
-            setResponseFiltersValue({ [responseToEdit]: [element._id] });
-            history.push("/");
-          }} />
+        {element.complianceItemsResponsesCount || '0'}
+        <Tooltip fontSize="md" label="Show Items">
+          <ArrowCount
+            cursor="pointer"
+            h="10px"
+            ml="13px"
+            onClick={() => {
+              setResponseFiltersValue({ [responseToEdit]: [element._id] });
+              history.push('/');
+            }}
+            stroke="#282F36"
+            w="10px"
+          />
         </Tooltip>
       </Flex>
     </Flex>
   );
-}
+};
 export default AdminTableRow;

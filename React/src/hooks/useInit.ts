@@ -1,40 +1,24 @@
-import { gql, useQuery } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+
+import { gql, useQuery } from '@apollo/client';
 import JSONfn from 'json-fn';
 
-import { IRoles } from "../interfaces/IRoles";
-import { useAppContext } from "../contexts/AppProvider";
-
-declare global {
-  var roles: {
-    reader: {
-      normal: string[];
-      restricted: object;
-    };
-    admin: {
-      normal: string[];
-      restricted: object;
-    };
-    user: {
-      normal: string[];
-      restricted: object;
-    };
-  };
-};
+import { useAppContext } from '../contexts/AppProvider';
+import { IRoles } from '../interfaces/IRoles';
 
 const SETTINGS = gql`
   query {
     roles
     settings(type: "defaultSettings") {
-        _id
-        name
-        value
-        label
-        type
-        description
-        inputType
-        placeholder
-        help
+      _id
+      name
+      value
+      label
+      type
+      description
+      inputType
+      placeholder
+      help
     }
   }
 `;
@@ -54,13 +38,17 @@ const ORGANIZATION = gql`
 `;
 
 const useInit = () => {
-  const { loading: loadingSettings, error: settingsError, data: settingsData } = useQuery(SETTINGS);
-  const { loading: loadingOrganization, error: organizationError, data: organizationData } = useQuery(ORGANIZATION);
   const {
-    setRoles,
-    setOrganizationConfig,
-    setSettings
-  } = useAppContext();
+    loading: loadingSettings,
+    error: settingsError,
+    data: settingsData,
+  } = useQuery(SETTINGS);
+  const {
+    loading: loadingOrganization,
+    error: organizationError,
+    data: organizationData,
+  } = useQuery(ORGANIZATION);
+  const { setRoles, setOrganizationConfig, setSettings } = useAppContext();
 
   useEffect(() => {
     if (settingsData) {
@@ -72,9 +60,8 @@ const useInit = () => {
   }, [settingsError, settingsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (organizationError) {
-      throw organizationError;
-    }
+    if (organizationError) throw organizationError;
+
     if (organizationData) {
       const { organization } = organizationData;
       setOrganizationConfig(organization);

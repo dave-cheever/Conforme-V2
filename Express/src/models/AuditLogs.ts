@@ -1,14 +1,14 @@
-import { model, Schema } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
+import { model, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-import { IAuditLog, IAuditLogModel } from "app-interfaces";
-import { genMetatags } from "app-utils";
+import { IAuditLog, IAuditLogModel } from 'app-interfaces';
+import { genMetatags } from 'app-utils';
 
 const AuditLogSchema = new Schema<IAuditLog, IAuditLogModel>({
   _id: String,
   action: {
     type: String,
-    enum: ["add", "update", "delete", "search", "snapshot"],
+    enum: ['add', 'update', 'delete', 'search', 'snapshot'],
   },
   element: {
     _id: String,
@@ -30,25 +30,36 @@ const AuditLogSchema = new Schema<IAuditLog, IAuditLogModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-AuditLogSchema.statics.customAudit = async function (auditLog: Partial<IAuditLog>, userId: string, organizationId: string): Promise<IAuditLog> {
+AuditLogSchema.statics.customAudit = async function (
+  auditLog: Partial<IAuditLog>,
+  userId: string,
+  organizationId: string,
+): Promise<IAuditLog> {
   const newAuditLog = {
     ...auditLog,
     _id: uuidv4(),
     organizationId,
-    metatags: genMetatags("added", userId) as { addedBy: string; addedAt: Date },
+    metatags: genMetatags('added', userId) as { addedBy: string; addedAt: Date },
   };
   const createdAuditLog = await this.create(newAuditLog);
   return createdAuditLog;
 };
 
-AuditLogSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IAuditLog[]> {
+AuditLogSchema.statics.customFind = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<IAuditLog[]> {
   const auditLogs = await this.find({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return auditLogs;
 };
 
-const auditLogModel = model<IAuditLog, IAuditLogModel>("AuditLog", AuditLogSchema, "auditLogs");
+const auditLogModel = model<IAuditLog, IAuditLogModel>(
+  'AuditLog',
+  AuditLogSchema,
+  'auditLogs',
+);
 export default auditLogModel;

@@ -1,17 +1,23 @@
-import { GraphQLResolveInfo } from "graphql";
 
-import { Categories, Responses } from "app-models";
-import { doesPathExist, join } from "app-utils";
+import { GraphQLResolveInfo } from 'graphql';
 
-const categories = async (_, __, { organization }, info: GraphQLResolveInfo) => {
+import { Categories, Responses } from 'app-models';
+import { doesPathExist, join } from 'app-utils';
+
+const categories = async (
+  _,
+  __,
+  { organization },
+  info: GraphQLResolveInfo,
+) => {
   const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ["categories", element]);
+    doesPathExist(info.fieldNodes, ['categories', element]);
   try {
-    let categories = await Categories.customFind({}, organization._id);
+    const categories = await Categories.customFind({}, organization._id);
 
-    if (shouldJoin("complianceItemsResponsesCount")) {
+    if (shouldJoin('complianceItemsResponsesCount')) {
       for (const category of categories) {
-        let pipeline: any[] = [];
+        const pipeline: any[] = [];
         join({
           pipeline,
           collection: 'complianceItems',
@@ -21,7 +27,7 @@ const categories = async (_, __, { organization }, info: GraphQLResolveInfo) => 
         pipeline.push({
           $match: {
             'complianceItem.categoryId': category._id,
-            "complianceItem.metatags.removedAt": { $eq: null },
+            'complianceItem.metatags.removedAt': { $eq: null },
             published: true,
           },
         });
@@ -29,9 +35,9 @@ const categories = async (_, __, { organization }, info: GraphQLResolveInfo) => 
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) {
+        if (responses && responses.length > 0) 
           category.complianceItemsResponsesCount = responses[0].count;
-        }
+        
       }
     }
 

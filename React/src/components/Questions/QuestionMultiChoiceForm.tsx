@@ -1,25 +1,25 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { IQuestionFormBase } from "../../interfaces/IQuestionFormBase";
-import { questionHeader } from "../../utils/helpers";
-import Checkbox from '../Forms/Checkbox';
+import { useEffect, useMemo, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Bin, Move, PlusIcon } from "../../icons";
-import { useState, useMemo, useEffect } from "react";
-import { Input } from "@chakra-ui/input";
-import { useFieldArray, useForm } from "react-hook-form";
-import { TextInput } from "../Forms";
-import { useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import { isEmpty } from "lodash";
-import { ITrackerQuestion } from "../../interfaces/ITrackerQuestion";
-import { IQuestionChoice } from "../../interfaces/IQuestionChoice";
+import { useFieldArray, useForm } from 'react-hook-form';
+
+import { ChevronRightIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
+
+import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { Move, PlusIcon, Trashcan } from '../../icons';
+import { IQuestionChoice } from '../../interfaces/IQuestionChoice';
+import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
+import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
+import { questionHeader } from '../../utils/helpers';
+import { TextInput } from '../Forms';
+import Checkbox from '../Forms/Checkbox';
 
 const defaultValues: Partial<ITrackerQuestion<IQuestionChoice[]>> = {
-  name: "",
-  description: "",
+  name: '',
+  description: '',
   required: false,
-  value: [{ label: "", isCorrect: false }]
+  value: [{ label: '', isCorrect: false }],
 };
 
 const QuestionMultiChoiceForm = ({
@@ -30,7 +30,7 @@ const QuestionMultiChoiceForm = ({
   setShowQuestionForm,
   setIsEdit,
   setEditQuestionIndex,
-  setEditQuestion
+  setEditQuestion,
 }: IQuestionFormBase<IQuestionChoice[]>) => {
   const { complianceItem } = useComplianceItemModalContext();
   const {
@@ -39,23 +39,24 @@ const QuestionMultiChoiceForm = ({
     watch,
     getValues,
     setValue,
-    reset
+    reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues,
   });
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [choicesIsEmpty, setChoicesIsEmpty] = useState<boolean>(true);
-  const [inputValue, setInputValue] = useState<string[]>([''])
+  const [inputValue, setInputValue] = useState<string[]>(['']);
   const questionName = watch('name');
-  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }, index) => {
-    if (editQuestionIndex === index && name === questionName) return false
-    return name === questionName
-  }) > -1;
+  const questionAlreadyExist =
+    (complianceItem.questions || []).findIndex(({ name }, index) => {
+      if (editQuestionIndex === index && name === questionName) return false;
+      return name === questionName;
+    }) > -1;
 
   const { fields, append } = useFieldArray({
     control,
-    name: "value"
+    name: 'value',
   });
   useEffect(() => {
     if (!isEmpty(editableValue)) {
@@ -63,37 +64,37 @@ const QuestionMultiChoiceForm = ({
         name: editableValue.name,
         description: editableValue.description,
         required: editableValue.required,
-        value: editableValue.value
-      })
-      const choicesLabel = editableValue.value && editableValue.value.map(choice => choice.label);
+        value: editableValue.value,
+      });
+      const choicesLabel =
+        editableValue.value &&
+        editableValue.value.map((choice) => choice.label);
       if (choicesLabel) setInputValue(choicesLabel);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(editableValue)])
+  }, [JSON.stringify(editableValue)]);
 
   useMemo(() => {
-    const isEmpty = (
-      inputValue.map(choice => choice === '')
-    ).some(value => value === true)
-    setChoicesIsEmpty(isEmpty)
-  }, [inputValue])
+    const isEmpty = inputValue
+      .map((choice) => choice === '')
+      .some((value) => value === true);
+    setChoicesIsEmpty(isEmpty);
+  }, [inputValue]);
 
   const onSubmitInput = (index: number, value: string) => {
     if (inputValue[index] !== value) {
-      const values = getValues("value") || [];
+      const values = getValues('value') || [];
       const options = [...values];
-      const option = options[index]
-      option['label'] = value
-      options.splice(index, 1, option)
+      const option = options[index];
+      option.label = value;
+      options.splice(index, 1, option);
     }
-  }
+  };
 
   const moveOptions = (result) => {
     setIsDragging(false);
-    if (!result.source || !result.destination) {
-      return;
-    }
-    const values = getValues("value") || [];
+    if (!result.source || !result.destination) return;
+
+    const values = getValues('value') || [];
     const newOptions = [...values];
     const newInputValue = [...inputValue];
     const [removed] = newOptions.splice(result.source.index, 1);
@@ -108,31 +109,30 @@ const QuestionMultiChoiceForm = ({
   };
 
   const addRequiredFieldAndUpdateChoiceValue = () => {
-    const value = getValues("value");
-    if (!value) {
-      return;
-    }
-    if (value.some(value => value.isCorrect === true)) {
+    const value = getValues('value');
+    if (!value) return;
+
+    if (value.some((value) => value.isCorrect === true))
       setValue('required', true);
-    } else {
-      setValue('required', false);
-    }
-    value.map(choice => choice['isCorrect'] = false);
+    else setValue('required', false);
+
+    value.forEach((choice) => {
+      // eslint-disable-next-line no-param-reassign
+      choice.isCorrect = false;
+    });
     setValue('value', value);
-    return;
-  }
+  };
 
   const handleInputChange = (event, index) => {
-    const oldValue = [...inputValue]
-    oldValue.splice(index, 1, event.target.value)
-    setInputValue([...oldValue])
-  }
+    const oldValue = [...inputValue];
+    oldValue.splice(index, 1, event.target.value);
+    setInputValue([...oldValue]);
+  };
 
   const removeChoice = (index: number) => {
-    if (fields.length === 1) {
-      return;
-    }
-    const values = getValues("value") || [];
+    if (fields.length === 1) return;
+
+    const values = getValues('value') || [];
     const value = [...values];
     const newInputsValue = [...inputValue];
     value.splice(index, 1);
@@ -142,31 +142,33 @@ const QuestionMultiChoiceForm = ({
       value,
     });
     setInputValue([...newInputsValue]);
-  }
+  };
 
   return (
     <Flex flexDir="column" h="full">
       <Flex
-        flexDir="column" h="full"
-        overflowY="auto"
+        flexDir="column"
+        h="full"
         overflowX="hidden"
+        overflowY="auto"
         pb={isDragging ? 'calc(40px + .5rem)' : 0}
         sx={{
           '&::-webkit-scrollbar': {
             backgroundColor: 'questionMultiChoiceForm.scrollBar.bg',
-            width: '2px'
+            width: '2px',
           },
           '&::-webkit-scrollbar-thumb': {
             backgroundColor: 'questionMultiChoiceForm.scrollBar.color',
           },
-        }}>
-        <Text fontWeight="bold" fontSize="smm" mb="20px">
+        }}
+      >
+        <Text fontSize="smm" fontWeight="bold" mb="20px">
           {questionHeader(questionType)}
         </Text>
         <TextInput
           control={control}
-          name="name"
           label="Question title"
+          name="name"
           placeholder="e.g. where is the tv?"
           validations={{
             notEmpty: true,
@@ -174,23 +176,24 @@ const QuestionMultiChoiceForm = ({
         />
         <TextInput
           control={control}
-          name="description"
           label="Question description"
+          name="description"
         />
-        <Text fontSize="ssm" my="20px" color="questionMultiChoiceForm.text.color">
-          Add as many options as you need and mark the correct answers.
-          Mark the correct answers by clicking on the checkbox.
-        </Text>
-        <Box
-          w='calc(100% + 10px)'
-          pr='10px'
+        <Text
+          color="questionMultiChoiceForm.text.color"
+          fontSize="ssm"
+          my="20px"
         >
+          Add as many options as you need and mark the correct answers. Mark the
+          correct answers by clicking on the checkbox.
+        </Text>
+        <Box pr="10px" w="calc(100% + 10px)">
           <DragDropContext
             onDragEnd={moveOptions}
             onDragStart={() => setIsDragging(true)}
           >
             <Droppable droppableId="multiChoiceQuestionDroppable">
-              {(provided, snapshot) => (
+              {(provided) => (
                 <Box
                   ref={provided.innerRef}
                   {...provided.droppableProps}
@@ -202,7 +205,7 @@ const QuestionMultiChoiceForm = ({
                       index={index}
                       key={object.id}
                     >
-                      {(provided, snapshot) => (
+                      {(provided) => (
                         <Box>
                           <Flex
                             ref={provided.innerRef}
@@ -210,113 +213,136 @@ const QuestionMultiChoiceForm = ({
                             align="center"
                           >
                             <Box {...provided.dragHandleProps}>
-                              <Move w="10px" mr="14px" ml="2px" mt="-4px" stroke="questionMultiChoiceForm.icon.moveIcon" />
+                              <Move
+                                ml="2px"
+                                mr="14px"
+                                mt="-4px"
+                                stroke="questionMultiChoiceForm.icon.moveIcon"
+                                w="10px"
+                              />
                             </Box>
-                            <Flex w='full'>
+                            <Flex w="full">
                               <Checkbox
                                 control={control}
                                 name={`value.${index}.isCorrect`}
                                 variant="secondaryVariant"
                               />
                               <Input
+                                name={object.id}
                                 onChange={(e) => {
-                                  handleInputChange(e, index)
-                                  setTimeout(() => onSubmitInput(index, e.target.value), 1200)
+                                  handleInputChange(e, index);
+                                  setTimeout(
+                                    () => onSubmitInput(index, e.target.value),
+                                    1200,
+                                  );
                                 }}
-                                onKeyDown={(e) => e.key === 'Enter' && onSubmitInput(index, object.label)}
+                                onKeyDown={(e) =>
+                                  e.key === 'Enter' &&
+                                  onSubmitInput(index, object.label)
+                                }
+                                placeholder="Option name"
                                 px="2px"
                                 value={inputValue[index]}
-                                name={object.id}
-                                placeholder="Option name"
                               />
                             </Flex>
-                            <Bin
-                              w='20px'
-                              stroke="questionMultiChoiceForm.icon.iconBin"
-                              cursor={fields.length === 1 ? "no-drop" : 'pointer'}
-                              mr={index + 1 === fields.length ? "12px" : "28px"}
+                            <Trashcan
+                              cursor={
+                                fields.length === 1 ? 'no-drop' : 'pointer'
+                              }
+                              mr={index + 1 === fields.length ? '12px' : '28px'}
                               onClick={() => removeChoice(index)}
+                              stroke="questionMultiChoiceForm.icon.iconBin"
+                              w="20px"
                             />
-                            {index + 1 === fields.length &&
+                            {index + 1 === fields.length && (
                               <PlusIcon
+                                cursor="pointer"
                                 onClick={() => {
                                   append({
-                                    label: "",
+                                    label: '',
                                     isCorrect: false,
-                                  })
-                                  setInputValue(prevValue => [...prevValue, ""])
-                                }
-                                }
-                                cursor="pointer"
+                                  });
+                                  setInputValue((prevValue) => [
+                                    ...prevValue,
+                                    '',
+                                  ]);
+                                }}
                                 stroke="questionMultiChoiceForm.icon.plusIcon"
-                              />}
+                              />
+                            )}
                           </Flex>
                         </Box>
                       )}
                     </Draggable>
                   ))}
-                </Box>)}
+                </Box>
+              )}
             </Droppable>
           </DragDropContext>
         </Box>
       </Flex>
-      <Flex justifyContent="space-between" mt='51px'>
+      <Flex justifyContent="space-between" mt="51px">
         <Button
           bg="questionMultiChoiceForm.button.secondary.bg"
           color="questionMultiChoiceForm.button.secondary.font"
-          opacity="0.5"
           fontSize="sm"
           fontWeight="medium"
           h="27px"
-          p="17px"
           onClick={() => {
             setShowQuestionForm(false);
             setIsEdit(false);
             setEditQuestionIndex(undefined);
             setEditQuestion('');
           }}
+          opacity="0.5"
+          p="17px"
         >
           Cancel
         </Button>
         <Button
           bg="questionMultiChoiceForm.button.primary.bg"
           color="questionMultiChoiceForm.button.primary.font"
+          disabled={
+            questionAlreadyExist ||
+            choicesIsEmpty ||
+            Object.keys(errors).length > 0 ||
+            !questionName
+          }
           fontSize="sm"
           fontWeight="medium"
           h="27px"
-          p="17px"
-          disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName}
-          title={questionAlreadyExist ? "This question already exist" : ''}
           onClick={() => {
-            addRequiredFieldAndUpdateChoiceValue()
+            addRequiredFieldAndUpdateChoiceValue();
             const values = getValues();
             addOrUpdateQuestion({ type: questionType, ...values });
             setShowQuestionForm(false);
           }}
+          p="17px"
+          title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
           <ChevronRightIcon ml="5px" />
         </Button>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default QuestionMultiChoiceForm
+export default QuestionMultiChoiceForm;
 
 export const questionMultiChoiceFormStyles = {
   questionMultiChoiceForm: {
     text: {
-      color: "#818197"
+      color: '#818197',
     },
     scrollBar: {
-      bg: "#E5E5E5",
-      color: "#DDD",
+      bg: '#E5E5E5',
+      color: '#DDD',
     },
     icon: {
-      plusIcon: "#818197",
-      iconBin: "#818197",
-      moveIcon: "#818197"
+      plusIcon: '#818197',
+      iconBin: '#818197',
+      moveIcon: '#818197',
     },
     button: {
       primary: {
@@ -327,6 +353,6 @@ export const questionMultiChoiceFormStyles = {
         bg: '#9A9EA1',
         font: '#FFFFFF',
       },
-    }
-  }
-}
+    },
+  },
+};

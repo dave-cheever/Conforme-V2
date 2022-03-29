@@ -1,4 +1,5 @@
-import { RepeatClockIcon } from "@chakra-ui/icons";
+import { RepeatClockIcon } from '@chakra-ui/icons';
+
 import {
   Admin,
   AttachmentIcon,
@@ -9,124 +10,128 @@ import {
   // Insights,
   ProgressIcon,
   QuestionIcon,
-  TeamsIcon
-} from "../icons";
-import { INavItem } from "../interfaces/INavItem";
+  TeamsIcon,
+} from '../icons';
+import { INavItem } from '../interfaces/INavItem';
 
 export const toastSuccess: any = {
-  title: "Success",
-  status: "success",
+  title: 'Success',
+  status: 'success',
   duration: 5000,
   isClosable: true,
-  position: "top",
+  position: 'top',
 };
 
 export const toastFailed: any = {
-  title: "Failed",
-  status: "error",
+  title: 'Failed',
+  status: 'error',
   duration: 5000,
   isClosable: true,
-  position: "top",
+  position: 'top',
 };
 
 export const trackerMenuItems: INavItem[] = [
   {
-    type: "menuItem",
-    label: "Compliance items",
-    url: "/",
+    type: 'menuItem',
+    label: 'Compliance items',
+    url: '/',
     icon: Home,
-    permission: "home.view"
-  }, {
+    permission: 'home.view',
+  },
+  {
     //   type: "menuItem",
     //   label: "Insights",
     //   url: "/insights",
     //   icon: Insights,
     //   permission: "insights.view"
     // }, {
-    type: "menuItem",
-    label: "Admin",
-    url: "/admin",
+    type: 'menuItem',
+    label: 'Admin',
+    url: '/admin',
     icon: Admin,
-    permission: "adminPanel.view",
+    permission: 'adminPanel.view',
     subSections: [
-      { label: "Compliance items", url: "/admin/compliance-items" },
-      { label: "Regulatory bodies", url: "/admin/regulatory-bodies" },
-      { label: "Categories", url: "/admin/categories" },
-      { label: "Locations", url: "/admin/locations" },
-      { label: "Business units", url: "/admin/business-units" },
-      { label: "Users", url: "/admin/users" },
-      { label: "Audit log", url: "/admin/audit-log" },
-      { label: "Other settings", url: "/admin/settings" },
-    ]
+      { label: 'Compliance items', url: '/admin/compliance-items' },
+      { label: 'Regulatory bodies', url: '/admin/regulatory-bodies' },
+      { label: 'Categories', url: '/admin/categories' },
+      { label: 'Locations', url: '/admin/locations' },
+      { label: 'Business units', url: '/admin/business-units' },
+      { label: 'Users', url: '/admin/users' },
+      { label: 'Audit log', url: '/admin/audit-log' },
+      { label: 'Other settings', url: '/admin/settings' },
+    ],
   },
 ];
 
-export const auditsMenuItems: INavItem[] = [{
-  type: "menuItem",
-  label: "Audits",
-  url: "/",
-  icon: Home,
-  permission: "home.view"
-}, {
-  type: "menuItem",
-  label: "Actions",
-  url: "/actions",
-  icon: CalendarIcon,
-  permission: "actions.view"
-}, {
-  type: "menuItem",
-  label: "Admin",
-  url: "/admin",
-  icon: Admin,
-  permission: "adminPanel.view",
-  subSections: [
-    { label: "Sites", url: "/admin/sites" },
-    { label: "Areas", url: "/admin/areas" },
-    { label: "Questions categories", url: "/admin/questions-categories" },
-    { label: "Questions", url: "/admin/questions" },
-    { label: "Audit types", url: "/admin/audit-types" },
-    { label: "Users", url: "/admin/users" },
-    { label: "Audit log", url: "/admin/audit-log" },
-    { label: "Other settings", url: "/admin/settings" },
-  ]
-}];
+export const auditsMenuItems: INavItem[] = [
+  {
+    type: 'menuItem',
+    label: 'Audits',
+    url: '/',
+    icon: Home,
+    permission: 'home.view',
+  },
+  {
+    type: 'menuItem',
+    label: 'Actions',
+    url: '/actions',
+    icon: CalendarIcon,
+    permission: 'actions.view',
+  },
+  {
+    type: 'menuItem',
+    label: 'Admin',
+    url: '/admin',
+    icon: Admin,
+    permission: 'adminPanel.view',
+    subSections: [
+      { label: 'Sites', url: '/admin/sites' },
+      { label: 'Areas', url: '/admin/areas' },
+      { label: 'Questions', url: '/admin/questions' },
+      { label: 'Questions Categories', url: '/admin/questions-categories' },
+      { label: 'Users', url: '/admin/users' },
+      { label: 'Audit log', url: '/admin/audit-log' },
+      { label: 'Other settings', url: '/admin/settings' },
+    ],
+  },
+];
 
 export const userMenus = [
   {
-    label: "Terms and Conditions",
-    url: "/terms-and-conditions"
+    label: 'Terms and Conditions',
+    url: '/terms-and-conditions',
   },
   {
-    label: "Privacy Policy",
-    url: "/privacy-policy"
+    label: 'Privacy Policy',
+    url: '/privacy-policy',
   },
   {
-    label: "Help",
-    url: "/help"
+    label: 'Help',
+    url: '/help',
   },
   {
-    label: "Settings",
-    url: "/admin/settings"
-  }
+    label: 'Settings',
+    url: '/admin/settings',
+  },
 ];
 
 export const responseTabItems = [
   {
     index: 0,
-    label: "Details",
-    icon: DetailIcon
+    label: 'Details',
+    icon: DetailIcon,
   },
   {
     index: 1,
-    label: "Attachments",
-    icon: AttachmentIcon
+    label: 'Attachments',
+    icon: AttachmentIcon,
   },
   {
     index: 2,
-    label: "Questions",
-    icon: QuestionIcon
-  }
-]
+    label: 'Questions',
+    icon: QuestionIcon,
+  },
+];
 
 export const chartColors = [
   '#336699',
@@ -178,18 +183,17 @@ export const chartColors = [
   '#CBA328',
   '#F46197',
   '#DBCFB0',
-  '#545775'
+  '#545775',
 ];
-
 
 export const settingsTabs = [
   {
     index: 0,
-    label: "Defaults"
+    label: 'Defaults',
   },
   {
     index: 1,
-    label: "Email templates"
+    label: 'Email templates',
   },
   // {
   //   index: 2,
@@ -200,79 +204,89 @@ export const settingsTabs = [
 export const auditTabs = [
   {
     index: 0,
-    label: "All logs"
+    label: 'All logs',
   },
   {
     index: 1,
-    label: "Renewals"
+    label: 'Renewals',
   },
   {
     index: 2,
-    label: "Team changes"
-  }
+    label: 'Team changes',
+  },
 ];
 
 export const navigationTabs = [
   {
     label: 'Progress',
     url: '',
-    icon: ProgressIcon
+    icon: ProgressIcon,
   },
   {
     label: 'Audit log',
     url: '/audit-log',
-    icon: AuditIcon
+    icon: AuditIcon,
   },
   {
     label: 'Team',
     url: '/team',
-    icon: TeamsIcon
+    icon: TeamsIcon,
   },
   {
     label: 'History',
     url: '/history',
-    icon: RepeatClockIcon
-  }
+    icon: RepeatClockIcon,
+  },
 ];
 
-export const userRoles = [{
-  value: "responsible",
-  label: "Responsible"
-}, {
-  value: "accountable",
-  label: "Accountable"
-}, {
-  value: "contributor",
-  label: "Contributor"
-}, {
-  value: "follower",
-  label: "Follower"
-}];
+export const userRoles = [
+  {
+    value: 'responsible',
+    label: 'Responsible',
+  },
+  {
+    value: 'accountable',
+    label: 'Accountable',
+  },
+  {
+    value: 'contributor',
+    label: 'Contributor',
+  },
+  {
+    value: 'follower',
+    label: 'Follower',
+  },
+];
 
-export const questionTypes = [{
-  value: "text",
-  label: "Text input"
-}, {
-  value: "textMultiline",
-  label: "Multiple lines of text"
-}, {
-  value: "switch",
-  label: "Yes / No answer"
-}, {
-  value: "datepicker",
-  label: "Date input"
-}, {
-  value: "multipleChoice",
-  label: "Multiple choices"
-},
+export const questionTypes = [
+  {
+    value: 'text',
+    label: 'Text input',
+  },
+  {
+    value: 'textMultiline',
+    label: 'Multiple lines of text',
+  },
+  {
+    value: 'switch',
+    label: 'Yes / No answer',
+  },
+  {
+    value: 'datepicker',
+    label: 'Date input',
+  },
+  {
+    value: 'multipleChoice',
+    label: 'Multiple choices',
+  },
   // {
   //   value: "singleChoice",
   //   label: "Single choice"
-  // }, 
+  // },
   // {
   //   value: "email",
   //   label: "Email address"
-  // }, 
+  // },
   // {
   //   value: "phoneNumber",
   //   label: "Phone number"
@@ -288,11 +302,11 @@ export const questionTypes = [{
 
 export const SwitchOptions = [
   {
-    label: "Yes",
-    value: "yes"
+    label: 'Yes',
+    value: 'yes',
   },
   {
-    label: "No",
-    value: "no"
+    label: 'No',
+    value: 'no',
   },
 ];

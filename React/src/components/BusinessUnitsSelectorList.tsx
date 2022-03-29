@@ -1,11 +1,9 @@
-import React from "react";
-import {
-  CheckboxGroup,
-  Stack,
-} from "@chakra-ui/react";
+import React from 'react';
 
-import { IBusinessUnit } from "../interfaces/IBusinessUnit";
-import FilterCheckBox from "./Filters/FilterCheckBox";
+import { CheckboxGroup, Stack } from '@chakra-ui/react';
+
+import { IBusinessUnit } from '../interfaces/IBusinessUnit';
+import FilterCheckBox from './Filters/FilterCheckBox';
 
 interface IBusinessUnitsSelectorList {
   filteredBusinessUnits: IBusinessUnit[];
@@ -14,17 +12,23 @@ interface IBusinessUnitsSelectorList {
   handleChange: (any) => void;
 }
 
-const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, disabled, handleChange }: IBusinessUnitsSelectorList) => {
-  return (
-    <CheckboxGroup
-      value={selected}
-      onChange={value => handleChange({ target: { name: 'businessUnitsIds', value } })}
-    >
-      <Stack w='full' direction="column">
-        {filteredBusinessUnits?.map(({ name, _id }) => <FilterCheckBox label={name} key={_id} value={_id} />)}
-      </Stack>
-    </CheckboxGroup>
-  );
-};
+const BusinessUnitsSelectorList = ({
+  filteredBusinessUnits,
+  selected,
+  handleChange,
+}: IBusinessUnitsSelectorList) => (
+  <CheckboxGroup
+    onChange={(value) =>
+      handleChange({ target: { name: 'businessUnitsIds', value } })
+    }
+    value={selected}
+  >
+    <Stack direction="column" w="full">
+      {filteredBusinessUnits?.map(({ name, _id }) => (
+        <FilterCheckBox key={_id} label={name} value={_id} />
+      ))}
+    </Stack>
+  </CheckboxGroup>
+);
 
 export default BusinessUnitsSelectorList;

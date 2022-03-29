@@ -1,6 +1,13 @@
-import React from 'react'
-import { useHistory } from 'react-router';
-import { Menu, MenuButton, Avatar, MenuList, Text, useDisclosure } from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
+
+import {
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import addHours from 'date-fns/addHours';
 
 import { userMenus } from '../bootstrap/config';
@@ -12,7 +19,7 @@ const UserMenu = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
 
   const logout = async () => {
-    history.push("/logout");
+    history.push('/logout');
     await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
       credentials: 'include',
       mode: 'no-cors',
@@ -23,9 +30,9 @@ const UserMenu = () => {
       displayName: user?.displayName,
       imgUrl: user?.imgUrl,
       firstName: user?.firstName,
-      expiresAt: addHours(new Date(), 24)
-    }
-    localStorage.setItem("logOutUser", JSON.stringify(logOutUser));
+      expiresAt: addHours(new Date(), 24),
+    };
+    localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
     setUser(null);
   };
 
@@ -34,87 +41,100 @@ const UserMenu = () => {
   };
 
   return (
-    <Menu onOpen={onOpen} onClose={onClose} isOpen={isOpen}>
-      <MenuButton
-        display="flex"
-        ml="1"
-        mr={["0", "6"]}
-        color="white"
-        w="65px"
-      >
+    <Menu isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+      <MenuButton color="white" display="flex" ml="1" mr={['0', '6']} w="65px">
         <Avatar
-          color="userMenu.avatar.color"
           bg="userMenu.avatar.bg"
-          rounded="full"
-          name={user?.displayName}
-          h="41px"
-          w="41px"
-          src={user?.imgUrl}
-          mx={3}
+          borderColor={
+            isOpen
+              ? 'userMenu.avatar.borderColorOpened'
+              : 'userMenu.avatar.borderColor'
+          }
           borderWidth="5px"
-          borderColor={isOpen ? "userMenu.avatar.borderColorOpened" : "userMenu.avatar.borderColor"}
+          color="userMenu.avatar.color"
+          h="41px"
+          mx={3}
+          name={user?.displayName}
+          rounded="full"
           size="sm"
+          src={user?.imgUrl}
+          w="41px"
         />
       </MenuButton>
-      <MenuList border="0px" borderRadius="10px" minW="175px" p="15px 20px 15px 20px" textAlign="right" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
-        <Text fontWeight="semibold" w="full" textOverflow="ellipsis" noOfLines={1}>
+      <MenuList
+        border="0px"
+        borderRadius="10px"
+        boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+        minW="175px"
+        p="15px 20px 15px 20px"
+        textAlign="right"
+      >
+        <Text
+          fontWeight="semibold"
+          noOfLines={1}
+          textOverflow="ellipsis"
+          w="full"
+        >
           {user?.displayName}
         </Text>
         <Text
-          color="userMenu.text"
-          w="full"
-          textOverflow="ellipsis"
-          noOfLines={1}
-          fontSize="sm"
-          pb="10px"
           borderBottomColor="userMenu.borderColor"
           borderBottomWidth="1px"
+          color="userMenu.text"
+          fontSize="sm"
           mb="10px"
+          noOfLines={1}
+          pb="10px"
+          textOverflow="ellipsis"
+          w="full"
         >
           {user?.jobTitle}
         </Text>
-        {userMenus.map(({ label, url }) =>
+        {userMenus.map(({ label, url }) => (
           <Text
-            key={label}
-            cursor="pointer"
+            _hover={{ color: 'userMenu.hoverColor' }}
             color="userMenu.text"
-            my="10px"
+            cursor="pointer"
             fontSize="smm"
-            _hover={{ color: "userMenu.hoverColor" }}
+            key={label}
+            my="10px"
             onClick={() => pageRedirect(url)}
-          >{label}
-          </Text>)}
+          >
+            {label}
+          </Text>
+        ))}
 
         <Text
-          cursor="pointer"
-          color="userMenu.text"
-          my="10px"
-          fontSize="smm"
-          onClick={() => logout()}
-          pt="10px"
+          _hover={{ color: 'userMenu.hoverColor' }}
           borderTopColor="userMenu.borderColor"
           borderTopWidth="1px"
+          color="userMenu.text"
+          cursor="pointer"
+          fontSize="smm"
           mt="10px"
-          _hover={{ color: "userMenu.hoverColor" }}
-        >Logout</Text>
+          my="10px"
+          onClick={() => logout()}
+          pt="10px"
+        >
+          Logout
+        </Text>
       </MenuList>
     </Menu>
-  )
-}
+  );
+};
 
 export default UserMenu;
 
-
 export const userMenuStyles = {
   userMenu: {
-    text: "#818197",
-    borderColor: "#F0F0F0",
-    hoverColor: "#462AC4",
+    text: '#818197',
+    borderColor: '#F0F0F0',
+    hoverColor: '#462AC4',
     avatar: {
-      color: "white",
-      bg: "#462AC4",
-      borderColor: "white",
-      borderColorOpened: "#E93C44"
-    }
-  }
-}
+      color: 'white',
+      bg: '#462AC4',
+      borderColor: 'white',
+      borderColorOpened: '#E93C44',
+    },
+  },
+};

@@ -1,20 +1,18 @@
-import {
-  Flex,
-  IconButton,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
-import { AddIcon, SearchIcon } from "../icons";
-import { useAdminContext } from "../contexts/AdminProvider";
-import { useFiltersContext } from "../contexts/FiltersProvider";
-import { useAppContext } from "../contexts/AppProvider";
-import Can from "./can";
-import UserMenu from "./UserMenu";
-import SearchBar from "./SearchBar";
-import NavigationTopProvider, { useNavigationTopContext } from "../contexts/NavigationTopProvider";
-import useDevice from "../hooks/useDevice";
+import { Flex, IconButton, Stack, Text } from '@chakra-ui/react';
+
+import { useAdminContext } from '../contexts/AdminProvider';
+import { useAppContext } from '../contexts/AppProvider';
+import { useFiltersContext } from '../contexts/FiltersProvider';
+import NavigationTopProvider, {
+  useNavigationTopContext,
+} from '../contexts/NavigationTopProvider';
+import useDevice from '../hooks/useDevice';
+import { AddIcon, SearchIcon } from '../icons';
+import Can from './can';
+import SearchBar from './SearchBar';
+import UserMenu from './UserMenu';
 
 const NavigationTop = () => {
   const device = useDevice();
@@ -27,98 +25,128 @@ const NavigationTop = () => {
   const pageRedirect = (page: string) => {
     history.push(page);
   };
-  const isComplianceItemPage = history.location.pathname.split('/')[1] === "compliance-item";
+  const isComplianceItemPage =
+    history.location.pathname.split('/')[1] === 'compliance-item';
 
   const handleAddButtonClick = () => {
     setAdminModalState('add');
-    if ([
-      '/',
-      '/admin/users',
-      '/admin/audit-log',
-      '/admin/settings'
-    ].includes(history.location.pathname)) {
+    if (
+      ['/', '/admin/users', '/admin/audit-log', '/admin/settings'].includes(
+        history.location.pathname,
+      )
+    )
       pageRedirect('/admin/compliance-items');
-    }
   };
 
   return (
     <Flex
-      justify="space-between"
       align="center"
-      w={["100vw", "full"]}
-      position={["fixed", "relative"]}
+      bg={['navigationTop.bgMobile', 'navigationTop.bg']}
+      h={['72px', '80px']}
+      justify="space-between"
+      position={['fixed', 'relative']}
+      w={['100vw', 'full']}
       zIndex={10}
-      h={["72px", "80px"]}
-      bg={["navigationTop.bgMobile", "navigationTop.bg"]}
     >
       <Stack
-        spacing={4}
-        direction="row"
         align="center"
-        fontWeight="semi_medium"
-        fontSize="md"
-        w="full"
-        mr={["0", "20px"]}
+        direction="row"
         display="flex"
+        fontSize="md"
+        fontWeight="semi_medium"
+        mr={['0', '20px']}
+        spacing={4}
+        w="full"
       >
         <Flex
           alignItems="center"
+          cursor="pointer"
+          display={device !== 'mobile' || isSearchBarOpen ? 'none' : 'flex'}
           h="80px"
           onClick={() => history.push('/')}
-          cursor="pointer"
-          display={device !== "mobile" || isSearchBarOpen ? "none" : "flex"}
         >
           <Text
-            w="full"
-            ml={["26px", 0]}
-            fontWeight="bold"
-            fontSize="md"
-            lineHeight="19px"
             color="navigationTop.organizationName"
+            fontSize="md"
+            fontWeight="bold"
+            lineHeight="19px"
+            ml={['26px', 0]}
+            w="full"
           >
-            {showFiltersPanel ? organizationConfig?.name.charAt(0) : organizationConfig?.name}
+            {showFiltersPanel
+              ? organizationConfig?.name.charAt(0)
+              : organizationConfig?.name}
           </Text>
         </Flex>
-        {!isComplianceItemPage && <Can
-          action='adminPanel'
-          yes={() => <IconButton
-            onClick={handleAddButtonClick}
-            _hover={{ opacity: 0.7 }}
-            mr="30px"
-            bg="navigationTop.addButton"
-            h={['52px', '45px']}
-            w={['52px', '45px']}
-            color="white"
-            aria-label="Add"
-            icon={<AddIcon stroke="navigationTop.addIcon" h="20px" w="20px" />}
-            position={['fixed', 'relative']}
-            bottom={['75px', '0']}
-            right={['15px', '0']}
-            zIndex={5}
-            boxShadow={["0px 0px 80px rgba(49, 50, 51, 0.25)", "none"]}
-            flexShrink={0}
-            rounded={["20px", "8px"]}
-            display={['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
-          />}
-        />}
+        {!isComplianceItemPage && (
+          <Can
+            action="adminPanel"
+            yes={() => (
+              <IconButton
+                _hover={{ opacity: 0.7 }}
+                aria-label="Add"
+                bg="navigationTop.addButton"
+                bottom={['75px', '0']}
+                boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
+                color="white"
+                display={
+                  [
+                    '/',
+                    '/admin/users',
+                    '/admin/settings',
+                    '/admin/audit-log',
+                  ].includes(history.location.pathname)
+                    ? 'none'
+                    : 'block'
+                }
+                flexShrink={0}
+                h={['52px', '45px']}
+                icon={
+                  <AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />
+                }
+                mr="30px"
+                onClick={handleAddButtonClick}
+                position={['fixed', 'relative']}
+                right={['15px', '0']}
+                rounded={['20px', '8px']}
+                w={['52px', '45px']}
+                zIndex={5}
+              />
+            )}
+          />
+        )}
 
-        <Flex display={device !== "mobile" || (device === "mobile" && isSearchBarOpen) ? "block" : "none"}>
+        <Flex
+          display={
+            device !== 'mobile' || (device === 'mobile' && isSearchBarOpen)
+              ? 'block'
+              : 'none'
+          }
+        >
           <SearchBar />
         </Flex>
       </Stack>
 
       <Flex
         align="center"
-        display={device === "mobile" && isSearchBarOpen ? "none" : "flex"}
+        display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}
       >
         <IconButton
-          mr="27.5px"
           align="center"
+          aria-label="Search responses"
           bg="navigationTop.searchIconBackground"
-          aria-label='Search responses'
           borderRadius="20px"
-          icon={<SearchIcon h="22px" w="18px" fill="navigationTop.searchBarIcon" stroke="brand.outerSpace" opacity="1" />}
-          display={["block", "none"]}
+          display={['block', 'none']}
+          icon={
+            <SearchIcon
+              fill="navigationTop.searchBarIcon"
+              h="22px"
+              opacity="1"
+              stroke="brand.outerSpace"
+              w="18px"
+            />
+          }
+          mr="27.5px"
           onClick={() => setIsSearchBarOpen(true)}
         />
         {/* <NotificationIcon
@@ -143,7 +171,7 @@ const NavigationTop = () => {
       >
         <SearchBar />
       </Stack> */}
-    </Flex >
+    </Flex>
   );
 };
 
@@ -157,19 +185,19 @@ export default NavigationTopWithContext;
 
 export const navigationTopStyles = {
   navigationTop: {
-    bg: "#E5E5E5",
-    bgMobile: "#FFFFFF",
-    inputBg: "#FFFFFF",
-    inputIconColor: "#282F36",
-    organizationName: "#282F36",
-    addButton: "#462AC4",
-    searchIconBackground: "#F0F0F0",
-    avatarBg: "#A2171E",
-    searchBarIconFill: "#282F36",
-    notificationIconHover: "#FFFFFF",
-    notificationBadgeBorder: "#FFFFFF",
-    notificationColorScheme: "#E93C44",
-    searchCrossIconStroke: "#282F36",
-    addIcon: "#FFFFFF",
-  }
-}
+    bg: '#E5E5E5',
+    bgMobile: '#FFFFFF',
+    inputBg: '#FFFFFF',
+    inputIconColor: '#282F36',
+    organizationName: '#282F36',
+    addButton: '#462AC4',
+    searchIconBackground: '#F0F0F0',
+    avatarBg: '#A2171E',
+    searchBarIconFill: '#282F36',
+    notificationIconHover: '#FFFFFF',
+    notificationBadgeBorder: '#FFFFFF',
+    notificationColorScheme: '#E93C44',
+    searchCrossIconStroke: '#282F36',
+    addIcon: '#FFFFFF',
+  },
+};

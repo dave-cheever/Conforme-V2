@@ -1,8 +1,5 @@
-import React from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex } from '@chakra-ui/react';
 
-const Licenses = () => {
-  return <Flex>Licenses</Flex>;
-};
+const Licenses = () => <Flex>Licenses</Flex>;
 
 export default Licenses;

@@ -1,5 +1,5 @@
-import { IResponse } from "./IResponse";
-import { IUser } from "./IUser";
+import { IResponse } from './IResponse';
+import { IUser } from './IUser';
 
 export interface IResponseContext {
   response: IResponse;
@@ -14,8 +14,8 @@ export interface IResponseContext {
   handleShareOpen: () => void;
   handleShareClose: () => void;
 
-  getUpdatedDisplayName: (userId:string) => string;
-  getParticipantDetailById: (userId:string) => IUser
+  getUpdatedDisplayName: (userId: string) => string;
+  getParticipantDetailById: (userId: string) => IUser;
 
   isConfirmationOpen: boolean;
   handleConfirmationOpen: () => void;
@@ -32,7 +32,7 @@ export interface IResponseContext {
   isOpenMessage: boolean;
   handleOpenMessage: () => void;
   handleCloseMessage: () => void;
-  
+
   participantsLoading: boolean;
   snapshot: string | null;
   snapshots: IResponse[];

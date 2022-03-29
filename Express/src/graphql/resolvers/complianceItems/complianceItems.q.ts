@@ -1,38 +1,46 @@
-import { GraphQLResolveInfo } from "graphql";
 
-import { ComplianceItems } from "app-models";
-import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
+import { GraphQLResolveInfo } from 'graphql';
 
-const complianceItems = async (_, { complianceItemsQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
-  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["complianceItems", element]);
+import { ComplianceItems } from 'app-models';
+import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
+
+const complianceItems = async (
+  _,
+  { complianceItemsQueryInput },
+  { authorize, organization },
+  info: GraphQLResolveInfo,
+) => {
+  const shouldJoin = (element: string) =>
+    doesPathExist(info.fieldNodes, ['complianceItems', element]);
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: "complianceItems.view" })) {
-      throw new Error("User is not permitted");
-    }
+    if (!isPermitted({ user, action: 'complianceItems.view' })) 
+      throw new Error('User is not permitted');
 
-    const pipeline: any[] = [{
-      $match: {
-        "metatags.removedAt": { $eq: null },
-        organizationId: organization._id,
+    const pipeline: any[] = [
+      {
+        $match: {
+          'metatags.removedAt': { $eq: null },
+          organizationId: organization._id,
+        },
       },
-    }];
+    ];
 
     // Filter By published
     if (complianceItemsQueryInput?.hasOwnProperty('published')) {
       pipeline.push({
         $match: {
-          published: complianceItemsQueryInput?.published
-        }
-      })
+          published: complianceItemsQueryInput?.published,
+        },
+      });
     }
 
     // Filter by compliance item id
     if (complianceItemsQueryInput?.complianceItemsIds) {
       pipeline.push({
         $match: {
-          _id: { $in: complianceItemsQueryInput.complianceItemsIds }
+          _id: { $in: complianceItemsQueryInput.complianceItemsIds },
         },
       });
     }
@@ -41,7 +49,9 @@ const complianceItems = async (_, { complianceItemsQueryInput }, { authorize, or
     if (complianceItemsQueryInput?.regulatoryBodiesIds) {
       pipeline.push({
         $match: {
-          regulatoryBodyId: { $in: complianceItemsQueryInput.regulatoryBodiesIds },
+          regulatoryBodyId: {
+            $in: complianceItemsQueryInput.regulatoryBodiesIds,
+          },
         },
       });
     }
@@ -80,7 +90,7 @@ const complianceItems = async (_, { complianceItemsQueryInput }, { authorize, or
         from: 'categoryId',
         to: 'category',
       });
-    };
+    }
 
     if (shouldJoin('regulatoryBody')) {
       join({
@@ -89,9 +99,11 @@ const complianceItems = async (_, { complianceItemsQueryInput }, { authorize, or
         from: 'regulatoryBodyId',
         to: 'regulatoryBody',
       });
-    };
+    }
 
-    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'complianceItems') });
+    pipeline.push({
+      $project: getProjectFields(info.fieldNodes, 'complianceItems'),
+    });
 
     const complianceItems = await ComplianceItems.aggregate(pipeline);
     return complianceItems;

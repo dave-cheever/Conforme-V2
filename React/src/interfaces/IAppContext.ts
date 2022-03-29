@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-import { IOrganization } from "./IOrganization";
+import { Dispatch, SetStateAction } from 'react';
 
-import { IRoles } from "./IRoles";
-import { ISetting } from "./ISetting";
-import { IUser } from "./IUser";
+import { IOrganization } from './IOrganization';
+import { IRoles } from './IRoles';
+import { ISetting } from './ISetting';
+import { IUser } from './IUser';
 
 export interface IAppContext {
   roles?: IRoles;
@@ -14,7 +14,7 @@ export interface IAppContext {
 
   organizationConfig?: IOrganization;
   setOrganizationConfig: Dispatch<SetStateAction<IOrganization | undefined>>;
-  
+
   user: IUser | null | undefined;
   setUser: Dispatch<SetStateAction<IUser | null | undefined>>;
 }

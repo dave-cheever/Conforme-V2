@@ -1,21 +1,13 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Stack,
-} from '@chakra-ui/react';
+
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Input, Stack } from '@chakra-ui/react';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import SectionHeader from './SectionHeader';
 
 const AdditionalDetailsForm = () => {
-  const {
-    complianceItem,
-    setValue,
-  } = useComplianceItemModalContext();
+  const { complianceItem, setValue } = useComplianceItemModalContext();
 
   const handleEvidenceItemChange = (value: string, index: number) => {
     const newValue = [...(complianceItem.evidenceItems || [])];
@@ -34,55 +26,75 @@ const AdditionalDetailsForm = () => {
   };
 
   return (
-    <Stack w='full' spacing={4} px={[0, 0, 3]}>
+    <Stack px={[0, 0, 3]} spacing={4} w="full">
       <SectionHeader label="Please define the expected evidence and action for this compliance item." />
-      <Stack w='full' spacing={2} pb={3} overflow='auto'>
-        <Box w='full' bg="additionalDetails.evidence.bg" borderRadius='4px'>
-          {complianceItem.evidenceItems?.map((item, index) =>
-            <Stack key={`item-${index}`} pr={5} mb={2} direction='row' spacing={4} align='center'>
+      <Stack overflow="auto" pb={3} spacing={2} w="full">
+        <Box bg="additionalDetails.evidence.bg" borderRadius="4px" w="full">
+          {complianceItem.evidenceItems?.map((item, index) => (
+            <Stack
+              align="center"
+              direction="row"
+              key={`item-${index}`}
+              mb={2}
+              pr={5}
+              spacing={4}
+            >
               <Box flexGrow={1}>
                 <Box
                   color="additionalDetails.evidence.label"
-                  fontWeight="bold"
                   fontSize={11}
+                  fontWeight="bold"
                   mb="5px"
                   zIndex={2}
                 >
                   Evidence {index + 1}
                 </Box>
-                <Flex alignItems="center">                
+                <Flex alignItems="center">
                   <Input
-                    name='evidenceItems'
-                    color="additionalDetails.evidence.input.font.normal"
+                    _focus={{
+                      color: 'additionalDetails.evidence.input.font.focus',
+                    }}
                     bg="additionalDetails.evidence.input.bg"
-                    borderWidth='1px'
-                    borderColor='additionalDetails.evidence.input.border'
-                    h='42px'
+                    borderColor="additionalDetails.evidence.input.border"
+                    borderWidth="1px"
+                    color="additionalDetails.evidence.input.font.normal"
                     fontSize="smm"
+                    h="42px"
                     mb={0}
+                    name="evidenceItems"
+                    onChange={({ target }) =>
+                      handleEvidenceItemChange(target.value, index)
+                    }
+                    placeholder="Type in the evidence title"
                     value={item}
-                    placeholder='Type in the evidence title'
-                    onChange={({ target }) => handleEvidenceItemChange(target.value, index)}
-                    _focus={{ color: 'additionalDetails.evidence.input.font.focus' }}
                   />
-                  <CloseIcon ml="25px" color='additionalDetails.evidence.remove' cursor='pointer' onClick={() => removeEvidenceItem(index)}/>
+                  <CloseIcon
+                    color="additionalDetails.evidence.remove"
+                    cursor="pointer"
+                    ml="25px"
+                    onClick={() => removeEvidenceItem(index)}
+                  />
                 </Flex>
               </Box>
             </Stack>
-          )}
-          {(complianceItem.evidenceItems || []).length < 5 &&
+          ))}
+          {(complianceItem.evidenceItems || []).length < 5 && (
             <Button
-              mt={complianceItem.evidenceItems?.length === 0 ? 0 : 3}
+              bgColor="additionalDetails.evidence.add.bg"
+              color="additionalDetails.evidence.add.font"
+              fontWeight="400"
+              leftIcon={<AddIcon stroke="additionalDetails.addIcon" />}
               mb={4}
-              px={4}
-              size='xs'
-              bgColor='additionalDetails.evidence.add.bg'
-              color='additionalDetails.evidence.add.font'
-              fontWeight='400'
-              leftIcon={<AddIcon stroke="additionalDetails.addIcon"/>}
+              mt={complianceItem.evidenceItems?.length === 0 ? 0 : 3}
               onClick={addEvidenceItem}
-            >{complianceItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}</Button>
-          }
+              px={4}
+              size="xs"
+            >
+              {complianceItem.evidenceItems?.length === 0
+                ? 'Require evidence'
+                : 'Add another'}
+            </Button>
+          )}
         </Box>
       </Stack>
     </Stack>
@@ -94,7 +106,7 @@ export default AdditionalDetailsForm;
 export const additionalDetailsStyles = {
   additionalDetails: {
     description: '#2B3236',
-    addIcon: "#FFFFFF",
+    addIcon: '#FFFFFF',
     evidence: {
       bg: '#F2F2F2',
       title: '#2B3236',
@@ -113,5 +125,5 @@ export const additionalDetailsStyles = {
         font: '#FFFFFF',
       },
     },
-  }
+  },
 };

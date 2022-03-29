@@ -1,4 +1,8 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import { gql, useQuery } from '@apollo/client';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Avatar,
   Box,
@@ -7,17 +11,15 @@ import {
   Skeleton,
   Text,
   Tooltip,
-} from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
-import format from "date-fns/format";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import { gql, useQuery } from "@apollo/client";
+} from '@chakra-ui/react';
+import format from 'date-fns/format';
 
-import { LocationIcon, UploadedTick } from "../../icons";
-import { responseStatuses } from "../../hooks/useResponseUtils";
-import { IResponse } from "../../interfaces/IResponse";
-import useResponseUtils from "../../hooks/useResponseUtils";
-import { IUser } from "../../interfaces/IUser";
+import useResponseUtils, {
+  responseStatuses,
+} from '../../hooks/useResponseUtils';
+import { LocationIcon, UploadedTick } from '../../icons';
+import { IResponse } from '../../interfaces/IResponse';
+import { IUser } from '../../interfaces/IUser';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -32,7 +34,10 @@ const GET_USERS_BY_ID = gql`
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const history = useHistory();
   const { getStatus, getRenewalStatus } = useResponseUtils();
-  const responseStatus = useMemo(() => getStatus(response), [getStatus, response]);
+  const responseStatus = useMemo(
+    () => getStatus(response),
+    [getStatus, response],
+  );
   const {
     data: { usersById: responseResponsible } = [],
     loading: responsibleLoading,
@@ -43,87 +48,103 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       },
     },
   });
-  const responsible: IUser = responseResponsible && responseResponsible.length !== 0 && responseResponsible[0];
+  const responsible: IUser =
+    responseResponsible &&
+    responseResponsible.length !== 0 &&
+    responseResponsible[0];
 
   return (
     <Box
-      _hover={{ boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.18)" }}
-      boxShadow="sm"
+      _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)' }}
       bg="white"
       borderRadius="20px"
-      w={["full", "full", "350px"]}
+      boxShadow="sm"
       flexShrink={0}
-      p="20px 25px 20px 25px"
       h="290px"
+      p="20px 25px 20px 25px"
+      w={['full', 'full', '350px']}
     >
       <Flex align="center" justify="space-between">
         <Flex align="center">
           <Flex
-            h='12px'
-            bgColor={getRenewalStatus(response) === 'comingUp' ? 'complianceSquare.comingUp' : `complianceSquare.${responseStatus}`}
-            w='12px'
+            bgColor={
+              getRenewalStatus(response) === 'comingUp'
+                ? 'complianceSquare.comingUp'
+                : `complianceSquare.${responseStatus}`
+            }
+            h="12px"
             rounded="full"
+            w="12px"
           />
           <Box
-            color='complianceSquare.fontColor'
-            opacity='1'
-            fontSize='11px'
-            overflow='hidden'
-            textOverflow='ellipsis'
-            whiteSpace='nowrap'
+            color="complianceSquare.fontColor"
+            fontSize="11px"
             ml={2}
+            opacity="1"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
           >
-            {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle='italic'>Unassigned</Flex>}
+            {response.complianceItem?.category?.name ? (
+              response.complianceItem?.category?.name
+            ) : (
+              <Flex fontStyle="italic">Unassigned</Flex>
+            )}
           </Box>
         </Flex>
-        <Flex align='center'>
-          {response.evidence?.some(({ uploaded }) => !uploaded) ?
-            <Tooltip label='Evidence required' placement='top' hasArrow><UploadedTick color='complianceSquare.crossIcon' /></Tooltip> :
-            <Tooltip label='Evidence uploaded' placement='top' hasArrow><UploadedTick color='complianceSquare.tickIcon' ml={2} /></Tooltip>
-          }
+        <Flex align="center">
+          {response.evidence?.some(({ uploaded }) => !uploaded) ? (
+            <Tooltip hasArrow label="Evidence required" placement="top">
+              <UploadedTick color="complianceSquare.crossIcon" />
+            </Tooltip>
+          ) : (
+            <Tooltip hasArrow label="Evidence uploaded" placement="top">
+              <UploadedTick color="complianceSquare.tickIcon" ml={2} />
+            </Tooltip>
+          )}
         </Flex>
       </Flex>
-      <Flex h="52px" w="full" mt={2} align="center" position="relative">
-        <Skeleton rounded="full" isLoaded={!responsibleLoading}>
+      <Flex align="center" h="52px" mt={2} position="relative" w="full">
+        <Skeleton isLoaded={!responsibleLoading} rounded="full">
           <Tooltip label={responsible?.displayName}>
             <Avatar
               boxSize="24px"
-              size="sm"
               cursor="pointer"
               name={responsible?.displayName}
+              size="sm"
               src={responsible?.imgUrl}
             />
           </Tooltip>
         </Skeleton>
         <Text
-          w="full"
-          fontSize="16px"
-          lineHeight="20px"
           color="complianceSquare.nameFontColor"
+          fontSize="16px"
           fontWeight="700"
-          noOfLines={2}
+          lineHeight="20px"
           ml={3}
+          noOfLines={2}
+          w="full"
         >
           {response.complianceItem?.name}
         </Text>
       </Flex>
-      <Flex h="40px" w="full" align="center">
-        <LocationIcon ml={1} color="complianceSquare.businessUnitFontColor" />
+      <Flex align="center" h="40px" w="full">
+        <LocationIcon color="complianceSquare.businessUnitFontColor" ml={1} />
         <Box
-          w="200px"
-          pl={2}
-          lineHeight="20px"
           color="complianceSquare.businessUnitFontColor"
           fontSize="14px"
+          lineHeight="20px"
           overflow="hidden"
+          pl={2}
           textOverflow="ellipsis"
+          w="200px"
           whiteSpace="nowrap"
         >
           {response.businessUnit?.name}
         </Box>
       </Flex>
-      <Flex h="50px" w="full" py="4" alignItems="flex-start">
-        <Box w="50%" color="complianceSquare.categoryFontColor" fontSize="11px">
+      <Flex alignItems="flex-start" h="50px" py="4" w="full">
+        <Box color="complianceSquare.categoryFontColor" fontSize="11px" w="50%">
           <Box>Regulatory body</Box>
           <Box
             color="complianceSquare.nameFontColor"
@@ -140,10 +161,10 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           </Box>
         </Box>
         <Box
-          ml={3}
-          w="50%"
           color="complianceSquare.regulatoryFontColor"
           fontSize="11px"
+          ml={3}
+          w="50%"
         >
           <Box>Next renewal on</Box>
           <Box
@@ -154,53 +175,53 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
             whiteSpace="nowrap"
           >
             {response?.nextRenewalDate ? (
-              format(new Date(response?.nextRenewalDate), "d MMM yyyy")
+              format(new Date(response?.nextRenewalDate), 'd MMM yyyy')
             ) : (
               <Flex fontStyle="italic">No due date</Flex>
             )}
           </Box>
         </Box>
       </Flex>
-      <Flex pt="50px" w="full" align="center" justify="space-between">
+      <Flex align="center" justify="space-between" pt="50px" w="full">
         <Button
-          bg={
-            responseStatus === "nonCompliant"
-              ? "complianceSquare.nonCompliant"
-              : "complianceSquare.buttonBg"
-          }
-          fontSize="11px"
-          rightIcon={
-            <ChevronRightIcon
-              color={
-                responseStatus === "nonCompliant"
-                  ? "white"
-                  : "complianceSquare.fontColor"
-              }
-              boxSize="20px"
-            />
-          }
-          color={
-            responseStatus === "nonCompliant"
-              ? "white"
-              : "complianceSquare.fontColor"
-          }
-          w="85px"
-          h="28px"
           _hover={{
             bg:
-              responseStatus === "nonCompliant"
-                ? "complianceSquare.nonCompliant"
-                : "complianceSquare.buttonBg",
+              responseStatus === 'nonCompliant'
+                ? 'complianceSquare.nonCompliant'
+                : 'complianceSquare.buttonBg',
           }}
+          bg={
+            responseStatus === 'nonCompliant'
+              ? 'complianceSquare.nonCompliant'
+              : 'complianceSquare.buttonBg'
+          }
+          color={
+            responseStatus === 'nonCompliant'
+              ? 'white'
+              : 'complianceSquare.fontColor'
+          }
+          fontSize="11px"
+          h="28px"
           onClick={() => history.push(`/compliance-item/${response._id}`)}
+          rightIcon={
+            <ChevronRightIcon
+              boxSize="20px"
+              color={
+                responseStatus === 'nonCompliant'
+                  ? 'white'
+                  : 'complianceSquare.fontColor'
+              }
+            />
+          }
+          w="85px"
         >
           Details
         </Button>
         <Flex
           align="center"
-          justify="center"
-          flexDirection="column"
           color="complianceSquare.nameFontColor"
+          flexDirection="column"
+          justify="center"
           mr={1}
         >
           <Box fontSize="11px" fontWeight="700">
@@ -221,21 +242,21 @@ export default ComplianceItemSquare;
 
 export const complianceItemsSquareStyles = {
   complianceSquare: {
-    compliant: "#62c240",
-    nonCompliant: "#FC5960",
-    comingUp: "#FFA012",
-    statusFontColor: "#FFFFFF",
-    imageBg: "#ffffff",
-    rightIcon: "#9A9EA1",
-    crossIcon: "#F0F0F0",
-    tickIcon: "#41BA17",
-    fontColor: "#818197",
-    regulatoryFontColor: "#818197",
-    renewalFontColor: "#424B50",
-    evidenceFontColor: "#424B50",
-    businessUnitFontColor: "#818197",
-    categoryFontColor: "#818197",
-    nameFontColor: "#282F36",
-    buttonBg: "#F0F2F5",
+    compliant: '#62c240',
+    nonCompliant: '#FC5960',
+    comingUp: '#FFA012',
+    statusFontColor: '#FFFFFF',
+    imageBg: '#ffffff',
+    rightIcon: '#9A9EA1',
+    crossIcon: '#F0F0F0',
+    tickIcon: '#41BA17',
+    fontColor: '#818197',
+    regulatoryFontColor: '#818197',
+    renewalFontColor: '#424B50',
+    evidenceFontColor: '#424B50',
+    businessUnitFontColor: '#818197',
+    categoryFontColor: '#818197',
+    nameFontColor: '#282F36',
+    buttonBg: '#F0F2F5',
   },
 };

@@ -1,20 +1,20 @@
-import auditLogsResolvers from "./auditLogs";
-import auditTypesResolvers from "./auditTypes";
-import businessUnitsResolvers from "./businessUnits"
-import categoriesResolvers from "./categories";
-import commentsResolvers from "./comments";
-import complianceItemsResolvers from "./complianceItems";
-import graphResolvers from "./graph";
-import locationsResolvers from "./locations";
-import organizationsResolvers from "./organizations";
-import questionsResolvers from "./questions";
-import questionsCategoriesResolvers from "./questionsCategories";
-import regulatoryBodiesResolvers from "./regulatoryBodies";
-import responsesResolvers from "./responses";
-import scalars from "../scalars";
-import searchResolvers from "./search";
-import settingsResolvers from "./settings";
-import usersResolvers from "./users";
+import scalars from '../scalars';
+import auditLogsResolvers from './auditLogs';
+import auditTypesResolvers from './auditTypes';
+import businessUnitsResolvers from './businessUnits';
+import categoriesResolvers from './categories';
+import commentsResolvers from './comments';
+import complianceItemsResolvers from './complianceItems';
+import graphResolvers from './graph';
+import locationsResolvers from './locations';
+import organizationsResolvers from './organizations';
+import questionsResolvers from './questions';
+import questionsCategoriesResolvers from './questionsCategories';
+import regulatoryBodiesResolvers from './regulatoryBodies';
+import responsesResolvers from './responses';
+import searchResolvers from './search';
+import settingsResolvers from './settings';
+import usersResolvers from './users';
 
 export default {
   Any: scalars.anyScalar,
@@ -49,6 +49,6 @@ export default {
     ...regulatoryBodiesResolvers.Mutation,
     ...responsesResolvers.Mutation,
     ...settingsResolvers.Mutation,
-    ...usersResolvers.Mutation
+    ...usersResolvers.Mutation,
   },
 };

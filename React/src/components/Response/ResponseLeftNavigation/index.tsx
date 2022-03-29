@@ -1,17 +1,18 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { Avatar, Box, Flex, Icon, useToast, Text } from "@chakra-ui/react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import React from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useHistory } from 'react-router-dom';
 
-import { ChevronRight, Conforme, Copy } from "../../../icons";
-import { navigationTabs, toastSuccess } from "../../../bootstrap/config";
-import ResponseLeftTabItem from "../ResponseLeftTabItem";
-import ResponseLeftItem from "../ResponseLeftItem";
-import { useResponseContext } from "../../../contexts/ResponseProvider";
-import { useFiltersContext } from "../../../contexts/FiltersProvider";
-import { gql, useQuery } from "@apollo/client";
-import { IUser } from "../../../interfaces/IUser";
-import { useAppContext } from "../../../contexts/AppProvider";
+import { gql, useQuery } from '@apollo/client';
+import { Avatar, Box, Flex, Icon, Text, useToast } from '@chakra-ui/react';
+
+import { navigationTabs, toastSuccess } from '../../../bootstrap/config';
+import { useAppContext } from '../../../contexts/AppProvider';
+import { useFiltersContext } from '../../../contexts/FiltersProvider';
+import { useResponseContext } from '../../../contexts/ResponseProvider';
+import { ChevronRight, Conforme, Copy } from '../../../icons';
+import { IUser } from '../../../interfaces/IUser';
+import ResponseLeftItem from '../ResponseLeftItem';
+import ResponseLeftTabItem from '../ResponseLeftTabItem';
 
 const GET_USERS_BY_ID = gql`
   query ($responsibleQuery: UserQueryInput, $accountableQuery: UserQueryInput) {
@@ -64,29 +65,29 @@ const ResponseLeftNavigation = () => {
 
   return (
     <Flex
-      color="responseLeftNavigation.color"
       bg="responseLeftNavigation.bg"
-      fontWeight="400"
+      color="responseLeftNavigation.color"
       direction="column"
-      w="240px"
+      display={['none', 'none', 'flex']}
+      fontWeight="400"
+      justifyContent="space-between"
       overflow="auto"
       px={6}
-      justifyContent="space-between"
-      display={["none", "none", "flex"]}
+      w="240px"
     >
       <Flex flexDirection="column">
         <Box
-          display="flex"
           alignItems="center"
-          h="80px"
-          onClick={() => history.push("/")}
           cursor="pointer"
+          display="flex"
+          h="80px"
+          onClick={() => history.push('/')}
         >
           <Text
-            w="80px"
-            fontWeight="bold"
-            fontSize="16px"
             color="navigationLeft.organizationNameFontColor"
+            fontSize="16px"
+            fontWeight="bold"
+            w="80px"
           >
             {showFiltersPanel
               ? organizationConfig?.name.charAt(0)
@@ -94,120 +95,120 @@ const ResponseLeftNavigation = () => {
           </Text>
         </Box>
         <Flex
-          cursor="pointer"
           align="center"
-          onClick={() => history.push("/compliance-items")}
           color="responseLeftNavigation.goBackColor"
+          cursor="pointer"
           fontSize="14px"
           h="30px"
           mb="30px"
+          onClick={() => history.push('/compliance-items')}
         >
-          <ChevronRight transform="Rotate(180deg)" mr={2} />
+          <ChevronRight mr={2} transform="Rotate(180deg)" />
           Go Back
         </Flex>
         <Flex flexDirection="column" mb={2}>
           {navigationTabs.map(({ label, icon, url }) => (
             <ResponseLeftTabItem
+              icon={icon}
               key={url}
               label={label}
-              icon={icon}
               url={url}
             />
           ))}
         </Flex>
         <Box h="50px">
-          <Box opacity={0.5} fontSize="11px">
+          <Box fontSize="11px" opacity={0.5}>
             Item ID
           </Box>
           <Flex align="center" fontSize="14px" minH="28px">
             <Flex mr={2}>{response?.complianceItem.reference}</Flex>
             <CopyToClipboard
-              text={response?.complianceItem.reference}
               onCopy={() =>
                 toast({
                   ...toastSuccess,
-                  title: "Item ID copied",
+                  title: 'Item ID copied',
                   description: `${response?.complianceItem.reference} was copied to clipboard`,
                 })
               }
+              text={response?.complianceItem.reference}
             >
               <Copy
+                _hover={{ opacity: 0.6, cursor: 'pointer' }}
                 color="responseLeftNavigation.copy"
-                mt={1}
                 h="17px"
+                mt={1}
                 w="17px"
-                _hover={{ opacity: 0.6, cursor: "pointer" }}
               />
             </CopyToClipboard>
           </Flex>
         </Box>
         <ResponseLeftItem
           heading="Business unit"
-          value={response?.businessUnit?.name || "-"}
+          value={response?.businessUnit?.name || '-'}
         />
         <Box h="50px" mt={2}>
-          <Box opacity={0.5} fontSize="11px">
+          <Box fontSize="11px" opacity={0.5}>
             Accountable
           </Box>
           <Flex align="center" fontSize="14px" minH="28px">
             <Avatar
-              color="white"
               bg="responseLeftNavigation.avatar"
+              color="white"
+              mr={2}
               name={
                 accountable && accountable.firstName && accountable.lastName
                   ? `${accountable.firstName} ${accountable.lastName}`
                   : `${accountable?.displayName}`
               }
-              src={accountable && accountable.imgUrl}
               size="xs"
-              mr={2}
+              src={accountable && accountable.imgUrl}
             />
             <Flex mr={2}>
               {accountable && accountable.firstName && accountable.lastName
                 ? `${accountable.firstName} ${accountable.lastName}`
-                : `${accountable?.displayName || "-"}`}
+                : `${accountable?.displayName || '-'}`}
             </Flex>
           </Flex>
         </Box>
         <Box h="50px" mt={2}>
-          <Box opacity={0.5} fontSize="11px">
+          <Box fontSize="11px" opacity={0.5}>
             Responsible
           </Box>
           <Flex align="center" fontSize="14px" minH="28px">
             <Avatar
-              color="white"
               bg="responseLeftNavigation.avatar"
+              color="white"
+              mr={2}
               name={
                 responsible && responsible.firstName && responsible.lastName
                   ? `${responsible.firstName} ${responsible.lastName}`
                   : `${responsible?.displayName}`
               }
-              src={responsible && responsible.imgUrl}
               size="xs"
-              mr={2}
+              src={responsible && responsible.imgUrl}
             />
             <Flex mr={2}>
               {responsible && responsible.firstName && responsible.lastName
                 ? `${responsible.firstName} ${responsible.lastName}`
-                : `${responsible?.displayName || "-"}`}
+                : `${responsible?.displayName || '-'}`}
             </Flex>
           </Flex>
         </Box>
         <ResponseLeftItem
           heading="Category"
-          value={response?.complianceItem?.category?.name || "-"}
+          value={response?.complianceItem?.category?.name || '-'}
         />
         <ResponseLeftItem
           heading="Regulatory body"
-          value={response?.complianceItem?.regulatoryBody?.name || "-"}
+          value={response?.complianceItem?.regulatoryBody?.name || '-'}
         />
         <ResponseLeftItem
           heading="Frequency"
-          value={response?.complianceItem?.frequency || "-"}
+          value={response?.complianceItem?.frequency || '-'}
         />
       </Flex>
       <Flex>
-        <Icon as={Conforme} w="103px" h="35px" mb="20px" />
+        <Icon as={Conforme} h="35px" mb="20px" w="103px" />
       </Flex>
     </Flex>
   );
@@ -217,12 +218,12 @@ export default ResponseLeftNavigation;
 
 export const responseLeftNavigationStyles = {
   responseLeftNavigation: {
-    bg: "#E5E5E5",
-    goBackColor: "#818197",
-    color: "#282F36",
-    building: "#2B3236",
-    copy: "#FF9A00",
-    avatar: "#462AC4",
-    responseDetailActiveColor: "#F0F0F0",
+    bg: '#E5E5E5',
+    goBackColor: '#818197',
+    color: '#282F36',
+    building: '#2B3236',
+    copy: '#FF9A00',
+    avatar: '#462AC4',
+    responseDetailActiveColor: '#F0F0F0',
   },
 };

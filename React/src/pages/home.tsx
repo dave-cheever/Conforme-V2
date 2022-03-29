@@ -1,35 +1,38 @@
-import React, { createContext, useState } from "react";
-import AuditModal from "../components/AuditModal/AuditModal";
-import { Button, useDisclosure } from "@chakra-ui/react";
+import { createContext, useState } from 'react';
 
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Button,
   Flex,
-  Text,
   Grid,
-  Spacer,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-} from "@chakra-ui/react";
-import AuditPanel from "../components/AuditPanel";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import AccidentInvestigationPanel from "../components/AccidentInvestigationPanel";
-import LicensesPanel from "../components/LicensesPanel";
-import DashboardFilters from "../components/DashboardFilters";
+  MenuList,
+  Spacer,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+
+import AccidentInvestigationPanel from '../components/AccidentInvestigationPanel';
+import AuditModal from '../components/AuditModal/AuditModal';
+import AuditPanel from '../components/AuditPanel';
+import DashboardFilters from '../components/DashboardFilters';
+import LicensesPanel from '../components/LicensesPanel';
 
 export const HomeContext = createContext({
-  filterType: ["allTypes"],
+  filterType: ['allTypes'],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   filterHandler: (type: string) => {},
 });
 
 const Home = () => {
-  const [filterType, setFilterType] = useState<Array<string>>(["allTypes"]);
+  const [filterType, setFilterType] = useState<Array<string>>(['allTypes']);
 
   const filterHandler = (type: string) => {
-    if (type === "allTypes") {
-      setFilterType(["allTypes"]);
+    if (type === 'allTypes') {
+      setFilterType(['allTypes']);
       return;
     }
     if (filterType.includes(type)) {
@@ -39,7 +42,7 @@ const Home = () => {
       return;
     }
     setFilterType((prevFilters) => [
-      ...prevFilters.filter((item) => item !== "allTypes"),
+      ...prevFilters.filter((item) => item !== 'allTypes'),
       type,
     ]);
   };
@@ -49,20 +52,24 @@ const Home = () => {
     filterHandler,
   };
 
-  const { isOpen: isAuditModalOpen, onOpen: openAuditModal, onClose: closeAuditModal } = useDisclosure();
+  const {
+    isOpen: isAuditModalOpen,
+    onOpen: openAuditModal,
+    onClose: closeAuditModal,
+  } = useDisclosure();
 
   return (
     <HomeContext.Provider value={HomeContextTemplate}>
       <Flex
+        alignContent={['center', 'flex-start']}
         direction="row"
-        w="full"
+        justify={['center', 'flex-start']}
         p={8}
+        w="full"
         wrap="wrap"
-        justify={["center", "flex-start"]}
-        alignContent={["center", "flex-start"]}
       >
-        <Box w="full" h="full" fontSize="18px">
-          <Text fontWeight="700" fontSize="24px">
+        <Box fontSize="18px" h="full" w="full">
+          <Text fontSize="24px" fontWeight="700">
             Your work
           </Text>
           <br />
@@ -71,14 +78,14 @@ const Home = () => {
             <Spacer />
             <Menu>
               <MenuButton
+                _active={{ color: 'white', bg: 'black' }}
+                _hover={{ color: 'white', bg: 'black' }}
                 as={Button}
-                rightIcon={<ChevronDownIcon />}
                 bg="white"
                 fontSize="14px"
                 fontWeight="700"
                 h="35px"
-                _hover={{ color: "white", bg: "black" }}
-                _active={{ color: "white", bg: "black" }}
+                rightIcon={<ChevronDownIcon />}
               >
                 Order: Priority
               </MenuButton>
@@ -90,14 +97,14 @@ const Home = () => {
           </Flex>
 
           <br />
-          <Grid templateColumns="repeat( auto-fill, 280px )" gap={2}>
+          <Grid gap={2} templateColumns="repeat( auto-fill, 280px )">
             <AuditPanel isMentioned open={openAuditModal} />
-            <AuditPanel open={openAuditModal}  />
+            <AuditPanel open={openAuditModal} />
             <AccidentInvestigationPanel />
             <LicensesPanel />
           </Grid>
         </Box>
-        <AuditModal onClose={closeAuditModal} isOpen={isAuditModalOpen} />
+        <AuditModal isOpen={isAuditModalOpen} onClose={closeAuditModal} />
       </Flex>
     </HomeContext.Provider>
   );

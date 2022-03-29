@@ -1,14 +1,24 @@
-import { model, models, Schema } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
-import { diff } from "deep-object-diff";
+import { diff } from 'deep-object-diff';
+import { GraphQLError } from 'graphql';
+import { model, models, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-import { IAuditValues, ILocation, ILocationModel } from "app-interfaces";
-import { genMetatags, getAuditValueForString, getAuditValueForUser, getBasicElement, removeDatabaseFields } from "app-utils";
-import { AuditLogs, Organizations, Users } from "app-models";
-import { GraphQLError } from "graphql";
+import { IAuditValues, ILocation, ILocationModel } from 'app-interfaces';
+import { AuditLogs, Organizations, Users } from 'app-models';
+import {
+  genMetatags,
+  getAuditValueForString,
+  getAuditValueForUser,
+  getBasicElement,
+  removeDatabaseFields,
+} from 'app-utils';
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+  organization,
+}): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -41,11 +51,20 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
   return auditRecordValues;
 };
 
+// custom validation for unique name
+async function validateUniqueName(this: any, name: string) {
+  const locationsCount = await models.Location.find({
+    name,
+    'metatags.removedAt': { $eq: null },
+  }).count();
+  return !locationsCount;
+}
+
 const locationsSchema = new Schema<ILocation, ILocationModel>({
   _id: String,
   name: {
     type: String,
-    validate: [validateUniqueName, "Location name already exists"]
+    validate: [validateUniqueName, 'Location name already exists'],
   },
   ownerId: String,
   organizationId: String,
@@ -57,48 +76,47 @@ const locationsSchema = new Schema<ILocation, ILocationModel>({
     updatedBy: String,
     removedAt: Date,
     removedBy: String,
-  }
+  },
 });
 
-//custom validation for unique name
-async function validateUniqueName(this: any, name: string) {
-  const locationsCount = await models.Location.find({
-    name,
-    "metatags.removedAt": { $eq: null },
-  }).count()
-  return !locationsCount
-}
-
-
-locationsSchema.statics.customCreate = async function (location: ILocation, userId: string, organizationId: string): Promise<ILocation> {
+locationsSchema.statics.customCreate = async function (
+  location: ILocation,
+  userId: string,
+  organizationId: string,
+): Promise<ILocation> {
   const createdLocation = await this.create({
     ...location,
     _id: uuidv4(),
     organizationId,
-    metatags: genMetatags("added", userId),
+    metatags: genMetatags('added', userId),
   });
 
   // Add owner to the database if doesn't exist
   const { ownerId } = location;
   if (ownerId) {
     const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) {
-      await Users.customAdd({ _id: ownerId }, userId, organizationId);
-    }
+    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
   }
 
   if (createdLocation?._doc) {
     const addAuditLog = async () => {
       const element = getBasicElement(createdLocation._doc);
       const newValues = removeDatabaseFields(createdLocation._doc);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
       const values = await getAuditRecordValues({ newValues, organization });
-      AuditLogs.customAudit({
-        coll: 'locations',
-        action: "add",
-        element,
-        values,
-      }, userId, organizationId);
+      AuditLogs.customAudit(
+        {
+          coll: 'locations',
+          action: 'add',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -107,64 +125,74 @@ locationsSchema.statics.customCreate = async function (location: ILocation, user
 
 locationsSchema.statics.customFind = async function (
   selector: any = {},
-  organizationId
+  organizationId,
 ): Promise<ILocation[]> {
   const locations = await this.find({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   });
   return locations;
 };
 
-locationsSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<ILocation | null> {
+locationsSchema.statics.customFindOne = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<ILocation | null> {
   const location = await this.findOne({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return location;
 };
 
-locationsSchema.statics.customFindById = async function (_id: string): Promise<ILocation> {
+locationsSchema.statics.customFindById = async function (
+  _id: string,
+): Promise<ILocation> {
   const location = await this.findOne({
     _id,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   });
-  if (!location) {
-    throw new Error("Location not found");
-  }
+  if (!location) throw new Error('Location not found');
+
   return location._doc;
 };
 
-locationsSchema.statics.customFindByOwnerId = async function (ownerId: string, organizationId: string): Promise<ILocation> {
+locationsSchema.statics.customFindByOwnerId = async function (
+  ownerId: string,
+  organizationId: string,
+): Promise<ILocation> {
   const location = await this.customFindOne({ ownerId }, organizationId);
-  if (!location) {
-    throw new Error('Location not found');
-  }
+  if (!location) throw new Error('Location not found');
+
   return location._doc;
 };
 
-locationsSchema.statics.customFindByOrganizationId = async function (organizationId: string): Promise<ILocation> {
+locationsSchema.statics.customFindByOrganizationId = async function (
+  organizationId: string,
+): Promise<ILocation> {
   const location = await this.customFindOne({ organizationId }, organizationId);
-  if (!location) {
-    throw new Error('Location not found');
-  }
+  if (!location) throw new Error('Location not found');
+
   return location._doc;
 };
 
-locationsSchema.statics.customUpdateOne = async function (selector: object = {}, updates: Partial<ILocation>, userId: string, organizationId: string): Promise<ILocation> {
+locationsSchema.statics.customUpdateOne = async function (
+  selector: object = {},
+  updates: Partial<ILocation>,
+  userId: string,
+  organizationId: string,
+): Promise<ILocation> {
   const location = await this.customFindOne(selector, organizationId);
-  if (!location) {
-    throw new GraphQLError('Location doesn\'t exist');
-  }
+  if (!location) throw new GraphQLError("Location doesn't exist");
 
   const updatedLocation = {
     ...location,
     ...updates,
     metatags: {
       ...location?.metatags,
-      ...genMetatags("updated", userId),
+      ...genMetatags('updated', userId),
     },
   };
   const updatedResult = await this.updateOne(selector, updatedLocation);
@@ -173,9 +201,7 @@ locationsSchema.statics.customUpdateOne = async function (selector: object = {},
   const { ownerId } = updatedLocation;
   if (ownerId) {
     const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) {
-      await Users.customAdd({ _id: ownerId }, userId, organizationId);
-    }
+    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
   }
 
   if (updatedResult?.modifiedCount) {
@@ -183,14 +209,25 @@ locationsSchema.statics.customUpdateOne = async function (selector: object = {},
       const element = getBasicElement(updatedLocation);
       const oldValues = removeDatabaseFields(location);
       const newValues = removeDatabaseFields(updatedLocation);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
-      const values = await getAuditRecordValues({ oldValues, newValues, organization });
-      AuditLogs.customAudit({
-        coll: 'locations',
-        action: "update",
-        element,
-        values,
-      }, userId, organizationId);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({
+        oldValues,
+        newValues,
+        organization,
+      });
+      AuditLogs.customAudit(
+        {
+          coll: 'locations',
+          action: 'update',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -198,17 +235,19 @@ locationsSchema.statics.customUpdateOne = async function (selector: object = {},
   return updatedLocation;
 };
 
-locationsSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
+locationsSchema.statics.customDelete = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<number> {
   const location = await this.customFindOne(selector, organizationId);
-  if (!location) {
-    throw new GraphQLError('Location doesn\'t exist');
-  }
+  if (!location) throw new GraphQLError("Location doesn't exist");
 
   const updatedLocation = {
     ...location,
     metatags: {
       ...location?.metatags,
-      ...genMetatags("removed", userId),
+      ...genMetatags('removed', userId),
     },
   };
   const deletedResult = await this.updateOne(selector, updatedLocation);
@@ -217,14 +256,21 @@ locationsSchema.statics.customDelete = async function (selector: object = {}, us
     const addAuditLog = async () => {
       const element = getBasicElement(location);
       const oldValues = removeDatabaseFields(location);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
       const values = await getAuditRecordValues({ oldValues, organization });
-      AuditLogs.customAudit({
-        coll: 'locations',
-        action: "delete",
-        element,
-        values,
-      }, userId, organizationId);
+      AuditLogs.customAudit(
+        {
+          coll: 'locations',
+          action: 'delete',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -232,5 +278,8 @@ locationsSchema.statics.customDelete = async function (selector: object = {}, us
   return deletedResult?.modifiedCount;
 };
 
-const locationModel = model<ILocation, ILocationModel>("Location", locationsSchema);
+const locationModel = model<ILocation, ILocationModel>(
+  'Location',
+  locationsSchema,
+);
 export default locationModel;

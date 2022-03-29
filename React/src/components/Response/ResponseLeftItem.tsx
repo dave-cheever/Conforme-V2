@@ -1,4 +1,4 @@
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 const ResponseLeftItem = ({
   heading,
@@ -6,17 +6,15 @@ const ResponseLeftItem = ({
 }: {
   heading: string;
   value: string;
-}) => {
-  return (
-    <Flex h="50px" flexDir="column" mt={2} align="flex-start">
-      <Box opacity={0.5} fontSize="11px">
-        {heading}
-      </Box>
-      <Text noOfLines={1} textOverflow="ellipsis" fontSize="14px">
-        {value || "-"}
-      </Text>
-    </Flex>
-  );
-};
+}) => (
+  <Flex align="flex-start" flexDir="column" h="50px" mt={2}>
+    <Box fontSize="11px" opacity={0.5}>
+      {heading}
+    </Box>
+    <Text fontSize="14px" noOfLines={1} textOverflow="ellipsis">
+      {value || '-'}
+    </Text>
+  </Flex>
+);
 
 export default ResponseLeftItem;

@@ -1,6 +1,5 @@
-import { useAppContext } from "../contexts/AppProvider";
-
-import { IUser } from "../interfaces/IUser";
+import { useAppContext } from '../contexts/AppProvider';
+import { IUser } from '../interfaces/IUser';
 
 export const isPermitted = ({
   user,
@@ -11,37 +10,28 @@ export const isPermitted = ({
   action?: string;
   data?: object;
 }): boolean => {
-  if (!action) {
-    return true;
-  }
+  if (!action) return true;
 
-  if (!user) {
-    return false;
-  }
+  if (!user) return false;
 
-  if (!globalThis.roles) {
-    return false;
-  }
-  
+  if (!globalThis.roles) return false;
+
   const permission = globalThis.roles[user.role];
-  if (!permission) {
-    return false;
-  }
+  if (!permission) return false;
 
-  const scope = action.split(".")[0];
+  const scope = action.split('.')[0];
   const { normal, restricted } = permission;
-  if (normal && (normal.includes(action) || normal.includes(scope))) {
+  if (normal && (normal.includes(action) || normal.includes(scope)))
     return true;
-  }
+
   if (
     restricted &&
-    ((typeof restricted[action] === "function" &&
+    ((typeof restricted[action] === 'function' &&
       restricted[action]({ user, ...data })) ||
-      (typeof restricted[scope] === "function" &&
+      (typeof restricted[scope] === 'function' &&
         restricted[scope]({ user, ...data })))
-  ) {
+  )
     return true;
-  }
 
   return false;
 };
@@ -59,9 +49,7 @@ const Can = ({
 }): any => {
   const { user } = useAppContext();
 
-  if (isPermitted({ user, action, data })) {
-    return yes();
-  }
+  if (isPermitted({ user, action, data })) return yes();
 
   return no();
 };

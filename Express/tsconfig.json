@@ -14,34 +14,15 @@
     "target": "ES2019",
     "moduleResolution": "node",
     "paths": {
-      "app-interfaces": [
-        "src/interfaces"
-      ],
-      "app-models": [
-        "src/models"
-      ],
-      "app-services": [
-        "src/services"
-      ],
-      "app-shared": [
-        "src/shared"
-      ],
-      "app-utils": [
-        "src/utils"
-      ]
+      "app-interfaces": ["src/interfaces"],
+      "app-models": ["src/models"],
+      "app-services": ["src/services"],
+      "app-shared": ["src/shared"],
+      "app-utils": ["src/utils"]
     },
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": [
-    "src/**/*.ts",
-    "spec/**/*.ts"
-  ],
-  "exclude": [
-    "src/public/"
-  ]
+  "include": ["src/**/*.ts", "spec/**/*.ts"],
+  "exclude": ["src/public/"]
 }

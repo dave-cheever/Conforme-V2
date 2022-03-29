@@ -1,12 +1,13 @@
 import React from 'react';
-import { Box, Flex, Select } from '@chakra-ui/react';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
-
 import { Controller } from 'react-hook-form';
+
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { Box, Flex, Select } from '@chakra-ui/react';
+
 import useValidate from '../../hooks/useValidate';
+import { ChevronRight } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
-import { ChevronRight } from '../../icons';
 
 interface IDropdown extends IField {
   placeholder?: string;
@@ -18,95 +19,142 @@ interface IDropdown extends IField {
   stroke?: string;
   help?: string;
   Icon?: any;
-  attributeType?: "Category" | "Regulatory body"
-  onAction?: (type?: "Category" | "Regulatory body") => void;
+  attributeType?: 'Category' | 'Regulatory body';
+  onAction?: (type?: 'Category' | 'Regulatory body') => void;
 }
 
 const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
-    if (validationValue && !value) {
-      return `${label} cannot be empty`;
-    }
+    if (validationValue && !value) return `${label} cannot be empty`;
   },
 };
 
-const Dropdown = ({ control, name, stroke, label, placeholder = '', tooltip = '', variant, validations = {},
-  disabled = false, options = [], help = '', Icon, onAction, attributeType }: IDropdown) => {
+const Dropdown = ({
+  control,
+  name,
+  stroke,
+  label,
+  placeholder = '',
+  tooltip = '',
+  variant,
+  validations = {},
+  disabled = false,
+  options = [],
+  help = '',
+  Icon,
+  onAction,
+  attributeType,
+}: IDropdown) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-      name={name}
       control={control}
-      rules={{ validate }}
-      render={({ field, fieldState, formState }) => {
+      name={name}
+      render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt='none'>
+          <Box id={name} mt="none" w="full">
             {label && (
-              <Flex pt={2} align='center' justify="space-between" mb='none'>
+              <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={error ? "dropdown.labelFont.error" : variant === "secondaryVariant" ? "dropdown.labelFont.secondaryVariant" :"dropdown.labelFont.normal"}
+                  color={
+                    error
+                      ? 'dropdown.labelFont.error'
+                      : variant === 'secondaryVariant'
+                      ? 'dropdown.labelFont.secondaryVariant'
+                      : 'dropdown.labelFont.normal'
+                  }
+                  fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
-                  fontSize={ variant === "secondaryVariant" ? "11px" : "14px" }
+                  left="none"
                   position="static"
-                  left='none'
                   zIndex={1}
                 >
                   {label}
-                  {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
+                  {help && (
+                    <Box fontSize="11px" mt={3} opacity={0.5}>
+                      {help}
+                    </Box>
+                  )}
                 </Box>
               </Flex>
             )}
-            <Flex alignItems={Icon ? "center" : ''}>
+            <Flex alignItems={Icon ? 'center' : ''}>
               <Select
-                css={{ paddingTop: "0" }}
+                _active={{
+                  bg: disabled ? 'dropdown.disabled.bg' : 'dropdown.activeBg',
+                }}
+                _disabled={{
+                  bg: 'dropdown.disabled.bg',
+                  color: 'dropdown.disabled.font',
+                  borderColor: 'dropdown.disabled.border',
+                  cursor: 'not-allowed',
+                }}
+                _focus={{
+                  borderColor: error
+                    ? 'dropdown.border.focus.error'
+                    : 'dropdown.border.focus.normal',
+                }}
+                _placeholder={{ color: 'dropdown.placeholder' }}
+                bg="dropdown.bg"
+                borderColor={
+                  error ? 'dropdown.border.error' : 'dropdown.border.normal'
+                }
                 borderRadius="8px"
                 borderWidth="1px"
-                top="5px"
+                color="dropdown.font"
+                css={{ paddingTop: '0' }}
+                cursor="pointer"
                 fontSize="smm"
                 h="42px"
-                color="dropdown.font"
-                bg="dropdown.bg"
-                borderColor={error ? "dropdown.border.error" : "dropdown.border.normal"}
-                onBlur={onBlur}
-                value={value}
-                onChange={onChange}
-                name={name}
+                icon={
+                  <ChevronRight
+                    stroke="dropdown.chevronDownIcon"
+                    transform="rotate(90deg)"
+                  />
+                }
                 isDisabled={disabled}
-                cursor="pointer"
-                _active={{ bg: disabled ? "dropdown.disabled.bg" : "dropdown.activeBg" }}
-                _focus={{ borderColor: error ? "dropdown.border.focus.error" : "dropdown.border.focus.normal" }}
-                _disabled={{
-                  bg: "dropdown.disabled.bg",
-                  color: "dropdown.disabled.font",
-                  borderColor: "dropdown.disabled.border",
-                  cursor: "not-allowed",
-                }}
+                name={name}
+                onBlur={onBlur}
+                onChange={onChange}
                 placeholder={placeholder}
-                _placeholder={{ color: 'dropdown.placeholder' }}
-                icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
+                top="5px"
+                value={value}
               >
-                {options.map(option => <option key={`${name}-${option.value}`} value={option.value}>{option.label}</option>)}
+                {options.map((option) => (
+                  <option key={`${name}-${option.value}`} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </Select>
-              {(Icon && onAction) &&
+              {Icon && onAction && (
                 <Icon
-                  stroke={stroke}
-                  ml="20px"
                   cursor="pointer"
+                  ml="20px"
                   mt="10px"
                   onClick={() => onAction(attributeType)}
-                />}
+                  stroke={stroke}
+                />
+              )}
             </Flex>
-            {error && <Box fontSize="smm" ml={1} mt={1} color='dropdown.error'>{error.message}</Box>}
-            {tooltip &&
-              <Flex color='dropdown.tooltip' align='center' mt={3}>
+            {error && (
+              <Box color="dropdown.error" fontSize="smm" ml={1} mt={1}>
+                {error.message}
+              </Box>
+            )}
+            {tooltip && (
+              <Flex align="center" color="dropdown.tooltip" mt={3}>
                 <InfoOutlineIcon />
-                <Box fontSize="11px" ml={2}>{tooltip}</Box>
-              </Flex>}
+                <Box fontSize="11px" ml={2}>
+                  {tooltip}
+                </Box>
+              </Flex>
+            )}
           </Box>
         );
       }}
+      rules={{ validate }}
     />
   );
 };
@@ -116,7 +164,7 @@ export const dropdownStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
-      secondaryVariant: "#818197",
+      secondaryVariant: '#818197',
       normal: '#282F36',
       error: '#E53E3E',
     },
@@ -136,7 +184,7 @@ export const dropdownStyles = {
     },
     placeholder: '#282F36',
     error: '#E53E3E',
-    tooltip: "#9A9EA1",
+    tooltip: '#9A9EA1',
     icon: '#818197',
     chevronDownIcon: '#282F36',
   },

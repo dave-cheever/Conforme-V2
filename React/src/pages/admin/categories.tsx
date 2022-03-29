@@ -1,20 +1,21 @@
-import { Box, Flex, Stack, useToast } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useForm } from "react-hook-form";
+import { useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/Admin/AdminModal";
-import AdminTableRow from "../../components/Admin/AdminTableRow";
-import { IBaseWithName } from "../../interfaces/IBaseWithName";
-import { AdminContext } from "../../contexts/AdminProvider";
-import TextInput from "../../components/Forms/TextInput";
-import Loader from "../../components/Loader";
-import Header from "../../components/Header";
-import AdminTableHeader from "../../components/Admin/AdminTableHeader";
-import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import BarChart from "../../components/BarChart";
-import useDevice from "../../hooks/useDevice";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Flex, Stack, useToast } from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import AdminModal from '../../components/Admin/AdminModal';
+import AdminTableHeader from '../../components/Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import AdminTableRow from '../../components/Admin/AdminTableRow';
+import BarChart from '../../components/BarChart';
+import TextInput from '../../components/Forms/TextInput';
+import Header from '../../components/Header';
+import Loader from '../../components/Loader';
+import { AdminContext } from '../../contexts/AdminProvider';
+import useDevice from '../../hooks/useDevice';
+import { IBaseWithName } from '../../interfaces/IBaseWithName';
 
 const GET_CATEGORIES = gql`
   query {
@@ -48,8 +49,8 @@ const DELETE_CATEGORY = gql`
 `;
 
 const defaultValues = {
-  _id: "",
-  name: "",
+  _id: '',
+  name: '',
 };
 
 const Categories = () => {
@@ -60,17 +61,18 @@ const Categories = () => {
   const [updateFunction] = useMutation(UPDATE_CATEGORY);
   const [deleteFunction] = useMutation(DELETE_CATEGORY);
   const device = useDevice();
-  const [sortType, setSortType] = useState("name");
+  const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState(true);
   const [currentCategoryName, setCurrentCategoryName] = useState('');
 
   const getCategories = (categoriesArray: IBaseWithName[]) => {
-    if (!categoriesArray) {
-      return [];
-    }
+    if (!categoriesArray) return [];
+
     return [...categoriesArray].sort((a, b) => a.name.localeCompare(b.name));
-  }
-  const [categories, setCategories] = useState<IBaseWithName[]>(getCategories(data?.categories));
+  };
+  const [categories, setCategories] = useState<IBaseWithName[]>(
+    getCategories(data?.categories),
+  );
 
   useEffect(() => {
     setCategories(getCategories(data?.categories));
@@ -78,14 +80,21 @@ const Categories = () => {
 
   useEffect(() => {
     if (sortOrder) {
-      setCategories([...categories].sort((a, b) => {
-        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())
-      }));
-    }
-    else {
-      setCategories([...categories].sort((a, b) => {
-        return (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())
-      }));
+      setCategories(
+        [...categories].sort((a, b) =>
+          (a[sortType] || 0)
+            .toString()
+            .localeCompare((b[sortType] || 0).toString()),
+        ),
+      );
+    } else {
+      setCategories(
+        [...categories].sort((a, b) =>
+          (b[sortType] || 0)
+            .toString()
+            .localeCompare((a[sortType] || 0).toString()),
+        ),
+      );
     }
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -96,22 +105,22 @@ const Categories = () => {
     trigger,
     reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues,
   });
 
   // Reset the form after closing
   useEffect(() => {
-    if (adminModalState === "closed") {
+    if (adminModalState === 'closed') {
       reset(defaultValues);
-      setCurrentCategoryName("");
+      setCurrentCategoryName('');
     }
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openCategoryModal = (
-    action: "edit" | "delete",
-    category: IBaseWithName
+    action: 'edit' | 'delete',
+    category: IBaseWithName,
   ) => {
     setAdminModalState(action);
     setCurrentCategoryName(category.name);
@@ -126,18 +135,18 @@ const Categories = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await createFunction({ variables: values });
-        toast({ ...toastSuccess, description: "Category added" });
+        toast({ ...toastSuccess, description: 'Category added' });
         refetch();
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -146,18 +155,18 @@ const Categories = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await updateFunction({ variables: { values } });
-        toast({ ...toastSuccess, description: "Category updated" });
+        toast({ ...toastSuccess, description: 'Category updated' });
         refetch();
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -165,107 +174,154 @@ const Categories = () => {
     try {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
-      toast({ ...toastSuccess, description: "Category deleted" });
+      toast({ ...toastSuccess, description: 'Category deleted' });
       refetch();
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
   const handleAction = async (action) => {
     const isFormValid = await trigger();
-    if (["add", "edit"].includes(action) && !isFormValid) {
+    if (['add', 'edit'].includes(action) && !isFormValid) {
       return toast({
         ...toastFailed,
-        description: "Please complete all the required fields",
+        description: 'Please complete all the required fields',
       });
     }
     switch (action) {
-      case "add":
+      case 'add':
         handleAddCategory();
         break;
-      case "edit":
+      case 'edit':
         handleUpdateCategory();
         break;
-      case "delete":
+      case 'delete':
         handleDeleteCategory();
         break;
       default:
-        setAdminModalState("closed");
+        setAdminModalState('closed');
     }
   };
 
   return (
     <>
       <AdminModal
-        isOpenModal={adminModalState !== "closed"}
+        collection="category"
+        isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
-        collection={"category"}
       >
-        <Flex w="full" align="flex-start" direction="column">
+        <Flex align="flex-start" direction="column" w="full">
           <TextInput
-            name="name"
-            label="Name"
-            placeholder="Category name"
             control={control}
             initialValue={currentCategoryName.toLowerCase()}
+            label="Name"
+            name="name"
+            placeholder="Category name"
             validations={{
               notEmpty: true,
-              uniqueValue: categories.map(({ name }) => name.toLowerCase())
+              uniqueValue: categories.map(({ name }) => name.toLowerCase()),
             }}
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Categories"]} mobileBreadcrumbs={["Categories"]} />
-      <Box p={["0", "0 25px 30px 30px"]} h="calc(100vh - 160px)" overflow="auto">
-        <Flex h="full" px={["25px", 0]}>
-          <Box w={["full", "full", "calc(100% - 250px)"]} h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, "50px"]}>
+      <Header
+        breadcrumbs={['Admin', 'Categories']}
+        mobileBreadcrumbs={['Categories']}
+      />
+      <Box
+        h="calc(100vh - 160px)"
+        overflow="auto"
+        p={['0', '0 25px 30px 30px']}
+      >
+        <Flex h="full" px={['25px', 0]}>
+          <Box
+            h={['calc(100% - 90px)', 'calc(100% - 35px)']}
+            mr={[0, 0, '50px']}
+            w={['full', 'full', 'calc(100% - 250px)']}
+          >
             <AdminTableHeader>
-              <AdminTableHeaderElement w={["80%", "50%"]} label="Category" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
-              <AdminTableHeaderElement w={["20%", "50%"]} label="Responses count" tooltip="Only published items" onClick={() => { setSortType("complianceItemsResponsesCount"); setSortOrder(!sortOrder); }} sortOrder={sortType === "complianceItemsResponsesCount" && !sortOrder} showSortingIcon={sortType === "complianceItemsResponsesCount"} />
+              <AdminTableHeaderElement
+                label="Category"
+                onClick={() => {
+                  setSortType('name');
+                  setSortOrder(!sortOrder);
+                }}
+                showSortingIcon={sortType === 'name'}
+                sortOrder={sortType === 'name' && !sortOrder}
+                w={['80%', '50%']}
+              />
+              <AdminTableHeaderElement
+                label="Responses count"
+                onClick={() => {
+                  setSortType('complianceItemsResponsesCount');
+                  setSortOrder(!sortOrder);
+                }}
+                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
+                sortOrder={
+                  sortType === 'complianceItemsResponsesCount' && !sortOrder
+                }
+                tooltip="Only published items"
+                w={['20%', '50%']}
+              />
             </AdminTableHeader>
             <Stack
-              h={loading ? "full" : "fit-content"}
               bg="white"
               borderBottomRadius="20px"
-              spacing="1px"
-              pb="3"
+              h={loading ? 'full' : 'fit-content'}
               minH="full"
+              pb="3"
+              spacing="1px"
             >
-              {loading ? <Loader center={true} /> : categories?.length > 0 ? (
-                categories?.map((category, i) => (
+              {loading ? (
+                <Loader center />
+              ) : categories?.length > 0 ? (
+                categories?.map((category) => (
                   <AdminTableRow
-                    key={category._id}
+                    edit={() => openCategoryModal('edit', category)}
                     element={category}
+                    key={category._id}
                     responseToEdit="categoriesIds"
-                    index={i}
-                    edit={() => openCategoryModal("edit", category)}
                   />
                 ))
               ) : (
-                <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+                <Flex
+                  fontSize="18px"
+                  fontStyle="italic"
+                  h="full"
+                  justify="center"
+                  mt={4}
+                  w="full"
+                >
                   No categories found
                 </Flex>
               )}
             </Stack>
           </Box>
-          {device === "desktop" &&
+          {device === 'desktop' && (
             <Flex
-              flexDirection="column"
               alignItems="center"
-              w={["100%", "220px"]}
+              flexDirection="column"
+              w={['100%', '220px']}
             >
               <Box w="100%">
-                {categories && <BarChart
-                  data={categories.map(({ _id, complianceItemsResponsesCount }) => ({ _id, count: complianceItemsResponsesCount }))}
-                  label="Categories"
-                />}
+                {categories && (
+                  <BarChart
+                    data={categories.map(
+                      ({ _id, complianceItemsResponsesCount }) => ({
+                        _id,
+                        count: complianceItemsResponsesCount,
+                      }),
+                    )}
+                    label="Categories"
+                  />
+                )}
               </Box>
             </Flex>
-          }
+          )}
         </Flex>
       </Box>
     </>
@@ -276,6 +332,6 @@ export default Categories;
 
 export const categoriesStyles = {
   categories: {
-    fontColor: "#818197",
-  }
+    fontColor: '#818197',
+  },
 };

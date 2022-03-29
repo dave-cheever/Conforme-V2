@@ -10,7 +10,20 @@ To start developing for Conforme you are going to need a development environment
 - Latest version of Python installed (for Windows development machines)
 - A copy of the env file for development. This will be updated for your own settings
 
+## Development environment and code editor
+
+Preferably you should be using VSCode as your code editor with Prettier and ESLint extensions installed.
+Then in settings.json add the following object to configure ESLint's working directory (where to lint)
+
+```
+  "eslint.workingDirectories": ["./", "./React", "./Express"],
+```
+
+You will find some commands in package.json that enable checking for errors/warnings, formatting with Prettier
+and linting with ESLint automatically. These commands are: lint:check, lint:fix, format:check, format:fix
+
 ## Database
+
 ### Collections indexes
 
 You need to add some indexes to the database to allow collections to be sorted by these indexes. When you run the app, collections should be created.
@@ -18,9 +31,11 @@ To add an index, open the database in Data Explorer, select the collection and g
 Add the following indexes:
 
 In complianceItems collection:
+
 - metatags.addedAt
 
 In auditLogs collection:
+
 - metatags.addedAt
 
 ### CosmosDB
@@ -176,6 +191,7 @@ You must grant SharePoint permissions to the Azure AD app to allow it to upload 
 Every organization also needs its system settings to be configured in the database. In the Settings collection, please add the following data models to create required settings objects for your organization.
 
 Audit log limit:
+
 ```
 {
   "id": <random generated UUID>,
@@ -190,6 +206,7 @@ Audit log limit:
 ```
 
 Response email reminder:
+
 ```
 {
   "id": <random generated UUID>,
@@ -209,6 +226,7 @@ Response email reminder:
 ```
 
 Overview email:
+
 ```
 {
   "id": <random generated UUID>,
@@ -227,6 +245,7 @@ Overview email:
 ```
 
 Overview email address:
+
 ```
 {
   "id": <random generated UUID>,
@@ -243,6 +262,7 @@ Overview email address:
 ```
 
 Due email:
+
 ```
 {
   "id": <random generated UUID>,
@@ -264,6 +284,7 @@ Due email:
 ```
 
 Maximum delegates:
+
 ```
 {
   "id": <random generated UUID>,

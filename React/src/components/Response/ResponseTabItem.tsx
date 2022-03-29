@@ -1,35 +1,41 @@
-import React from 'react'
-import { Flex, Text, Icon } from '@chakra-ui/react'
+import React from 'react';
 
-const ResponseTabItem = ({setActiveTab, index,active, label, icon}) => {
+import { Flex, Icon, Text } from '@chakra-ui/react';
 
+const ResponseTabItem = ({ setActiveTab, index, active, label, icon }) => {
   const onClick = () => {
     setActiveTab(index);
-  }
+  };
 
   return (
-    <Flex 
-        onClick={onClick}
-        flexDirection="column"
-        h="62px" p="8px 13px 6px 13px" borderRadius="10px" 
-        bg={active ? "responseTabItem.activeBg": "responseTabItem.bg"} mr="3" align="center" 
-        _hover={{bg: "responseTabItem.activeBg"}}
-        cursor="pointer"
-        color={active ? "responseTabItem.activeColor": "responseTabItem.color"}
-        >
-        <Icon as={icon} boxSize="15px" />
-        <Text fontSize={["11px","14px"]} mt={3} fontWeight="700">{label}</Text> 
+    <Flex
+      _hover={{ bg: 'responseTabItem.activeBg' }}
+      align="center"
+      bg={active ? 'responseTabItem.activeBg' : 'responseTabItem.bg'}
+      borderRadius="10px"
+      color={active ? 'responseTabItem.activeColor' : 'responseTabItem.color'}
+      cursor="pointer"
+      flexDirection="column"
+      h="62px"
+      mr="3"
+      onClick={onClick}
+      p="8px 13px 6px 13px"
+    >
+      <Icon as={icon} boxSize="15px" />
+      <Text fontSize={['11px', '14px']} fontWeight="700" mt={3}>
+        {label}
+      </Text>
     </Flex>
-    )
-}
+  );
+};
 
-export default ResponseTabItem
+export default ResponseTabItem;
 
 export const responseTabItemStyles = {
-    responseTabItem:{
-        bg: "white", 
-        activeBg: "#F0F2F5",
-        color:"#818197",
-        activeColor:"#282F36"
-    }
-}
+  responseTabItem: {
+    bg: 'white',
+    activeBg: '#F0F2F5',
+    color: '#818197',
+    activeColor: '#282F36',
+  },
+};

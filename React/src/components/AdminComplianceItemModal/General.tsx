@@ -1,145 +1,158 @@
 import React, { useMemo, useState } from 'react';
-import {
-  Stack,
-  Box,
-  Flex
-} from '@chakra-ui/react';
+
+import { Box, Flex, Stack } from '@chakra-ui/react';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
-import TextInput from '../Forms/TextInput';
-import Textarea from '../Forms/Textarea';
-import Dropdown from '../Forms/Dropdown';
-import Datepicker from '../Forms/Datepicker';
 import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
-import SectionHeader from './SectionHeader';
 import { PlusIcon } from '../../icons';
+import Datepicker from '../Forms/Datepicker';
+import Dropdown from '../Forms/Dropdown';
+import Textarea from '../Forms/Textarea';
+import TextInput from '../Forms/TextInput';
 import AddComplianceItemAttribute from './AddComplianceItemAttribute';
+import SectionHeader from './SectionHeader';
 
 const GeneralForm = () => {
-  const {
-    control,
-    categories,
-    regulatoryBodies,
-    setValue,
-    refetch
-  } = useComplianceItemModalContext();
+  const { control, categories, regulatoryBodies, setValue, refetch } =
+    useComplianceItemModalContext();
 
-  const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
-  const regulatoryBodiesOptions = useMemo(() => regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })), [regulatoryBodies]);
-  const frequencyOptions = useMemo(() => complianceItemFrequencies.map(f => ({ value: f, label: f })), []);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [attributeType, setAttributeType] = useState<"Category" | "Regulatory body" | undefined>()
+  const categoriesOptions = useMemo(
+    () => categories.map(({ _id, name }) => ({ value: _id, label: name })),
+    [categories],
+  );
+  const regulatoryBodiesOptions = useMemo(
+    () =>
+      regulatoryBodies.map(({ _id, name }) => ({ value: _id, label: name })),
+    [regulatoryBodies],
+  );
+  const frequencyOptions = useMemo(
+    () => complianceItemFrequencies.map((f) => ({ value: f, label: f })),
+    [],
+  );
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [attributeType, setAttributeType] = useState<
+    'Category' | 'Regulatory body' | undefined
+  >();
 
-  const onAddAttribute = (type: "Category" | "Regulatory body" | undefined) => {
-    setIsModalOpen(true)
-    setAttributeType(type)
-  }
+  const onAddAttribute = (type: 'Category' | 'Regulatory body' | undefined) => {
+    setIsModalOpen(true);
+    setAttributeType(type);
+  };
 
-  const onAction = (action: 'close') => {
-    setIsModalOpen(false)
-    setAttributeType(undefined)
-  }
+  const onAction = () => {
+    setIsModalOpen(false);
+    setAttributeType(undefined);
+  };
 
-  const newAttributeValue = ({ value, type }: {value: string, type: "category" | "regulatoryBody" }) => {
+  const newAttributeValue = ({
+    value,
+    type,
+  }: {
+    value: string;
+    type: 'category' | 'regulatoryBody';
+  }) => {
     switch (type) {
-      case "category":
-        setValue("categoryId",value)
+      case 'category':
+        setValue('categoryId', value);
         break;
-      case "regulatoryBody":
-        setValue("regulatoryBodyId",value)
+      case 'regulatoryBody':
+        setValue('regulatoryBodyId', value);
+        break;
+      default:
         break;
     }
-  }
+  };
 
   return (
     <>
-      {isModalOpen &&
+      {isModalOpen && (
         <AddComplianceItemAttribute
           attributeType={attributeType}
-          newAttributeValue={newAttributeValue}
           isOpenModal={isModalOpen}
+          newAttributeValue={newAttributeValue}
           onAction={onAction}
           refetch={refetch}
-        />}
-      <Stack w='full' spacing={4} px={[0, 0, 3]} overflow="auto">
+        />
+      )}
+      <Stack overflow="auto" px={[0, 0, 3]} spacing={4} w="full">
         <Box w="calc(100% - 80px)">
           <SectionHeader label="General details" />
-          <Stack w='full' spacing={2} pb={3}>
+          <Stack pb={3} spacing={2} w="full">
             <TextInput
               control={control}
-              name="name"
               label="Item name"
+              name="name"
               placeholder="Compliance item name"
-              variant="secondaryVariant"
               validations={{
                 notEmpty: true,
               }}
+              variant="secondaryVariant"
             />
             <Textarea
               control={control}
-              name="description"
               label="Description"
+              name="description"
               placeholder="Describe the compliance item"
-              variant="secondaryVariant"
               validations={{
                 notEmpty: true,
               }}
+              variant="secondaryVariant"
             />
           </Stack>
 
           <SectionHeader label="Item attributes" />
-          <Stack w='full' spacing={2} pb={3}>
+          <Stack pb={3} spacing={2} w="full">
             <Flex w="calc(100% + 35px)">
               <Dropdown
+                attributeType="Category"
                 control={control}
-                name="categoryId"
+                Icon={PlusIcon}
                 label="Category"
+                name="categoryId"
+                onAction={onAddAttribute}
+                options={categoriesOptions}
                 placeholder="Select category"
-                variant="secondaryVariant"
                 stroke="dropdown.icon"
                 validations={{
                   notEmpty: true,
                 }}
-                options={categoriesOptions}
-                Icon={PlusIcon}
-                attributeType="Category"
-                onAction={onAddAttribute}
+                variant="secondaryVariant"
               />
             </Flex>
             <Flex w="calc(100% + 35px)">
               <Dropdown
+                attributeType="Regulatory body"
                 control={control}
-                name="regulatoryBodyId"
+                Icon={PlusIcon}
                 label="Regulatory body"
+                name="regulatoryBodyId"
+                onAction={onAddAttribute}
+                options={regulatoryBodiesOptions}
                 placeholder="Select regulatory body"
-                variant="secondaryVariant"
                 stroke="dropdown.icon"
                 validations={{
                   notEmpty: true,
                 }}
-                options={regulatoryBodiesOptions}
-                Icon={PlusIcon}
-                attributeType="Regulatory body"
-                onAction={onAddAttribute}
+                variant="secondaryVariant"
               />
             </Flex>
             <Datepicker
               control={control}
-              name="dueDate"
               label="Expires on (optional)"
+              name="dueDate"
               placeholder="Define when the compliance item is due"
               variant="secondaryVariant"
             />
             <Dropdown
               control={control}
-              name="frequency"
               label="Frequency"
+              name="frequency"
+              options={frequencyOptions}
               placeholder="Define how often it needs to be renewed"
-              variant="secondaryVariant"
               validations={{
                 notEmpty: true,
               }}
-              options={frequencyOptions}
+              variant="secondaryVariant"
             />
           </Stack>
         </Box>

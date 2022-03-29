@@ -1,3 +1,3 @@
-import { IBaseModel, IAuditType } from "app-interfaces";
+import { IAuditType, IBaseModel } from 'app-interfaces';
 
-export interface IAuditTypeModel extends IBaseModel<IAuditType> { };
+export interface IAuditTypeModel extends IBaseModel<IAuditType> {}

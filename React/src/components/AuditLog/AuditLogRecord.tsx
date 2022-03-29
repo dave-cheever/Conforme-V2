@@ -1,19 +1,20 @@
-import React, { useMemo } from "react";
-import { Flex, Box, Avatar, Text } from "@chakra-ui/react";
-import { gql, useQuery } from "@apollo/client";
-import format from "date-fns/format";
-import { useHistory } from "react-router-dom";
-import reactStringReplace from "react-string-replace";
+import React, { useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import reactStringReplace from 'react-string-replace';
 
+import { gql, useQuery } from '@apollo/client';
+import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
+import format from 'date-fns/format';
+
+import { IAuditLogRecord } from '../../interfaces/IAuditLog';
+import { IUser } from '../../interfaces/IUser';
 import {
   getCollectionNameByAction,
   getFieldNameByAction,
   getFieldNameByValues,
   getLabelByField,
-} from "../../utils/helpers";
-import { IAuditLogRecord } from "../../interfaces/IAuditLog";
-import { IUser } from "../../interfaces/IUser";
-import ChatMention from "../Response/ChatMention";
+} from '../../utils/helpers';
+import ChatMention from '../Response/ChatMention';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -38,120 +39,120 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
   const auditAddedUser: IUser =
     usersById && usersById?.length !== 0 && usersById[0];
 
-  const isResponseAudit = useMemo(() => {
-    return history.location.pathname.includes("/compliance-item");
-  }, [history]);
+  const isResponseAudit = useMemo(
+    () => history.location.pathname.includes('/compliance-item'),
+    [history],
+  );
 
-  const displayUpdateDetails = (element, i, oldValue, newValue) => {
-    return (
-      (oldValue || newValue) && (
-        <Flex
-          key={i}
-          w="full"
-          mb="2px"
-          flexDirection={["column", "row", "row"]}
+  const displayUpdateDetails = (element, i, oldValue, newValue) =>
+    (oldValue || newValue) && (
+      <Flex flexDirection={['column', 'row', 'row']} key={i} mb="2px" w="full">
+        <Box
+          mr="20px"
+          mt="10px"
+          textAlign={['center', 'right']}
+          w={['100%', '20%']}
         >
-          <Box
-            w={["100%", "20%"]}
-            mt="10px"
-            textAlign={["center", "right"]}
-            mr="20px"
-          >
-            {getLabelByField(element)}
-          </Box>
-          <Box
-            w={["100%", "40%"]}
-            bg={oldValue ? "#FFDCD1" : "#fff"}
-            p="10px"
-            mb={["2px", "0"]}
-          >
-            {getFieldNameByValues(oldValue)}
-          </Box>
-          <Box
-            w={["100%", "40%"]}
-            bg={newValue ? "#CFFED4" : "#fff"}
-            p="10px"
-            ml={["0", "20px"]}
-          >
-            {getFieldNameByValues(newValue)}
-          </Box>
-        </Flex>
-      )
+          {getLabelByField(element)}
+        </Box>
+        <Box
+          bg={oldValue ? '#FFDCD1' : '#fff'}
+          mb={['2px', '0']}
+          p="10px"
+          w={['100%', '40%']}
+        >
+          {getFieldNameByValues(oldValue)}
+        </Box>
+        <Box
+          bg={newValue ? '#CFFED4' : '#fff'}
+          ml={['0', '20px']}
+          p="10px"
+          w={['100%', '40%']}
+        >
+          {getFieldNameByValues(newValue)}
+        </Box>
+      </Flex>
     );
-  };
 
-  if (!audit.values || Object.keys(audit.values).length === 0) {
-    return null;
-  }
+  if (!audit.values || Object.keys(audit.values).length === 0) return null;
 
   const goToItem = () => {
     history.push(`/compliance-item/${audit.element._id}`);
   };
 
   return (
-    <Flex mb="18px" flexDir="column" ml="20px">
-      <Text fontSize="11px" color="auditLogRecordStyles.info.color">
-        {format(new Date(audit?.metatags?.addedAt!), "h:mm a")}
+    <Flex flexDir="column" mb="18px" ml="20px">
+      <Text color="auditLogRecordStyles.info.color" fontSize="11px">
+        {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
+        {format(new Date(audit?.metatags?.addedAt!), 'h:mm a')}
       </Text>
       <Flex align="center" mt="3">
         <Avatar
           borderColor="auditLogRecordStyles.info.border"
+          h="32px"
           rounded="full"
           src={auditAddedUser?.imgUrl}
           w="32px"
-          h="32px"
         />
         <Flex flexDir="column" ml="3">
           <Text
-            fontSize="11px"
             color="auditLogRecordStyles.userInfo.color"
+            fontSize="11px"
             opacity="0.5"
           >
             {auditAddedUser
               ? `${auditAddedUser?.firstName} ${auditAddedUser?.lastName}`
-              : "Unknown user"}
+              : 'Unknown user'}
           </Text>
           <Text color="auditLogRecordStyles.title.action" fontSize="14px">
-            {getFieldNameByAction(audit.action)}{" "}
-            {getCollectionNameByAction(audit.coll)}{" "}
-            {audit.action === "add" && audit.coll === "comments" && (
-              <Text as="span" pl={2} fontWeight="light">
-                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
-                  <ChatMention key={i} tag={match} />
-                ))}
+            {getFieldNameByAction(audit.action)}{' '}
+            {getCollectionNameByAction(audit.coll)}{' '}
+            {audit.action === 'add' && audit.coll === 'comments' && (
+              <Text as="span" fontWeight="light" pl={2}>
+                {reactStringReplace(
+                  audit.values.text?.new?.value,
+                  /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g,
+                  (match, i) => (
+                    <ChatMention key={i} tag={match} />
+                  ),
+                )}
               </Text>
             )}
-            {audit.action === "delete" && audit.coll === "comments" && (
-              <Text as="span" pl={2} fontWeight="light">
-                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
-                  <ChatMention key={i} tag={match} />
-                ))}
+            {audit.action === 'delete' && audit.coll === 'comments' && (
+              <Text as="span" fontWeight="light" pl={2}>
+                {reactStringReplace(
+                  audit.values.text?.new?.value,
+                  /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g,
+                  (match, i) => (
+                    <ChatMention key={i} tag={match} />
+                  ),
+                )}
               </Text>
             )}
-            {!isResponseAudit && " for "}
+            {!isResponseAudit && ' for '}
             <Text
               as="span"
-              cursor="pointer"
               color="#462AC4"
+              cursor="pointer"
               fontWeight="bold"
               onClick={goToItem}
             >
-              {!isResponseAudit && audit.element.name}{" "}
+              {!isResponseAudit && audit.element.name}{' '}
             </Text>
           </Text>
         </Flex>
       </Flex>
       <Flex direction="column" w="full">
-        {audit.action === "update" && (
+        {audit.action === 'update' && (
           <Flex
-            ml="17px"
             border="1px dashed"
             borderColor="auditLogRecordStyles.log.border"
             borderRadius="10px"
-            w={["100%", "100%", "80%"]}
+            flexDirection="column"
+            ml="17px"
             mt="20px"
             p="25px 20px 20px 20px"
-            flexDirection="column"
+            w={['100%', '100%', '80%']}
           >
             <Box maxH="245px" overflow="auto">
               {Object.keys(audit.values).map((element, i) =>
@@ -159,8 +160,8 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
                   element,
                   i,
                   audit.values[element].old?.label,
-                  audit.values[element].new?.label
-                )
+                  audit.values[element].new?.label,
+                ),
               )}
             </Box>
           </Flex>
@@ -173,18 +174,18 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
 export const auditLogRecordStyles = {
   auditLogRecordStyles: {
     info: {
-      color: "#1F1F1F",
-      border: "#816ce1",
+      color: '#1F1F1F',
+      border: '#816ce1',
     },
     userInfo: {
-      color: "#282F36",
+      color: '#282F36',
     },
     title: {
-      color: "#282F36",
-      action: "#000",
+      color: '#282F36',
+      action: '#000',
     },
     log: {
-      border: "#9A9EA1",
+      border: '#9A9EA1',
     },
   },
 };

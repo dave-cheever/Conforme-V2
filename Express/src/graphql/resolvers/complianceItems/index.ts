@@ -1,8 +1,8 @@
-import cloneComplianceItem from "./cloneComplianceItem.m";
-import complianceItems from "./complianceItems.q";
-import createComplianceItem from "./createComplianceItem.m";
-import deleteComplianceItem from "./deleteComplianceItem.m";
-import updateComplianceItem from "./updateComplianceItem.m";
+import cloneComplianceItem from './cloneComplianceItem.m';
+import complianceItems from './complianceItems.q';
+import createComplianceItem from './createComplianceItem.m';
+import deleteComplianceItem from './deleteComplianceItem.m';
+import updateComplianceItem from './updateComplianceItem.m';
 
 const complianceItemsResolvers = {
   Query: {
@@ -12,7 +12,7 @@ const complianceItemsResolvers = {
     createComplianceItem,
     deleteComplianceItem,
     updateComplianceItem,
-    cloneComplianceItem
+    cloneComplianceItem,
   },
 };
 

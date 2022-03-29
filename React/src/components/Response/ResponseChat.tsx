@@ -1,4 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   Avatar,
   Box,
@@ -13,18 +16,16 @@ import {
   Text,
   useDisclosure,
   useToast,
-} from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { gql, useMutation, useQuery } from "@apollo/client";
+} from '@chakra-ui/react';
 
-import MessageInput from "./MessageInput";
-import ResponseChatSent from "./ResponseChatItem";
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import { IComment } from "../../interfaces/IComment";
-import { toastFailed } from "../../bootstrap/config";
-import Loader from "../Loader";
-import useDevice from "../../hooks/useDevice";
-import Can from "../can";
+import { toastFailed } from '../../bootstrap/config';
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import useDevice from '../../hooks/useDevice';
+import { IComment } from '../../interfaces/IComment';
+import Can from '../can';
+import Loader from '../Loader';
+import MessageInput from './MessageInput';
+import ResponseChatSent from './ResponseChatItem';
 
 const GET_COMMENTS = gql`
   query ($_id: String!) {
@@ -56,13 +57,14 @@ const DELETE_COMMENT = gql`
 `;
 
 const defaultValues = {
-  text: "",
+  text: '',
 };
 
 const ResponseChat = () => {
   const toast = useToast();
   const device = useDevice();
-  const { response, handleCloseMessage, users, participantsLoading } = useResponseContext();
+  const { response, handleCloseMessage, users, participantsLoading } =
+    useResponseContext();
   const { data, loading, refetch } = useQuery(GET_COMMENTS, {
     variables: { _id: response?._id },
     skip: !response,
@@ -77,25 +79,21 @@ const ResponseChat = () => {
     divRef.current.scrollTop = divRef.current.scrollHeight;
   };
 
-  useEffect(() => {
-    return () => {
-      if (device === "tablet" || device === "mobile") {
-        handleCloseMessage();
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(
+    () => () => {
+      if (device === 'tablet' || device === 'mobile') handleCloseMessage();
+    },
+
+    [],
+  );
 
   useEffect(() => {
     scrollToBottom();
   });
 
   useEffect(() => {
-    if (data?.comments) {
-      setComments([...data.comments]);
-    } else {
-      setComments([]);
-    }
+    if (data?.comments) setComments([...data.comments]);
+    else setComments([]);
   }, [data]);
 
   const {
@@ -105,15 +103,13 @@ const ResponseChat = () => {
     trigger,
     reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues,
   });
 
   const addComment = async () => {
     const isFormValid = await trigger();
-    if (!isFormValid) {
-      return;
-    }
+    if (!isFormValid) return;
 
     try {
       if (Object.keys(errors).length === 0) {
@@ -129,9 +125,9 @@ const ResponseChat = () => {
     } catch (error) {
       toast({
         ...toastFailed,
-        title: "Comment not added",
+        title: 'Comment not added',
         description:
-          "There was an issue while adding a comment. Try again later.",
+          'There was an issue while adding a comment. Try again later.',
       });
     }
   };
@@ -143,36 +139,33 @@ const ResponseChat = () => {
     } catch (error) {
       toast({
         ...toastFailed,
-        title: "Comment not deleted",
+        title: 'Comment not deleted',
         description:
-          "There was an issue while deleting a comment. Try again later.",
+          'There was an issue while deleting a comment. Try again later.',
       });
     }
   };
 
   const getRole = (userId: string) => {
-    if (!response) {
-      return "";
-    }
+    if (!response) return '';
 
-    if (response.responsibleId === userId) {
-      return "Responsible";
-    }
+    if (response.responsibleId === userId) return 'Responsible';
 
-    if (response.accountableId === userId) {
-      return "Accountable";
-    }
+    if (response.accountableId === userId) return 'Accountable';
 
-    if (response.contributorsIds && response.contributorsIds?.length > 0 && response.contributorsIds.includes(userId)) {
-      return "Contributor";
-    }
+    if (
+      response.contributorsIds &&
+      response.contributorsIds?.length > 0 &&
+      response.contributorsIds.includes(userId)
+    )
+      return 'Contributor';
 
-    return "Follower"
-  }
+    return 'Follower';
+  };
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>List of all participants</ModalHeader>
@@ -180,21 +173,29 @@ const ResponseChat = () => {
           <ModalBody>
             <Flex flexDirection="column">
               {users?.map((user) => (
-                <Flex key={user._id} align="center" px="1" py="2" justify="space-between">
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  key={user._id}
+                  px="1"
+                  py="2"
+                >
                   <Flex align="center">
                     <Avatar
-                      rounded="full"
-                      h="32px"
-                      w="32px"
-                      p="2px"
-                      src={user?.imgUrl}
-                      name={user?.displayName}
-                      mr={users.length > 1 ? "10px" : ""}
                       align="center"
+                      h="32px"
+                      mr={users.length > 1 ? '10px' : ''}
+                      name={user?.displayName}
+                      p="2px"
+                      rounded="full"
+                      src={user?.imgUrl}
+                      w="32px"
                     />
                     <Text fontSize="14px">{user.displayName}</Text>
                   </Flex>
-                  <Text fontSize="14px" fontWeight="700">{getRole(user._id)}</Text>
+                  <Text fontSize="14px" fontWeight="700">
+                    {getRole(user._id)}
+                  </Text>
                 </Flex>
               ))}
             </Flex>
@@ -202,10 +203,10 @@ const ResponseChat = () => {
         </ModalContent>
       </Modal>
       <Box
-        w={["calc(100vw - 30px)", "300px", "330px"]}
         h="full"
         pl="25px"
-        pr={["25px", "25px", "0px"]}
+        pr={['25px', '25px', '0px']}
+        w={['calc(100vw - 30px)', '300px', '330px']}
       >
         <Flex alignItems="center" flexDirection="column">
           <Text
@@ -218,41 +219,39 @@ const ResponseChat = () => {
             Chat
           </Text>
           {participantsLoading ? (
-            <SkeletonCircle size="32px" mb={2} />
+            <SkeletonCircle mb={2} size="32px" />
           ) : (
-            <Flex mb={2} w="full" justify="center">
-              {users.slice(0, 3).map((user, i) => {
-                return (
-                  <Avatar
-                    key={i}
-                    rounded="full"
-                    h="32px"
-                    w="32px"
-                    p="2px"
-                    src={user?.imgUrl}
-                    name={user?.displayName}
-                    mr={users.length > 1 ? "10px" : ""}
-                  />
-                );
-              })}
+            <Flex justify="center" mb={2} w="full">
+              {users.slice(0, 3).map((user, i) => (
+                <Avatar
+                  h="32px"
+                  key={i}
+                  mr={users.length > 1 ? '10px' : ''}
+                  name={user?.displayName}
+                  p="2px"
+                  rounded="full"
+                  src={user?.imgUrl}
+                  w="32px"
+                />
+              ))}
               {users.length > 3 && (
                 <Flex
+                  align="center"
                   bg="responseChat.image.bg"
                   color="responseChat.image.color"
+                  cursor="pointer"
                   fontSize="11px"
                   fontWeight="bold"
-                  w="32px"
-                  rounded="full"
-                  align="center"
                   justify="center"
                   onClick={onOpen}
-                  cursor="pointer"
+                  rounded="full"
+                  w="32px"
                 >
                   +{users.length - 3}
                 </Flex>
               )}
               {users.length === 0 && (
-                <Flex fontStyle="italic" fontSize="13px" mb="4">
+                <Flex fontSize="13px" fontStyle="italic" mb="4">
                   No participants
                 </Flex>
               )}
@@ -260,56 +259,57 @@ const ResponseChat = () => {
           )}
         </Flex>
         <Flex
+          flexDirection="column"
           h={[
-            "calc(100vh - 390px)",
-            "calc(100vh - 340px)",
-            "calc(100vh - 280px)",
+            'calc(100vh - 390px)',
+            'calc(100vh - 340px)',
+            'calc(100vh - 280px)',
           ]}
           overflow="hidden"
-          flexDirection="column"
-          w="calc(100% + 10px)"
           pr="10px"
+          w="calc(100% + 10px)"
         >
           <Flex
+            flexDirection="column"
             h="full"
             overflow="auto"
-            flexDirection="column"
+            pr="10px"
             ref={divRef}
             sx={{
-              "&::-webkit-scrollbar": {
-                backgroundColor: "responseChat.scrollBar.bg",
-                width: "4px",
+              '&::-webkit-scrollbar': {
+                backgroundColor: 'responseChat.scrollBar.bg',
+                width: '4px',
               },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "responseChat.scrollBar.color",
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: 'responseChat.scrollBar.color',
               },
             }}
-            pr="10px"
             w="calc(100% + 10px)"
           >
-            {loading && <Loader size="md" center={true} />}
+            {loading && <Loader center size="md" />}
             {comments.map((comment) => (
               <ResponseChatSent
+                comment={comment}
                 key={comment._id}
                 onAction={deleteComment}
-                comment={comment}
               />
             ))}
           </Flex>
           <Can
             action="comments.add"
             data={{ response }}
+            no={() => <Box h="20px" />}
             yes={() => (
               <MessageInput
-                name="text"
-                placeholder="Send message"
                 control={control}
+                name="text"
                 onAction={addComment}
+                placeholder="Send message"
                 validations={{
                   notEmpty: true,
                 }}
-              />)}
-            no={() => <Box h="20px" />}
+              />
+            )}
           />
         </Flex>
       </Box>
@@ -321,18 +321,18 @@ export default ResponseChat;
 
 export const responseChatStyles = {
   responseChat: {
-    text: "#282F3680",
+    text: '#282F3680',
     scrollBar: {
-      bg: "#E5E5E5",
-      color: "#DDD",
+      bg: '#E5E5E5',
+      color: '#DDD',
     },
     image: {
-      bg: "#818197",
-      color: "#ffffff",
+      bg: '#818197',
+      color: '#ffffff',
     },
   },
   mentionListItem: {
-    color: "#818197",
-    hoverColor: "#282F36",
+    color: '#818197',
+    hoverColor: '#282F36',
   },
 };

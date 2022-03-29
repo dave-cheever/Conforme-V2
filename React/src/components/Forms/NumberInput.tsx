@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Flex, Input } from '@chakra-ui/react';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Controller } from 'react-hook-form';
+
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { Box, Flex, Input } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
@@ -14,77 +15,116 @@ interface INumberInput extends IField {
 
 const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
-    if (validationValue && !value) {
-      return `${label} cannot be empty`;
-    }
+    if (validationValue && !value) return `${label} cannot be empty`;
   },
 };
 
-const NumberInput = ({ control, name, label, placeholder = '', tooltip = '', variant, validations = {}, disabled = false, help }: INumberInput) => {
+const NumberInput = ({
+  control,
+  name,
+  label,
+  placeholder = '',
+  tooltip = '',
+  variant,
+  validations = {},
+  disabled = false,
+  help,
+}: INumberInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-      name={name}
       control={control}
-      rules={{ validate }}
-      render={({ field, fieldState, formState }) => {
+      name={name}
+      render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt='none'>
+          <Box id={name} mt="none" w="full">
             {label && (
-              <Flex pt={2} align='center' justify="space-between" mb='none'>
+              <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={error ? "numberInput.labelFont.error" : variant === "secondaryVariant" ? "numberInput.labelFont.secondaryVariant" : "numberInput.labelFont.normal"}
+                  color={
+                    error
+                      ? 'numberInput.labelFont.error'
+                      : variant === 'secondaryVariant'
+                      ? 'numberInput.labelFont.secondaryVariant'
+                      : 'numberInput.labelFont.normal'
+                  }
+                  fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
-                  fontSize={variant === "secondaryVariant" ? "11px" : "14px"}
+                  left="none"
                   position="static"
-                  left='none'
                   zIndex={1}
                 >
                   {label}
-                  {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
+                  {help && (
+                    <Box fontSize="11px" mt={3} opacity={0.5}>
+                      {help}
+                    </Box>
+                  )}
                 </Box>
               </Flex>
             )}
             <Input
-              mt="3"
+              _active={{
+                bg: disabled
+                  ? 'numberInput.disabled.bg'
+                  : 'numberInput.activeBg',
+              }}
+              _disabled={{
+                bg: 'numberInput.disabled.bg',
+                color: 'numberInput.disabled.font',
+                borderColor: 'numberInput.disabled.border',
+                cursor: 'not-allowed',
+              }}
+              _focus={{
+                borderColor: error
+                  ? 'numberInput.border.focus.error'
+                  : 'numberInput.border.focus.normal',
+              }}
+              _hover={{ cursor: 'auto' }}
+              _placeholder={{ color: 'numberInput.placeholder' }}
+              bg="numberInput.bg"
+              borderColor={
+                error ? 'numberInput.border.error' : 'numberInput.border.normal'
+              }
               borderRadius="8px"
               borderWidth="1px"
-              pt='none'
-              h="42px"
-              type="number"
               color="numberInput.font"
-              bg="numberInput.bg"
-              name={name}
-              defaultValue={value}
-              borderColor={error ? "numberInput.border.error" : "numberInput.border.normal"}
-              _active={{ bg: disabled ? "numberInput.disabled.bg" : "numberInput.activeBg" }}
-              _focus={{ borderColor: error ? "numberInput.border.focus.error" : "numberInput.border.focus.normal" }}
-              _hover={{ cursor: "auto" }}
-              onChange={e => onChange(parseInt(e.target.value))}
-              onBlur={onBlur}
-              isDisabled={disabled}
               cursor="pointer"
-              _disabled={{
-                bg: "numberInput.disabled.bg",
-                color: "numberInput.disabled.font",
-                borderColor: "numberInput.disabled.border",
-                cursor: "not-allowed",
-              }}
-              maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
+              defaultValue={value}
+              h="42px"
+              isDisabled={disabled}
+              maxLength={
+                validations && validations.forceMaxLength
+                  ? (validations.maxLength as number)
+                  : undefined
+              }
+              mt="3"
+              name={name}
+              onBlur={onBlur}
+              onChange={onChange}
               placeholder={variant === 'secondaryVariant' ? '' : placeholder}
-              _placeholder={{ color: 'numberInput.placeholder' }}
+              pt="none"
+              type="number"
             />
-            {error && <Box fontSize={14} ml={1} color='numberInput.error'>{error.message}</Box>}
-            {tooltip &&
-              <Flex color='dropdown.tooltip' align='center' mt={3}>
+            {error && (
+              <Box color="numberInput.error" fontSize={14} ml={1}>
+                {error.message}
+              </Box>
+            )}
+            {tooltip && (
+              <Flex align="center" color="dropdown.tooltip" mt={3}>
                 <InfoOutlineIcon />
-                <Box fontSize="11px" ml={2}>{tooltip}</Box>
-              </Flex>}
+                <Box fontSize="11px" ml={2}>
+                  {tooltip}
+                </Box>
+              </Flex>
+            )}
           </Box>
         );
       }}
+      rules={{ validate }}
     />
   );
 };
@@ -94,7 +134,7 @@ export const numberInputStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
-      secondaryVariant: "#818197",
+      secondaryVariant: '#818197',
       normal: '#282F36',
       error: '#E53E3E',
     },
@@ -114,8 +154,8 @@ export const numberInputStyles = {
     },
     placeholder: '#CBCCCD',
     error: '#E53E3E',
-    tooltip: "#9A9EA1",
-    icon: '#818197'
+    tooltip: '#9A9EA1',
+    icon: '#818197',
   },
 };
 

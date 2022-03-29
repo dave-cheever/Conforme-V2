@@ -1,22 +1,32 @@
-import { useContext, useEffect, useMemo, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useForm } from "react-hook-form";
-import { Box, Flex, Text, useToast, Stack, Button, Select, Spacer } from "@chakra-ui/react";
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import Loader from "../../components/Loader";
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/Admin/AdminModal";
-import { AdminContext } from "../../contexts/AdminProvider";
-import TextInput from "../../components/Forms/TextInput";
-import Header from "../../components/Header";
-import AdminTableHeader from "../../components/Admin/AdminTableHeader";
-import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import useDevice from "../../hooks/useDevice";
-import { IAuditType } from "../../interfaces/IAuditType";
-import { Dropdown } from "../../components/Forms";
-import { complianceItemFrequencies } from "../../hooks/useResponseUtils";
-import { IAuditSection } from "../../interfaces/IAuditSection";
-import { ChevronRight } from "../../icons";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import {
+  Box,
+  Button,
+  Flex,
+  Select,
+  Spacer,
+  Stack,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import AdminModal from '../../components/Admin/AdminModal';
+import AdminTableHeader from '../../components/Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import { Dropdown } from '../../components/Forms';
+import TextInput from '../../components/Forms/TextInput';
+import Header from '../../components/Header';
+import Loader from '../../components/Loader';
+import { AdminContext } from '../../contexts/AdminProvider';
+import useDevice from '../../hooks/useDevice';
+import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
+import { ChevronRight } from '../../icons';
+import { IAuditSection } from '../../interfaces/IAuditSection';
+import { IAuditType } from '../../interfaces/IAuditType';
 
 const GET_AUDIT_TYPES = gql`
   query {
@@ -57,34 +67,40 @@ const DELETE_AUDIT_TYPE = gql`
 
 const defaultValues: Partial<IAuditType> = {
   _id: undefined,
-  name: "",
+  name: '',
   frequency: undefined,
   sections: [],
-  view: "categorized",
+  view: 'categorized',
 };
 
 const AuditTypes = () => {
   const toast = useToast();
-  const frequencyOptions = useMemo(() => complianceItemFrequencies.map(f => ({ value: f, label: f })), []);
+  const frequencyOptions = useMemo(
+    () => complianceItemFrequencies.map((f) => ({ value: f, label: f })),
+    [],
+  );
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_AUDIT_TYPES);
   const [createFunction] = useMutation(CREATE_AUDIT_TYPE);
   const [updateFunction] = useMutation(UPDATE_AUDIT_TYPE);
   const [deleteFunction] = useMutation(DELETE_AUDIT_TYPE);
   const device = useDevice();
-  const [sortType, setSortType] = useState("name");
+  const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState(true);
 
   const getAuditTypes = (auditTypesArray: IAuditType[]) => {
-    if (!auditTypesArray) {
-      return [];
-    }
-    return auditTypesArray.map(auditType => ({
-      ...auditType,
-      sections: auditType.sections.map(({ type, _id }) => ({ type, _id })),
-    })).sort((a, b) => a.name.localeCompare(b.name));
-  }
-  const [auditTypes, setAuditTypes] = useState<IAuditType[]>(getAuditTypes(data?.auditTypes));
+    if (!auditTypesArray) return [];
+
+    return auditTypesArray
+      .map((auditType) => ({
+        ...auditType,
+        sections: auditType.sections.map(({ type, _id }) => ({ type, _id })),
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  };
+  const [auditTypes, setAuditTypes] = useState<IAuditType[]>(
+    getAuditTypes(data?.auditTypes),
+  );
 
   useEffect(() => {
     setAuditTypes(getAuditTypes(data?.auditTypes));
@@ -94,18 +110,18 @@ const AuditTypes = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner')
-        return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-      else {
-        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      if (sortType === 'owner') {
+        return (a.owner?.displayName || '').localeCompare(
+          b.owner?.displayName || '',
+        );
       }
+
+      return (a[sortType] || 0)
+        .toString()
+        .localeCompare((b[sortType] || 0).toString());
     };
-    if (sortOrder) {
-      setAuditTypes([...auditTypes].sort((a, b) => sort(a, b)));
-    }
-    else {
-      setAuditTypes([...auditTypes].sort((a, b) => sort(b, a)));
-    }
+    if (sortOrder) setAuditTypes([...auditTypes].sort((a, b) => sort(a, b)));
+    else setAuditTypes([...auditTypes].sort((a, b) => sort(b, a)));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
@@ -117,22 +133,20 @@ const AuditTypes = () => {
     trigger,
     reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues,
   });
 
-  const sections = watch("sections") || [];
+  const sections = watch('sections') || [];
 
   // Reset the form after closing
   useEffect(() => {
-    if (adminModalState === "closed") {
-      reset(defaultValues);
-    }
+    if (adminModalState === 'closed') reset(defaultValues);
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openAuditTypeModal = (
-    action: "edit" | "delete",
+    action: 'edit' | 'delete',
     auditType: IAuditType,
   ) => {
     setAdminModalState(action);
@@ -150,17 +164,17 @@ const AuditTypes = () => {
         const auditType = getValues();
         await createFunction({ variables: { auditType } });
         refetch();
-        toast({ ...toastSuccess, description: "Audit type added" });
+        toast({ ...toastSuccess, description: 'Audit type added' });
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -179,17 +193,17 @@ const AuditTypes = () => {
           },
         });
         refetch();
-        toast({ ...toastSuccess, description: "Audit type updated" });
+        toast({ ...toastSuccess, description: 'Audit type updated' });
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -198,63 +212,60 @@ const AuditTypes = () => {
       const _id = getValues('_id');
       await deleteFunction({ variables: { _id } });
       refetch();
-      toast({ ...toastSuccess, description: "Audit type deleted" });
+      toast({ ...toastSuccess, description: 'Audit type deleted' });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
   const handleAction = async (action) => {
     const isFormValid = await trigger();
-    if (["add", "edit"].includes(action) && !isFormValid) {
+    if (['add', 'edit'].includes(action) && !isFormValid) {
       return toast({
         ...toastFailed,
-        description: "Please complete all the required fields",
+        description: 'Please complete all the required fields',
       });
     }
     switch (action) {
-      case "add":
+      case 'add':
         handleAddAuditType();
         break;
-      case "edit":
+      case 'edit':
         handleUpdateAuditType();
         break;
-      case "delete":
+      case 'delete':
         handleDeleteAuditType();
         break;
       default:
-        setAdminModalState("closed");
+        setAdminModalState('closed');
     }
   };
 
   const renderAuditTypeRow = (auditType: IAuditType, i: number) => (
     <Flex
-      key={auditType._id}
-      w='full'
-      h='73px'
-      bg='#FFFFFF'
-      mb="1px"
-      p={4}
-      alignItems='center'
-      borderBottomRadius={(i === auditTypes.length - 1) ? 'lg' : ''}
+      alignItems="center"
+      bg="#FFFFFF"
+      borderBottomRadius={i === auditTypes.length - 1 ? 'lg' : ''}
       boxShadow="sm"
       flexShrink={0}
+      h="73px"
+      key={auditType._id}
+      mb="1px"
+      p={4}
+      w="full"
     >
       <Flex
-        w='full'
-        flexDir="column"
-        pl={1}
-        mr={4}
         cursor="pointer"
+        flexDir="column"
+        mr={4}
         onClick={() => openAuditTypeModal('edit', auditType)}
+        pl={1}
+        w="full"
       >
-        <Text
-          overflow='hidden'
-          textOverflow='ellipsis'
-          whiteSpace='nowrap'
-        >{auditType.name}
+        <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          {auditType.name}
         </Text>
       </Flex>
     </Flex>
@@ -263,144 +274,224 @@ const AuditTypes = () => {
   return (
     <>
       <AdminModal
-        isOpenModal={adminModalState !== "closed"}
+        collection="audit types"
+        isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
-        collection={"audit types"}
       >
-        <Stack w={device === 'mobile' ? 'full' : "calc(100% - 150px)"} spacing={2}>
+        <Stack
+          spacing={2}
+          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
+        >
           <TextInput
-            name="name"
+            control={control}
             label="Name"
-            placeholder='Name'
-            control={control}
+            name="name"
+            placeholder="Name"
             validations={{
               notEmpty: true,
             }}
           />
           <Dropdown
-            name="frequency"
+            control={control}
             label="Frequency"
-            placeholder='Frequency'
-            control={control}
+            name="frequency"
             options={frequencyOptions}
+            placeholder="Frequency"
             validations={{
               notEmpty: true,
             }}
           />
           <Dropdown
-            name="view"
-            label="View"
-            placeholder='View'
             control={control}
-            options={[{ value: 'categorized', label: 'Categorized' }, { value: 'singlePage', label: 'Single page' }]}
+            label="View"
+            name="view"
+            options={[
+              { value: 'categorized', label: 'Categorized' },
+              { value: 'singlePage', label: 'Single page' },
+            ]}
+            placeholder="View"
             validations={{
               notEmpty: true,
             }}
           />
           <Stack>
-            <Flex pt={4} align='center' justify="space-between" mb='none'>
+            <Flex align="center" justify="space-between" mb="none" pt={4}>
               <Box
                 color="dropdown.labelFont.normal"
-                fontWeight="bold"
                 fontSize="14px"
+                fontWeight="bold"
+                left="none"
                 position="static"
-                left='none'
                 zIndex={1}
               >
                 Sections
               </Box>
             </Flex>
             <Stack spacing={4}>
-              {sections.length > 0 ?
+              {sections.length > 0 ? (
                 sections.map((section, i) => (
                   <Stack key={`section-${i}`}>
                     <Text fontSize="smm">Section {i + 1}</Text>
                     <Text fontSize="sm">Type</Text>
                     <Select
-                      css={{ paddingTop: "0" }}
-                      borderRadius="8px"
-                      borderWidth="1px"
-                      top="5px"
-                      fontSize="smm"
-                      h="42px"
-                      color="dropdown.font"
+                      _active={{ bg: 'dropdown.activeBg' }}
+                      _focus={{ borderColor: 'dropdown.border.focus.normal' }}
+                      _placeholder={{ color: 'dropdown.placeholder' }}
                       bg="dropdown.bg"
                       borderColor="dropdown.border.normal"
-                      _active={{ bg: "dropdown.activeBg" }}
-                      _focus={{ borderColor: "dropdown.border.focus.normal" }}
-                      _placeholder={{ color: 'dropdown.placeholder' }}
-                      icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
-                      onChange={e => setValue("sections", sections.map((sectionValue, index) => {
-                        if (index === i) {
-                          return { type: e.target.value } as IAuditSection;
-                        }
-                        return sectionValue;
-                      }))}
+                      borderRadius="8px"
+                      borderWidth="1px"
+                      color="dropdown.font"
+                      css={{ paddingTop: '0' }}
+                      fontSize="smm"
+                      h="42px"
+                      icon={
+                        <ChevronRight
+                          stroke="dropdown.chevronDownIcon"
+                          transform="rotate(90deg)"
+                        />
+                      }
+                      onChange={(e) =>
+                        setValue(
+                          'sections',
+                          sections.map((sectionValue, index) => {
+                            if (index === i)
+                              return { type: e.target.value } as IAuditSection;
+
+                            return sectionValue;
+                          }),
+                        )
+                      }
+                      top="5px"
                       value={section.type}
                     >
                       <option value="notes">Notes</option>
-                      <option value="questionsCategory">Question category</option>
+                      <option value="questionsCategory">
+                        Question category
+                      </option>
                     </Select>
                     {section.type === 'questionsCategory' && (
                       <Stack pt={2}>
                         <Text fontSize="sm">Question category</Text>
                         <Select
-                          css={{ paddingTop: "0" }}
-                          borderRadius="8px"
-                          borderWidth="1px"
-                          top="5px"
-                          fontSize="smm"
-                          h="42px"
-                          color="dropdown.font"
+                          _active={{ bg: 'dropdown.activeBg' }}
+                          _focus={{
+                            borderColor: 'dropdown.border.focus.normal',
+                          }}
+                          _placeholder={{ color: 'dropdown.placeholder' }}
                           bg="dropdown.bg"
                           borderColor="dropdown.border.normal"
-                          _active={{ bg: "dropdown.activeBg" }}
-                          _focus={{ borderColor: "dropdown.border.focus.normal" }}
-                          _placeholder={{ color: 'dropdown.placeholder' }}
-                          icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
-                          onChange={e => setValue("sections", sections.map((sectionValue, index) => {
-                            if (index === i) {
-                              return { ...sectionValue, _id: e.target.value };
-                            }
-                            return sectionValue;
-                          }))}
+                          borderRadius="8px"
+                          borderWidth="1px"
+                          color="dropdown.font"
+                          css={{ paddingTop: '0' }}
+                          fontSize="smm"
+                          h="42px"
+                          icon={
+                            <ChevronRight
+                              stroke="dropdown.chevronDownIcon"
+                              transform="rotate(90deg)"
+                            />
+                          }
+                          onChange={(e) =>
+                            setValue(
+                              'sections',
+                              sections.map((sectionValue, index) => {
+                                if (index === i) {
+                                  return {
+                                    ...sectionValue,
+                                    _id: e.target.value,
+                                  };
+                                }
+                                return sectionValue;
+                              }),
+                            )
+                          }
+                          top="5px"
                           value={section._id}
                         >
-                          <option value={undefined}>Please select questions category</option>
-                          {questionsCategories.map(({ _id, name }) => <option key={_id} value={_id}>{name}</option>)}
+                          <option value={undefined}>
+                            Please select questions category
+                          </option>
+                          {questionsCategories.map(({ _id, name }) => (
+                            <option key={_id} value={_id}>
+                              {name}
+                            </option>
+                          ))}
                         </Select>
                       </Stack>
                     )}
                   </Stack>
                 ))
-                : <Text fontSize="smm">No sections added</Text>}
+              ) : (
+                <Text fontSize="smm">No sections added</Text>
+              )}
             </Stack>
             <Spacer />
             <Spacer />
             <Button
-              mt={16}
               bg="adminModal.button.bg"
               color="adminModal.button.color"
               fontSize="smm"
               fontWeight="bold"
-              onClick={() => setValue("sections", [...sections, { type: "notes" }])}
-            >Add section</Button>
+              mt={16}
+              onClick={() =>
+                setValue('sections', [...sections, { type: 'notes' }])
+              }
+            >
+              Add section
+            </Button>
           </Stack>
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Audit types"]} mobileBreadcrumbs={["Audit types"]} />
-      <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
-        <Box w='full' h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
+      <Header
+        breadcrumbs={['Admin', 'Audit types']}
+        mobileBreadcrumbs={['Audit types']}
+      />
+      <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
+        <Box
+          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
+          p={[0, '0 25px 30px 30px']}
+          w="full"
+        >
           <AdminTableHeader>
-            <AdminTableHeaderElement w='full' label="Name" onClick={() => { setSortType("name"); setSortOrder(!sortOrder); }} sortOrder={sortType === "name" && !sortOrder} showSortingIcon={sortType === "name"} />
+            <AdminTableHeaderElement
+              label="Name"
+              onClick={() => {
+                setSortType('name');
+                setSortOrder(!sortOrder);
+              }}
+              showSortingIcon={sortType === 'name'}
+              sortOrder={sortType === 'name' && !sortOrder}
+              w="full"
+            />
           </AdminTableHeader>
-          <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
-            {loading ? <Loader center={true} /> : (auditTypes?.length > 0 ? auditTypes?.map(renderAuditTypeRow) : (
-              <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+          <Flex
+            bg="white"
+            borderBottomRadius="20px"
+            flexDir="column"
+            fontSize="smm"
+            h="full"
+            overflow="auto"
+            w="full"
+          >
+            {loading ? (
+              <Loader center />
+            ) : auditTypes?.length > 0 ? (
+              auditTypes?.map(renderAuditTypeRow)
+            ) : (
+              <Flex
+                fontSize="18px"
+                fontStyle="italic"
+                h="full"
+                justify="center"
+                mt={4}
+                w="full"
+              >
                 No audit types found
               </Flex>
-            ))}
+            )}
           </Flex>
         </Box>
       </Flex>

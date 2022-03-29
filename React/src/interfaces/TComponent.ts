@@ -1,3 +1,1 @@
-export type TComponent =
-  'audits' |
-  'tracker';
+export type TComponent = 'audits' | 'tracker';

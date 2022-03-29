@@ -1,39 +1,69 @@
-import { Avatar, Box, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react'
 import { useContext } from 'react';
-import { IAuditor } from '../../interfaces/IAuditor'
+
+import {
+  Avatar,
+  Box,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Text,
+} from '@chakra-ui/react';
+
+import { IAuditor } from '../../interfaces/IAuditor';
 import AuditModalContext from './AuditModalContext';
 
-
-
 const SelectedAuditor = ({ name, designation, imgSrc }: IAuditor) => {
-
   const modalContext = useContext(AuditModalContext);
 
-  let auditor: IAuditor = {
-    name: name,
-    designation: designation,
-    imgSrc: imgSrc
-  }
+  const auditor: IAuditor = {
+    name,
+    designation,
+    imgSrc,
+  };
 
   return (
-    <Tag h="62px" w="280px" size="lg" bg="white" borderRadius="10px" p="0px 20px"
-      boxShadow="0px 10px 30px 0px #42424214">
-      <Box display="flex" justifyContent="start"
-        alignItems="center" w="250px">
-        <Avatar w="36px" h="36px" bg="auditModal.participants.avatar.bg"
+    <Tag
+      bg="white"
+      borderRadius="10px"
+      boxShadow="0px 10px 30px 0px #42424214"
+      h="62px"
+      p="0px 20px"
+      size="lg"
+      w="280px"
+    >
+      <Box alignItems="center" display="flex" justifyContent="start" w="250px">
+        <Avatar
+          bg="auditModal.participants.avatar.bg"
+          h="36px"
           lineHeight="0px"
-          name={name} src={imgSrc}
-          mr="15px" />
+          mr="15px"
+          name={name}
+          src={imgSrc}
+          w="36px"
+        />
         <TagLabel>
-          <Text fontWeight="400" fontSize="md"
-            color="auditModal.participants.avatar.text.name" >{name}</Text>
-          <Text fontWeight="400" fontSize="sm"
-            color="auditModal.participants.avatar.text.designation">{designation}</Text>
+          <Text
+            color="auditModal.participants.avatar.text.name"
+            fontSize="md"
+            fontWeight="400"
+          >
+            {name}
+          </Text>
+          <Text
+            color="auditModal.participants.avatar.text.designation"
+            fontSize="sm"
+            fontWeight="400"
+          >
+            {designation}
+          </Text>
         </TagLabel>
       </Box>
-      <TagCloseButton w="20px" onClick={() => modalContext.updateSelectedAuditors(auditor, "remove")} />
+      <TagCloseButton
+        onClick={() => modalContext.updateSelectedAuditors(auditor, 'remove')}
+        w="20px"
+      />
     </Tag>
-  )
-}
+  );
+};
 
-export default SelectedAuditor
+export default SelectedAuditor;

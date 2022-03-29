@@ -1,11 +1,18 @@
 import React from 'react';
-import { Box, Flex, Icon, Textarea as ChakraTextarea, Tooltip } from '@chakra-ui/react';
-
 import { Controller } from 'react-hook-form';
+
+import {
+  Box,
+  Textarea as ChakraTextarea,
+  Flex,
+  Icon,
+  Tooltip,
+} from '@chakra-ui/react';
+
 import useValidate from '../../hooks/useValidate';
+import { Asterisk } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
-import { Asterisk } from '../../icons';
 
 interface ITextarea extends IField {
   placeholder?: string;
@@ -14,79 +21,128 @@ interface ITextarea extends IField {
 
 const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
-    if (validationValue && !value) {
-      return `${label} cannot be empty`;
-    }
+    if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue) {
+    if (value.length < validationValue)
       return `${label} can be maximum ${validationValue} characters length`;
-    }
   },
 };
 
-const Textarea = ({ control, name, label, placeholder = '', tooltip = '', variant, required, validations = {}, disabled = false }: ITextarea) => {
+const Textarea = ({
+  control,
+  name,
+  label,
+  placeholder = '',
+  tooltip = '',
+  required,
+  validations = {},
+  disabled = false,
+}: ITextarea) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-      name={name}
       control={control}
-      rules={{ validate }}
-      render={({ field, fieldState, formState }) => {
+      name={name}
+      render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt='none'>
+          <Box id={name} mt="none" w="full">
             {label && (
-              <Flex pt={2} pb={1} align='center' justify="space-between" mb='none'>
+              <Flex
+                align="center"
+                justify="space-between"
+                mb="none"
+                pb={1}
+                pt={2}
+              >
                 <Box
-                  color={error ? "textMultilineInput.labelFont.error" : "textMultilineInput.labelFont.normal"}
-                  fontWeight="bold"
+                  color={
+                    error
+                      ? 'textMultilineInput.labelFont.error'
+                      : 'textMultilineInput.labelFont.normal'
+                  }
                   fontSize={11}
+                  fontWeight="bold"
+                  left="none"
                   position="static"
-                  left='none'
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='textMultilineConfirmInput.iconAsterisk' />}
-                  {' '}
-                  {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
+                  {required && (
+                    <Asterisk
+                      fill="questionListElement.iconAsterisk"
+                      mb="8px"
+                      ml="5px"
+                      stroke="textMultilineConfirmInput.iconAsterisk"
+                    />
+                  )}{' '}
+                  {tooltip && (
+                    <Tooltip hasArrow label={tooltip} placement="top">
+                      <Icon h="14px" mb={1} name="info" />
+                    </Tooltip>
+                  )}
                 </Box>
               </Flex>
             )}
             <ChakraTextarea
+              _active={{
+                bg: disabled
+                  ? 'textMultilineInput.disabled.bg'
+                  : 'textMultilineInput.activeBg',
+              }}
+              _disabled={{
+                bg: 'textMultilineInput.disabled.bg',
+                color: 'textMultilineInput.disabled.font',
+                borderColor: 'textMultilineInput.disabled.border',
+                cursor: 'not-allowed',
+              }}
+              _focus={{
+                borderColor: error
+                  ? 'textMultilineInput.border.focus.error'
+                  : 'textMultilineInput.border.focus.normal',
+              }}
+              _hover={{ cursor: 'auto' }}
+              _placeholder={{
+                fontSize: 'smm',
+                color: 'textMultilineInput.placeholder',
+              }}
+              bg="textMultilineInput.bg"
+              borderColor={
+                error
+                  ? 'textMultilineInput.border.error'
+                  : 'textMultilineInput.border.normal'
+              }
               borderRadius="8px"
               borderWidth="1px"
-              pt='5px'
+              color="textMultilineInput.font"
+              cursor="pointer"
+              defaultValue={value}
+              fontSize="smm"
+              isDisabled={disabled}
+              maxLength={
+                validations && validations.forceMaxLength
+                  ? (validations.maxLength as number)
+                  : undefined
+              }
+              name={name}
+              onBlur={onBlur}
+              onChange={onChange}
+              placeholder={placeholder}
+              pt="5px"
               rows={4}
               type="text"
-              fontSize="smm"
-              color="textMultilineInput.font"
-              bg="textMultilineInput.bg"
-              name={name}
-              defaultValue={value}
-              borderColor={error ? "textMultilineInput.border.error" : "textMultilineInput.border.normal"}
-              _active={{ bg: disabled ? "textMultilineInput.disabled.bg" : "textMultilineInput.activeBg" }}
-              _focus={{ borderColor: error ? "textMultilineInput.border.focus.error" : "textMultilineInput.border.focus.normal" }}
-              _hover={{ cursor: "auto" }}
-              onChange={onChange}
-              onBlur={onBlur}
-              isDisabled={disabled}
-              cursor="pointer"
-              _disabled={{
-                bg: "textMultilineInput.disabled.bg",
-                color: "textMultilineInput.disabled.font",
-                borderColor: "textMultilineInput.disabled.border",
-                cursor: "not-allowed",
-              }}
-              maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
-              placeholder={placeholder}
-              _placeholder={{ fontSize: "smm", color: 'textMultilineInput.placeholder' }}
             />
-            {error && <Box fontSize={14} ml={1} color='textMultilineInput.error'>{error.message}</Box>}
+            {error && (
+              <Box color="textMultilineInput.error" fontSize={14} ml={1}>
+                {error.message}
+              </Box>
+            )}
           </Box>
         );
       }}
+      rules={{ validate }}
     />
   );
 };

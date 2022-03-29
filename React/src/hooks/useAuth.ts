@@ -1,6 +1,8 @@
-import { useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
-import { useAppContext } from "../contexts/AppProvider";
+import { useEffect } from 'react';
+
+import { gql, useQuery } from '@apollo/client';
+
+import { useAppContext } from '../contexts/AppProvider';
 
 const USERS = gql`
   query {
@@ -25,16 +27,12 @@ const useAuth = () => {
   const { setUser } = useAppContext();
 
   useEffect(() => {
-    if (data) {
-      setUser(data.session.user);
-    }
-  }, [data?.session.user]); // eslint-disable-line react-hooks/exhaustive-deps
-  
+    if (data) setUser(data.session.user);
+  }, [data?.session.user]);
+
   useEffect(() => {
-    if (error?.message) {
-      setUser(null);
-    }
-  }, [error]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (error?.message) setUser(null);
+  }, [error]);
 
   return loading;
 };

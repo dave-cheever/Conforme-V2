@@ -1,93 +1,94 @@
-import { theme } from "@chakra-ui/react";
-import { additionalDetailsStyles } from "../components/AdminComplianceItemModal/AdditionalDetails";
-import { addComplianceItemAttributeStyles } from "../components/AdminComplianceItemModal/AddComplianceItemAttribute";
-import { adminModalStyles } from "../components/Admin/AdminModal";
-import { adminTableHeaderElementStyles } from "../components/Admin/AdminTableHeaderElement";
-import { adminTableHeaderStyles } from "../components/Admin/AdminTableHeader";
-import { alertDialogStyles } from "../components/AlertDialog";
-import { auditLogDayStyles } from "../components/AuditLog/AuditLogDay";
-import { auditLogRecordStyles } from "../components/AuditLog/AuditLogRecord";
-import { auditLogStyles } from "../components/AuditLog/AuditLog";
-import { avatarUserStyles } from "../components/Team/AvatarUser";
-import { barChartStyles } from "../components/BarChart";
-import { businessUnitsModalStyles } from "../components/AdminComplianceItemModal/BusinessUnits";
-import { businessUnitsSelectorStyles } from "../components/BusinessUnitsSelector";
-import { businessUnitsStyles } from "../pages/admin/business-units";
-import { categoriesStyles } from "../pages/admin/categories";
-import { chatMentionStyles } from "../components/Response/ChatMention";
-import { cloneComplianceItemModalStyles } from "../components/AdminComplianceItemModal/CloneComplianceItemModal";
-import { complianceItemsAdminWithContextStyles } from "../pages/admin/compliance-items";
-import { complianceGroupItemsStyles } from "../components/ComplianceItem/ComplianceItemsGroup";
-import { complianceItemModalStyles } from "../components/AdminComplianceItemModal/ComplianceItemModal";
-import { complianceItemResponseStyles } from "../pages/compliance-item/index";
-import { complianceItemStyles } from "../pages/compliance-items";
-import { complianceItemsSquareStyles } from "../components/ComplianceItem/ComplianceItemSquare";
-import { complianceListItemsStyles } from "../components/ComplianceItem/ComplianceItemsList";
-import { customRadioButtonStyles } from "../components/CustomRadioButton";
-import { datepickerStyles } from "../components/Forms/Datepicker";
-import { deleteComplianceItemModalStyles } from "../components/AdminComplianceItemModal/DeleteComplianceItemModal";
-import { documentUploadedStyles } from "../components/Response/DocumentUploaded";
-import { dropdownStyles } from "../components/Forms/Dropdown";
-import { emailTemplateStyles } from "../components/Settings/EmailTemplate";
-import { emailTemplatesStyles } from "../components/Settings/EmailTemplates";
-import { evidenceStyles } from "../components/Response/Evidence";
-import { filtersPanelItemStyles } from "../components/Filters/FiltersPanelItem";
-import { filtersPanelStyles } from "../components/Filters/FiltersPanel";
-import { headerStyles } from "../components/Header";
-import { historicalListItemStyles } from "../components/Response/HistoricalListItem";
-import { historyPageStyles } from "../pages/compliance-item/history";
-import { loginPageStyles } from "../pages/login";
-import { locationsStyles } from "../pages/admin/locations";
-import { locationsFormModalStyles } from "../components/AdminComplianceItemModal/Locations";
-import { locationsSelectorStyles } from "../components/LocationsSelector";
-import { logoutPageStyles } from "../pages/logout";
-import { messageInputStyles } from "../components/Response/MessageInput";
-import { multipleChoicesStyles } from "../components/Forms/MultipleChoices";
-import { navigationLeftFiltersStyles } from "../components/NavigationLeft/NavigationLeftFilters";
-import { navigationLeftItemStyles } from "../components/NavigationLeft/NavigationLeftItem";
-import { navigationBottomMobileStyles } from "../components/NavigationBottomMobile";
-import { navigationLeftItemTabletStyles } from "../components/NavigationLeft/NavigationLeftItemTablet";
-import { navigationLeftStyles } from "../components/NavigationLeft/NavigationLeft";
-import { navigationMobileModalStyles } from "../components/AdminComplianceItemModal/NavigationMobileModal";
-import { navigationModalStyles } from "../components/AdminComplianceItemModal/NavigationModal";
-import { navigationTopStyles } from "../components/NavigationTop";
-import { numberInputStyles } from "../components/Forms/NumberInput";
-import { peoplePickerStyles } from "../components/Forms/PeoplePicker";
-import { questionEmailFormStyles } from "../components/Questions/QuestionEmailForm";
-import { questionFormStyles } from "../components/Questions/QuestionForm";
-import { questionListElementStyles } from "../components/Questions/QuestionListElement";
-import { questionListStyles } from "../components/Questions/QuestionList";
-import { questionsModalStyles } from "../components/AdminComplianceItemModal/Questions";
-import { questionMultiChoiceFormStyles } from "../components/Questions/QuestionMultiChoiceForm";
-import { questionSimpleFormStyles } from "../components/Questions/QuestionSimpleForm";
-import { regulatoryBodiesStyles } from "../pages/admin/regulatory-bodies";
-import { responseChatStyles } from "../components/Response/ResponseChat";
-import { responseChatItemStyles } from "../components/Response/ResponseChatItem";
-import { responseHeaderMenuItemStyles } from "../components/Response/ResponseHeader/ResponseHeaderMenuItem";
-import { responseHeaderStyles } from "../components/Response/ResponseHeader/ResponseHeader";
-import { responseHeaderStatusStyles } from "../components/Response/ResponseHeader/ResponseHeaderStatus";
-import { responseLayoutStyles } from "../layouts/ResponseLayout";
-import { responseLeftNavigationStyles } from "../components/Response/ResponseLeftNavigation";
-import { responseLeftTabItemStyles } from "../components/Response/ResponseLeftTabItem";
-import { responseRenewalDetailsStyles } from "../components/Response/Details";
-import { responseRenewalModalStyles } from "../components/Response/RenewalModal";
-import { responseTabItemStyles } from "../components/Response/ResponseTabItem";
-import { responseQuestionsStyles } from "../components/Response/ResponseQuestions";
-import { shareModalStyles } from "../components/ShareModal";
-import { subSectionStyles } from "../components/NavigationLeft/SubSection";
-import { settingsTabItemStyles } from "../components/Settings/TabItem";
-import { summaryItemModalStyles } from "../components/AdminComplianceItemModal/SummaryItem";
-import { summaryModalStyles } from "../components/AdminComplianceItemModal/Summary";
-import { switchStyles } from "../components/Forms/Switch";
-import { teamPageStyles } from "../pages/compliance-item/team";
-import { textConfirmInputStyles } from "../components/Forms/TextConfirmInput";
-import { textInputStyles } from "../components/Forms/TextInput";
-import { textMultilineConfirmInputStyles } from "../components/Forms/TextMultilineConfirmInput";
-import { textMultilineInputStyles } from "../components/Forms/Textarea";
-import { toggleStyles } from "../components/Forms/Toggle";
-import { userItemStyles } from "../pages/admin/users";
-import { userMenuStyles } from "../components/UserMenu";
-import { userSelectorStyles } from "../components/UsersSelector";
+import { theme } from '@chakra-ui/react';
+
+import { adminModalStyles } from '../components/Admin/AdminModal';
+import { adminTableHeaderStyles } from '../components/Admin/AdminTableHeader';
+import { adminTableHeaderElementStyles } from '../components/Admin/AdminTableHeaderElement';
+import { addComplianceItemAttributeStyles } from '../components/AdminComplianceItemModal/AddComplianceItemAttribute';
+import { additionalDetailsStyles } from '../components/AdminComplianceItemModal/AdditionalDetails';
+import { businessUnitsModalStyles } from '../components/AdminComplianceItemModal/BusinessUnits';
+import { cloneComplianceItemModalStyles } from '../components/AdminComplianceItemModal/CloneComplianceItemModal';
+import { complianceItemModalStyles } from '../components/AdminComplianceItemModal/ComplianceItemModal';
+import { deleteComplianceItemModalStyles } from '../components/AdminComplianceItemModal/DeleteComplianceItemModal';
+import { locationsFormModalStyles } from '../components/AdminComplianceItemModal/Locations';
+import { navigationMobileModalStyles } from '../components/AdminComplianceItemModal/NavigationMobileModal';
+import { navigationModalStyles } from '../components/AdminComplianceItemModal/NavigationModal';
+import { questionsModalStyles } from '../components/AdminComplianceItemModal/Questions';
+import { summaryModalStyles } from '../components/AdminComplianceItemModal/Summary';
+import { summaryItemModalStyles } from '../components/AdminComplianceItemModal/SummaryItem';
+import { alertDialogStyles } from '../components/AlertDialog';
+import { auditLogStyles } from '../components/AuditLog/AuditLog';
+import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
+import { auditLogRecordStyles } from '../components/AuditLog/AuditLogRecord';
+import { barChartStyles } from '../components/BarChart';
+import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector';
+import { complianceGroupItemsStyles } from '../components/ComplianceItem/ComplianceItemsGroup';
+import { complianceListItemsStyles } from '../components/ComplianceItem/ComplianceItemsList';
+import { complianceItemsSquareStyles } from '../components/ComplianceItem/ComplianceItemSquare';
+import { customRadioButtonStyles } from '../components/CustomRadioButton';
+import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
+import { filtersPanelItemStyles } from '../components/Filters/FiltersPanelItem';
+import { datepickerStyles } from '../components/Forms/Datepicker';
+import { dropdownStyles } from '../components/Forms/Dropdown';
+import { multipleChoicesStyles } from '../components/Forms/MultipleChoices';
+import { numberInputStyles } from '../components/Forms/NumberInput';
+import { peoplePickerStyles } from '../components/Forms/PeoplePicker';
+import { switchStyles } from '../components/Forms/Switch';
+import { textMultilineInputStyles } from '../components/Forms/Textarea';
+import { textConfirmInputStyles } from '../components/Forms/TextConfirmInput';
+import { textInputStyles } from '../components/Forms/TextInput';
+import { textMultilineConfirmInputStyles } from '../components/Forms/TextMultilineConfirmInput';
+import { toggleStyles } from '../components/Forms/Toggle';
+import { headerStyles } from '../components/Header';
+import { locationsSelectorStyles } from '../components/LocationsSelector';
+import { navigationBottomMobileStyles } from '../components/NavigationBottomMobile';
+import { navigationLeftStyles } from '../components/NavigationLeft/NavigationLeft';
+import { navigationLeftFiltersStyles } from '../components/NavigationLeft/NavigationLeftFilters';
+import { navigationLeftItemStyles } from '../components/NavigationLeft/NavigationLeftItem';
+import { navigationLeftItemTabletStyles } from '../components/NavigationLeft/NavigationLeftItemTablet';
+import { subSectionStyles } from '../components/NavigationLeft/SubSection';
+import { navigationTopStyles } from '../components/NavigationTop';
+import { questionEmailFormStyles } from '../components/Questions/QuestionEmailForm';
+import { questionFormStyles } from '../components/Questions/QuestionForm';
+import { questionListStyles } from '../components/Questions/QuestionList';
+import { questionListElementStyles } from '../components/Questions/QuestionListElement';
+import { questionMultiChoiceFormStyles } from '../components/Questions/QuestionMultiChoiceForm';
+import { questionSimpleFormStyles } from '../components/Questions/QuestionSimpleForm';
+import { chatMentionStyles } from '../components/Response/ChatMention';
+import { responseRenewalDetailsStyles } from '../components/Response/Details';
+import { documentUploadedStyles } from '../components/Response/DocumentUploaded';
+import { evidenceStyles } from '../components/Response/Evidence';
+import { historicalListItemStyles } from '../components/Response/HistoricalListItem';
+import { messageInputStyles } from '../components/Response/MessageInput';
+import { responseRenewalModalStyles } from '../components/Response/RenewalModal';
+import { responseChatStyles } from '../components/Response/ResponseChat';
+import { responseChatItemStyles } from '../components/Response/ResponseChatItem';
+import { responseHeaderStyles } from '../components/Response/ResponseHeader/ResponseHeader';
+import { responseHeaderMenuItemStyles } from '../components/Response/ResponseHeader/ResponseHeaderMenuItem';
+import { responseHeaderStatusStyles } from '../components/Response/ResponseHeader/ResponseHeaderStatus';
+import { responseLeftNavigationStyles } from '../components/Response/ResponseLeftNavigation';
+import { responseLeftTabItemStyles } from '../components/Response/ResponseLeftTabItem';
+import { responseQuestionsStyles } from '../components/Response/ResponseQuestions';
+import { responseTabItemStyles } from '../components/Response/ResponseTabItem';
+import { emailTemplateStyles } from '../components/Settings/EmailTemplate';
+import { emailTemplatesStyles } from '../components/Settings/EmailTemplates';
+import { settingsTabItemStyles } from '../components/Settings/TabItem';
+import { shareModalStyles } from '../components/ShareModal';
+import { avatarUserStyles } from '../components/Team/AvatarUser';
+import { userMenuStyles } from '../components/UserMenu';
+import { userSelectorStyles } from '../components/UsersSelector';
+import { responseLayoutStyles } from '../layouts/ResponseLayout';
+import { businessUnitsStyles } from '../pages/admin/business-units';
+import { categoriesStyles } from '../pages/admin/categories';
+import { complianceItemsAdminWithContextStyles } from '../pages/admin/compliance-items';
+import { locationsStyles } from '../pages/admin/locations';
+import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
+import { userItemStyles } from '../pages/admin/users';
+import { historyPageStyles } from '../pages/compliance-item/history';
+import { complianceItemResponseStyles } from '../pages/compliance-item/index';
+import { teamPageStyles } from '../pages/compliance-item/team';
+import { complianceItemStyles } from '../pages/compliance-items';
+import { loginPageStyles } from '../pages/login';
+import { logoutPageStyles } from '../pages/logout';
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -96,12 +97,12 @@ const getTheme = (organizationTheme?: any) => {
   const customTheme: any = {
     ...theme,
     breakpoints: {
-      tablet: "768px",
-      desktop: "1280px"
+      tablet: '768px',
+      desktop: '1280px',
     },
     shadows: {
       ...theme.shadows,
-      outline: "none",
+      outline: 'none',
     },
     fonts: {
       ...theme.fonts,
@@ -111,14 +112,14 @@ const getTheme = (organizationTheme?: any) => {
     },
     fontSizes: {
       ...theme.fontSizes,
-      xs: "10px",
-      ssm: "11px",
-      sm: "12px",
-      smm: "14px",
-      md: "16px",
-      lg: "18px",
-      xl: "20px",
-      xxl: "24px",
+      xs: '10px',
+      ssm: '11px',
+      sm: '12px',
+      smm: '14px',
+      md: '16px',
+      lg: '18px',
+      xl: '20px',
+      xxl: '24px',
     },
     fontWeights: {
       ...theme.fontWeights,
@@ -221,7 +222,6 @@ const getTheme = (organizationTheme?: any) => {
       ...userMenuStyles,
       ...userSelectorStyles,
 
-
       purpleHeart: {
         50: '#ede9ff',
         100: '#c9bff7',
@@ -237,141 +237,141 @@ const getTheme = (organizationTheme?: any) => {
 
       auditModal: {
         title: {
-          text: "#434B4F",
+          text: '#434B4F',
         },
         avatar: {
-          bg: "#F69942",
-          text: "#9A9EA1",
+          bg: '#F69942',
+          text: '#9A9EA1',
         },
         location: {
-          text: "#9A9EA1",
+          text: '#9A9EA1',
         },
         questionGroup: {
-          checked: "#41B916",
+          checked: '#41B916',
           activeButton: {
-            500: "#A2171E",
-            600: "#A2171E",
+            500: '#A2171E',
+            600: '#A2171E',
           },
           nonActiveButton: {
-            500: "#FFF",
-            600: "#FFF",
+            500: '#FFF',
+            600: '#FFF',
           },
         },
         menu: {
-          bg: "transparent",
-          text: "#9A9EA1",
+          bg: 'transparent',
+          text: '#9A9EA1',
           active: {
-            icon: "#1F1F1F",
-            text: "#1F1F1F",
-            indicator: "#A2171E",
+            icon: '#1F1F1F',
+            text: '#1F1F1F',
+            indicator: '#A2171E',
           },
           inActive: {
-            icon: "#9A9EA1",
-            text: "#9A9EA1",
-            indicator: "transparent",
+            icon: '#9A9EA1',
+            text: '#9A9EA1',
+            indicator: 'transparent',
           },
         },
         participants: {
-          text: "#1F1F1F",
+          text: '#1F1F1F',
           avatar: {
-            bg: "#F69942",
+            bg: '#F69942',
             text: {
-              name: "#1F1F1F",
-              designation: "#9A9EA1",
+              name: '#1F1F1F',
+              designation: '#9A9EA1',
             },
           },
           customSearch: {
-            bg: "white",
-            border: "#9A9EA180",
+            bg: 'white',
+            border: '#9A9EA180',
           },
           inspect: {
-            text: "#1F1F1F",
+            text: '#1F1F1F',
             area: {
               text: {
-                name: "#1F1F1F",
-                location: "#9A9EA1",
+                name: '#1F1F1F',
+                location: '#9A9EA1',
               },
             },
           },
           auditType: {
-            text: "#1F1F1F",
+            text: '#1F1F1F',
           },
         },
         button: {
-          bg: "#A2171E",
-          hoverBg: "#CC242D",
+          bg: '#A2171E',
+          hoverBg: '#CC242D',
         },
       },
       additionalQuestions: {
         active: {
-          icon: "#1F1F1F",
-          requiredIcon: "#A2171E",
-          text: "#1F1F1F",
-          indicator: "#A2171E",
+          icon: '#1F1F1F',
+          requiredIcon: '#A2171E',
+          text: '#1F1F1F',
+          indicator: '#A2171E',
         },
         inActive: {
-          icon: "#9A9EA1",
-          text: "#9A9EA1",
-          indicator: "transparent",
-          requiredIcon: "#D08B90",
+          icon: '#9A9EA1',
+          text: '#9A9EA1',
+          indicator: 'transparent',
+          requiredIcon: '#D08B90',
         },
       },
       homePage: {
         button: {
-          bg: "#A2171E",
-          hoverBg: "#CC242D",
+          bg: '#A2171E',
+          hoverBg: '#CC242D',
         },
       },
       circularProgress: {
-        text: "#9A9EA1",
-        progress: "#A2171E",
+        text: '#9A9EA1',
+        progress: '#A2171E',
       },
       layout: {
-        bg: "#E5E5E5",
+        bg: '#E5E5E5',
       },
       dashboardFilters: {
-        active: "#FFFFFF",
-        inActive: "#1F1F1F",
+        active: '#FFFFFF',
+        inActive: '#1F1F1F',
       },
       auditPanel: {
-        header: "#9A9EA1",
-        bg: "#FFFFFF",
-        button: "#1F1F1F",
-        headerText: "#FFFFFF",
-        ribbon: "#F69942",
-        mentionHeader: "#A2171E",
-        mentionRibbon: "#A2171E",
-        text: "#313233",
-        healthKitIcon: "#9A9EA1",
+        header: '#9A9EA1',
+        bg: '#FFFFFF',
+        button: '#1F1F1F',
+        headerText: '#FFFFFF',
+        ribbon: '#F69942',
+        mentionHeader: '#A2171E',
+        mentionRibbon: '#A2171E',
+        text: '#313233',
+        healthKitIcon: '#9A9EA1',
       },
       licensesPanel: {
-        header: "#9A9EA1",
-        bg: "#FFFFFF",
-        button: "#1F1F1F",
-        headerText: "#FFFFFF",
-        ribbon: "#F69942",
-        text: "#313233",
+        header: '#9A9EA1',
+        bg: '#FFFFFF',
+        button: '#1F1F1F',
+        headerText: '#FFFFFF',
+        ribbon: '#F69942',
+        text: '#313233',
       },
       investigationPanel: {
-        header: "#9A9EA1",
-        bg: "#FFFFFF",
-        button: "#1F1F1F",
-        headerText: "#FFFFFF",
-        ribbon: "#F69942",
-        text: "#313233",
+        header: '#9A9EA1',
+        bg: '#FFFFFF',
+        button: '#1F1F1F',
+        headerText: '#FFFFFF',
+        ribbon: '#F69942',
+        text: '#313233',
       },
       settings: {
         header: {
-          bg: "#2B3236",
-          tabPanels: "#424B50",
-          selectedTab: "#A2171E",
+          bg: '#2B3236',
+          tabPanels: '#424B50',
+          selectedTab: '#A2171E',
         },
       },
       chart: {
-        labelFontColor: "#2B3236",
+        labelFontColor: '#2B3236',
       },
       loader: {
-        color: "#A2171E",
+        color: '#A2171E',
       },
       adminTableRow: {
         bg: '#FFFFFF',
@@ -415,7 +415,7 @@ const getTheme = (organizationTheme?: any) => {
           font: {
             normal: '#777777',
             selected: '#FFFFFF',
-          }
+          },
         },
       },
       businessUnitsCarousel: {
@@ -423,18 +423,18 @@ const getTheme = (organizationTheme?: any) => {
         elementBg: '#FFFFFF',
       },
       adminComplianceItemModal: {
-        bg: "#F2F2F2",
+        bg: '#F2F2F2',
         primaryButton: {
-          bg: "#A2171E",
-          hoverBg: "#CC242D",
+          bg: '#A2171E',
+          hoverBg: '#CC242D',
         },
         secondaryButton: {
-          bg: "#424B50",
+          bg: '#424B50',
         },
         section: {
           emptyCircle: '#9A9EA1',
           fullCircle: {
-            error: "#E53E3E",
+            error: '#E53E3E',
             success: '#009400',
           },
           errorSign: '#E53E3E',
@@ -469,7 +469,7 @@ const getTheme = (organizationTheme?: any) => {
                   bg: '#9A9EA1',
                   font: '#FFFFFF',
                 },
-              }
+              },
             },
             list: {
               element: {
@@ -494,8 +494,8 @@ const getTheme = (organizationTheme?: any) => {
           bg: 'rgba(67, 76, 81, 0.95)',
           font: '#FFFFFF',
           keep: {
-            bg: "#A2171E",
-            hover: "#CC242D",
+            bg: '#A2171E',
+            hover: '#CC242D',
             font: '#FFFFFF',
           },
         },
@@ -559,22 +559,22 @@ const getTheme = (organizationTheme?: any) => {
       },
       response: {
         leftNavigation: {
-          bg: "#424B50",
-          businessUnitBg: "#2B3236",
-          businessUnitImageBg: "#ffffff",
-          businessUnitImageFont: "#2B3236",
-          building: "#2B3236",
-          copy: "#FC5960",
-          avatar: "#FC5960",
+          bg: '#424B50',
+          businessUnitBg: '#2B3236',
+          businessUnitImageBg: '#ffffff',
+          businessUnitImageFont: '#2B3236',
+          building: '#2B3236',
+          copy: '#FC5960',
+          avatar: '#FC5960',
         },
-        expandButtonText: "#FC5960",
+        expandButtonText: '#FC5960',
         delegates: {
-          fontColor: "#2B3236",
-          avatar: "#2B3236",
-          button: "#2B3236",
-          addButton: "#1C8586",
-          inputFocusFont: "#2B3236"
-        }
+          fontColor: '#2B3236',
+          avatar: '#2B3236',
+          button: '#2B3236',
+          addButton: '#1C8586',
+          inputFocusFont: '#2B3236',
+        },
       },
 
       brand: {
@@ -583,8 +583,8 @@ const getTheme = (organizationTheme?: any) => {
     },
     styles: {
       global: {
-        ".chakra-collapse": {
-          width: "100% !important",
+        '.chakra-collapse': {
+          width: '100% !important',
         },
       },
     },
@@ -596,55 +596,55 @@ const getTheme = (organizationTheme?: any) => {
         variants: {
           conformeModal: {
             dialog: {
-              minW: ["100%", "700px"],
+              minW: ['100%', '700px'],
             },
             dialogContainer: {
-              justifyContent: "flex-end"
+              justifyContent: 'flex-end',
             },
             overlay: {
               background:
-                "linear-gradient(to right, transparent 0%, black 200%)",
+                'linear-gradient(to right, transparent 0%, black 200%)',
             },
           },
           deleteModal: {
             dialog: {
-              minW: "330px",
+              minW: '330px',
             },
             dialogContainer: {
-              justifyContent: "flex-end"
+              justifyContent: 'flex-end',
             },
             overlay: {
               background:
-                "linear-gradient(to right, transparent 0%, black 200%)",
+                'linear-gradient(to right, transparent 0%, black 200%)',
             },
           },
           adminModal: {
             dialog: {
-              minW: ["100%", "510px"],
+              minW: ['100%', '510px'],
             },
             dialogContainer: {
-              justifyContent: "flex-end"
+              justifyContent: 'flex-end',
             },
             overlay: {
               background:
-                "linear-gradient(to right, transparent 0%, black 200%)",
+                'linear-gradient(to right, transparent 0%, black 200%)',
             },
           },
           shareModal: {
             dialog: {
-              maxW: "330px",
-              minW: ["calc(100% - 50px)", "330px"]
-            }
+              maxW: '330px',
+              minW: ['calc(100% - 50px)', '330px'],
+            },
           },
           teamModal: {
             dialog: {
-              minWidth: ["calc(100% - 50px)", "380px"],
-              maxWidth: ["calc(100% - 50px)", "380px"],
-              minH: "196px",
-              maxH: "500px",
-              boxShadow: "0px 0px 80px rgba(49, 50, 51, 0.25)",
-              rounded: "20px"
-            }
+              minWidth: ['calc(100% - 50px)', '380px'],
+              maxWidth: ['calc(100% - 50px)', '380px'],
+              minH: '196px',
+              maxH: '500px',
+              boxShadow: '0px 0px 80px rgba(49, 50, 51, 0.25)',
+              rounded: '20px',
+            },
           },
         },
       },
@@ -653,10 +653,10 @@ const getTheme = (organizationTheme?: any) => {
         variants: {
           auditModalSearchInput: {
             field: {
-              top: "5px",
-              border: "none",
-              outline: "0",
-              bg: "white",
+              top: '5px',
+              border: 'none',
+              outline: '0',
+              bg: 'white',
             },
           },
         },

@@ -1,150 +1,196 @@
 import React from 'react';
-import { Box, Flex, Input, Stack, useToast } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
 
-import useValidate from '../../hooks/useValidate';
-import { IField } from '../../interfaces/IField';
-import { TDefinedValidations } from '../../interfaces/TValidations';
-import { PlusIcon, Trashcan } from '../../icons';
-import { IFormFieldHeadings } from '../../interfaces/IForm';
-import { toastFailed } from '../../bootstrap/config';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { Box, Flex, Input, Stack, useToast } from '@chakra-ui/react';
+
+import { toastFailed } from '../../bootstrap/config';
+import useValidate from '../../hooks/useValidate';
+import { PlusIcon, Trashcan } from '../../icons';
+import { IField } from '../../interfaces/IField';
+import { IFormFieldHeadings } from '../../interfaces/IForm';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 
 interface ITable extends IField {
   placeholder?: string;
   variant?: string;
   styles?: {
     textInput?: {
-      font?: string
-    }
+      font?: string;
+    };
   };
   headings?: IFormFieldHeadings;
 }
 
 const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
-    if (validationValue && !value) {
-      return `${label} cannot be empty`;
-    }
+    if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue) {
+    if (value.length < validationValue)
       return `${label} can be maximum ${validationValue} characters length`;
-    }
   },
   isEmail: (label, validationValue, value) => {
     const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!value.match(regexEmail)) {
-      return "Invalid Email";
-    }
-  }
+    if (!value.match(regexEmail)) return 'Invalid Email';
+  },
 };
 
-const Table = ({ control, name, label, headings, placeholder = '', help, tooltip = '', validations = {}, disabled, required, styles }: ITable) => {
+const Table = ({
+  control,
+  name,
+  label,
+  headings,
+  help,
+  tooltip = '',
+  validations = {},
+  disabled,
+}: ITable) => {
   const toast = useToast();
   const validate = useValidate(label || name, validations, definedValidations);
 
   const addRow = (value, onChange) => {
     if (value[value.length - 1]) {
-      const rowIsEmpty = !Object.values(value[value.length - 1]).some((x: any) => x !== '');
+      const rowIsEmpty = !Object.values(value[value.length - 1]).some(
+        (x: any) => x !== '',
+      );
       if (rowIsEmpty) {
         toast({
           ...toastFailed,
-          description: "Please complete the last row before creating a new one"
+          description: 'Please complete the last row before creating a new one',
         });
         return;
       }
     }
     const newRow = {};
-    headings?.cols.forEach(col => newRow[col.name] = '');
-    const newValue = [
-      ...value,
-      newRow
-    ];
+    headings?.cols.forEach((col) => {
+      newRow[col.name] = '';
+    });
+    const newValue = [...value, newRow];
     onChange({ target: { name, value: newValue } });
   };
 
   const removeRow = (index, value, onChange) => {
-    onChange({ target: { name, value: value.filter((row, i) => i !== index) } });
+    onChange({
+      target: { name, value: value.filter((row, i) => i !== index) },
+    });
   };
 
   return (
     <Controller
-      name={name}
       control={control}
-      rules={{ validate }}
+      name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box w='full' id={name} mt='none'>
+          <Box id={name} mt="none" w="full">
             {label && (
-              <Flex pt={2} align='center' justify="space-between" mb='none'>
+              <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={error ? "dropdown.labelFont.error" : "dropdown.labelFont.normal"}
-                  fontWeight="bold"
+                  color={
+                    error
+                      ? 'dropdown.labelFont.error'
+                      : 'dropdown.labelFont.normal'
+                  }
                   fontSize="14px"
+                  fontWeight="bold"
+                  left="none"
                   position="static"
-                  left='none'
                   zIndex={1}
                 >
                   {label}
-                  {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
+                  {help && (
+                    <Box fontSize="11px" mt={3} opacity={0.5}>
+                      {help}
+                    </Box>
+                  )}
                 </Box>
               </Flex>
             )}
-            <Stack w='full' mt='10px'>
-              {value?.map((row, index) => {
-                return (
-                  <Flex key={`row-${index}`} justify='space-between' align='center'>
-                    <Flex w='full' mr={2}>
-                      <Input
-                        h="40px"
-                        w='full'
-                        fontSize="smm"
-                        color="form.textInput.font"
-                        bg="form.textInput.bg"
-                        borderRadius="8px"
-                        borderWidth="1px"
-                        borderColor={error ? "form.textInput.border.error" : "form.textInput.border.normal"}
-                        _active={{ bg: disabled ? "form.textInput.disabled.bg" : "form.textInput.activeBg" }}
-                        _focus={{ borderColor: error?.message?.includes(row) ? "form.textInput.border.focus.error" : "form.textInput.border.focus.normal" }}
-                        _hover={{ cursor: "auto" }}
-                        name={name}
-                        value={row}
-                        onChange={(e) => {
-                          value[index] = /^-?\d+$/.test(e.target.value) ? parseInt(e.target.value) : e.target.value;
-                          onChange({ target: { name, value } });
-                        }}
-                        onBlur={onBlur}
-                        disabled={disabled}
-                        _disabled={{
-                          bg: "form.textInput.disabled.bg",
-                          color: "form.textInput.disabled.font",
-                          borderColor: "form.textInput.disabled.border",
-                          cursor: "not-allowed",
-                        }}
-                      />
-                    </Flex>
-                    <Trashcan onClick={() => removeRow(index, value, onChange)} cursor='pointer' />
+            <Stack mt="10px" w="full">
+              {value?.map((row, index) => (
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  key={`row-${index}`}
+                >
+                  <Flex mr={2} w="full">
+                    <Input
+                      _active={{
+                        bg: disabled
+                          ? 'form.textInput.disabled.bg'
+                          : 'form.textInput.activeBg',
+                      }}
+                      _disabled={{
+                        bg: 'form.textInput.disabled.bg',
+                        color: 'form.textInput.disabled.font',
+                        borderColor: 'form.textInput.disabled.border',
+                        cursor: 'not-allowed',
+                      }}
+                      _focus={{
+                        borderColor: error?.message?.includes(row)
+                          ? 'form.textInput.border.focus.error'
+                          : 'form.textInput.border.focus.normal',
+                      }}
+                      _hover={{ cursor: 'auto' }}
+                      bg="form.textInput.bg"
+                      borderColor={
+                        error
+                          ? 'form.textInput.border.error'
+                          : 'form.textInput.border.normal'
+                      }
+                      borderRadius="8px"
+                      borderWidth="1px"
+                      color="form.textInput.font"
+                      disabled={disabled}
+                      fontSize="smm"
+                      h="40px"
+                      name={name}
+                      onBlur={onBlur}
+                      onChange={(e) => {
+                        value[index] = /^-?\d+$/.test(e.target.value)
+                          ? parseInt(e.target.value, 10)
+                          : e.target.value;
+                        onChange({ target: { name, value } });
+                      }}
+                      value={row}
+                      w="full"
+                    />
                   </Flex>
-                );
-              })}
+                  <Trashcan
+                    cursor="pointer"
+                    onClick={() => removeRow(index, value, onChange)}
+                  />
+                </Flex>
+              ))}
               {validations?.maxLength && value.length < validations.maxLength && (
-                <Box onClick={() => addRow(value, onChange)} pl={2} cursor='pointer'>
+                <Box
+                  cursor="pointer"
+                  onClick={() => addRow(value, onChange)}
+                  pl={2}
+                >
                   <PlusIcon /> Add row
                 </Box>
               )}
             </Stack>
-            {error && <Box fontSize={14} ml={1} color='form.textInput.error'>{error.message}</Box>}
-            {tooltip &&
-              <Flex color='dropdown.tooltip' align='center' mt={3}>
+            {error && (
+              <Box color="form.textInput.error" fontSize={14} ml={1}>
+                {error.message}
+              </Box>
+            )}
+            {tooltip && (
+              <Flex align="center" color="dropdown.tooltip" mt={3}>
                 <InfoOutlineIcon />
-                <Box fontSize="11px" ml={2}>{tooltip}</Box>
-              </Flex>}
+                <Box fontSize="11px" ml={2}>
+                  {tooltip}
+                </Box>
+              </Flex>
+            )}
           </Box>
         );
       }}
+      rules={{ validate }}
     />
   );
 };

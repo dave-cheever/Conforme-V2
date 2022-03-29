@@ -1,4 +1,5 @@
-import { IBaseModel, IQuestion } from "app-interfaces";
-import { TQuestionValue } from "./TQuestionValue";
+import { IBaseModel, IQuestion } from 'app-interfaces';
 
-export interface IQuestionModel extends IBaseModel<IQuestion<TQuestionValue>> {};
+import { TQuestionValue } from './TQuestionValue';
+
+export interface IQuestionModel extends IBaseModel<IQuestion<TQuestionValue>> {}

@@ -9,4 +9,4 @@ export interface IBase {
     removedBy?: string;
     removedAt?: Date;
   };
-};
+}

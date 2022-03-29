@@ -1,4 +1,4 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const Conforme = createIcon({
   path: (
@@ -13,7 +13,7 @@ const Conforme = createIcon({
       />
     </g>
   ),
-  viewBox: "0 0 103 31",
+  viewBox: '0 0 103 31',
 });
 
 export default Conforme;

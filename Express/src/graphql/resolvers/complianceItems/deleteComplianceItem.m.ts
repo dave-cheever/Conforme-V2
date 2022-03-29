@@ -1,30 +1,40 @@
-import { ComplianceItems } from "app-models";
-import { genMetatags, isPermitted } from "app-utils";
+import { ComplianceItems } from 'app-models';
+import { genMetatags, isPermitted } from 'app-utils';
 
-const deleteComplianceItem = async (_, { _id }, { authorize, organization }) => {
+const deleteComplianceItem = async (
+  _,
+  { _id },
+  { authorize, organization },
+) => {
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: "complianceItems.delete", data: { _id } })) {
-      throw new Error("User is not permitted");
-    }
+    if (
+      !isPermitted({ user, action: 'complianceItems.delete', data: { _id } })
+    ) 
+      throw new Error('User is not permitted');
 
-    const complianceItem = await ComplianceItems.customFindById(_id, organization._id);
-    if (!complianceItem) {
+    const complianceItem = await ComplianceItems.customFindById(
+      _id,
+      organization._id,
+    );
+    if (!complianceItem) 
       throw new Error("Compliance item doesn't exist");
-    }
-    if (complianceItem.published) {
-      throw new Error("Can not delete published compliance item");
-    }
+    
+    if (complianceItem.published) 
+      throw new Error('Can not delete published compliance item');
 
     const deletedComplianceItem = {
       ...complianceItem,
       metatags: {
         ...complianceItem?.metatags,
-        ...genMetatags("removed", user._id),
+        ...genMetatags('removed', user._id),
       },
     };
-    await ComplianceItems.updateOne({ _id: complianceItem._id }, deletedComplianceItem);
+    await ComplianceItems.updateOne(
+      { _id: complianceItem._id },
+      deletedComplianceItem,
+    );
 
     return true;
   } catch (err: any) {

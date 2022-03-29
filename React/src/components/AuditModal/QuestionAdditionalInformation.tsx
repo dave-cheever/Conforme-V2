@@ -1,10 +1,12 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { useState } from "react";
-import * as Icons from "../../icons";
-import QuestionAdditionalButton from "./QuestionAdditionalButton";
+import { useState } from 'react';
+
+import { Box, Flex, Text } from '@chakra-ui/react';
+
+import * as Icons from '../../icons';
+import QuestionAdditionalButton from './QuestionAdditionalButton';
 
 const QuestionAdditionalInformation = () => {
-  const [activeInformation, setActiveInformation] = useState("Actions");
+  const [activeInformation, setActiveInformation] = useState('Actions');
   return (
     <Box>
       <Text fontSize="16px" fontWeight="400">
@@ -13,22 +15,22 @@ const QuestionAdditionalInformation = () => {
       <br />
       <Flex alignItems="center">
         <QuestionAdditionalButton
-          label="Actions"
+          activeInformation={activeInformation}
           icon={Icons.HealthKitIcon}
+          label="Actions"
           requiredIcon={Icons.RequiredIcon}
-          activeInformation={activeInformation}
           setActiveInformation={setActiveInformation}
         />
         <QuestionAdditionalButton
-          label="Attachments"
+          activeInformation={activeInformation}
           icon={Icons.AttachmentIcon}
-          activeInformation={activeInformation}
+          label="Attachments"
           setActiveInformation={setActiveInformation}
         />
         <QuestionAdditionalButton
-          label="More detail"
-          icon={Icons.DetailIcon}
           activeInformation={activeInformation}
+          icon={Icons.DetailIcon}
+          label="More detail"
           setActiveInformation={setActiveInformation}
         />
       </Flex>

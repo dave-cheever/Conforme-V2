@@ -1,24 +1,28 @@
 import React, { useMemo } from 'react';
+
 import {
+  Avatar,
+  Button,
+  Flex,
+  Icon,
+  ModalBody,
   ModalContent,
   ModalHeader,
-  Flex,
-  Avatar,
-  ModalBody,
-  Button,
   useToast,
-  Icon,
 } from '@chakra-ui/react';
 
-import AlertDialog from '../AlertDialog';
 import { toastFailed } from '../../bootstrap/config';
-import { initialDialogDetails, useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
-import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import { useAppContext } from '../../contexts/AppProvider';
-import { Close, OpenMenuArrow, Save } from '../../icons';
-import NavigationModal from './NavigationModal';
+import {
+  initialDialogDetails,
+  useComplianceItemModalContext,
+} from '../../contexts/ComplianceItemModalProvider';
+import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import useDevice from '../../hooks/useDevice';
+import { Close, OpenMenuArrow, Save } from '../../icons';
+import AlertDialog from '../AlertDialog';
 import NavigationMobileModal from './NavigationMobileModal';
+import NavigationModal from './NavigationModal';
 
 const ComplianceItemModal = ({ refetch }) => {
   const toast = useToast();
@@ -26,30 +30,34 @@ const ComplianceItemModal = ({ refetch }) => {
   const { user } = useAppContext();
   const {
     complianceItem,
-    errors, trigger,
-    savingDialogDetails, setSavingDialogDetails,
-    selectedSection, selectedSectionIndex, selectSection,
+    errors,
+    trigger,
+    savingDialogDetails,
+    setSavingDialogDetails,
+    selectedSection,
+    selectedSectionIndex,
+    selectSection,
   } = useComplianceItemModalContext();
-  const {
-    saveComplianceItem,
-    closeModal,
-  } = useComplianceItemModal(refetch);
+  const { saveComplianceItem, closeModal } = useComplianceItemModal(refetch);
   const { Component } = selectedSection;
 
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
   const isActionRequiredToComplete = useMemo(() => {
     // If evidence with no title exists
-    if (complianceItem.evidenceItems?.some(evidence => evidence === "")) {
-      return true
-    }
-    // If no evidence or no questions
-    if ((complianceItem.evidenceItems || []).length === 0 && (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length === 0) {
-      return true
-    }
-   return false
-  }, [complianceItem]);
+    if (complianceItem.evidenceItems?.some((evidence) => evidence === ''))
+      return true;
 
-  
+    // If no evidence or no questions
+    if (
+      (complianceItem.evidenceItems || []).length === 0 &&
+      (complianceItem.questions || []).filter(
+        ({ required, outdated }) => required && !outdated,
+      )?.length === 0
+    )
+      return true;
+
+    return false;
+  }, [complianceItem]);
 
   const handlePrimaryButtonClick = () => {
     if (selectedSection.name === 'Summary') {
@@ -59,32 +67,39 @@ const ComplianceItemModal = ({ refetch }) => {
         const savingDialogDetails = {
           isOpen: true,
           title: `Unpublish ${complianceItem.name}`,
-          description: "Are you sure you wish to unpublish this compliance item? It will hide all existing responses.",
+          description:
+            'Are you sure you wish to unpublish this compliance item? It will hide all existing responses.',
           state: undefined,
           showButtons: true,
-          action: () => saveComplianceItem({
-            ...complianceItem,
-            published: false,
-          }),
+          action: () =>
+            saveComplianceItem({
+              ...complianceItem,
+              published: false,
+            }),
         };
         return setSavingDialogDetails(savingDialogDetails);
       }
       if (Object.keys(errors).length > 0) {
         // If CI is not published and there are errors
-        return toast({ ...toastFailed, description: 'Please complete all the required fields' });
+        return toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
       }
 
       // If CI is not published
       const savingDialogDetails = {
         isOpen: true,
         title: `Publish ${complianceItem.name}`,
-        description: "Are you sure you wish to publish this compliance item? It will become available for completion by all relevant business units.",
+        description:
+          'Are you sure you wish to publish this compliance item? It will become available for completion by all relevant business units.',
         state: undefined,
         showButtons: true,
-        action: () => saveComplianceItem({
-          ...complianceItem,
-          published: true,
-        }),
+        action: () =>
+          saveComplianceItem({
+            ...complianceItem,
+            published: true,
+          }),
       };
       return setSavingDialogDetails(savingDialogDetails);
     }
@@ -106,118 +121,159 @@ const ComplianceItemModal = ({ refetch }) => {
 
   const handlePreviousButtonClick = () => {
     selectSection(selectedSectionIndex - 1);
-  }
+  };
 
   const buttonText = useMemo(() => {
-    if (selectedSection.name !== "Summary") {
-      return "Next Step"
-    }
+    if (selectedSection.name !== 'Summary') return 'Next Step';
 
-    if (complianceItem.published) {
-      return "Unpublish";
-    }
+    if (complianceItem.published) return 'Unpublish';
 
-    if (complianceItem.hasOwnProperty('_id')) {
-      return "Publish compliance item";
-    }
+    if (complianceItem.hasOwnProperty('_id')) return 'Publish compliance item';
 
-    return "Add compliance item";
-
+    return 'Add compliance item';
   }, [complianceItem, selectedSection]);
 
   return (
     <>
       <ModalContent
+        bg="complianceItemModal.bg"
         h="100%"
         m="0"
-        p={["25px", "35px"]}
-        rounded="0"
-        bg="complianceItemModal.bg"
+        p={['25px', '35px']}
         position="absolute"
+        rounded="0"
       >
-        <ModalHeader p="0 0 20px 0" fontWeight="bold" fontSize="xxl" alignItems="center">
+        <ModalHeader
+          alignItems="center"
+          fontSize="xxl"
+          fontWeight="bold"
+          p="0 0 20px 0"
+        >
           <Flex justifyContent="space-between">
-            <Flex alignItems="center" fontSize={["14px", "24px"]}>
+            <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar
-                rounded='full'
-                name={user?.displayName}
-                size='xs'
-                src={user?.imgUrl}
                 mr={3}
+                name={user?.displayName}
+                rounded="full"
+                size="xs"
+                src={user?.imgUrl}
               />
-              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} compliance item
+              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} compliance
+              item
             </Flex>
             <Flex alignItems="center">
               <Button
-                leftIcon={<Icon as={Save} stroke="complianceItemModal.saveButton.icon" />}
-                w="93px"
-                h="40px"
-                mr="26px"
                 bg="complianceItemModal.saveButton.bg"
                 color="complianceItemModal.saveButton.color"
+                disabled={
+                  (Object.keys(errors).length > 0 ||
+                    isActionRequiredToComplete ||
+                    complianceItem?.locationsIds?.length === 0 ||
+                    complianceItem?.businessUnitsIds?.length === 0) &&
+                  complianceItem.published
+                }
                 fontSize="smm"
                 fontWeight="700"
-                onClick={handleSecondaryButtonClick}
-                disabled={(
-                  Object.keys(errors).length > 0 || 
-                  isActionRequiredToComplete || 
-                  complianceItem?.locationsIds?.length === 0 || 
-                  complianceItem?.businessUnitsIds?.length === 0
-                  ) && 
-                  complianceItem.published 
+                h="40px"
+                leftIcon={
+                  <Icon
+                    as={Save}
+                    stroke="complianceItemModal.saveButton.icon"
+                  />
                 }
-              >Save</Button>
-              <Close w="15px" h="15px" stroke="complianceItemModal.closeIcon" onClick={closeModal} cursor="pointer" />
+                mr="26px"
+                onClick={handleSecondaryButtonClick}
+                w="93px"
+              >
+                Save
+              </Button>
+              <Close
+                cursor="pointer"
+                h="15px"
+                onClick={closeModal}
+                stroke="complianceItemModal.closeIcon"
+                w="15px"
+              />
             </Flex>
           </Flex>
         </ModalHeader>
         <ModalBody h="calc(100% - 175px)" p="0">
-          <Flex height="100%" flexDir={["column", "row"]}>
-            {device !== "mobile" && <NavigationModal />}
-            {device === "mobile" && <NavigationMobileModal />}
-            <Flex flexDir="column" w={["full", "440px"]} p="25px" bg="complianceItemModal.tabs.bg" h={["calc(100vh - 180px)", "calc(100vh - 120px)"]} rounded="20px" justifyContent="space-between">
+          <Flex flexDir={['column', 'row']} height="100%">
+            {device !== 'mobile' && <NavigationModal />}
+            {device === 'mobile' && <NavigationMobileModal />}
+            <Flex
+              bg="complianceItemModal.tabs.bg"
+              flexDir="column"
+              h={['calc(100vh - 180px)', 'calc(100vh - 120px)']}
+              justifyContent="space-between"
+              p="25px"
+              rounded="20px"
+              w={['full', '440px']}
+            >
               <Flex height="calc(100% - 60px)" mb="20px">
                 <Component />
               </Flex>
-              <Flex justifyContent={selectedSection.name !== "Details" ? "space-between" : "flex-end"} w="full">
-                {selectedSection.name !== 'Details' &&
+              <Flex
+                justifyContent={
+                  selectedSection.name !== 'Details'
+                    ? 'space-between'
+                    : 'flex-end'
+                }
+                w="full"
+              >
+                {selectedSection.name !== 'Details' && (
                   <Button
-                    w="fit-content"
-                    h="40px"
-                    leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
-                    fontSize="smm"
-                    fontWeight="700"
-                    rounded="10px"
+                    _hover={{
+                      bg: 'complianceItemModal.tabs.bottomButton.hover',
+                    }}
                     bg="complianceItemModal.tabs.bottomButton.bg"
                     color="complianceItemModal.tabs.bottomButton.color"
-                    _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
+                    fontSize="smm"
+                    fontWeight="700"
+                    h="40px"
+                    leftIcon={
+                      <Icon
+                        as={OpenMenuArrow}
+                        stroke="complianceItemModal.tabs.bottomButton.icon"
+                        transform="rotate(90deg)"
+                      />
+                    }
                     onClick={handlePreviousButtonClick}
+                    rounded="10px"
+                    w="fit-content"
                   >
                     Back
-                  </Button>}
+                  </Button>
+                )}
                 <Button
-                  ml={3}
-                  w="fit-content"
-                  h="40px"
-                  rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
+                  _hover={{ bg: 'complianceItemModal.tabs.bottomButton.hover' }}
                   bg="complianceItemModal.tabs.bottomButton.bg"
                   color="complianceItemModal.tabs.bottomButton.color"
+                  disabled={
+                    (Object.keys(errors).length > 0 ||
+                      isActionRequiredToComplete ||
+                      complianceItem?.locationsIds?.length === 0 ||
+                      complianceItem?.businessUnitsIds?.length === 0) &&
+                    selectedSection.name === 'Summary' &&
+                    buttonText !== 'Unpublish'
+                  }
                   fontSize="smm"
                   fontWeight="700"
-                  _hover={{ bg: "complianceItemModal.tabs.bottomButton.hover" }}
-                  rounded="10px"
+                  h="40px"
+                  ml={3}
                   onClick={() => {
                     trigger(Object.keys(selectedSection.fields || []) as any);
-                    handlePrimaryButtonClick()
+                    handlePrimaryButtonClick();
                   }}
-                  disabled={(
-                    Object.keys(errors).length > 0 || 
-                    isActionRequiredToComplete || 
-                    complianceItem?.locationsIds?.length === 0 || 
-                    complianceItem?.businessUnitsIds?.length === 0
-                    ) && selectedSection.name === 'Summary' 
-                    && buttonText !== 'Unpublish'
+                  rightIcon={
+                    <Icon
+                      as={OpenMenuArrow}
+                      stroke="complianceItemModal.tabs.bottomButton.icon"
+                      transform="rotate(270deg)"
+                    />
                   }
+                  rounded="10px"
+                  w="fit-content"
                 >
                   {buttonText}
                 </Button>
@@ -228,38 +284,38 @@ const ComplianceItemModal = ({ refetch }) => {
       </ModalContent>
 
       <AlertDialog
-        isOpen={savingDialogDetails.isOpen}
-        title={savingDialogDetails.title}
         description={savingDialogDetails.description}
-        state={savingDialogDetails.state}
-        showButtons={savingDialogDetails.showButtons}
-        handleYes={savingDialogDetails.action}
         handleNo={() => setSavingDialogDetails(initialDialogDetails)}
+        handleYes={savingDialogDetails.action}
+        isOpen={savingDialogDetails.isOpen}
         onClose={() => setSavingDialogDetails(initialDialogDetails)}
+        showButtons={savingDialogDetails.showButtons}
+        state={savingDialogDetails.state}
+        title={savingDialogDetails.title}
       />
     </>
-  )
+  );
 };
 
 export default ComplianceItemModal;
 
 export const complianceItemModalStyles = {
   complianceItemModal: {
-    bg: "#ffffff",
+    bg: '#ffffff',
     saveButton: {
-      bg: "#F0F2F5",
-      color: "#424B50",
-      icon: "#818197"
+      bg: '#F0F2F5',
+      color: '#424B50',
+      icon: '#818197',
     },
-    closeIcon: "#282F36",
+    closeIcon: '#282F36',
     tabs: {
-      bg: "#F0F2F5",
+      bg: '#F0F2F5',
       bottomButton: {
-        bg: "#462AC4",
-        color: "#ffffff",
-        icon: "#ffffff",
-        hover: "#462AC4"
-      }
-    }
-  }
+        bg: '#462AC4',
+        color: '#ffffff',
+        icon: '#ffffff',
+        hover: '#462AC4',
+      },
+    },
+  },
 };

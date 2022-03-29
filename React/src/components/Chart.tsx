@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Box, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from 'react';
+import { Doughnut } from 'react-chartjs-2';
 
-import { chartColors } from "../bootstrap/config";
-import { IBaseWithName } from "../interfaces/IBaseWithName";
+import { Box, Flex } from '@chakra-ui/react';
+
+import { chartColors } from '../bootstrap/config';
+import { IBaseWithName } from '../interfaces/IBaseWithName';
 
 const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
   const [chartData, setChartData] = useState<number[]>([]);
@@ -26,7 +27,7 @@ const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
         data: [...chartData],
         weight: 1,
         backgroundColor: [...chartColors],
-        borderWidth: "5px",
+        borderWidth: '5px',
       },
     ],
 
@@ -47,22 +48,22 @@ const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
 
   return (
     <Flex
-      direction="column"
       alignItems="center"
+      direction="column"
       p="0 30px"
       position="fixed"
       right="30px"
     >
-      <Box mb="24px" fontWeight="bold" color="chart.labelFontColor">
+      <Box color="chart.labelFontColor" fontWeight="bold" mb="24px">
         Responses by {label}
       </Box>
       <Box
-        bgColor="#DBDBDC"
-        height="173px"
-        width="173px"
-        borderRadius="100px"
         alignItems="center"
+        bgColor="#DBDBDC"
+        borderRadius="100px"
+        height="173px"
         justifyContent="center"
+        width="173px"
       >
         <Doughnut data={data} height={300} options={options} />
       </Box>

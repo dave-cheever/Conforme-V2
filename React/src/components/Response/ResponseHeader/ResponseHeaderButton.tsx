@@ -1,42 +1,44 @@
 import { Button, IconButton } from '@chakra-ui/react';
 
-const ResponseHeaderButton  = ({icon, name, onClick, loading=false}) => {
-   return (
-      <>
-      <Button
-         ml='15px'
-         px={4}
-         borderRadius="10px"
-         fontSize="14px"
-         fontWeight="bold"
-         isLoading={loading}
-         bg="reasponseHeader.buttonLightBg"
-         color="reasponseHeader.buttonLightColor"
-         leftIcon={icon}
-         _hover={{
-           bg: 'reasponseHeader.buttonLightBgHover',
-           color: 'reasponseHeader.buttonLightColorHover',
-           cursor: 'pointer',
-           stroke: 'green',
-         }}
-         role="group"
-         onClick={onClick}
-         display={["none","none","flex"]}
-      >
+const ResponseHeaderButton = ({ icon, name, onClick, loading = false }) => (
+  <>
+    <Button
+      _hover={{
+        bg: 'reasponseHeader.buttonLightBgHover',
+        color: 'reasponseHeader.buttonLightColorHover',
+        cursor: 'pointer',
+        stroke: 'green',
+      }}
+      bg="reasponseHeader.buttonLightBg"
+      borderRadius="10px"
+      color="reasponseHeader.buttonLightColor"
+      display={['none', 'none', 'flex']}
+      fontSize="14px"
+      fontWeight="bold"
+      isLoading={loading}
+      leftIcon={icon}
+      ml="15px"
+      onClick={onClick}
+      px={4}
+      role="group"
+    >
       {name}
-      </Button>
-      <IconButton
-         ml='15px'
-         borderRadius="10px" 
-         bg="reasponseHeader.buttonLightBg"
-         aria-label='Search database'
-         icon={icon}
-         display={["none","flex","none"]}
-         onClick={onClick}
-         _hover={{ bg: 'reasponseHeader.buttonLightBgHover', color: 'reasponseHeader.buttonLightColorHover', cursor: 'pointer' }} 
-      />
-      </>
-  );
-}
+    </Button>
+    <IconButton
+      _hover={{
+        bg: 'reasponseHeader.buttonLightBgHover',
+        color: 'reasponseHeader.buttonLightColorHover',
+        cursor: 'pointer',
+      }}
+      aria-label="Search database"
+      bg="reasponseHeader.buttonLightBg"
+      borderRadius="10px"
+      display={['none', 'flex', 'none']}
+      icon={icon}
+      ml="15px"
+      onClick={onClick}
+    />
+  </>
+);
 
 export default ResponseHeaderButton;

@@ -1,7 +1,7 @@
-import { createIcon } from "@chakra-ui/icon";
+import { createIcon } from '@chakra-ui/icons';
 
 const Home = createIcon({
-  viewBox: "0 0 14 14",
+  viewBox: '0 0 14 14',
   path: (
     <g>
       <path

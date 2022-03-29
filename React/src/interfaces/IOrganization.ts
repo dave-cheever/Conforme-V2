@@ -1,4 +1,4 @@
-import { IBase } from "./IBase";
+import { IBase } from './IBase';
 
 export interface IAddon {
   name: string;

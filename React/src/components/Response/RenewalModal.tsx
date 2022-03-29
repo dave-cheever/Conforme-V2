@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import { gql, useMutation } from '@apollo/client';
 import {
   Button,
   Modal,
@@ -8,15 +11,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text
+  Text,
 } from '@chakra-ui/react';
 import moment from 'moment';
-import { useHistory } from 'react-router-dom';
 
 import { ResponseContext } from '../../contexts/ResponseProvider';
-import Loader from '../Loader';
 import { IResponse } from '../../interfaces/IResponse';
-import { gql, useMutation } from '@apollo/client';
+import Loader from '../Loader';
 
 const RENEW_RESPONSE = gql`
   mutation ($_id: ID!) {
@@ -30,14 +31,15 @@ const RENEW_RESPONSE = gql`
 const RenewalModal = () => {
   const history = useHistory();
   const [renewResponse] = useMutation(RENEW_RESPONSE);
-  const { response, isRenewalOpen, handleRenewalClose, refetch, setActiveTab } = useContext(ResponseContext);
+  const { response, isRenewalOpen, handleRenewalClose, refetch, setActiveTab } =
+    useContext(ResponseContext);
   const [loading, setLoading] = useState(false);
-  const [renewedResponse, setRenewedResponse] = useState<IResponse | undefined>(undefined);
+  const [renewedResponse, setRenewedResponse] = useState<IResponse | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
-    if (!isRenewalOpen) {
-      setRenewedResponse(undefined);
-    }
+    if (!isRenewalOpen) setRenewedResponse(undefined);
   }, [isRenewalOpen]);
 
   const renew = async () => {
@@ -55,50 +57,61 @@ const RenewalModal = () => {
   const handleViewRenewed = async () => {
     handleRenewalClose();
     setActiveTab(0);
-  }
+  };
 
   return (
-    <Modal
-      isOpen={isRenewalOpen}
-      onClose={handleRenewalClose}
-    >
+    <Modal isOpen={isRenewalOpen} onClose={handleRenewalClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {loading ? 'Renewing...' : (!renewedResponse ? 'Please confirm' : 'Response renewed')}
+          {loading
+            ? 'Renewing...'
+            : !renewedResponse
+            ? 'Please confirm'
+            : 'Response renewed'}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody minH="100px">
           {loading ? (
-            <Loader center={true} />
+            <Loader center />
           ) : !renewedResponse ? (
             <Text>
-              You are about to renew <b>{response?.complianceItem?.name}</b> compliance item for <b>{response?.businessUnit?.name}</b>.&nbsp;
-              That will move existing evidence to history and allow you to fill the response with new data.&nbsp;
+              You are about to renew <b>{response?.complianceItem?.name}</b>{' '}
+              compliance item for <b>{response?.businessUnit?.name}</b>.&nbsp;
+              That will move existing evidence to history and allow you to fill
+              the response with new data.&nbsp;
             </Text>
           ) : (
             <Text>
-              <b>{response?.complianceItem?.name}</b> for <b>{response?.businessUnit?.name}</b> was renewed.&nbsp;
-              Complete it before <b>{moment(renewedResponse?.nextRenewalDate).format('D MMM YYYY')}</b>.
+              <b>{response?.complianceItem?.name}</b> for{' '}
+              <b>{response?.businessUnit?.name}</b> was renewed.&nbsp; Complete
+              it before{' '}
+              <b>
+                {moment(renewedResponse?.nextRenewalDate).format('D MMM YYYY')}
+              </b>
+              .
             </Text>
           )}
         </ModalBody>
 
         {!loading && (
-          <ModalFooter bg="renewResponseModal.footer.bg" roundedBottom='0.375rem'>
+          <ModalFooter
+            bg="renewResponseModal.footer.bg"
+            roundedBottom="0.375rem"
+          >
             {!renewedResponse ? (
               <>
                 <Button
-                  color="renewResponseModal.buttons.secondary.color"
                   bg="renewResponseModal.buttons.secondary.bg"
+                  color="renewResponseModal.buttons.secondary.color"
                   mr={3}
                   onClick={handleRenewalClose}
                 >
                   Cancel
                 </Button>
                 <Button
-                  color="renewResponseModal.buttons.primary.color"
                   bg="renewResponseModal.buttons.primary.bg"
+                  color="renewResponseModal.buttons.primary.color"
                   onClick={renew}
                 >
                   Renew
@@ -107,17 +120,14 @@ const RenewalModal = () => {
             ) : (
               <>
                 <Button
-                  color="renewResponseModal.buttons.secondary.color"
                   bg="renewResponseModal.buttons.secondary.bg"
+                  color="renewResponseModal.buttons.secondary.color"
                   mr={3}
                   onClick={() => history.push('/')}
                 >
                   Return to homepage
                 </Button>
-                <Button
-                  colorScheme="purpleHeart"
-                  onClick={handleViewRenewed}
-                >
+                <Button colorScheme="purpleHeart" onClick={handleViewRenewed}>
                   View renewed response
                 </Button>
               </>

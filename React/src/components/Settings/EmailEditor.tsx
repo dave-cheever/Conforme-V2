@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { Button, Box, Stack } from '@chakra-ui/react';
+
+import { Box, Button, Stack } from '@chakra-ui/react';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 
@@ -20,37 +21,39 @@ const EmailEditor = ({ setHtml, value, options }) => {
 
   const getSunEditorInstance = (sunEditor) => {
     editorRef.current = sunEditor;
-};
+  };
 
   const insertTag = (tag: string) => {
     if (editorRef && editorRef.current) {
-       // @ts-expect-error
+      // @ts-expect-error
       editorRef.current.insertHTML(tag);
     }
-  }
+  };
 
   return (
     <Box>
-      <Box id="custom_toolbar" className="sun-editor" />
-      <Stack direction='row' bgColor='white' p={2} spacing={2}>
-        {options.map((option: string) =>
+      <Box className="sun-editor" id="custom_toolbar" />
+      <Stack bgColor="white" direction="row" p={2} spacing={2}>
+        {options.map((option: string) => (
           <Button
             key={option}
-            size='sm'
             onClick={() => insertTag(`%${option}%`)}
-          >{option}</Button>
-        )}
+            size="sm"
+          >
+            {option}
+          </Button>
+        ))}
       </Stack>
-      
+
       <SunEditor
         getSunEditorInstance={getSunEditorInstance}
-        setContents={value}
-        setOptions={sunEditorOptions}
-        setDefaultStyle="font-family: Arial, sans-serif;"
         onChange={setHtml}
+        setContents={value}
+        setDefaultStyle="font-family: Arial, sans-serif;"
+        setOptions={sunEditorOptions}
       />
     </Box>
-  )
+  );
 };
 
 export default EmailEditor;

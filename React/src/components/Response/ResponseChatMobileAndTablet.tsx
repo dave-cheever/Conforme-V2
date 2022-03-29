@@ -1,20 +1,19 @@
-import { Box } from "@chakra-ui/layout"
-import ResponseChat from "./ResponseChat"
+import { Box } from '@chakra-ui/react';
 
-const ResponseChatMobileAndTablet = () => {
-  return (
-    <Box
-      bg="white"
-      position="fixed"
-      rounded="20px"
-      boxShadow="lg"
-      zIndex="1"
-      right="18px"
-      top={["175px"]}
-      >
-      <ResponseChat />
-    </Box>
-  )
-}
+import ResponseChat from './ResponseChat';
 
-export default ResponseChatMobileAndTablet
+const ResponseChatMobileAndTablet = () => (
+  <Box
+    bg="white"
+    boxShadow="lg"
+    position="fixed"
+    right="18px"
+    rounded="20px"
+    top={['175px']}
+    zIndex="1"
+  >
+    <ResponseChat />
+  </Box>
+);
+
+export default ResponseChatMobileAndTablet;

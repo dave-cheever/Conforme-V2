@@ -1,6 +1,11 @@
-import { IBase } from "app-interfaces";
+import { IBase } from 'app-interfaces';
 
-export type IAuditLogAction = "add" | "update" | "delete" | "search" | "snapshot";
+export type IAuditLogAction =
+  | 'add'
+  | 'update'
+  | 'delete'
+  | 'search'
+  | 'snapshot';
 
 export interface IAuditLogElement {
   _id: string;

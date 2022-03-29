@@ -1,7 +1,8 @@
 import React from 'react';
+
 import {
-  AlertDialog as AlertDialogChakra,
   AlertDialogBody,
+  AlertDialog as AlertDialogChakra,
   AlertDialogCloseButton,
   AlertDialogContent,
   AlertDialogFooter,
@@ -21,40 +22,53 @@ interface IAlertDialog {
   handleYes?: any;
   handleNo?: any;
   onClose?: any;
-};
+}
 
-const AlertDialog = ({ isOpen, title, description, state, showButtons, handleYes, handleNo, onClose }: IAlertDialog) => {
+const AlertDialog = ({
+  isOpen,
+  title,
+  description,
+  state,
+  showButtons,
+  handleYes,
+  handleNo,
+  onClose,
+}: IAlertDialog) => {
   const cancelRef: any = React.useRef();
   return (
     <AlertDialogChakra
-      motionPreset="slideInBottom"
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-      isOpen={isOpen}
       isCentered
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      motionPreset="slideInBottom"
+      onClose={onClose}
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
         <AlertDialogHeader>{title}</AlertDialogHeader>
         <AlertDialogCloseButton />
-        <AlertDialogBody>
-          {description}
-        </AlertDialogBody>
-        <AlertDialogFooter justifyContent='space-between'>
-          <Text fontSize='md' color='alertDialog.state'>{state}</Text>
+        <AlertDialogBody>{description}</AlertDialogBody>
+        <AlertDialogFooter justifyContent="space-between">
+          <Text color="alertDialog.state" fontSize="md">
+            {state}
+          </Text>
           {showButtons && (
             <HStack>
-              <Button ref={cancelRef} onClick={handleNo} disabled={!!state}>No</Button>
+              <Button disabled={!!state} onClick={handleNo} ref={cancelRef}>
+                No
+              </Button>
               <Button
-                onClick={handleYes}
-                ml={3}
-                isLoading={!!state}
-                color="alertDialog.buttons.action.color"
-                bg="alertDialog.buttons.action.bg"
                 _hover={{
-                  bg: "alertDialog.buttons.action.hover",
+                  bg: 'alertDialog.buttons.action.hover',
                 }}
-              >Yes</Button>
+                bg="alertDialog.buttons.action.bg"
+                color="alertDialog.buttons.action.color"
+                isLoading={!!state}
+                ml={3}
+                onClick={handleYes}
+              >
+                Yes
+              </Button>
             </HStack>
           )}
         </AlertDialogFooter>

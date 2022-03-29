@@ -1,97 +1,112 @@
-import { Flex, IconButton } from "@chakra-ui/react";
+import { useHistory } from 'react-router-dom';
 
-import NavigationTop from "../components/NavigationTop";
-import Loader from "../components/Loader";
-import ResponseLeftNavigation from "../components/Response/ResponseLeftNavigation";
+import { Flex, IconButton } from '@chakra-ui/react';
+
+import Loader from '../components/Loader';
+import NavigationTop from '../components/NavigationTop';
+import ResponseChat from '../components/Response/ResponseChat';
+import ResponseChatMobileAndTablet from '../components/Response/ResponseChatMobileAndTablet';
+import ReasponseHeader from '../components/Response/ResponseHeader/ResponseHeader';
+import ResponseLeftNavigation from '../components/Response/ResponseLeftNavigation';
+import ResponseLeftNavigationMobile from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationMobile';
+import ResponseLeftNavigationTablet from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationTablet';
+import ShareModal from '../components/ShareModal';
 import ResponseProvider, {
   useResponseContext,
-} from "../contexts/ResponseProvider";
-import ResponseLeftNavigationTablet from "../components/Response/ResponseLeftNavigation/ResponseLeftNavigationTablet";
-import ResponseLeftNavigationMobile from "../components/Response/ResponseLeftNavigation/ResponseLeftNavigationMobile";
-import ShareModal from "../components/ShareModal";
-import ReasponseHeader from "../components/Response/ResponseHeader/ResponseHeader";
-import ResponseChat from "../components/Response/ResponseChat";
-import ResponseChatMobileAndTablet from "../components/Response/ResponseChatMobileAndTablet";
-import useDevice from "../hooks/useDevice";
-import { useHistory } from "react-router-dom";
-import { CrossIcon, MessageIcon } from "../icons";
+} from '../contexts/ResponseProvider';
+import useDevice from '../hooks/useDevice';
+import { CrossIcon, MessageIcon } from '../icons';
 
 const ResponseLayout = ({ component: Component }: { component: any }) => {
-  const { loading, response, isOpenMessage, handleOpenMessage, handleCloseMessage } = useResponseContext();
+  const {
+    loading,
+    response,
+    isOpenMessage,
+    handleOpenMessage,
+    handleCloseMessage,
+  } = useResponseContext();
   const history = useHistory();
-  const device = useDevice()
-  const isTabletAndMobile = device === 'tablet' || device === 'mobile'
-  const isComplianceItemPage = history.location.pathname.split('/')[1] === "compliance-item"
+  const device = useDevice();
+  const isTabletAndMobile = device === 'tablet' || device === 'mobile';
+  const isComplianceItemPage =
+    history.location.pathname.split('/')[1] === 'compliance-item';
 
   if (loading && !response) {
     return (
       <Flex h="100vh">
-        <Loader center={true} />
+        <Loader center />
       </Flex>
     );
   }
 
   return (
-    <Flex w="full" h="full" minH="100vh">
+    <Flex h="full" minH="100vh" w="full">
       <ResponseLeftNavigation />
       <ResponseLeftNavigationTablet />
       <Flex
-        w={["100%", "calc(100% - 80px)", "calc(100% - 240px)"]}
         direction="column"
+        w={['100%', 'calc(100% - 80px)', 'calc(100% - 240px)']}
       >
         <NavigationTop />
         <Flex
-          flexDirection="column"
           bg="layout.bg"
-          position="absolute"
-          top={[0, "80px"]}
-          w={["full", "calc(100% - 80px)", "calc(100% - 240px)"]}
+          flexDirection="column"
+          h={['calc(100vh - 126px)', 'calc(100vh - 80px)']}
+          mt={['65px', 0]}
           overflow="auto"
-          h={["calc(100vh - 126px)", "calc(100vh - 80px)"]}
-          mt={["65px", 0]}
-          pt={["25px", 0]}
+          position="absolute"
+          pt={['25px', 0]}
+          top={[0, '80px']}
+          w={['full', 'calc(100% - 80px)', 'calc(100% - 240px)']}
           zIndex={4}
         >
           <ShareModal />
           <ReasponseHeader />
-          {isComplianceItemPage && isTabletAndMobile &&
+          {isComplianceItemPage && isTabletAndMobile && (
             <IconButton
-              onClick={() => isOpenMessage ? handleCloseMessage() : handleOpenMessage()}
               _hover={{ opacity: 0.7 }}
-              mr="2px"
-              bg="responseLayout.iconBg"
-              h="52px"
-              w="52px"
               alignItems="center"
-              color="white"
               aria-label="Message"
-              icon={isOpenMessage ?
-                <CrossIcon ml="5px" h="21px" w="22px" stroke="white" /> :
-                <MessageIcon h="21px" w="22px" stroke="white" />
-              }
-              position='fixed'
+              bg="responseLayout.iconBg"
               bottom={['75px', '22px']}
-              right='16px'
-              zIndex={5}
+              color="white"
               flexShrink={0}
+              h="52px"
+              icon={
+                isOpenMessage ? (
+                  <CrossIcon h="21px" ml="5px" stroke="white" w="22px" />
+                ) : (
+                  <MessageIcon h="21px" stroke="white" w="22px" />
+                )
+              }
+              mr="2px"
+              onClick={() =>
+                isOpenMessage ? handleCloseMessage() : handleOpenMessage()
+              }
+              position="fixed"
+              right="16px"
               rounded="20px"
-            />}
-          <Flex w="full" h="full" px="25px">
+              w="52px"
+              zIndex={5}
+            />
+          )}
+          <Flex h="full" px="25px" w="full">
             <Flex
               flexDirection="column"
-              minH={["calc(100vh - 200px)", "calc(100vh - 200px)"]}
-              maxH={["none", "calc(100vh - 200px)"]}
-              w="full"
               h="full"
+              maxH={['none', 'calc(100vh - 200px)']}
+              minH={['calc(100vh - 200px)', 'calc(100vh - 200px)']}
               pb="25px"
-              pt={["40px", "0px"]}
+              pt={['40px', '0px']}
+              w="full"
             >
               <Component />
             </Flex>
-            {device === "desktop" && <ResponseChat />}
+            {device === 'desktop' && <ResponseChat />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile &&
-            <ResponseChatMobileAndTablet />}
+          {isOpenMessage && isTabletAndMobile && (
+            <ResponseChatMobileAndTablet />
+          )}
         </Flex>
         <ResponseLeftNavigationMobile />
       </Flex>
@@ -100,10 +115,10 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
 };
 
 export const responseLayoutStyles = {
-  responseLayout : {
-    iconBg: "#1E1E38"
-  }
-}
+  responseLayout: {
+    iconBg: '#1E1E38',
+  },
+};
 
 const ResponseLayoutWithContext = (props) => (
   <ResponseProvider {...props}>

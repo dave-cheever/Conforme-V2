@@ -1,5 +1,5 @@
-import { IFormFieldHeadings } from "./IForm";
-import { TValidations } from "./TValidations";
+import { IFormFieldHeadings } from './IForm';
+import { TValidations } from './TValidations';
 
 export interface IField {
   control: any;

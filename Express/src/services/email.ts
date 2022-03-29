@@ -1,7 +1,7 @@
-import { IOrganization } from "app-interfaces";
-import { Users } from "app-models";
-import { GraphService } from "app-services";
-import { MENTION_EMAIL } from "app-utils";
+import { IOrganization } from 'app-interfaces';
+import { Users } from 'app-models';
+import { GraphService } from 'app-services';
+import { MENTION_EMAIL } from 'app-utils';
 
 const sendMentionedEmail = async ({
   userIds,
@@ -12,10 +12,12 @@ const sendMentionedEmail = async ({
   organization: IOrganization;
   message: String;
 }) => {
-  //get all information for user;
+  // get all information for user;
   for (const id of userIds) {
-
-    const user = await Users.customFindByIdWithDetails({ userId: id, organization });
+    const user = await Users.customFindByIdWithDetails({
+      userId: id,
+      organization,
+    });
 
     await GraphService.sendEmail({
       emailType: MENTION_EMAIL,
@@ -25,7 +27,7 @@ const sendMentionedEmail = async ({
       to: [user.email],
     });
   }
-}
+};
 
 export default {
   sendMentionedEmail,

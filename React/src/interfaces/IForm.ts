@@ -7,7 +7,7 @@ export interface IFormFieldValidations {
   regex?: RegExp;
   equals?: string | number | boolean;
   forceMaxLength?: boolean;
-  required?: Boolean;
+  required?: boolean;
 }
 
 export interface IFormFieldHeadingOption {

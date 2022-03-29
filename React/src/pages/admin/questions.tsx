@@ -1,21 +1,21 @@
-import { useContext, useEffect, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useForm } from "react-hook-form";
-import { Box, Flex, Text, useToast, Stack } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import Loader from "../../components/Loader";
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import AdminModal from "../../components/Admin/AdminModal";
-import { AdminContext } from "../../contexts/AdminProvider";
-import TextInput from "../../components/Forms/TextInput";
-import Header from "../../components/Header";
-import { IQuestion } from "../../interfaces/IQuestion";
-import AdminTableHeader from "../../components/Admin/AdminTableHeader";
-import AdminTableHeaderElement from "../../components/Admin/AdminTableHeaderElement";
-import useDevice from "../../hooks/useDevice";
-import { TQuestionValue } from "../../interfaces/TQuestionValue";
-import TextInputMultiline from "../../components/Forms/TextInputMultiline";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import AdminModal from '../../components/Admin/AdminModal';
+import AdminTableHeader from '../../components/Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import TextInput from '../../components/Forms/TextInput';
+import TextInputMultiline from '../../components/Forms/TextInputMultiline';
+import Header from '../../components/Header';
+import Loader from '../../components/Loader';
+import { AdminContext } from '../../contexts/AdminProvider';
+import useDevice from '../../hooks/useDevice';
+import { IQuestion } from '../../interfaces/IQuestion';
+import { TQuestionValue } from '../../interfaces/TQuestionValue';
 
 const GET_QUESTIONS = gql`
   query {
@@ -51,15 +51,15 @@ const DELETE_QUESTION = gql`
 
 const defaultValues: Partial<IQuestion<TQuestionValue>> = {
   _id: undefined,
-  type: "text",
-  question: "",
-  description: "",
-  category: "",
+  type: 'text',
+  question: '',
+  description: '',
+  category: '',
   positiveValue: null,
   negativeValue: null,
   scope: {
     component: 'audits',
-  }
+  },
 };
 
 const Questions = () => {
@@ -70,16 +70,19 @@ const Questions = () => {
   const [updateFunction] = useMutation(UPDATE_QUESTION);
   const [deleteFunction] = useMutation(DELETE_QUESTION);
   const device = useDevice();
-  const [sortType, setSortType] = useState("question");
+  const [sortType, setSortType] = useState('question');
   const [sortOrder, setSortOrder] = useState(true);
 
   const getQuestions = (questionsArray: IQuestion<TQuestionValue>[]) => {
-    if (!questionsArray) {
-      return [];
-    }
-    return [...questionsArray].sort((a, b) => a.question.localeCompare(b.question));
-  }
-  const [questions, setQuestions] = useState<IQuestion<TQuestionValue>[]>(getQuestions(data?.questions));
+    if (!questionsArray) return [];
+
+    return [...questionsArray].sort((a, b) =>
+      a.question.localeCompare(b.question),
+    );
+  };
+  const [questions, setQuestions] = useState<IQuestion<TQuestionValue>[]>(
+    getQuestions(data?.questions),
+  );
 
   useEffect(() => {
     setQuestions(getQuestions(data?.questions));
@@ -87,18 +90,18 @@ const Questions = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner')
-        return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-      else {
-        return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      if (sortType === 'owner') {
+        return (a.owner?.displayName || '').localeCompare(
+          b.owner?.displayName || '',
+        );
       }
+
+      return (a[sortType] || 0)
+        .toString()
+        .localeCompare((b[sortType] || 0).toString());
     };
-    if (sortOrder) {
-      setQuestions([...questions].sort((a, b) => sort(a, b)));
-    }
-    else {
-      setQuestions([...questions].sort((a, b) => sort(b, a)));
-    }
+    if (sortOrder) setQuestions([...questions].sort((a, b) => sort(a, b)));
+    else setQuestions([...questions].sort((a, b) => sort(b, a)));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
@@ -108,20 +111,18 @@ const Questions = () => {
     trigger,
     reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues,
   });
 
   // Reset the form after closing
   useEffect(() => {
-    if (adminModalState === "closed") {
-      reset(defaultValues);
-    }
+    if (adminModalState === 'closed') reset(defaultValues);
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openQuestionModal = (
-    action: "edit" | "delete",
+    action: 'edit' | 'delete',
     question: IQuestion<TQuestionValue>,
   ) => {
     setAdminModalState(action);
@@ -143,17 +144,17 @@ const Questions = () => {
         const question = getValues();
         await createFunction({ variables: { question } });
         refetch();
-        toast({ ...toastSuccess, description: "Question added" });
+        toast({ ...toastSuccess, description: 'Question added' });
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -176,17 +177,17 @@ const Questions = () => {
           },
         });
         refetch();
-        toast({ ...toastSuccess, description: "Question updated" });
+        toast({ ...toastSuccess, description: 'Question updated' });
       } else {
         toast({
           ...toastFailed,
-          description: "Please complete all the required fields",
+          description: 'Please complete all the required fields',
         });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
@@ -195,63 +196,63 @@ const Questions = () => {
       const _id = getValues('_id');
       await deleteFunction({ variables: { _id } });
       refetch();
-      toast({ ...toastSuccess, description: "Question deleted" });
+      toast({ ...toastSuccess, description: 'Question deleted' });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
-      setAdminModalState("closed");
+      setAdminModalState('closed');
     }
   };
 
   const handleAction = async (action) => {
     const isFormValid = await trigger();
-    if (["add", "edit"].includes(action) && !isFormValid) {
+    if (['add', 'edit'].includes(action) && !isFormValid) {
       return toast({
         ...toastFailed,
-        description: "Please complete all the required fields",
+        description: 'Please complete all the required fields',
       });
     }
     switch (action) {
-      case "add":
+      case 'add':
         handleAddQuestion();
         break;
-      case "edit":
+      case 'edit':
         handleUpdateQuestion();
         break;
-      case "delete":
+      case 'delete':
         handleDeleteQuestion();
         break;
       default:
-        setAdminModalState("closed");
+        setAdminModalState('closed');
     }
   };
 
-  const renderQuestionRow = (question: IQuestion<TQuestionValue>, i: number) => (
+  const renderQuestionRow = (
+    question: IQuestion<TQuestionValue>,
+    i: number,
+  ) => (
     <Flex
-      key={question._id}
-      w='full'
-      h='73px'
-      bg='#FFFFFF'
-      mb="1px"
-      p={4}
-      alignItems='center'
-      borderBottomRadius={(i === questions.length - 1) ? 'lg' : ''}
+      alignItems="center"
+      bg="#FFFFFF"
+      borderBottomRadius={i === questions.length - 1 ? 'lg' : ''}
       boxShadow="sm"
       flexShrink={0}
+      h="73px"
+      key={question._id}
+      mb="1px"
+      p={4}
+      w="full"
     >
       <Flex
-        w='full'
-        flexDir="column"
-        pl={1}
-        mr={4}
         cursor="pointer"
+        flexDir="column"
+        mr={4}
         onClick={() => openQuestionModal('edit', question)}
+        pl={1}
+        w="full"
       >
-        <Text
-          overflow='hidden'
-          textOverflow='ellipsis'
-          whiteSpace='nowrap'
-        >{question.question}
+        <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          {question.question}
         </Text>
       </Flex>
     </Flex>
@@ -260,53 +261,92 @@ const Questions = () => {
   return (
     <>
       <AdminModal
-        isOpenModal={adminModalState !== "closed"}
+        collection="questions"
+        isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
-        collection={"questions"}
       >
-        <Stack w={device === 'mobile' ? 'full' : "calc(100% - 150px)"} spacing={2}>
+        <Stack
+          spacing={2}
+          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
+        >
           <TextInput
-            name="question"
-            label="Question"
-            placeholder='Question'
             control={control}
+            label="Question"
+            name="question"
+            placeholder="Question"
+            required
             validations={{
               notEmpty: true,
             }}
           />
           <TextInputMultiline
-            name="description"
+            control={control}
             label="Description"
-            placeholder='Description'
-            control={control}
+            name="description"
+            placeholder="Description"
           />
           <TextInput
-            name="positiveValue"
+            control={control}
             label="Positive value"
-            placeholder='Positive value'
-            control={control}
+            name="positiveValue"
+            placeholder="Positive value"
           />
           <TextInput
-            name="negativeValue"
-            label="Negative value"
-            placeholder='Negative value'
             control={control}
+            label="Negative value"
+            name="negativeValue"
+            placeholder="Negative value"
           />
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={["Admin", "Questions"]} mobileBreadcrumbs={["Questions"]} />
-      <Flex h='calc(100vh - 160px)' px={["25px", 0]} overflow="auto">
-        <Box w='full' h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, "0 25px 30px 30px"]}>
+      <Header
+        breadcrumbs={['Admin', 'Questions']}
+        mobileBreadcrumbs={['Questions']}
+      />
+      <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
+        <Box
+          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
+          p={[0, '0 25px 30px 30px']}
+          w="full"
+        >
           <AdminTableHeader>
-            <AdminTableHeaderElement w='full' label="Question" onClick={() => { setSortType("question"); setSortOrder(!sortOrder); }} sortOrder={sortType === "question" && !sortOrder} showSortingIcon={sortType === "question"} />
+            <AdminTableHeaderElement
+              label="Question"
+              onClick={() => {
+                setSortType('question');
+                setSortOrder(!sortOrder);
+              }}
+              showSortingIcon={sortType === 'question'}
+              sortOrder={sortType === 'question' && !sortOrder}
+              w="full"
+            />
           </AdminTableHeader>
-          <Flex h="full" bg="white" flexDir="column" overflow="auto" w='full' borderBottomRadius="20px" fontSize="smm">
-            {loading ? <Loader center={true} /> : (questions?.length > 0 ? questions?.map(renderQuestionRow) : (
-              <Flex w="full" h="full" mt={4} fontSize="18px" fontStyle="italic" justify="center">
+          <Flex
+            bg="white"
+            borderBottomRadius="20px"
+            flexDir="column"
+            fontSize="smm"
+            h="full"
+            overflow="auto"
+            w="full"
+          >
+            {loading ? (
+              <Loader center />
+            ) : questions?.length > 0 ? (
+              questions?.map(renderQuestionRow)
+            ) : (
+              <Flex
+                fontSize="18px"
+                fontStyle="italic"
+                h="full"
+                justify="center"
+                mt={4}
+                w="full"
+              >
                 No questions found
               </Flex>
-            ))}
+            )}
           </Flex>
         </Box>
       </Flex>

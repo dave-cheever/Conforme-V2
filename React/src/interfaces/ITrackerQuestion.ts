@@ -1,4 +1,4 @@
-import { TQuestionType } from "./TQuestionType";
+import { TQuestionType } from './TQuestionType';
 
 export interface ITrackerQuestion<ValueType> {
   type: TQuestionType;

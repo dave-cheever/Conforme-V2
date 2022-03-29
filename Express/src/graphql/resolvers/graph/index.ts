@@ -2,7 +2,7 @@ import filesDetails from './filesDetails.q';
 
 const graphResolvers = {
   Query: {
-    filesDetails
+    filesDetails,
   },
 };
 

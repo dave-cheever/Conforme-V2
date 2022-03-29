@@ -1,4 +1,4 @@
-import { IBase, IUser } from "app-interfaces";
+import { IBase, IUser } from 'app-interfaces';
 
 export interface ILocation extends IBase {
   _id: string;
@@ -7,7 +7,7 @@ export interface ILocation extends IBase {
   organizationId: string;
   notes: string;
 
-   // Additional fields - can be added when getting from database
+  // Additional fields - can be added when getting from database
   owner?: IUser;
   complianceItemsResponsesCount?: number;
 }

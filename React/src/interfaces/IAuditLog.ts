@@ -1,6 +1,6 @@
-import { IBase } from "./IBase";
+import { IBase } from './IBase';
 
-export type IAuditLogAction = "add" | "update" | "delete" | "search";
+export type IAuditLogAction = 'add' | 'update' | 'delete' | 'search';
 
 export interface IAuditLogElement {
   _id: string;

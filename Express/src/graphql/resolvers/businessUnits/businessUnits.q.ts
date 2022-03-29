@@ -1,54 +1,80 @@
-import { GraphQLResolveInfo } from "graphql";
+import { GraphQLResolveInfo } from 'graphql';
 
-import { BusinessUnits, Responses, Users } from "app-models";
-import { doesPathExist, join } from "app-utils";
-import { IBusinessUnit } from "app-interfaces";
+import { IBusinessUnit } from 'app-interfaces';
+import { BusinessUnits, Responses, Users } from 'app-models';
+import { doesPathExist, join } from 'app-utils';
 
-const businessUnits = async (_, __, { organization }, info: GraphQLResolveInfo) => {
-  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ["businessUnits", element]);
+const businessUnits = async (
+  _,
+  __,
+  { organization },
+  info: GraphQLResolveInfo,
+) => {
+  const shouldJoin = (element: string) =>
+    doesPathExist(info.fieldNodes, ['businessUnits', element]);
   try {
     let businessUnits = await BusinessUnits.customFind({}, organization._id);
 
-    if (shouldJoin("complianceItemsResponsesCount")) {
-      businessUnits = await Promise.all(businessUnits.map(businessUnit => new Promise<IBusinessUnit>(async res => {
-        let pipeline: any[] = [{
-          $match: {
-            businessUnitId: businessUnit._id,
-          },
-        }];
-        join({
-          pipeline,
-          collection: 'complianceItems',
-          from: 'complianceItemId',
-          to: 'complianceItem',
-        });
-        pipeline.push({
-          $match: {
-            'complianceItem.metatags.removedAt': { $eq: null },
-            published: true,
-          },
-        });
-        pipeline.push({
-          $count: 'count',
-        });
-        const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) {
-          businessUnit.complianceItemsResponsesCount = responses[0].count;
-        }
-        return res(businessUnit);
-      })));
+    if (shouldJoin('complianceItemsResponsesCount')) {
+      businessUnits = await Promise.all(
+        businessUnits.map(
+          (businessUnit) =>
+            // eslint-disable-next-line no-async-promise-executor
+            new Promise<IBusinessUnit>(async (res) => {
+              const pipeline: any[] = [
+                {
+                  $match: {
+                    businessUnitId: businessUnit._id,
+                  },
+                },
+              ];
+              join({
+                pipeline,
+                collection: 'complianceItems',
+                from: 'complianceItemId',
+                to: 'complianceItem',
+              });
+              pipeline.push({
+                $match: {
+                  'complianceItem.metatags.removedAt': { $eq: null },
+                  published: true,
+                },
+              });
+              pipeline.push({
+                $count: 'count',
+              });
+              const responses = await Responses.aggregate(pipeline);
+              if (responses && responses.length > 0)
+                // eslint-disable-next-line no-param-reassign
+                businessUnit.complianceItemsResponsesCount = responses[0].count;
+
+              // eslint-disable-next-line no-promise-executor-return
+              return res(businessUnit);
+            }),
+        ),
+      );
     }
 
-    if (shouldJoin("owner")) {
-      await Promise.all(businessUnits.map(businessUnit => new Promise<void>(async (resolve, reject) => {
-        try {
-          businessUnit.owner = await Users.customFindByIdWithDetails({ userId: businessUnit.ownerId, organization });
-          resolve();
-        } catch (e) {
-          console.log(`Error occured for ${businessUnit._id}: ${e}`);
-          reject();
-        }
-      })));
+    if (shouldJoin('owner')) {
+      await Promise.all(
+        businessUnits.map(
+          (businessUnit) =>
+            // eslint-disable-next-line no-async-promise-executor
+            new Promise<void>(async (resolve, reject) => {
+              try {
+                // eslint-disable-next-line no-param-reassign
+                businessUnit.owner = await Users.customFindByIdWithDetails({
+                  userId: businessUnit.ownerId,
+                  organization,
+                });
+                resolve();
+              } catch (e) {
+                console.log(`Error occured for ${businessUnit._id}: ${e}`);
+                reject();
+              }
+            }),
+        ),
+      );
     }
 
     return businessUnits.sort((a, b) => a.name.localeCompare(b.name));

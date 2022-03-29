@@ -1,17 +1,17 @@
-import AuditLogs from "./AuditLogs";
-import AuditTypes from "./AuditTypes";
-import BusinessUnits from "./BusinessUnits";
-import Categories from "./Categories";
-import Comments from "./Comments";
-import ComplianceItems from "./ComplianceItems";
-import Locations from "./Locations";
-import Organizations from "./Organizations";
-import QuestionsCategories from "./QuestionsCategories";
-import Questions from "./Questions";
-import RegulatoryBodies from "./RegulatoryBodies";
-import Responses from "./Responses";
-import Settings from "./Settings";
-import Users from "./Users";
+import AuditLogs from './AuditLogs';
+import AuditTypes from './AuditTypes';
+import BusinessUnits from './BusinessUnits';
+import Categories from './Categories';
+import Comments from './Comments';
+import ComplianceItems from './ComplianceItems';
+import Locations from './Locations';
+import Organizations from './Organizations';
+import Questions from './Questions';
+import QuestionsCategories from './QuestionsCategories';
+import RegulatoryBodies from './RegulatoryBodies';
+import Responses from './Responses';
+import Settings from './Settings';
+import Users from './Users';
 
 export {
   AuditLogs,
@@ -27,5 +27,5 @@ export {
   RegulatoryBodies,
   Responses,
   Settings,
-  Users
+  Users,
 };

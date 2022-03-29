@@ -1,7 +1,7 @@
-import { IBase } from "app-interfaces";
+import { IBase } from 'app-interfaces';
 
 export interface IBaseWithName extends IBase {
   name: string;
   complianceItemsResponsesCount?: number;
-  organizationId?:string;
-};
+  organizationId?: string;
+}

@@ -1,65 +1,64 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import {
+  Avatar,
+  Box,
   Button,
   Flex,
-  Box,
   Image,
   Text,
   useToast,
   VStack,
-  Avatar,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { toastFailed } from "../bootstrap/config";
-import { useAppContext } from "../contexts/AppProvider";
-import { ArrowRight } from "../icons";
-import useDevice from "../hooks/useDevice";
-import { useLocation } from "react-router-dom";
+import { toastFailed } from '../bootstrap/config';
+import { useAppContext } from '../contexts/AppProvider';
+import useDevice from '../hooks/useDevice';
+import { ArrowRight } from '../icons';
 
 type StateProps = {
-  redirectUrl: string
-}
+  redirectUrl: string;
+};
 
 const Login = () => {
   const toast = useToast();
-  const params = window.location.search.split("&");
+  const params = window.location.search.split('&');
   const { organizationConfig } = useAppContext();
   const device = useDevice();
-  const [refresh,setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const { state } = useLocation<StateProps>();
 
   useEffect(() => {
-    if(state  && state.redirectUrl !== "/" && state.redirectUrl){
-      localStorage.setItem("redirectUrl",state.redirectUrl);
-      state.redirectUrl = "/";
+    if (state && state.redirectUrl !== '/' && state.redirectUrl) {
+      localStorage.setItem('redirectUrl', state.redirectUrl);
+      state.redirectUrl = '/';
     }
-  },[state]);
+  }, [state]);
 
   const user = useMemo(() => {
-    const logOutUser = localStorage.getItem("logOutUser");
+    const logOutUser = localStorage.getItem('logOutUser');
 
-    if (!logOutUser) {
-      return null;
-    }
+    if (!logOutUser) return null;
+
     try {
       const expiresAt = new Date(JSON.parse(logOutUser)?.expiresAt).getTime();
       if (expiresAt < new Date().getTime()) {
-        localStorage.removeItem("logOutUser");
+        localStorage.removeItem('logOutUser');
         return null;
       }
       return JSON.parse(logOutUser);
     } catch (error) {
       return null;
     }
-  // eslint-disable-next-line
   }, [refresh]);
-  
+
   const redirectUrl = params
-    .find((str) => str.includes("redirectUrl"))
-    ?.split("=")[1];
+    .find((str) => str.includes('redirectUrl'))
+    ?.split('=')[1];
   const errorMessage = params
-    .find((str) => str.includes("errorMessage"))
-    ?.split("=")[1];
+    .find((str) => str.includes('errorMessage'))
+    ?.split('=')[1];
 
   useEffect(() => {
     if (errorMessage) {
@@ -74,100 +73,141 @@ const Login = () => {
   const loginWithAzureAD = async () => {
     window.open(
       `${process.env.REACT_APP_API_URL}/auth/aad${
-        redirectUrl ? `?redirect=${redirectUrl}` : ""
+        redirectUrl ? `?redirect=${redirectUrl}` : ''
       }`,
-      "_self"
+      '_self',
     );
   };
 
   const removeUser = () => {
-    localStorage.removeItem("logOutUser");
+    localStorage.removeItem('logOutUser');
     setRefresh(!refresh);
-  }
+  };
 
   return (
-    <Flex w="full" h="100vh" flexDir={["column","column","row"]} bg="loginPage.bg">
-      {user ? <Flex
-        w={["full", "full", "30%"]}
-        align="center"
-        order={[2, 2, 1]}
-        justify={["center", "center", "flex-end"]}
-        h="full"
-      >
-        <VStack spacing={5} align="center" textAlign="center">
-          <Flex
-            color="loginPage.organizationNameColor"
-            noOfLines={2}
-            textOverflow="ellipsis"
-            w="240px"
-            fontSize="24px"
-            lineHeight="41px"
-            fontWeight="bold"
-            mb={3}
-          >
-            {organizationConfig?.name}
-          </Flex>
-          <Flex
-            bg="white"
-            rounded="full"
-            borderWidth="10px"
-            borderColor="loginPage.avatarBorderColor"
-          >
-            <Avatar
-              h="75px"
-              w="75px"
-              borderWidth="4px"
-              borderColor="white"
-              src={user?.imgUrl}
-              name={user?.displayName}
-            />
-          </Flex>
-          <Button
-            w="204px"
-            colorScheme="purpleHeart"
-            onClick={loginWithAzureAD}
-            borderRadius="10px"
-            fontSize="14px"
-            lineHeight="18px"
-            h="40px"
-          >
-            Login as {user?.firstName}
-          </Button>
-          <Flex flexDir="column" color="loginPage.descriptionColor" align="center" fontSize="11px">
-            <Flex>Not {user?.firstName}?</Flex>
+    <Flex
+      bg="loginPage.bg"
+      flexDir={['column', 'column', 'row']}
+      h="100vh"
+      w="full"
+    >
+      {user ? (
+        <Flex
+          align="center"
+          h="full"
+          justify={['center', 'center', 'flex-end']}
+          order={[2, 2, 1]}
+          w={['full', 'full', '30%']}
+        >
+          <VStack align="center" spacing={5} textAlign="center">
             <Flex
-              _hover={{ color: "loginPage.hoverColor" }}
-              cursor="pointer"
-              onClick={removeUser}
+              color="loginPage.organizationNameColor"
+              fontSize="24px"
+              fontWeight="bold"
+              lineHeight="41px"
+              mb={3}
+              noOfLines={2}
+              textOverflow="ellipsis"
+              w="240px"
             >
-              Login as someone else
+              {organizationConfig?.name}
             </Flex>
-          </Flex>
-        </VStack>
-      </Flex>: 
-      <Flex w={["full","full","30%"]} align="center" order={[2, 2, 1]} justify={["center","center","flex-end"]} h="full">
-        <Flex flexDir="column" textAlign={["center","center","start"]}>
-          <Text color="loginPage.organizationNameColor" noOfLines={2} textOverflow="ellipsis" w="240px" fontSize="36px" lineHeight="41px" fontWeight="bold" mb="50px">
-          {organizationConfig?.name}
-          </Text>
-          <Button
-            w="240px"
-            colorScheme="purpleHeart"
-            onClick={loginWithAzureAD}
-            borderRadius="10px"
-            fontSize="14px"
-            lineHeight="18px"
-            h="40px"
-            rightIcon={<ArrowRight mt={1}/>}
-          >
-            Login with Azure AD
-          </Button>
+            <Flex
+              bg="white"
+              borderColor="loginPage.avatarBorderColor"
+              borderWidth="10px"
+              rounded="full"
+            >
+              <Avatar
+                borderColor="white"
+                borderWidth="4px"
+                h="75px"
+                name={user?.displayName}
+                src={user?.imgUrl}
+                w="75px"
+              />
+            </Flex>
+            <Button
+              borderRadius="10px"
+              colorScheme="purpleHeart"
+              fontSize="14px"
+              h="40px"
+              lineHeight="18px"
+              onClick={loginWithAzureAD}
+              w="204px"
+            >
+              Login as {user?.firstName}
+            </Button>
+            <Flex
+              align="center"
+              color="loginPage.descriptionColor"
+              flexDir="column"
+              fontSize="11px"
+            >
+              <Flex>Not {user?.firstName}?</Flex>
+              <Flex
+                _hover={{ color: 'loginPage.hoverColor' }}
+                cursor="pointer"
+                onClick={removeUser}
+              >
+                Login as someone else
+              </Flex>
+            </Flex>
+          </VStack>
         </Flex>
-      </Flex>
-      }
-      <Flex w={["full","full","70%"]} h="full" align="center" order={[1, 1, 2]} justify={["center","center","flex-end"]}>
-        <Box h={["30vh", "40vh", "95vh"]}  overflow="hidden" >
-        <Image h='full' maxW='max-content' src={device === "desktop" ? organizationConfig?.bgImageUrl: organizationConfig?.bgImageTabletUrl} />
+      ) : (
+        <Flex
+          align="center"
+          h="full"
+          justify={['center', 'center', 'flex-end']}
+          order={[2, 2, 1]}
+          w={['full', 'full', '30%']}
+        >
+          <Flex flexDir="column" textAlign={['center', 'center', 'start']}>
+            <Text
+              color="loginPage.organizationNameColor"
+              fontSize="36px"
+              fontWeight="bold"
+              lineHeight="41px"
+              mb="50px"
+              noOfLines={2}
+              textOverflow="ellipsis"
+              w="240px"
+            >
+              {organizationConfig?.name}
+            </Text>
+            <Button
+              borderRadius="10px"
+              colorScheme="purpleHeart"
+              fontSize="14px"
+              h="40px"
+              lineHeight="18px"
+              onClick={loginWithAzureAD}
+              rightIcon={<ArrowRight mt={1} />}
+              w="240px"
+            >
+              Login with Azure AD
+            </Button>
+          </Flex>
+        </Flex>
+      )}
+      <Flex
+        align="center"
+        h="full"
+        justify={['center', 'center', 'flex-end']}
+        order={[1, 1, 2]}
+        w={['full', 'full', '70%']}
+      >
+        <Box h={['30vh', '40vh', '95vh']} overflow="hidden">
+          <Image
+            h="full"
+            maxW="max-content"
+            src={
+              device === 'desktop'
+                ? organizationConfig?.bgImageUrl
+                : organizationConfig?.bgImageTabletUrl
+            }
+          />
         </Box>
       </Flex>
     </Flex>
@@ -177,11 +217,11 @@ const Login = () => {
 export default Login;
 
 export const loginPageStyles = {
-  loginPage:{
-    bg:"#E5E5E5",
-    organizationNameColor:"#282F36",
-    avatarBorderColor: "#6d649845",
-    descriptionColor: "#818197",
-    hoverColor: "#462AC4"
-  }
-}
+  loginPage: {
+    bg: '#E5E5E5',
+    organizationNameColor: '#282F36',
+    avatarBorderColor: '#6d649845',
+    descriptionColor: '#818197',
+    hoverColor: '#462AC4',
+  },
+};

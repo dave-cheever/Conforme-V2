@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
-import { useRadioGroup, HStack, Button, Flex, Text } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { isEmpty } from "lodash";
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { IQuestionFormBase } from "../../interfaces/IQuestionFormBase";
-import { questionHeader } from "../../utils/helpers";
-import TextInput from "../Forms/TextInput";
+import { Button, Flex, HStack, Text, useRadioGroup } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
+
+import { SwitchOptions } from '../../bootstrap/config';
+import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
+import { questionHeader } from '../../utils/helpers';
+import CustomRadioButton from '../CustomRadioButton';
 import Checkbox from '../Forms/Checkbox';
 import Textarea from '../Forms/Textarea';
-import { useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
-import CustomRadioButton from "../CustomRadioButton";
-import { SwitchOptions } from "../../bootstrap/config";
+import TextInput from '../Forms/TextInput';
 
 const QuestionSimpleForm = ({
   questionType,
@@ -22,7 +23,6 @@ const QuestionSimpleForm = ({
   setEditQuestionIndex,
   setEditQuestion,
 }: IQuestionFormBase<string>) => {
-
   const { complianceItem } = useComplianceItemModalContext();
   const {
     control,
@@ -30,52 +30,62 @@ const QuestionSimpleForm = ({
     watch,
     getValues,
     setValue,
-    reset
+    reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       name: '',
       description: '',
       required: false,
-      ...(questionType === "switch" && { requiredAnswer: "", notApplicable: false })
+      ...(questionType === 'switch' && {
+        requiredAnswer: '',
+        notApplicable: false,
+      }),
     },
   });
 
-  const [questionName, required, notApplicable] = watch(['name', "required", "notApplicable"]);
-  const [selectedRadio, setSelectedRadio] = useState<string>("");
+  const [questionName, required, notApplicable] = watch([
+    'name',
+    'required',
+    'notApplicable',
+  ]);
+  const [selectedRadio, setSelectedRadio] = useState<string>('');
 
-  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }, index) => {
-    if (editQuestionIndex === index && name === questionName) return false;
-    return name === questionName;
-  }) > -1;
+  const questionAlreadyExist =
+    (complianceItem.questions || []).findIndex(({ name }, index) => {
+      if (editQuestionIndex === index && name === questionName) return false;
+      return name === questionName;
+    }) > -1;
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "questions",
+    name: 'questions',
     value: selectedRadio,
     onChange: setSelectedRadio,
   });
 
   useEffect(() => {
     switch (selectedRadio) {
-      case "yes":
-        setValue("requiredAnswer", "yes");
-        setValue("required", true);
-        setValue("notApplicable", false);
+      case 'yes':
+        setValue('requiredAnswer', 'yes');
+        setValue('required', true);
+        setValue('notApplicable', false);
         break;
-      case "no":
-        setValue("requiredAnswer", "no");
-        setValue("required", true);
-        setValue("notApplicable", false);
+      case 'no':
+        setValue('requiredAnswer', 'no');
+        setValue('required', true);
+        setValue('notApplicable', false);
+        break;
+      default:
         break;
     }
-  }, [selectedRadio, setValue])
+  }, [selectedRadio, setValue]);
 
   useEffect(() => {
     if (notApplicable) {
-      setValue("required", false);
-      setSelectedRadio("");
+      setValue('required', false);
+      setSelectedRadio('');
     }
-  }, [notApplicable, setValue])
+  }, [notApplicable, setValue]);
 
   useEffect(() => {
     if (!isEmpty(editableValue)) {
@@ -84,54 +94,51 @@ const QuestionSimpleForm = ({
         description: editableValue.description,
         required: editableValue.required,
         requiredAnswer: editableValue.requiredAnswer,
-        notApplicable: editableValue.notApplicable
+        notApplicable: editableValue.notApplicable,
       });
-      setSelectedRadio(editableValue.requiredAnswer || "");
+      setSelectedRadio(editableValue.requiredAnswer || '');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(editableValue)])
+  }, [JSON.stringify(editableValue)]);
 
   useEffect(() => {
     if (!questionName) return;
 
-    if (required === false || notApplicable) {
-      setSelectedRadio("");
-    }
-  }, [required, questionName, notApplicable])
+    if (required === false || notApplicable) setSelectedRadio('');
+  }, [required, questionName, notApplicable]);
 
   const group = getRootProps();
 
   return (
     <>
-      <Flex alignItems="center" mb='20px'>
-        <Text fontWeight="bold" fontSize="smm">
+      <Flex alignItems="center" mb="20px">
+        <Text fontSize="smm" fontWeight="bold">
           {questionHeader(questionType)}
         </Text>
       </Flex>
       <TextInput
         control={control}
-        name="name"
         label="Question title"
-        variant="secondaryVariant"
+        name="name"
         placeholder="e.g. where is the tv?"
         validations={{
           notEmpty: true,
         }}
+        variant="secondaryVariant"
       />
       <Textarea
         control={control}
+        label="Description"
         name="description"
         variant="secondaryVariant"
-        label="Description"
       />
       <Checkbox
         control={control}
+        disabled={notApplicable}
+        label="Answer is required"
         name="required"
         variant="secondaryVariant"
-        label="Answer is required"
-        disabled={notApplicable}
       />
-      {questionType === 'switch' &&
+      {questionType === 'switch' && (
         <>
           <HStack {...group} alignItems="flex-start" spacing="20px">
             <Text>Compliant answer is:</Text>
@@ -141,58 +148,62 @@ const QuestionSimpleForm = ({
                 <CustomRadioButton key={value} {...radio} fontSize="smm">
                   {label}
                 </CustomRadioButton>
-              )
+              );
             })}
           </HStack>
           <Checkbox
             control={control}
+            label="NA answer permitted"
             name="notApplicable"
             variant="secondaryVariant"
-            label="NA answer permitted"
           />
         </>
-      }
-      <Flex justifyContent="space-between" mt='15px'>
+      )}
+      <Flex justifyContent="space-between" mt="15px">
         <Button
           bg="questionsSimple.form.button.primary.bg"
           color="questionsSimple.form.button.primary.font"
+          disabled={
+            questionAlreadyExist ||
+            Object.keys(errors).length > 0 ||
+            !questionName
+          }
           fontSize="sm"
           fontWeight="medium"
           h="27px"
-          p="17px"
           onClick={() => {
             const question = getValues();
             addOrUpdateQuestion({ type: questionType, ...question });
             setShowQuestionForm(false);
           }}
-          disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
-          title={questionAlreadyExist ? "This question already exist" : ''}
+          p="17px"
+          title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
         </Button>
         <Button
           bg="questionsSimple.form.button.secondary.bg"
           color="questionsSimple.form.button.secondary.font"
-          opacity="0.5"
           fontSize="sm"
           fontWeight="medium"
           h="27px"
-          p="17px"
           onClick={() => {
             setShowQuestionForm(false);
             setIsEdit(false);
             setEditQuestionIndex(undefined);
             setEditQuestion('');
           }}
+          opacity="0.5"
+          p="17px"
         >
           Cancel
         </Button>
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default QuestionSimpleForm
+export default QuestionSimpleForm;
 
 export const questionSimpleFormStyles = {
   questionsSimple: {
@@ -207,7 +218,7 @@ export const questionSimpleFormStyles = {
           bg: '#9A9EA1',
           font: '#FFFFFF',
         },
-      }
+      },
     },
   },
 };

@@ -1,4 +1,4 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const UploadedTick = createIcon({
   path: (
@@ -9,14 +9,14 @@ const UploadedTick = createIcon({
       />
       <path
         d="M7.5 5L4.062 9 2.5 7.182"
+        fill="none"
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
       />
     </g>
   ),
-  viewBox: "0 0 10 12",
+  viewBox: '0 0 10 12',
 });
 
 export default UploadedTick;

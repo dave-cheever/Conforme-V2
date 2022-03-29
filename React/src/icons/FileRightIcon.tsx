@@ -1,7 +1,7 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const FileRightIcon = createIcon({
-  viewBox: "0 0 14 17",
+  viewBox: '0 0 14 17',
   path: (
     <g>
       <path
@@ -9,8 +9,8 @@ const FileRightIcon = createIcon({
         fill="#A2171E"
       />
       <path
-        fill="none"
         d="M10.625 7.4375L5.51172 12.75L3.1875 10.3352"
+        fill="none"
         stroke="white"
         strokeLinecap="round"
         strokeLinejoin="round"

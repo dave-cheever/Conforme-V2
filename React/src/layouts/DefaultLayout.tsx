@@ -1,15 +1,15 @@
-import { Flex } from "@chakra-ui/react";
-import NavigationBottomMobile from "../components/NavigationBottomMobile";
+import { Flex } from '@chakra-ui/react';
 
-import NavigationLeft from "../components/NavigationLeft/NavigationLeft";
-import NavigationTop from "../components/NavigationTop";
-import useDevice from "../hooks/useDevice";
+import NavigationBottomMobile from '../components/NavigationBottomMobile';
+import NavigationLeft from '../components/NavigationLeft/NavigationLeft';
+import NavigationTop from '../components/NavigationTop';
+import useDevice from '../hooks/useDevice';
 
 const DefaultLayout = ({ component: Component }: { component: any }) => {
   const device = useDevice();
 
   return (
-    <Flex minH='100vh'>
+    <Flex minH="100vh">
       <NavigationLeft />
       <Flex
         direction="column"
@@ -19,15 +19,17 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
       >
         <NavigationTop />
         <Flex
+          bg="layout.bg"
           flexDirection="column"
-          bg="layout.bg" position="absolute"
-          top="80px" w="full"
+          h={['calc(100vh - 140px)', 'calc(100vh - 80px)']}
           overflow="auto"
-          h={["calc(100vh - 140px)","calc(100vh - 80px)"]}
+          position="absolute"
+          top="80px"
+          w="full"
         >
           <Component />
         </Flex>
-        {device === "mobile" && <NavigationBottomMobile />}
+        {device === 'mobile' && <NavigationBottomMobile />}
       </Flex>
     </Flex>
   );

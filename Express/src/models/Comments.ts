@@ -1,10 +1,16 @@
-import { model, Schema } from 'mongoose';
+
 import { GraphQLError } from 'graphql';
-import { v4 as uuidv4 } from "uuid";
+import { model, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IComment, ICommentModel } from 'app-interfaces';
 import { AuditLogs, ComplianceItems, Responses } from 'app-models';
-import { removeDatabaseFields, getAuditRecordValues, genMetatags, getForeignElement } from 'app-utils';
+import {
+  genMetatags,
+  getAuditRecordValues,
+  getForeignElement,
+  removeDatabaseFields,
+} from 'app-utils';
 
 const commentSchema = new Schema<IComment, ICommentModel>({
   _id: String,
@@ -17,33 +23,50 @@ const commentSchema = new Schema<IComment, ICommentModel>({
     updatedAt: Date,
     updatedBy: String,
     removedAt: Date,
-    removedBy: String
-  }
+    removedBy: String,
+  },
 });
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-commentSchema.statics.customCreate = async function (comment: IComment, userId: string, organizationId: string): Promise<IComment> {
+commentSchema.statics.customCreate = async function (
+  comment: IComment,
+  userId: string,
+  organizationId: string,
+): Promise<IComment> {
   const createdComment = await this.create({
     ...comment,
     _id: uuidv4(),
     organizationId,
-    metatags: genMetatags("added", userId),
+    metatags: genMetatags('added', userId),
   });
 
   if (createdComment?._doc) {
     const addAuditLog = async () => {
-      const response = await Responses.customFindById(comment.responseId, organizationId);
-      const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organizationId);
-      const element = getForeignElement({ _id: response._id , name: complianceItem.name }, createdComment._doc._id);
+      const response = await Responses.customFindById(
+        comment.responseId,
+        organizationId,
+      );
+      const complianceItem = await ComplianceItems.customFindById(
+        response.complianceItemId,
+        organizationId,
+      );
+      const element = getForeignElement(
+        { _id: response._id, name: complianceItem.name },
+        createdComment._doc._id,
+      );
       const newValues = removeDatabaseFields(createdComment._doc);
       const values = await getAuditRecordValues({ newValues });
-      AuditLogs.customAudit({
-        coll: 'comments',
-        action: "add",
-        element,
-        values,
-      }, userId, organizationId);
+      AuditLogs.customAudit(
+        {
+          coll: 'comments',
+          action: 'add',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -51,62 +74,85 @@ commentSchema.statics.customCreate = async function (comment: IComment, userId: 
   return createdComment;
 };
 
-commentSchema.statics.customFind = async function (_id: string): Promise<IComment[]> {
+commentSchema.statics.customFind = async function (
+  _id: string,
+): Promise<IComment[]> {
   const comments = await this.find({
     responseId: _id,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return comments;
 };
 
-commentSchema.statics.customFindById = async function (_id: string): Promise<IComment> {
+commentSchema.statics.customFindById = async function (
+  _id: string,
+): Promise<IComment> {
   const comment = await this.findOne({
     _id,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
-  if (!comment) {
-    throw new Error("Comment not found");
-  }
+  if (!comment) 
+    throw new Error('Comment not found');
+  
   return comment;
 };
 
-commentSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IComment | null> {
+commentSchema.statics.customFindOne = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<IComment | null> {
   const comment = await this.findOne({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null },
   }).lean();
   return comment;
 };
 
-commentSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
+commentSchema.statics.customDelete = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<number> {
   const comment = await this.customFindOne(selector, organizationId);
-  if (!comment) {
-    throw new GraphQLError('Comment doesn\'t exist');
-  }
+  if (!comment) 
+    throw new GraphQLError("Comment doesn't exist");
 
   const updatedComment = {
     ...comment,
     metatags: {
       ...comment?.metatags,
-      ...genMetatags("removed", userId),
+      ...genMetatags('removed', userId),
     },
   };
   const deletedResult = await this.updateOne(selector, updatedComment);
 
   if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
-      const response = await Responses.customFindById(comment.responseId, organizationId);
-      const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organizationId);
-      const element = getForeignElement({ _id: response._id, name: complianceItem.name }, comment._id);
+      const response = await Responses.customFindById(
+        comment.responseId,
+        organizationId,
+      );
+      const complianceItem = await ComplianceItems.customFindById(
+        response.complianceItemId,
+        organizationId,
+      );
+      const element = getForeignElement(
+        { _id: response._id, name: complianceItem.name },
+        comment._id,
+      );
       const oldValues = removeDatabaseFields(comment);
       const values = await getAuditRecordValues({ oldValues });
-      AuditLogs.customAudit({
-        coll: 'comments',
-        action: "delete",
-        element,
-        values,
-      }, userId, organizationId);
+      AuditLogs.customAudit(
+        {
+          coll: 'comments',
+          action: 'delete',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }

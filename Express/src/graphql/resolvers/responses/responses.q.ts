@@ -1,32 +1,50 @@
-import { GraphQLResolveInfo } from "graphql";
-import { Responses, Users } from "app-models";
-import { doesPathExist, getProjectFields, isPermitted, join } from "app-utils";
-import { addMonths, endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, isSameDay, differenceInCalendarDays } from "date-fns";
-import { response } from "express";
+import {
+  addMonths,
+  differenceInCalendarDays,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  isSameDay,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns';
+import { response } from 'express';
+import { GraphQLResolveInfo } from 'graphql';
 
-const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
-  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, [
-    'responses',
-    ...elements,
-  ]);
+import { Responses, Users } from 'app-models';
+import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
+
+const responses = async (
+  _,
+  { responsesQuery },
+  { authorize, organization },
+  info: GraphQLResolveInfo,
+) => {
+  const shouldJoin = (elements: string[]) =>
+    doesPathExist(info.fieldNodes, ['responses', ...elements]);
   try {
     const user = await authorize();
-    const pipeline: any[] = [{
-      $match: {
-        organizationId: organization._id
+    const pipeline: any[] = [
+      {
+        $match: {
+          organizationId: organization._id,
+        },
       },
-    }];
+    ];
 
-    if (!isPermitted({ user, action: 'responses.viewAll', data: { response } })) {
+    if (
+      !isPermitted({ user, action: 'responses.viewAll', data: { response } })
+    ) {
       pipeline.push({
         $match: {
           $or: [
             { accountableId: user._id },
             { responsibleId: user._id },
             { contributorsIds: { $in: [user._id] } },
-            { followersIds: { $in: [user._id] } }
-          ]
-        }
+            { followersIds: { $in: [user._id] } },
+          ],
+        },
       });
     }
 
@@ -71,82 +89,102 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
           break;
         case 'thisWeek':
           $match = {
-            $and: [{
-              nextRenewalDate: {
-                $gte: startOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
-              }
-            }, {
-              nextRenewalDate: {
-                $lte: endOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
-              }
-            }],
+            $and: [
+              {
+                nextRenewalDate: {
+                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
+                },
+              },
+              {
+                nextRenewalDate: {
+                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
+                },
+              },
+            ],
           };
           break;
         case 'thisMonth':
           $match = {
-            $and: [{
-              nextRenewalDate: {
-                $gte: startOfMonth(new Date()).valueOf(),
-              }
-            }, {
-              nextRenewalDate: {
-                $lte: endOfMonth(new Date()).valueOf(),
-              }
-            }],
+            $and: [
+              {
+                nextRenewalDate: {
+                  $gte: startOfMonth(new Date()).valueOf(),
+                },
+              },
+              {
+                nextRenewalDate: {
+                  $lte: endOfMonth(new Date()).valueOf(),
+                },
+              },
+            ],
           };
           break;
         case 'nextMonth':
           $match = {
-            $and: [{
-              nextRenewalDate: {
-                $gte: startOfMonth(addMonths(new Date(), 1)).valueOf(),
-              }
-            }, {
-              nextRenewalDate: {
-                $lte: endOfMonth(addMonths(new Date(), 1)).valueOf(),
-              }
-            }],
+            $and: [
+              {
+                nextRenewalDate: {
+                  $gte: startOfMonth(addMonths(new Date(), 1)).valueOf(),
+                },
+              },
+              {
+                nextRenewalDate: {
+                  $lte: endOfMonth(addMonths(new Date(), 1)).valueOf(),
+                },
+              },
+            ],
           };
           break;
         case 'exactDate':
           $match = {
-            $and: [{
-              nextRenewalDate: {
-                $gte: startOfDay(new Date(startDate)).valueOf(),
-              }
-            }, {
-              nextRenewalDate: {
-                $lte: endOfDay(new Date(startDate)).valueOf(),
-              }
-            }],
+            $and: [
+              {
+                nextRenewalDate: {
+                  $gte: startOfDay(new Date(startDate)).valueOf(),
+                },
+              },
+              {
+                nextRenewalDate: {
+                  $lte: endOfDay(new Date(startDate)).valueOf(),
+                },
+              },
+            ],
           };
           break;
         case 'dateRange':
           if (startDate && endDate) {
             $match = {
-              $and: [{
-                nextRenewalDate: {
-                  $gte: startOfDay(new Date(startDate)).valueOf(),
-                }
-              }, {
-                nextRenewalDate: {
-                  $lte: endOfDay(new Date(endDate)).valueOf(),
-                }
-              }],
+              $and: [
+                {
+                  nextRenewalDate: {
+                    $gte: startOfDay(new Date(startDate)).valueOf(),
+                  },
+                },
+                {
+                  nextRenewalDate: {
+                    $lte: endOfDay(new Date(endDate)).valueOf(),
+                  },
+                },
+              ],
             };
           }
           break;
+        default:
+          break;
       }
-      if ($match) {
-        pipeline.push({ $match });
-      }
+      if ($match) pipeline.push({ $match });
     }
 
     // Filter by published state
-    if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
+    if (
+      !(
+        responsesQuery?.includeNotPublished &&
+        isPermitted({ user, action: 'responses.viewAll' })
+      )
+    ) {
       pipeline.push({
         $match: {
-          'published': true,
+          published: true,
         },
       });
     }
@@ -187,15 +225,27 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     // Filter by user id (in compliance item)
     if (responsesQuery?.usersIds) {
-      let conds: any = []
-      if (responsesQuery?.usersIds.responsibleIds.length > 0)
-        conds.push({ responsibleId: { $in: responsesQuery.usersIds.responsibleIds } })
-      if (responsesQuery?.usersIds.accountableIds.length > 0)
-        conds.push({ accountableId: { $in: responsesQuery.usersIds.accountableIds } })
-      if (responsesQuery?.usersIds.contributorIds.length > 0)
-        conds.push({ contributorsIds: { $in: responsesQuery.usersIds.contributorIds } })
-      if (responsesQuery?.usersIds.followerIds.length > 0)
-        conds.push({ followersIds: { $in: responsesQuery.usersIds.followerIds } })
+      const conds: any = [];
+      if (responsesQuery?.usersIds.responsibleIds.length > 0) {
+        conds.push({
+          responsibleId: { $in: responsesQuery.usersIds.responsibleIds },
+        });
+      }
+      if (responsesQuery?.usersIds.accountableIds.length > 0) {
+        conds.push({
+          accountableId: { $in: responsesQuery.usersIds.accountableIds },
+        });
+      }
+      if (responsesQuery?.usersIds.contributorIds.length > 0) {
+        conds.push({
+          contributorsIds: { $in: responsesQuery.usersIds.contributorIds },
+        });
+      }
+      if (responsesQuery?.usersIds.followerIds.length > 0) {
+        conds.push({
+          followersIds: { $in: responsesQuery.usersIds.followerIds },
+        });
+      }
       pipeline.push({
         $match: {
           $and: conds,
@@ -207,7 +257,9 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
     if (responsesQuery?.regulatoryBodiesIds) {
       pipeline.push({
         $match: {
-          'complianceItem.regulatoryBodyId': { $in: responsesQuery.regulatoryBodiesIds },
+          'complianceItem.regulatoryBodyId': {
+            $in: responsesQuery.regulatoryBodiesIds,
+          },
         },
       });
     }
@@ -248,29 +300,34 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     // Join responsible
     if (shouldJoin(['responsible'])) {
-      Promise.all(responses.map(response => new Promise<void>(async (resolve, reject) => {
-        try {
-          response.responsible = await Users.customFindByIdWithDetails({ userId: response.responsibleId, organization });
-          resolve()
-        } catch (e) {
-          console.log(`Error occured for ${response._id}: ${e}`);
-          reject()
-        }
-      })))
+      Promise.all(
+        responses.map(
+          (response) =>
+            // eslint-disable-next-line no-async-promise-executor
+            new Promise<void>(async (resolve, reject) => {
+              try {
+                response.responsible = await Users.customFindByIdWithDetails({
+                  userId: response.responsibleId,
+                  organization,
+                });
+                resolve();
+              } catch (e) {
+                console.log(`Error occured for ${response._id}: ${e}`);
+                reject();
+              }
+            }),
+        ),
+      );
     }
 
-    if (shouldJoin(["daysToDueDate"])) {
+    if (shouldJoin(['daysToDueDate'])) {
       for (const response of responses) {
-        if (!response.nextRenewalDate) {
-          continue;
-        }
+        if (!response.nextRenewalDate) continue;
+
         const start = new Date(response.nextRenewalDate);
         const end = new Date();
-        if (isSameDay(start, end)) {
-          response.daysToDueDate = 0;
-        } else {
-          response.daysToDueDate = differenceInCalendarDays(start, end);
-        }
+        if (isSameDay(start, end)) response.daysToDueDate = 0;
+        else response.daysToDueDate = differenceInCalendarDays(start, end);
       }
     }
 

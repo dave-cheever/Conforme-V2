@@ -1,10 +1,9 @@
-import React from "react";
-import {
-  CheckboxGroup,
-  Stack,
-} from "@chakra-ui/react";
-import { IUser } from "../interfaces/IUser";
-import FilterCheckBox from "./Filters/FilterCheckBox";
+import React from 'react';
+
+import { CheckboxGroup, Stack } from '@chakra-ui/react';
+
+import { IUser } from '../interfaces/IUser';
+import FilterCheckBox from './Filters/FilterCheckBox';
 
 interface IUsersSelectorList {
   filteredUsers: IUser[];
@@ -14,17 +13,24 @@ interface IUsersSelectorList {
   handleChange: (any) => void;
 }
 
-const UsersSelectorList = ({ filteredUsers, selected, selectedRole, disabled, handleChange }: IUsersSelectorList) => {
-  return (
-    <CheckboxGroup
-      value={selected}
-      onChange={value => handleChange({ target: { userRole: selectedRole, value } })}
-    >
-      <Stack w='full' direction="column">
-        {filteredUsers?.map(({ displayName, _id }) => <FilterCheckBox label={displayName} key={_id} value={_id} />)}
-      </Stack>
-    </CheckboxGroup >
-  );
-};
+const UsersSelectorList = ({
+  filteredUsers,
+  selected,
+  selectedRole,
+  handleChange,
+}: IUsersSelectorList) => (
+  <CheckboxGroup
+    onChange={(value) =>
+      handleChange({ target: { userRole: selectedRole, value } })
+    }
+    value={selected}
+  >
+    <Stack direction="column" w="full">
+      {filteredUsers?.map(({ displayName, _id }) => (
+        <FilterCheckBox key={_id} label={displayName} value={_id} />
+      ))}
+    </Stack>
+  </CheckboxGroup>
+);
 
 export default UsersSelectorList;

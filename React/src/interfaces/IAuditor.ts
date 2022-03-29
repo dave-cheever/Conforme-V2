@@ -1,5 +1,3 @@
-
-
 export interface IAuditor {
   name: string;
   designation: string;

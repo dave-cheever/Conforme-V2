@@ -1,23 +1,28 @@
-import { v4 as uuidv4 } from "uuid";
+import { ComplianceItems } from 'app-models';
+import { isPermitted } from 'app-utils';
 
-import { ComplianceItems } from "app-models";
-import { genMetatags, isPermitted } from "app-utils";
-
-const createComplianceItem = async (_, { complianceItemInput }, { authorize, organization }) => {
+const createComplianceItem = async (
+  _,
+  { complianceItemInput },
+  { authorize, organization },
+) => {
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: "complianceItems.add" })) {
-      throw new Error("User is not permitted");
-    }
-    
+    if (!isPermitted({ user, action: 'complianceItems.add' }))
+      throw new Error('User is not permitted');
+
     const reference = await ComplianceItems.customGenerateReference();
     const newComplianceItem = {
       ...complianceItemInput,
       reference,
     };
 
-    const createdComplianceItem = await ComplianceItems.customCreate(newComplianceItem, user._id, organization._id);
+    const createdComplianceItem = await ComplianceItems.customCreate(
+      newComplianceItem,
+      user._id,
+      organization._id,
+    );
 
     ComplianceItems.customSynchronizeResponses({
       complianceItem: createdComplianceItem,

@@ -1,30 +1,30 @@
-import React, { useEffect } from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { useEffect } from 'react';
 
-import Header from "../components/Header";
-import { useFiltersContext } from "../contexts/FiltersProvider";
+import { Flex, Text } from '@chakra-ui/react';
+
+import Header from '../components/Header';
+import { useFiltersContext } from '../contexts/FiltersProvider';
 
 const Help = () => {
   const { setUsedFilters } = useFiltersContext();
 
   useEffect(() => {
     setUsedFilters([]);
-  // eslint-disable-next-line
-  },[]);
+  }, []);
 
   return (
-    <Flex flexDirection="column" h="full" w="full" overflow="auto">
-      <Header breadcrumbs={["Home", "Help"]} mobileBreadcrumbs={["Help"]}/>
+    <Flex flexDirection="column" h="full" overflow="auto" w="full">
+      <Header breadcrumbs={['Home', 'Help']} mobileBreadcrumbs={['Help']} />
       <Flex
-        flexDirection="column"
         bg="white"
-        maxWidth={"full"}
         borderRadius="20px"
-        ml="7"
-        p="25px 30px 25px 30px"
-        mr="25px"
-        mb={["25px","25px"]}
+        flexDirection="column"
         h="full"
+        maxWidth="full"
+        mb={['25px', '25px']}
+        ml="7"
+        mr="25px"
+        p="25px 30px 25px 30px"
       >
         <Text fontSize="24px" fontWeight="bold" mb="30px">
           Welcome to Tracker
@@ -35,7 +35,7 @@ const Help = () => {
           the this sparing. <br /> <br /> A then much caterpillar unselfishly
           dolphin pessimistic oriole much a dutifully alas close disagreed
           kangaroo carnally and this this much considering regardless hello frog
-          industriously much. 
+          industriously much.
           <br />
           <br />
           Cannily before around piquant smoked much some well the aside much
@@ -48,7 +48,7 @@ const Help = () => {
         </Text>
         <Text>
           More far loving adventurous jeepers doggedly a more oh cassowary
-          folded around near less and less much piranha thus the far above this.{" "}
+          folded around near less and less much piranha thus the far above this.{' '}
           <br /> <br /> Desirable incapably amid this away cackled a then far
           some near when since slid armadillo far beside hello snorted and on
           but exact tasteful far and darn well much oh the yikes and hey.

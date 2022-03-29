@@ -1,6 +1,6 @@
-import { IBase } from "./IBase";
-import { TComponent } from "./TComponent";
-import { TQuestionType } from "./TQuestionType";
+import { IBase } from './IBase';
+import { TComponent } from './TComponent';
+import { TQuestionType } from './TQuestionType';
 
 export interface IQuestion<ValueType> extends IBase {
   type: TQuestionType;

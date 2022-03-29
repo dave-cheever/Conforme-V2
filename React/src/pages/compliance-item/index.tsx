@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Flex } from '@chakra-ui/react';
 import Confetti from 'react-confetti';
 
+import { Button, Flex } from '@chakra-ui/react';
+
 import { responseTabItems } from '../../bootstrap/config';
-import Details from '../../components/Response/Details';
 import Attachments from '../../components/Response/Attachments';
+import Details from '../../components/Response/Details';
+import RenewalModal from '../../components/Response/RenewalModal';
 import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
-import RenewalModal from '../../components/Response/RenewalModal';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import useResponseUtils from '../../hooks/useResponseUtils';
 
@@ -17,10 +18,7 @@ const ComplianceItemResponse = () => {
   const [run, setRun] = useState(false);
 
   useEffect(() => {
-    if (getStatus(response) === "compliant" && !snapshot) {
-      setRun(false); // TODO: needs to be updated, fix dimensions and trigger
-    }
-    // eslint-disable-next-line
+    if (getStatus(response) === 'compliant' && !snapshot) setRun(false); // TODO: needs to be updated, fix dimensions and trigger
   }, [response]);
 
   const renderSection = () => {
@@ -37,30 +35,75 @@ const ComplianceItemResponse = () => {
       default:
         break;
     }
-  }
+  };
   return (
     <>
       <RenewalModal />
       <Confetti
-        width={1250}
-        height={1100}
         confettiSource={{
           x: 625,
           y: 350,
           w: 10,
-          h: 10
+          h: 10,
         }}
-        run={run}
+        height={1100}
         recycle={false}
+        run={run}
+        width={1250}
       />
-      <Flex w="full" h="full" direction="column">
-        <Flex flexDir="column" h={["fit-content", "full"]} p={["15px 20px 20px 20px", "25px 30px 25px 30px"]} w="full" borderRadius="20px" bg="complianceItemResponse.bg">
-          <Flex align='center' justify="space-between" mb="8">
-            <Flex justify={["center", "flex-start"]} w="full">
-              {responseTabItems.map(({ index, label, icon }) => <ResponseTabItem setActiveTab={setActiveTab} index={index} active={activeTab === index} key={label} label={label} icon={icon} />)}
+      <Flex direction="column" h="full" w="full">
+        <Flex
+          bg="complianceItemResponse.bg"
+          borderRadius="20px"
+          flexDir="column"
+          h={['fit-content', 'full']}
+          p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
+          w="full"
+        >
+          <Flex align="center" justify="space-between" mb="8">
+            <Flex justify={['center', 'flex-start']} w="full">
+              {responseTabItems.map(({ index, label, icon }) => (
+                <ResponseTabItem
+                  active={activeTab === index}
+                  icon={icon}
+                  index={index}
+                  key={label}
+                  label={label}
+                  setActiveTab={setActiveTab}
+                />
+              ))}
             </Flex>
-            {activeTab > 0 && <Button mr={activeTab === 2 ? '132px' : '12px'} display={["none", "block"]} flexShrink={0} w='120px' borderRadius="10px" h="28px" fontSize="11px" fontWeight="bold" color="complianceItemResponse.nextButtonColor" onClick={() => setActiveTab(activeTab - 1)}>Previous step</Button>}
-            {activeTab < 2 && <Button display={["none", "block"]} w='120px' flexShrink={0} borderRadius="10px" h="28px" fontSize="11px" fontWeight="bold" color="complianceItemResponse.nextButtonColor" onClick={() => setActiveTab(activeTab + 1)}>Next step</Button>}
+            {activeTab > 0 && (
+              <Button
+                borderRadius="10px"
+                color="complianceItemResponse.nextButtonColor"
+                display={['none', 'block']}
+                flexShrink={0}
+                fontSize="11px"
+                fontWeight="bold"
+                h="28px"
+                mr={activeTab === 2 ? '132px' : '12px'}
+                onClick={() => setActiveTab(activeTab - 1)}
+                w="120px"
+              >
+                Previous step
+              </Button>
+            )}
+            {activeTab < 2 && (
+              <Button
+                borderRadius="10px"
+                color="complianceItemResponse.nextButtonColor"
+                display={['none', 'block']}
+                flexShrink={0}
+                fontSize="11px"
+                fontWeight="bold"
+                h="28px"
+                onClick={() => setActiveTab(activeTab + 1)}
+                w="120px"
+              >
+                Next step
+              </Button>
+            )}
           </Flex>
           {renderSection()}
         </Flex>
@@ -73,11 +116,11 @@ export default ComplianceItemResponse;
 
 export const complianceItemResponseStyles = {
   complianceItemResponse: {
-    bg: "white",
-    nextButtonColor: "#818197",
-    labelColor: "#818197",
-    expandButtonText: "#462AC4",
-    labelTextColor: "#1F1F1F",
-    textColor: "#282F36"
-  }
-}
+    bg: 'white',
+    nextButtonColor: '#818197',
+    labelColor: '#818197',
+    expandButtonText: '#462AC4',
+    labelTextColor: '#1F1F1F',
+    textColor: '#282F36',
+  },
+};

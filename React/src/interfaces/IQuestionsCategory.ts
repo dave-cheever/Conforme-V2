@@ -1,5 +1,5 @@
-import { IBase } from "./IBase";
-import { TComponent } from "./TComponent";
+import { IBase } from './IBase';
+import { TComponent } from './TComponent';
 
 export interface IQuestionsCategory extends IBase {
   name: string;

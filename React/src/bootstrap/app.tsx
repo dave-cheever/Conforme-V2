@@ -1,17 +1,18 @@
-import { useEffect } from "react";
-import { ChakraProvider, CSSReset, Flex, Spinner } from "@chakra-ui/react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { useEffect } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
+
+import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
 import './styles.css';
-import getTheme from "./theme";
-import useAuth from "../hooks/useAuth";
-import useInit from "../hooks/useInit";
-import useRoutes from "../hooks/useRoutes";
-import IdleMonitor from "../components/IdleMonitor";
-import AppProvider, { useAppContext } from "../contexts/AppProvider";
-import ConfigProvider from "../contexts/ConfigProvider";
-import AdminProvider from "../contexts/AdminProvider";
-import FiltersProvider from "../contexts/FiltersProvider";
+import IdleMonitor from '../components/IdleMonitor';
+import AdminProvider from '../contexts/AdminProvider';
+import AppProvider, { useAppContext } from '../contexts/AppProvider';
+import ConfigProvider from '../contexts/ConfigProvider';
+import FiltersProvider from '../contexts/FiltersProvider';
+import useAuth from '../hooks/useAuth';
+import useInit from '../hooks/useInit';
+import useRoutes from '../hooks/useRoutes';
+import getTheme from './theme';
 
 function App() {
   const { user, organizationConfig } = useAppContext();
@@ -27,19 +28,18 @@ function App() {
       localStorage.removeItem('redirectUrl');
       history.push(redirectUrl);
     }
-    // eslint-disable-next-line
   }, []);
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (
       <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
-        <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center">
+        <Flex alignItems="center" h="100vh" justifyContent="center" w="100vw">
           <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
             color="brand.primary"
+            emptyColor="gray.200"
             size="xl"
+            speed="0.65s"
+            thickness="4px"
           />
         </Flex>
       </ChakraProvider>
@@ -52,13 +52,23 @@ function App() {
       {user && <IdleMonitor />}
       <AdminProvider>
         <FiltersProvider>
-          <Switch>{routes.map(props => <Route {...props} />)}</Switch>
+          <Switch>
+            {routes.map((props) => (
+              <Route {...props} />
+            ))}
+          </Switch>
         </FiltersProvider>
       </AdminProvider>
     </ChakraProvider>
   );
 }
 
-const AppWithContext = () => <AppProvider><ConfigProvider><App /></ConfigProvider></AppProvider>;
+const AppWithContext = () => (
+  <AppProvider>
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
+  </AppProvider>
+);
 
 export default AppWithContext;

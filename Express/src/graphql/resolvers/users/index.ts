@@ -1,8 +1,8 @@
 import searchUsers from './searchUsers.q';
 import session from './session.q';
-import usersById from './usersById.q';
-import users from './users.q';
 import updateUser from './updateUser.m';
+import users from './users.q';
+import usersById from './usersById.q';
 
 const usersResolvers = {
   Query: {
@@ -12,7 +12,7 @@ const usersResolvers = {
     usersById,
   },
   Mutation: {
-    updateUser
+    updateUser,
   },
 };
 

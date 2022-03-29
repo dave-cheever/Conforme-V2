@@ -1,6 +1,7 @@
-import React, { useMemo } from "react";
-import { Flex, Icon } from "@chakra-ui/react";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useMemo } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+
+import { Flex, Icon } from '@chakra-ui/react';
 
 const ResponseLeftTabItem = ({
   label,
@@ -12,9 +13,10 @@ const ResponseLeftTabItem = ({
   const history = useHistory();
   const { id }: { id: string } = useParams();
 
-  const active = useMemo(() => {
-    return history.location.pathname === `/compliance-item/${id}${url}`;
-  }, [id, url, history]);
+  const active = useMemo(
+    () => history.location.pathname === `/compliance-item/${id}${url}`,
+    [id, url, history],
+  );
 
   const redirectPage = () => {
     history.push(`/compliance-item/${id}${url}${history.location.search}`);
@@ -22,31 +24,46 @@ const ResponseLeftTabItem = ({
 
   return (
     <Flex
-      mb={[0, 3]}
-      mx={[3, 0]}
       align="center"
       cursor="pointer"
+      mb={[0, 3]}
+      mx={[3, 0]}
       onClick={redirectPage}
-      w={active ? "full" : "fit-content"}
+      w={active ? 'full' : 'fit-content'}
     >
       <Flex
-        w="30px"
-        h="30px"
-        bg={ active ? "responseLeftTabItem.activeIconBg": "responseLeftTabItem.iconBg"}
-        borderRadius="8px"
         align="center"
+        bg={
+          active
+            ? 'responseLeftTabItem.activeIconBg'
+            : 'responseLeftTabItem.iconBg'
+        }
+        borderRadius="8px"
+        h="30px"
         justify="center"
+        w="30px"
       >
         <Icon
           as={icon}
-          color={ active ? "responseLeftTabItem.activeIconColor" : "responseLeftTabItem.iconColor"}
+          color={
+            active
+              ? 'responseLeftTabItem.activeIconColor'
+              : 'responseLeftTabItem.iconColor'
+          }
         />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
+          color={
+            active
+              ? [
+                  'responseLeftTabItem.textColor',
+                  'responseLeftTabItem.activeTextColor',
+                ]
+              : 'responseLeftTabItem.textColor'
+          }
           flexGrow={1}
-          fontSize={["11px", "14px"]}
-          color={ active ? [ "responseLeftTabItem.textColor", "responseLeftTabItem.activeTextColor"]: "responseLeftTabItem.textColor"}
+          fontSize={['11px', '14px']}
           ml={3}
         >
           {label}
@@ -60,11 +77,11 @@ export default ResponseLeftTabItem;
 
 export const responseLeftTabItemStyles = {
   responseLeftTabItem: {
-    iconBg: "#FFFFFF",
-    activeIconBg: "#462AC4",
-    activeTextColor: "#1F1F1F",
-    textColor: "#818197",
-    activeIconColor: "white",
-    iconColor: "#818197",
+    iconBg: '#FFFFFF',
+    activeIconBg: '#462AC4',
+    activeTextColor: '#1F1F1F',
+    textColor: '#818197',
+    activeIconColor: 'white',
+    iconColor: '#818197',
   },
 };

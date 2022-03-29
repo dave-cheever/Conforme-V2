@@ -1,8 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex } from '@chakra-ui/react';
 
-import Loader from "../Loader";
-import AuditLogDay from "./AuditLogDay";
-import { IAuditLog } from "../../interfaces/IAuditLog";
+import { IAuditLog } from '../../interfaces/IAuditLog';
+import Loader from '../Loader';
+import AuditLogDay from './AuditLogDay';
 
 interface IProps {
   auditLogs: IAuditLog[] | [];
@@ -12,7 +12,7 @@ interface IProps {
 const AuditLog = ({ auditLogs, loading }: IProps) => {
   if (loading) {
     return (
-      <Flex w="full" h="calc(100vh - 150px)">
+      <Flex h="calc(100vh - 150px)" w="full">
         <Loader center />
       </Flex>
     );
@@ -20,15 +20,15 @@ const AuditLog = ({ auditLogs, loading }: IProps) => {
 
   return (
     <Flex
-      flexDirection="column"
-      rounded="md"
       bg="auditLog.bg"
+      flexDirection="column"
       position="relative"
-      w="100%"
       pt="20px"
+      rounded="md"
+      w="100%"
     >
       {auditLogs.map((auditLog) => (
-        <AuditLogDay key={auditLog._id} auditLog={auditLog} />
+        <AuditLogDay auditLog={auditLog} key={auditLog._id} />
       ))}
     </Flex>
   );
@@ -36,9 +36,9 @@ const AuditLog = ({ auditLogs, loading }: IProps) => {
 
 export const auditLogStyles = {
   auditLog: {
-    bg: "#FFFFFF",
-    border: "#424B50",
-    loadMore: "#000000",
+    bg: '#FFFFFF',
+    border: '#424B50',
+    loadMore: '#000000',
   },
 };
 

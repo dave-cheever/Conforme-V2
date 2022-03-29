@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
-import { TQuestionValue } from "./TQuestionValue";
-import { ITrackerQuestion } from "./ITrackerQuestion";
+import { ITrackerQuestion } from './ITrackerQuestion';
+import { TQuestionValue } from './TQuestionValue';
 
 export interface IQuestionFormBase<IEditableValue> {
   questionType: string;

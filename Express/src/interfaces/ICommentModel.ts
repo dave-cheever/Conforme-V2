@@ -1,3 +1,3 @@
-import { IBaseModel, IComment } from "app-interfaces";
+import { IBaseModel, IComment } from 'app-interfaces';
 
-export interface ICommentModel extends IBaseModel<IComment> {};
+export interface ICommentModel extends IBaseModel<IComment> {}

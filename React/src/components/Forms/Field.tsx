@@ -1,24 +1,41 @@
 import React from 'react';
 
+import { IField } from '../../interfaces/IField';
+import DataGrid from './DataGrid';
 import {
   Checkbox,
-  Dropdown,
   Datepicker,
+  Dropdown,
+  MultipleChoices,
   NumberInput,
   Switch,
   Textarea,
   TextConfirmInput,
-  TextMultilineConfirmInput,
   TextInput,
+  TextMultilineConfirmInput,
   Toggle,
-  MultipleChoices,
 } from './index';
-import { IField } from '../../interfaces/IField';
 import Table from './Table';
-import DataGrid from './DataGrid';
 
 const Field = ({ control, ...field }) => {
-  const { type, name, label, tooltip, disabled, options, validations, headings, variant, placeholder, help, styles, required, defaultvalue, requiredAnswer, notApplicable } = field;
+  const {
+    type,
+    name,
+    label,
+    tooltip,
+    disabled,
+    options,
+    validations,
+    headings,
+    variant,
+    placeholder,
+    help,
+    styles,
+    required,
+    defaultvalue,
+    requiredAnswer,
+    notApplicable,
+  } = field;
   const props: IField = {
     control,
     name,
@@ -35,7 +52,7 @@ const Field = ({ control, ...field }) => {
     required,
     requiredAnswer,
     defaultvalue,
-    notApplicable
+    notApplicable,
   };
 
   switch (type) {
@@ -55,13 +72,13 @@ const Field = ({ control, ...field }) => {
       return <Textarea key={name} {...props} />;
     }
     case 'switch': {
-      return <Switch key={name} {...props} />
+      return <Switch key={name} {...props} />;
     }
     case 'multipleChoice': {
-      return <MultipleChoices {...props} />
+      return <MultipleChoices {...props} />;
     }
     case 'toggle': {
-      return <Toggle key={name} {...props} />
+      return <Toggle key={name} {...props} />;
     }
     case 'checkbox': {
       return <Checkbox key={name} {...props} />;
@@ -79,7 +96,11 @@ const Field = ({ control, ...field }) => {
       return <DataGrid key={name} {...props} />;
     }
     default:
-      return <div>Field "{name}" of type "{type}" is not supported</div>;
+      return (
+        <div>
+          Field "{name}" of type "{type}" is not supported
+        </div>
+      );
   }
 };
 

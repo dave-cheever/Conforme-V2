@@ -1,21 +1,20 @@
-import React from "react";
-import { Progress } from "@chakra-ui/progress";
+import React from 'react';
+
+import { Progress } from '@chakra-ui/react';
 
 interface IProgressBar {
   value: number;
 }
 
-const ProgressBar = ({ value }: IProgressBar) => {
-  return (
-    <Progress
-      width={55}
-      value={value}
-      height={1}
-      mr="2"
-      colorScheme="#FFFFFF"
-      borderRadius="20px"
-    />
-  );
-};
+const ProgressBar = ({ value }: IProgressBar) => (
+  <Progress
+    borderRadius="20px"
+    colorScheme="#FFFFFF"
+    height={1}
+    mr="2"
+    value={value}
+    width={55}
+  />
+);
 
 export default ProgressBar;

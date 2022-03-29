@@ -16,7 +16,7 @@ const responsesResolvers = {
     removeDocument,
     renewResponse,
     updateResponseQuestions,
-    updateResponse
+    updateResponse,
   },
 };
 

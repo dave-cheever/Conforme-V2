@@ -1,4 +1,4 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon } from '@chakra-ui/icons';
 
 const Building = createIcon({
   path: (
@@ -7,7 +7,7 @@ const Building = createIcon({
       fill="currentColor"
     />
   ),
-  viewBox: "0 0 448 512",
+  viewBox: '0 0 448 512',
 });
 
 export default Building;

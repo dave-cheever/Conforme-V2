@@ -1,11 +1,12 @@
-import { IQuestionFormBase } from "../../interfaces/IQuestionFormBase"
-import { Button } from "@chakra-ui/button";
-import { Flex, Text } from "@chakra-ui/layout";
-import { questionHeader } from "../../utils/helpers";
-import TextInput from "../Forms/TextInput";
+import { useForm } from 'react-hook-form';
+
+import { Button, Flex, Text } from '@chakra-ui/react';
+
+import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
+import { questionHeader } from '../../utils/helpers';
 import Checkbox from '../Forms/Checkbox';
-import { useComplianceItemModalContext } from "../../contexts/ComplianceItemModalProvider";
-import { useForm } from "react-hook-form";
+import TextInput from '../Forms/TextInput';
 
 const QuestionEmailForm = ({
   questionType,
@@ -13,9 +14,8 @@ const QuestionEmailForm = ({
   setShowQuestionForm,
   setIsEdit,
   setEditQuestionIndex,
-  setEditQuestion
+  setEditQuestion,
 }: IQuestionFormBase<string>) => {
-
   const { complianceItem } = useComplianceItemModalContext();
   const {
     control,
@@ -23,7 +23,7 @@ const QuestionEmailForm = ({
     watch,
     getValues,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       name: '',
       description: '',
@@ -31,72 +31,79 @@ const QuestionEmailForm = ({
     },
   });
   const questionName = watch('name');
-  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
+  const questionAlreadyExist =
+    (complianceItem.questions || []).findIndex(
+      ({ name }) => name === questionName,
+    ) > -1;
   return (
     <>
-      <Flex alignItems="center" mb='20px'>
-        <Text fontWeight="bold" fontSize="smm">
+      <Flex alignItems="center" mb="20px">
+        <Text fontSize="smm" fontWeight="bold">
           {questionHeader(questionType)}
         </Text>
       </Flex>
       <TextInput
         control={control}
-        name="name"
         label="Question instructions (optional)"
-        variant="secondaryVariant"
+        name="name"
         placeholder="e.g. must be a company email"
         validations={{
           notEmpty: true,
-          isEmail: true
+          isEmail: true,
         }}
+        variant="secondaryVariant"
       />
       <Checkbox
         control={control}
+        label="Answer is required"
         name="required"
         variant="secondaryVariant"
-        label="Answer is required"
       />
-      <Flex justifyContent="space-between" mt='15px'>
+      <Flex justifyContent="space-between" mt="15px">
         <Button
           bg="questionEmailForm.button.primary.bg"
           color="questionEmailForm.button.primary.font"
+          disabled={
+            questionAlreadyExist ||
+            Object.keys(errors).length > 0 ||
+            !questionName
+          }
           fontSize="sm"
           fontWeight="medium"
           h="27px"
-          p="17px"
           onClick={() => {
             const question = getValues();
             addOrUpdateQuestion({ type: questionType, ...question });
             setShowQuestionForm(false);
           }}
-          disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
-          title={questionAlreadyExist ? "This question already exist" : ''}
+          p="17px"
+          title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
         </Button>
         <Button
           bg="questionEmailForm.button.secondary.bg"
           color="questionEmailForm.button.secondary.font"
-          opacity="0.5"
           fontSize="sm"
           fontWeight="medium"
           h="27px"
-          p="17px"
           onClick={() => {
             setShowQuestionForm(false);
             setIsEdit(false);
             setEditQuestionIndex(undefined);
             setEditQuestion('');
           }}
+          opacity="0.5"
+          p="17px"
         >
           Cancel
         </Button>
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default QuestionEmailForm
+export default QuestionEmailForm;
 
 export const questionEmailFormStyles = {
   questionEmailForm: {
@@ -109,6 +116,6 @@ export const questionEmailFormStyles = {
         bg: '#9A9EA1',
         font: '#FFFFFF',
       },
-    }
-  }
-}
+    },
+  },
+};

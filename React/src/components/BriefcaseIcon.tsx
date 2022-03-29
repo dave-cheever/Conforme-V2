@@ -4,21 +4,22 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-} from "@chakra-ui/react";
-import { Briefcase } from "../icons";
+} from '@chakra-ui/react';
+
+import { Briefcase } from '../icons';
 
 const BriefcaseIcon = () => (
-  <Popover trigger="hover" placement="top">
+  <Popover placement="top" trigger="hover">
     <PopoverTrigger>
-      <Briefcase w="16px" h="14px" fill="brand.paleGrey" />
+      <Briefcase fill="brand.paleGrey" h="14px" w="16px" />
     </PopoverTrigger>
     <PopoverContent
       bg="brand.secondary"
-      ml="40px"
-      mb="5px"
-      w="180px"
       color="brand.lightGrey"
       fontSize="14px"
+      mb="5px"
+      ml="40px"
+      w="180px"
     >
       <PopoverArrow bg="brand.secondary" />
       <PopoverBody>Corporate business unit</PopoverBody>

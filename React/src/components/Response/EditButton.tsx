@@ -1,5 +1,6 @@
-import { EditIcon } from "@chakra-ui/icons";
-import React, { forwardRef } from "react";
+import React, { forwardRef } from 'react';
+
+import { EditIcon } from '@chakra-ui/icons';
 
 interface Props {
   onClick?: () => void;
@@ -8,14 +9,14 @@ interface Props {
 const EditButton = forwardRef(
   ({ onClick }: Props, ref: React.ForwardedRef<SVGSVGElement>) => (
     <EditIcon
-      ref={ref}
-      ml="3"
-      onClick={onClick}
       color="responseRenewalDetails.editButtonColor"
       cursor="pointer"
       mb="2"
+      ml="3"
+      onClick={onClick}
+      ref={ref}
     />
-  )
+  ),
 );
 
 export default EditButton;

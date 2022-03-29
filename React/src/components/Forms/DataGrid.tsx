@@ -1,18 +1,12 @@
 import React from 'react';
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Input,
-} from '@chakra-ui/react';
-
-import { IField } from '../../interfaces/IField';
-import useValidate from '../../hooks/useValidate';
-import { TDefinedValidations } from '../../interfaces/TValidations';
 import { Controller } from 'react-hook-form';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
 
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { Box, Flex, Grid, GridItem, Input } from '@chakra-ui/react';
+
+import useValidate from '../../hooks/useValidate';
+import { IField } from '../../interfaces/IField';
+import { TDefinedValidations } from '../../interfaces/TValidations';
 
 interface IFormFieldHeadingOption {
   label: string;
@@ -31,35 +25,37 @@ interface IFormFieldHeadings {
   }[];
 }
 
-
 interface IDataGrid extends IField {
   placeholder?: string;
   styles?: {
     textInput?: {
-      font?: string
-    }
-  }
+      font?: string;
+    };
+  };
   headings?: IFormFieldHeadings;
 }
 
 const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
-    if (validationValue && !value) {
-      return `${label} cannot be empty`;
-    }
+    if (validationValue && !value) return `${label} cannot be empty`;
   },
 };
 
-
-const DataGrid = ({ name, label, disabled, validations = {}, control, tooltip, help }: IDataGrid) => {
-
+const DataGrid = ({
+  name,
+  label,
+  disabled,
+  validations = {},
+  control,
+  tooltip,
+  help,
+}: IDataGrid) => {
   const validate = useValidate(label || name, validations, definedValidations);
 
   return (
     <Controller
-      name={name}
       control={control}
-      rules={{ validate }}
+      name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
@@ -68,64 +64,86 @@ const DataGrid = ({ name, label, disabled, validations = {}, control, tooltip, h
         const onCellChange = (e, row) => {
           const newValue = {
             ...value,
-            [row[0]]: /^-?\d+$/.test(e.target.value) ? parseInt(e.target.value) : e.target.value,
+            [row[0]]: /^-?\d+$/.test(e.target.value)
+              ? parseInt(e.target.value, 10)
+              : e.target.value,
           };
           onChange({ target: { name, value: newValue } });
-        }
-
-        const renderRow = (row, index) => {
-          return (
-            <Grid templateColumns="repeat(10, 1fr)" key={row[0]}>
-              <GridItem colSpan={3}>
-                <Flex w='full' h='full' align='center'>{row[0]}</Flex>
-              </GridItem>
-              <GridItem colSpan={7}>
-                <Flex mt='10px'>
-                  <Input
-                    type='text'
-                    value={row[1]}
-                    onChange={(e) => onCellChange(e, row)}
-                    onBlur={onBlur}
-                    disabled={disabled}
-                    color="form.textInput.font"
-                    bg="form.textInput.bg"
-                    borderRadius="8px"
-                    borderWidth="1px"
-                    borderColor={error ? "form.textInput.border.error" : "form.textInput.border.normal"}
-                  />
-                </Flex>
-              </GridItem>
-            </Grid>
-          );
         };
 
+        const renderRow = (row, index) => (
+          <Grid key={index} templateColumns="repeat(10, 1fr)">
+            <GridItem colSpan={3}>
+              <Flex align="center" h="full" w="full">
+                {row[0]}
+              </Flex>
+            </GridItem>
+            <GridItem colSpan={7}>
+              <Flex mt="10px">
+                <Input
+                  bg="form.textInput.bg"
+                  borderColor={
+                    error
+                      ? 'form.textInput.border.error'
+                      : 'form.textInput.border.normal'
+                  }
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  color="form.textInput.font"
+                  disabled={disabled}
+                  onBlur={onBlur}
+                  onChange={(e) => onCellChange(e, row)}
+                  type="text"
+                  value={row[1]}
+                />
+              </Flex>
+            </GridItem>
+          </Grid>
+        );
+
         return (
-          <Box w='full' id={name}>
+          <Box id={name} w="full">
             {label && (
-              <Flex pt={2} align='center' justify="space-between" mb='none'>
+              <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={error ? "dropdown.labelFont.error" : "dropdown.labelFont.normal"}
-                  fontWeight="bold"
+                  color={
+                    error
+                      ? 'dropdown.labelFont.error'
+                      : 'dropdown.labelFont.normal'
+                  }
                   fontSize="14px"
+                  fontWeight="bold"
+                  left="none"
                   position="static"
-                  left='none'
                   zIndex={1}
                 >
                   {label}
-                  {help && <Box fontSize="11px" opacity={.5} mt={3}>{help}</Box>}
+                  {help && (
+                    <Box fontSize="11px" mt={3} opacity={0.5}>
+                      {help}
+                    </Box>
+                  )}
                 </Box>
               </Flex>
             )}
             {rows?.map((row, index) => renderRow(row, index))}
-            {error && <Box fontSize="smm" ml={1} mt={1} color='datepicker.error'>{error.message}</Box>}
-            {tooltip &&
-              <Flex color='dropdown.tooltip' align='center' mt={3}>
+            {error && (
+              <Box color="datepicker.error" fontSize="smm" ml={1} mt={1}>
+                {error.message}
+              </Box>
+            )}
+            {tooltip && (
+              <Flex align="center" color="dropdown.tooltip" mt={3}>
                 <InfoOutlineIcon />
-                <Box fontSize="11px" ml={2}>{tooltip}</Box>
-              </Flex>}
+                <Box fontSize="11px" ml={2}>
+                  {tooltip}
+                </Box>
+              </Flex>
+            )}
           </Box>
         );
       }}
+      rules={{ validate }}
     />
   );
 };

@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import { gql, useQuery } from "@apollo/client";
-import { isEqual } from "date-fns";
+import React, { useEffect, useMemo, useState } from 'react';
 
-import AuditLogComponent from "../../components/AuditLog/AuditLog";
-import { IAuditLog } from "../../interfaces/IAuditLog";
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import { auditTabs } from "../../bootstrap/config";
-import TabItem from "../../components/Settings/TabItem";
-import { useAppContext } from "../../contexts/AppProvider";
+import { gql, useQuery } from '@apollo/client';
+import { Flex, Text } from '@chakra-ui/react';
+import { isEqual } from 'date-fns';
+
+import { auditTabs } from '../../bootstrap/config';
+import AuditLogComponent from '../../components/AuditLog/AuditLog';
+import TabItem from '../../components/Settings/TabItem';
+import { useAppContext } from '../../contexts/AppProvider';
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import { IAuditLog } from '../../interfaces/IAuditLog';
 
 const GET_AUDIT_LOGS = gql`
   query AuditLogs($auditLogsQuery: AuditLogsQuery) {
@@ -37,14 +38,22 @@ const AuditLog = () => {
   const { settings } = useAppContext();
 
   const auditLogLimit = useMemo(() => {
-    if (settings.length === 0) {
+    if (settings.length === 0) return 5;
+
+    if (
+      settings?.filter((settings) => settings.name === 'auditLogLimit')
+        .length === 0
+    )
       return 5;
-    }
-    if (settings?.filter(settings => settings.name === "auditLogLimit").length === 0) {
-      return 5;
-    }
-    if (settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value) {
-      return Number(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value);
+
+    if (
+      settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
+        ?.value
+    ) {
+      return Number(
+        settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
+          ?.value,
+      );
     }
     return 5;
   }, [settings]);
@@ -80,19 +89,18 @@ const AuditLog = () => {
 
   useEffect(() => {
     if (data) {
-      setAuditLogs((currentLogs) => {
-        return data.auditLogs.reduce((acc, curr) => {
+      setAuditLogs((currentLogs) =>
+        data.auditLogs.reduce((acc, curr) => {
           const newAcc = [...acc];
           const currentLog = newAcc.find(({ _id }) => _id === curr._id);
           if (currentLog) {
             curr.records.forEach((record) => {
               if (
                 !currentLog.records.some(({ metatags: { addedAt } }) =>
-                  isEqual(new Date(record.metatags.addedAt), new Date(addedAt))
+                  isEqual(new Date(record.metatags.addedAt), new Date(addedAt)),
                 )
-              ) {
+              )
                 currentLog.records.push(record);
-              }
             });
           } else {
             newAcc.push({
@@ -107,8 +115,8 @@ const AuditLog = () => {
             });
           }
           return newAcc;
-        }, currentLogs);
-      });
+        }, currentLogs),
+      );
     }
   }, [data]);
 
@@ -126,38 +134,44 @@ const AuditLog = () => {
         break;
 
       case 2:
-        setFieldsFilter(['responsibleId', 'accountableId', 'contributorsIds', 'followersIds']);
+        setFieldsFilter([
+          'responsibleId',
+          'accountableId',
+          'contributorsIds',
+          'followersIds',
+        ]);
+        break;
+      default:
         break;
     }
   }, [activeTab]);
 
   return (
     <Flex
-      w="full"
-      h="full"
       bg="white"
       borderRadius="20px"
-      p="25px 30px"
-      overflow="auto"
       flexDir="column"
+      h="full"
+      overflow="auto"
+      p="25px 30px"
+      w="full"
     >
       <Flex mb="3">
         {auditTabs?.map(({ index, label }) => (
           <TabItem
-            key={index}
-            setActiveTab={setActiveTab}
-            index={index}
             active={index === activeTab}
+            index={index}
+            key={index}
             label={label}
+            setActiveTab={setActiveTab}
           />
-        )
-        )}
+        ))}
       </Flex>
       <AuditLogComponent auditLogs={auditLogs} loading={loading} />
       {!loading && (
         <Text
-          cursor="pointer"
           color="auditLog.loadMore"
+          cursor="pointer"
           mb={4}
           onClick={() => setSkip((prev) => prev + 5)}
         >

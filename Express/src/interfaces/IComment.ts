@@ -1,4 +1,4 @@
-import { IBase } from "app-interfaces";
+import { IBase } from 'app-interfaces';
 
 export interface IComment extends IBase {
   responseId: string;

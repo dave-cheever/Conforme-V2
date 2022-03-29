@@ -1,8 +1,13 @@
-import { useBreakpointValue } from "@chakra-ui/react"
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const useDevice = () => {
-  const device: "mobile" | "tablet" | "desktop" = useBreakpointValue({ base: "mobile", tablet: "tablet", desktop: "desktop" }) || "desktop";
+  const device: 'mobile' | 'tablet' | 'desktop' =
+    useBreakpointValue({
+      base: 'mobile',
+      tablet: 'tablet',
+      desktop: 'desktop',
+    }) || 'desktop';
   return device;
-}
+};
 
 export default useDevice;

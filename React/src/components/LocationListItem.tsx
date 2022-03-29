@@ -1,17 +1,12 @@
-import React from "react";
-import {
-  Flex,
-  Avatar,
-  Spacer,
-  Tooltip,
-  Text,
-} from "@chakra-ui/react";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-import useDevice from "../hooks/useDevice";
-import { ArrowCount } from "../icons";
-import { ILocation } from "../interfaces/ILocation";
-import { useHistory } from "react-router-dom";
-import { useFiltersContext } from "../contexts/FiltersProvider";
+import { Avatar, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
+
+import { useFiltersContext } from '../contexts/FiltersProvider';
+import useDevice from '../hooks/useDevice';
+import { ArrowCount } from '../icons';
+import { ILocation } from '../interfaces/ILocation';
 
 const LocationListItem = ({
   location,
@@ -26,62 +21,61 @@ const LocationListItem = ({
 
   return (
     <Flex
-      flexShrink={0}
-      w="calc(100% - 22px)"
-      h="73px"
-      bg="adminComplianceItems.element.bg"
-      color="adminComplianceItems.element.font"
-      pl={6}
       align="center"
-      mt="0px"
-      fontSize="smm"
-      cursor="pointer"
+      bg="adminComplianceItems.element.bg"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
+      color="adminComplianceItems.element.font"
+      cursor="pointer"
+      flexShrink={0}
+      fontSize="smm"
       fontWeight="semi_medium"
+      h="73px"
+      mt="0px"
+      onClick={() => openLocationModal('edit', location)}
       overflow="hidden"
       overflowwrap="ellipsis"
-      onClick={() => openLocationModal("edit", location)}
+      pl={6}
+      w="calc(100% - 22px)"
     >
-      <Flex w={["max-content", "full"]}>{location.name}</Flex>
-      {device !== "mobile" && device !== "tablet" && (
+      <Flex w={['max-content', 'full']}>{location.name}</Flex>
+      {device !== 'mobile' && device !== 'tablet' && (
         <>
           <Flex w="full">
-            <Text noOfLines={1} mr="25px">
+            <Text mr="25px" noOfLines={1}>
               {location.notes || '-'}
             </Text>
           </Flex>
           <Flex w="full">
             <Avatar
-              color="userMenu.avatar.color"
               bg="userMenu.avatar.bg"
-              rounded="full"
-              name={location?.owner?.displayName}
+              color="userMenu.avatar.color"
               h="24px"
-              w="24px"
-              src={location?.owner?.imgUrl}
               mr="10px"
+              name={location?.owner?.displayName}
+              rounded="full"
               size="sm"
+              src={location?.owner?.imgUrl}
+              w="24px"
             />
             {location?.owner?.displayName}
           </Flex>
-
         </>
       )}
-      <Spacer display={["block", "none"]} />
-      <Flex w={["97px", "full"]} alignItems="center">
-        {location.complianceItemsResponsesCount || "0"}
-        <Tooltip label="Show Items" fontSize="md">
+      <Spacer display={['block', 'none']} />
+      <Flex alignItems="center" w={['97px', 'full']}>
+        {location.complianceItemsResponsesCount || '0'}
+        <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
-            w="10px"
-            h="10px"
-            stroke="locations.tooltipStroke"
             cursor="pointer"
+            h="10px"
             ml="13px"
             onClick={() => {
-              setResponseFiltersValue({ "locationsIds": [location._id] });
-              history.push("/");
+              setResponseFiltersValue({ locationsIds: [location._id] });
+              history.push('/');
             }}
+            stroke="locations.tooltipStroke"
+            w="10px"
           />
         </Tooltip>
       </Flex>

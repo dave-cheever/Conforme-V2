@@ -1,4 +1,4 @@
-import { IBase } from "./IBase";
+import { IBase } from './IBase';
 
 export interface IUser extends IBase {
   organizationsIds?: string[];
@@ -7,7 +7,7 @@ export interface IUser extends IBase {
   displayName: string;
   email: string;
   jobTitle?: string;
-  role: "reader" | "admin" | "user";
+  role: 'reader' | 'admin' | 'user';
   imgUrl?: string;
   defaultPage?: string;
   lastLogin: Date;

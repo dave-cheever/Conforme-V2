@@ -1,9 +1,16 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import { IFiltersContext } from "../interfaces/IFiltersContext";
-import IFilters, { IResponseFilters } from "../interfaces/IFilters";
-import useFiltersUtils from "../hooks/useFiltersUtils";
+import { gql, useQuery } from '@apollo/client';
+
+import useFiltersUtils from '../hooks/useFiltersUtils';
+import IFilters, { IResponseFilters } from '../interfaces/IFilters';
+import { IFiltersContext } from '../interfaces/IFiltersContext';
 
 export const FiltersContext = createContext({} as IFiltersContext);
 
@@ -42,12 +49,14 @@ const GET_FILTERS_DATA = gql`
 export const useFiltersContext = () => {
   const context = useContext(FiltersContext);
   if (!context) {
-    throw new Error('useFiltersContext must be used within the FiltersProvider');
+    throw new Error(
+      'useFiltersContext must be used within the FiltersProvider',
+    );
   }
   return context;
 };
 
-const FiltersProvider = (props: any) => {
+const FiltersProvider = ({ children }) => {
   const { data } = useQuery(GET_FILTERS_DATA, {
     variables: {
       complianceItemsQueryInput: {
@@ -55,68 +64,88 @@ const FiltersProvider = (props: any) => {
       },
     },
   });
-  const {
-    getFilters,
-  } = useFiltersUtils();
+  const { getFilters } = useFiltersUtils();
   const [filtersValues, setFiltersValues] = useState<IFilters>(getFilters());
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
-  const [responseFiltersValue, setResponseFiltersValue] = useState<IResponseFilters>({});
+  const [responseFiltersValue, setResponseFiltersValue] =
+    useState<IResponseFilters>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
-  const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(null);
-  const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{ [statusName: string]: number }>({});
-  const numberOfSelectedFilters = Object.values(filtersValues).filter(({ value }) => value && value.length > 0).length;
+  const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(
+    null,
+  );
+  const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{
+    [statusName: string]: number;
+  }>({});
+  const numberOfSelectedFilters = Object.values(filtersValues).filter(
+    ({ value }) => value && value.length > 0,
+  ).length;
 
   const setFilters = (filters = {}) => {
-    setFiltersValues(getFilters({
-      usedFilters,
-      oldFilters: filtersValues,
-      newFilters: filters,
-    }));
+    setFiltersValues(
+      getFilters({
+        usedFilters,
+        oldFilters: filtersValues,
+        newFilters: filters,
+      }),
+    );
   };
 
   const cleanFilters = () => {
-    setFiltersValues(getFilters({
-      usedFilters,
-      oldFilters: {},
-    }));
+    setFiltersValues(
+      getFilters({
+        usedFilters,
+        oldFilters: {},
+      }),
+    );
   };
 
   useEffect(() => {
     setFilters();
-  }, [usedFilters]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [usedFilters]);
 
-  const value = useMemo(() => ({
-    filtersValues, setFiltersValues,
-    usedFilters, setUsedFilters,
-    setFilters, cleanFilters,
-    showFiltersPanel, setShowFiltersPanel,
-    openedFilterPanel, setOpenedFilterPanel,
-    responsesStatusesCounts, setResponsesStatusesCounts,
-    responseFiltersValue, setResponseFiltersValue,
-    numberOfSelectedFilters,
-    complianceItems: data?.complianceItems,
-    categories: data?.categories,
-    locations: data?.locations,
-    regulatoryBodies: data?.regulatoryBodies,
-    businessUnits: data?.businessUnits,
-    users: [...(data?.users || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
-  }), [ // eslint-disable-line react-hooks/exhaustive-deps
-    filtersValues,
-    usedFilters,
-    showFiltersPanel,
-    openedFilterPanel,
-    responsesStatusesCounts,
-    numberOfSelectedFilters,
-    responseFiltersValue,
-    setResponseFiltersValue,
-    data,
-  ]);
+  const value = useMemo(
+    () => ({
+      filtersValues,
+      setFiltersValues,
+      usedFilters,
+      setUsedFilters,
+      setFilters,
+      cleanFilters,
+      showFiltersPanel,
+      setShowFiltersPanel,
+      openedFilterPanel,
+      setOpenedFilterPanel,
+      responsesStatusesCounts,
+      setResponsesStatusesCounts,
+      responseFiltersValue,
+      setResponseFiltersValue,
+      numberOfSelectedFilters,
+      complianceItems: data?.complianceItems,
+      categories: data?.categories,
+      locations: data?.locations,
+      regulatoryBodies: data?.regulatoryBodies,
+      businessUnits: data?.businessUnits,
+      users: [...(data?.users || [])].sort((a, b) =>
+        a.displayName.localeCompare(b.displayName),
+      ),
+    }),
+
+    [
+      filtersValues,
+      usedFilters,
+      showFiltersPanel,
+      openedFilterPanel,
+      responsesStatusesCounts,
+      numberOfSelectedFilters,
+      responseFiltersValue,
+      setResponseFiltersValue,
+      data,
+    ],
+  );
 
   return (
-    <FiltersContext.Provider value={value}>
-      {props.children}
-    </FiltersContext.Provider>
-  )
-}
+    <FiltersContext.Provider value={value}>{children}</FiltersContext.Provider>
+  );
+};
 
 export default FiltersProvider;

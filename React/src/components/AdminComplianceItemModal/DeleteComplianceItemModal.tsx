@@ -1,89 +1,91 @@
 import React, { useContext } from 'react';
-import {
-  ModalContent,
-  Flex,
-  Box,
-  Button,
-} from '@chakra-ui/react';
+
+import { Box, Button, Flex, ModalContent } from '@chakra-ui/react';
 
 import { ComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import { CrossIcon } from '../../icons';
 
 const DeleteComplianceItemModal = ({ refetch }) => {
-  const {
-    complianceItem,
-  } = useContext(ComplianceItemModalContext);
-  const {
-    deleteComplianceItem,
-    closeModal,
-  } = useComplianceItemModal(refetch);
+  const { complianceItem } = useContext(ComplianceItemModalContext);
+  const { deleteComplianceItem, closeModal } = useComplianceItemModal(refetch);
 
   return (
     <ModalContent
-      w="330px"
       bg="deleteComplianceItemModal.bg"
       borderRadius="20px"
-      position="relative"
-      p="20px  25px"
       m="auto"
+      p="20px  25px"
+      position="relative"
+      w="330px"
     >
-      <Flex h="100%" flexDirection="column" justifyContent="left">
+      <Flex flexDirection="column" h="100%" justifyContent="left">
         <Flex
+          color="deleteComplianceItemModal.heading"
           fontSize="xxl"
           fontWeight="bold"
-          color="deleteComplianceItemModal.heading"
+          justifyContent="space-between"
           mb="15px"
           w="full"
-          justifyContent="space-between"
-        >Remove item?
-          <CrossIcon onClick={closeModal} stroke="deleteComplianceItemModal.crossIcon" w="20px" cursor="pointer"  />
-        </Flex>
-        <Box
-          whiteSpace="pre"
-          color="deleteComplianceItemModal.subHeading"
         >
+          Remove item?
+          <CrossIcon
+            cursor="pointer"
+            onClick={closeModal}
+            stroke="deleteComplianceItemModal.crossIcon"
+            w="20px"
+          />
+        </Flex>
+        <Box color="deleteComplianceItemModal.subHeading" whiteSpace="pre">
           The action cannot be undone.
         </Box>
-        <Flex mt="40px" justifyContent="space-between">
+        <Flex justifyContent="space-between" mt="40px">
           <Button
-            color="deleteComplianceItemModal.buttonKeepColor"
-            p="10px 20px"
+            _hover={{
+              backgroundColor: 'deleteComplianceItemModal.buttonKeepHoverBg',
+            }}
             bg="deleteComplianceItemModal.buttonKeepBg"
-            _hover={{ backgroundColor: "deleteComplianceItemModal.buttonKeepHoverBg" }}
             borderRadius="4px"
+            color="deleteComplianceItemModal.buttonKeepColor"
             mr="22px"
             onClick={closeModal}
-          >Keep</Button>
-          <Button
             p="10px 20px"
-            borderRadius="4px"
+          >
+            Keep
+          </Button>
+          <Button
+            _hover={{
+              bg: 'deleteComplianceItemModal.buttonRemoveHoverBg',
+              opacity: 0.7,
+            }}
             bg="deleteComplianceItemModal.buttonRemoveBg"
+            borderRadius="4px"
             color="deleteComplianceItemModal.buttonRemoveColor"
-            _hover={{ bg: "deleteComplianceItemModal.buttonRemoveHoverBg", opacity: 0.7 }}
             fontSize="smm"
-            onClick={() => deleteComplianceItem(complianceItem)}>
+            onClick={() => deleteComplianceItem(complianceItem)}
+            p="10px 20px"
+          >
             Delete
           </Button>
         </Flex>
       </Flex>
     </ModalContent>
-  )
+  );
 };
 
 export const deleteComplianceItemModalStyles = {
   deleteComplianceItemModal: {
-    bg: "#FFFFFF",
-    heading: "#313233",
-    subHeading: "#818197",
-    buttonKeepColor: "#818197",
-    buttonKeepBg: "#F0F2F5",
-    buttonKeepHoverBg: "#F0F2F5",
-    buttonRemoveColor: "#FFFFFF",
-    buttonRemoveBg: "#E93C44",
-    buttonRemoveHoverBg: "#E93C44",
-    crossIcon:"#282F36"
-  }
-}
+    bg: '#FFFFFF',
+    heading: '#313233',
+    subHeading: '#818197',
+    buttonKeepColor: '#818197',
+    buttonKeepBg: '#F0F2F5',
+    buttonKeepHoverBg: '#F0F2F5',
+    buttonRemoveColor: '#FFFFFF',
+    buttonRemoveBg: '#E93C44',
+    buttonRemoveHoverBg: '#E93C44',
+    crossIcon: '#282F36',
+  },
+};
 
 export default DeleteComplianceItemModal;

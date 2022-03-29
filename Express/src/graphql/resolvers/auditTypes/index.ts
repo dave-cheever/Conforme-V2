@@ -1,7 +1,7 @@
-import auditTypes from "./auditTypes";
-import createAuditType from "./createAuditType.m";
-import deleteAuditType from "./deleteAuditType.m";
-import updateAuditType from "./updateAuditType.m";
+import auditTypes from './auditTypes';
+import createAuditType from './createAuditType.m';
+import deleteAuditType from './deleteAuditType.m';
+import updateAuditType from './updateAuditType.m';
 
 const auditTypesResolvers = {
   Query: {

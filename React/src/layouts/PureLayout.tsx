@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex } from '@chakra-ui/react';
 
-const PureLayout = ({ component: Component }: { component: any }) => {
-  return <Flex>
+const PureLayout = ({ component: Component }: { component: any }) => (
+  <Flex>
     <Component />
-  </Flex>;
-};
+  </Flex>
+);
 
 export default PureLayout;

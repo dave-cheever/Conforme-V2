@@ -1,7 +1,7 @@
-import locations from "./locations.q";
-import createLocation from "./createLocations.m";
-import deleteLocation from "./deleteLocations.m";
-import updateLocation from "./updateLocations.m";
+import createLocation from './createLocations.m';
+import deleteLocation from './deleteLocations.m';
+import locations from './locations.q';
+import updateLocation from './updateLocations.m';
 
 const locationsResolvers = {
   Query: {

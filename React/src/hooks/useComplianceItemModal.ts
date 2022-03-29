@@ -1,11 +1,15 @@
-import { useCallback, useContext } from "react";
-import { useToast } from "@chakra-ui/react";
+import { useCallback, useContext } from 'react';
 
-import { toastFailed, toastSuccess } from "../bootstrap/config";
-import { AdminContext } from "../contexts/AdminProvider";
-import { initialDialogDetails, useComplianceItemModalContext } from "../contexts/ComplianceItemModalProvider";
-import { IComplianceItem } from "../interfaces/IComplianceItem";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from '@apollo/client';
+import { useToast } from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../bootstrap/config';
+import { AdminContext } from '../contexts/AdminProvider';
+import {
+  initialDialogDetails,
+  useComplianceItemModalContext,
+} from '../contexts/ComplianceItemModalProvider';
+import { IComplianceItem } from '../interfaces/IComplianceItem';
 
 const CREATE_COMPLIANCE_ITEM = gql`
   mutation ($complianceItemInput: ComplianceItemInput!) {
@@ -34,14 +38,11 @@ const CLONE_COMPLIANCE_ITEM = gql`
   }
 `;
 
-const useComplianceItemModal = (refetch = () => { }) => {
+const useComplianceItemModal = (refetch = () => {}) => {
   const toast = useToast();
   const { setAdminModalState } = useContext(AdminContext);
-  const {
-    reset, setValue,
-    selectedSectionIndex,
-    setSavingDialogDetails,
-  } = useComplianceItemModalContext();
+  const { reset, setValue, selectedSectionIndex, setSavingDialogDetails } =
+    useComplianceItemModalContext();
   const [create] = useMutation(CREATE_COMPLIANCE_ITEM);
   const [update] = useMutation(UPDATE_COMPLIANCE_ITEM);
   const [remove] = useMutation(DELETE_COMPLIANCE_ITEM);
@@ -49,14 +50,16 @@ const useComplianceItemModal = (refetch = () => { }) => {
 
   const closeModal = useCallback(() => setAdminModalState('closed'), []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const saveComplianceItem = async (complianceItemInput: Partial<IComplianceItem>) => {
+  const saveComplianceItem = async (
+    complianceItemInput: Partial<IComplianceItem>,
+  ) => {
     try {
-      setSavingDialogDetails(details => ({
+      setSavingDialogDetails((details) => ({
         ...details,
         state: 'Saving compliance item',
       }));
       const changeState = setTimeout(() => {
-        setSavingDialogDetails(details => ({
+        setSavingDialogDetails((details) => ({
           ...details,
           state: 'Saving responses',
         }));
@@ -72,22 +75,35 @@ const useComplianceItemModal = (refetch = () => { }) => {
       } else {
         const { data } = await create({ variables: { complianceItemInput } });
         savedComplianceItemId = data.createComplianceItem._id;
-        reset({ ...complianceItemInput, _id: savedComplianceItemId }, selectedSectionIndex);
+        reset(
+          { ...complianceItemInput, _id: savedComplianceItemId },
+          selectedSectionIndex,
+        );
       }
       refetch();
-      toast({ ...toastSuccess, description: `${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}` });
+      toast({
+        ...toastSuccess,
+        description: `${complianceItemInput.name} ${
+          complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'
+        }`,
+      });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
       setSavingDialogDetails(initialDialogDetails);
     }
-  }
+  };
 
-  const deleteComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
+  const deleteComplianceItem = async (
+    complianceItem: Partial<IComplianceItem>,
+  ) => {
     try {
       await remove({ variables: { _id: complianceItem._id } });
       refetch();
-      toast({ ...toastSuccess, description: `${complianceItem.name} was deleted` });
+      toast({
+        ...toastSuccess,
+        description: `${complianceItem.name} was deleted`,
+      });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
@@ -95,26 +111,30 @@ const useComplianceItemModal = (refetch = () => { }) => {
     }
   };
 
-  const cloneComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
+  const cloneComplianceItem = async (
+    complianceItem: Partial<IComplianceItem>,
+  ) => {
     try {
-      setSavingDialogDetails(details => ({
+      setSavingDialogDetails((details) => ({
         ...details,
         state: 'Saving compliance item',
       }));
       const changeState = setTimeout(() => {
-        setSavingDialogDetails(details => ({
+        setSavingDialogDetails((details) => ({
           ...details,
           state: 'Saving responses',
         }));
         clearTimeout(changeState);
       }, 1000);
 
-      let savedComplianceItemId: string;
       const { data } = await clone({ variables: { _id: complianceItem._id } });
-      savedComplianceItemId = data.cloneComplianceItem._id;
+      const savedComplianceItemId = data.cloneComplianceItem._id;
       setValue('_id', savedComplianceItemId);
       refetch();
-      toast({ ...toastSuccess, description: `${complianceItem.name} was cloned` });
+      toast({
+        ...toastSuccess,
+        description: `${complianceItem.name} was cloned`,
+      });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {

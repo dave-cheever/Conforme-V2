@@ -1,8 +1,7 @@
-import React from "react";
-import { Flex } from "@chakra-ui/react";
+import React from 'react';
 
-const Accidents = () => {
-  return <Flex>Accidents</Flex>;
-};
+import { Flex } from '@chakra-ui/react';
+
+const Accidents = () => <Flex>Accidents</Flex>;
 
 export default Accidents;

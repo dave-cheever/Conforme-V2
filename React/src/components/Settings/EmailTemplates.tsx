@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   Button,
   Flex,
@@ -10,15 +13,13 @@ import {
   ModalHeader,
   ModalOverlay,
   useToast,
-} from "@chakra-ui/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+} from '@chakra-ui/react';
 
-import EmailTemplate from "./EmailTemplate";
-import { useState } from "react";
-import EmailEditor from "./EmailEditor";
-import Loader from "../Loader";
-import { TickIcon } from "../../icons";
-import { toastSuccess } from "../../bootstrap/config";
+import { toastSuccess } from '../../bootstrap/config';
+import { TickIcon } from '../../icons';
+import Loader from '../Loader';
+import EmailEditor from './EmailEditor';
+import EmailTemplate from './EmailTemplate';
 
 const GET_EMAIL_TEMPLATES = gql`
   query {
@@ -50,12 +51,19 @@ const GENERATE_EMAIL_TEMPLATE = gql`
   }
 `;
 
-const EmailTemplates = ({selectedTemplate,setSelectedTemplate, isOpen, onClose, updateImage, setUpdateImage}) => {
+const EmailTemplates = ({
+  selectedTemplate,
+  setSelectedTemplate,
+  isOpen,
+  onClose,
+  updateImage,
+  setUpdateImage,
+}) => {
   const { data: emailTemplates, loading } = useQuery(GET_EMAIL_TEMPLATES);
-  const [updateSetting, { loading: saveLoading }] = useMutation(UPDATE_SETTINGS);
+  const [updateSetting, { loading: saveLoading }] =
+    useMutation(UPDATE_SETTINGS);
   const [generateThumbnail] = useMutation(GENERATE_EMAIL_TEMPLATE);
   const [html, setHtml] = useState<string>();
-  
 
   const toast = useToast();
 
@@ -77,26 +85,35 @@ const EmailTemplates = ({selectedTemplate,setSelectedTemplate, isOpen, onClose, 
     setUpdateImage(updateImage + 1);
     toast({
       ...toastSuccess,
-      description: "Email template updated successfully",
+      description: 'Email template updated successfully',
     });
   };
 
-  if( loading ){
+  if (loading) {
     return (
-      <Flex w={["full","full","550px"]} h="full">
-        <Loader center={true} />
+      <Flex h="full" w={['full', 'full', '550px']}>
+        <Loader center />
       </Flex>
     );
   }
 
   return (
     <Flex w="full">
-      <Grid w={["full","full","550px"]} h={["fit-content","fit-content","full"]} templateColumns={["repeat(1, 1fr)",selectedTemplate ? "repeat(1, 1fr)": "repeat(3, 1fr)","repeat(3, 1fr)"]} gap={7}>
+      <Grid
+        gap={7}
+        h={['fit-content', 'fit-content', 'full']}
+        templateColumns={[
+          'repeat(1, 1fr)',
+          selectedTemplate ? 'repeat(1, 1fr)' : 'repeat(3, 1fr)',
+          'repeat(3, 1fr)',
+        ]}
+        w={['full', 'full', '550px']}
+      >
         {emailTemplates?.settings?.map((template) => (
           <EmailTemplate
             active={selectedTemplate?._id === template?._id}
-            setSelectedTemplate={setSelectedTemplate}
             key={template?._id}
+            setSelectedTemplate={setSelectedTemplate}
             template={template}
             updateImage={updateImage}
           />
@@ -105,14 +122,14 @@ const EmailTemplates = ({selectedTemplate,setSelectedTemplate, isOpen, onClose, 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
-          h="100vh"
-          maxW="700px"
-          w="full"
           borderRadius="0px"
+          h="100vh"
+          margin="0px"
+          maxW="700px"
           position="fixed"
           right="0px"
           top="0px"
-          margin="0px"
+          w="full"
         >
           <ModalHeader fontSize="20px">
             Edit "{selectedTemplate?.label}” template
@@ -120,21 +137,21 @@ const EmailTemplates = ({selectedTemplate,setSelectedTemplate, isOpen, onClose, 
           <ModalCloseButton />
           <ModalBody bg="emailTemplates.bg" p="0px">
             <EmailEditor
+              options={selectedTemplate?.options}
               setHtml={setHtml}
               value={selectedTemplate?.value}
-              options={selectedTemplate?.options}
             />
           </ModalBody>
 
           <ModalFooter mr="auto">
             <Button
-              isLoading={saveLoading}
-              isDisabled={html === selectedTemplate?.value}
+              borderRadius="10px"
               colorScheme="purpleHeart"
               fontSize="14px"
-              borderRadius="10px"
-              leftIcon={<TickIcon stroke="white" mt={1} />}
               h="35px"
+              isDisabled={html === selectedTemplate?.value}
+              isLoading={saveLoading}
+              leftIcon={<TickIcon mt={1} stroke="white" />}
               onClick={saveTemplate}
             >
               Save
@@ -150,6 +167,6 @@ export default EmailTemplates;
 
 export const emailTemplatesStyles = {
   emailTemplates: {
-    bg: "#F0F2F5",
+    bg: '#F0F2F5',
   },
 };

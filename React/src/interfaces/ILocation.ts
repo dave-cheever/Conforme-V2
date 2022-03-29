@@ -1,5 +1,5 @@
-import { IBase } from "./IBase";
-import { IUser } from "./IUser";
+import { IBase } from './IBase';
+import { IUser } from './IUser';
 
 export interface ILocation extends IBase {
   _id: string;

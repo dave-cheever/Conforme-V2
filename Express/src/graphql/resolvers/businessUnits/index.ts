@@ -1,7 +1,7 @@
-import businessUnits from "./businessUnits.q";
-import createBusinessUnit from "./createBusinessUnits.m";
-import updateBusinessUnit from "./updateBusinessUnits.m";
-import deleteBusinessUnit from "./deleteBusinessUnits.m";
+import businessUnits from './businessUnits.q';
+import createBusinessUnit from './createBusinessUnits.m';
+import deleteBusinessUnit from './deleteBusinessUnits.m';
+import updateBusinessUnit from './updateBusinessUnits.m';
 
 const businessUnitsResolvers = {
   Query: {

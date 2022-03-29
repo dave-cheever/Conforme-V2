@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { Box, Flex, Icon, Tooltip, Textarea } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
+
 import { CloseIcon } from '@chakra-ui/icons';
+import { Box, Flex, Icon, Textarea, Tooltip } from '@chakra-ui/react';
+
+import useValidate from '../../hooks/useValidate';
 import { Asterisk, CheckIcon } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
-import useValidate from '../../hooks/useValidate';
 
 interface ItextMultilineConfirmInput extends IField {
   placeholder?: string;
@@ -13,116 +15,169 @@ interface ItextMultilineConfirmInput extends IField {
 
 const definedValidations: TDefinedValidations = {
   notEmpty: (label, validationValue, value) => {
-    if (validationValue && !value) {
-      return `${label} cannot be empty`;
-    }
+    if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue) {
+    if (value.length < validationValue)
       return `${label} can be maximum ${validationValue} characters length`;
-    }
   },
 };
 
-const TextMultilineConfirmInput = ({ control, name, label, required, tooltip = '', validations = {}, disabled = false, defaultvalue }: ItextMultilineConfirmInput) => {
+const TextMultilineConfirmInput = ({
+  control,
+  name,
+  label,
+  required,
+  tooltip = '',
+  validations = {},
+  disabled = false,
+  defaultvalue,
+}: ItextMultilineConfirmInput) => {
   const inputRef = useRef<any>();
   const [tempValue, setTempValue] = useState(defaultvalue || '');
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-      name={name}
       control={control}
-      rules={{ validate }}
-      render={({ field, fieldState, formState }) => {
+      name={name}
+      render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const showButtons = tempValue !== (value || '');
 
         const { error } = fieldState;
         return (
-          <Box w='full' id={name}>
+          <Box id={name} w="full">
             {label && (
-              <Flex pt={2} pb={2} align='center' justify="space-between" mb='none'>
+              <Flex
+                align="center"
+                justify="space-between"
+                mb="none"
+                pb={2}
+                pt={2}
+              >
                 <Box
-                  color={error ? "textMultilineConfirmInput.labelFont.error" : "textMultilineConfirmInput.labelFont.normal"}
-                  fontWeight="bold"
+                  color={
+                    error
+                      ? 'textMultilineConfirmInput.labelFont.error'
+                      : 'textMultilineConfirmInput.labelFont.normal'
+                  }
                   fontSize="ssm"
+                  fontWeight="bold"
+                  left="none"
                   position="static"
-                  left='none'
                   zIndex={2}
                 >
                   {label}
-                  {required && <Asterisk ml="5px" mb="8px" fill="questionListElement.iconAsterisk" stroke='textMultilineConfirmInput.iconAsterisk' w='9px' h='9px' />}
-                  {' '}
-                  {tooltip && <Tooltip hasArrow label={tooltip} placement="top"><Icon name="info" mb={1} h="14px" /></Tooltip>}
+                  {required && (
+                    <Asterisk
+                      fill="questionListElement.iconAsterisk"
+                      h="9px"
+                      mb="8px"
+                      ml="5px"
+                      stroke="textMultilineConfirmInput.iconAsterisk"
+                      w="9px"
+                    />
+                  )}{' '}
+                  {tooltip && (
+                    <Tooltip hasArrow label={tooltip} placement="top">
+                      <Icon h="14px" mb={1} name="info" />
+                    </Tooltip>
+                  )}
                 </Box>
               </Flex>
             )}
             <Flex>
               <Textarea
-                ref={inputRef}
-                borderRadius={showButtons ? "8px 0 0 8px" : "8px"}
-                borderWidth={showButtons ? "1px 0 1px 1px" : "1px"}
-                h={"40px"}
-
-                type="text"
-                color="textMultilineConfirmInput.font"
-                bg="textMultilineConfirmInput.bg"
-                name={name}
-                defaultValue={tempValue}
-                borderColor={error ? "textMultilineConfirmInput.border.error" : "textMultilineConfirmInput.border.normal"}
-                _active={{ bg: disabled ? "textMultilineConfirmInput.disabled.bg" : "textMultilineConfirmInput.activeBg" }}
-                _focus={{ borderColor: error ? "textMultilineConfirmInput.border.focus.error" : "textMultilineConfirmInput.border.focus.normal" }}
-                _hover={{ cursor: "auto" }}
-                onChange={event => setTempValue(event.target.value)}
-                onBlur={onBlur}
-                isDisabled={disabled}
-                cursor="pointer"
-                _disabled={{
-                  bg: "textMultilineConfirmInput.disabled.bg",
-                  color: "textMultilineConfirmInput.disabled.font",
-                  borderColor: "textMultilineConfirmInput.disabled.border",
-                  cursor: "not-allowed",
+                _active={{
+                  bg: disabled
+                    ? 'textMultilineConfirmInput.disabled.bg'
+                    : 'textMultilineConfirmInput.activeBg',
                 }}
-                maxLength={validations && validations.forceMaxLength ? validations.maxLength as number : undefined}
-                _placeholder={{ color: 'textMultilineConfirmInput.placeholder' }}
+                _disabled={{
+                  bg: 'textMultilineConfirmInput.disabled.bg',
+                  color: 'textMultilineConfirmInput.disabled.font',
+                  borderColor: 'textMultilineConfirmInput.disabled.border',
+                  cursor: 'not-allowed',
+                }}
+                _focus={{
+                  borderColor: error
+                    ? 'textMultilineConfirmInput.border.focus.error'
+                    : 'textMultilineConfirmInput.border.focus.normal',
+                }}
+                _hover={{ cursor: 'auto' }}
+                _placeholder={{
+                  color: 'textMultilineConfirmInput.placeholder',
+                }}
+                bg="textMultilineConfirmInput.bg"
+                borderColor={
+                  error
+                    ? 'textMultilineConfirmInput.border.error'
+                    : 'textMultilineConfirmInput.border.normal'
+                }
+                borderRadius={showButtons ? '8px 0 0 8px' : '8px'}
+                borderWidth={showButtons ? '1px 0 1px 1px' : '1px'}
+                color="textMultilineConfirmInput.font"
+                cursor="pointer"
+                defaultValue={tempValue}
+                h="40px"
+                isDisabled={disabled}
+                maxLength={
+                  validations && validations.forceMaxLength
+                    ? (validations.maxLength as number)
+                    : undefined
+                }
+                name={name}
+                onBlur={onBlur}
+                onChange={(event) => setTempValue(event.target.value)}
+                ref={inputRef}
+                type="text"
               />
               {showButtons && (
-                <Flex
-                  direction='column'
-                  cursor='pointer'
-                >
+                <Flex cursor="pointer" direction="column">
                   <Flex
-                    grow={1}
-                    w={6}
+                    align="center"
+                    bgColor="textMultilineConfirmInput.approve.bg"
                     borderRadius="0 8px 0 0"
-                    align='center'
-                    justify='center'
-                    bgColor='textMultilineConfirmInput.approve.bg'
-                    color='textMultilineConfirmInput.approve.font'
-                    onClick={() => onChange({ target: { name, value: inputRef.current?.value } })}
-                  ><CheckIcon stroke='textMultilineConfirmInput.approve.font' /></Flex>
-                  <Flex
+                    color="textMultilineConfirmInput.approve.font"
                     grow={1}
+                    justify="center"
+                    onClick={() =>
+                      onChange({
+                        target: { name, value: inputRef.current?.value },
+                      })
+                    }
                     w={6}
+                  >
+                    <CheckIcon stroke="textMultilineConfirmInput.approve.font" />
+                  </Flex>
+                  <Flex
+                    align="center"
+                    bgColor="textMultilineConfirmInput.reject.bg"
                     borderRadius="0 0 8px 0"
-                    align='center'
-                    justify='center'
-                    bgColor='textMultilineConfirmInput.reject.bg'
-                    color='textMultilineConfirmInput.reject.font'
+                    color="textMultilineConfirmInput.reject.font"
+                    grow={1}
+                    justify="center"
                     onClick={() => {
-                      if (inputRef.current) {
-                        inputRef.current.value = value;
-                      }
+                      if (inputRef.current) inputRef.current.value = value;
+
                       setTempValue(value);
                     }}
-                  ><CloseIcon w='12px' /></Flex>
+                    w={6}
+                  >
+                    <CloseIcon w="12px" />
+                  </Flex>
                 </Flex>
               )}
             </Flex>
-            {error && <Box fontSize={14} ml={1} color='textMultilineConfirmInput.error'>{error.message}</Box>}
+            {error && (
+              <Box color="textMultilineConfirmInput.error" fontSize={14} ml={1}>
+                {error.message}
+              </Box>
+            )}
           </Box>
         );
       }}
+      rules={{ validate }}
     />
   );
 };

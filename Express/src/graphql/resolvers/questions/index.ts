@@ -1,7 +1,7 @@
-import questions from "./questions.q";
-import createQuestion from "./createQuestion.m";
-import deleteQuestion from "./deleteQuestion.m";
-import updateQuestion from "./updateQuestion.m";
+import createQuestion from './createQuestion.m';
+import deleteQuestion from './deleteQuestion.m';
+import questions from './questions.q';
+import updateQuestion from './updateQuestion.m';
 
 const questionsResolvers = {
   Query: {

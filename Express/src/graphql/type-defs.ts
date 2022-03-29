@@ -1,21 +1,70 @@
-import { gql } from "apollo-server-express";
+import { gql } from 'apollo-server-express';
 
-import { auditLogsTypeDefs, auditLogsQueryDefs } from './resolvers/auditLogs';
-import { auditTypesMutationDefs, auditTypesQueryDefs, auditTypesTypeDefs } from "./resolvers/auditTypes";
-import { businessUnitsTypeDefs, businessUnitsQueryDefs, businessUnitsMutationDefs } from "./resolvers/businessUnits";
-import { categoriesQueryDefs, categoriesMutationDefs } from "./resolvers/categories";
-import { commentsMutationDefs, commentsQueryDefs, commnentsTypeDefs } from "./resolvers/comments";
-import { complianceItemsTypeDefs, complianceItemsQueryDefs, complianceItemsMutationDefs } from "./resolvers/complianceItems";
-import { graphTypeDefs, graphQueryDefs } from "./resolvers/graph";
-import { locationsTypeDefs, locationsQueryDefs, locationsMutationDefs } from "./resolvers/locations";
-import { organizationsTypeDefs, organizationsQueryDefs } from "./resolvers/organizations";
-import { questionsCategoriesTypeDefs, questionsCategoriesQueryDefs, questionsCategoriesMutationDefs } from "./resolvers/questionsCategories";
-import { questionsTypeDefs, questionsQueryDefs, questionsMutationDefs } from "./resolvers/questions";
-import { regulatoryBodiesQueryDefs, regulatoryBodiesMutationDefs } from "./resolvers/regulatoryBodies";
-import { responsesTypeDefs, responsesQueryDefs, responsesMutationDefs } from "./resolvers/responses";
-import { searchQueryDefs, searchTypeDefs } from "./resolvers/search";
-import { settingsTypeDefs, settingsQueryDefs, settingsMutationDefs } from "./resolvers/settings";
-import { usersTypeDefs, usersQueryDefs,usersMutationsDefs } from "./resolvers/users";
+import { auditLogsQueryDefs, auditLogsTypeDefs } from './resolvers/auditLogs';
+import {
+  auditTypesMutationDefs,
+  auditTypesQueryDefs,
+  auditTypesTypeDefs,
+} from './resolvers/auditTypes';
+import {
+  businessUnitsMutationDefs,
+  businessUnitsQueryDefs,
+  businessUnitsTypeDefs,
+} from './resolvers/businessUnits';
+import {
+  categoriesMutationDefs,
+  categoriesQueryDefs,
+} from './resolvers/categories';
+import {
+  commentsMutationDefs,
+  commentsQueryDefs,
+  commnentsTypeDefs,
+} from './resolvers/comments';
+import {
+  complianceItemsMutationDefs,
+  complianceItemsQueryDefs,
+  complianceItemsTypeDefs,
+} from './resolvers/complianceItems';
+import { graphQueryDefs, graphTypeDefs } from './resolvers/graph';
+import {
+  locationsMutationDefs,
+  locationsQueryDefs,
+  locationsTypeDefs,
+} from './resolvers/locations';
+import {
+  organizationsQueryDefs,
+  organizationsTypeDefs,
+} from './resolvers/organizations';
+import {
+  questionsMutationDefs,
+  questionsQueryDefs,
+  questionsTypeDefs,
+} from './resolvers/questions';
+import {
+  questionsCategoriesMutationDefs,
+  questionsCategoriesQueryDefs,
+  questionsCategoriesTypeDefs,
+} from './resolvers/questionsCategories';
+import {
+  regulatoryBodiesMutationDefs,
+  regulatoryBodiesQueryDefs,
+} from './resolvers/regulatoryBodies';
+import {
+  responsesMutationDefs,
+  responsesQueryDefs,
+  responsesTypeDefs,
+} from './resolvers/responses';
+import { searchQueryDefs, searchTypeDefs } from './resolvers/search';
+import {
+  settingsMutationDefs,
+  settingsQueryDefs,
+  settingsTypeDefs,
+} from './resolvers/settings';
+import {
+  usersMutationsDefs,
+  usersQueryDefs,
+  usersTypeDefs,
+} from './resolvers/users';
 
 const typeDefs = gql`
   scalar Any

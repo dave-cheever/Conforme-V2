@@ -1,4 +1,4 @@
-import { IconProps } from "@chakra-ui/icon";
+import { IconProps } from '@chakra-ui/icons';
 
 export interface IAuditModalMenuItemProps {
   label: string;

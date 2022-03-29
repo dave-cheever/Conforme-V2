@@ -1,19 +1,19 @@
 import {
-  Box,
   Avatar,
-  Flex,
+  Box,
   Button,
+  Flex,
   Modal,
-  ModalOverlay,
+  ModalBody,
   ModalContent,
   ModalHeader,
-  ModalBody,
+  ModalOverlay,
   useDisclosure,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { useAppContext } from "../../contexts/AppProvider";
-import { ChevronRight, Close } from "../../icons";
-import { AdminModalState } from "../../interfaces/IAdminContext";
+import { useAppContext } from '../../contexts/AppProvider';
+import { ChevronRight, Close } from '../../icons';
+import { AdminModalState } from '../../interfaces/IAdminContext';
 
 interface IAdminModal {
   isOpenModal: boolean;
@@ -37,121 +37,134 @@ const AdminModal = ({
     <Modal
       isOpen={isOpenModal}
       onClose={onClose}
-      onOverlayClick={onAction}
       onEsc={onAction}
-      variant={collection ? "adminModal" : "conformeModal"}
+      onOverlayClick={onAction}
+      variant={collection ? 'adminModal' : 'conformeModal'}
     >
       <ModalOverlay />
-      {modalType !== "delete" && (
+      {modalType !== 'delete' && (
         <ModalContent
           bg="adminModal.content.bg"
-          h={["100vh"]}
+          h={['100vh']}
           position="absolute"
-          top={["-60px"]}
           rounded="0"
+          top={['-60px']}
         >
-          <ModalHeader
-            pl="18px"
-          >
-            <Flex pt="10px" justifyContent="space-between" alignItems="center">
+          <ModalHeader pl="18px">
+            <Flex alignItems="center" justifyContent="space-between" pt="10px">
               <Flex>
                 <Avatar
-                  rounded="full"
+                  mx={3}
                   name={user?.displayName}
+                  rounded="full"
                   size="sm"
                   src={user?.imgUrl}
-                  mx={3}
                 />
-                <Box fontSize="xxl" fontWeight="bold" >{modalType === "edit" ? `Edit ${collection}` : `Add ${collection}`}</Box>
+                <Box fontSize="xxl" fontWeight="bold">
+                  {modalType === 'edit'
+                    ? `Edit ${collection}`
+                    : `Add ${collection}`}
+                </Box>
               </Flex>
-              <Close w="15px" h="15px" stroke="adminModal.closeIcon" onClick={onAction} cursor="pointer" />
+              <Close
+                cursor="pointer"
+                h="15px"
+                onClick={onAction}
+                stroke="adminModal.closeIcon"
+                w="15px"
+              />
             </Flex>
           </ModalHeader>
           <ModalBody bg="adminModal.body.bg" overflowY="auto">
-            <Box borderRadius={["0", "20px"]} bgColor="#F0F2F5" h={"98%"} p={25} position="relative" >
+            <Box
+              bgColor="#F0F2F5"
+              borderRadius={['0', '20px']}
+              h="98%"
+              p={25}
+              position="relative"
+            >
               {children}
-              {(modalType === 'edit') &&
+              {modalType === 'edit' && (
                 <Button
-                  mb="25"
-                  bottom={0}
-                  position="absolute"
+                  _hover={{ bg: 'adminModal.button.remove.bg' }}
                   bg="adminModal.button.remove.bg"
+                  bottom={0}
                   color="adminModal.button.remove.color"
-                  _hover={{ bg: "adminModal.button.remove.bg" }}
                   fontSize="smm"
                   fontWeight="bold"
-                  onClick={() => onAction("delete")}
+                  mb="25"
+                  onClick={() => onAction('delete')}
+                  position="absolute"
                 >
                   Remove
-                </Button>}
+                </Button>
+              )}
               <Button
-                mb="25"
-                right={modalType === 'edit' ? 0 : ''}
-                bottom={0}
-                mr="25px"
-                position="absolute"
+                _hover={{ bg: 'adminModal.button.hover' }}
                 bg="adminModal.button.bg"
+                bottom={0}
                 color="adminModal.button.color"
                 fontSize="smm"
                 fontWeight="bold"
-
-                _hover={{ bg: "adminModal.button.hover" }}
+                mb="25"
+                mr="25px"
                 onClick={() => onAction(modalType)}
+                position="absolute"
+                right={modalType === 'edit' ? 0 : ''}
               >
-                {modalType === "edit" ? "Update" : "Add"}
+                {modalType === 'edit' ? 'Update' : 'Add'}
                 <ChevronRight ml="5px" />
               </Button>
-
             </Box>
           </ModalBody>
         </ModalContent>
       )}
-      {modalType === "delete" && (
+      {modalType === 'delete' && (
         <ModalContent
           bg="adminModal.delete.bg"
-          h={["100vh", "calc(100vh - 30px)"]}
-          borderRadius={["0", "20px"]}
+          borderRadius={['0', '20px']}
+          h={['100vh', 'calc(100vh - 30px)']}
           position="absolute"
-          top={["-60px", "-45px"]}
-          right={["0", "15px"]}
+          right={['0', '15px']}
+          top={['-60px', '-45px']}
         >
           <Flex
-            h="100%"
             alignItems="center"
             flexDirection="column"
+            h="100%"
             justifyContent="center"
           >
             <Box
+              color="adminModal.button.color"
               fontSize="fontSize.xxl"
               fontWeight="fontWeights.bold"
-              color="adminModal.button.color"
               mb="45px"
             >
               Remove
             </Box>
             <Box
-              whiteSpace="pre"
               color="adminModal.text.color"
               textAlign="center"
+              whiteSpace="pre"
             >
               {`All the information will be lost and you will need \n to re-create it from scratch.`}
             </Box>
             <Box mt="34px">
               <Button
-                color="adminModal.button.color"
-                p="10px 40px"
+                _hover={{ backgroundColor: 'adminModal.button.keep.hover' }}
                 bg="adminModal.button.keep.bg"
-                _hover={{ backgroundColor: "adminModal.button.keep.hover" }}
                 borderRadius="4px"
+                color="adminModal.button.color"
                 mr="22px"
                 onClick={onAction}
+                p="10px 40px"
               >
                 Keep
               </Button>
               <Button
-                p="10px 40px"
                 borderRadius="4px"
                 onClick={() => onAction(modalType)}
+                p="10px 40px"
               >
                 Remove
               </Button>
@@ -168,33 +181,30 @@ export default AdminModal;
 export const adminModalStyles = {
   adminModal: {
     content: {
-      bg: "#FFFFFF",
+      bg: '#FFFFFF',
     },
     body: {
-      bg: "#FFFFFF",
+      bg: '#FFFFFF',
     },
-    closeIcon: "#282F36",
+    closeIcon: '#282F36',
     button: {
-      bg: "#462AC4",
-      hover: "#462AC4",
+      bg: '#462AC4',
+      hover: '#462AC4',
       keep: {
-        bg: "#A2171E",
-        hover: "#462AC4",
+        bg: '#A2171E',
+        hover: '#462AC4',
       },
       remove: {
-        bg: "#E93C44",
-        color: "#ffffff",
-
+        bg: '#E93C44',
+        color: '#ffffff',
       },
-      color: "#ffffff",
-
+      color: '#ffffff',
     },
     text: {
-      color: "#ffffff",
+      color: '#ffffff',
     },
     delete: {
       bg: 'rgba(67, 76, 81, 0.95)',
     },
-  }
-}
-
+  },
+};

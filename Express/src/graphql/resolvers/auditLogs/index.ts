@@ -1,11 +1,10 @@
-import auditLogs from "./auditLogs.q";
+import auditLogs from './auditLogs.q';
 
 const auditLogsResolvers = {
   Query: {
     auditLogs,
   },
-  Mutation: {
-  },
+  Mutation: {},
 };
 
 export const auditLogsTypeDefs = `

@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react';
+
+import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   Box,
   Button,
@@ -12,17 +14,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
-  Text
-} from "@chakra-ui/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { format } from "date-fns";
+} from '@chakra-ui/react';
+import { format } from 'date-fns';
 
-import { IDocument } from "../../interfaces/IResponse";
-import Can from "../can";
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import { Bin, BlankPage, DownloadIcon } from "../../icons";
-
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import { BlankPage, DownloadIcon, Trashcan } from '../../icons';
+import { IDocument } from '../../interfaces/IResponse';
+import Can from '../can';
 
 const GET_DOCUMENT_DETAILS = gql`
   query FilesDetails($filesDetailsQuery: FilesDetailsQuery) {
@@ -41,15 +41,27 @@ const REMOVE_DOCUMENT = gql`
   }
 `;
 
-const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, outDated = false }: { document: IDocument | undefined, isAttachment?: boolean, isEvidence?: boolean, outDated?: boolean }) => {
-  const { data } = useQuery(GET_DOCUMENT_DETAILS, { variables: { filesDetailsQuery: { ids: [document?.id] } } });
+const DocumentUploaded = ({
+  document,
+  isEvidence = false,
+  isAttachment = false,
+  outDated = false,
+}: {
+  document: IDocument | undefined;
+  isAttachment?: boolean;
+  isEvidence?: boolean;
+  outDated?: boolean;
+}) => {
+  const { data } = useQuery(GET_DOCUMENT_DETAILS, {
+    variables: { filesDetailsQuery: { ids: [document?.id] } },
+  });
   const [removeDocument] = useMutation(REMOVE_DOCUMENT);
+  const { response, snapshot, refetch } = useResponseContext();
   const {
-    response,
-    snapshot,
-    refetch,
-  } = useResponseContext();
-  const { onOpen: handleDeleteOpen, onClose: handleDeleteClose, isOpen: deleteIsOpen } = useDisclosure();
+    onOpen: handleDeleteOpen,
+    onClose: handleDeleteClose,
+    isOpen: deleteIsOpen,
+  } = useDisclosure();
   const documentDetails = (data?.filesDetails || [])[0];
 
   const remove = async () => {
@@ -58,12 +70,12 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
         responseDocumentRemoveInput: {
           _id: response?._id,
           documentId: document?.id,
-          documentType: isEvidence ? 'evidence' : 'attachment'
+          documentType: isEvidence ? 'evidence' : 'attachment',
         },
       },
     });
     refetch();
-  }
+  };
 
   const renderDeleteModal = () => (
     <Modal isOpen={deleteIsOpen} onClose={handleDeleteClose}>
@@ -71,28 +83,31 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
       <ModalContent>
         <ModalHeader>Delete file</ModalHeader>
         <ModalCloseButton />
-        <ModalBody textAlign='center'>
-          Are you sure you wish to delete {document?.name}? It will reset the status for the last iteration to non-compliant.
+        <ModalBody textAlign="center">
+          Are you sure you wish to delete {document?.name}? It will reset the
+          status for the last iteration to non-compliant.
         </ModalBody>
-        <ModalFooter >
-          <Flex w='full' justify='center'>
-            {!snapshot && <Button
-              colorScheme="purpleHeart"
-              mr={3}
-              onClick={() => {
-                remove();
-                handleDeleteClose();
-              }}
-              _hover={{ opacity: 0.7 }}
-            >
-              Delete
-            </Button>}
+        <ModalFooter>
+          <Flex justify="center" w="full">
+            {!snapshot && (
+              <Button
+                _hover={{ opacity: 0.7 }}
+                colorScheme="purpleHeart"
+                mr={3}
+                onClick={() => {
+                  remove();
+                  handleDeleteClose();
+                }}
+              >
+                Delete
+              </Button>
+            )}
             <Button
+              _hover={{ opacity: 0.7 }}
+              colorScheme="red"
               onClick={() => {
                 handleDeleteClose();
               }}
-              colorScheme="red"
-              _hover={{ opacity: 0.7 }}
             >
               Cancel
             </Button>
@@ -106,102 +121,141 @@ const DocumentUploaded = ({ document, isEvidence = false, isAttachment = false, 
     <>
       {deleteIsOpen && renderDeleteModal()}
       <Flex
-        key={document?.id}
-        w='full'
-        h='65px'
-        fontWeight='400'
+        align="center"
         bg="documentUploaded.bg"
         borderRadius="10px"
-        maxWidth='400px'
-        align='center'
-        justify='space-between'
-        color='brand.darkGrey'
+        color="brand.darkGrey"
+        fontWeight="400"
+        h="65px"
+        justify="space-between"
+        key={document?.id}
+        maxWidth="400px"
+        minW={['none', '342px']}
         role="group"
-        minW={["none","342px"]}
+        w="full"
       >
-        <Flex align='center' w="full" justify="space-between">
-          <Box w='55px' h='55px' bg='documentUploaded.thumbnailBg' borderRadius="10px" ml='5px' mr={2} fontSize='12px' flexShrink={0} align='center'>
+        <Flex align="center" justify="space-between" w="full">
+          <Box
+            align="center"
+            bg="documentUploaded.thumbnailBg"
+            borderRadius="10px"
+            flexShrink={0}
+            fontSize="12px"
+            h="55px"
+            ml="5px"
+            mr={2}
+            w="55px"
+          >
             <Image
-              maxWidth='55px'
-              fallback={<Flex align='center' h='full'><BlankPage h='30px' w='55px' /></Flex>}
-              maxHeight='55px'
+              fallback={
+                <Flex align="center" h="full">
+                  <BlankPage h="30px" w="55px" />
+                </Flex>
+              }
+              maxHeight="55px"
+              maxWidth="55px"
               src={documentDetails?.thumbnail}
             />
           </Box>
-          <Flex direction='column' overflow='hidden' textOverflow='ellipsis' fontSize='12px' mr={2}>
-            <Text fontWeight='700' noOfLines={1} textOverflow="ellipsis" cursor="pointer" onClick={() => {if(documentDetails?.preview) window.open(documentDetails?.preview)}}>{document?.name}</Text>
-            <Flex opacity='0.6'>Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
-          </Flex>
-        {(isAttachment || isEvidence) && !outDated && (
-          <Flex>
-            <Can
-              action='responses.edit'
-              data={{ response }}
-              yes={() => (
-                <IconButton
-                  aria-label='delete evidence'
-                  icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open(documentDetails?.path)
-                  }}
-                  ml={3}
-                  _hover={{ bg: "" }}
-                  bg=""
-                  display="inline-block"
-                />
-              )}
-            />
-            {!snapshot && <Can
-              action='responses.edit'
-              data={{ response }}
-              yes={() => (
-                <IconButton
-                  aria-label='delete evidence'
-                  _hover={{ bg: "" }}
-                  icon={<Bin stroke="documentUploaded.binIcon" />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteOpen();
-                  }}
-                  mr={3}
-                  bg=""
-                  display="inline-block"
-                />
-              )}
-            />}
-          </Flex>
-        )}
-        {outDated && <Can
-          action='responses.edit'
-          data={{ response }}
-          yes={() => (
-            <IconButton
-              aria-label='delete evidence'
-              icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(documentDetails?.path)
+          <Flex
+            direction="column"
+            fontSize="12px"
+            mr={2}
+            overflow="hidden"
+            textOverflow="ellipsis"
+          >
+            <Text
+              cursor="pointer"
+              fontWeight="700"
+              noOfLines={1}
+              onClick={() => {
+                if (documentDetails?.preview)
+                  window.open(documentDetails?.preview);
               }}
-              mr={3}
-              bg=""
-              display="inline-block"
+              textOverflow="ellipsis"
+            >
+              {document?.name}
+            </Text>
+            <Flex opacity="0.6">
+              Uploaded {document && format(new Date(document.addedAt), 'Pp')}
+            </Flex>
+          </Flex>
+          {(isAttachment || isEvidence) && !outDated && (
+            <Flex>
+              <Can
+                action="responses.edit"
+                data={{ response }}
+                yes={() => (
+                  <IconButton
+                    _hover={{ bg: '' }}
+                    aria-label="delete evidence"
+                    bg=""
+                    display="inline-block"
+                    icon={
+                      <DownloadIcon stroke="documentUploaded.downloadIcon" />
+                    }
+                    ml={3}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(documentDetails?.path);
+                    }}
+                  />
+                )}
+              />
+              {!snapshot && (
+                <Can
+                  action="responses.edit"
+                  data={{ response }}
+                  yes={() => (
+                    <IconButton
+                      _hover={{ bg: '' }}
+                      aria-label="delete evidence"
+                      bg=""
+                      display="inline-block"
+                      icon={<Trashcan stroke="documentUploaded.binIcon" />}
+                      mr={3}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteOpen();
+                      }}
+                    />
+                  )}
+                />
+              )}
+            </Flex>
+          )}
+          {outDated && (
+            <Can
+              action="responses.edit"
+              data={{ response }}
+              yes={() => (
+                <IconButton
+                  aria-label="delete evidence"
+                  bg=""
+                  display="inline-block"
+                  icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
+                  mr={3}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(documentDetails?.path);
+                  }}
+                />
+              )}
             />
           )}
-        />}
         </Flex>
       </Flex>
     </>
-  )
+  );
 };
 
 export default DocumentUploaded;
 
 export const documentUploadedStyles = {
   documentUploaded: {
-    bg: "#F2F2F2",
-    thumbnailBg: "#FFFFFF",
-    downloadIcon: "#282F36",
-    binIcon: "black"
-  }
-}
+    bg: '#F2F2F2',
+    thumbnailBg: '#FFFFFF',
+    downloadIcon: '#282F36',
+    binIcon: 'black',
+  },
+};

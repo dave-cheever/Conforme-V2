@@ -1,4 +1,4 @@
-import { IBase, TComponent, TQuestionType } from "app-interfaces";
+import { IBase, TComponent, TQuestionType } from 'app-interfaces';
 
 export interface IQuestion<ValueType> extends IBase {
   type: TQuestionType;

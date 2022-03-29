@@ -1,7 +1,8 @@
-import React from "react";
-import { Image, Flex } from "@chakra-ui/react";
+import React from 'react';
 
-import { ISetting } from "../../interfaces/ISetting";
+import { Flex, Image } from '@chakra-ui/react';
+
+import { ISetting } from '../../interfaces/ISetting';
 
 const EmailTemplate = ({
   active,
@@ -19,26 +20,31 @@ const EmailTemplate = ({
   };
 
   return (
-    <Flex w="full" flexDirection="column" minW={["80px","155px","full"]} onClick={onClick}>
+    <Flex
+      flexDirection="column"
+      minW={['80px', '155px', 'full']}
+      onClick={onClick}
+      w="full"
+    >
       <Flex
-        borderWidth="2px"
+        _hover={{ borderColor: 'emailTemplate.hoverBorderColor' }}
         borderColor={
           active
-            ? "emailTemplate.activeBorderColor"
-            : "emailTemplate.borderColor"
+            ? 'emailTemplate.activeBorderColor'
+            : 'emailTemplate.borderColor'
         }
-        _hover={{ borderColor: "emailTemplate.hoverBorderColor" }}
         borderRadius="10px"
+        borderWidth="2px"
       >
         <Image
-          w="full"
-          h="180px"
-          fit="contain"
-          src={`${process.env.REACT_APP_API_URL}/images/thumbnails/${template._id}.png?preventCache=${updateImage}`}
           cursor="pointer"
+          fit="contain"
+          h="180px"
+          src={`${process.env.REACT_APP_API_URL}/images/thumbnails/${template._id}.png?preventCache=${updateImage}`}
+          w="full"
         />
       </Flex>
-      <Flex fontSize="14px" color="emailTemplate.labelColor" mt={2}>
+      <Flex color="emailTemplate.labelColor" fontSize="14px" mt={2}>
         {template?.label}
       </Flex>
     </Flex>
@@ -49,9 +55,9 @@ export default EmailTemplate;
 
 export const emailTemplateStyles = {
   emailTemplate: {
-    borderColor: "rgba(221, 221, 221, 0.5)",
-    activeBorderColor: "#462AC4",
-    hoverBorderColor: "#462AC4",
-    labelColor: "#434B4F",
+    borderColor: 'rgba(221, 221, 221, 0.5)',
+    activeBorderColor: '#462AC4',
+    hoverBorderColor: '#462AC4',
+    labelColor: '#434B4F',
   },
 };

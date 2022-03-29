@@ -1,7 +1,7 @@
-import createCategory from "./createCategory.m";
-import deleteCategory from "./deleteCategory.m";
-import updateCategory from "./updateCategory.m";
-import categories from "./categories.q";
+import categories from './categories.q';
+import createCategory from './createCategory.m';
+import deleteCategory from './deleteCategory.m';
+import updateCategory from './updateCategory.m';
 
 const categoriesResolvers = {
   Query: {

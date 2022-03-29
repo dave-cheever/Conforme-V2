@@ -1,21 +1,31 @@
-import { Modal, ModalCloseButton, ModalContent, ModalOverlay } from "@chakra-ui/modal"
-import { useDisclosure } from "@chakra-ui/hooks";
-import { Box, Flex } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/button";
-import TextInput from '../Forms/TextInput';
-import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
-import { toastFailed, toastSuccess } from "../../bootstrap/config";
-import { useToast } from "@chakra-ui/toast";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { gql, useMutation } from '@apollo/client';
+import {
+  Box,
+  Button,
+  Flex,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import TextInput from '../Forms/TextInput';
 
 interface IAddComplianceItemAttribute {
   isOpenModal: boolean;
   refetch: () => void;
-  attributeType: "Category" | "Regulatory body" | undefined
+  attributeType: 'Category' | 'Regulatory body' | undefined;
   onAction: (action: 'close') => void;
-  newAttributeValue: (arg0: { value: string, type: "category" | "regulatoryBody" }) => void
+  newAttributeValue: (arg0: {
+    value: string;
+    type: 'category' | 'regulatoryBody';
+  }) => void;
 }
 
 const CREATE_CATEGORY = gql`
@@ -28,7 +38,7 @@ const CREATE_CATEGORY = gql`
 `;
 
 const CREATE_REGULATORY_BODY = gql`
-  mutation ($name: String!){
+  mutation ($name: String!) {
     createRegulatoryBody(name: $name) {
       _id
       name
@@ -41,22 +51,12 @@ const AddComplianceItemAttribute = ({
   onAction,
   attributeType,
   newAttributeValue,
-  refetch
+  refetch,
 }: IAddComplianceItemAttribute) => {
   const { onClose } = useDisclosure();
   const [createCategory] = useMutation(CREATE_CATEGORY);
   const [createRegulatoryBody] = useMutation(CREATE_REGULATORY_BODY);
   const toast = useToast();
-
-  useEffect(() => {
-    return () => {
-      reset({
-        _id: '',
-        name: ''
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const {
     control,
@@ -65,83 +65,100 @@ const AddComplianceItemAttribute = ({
     trigger,
     reset,
   } = useForm({
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       _id: '',
-      name: ''
+      name: '',
     },
   });
 
-  const addAttribute = async (type: "Category" | "Regulatory body" | undefined) => {
+  useEffect(
+    () => () => {
+      reset({
+        _id: '',
+        name: '',
+      });
+    },
+
+    [],
+  );
+
+  const addAttribute = async (
+    type: 'Category' | 'Regulatory body' | undefined,
+  ) => {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         switch (type) {
-          case "Category":
-            const { data: category } = await createCategory({ variables: values });
-            refetch()
-            toast({ ...toastSuccess, description: "Category added" });
+          case 'Category': {
+            const { data: category } = await createCategory({
+              variables: values,
+            });
+            refetch();
+            toast({ ...toastSuccess, description: 'Category added' });
             newAttributeValue({
               value: category.createCategory._id,
-              type: "category"
-            })
+              type: 'category',
+            });
             break;
-          case "Regulatory body":
-            const { data: regulatoryBody } = await createRegulatoryBody({ variables: values });
+          }
+          case 'Regulatory body': {
+            const { data: regulatoryBody } = await createRegulatoryBody({
+              variables: values,
+            });
             toast({ ...toastSuccess, description: 'Regulatory body added' });
-            refetch()
+            refetch();
             newAttributeValue({
               value: regulatoryBody.createRegulatoryBody._id,
-              type: "regulatoryBody"
-            })
-            break
+              type: 'regulatoryBody',
+            });
+            break;
+          }
           default:
-            onAction('close')
-            break
+            onAction('close');
+            break;
         }
-
       } else {
-        toast({ ...toastFailed, description: 'Please complete all the required fields' });
+        toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
       }
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
       onAction('close');
     }
-  }
+  };
 
-  const onAddAction = async (type: "Category" | "Regulatory body" | undefined) => {
+  const onAddAction = async (
+    type: 'Category' | 'Regulatory body' | undefined,
+  ) => {
     const isFormValid = await trigger();
     if (!isFormValid) {
-      return toast({ ...toastFailed, description: 'Please complete all the required fields' });
+      return toast({
+        ...toastFailed,
+        description: 'Please complete all the required fields',
+      });
     }
-    addAttribute(type)
-  }
+
+    return addAttribute(type);
+  };
 
   return (
     <Modal
+      isCentered
       isOpen={isOpenModal}
       onClose={onClose}
-      size={"xs"}
-      onOverlayClick={() => onAction('close')}
       onEsc={() => onAction('close')}
-      isCentered
+      onOverlayClick={() => onAction('close')}
+      size="xs"
     >
       <ModalOverlay />
-      <ModalContent
-        borderRadius={["0", "20px"]}
-        position="absolute"
-      >
-        <Flex
-          p='25px'
-          flexDirection="column"
-        >
+      <ModalContent borderRadius={['0', '20px']} position="absolute">
+        <Flex flexDirection="column" p="25px">
           <Flex>
-            <Box
-              fontSize="smm"
-              fontWeight="bold"
-              mb="10px"
-            >
+            <Box fontSize="smm" fontWeight="bold" mb="10px">
               {`Add ${attributeType}`}
             </Box>
             <ModalCloseButton onClick={() => onAction('close')} />
@@ -154,12 +171,14 @@ const AddComplianceItemAttribute = ({
               notEmpty: true,
             }}
           />
-          <Flex mt="34px" justifyContent="end">
+          <Flex justifyContent="end" mt="34px">
             <Button
-              color="addComplianceItemAttribute.button.color"
-              borderRadius="10px"
+              _hover={{
+                backgroundColor: 'addComplianceItemAttribute.button.hover',
+              }}
               bg="addComplianceItemAttribute.button.bg"
-              _hover={{ backgroundColor: "addComplianceItemAttribute.button.hover" }}
+              borderRadius="10px"
+              color="addComplianceItemAttribute.button.color"
               onClick={() => onAddAction(attributeType)}
             >
               Add
@@ -168,29 +187,26 @@ const AddComplianceItemAttribute = ({
         </Flex>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default AddComplianceItemAttribute
+export default AddComplianceItemAttribute;
 
 export const addComplianceItemAttributeStyles = {
   addComplianceItemAttribute: {
     content: {
-      bg: "#FFFFFF",
+      bg: '#FFFFFF',
     },
     body: {
-      bg: "#FFFFFF",
+      bg: '#FFFFFF',
     },
     button: {
-      bg: "#462AC4",
-      hover: "#462AC4",
-      color: "#ffffff",
+      bg: '#462AC4',
+      hover: '#462AC4',
+      color: '#ffffff',
     },
     text: {
-      color: "#818197",
+      color: '#818197',
     },
-
-  }
-}
-
-
+  },
+};

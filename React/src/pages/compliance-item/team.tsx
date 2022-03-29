@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo } from "react";
-import { Flex, Grid, Stack } from "@chakra-ui/react";
-import { gql, useQuery } from "@apollo/client";
+import React, { useEffect, useMemo } from 'react';
 
-import AvatarUser from "../../components/Team/AvatarUser";
-import { IUser } from "../../interfaces/IUser";
-import { useResponseContext } from "../../contexts/ResponseProvider";
-import TeamHeader from "../../components/Team/TeamHeader";
-import TeamProvider, { useTeamContext } from "../../contexts/TeamProvider";
-import TeamModal from "../../components/Team/TeamModal";
-import Loader from "../../components/Loader";
+import { gql, useQuery } from '@apollo/client';
+import { Flex, Grid, Stack } from '@chakra-ui/react';
+
+import Loader from '../../components/Loader';
+import AvatarUser from '../../components/Team/AvatarUser';
+import TeamHeader from '../../components/Team/TeamHeader';
+import TeamModal from '../../components/Team/TeamModal';
+import { useResponseContext } from '../../contexts/ResponseProvider';
+import TeamProvider, { useTeamContext } from '../../contexts/TeamProvider';
+import { IUser } from '../../interfaces/IUser';
 
 const GET_USERS_BY_ID = gql`
   query (
@@ -73,39 +74,34 @@ const Team = () => {
     skip: !!snapshot,
   });
 
-  let racfData = useMemo(() => {
+  const racfData = useMemo(() => {
     if (snapshot) {
       return {
         responseAccountable: response?.accountable && [response.accountable],
         responseResponsible: response?.responsible && [response.responsible],
         contributors: response?.contributors,
         followers: response?.followers,
-      }
+      };
     }
     return racf;
   }, [racf, response, snapshot]);
 
   useEffect(() => {
     refetchUsers();
-    if (filterType === "responsible" || filterType === "accountable") {
+    if (filterType === 'responsible' || filterType === 'accountable')
       setSelectedParticipants([]);
-    }
+
     if (data?.searchUsers && searchQuery) {
       const filteredUsers = data.searchUsers.filter(
-        ({ _id }) => response && !response[filterType].includes(_id)
+        ({ _id }) => response && !response[filterType].includes(_id),
       );
 
       setUserSearchResults(filteredUsers);
-    } else {
-      setUserSearchResults([]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } else setUserSearchResults([]);
   }, [searchQuery, data]);
-
 
   useEffect(() => {
     setSelectedParticipants([]);
-    // eslint-disable-next-line
   }, [filterType]);
 
   const accountable: IUser =
@@ -117,66 +113,65 @@ const Team = () => {
     racfData?.responseResponsible?.length !== 0 &&
     racfData?.responseResponsible[0];
 
-
   if (loading) {
     return (
-      <Flex w="full" h="full" rounded="20px" bg="teamPage.bg">
-        <Loader center={true} />
+      <Flex bg="teamPage.bg" h="full" rounded="20px" w="full">
+        <Loader center />
       </Flex>
-    )
+    );
   }
 
   return (
     <Stack
-      h={["fit-content", "full"]}
-      alignItems={["center", "flex-start"]}
-      w="full"
-      spacing="40px"
-      p="25px 30px"
+      alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
-      rounded="20px"
       fontSize="smm"
       fontWeight="bold"
-      overflow={["visible", "auto"]}
+      h={['fit-content', 'full']}
+      overflow={['visible', 'auto']}
+      p="25px 30px"
+      rounded="20px"
+      spacing="40px"
+      w="full"
     >
       <TeamModal />
       <Flex>
         <Flex flexDir="column">
           <TeamHeader
-            header="Accountable"
-            onOpen={onOpen}
-            setFilterType={() => setFilterType("accountableId")}
-            isButtonVisible={!response?.accountableId}
             action="responses"
+            header="Accountable"
+            isButtonVisible={!response?.accountableId}
+            onOpen={onOpen}
+            setFilterType={() => setFilterType('accountableId')}
           />
           {racfData?.responseAccountable &&
             racfData?.responseAccountable?.length !== 0 && (
               <Flex>
                 <AvatarUser
-                  user={accountable}
-                  permission="accountable"
                   action="responses"
                   isReplaceable
+                  permission="accountable"
+                  user={accountable}
                 />
               </Flex>
             )}
         </Flex>
         <Flex flexDir="column" ml="26px">
           <TeamHeader
-            header="Responsible"
-            onOpen={onOpen}
-            setFilterType={() => setFilterType("responsibleId")}
-            isButtonVisible={!response?.responsibleId}
             action="responses.manageResponsible"
+            header="Responsible"
+            isButtonVisible={!response?.responsibleId}
+            onOpen={onOpen}
+            setFilterType={() => setFilterType('responsibleId')}
           />
           {racfData?.responseResponsible &&
             racfData?.responseResponsible?.length !== 0 && (
               <Flex>
                 <AvatarUser
-                  user={responsible}
-                  permission="responsible"
                   action="responses.manageResponsible"
                   isReplaceable
+                  permission="responsible"
+                  user={responsible}
                 />
               </Flex>
             )}
@@ -185,41 +180,61 @@ const Team = () => {
       <Flex>
         <Flex flexDir="column">
           <TeamHeader
-            header="Contributors"
-            onOpen={onOpen}
-            setFilterType={() => setFilterType("contributorsIds")}
-            isButtonVisible={response?.contributorsIds?.length! < maxDelegates}
             action="responses.manageContributor"
+            header="Contributors"
+            isButtonVisible={response?.contributorsIds?.length! < maxDelegates}
+            onOpen={onOpen}
+            setFilterType={() => setFilterType('contributorsIds')}
           />
-          <Grid w="full" templateColumns={["repeat(3, 1fr)", "repeat(4, 1fr)", "repeat(6, 1fr)"]} gap={[0, 6]}>
-            {(racfData?.contributors || []).sort((a, b) => a.displayName.localeCompare(b.displayName)).map((contributor) => (
-              <AvatarUser
-                key={contributor._id}
-                user={contributor}
-                permission="contributor"
-                action="responses.manageContributor"
-              />
-            ))}
+          <Grid
+            gap={[0, 6]}
+            templateColumns={[
+              'repeat(3, 1fr)',
+              'repeat(4, 1fr)',
+              'repeat(6, 1fr)',
+            ]}
+            w="full"
+          >
+            {(racfData?.contributors || [])
+              .sort((a, b) => a.displayName.localeCompare(b.displayName))
+              .map((contributor) => (
+                <AvatarUser
+                  action="responses.manageContributor"
+                  key={contributor._id}
+                  permission="contributor"
+                  user={contributor}
+                />
+              ))}
           </Grid>
         </Flex>
       </Flex>
       <Flex>
         <Flex flexDir="column">
           <TeamHeader
+            action="responses.manageMultipleFollowers"
             header="Followers"
             onOpen={onOpen}
-            setFilterType={() => setFilterType("followersIds")}
-            action="responses.manageMultipleFollowers"
+            setFilterType={() => setFilterType('followersIds')}
           />
-          <Grid w="full" templateColumns={["repeat(3, 1fr)", "repeat(4, 1fr)", "repeat(6, 1fr)"]} gap={[0, 6]}>
-            {(racfData?.followers || []).sort((a, b) => a.displayName.localeCompare(b.displayName)).map((follower) => (
-              <AvatarUser
-                key={follower._id}
-                user={follower}
-                permission="follower"
-                action="responses.manageMultipleFollowers"
-              />
-            ))}
+          <Grid
+            gap={[0, 6]}
+            templateColumns={[
+              'repeat(3, 1fr)',
+              'repeat(4, 1fr)',
+              'repeat(6, 1fr)',
+            ]}
+            w="full"
+          >
+            {(racfData?.followers || [])
+              .sort((a, b) => a.displayName.localeCompare(b.displayName))
+              .map((follower) => (
+                <AvatarUser
+                  action="responses.manageMultipleFollowers"
+                  key={follower._id}
+                  permission="follower"
+                  user={follower}
+                />
+              ))}
           </Grid>
         </Flex>
       </Flex>
@@ -237,20 +252,20 @@ export default TeamWithContext;
 
 export const teamPageStyles = {
   teamPage: {
-    bg: "#FFFFFF",
+    bg: '#FFFFFF',
     modal: {
-      searchIcon: "#434B4F",
-      inputBorder: "#cdcdd5",
+      searchIcon: '#434B4F',
+      inputBorder: '#cdcdd5',
     },
-    radioButtonFont: "#818197",
+    radioButtonFont: '#818197',
     button: {
       add: {
-        bg: "#462AC4",
-        color: "#FFFFFF",
+        bg: '#462AC4',
+        color: '#FFFFFF',
       },
       addDelegates: {
-        bg: "#818197",
-        color: "#FFFFFF",
+        bg: '#818197',
+        color: '#FFFFFF',
       },
     },
   },

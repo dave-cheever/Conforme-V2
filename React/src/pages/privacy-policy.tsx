@@ -1,31 +1,32 @@
-import React from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import Header from "../components/Header";
+import React from 'react';
 
-const PrivacyPolicy = () => {
-  return (
-    <Flex w='full' h='full' direction='column'>
-      <Header breadcrumbs={["Home", "Privacy policy"]} mobileBreadcrumbs={["Privacy policy"]}/>
-      <Flex
-        flexDirection="column"
-        bg="white"
-        maxWidth={"full"}
-        borderRadius="20px"
-        ml="7"
-        p="25px 30px 25px 30px"
-        mr="25px"
-        mb={["25px","25px"]}
-        h="full"
-      >
-        <Text fontSize="24px" fontWeight="bold" mb="30px">
-          Privacy Policy
-        </Text>
-        <Text>
-          Lorem ipsum
-        </Text>
-      </Flex>
+import { Flex, Text } from '@chakra-ui/react';
+
+import Header from '../components/Header';
+
+const PrivacyPolicy = () => (
+  <Flex direction="column" h="full" w="full">
+    <Header
+      breadcrumbs={['Home', 'Privacy policy']}
+      mobileBreadcrumbs={['Privacy policy']}
+    />
+    <Flex
+      bg="white"
+      borderRadius="20px"
+      flexDirection="column"
+      h="full"
+      maxWidth="full"
+      mb={['25px', '25px']}
+      ml="7"
+      mr="25px"
+      p="25px 30px 25px 30px"
+    >
+      <Text fontSize="24px" fontWeight="bold" mb="30px">
+        Privacy Policy
+      </Text>
+      <Text>Lorem ipsum</Text>
     </Flex>
-  )
-};
+  </Flex>
+);
 
 export default PrivacyPolicy;

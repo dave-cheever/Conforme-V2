@@ -1,13 +1,13 @@
 import Checkbox from './Checkbox';
 import Datepicker from './Datepicker';
 import Dropdown from './Dropdown';
-import MultipleChoices from "./MultipleChoices"
+import MultipleChoices from './MultipleChoices';
 import NumberInput from './NumberInput';
 import Switch from './Switch';
 import Textarea from './Textarea';
 import TextConfirmInput from './TextConfirmInput';
-import TextMultilineConfirmInput from './TextMultilineConfirmInput';
 import TextInput from './TextInput';
+import TextMultilineConfirmInput from './TextMultilineConfirmInput';
 import Toggle from './Toggle';
 
 export {

@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { gql, useQuery } from "@apollo/client";
-import { isEqual } from "date-fns";
+import React, { useEffect, useMemo, useState } from 'react';
 
-import Header from "../../components/Header";
-import AuditLogComponent from "../../components/AuditLog/AuditLog";
-import { IAuditLog } from "../../interfaces/IAuditLog";
-import { useAppContext } from "../../contexts/AppProvider";
+import { gql, useQuery } from '@apollo/client';
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { isEqual } from 'date-fns';
+
+import AuditLogComponent from '../../components/AuditLog/AuditLog';
+import Header from '../../components/Header';
+import { useAppContext } from '../../contexts/AppProvider';
+import { IAuditLog } from '../../interfaces/IAuditLog';
 
 const GET_AUDIT_LOGS = gql`
   query AuditLogs($auditLogsQuery: AuditLogsQuery) {
@@ -33,19 +34,26 @@ const AuditLog = () => {
   const dateLimit = useMemo(() => new Date(), []);
   const { settings } = useAppContext();
   const auditLogLimit = useMemo(() => {
-    if(settings.length === 0){
-      return 5;
-    }
-    if(settings?.filter(settings => settings.name === "auditLogLimit").length === 0){
-      return 5;
-    }
+    if (settings.length === 0) return 5;
 
-    if(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value){
-      return Number(settings?.filter(settings => settings.name === "auditLogLimit")[0]?.value);
+    if (
+      settings?.filter((settings) => settings.name === 'auditLogLimit')
+        .length === 0
+    )
+      return 5;
+
+    if (
+      settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
+        ?.value
+    ) {
+      return Number(
+        settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
+          ?.value,
+      );
     }
 
     return 5;
-  },[settings]);
+  }, [settings]);
 
   const { data, loading, refetch } = useQuery(GET_AUDIT_LOGS, {
     variables: {
@@ -71,19 +79,18 @@ const AuditLog = () => {
 
   useEffect(() => {
     if (data) {
-      setAuditLogs((currentLogs) => {
-        return data.auditLogs.reduce((acc, curr) => {
+      setAuditLogs((currentLogs) =>
+        data.auditLogs.reduce((acc, curr) => {
           const newAcc = [...acc];
           const currentLog = newAcc.find(({ _id }) => _id === curr._id);
           if (currentLog) {
             curr.records.forEach((record) => {
               if (
                 !currentLog.records.some(({ metatags: { addedAt } }) =>
-                  isEqual(new Date(record.metatags.addedAt), new Date(addedAt))
+                  isEqual(new Date(record.metatags.addedAt), new Date(addedAt)),
                 )
-              ) {
+              )
                 currentLog.records.push(record);
-              }
             });
           } else {
             newAcc.push({
@@ -98,21 +105,28 @@ const AuditLog = () => {
             });
           }
           return newAcc;
-        }, currentLogs);
-      });
+        }, currentLogs),
+      );
     }
   }, [data]);
 
   return (
     <>
-      <Header breadcrumbs={["Admin", "Audit log"]} />
-      <Box p="30px" pt="0px" h="calc(100vh - 150px)" overflow="auto">
-        <Flex px="6" bg="white" pt="3" borderRadius="20px" flexDir="column" h="fit-content">
+      <Header breadcrumbs={['Admin', 'Audit log']} />
+      <Box h="calc(100vh - 150px)" overflow="auto" p="30px" pt="0px">
+        <Flex
+          bg="white"
+          borderRadius="20px"
+          flexDir="column"
+          h="fit-content"
+          pt="3"
+          px="6"
+        >
           <AuditLogComponent auditLogs={auditLogs} loading={loading} />
           {!loading && (
             <Text
-              cursor="pointer"
               color="auditLog.loadMore"
+              cursor="pointer"
               mb={4}
               onClick={() => setSkip((prev) => prev + 5)}
             >

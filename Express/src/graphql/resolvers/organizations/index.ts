@@ -4,8 +4,7 @@ const organizationsResolvers = {
   Query: {
     organization,
   },
-  Mutation: {
-  },
+  Mutation: {},
 };
 
 export const organizationsTypeDefs = `

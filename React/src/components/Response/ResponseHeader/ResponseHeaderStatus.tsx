@@ -1,62 +1,67 @@
-
-import { CheckIcon, CrossIcon } from '../../../icons';
-import { Flex, Stack, VStack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
+import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
+
+import { CheckIcon, CrossIcon } from '../../../icons';
 
 const ResponseHeaderStatus = ({ heading, status }) => {
   const [color, setColor] = useState<string>();
 
   useEffect(() => {
-    if (status === 'Yes') {
-      setColor("responseHeaderStatus.yes");
-    } else if (status === 'No') {
-      setColor("responseHeaderStatus.no");
-    } else {
-      setColor("responseHeaderStatus.default");
-    }
+    if (status === 'Yes') setColor('responseHeaderStatus.yes');
+    else if (status === 'No') setColor('responseHeaderStatus.no');
+    else setColor('responseHeaderStatus.default');
   }, [status]);
 
   const renderIcon = () => {
-    if (status === 'Yes') {
-      return <CheckIcon stroke={color} w="16px" />;
-    } else if (status === 'No') {
-      return <CrossIcon stroke={color} w="16px" />;
-    }
+    if (status === 'Yes') return <CheckIcon stroke={color} w="16px" />;
+
+    if (status === 'No') return <CrossIcon stroke={color} w="16px" />;
 
     return null;
-  }
+  };
 
   return (
     <VStack
-      direction="column"
       align="left"
-      spacing='3px'
-      w={["max-content", "max-content"]}
-      pr={["0", "30"]}
-      alignItems={["start", "start"]}
+      alignItems={['start', 'start']}
+      direction="column"
+      pr={['0', '30']}
+      spacing="3px"
+      w={['max-content', 'max-content']}
     >
-      <Flex fontStyle="normal" fontWeight="semi_medium" fontSize="ssm" lineHeight="16px" color="responseHeaderStatus.heading">{heading}</Flex>
-      <Stack
-        direction="row"
-        spacing={2}
-        align="center"
-        pr="10px"
+      <Flex
+        color="responseHeaderStatus.heading"
+        fontSize="ssm"
+        fontStyle="normal"
+        fontWeight="semi_medium"
+        lineHeight="16px"
       >
+        {heading}
+      </Flex>
+      <Stack align="center" direction="row" pr="10px" spacing={2}>
         {renderIcon()}
-        <Text fontStyle="normal" fontWeight="bold" fontSize="smm" lineHeight="20px" color={color}>{status}</Text>
+        <Text
+          color={color}
+          fontSize="smm"
+          fontStyle="normal"
+          fontWeight="bold"
+          lineHeight="20px"
+        >
+          {status}
+        </Text>
       </Stack>
     </VStack>
   );
-}
+};
 
 export default ResponseHeaderStatus;
 
 export const responseHeaderStatusStyles = {
   responseHeaderStatus: {
-    yes: "#41B916",
-    no: "#E93C44",
-    default: "#818197",
-    heading: "#282F3680",
-  }
-}
+    yes: '#41B916',
+    no: '#E93C44',
+    default: '#818197',
+    heading: '#282F3680',
+  },
+};

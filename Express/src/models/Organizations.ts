@@ -28,27 +28,34 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
     updatedAt: Date,
     updatedBy: String,
     removedAt: Date,
-    removedBy: String
-  }
+    removedBy: String,
+  },
 });
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-organizationSchema.statics.customFindById = async function (_id: string): Promise<IOrganization> {
+organizationSchema.statics.customFindById = async function (
+  _id: string,
+): Promise<IOrganization> {
   const organization = await this.findById(_id).lean();
-  if (!organization) {
+  if (!organization) 
     throw new Error('Organization not found');
-  }
+  
   return organization;
-}
+};
 
-organizationSchema.statics.customFindByDomain = async function (domain: string): Promise<IOrganization> {
+organizationSchema.statics.customFindByDomain = async function (
+  domain: string,
+): Promise<IOrganization> {
   const organization = await this.findOne({ domain }).lean();
-  if (!organization) {
+  if (!organization) 
     throw new Error('Organization not found');
-  }
+  
   return organization;
-}
+};
 
-const organizationModel = model<IOrganization, IOrganizationModel>('Organization', organizationSchema);
+const organizationModel = model<IOrganization, IOrganizationModel>(
+  'Organization',
+  organizationSchema,
+);
 export default organizationModel;
