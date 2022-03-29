@@ -130,7 +130,6 @@ const TextMultilineConfirmInput = ({
                 onBlur={onBlur}
                 onChange={(event) => setTempValue(event.target.value)}
                 ref={inputRef}
-                type="text"
               />
               {showButtons && (
                 <Flex cursor="pointer" direction="column">

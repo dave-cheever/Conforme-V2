@@ -228,7 +228,6 @@ const ShareModal = () => {
                   <Link
                     _hover={{}}
                     alignSelf="flex-end"
-                    disabled={isSendDisabled}
                     href={email}
                     isExternal
                   >

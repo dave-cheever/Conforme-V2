@@ -116,7 +116,6 @@ const TextInputMultiline = ({
               onBlur={onBlur}
               onChange={onChange}
               placeholder={placeholder}
-              type="text"
             />
             {error && (
               <Box color="textInput.error" fontSize={14} ml={1}>

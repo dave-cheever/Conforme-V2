@@ -136,7 +136,6 @@ const DocumentUploaded = ({
       >
         <Flex align="center" justify="space-between" w="full">
           <Box
-            align="center"
             bg="documentUploaded.thumbnailBg"
             borderRadius="10px"
             flexShrink={0}

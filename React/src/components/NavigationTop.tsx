@@ -132,7 +132,6 @@ const NavigationTop = () => {
         display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}
       >
         <IconButton
-          align="center"
           aria-label="Search responses"
           bg="navigationTop.searchIconBackground"
           borderRadius="20px"

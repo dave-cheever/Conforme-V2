@@ -34,7 +34,6 @@ const LocationListItem = ({
       mt="0px"
       onClick={() => openLocationModal('edit', location)}
       overflow="hidden"
-      overflowwrap="ellipsis"
       pl={6}
       w="calc(100% - 22px)"
     >

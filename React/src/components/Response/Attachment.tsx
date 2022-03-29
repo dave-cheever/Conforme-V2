@@ -99,7 +99,6 @@ const Attachment = () => {
                   {({ getRootProps, getInputProps }) => (
                     <Box
                       {...getRootProps()}
-                      align="center"
                       cursor="pointer"
                       mb={3}
                       minH="65px"

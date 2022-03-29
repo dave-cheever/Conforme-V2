@@ -79,7 +79,6 @@ const MessageInput = ({
                 markup="@@@(__display__)[__id__]"
                 renderSuggestion={(highlightedDisplay) => (
                   <Flex
-                    __hover={{ color: 'mentionListItem.hoverColor' }}
                     color="mentionListItem.color"
                     fontSize="14px"
                     pl="13px"

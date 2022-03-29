@@ -216,7 +216,6 @@ const TeamModal = () => {
                     <Flex direction="column" ml="2">
                       <Text
                         color="black"
-                        direction="column"
                         fontSize="smm"
                         fontWeight="semibold"
                       >

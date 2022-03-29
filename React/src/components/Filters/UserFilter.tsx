@@ -195,7 +195,7 @@ const UserFilter = () => {
         />
       </InputGroup>
 
-      <Box align="center" mt={2} w="full">
+      <Box mt={2} w="full">
         {selectedRoleUsers
           ?.filter((selectedRoleUser) => selectedRoleUser.count !== 0)
           .map((selectedRoleUser, i) => (

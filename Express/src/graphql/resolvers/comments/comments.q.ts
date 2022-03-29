@@ -3,7 +3,7 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Comments } from 'app-models';
 import { doesPathExist, getProjectFields, join } from 'app-utils';
 
-const comments = async (_, { _id }, info: GraphQLResolveInfo) => {
+const comments = async (_, { _id }, __, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) =>
     doesPathExist(info.fieldNodes, ['comments', ...elements]);
 

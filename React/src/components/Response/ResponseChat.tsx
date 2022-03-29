@@ -182,7 +182,6 @@ const ResponseChat = () => {
                 >
                   <Flex align="center">
                     <Avatar
-                      align="center"
                       h="32px"
                       mr={users.length > 1 ? '10px' : ''}
                       name={user?.displayName}

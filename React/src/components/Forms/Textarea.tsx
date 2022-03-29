@@ -132,7 +132,6 @@ const Textarea = ({
               placeholder={placeholder}
               pt="5px"
               rows={4}
-              type="text"
             />
             {error && (
               <Box color="textMultilineInput.error" fontSize={14} ml={1}>

@@ -22,7 +22,6 @@ const DocumentUploading = ({ documentName }: { documentName: string }) => (
   >
     <Flex align="center">
       <Box
-        align="center"
         bg="evidence.uploadBg"
         flexShrink={0}
         fontSize="12px"

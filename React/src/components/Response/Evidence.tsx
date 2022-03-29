@@ -115,7 +115,6 @@ const EvidenceExpected = ({ evidence }) => {
               {({ getRootProps, getInputProps }) => (
                 <Box
                   {...getRootProps()}
-                  align="center"
                   cursor="pointer"
                   h="65px"
                   w="full"
