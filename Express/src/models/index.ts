@@ -1,4 +1,7 @@
+import Actions from './Actions';
+import Answers from './Answers';
 import AuditLogs from './AuditLogs';
+import Audits from './Audits';
 import AuditTypes from './AuditTypes';
 import BusinessUnits from './BusinessUnits';
 import Categories from './Categories';
@@ -14,7 +17,10 @@ import Settings from './Settings';
 import Users from './Users';
 
 export {
+  Actions,
+  Answers,
   AuditLogs,
+  Audits,
   AuditTypes,
   BusinessUnits,
   Categories,
@@ -27,5 +33,5 @@ export {
   RegulatoryBodies,
   Responses,
   Settings,
-  Users,
+  Users
 };

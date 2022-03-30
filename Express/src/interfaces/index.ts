@@ -1,5 +1,11 @@
+import { IAction } from './IAction';
+import { IActionModel } from './IActionModel';
+import { IAnswer } from './IAnswer';
+import { IAnswerModel } from './IAnswerModel';
+import { IAudit } from './IAudit';
 import { IAuditLog, IAuditValues } from './IAuditLog';
 import { IAuditLogModel } from './IAuditLogModel';
+import { IAuditModel } from './IAuditModel';
 import { IAuditSection } from './IAuditSection';
 import { IAuditType } from './IAuditType';
 import { IAuditTypeModel } from './IAuditTypeModel';
@@ -13,6 +19,7 @@ import { IComment } from './IComment';
 import { ICommentModel } from './ICommentModel';
 import { IComplianceItem } from './IComplianceItem';
 import { IComplianceItemModel } from './IComplianceItemModel';
+import { IDocument } from './IDocument';
 import { ILocation } from './ILocation';
 import { ILocationModel } from './ILocationModel';
 import { IOrganization } from './IOrganization';
@@ -37,9 +44,15 @@ import { TQuestionType } from './TQuestionType';
 import { TQuestionValue } from './TQuestionValue';
 
 export {
+  IAction,
+  IActionModel,
+  IAnswer,
+  IAnswerModel,
+  IAudit,
   IAuditLog,
   IAuditValues,
   IAuditLogModel,
+  IAuditModel,
   IAuditSection,
   IAuditType,
   IAuditTypeModel,
@@ -53,6 +66,7 @@ export {
   IComplianceItemModel,
   IComment,
   ICommentModel,
+  IDocument,
   IGraphUser,
   ILocation,
   ILocationModel,

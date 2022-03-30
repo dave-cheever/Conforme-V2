@@ -23,11 +23,13 @@ export const questionsCategoriesTypeDefs = `
 
   type QuestionsCategory {
     _id: ID!
-    auditType: String
     name: String!
+    auditType: String
+    navigationDisplay: Boolean!
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
+    icon: String!
     scope: QuestionsCategoryScope!
     metatags: Metatags
   }
@@ -44,21 +46,25 @@ export const questionsCategoriesTypeDefs = `
   }
 
   input QuestionsCategoryCreateInput {
-    auditType: String
     name: String!
+    auditType: String
+    navigationDisplay: Boolean!
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
+    icon: String!
     scope: QuestionsCategoryScopeInput!
   }
   
   input QuestionsCategoryModifyInput {
     _id: ID!
-    auditType: String
     name: String!
+    auditType: String
+    navigationDisplay: Boolean!
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
+    icon: String!
   }
 `;
 

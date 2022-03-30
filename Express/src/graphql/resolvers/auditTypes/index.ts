@@ -1,37 +1,27 @@
-import auditTypes from './auditTypes';
+import auditTypes from './auditTypes.q';
 import createAuditType from './createAuditType.m';
 import deleteAuditType from './deleteAuditType.m';
 import updateAuditType from './updateAuditType.m';
 
 const auditTypesResolvers = {
   Query: {
-    auditTypes,
+    auditTypes
   },
   Mutation: {
     createAuditType,
     deleteAuditType,
-    updateAuditType,
-  },
+    updateAuditType
+  }
 };
 
 export const auditTypesTypeDefs = `
-  type AuditSection {
-    type: String!
-    _id: ID
-  }
-
   type AuditType {
     _id: ID!
     name: String!
     frequency: String!
     view: String!
-    sections: [AuditSection!]!
+    questionsCategoriesIds: [ID!]!
     metatags: Metatags
-  }
-
-  input AuditSectionInput {
-    type: String!
-    _id: ID
   }
 
   input AuditTypeQueryInput {
@@ -41,7 +31,7 @@ export const auditTypesTypeDefs = `
   input AuditTypeCreateInput {
     name: String!
     frequency: String!
-    sections: [AuditSectionInput!]!
+    questionsCategoriesIds: [ID]
     view: String!
   }
   
@@ -49,7 +39,7 @@ export const auditTypesTypeDefs = `
     _id: ID!
     name: String!
     frequency: String!
-    sections: [AuditSectionInput!]!
+    questionsCategoriesIds: [ID!]!
     view: String!
   }
 `;

@@ -18,7 +18,7 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   },
   question: String,
   description: String,
-  category: String,
+  questionsCategoryId: String,
   required: Boolean,
   notApplicable: Boolean,
   positiveValue: Schema.Types.Mixed,

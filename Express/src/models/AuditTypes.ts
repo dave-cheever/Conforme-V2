@@ -164,7 +164,7 @@ auditTypesSchema.statics.customDelete = async function (
   organizationId: string,
 ): Promise<number> {
   const auditType = await this.customFindOne(selector, organizationId);
-  if (!auditType) throw new GraphQLError("Question doesn't exist");
+  if (!auditType) throw new GraphQLError("Audit type doesn't exist");
 
   const updatedAuditType = {
     ...auditType,

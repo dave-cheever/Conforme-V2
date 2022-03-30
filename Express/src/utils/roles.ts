@@ -43,7 +43,7 @@ const defaultPermissions = [
   'regulatoryBodies.view',
   'settings.view',
   'businessUnits.view',
-  'complianceItems.view',
+  'complianceItems.view'
 ];
 
 const roles = {
@@ -58,8 +58,8 @@ const roles = {
       'responses.manageContributor': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
-      'responses.manageMultipleFollowers': ifRAHasAccess,
-    },
+      'responses.manageMultipleFollowers': ifRAHasAccess
+    }
   },
 
   reader: {
@@ -71,7 +71,7 @@ const roles = {
       'auditLogs.view',
       'responses.view',
       'users.searchInAAD',
-      'responses.manageFollower',
+      'responses.manageFollower'
     ],
     restricted: {
       'responses.edit': ifRACHasAccess,
@@ -80,15 +80,18 @@ const roles = {
       'responses.manageContributor': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
-      'responses.manageMultipleFollowers': ifRAHasAccess,
-    },
+      'responses.manageMultipleFollowers': ifRAHasAccess
+    }
   },
 
   admin: {
     normal: [
       ...defaultPermissions,
+      'actions',
       'adminPanel', // permission to see admin items in menu
+      'answers',
       'auditLogs',
+      'audits',
       'auditTypes',
       'businessUnits',
       'categories',
@@ -102,12 +105,12 @@ const roles = {
       'responses',
       'regulatoryBodies',
       'settings',
-      'users',
+      'users'
     ],
     restricted: {
-      'comments.delete': ({ user, comment }) => user._id === comment.authorId,
-    },
-  },
+      'comments.delete': ({ user, comment }) => user._id === comment.authorId
+    }
+  }
 };
 
 export default roles;

@@ -3,18 +3,11 @@ import {
   IBusinessUnit,
   IComment,
   IComplianceItem,
+  IDocument,
   ITrackerQuestion,
   IUser,
-  TQuestionValue,
+  TQuestionValue
 } from 'app-interfaces';
-
-export interface IDocument {
-  id: string;
-  name: string;
-  addedAt: Date;
-  path?: string;
-  thumbnail?: string;
-}
 
 export interface IEvidence {
   name: string;

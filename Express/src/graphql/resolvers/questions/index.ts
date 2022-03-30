@@ -26,7 +26,7 @@ export const questionsTypeDefs = `
     type: String!
     question: String!
     description: String
-    category: String
+    questionsCategoryId: String
     required: Boolean
     notApplicable: Boolean
     positiveValue: Any
@@ -50,7 +50,7 @@ export const questionsTypeDefs = `
     type: String!
     question: String!
     description: String
-    category: String
+    questionsCategoryId: String
     required: Boolean
     notApplicable: Boolean
     positiveValue: Any
@@ -62,7 +62,7 @@ export const questionsTypeDefs = `
     _id: ID!
     question: String
     description: String
-    category: String
+    questionsCategoryId: String
     required: Boolean
     notApplicable: Boolean
     positiveValue: Any
