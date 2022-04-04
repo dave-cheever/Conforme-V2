@@ -303,3 +303,39 @@ Maximum delegates:
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.
 
 Follow the instructions in the readme files for the API (Express) and Client (REACT) applications.
+
+## Emails service
+
+Conforme uses Azure Functions app to send notifications.
+
+- Start by opening the [Function App section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp)
+- Click the **Create** button in the top menu
+- Fill in the following values depending on environment:
+  - SIT
+    - Subscription: Conforme - SIT
+    - Resource group: rg-conforme-web-sit
+    - Function App name: conforme-functions-sit
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+  - SAT
+    - Subscription: Conforme - SAT
+    - Resource group: rg-conforme-web-sat
+    - Registry name: conforme-functions-sat
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+  - PROD
+    - Subscription: Conforme - Production
+    - Resource group: rg-conforme-web-prod
+    - Registry name: conforme-functions-prod
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+- Go to the **Review + create** tab
+- Read it carefully and make sure everything is correct, then click on the **Create** button
+
+Deployment of Functions app will be proceed by Azure Pipelines.

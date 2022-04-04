@@ -1,0 +1,56 @@
+import { model, Schema } from 'mongoose';
+
+import { IOrganization } from '../../interfaces/IOrganization';
+import { IOrganizationModel } from '../../interfaces/IOrganizationModel';
+
+
+const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
+  _id: String,
+  name: String,
+  domain: String,
+  licenceExpirationDate: Date,
+  logoUrl: String,
+  bgImageUrl: String,
+  bgImageTabletUrl: String,
+  theme: Object,
+  addons: Object,
+  allowedTenantsIds: [String],
+  accessGroupId: String,
+  readersGroupId: String,
+  adminsGroupId: String,
+  spSiteUrl: String,
+  spLibraryId: String,
+  emailAddress: String,
+  tenantId: String,
+  clientId: String,
+  secret: String,
+  metatags: {
+    addedAt: Date,
+    addedBy: String,
+    updatedAt: Date,
+    updatedBy: String,
+    removedAt: Date,
+    removedBy: String
+  }
+});
+
+// Creating custom methods for every collection to manipulate th DB because we want to do some checks
+
+organizationSchema.statics.customFindById = async function (_id: string): Promise<IOrganization> {
+  const organization = await this.findById(_id).lean();
+  if (!organization) {
+    throw new Error('Organization not found');
+  }
+  return organization;
+}
+
+organizationSchema.statics.customFindByDomain = async function (domain: string): Promise<IOrganization> {
+  const organization = await this.findOne({ domain }).lean();
+  if (!organization) {
+    throw new Error('Organization not found');
+  }
+  return organization;
+}
+
+const organizationModel = model<IOrganization, IOrganizationModel>('Organization', organizationSchema);
+export default organizationModel;
