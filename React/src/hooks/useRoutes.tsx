@@ -23,6 +23,7 @@ import Settings from '../pages/admin/settings';
 import Sites from '../pages/admin/sites';
 import Users from '../pages/admin/users';
 import Assets from '../pages/assets';
+import Audit from '../pages/audit';
 import Audits from '../pages/audits';
 import ComplianceItemAuditLog from '../pages/compliance-item/audit-log';
 import History from '../pages/compliance-item/history';
@@ -77,6 +78,13 @@ const protectedRoutes: Array<IRoute> = [
     key: 'audits',
     exact: true,
     component: Audits,
+    layout: DefaultLayout,
+  },
+  {
+    path: '/audits/:id',
+    key: 'audit',
+    exact: true,
+    component: Audit,
     layout: DefaultLayout,
   },
   {

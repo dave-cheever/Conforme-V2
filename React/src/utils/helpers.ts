@@ -291,3 +291,6 @@ export const getFieldNameByValues = (value: string) => {
 
   return fieldValue;
 };
+
+export const checkForModule = (organizationConfig, module: string) =>
+  !!organizationConfig?.addons.find((addon) => addon.name === module);

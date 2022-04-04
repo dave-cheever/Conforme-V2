@@ -33,6 +33,7 @@ export const answersTypeDefs = `
 
   type Answer {
     _id: ID!
+    auditId: String!
     questionId: ID!
     answer: String!
     attachements: [AnswerDocument]
@@ -53,6 +54,7 @@ export const answersTypeDefs = `
   }
 
   input AnswerCreateInput {
+    auditId: String!
     questionId: ID!
     answer: String!
     status: String!
@@ -62,6 +64,7 @@ export const answersTypeDefs = `
   
   input AnswerModifyInput {
     _id: ID!
+    auditId: String!
     questionId: ID!
     answer: String!
     status: String!

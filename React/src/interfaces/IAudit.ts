@@ -1,4 +1,4 @@
-import { IBase } from 'app-interfaces';
+import { IBase } from './IBase';
 
 export interface IAudit extends IBase {
   auditTypeId: string;
@@ -7,5 +7,4 @@ export interface IAudit extends IBase {
   areaId?: string;
   auditorId: string;
   participantsIds: string[];
-  organizationId: string;
 }

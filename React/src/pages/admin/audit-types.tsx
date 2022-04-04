@@ -25,7 +25,6 @@ import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
 import { ChevronRight } from '../../icons';
-import { IAuditSection } from '../../interfaces/IAuditSection';
 import { IAuditType } from '../../interfaces/IAuditType';
 
 const GET_AUDIT_TYPES = gql`
@@ -336,44 +335,6 @@ const AuditTypes = () => {
                 sections.map((section, i) => (
                   <Stack key={`section-${i}`}>
                     <Text fontSize="smm">Section {i + 1}</Text>
-                    <Text fontSize="sm">Type</Text>
-                    <Select
-                      _active={{ bg: 'dropdown.activeBg' }}
-                      _focus={{ borderColor: 'dropdown.border.focus.normal' }}
-                      _placeholder={{ color: 'dropdown.placeholder' }}
-                      bg="dropdown.bg"
-                      borderColor="dropdown.border.normal"
-                      borderRadius="8px"
-                      borderWidth="1px"
-                      color="dropdown.font"
-                      css={{ paddingTop: '0' }}
-                      fontSize="smm"
-                      h="42px"
-                      icon={
-                        <ChevronRight
-                          stroke="dropdown.chevronDownIcon"
-                          transform="rotate(90deg)"
-                        />
-                      }
-                      onChange={(e) =>
-                        setValue(
-                          'sections',
-                          sections.map((sectionValue, index) => {
-                            if (index === i)
-                              return { type: e.target.value } as IAuditSection;
-
-                            return sectionValue;
-                          }),
-                        )
-                      }
-                      top="5px"
-                      value={section.type}
-                    >
-                      <option value="notes">Notes</option>
-                      <option value="questionsCategory">
-                        Question category
-                      </option>
-                    </Select>
                     {section.type === 'questionsCategory' && (
                       <Stack pt={2}>
                         <Text fontSize="sm">Question category</Text>
@@ -417,7 +378,7 @@ const AuditTypes = () => {
                           <option value={undefined}>
                             Please select questions category
                           </option>
-                          {questionsCategories.map(({ _id, name }) => (
+                          {questionsCategories?.map(({ _id, name }) => (
                             <option key={_id} value={_id}>
                               {name}
                             </option>
@@ -440,7 +401,10 @@ const AuditTypes = () => {
               fontWeight="bold"
               mt={16}
               onClick={() =>
-                setValue('sections', [...sections, { type: 'notes' }])
+                setValue('sections', [
+                  ...sections,
+                  { type: 'questionsCategory' },
+                ])
               }
             >
               Add section

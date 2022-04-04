@@ -21,11 +21,11 @@ const GET_QUESTIONS_CATEGORIES = gql`
   query {
     questionsCategories {
       _id
-      auditType
       name
       withAnswers
       allowCustomQuestions
       maxQuestionsNumber
+      icon
       scope {
         component
       }
@@ -54,11 +54,11 @@ const DELETE_QUESTION_CATEGORY = gql`
 
 const defaultValues: Partial<IQuestionsCategory> = {
   _id: undefined,
-  auditType: '',
   name: '',
   withAnswers: true,
   allowCustomQuestions: true,
   maxQuestionsNumber: 5,
+  icon: '',
   scope: {
     component: 'audits',
   },
@@ -138,11 +138,11 @@ const QuestionsCategories = () => {
     setAdminModalState(action);
     reset({
       _id: questionsCategory?._id,
-      auditType: questionsCategory?.auditType,
       name: questionsCategory?.name,
       withAnswers: questionsCategory?.withAnswers,
       allowCustomQuestions: questionsCategory?.allowCustomQuestions,
       maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+      icon: questionsCategory?.icon,
       scope: questionsCategory?.scope,
     });
   };
@@ -175,11 +175,11 @@ const QuestionsCategories = () => {
           variables: {
             questionsCategoryInput: {
               _id: questionsCategory?._id,
-              auditType: questionsCategory?.auditType,
               name: questionsCategory?.name,
               withAnswers: questionsCategory?.withAnswers,
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+              icon: questionsCategory?.icon,
             },
           },
         });
@@ -291,18 +291,33 @@ const QuestionsCategories = () => {
             label="Allow answers"
             name="withAnswers"
             placeholder="Allow answers"
+            validations={{
+              notEmpty: true,
+            }}
           />
           <Toggle
             control={control}
             label="Allow custom questions"
             name="allowCustomQuestions"
             placeholder="Allow custom questions"
+            validations={{
+              notEmpty: true,
+            }}
           />
           <NumberInput
             control={control}
             label="Max number of questions"
             name="maxQuestionsNumber"
             placeholder="Max number of questions"
+            validations={{
+              notEmpty: true,
+            }}
+          />
+          <TextInput
+            control={control}
+            label="Icon"
+            name="icon"
+            placeholder="Icon"
             validations={{
               notEmpty: true,
             }}

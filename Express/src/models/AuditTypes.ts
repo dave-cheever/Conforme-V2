@@ -28,7 +28,7 @@ const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
     {
       type: {
         type: String,
-        enum: ['notes', 'questionsCategory'],
+        enum: ['questionsCategory'],
       },
       _id: String,
     },

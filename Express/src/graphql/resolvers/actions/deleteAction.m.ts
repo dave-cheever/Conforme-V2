@@ -1,11 +1,7 @@
-import { Actions, Audits } from 'app-models';
+import { Actions } from 'app-models';
 import { isPermitted } from 'app-utils';
 
-const deleteAction = async (
-  _,
-  { _id, auditId },
-  { authorize, organization }
-) => {
+const deleteAction = async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -15,19 +11,7 @@ const deleteAction = async (
     const deletedResult = await Actions.customDelete(
       { _id },
       user._id,
-      organization._id
-    );
-    const parentAudit = await Audits.customFindOne(
-      { _id: auditId },
-      organization._id
-    );
-    await Audits.customUpdateOne(
-      { _id: parentAudit._id },
-      {
-        actionsIds: parentAudit.answersIds.filter((id) => id !== _id)
-      },
-      user._id,
-      organization._id
+      organization._id,
     );
 
     return deletedResult;

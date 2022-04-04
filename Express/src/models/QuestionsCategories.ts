@@ -16,8 +16,6 @@ const questionsCategoriesSchema = new Schema<
 >({
   _id: String,
   name: String,
-  auditType: String,
-  navigationDisplay: Boolean,
   withAnswers: Boolean,
   allowCustomQuestions: Boolean,
   maxQuestionsNumber: Number,

@@ -2,8 +2,6 @@ import { IBase, TComponent } from 'app-interfaces';
 
 export interface IQuestionsCategory extends IBase {
   name: string;
-  auditType?: string;
-  navigationDisplay: boolean;
   withAnswers: boolean;
   allowCustomQuestions: boolean;
   maxQuestionsNumber: number;

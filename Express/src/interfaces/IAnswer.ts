@@ -1,6 +1,7 @@
 import { IBase, IDocument, TComponent, TQuestionValue } from 'app-interfaces';
 
 export interface IAnswer extends IBase {
+  auditId: string;
   questionId: string;
   answer: TQuestionValue;
   attachments: IDocument[];

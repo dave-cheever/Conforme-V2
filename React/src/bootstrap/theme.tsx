@@ -19,6 +19,8 @@ import { alertDialogStyles } from '../components/AlertDialog';
 import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
 import { auditLogRecordStyles } from '../components/AuditLog/AuditLogRecord';
+import { auditModalStyles } from '../components/AuditModal/AuditModal';
+import { auditTeamModalStyles } from '../components/AuditModal/AuditTeamModal';
 import { barChartStyles } from '../components/BarChart';
 import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector';
 import { complianceGroupItemsStyles } from '../components/ComplianceItem/ComplianceItemsGroup';
@@ -83,6 +85,7 @@ import { complianceItemsAdminWithContextStyles } from '../pages/admin/compliance
 import { locationsStyles } from '../pages/admin/locations';
 import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
 import { userItemStyles } from '../pages/admin/users';
+import { auditsStyles } from '../pages/audits';
 import { historyPageStyles } from '../pages/compliance-item/history';
 import { complianceItemResponseStyles } from '../pages/compliance-item/index';
 import { teamPageStyles } from '../pages/compliance-item/team';
@@ -140,6 +143,8 @@ const getTheme = (organizationTheme?: any) => {
       ...auditLogDayStyles,
       ...auditLogRecordStyles,
       ...auditLogStyles,
+      ...auditModalStyles,
+      ...auditTeamModalStyles,
       ...avatarUserStyles,
       ...barChartStyles,
       ...businessUnitsModalStyles,
@@ -219,6 +224,7 @@ const getTheme = (organizationTheme?: any) => {
       ...textMultilineInputStyles,
       ...toggleStyles,
       ...userItemStyles,
+      ...auditsStyles,
       ...userMenuStyles,
       ...userSelectorStyles,
 
@@ -235,73 +241,6 @@ const getTheme = (organizationTheme?: any) => {
         900: '#07041c',
       },
 
-      auditModal: {
-        title: {
-          text: '#434B4F',
-        },
-        avatar: {
-          bg: '#F69942',
-          text: '#9A9EA1',
-        },
-        location: {
-          text: '#9A9EA1',
-        },
-        questionGroup: {
-          checked: '#41B916',
-          activeButton: {
-            500: '#A2171E',
-            600: '#A2171E',
-          },
-          nonActiveButton: {
-            500: '#FFF',
-            600: '#FFF',
-          },
-        },
-        menu: {
-          bg: 'transparent',
-          text: '#9A9EA1',
-          active: {
-            icon: '#1F1F1F',
-            text: '#1F1F1F',
-            indicator: '#A2171E',
-          },
-          inActive: {
-            icon: '#9A9EA1',
-            text: '#9A9EA1',
-            indicator: 'transparent',
-          },
-        },
-        participants: {
-          text: '#1F1F1F',
-          avatar: {
-            bg: '#F69942',
-            text: {
-              name: '#1F1F1F',
-              designation: '#9A9EA1',
-            },
-          },
-          customSearch: {
-            bg: 'white',
-            border: '#9A9EA180',
-          },
-          inspect: {
-            text: '#1F1F1F',
-            area: {
-              text: {
-                name: '#1F1F1F',
-                location: '#9A9EA1',
-              },
-            },
-          },
-          auditType: {
-            text: '#1F1F1F',
-          },
-        },
-        button: {
-          bg: '#A2171E',
-          hoverBg: '#CC242D',
-        },
-      },
       additionalQuestions: {
         active: {
           icon: '#1F1F1F',

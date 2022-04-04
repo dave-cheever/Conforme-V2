@@ -1,0 +1,51 @@
+import { useCallback, useContext } from 'react';
+
+import { gql, useMutation } from '@apollo/client';
+import { useToast } from '@chakra-ui/react';
+
+import { toastFailed, toastSuccess } from '../bootstrap/config';
+import { AdminContext } from '../contexts/AdminProvider';
+import { useAuditModalContext } from '../contexts/AuditModalProvider';
+import { IAudit } from '../interfaces/IAudit';
+
+const CREATE_AUDIT = gql`
+  mutation ($audit: AuditCreateInput!) {
+    createAudit(audit: $audit) {
+      _id
+    }
+  }
+`;
+
+const useAuditModal = (refetch = () => {}) => {
+  const toast = useToast();
+  const { setAdminModalState } = useContext(AdminContext);
+  const { reset } = useAuditModalContext();
+  const [create] = useMutation(CREATE_AUDIT);
+
+  const closeModal = useCallback(() => setAdminModalState('closed'), []);
+
+  const saveAudit = async (audit: Partial<IAudit>) => {
+    try {
+      const { data } = await create({ variables: { audit } });
+      const auditId = data.createAudit._id;
+      reset({ ...audit, _id: auditId });
+
+      refetch();
+      toast({
+        ...toastSuccess,
+        description: `Audit ${audit.hasOwnProperty('_id') ? 'saved' : 'added'}`,
+      });
+
+      return auditId;
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
+
+  return {
+    saveAudit,
+    closeModal,
+  };
+};
+
+export default useAuditModal;

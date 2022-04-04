@@ -24,8 +24,6 @@ export const questionsCategoriesTypeDefs = `
   type QuestionsCategory {
     _id: ID!
     name: String!
-    auditType: String
-    navigationDisplay: Boolean!
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
@@ -47,8 +45,6 @@ export const questionsCategoriesTypeDefs = `
 
   input QuestionsCategoryCreateInput {
     name: String!
-    auditType: String
-    navigationDisplay: Boolean!
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
@@ -59,8 +55,6 @@ export const questionsCategoriesTypeDefs = `
   input QuestionsCategoryModifyInput {
     _id: ID!
     name: String!
-    auditType: String
-    navigationDisplay: Boolean!
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!

@@ -7,15 +7,14 @@ import { genMetatags } from 'app-utils';
 
 const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
-  name: String,
+  auditTypeId: String,
   walkType: {
     type: String,
     enum: ['physical', 'virtual'],
   },
   siteId: String,
   areaId: String,
-  answersIds: [String],
-  actionsIds: [String],
+  auditorId: String,
   participantsIds: [String],
   organizationId: String,
   metatags: {
@@ -33,14 +32,14 @@ auditsSchema.statics.customCreate = async function (
   userId: string,
   organizationId: string,
 ): Promise<IAudit> {
-  const createdAuditType = await this.create({
+  const createdAudit = await this.create({
     ...audit,
     _id: uuidv4(),
     organizationId,
     metatags: genMetatags('added', userId),
   });
 
-  return createdAuditType;
+  return createdAudit;
 };
 
 auditsSchema.statics.customFind = async function (
@@ -121,6 +120,6 @@ auditsSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
-const auditsModel = model<IAudit, IAuditModel>('Audit', auditsSchema, 'audits');
+const auditsModel = model<IAudit, IAuditModel>('Audit', auditsSchema);
 
 export default auditsModel;

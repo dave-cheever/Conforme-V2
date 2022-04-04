@@ -1,4 +1,4 @@
 export type IAuditSection = {
-  type: 'notes' | 'questionsCategory';
+  type: 'questionsCategory';
   _id?: string; // used for QuestionsCategory
 };

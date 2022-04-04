@@ -7,6 +7,8 @@ import { genMetatags } from 'app-utils';
 
 const answersSchema = new Schema<IAnswer, IAnswerModel>({
   _id: String,
+  auditId: String,
+  questionId: String,
   answer: String,
   attachments: [
     {

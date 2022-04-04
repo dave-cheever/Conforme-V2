@@ -8,6 +8,7 @@ import { genMetatags } from 'app-utils';
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
   title: String,
+  auditId: String,
   dueDate: String,
   done: Boolean,
   priority: String,

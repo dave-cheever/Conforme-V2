@@ -10,6 +10,7 @@ import NavigationTopProvider, {
 } from '../contexts/NavigationTopProvider';
 import useDevice from '../hooks/useDevice';
 import { AddIcon, SearchIcon } from '../icons';
+import { checkForModule } from '../utils/helpers';
 import Can from './can';
 import SearchBar from './SearchBar';
 import UserMenu from './UserMenu';
@@ -31,11 +32,20 @@ const NavigationTop = () => {
   const handleAddButtonClick = () => {
     setAdminModalState('add');
     if (
+      checkForModule(organizationConfig, 'tracker') &&
       ['/', '/admin/users', '/admin/audit-log', '/admin/settings'].includes(
         history.location.pathname,
       )
     )
       pageRedirect('/admin/compliance-items');
+    if (
+      checkForModule(organizationConfig, 'audits') &&
+      (['/', '/admin/users', '/admin/audit-log', '/admin/settings'].includes(
+        history.location.pathname,
+      ) ||
+        /\/audits/.test(history.location.pathname))
+    )
+      pageRedirect('/audits');
   };
 
   return (
@@ -78,9 +88,47 @@ const NavigationTop = () => {
               : organizationConfig?.name}
           </Text>
         </Flex>
-        {!isComplianceItemPage && (
+        {!isComplianceItemPage &&
+          checkForModule(organizationConfig, 'tracker') && (
+            <Can
+              action="adminPanel"
+              yes={() => (
+                <IconButton
+                  _hover={{ opacity: 0.7 }}
+                  aria-label="Add"
+                  bg="navigationTop.addButton"
+                  bottom={['75px', '0']}
+                  boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
+                  color="white"
+                  display={
+                    [
+                      '/',
+                      '/admin/users',
+                      '/admin/settings',
+                      '/admin/audit-log',
+                    ].includes(history.location.pathname)
+                      ? 'none'
+                      : 'block'
+                  }
+                  flexShrink={0}
+                  h={['52px', '45px']}
+                  icon={
+                    <AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />
+                  }
+                  mr="30px"
+                  onClick={handleAddButtonClick}
+                  position={['fixed', 'relative']}
+                  right={['15px', '0']}
+                  rounded={['20px', '8px']}
+                  w={['52px', '45px']}
+                  zIndex={5}
+                />
+              )}
+            />
+          )}
+        {checkForModule(organizationConfig, 'audits') && (
           <Can
-            action="adminPanel"
+            action="audits"
             yes={() => (
               <IconButton
                 _hover={{ opacity: 0.7 }}
@@ -91,7 +139,6 @@ const NavigationTop = () => {
                 color="white"
                 display={
                   [
-                    '/',
                     '/admin/users',
                     '/admin/settings',
                     '/admin/audit-log',
@@ -115,7 +162,6 @@ const NavigationTop = () => {
             )}
           />
         )}
-
         <Flex
           display={
             device !== 'mobile' || (device === 'mobile' && isSearchBarOpen)

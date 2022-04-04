@@ -3,10 +3,10 @@ import { TComponent } from './TComponent';
 
 export interface IQuestionsCategory extends IBase {
   name: string;
-  auditType?: string;
   withAnswers: boolean;
   allowCustomQuestions: boolean;
   maxQuestionsNumber: number;
+  icon: string;
   scope: {
     component: TComponent;
     type?: string;

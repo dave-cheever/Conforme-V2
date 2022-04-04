@@ -17,12 +17,12 @@ const auditsResolvers = {
 export const auditsTypeDefs = `
   type Audit {
     _id: ID!
-    name: String!
+    auditTypeId: String!
     walkType: String!
     siteId: ID
     areaId: ID
-    answersIds: [ID],
-    actionsIds: [ID],
+    auditorId: ID!
+    participantsIds: [ID]
     metatags: Metatags
   }
 
@@ -31,29 +31,27 @@ export const auditsTypeDefs = `
   }
 
   input AuditCreateInput {
-    name: String!
+    auditTypeId: String!
     walkType: String!
     siteId: ID
     areaId: ID
-    answersIds: [ID],
-    actionsIds: [ID],
-    participantsIds: [ID!]!
+    auditorId: ID!
+    participantsIds: [ID]
   }
   
   input AuditModifyInput {
     _id: ID!
-    name: String!
+    auditTypeId: String!
     walkType: String!
     siteId: ID
     areaId: ID
-    answersIds: [ID],
-    actionsIds: [ID],
-    participantsIds: [ID!]!
+    auditorId: ID!
+    participantsIds: [ID]
   }
 `;
 
 export const auditsQueryDefs = `
-  audits: [Audit!]!
+  audits(auditQueryInput: AuditQueryInput): [Audit!]!
 `;
 
 export const auditsMutationDefs = `

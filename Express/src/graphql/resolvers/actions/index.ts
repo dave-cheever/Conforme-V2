@@ -18,6 +18,7 @@ export const actionsTypeDefs = `
   type Action {
     _id: ID!
     title: ID!
+    auditId: String!
     dueDate: Date!
     done: Boolean!
     priority: String!,
@@ -32,6 +33,7 @@ export const actionsTypeDefs = `
 
   input ActionCreateInput {
     title: ID!
+    auditId: String!
     dueDate: Date!
     done: Boolean!
     priority: String!,
@@ -42,6 +44,7 @@ export const actionsTypeDefs = `
   input ActionModifyInput {
     _id: ID!
     title: ID!
+    auditId: String!
     dueDate: Date!
     done: Boolean!
     priority: String!,
@@ -55,9 +58,9 @@ export const actionsQueryDefs = `
 `;
 
 export const actionsMutationDefs = `
-  createAction(action: ActionCreateInput!, auditId: ID!): Action!
-  updateAction(actionInput: ActionModifyInput!, auditId: ID!): Action!
-  deleteAction(_id: String!, auditId: ID!): Boolean!
+  createAction(action: ActionCreateInput!): Action!
+  updateAction(actionInput: ActionModifyInput!): Action!
+  deleteAction(_id: String!): Boolean!
 `;
 
 export default actionsResolvers;

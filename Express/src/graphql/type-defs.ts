@@ -3,82 +3,82 @@ import { gql } from 'apollo-server-express';
 import {
   actionsMutationDefs,
   actionsQueryDefs,
-  actionsTypeDefs
+  actionsTypeDefs,
 } from './resolvers/actions';
 import {
   answersMutationDefs,
   answersQueryDefs,
-  answersTypeDefs
+  answersTypeDefs,
 } from './resolvers/answers';
 import { auditLogsQueryDefs, auditLogsTypeDefs } from './resolvers/auditLogs';
 import {
   auditsMutationDefs,
   auditsQueryDefs,
-  auditsTypeDefs
+  auditsTypeDefs,
 } from './resolvers/audits';
 import {
   auditTypesMutationDefs,
   auditTypesQueryDefs,
-  auditTypesTypeDefs
+  auditTypesTypeDefs,
 } from './resolvers/auditTypes';
 import {
   businessUnitsMutationDefs,
   businessUnitsQueryDefs,
-  businessUnitsTypeDefs
+  businessUnitsTypeDefs,
 } from './resolvers/businessUnits';
 import {
   categoriesMutationDefs,
-  categoriesQueryDefs
+  categoriesQueryDefs,
 } from './resolvers/categories';
 import {
   commentsMutationDefs,
   commentsQueryDefs,
-  commnentsTypeDefs
+  commnentsTypeDefs,
 } from './resolvers/comments';
 import {
   complianceItemsMutationDefs,
   complianceItemsQueryDefs,
-  complianceItemsTypeDefs
+  complianceItemsTypeDefs,
 } from './resolvers/complianceItems';
 import { graphQueryDefs, graphTypeDefs } from './resolvers/graph';
 import {
   locationsMutationDefs,
   locationsQueryDefs,
-  locationsTypeDefs
+  locationsTypeDefs,
 } from './resolvers/locations';
 import {
   organizationsQueryDefs,
-  organizationsTypeDefs
+  organizationsTypeDefs,
 } from './resolvers/organizations';
 import {
   questionsMutationDefs,
   questionsQueryDefs,
-  questionsTypeDefs
+  questionsTypeDefs,
 } from './resolvers/questions';
 import {
   questionsCategoriesMutationDefs,
   questionsCategoriesQueryDefs,
-  questionsCategoriesTypeDefs
+  questionsCategoriesTypeDefs,
 } from './resolvers/questionsCategories';
 import {
   regulatoryBodiesMutationDefs,
-  regulatoryBodiesQueryDefs
+  regulatoryBodiesQueryDefs,
 } from './resolvers/regulatoryBodies';
 import {
   responsesMutationDefs,
   responsesQueryDefs,
-  responsesTypeDefs
+  responsesTypeDefs,
 } from './resolvers/responses';
 import { searchQueryDefs, searchTypeDefs } from './resolvers/search';
 import {
   settingsMutationDefs,
   settingsQueryDefs,
-  settingsTypeDefs
+  settingsTypeDefs,
 } from './resolvers/settings';
 import {
   usersMutationsDefs,
   usersQueryDefs,
-  usersTypeDefs
+  usersTypeDefs,
 } from './resolvers/users';
 
 const typeDefs = gql`

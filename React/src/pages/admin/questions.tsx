@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Select, Stack, Text, useToast } from '@chakra-ui/react';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -14,6 +14,7 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
+import { ChevronRight } from '../../icons';
 import { IQuestion } from '../../interfaces/IQuestion';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 
@@ -24,11 +25,16 @@ const GET_QUESTIONS = gql`
       type
       question
       description
+      questionsCategoryId
       positiveValue
       negativeValue
       scope {
         component
       }
+    }
+    questionsCategories {
+      _id
+      name
     }
   }
 `;
@@ -57,7 +63,7 @@ const defaultValues: Partial<IQuestion<TQuestionValue>> = {
   type: 'text',
   question: '',
   description: '',
-  category: '',
+  questionsCategoryId: '',
   positiveValue: null,
   negativeValue: null,
   scope: {
@@ -91,6 +97,8 @@ const Questions = () => {
     setQuestions(getQuestions(data?.questions));
   }, [data]);
 
+  const questionsCategories = data?.questionsCategories;
+
   useEffect(() => {
     const sort = (a, b) => {
       if (sortType === 'owner') {
@@ -110,13 +118,17 @@ const Questions = () => {
   const {
     control,
     formState: { errors },
+    watch,
     getValues,
+    setValue,
     trigger,
     reset,
   } = useForm({
     mode: 'all',
     defaultValues,
   });
+
+  const questionsCategoryId = watch('questionsCategoryId');
 
   // Reset the form after closing
   useEffect(() => {
@@ -134,7 +146,7 @@ const Questions = () => {
       type: question?.type,
       question: question?.question,
       description: question?.description,
-      category: question?.category,
+      questionsCategoryId: question?.questionsCategoryId,
       positiveValue: question?.positiveValue,
       negativeValue: question?.negativeValue,
       scope: question?.scope,
@@ -171,7 +183,7 @@ const Questions = () => {
               _id: question._id,
               question: question.question,
               description: question.description,
-              category: question.category,
+              questionsCategoryId: question.questionsCategoryId,
               required: question.required,
               notApplicable: question.notApplicable,
               positiveValue: question.positiveValue,
@@ -273,6 +285,38 @@ const Questions = () => {
           spacing={2}
           w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
         >
+          <Text fontSize="sm">Question category</Text>
+          <Select
+            _active={{ bg: 'dropdown.activeBg' }}
+            _focus={{
+              borderColor: 'dropdown.border.focus.normal',
+            }}
+            _placeholder={{ color: 'dropdown.placeholder' }}
+            bg="dropdown.bg"
+            borderColor="dropdown.border.normal"
+            borderRadius="8px"
+            borderWidth="1px"
+            color="dropdown.font"
+            css={{ paddingTop: '0' }}
+            fontSize="smm"
+            h="42px"
+            icon={
+              <ChevronRight
+                stroke="dropdown.chevronDownIcon"
+                transform="rotate(90deg)"
+              />
+            }
+            onChange={(e) => setValue('questionsCategoryId', e.target.value)}
+            top="5px"
+            value={questionsCategoryId}
+          >
+            <option value={undefined}>Please select questions category</option>
+            {questionsCategories?.map(({ _id, name }) => (
+              <option key={_id} value={_id}>
+                {name}
+              </option>
+            ))}
+          </Select>
           <TextInput
             control={control}
             label="Question"

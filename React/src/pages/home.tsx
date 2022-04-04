@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/react';
 
 import AccidentInvestigationPanel from '../components/AccidentInvestigationPanel';
-import AuditModal from '../components/AuditModal/AuditModal';
 import AuditPanel from '../components/AuditPanel';
 import DashboardFilters from '../components/DashboardFilters';
 import LicensesPanel from '../components/LicensesPanel';
@@ -104,7 +103,6 @@ const Home = () => {
             <LicensesPanel />
           </Grid>
         </Box>
-        <AuditModal isOpen={isAuditModalOpen} onClose={closeAuditModal} />
       </Flex>
     </HomeContext.Provider>
   );
