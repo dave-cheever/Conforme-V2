@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useLazyQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
+import useNavigate from '../../hooks/useNavigate';
 import useResponseUtils from '../../hooks/useResponseUtils';
 import { Close, LocationIcon, TickIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
@@ -21,7 +21,7 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const ComplianceListItem = ({ response }: { response: IResponse }) => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { getStatus } = useResponseUtils();
   const [
     getResponsible,
@@ -52,7 +52,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
       borderBottomColor="complianceList.headerBorderColor"
       borderBottomWidth="1px"
       cursor="pointer"
-      onClick={() => history.push(`/compliance-item/${response._id}`)}
+      onClick={() => navigateTo(`/compliance-item/${response._id}`)}
       p="15px 25px"
       py={[1, 0]}
       w="full"

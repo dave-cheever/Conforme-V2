@@ -1,5 +1,5 @@
 import { IBase } from './IBase';
-import { TComponent } from './TComponent';
+import { TModuleType } from './TModuleType';
 
 export interface IQuestionsCategory extends IBase {
   name: string;
@@ -8,7 +8,7 @@ export interface IQuestionsCategory extends IBase {
   maxQuestionsNumber: number;
   icon: string;
   scope: {
-    component: TComponent;
+    component: TModuleType;
     type?: string;
     _id?: string;
   };

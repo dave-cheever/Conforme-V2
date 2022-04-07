@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Box, Flex, Icon } from '@chakra-ui/react';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowRight } from '../../icons';
 import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from './NavigationLeftFilters';
@@ -12,10 +12,10 @@ import SubSection from './SubSection';
 
 const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
   const { organizationConfig } = useAppContext();
-  const isTrackerComponent = organizationConfig?.addons.find(
+  const isTrackerComponent = organizationConfig?.modules.find(
     ({ name }) => name === 'tracker',
   );
-  const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const [menuOpen, setMenuOpen] = useState(true);
 
@@ -35,8 +35,8 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
         mt="5px"
         onClick={() => {
           setMenuOpen(!menuOpen);
-          if (menuItem.subSections) history.push(menuItem.subSections[0].url);
-          else history.push(url);
+          if (menuItem.subSections) navigateTo(menuItem.subSections[0].url);
+          else navigateTo(url);
         }}
         pos="relative"
         w="240px"
@@ -46,12 +46,12 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
             alignItems="center"
             bg={
               menuItem.subSections
-                ? history.location.pathname.includes(url)
+                ? isPathActive(url)
                   ? 'navigationLeftItem.selectedLabelBg'
                   : 'navigationLeftItem.unselectedLabelBg'
-                : history.location.pathname === url
-                ? 'navigationLeftItem.selectedLabelBg'
-                : 'navigationLeftItem.unselectedLabelBg'
+                : isPathActive(url, { exact: true })
+                  ? 'navigationLeftItem.selectedLabelBg'
+                  : 'navigationLeftItem.unselectedLabelBg'
             }
             h="30px"
             justifyContent="center"
@@ -64,33 +64,35 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
               h="15px"
               stroke={
                 menuItem.subSections
-                  ? history.location.pathname.includes(url)
+                  ? isPathActive(url)
                     ? 'navigationLeftItem.selectedIconStroke'
                     : 'navigationLeftItem.unselectedIconStroke'
-                  : history.location.pathname === url
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
+                  : isPathActive(url, { exact: true })
+                    ? 'navigationLeftItem.selectedIconStroke'
+                    : 'navigationLeftItem.unselectedIconStroke'
               }
               w="15px"
             />
           </Flex>
           {showFiltersPanel &&
-            (menuItem.subSections?.length > 0 ||
-              (history.location.pathname === '/' &&
-                history.location.pathname === url)) && (
+            (
+              menuItem.subSections?.length > 0 ||
+              isPathActive(url, { exact: true })
+            ) && (
               <ArrowRight boxSize="10px" ml={1} />
-            )}
+            )
+          }
         </Flex>
         {!showFiltersPanel && (
           <Box
             color={
               menuItem.subSections
-                ? history.location.pathname.includes(url)
+                ? isPathActive(url)
                   ? 'navigationLeftItem.selectedMenuItem'
                   : 'navigationLeftItem.unselectedMenuItem'
-                : history.location.pathname === url
-                ? 'navigationLeftItem.selectedMenuItem'
-                : 'navigationLeftItem.unselectedMenuItem'
+                : isPathActive(url, { exact: true })
+                  ? 'navigationLeftItem.selectedMenuItem'
+                  : 'navigationLeftItem.unselectedMenuItem'
             }
             fontWeight="400"
             ml="5"
@@ -100,7 +102,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
         )}
       </Box>
       <Box>
-        {history.location.pathname.includes(url) &&
+        {isPathActive(url) &&
           !showFiltersPanel &&
           menuItem.subSections?.map((subSection) => (
             <SubSection
@@ -110,8 +112,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
               subsection={subSection}
             />
           ))}
-        {history.location.pathname === '/' &&
-          history.location.pathname === url &&
+        {isPathActive(url, { exact: true }) &&
           !showFiltersPanel &&
           isTrackerComponent && (
             <>
@@ -120,7 +121,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                   filter={[
                     'all',
                     responsesStatusesCounts.compliant +
-                      responsesStatusesCounts.nonCompliant,
+                    responsesStatusesCounts.nonCompliant,
                   ]}
                   menuOpen={menuOpen}
                 />

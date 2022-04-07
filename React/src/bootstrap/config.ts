@@ -34,7 +34,7 @@ export const trackerMenuItems: INavItem[] = [
   {
     type: 'menuItem',
     label: 'Compliance items',
-    url: '/',
+    url: '/dashboard',
     icon: Home,
     permission: 'home.view',
   },
@@ -67,7 +67,7 @@ export const auditsMenuItems: INavItem[] = [
   {
     type: 'menuItem',
     label: 'Audits',
-    url: '/',
+    url: '/dashboard',
     icon: Home,
     permission: 'home.view',
   },

@@ -57,17 +57,23 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
       "brand": {
         "primary": "#FFFFFF",
         "secondary": "#A1A1A1",
-        "primaryFont": "#CCCCCCC",
+        "primaryFont": "#CCCCCC",
         "secondaryFont": "#434C52",
         "active": "#B98474",
         "lightGrey": "#E3E3E3"
       }
     }
   },
-  "addons": [{
-    "name": "audits"
+  "modules": [{
+    "name": <module name>,
+    "type": "audits",
+    "path": <module path>,
+    "showInNavigation": <true/false>
   }, {
-    "name": "tracker"
+    "name": <module name>,
+    "type": "tracker",
+    "path": <module path>,
+    "showInNavigation": <true/false>
   }],
   "allowedTenantsIds": [
     <tenant id>

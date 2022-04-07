@@ -1,7 +1,6 @@
-import { useHistory } from 'react-router-dom';
-
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import useNavigate from '../../hooks/useNavigate';
 import { ISubsection } from '../../interfaces/IMenu';
 
 const SubSection = ({
@@ -13,14 +12,14 @@ const SubSection = ({
   menuOpen?: boolean;
   setMenuOpen?: (value: boolean) => void;
 }) => {
-  const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
   const { url, label } = subsection;
 
   return (
     <Flex
       alignItems="center"
       color={
-        history.location.pathname === url
+        isPathActive(url, { exact: true })
           ? 'subSection.selectedFontColor'
           : 'subSection.unselectedFontColor'
       }
@@ -31,13 +30,13 @@ const SubSection = ({
       lineHeight="40px"
       ml={[menuOpen ? '35px' : '10px', '20px', '35px']}
       onClick={() => {
-        history.push(url);
+        navigateTo(url);
         if (setMenuOpen) setMenuOpen(!menuOpen);
       }}
     >
       <Box
         bg={
-          history.location.pathname === url
+          isPathActive(url, { exact: true })
             ? 'subSection.selectedIndicator'
             : 'subSection.unselectedIndicator'
         }

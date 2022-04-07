@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import reactStringReplace from 'react-string-replace';
 
 import { gql, useQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
+import useNavigate from '../../hooks/useNavigate';
 import { IAuditLogRecord } from '../../interfaces/IAuditLog';
 import { IUser } from '../../interfaces/IUser';
 import {
@@ -28,7 +28,7 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
-  const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
 
   const { data: { usersById } = [] } = useQuery(GET_USERS_BY_ID, {
     variables: {
@@ -39,10 +39,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
   const auditAddedUser: IUser =
     usersById && usersById?.length !== 0 && usersById[0];
 
-  const isResponseAudit = useMemo(
-    () => history.location.pathname.includes('/compliance-item'),
-    [history],
-  );
+  const isResponseAudit = isPathActive('/compliance-item');
 
   const displayUpdateDetails = (element, i, oldValue, newValue) =>
     (oldValue || newValue) && (
@@ -77,7 +74,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
   if (!audit.values || Object.keys(audit.values).length === 0) return null;
 
   const goToItem = () => {
-    history.push(`/compliance-item/${audit.element._id}`);
+    navigateTo(`/compliance-item/${audit.element._id}`);
   };
 
   return (

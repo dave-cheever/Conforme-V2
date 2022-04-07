@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Box, Flex, Icon } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowRight } from '../../icons';
 import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from './NavigationLeftFilters';
@@ -23,7 +23,7 @@ const NavigationLeftItemTablet = ({
   setSubsectionOpen: (value: boolean) => void;
 }) => {
   const [menuOpen, setMenuOpen] = useState(true);
-  const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
   const { url, icon } = menuItem;
   const { responsesStatusesCounts } = useFiltersContext();
 
@@ -47,12 +47,12 @@ const NavigationLeftItemTablet = ({
             alignItems="center"
             bg={
               menuItem.subSections
-                ? history.location.pathname.includes(url)
+                ? isPathActive(url)
                   ? 'navigationLeftItemTablet.selectedLabelBg'
                   : 'navigationLeftItemTablet.unselectedLabelBg'
-                : history.location.pathname === url
-                ? 'navigationLeftItemTablet.selectedLabelBg'
-                : 'navigationLeftItemTablet.unselectedLabelBg'
+                : isPathActive(url, { exact: true })
+                  ? 'navigationLeftItemTablet.selectedLabelBg'
+                  : 'navigationLeftItemTablet.unselectedLabelBg'
             }
             h="30px"
             justifyContent="center"
@@ -61,7 +61,7 @@ const NavigationLeftItemTablet = ({
               if (menuItem.url === '/') {
                 setFiltersOpen(!filtersOpen);
                 setSubsectionOpen(false);
-                history.push(url);
+                navigateTo(url);
               } else if (menuItem.url === '/admin') {
                 setSubsectionOpen(!subsectionOpen);
                 setFiltersOpen(false);
@@ -75,12 +75,12 @@ const NavigationLeftItemTablet = ({
               h="15px"
               stroke={
                 menuItem.subSections
-                  ? history.location.pathname.includes(url)
+                  ? isPathActive(url)
                     ? 'navigationLeftItemTablet.selectedIconStroke'
                     : 'navigationLeftItemTablet.unselectedIconStroke'
-                  : history.location.pathname === url
-                  ? 'navigationLeftItemTablet.selectedIconStroke'
-                  : 'navigationLeftItemTablet.unselectedIconStroke'
+                  : isPathActive(url, { exact: true })
+                    ? 'navigationLeftItemTablet.selectedIconStroke'
+                    : 'navigationLeftItemTablet.unselectedIconStroke'
               }
               w="15px"
             />
@@ -104,7 +104,7 @@ const NavigationLeftItemTablet = ({
                 filter={[
                   'all',
                   responsesStatusesCounts.compliant +
-                    responsesStatusesCounts.nonCompliant,
+                  responsesStatusesCounts.nonCompliant,
                 ]}
                 menuOpen={menuOpen}
                 setFiltersOpen={setFiltersOpen}

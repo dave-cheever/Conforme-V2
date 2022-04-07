@@ -15,9 +15,9 @@ export const useConfigContext = () => {
 };
 
 const ConfigProvider = ({ children }) => {
-  const { organizationConfig } = useAppContext();
+  const { organizationConfig, module } = useAppContext();
   const menuItems = useMemo(() => {
-    if (organizationConfig?.addons.find(({ name }) => name === 'audits'))
+    if (module?.type === 'audits')
       return auditsMenuItems;
 
     return trackerMenuItems;

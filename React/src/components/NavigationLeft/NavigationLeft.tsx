@@ -7,27 +7,25 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useConfigContext } from '../../contexts/ConfigProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
+import useNavigate from '../../hooks/useNavigate';
 import { Conforme, ConformeSmall } from '../../icons';
+import { getInitials } from '../../utils/helpers';
 import Can from '../can';
 import NavigationLeftItem from './NavigationLeftItem';
 import NavigationLeftItemTablet from './NavigationLeftItemTablet';
 
 const NavigationLeft = () => {
   const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
   const { cleanFilters, showFiltersPanel } = useFiltersContext();
-  const { organizationConfig } = useAppContext();
+  const { module } = useAppContext();
   const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const device = useDevice();
 
   useEffect(() => {
-    if (
-      !(
-        history.location.pathname === '/' ||
-        history.location.pathname.includes('/items')
-      )
-    )
+    if (!(isPathActive('/', { exact: true }) || isPathActive('/items')))
       cleanFilters();
   }, [history.location.pathname]);
 
@@ -47,18 +45,18 @@ const NavigationLeft = () => {
           cursor="pointer"
           display="flex"
           h="80px"
-          onClick={() => history.push('/')}
+          onClick={() => navigateTo('/')}
         >
           <Text
             color="navigationLeft.organizationNameFontColor"
             fontSize="16px"
             fontWeight="bold"
             ml="25px"
-            w="80px"
+            w="full"
           >
             {showFiltersPanel || device === 'tablet'
-              ? organizationConfig?.name.charAt(0)
-              : organizationConfig?.name}
+              ? getInitials(module?.name)
+              : module?.name}
           </Text>
         </Box>
         <Flex

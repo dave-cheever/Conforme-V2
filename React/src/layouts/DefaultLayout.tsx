@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
+import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationBottomMobile from '../components/NavigationBottomMobile';
 import NavigationLeft from '../components/NavigationLeft/NavigationLeft';
 import NavigationTop from '../components/NavigationTop';
@@ -10,6 +11,7 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
 
   return (
     <Flex minH="100vh">
+      <ModuleSwitcher />
       <NavigationLeft />
       <Flex
         direction="column"

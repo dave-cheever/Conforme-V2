@@ -12,6 +12,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 import { isEqual } from 'date-fns';
 
 import { toastFailed } from '../bootstrap/config';
+import useNavigate from '../hooks/useNavigate';
 import { IResponse } from '../interfaces/IResponse';
 import { IResponseContext } from '../interfaces/IResponseContext';
 import { IUser } from '../interfaces/IUser';
@@ -135,6 +136,7 @@ export const useResponseContext = () => {
 const ResponseProvider = ({ children }) => {
   const { id }: { id: string } = useParams();
   const history = useHistory();
+  const { navigateTo } = useNavigate();
   const query = new URLSearchParams(history.location.search);
   const snapshot = query.get('snapshot');
   const { data, loading, refetch } = useQuery(GET_RESPONSES, {
@@ -208,7 +210,7 @@ const ResponseProvider = ({ children }) => {
       title: 'Response not found',
       description: 'Either response ID or snapshot is not valid.',
     });
-    history.push('/');
+    navigateTo('/');
   }
 
   const participants: IUser[] = useMemo(

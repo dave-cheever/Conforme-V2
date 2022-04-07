@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Flex, Icon } from '@chakra-ui/react';
+
+import useNavigate from '../../hooks/useNavigate';
 
 const ResponseLeftTabItem = ({
   label,
@@ -11,15 +13,13 @@ const ResponseLeftTabItem = ({
   isMobile = false,
 }) => {
   const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
   const { id }: { id: string } = useParams();
 
-  const active = useMemo(
-    () => history.location.pathname === `/compliance-item/${id}${url}`,
-    [id, url, history],
-  );
+  const active = isPathActive(`/compliance-item/${id}${url}`, { exact: true });
 
   const redirectPage = () => {
-    history.push(`/compliance-item/${id}${url}${history.location.search}`);
+    navigateTo(`/compliance-item/${id}${url}${history.location.search}`);
   };
 
   return (
@@ -57,9 +57,9 @@ const ResponseLeftTabItem = ({
           color={
             active
               ? [
-                  'responseLeftTabItem.textColor',
-                  'responseLeftTabItem.activeTextColor',
-                ]
+                'responseLeftTabItem.textColor',
+                'responseLeftTabItem.activeTextColor',
+              ]
               : 'responseLeftTabItem.textColor'
           }
           flexGrow={1}

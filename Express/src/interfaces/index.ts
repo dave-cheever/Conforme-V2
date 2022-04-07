@@ -22,6 +22,7 @@ import { IComplianceItemModel } from './IComplianceItemModel';
 import { IDocument } from './IDocument';
 import { ILocation } from './ILocation';
 import { ILocationModel } from './ILocationModel';
+import { IModule } from './IModule';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
@@ -38,8 +39,8 @@ import { ITrackerQuestion } from './ITrackerQuestion';
 import { IGraphUser, IUser } from './IUser';
 import { IUserModel } from './IUserModel';
 import { TCollection } from './TCollection';
-import { TComponent } from './TComponent';
 import { TFrequency } from './TFrequency';
+import { TModuleType } from './TModuleType';
 import { TQuestionType } from './TQuestionType';
 import { TQuestionValue } from './TQuestionValue';
 
@@ -70,6 +71,7 @@ export {
   IGraphUser,
   ILocation,
   ILocationModel,
+  IModule,
   IOrganization,
   IOrganizationModel,
   IQuestion,
@@ -86,8 +88,8 @@ export {
   IUser,
   IUserModel,
   TCollection,
-  TComponent,
   TFrequency,
+  TModuleType,
   TQuestionType,
   TQuestionValue,
 };

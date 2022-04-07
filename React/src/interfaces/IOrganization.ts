@@ -1,8 +1,5 @@
 import { IBase } from './IBase';
-
-export interface IAddon {
-  name: string;
-}
+import { IModule } from './IModule';
 
 export interface IOrganization extends IBase {
   name: string;
@@ -11,5 +8,5 @@ export interface IOrganization extends IBase {
   bgImageUrl: string;
   bgImageTabletUrl: string;
   theme: object;
-  addons: IAddon[];
+  modules: IModule[];
 }

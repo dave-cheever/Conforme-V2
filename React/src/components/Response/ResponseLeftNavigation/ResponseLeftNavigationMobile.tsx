@@ -1,16 +1,16 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Divider, Flex } from '@chakra-ui/react';
 
 import { navigationTabs } from '../../../bootstrap/config';
 import { useResponseContext } from '../../../contexts/ResponseProvider';
+import useNavigate from '../../../hooks/useNavigate';
 import { ChevronRight } from '../../../icons';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 import ResponseDetail from './ResponseDetail';
 
 const ResponseLeftNavigationMobile = () => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
 
   const { response } = useResponseContext();
 
@@ -39,7 +39,7 @@ const ResponseLeftNavigationMobile = () => {
           fontSize="14px"
           h="30px"
           mr={3}
-          onClick={() => history.push('/compliance-items')}
+          onClick={() => navigateTo('/compliance-items')}
         >
           <ChevronRight ml={2} transform="Rotate(180deg)" />
           <Divider ml={3} orientation="vertical" />

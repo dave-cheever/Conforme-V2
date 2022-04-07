@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
@@ -18,6 +17,7 @@ import { debounce } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
+import useNavigate from '../hooks/useNavigate';
 import { CrossIcon } from '../icons';
 import Loader from './Loader';
 
@@ -45,7 +45,7 @@ const GET_SEARCH_HISTORY = gql`
 `;
 
 const SearchBar = () => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { user } = useAppContext();
   const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } =
     useNavigationTopContext();
@@ -144,7 +144,7 @@ const SearchBar = () => {
       <Box
         display={
           isSearchBarOpen &&
-          (recentlySearchPhrases?.length > 0 || data?.search || loading)
+            (recentlySearchPhrases?.length > 0 || data?.search || loading)
             ? 'block'
             : 'none'
         }
@@ -175,7 +175,7 @@ const SearchBar = () => {
                     direction="row"
                     key={searchResult._id}
                     onClick={() =>
-                      history.push(`${searchResult.type}/${searchResult._id}`)
+                      navigateTo(`${searchResult.type}/${searchResult._id}`)
                     }
                   >
                     <Text>{searchResult.primaryText}</Text>

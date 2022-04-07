@@ -1,10 +1,10 @@
 import { FunctionComponent, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Flex, Text } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useNavigate from '../hooks/useNavigate';
 import { ArrowRight, Filter } from '../icons';
 
 interface IHeader {
@@ -25,16 +25,15 @@ const Header: FunctionComponent<IHeader> = ({
   } = useFiltersContext();
 
   const device = useDevice();
-  const history = useHistory();
+  const { isPathActive } = useNavigate();
   const breadCrumbs = useMemo(() => {
     if (device === 'mobile') return mobileBreadcrumbs || [];
 
     return breadcrumbs;
   }, [device, breadcrumbs, mobileBreadcrumbs]);
 
-  const isComplianceItemsAdminPage =
-    history.location.pathname === '/admin/compliance-items';
-  const isHomePage = history.location.pathname === '/';
+  const isComplianceItemsAdminPage = isPathActive('/admin/compliance-items', { exact: true });
+  const isHomePage = isPathActive('/dashboard', { exact: true });
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex align="center" h="full" key={`bc-${i}`}>
       {i > 0 && (

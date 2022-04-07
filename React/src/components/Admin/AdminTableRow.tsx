@@ -1,8 +1,7 @@
-import { useHistory } from 'react-router-dom';
-
 import { Flex, Tooltip } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBaseWithName } from '../../interfaces/IBaseWithName';
 
@@ -15,7 +14,7 @@ const AdminTableRow = ({
   responseToEdit: 'regulatoryBodiesIds' | 'categoriesIds';
   edit?: () => void;
 }) => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
   return (
     <Flex
@@ -50,7 +49,7 @@ const AdminTableRow = ({
             ml="13px"
             onClick={() => {
               setResponseFiltersValue({ [responseToEdit]: [element._id] });
-              history.push('/');
+              navigateTo('/');
             }}
             stroke="#282F36"
             w="10px"

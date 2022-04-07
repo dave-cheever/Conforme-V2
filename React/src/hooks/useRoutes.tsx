@@ -97,7 +97,7 @@ const protectedRoutes: Array<IRoute> = [
     layout: AuditLayout,
   },
   {
-    path: '/',
+    path: '/dashboard',
     key: 'dashboard',
     exact: true,
     component: Dashboard,
@@ -285,31 +285,40 @@ const protectedRoutes: Array<IRoute> = [
     component: Help,
     layout: DefaultLayout,
   },
-  {
-    path: '*',
-    key: 'not-found',
-    component: () => <Redirect key="not-found" to={{ pathname: '/' }} />,
-    layout: DefaultLayout,
-  },
 ];
 
 const useRoutes = () => {
-  const { user } = useAppContext();
+  const { user, module } = useAppContext();
 
   let routes: IRoute[] = [];
   if (!user) routes = openRoutes;
-  else routes = protectedRoutes;
+  else {
+    routes = [
+      ...protectedRoutes.map((route) => ({
+        ...route,
+        path: `/:modulePath${route.path}`,
+      })),
+    ];
+  }
 
-  return routes.map((route) => ({
-    ...route,
-    component: () => (
-      <Can
-        action={route.permission}
-        no={() => <Redirect key="not-found" to={{ pathname: '/' }} />}
-        yes={() => <route.layout component={route.component} key={route.key} />}
-      />
-    ),
-  }));
+  return [
+    ...routes.map((route) => ({
+      ...route,
+      component: () => (
+        <Can
+          action={route.permission}
+          no={() => <Redirect key="not-found" to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />}
+          yes={() => <route.layout component={route.component} key={route.key} />}
+        />
+      ),
+    })),
+    {
+      path: '*',
+      key: 'not-found',
+      component: () => <Redirect key="not-found" to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />,
+      layout: DefaultLayout,
+    },
+  ];
 };
 
 export default useRoutes;

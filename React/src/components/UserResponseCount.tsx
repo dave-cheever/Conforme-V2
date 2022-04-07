@@ -1,13 +1,13 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
+import useNavigate from '../hooks/useNavigate';
 
 const UserResponseCount = ({ userId, role, responseCount }) => {
   const { filtersValues, setFilters } = useFiltersContext();
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
 
   const handleUserChange = ({ userRole, value }) => {
     const userIdsFilter = filtersValues.usersIds?.value;
@@ -51,7 +51,7 @@ const UserResponseCount = ({ userId, role, responseCount }) => {
 
   const handleClick = () => {
     localStorage.setItem('viewMode', 'Grid');
-    history.push('/');
+    navigateTo('/');
     handleUserChange({ userRole: role, value: [userId] });
   };
 

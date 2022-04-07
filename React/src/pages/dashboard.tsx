@@ -3,8 +3,8 @@ import Audits from './audits';
 import ComplianceItems from './compliance-items';
 
 const Dashboard = () => {
-  const { organizationConfig } = useAppContext();
-  if (organizationConfig?.addons.find(({ name }) => name === 'audits'))
+  const { module } = useAppContext();
+  if (module?.type === 'audits')
     return <Audits />;
 
   return <ComplianceItems />;

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import JSONfn from 'json-fn';
@@ -32,7 +33,12 @@ const ORGANIZATION = gql`
       bgImageUrl
       bgImageTabletUrl
       theme
-      addons
+      modules {
+        type
+        name
+        path
+        showInNavigation
+      }
     }
   }
 `;
@@ -48,7 +54,9 @@ const useInit = () => {
     error: organizationError,
     data: organizationData,
   } = useQuery(ORGANIZATION);
-  const { setRoles, setOrganizationConfig, setSettings } = useAppContext();
+  const { setRoles, setOrganizationConfig, setModule, setSettings } = useAppContext();
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (settingsData) {
@@ -65,7 +73,20 @@ const useInit = () => {
     if (organizationData) {
       const { organization } = organizationData;
       setOrganizationConfig(organization);
-      document.title = `Conforme - ${organization.name}`;
+
+      const modulePath = location.pathname.split('/')[1];
+      let module = organization.modules.find((m) => m.path === modulePath);
+      if (!module) {
+        [module] = organization.modules;
+        history.push(module.path);
+      }
+
+      setModule(module);
+      if (module)
+        document.title = `${module.name} - ${organization.name} - Conforme`;
+      else
+        document.title = `${organization.name} - Conforme`;
+
     }
   }, [organizationError, organizationData]); // eslint-disable-line react-hooks/exhaustive-deps
 

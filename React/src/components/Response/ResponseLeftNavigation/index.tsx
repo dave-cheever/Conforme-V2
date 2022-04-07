@@ -1,6 +1,5 @@
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Icon, Text, useToast } from '@chakra-ui/react';
@@ -9,8 +8,10 @@ import { navigationTabs, toastSuccess } from '../../../bootstrap/config';
 import { useAppContext } from '../../../contexts/AppProvider';
 import { useFiltersContext } from '../../../contexts/FiltersProvider';
 import { useResponseContext } from '../../../contexts/ResponseProvider';
+import useNavigate from '../../../hooks/useNavigate';
 import { ChevronRight, Conforme, Copy } from '../../../icons';
 import { IUser } from '../../../interfaces/IUser';
+import { getInitials } from '../../../utils/helpers';
 import ResponseLeftItem from '../ResponseLeftItem';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 
@@ -34,9 +35,9 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const ResponseLeftNavigation = () => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const toast = useToast();
-  const { organizationConfig } = useAppContext();
+  const { module } = useAppContext();
 
   const { showFiltersPanel } = useFiltersContext();
 
@@ -81,7 +82,7 @@ const ResponseLeftNavigation = () => {
           cursor="pointer"
           display="flex"
           h="80px"
-          onClick={() => history.push('/')}
+          onClick={() => navigateTo('/')}
         >
           <Text
             color="navigationLeft.organizationNameFontColor"
@@ -89,9 +90,7 @@ const ResponseLeftNavigation = () => {
             fontWeight="bold"
             w="80px"
           >
-            {showFiltersPanel
-              ? organizationConfig?.name.charAt(0)
-              : organizationConfig?.name}
+            {showFiltersPanel ? getInitials(module?.name) : module?.name}
           </Text>
         </Box>
         <Flex
@@ -101,7 +100,7 @@ const ResponseLeftNavigation = () => {
           fontSize="14px"
           h="30px"
           mb="30px"
-          onClick={() => history.push('/compliance-items')}
+          onClick={() => navigateTo('/compliance-items')}
         >
           <ChevronRight mr={2} transform="Rotate(180deg)" />
           Go Back

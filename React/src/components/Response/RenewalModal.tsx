@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useMutation } from '@apollo/client';
 import {
@@ -16,6 +15,7 @@ import {
 import moment from 'moment';
 
 import { ResponseContext } from '../../contexts/ResponseProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { IResponse } from '../../interfaces/IResponse';
 import Loader from '../Loader';
 
@@ -29,7 +29,7 @@ const RENEW_RESPONSE = gql`
 `;
 
 const RenewalModal = () => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const [renewResponse] = useMutation(RENEW_RESPONSE);
   const { response, isRenewalOpen, handleRenewalClose, refetch, setActiveTab } =
     useContext(ResponseContext);
@@ -67,8 +67,8 @@ const RenewalModal = () => {
           {loading
             ? 'Renewing...'
             : !renewedResponse
-            ? 'Please confirm'
-            : 'Response renewed'}
+              ? 'Please confirm'
+              : 'Response renewed'}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody minH="100px">
@@ -123,7 +123,7 @@ const RenewalModal = () => {
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
                   mr={3}
-                  onClick={() => history.push('/')}
+                  onClick={() => navigateTo('/')}
                 >
                   Return to homepage
                 </Button>

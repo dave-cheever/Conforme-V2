@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { SmallCloseIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import {
@@ -25,6 +24,7 @@ import {
   ResponseContext,
   useResponseContext,
 } from '../../../contexts/ResponseProvider';
+import useNavigate from '../../../hooks/useNavigate';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 import { ArrowDownIcon, CheckIcon, ShareIcon } from '../../../icons';
 import { isPermitted } from '../../can';
@@ -36,7 +36,7 @@ import ResponseHeaderStatus from './ResponseHeaderStatus';
 const ReasponseHeader = () => {
   const { response, snapshot, handleRenewalOpen, setActiveTab } =
     useResponseContext();
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const toast = useToast();
   const {
     getStatus,
@@ -60,13 +60,11 @@ const ReasponseHeader = () => {
       toast({
         ...toastSuccess,
         title: 'Response completed',
-        description: `${response.complianceItem.name} for ${
-          response.businessUnit?.name
-        } is compliant until ${
-          response.nextRenewalDate
+        description: `${response.complianceItem.name} for ${response.businessUnit?.name
+          } is compliant until ${response.nextRenewalDate
             ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy')
             : 'N/A'
-        } `,
+          } `,
       });
       return setStatus('compliant');
     }
@@ -162,7 +160,7 @@ const ReasponseHeader = () => {
                   cursor="pointer"
                   onClick={() => {
                     setActiveTab(0);
-                    history.push(`/compliance-item/${response._id}`);
+                    navigateTo(`/compliance-item/${response._id}`);
                   }}
                 />
               </Tooltip>
@@ -221,33 +219,33 @@ const ReasponseHeader = () => {
             {!['Ad-hoc', 'Variable'].includes(
               response?.complianceItem?.frequency,
             ) && (
-              <Button
-                _hover={{
-                  bg: 'reasponseHeader.buttonDarkBgHover',
-                  color: 'reasponseHeader.buttonDarkColorHover',
-                }}
-                bg={
-                  enableRenewalButton
-                    ? 'reasponseHeader.buttonDarkBg'
-                    : 'reasponseHeader.buttonDarkBg'
-                }
-                borderRadius="10px"
-                color={
-                  enableRenewalButton
-                    ? 'reasponseHeader.buttonDarkColor'
-                    : 'reasponseHeader.buttonDarkColor'
-                }
-                display={['none', 'flex']}
-                fontSize="smm"
-                fontWeight="bold"
-                isDisabled={!enableRenewalButton}
-                ml="15px"
-                onClick={handleRenewalOpen}
-                w="88px"
-              >
-                Renew
-              </Button>
-            )}
+                <Button
+                  _hover={{
+                    bg: 'reasponseHeader.buttonDarkBgHover',
+                    color: 'reasponseHeader.buttonDarkColorHover',
+                  }}
+                  bg={
+                    enableRenewalButton
+                      ? 'reasponseHeader.buttonDarkBg'
+                      : 'reasponseHeader.buttonDarkBg'
+                  }
+                  borderRadius="10px"
+                  color={
+                    enableRenewalButton
+                      ? 'reasponseHeader.buttonDarkColor'
+                      : 'reasponseHeader.buttonDarkColor'
+                  }
+                  display={['none', 'flex']}
+                  fontSize="smm"
+                  fontWeight="bold"
+                  isDisabled={!enableRenewalButton}
+                  ml="15px"
+                  onClick={handleRenewalOpen}
+                  w="88px"
+                >
+                  Renew
+                </Button>
+              )}
           </Flex>
         </Flex>
 

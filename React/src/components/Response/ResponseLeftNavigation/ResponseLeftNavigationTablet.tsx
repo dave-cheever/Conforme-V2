@@ -1,18 +1,19 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { navigationTabs } from '../../../bootstrap/config';
 import { useAppContext } from '../../../contexts/AppProvider';
 import { useResponseContext } from '../../../contexts/ResponseProvider';
+import useNavigate from '../../../hooks/useNavigate';
 import { ChevronRight, ConformeSmall } from '../../../icons';
+import { getInitials } from '../../../utils/helpers';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 import ResponseDetail from './ResponseDetail';
 
 const ResponseLeftNavigationTablet = () => {
-  const history = useHistory();
-  const { organizationConfig } = useAppContext();
+  const { navigateTo } = useNavigate();
+  const { module } = useAppContext();
 
   const { response } = useResponseContext();
 
@@ -37,14 +38,14 @@ const ResponseLeftNavigationTablet = () => {
           display="flex"
           h="80px"
           justifyContent="center"
-          onClick={() => history.push('/')}
+          onClick={() => navigateTo('/')}
         >
           <Text
             color="navigationLeft.organizationNameFontColor"
             fontSize="16px"
             fontWeight="bold"
           >
-            {organizationConfig?.name.charAt(0)}
+            {getInitials(module?.name)}
           </Text>
         </Box>
         <Flex
@@ -54,7 +55,7 @@ const ResponseLeftNavigationTablet = () => {
           fontSize="14px"
           h="30px"
           mb="20px"
-          onClick={() => history.push('/compliance-items')}
+          onClick={() => navigateTo('/compliance-items')}
           w="full"
         >
           <ChevronRight ml={2} transform="Rotate(180deg)" />

@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 
 import FiltersPanel from '../components/Filters/FiltersPanel';
+import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationBottomMobile from '../components/NavigationBottomMobile';
 import NavigationLeft from '../components/NavigationLeft/NavigationLeft';
 import NavigationTop from '../components/NavigationTop';
@@ -13,6 +14,7 @@ const FilterLayout = ({ component: Component }: { component: any }) => {
 
   return (
     <Flex bg="layout.bg" minH="100vh">
+      <ModuleSwitcher />
       <NavigationLeft />
       <Flex direction="column" overflow="auto" position="relative" w="full">
         <NavigationTop />

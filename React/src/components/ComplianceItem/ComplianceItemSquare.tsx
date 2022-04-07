@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { ChevronRightIcon } from '@chakra-ui/icons';
@@ -14,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
+import useNavigate from '../../hooks/useNavigate';
 import useResponseUtils, {
   responseStatuses,
 } from '../../hooks/useResponseUtils';
@@ -32,7 +32,7 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { getStatus, getRenewalStatus } = useResponseUtils();
   const responseStatus = useMemo(
     () => getStatus(response),
@@ -202,7 +202,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
           }
           fontSize="11px"
           h="28px"
-          onClick={() => history.push(`/compliance-item/${response._id}`)}
+          onClick={() => navigateTo(`/compliance-item/${response._id}`)}
           rightIcon={
             <ChevronRightIcon
               boxSize="20px"

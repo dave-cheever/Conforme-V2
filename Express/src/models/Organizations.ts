@@ -11,7 +11,15 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   bgImageUrl: String,
   bgImageTabletUrl: String,
   theme: Object,
-  addons: Object,
+  modules: [{
+    type: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    name: String,
+    path: String,
+    showInNavigation: Boolean,
+  }],
   allowedTenantsIds: [String],
   accessGroupId: String,
   readersGroupId: String,
@@ -38,9 +46,9 @@ organizationSchema.statics.customFindById = async function (
   _id: string,
 ): Promise<IOrganization> {
   const organization = await this.findById(_id).lean();
-  if (!organization) 
+  if (!organization)
     throw new Error('Organization not found');
-  
+
   return organization;
 };
 
@@ -48,9 +56,9 @@ organizationSchema.statics.customFindByDomain = async function (
   domain: string,
 ): Promise<IOrganization> {
   const organization = await this.findOne({ domain }).lean();
-  if (!organization) 
+  if (!organization)
     throw new Error('Organization not found');
-  
+
   return organization;
 };
 

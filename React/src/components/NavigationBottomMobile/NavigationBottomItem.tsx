@@ -1,9 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowRight } from '../../icons';
 import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from '../NavigationLeft/NavigationLeftFilters';
@@ -22,7 +22,7 @@ const NavigationBottomItem = ({
   subsectionOpen: boolean;
   setSubsectionOpen: (value: boolean) => void;
 }) => {
-  const history = useHistory();
+  const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const { responsesStatusesCounts } = useFiltersContext();
 
@@ -36,18 +36,18 @@ const NavigationBottomItem = ({
       }}
       flexGrow={
         menuItem.subSections
-          ? history.location.pathname.includes(url)
+          ? isPathActive(url)
             ? 1
             : 0
-          : history.location.pathname === url
-          ? 1
-          : 0
+          : isPathActive(url, { exact: true })
+            ? 1
+            : 0
       }
       onClick={() => {
         if (menuItem.url === '/') {
           setFiltersOpen(!filtersOpen);
           setSubsectionOpen(false);
-          history.push(url);
+          navigateTo(url);
         } else if (menuItem.url === '/admin') {
           setSubsectionOpen(!subsectionOpen);
           setFiltersOpen(false);
@@ -59,12 +59,12 @@ const NavigationBottomItem = ({
         alignItems="center"
         bg={
           menuItem.subSections
-            ? history.location.pathname.includes(url)
+            ? isPathActive(url)
               ? 'navigationLeftItemTablet.selectedLabelBg'
               : 'navigationLeftItemTablet.unselectedLabelBg'
-            : history.location.pathname === url
-            ? 'navigationLeftItemTablet.selectedLabelBg'
-            : 'navigationLeftItemTablet.unselectedLabelBg'
+            : isPathActive(url, { exact: true })
+              ? 'navigationLeftItemTablet.selectedLabelBg'
+              : 'navigationLeftItemTablet.unselectedLabelBg'
         }
         h="30px"
         justifyContent="center"
@@ -76,30 +76,30 @@ const NavigationBottomItem = ({
           h="15px"
           stroke={
             menuItem.subSections
-              ? history.location.pathname.includes(url)
+              ? isPathActive(url)
                 ? 'navigationLeftItemTablet.selectedIconStroke'
                 : 'navigationLeftItemTablet.unselectedIconStroke'
-              : history.location.pathname === url
-              ? 'navigationLeftItemTablet.selectedIconStroke'
-              : 'navigationLeftItemTablet.unselectedIconStroke'
+              : isPathActive(url, { exact: true })
+                ? 'navigationLeftItemTablet.selectedIconStroke'
+                : 'navigationLeftItemTablet.unselectedIconStroke'
           }
           w="15px"
         />
       </Flex>
-      {((menuItem.subSections && history.location.pathname.includes(url)) ||
-        (!menuItem.subSections && history.location.pathname === url)) && (
-        <>
-          <Text color="#818197" fontSize="11px" ml="15px">
-            {label}
-          </Text>
-          <ArrowRight
-            boxSize="10px"
-            ml="15px"
-            stroke="#818197"
-            transform="rotate(270deg)"
-          />
-        </>
-      )}
+      {((menuItem.subSections && isPathActive(url)) ||
+        (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
+          <>
+            <Text color="#818197" fontSize="11px" ml="15px">
+              {label}
+            </Text>
+            <ArrowRight
+              boxSize="10px"
+              ml="15px"
+              stroke="#818197"
+              transform="rotate(270deg)"
+            />
+          </>
+        )}
       {filtersOpen && menuItem.url === '/' && (
         <Box
           bg="white"
@@ -117,7 +117,7 @@ const NavigationBottomItem = ({
               filter={[
                 'all',
                 responsesStatusesCounts.compliant +
-                  responsesStatusesCounts.nonCompliant,
+                responsesStatusesCounts.nonCompliant,
               ]}
               setFiltersOpen={setFiltersOpen}
             />
@@ -138,12 +138,12 @@ const NavigationBottomItem = ({
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
           left={
             menuItem.subSections
-              ? history.location.pathname.includes(url)
+              ? isPathActive(url)
                 ? '0'
                 : '-200px'
-              : history.location.pathname === url
-              ? '0'
-              : '-200px'
+              : isPathActive(url, { exact: true })
+                ? '0'
+                : '-200px'
           }
           pos="absolute"
           py="15px"

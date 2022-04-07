@@ -292,5 +292,8 @@ export const getFieldNameByValues = (value: string) => {
   return fieldValue;
 };
 
-export const checkForModule = (organizationConfig, module: string) =>
-  !!organizationConfig?.addons.find((addon) => addon.name === module);
+export const getInitials = (name = '') => {
+  const names = name.split(' ');
+  const initials = names.map((n) => n.charAt(0)).join('');
+  return initials.toUpperCase();
+};

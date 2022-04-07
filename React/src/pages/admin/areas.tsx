@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, Tooltip, useToast } from '@chakra-ui/react';
@@ -15,6 +14,7 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 
@@ -66,7 +66,7 @@ const Areas = () => {
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const device = useDevice();
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState(true);
 
@@ -242,12 +242,7 @@ const Areas = () => {
             cursor="pointer"
             h="10px"
             ml="13px"
-            onClick={() => {
-              history.push({
-                pathname: '/',
-                state: { businessUnitsIds: [businessUnit._id] },
-              });
-            }}
+            onClick={() => navigateTo('/', { businessUnitsIds: [businessUnit._id] })}
             stroke="#282F36"
             w="10px"
           />

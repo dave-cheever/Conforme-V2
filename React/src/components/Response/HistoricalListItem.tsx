@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useLazyQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
 import { format, getTime } from 'date-fns';
 
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
 
@@ -20,7 +20,7 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const HistoricalListItem = ({ response }: { response: IResponse }) => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { snapshot } = useResponseContext();
   const [
     getUsers,
@@ -53,7 +53,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
       borderBottomWidth="1px"
       cursor="pointer"
       onClick={() =>
-        history.push(
+        navigateTo(
           `/compliance-item/${response._id}?snapshot=${getTime(
             new Date(response.lastRenewalDate!),
           )}`,

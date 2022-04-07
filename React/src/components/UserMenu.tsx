@@ -12,10 +12,12 @@ import addHours from 'date-fns/addHours';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
+import useNavigate from '../hooks/useNavigate';
 
 const UserMenu = () => {
   const { user, setUser } = useAppContext();
   const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { onOpen, onClose, isOpen } = useDisclosure();
 
   const logout = async () => {
@@ -37,7 +39,7 @@ const UserMenu = () => {
   };
 
   const pageRedirect = (page: string) => {
-    history.push(page);
+    navigateTo(page);
   };
 
   return (

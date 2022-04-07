@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, Tooltip, useToast } from '@chakra-ui/react';
@@ -16,6 +15,7 @@ import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 
@@ -68,7 +68,7 @@ const BusinessUnits = () => {
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const device = useDevice();
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState(true);
   const [currentBusinessUnitName, setCurrentBusinessUnitName] =
@@ -252,7 +252,7 @@ const BusinessUnits = () => {
             ml="13px"
             onClick={() => {
               setResponseFiltersValue({ businessUnitsIds: [businessUnit._id] });
-              history.push('/');
+              navigateTo('/');
             }}
             stroke="#282F36"
             w="10px"

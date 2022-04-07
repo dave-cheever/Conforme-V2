@@ -8,6 +8,13 @@ const organizationsResolvers = {
 };
 
 export const organizationsTypeDefs = `
+  type Module {
+    type: String!
+    name: String!
+    path: String!
+    showInNavigation: Boolean
+  }
+
   type Organization {
     _id: ID!
     name: String!
@@ -16,7 +23,7 @@ export const organizationsTypeDefs = `
     bgImageUrl: String
     bgImageTabletUrl: String
     theme: Object!
-    addons: Object
+    modules: [Module]
     clientId: String
     tenantId: String
     secret: String

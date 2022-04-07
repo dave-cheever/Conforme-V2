@@ -1,10 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Avatar, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useNavigate from '../hooks/useNavigate';
 import { ArrowCount } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
 
@@ -16,7 +16,7 @@ const LocationListItem = ({
   openLocationModal;
 }) => {
   const device = useDevice();
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
 
   return (
@@ -71,7 +71,7 @@ const LocationListItem = ({
             ml="13px"
             onClick={() => {
               setResponseFiltersValue({ locationsIds: [location._id] });
-              history.push('/');
+              navigateTo('/');
             }}
             stroke="locations.tooltipStroke"
             w="10px"

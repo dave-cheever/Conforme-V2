@@ -1,8 +1,4 @@
-import { IBase } from 'app-interfaces';
-
-export interface IAddon {
-  name: string;
-}
+import { IBase, IModule } from 'app-interfaces';
 
 export interface IOrganization extends IBase {
   name: string;
@@ -12,7 +8,7 @@ export interface IOrganization extends IBase {
   bgImageUrl: string;
   bgImageTabletUrl: string;
   theme: object;
-  addons: IAddon[];
+  modules: IModule[];
   allowedTenantsIds: string[]; // 'all' for all tenants
   accessGroupId?: string; // ID of Azure AD group if required to login
   readersGroupId?: string; // ID of Azure AD group of users with role "reader"
