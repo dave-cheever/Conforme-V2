@@ -1,3 +1,4 @@
+import { priorities } from './constants';
 import {
   emailPreview,
   getEmailSubject,
@@ -76,4 +77,5 @@ export {
   mentionParser,
   getNextRenewalDate,
   getPrevRenewalDate,
+  priorities,
 };

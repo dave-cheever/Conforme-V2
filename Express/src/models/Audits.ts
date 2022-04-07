@@ -8,6 +8,7 @@ import { genMetatags } from 'app-utils';
 const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
   auditTypeId: String,
+  reference: String,
   walkType: {
     type: String,
     enum: ['physical', 'virtual'],
@@ -26,6 +27,19 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
     removedBy: String,
   },
 });
+
+auditsSchema.statics.customGenerateReference =
+  async function (): Promise<string> {
+    let reference = '0000001';
+    const lastAudit = await this.findOne({})
+      .sort({ 'metatags.addedAt': -1 })
+      .lean();
+    if (lastAudit && lastAudit.reference) {
+      const newReference = parseInt(lastAudit.reference, 10) + 1;
+      reference = `000000${newReference}`.slice(-7);
+    }
+    return reference;
+  };
 
 auditsSchema.statics.customCreate = async function (
   audit: IAudit,

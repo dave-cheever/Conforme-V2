@@ -240,6 +240,24 @@ export const navigationTabs = [
   },
 ];
 
+export const auditNavigationTabs = [
+  {
+    label: 'Walk',
+    url: '/',
+    icon: ProgressIcon,
+  },
+  {
+    label: 'Participants',
+    url: '/participants',
+    icon: TeamsIcon,
+  },
+  {
+    label: 'History',
+    url: '/history',
+    icon: RepeatClockIcon,
+  },
+];
+
 export const userRoles = [
   {
     value: 'responsible',

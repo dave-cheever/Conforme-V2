@@ -8,8 +8,14 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
     if (!isPermitted({ user, action: 'audits.add' }))
       throw new Error('User is not permitted');
 
+    const reference = await Audits.customGenerateReference();
+    const newAudit = {
+      ...audit,
+      reference,
+    };
+
     const createdAudit = await Audits.customCreate(
-      audit,
+      newAudit,
       user._id,
       organization._id,
     );

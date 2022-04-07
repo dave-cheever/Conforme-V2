@@ -5,6 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 
 import { IAudit } from '../interfaces/IAudit';
 import { IAuditModalContext } from '../interfaces/IAuditModalContext';
+import { useAppContext } from './AppProvider';
 
 export const AuditModalContext = createContext({} as IAuditModalContext);
 
@@ -44,9 +45,12 @@ export const useAuditModalContext = () => {
 };
 
 const AuditModalProvider = ({ children }) => {
+  const { user } = useAppContext();
   const { data, refetch } = useQuery(GET_FORM_DATA);
 
-  const defaultValues: Partial<IAudit> = {};
+  const defaultValues: Partial<IAudit> = {
+    auditorId: user?._id,
+  };
 
   const {
     control,

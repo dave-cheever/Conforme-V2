@@ -1,42 +1,114 @@
-import { gql, useQuery } from '@apollo/client';
-import { Modal, ModalOverlay } from '@chakra-ui/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { gql, useQuery } from '@apollo/client';
+import {
+  Button,
+  Flex,
+  Grid,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalOverlay,
+  Text,
+} from '@chakra-ui/react';
+
+import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
+import Header from '../components/Header';
+import Loader from '../components/Loader';
 import { useAdminContext } from '../contexts/AdminProvider';
+import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, {
   useAuditModalContext,
 } from '../contexts/AuditModalProvider';
 import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import useDevice from '../hooks/useDevice';
+import { ChevronRight, GridIcon, GroupIcon, ListIcon } from '../icons';
 
 const GET_AUDITS = gql`
   query ($auditQueryInput: AuditQueryInput) {
     audits(auditQueryInput: $auditQueryInput) {
       _id
-      auditTypeId
       walkType
-      siteId
-      areaId
+      reference
+      auditorId
+      participantsIds
+      auditType {
+        _id
+        name
+        frequency
+      }
+      site {
+        _id
+        name
+      }
+      area {
+        _id
+        name
+      }
+      auditor {
+        _id
+        displayName
+      }
+      participants {
+        _id
+        displayName
+      }
       metatags {
         addedAt
-        addedBy
       }
     }
   }
 `;
 
 const Audits = () => {
+  const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { reset, trigger } = useAuditModalContext();
-  const { refetch } = useQuery(GET_AUDITS);
+  const { data, loading, error, refetch } = useQuery(GET_AUDITS);
   const { audit } = useAuditModalContext();
+
+  const initialViewMode = useMemo(() => {
+    const savedView = localStorage.getItem('viewMode');
+    if (
+      savedView &&
+      (savedView === 'Grid' || savedView === 'List' || savedView === 'Group')
+    )
+      return savedView;
+
+    return 'Grid';
+  }, [user]);
+
+  const [viewMode, setViewMode] = useState<'Grid' | 'List' | 'Group'>(
+    initialViewMode,
+  );
+
+  useEffect(() => {
+    if (device === 'mobile') setViewMode('Grid');
+  }, [device]);
+
+  const viewIcon = useMemo(
+    () => ({
+      Grid: <GridIcon boxSize="18px" />,
+      List: <ListIcon boxSize="18px" />,
+      Group: <GroupIcon boxSize="18px" />,
+    }),
+    [],
+  );
 
   const onCloseModal = async () => {
     await trigger();
     reset();
     setAdminModalState('closed');
   };
+
+  const changeViewMode = useCallback((_viewMode: 'Grid' | 'List' | 'Group') => {
+    setViewMode(_viewMode);
+    localStorage.setItem('viewMode', _viewMode);
+  }, []);
 
   return (
     <>
@@ -56,6 +128,115 @@ const Audits = () => {
         <ModalOverlay />
         <AuditModal refetch={refetch} />
       </Modal>
+      <Header breadcrumbs={['Audits']} mobileBreadcrumbs={['Audits']}>
+        {device !== 'mobile' && (
+          <Menu autoSelect={false}>
+            {
+              // @ts-ignore: Issue inside ChakraUI
+              <MenuButton
+                _active={{}}
+                _hover={{}}
+                as={Button}
+                bg="auditsItems.header.menuButtonBg"
+                fontSize="14px"
+                fontWeight="700"
+                h="40px"
+                ml={['15px', '0']}
+                rightIcon={
+                  <ChevronRight
+                    color="auditsItems.header.rightIcon"
+                    h="12px"
+                    mt="3px"
+                    transform="rotate(90deg)"
+                    w="12px"
+                  />
+                }
+                rounded="10px"
+              >
+                <Flex align="center" mr="1">
+                  {viewIcon[viewMode]}
+                </Flex>
+              </MenuButton>
+            }
+            <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
+              <MenuItem
+                _focus={{ color: 'auditsItems.header.menuItemFocus' }}
+                color={
+                  viewMode === 'Grid'
+                    ? 'auditsItems.header.menuItemFontSelected'
+                    : 'auditsItems.header.menuItemFont'
+                }
+                fontSize="14px"
+                onClick={() => changeViewMode('Grid')}
+              >
+                <GridIcon mr={3} />
+                Card
+              </MenuItem>
+              <MenuItem
+                _focus={{ color: 'auditsItems.header.menuItemFocus' }}
+                color={
+                  viewMode === 'List'
+                    ? 'auditsItems.header.menuItemFontSelected'
+                    : 'auditsItems.header.menuItemFont'
+                }
+                fontSize="14px"
+                onClick={() => changeViewMode('List')}
+              >
+                <ListIcon mr={3} />
+                List
+              </MenuItem>
+              <MenuItem
+                _focus={{ color: 'auditsItems.header.menuItemFocus' }}
+                color={
+                  viewMode === 'Group'
+                    ? 'auditsItems.header.menuItemFontSelected'
+                    : 'auditsItems.header.menuItemFont'
+                }
+                fontSize="14px"
+                onClick={() => changeViewMode('Group')}
+              >
+                <GroupIcon mr={3} />
+                Group
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
+      </Header>
+      <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
+        {/* eslint-disable */}
+        {error ? (
+          <Text>{error.message}</Text>
+        ) : loading ? (
+          <Loader center={true} />
+        ) : (
+          <>
+            {viewMode === 'Grid' && (
+              <Grid
+                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
+                display={['grid', 'grid', 'flex']}
+                flexWrap="wrap"
+                h="fit-content"
+                gap={6}
+                w="full"
+                pb={[0, 8]}
+                px={[4, 8]}
+                pt="3"
+              >
+                {data.audits.length > 0 ? (
+                  data.audits?.map((audit) => (
+                    <AuditSquare key={audit._id} audit={audit} />
+                  ))
+                ) : (
+                  <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
+                    No audits found
+                  </Flex>
+                )}
+              </Grid>
+            )}
+          </>
+        )}
+        {/* eslint-enable */}
+      </Flex>
     </>
   );
 };

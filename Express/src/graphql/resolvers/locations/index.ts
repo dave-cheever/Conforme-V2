@@ -15,33 +15,37 @@ const locationsResolvers = {
 };
 
 export const locationsTypeDefs = `
-type Location {
-  _id: ID!
-  name: String!
-  ownerId: String!
-  organizationId: String
-  notes: String!
-  complianceItemsResponsesCount: Int
-  owner: User
-  metatags: Metatags!
-}
+  type Location {
+    _id: ID!
+    name: String!
+    ownerId: String!
+    organizationId: String
+    notes: String!
+    complianceItemsResponsesCount: Int
+    owner: User
+    metatags: Metatags!
+  }
 
-input LocationInput {
-  name: String!
-  ownerId: String!
-  notes: String!
-}
+  input LocationInput {
+    name: String!
+    ownerId: String!
+    notes: String!
+  }
 
-input LocationModifyInput {
-  _id: ID!
-  name: String!
-  ownerId: String! 
-  notes: String!
-}
+  input LocationModifyInput {
+    _id: ID!
+    name: String!
+    ownerId: String! 
+    notes: String!
+  }
+
+  input LocationQueryInput {
+    _id: ID!
+  }
 `;
 
 export const locationsQueryDefs = `
-  locations: [Location!]!
+  locations(locationQueryInput: LocationQueryInput): [Location!]!
 `;
 
 export const locationsMutationDefs = `

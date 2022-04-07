@@ -19,7 +19,13 @@ export const auditsTypeDefs = `
     _id: ID!
     auditTypeId: String!
     walkType: String!
-    siteId: ID
+    reference: String!
+    auditType: AuditType!
+    site: Location!
+    area: BusinessUnit
+    auditor: User!
+    participants: [User]
+    siteId: ID!
     areaId: ID
     auditorId: ID!
     participantsIds: [ID]
@@ -33,7 +39,7 @@ export const auditsTypeDefs = `
   input AuditCreateInput {
     auditTypeId: String!
     walkType: String!
-    siteId: ID
+    siteId: ID!
     areaId: ID
     auditorId: ID!
     participantsIds: [ID]
@@ -43,7 +49,7 @@ export const auditsTypeDefs = `
     _id: ID!
     auditTypeId: String!
     walkType: String!
-    siteId: ID
+    siteId: ID!
     areaId: ID
     auditorId: ID!
     participantsIds: [ID]

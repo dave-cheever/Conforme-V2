@@ -1,14 +1,21 @@
-
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Locations, Responses, Users } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
 
-const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
+const locations = async (
+  _,
+  { locationQueryInput = {} },
+  { organization },
+  info: GraphQLResolveInfo,
+) => {
   const shouldJoin = (element: string) =>
     doesPathExist(info.fieldNodes, ['locations', element]);
   try {
-    const locations = await Locations.customFind({}, organization._id);
+    const locations = await Locations.customFind(
+      locationQueryInput,
+      organization._id,
+    );
 
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const location of locations) {
@@ -30,9 +37,8 @@ const locations = async (_, __, { organization }, info: GraphQLResolveInfo) => {
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) 
+        if (responses && responses.length > 0)
           location.complianceItemsResponsesCount = responses[0].count;
-        
       }
     }
 

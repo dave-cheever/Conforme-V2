@@ -1,0 +1,162 @@
+import { useHistory } from 'react-router-dom';
+
+import { ChevronRightIcon } from '@chakra-ui/icons';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Skeleton,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
+
+import { LocationIcon } from '../../icons';
+import { IAudit } from '../../interfaces/IAudit';
+
+const AuditSquare = ({ audit }: { audit: IAudit }) => {
+  const history = useHistory();
+
+  return (
+    <Box
+      _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)' }}
+      bg="white"
+      borderRadius="20px"
+      boxShadow="sm"
+      flexShrink={0}
+      h="290px"
+      p="20px 25px 20px 25px"
+      w={['full', 'full', '350px']}
+    >
+      <Flex align="center" justify="space-between">
+        <Flex align="center">
+          <Flex
+            bgColor="auditSquare.comingUp"
+            h="12px"
+            rounded="full"
+            w="12px"
+          />
+          <Box
+            color="auditSquare.fontColor"
+            fontSize="11px"
+            ml={2}
+            opacity="1"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            <Flex fontStyle="italic">Unassigned</Flex>
+          </Box>
+        </Flex>
+      </Flex>
+      <Flex align="center" h="52px" mt={2} position="relative" w="full">
+        <Skeleton isLoaded={!!audit} rounded="full">
+          <Tooltip label={audit?.auditor?.displayName}>
+            <Avatar
+              boxSize="24px"
+              cursor="pointer"
+              name={audit?.auditor?.displayName}
+              size="sm"
+              src={audit?.auditor?.imgUrl}
+            />
+          </Tooltip>
+        </Skeleton>
+        <Text
+          color="auditSquare.nameFontColor"
+          fontSize="16px"
+          fontWeight="700"
+          lineHeight="20px"
+          ml={3}
+          noOfLines={2}
+          w="full"
+        >
+          {audit?.site?.name}
+        </Text>
+      </Flex>
+      <Flex align="center" h="40px" w="full">
+        <LocationIcon color="auditSquare.businessUnitFontColor" ml={1} />
+        <Box
+          color="auditSquare.businessUnitFontColor"
+          fontSize="14px"
+          lineHeight="20px"
+          overflow="hidden"
+          pl={2}
+          textOverflow="ellipsis"
+          w="200px"
+          whiteSpace="nowrap"
+        >
+          {audit?.walkType === 'virtual' ? 'Virtual' : audit?.area?.name}
+        </Box>
+      </Flex>
+      <Flex alignItems="flex-start" h="50px" py="4" w="full">
+        <Box
+          color="auditSquare.regulatoryFontColor"
+          fontSize="11px"
+          ml={3}
+          w="50%"
+        >
+          <Box>Next renewal on</Box>
+          <Box
+            color="auditSquare.nameFontColor"
+            fontSize="13px"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            <Flex fontStyle="italic">No due date</Flex>
+          </Box>
+        </Box>
+      </Flex>
+      <Flex align="center" justify="space-between" pt="50px" w="full">
+        <Button
+          _hover={{
+            bg: 'auditSquare.buttonBg',
+          }}
+          bg="auditSquare.buttonBg"
+          color="auditSquare.fontColor"
+          fontSize="11px"
+          h="28px"
+          onClick={() => history.push(`/audits/${audit._id}`)}
+          rightIcon={
+            <ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />
+          }
+          w="85px"
+        >
+          Details
+        </Button>
+        <Flex
+          align="center"
+          color="auditSquare.nameFontColor"
+          flexDirection="column"
+          justify="center"
+          mr={1}
+        >
+          <Box fontSize="11px" fontWeight="700">
+            0
+          </Box>
+        </Flex>
+      </Flex>
+    </Box>
+  );
+};
+
+export default AuditSquare;
+
+export const auditSquareStyles = {
+  auditSquare: {
+    comingUp: '#FFA012',
+    statusFontColor: '#FFFFFF',
+    imageBg: '#ffffff',
+    rightIcon: '#9A9EA1',
+    crossIcon: '#F0F0F0',
+    tickIcon: '#41BA17',
+    fontColor: '#818197',
+    regulatoryFontColor: '#818197',
+    renewalFontColor: '#424B50',
+    evidenceFontColor: '#424B50',
+    businessUnitFontColor: '#818197',
+    categoryFontColor: '#818197',
+    nameFontColor: '#282F36',
+    buttonBg: '#F0F2F5',
+  },
+};

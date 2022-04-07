@@ -16,6 +16,11 @@ import { questionsModalStyles } from '../components/AdminComplianceItemModal/Que
 import { summaryModalStyles } from '../components/AdminComplianceItemModal/Summary';
 import { summaryItemModalStyles } from '../components/AdminComplianceItemModal/SummaryItem';
 import { alertDialogStyles } from '../components/AlertDialog';
+import { auditHeaderStyles } from '../components/Audit/AuditHeader';
+import { auditHeaderMenuItemStyles } from '../components/Audit/AuditHeaderMenuItem';
+import { auditLeftNavigationStyles } from '../components/Audit/AuditLeftNavigation';
+import { auditLeftTabItemStyles } from '../components/Audit/AuditLeftTabItem';
+import { auditSquareStyles } from '../components/Audit/AuditSquare';
 import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
 import { auditLogRecordStyles } from '../components/AuditLog/AuditLogRecord';
@@ -85,6 +90,7 @@ import { complianceItemsAdminWithContextStyles } from '../pages/admin/compliance
 import { locationsStyles } from '../pages/admin/locations';
 import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
 import { userItemStyles } from '../pages/admin/users';
+import { auditItemStyles } from '../pages/audit';
 import { auditsStyles } from '../pages/audits';
 import { historyPageStyles } from '../pages/compliance-item/history';
 import { complianceItemResponseStyles } from '../pages/compliance-item/index';
@@ -140,10 +146,16 @@ const getTheme = (organizationTheme?: any) => {
       ...adminTableHeaderElementStyles,
       ...adminTableHeaderStyles,
       ...alertDialogStyles,
+      ...auditHeaderStyles,
+      ...auditHeaderMenuItemStyles,
+      ...auditItemStyles,
+      ...auditLeftNavigationStyles,
+      ...auditLeftTabItemStyles,
       ...auditLogDayStyles,
       ...auditLogRecordStyles,
       ...auditLogStyles,
       ...auditModalStyles,
+      ...auditSquareStyles,
       ...auditTeamModalStyles,
       ...avatarUserStyles,
       ...barChartStyles,

@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import Can from '../components/can';
 import { useAppContext } from '../contexts/AppProvider';
 import IRoute from '../interfaces/IRoute';
+import AuditLayout from '../layouts/AuditLayout';
 import DefaultLayout from '../layouts/DefaultLayout';
 import FilterLayout from '../layouts/FilterLayout';
 import PureLayout from '../layouts/PureLayout';
@@ -24,6 +25,7 @@ import Sites from '../pages/admin/sites';
 import Users from '../pages/admin/users';
 import Assets from '../pages/assets';
 import Audit from '../pages/audit';
+import AuditParticipants from '../pages/audit/participants';
 import Audits from '../pages/audits';
 import ComplianceItemAuditLog from '../pages/compliance-item/audit-log';
 import History from '../pages/compliance-item/history';
@@ -85,7 +87,14 @@ const protectedRoutes: Array<IRoute> = [
     key: 'audit',
     exact: true,
     component: Audit,
-    layout: DefaultLayout,
+    layout: AuditLayout,
+  },
+  {
+    path: '/audits/:id/participants',
+    key: 'audit',
+    exact: true,
+    component: AuditParticipants,
+    layout: AuditLayout,
   },
   {
     path: '/',

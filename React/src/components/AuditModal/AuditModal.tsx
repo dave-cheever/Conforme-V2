@@ -258,7 +258,7 @@ const AuditModal = ({ refetch }) => {
                   <IconButton
                     aria-label="Add participant"
                     bg="auditModal.tabs.bottomButton.bg"
-                    icon={<AddIcon color="#fff" size="sm" />}
+                    icon={<AddIcon />}
                     isRound
                     onClick={() => setParticipantsModalOpen(true)}
                     size="lg"

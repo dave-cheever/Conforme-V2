@@ -1,6 +1,5 @@
-import { priorities } from 'src/utils/constants';
-
 import { Actions } from 'app-models';
+import { priorities } from 'app-utils';
 
 const actions = async (_, __, { organization }) => {
   try {
