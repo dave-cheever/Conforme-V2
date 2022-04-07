@@ -1,4 +1,4 @@
-import { IBase, IDocument, TComponent, TQuestionValue } from 'app-interfaces';
+import { IBase, IDocument, TModuleType, TQuestionValue } from 'app-interfaces';
 
 export interface IAnswer extends IBase {
   auditId: string;
@@ -10,7 +10,7 @@ export interface IAnswer extends IBase {
     [name: string]: boolean;
   };
   scope: {
-    component: TComponent;
+    component: TModuleType;
     type?: string;
     _id?: string;
   };

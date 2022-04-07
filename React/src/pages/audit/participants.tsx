@@ -40,7 +40,7 @@ const AuditParticipants = () => {
           p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
           w="full"
         >
-          <Flex alignItem="center" direction="column" mb="8">
+          <Flex align="center" direction="column" mb="8">
             <Box mb={10}>
               <AuditTeamModal
                 isOpen={auditorModalOpen}

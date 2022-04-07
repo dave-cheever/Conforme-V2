@@ -1,4 +1,4 @@
-import { IBase, TComponent } from 'app-interfaces';
+import { IBase, TModuleType } from 'app-interfaces';
 
 export interface IQuestionsCategory extends IBase {
   name: string;
@@ -7,7 +7,7 @@ export interface IQuestionsCategory extends IBase {
   maxQuestionsNumber: number;
   icon: string;
   scope: {
-    component: TComponent;
+    component: TModuleType;
     type?: string;
     _id?: string;
   };

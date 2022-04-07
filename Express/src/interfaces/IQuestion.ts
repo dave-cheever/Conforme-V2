@@ -1,4 +1,4 @@
-import { IBase, TComponent, TQuestionType } from 'app-interfaces';
+import { IBase, TModuleType, TQuestionType } from 'app-interfaces';
 
 export interface IQuestion<ValueType> extends IBase {
   type: TQuestionType;
@@ -10,7 +10,7 @@ export interface IQuestion<ValueType> extends IBase {
   positiveValue?: ValueType;
   negativeValue?: ValueType;
   scope: {
-    component: TComponent;
+    component: TModuleType;
     type?: string;
     _id?: string;
   };
