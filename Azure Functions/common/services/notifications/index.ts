@@ -1,20 +1,53 @@
 import { IOrganization } from "../../interfaces/IOrganization";
+import Organizations from "../collections/Organizations";
+import getAuditsWeeklyDigestEmailTemplate from "./audits-weekly-digest";
 import getMentionEmail from "./mentionEmail";
+import getSkeleton from "./template";
 
 export const MENTION_EMAIL = 0;
+export const AUDITS_WEEKLY_DIGEST_EMAIL = 1;
 
-const getEmailSubject = (emailType: number, emailData) => {
+const getEmailSubject = (emailType: number, emailData = {}) => {
   switch (emailType) {
-    case 0:
+    case MENTION_EMAIL:
       return "You have been mentioned in chat";
+    case AUDITS_WEEKLY_DIGEST_EMAIL:
+      return "Audits weekly digest";
   }
 };
 
-const getEmailTemplate = async (emailType: number, emailData, organization: IOrganization) => {
+const getEmailTemplate = async ({
+  emailType,
+  template,
+  emailData,
+  organization,
+  organizationId,
+}: {
+  emailType: number;
+  emailData: any;
+  organizationId?: string;
+  organization?: IOrganization;
+  template?: string;
+}) => {
+  let body: string;
   switch (emailType) {
-    case 0:
-      return getMentionEmail(emailData, organization);
+    case MENTION_EMAIL:
+      body = getMentionEmail(emailData);
+      break;
+    case AUDITS_WEEKLY_DIGEST_EMAIL:
+      body = getAuditsWeeklyDigestEmailTemplate(template, emailData);
+      break;
   }
+  if (!organization) {
+    if (!organizationId) {
+      throw Error("You need to pass either organization or organizationId");
+    }
+    organization = await Organizations.customFindById(
+      organizationId,
+      organizationId
+    );
+  }
+  return getSkeleton(body, organization);
 };
 
 export { getEmailSubject, getEmailTemplate };

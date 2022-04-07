@@ -7,7 +7,7 @@ export default async () => {
   const config = await configService.getConfig();
   connect(config.MongoConnectionString)
     .then(async () => {
-      console.log('MongoDB connected');
+      console.log("MongoDB connected");
     })
-    .catch(e => console.log(e));
+    .catch((e) => console.log(e));
 };

@@ -341,6 +341,8 @@ Conforme uses Azure Functions app to send notifications.
     - Runtime stack: Node.js
     - Version: 14 LTS
     - Location: UK South
+- Click the **Next: Hosting >** button in the top menu
+- Select "Linux" as operating system
 - Go to the **Review + create** tab
 - Read it carefully and make sure everything is correct, then click on the **Create** button
 
