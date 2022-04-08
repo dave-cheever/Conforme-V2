@@ -268,7 +268,7 @@ const QuestionsCategories = () => {
   return (
     <>
       <AdminModal
-        collection="questions category"
+        collection="questions categories"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
