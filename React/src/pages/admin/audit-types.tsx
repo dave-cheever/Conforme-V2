@@ -287,7 +287,7 @@ const AuditTypes = () => {
         >
           <TextInput
             control={control}
-            label="Name"
+            label="Audit type name"
             name="name"
             placeholder="Name"
             validations={{
@@ -303,6 +303,7 @@ const AuditTypes = () => {
             validations={{
               notEmpty: true,
             }}
+            variant="secondaryVariant"
           />
           <Dropdown
             control={control}
@@ -316,6 +317,7 @@ const AuditTypes = () => {
             validations={{
               notEmpty: true,
             }}
+            variant="secondaryVariant"
           />
           <Stack>
             <Flex align="center" justify="space-between" mb="none" pt={4}>
@@ -336,55 +338,52 @@ const AuditTypes = () => {
                   <Stack key={`section-${i}`}>
                     <Text fontSize="smm">Section {i + 1}</Text>
                     {section.type === 'questionsCategory' && (
-                      <Stack pt={2}>
-                        <Text fontSize="sm">Question category</Text>
-                        <Select
-                          _active={{ bg: 'dropdown.activeBg' }}
-                          _focus={{
-                            borderColor: 'dropdown.border.focus.normal',
-                          }}
-                          _placeholder={{ color: 'dropdown.placeholder' }}
-                          bg="dropdown.bg"
-                          borderColor="dropdown.border.normal"
-                          borderRadius="8px"
-                          borderWidth="1px"
-                          color="dropdown.font"
-                          css={{ paddingTop: '0' }}
-                          fontSize="smm"
-                          h="42px"
-                          icon={
-                            <ChevronRight
-                              stroke="dropdown.chevronDownIcon"
-                              transform="rotate(90deg)"
-                            />
-                          }
-                          onChange={(e) =>
-                            setValue(
-                              'sections',
-                              sections.map((sectionValue, index) => {
-                                if (index === i) {
-                                  return {
-                                    ...sectionValue,
-                                    _id: e.target.value,
-                                  };
-                                }
-                                return sectionValue;
-                              }),
-                            )
-                          }
-                          top="5px"
-                          value={section._id}
-                        >
-                          <option value={undefined}>
-                            Please select questions category
+                      <Select
+                        _active={{ bg: 'dropdown.activeBg' }}
+                        _focus={{
+                          borderColor: 'dropdown.border.focus.normal',
+                        }}
+                        _placeholder={{ color: 'dropdown.placeholder' }}
+                        bg="dropdown.bg"
+                        borderColor="dropdown.border.normal"
+                        borderRadius="8px"
+                        borderWidth="1px"
+                        color="dropdown.font"
+                        css={{ paddingTop: '0' }}
+                        fontSize="smm"
+                        h="42px"
+                        icon={
+                          <ChevronRight
+                            stroke="dropdown.chevronDownIcon"
+                            transform="rotate(90deg)"
+                          />
+                        }
+                        onChange={(e) =>
+                          setValue(
+                            'sections',
+                            sections.map((sectionValue, index) => {
+                              if (index === i) {
+                                return {
+                                  ...sectionValue,
+                                  _id: e.target.value,
+                                };
+                              }
+                              return sectionValue;
+                            }),
+                          )
+                        }
+                        top="5px"
+                        value={section._id}
+                      >
+                        <option value={undefined}>
+                          Please select questions category
+                        </option>
+                        {questionsCategories?.map(({ _id, name }) => (
+                          <option key={_id} value={_id}>
+                            {name}
                           </option>
-                          {questionsCategories?.map(({ _id, name }) => (
-                            <option key={_id} value={_id}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
-                      </Stack>
+                        ))}
+                      </Select>
                     )}
                   </Stack>
                 ))
