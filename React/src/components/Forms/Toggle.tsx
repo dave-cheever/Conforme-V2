@@ -53,7 +53,7 @@ const Toggle = ({
               >
                 <Box
                   color={error ? 'switch.label.error' : 'switch.label.normal'}
-                  fontSize={14}
+                  fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
                   left={variant !== 'secondaryVariant' ? '19px' : 'none'}
                   position={

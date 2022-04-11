@@ -294,6 +294,7 @@ const QuestionsCategories = () => {
             validations={{
               notEmpty: true,
             }}
+            variant="secondaryVariant"
           />
           <Toggle
             control={control}
@@ -303,6 +304,7 @@ const QuestionsCategories = () => {
             validations={{
               notEmpty: true,
             }}
+            variant="secondaryVariant"
           />
           <NumberInput
             control={control}
@@ -312,6 +314,7 @@ const QuestionsCategories = () => {
             validations={{
               notEmpty: true,
             }}
+            variant="secondaryVariant"
           />
           <TextInput
             control={control}

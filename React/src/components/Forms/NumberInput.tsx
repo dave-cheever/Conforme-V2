@@ -46,9 +46,7 @@ const NumberInput = ({
                   color={
                     error
                       ? 'numberInput.labelFont.error'
-                      : variant === 'secondaryVariant'
-                        ? 'numberInput.labelFont.secondaryVariant'
-                        : 'numberInput.labelFont.normal'
+                      : 'numberInput.labelFont.normal'
                   }
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
@@ -103,7 +101,9 @@ const NumberInput = ({
               mt="3"
               name={name}
               onBlur={onBlur}
-              onChange={e => onChange({ name, target: { value: Number(e.target.value) } })}
+              onChange={(e) =>
+                onChange({ name, target: { value: Number(e.target.value) } })
+              }
               placeholder={variant === 'secondaryVariant' ? '' : placeholder}
               pt="none"
               type="number"
