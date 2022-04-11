@@ -258,6 +258,7 @@ const AuditModal = ({ refetch }) => {
                   <IconButton
                     aria-label="Add participant"
                     bg="auditModal.tabs.bottomButton.bg"
+                    color="auditModal.participantsButton.color"
                     icon={<AddIcon />}
                     isRound
                     onClick={() => setParticipantsModalOpen(true)}
@@ -304,6 +305,9 @@ export default AuditModal;
 export const auditModalStyles = {
   auditModal: {
     bg: '#ffffff',
+    participantsButton: {
+      color: '#FFFFFF',
+    },
     saveButton: {
       bg: '#F0F2F5',
       color: '#424B50',

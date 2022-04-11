@@ -1,5 +1,3 @@
-import { useHistory } from 'react-router-dom';
-
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Avatar,
@@ -11,11 +9,12 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 
+import useNavigate from '../../hooks/useNavigate';
 import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 const AuditSquare = ({ audit }: { audit: IAudit }) => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
 
   return (
     <Box
@@ -116,7 +115,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           color="auditSquare.fontColor"
           fontSize="11px"
           h="28px"
-          onClick={() => history.push(`/audits/${audit._id}`)}
+          onClick={() => navigateTo(`/audits/${audit._id}`)}
           rightIcon={
             <ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />
           }

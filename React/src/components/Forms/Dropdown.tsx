@@ -61,8 +61,6 @@ const Dropdown = ({
                   color={
                     error
                       ? 'dropdown.labelFont.error'
-                      : variant === 'secondaryVariant'
-                      ? 'dropdown.labelFont.secondaryVariant'
                       : 'dropdown.labelFont.normal'
                   }
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}

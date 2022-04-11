@@ -3,6 +3,8 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import { Flex, Icon } from '@chakra-ui/react';
 
+import useNavigate from '../../hooks/useNavigate';
+
 const AuditLeftTabItem = ({
   label,
   icon,
@@ -11,6 +13,7 @@ const AuditLeftTabItem = ({
   isMobile = false,
 }) => {
   const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { id }: { id: string } = useParams();
 
   const active = useMemo(
@@ -19,7 +22,7 @@ const AuditLeftTabItem = ({
   );
 
   const redirectPage = () => {
-    history.push(`/audits/${id}${url}${history.location.search}`);
+    navigateTo(`/audits/${id}${url}${history.location.search}`);
   };
 
   return (

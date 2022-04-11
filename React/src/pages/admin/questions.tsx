@@ -2,19 +2,19 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Select, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import Dropdown from '../../components/Forms/Dropdown';
 import TextInput from '../../components/Forms/TextInput';
 import TextInputMultiline from '../../components/Forms/TextInputMultiline';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
-import { ChevronRight } from '../../icons';
 import { IQuestion } from '../../interfaces/IQuestion';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 
@@ -118,17 +118,13 @@ const Questions = () => {
   const {
     control,
     formState: { errors },
-    watch,
     getValues,
-    setValue,
     trigger,
     reset,
   } = useForm({
     mode: 'all',
     defaultValues,
   });
-
-  const questionsCategoryId = watch('questionsCategoryId');
 
   // Reset the form after closing
   useEffect(() => {
@@ -285,38 +281,17 @@ const Questions = () => {
           spacing={2}
           w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
         >
-          <Text fontSize="sm">Question category</Text>
-          <Select
-            _active={{ bg: 'dropdown.activeBg' }}
-            _focus={{
-              borderColor: 'dropdown.border.focus.normal',
-            }}
-            _placeholder={{ color: 'dropdown.placeholder' }}
-            bg="dropdown.bg"
-            borderColor="dropdown.border.normal"
-            borderRadius="8px"
-            borderWidth="1px"
-            color="dropdown.font"
-            css={{ paddingTop: '0' }}
-            fontSize="smm"
-            h="42px"
-            icon={
-              <ChevronRight
-                stroke="dropdown.chevronDownIcon"
-                transform="rotate(90deg)"
-              />
-            }
-            onChange={(e) => setValue('questionsCategoryId', e.target.value)}
-            top="5px"
-            value={questionsCategoryId}
-          >
-            <option value={undefined}>Please select questions category</option>
-            {questionsCategories?.map(({ _id, name }) => (
-              <option key={_id} value={_id}>
-                {name}
-              </option>
-            ))}
-          </Select>
+          <Dropdown
+            control={control}
+            label="Questions Category"
+            name="questionsCategoryId"
+            options={questionsCategories?.map(({ _id, name }) => ({
+              label: name,
+              value: _id,
+            }))}
+            placeholder="Questions category"
+            variant="secondaryVariant"
+          />
           <TextInput
             control={control}
             label="Question"

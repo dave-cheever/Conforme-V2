@@ -40,7 +40,7 @@ const AuditParticipants = () => {
           p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
           w="full"
         >
-          <Flex align="center" direction="column" mb="8">
+          <Flex direction="column" mb="8">
             <Box mb={10}>
               <AuditTeamModal
                 isOpen={auditorModalOpen}
@@ -93,6 +93,7 @@ const AuditParticipants = () => {
                   <IconButton
                     aria-label="Add participant"
                     bg="auditModal.tabs.bottomButton.bg"
+                    color="auditModal.participantsButton.color"
                     icon={<AddIcon />}
                     isRound
                     onClick={() => setParticipantsModalOpen(true)}

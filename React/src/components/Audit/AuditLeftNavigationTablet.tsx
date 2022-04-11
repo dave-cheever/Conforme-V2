@@ -1,14 +1,13 @@
-import { useHistory } from 'react-router-dom';
-
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { auditNavigationTabs } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, ConformeSmall } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 const AuditLeftNavigationTablet = () => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { organizationConfig } = useAppContext();
 
   return (
@@ -32,7 +31,7 @@ const AuditLeftNavigationTablet = () => {
           display="flex"
           h="80px"
           justifyContent="center"
-          onClick={() => history.push('/')}
+          onClick={() => navigateTo('/')}
         >
           <Text
             color="auditLeftNavigation.organizationNameFontColor"
@@ -49,7 +48,7 @@ const AuditLeftNavigationTablet = () => {
           fontSize="14px"
           h="30px"
           mb="20px"
-          onClick={() => history.push('/audits')}
+          onClick={() => navigateTo('/audits')}
           w="full"
         >
           <ChevronRight ml={2} transform="Rotate(180deg)" />

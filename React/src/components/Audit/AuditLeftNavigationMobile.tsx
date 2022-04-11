@@ -1,14 +1,12 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-
 import { Divider, Flex } from '@chakra-ui/react';
 
 import { auditNavigationTabs } from '../../bootstrap/config';
+import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 const AuditLeftNavigationMobile = () => {
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
 
   return (
     <Flex
@@ -35,7 +33,7 @@ const AuditLeftNavigationMobile = () => {
           fontSize="14px"
           h="30px"
           mr={3}
-          onClick={() => history.push('/audits')}
+          onClick={() => navigateTo('/audits')}
         >
           <ChevronRight ml={2} transform="Rotate(180deg)" />
           <Divider ml={3} orientation="vertical" />

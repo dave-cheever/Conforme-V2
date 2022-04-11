@@ -55,8 +55,8 @@ const DELETE_QUESTION_CATEGORY = gql`
 const defaultValues: Partial<IQuestionsCategory> = {
   _id: undefined,
   name: '',
-  withAnswers: true,
-  allowCustomQuestions: true,
+  withAnswers: false,
+  allowCustomQuestions: false,
   maxQuestionsNumber: 5,
   icon: '',
   scope: {
@@ -282,6 +282,7 @@ const QuestionsCategories = () => {
             label="Name"
             name="name"
             placeholder="Name"
+            required
             validations={{
               notEmpty: true,
             }}
@@ -311,6 +312,7 @@ const QuestionsCategories = () => {
             label="Max number of questions"
             name="maxQuestionsNumber"
             placeholder="Max number of questions"
+            required
             validations={{
               notEmpty: true,
             }}
@@ -321,6 +323,7 @@ const QuestionsCategories = () => {
             label="Icon"
             name="icon"
             placeholder="Icon"
+            required
             validations={{
               notEmpty: true,
             }}
