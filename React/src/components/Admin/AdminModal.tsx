@@ -8,6 +8,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Spacer,
   useDisclosure,
 } from '@chakra-ui/react';
 
@@ -76,46 +77,41 @@ const AdminModal = ({
             </Flex>
           </ModalHeader>
           <ModalBody bg="adminModal.body.bg" overflowY="auto">
-            <Box
+            <Flex
               bgColor="#F0F2F5"
               borderRadius={['0', '20px']}
-              h="98%"
+              direction="column"
+              minH="98%"
               p={25}
-              position="relative"
             >
               {children}
-              {modalType === 'edit' && (
+              <Spacer />
+              <Flex justify="space-between" mt={5}>
+                {modalType === 'edit' && (
+                  <Button
+                    _hover={{ bg: 'adminModal.button.remove.bg' }}
+                    bg="adminModal.button.remove.bg"
+                    color="adminModal.button.remove.color"
+                    fontSize="smm"
+                    fontWeight="bold"
+                    onClick={() => onAction('delete')}
+                  >
+                    Remove
+                  </Button>
+                )}
                 <Button
-                  _hover={{ bg: 'adminModal.button.remove.bg' }}
-                  bg="adminModal.button.remove.bg"
-                  bottom={0}
-                  color="adminModal.button.remove.color"
+                  _hover={{ bg: 'adminModal.button.hover' }}
+                  bg="adminModal.button.bg"
+                  color="adminModal.button.color"
                   fontSize="smm"
                   fontWeight="bold"
-                  mb="25"
-                  onClick={() => onAction('delete')}
-                  position="absolute"
+                  onClick={() => onAction(modalType)}
                 >
-                  Remove
+                  {modalType === 'edit' ? 'Update' : 'Add'}
+                  <ChevronRight ml="5px" />
                 </Button>
-              )}
-              <Button
-                _hover={{ bg: 'adminModal.button.hover' }}
-                bg="adminModal.button.bg"
-                bottom={0}
-                color="adminModal.button.color"
-                fontSize="smm"
-                fontWeight="bold"
-                mb="25"
-                mr="25px"
-                onClick={() => onAction(modalType)}
-                position="absolute"
-                right={modalType === 'edit' ? 0 : ''}
-              >
-                {modalType === 'edit' ? 'Update' : 'Add'}
-                <ChevronRight ml="5px" />
-              </Button>
-            </Box>
+              </Flex>
+            </Flex>
           </ModalBody>
         </ModalContent>
       )}
