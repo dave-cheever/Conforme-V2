@@ -214,48 +214,6 @@ export const getUserName = (fullName: string) => {
   };
 };
 
-export const getNextDueDate = (frequency: String, dueDate: Date) => {
-  let nextDueDate;
-  switch (frequency) {
-    case 'Daily':
-      nextDueDate = moment(dueDate).add(1, 'day');
-      break;
-
-    case 'Weekly':
-      nextDueDate = moment(dueDate).add(1, 'week');
-      break;
-
-    case 'Monthly':
-      nextDueDate = moment(dueDate).add(1, 'month');
-      break;
-
-    case 'Quarterly':
-      nextDueDate = moment(dueDate).add(3, 'months');
-      break;
-
-    case '6 Months':
-      nextDueDate = moment(dueDate).add(6, 'months');
-      break;
-
-    case 'Annual':
-      nextDueDate = moment(dueDate).add(1, 'year');
-      break;
-
-    case '2 years':
-      nextDueDate = moment(dueDate).add(2, 'years');
-      break;
-
-    case '5 years':
-      nextDueDate = moment(dueDate).add(5, 'years');
-      break;
-
-    default:
-      nextDueDate = null;
-      break;
-  }
-  return nextDueDate;
-};
-
 export const getStatus = (frequency: String) => {
   let status = '';
   switch (frequency) {
@@ -427,6 +385,10 @@ export const getNextRenewalDate = (
 
     case '2 years':
       newNextRenewalDate = addYears(nextRenewalDate, 2);
+      break;
+
+    case '3 years':
+      newNextRenewalDate = addYears(nextRenewalDate, 3);
       break;
 
     case '5 years':

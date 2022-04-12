@@ -144,7 +144,7 @@ const SearchBar = () => {
       <Box
         display={
           isSearchBarOpen &&
-            (recentlySearchPhrases?.length > 0 || data?.search || loading)
+          (recentlySearchPhrases?.length > 0 || data?.search || loading)
             ? 'block'
             : 'none'
         }
@@ -175,7 +175,7 @@ const SearchBar = () => {
                     direction="row"
                     key={searchResult._id}
                     onClick={() =>
-                      navigateTo(`${searchResult.type}/${searchResult._id}`)
+                      navigateTo(`/${searchResult.type}/${searchResult._id}`)
                     }
                   >
                     <Text>{searchResult.primaryText}</Text>
