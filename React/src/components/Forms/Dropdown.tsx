@@ -5,7 +5,7 @@ import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Box, Flex, Select } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
-import { ChevronRight } from '../../icons';
+import { Asterisk, ChevronRight } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
 
@@ -16,6 +16,7 @@ interface IDropdown extends IField {
     label?: string;
     value?: string;
   }[];
+  required?: boolean;
   stroke?: string;
   help?: string;
   Icon?: any;
@@ -35,6 +36,7 @@ const Dropdown = ({
   stroke,
   label,
   placeholder = '',
+  required,
   tooltip = '',
   variant,
   validations = {},
@@ -70,6 +72,16 @@ const Dropdown = ({
                   zIndex={1}
                 >
                   {label}
+                  {required && (
+                    <Asterisk
+                      fill="questionListElement.iconAsterisk"
+                      h="9px"
+                      mb="8px"
+                      ml="5px"
+                      stroke="questionListElement.iconAsterisk"
+                      w="9px"
+                    />
+                  )}{' '}
                   {help && (
                     <Box fontSize="11px" mt={3} opacity={0.5}>
                       {help}

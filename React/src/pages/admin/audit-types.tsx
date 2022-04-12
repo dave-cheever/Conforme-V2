@@ -290,6 +290,7 @@ const AuditTypes = () => {
             label="Audit type name"
             name="name"
             placeholder="Name"
+            required
             validations={{
               notEmpty: true,
             }}
@@ -300,6 +301,7 @@ const AuditTypes = () => {
             name="frequency"
             options={frequencyOptions}
             placeholder="Frequency"
+            required
             validations={{
               notEmpty: true,
             }}
@@ -314,6 +316,7 @@ const AuditTypes = () => {
               { value: 'singlePage', label: 'Single page' },
             ]}
             placeholder="View"
+            required
             validations={{
               notEmpty: true,
             }}
