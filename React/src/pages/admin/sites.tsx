@@ -222,6 +222,7 @@ const Sites = () => {
             label="Site name"
             name="name"
             placeholder="e.g. London"
+            required
             validations={{
               notEmpty: true,
             }}
@@ -237,6 +238,7 @@ const Sites = () => {
             label="Owner"
             name="ownerId"
             placeholder="Select"
+            required
             validations={{
               notEmpty: true,
             }}
