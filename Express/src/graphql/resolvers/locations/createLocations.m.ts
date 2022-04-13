@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Locations } from 'app-models';
@@ -29,6 +30,9 @@ const createLocation = async (
 
     return location;
   } catch (err: any) {
+    if (err instanceof mongoose.Error.ValidationError)
+      throw new Error(err.errors.name.message);
+
     throw new Error(err);
   }
 };

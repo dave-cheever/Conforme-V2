@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import { Locations } from 'app-models';
 import { isPermitted } from 'app-utils';
 
@@ -30,6 +32,9 @@ const updateLocation = async (
     );
     return updatedLocation;
   } catch (err: any) {
+    if (err instanceof mongoose.Error.ValidationError)
+      throw new Error(err.errors.name.message);
+
     throw new Error(err);
   }
 };

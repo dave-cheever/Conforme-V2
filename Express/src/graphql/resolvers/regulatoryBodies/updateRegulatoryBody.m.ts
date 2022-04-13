@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import { RegulatoryBodies } from 'app-models';
 import { isPermitted } from 'app-utils';
 
@@ -32,6 +34,9 @@ const updateRegulatoryBody = async (
     );
     return updatedRegulatoryBody;
   } catch (err: any) {
+    if (err instanceof mongoose.Error.ValidationError)
+      throw new Error(err.errors.name.message);
+
     throw new Error(err);
   }
 };
