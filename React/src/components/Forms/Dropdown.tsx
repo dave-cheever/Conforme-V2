@@ -175,7 +175,7 @@ export const dropdownStyles = {
     bg: '#FFFFFF',
     labelFont: {
       secondaryVariant: '#818197',
-      normal: '#282F36',
+      normal: '#2B3236',
       error: '#E53E3E',
     },
     border: {

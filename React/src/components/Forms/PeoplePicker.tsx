@@ -245,7 +245,7 @@ export const peoplePickerStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
-      normal: '#818197',
+      normal: '#2B3236',
       error: '#E53E3E',
     },
     hover: {
