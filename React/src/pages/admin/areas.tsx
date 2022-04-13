@@ -242,7 +242,9 @@ const Areas = () => {
             cursor="pointer"
             h="10px"
             ml="13px"
-            onClick={() => navigateTo('/', { businessUnitsIds: [businessUnit._id] })}
+            onClick={() =>
+              navigateTo('/', { businessUnitsIds: [businessUnit._id] })
+            }
             stroke="#282F36"
             w="10px"
           />
@@ -268,6 +270,7 @@ const Areas = () => {
             label="Name"
             name="name"
             placeholder="Name"
+            required
             validations={{
               notEmpty: true,
             }}
@@ -277,6 +280,7 @@ const Areas = () => {
             label="Owner"
             name="ownerId"
             placeholder="Select"
+            required
             validations={{
               notEmpty: true,
             }}

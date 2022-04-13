@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
-import { ChevronRight } from '../../icons';
+import { Asterisk, ChevronRight } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { IUser } from '../../interfaces/IUser';
 import { TDefinedValidations } from '../../interfaces/TValidations';
@@ -24,6 +24,7 @@ interface IPeoplePicker extends IField {
   placeholder?: string;
   variant?: string;
   help?: string;
+  required?: boolean;
 }
 
 const SEARCH_USERS = gql`
@@ -51,6 +52,7 @@ const PeoplePicker = ({
   tooltip = '',
   validations = {},
   disabled = false,
+  required,
 }: IPeoplePicker) => {
   const [showResults, setShowResults] = useState<boolean>(false);
   const [searchText, setSearchText] = useState('');
@@ -110,6 +112,16 @@ const PeoplePicker = ({
                     zIndex={2}
                   >
                     {label}{' '}
+                    {required && (
+                      <Asterisk
+                        fill="questionListElement.iconAsterisk"
+                        h="9px"
+                        mb="8px"
+                        ml="5px"
+                        stroke="questionListElement.iconAsterisk"
+                        w="9px"
+                      />
+                    )}{' '}
                     {tooltip && (
                       <Tooltip hasArrow label={tooltip} placement="top">
                         <Icon h="14px" mb={1} name="info" />
