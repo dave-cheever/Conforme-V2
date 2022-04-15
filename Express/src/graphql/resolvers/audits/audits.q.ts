@@ -1,4 +1,4 @@
-import { compareAsc } from 'date-fns';
+import { compareDesc } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Audits, Users } from 'app-models';
@@ -127,7 +127,7 @@ const audits = async (
     }
 
     return audits.sort((a, b) =>
-      compareAsc(new Date(a.metatags.addedAt), new Date(b.metatags.addedAt)),
+      compareDesc(new Date(a.metatags.addedAt), new Date(b.metatags.addedAt)),
     );
   } catch (err: any) {
     throw new Error(err);

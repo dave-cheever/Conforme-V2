@@ -24,6 +24,7 @@ export const auditTypesTypeDefs = `
     _id: ID!
     name: String!
     frequency: String!
+    startingDate: Date!
     view: String!
     sections: [AuditSection!]!
     metatags: Metatags
@@ -41,6 +42,7 @@ export const auditTypesTypeDefs = `
   input AuditTypeCreateInput {
     name: String!
     frequency: String!
+    startingDate: Date!
     sections: [AuditSectionInput!]!
     view: String!
   }
@@ -49,6 +51,7 @@ export const auditTypesTypeDefs = `
     _id: ID!
     name: String!
     frequency: String!
+    startingDate: Date!
     sections: [AuditSectionInput!]!
     view: String!
   }

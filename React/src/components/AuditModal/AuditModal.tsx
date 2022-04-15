@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { AddIcon } from '@chakra-ui/icons';
 import {
@@ -25,13 +24,14 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditModalContext } from '../../contexts/AuditModalProvider';
 import { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 import useAuditModal from '../../hooks/useAuditModal';
+import useNavigate from '../../hooks/useNavigate';
 import { Close, TickIcon } from '../../icons';
 import Dropdown from '../Forms/Dropdown';
 import AuditTeamModal from './AuditTeamModal';
 
 const AuditModal = ({ refetch }) => {
   const toast = useToast();
-  const history = useHistory();
+  const { navigateTo } = useNavigate();
   const { user } = useAppContext();
   const {
     audit,
@@ -88,8 +88,11 @@ const AuditModal = ({ refetch }) => {
     const auditId = await saveAudit({
       ...audit,
     });
-    setAdminModalState('closed');
-    history.push(`audits/${auditId}`);
+
+    if (auditId) {
+      setAdminModalState('closed');
+      navigateTo(`/audits/${auditId}`);
+    }
   };
 
   return (

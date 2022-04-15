@@ -17,7 +17,7 @@ import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
-import { Dropdown } from '../../components/Forms';
+import { Datepicker, Dropdown } from '../../components/Forms';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
@@ -33,6 +33,7 @@ const GET_AUDIT_TYPES = gql`
       _id
       name
       frequency
+      startingDate
       view
       sections {
         type
@@ -69,6 +70,7 @@ const defaultValues: Partial<IAuditType> = {
   _id: undefined,
   name: '',
   frequency: undefined,
+  startingDate: new Date(),
   sections: [],
   view: 'categorized',
 };
@@ -154,6 +156,7 @@ const AuditTypes = () => {
       _id: auditType?._id,
       name: auditType.name,
       frequency: auditType.frequency,
+      startingDate: auditType.startingDate,
       sections: auditType.sections,
       view: auditType.view,
     });
@@ -188,6 +191,7 @@ const AuditTypes = () => {
             auditTypeInput: {
               _id: auditType?._id,
               name: auditType.name,
+              startingDate: auditType.startingDate,
               frequency: auditType.frequency,
               sections: auditType.sections,
               view: auditType.view,
@@ -306,6 +310,16 @@ const AuditTypes = () => {
               notEmpty: true,
             }}
             variant="secondaryVariant"
+          />
+          <Datepicker
+            control={control}
+            label="Starting date"
+            name="startingDate"
+            placeholder="Starting date"
+            required
+            validations={{
+              notEmpty: true,
+            }}
           />
           <Dropdown
             control={control}

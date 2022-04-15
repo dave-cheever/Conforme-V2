@@ -9,6 +9,11 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
   auditTypeId: String,
   reference: String,
+  status: {
+    type: String,
+    enum: ['inProgress', 'completed'],
+  },
+  dueDate: Date,
   walkType: {
     type: String,
     enum: ['physical', 'virtual'],

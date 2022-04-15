@@ -14,6 +14,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import AuditsList from '../components/Audit/AuditsList';
 import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
 import Header from '../components/Header';
@@ -32,6 +33,8 @@ const GET_AUDITS = gql`
     audits(auditQueryInput: $auditQueryInput) {
       _id
       walkType
+      dueDate
+      status
       reference
       auditorId
       participantsIds
@@ -39,6 +42,7 @@ const GET_AUDITS = gql`
         _id
         name
         frequency
+        startingDate
       }
       site {
         _id
@@ -51,10 +55,12 @@ const GET_AUDITS = gql`
       auditor {
         _id
         displayName
+        imgUrl
       }
       participants {
         _id
         displayName
+        imgUrl
       }
       metatags {
         addedAt
@@ -233,6 +239,7 @@ const Audits = () => {
                 )}
               </Grid>
             )}
+            {viewMode === 'List' && <AuditsList audits={data.audits} />}
           </>
         )}
         {/* eslint-enable */}

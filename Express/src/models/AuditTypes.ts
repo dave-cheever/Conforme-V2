@@ -24,6 +24,7 @@ const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
       'Ad-hoc',
     ],
   },
+  startingDate: Date,
   sections: [
     {
       type: {

@@ -12,7 +12,6 @@ import {
 import { diff } from 'deep-object-diff';
 import { StatusCodes } from 'http-status-codes';
 import { difference } from 'lodash';
-import moment from 'moment';
 
 import { IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import { Users } from 'app-models';

@@ -8,9 +8,10 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
+import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 const AuditSquare = ({ audit }: { audit: IAudit }) => {
@@ -29,26 +30,21 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
     >
       <Flex align="center" justify="space-between">
         <Flex align="center">
-          <Flex
-            bgColor="auditSquare.comingUp"
-            h="12px"
-            rounded="full"
-            w="12px"
-          />
+          <Flex h="12px" rounded="full" w="12px" />
           <Box
             color="auditSquare.fontColor"
             fontSize="11px"
-            ml={2}
             opacity="1"
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            <Flex fontStyle="italic">Unassigned</Flex>
+            <Flex>{audit?.auditType.name}</Flex>
           </Box>
         </Flex>
       </Flex>
-      <Flex align="center" h="52px" mt={2} position="relative" w="full">
+      {/* eslint-disable-next-line react/jsx-max-props-per-line */}
+      <Flex align="center" h="52px" ml={2} mt={2} position="relative" w="full">
         <Skeleton isLoaded={!!audit} rounded="full">
           <Tooltip label={audit?.auditor?.displayName}>
             <Avatar
@@ -73,9 +69,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">
-        <LocationIcon color="auditSquare.businessUnitFontColor" ml={1} />
         <Box
-          color="auditSquare.businessUnitFontColor"
           fontSize="14px"
           lineHeight="20px"
           overflow="hidden"
@@ -84,25 +78,37 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           w="200px"
           whiteSpace="nowrap"
         >
-          {audit?.walkType === 'virtual' ? 'Virtual' : audit?.area?.name}
+          <Text color="auditSquare.titleFontColor">Site</Text>
+          <Text>{audit?.site.name}</Text>
+        </Box>
+        <Box
+          fontSize="14px"
+          lineHeight="20px"
+          overflow="hidden"
+          pl={2}
+          textOverflow="ellipsis"
+          w="200px"
+          whiteSpace="nowrap"
+        >
+          <Text color="auditSquare.titleFontColor">Type</Text>
+          <Text textTransform="capitalize">{audit?.walkType}</Text>
         </Box>
       </Flex>
       <Flex alignItems="flex-start" h="50px" py="4" w="full">
-        <Box
-          color="auditSquare.regulatoryFontColor"
-          fontSize="11px"
-          ml={3}
-          w="50%"
-        >
-          <Box>Next renewal on</Box>
+        <Box color="auditSquare.titleFontColor" fontSize="11px" ml={2} w="50%">
+          <Box>Due for</Box>
           <Box
-            color="auditSquare.nameFontColor"
+            color="auditSquare.dueDateColor"
             fontSize="13px"
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            <Flex fontStyle="italic">No due date</Flex>
+            {audit?.dueDate ? (
+              format(new Date(audit?.dueDate), 'd MMM yyyy')
+            ) : (
+              <Flex fontStyle="italic">No due date</Flex>
+            )}
           </Box>
         </Box>
       </Flex>
@@ -121,7 +127,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           }
           w="85px"
         >
-          Details
+          More
         </Button>
         <Flex
           align="center"
@@ -131,7 +137,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           mr={1}
         >
           <Box fontSize="11px" fontWeight="700">
-            0
+            {auditStatuses[audit?.status]}
           </Box>
         </Flex>
       </Flex>
@@ -143,17 +149,18 @@ export default AuditSquare;
 
 export const auditSquareStyles = {
   auditSquare: {
-    comingUp: '#FFA012',
+    completed: '#62c240',
+    overdue: '#FC5960',
+    inProgress: '#FFA012',
     statusFontColor: '#FFFFFF',
     imageBg: '#ffffff',
     rightIcon: '#9A9EA1',
     crossIcon: '#F0F0F0',
     tickIcon: '#41BA17',
     fontColor: '#818197',
-    regulatoryFontColor: '#818197',
-    renewalFontColor: '#424B50',
+    dueDateColor: '#424B50',
     evidenceFontColor: '#424B50',
-    businessUnitFontColor: '#818197',
+    titleFontColor: '#818197',
     categoryFontColor: '#818197',
     nameFontColor: '#282F36',
     buttonBg: '#F0F2F5',

@@ -7,6 +7,8 @@ import { IUser } from './IUser';
 export interface IAudit extends IBase {
   auditTypeId: string;
   reference: string;
+  status: 'inProgress' | 'completed';
+  dueDate: Date;
   walkType: 'physical' | 'virtual';
   auditType: IAuditType;
   site: ILocation;

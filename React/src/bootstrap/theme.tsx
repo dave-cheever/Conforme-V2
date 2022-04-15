@@ -21,6 +21,7 @@ import { auditHeaderStyles } from '../components/Audit/AuditHeader';
 import { auditHeaderMenuItemStyles } from '../components/Audit/AuditHeaderMenuItem';
 import { auditLeftNavigationStyles } from '../components/Audit/AuditLeftNavigation';
 import { auditLeftTabItemStyles } from '../components/Audit/AuditLeftTabItem';
+import { auditsListStyles } from '../components/Audit/AuditsList';
 import { auditSquareStyles } from '../components/Audit/AuditSquare';
 import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
@@ -147,6 +148,7 @@ const getTheme = (organizationTheme?: any) => {
         ...auditItemStyles,
         ...auditLeftNavigationStyles,
         ...auditLeftTabItemStyles,
+        ...auditsListStyles,
         ...auditSquareStyles,
         ...adminModalStyles,
         ...additionalDetailsStyles,

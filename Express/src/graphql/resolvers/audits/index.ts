@@ -20,6 +20,8 @@ export const auditsTypeDefs = `
     auditTypeId: String!
     walkType: String!
     reference: String!
+    status: String!
+    dueDate: Date!
     auditType: AuditType!
     site: Location!
     area: BusinessUnit
