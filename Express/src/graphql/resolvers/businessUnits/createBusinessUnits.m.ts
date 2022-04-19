@@ -14,8 +14,12 @@ const createBusinessUnit = async (
     if (!isPermitted({ user, action: 'businessUnits.add' }))
       throw new Error('User is not permitted');
 
+    const newBusinessUnit = {
+      ...businessUnitInput,
+      name: businessUnitInput.name.trim(),
+    };
     const createdBusinessUnit = await BusinessUnits.customCreate(
-      businessUnitInput,
+      newBusinessUnit,
       user._id,
       organization._id,
     );

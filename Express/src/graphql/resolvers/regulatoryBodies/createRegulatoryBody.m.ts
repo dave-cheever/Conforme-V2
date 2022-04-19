@@ -15,7 +15,7 @@ const createRegulatoryBody = async (
       throw new Error('User is not permitted');
 
     const createdRegulatoryBody = await RegulatoryBodies.customCreate(
-      { name },
+      { name: name.trim() },
       user._id,
       organization._id,
     );

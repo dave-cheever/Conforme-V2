@@ -18,6 +18,7 @@ const createLocation = async (
     const newLocation = {
       _id: uuidv4(),
       ...locationInput,
+      name: locationInput.name.trim(),
       organizationId: organization._id,
       metatags: genMetatags('added', user._id),
     };

@@ -27,8 +27,8 @@ const definedValidations: TDefinedValidations = {
     if (
       validationValue &&
       value &&
-      initialValue !== value.toLowerCase() &&
-      (validationValue as string[]).includes(value.toLowerCase())
+      initialValue !== value.trim().toLowerCase() &&
+      (validationValue as string[]).includes(value.trim().toLowerCase())
     )
       return `${label} already taken`;
   },
