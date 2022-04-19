@@ -197,7 +197,7 @@ const ComplianceItemModal = ({ refetch }) => {
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody h="calc(100% - 175px)" p="0">
+        <ModalBody p="0">
           <Flex flexDir={['column', 'row']} height="100%">
             {device !== 'mobile' && <NavigationModal />}
             {device === 'mobile' && <NavigationMobileModal />}
@@ -210,7 +210,7 @@ const ComplianceItemModal = ({ refetch }) => {
               rounded="20px"
               w={['full', '440px']}
             >
-              <Flex height="calc(100% - 60px)" mb="20px">
+              <Flex mb="20px" minH="calc(100% - 60px)" overflowY="auto">
                 <Component />
               </Flex>
               <Flex

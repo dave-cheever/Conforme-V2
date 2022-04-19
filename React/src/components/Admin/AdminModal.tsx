@@ -46,7 +46,7 @@ const AdminModal = ({
       {modalType !== 'delete' && (
         <ModalContent
           bg="adminModal.content.bg"
-          h={['100vh']}
+          h="100vh"
           position="absolute"
           rounded="0"
           top={['-60px']}
