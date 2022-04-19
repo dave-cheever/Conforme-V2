@@ -21,24 +21,6 @@ export const auditFrequencies = [
 ];
 
 const useAuditUtils = () => {
-  const getRenewalStatus = (audit: IAudit) => {
-    if (!audit) return;
-
-    const { dueDate, status } = audit;
-    const daysToDueDate = differenceInDays(
-      new Date(dueDate),
-      new Date(audit.auditType.startingDate),
-    );
-
-    if (daysToDueDate && daysToDueDate < 0) {
-      // If there is less than 0 days to due date
-      return 'overdue';
-    }
-    // If there is more than comingUpTriggers value days to due date
-    // Return one of standard renewal status - "notStarted", "inProgress" or "completed"
-    return status;
-  };
-
   const getStatus = (audit: IAudit) => {
     if (!audit) return;
 
@@ -51,11 +33,13 @@ const useAuditUtils = () => {
     if (audit.status === 'completed' && (!daysToDueDate || daysToDueDate >= 0))
       return 'completed';
 
+    if (audit.status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0))
+      return 'inProgress';
+
     return 'overdue';
   };
 
   return {
-    getRenewalStatus,
     getStatus,
   };
 };

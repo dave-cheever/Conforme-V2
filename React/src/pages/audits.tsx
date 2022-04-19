@@ -14,6 +14,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import AuditsGroup from '../components/Audit/AuditsGroup';
 import AuditsList from '../components/Audit/AuditsList';
 import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
@@ -85,7 +86,7 @@ const Audits = () => {
     )
       return savedView;
 
-    return 'Grid';
+    return 'List';
   }, [user]);
 
   const [viewMode, setViewMode] = useState<'Grid' | 'List' | 'Group'>(
@@ -240,6 +241,7 @@ const Audits = () => {
               </Grid>
             )}
             {viewMode === 'List' && <AuditsList audits={data.audits} />}
+            {viewMode === 'Group' && <AuditsGroup audits={data.audits} />}
           </>
         )}
         {/* eslint-enable */}
