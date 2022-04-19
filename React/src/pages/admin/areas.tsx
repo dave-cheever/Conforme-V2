@@ -143,7 +143,10 @@ const Areas = () => {
         });
       }
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      toast({
+        ...toastFailed,
+        description: e.message.replace('Business unit', 'Area'),
+      });
     } finally {
       setAdminModalState('closed');
     }
@@ -163,7 +166,10 @@ const Areas = () => {
         });
       }
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      toast({
+        ...toastFailed,
+        description: e.message.replace('Business unit', 'Area'),
+      });
     } finally {
       setAdminModalState('closed');
     }
@@ -176,7 +182,10 @@ const Areas = () => {
       refetch();
       toast({ ...toastSuccess, description: 'Area deleted' });
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      toast({
+        ...toastFailed,
+        description: e.message.replace('Business unit', 'Area'),
+      });
     } finally {
       setAdminModalState('closed');
     }

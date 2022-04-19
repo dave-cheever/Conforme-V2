@@ -146,7 +146,10 @@ const Sites = () => {
         });
       }
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      toast({
+        ...toastFailed,
+        description: e.message.replace('Location', 'Site'),
+      });
     } finally {
       setAdminModalState('closed');
     }
@@ -166,7 +169,10 @@ const Sites = () => {
         });
       }
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      toast({
+        ...toastFailed,
+        description: e.message.replace('Location', 'Site'),
+      });
     } finally {
       setAdminModalState('closed');
     }
@@ -179,7 +185,10 @@ const Sites = () => {
       toast({ ...toastSuccess, description: 'Site deleted' });
       refetch();
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      toast({
+        ...toastFailed,
+        description: e.message.replace('Location', 'Site'),
+      });
     } finally {
       setAdminModalState('closed');
     }
