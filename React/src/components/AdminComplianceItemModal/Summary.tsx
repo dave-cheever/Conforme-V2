@@ -115,10 +115,10 @@ const Summary = () => {
             p="10px 15px"
             rounded="10px"
           >
-            <Text color="summaryModal.label" fontSize="sm">
+            <Text color="summaryModal.label" fontSize="ssm">
               Evidence {index + 1}
             </Text>
-            <Text color="summaryModal.value" fontSize="md">
+            <Text color="summaryModal.value" fontSize="smm" fontWeight="bold">
               {item}
             </Text>
           </Stack>
