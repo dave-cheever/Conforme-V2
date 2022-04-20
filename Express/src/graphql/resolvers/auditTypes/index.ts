@@ -20,6 +20,12 @@ export const auditTypesTypeDefs = `
     _id: ID
   }
 
+  type AuditOption {
+    type: String!
+    name: String!
+    value: Any!
+  }
+
   type AuditType {
     _id: ID!
     name: String!
@@ -27,6 +33,7 @@ export const auditTypesTypeDefs = `
     startingDate: Date!
     view: String!
     sections: [AuditSection!]!
+    options: [AuditOption!]
     metatags: Metatags
   }
 
@@ -39,11 +46,18 @@ export const auditTypesTypeDefs = `
     _id: ID
   }
 
+  input AuditOptionInput {
+    type: String!
+    name: String!
+    value: Any!
+  }
+
   input AuditTypeCreateInput {
     name: String!
     frequency: String!
     startingDate: Date!
     sections: [AuditSectionInput!]!
+    options: [AuditOptionInput!]
     view: String!
   }
   
@@ -53,6 +67,7 @@ export const auditTypesTypeDefs = `
     frequency: String!
     startingDate: Date!
     sections: [AuditSectionInput!]!
+    options: [AuditOptionInput!]
     view: String!
   }
 `;

@@ -20,6 +20,16 @@ const questionsCategoriesSchema = new Schema<
   allowCustomQuestions: Boolean,
   maxQuestionsNumber: Number,
   icon: String,
+  options: [
+    {
+      type: {
+        type: String,
+        enum: ['notification'],
+      },
+      name: String,
+      value: String,
+    },
+  ],
   scope: {
     component: {
       type: String,

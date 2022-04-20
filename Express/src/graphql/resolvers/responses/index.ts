@@ -1,3 +1,4 @@
+import addDocuments from './addDocuments.m';
 import addParticipant from './addParticipant.m';
 import removeDocument from './removeDocument.m';
 import removeParticipant from './removeParticipant.m';
@@ -13,6 +14,7 @@ const responsesResolvers = {
   Mutation: {
     addParticipant,
     removeParticipant,
+    addDocuments,
     removeDocument,
     renewResponse,
     updateResponseQuestions,
@@ -21,18 +23,9 @@ const responsesResolvers = {
 };
 
 export const responsesTypeDefs = `
-
-  type ResponseDocument {
-    id: String!
-    name: String!
-    addedAt: Date!
-    thumbnail: String
-    path: String
-  }
-
   type ResponseEvidence {
     name: String!
-    uploaded: ResponseDocument
+    uploaded: Document
     outdated: Boolean
   }
 
@@ -64,7 +57,7 @@ export const responsesTypeDefs = `
     complianceItem: ComplianceItem
     businessUnit: BusinessUnit
     evidence: [ResponseEvidence]
-    attachments: [ResponseDocument]
+    attachments: [Document]
     questions: [ResponseQuestion]
     responsible: User
     daysToDueDate: Int
@@ -102,6 +95,13 @@ export const responsesTypeDefs = `
     permission: String!
   }
 
+  input ResponseDocumentsAddInput {
+    _id: ID!
+    documentType: String!
+    documentName: String
+    uploaded: [DocumentInput]!
+  }
+
   input ResponseDocumentRemoveInput {
     _id: ID!
     documentId: ID!
@@ -126,6 +126,7 @@ export const responsesQueryDefs = `
 export const responsesMutationDefs = `
   addParticipant(responseParticipantModify: ResponseParticipantModify!): Response!
   removeParticipant(responseParticipantRemove: ResponseParticipantRemove!): Boolean!
+  addDocuments(responseDocumentsAddInput: ResponseDocumentsAddInput!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
   renewResponse(_id: ID!): Response!
   updateResponseQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!

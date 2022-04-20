@@ -210,28 +210,27 @@ const Audits = () => {
         )}
       </Header>
       <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
-        {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>
         ) : loading ? (
-          <Loader center={true} />
+          <Loader center />
         ) : (
           <>
             {viewMode === 'Grid' && (
               <Grid
-                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
                 display={['grid', 'grid', 'flex']}
                 flexWrap="wrap"
-                h="fit-content"
                 gap={6}
-                w="full"
+                h="fit-content"
                 pb={[0, 8]}
-                px={[4, 8]}
                 pt="3"
+                px={[4, 8]}
+                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
+                w="full"
               >
                 {data.audits.length > 0 ? (
                   data.audits?.map((audit) => (
-                    <AuditSquare key={audit._id} audit={audit} />
+                    <AuditSquare audit={audit} key={audit._id} />
                   ))
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
@@ -244,7 +243,6 @@ const Audits = () => {
             {viewMode === 'Group' && <AuditsGroup audits={data.audits} />}
           </>
         )}
-        {/* eslint-enable */}
       </Flex>
     </>
   );

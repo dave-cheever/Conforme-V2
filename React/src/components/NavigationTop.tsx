@@ -19,7 +19,7 @@ import UserMenu from './UserMenu';
 const NavigationTop = () => {
   const device = useDevice();
   const history = useHistory();
-  const { navigateTo } = useNavigate();
+  const { isPathActive, navigateTo } = useNavigate();
   const { module } = useAppContext();
   const { setAdminModalState } = useAdminContext();
   const { showFiltersPanel } = useFiltersContext();
@@ -28,8 +28,7 @@ const NavigationTop = () => {
   const pageRedirect = (page: string) => {
     navigateTo(page);
   };
-  const isComplianceItemPage =
-    history.location.pathname.split('/')[1] === 'compliance-item';
+  const isComplianceItemPage = isPathActive('/compliance-item/');
 
   const handleAddButtonClick = () => {
     setAdminModalState('add');
@@ -67,6 +66,7 @@ const NavigationTop = () => {
         fontSize="md"
         fontWeight="semi_medium"
         mr={['0', '20px']}
+        pl={2}
         spacing={4}
         w="full"
       >

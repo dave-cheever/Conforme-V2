@@ -13,11 +13,11 @@ const AuditLeftTabItem = ({
   isMobile = false,
 }) => {
   const history = useHistory();
-  const { navigateTo } = useNavigate();
+  const { isPathActive, navigateTo } = useNavigate();
   const { id }: { id: string } = useParams();
 
   const active = useMemo(
-    () => history.location.pathname === `/audits/${id}${url}`,
+    () => isPathActive(`/audits/${id}${url}`, { exact: true }),
     [id, url, history],
   );
 

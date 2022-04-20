@@ -17,10 +17,12 @@ import { questionsModalStyles } from '../components/AdminComplianceItemModal/Que
 import { summaryModalStyles } from '../components/AdminComplianceItemModal/Summary';
 import { summaryItemModalStyles } from '../components/AdminComplianceItemModal/SummaryItem';
 import { alertDialogStyles } from '../components/AlertDialog';
+import { auditAnswerStyles } from '../components/Audit/AuditAnswer';
 import { auditHeaderStyles } from '../components/Audit/AuditHeader';
 import { auditHeaderMenuItemStyles } from '../components/Audit/AuditHeaderMenuItem';
 import { auditLeftNavigationStyles } from '../components/Audit/AuditLeftNavigation';
 import { auditLeftTabItemStyles } from '../components/Audit/AuditLeftTabItem';
+import { auditNewQuestionModalStyles } from '../components/Audit/AuditNewQuestionModal';
 import { auditsGroupStyles } from '../components/Audit/AuditsGroup';
 import { auditsListStyles } from '../components/Audit/AuditsList';
 import { auditSquareStyles } from '../components/Audit/AuditSquare';
@@ -35,6 +37,7 @@ import { complianceGroupItemsStyles } from '../components/ComplianceItem/Complia
 import { complianceListItemsStyles } from '../components/ComplianceItem/ComplianceItemsList';
 import { complianceItemsSquareStyles } from '../components/ComplianceItem/ComplianceItemSquare';
 import { customRadioButtonStyles } from '../components/CustomRadioButton';
+import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
 import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
 import { filtersPanelItemStyles } from '../components/Filters/FiltersPanelItem';
 import { datepickerStyles } from '../components/Forms/Datepicker';
@@ -66,7 +69,6 @@ import { questionMultiChoiceFormStyles } from '../components/Questions/QuestionM
 import { questionSimpleFormStyles } from '../components/Questions/QuestionSimpleForm';
 import { chatMentionStyles } from '../components/Response/ChatMention';
 import { responseRenewalDetailsStyles } from '../components/Response/Details';
-import { documentUploadedStyles } from '../components/Response/DocumentUploaded';
 import { evidenceStyles } from '../components/Response/Evidence';
 import { historicalListItemStyles } from '../components/Response/HistoricalListItem';
 import { messageInputStyles } from '../components/Response/MessageInput';
@@ -88,6 +90,7 @@ import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
+import { auditTypesAdminStyles } from '../pages/admin/audit-types';
 import { businessUnitsStyles } from '../pages/admin/business-units';
 import { categoriesStyles } from '../pages/admin/categories';
 import { complianceItemsAdminWithContextStyles } from '../pages/admin/compliance-items';
@@ -159,11 +162,14 @@ const getTheme = (organizationTheme?: any) => {
         ...adminTableHeaderElementStyles,
         ...adminTableHeaderStyles,
         ...alertDialogStyles,
+        ...auditAnswerStyles,
         ...auditLogDayStyles,
         ...auditLogRecordStyles,
         ...auditLogStyles,
         ...auditModalStyles,
+        ...auditNewQuestionModalStyles,
         ...auditTeamModalStyles,
+        ...auditTypesAdminStyles,
         ...avatarUserStyles,
         ...barChartStyles,
         ...businessUnitsModalStyles,

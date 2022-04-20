@@ -29,6 +29,7 @@ export const actionsTypeDefs = `
 
   input ActionQueryInput {
     _id: ID
+    scope: ScopeInput
   }
 
   input ActionCreateInput {

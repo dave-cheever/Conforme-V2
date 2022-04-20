@@ -33,7 +33,7 @@ const ModuleSwitcher = () => {
   return (
     <Stack backgroundColor="moduleSwitcher.background" p="5px" w="50px">
       {organizationConfig?.modules?.map((m) => (
-        <Tooltip hasArrow key={m.name} label={m.name} placement="right">
+        <Tooltip hasArrow key={m.path} label={m.name} placement="right">
           <Flex
             align="center"
             backgroundColor={
@@ -50,7 +50,6 @@ const ModuleSwitcher = () => {
             fontSize="md"
             h="40px"
             justify="center"
-            key={m.path}
             onClick={() => m.path !== module?.path && chooseModule(m)}
             rounded="md"
             w="40px"

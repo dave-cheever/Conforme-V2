@@ -49,7 +49,7 @@ const TextInput = ({
   placeholder = '',
   tooltip = '',
   validations = {},
-  disabled,
+  disabled = false,
   required,
   styles,
   initialValue,

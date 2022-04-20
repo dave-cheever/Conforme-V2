@@ -130,7 +130,7 @@ const Dropdown = ({
                 onChange={onChange}
                 placeholder={placeholder}
                 top="5px"
-                value={value}
+                value={value || ''}
               >
                 {options.map((option) => (
                   <option key={`${name}-${option.value}`} value={option.value}>

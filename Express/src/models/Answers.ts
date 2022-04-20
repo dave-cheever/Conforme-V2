@@ -7,9 +7,8 @@ import { genMetatags } from 'app-utils';
 
 const answersSchema = new Schema<IAnswer, IAnswerModel>({
   _id: String,
-  auditId: String,
   questionId: String,
-  answer: String,
+  answer: Schema.Types.Mixed,
   attachments: [
     {
       _id: false,
@@ -18,7 +17,10 @@ const answersSchema = new Schema<IAnswer, IAnswerModel>({
       addedAt: Date,
     },
   ],
-  status: String,
+  status: {
+    type: String,
+    enum: ['open', 'ignored', 'closed'],
+  },
   options: {
     type: Map,
     of: Boolean,

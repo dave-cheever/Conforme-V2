@@ -17,6 +17,7 @@ const audits = async (
     const pipeline: any[] = [
       {
         $match: {
+          'metatags.removedAt': { $eq: null },
           organizationId: organization._id,
         },
       },

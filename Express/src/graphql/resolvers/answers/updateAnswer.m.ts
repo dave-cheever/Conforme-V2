@@ -4,7 +4,7 @@ import { isPermitted } from 'app-utils';
 const updateAnswer = async (
   _,
   { answerInput },
-  { authorize, organization }
+  { authorize, organization },
 ) => {
   try {
     const user = await authorize();
@@ -14,7 +14,7 @@ const updateAnswer = async (
 
     const answer = await Answers.customFindById(
       answerInput._id,
-      organization._id
+      organization._id,
     );
     if (!answer) throw new Error("Answer doesn't exist");
 
@@ -22,7 +22,7 @@ const updateAnswer = async (
       { _id: answer._id },
       answerInput,
       user._id,
-      organization._id
+      organization._id,
     );
     return updatedAnswer;
   } catch (err: any) {

@@ -13,7 +13,7 @@ import SubSection from './SubSection';
 const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
   const { organizationConfig } = useAppContext();
   const isTrackerComponent = organizationConfig?.modules.find(
-    ({ name }) => name === 'tracker',
+    ({ type }) => type === 'tracker',
   );
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
@@ -50,8 +50,8 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                   ? 'navigationLeftItem.selectedLabelBg'
                   : 'navigationLeftItem.unselectedLabelBg'
                 : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedLabelBg'
-                  : 'navigationLeftItem.unselectedLabelBg'
+                ? 'navigationLeftItem.selectedLabelBg'
+                : 'navigationLeftItem.unselectedLabelBg'
             }
             h="30px"
             justifyContent="center"
@@ -68,20 +68,17 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                     ? 'navigationLeftItem.selectedIconStroke'
                     : 'navigationLeftItem.unselectedIconStroke'
                   : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
+                  ? 'navigationLeftItem.selectedIconStroke'
+                  : 'navigationLeftItem.unselectedIconStroke'
               }
               w="15px"
             />
           </Flex>
           {showFiltersPanel &&
-            (
-              menuItem.subSections?.length > 0 ||
-              isPathActive(url, { exact: true })
-            ) && (
+            (menuItem.subSections?.length > 0 ||
+              isPathActive(url, { exact: true })) && (
               <ArrowRight boxSize="10px" ml={1} />
-            )
-          }
+            )}
         </Flex>
         {!showFiltersPanel && (
           <Box
@@ -91,8 +88,8 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                   ? 'navigationLeftItem.selectedMenuItem'
                   : 'navigationLeftItem.unselectedMenuItem'
                 : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedMenuItem'
-                  : 'navigationLeftItem.unselectedMenuItem'
+                ? 'navigationLeftItem.selectedMenuItem'
+                : 'navigationLeftItem.unselectedMenuItem'
             }
             fontWeight="400"
             ml="5"
@@ -121,7 +118,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                   filter={[
                     'all',
                     responsesStatusesCounts.compliant +
-                    responsesStatusesCounts.nonCompliant,
+                      responsesStatusesCounts.nonCompliant,
                   ]}
                   menuOpen={menuOpen}
                 />

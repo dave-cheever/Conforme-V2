@@ -1,5 +1,4 @@
 import Accidents from './Accidents';
-import Actions from './Actions';
 import ActionsIcon from './ActionsIcon';
 import AddIcon from './AddIcon';
 import Admin from './Admin';
@@ -36,6 +35,7 @@ import Conforme from './Conforme';
 import ConformeSmall from './ConformeSmall';
 import Copy from './Copy';
 import CrossIcon from './CrossIcon';
+import DangerIcon from './DangerIcon';
 import Dashboard from './Dashboard';
 import DetailIcon from './DetailIcon';
 import DownloadIcon from './DownloadIcon';
@@ -64,6 +64,7 @@ import MessageIcon from './MessageIcon';
 import MessageSquareIcon from './MessageSquareIcon';
 import MinusIcon from './MinusIcon';
 import Move from './Move';
+import NotesIcon from './NotesIcon';
 import NotificationIcon from './NotificationIcon';
 import OpenMenuArrow from './OpenMenuArrow';
 import PlusIcon from './PlusIcon';
@@ -86,6 +87,7 @@ import SendMessageIcon from './SendMessageIcon';
 import Share from './Share';
 import ShareIcon from './ShareIcon';
 import TeamsIcon from './TeamsIcon';
+import ThumbUpIcon from './ThumbUpIcon';
 import TickIcon from './TickIcon';
 import Trashcan from './Trashcan';
 import UnFollowIcon from './UnFollowIcon';
@@ -95,7 +97,6 @@ import UploadIcon from './UploadIcon';
 
 export {
   Accidents,
-  Actions,
   ActionsIcon,
   Admin,
   AddIcon,
@@ -125,13 +126,14 @@ export {
   CircledTickBold,
   CircleEmpty,
   CircleRemove,
+  CloneIcon,
   Close,
   ComingUpIcon,
   Conforme,
   ConformeSmall,
   Copy,
   CrossIcon,
-  CloneIcon,
+  DangerIcon,
   Dashboard,
   DetailIcon,
   DownloadIcon,
@@ -160,6 +162,7 @@ export {
   MessageSquareIcon,
   MinusIcon,
   Move,
+  NotesIcon,
   NotificationIcon,
   OpenMenuArrow,
   PlusIcon,
@@ -182,6 +185,7 @@ export {
   Share,
   ShareIcon,
   TeamsIcon,
+  ThumbUpIcon,
   TickIcon,
   Trashcan,
   UnFollowIcon,

@@ -15,15 +15,14 @@ const updateQuestionsCategory = async (
         action: 'questionsCategories.edit',
         data: questionsCategoryInput,
       })
-    ) 
+    )
       throw new Error('User is not permitted');
 
     const questionsCategory = await QuestionsCategories.customFindById(
       questionsCategoryInput._id,
       organization._id,
     );
-    if (!questionsCategory) 
-      throw new Error("Question Category doesn't exist");
+    if (!questionsCategory) throw new Error("Question Category doesn't exist");
 
     const updatedQuestionsCategory = await QuestionsCategories.customUpdateOne(
       { _id: questionsCategory._id },

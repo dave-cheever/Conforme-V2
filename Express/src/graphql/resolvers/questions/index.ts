@@ -15,47 +15,36 @@ const questionsResolvers = {
 };
 
 export const questionsTypeDefs = `
-  type QuestionScope {
-    component: String!
-    type: String
-    _id: String
-  }
-
   type Question {
     _id: ID!
     type: String!
-    question: String!
+    question: String
     description: String
     questionsCategoryId: String
     required: Boolean
     notApplicable: Boolean
     positiveValue: Any
     negativeValue: Any
-    scope: QuestionScope!
+    scope: Scope!
+    answer: Answer
     metatags: Metatags
   }
 
-  input QuestionScopeInput {
-    component: String!
-    type: String
-    _id: String
-  }
-
-  input QuestionQueryInput {
+  input QuestionQuery {
     _id: ID
-    scope: QuestionScopeInput
+    scope: ScopeInput
   }
 
   input QuestionCreateInput {
     type: String!
     question: String!
     description: String
-    questionsCategoryId: String
+    questionsCategoryId: String!
     required: Boolean
     notApplicable: Boolean
     positiveValue: Any
     negativeValue: Any
-    scope: QuestionScopeInput!
+    scope: ScopeInput!
   }
   
   input QuestionModifyInput {
@@ -71,13 +60,13 @@ export const questionsTypeDefs = `
 `;
 
 export const questionsQueryDefs = `
-  questions: [Question!]!
+  questions(questionQuery: QuestionQuery): [Question!]!
 `;
 
 export const questionsMutationDefs = `
   createQuestion(question: QuestionCreateInput!): Question!
   updateQuestion(questionInput: QuestionModifyInput!): Question!
-  deleteQuestion(_id: String!): Boolean!
+  deleteQuestion(_id: ID!): Boolean!
 `;
 
 export default questionsResolvers;

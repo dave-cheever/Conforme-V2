@@ -8,12 +8,24 @@ import { genMetatags } from 'app-utils';
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
   title: String,
-  auditId: String,
   dueDate: String,
   done: Boolean,
-  priority: String,
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high'],
+  },
   description: String,
   assignedId: String,
+  scope: {
+    component: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    type: {
+      type: String,
+    },
+    _id: String,
+  },
   organizationId: String,
   metatags: {
     addedAt: Date,

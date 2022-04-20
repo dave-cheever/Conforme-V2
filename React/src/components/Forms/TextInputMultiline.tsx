@@ -4,6 +4,7 @@ import { Controller } from 'react-hook-form';
 import { Box, Flex, Icon, Textarea, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
+import { Asterisk } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
 
@@ -35,6 +36,7 @@ const TextInputMultiline = ({
   tooltip = '',
   validations = {},
   disabled = false,
+  required,
   styles,
 }: ITextInputMultiline) => {
   const validate = useValidate(label || name, validations, definedValidations);
@@ -69,7 +71,17 @@ const TextInputMultiline = ({
                   position="static"
                   zIndex={2}
                 >
-                  {label}{' '}
+                  {label}
+                  {required && (
+                    <Asterisk
+                      fill="questionListElement.iconAsterisk"
+                      h="9px"
+                      mb="8px"
+                      ml="5px"
+                      stroke="questionListElement.iconAsterisk"
+                      w="9px"
+                    />
+                  )}{' '}
                   {tooltip && (
                     <Tooltip hasArrow label={tooltip} placement="top">
                       <Icon h="14px" mb={1} name="info" />

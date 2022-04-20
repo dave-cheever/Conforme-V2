@@ -1,4 +1,4 @@
-import { IBase, TModuleType } from 'app-interfaces';
+import { IAuditOption, IBase, IScope } from 'app-interfaces';
 
 export interface IQuestionsCategory extends IBase {
   name: string;
@@ -6,10 +6,7 @@ export interface IQuestionsCategory extends IBase {
   allowCustomQuestions: boolean;
   maxQuestionsNumber: number;
   icon: string;
-  scope: {
-    component: TModuleType;
-    type?: string;
-    _id?: string;
-  };
+  options: IAuditOption[];
+  scope: IScope;
   organizationId: string;
 }

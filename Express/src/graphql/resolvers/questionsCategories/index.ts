@@ -15,10 +15,10 @@ const questionsCategoryResolvers = {
 };
 
 export const questionsCategoriesTypeDefs = `
-  type QuestionsCategoryScope {
-    component: String!
-    type: String
-    _id: String
+  type QuestionsCategoryOption {
+    type: String!
+    name: String!
+    value: String
   }
 
   type QuestionsCategory {
@@ -28,19 +28,21 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     icon: String!
-    scope: QuestionsCategoryScope!
+    options: [QuestionsCategoryOption!]
+    scope: Scope!
     metatags: Metatags
   }
 
-  input QuestionsCategoryScopeInput {
-    component: String!
-    type: String
-    _id: String
+  input QuestionsCategoryQuery {
+    _id: ID
+    _ids: [ID]
+    scope: ScopeInput
   }
 
-  input QuestionsCategoryQueryInput {
-    _id: ID
-    scope: QuestionsCategoryScopeInput
+  input QuestionsCategoryOptionInput {
+    type: String!
+    name: String!
+    value: String
   }
 
   input QuestionsCategoryCreateInput {
@@ -49,7 +51,8 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     icon: String!
-    scope: QuestionsCategoryScopeInput!
+    options: [QuestionsCategoryOptionInput!]
+    scope: ScopeInput!
   }
   
   input QuestionsCategoryModifyInput {
@@ -59,11 +62,12 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     icon: String!
+    options: [QuestionsCategoryOptionInput!]
   }
 `;
 
 export const questionsCategoriesQueryDefs = `
-  questionsCategories: [QuestionsCategory!]!
+  questionsCategories(questionsCategoryQuery: QuestionsCategoryQuery): [QuestionsCategory!]!
 `;
 
 export const questionsCategoriesMutationDefs = `

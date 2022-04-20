@@ -101,11 +101,37 @@ const typeDefs = gql`
     complianceItemsResponsesCount: Int
   }
 
+  type Document {
+    id: String!
+    name: String!
+    addedAt: Date!
+    thumbnail: String
+    path: String
+  }
+  
+  type Scope {
+    component: String
+    type: String
+    _id: String
+  }
+
   input BaseWithNameModifyInput {
     _id: ID!
     name: String
   }
+
+  input DocumentInput {
+    id: String!
+    name: String!
+    addedAt: Date!
+  }
   
+  input ScopeInput {
+    component: String
+    type: String
+    _id: String
+  }
+
   ${actionsTypeDefs}
   ${answersTypeDefs}
   ${auditLogsTypeDefs}

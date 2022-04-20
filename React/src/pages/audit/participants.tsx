@@ -7,8 +7,9 @@ import {
   Flex,
   Grid,
   GridItem,
-  Heading,
   IconButton,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
 
 import AuditTeamModal from '../../components/AuditModal/AuditTeamModal';
@@ -25,18 +26,17 @@ const AuditParticipants = () => {
   return (
     <>
       <Flex flexDir="column" h={['fit-content', 'full']} w="full">
-        <Flex
-          alignItems="center"
-          justifyContent={['space-between', 'initial']}
-          mb="8"
-        >
-          <Heading mb={3}>Participants</Heading>
+        <Flex justifyContent={['space-between', 'initial']}>
+          <Text fontSize="xxl" fontWeight="semibold">
+            Participants
+          </Text>
         </Flex>
         <Flex
           bg="auditItem.bg"
           borderRadius="20px"
           flexDir="column"
           h="full"
+          mt={4}
           p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
           w="full"
         >
@@ -47,20 +47,22 @@ const AuditParticipants = () => {
                 multiple={false}
                 onClose={() => setAuditorModalOpen(false)}
               />
-              <Heading as="h4" mb={5} size="md">
+              <Text fontSize="smm" fontWeight="semibold" mb={5} size="md">
                 Audited by
-              </Heading>
-              <Flex alignItems="center" fontSize={['14px', '24px']}>
+              </Text>
+              <Stack align="center" fontSize={['14px', '24px']} w="fit-content">
                 <Avatar
                   cursor="pointer"
-                  mr={3}
                   name={selectedAuditor?.displayName}
                   onClick={() => setAuditorModalOpen(true)}
                   rounded="full"
-                  size="md"
+                  size="lg"
                   src={selectedAuditor?.imgUrl}
                 />
-              </Flex>
+                <Text fontSize="smm" opacity={0.5}>
+                  {selectedAuditor?.displayName}
+                </Text>
+              </Stack>
             </Box>
             <Box mb={10}>
               <AuditTeamModal
@@ -68,9 +70,9 @@ const AuditParticipants = () => {
                 multiple
                 onClose={() => setParticipantsModalOpen(false)}
               />
-              <Heading as="h4" mb={5} size="md">
+              <Text fontSize="smm" fontWeight="semibold" mb={5} size="md">
                 Participants
-              </Heading>
+              </Text>
               <Grid
                 alignItems="center"
                 fontSize={['14px', '24px']}
@@ -78,26 +80,34 @@ const AuditParticipants = () => {
                 templateColumns="repeat(auto-fill, 50px)"
               >
                 {selectedParticipants?.map((participant) => (
-                  <GridItem key={participant?._id}>
+                  <Stack
+                    align="center"
+                    fontSize={['14px', '24px']}
+                    w="fit-content"
+                  >
                     <Avatar
                       cursor="pointer"
-                      mr={3}
                       name={participant?.displayName}
+                      onClick={() => setAuditorModalOpen(true)}
                       rounded="full"
-                      size="md"
+                      size="lg"
                       src={participant?.imgUrl}
                     />
-                  </GridItem>
+                    <Text fontSize="smm" opacity={0.5}>
+                      {participant?.displayName}
+                    </Text>
+                  </Stack>
                 ))}
                 <GridItem>
                   <IconButton
                     aria-label="Add participant"
                     bg="auditModal.tabs.bottomButton.bg"
                     color="auditModal.participantsButton.color"
+                    h="64px"
                     icon={<AddIcon />}
                     isRound
                     onClick={() => setParticipantsModalOpen(true)}
-                    size="lg"
+                    w="64px"
                   />
                 </GridItem>
               </Grid>

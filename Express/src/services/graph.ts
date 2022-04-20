@@ -14,16 +14,14 @@ const inMemoryStorage = multer.memoryStorage();
 const inMemoryStrategy = multer({ storage: inMemoryStorage });
 
 const graphSetup = async (organizationId: string) => {
-  if (!organizationId) 
-    throw new Error('No organization id');
-  
+  if (!organizationId) throw new Error('No organization id');
+
   const organization = await Organizations.customFindById(
     organizationId,
     organizationId,
   );
-  if (!organizationId) 
-    throw new Error('Wrong organization config');
-  
+  if (!organizationId) throw new Error('Wrong organization config');
+
   const { clientId, tenantId, secret } = organization;
   graph.setup({
     graph: {
@@ -34,16 +32,14 @@ const graphSetup = async (organizationId: string) => {
 };
 
 const getClient = async (organizationId: string) => {
-  if (!organizationId) 
-    throw new Error('No organization id');
-  
+  if (!organizationId) throw new Error('No organization id');
+
   const organization = await Organizations.customFindById(
     organizationId,
     organizationId,
   );
-  if (!organizationId) 
-    throw new Error('Wrong organization config');
-  
+  if (!organizationId) throw new Error('Wrong organization config');
+
   const { clientId, tenantId, secret } = organization;
   const token = await new AdalFetchClient(
     tenantId || '',
@@ -156,9 +152,8 @@ const getBasicUsers = async ({
   organization: IOrganization;
 }) => {
   await graphSetup(organization._id);
-  if (usersIds.length === 0) 
-    return [];
-  
+  if (usersIds.length === 0) return [];
+
   // Graph API allows to search by maximum 15 child clauses using 'OR' operator
   // so we need to divide usersIds array to chunks
   const chunks = usersIds.reduce((acc, curr, i) => {
@@ -280,10 +275,10 @@ const getUsers = async ({
 };
 
 const uploadDocuments = async (
-  organization: IOrganization,
   documents: Express.Multer.File[],
-  responseId: string,
-): Promise<{ name: string; id: string }[]> => {
+  path: string,
+  organization: IOrganization,
+): Promise<{ name: string; id: string; addedAt: Date }[]> => {
   if (!organization.spSiteUrl) {
     logger.error('Graph error: Wrong SharePoint site configuration');
     return [];
@@ -303,11 +298,11 @@ const uploadDocuments = async (
     documents.map(async (document) => {
       try {
         const uploadSession = await client.post(
-          `sites/${id}/drive/root:/${responseId}/${document.originalname}:/createUploadSession`,
+          `sites/${id}/drive/root:/${path}/${document.originalname}:/createUploadSession`,
           {},
         );
         const { uploadUrl } = uploadSession.data;
-        if (!uploadUrl) 
+        if (!uploadUrl)
           throw new Error('Graph error: Cannot generate upload url');
 
         let uploadedBytes = 0;
@@ -327,9 +322,8 @@ const uploadDocuments = async (
             },
           });
           uploadedBytes += chunk.length;
-          if (uploadedBytes < document.size) 
-            await upload();
-          
+          if (uploadedBytes < document.size) await upload();
+
           return result;
         };
 
@@ -345,6 +339,7 @@ const uploadDocuments = async (
         return {
           name: document.originalname,
           id: siteId,
+          addedAt: new Date(),
         };
       } catch (e: any) {
         logger.error(e.response.data.error.message);
@@ -397,9 +392,8 @@ const sendEmail = async ({
 }) => {
   try {
     const client = await getClient(organization._id);
-    if (!to) 
-      return logger.error('Graph error: Wrong Email configuration');
-    
+    if (!to) return logger.error('Graph error: Wrong Email configuration');
+
     const toRecipients = to.map((address) => ({
       emailAddress: {
         address,

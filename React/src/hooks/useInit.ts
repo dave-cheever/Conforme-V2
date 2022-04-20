@@ -54,7 +54,8 @@ const useInit = () => {
     error: organizationError,
     data: organizationData,
   } = useQuery(ORGANIZATION);
-  const { setRoles, setOrganizationConfig, setModule, setSettings } = useAppContext();
+  const { user, setRoles, setOrganizationConfig, setModule, setSettings } =
+    useAppContext();
   const location = useLocation();
   const history = useHistory();
 
@@ -82,13 +83,11 @@ const useInit = () => {
       }
 
       setModule(module);
-      if (module)
+      if (module && user)
         document.title = `${module.name} - ${organization.name} - Conforme`;
-      else
-        document.title = `${organization.name} - Conforme`;
-
+      else document.title = `${organization.name} - Conforme`;
     }
-  }, [organizationError, organizationData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user, organizationError, organizationData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return loadingSettings && loadingOrganization;
 };

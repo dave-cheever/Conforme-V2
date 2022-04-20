@@ -86,7 +86,7 @@ const Questions = () => {
     if (!questionsArray) return [];
 
     return [...questionsArray].sort((a, b) =>
-      a.question.localeCompare(b.question),
+      (a.question || '').localeCompare(b.question || ''),
     );
   };
   const [questions, setQuestions] = useState<IQuestion<TQuestionValue>[]>(

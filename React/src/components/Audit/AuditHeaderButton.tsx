@@ -12,7 +12,7 @@ const AuditHeaderButton = ({ icon, name, onClick, loading = false }) => (
       bg="auditHeader.buttonLightBg"
       borderRadius="10px"
       color="auditHeader.buttonLightColor"
-      display={['none', 'none', 'flex']}
+      display={['none', icon ? 'none' : 'flex', 'flex']}
       fontSize="14px"
       fontWeight="bold"
       isLoading={loading}
@@ -33,7 +33,7 @@ const AuditHeaderButton = ({ icon, name, onClick, loading = false }) => (
       aria-label="Search database"
       bg="auditHeader.buttonLightBg"
       borderRadius="10px"
-      display={['none', 'flex', 'none']}
+      display={['none', icon ? 'flex' : 'none', 'none']}
       icon={icon}
       ml="15px"
       onClick={onClick}

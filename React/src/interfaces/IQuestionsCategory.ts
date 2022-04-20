@@ -1,5 +1,5 @@
 import { IBase } from './IBase';
-import { TModuleType } from './TModuleType';
+import { IScope } from './IScope';
 
 export interface IQuestionsCategory extends IBase {
   name: string;
@@ -7,10 +7,11 @@ export interface IQuestionsCategory extends IBase {
   allowCustomQuestions: boolean;
   maxQuestionsNumber: number;
   icon: string;
-  scope: {
-    component: TModuleType;
-    type?: string;
-    _id?: string;
-  };
+  options: {
+    type: 'notification';
+    name: string;
+    value?: string;
+  }[];
+  scope: IScope;
   organizationId: string;
 }

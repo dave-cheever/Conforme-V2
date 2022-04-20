@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Select,
   Spacer,
   Stack,
@@ -249,6 +250,13 @@ const AuditTypes = () => {
     }
   };
 
+  const moveSection = (sectionIndex: number, newPosition: number) => {
+    const sectionsCopy = [...sections];
+    const section = sectionsCopy.splice(sectionIndex, 1)[0];
+    sectionsCopy.splice(newPosition, 0, section);
+    setValue('sections', sectionsCopy);
+  };
+
   const renderAuditTypeRow = (auditType: IAuditType, i: number) => (
     <Flex
       alignItems="center"
@@ -353,7 +361,35 @@ const AuditTypes = () => {
               {sections.length > 0 ? (
                 sections.map((section, i) => (
                   <Stack key={`section-${i}`}>
-                    <Text fontSize="smm">Section {i + 1}</Text>
+                    <HStack align="flex-end" fontSize="smm">
+                      <Text>Section {i + 1}</Text>
+                      {i > 0 && (
+                        <Text
+                          _hover={{
+                            textDecoration: 'underline',
+                          }}
+                          color="auditTypesAdmin.linkColor"
+                          cursor="pointer"
+                          fontSize="xs"
+                          onClick={() => moveSection(i, i - 1)}
+                        >
+                          move up
+                        </Text>
+                      )}
+                      {i < sections.length - 1 && (
+                        <Text
+                          _hover={{
+                            textDecoration: 'underline',
+                          }}
+                          color="auditTypesAdmin.linkColor"
+                          cursor="pointer"
+                          fontSize="xs"
+                          onClick={() => moveSection(i, i + 1)}
+                        >
+                          move down
+                        </Text>
+                      )}
+                    </HStack>
                     {section.type === 'questionsCategory' && (
                       <Select
                         _active={{ bg: 'dropdown.activeBg' }}
@@ -483,3 +519,9 @@ const AuditTypes = () => {
 };
 
 export default AuditTypes;
+
+export const auditTypesAdminStyles = {
+  auditTypesAdmin: {
+    linkColor: '#005699',
+  },
+};

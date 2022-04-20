@@ -1,8 +1,7 @@
-import { useHistory } from 'react-router-dom';
-
 import { Flex, IconButton } from '@chakra-ui/react';
 
 import Loader from '../components/Loader';
+import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
 import ResponseChat from '../components/Response/ResponseChat';
 import ResponseChatMobileAndTablet from '../components/Response/ResponseChatMobileAndTablet';
@@ -25,11 +24,8 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
     handleOpenMessage,
     handleCloseMessage,
   } = useResponseContext();
-  const history = useHistory();
   const device = useDevice();
   const isTabletAndMobile = device === 'tablet' || device === 'mobile';
-  const isComplianceItemPage =
-    history.location.pathname.split('/')[1] === 'compliance-item';
 
   if (loading && !response) {
     return (
@@ -41,11 +37,12 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
 
   return (
     <Flex h="full" minH="100vh" w="full">
+      <ModuleSwitcher />
       <ResponseLeftNavigation />
       <ResponseLeftNavigationTablet />
       <Flex
         direction="column"
-        w={['100%', 'calc(100% - 80px)', 'calc(100% - 240px)']}
+        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
       >
         <NavigationTop />
         <Flex
@@ -57,12 +54,12 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           position="absolute"
           pt={['25px', 0]}
           top={[0, '80px']}
-          w={['full', 'calc(100% - 80px)', 'calc(100% - 240px)']}
+          w={['full', 'calc(100% - 80px)', 'calc(100% - 290px)']}
           zIndex={4}
         >
           <ShareModal />
           <ReasponseHeader />
-          {isComplianceItemPage && isTabletAndMobile && (
+          {isTabletAndMobile && (
             <IconButton
               _hover={{ opacity: 0.7 }}
               alignItems="center"
@@ -94,8 +91,8 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
             <Flex
               flexDirection="column"
               h="full"
-              maxH={['none', 'calc(100vh - 200px)']}
-              minH={['calc(100vh - 200px)', 'calc(100vh - 200px)']}
+              maxH={['none', 'calc(100vh - 210px)']}
+              minH={['calc(100vh - 200px)', 'calc(100vh - 210px)']}
               pb="25px"
               pt={['40px', '0px']}
               w="full"

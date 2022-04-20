@@ -347,3 +347,26 @@ Conforme uses Azure Functions app to send notifications.
 - Read it carefully and make sure everything is correct, then click on the **Create** button
 
 Deployment of Functions app will be proceed by Azure Pipelines.
+
+## Configure app services custom domain
+
+To make the app working on every scenario (some of browsers doesn't support 3rd party cookies) you need to configure custom domain to both: client and server.
+First of all you need to register a new custom domain. If you have it, follow these steps to configure it separately for client and server:
+- Start by opening the [App Service section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/appservice)
+- Open your app service
+- Navigate to **Custom domains** menu option
+- Select **Add custom domain** option
+- Enter a domain with a subdomain (e.g. cielocosta.conforme.app)
+- Press **Validate** button
+- As a **Hostname record type** select **CNAME**
+- Open the DNS settings for your domain in the provider you chosen
+- Add **CNAME** DNS record with host as **<subdomain>** (e.g. cielocosta) and value as your default app service URL (e.g. conforme.azurewebsites.net)
+- Add **TXT** DNS record with host as **asuid.<subdomain>** (e.g. asuid.cielocosta) and value as your **Custom Domain Verification ID** that you can copy from **Add custom domain** modal
+- Once you save your DNS settings get back to **Add custom domain** modal and press **Validate** button again
+- It could take a time to apply DNS settings in your domain provider, so try to validate it as long as **Domain ownership** won't be green and chacked
+- On Azure open **TLS/SSL settings** and select **Private Key Certificates (.pfx)** from the top
+- Press **Create App Service Managed Certificate** option
+- In the dropdown select your custom domain and press **Create**
+- Once certificate is created navigate to **Custom domains** tab
+- Find your domain on a list and press **Add binding**
+- Select your domain, created certificate, **SNI SSL** as type and press **Add binding**

@@ -3,8 +3,6 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   Menu,
   MenuButton,
@@ -36,14 +34,7 @@ const AuditHeader = () => {
         w="full"
         zIndex={1}
       >
-        <Stack
-          alignItems="center"
-          direction="row"
-          h="40px"
-          mb="15px"
-          spacing={4}
-          w="full"
-        >
+        <Stack direction="row" h="40px" mb="15px" spacing={4} w="full">
           <Heading
             alignItems={['flex-start', 'center']}
             color="auditHeader.heading"
@@ -53,115 +44,66 @@ const AuditHeader = () => {
             {area?.name ?? 'Virtual'}
           </Heading>
         </Stack>
-        <Flex mb="15px">
-          <Grid
-            alignItems="stretch"
-            gap="30px"
-            maxW={['100vw', '390px']}
-            pl={['10px', '0px']}
-            pr={['35px', '0px']}
-            templateColumns={['repeat(2, 1fr)', 'repeat(5, 1fr)']}
-            w="full"
-          >
-            <GridItem>
-              <Box fontSize="11px" opacity={0.5}>
+        <Flex pl={['10px', '0px']} pr={['35px', '25px']}>
+          <Stack direction="row" spacing={6}>
+            <Flex direction="column" justify="center">
+              <Text fontSize="11px" opacity={0.5}>
                 Item ID
-              </Box>
-              <Flex mr={2}>
-                <Text fontSize="smm">{audit?.reference}</Text>
-              </Flex>
-            </GridItem>
-            <GridItem>
-              <Flex mr={2}>
-                <Avatar
-                  mr={3}
-                  name={auditor?.displayName}
-                  rounded="full"
-                  size="xs"
-                  src={auditor?.imgUrl}
-                />
-                <Box>
-                  <Box fontSize="11px" opacity={0.5}>
-                    Owner
-                  </Box>
-                  <Text fontSize="smm">{auditor?.displayName}</Text>
-                </Box>
-              </Flex>
-            </GridItem>
-            <GridItem>
-              <Box fontSize="11px" opacity={0.5}>
-                Site
-              </Box>
-              <Flex mr={2}>
-                <Text fontSize="smm">{site?.name}</Text>
-              </Flex>
-            </GridItem>
-            {area?.name && (
-              <>
-                <GridItem>
-                  <Box fontSize="11px" opacity={0.5}>
-                    Area
-                  </Box>
-                  <Flex mr={2}>
-                    <Text fontSize="smm">{area?.name}</Text>
-                  </Flex>
-                </GridItem>
-              </>
-            )}
-            <GridItem>
-              <Box fontSize="11px" opacity={0.5}>
-                Type
-              </Box>
-              <Flex mr={2}>
-                <Text fontSize="smm" textTransform="capitalize">
-                  {audit?.walkType}
+              </Text>
+              <Text fontSize="smm">{audit?.reference}</Text>
+            </Flex>
+            <Stack align="center" direction="row" spacing={2}>
+              <Avatar
+                name={auditor?.displayName}
+                rounded="full"
+                size="xs"
+                src={auditor?.imgUrl}
+              />
+              <Box>
+                <Text fontSize="11px" opacity={0.5}>
+                  Owner
                 </Text>
+                <Text fontSize="smm">{auditor?.displayName}</Text>
+              </Box>
+            </Stack>
+            <Flex direction="column" justify="center">
+              <Text fontSize="11px" opacity={0.5}>
+                Site
+              </Text>
+              <Text fontSize="smm">{site?.name}</Text>
+            </Flex>
+            {area?.name && (
+              <Flex direction="column" justify="center">
+                <Text fontSize="11px" opacity={0.5}>
+                  Area
+                </Text>
+                <Text fontSize="smm">{area?.name}</Text>
               </Flex>
-            </GridItem>
-          </Grid>
+            )}
+            <Flex direction="column" justify="center">
+              <Text fontSize="11px" opacity={0.5}>
+                Type
+              </Text>
+              <Text fontSize="smm" textTransform="capitalize">
+                {audit?.walkType}
+              </Text>
+            </Flex>
+          </Stack>
           <Spacer display={['none', 'flex']} />
-          <Flex
-            color="white"
-            display={['none', 'flex']}
-            h="40px"
-            justify="flex-end"
-            mr="27px"
-          >
-            <AuditHeaderButton
-              icon={
-                <ShareIcon
-                  _groupHover={{
-                    stroke: 'auditHeader.buttonLightColorHover',
-                  }}
-                  fontSize="15px"
-                  stroke="auditHeader.buttonLightColor"
-                />
-              }
-              name="Share"
-              onClick={() => {}}
-            />
-          </Flex>
-          <Flex
-            color="white"
-            display={['none', 'flex']}
-            h="40px"
-            justify="flex-end"
-            mr="27px"
-          >
-            <Button
-              _hover={{
-                bg: 'auditHeader.buttonLightBgHover',
-                color: 'auditHeader.buttonLightColorHover',
-                cursor: 'pointer',
-                stroke: 'green',
-              }}
-              bg="auditHeader.buttonLightBg"
-              color="auditHeader.buttonLightColor"
-              onClick={() => {}}
-            >
-              Save
-            </Button>
-          </Flex>
+          <AuditHeaderButton
+            icon={
+              <ShareIcon
+                _groupHover={{
+                  stroke: 'auditHeader.buttonLightColorHover',
+                }}
+                fontSize="15px"
+                stroke="auditHeader.buttonLightColor"
+              />
+            }
+            name="Share"
+            onClick={() => {}}
+          />
+          <AuditHeaderButton icon={null} name="Submit" onClick={() => {}} />
         </Flex>
         <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px">
           <Menu>

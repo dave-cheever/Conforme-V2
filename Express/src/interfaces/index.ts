@@ -6,6 +6,7 @@ import { IAudit } from './IAudit';
 import { IAuditLog, IAuditValues } from './IAuditLog';
 import { IAuditLogModel } from './IAuditLogModel';
 import { IAuditModel } from './IAuditModel';
+import { IAuditOption } from './IAuditOption';
 import { IAuditSection } from './IAuditSection';
 import { IAuditType } from './IAuditType';
 import { IAuditTypeModel } from './IAuditTypeModel';
@@ -32,6 +33,7 @@ import { IQuestionsCategory } from './IQuestionsCategory';
 import { IQuestionsCategoryModel } from './IQuestionsCategoryModel';
 import { IResponse } from './IResponse';
 import { IResponseModel } from './IResponseModel';
+import { IScope } from './IScope';
 import { ISession } from './ISession';
 import { ISetting } from './ISetting';
 import { ISettingModel } from './ISettingModel';
@@ -55,6 +57,7 @@ export {
   IAuditLogModel,
   IAuditModel,
   IAuditSection,
+  IAuditOption,
   IAuditType,
   IAuditTypeModel,
   IBase,
@@ -81,6 +84,7 @@ export {
   IQuestionModel,
   IResponse,
   IResponseModel,
+  IScope,
   ISession,
   ISetting,
   ISettingModel,

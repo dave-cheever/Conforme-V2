@@ -23,7 +23,7 @@ const ShareIcon = createIcon({
       />
     </>
   ),
-  viewBox: '0 0 18 18',
+  viewBox: '0 0 12 16',
 });
 
 export default ShareIcon;

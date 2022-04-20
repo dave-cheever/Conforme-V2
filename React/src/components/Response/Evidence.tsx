@@ -1,19 +1,34 @@
 import React, { useMemo, useState } from 'react';
 import Dropzone, { FileRejection } from 'react-dropzone';
 
+import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 
 import { toastFailed } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { Asterisk, UploadIcon } from '../../icons';
-import Can from '../can';
-import DocumentUploaded from './DocumentUploaded';
+import Can, { isPermitted } from '../can';
+import DocumentUploaded from '../Documents/DocumentUploaded';
 import DocumentUploading from './DocumentUploading';
+
+const ADD_DOCUMENTS = gql`
+  mutation ($responseDocumentsAddInput: ResponseDocumentsAddInput!) {
+    addDocuments(responseDocumentsAddInput: $responseDocumentsAddInput)
+  }
+`;
+
+const REMOVE_DOCUMENT = gql`
+  mutation ($responseDocumentRemoveInput: ResponseDocumentRemoveInput!) {
+    removeDocument(responseDocumentRemoveInput: $responseDocumentRemoveInput)
+  }
+`;
 
 const EvidenceExpected = ({ evidence }) => {
   const toast = useToast();
-  const { response, refetch } = useResponseContext();
+  const { user } = useAppContext();
+  const { response, snapshot, refetch } = useResponseContext();
   const acceptedFileTypes = useMemo(
     () => [
       '.pdf',
@@ -34,6 +49,19 @@ const EvidenceExpected = ({ evidence }) => {
   const [status, setStatus] = useState<'idle' | 'uploading' | 'rejected'>(
     'idle',
   );
+  const [saveEvidence] = useMutation(ADD_DOCUMENTS);
+  const [removeDocument] = useMutation(REMOVE_DOCUMENT);
+  const removeEvidence = async () => {
+    await removeDocument({
+      variables: {
+        responseDocumentRemoveInput: {
+          _id: response?._id,
+          documentId: evidence.uploaded.id,
+          documentType: 'evidence',
+        },
+      },
+    });
+  };
 
   const upload = async ({
     acceptedFile,
@@ -49,14 +77,24 @@ const EvidenceExpected = ({ evidence }) => {
       setStatus('uploading');
       try {
         const documentsData = new FormData();
-        documentsData.append('responseId', response._id);
+        documentsData.append('elementId', response._id);
         documentsData.append('documentName', evidence.name);
         documentsData.append('documentType', 'evidence');
         documentsData.append('document', acceptedFile);
-        await axios.post(
+        const res = await axios.post(
           `${process.env.REACT_APP_API_URL}/files/document`,
           documentsData,
         );
+        await saveEvidence({
+          variables: {
+            responseDocumentsAddInput: {
+              _id: response?._id,
+              documentType: 'evidence',
+              documentName: evidence.name,
+              uploaded: res.data,
+            },
+          },
+        });
         refetch();
       } catch (error) {
         toast({
@@ -94,7 +132,30 @@ const EvidenceExpected = ({ evidence }) => {
         </Box>
       </Flex>
       {evidence.uploaded?.id ? (
-        <DocumentUploaded document={evidence.uploaded} isEvidence />
+        <Flex maxW="380px">
+          <DocumentUploaded
+            callback={async () => {
+              await removeEvidence();
+              refetch();
+            }}
+            deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name}? It will reset the status for the last iteration to non-compliant.`}
+            document={evidence.uploaded}
+            downloadable={isPermitted({
+              user,
+              action: 'responses.edit',
+              data: response,
+            })}
+            removable={
+              !snapshot &&
+              !evidence.outdated &&
+              isPermitted({
+                user,
+                action: 'responses.edit',
+                data: response,
+              })
+            }
+          />
+        </Flex>
       ) : status === 'uploading' ? (
         <DocumentUploading documentName={evidence.name} />
       ) : (
@@ -117,6 +178,7 @@ const EvidenceExpected = ({ evidence }) => {
                   {...getRootProps()}
                   cursor="pointer"
                   h="65px"
+                  maxW="380px"
                   w="full"
                 >
                   <input {...getInputProps()} />

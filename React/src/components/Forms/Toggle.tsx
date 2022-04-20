@@ -11,6 +11,8 @@ import { TDefinedValidations } from '../../interfaces/TValidations';
 interface IToggle extends IField {
   variant?: string;
   help?: string;
+  trueLabel?: string;
+  falseLabel?: string;
 }
 
 const definedValidations: TDefinedValidations = {
@@ -28,6 +30,8 @@ const Toggle = ({
   validations = {},
   disabled = false,
   help = '',
+  trueLabel = 'Yes',
+  falseLabel = 'No',
 }: IToggle) => {
   const validate = useValidate(label || name, validations, definedValidations);
 
@@ -80,7 +84,7 @@ const Toggle = ({
                     },
                   },
                 }}
-                isChecked={value}
+                isChecked={!!value}
                 isDisabled={disabled}
                 name={name}
                 onBlur={onBlur}
@@ -91,9 +95,8 @@ const Toggle = ({
                 fontSize="14px"
                 fontWeight="400"
                 ml={3}
-                mt={-1}
               >
-                {value ? 'Enabled' : 'Disabled'}
+                {value ? trueLabel : falseLabel}
               </Flex>
             </Flex>
             {error && (

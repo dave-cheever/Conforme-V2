@@ -1,5 +1,6 @@
 export interface IBase {
   _id: string;
+  organizationId: string;
   metatags?: {
     addedBy?: string;
     addedAt?: Date;

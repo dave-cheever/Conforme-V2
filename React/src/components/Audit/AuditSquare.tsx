@@ -121,7 +121,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           color="auditSquare.fontColor"
           fontSize="11px"
           h="28px"
-          onClick={() => navigateTo(`/audits/${audit._id}`)}
+          onClick={() => navigateTo(`/audits/${audit._id}/`)}
           rightIcon={
             <ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />
           }

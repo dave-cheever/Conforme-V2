@@ -91,7 +91,7 @@
       }
     ],
     "react/jsx-sort-props": [
-      "error",
+      "warn",
       {
         "ignoreCase": true
       }

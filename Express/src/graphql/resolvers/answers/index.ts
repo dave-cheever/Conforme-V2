@@ -1,3 +1,4 @@
+import addAnswerDocuments from './addAnswerDocuments.m';
 import answers from './answers.q';
 import createAnswer from './createAnswer.m';
 import deleteAnswer from './deleteAnswer.m';
@@ -11,64 +12,50 @@ const answersResolvers = {
   Mutation: {
     createAnswer,
     deleteAnswer,
-    removeAnswerDocument,
     updateAnswer,
+    addAnswerDocuments,
+    removeAnswerDocument,
   },
 };
 
 export const answersTypeDefs = `
-  type AnswersScope {
-    component: String!
-    type: String
-    _id: String
-  }
-
-  type AnswerDocument {
-    id: String!
-    name: String!
-    addedAt: Date!
-    thumbnail: String
-    path: String
-  }
-
   type Answer {
     _id: ID!
-    auditId: String!
     questionId: ID!
-    answer: String!
-    attachements: [AnswerDocument]
-    status: String!
-    options: Any!
-    scope: AnswersScope!
+    question: Question
+    answer: String
+    attachments: [Document]
+    status: String
+    options: Any
+    scope: Scope
     metatags: Metatags
   }
 
-  input AnswerQueryInput {
+  input AnswerQuery {
     _id: ID
-  }
-
-  input AnswerScopeInput {
-    component: String!
-    type: String
-    _id: String
+    questionsIds: [ID]
+    scope: ScopeInput
   }
 
   input AnswerCreateInput {
-    auditId: String!
     questionId: ID!
-    answer: String!
-    status: String!
-    options: Any!
-    scope: AnswerScopeInput!
+    answer: String
+    status: String
+    options: Any
+    scope: ScopeInput!
   }
   
   input AnswerModifyInput {
     _id: ID!
-    auditId: String!
-    questionId: ID!
-    answer: String!
-    status: String!
-    options: Any!
+    answer: String
+    status: String
+    options: Any
+    attachments: [DocumentInput]
+  }
+
+  input AnswerDocumentsAddInput {
+    _id: ID!
+    uploaded: [DocumentInput]!
   }
 
   input AnswerDocumentRemoveInput {
@@ -79,13 +66,14 @@ export const answersTypeDefs = `
 `;
 
 export const answersQueryDefs = `
-  answers: [Answer!]!
+  answers(answerQuery: AnswerQuery): [Answer!]!
 `;
 
 export const answersMutationDefs = `
-  createAnswer(answer: AnswerCreateInput!, auditId: ID!): Answer!
-  updateAnswer(answerInput: AnswerModifyInput!, auditId: ID!): Answer!
-  deleteAnswer(_id: String!, auditId: ID!): Boolean!
+  createAnswer(answer: AnswerCreateInput!): Answer!
+  updateAnswer(answerInput: AnswerModifyInput!): Answer!
+  deleteAnswer(_id: ID!): Boolean!
+  addAnswerDocuments(answerDocumentsAddInput: AnswerDocumentsAddInput!): Boolean!
   removeAnswerDocument(answerDocumentRemoveInput: AnswerDocumentRemoveInput!): Boolean!
 `;
 

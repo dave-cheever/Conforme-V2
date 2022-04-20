@@ -8,6 +8,7 @@ import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
+import { Dropdown } from '../../components/Forms';
 import NumberInput from '../../components/Forms/NumberInput';
 import TextInput from '../../components/Forms/TextInput';
 import Toggle from '../../components/Forms/Toggle';
@@ -26,6 +27,11 @@ const GET_QUESTIONS_CATEGORIES = gql`
       allowCustomQuestions
       maxQuestionsNumber
       icon
+      options {
+        type
+        name
+        value
+      }
       scope {
         component
       }
@@ -52,17 +58,19 @@ const DELETE_QUESTION_CATEGORY = gql`
   }
 `;
 
-const defaultValues: Partial<IQuestionsCategory> = {
-  _id: undefined,
-  name: '',
-  withAnswers: false,
-  allowCustomQuestions: false,
-  maxQuestionsNumber: 5,
-  icon: '',
-  scope: {
-    component: 'audits',
-  },
-};
+const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } =
+  {
+    _id: undefined,
+    name: '',
+    withAnswers: false,
+    allowCustomQuestions: false,
+    maxQuestionsNumber: 5,
+    icon: '',
+    selectedOption: '',
+    scope: {
+      component: 'audits',
+    },
+  };
 
 const QuestionsCategories = () => {
   const toast = useToast();
@@ -117,13 +125,15 @@ const QuestionsCategories = () => {
   const {
     control,
     formState: { errors },
-    getValues,
+    watch,
     trigger,
     reset,
   } = useForm({
     mode: 'all',
     defaultValues,
   });
+
+  const questionsCategory = watch();
 
   // Reset the form after closing
   useEffect(() => {
@@ -143,6 +153,7 @@ const QuestionsCategories = () => {
       allowCustomQuestions: questionsCategory?.allowCustomQuestions,
       maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
       icon: questionsCategory?.icon,
+      selectedOption: (questionsCategory?.options || [])[0]?.name || '',
       scope: questionsCategory?.scope,
     });
   };
@@ -150,8 +161,27 @@ const QuestionsCategories = () => {
   const handleAddQuestionsCategory = async () => {
     try {
       if (Object.keys(errors).length === 0) {
-        const questionsCategory = getValues();
-        await createFunction({ variables: { questionsCategory } });
+        await createFunction({
+          variables: {
+            questionsCategory: {
+              _id: questionsCategory?._id,
+              name: questionsCategory?.name,
+              withAnswers: questionsCategory?.withAnswers,
+              allowCustomQuestions: questionsCategory?.allowCustomQuestions,
+              maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+              icon: questionsCategory?.icon,
+              options: questionsCategory?.selectedOption
+                ? [
+                    {
+                      type: 'notification',
+                      name: questionsCategory.selectedOption,
+                    },
+                  ]
+                : [],
+              scope: questionsCategory?.scope,
+            },
+          },
+        });
         refetch();
         toast({ ...toastSuccess, description: 'Questions category added' });
       } else {
@@ -170,7 +200,6 @@ const QuestionsCategories = () => {
   const handleUpdateQuestionsCategory = async () => {
     try {
       if (Object.keys(errors).length === 0) {
-        const questionsCategory = getValues();
         await updateFunction({
           variables: {
             questionsCategoryInput: {
@@ -180,6 +209,14 @@ const QuestionsCategories = () => {
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
               icon: questionsCategory?.icon,
+              options: questionsCategory?.selectedOption
+                ? [
+                    {
+                      type: 'notification',
+                      name: questionsCategory.selectedOption,
+                    },
+                  ]
+                : [],
             },
           },
         });
@@ -200,7 +237,7 @@ const QuestionsCategories = () => {
 
   const handleDeleteQuestionsCategory = async () => {
     try {
-      const _id = getValues('_id');
+      const { _id } = questionsCategory;
       await deleteFunction({ variables: { _id } });
       refetch();
       toast({ ...toastSuccess, description: 'Questions category deleted' });
@@ -292,9 +329,6 @@ const QuestionsCategories = () => {
             label="Allow answers"
             name="withAnswers"
             placeholder="Allow answers"
-            validations={{
-              notEmpty: true,
-            }}
             variant="secondaryVariant"
           />
           <Toggle
@@ -302,9 +336,6 @@ const QuestionsCategories = () => {
             label="Allow custom questions"
             name="allowCustomQuestions"
             placeholder="Allow custom questions"
-            validations={{
-              notEmpty: true,
-            }}
             variant="secondaryVariant"
           />
           <NumberInput
@@ -328,6 +359,25 @@ const QuestionsCategories = () => {
               notEmpty: true,
             }}
           />
+          <Stack pt={2}>
+            <Text fontSize="11px" fontWeight="bold">
+              Options
+            </Text>
+            <Dropdown
+              control={control}
+              name="selectedOption"
+              options={[
+                {
+                  label: 'Please select additional option',
+                  value: '',
+                },
+                {
+                  label: 'Inform HSE or Estates',
+                  value: 'Inform HSE or Estates',
+                },
+              ]}
+            />
+          </Stack>
         </Stack>
       </AdminModal>
       <Header

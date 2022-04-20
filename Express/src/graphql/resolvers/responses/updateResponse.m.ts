@@ -14,10 +14,9 @@ const updateResponse = async (
       _id,
       organizationId: organization._id,
     });
-    if (!response) 
-      throw new Error("Response doesn't exist");
+    if (!response) throw new Error("Response doesn't exist");
 
-    if (!isPermitted({ user, action: 'responses.edit', data: { response } })) 
+    if (!isPermitted({ user, action: 'responses.edit', data: { response } }))
       throw new Error('User is not permitted');
 
     const updatedResponse = await Responses.customUpdateOne(
