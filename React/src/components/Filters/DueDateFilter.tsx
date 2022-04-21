@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 

@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import IFilters from '../../interfaces/IFilters';
 
 const IsVerifiedFilter = () => {
   const { filtersValues, setFilters } = useFiltersContext();

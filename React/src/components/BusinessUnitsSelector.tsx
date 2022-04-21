@@ -9,6 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { useAppContext } from '../contexts/AppProvider';
 import { Magnifier, MinusIcon } from '../icons';
 import { IBusinessUnit } from '../interfaces/IBusinessUnit';
 import BusinessUnitsSelectorList from './BusinessUnitsSelectorList';
@@ -28,6 +29,7 @@ const BusinessUnitsSelector = ({
   disabled,
   handleChange,
 }: IBusinessUnitsSelector) => {
+  const { module } = useAppContext();
   const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<
     IBusinessUnit[]
   >([]);
@@ -35,7 +37,7 @@ const BusinessUnitsSelector = ({
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const areAllSelected = useMemo(
-    () => filteredBusinessUnits?.every(({ _id }) => selected.includes(_id)),
+    () => filteredBusinessUnits?.every(({ _id }) => selected?.includes(_id)),
     [filteredBusinessUnits, selected],
   );
 
@@ -62,11 +64,21 @@ const BusinessUnitsSelector = ({
       if (event.target.checked) {
         // Add all filtered business units to selection
         const value = Array.from(new Set([...selected, ...currentViewIds]));
-        handleChange({ target: { name: 'businessUnitsIds', value } });
+        handleChange({
+          target: {
+            name: module?.type === 'tracker' ? 'businessUnitsIds' : 'areasIds',
+            value,
+          },
+        });
       } else {
         // Remove all filtered business units from selection
-        const value = selected.filter((_id) => !currentViewIds.includes(_id));
-        handleChange({ target: { name: 'businessUnitsIds', value } });
+        const value = selected?.filter((_id) => !currentViewIds.includes(_id));
+        handleChange({
+          target: {
+            name: module?.type === 'tracker' ? 'businessUnitsIds' : 'areasIds',
+            value,
+          },
+        });
       }
     },
 
@@ -112,7 +124,11 @@ const BusinessUnitsSelector = ({
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={8}
-                placeholder="Search business units"
+                placeholder={
+                  module?.type === 'tracker'
+                    ? 'Search business units'
+                    : 'Search areas'
+                }
                 value={searchText}
                 w="full"
               />

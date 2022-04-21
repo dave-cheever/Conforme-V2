@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   Box,
@@ -9,81 +9,68 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { useAppContext } from '../contexts/AppProvider';
 import { MinusIcon, SearchIcon } from '../icons';
-import { ILocation } from '../interfaces/ILocation';
-import LocationsSelectorList from './LocationsSelectorList';
+import StatusSelectorList from './StatusSelectorList';
 
-interface ILocationsSelector {
-  locations: ILocation[];
+interface ISitesSelector {
+  status: string[];
   selected: string[];
   note?: string;
   disabled?: boolean;
   handleChange: (any) => void;
 }
 
-const LocationsSelector = ({
-  locations,
+const StatusSelector = ({
+  status,
   selected,
   note,
   disabled,
   handleChange,
-}: ILocationsSelector) => {
-  const { module } = useAppContext();
-  const [filteredLocations, setFilteredLocations] = useState<ILocation[]>([]);
+}: ISitesSelector) => {
+  const [filteredStatuses, setFilteredStatuses] = useState<string[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const areAllSelected = useMemo(
-    () => filteredLocations?.every(({ _id }) => selected?.includes(_id)),
-    [filteredLocations, selected],
+    () => filteredStatuses?.every((value) => selected.includes(value)),
+    [filteredStatuses, selected],
   );
 
   useEffect(() => {
-    let filteredLocations: ILocation[] = [];
-    if (disabled) {
-      filteredLocations = locations?.filter(({ _id }) =>
-        selected.includes(_id),
-      );
-    } else {
-      filteredLocations = locations?.filter(({ name }) =>
-        name.toLowerCase().includes(searchText.toLowerCase()),
+    let filteredStatuses: string[] = [];
+    if (disabled)
+      filteredStatuses = status?.filter((value) => selected.includes(value));
+    else {
+      filteredStatuses = status?.filter((value) =>
+        value.toLowerCase().includes(searchText.toLowerCase()),
       );
     }
-    setFilteredLocations(filteredLocations);
-  }, [locations, selectedType, searchText, disabled, selected]);
+    setFilteredStatuses(filteredStatuses);
+  }, [status, selectedType, searchText, disabled, selected]);
 
   const toggleAll = useCallback(
     (event) => {
-      const currentViewIds = filteredLocations.map(({ _id }) => _id);
+      const currentViewIds = filteredStatuses.map((value) => value);
       if (event.target.checked) {
         // Add all filtered locations to selection
         const value = Array.from(new Set([...selected, ...currentViewIds]));
-        handleChange({
-          target: {
-            name: module?.type === 'tracker' ? 'locationsIds' : 'sitesIds',
-            value,
-          },
-        });
+        handleChange({ target: { name: 'status', value } });
       } else {
         // Remove all filtered locations from selection
-        const value = selected?.filter((_id) => !currentViewIds.includes(_id));
-        handleChange({
-          target: {
-            name: module?.type === 'tracker' ? 'locationsIds' : 'sitesIds',
-            value,
-          },
-        });
+        const value = selected.filter(
+          (value) => !currentViewIds.includes(value),
+        );
+        handleChange({ target: { name: 'status', value } });
       }
     },
 
-    [filteredLocations, selected],
+    [filteredStatuses, selected],
   );
 
   if (disabled) {
     return (
-      <LocationsSelectorList
+      <StatusSelectorList
         disabled={disabled}
-        filteredLocations={filteredLocations}
+        filteredStatuses={filteredStatuses}
         handleChange={handleChange}
         selected={selected}
       />
@@ -97,18 +84,14 @@ const LocationsSelector = ({
           <Box py="5px">
             <InputGroup>
               <Input
-                borderColor="filterPanel.searchBoxBordercolor"
+                borderColor="auditFilterPanel.searchBoxBordercolor"
                 borderWidth="1px"
-                color="locationsSelector.search.label"
+                color="statusSelector.search.label"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={10}
-                placeholder={
-                  module?.type === 'tracker'
-                    ? 'Search locations'
-                    : 'Search sites'
-                }
+                placeholder="Search statuses"
                 value={searchText}
                 w="full"
               />
@@ -117,14 +100,14 @@ const LocationsSelector = ({
                 h="15px"
                 left="14px"
                 position="absolute"
-                stroke="locationsSelector.search.icon"
+                stroke="statusSelector.search.icon"
                 w="15x"
               />
             </InputGroup>
           </Box>
           {note && (
             <Text
-              color="locationsSelector.note"
+              color="statusSelector.note"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"
@@ -133,10 +116,10 @@ const LocationsSelector = ({
               {note}
             </Text>
           )}
-          {filteredLocations?.length > 0 && (
+          {filteredStatuses?.length > 0 && (
             <Checkbox
-              borderColor="locationsSelector.checkbox.border"
-              colorScheme="locationsSelector.checkbox"
+              borderColor="statusSelector.checkbox.border"
+              colorScheme="statusSelector.checkbox"
               css={{
                 '.chakra-checkbox__control': {
                   borderRadius: '50%',
@@ -160,14 +143,14 @@ const LocationsSelector = ({
               onChange={toggleAll}
               py="20px"
             >
-              <Text color="filterPanel.checkboxLabelColor" fontSize="14px">
+              <Text color="auditFilterPanel.checkboxLabelColor" fontSize="14px">
                 Select all
               </Text>
             </Checkbox>
           )}
-          <LocationsSelectorList
+          <StatusSelectorList
             disabled={disabled}
-            filteredLocations={filteredLocations}
+            filteredStatuses={filteredStatuses}
             handleChange={handleChange}
             selected={selected}
           />
@@ -177,10 +160,10 @@ const LocationsSelector = ({
   );
 };
 
-export default LocationsSelector;
+export default StatusSelector;
 
-export const locationsSelectorStyles = {
-  locationsSelector: {
+export const statusSelectorStyles = {
+  statusSelector: {
     label: '#777777',
     search: {
       icon: '818197',

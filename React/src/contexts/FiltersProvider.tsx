@@ -1,16 +1,15 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 
 import useFiltersUtils from '../hooks/useFiltersUtils';
-import IFilters, { IResponseFilters } from '../interfaces/IFilters';
+import IFilters, {
+  IAuditFilters,
+  IResponseFilters,
+} from '../interfaces/IFilters';
 import { IFiltersContext } from '../interfaces/IFiltersContext';
+import TAuditStatus from '../interfaces/TAuditStatus';
+import TAuditWalkType from '../interfaces/TAuditWalkType';
 
 export const FiltersContext = createContext({} as IFiltersContext);
 
@@ -69,6 +68,7 @@ const FiltersProvider = ({ children }) => {
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
   const [responseFiltersValue, setResponseFiltersValue] =
     useState<IResponseFilters>({});
+  const [auditFiltersValue, setAuditFiltersValue] = useState<IAuditFilters>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(
     null,
@@ -77,7 +77,7 @@ const FiltersProvider = ({ children }) => {
     [statusName: string]: number;
   }>({});
   const numberOfSelectedFilters = Object.values(filtersValues).filter(
-    ({ value }) => value && value.length > 0,
+    (filter) => filter?.value && filter?.value.length > 0,
   ).length;
 
   const setFilters = (filters = {}) => {
@@ -94,7 +94,6 @@ const FiltersProvider = ({ children }) => {
     setFiltersValues(
       getFilters({
         usedFilters,
-        oldFilters: {},
       }),
     );
   };
@@ -119,6 +118,8 @@ const FiltersProvider = ({ children }) => {
       setResponsesStatusesCounts,
       responseFiltersValue,
       setResponseFiltersValue,
+      auditFiltersValue,
+      setAuditFiltersValue,
       numberOfSelectedFilters,
       complianceItems: data?.complianceItems,
       categories: data?.categories,
@@ -128,6 +129,10 @@ const FiltersProvider = ({ children }) => {
       users: [...(data?.users || [])].sort((a, b) =>
         a.displayName.localeCompare(b.displayName),
       ),
+      auditStatuses: ['inProgress', 'completed'] as TAuditStatus[],
+      auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],
+      sites: data?.locations,
+      areas: data?.businessUnits,
     }),
 
     [

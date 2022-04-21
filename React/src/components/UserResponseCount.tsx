@@ -1,16 +1,15 @@
-import React from 'react';
-
 import { Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useNavigate from '../hooks/useNavigate';
+import { IUserFilter } from '../interfaces/IFilters';
 
 const UserResponseCount = ({ userId, role, responseCount }) => {
   const { filtersValues, setFilters } = useFiltersContext();
   const { navigateTo } = useNavigate();
 
   const handleUserChange = ({ userRole, value }) => {
-    const userIdsFilter = filtersValues.usersIds?.value;
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
     switch (userRole) {
       case 'responsible':
         setFilters({

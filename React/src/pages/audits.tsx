@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 
 import AuditsGroup from '../components/Audit/AuditsGroup';
 import AuditsList from '../components/Audit/AuditsList';
@@ -26,8 +27,10 @@ import AuditModalProvider, {
   useAuditModalContext,
 } from '../contexts/AuditModalProvider';
 import AuditTeamProvider from '../contexts/AuditTeamProvider';
+import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import { ChevronRight, GridIcon, GroupIcon, ListIcon } from '../icons';
+import { IAudit } from '../interfaces/IAudit';
 
 const GET_AUDITS = gql`
   query ($auditQueryInput: AuditQueryInput) {
@@ -72,11 +75,80 @@ const GET_AUDITS = gql`
 
 const Audits = () => {
   const { user } = useAppContext();
+  const {
+    filtersValues,
+    setUsedFilters,
+    setFilters,
+    setShowFiltersPanel,
+    auditFiltersValue,
+    setAuditFiltersValue,
+    usedFilters,
+  } = useFiltersContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
   const { audit } = useAuditModalContext();
+  const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
+
+  useEffect(() => {
+    setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds']);
+    return () => setShowFiltersPanel(false);
+  }, []);
+
+  useEffect(() => {
+    if (
+      auditFiltersValue &&
+      !isEmpty(auditFiltersValue) &&
+      !isEmpty(filtersValues) &&
+      !isEmpty(usedFilters)
+    ) {
+      setFilters(auditFiltersValue);
+      setAuditFiltersValue({});
+    }
+  }, [
+    filtersValues,
+    usedFilters,
+    setAuditFiltersValue,
+    auditFiltersValue,
+    setFilters,
+  ]);
+
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters = Object.entries(filtersValues).reduce(
+      (acc, filter) => {
+        if (!filter || !filter[1]) return { ...acc };
+
+        const [key, value] = filter;
+
+        if (
+          !value.value ||
+          (Array.isArray(value.value) && value.value.length === 0) ||
+          (key === 'usersIds' &&
+            value.value.auditorsIds.length === 0 &&
+            value.value.participantsIds.length === 0)
+        )
+          return acc;
+
+        return {
+          ...acc,
+          [key]: value?.value,
+        };
+      },
+      {},
+    );
+
+    if (parsedFilters) refetch({ auditQueryInput: parsedFilters });
+  }, [filtersValues]);
+
+  useEffect(() => {
+    if (data && data?.audits && !error) {
+      const items = [...data?.audits];
+
+      setFilteredAudits(items);
+    }
+  }, [data?.audits]);
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
@@ -228,8 +300,8 @@ const Audits = () => {
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
                 w="full"
               >
-                {data.audits.length > 0 ? (
-                  data.audits?.map((audit) => (
+                {filteredAudits.length > 0 ? (
+                  filteredAudits?.map((audit) => (
                     <AuditSquare audit={audit} key={audit._id} />
                   ))
                 ) : (

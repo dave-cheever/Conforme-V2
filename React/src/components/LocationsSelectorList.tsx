@@ -1,7 +1,6 @@
-import React from 'react';
-
 import { CheckboxGroup, Stack } from '@chakra-ui/react';
 
+import { useAppContext } from '../contexts/AppProvider';
 import { ILocation } from '../interfaces/ILocation';
 import FilterCheckBox from './Filters/FilterCheckBox';
 
@@ -12,23 +11,32 @@ interface ILocationsSelectorList {
   handleChange: (any) => void;
 }
 
-const BusinessUnitsSelectorList = ({
+const LocationsSelectorList = ({
   filteredLocations,
   selected,
   handleChange,
-}: ILocationsSelectorList) => (
-  <CheckboxGroup
-    onChange={(value) =>
-      handleChange({ target: { name: 'locationsIds', value } })
-    }
-    value={selected}
-  >
-    <Stack direction="column" w="full">
-      {filteredLocations?.map(({ name, _id }) => (
-        <FilterCheckBox key={_id} label={name} value={_id} />
-      ))}
-    </Stack>
-  </CheckboxGroup>
-);
+}: ILocationsSelectorList) => {
+  const { module } = useAppContext();
 
-export default BusinessUnitsSelectorList;
+  return (
+    <CheckboxGroup
+      onChange={(value) =>
+        handleChange({
+          target: {
+            name: module?.type === 'tracker' ? 'locationsIds' : 'sitesIds',
+            value,
+          },
+        })
+      }
+      value={selected}
+    >
+      <Stack direction="column" w="full">
+        {filteredLocations?.map(({ name, _id }) => (
+          <FilterCheckBox key={_id} label={name} value={_id} />
+        ))}
+      </Stack>
+    </CheckboxGroup>
+  );
+};
+
+export default LocationsSelectorList;

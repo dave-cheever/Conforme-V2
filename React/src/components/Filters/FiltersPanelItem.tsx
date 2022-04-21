@@ -9,9 +9,9 @@ import BusinessUnitFilter from './BusinessUnitFilter';
 import CategoryFilter from './CategoryFilter';
 import ComplianceItemFilter from './ComplianceItemFilter';
 import DueDateFilter from './DueDateFilter';
-import ItemStatusFilter from './ItemStatusFilter';
 import LocationFilter from './LocationFilter';
 import RegulatoryBodyFilter from './RegulatoryBodyFilter';
+import StateChoiceFilter from './StateChoiceFilter';
 import UserFilter from './UserFilter';
 
 const FiltersPanelItem = ({
@@ -25,16 +25,14 @@ const FiltersPanelItem = ({
   const { setFilters, filtersValues } = useFiltersContext();
 
   const filtersLength = useMemo(
-    () => filtersValues[name]?.value?.length || 0,
+    () => filtersValues?.[name]?.value?.length || 0,
     [filtersValues, name],
   );
 
   const renderPanel = () => {
     switch (name) {
-      case 'itemStatus':
-        return <ItemStatusFilter />;
-
       case 'businessUnitsIds':
+      case 'areasIds':
         return <BusinessUnitFilter />;
 
       case 'categoriesIds':
@@ -47,6 +45,7 @@ const FiltersPanelItem = ({
         return <DueDateFilter />;
 
       case 'locationsIds':
+      case 'sitesIds':
         return <LocationFilter />;
 
       case 'regulatoryBodiesIds':
@@ -56,7 +55,7 @@ const FiltersPanelItem = ({
         return <UserFilter />;
 
       default:
-        break;
+        return <StateChoiceFilter name={name} />;
     }
   };
 
@@ -91,7 +90,7 @@ const FiltersPanelItem = ({
           onClick={onToggle}
           w="full"
         >
-          {filter.name}
+          {filter?.name}
         </Text>
         <Flex>
           {filtersLength > 0 && (

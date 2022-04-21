@@ -34,8 +34,18 @@ export const auditsTypeDefs = `
     metatags: Metatags
   }
 
+  input AuditUsersInput {
+    auditorsIds: [ID]
+    participantsIds: [ID]
+  }
+
   input AuditQueryInput {
     _id: ID
+    status: [String]
+    walkType: [String]
+    areasIds: [ID]
+    sitesIds: [ID]
+    usersIds: AuditUsersInput
   }
 
   input AuditCreateInput {

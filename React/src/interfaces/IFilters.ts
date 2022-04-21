@@ -1,8 +1,5 @@
 import IFilter from './IFilter';
-
-interface IFilterString extends IFilter {
-  value: string[] | null;
-}
+import IFilterString from './IFilterString';
 
 interface IUserFilterObject {
   responsibleIds: string[] | null;
@@ -11,9 +8,19 @@ interface IUserFilterObject {
   followerIds: string[] | null;
 }
 
-interface IUserFilter {
+interface IAuditUserFilterObject {
+  auditorsIds: string[] | null;
+  participantsIds: string[] | null;
+}
+
+export interface IUserFilter {
   name: string;
   value: IUserFilterObject | null;
+}
+
+export interface IAuditUserFilter {
+  name: string;
+  value: IAuditUserFilterObject | null;
 }
 
 export interface IResponseFilters {
@@ -21,6 +28,14 @@ export interface IResponseFilters {
   categoriesIds?: string[] | undefined;
   businessUnitsIds?: string[] | undefined;
   regulatoryBodiesIds?: string[] | undefined;
+}
+
+export interface IAuditFilters {
+  sitesIds?: IFilter;
+  areasIds?: IFilter;
+  status?: IFilterString;
+  walkType?: IFilterString;
+  usersIds?: IAuditUserFilter;
 }
 
 export default interface IFilters {
@@ -34,6 +49,10 @@ export default interface IFilters {
   usersRoles?: IFilter;
   collections?: IFilter;
   action?: IFilter;
-  usersIds?: IUserFilter;
+  usersIds?: IUserFilter | IAuditUserFilter;
   locationsIds?: IFilter;
+  sitesIds?: IFilter;
+  areasIds?: IFilter;
+  status?: IFilterString;
+  walkType?: IFilterString;
 }

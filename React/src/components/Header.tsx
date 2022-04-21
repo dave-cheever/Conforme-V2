@@ -4,7 +4,6 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
-import useNavigate from '../hooks/useNavigate';
 import { ArrowRight, Filter } from '../icons';
 
 interface IHeader {
@@ -25,15 +24,12 @@ const Header: FunctionComponent<IHeader> = ({
   } = useFiltersContext();
 
   const device = useDevice();
-  const { isPathActive } = useNavigate();
   const breadCrumbs = useMemo(() => {
     if (device === 'mobile') return mobileBreadcrumbs || [];
 
     return breadcrumbs;
   }, [device, breadcrumbs, mobileBreadcrumbs]);
 
-  const isComplianceItemsAdminPage = isPathActive('/admin/compliance-items', { exact: true });
-  const isHomePage = isPathActive('/dashboard', { exact: true });
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex align="center" h="full" key={`bc-${i}`}>
       {i > 0 && (
@@ -70,51 +66,49 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex justify="flex-end" mr="20px" w="full">
           {children}
         </Flex>
-        {usedFilters &&
-          (isComplianceItemsAdminPage || isHomePage) &&
-          usedFilters.length > 0 && (
-            <Flex
-              align="center"
-              bg="header.filterBackgroundColor"
-              borderRadius="10px"
-              color="brand.primaryFont"
-              cursor="pointer"
-              flexShrink={0}
-              fontSize="sm"
-              h="40px"
-              justify="space-between"
-              minW="120px"
-              mr={[6, 6, 4]}
-              onClick={() => setShowFiltersPanel(!showFiltersPanel)}
-              p={4}
-            >
-              <Flex color="white" fontSize="14px" fontWeight="bold">
-                Filters
-              </Flex>
-              {numberOfSelectedFilters > 0 && (
-                <Flex
-                  align="center"
-                  bg="header.selectedFilterColor"
-                  borderRadius="10px"
-                  color="white"
-                  fontSize="12px"
-                  fontWeight="400"
-                  h="20px"
-                  justify="center"
-                  lineHeight="14px"
-                  mx="2"
-                  w="27px"
-                >
-                  {numberOfSelectedFilters}
-                </Flex>
-              )}
-              <Filter
-                h="18px"
-                ml={3}
-                transform={numberOfSelectedFilters > 0 ? 'rotate(180deg)' : ''}
-              />
+        {usedFilters && usedFilters.length > 0 && (
+          <Flex
+            align="center"
+            bg="header.filterBackgroundColor"
+            borderRadius="10px"
+            color="brand.primaryFont"
+            cursor="pointer"
+            flexShrink={0}
+            fontSize="sm"
+            h="40px"
+            justify="space-between"
+            minW="120px"
+            mr={[6, 6, 4]}
+            onClick={() => setShowFiltersPanel(!showFiltersPanel)}
+            p={4}
+          >
+            <Flex color="white" fontSize="14px" fontWeight="bold">
+              Filters
             </Flex>
-          )}
+            {numberOfSelectedFilters > 0 && (
+              <Flex
+                align="center"
+                bg="header.selectedFilterColor"
+                borderRadius="10px"
+                color="white"
+                fontSize="12px"
+                fontWeight="400"
+                h="20px"
+                justify="center"
+                lineHeight="14px"
+                mx="2"
+                w="27px"
+              >
+                {numberOfSelectedFilters}
+              </Flex>
+            )}
+            <Filter
+              h="18px"
+              ml={3}
+              transform={numberOfSelectedFilters > 0 ? 'rotate(180deg)' : ''}
+            />
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

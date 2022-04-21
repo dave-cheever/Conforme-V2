@@ -277,6 +277,17 @@ export const userRoles = [
   },
 ];
 
+export const auditUserRoles = [
+  {
+    value: 'auditor',
+    label: 'Auditor',
+  },
+  {
+    value: 'participant',
+    label: 'Participant',
+  },
+];
+
 export const questionTypes = [
   {
     value: 'text',

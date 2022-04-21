@@ -1,8 +1,13 @@
 import { format } from 'date-fns';
 
+import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import IFilter from '../interfaces/IFilter';
-import IFilters from '../interfaces/IFilters';
+import IFilters, {
+  IAuditFilters,
+  IAuditUserFilter,
+  IUserFilter,
+} from '../interfaces/IFilters';
 
 export const initialFilters: IFilters = {
   complianceItemsIds: {
@@ -56,6 +61,42 @@ export const initialFilters: IFilters = {
   },
 };
 
+export const initialAuditFilters: IAuditFilters = {
+  walkType: {
+    name: 'Walk type',
+    value: [],
+  },
+  status: {
+    name: 'Status',
+    value: [],
+  },
+  sitesIds: {
+    name: 'Site',
+    value: [],
+  },
+  areasIds: {
+    name: 'Area',
+    value: [],
+  },
+  usersIds: {
+    name: 'User',
+    value: {
+      auditorsIds: [],
+      participantsIds: [],
+    },
+  },
+};
+
+export const auditStatuses = {
+  inProgress: 'In progress',
+  completed: 'Completed',
+};
+
+export const auditWalkTypes = {
+  virtual: 'Virtual',
+  physical: 'Physical',
+};
+
 export const complianceItemStatuses = {
   compliant: 'Compliant',
   nonCompliant: 'Non-compliant',
@@ -91,6 +132,7 @@ export const actions = {
 };
 
 const useFiltersUtils = () => {
+  const { module } = useAppContext();
   const {
     filtersValues,
     complianceItems,
@@ -99,6 +141,8 @@ const useFiltersUtils = () => {
     businessUnits,
     users,
     locations,
+    areas,
+    sites,
   } = useFiltersContext();
 
   const getFilters = ({
@@ -111,9 +155,13 @@ const useFiltersUtils = () => {
     newFilters?: object;
   } = {}) => {
     // Make a copy of initial filters
-    const cleanFilters = JSON.parse(JSON.stringify(initialFilters));
+    const cleanFilters = JSON.parse(
+      JSON.stringify(
+        module?.type === 'tracker' ? initialFilters : initialAuditFilters,
+      ),
+    );
 
-    const filters: IFilters = {};
+    const filters = {};
     let filterName = '';
     for (filterName of usedFilters) {
       // Get filter config from existing or initial filters
@@ -191,8 +239,19 @@ const useFiltersUtils = () => {
         return actions[value[0]];
       }
       case 'usersIds': {
-        const value: any = filtersValues.usersIds?.value?.responsibleIds;
+        const value: any =
+          module?.type === 'tracker'
+            ? (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds
+            : (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds;
         return users.find((f) => f._id === value[0])?.displayName;
+      }
+      case 'sitesIds': {
+        const value: any = filtersValues.areasIds?.value;
+        return areas.find((f) => f._id === value[0])?.name;
+      }
+      case 'areasIds': {
+        const value: any = filtersValues.sitesIds?.value;
+        return sites.find((f) => f._id === value[0])?.name;
       }
       default:
         break;

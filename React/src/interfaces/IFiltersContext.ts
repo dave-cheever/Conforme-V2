@@ -3,9 +3,11 @@ import { Dispatch, SetStateAction } from 'react';
 import { IBaseWithName } from './IBaseWithName';
 import { IBusinessUnit } from './IBusinessUnit';
 import { IComplianceItem } from './IComplianceItem';
-import IFilters, { IResponseFilters } from './IFilters';
+import IFilters, { IAuditFilters, IResponseFilters } from './IFilters';
 import { ILocation } from './ILocation';
 import { IUser } from './IUser';
+import TAuditStatus from './TAuditStatus';
+import TAuditWalkType from './TAuditWalkType';
 
 export interface IFiltersContext {
   filtersValues: IFilters;
@@ -30,6 +32,8 @@ export interface IFiltersContext {
 
   responseFiltersValue: IResponseFilters;
   setResponseFiltersValue: Dispatch<SetStateAction<IResponseFilters>>;
+  auditFiltersValue: IAuditFilters;
+  setAuditFiltersValue: Dispatch<SetStateAction<IAuditFilters>>;
 
   numberOfSelectedFilters: number;
 
@@ -39,4 +43,8 @@ export interface IFiltersContext {
   businessUnits: Partial<IBusinessUnit>[];
   users: Partial<IUser>[];
   locations: Partial<ILocation>[];
+  auditStatuses: TAuditStatus[];
+  auditWalkTypes: TAuditWalkType[];
+  sites: Partial<ILocation>[];
+  areas: Partial<IBusinessUnit>[];
 }

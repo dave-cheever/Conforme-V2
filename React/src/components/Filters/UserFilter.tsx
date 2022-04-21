@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   Box,
@@ -10,56 +10,89 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { userRoles } from '../../bootstrap/config';
+import { auditUserRoles, userRoles } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { ArrowDownIcon, CrossIcon, Magnifier } from '../../icons';
+import { IAuditUserFilter, IUserFilter } from '../../interfaces/IFilters';
 import { IUser } from '../../interfaces/IUser';
 import UsersSelector from '../UsersSelector';
 
 const UserFilter = () => {
+  const { module } = useAppContext();
   const { filtersValues, setFilters, users } = useFiltersContext();
-
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedRole, setSelectedRole] = useState<string>('responsible');
+  const [selectedRole, setSelectedRole] = useState<string>(
+    module?.type === 'tracker' ? 'responsible' : 'auditor',
+  );
   const selectedRoleUsers = useMemo(
-    () => [
-      {
-        name: 'responsible',
-        count: filtersValues.usersIds?.value?.responsibleIds?.length || 0,
-      },
-      {
-        name: 'accountable',
-        count: filtersValues.usersIds?.value?.accountableIds?.length || 0,
-      },
-      {
-        name: 'contributor',
-        count: filtersValues.usersIds?.value?.contributorIds?.length || 0,
-      },
-      {
-        name: 'follower',
-        count: filtersValues.usersIds?.value?.followerIds?.length || 0,
-      },
-    ],
-    [filtersValues],
+    () =>
+      module?.type === 'tracker'
+        ? [
+            {
+              name: 'responsible',
+              count:
+                (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds
+                  ?.length || 0,
+            },
+            {
+              name: 'accountable',
+              count:
+                (filtersValues.usersIds as IUserFilter)?.value?.accountableIds
+                  ?.length || 0,
+            },
+            {
+              name: 'contributor',
+              count:
+                (filtersValues.usersIds as IUserFilter)?.value?.contributorIds
+                  ?.length || 0,
+            },
+            {
+              name: 'follower',
+              count:
+                (filtersValues.usersIds as IUserFilter)?.value?.followerIds
+                  ?.length || 0,
+            },
+          ]
+        : [
+            {
+              name: 'auditor',
+              count:
+                (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds
+                  ?.length || 0,
+            },
+            {
+              name: 'participant',
+              count:
+                (filtersValues.usersIds as IAuditUserFilter)?.value
+                  ?.participantsIds?.length || 0,
+            },
+          ],
+    [filtersValues, module],
   );
 
   const selectedUsers = useMemo(() => {
     switch (selectedRole) {
       case 'responsible':
-        return filtersValues.usersIds?.value?.responsibleIds;
+        return (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds;
       case 'accountable':
-        return filtersValues.usersIds?.value?.accountableIds;
+        return (filtersValues.usersIds as IUserFilter)?.value?.accountableIds;
       case 'contributor':
-        return filtersValues.usersIds?.value?.contributorIds;
+        return (filtersValues.usersIds as IUserFilter)?.value?.contributorIds;
       case 'follower':
-        return filtersValues.usersIds?.value?.followerIds;
+        return (filtersValues.usersIds as IUserFilter)?.value?.followerIds;
+      case 'auditor':
+        return (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds;
+      case 'participant':
+        return (filtersValues.usersIds as IAuditUserFilter)?.value
+          ?.participantsIds;
       default:
         break;
     }
   }, [filtersValues, selectedRole]) as string[];
 
   const handleUserChange = ({ target: { userRole, value } }) => {
-    const userIdsFilter = filtersValues.usersIds?.value;
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
     switch (userRole) {
       case 'responsible':
         setFilters({
@@ -98,8 +131,32 @@ const UserFilter = () => {
     }
   };
 
+  const handleAuditUserChange = ({ target: { userRole, value } }) => {
+    const userIdsFilter = (filtersValues.usersIds as IAuditUserFilter)?.value;
+    switch (userRole) {
+      case 'auditor':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            auditorsIds: value,
+          },
+        });
+        break;
+      case 'participant':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            participantsIds: value,
+          },
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleClearFilter = (selectedRoleUser) => {
-    const userIdsFilter = filtersValues.usersIds?.value;
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
     switch (selectedRoleUser.name) {
       case 'responsible':
         setFilters({
@@ -138,6 +195,30 @@ const UserFilter = () => {
     }
   };
 
+  const handleClearAuditFilter = (selectedRoleUser) => {
+    const userIdsFilter = (filtersValues.usersIds as IAuditUserFilter)?.value;
+    switch (selectedRoleUser.name) {
+      case 'auditor':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            auditorsIds: [],
+          },
+        });
+        break;
+      case 'participant':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            participantsIds: [],
+          },
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <Box w="full">
       <Select
@@ -165,11 +246,13 @@ const UserFilter = () => {
           setSelectedRole(value.target.value);
         }}
       >
-        {userRoles.map((role, i) => (
-          <option key={i} value={role.value}>
-            {role.label}
-          </option>
-        ))}
+        {(module?.type === 'tracker' ? userRoles : auditUserRoles).map(
+          (role, i) => (
+            <option key={i} value={role.value}>
+              {role.label}
+            </option>
+          ),
+        )}
       </Select>
 
       <InputGroup>
@@ -186,13 +269,7 @@ const UserFilter = () => {
           value={searchText}
           w="full"
         />
-        <Magnifier
-          h="12px"
-          ml="14px"
-          mt="22px"
-          position="absolute"
-          w="12x"
-        />
+        <Magnifier h="12px" ml="14px" mt="22px" position="absolute" w="12x" />
       </InputGroup>
 
       <Box mt={2} w="full">
@@ -212,7 +289,11 @@ const UserFilter = () => {
               <CrossIcon
                 cursor="pointer"
                 h="15px"
-                onClick={() => handleClearFilter(selectedRoleUser)}
+                onClick={() =>
+                  module?.type === 'tracker'
+                    ? handleClearFilter(selectedRoleUser)
+                    : handleClearAuditFilter(selectedRoleUser)
+                }
                 stroke="usersSelector.roles.selectedRole.crossIcon"
                 w="15px"
               />
@@ -221,7 +302,9 @@ const UserFilter = () => {
       </Box>
 
       <UsersSelector
-        handleChange={handleUserChange}
+        handleChange={
+          module?.type === 'tracker' ? handleUserChange : handleAuditUserChange
+        }
         searchText={searchText}
         selected={selectedUsers}
         selectedRole={selectedRole}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Box, Button, Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';

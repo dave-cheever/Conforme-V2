@@ -14,7 +14,10 @@ const ComplianceItemFilter = () => {
   ) as string[];
   const [search, setSearch] = useState<string>('');
 
-  const isSelected = useCallback((_id: string) => value.includes(_id), [value]);
+  const isSelected = useCallback(
+    (_id: string) => value?.includes(_id),
+    [value],
+  );
 
   const selectedComplianceItems = useMemo(
     () => complianceItems?.filter(({ _id }) => _id && isSelected(_id)),

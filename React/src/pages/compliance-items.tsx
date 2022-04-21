@@ -170,7 +170,11 @@ const ComplianceItems = () => {
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
     const parsedFilters = Object.entries(filtersValues).reduce(
-      (acc, [key, value]) => {
+      (acc, filter) => {
+        if (!filter || !filter[1]) return { ...acc };
+
+        const [key, value] = filter;
+
         if (key === 'itemStatus') {
           // itemStatus is client side filter
           return acc;
@@ -206,11 +210,11 @@ const ComplianceItems = () => {
     if (data && data?.responses?.length !== 0 && !error) {
       let items = [...data?.responses];
       if (
-        filtersValues.itemStatus?.value &&
-        filtersValues.itemStatus?.value?.length > 0
+        filtersValues?.itemStatus?.value &&
+        filtersValues?.itemStatus?.value?.length! > 0
       ) {
         const statusFilteredResults: IResponse[] = [];
-        for (const filter of filtersValues.itemStatus?.value) {
+        for (const filter of filtersValues?.itemStatus?.value!) {
           if (
             [
               'notStarted',

@@ -31,6 +31,56 @@ const audits = async (
       });
     }
 
+    if (auditQueryInput?.status?.length > 0) {
+      pipeline.push({
+        $match: {
+          status: { $in: auditQueryInput.status },
+        },
+      });
+    }
+
+    if (auditQueryInput?.walkType?.length > 0) {
+      pipeline.push({
+        $match: {
+          walkType: { $in: auditQueryInput.walkType },
+        },
+      });
+    }
+
+    if (auditQueryInput?.sitesIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          siteId: { $in: auditQueryInput.sitesIds },
+        },
+      });
+    }
+
+    if (auditQueryInput?.areasIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          areaId: { $in: auditQueryInput.areasIds },
+        },
+      });
+    }
+
+    if (auditQueryInput?.usersIds?.auditorsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          auditorId: { $in: auditQueryInput.usersIds?.auditorsIds },
+        },
+      });
+    }
+
+    if (auditQueryInput?.usersIds?.participantsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          participantsIds: {
+            $in: auditQueryInput.usersIds?.participantsIds,
+          },
+        },
+      });
+    }
+
     if (shouldJoin(['auditType'])) {
       join({
         pipeline,

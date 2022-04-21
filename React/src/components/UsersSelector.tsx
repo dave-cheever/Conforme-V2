@@ -27,7 +27,7 @@ const UsersSelector = ({
 }: IUsersSelector) => {
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const areAllSelected = useMemo(
-    () => filteredUsers?.every(({ _id }) => selected.includes(_id)),
+    () => filteredUsers?.every(({ _id }) => selected?.includes(_id)),
 
     [filteredUsers, selected, selectedRole],
   );
@@ -35,10 +35,10 @@ const UsersSelector = ({
   useEffect(() => {
     let filteredUsers: IUser[] = [];
     if (disabled)
-      filteredUsers = users?.filter(({ _id }) => selected.includes(_id));
+      filteredUsers = users?.filter(({ _id }) => selected?.includes(_id));
     else {
       filteredUsers = users?.filter(({ displayName }) =>
-        displayName.toLowerCase().includes(searchText.toLowerCase()),
+        displayName.toLowerCase().includes(searchText?.toLowerCase()),
       );
     }
     setFilteredUsers(filteredUsers);
@@ -122,7 +122,7 @@ const UsersSelector = ({
           <UsersSelectorList
             disabled={disabled}
             filteredUsers={filteredUsers.filter((filteredUser) =>
-              selected.includes(filteredUser._id),
+              selected?.includes(filteredUser._id),
             )}
             handleChange={handleChange}
             selected={selected}
@@ -131,7 +131,7 @@ const UsersSelector = ({
           <UsersSelectorList
             disabled={disabled}
             filteredUsers={filteredUsers.filter(
-              (filteredUser) => !selected.includes(filteredUser._id),
+              (filteredUser) => !selected?.includes(filteredUser._id),
             )}
             handleChange={handleChange}
             selected={selected}

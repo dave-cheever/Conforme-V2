@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { Checkbox, CheckboxGroup, Stack, Text } from '@chakra-ui/react';
 
