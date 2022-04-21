@@ -42,6 +42,7 @@ import DownloadIcon from './DownloadIcon';
 import EditIcon from './EditIcon';
 import EllipsisIcon from './EllipsisIcon';
 import ErrorSign from './ErrorSign';
+import ExportIcon from './ExportIcon';
 import Eye from './Eye';
 import FileRightIcon from './FileRightIcon';
 import Filter from './Filter';
@@ -140,6 +141,7 @@ export {
   EditIcon,
   EllipsisIcon,
   ErrorSign,
+  ExportIcon,
   Eye,
   FileRightIcon,
   Filter,

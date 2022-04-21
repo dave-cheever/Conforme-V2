@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
 import {
@@ -13,6 +14,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 
 import AuditsGroup from '../components/Audit/AuditsGroup';
@@ -29,7 +31,13 @@ import AuditModalProvider, {
 import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
-import { ChevronRight, GridIcon, GroupIcon, ListIcon } from '../icons';
+import {
+  ChevronRight,
+  ExportIcon,
+  GridIcon,
+  GroupIcon,
+  ListIcon,
+} from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 
 const GET_AUDITS = gql`
@@ -189,6 +197,38 @@ const Audits = () => {
     localStorage.setItem('viewMode', _viewMode);
   }, []);
 
+  const csvHeaders = [
+    { label: '_id', key: '_id' },
+    { label: 'Audit type', key: 'auditType.name' },
+    { label: 'Walk type', key: 'walkType' },
+    { label: 'Status', key: 'status' },
+    { label: 'Area', key: 'area.name' },
+    { label: 'Site', key: 'site.name' },
+    { label: 'Auditor', key: 'auditor.displayName' },
+    { label: 'Participants', key: 'participants' },
+  ];
+
+  const csvData = useMemo(
+    () =>
+      (data?.audits ?? []).map(
+        ({
+          typename,
+          participantsIds,
+          auditorId,
+          reference,
+          metatags,
+          ...audit
+        }) => ({
+          ...audit,
+          dueDate: format(new Date(audit?.dueDate), 'd MMM yyyy'),
+          participants: audit?.participants
+            ?.map((participant) => participant.displayName)
+            .join(', '),
+        }),
+      ),
+    [JSON.stringify(data?.audits)],
+  );
+
   return (
     <>
       <Modal
@@ -209,76 +249,101 @@ const Audits = () => {
       </Modal>
       <Header breadcrumbs={['Audits']} mobileBreadcrumbs={['Audits']}>
         {device !== 'mobile' && (
-          <Menu autoSelect={false}>
-            {
-              // @ts-ignore: Issue inside ChakraUI
-              <MenuButton
-                _active={{}}
-                _hover={{}}
-                as={Button}
-                bg="auditsItems.header.menuButtonBg"
-                fontSize="14px"
-                fontWeight="700"
-                h="40px"
-                ml={['15px', '0']}
-                rightIcon={
-                  <ChevronRight
-                    color="auditsItems.header.rightIcon"
-                    h="12px"
-                    mt="3px"
-                    transform="rotate(90deg)"
-                    w="12px"
-                  />
-                }
-                rounded="10px"
+          <>
+            <Menu autoSelect={false}>
+              {
+                // @ts-ignore: Issue inside ChakraUI
+                <MenuButton
+                  _active={{}}
+                  _hover={{}}
+                  as={Button}
+                  bg="auditsItems.header.menuButtonBg"
+                  fontSize="14px"
+                  fontWeight="700"
+                  h="40px"
+                  ml={['15px', '0']}
+                  rightIcon={
+                    <ChevronRight
+                      color="auditsItems.header.rightIcon"
+                      h="12px"
+                      mt="3px"
+                      transform="rotate(90deg)"
+                      w="12px"
+                    />
+                  }
+                  rounded="10px"
+                >
+                  <Flex align="center" mr="1">
+                    {viewIcon[viewMode]}
+                  </Flex>
+                </MenuButton>
+              }
+              <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
+                <MenuItem
+                  _focus={{ color: 'auditsItems.header.menuItemFocus' }}
+                  color={
+                    viewMode === 'Grid'
+                      ? 'auditsItems.header.menuItemFontSelected'
+                      : 'auditsItems.header.menuItemFont'
+                  }
+                  fontSize="14px"
+                  onClick={() => changeViewMode('Grid')}
+                >
+                  <GridIcon mr={3} />
+                  Card
+                </MenuItem>
+                <MenuItem
+                  _focus={{ color: 'auditsItems.header.menuItemFocus' }}
+                  color={
+                    viewMode === 'List'
+                      ? 'auditsItems.header.menuItemFontSelected'
+                      : 'auditsItems.header.menuItemFont'
+                  }
+                  fontSize="14px"
+                  onClick={() => changeViewMode('List')}
+                >
+                  <ListIcon mr={3} />
+                  List
+                </MenuItem>
+                <MenuItem
+                  _focus={{ color: 'auditsItems.header.menuItemFocus' }}
+                  color={
+                    viewMode === 'Group'
+                      ? 'auditsItems.header.menuItemFontSelected'
+                      : 'auditsItems.header.menuItemFont'
+                  }
+                  fontSize="14px"
+                  onClick={() => changeViewMode('Group')}
+                >
+                  <GroupIcon mr={3} />
+                  Group
+                </MenuItem>
+              </MenuList>
+            </Menu>
+            <Button
+              _hover={{
+                bg: 'reasponseHeader.buttonLightBgHover',
+                color: 'reasponseHeader.buttonLightColorHover',
+                cursor: 'pointer',
+                '&:hover svg path': { stroke: 'white' },
+              }}
+              bg="white"
+              borderRadius="10px"
+              ml="15px"
+              rightIcon={<ExportIcon height="15px" width="15px" />}
+            >
+              <CSVLink
+                data={csvData}
+                filename="audits.csv"
+                headers={csvHeaders}
+                target="_blank"
               >
-                <Flex align="center" mr="1">
-                  {viewIcon[viewMode]}
-                </Flex>
-              </MenuButton>
-            }
-            <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
-              <MenuItem
-                _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                color={
-                  viewMode === 'Grid'
-                    ? 'auditsItems.header.menuItemFontSelected'
-                    : 'auditsItems.header.menuItemFont'
-                }
-                fontSize="14px"
-                onClick={() => changeViewMode('Grid')}
-              >
-                <GridIcon mr={3} />
-                Card
-              </MenuItem>
-              <MenuItem
-                _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                color={
-                  viewMode === 'List'
-                    ? 'auditsItems.header.menuItemFontSelected'
-                    : 'auditsItems.header.menuItemFont'
-                }
-                fontSize="14px"
-                onClick={() => changeViewMode('List')}
-              >
-                <ListIcon mr={3} />
-                List
-              </MenuItem>
-              <MenuItem
-                _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                color={
-                  viewMode === 'Group'
-                    ? 'auditsItems.header.menuItemFontSelected'
-                    : 'auditsItems.header.menuItemFont'
-                }
-                fontSize="14px"
-                onClick={() => changeViewMode('Group')}
-              >
-                <GroupIcon mr={3} />
-                Group
-              </MenuItem>
-            </MenuList>
-          </Menu>
+                <Text fontSize="smm" fontWeight="bold">
+                  Export
+                </Text>
+              </CSVLink>
+            </Button>
+          </>
         )}
       </Header>
       <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
