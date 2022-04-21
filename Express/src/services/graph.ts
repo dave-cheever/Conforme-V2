@@ -350,6 +350,84 @@ const uploadDocuments = async (
   return uploadedDocuments;
 };
 
+const moveDocument = async (
+  id: string,
+  newPath: string,
+  newName: string,
+  organization: IOrganization,
+): Promise<boolean> => {
+  if (!organization.spSiteUrl || !organization.spLibraryId) {
+    logger.error('Graph error: Wrong SharePoint configuration');
+    return false;
+  }
+  const client = await getClient(organization._id);
+  const spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || '';
+  const spStart = spUrlStart[0]
+    .replace('https://', '')
+    .replace('.com', '.com:');
+  const spUrlSite =
+    organization.spSiteUrl?.match(/sites\/.*/g) ||
+    organization.spSiteUrl?.match(/teams\/.*/g);
+  const spSiteId = `sites/${organization.spSiteUrl
+    .replace('https://', '')
+    .replace('.com', '.com:')}`;
+
+  const site = await client.get(spSiteId);
+  const { id: siteId } = site.data;
+  if (!siteId) {
+    logger.error('Graph error: Wrong SharePoint site configuration');
+    return false;
+  }
+
+  try {
+    // Get file details
+    const fileDetails = await client.get(
+      `sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`,
+    );
+
+    // Create folder
+    const folderRes = await client.post(
+      `sites/${siteId}/drive/items/root/children`,
+      {
+        name: newPath,
+        folder: {},
+        '@microsoft.graph.conflictBehavior': 'replace',
+      },
+    );
+
+    // Move file to new folder
+    await client.patch(
+      `sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`,
+      {
+        parentReference: {
+          path: `sites/${siteId}/drive/items/root:/${newPath}`,
+          id: folderRes.data.id,
+        },
+        name: newName,
+      },
+    );
+
+    try {
+      // Get old folder details
+      const tempFolderDetails = await client.get(
+        `sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`,
+      );
+
+      // Delete old folder if empty
+      if (tempFolderDetails.data.folder.childCount === 0) {
+        await client.delete(
+          `sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`,
+        );
+      }
+    } catch (deleteErr: any) {} // do not do anything if folder was already removed
+
+    return true;
+  } catch (e: any) {
+    logger.error(e.response.data.error.message);
+    throw new Error(e.response.data.error.message);
+  }
+};
+
 const deleteDocument = async (
   id: string,
   organization: IOrganization,
@@ -427,6 +505,7 @@ export default {
   getBasicUser,
   getBasicUsers,
   addMemberToAccessGroup,
+  moveDocument,
   deleteDocument,
   getFileDetails,
   sendEmail,

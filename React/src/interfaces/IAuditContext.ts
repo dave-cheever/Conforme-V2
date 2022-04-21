@@ -1,6 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import {
+  ApolloCache,
+  DefaultContext,
+  FetchResult,
+  MutationFunctionOptions,
+  OperationVariables,
+} from '@apollo/client';
+
+import {
   IQuestionsByCategories,
   TQuestionWithAnswer,
 } from '../contexts/AuditProvider';
@@ -11,7 +19,6 @@ import { ILocation } from './ILocation';
 import { IQuestionsCategory } from './IQuestionsCategory';
 import { IUser } from './IUser';
 import { TDeepPartial } from './TDeepPartial';
-import { TQuestionType } from './TQuestionType';
 
 export interface IAuditContext {
   audit: IAudit;
@@ -21,21 +28,40 @@ export interface IAuditContext {
   site: ILocation;
   area?: IBusinessUnit;
   questionsCategories: IQuestionsCategory[];
+  customQuestionsCategories: IQuestionsCategory[];
   questions: IQuestionsByCategories;
   loading: boolean;
-  selectedQuestion?: TQuestionWithAnswer;
+  selectedQuestion?: TDeepPartial<TQuestionWithAnswer>;
+
   setSelectedQuestion: Dispatch<
-    SetStateAction<TQuestionWithAnswer | undefined>
+    SetStateAction<TDeepPartial<TQuestionWithAnswer> | undefined>
   >;
-  addCustomQuestionAndAnswer: (question: {
-    type: TQuestionType;
-    questionsCategoryId: string;
-  }) => Promise<void>;
+  createCustomQuestionAndAnswer: (
+    questionValues: TDeepPartial<TQuestionWithAnswer>,
+  ) => Promise<void>;
   saveCustomQuestionAndAnswer: (
-    question: TDeepPartial<TQuestionWithAnswer>,
+    questionValues: TDeepPartial<TQuestionWithAnswer>,
   ) => Promise<void>;
   deleteCustomQuestionAndAnswer: (
-    question: TQuestionWithAnswer,
+    questionValues: TDeepPartial<TQuestionWithAnswer>,
   ) => Promise<void>;
+
+  updateAudit: (
+    options?: MutationFunctionOptions<
+      any,
+      OperationVariables,
+      DefaultContext,
+      ApolloCache<any>
+    >,
+  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+  submitAudit: (
+    options?: MutationFunctionOptions<
+      any,
+      OperationVariables,
+      DefaultContext,
+      ApolloCache<any>
+    >,
+  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+
   refetch: () => void;
 }

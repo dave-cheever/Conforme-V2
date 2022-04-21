@@ -344,9 +344,7 @@ const QuestionsCategories = () => {
             name="maxQuestionsNumber"
             placeholder="Max number of questions"
             required
-            validations={{
-              notEmpty: true,
-            }}
+            tooltip="0 means no limit"
             variant="secondaryVariant"
           />
           <TextInput

@@ -25,10 +25,12 @@ const useAuditUtils = () => {
     if (!audit) return;
 
     const { dueDate } = audit;
-    const daysToDueDate = differenceInDays(
-      new Date(dueDate),
-      new Date(audit.auditType.startingDate),
-    );
+    const daysToDueDate = audit.auditType?.startingDate
+      ? differenceInDays(
+          new Date(dueDate),
+          new Date(audit.auditType?.startingDate!),
+        )
+      : 0;
 
     if (audit.status === 'completed' && (!daysToDueDate || daysToDueDate >= 0))
       return 'completed';

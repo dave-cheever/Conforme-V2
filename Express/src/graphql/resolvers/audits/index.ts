@@ -1,6 +1,7 @@
 import audits from './audits.q';
 import createAudit from './createAudit.m';
 import deleteAudit from './deleteAudit.m';
+import submitAudit from './submitAudit.m';
 import updateAudit from './updateAudit.m';
 
 const auditsResolvers = {
@@ -10,6 +11,7 @@ const auditsResolvers = {
   Mutation: {
     createAudit,
     deleteAudit,
+    submitAudit,
     updateAudit,
   },
 };
@@ -23,14 +25,14 @@ export const auditsTypeDefs = `
     status: String!
     dueDate: Date!
     auditType: AuditType!
-    site: Location!
-    area: BusinessUnit
-    auditor: User!
-    participants: [User]
-    siteId: ID!
+    siteId: ID
+    site: Location
     areaId: ID
+    area: BusinessUnit
     auditorId: ID!
+    auditor: User!
     participantsIds: [ID]
+    participants: [User]
     metatags: Metatags
   }
 
@@ -51,7 +53,7 @@ export const auditsTypeDefs = `
   input AuditCreateInput {
     auditTypeId: String!
     walkType: String!
-    siteId: ID!
+    siteId: ID
     areaId: ID
     auditorId: ID!
     participantsIds: [ID]
@@ -59,11 +61,8 @@ export const auditsTypeDefs = `
   
   input AuditModifyInput {
     _id: ID!
-    auditTypeId: String!
-    walkType: String!
-    siteId: ID!
-    areaId: ID
-    auditorId: ID!
+    auditTypeId: String
+    auditorId: ID
     participantsIds: [ID]
   }
 `;
@@ -74,8 +73,9 @@ export const auditsQueryDefs = `
 
 export const auditsMutationDefs = `
   createAudit(audit: AuditCreateInput!): Audit!
-  updateAudit(auditInput: AuditModifyInput!): Audit!
   deleteAudit(_id: String!): Boolean!
+  submitAudit(auditId: ID!): Boolean!
+  updateAudit(auditInput: AuditModifyInput!): Audit!
 `;
 
 export default auditsResolvers;

@@ -39,7 +39,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            <Flex>{audit?.auditType.name}</Flex>
+            <Flex>{audit?.auditType?.name}</Flex>
           </Box>
         </Flex>
       </Flex>
@@ -65,22 +65,24 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           noOfLines={2}
           w="full"
         >
-          {audit?.site?.name}
+          {audit?.walkType === 'physical' ? audit?.site?.name : 'Virtual walk'}
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">
-        <Box
-          fontSize="14px"
-          lineHeight="20px"
-          overflow="hidden"
-          pl={2}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap"
-        >
-          <Text color="auditSquare.titleFontColor">Site</Text>
-          <Text>{audit?.site.name}</Text>
-        </Box>
+        {audit?.walkType === 'physical' && (
+          <Box
+            fontSize="14px"
+            lineHeight="20px"
+            overflow="hidden"
+            pl={2}
+            textOverflow="ellipsis"
+            w="200px"
+            whiteSpace="nowrap"
+          >
+            <Text color="auditSquare.titleFontColor">Site</Text>
+            <Text>{audit?.site?.name}</Text>
+          </Box>
+        )}
         <Box
           fontSize="14px"
           lineHeight="20px"

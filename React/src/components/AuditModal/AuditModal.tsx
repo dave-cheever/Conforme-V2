@@ -8,13 +8,14 @@ import {
   Flex,
   Grid,
   GridItem,
-  Heading,
   Icon,
   IconButton,
   ModalBody,
   ModalContent,
   ModalHeader,
   Spacer,
+  Stack,
+  Text,
   useToast,
 } from '@chakra-ui/react';
 
@@ -26,7 +27,7 @@ import { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 import useAuditModal from '../../hooks/useAuditModal';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, TickIcon } from '../../icons';
-import Dropdown from '../Forms/Dropdown';
+import { Datepicker, Dropdown } from '../Forms';
 import AuditTeamModal from './AuditTeamModal';
 
 const AuditModal = ({ refetch }) => {
@@ -40,7 +41,6 @@ const AuditModal = ({ refetch }) => {
     auditTypes,
     locations,
     businessUnits,
-    errors,
     reset,
   } = useAuditModalContext();
   const { selectedAuditor, selectedParticipants } = useAuditTeamContext();
@@ -78,16 +78,8 @@ const AuditModal = ({ refetch }) => {
       });
     }
 
-    if (Object.keys(errors).length > 0) {
-      return toast({
-        ...toastFailed,
-        description: 'Please complete all the required fields',
-      });
-    }
-
-    const auditId = await saveAudit({
-      ...audit,
-    });
+    const { metatags, ...auditValues } = audit;
+    const auditId = await saveAudit(auditValues);
 
     if (auditId) {
       setAdminModalState('closed');
@@ -97,6 +89,16 @@ const AuditModal = ({ refetch }) => {
 
   return (
     <>
+      <AuditTeamModal
+        isOpen={auditorModalOpen}
+        multiple={false}
+        onClose={() => setAuditorModalOpen(false)}
+      />
+      <AuditTeamModal
+        isOpen={participantsModalOpen}
+        multiple
+        onClose={() => setParticipantsModalOpen(false)}
+      />
       <ModalContent
         bg="auditModal.bg"
         h="100%"
@@ -120,7 +122,7 @@ const AuditModal = ({ refetch }) => {
                 size="xs"
                 src={user?.imgUrl}
               />
-              New Audit
+              New walk
             </Flex>
             <Flex alignItems="center">
               <Close
@@ -134,22 +136,41 @@ const AuditModal = ({ refetch }) => {
           </Flex>
         </ModalHeader>
         <ModalBody h="calc(100% - 175px)" p="0">
-          <Heading as="h4" mb={5} size="md">
-            Walk details
-          </Heading>
-          <Flex direction="column" height="calc(100% - 60px)" mb="20px">
-            <Grid gap={5} templateColumns="repeat(2, 1fr)">
-              {auditTypes?.length > 1 && !audit?.auditTypeId && (
+          <Stack h="full" spacing={4}>
+            <Flex direction="column">
+              <Text fontSize="smm" fontWeight="semibold">
+                Walk details
+              </Text>
+              <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
+                {auditTypes?.length > 1 && !audit?.auditTypeId && (
+                  <GridItem w="100%">
+                    <Dropdown
+                      control={control}
+                      label="Audit Type"
+                      name="auditTypeId"
+                      options={(auditTypes ?? []).map((auditType) => ({
+                        value: auditType._id,
+                        label: auditType.name,
+                      }))}
+                      placeholder="Select audit type"
+                      stroke="dropdown.icon"
+                      validations={{
+                        notEmpty: true,
+                      }}
+                    />
+                  </GridItem>
+                )}
                 <GridItem w="100%">
                   <Dropdown
                     control={control}
-                    label="Audit Type"
-                    name="auditTypeId"
-                    options={(auditTypes ?? []).map((auditType) => ({
-                      value: auditType._id,
-                      label: auditType.name,
-                    }))}
-                    placeholder="Select audit type"
+                    label="Type"
+                    name="walkType"
+                    options={[
+                      { value: 'virtual', label: 'Virtual' },
+                      { value: 'physical', label: 'Physical' },
+                    ]}
+                    placeholder="Select walk type"
+                    required
                     stroke="dropdown.icon"
                     validations={{
                       notEmpty: true,
@@ -157,115 +178,131 @@ const AuditModal = ({ refetch }) => {
                     variant="secondaryVariant"
                   />
                 </GridItem>
-              )}
-              <GridItem w="100%">
-                <Dropdown
-                  control={control}
-                  label="Walk Type"
-                  name="walkType"
-                  options={[
-                    { value: 'virtual', label: 'Virtual' },
-                    { value: 'physical', label: 'Physical' },
-                  ]}
-                  placeholder="Select walk type"
-                  stroke="dropdown.icon"
-                  validations={{
-                    notEmpty: true,
-                  }}
-                  variant="secondaryVariant"
-                />
-              </GridItem>
-              <GridItem w="100%">
-                <Dropdown
-                  control={control}
-                  label="Site"
-                  name="siteId"
-                  options={(locations ?? []).map((location) => ({
-                    value: location._id,
-                    label: location.name,
-                  }))}
-                  placeholder="Select site"
-                  stroke="dropdown.icon"
-                  validations={{
-                    notEmpty: true,
-                  }}
-                  variant="secondaryVariant"
-                />
-              </GridItem>
-              <GridItem w="100%">
                 {audit.walkType === 'physical' && (
-                  <Dropdown
-                    control={control}
-                    label="Area"
-                    name="areaId"
-                    options={(businessUnits ?? []).map((businessUnit) => ({
-                      value: businessUnit._id,
-                      label: businessUnit.name,
-                    }))}
-                    placeholder="Select Area"
-                    stroke="dropdown.icon"
-                    variant="secondaryVariant"
-                  />
+                  <>
+                    <GridItem w="100%">
+                      <Datepicker
+                        control={control}
+                        disabled
+                        label="Start date (today)"
+                        name="metatags.addedAt"
+                        variant="secondaryVariant"
+                      />
+                    </GridItem>
+                    <GridItem w="100%">
+                      <Dropdown
+                        control={control}
+                        label="Site"
+                        name="siteId"
+                        options={(locations ?? []).map((location) => ({
+                          value: location._id,
+                          label: location.name,
+                        }))}
+                        placeholder="Select site"
+                        required
+                        stroke="dropdown.icon"
+                        validations={{
+                          notEmpty: true,
+                        }}
+                        variant="secondaryVariant"
+                      />
+                    </GridItem>
+                    <GridItem w="100%">
+                      <Dropdown
+                        control={control}
+                        label="Area"
+                        name="areaId"
+                        options={(businessUnits ?? []).map((businessUnit) => ({
+                          value: businessUnit._id,
+                          label: businessUnit.name,
+                        }))}
+                        placeholder="Select Area"
+                        required
+                        stroke="dropdown.icon"
+                        validations={{
+                          notEmpty: true,
+                        }}
+                        variant="secondaryVariant"
+                      />
+                    </GridItem>
+                  </>
                 )}
-              </GridItem>
-            </Grid>
-            <Box mt={3}>
-              <AuditTeamModal
-                isOpen={auditorModalOpen}
-                multiple={false}
-                onClose={() => setAuditorModalOpen(false)}
-              />
-              <Heading as="h4" mb={5} size="md">
-                Audited by
-              </Heading>
-              <Flex alignItems="center" fontSize={['14px', '24px']}>
+              </Grid>
+            </Flex>
+            <Text fontSize="smm" fontWeight="semibold">
+              Audited by
+            </Text>
+            <Box>
+              <Flex
+                align="center"
+                direction="column"
+                fontSize={['14px', '24px']}
+                position="relative"
+                textAlign="center"
+                w="64px"
+              >
                 <Avatar
                   cursor="pointer"
-                  mr={3}
                   name={selectedAuditor?.displayName}
                   onClick={() => setAuditorModalOpen(true)}
                   rounded="full"
-                  size="md"
+                  size="lg"
                   src={selectedAuditor?.imgUrl}
                 />
+                <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                  {selectedAuditor.firstName || selectedAuditor.lastName
+                    ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
+                    : selectedAuditor.displayName}
+                </Text>
               </Flex>
             </Box>
-            <Box mt={3}>
-              <AuditTeamModal
-                isOpen={participantsModalOpen}
-                multiple
-                onClose={() => setParticipantsModalOpen(false)}
-              />
-              <Heading as="h4" mb={5} size="md">
-                Participants
-              </Heading>
+            <Text fontSize="smm" fontWeight="semibold">
+              Participants
+            </Text>
+            <Box>
               <Grid
-                alignItems="center"
                 fontSize={['14px', '24px']}
-                gap={5}
-                templateColumns="repeat(auto-fill, 50px)"
+                gap={6}
+                templateColumns="repeat(auto-fill, 64px)"
               >
-                {selectedParticipants?.map((participant) => (
-                  <GridItem key={participant?._id}>
-                    <Avatar
-                      cursor="pointer"
-                      mr={3}
-                      name={participant?.displayName}
-                      rounded="full"
-                      size="md"
-                      src={participant?.imgUrl}
-                    />
-                  </GridItem>
-                ))}
+                {selectedParticipants?.map((participant) => {
+                  if (!participant) return null;
+                  return (
+                    <GridItem key={participant._id}>
+                      <Flex
+                        align="center"
+                        direction="column"
+                        fontSize={['14px', '24px']}
+                        position="relative"
+                        textAlign="center"
+                        w="64px"
+                      >
+                        <Avatar
+                          cursor="pointer"
+                          name={participant.displayName}
+                          rounded="full"
+                          size="lg"
+                          src={participant.imgUrl}
+                        />
+                        <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                          {participant.firstName || participant.lastName
+                            ? `${participant.firstName} ${participant.lastName}`
+                            : participant.displayName}
+                        </Text>
+                      </Flex>
+                    </GridItem>
+                  );
+                })}
                 <GridItem>
                   <IconButton
                     aria-label="Add participant"
-                    bg="auditModal.tabs.bottomButton.bg"
-                    color="auditModal.participantsButton.color"
+                    bg="auditModal.addParticipant.bg"
+                    color="auditModal.addParticipant.color"
+                    h="64px"
                     icon={<AddIcon />}
                     isRound
                     onClick={() => setParticipantsModalOpen(true)}
-                    size="lg"
+                    w="64px"
                   />
                 </GridItem>
               </Grid>
@@ -275,7 +312,11 @@ const AuditModal = ({ refetch }) => {
               <Button
                 bg="auditModal.tabs.bottomButton.bg"
                 color="auditModal.tabs.bottomButton.color"
-                disabled={Object.keys(errors).length > 0}
+                disabled={
+                  !audit.walkType ||
+                  (audit.walkType === 'physical' &&
+                    (!audit.siteId || !audit.areaId))
+                }
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
@@ -296,7 +337,7 @@ const AuditModal = ({ refetch }) => {
                 Start Audit
               </Button>
             </Flex>
-          </Flex>
+          </Stack>
         </ModalBody>
       </ModalContent>
     </>
@@ -308,7 +349,8 @@ export default AuditModal;
 export const auditModalStyles = {
   auditModal: {
     bg: '#ffffff',
-    participantsButton: {
+    addParticipant: {
+      bg: '#1E1836',
       color: '#FFFFFF',
     },
     saveButton: {

@@ -37,6 +37,7 @@ const filesRouter = () => {
             .replace(/[^a-zA-Z0-9 ]+/g, '')
             .trim()
             .replace(' ', '-')
+            .substring(0, 200)
             .toLowerCase()}`;
         }
 

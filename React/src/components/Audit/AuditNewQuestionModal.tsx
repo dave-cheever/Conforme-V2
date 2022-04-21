@@ -8,17 +8,20 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
 import Icon from '../Icon';
 
 const AuditNewQuestionModal = ({ isOpen, onClose }) => {
-  const { questions, questionsCategories, addCustomQuestionAndAnswer } =
+  const { audit, questions, customQuestionsCategories, setSelectedQuestion } =
     useAuditContext();
 
   const countQuestionsLeft = (category: IQuestionsCategory) =>
-    category.maxQuestionsNumber - (questions[category._id] || []).length;
+    category.maxQuestionsNumber
+      ? category.maxQuestionsNumber - (questions[category._id] || []).length
+      : 1;
 
   return (
     <Modal isCentered isOpen={isOpen} onClose={onClose} size="2xl">
@@ -31,47 +34,58 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
         </ModalHeader>
         <ModalBody mb="40px">
           <Flex justify="space-around" wrap="wrap">
-            {questionsCategories.map((category) => (
-              <Stack
-                _hover={{
-                  bg: 'auditNewQuestionModal.tile.bg.hover',
-                }}
-                align="center"
-                bgColor="auditNewQuestionModal.tile.bg.default"
-                cursor="pointer"
-                flexShrink={0}
-                h="170px"
-                justify="center"
-                key={category._id}
-                mt={4}
-                onClick={() => {
-                  addCustomQuestionAndAnswer({
-                    type: 'text',
-                    questionsCategoryId: category._id,
-                  });
-                  onClose();
-                }}
-                rounded="10px"
-                spacing={4}
-                w="170px"
-              >
-                <Icon
-                  fill="auditNewQuestionModal.tile.icon.fill"
-                  h="36px"
-                  icon={category.icon}
-                  stroke="auditNewQuestionModal.tile.icon.stroke"
-                  w="36px"
-                />
-                <Stack align="center" spacing={0}>
-                  <Text fontSize="smm">{category.name}</Text>
-                  {category.maxQuestionsNumber && (
-                    <Text fontSize="smm">
-                      {countQuestionsLeft(category)} left
-                    </Text>
-                  )}
+            {customQuestionsCategories.map((category) => {
+              const questionsLeft = countQuestionsLeft(category);
+              const isDisabled = !questionsLeft;
+              return (
+                <Stack
+                  _hover={{
+                    bg: isDisabled
+                      ? 'auditNewQuestionModal.tile.bg.default'
+                      : 'auditNewQuestionModal.tile.bg.hover',
+                  }}
+                  align="center"
+                  bgColor="auditNewQuestionModal.tile.bg.default"
+                  cursor={isDisabled ? 'default' : 'pointer'}
+                  flexShrink={0}
+                  h="170px"
+                  justify="center"
+                  key={category._id}
+                  mt={4}
+                  onClick={() => {
+                    if (isDisabled) return;
+                    setSelectedQuestion({
+                      _id: uuidv4(), // generate temporary id to save attachments using it and replace after saving the question and answer
+                      type: 'text',
+                      questionsCategoryId: category._id,
+                      scope: {
+                        type: 'audit',
+                        _id: audit._id,
+                      },
+                    });
+                    onClose();
+                  }}
+                  opacity={isDisabled ? 0.5 : 1}
+                  rounded="10px"
+                  spacing={4}
+                  w="170px"
+                >
+                  <Icon
+                    fill="auditNewQuestionModal.tile.icon.fill"
+                    h="36px"
+                    icon={category.icon}
+                    stroke="auditNewQuestionModal.tile.icon.stroke"
+                    w="36px"
+                  />
+                  <Stack align="center" spacing={0}>
+                    <Text fontSize="smm">{category.name}</Text>
+                    {category.maxQuestionsNumber && (
+                      <Text fontSize="smm">{questionsLeft} left</Text>
+                    )}
+                  </Stack>
                 </Stack>
-              </Stack>
-            ))}
+              );
+            })}
           </Flex>
         </ModalBody>
       </ModalContent>

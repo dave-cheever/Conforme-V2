@@ -102,15 +102,15 @@ const Datepicker = ({
               borderWidth="1px"
               color="datepicker.font"
               cursor={disabled ? 'not-allowed' : 'pointer'}
-              h="40px"
+              h="42px"
               justify="space-between"
               mb="-5px"
               mt="5px"
-              pl="3px"
+              overflow="hidden"
               pt="none"
             >
               {disabled ? (
-                <Text>
+                <Text fontSize="smm" pl={4}>
                   {value ? format(new Date(value), 'd MMM yyyy') : ''}
                 </Text>
               ) : (
@@ -134,8 +134,10 @@ const Datepicker = ({
                 mr="10px"
                 mt="-2px"
                 onClick={() => {
-                  // @ts-ignore
-                  datePickerRef.current.setOpen(true);
+                  if (!disabled) {
+                    // @ts-ignore
+                    datePickerRef.current.setOpen(true);
+                  }
                 }}
                 stroke="datepicker.font"
                 w="14px"

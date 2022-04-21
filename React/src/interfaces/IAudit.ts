@@ -10,13 +10,15 @@ export interface IAudit extends IBase {
   status: 'inProgress' | 'completed';
   dueDate: Date;
   walkType: 'physical' | 'virtual';
-  auditType: IAuditType;
-  site: ILocation;
-  area?: IBusinessUnit;
-  auditor: IUser;
-  participants: IUser[];
-  siteId: string;
+  siteId?: string;
   areaId?: string;
   auditorId: string;
   participantsIds: string[];
+
+  // Additional fields
+  auditType?: IAuditType;
+  site?: ILocation;
+  area?: IBusinessUnit;
+  auditor?: IUser;
+  participants?: IUser[];
 }

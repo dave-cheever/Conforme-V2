@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Flex,
@@ -11,20 +12,31 @@ import {
   Spacer,
   Stack,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 import { ArrowDownIcon, ShareIcon } from '../../icons';
 import AuditHeaderButton from './AuditHeaderButton';
 import AuditHeaderMenuItem from './AuditHeaderMenuItem';
+import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
   const { audit, auditor, site, area } = useAuditContext();
+  const {
+    isOpen: isSubmitModalOpen,
+    onOpen: handleSubmitModalOpen,
+    onClose: handleSubmitModalClose,
+  } = useDisclosure();
 
   if (!audit) return null;
 
   return (
     <>
+      <AuditSubmitModal
+        isOpen={isSubmitModalOpen}
+        onClose={handleSubmitModalClose}
+      />
       <Flex
         bg="auditHeader.bg"
         direction="column"
@@ -34,7 +46,14 @@ const AuditHeader = () => {
         w="full"
         zIndex={1}
       >
-        <Stack direction="row" h="40px" mb="15px" spacing={4} w="full">
+        <Stack
+          align="center"
+          direction="row"
+          h="40px"
+          mb="15px"
+          spacing={4}
+          w="full"
+        >
           <Heading
             alignItems={['flex-start', 'center']}
             color="auditHeader.heading"
@@ -43,6 +62,11 @@ const AuditHeader = () => {
           >
             {area?.name ?? 'Virtual'}
           </Heading>
+          {audit.status === 'completed' && (
+            <Badge colorScheme="green" h="fit-content" variant="outline">
+              Completed
+            </Badge>
+          )}
         </Stack>
         <Flex pl={['10px', '0px']} pr={['35px', '25px']}>
           <Stack direction="row" spacing={6}>
@@ -103,7 +127,15 @@ const AuditHeader = () => {
             name="Share"
             onClick={() => {}}
           />
-          <AuditHeaderButton icon={null} name="Submit" onClick={() => {}} />
+          {audit.status === 'inProgress' && (
+            <AuditHeaderButton
+              bgColor="#DC0043"
+              fontColor="white"
+              icon={null}
+              name="Submit"
+              onClick={handleSubmitModalOpen}
+            />
+          )}
         </Flex>
         <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px">
           <Menu>

@@ -50,6 +50,9 @@ const AuditModalProvider = ({ children }) => {
 
   const defaultValues: Partial<IAudit> = {
     auditorId: user?._id,
+    metatags: {
+      addedAt: new Date(),
+    },
   };
 
   const {

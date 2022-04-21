@@ -9,7 +9,6 @@ import { IAnswer } from '../interfaces/IAnswer';
 import { IAuditContext } from '../interfaces/IAuditContext';
 import { IQuestion } from '../interfaces/IQuestion';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
-import { TQuestionType } from '../interfaces/TQuestionType';
 
 export const AuditContext = createContext({} as IAuditContext);
 
@@ -19,6 +18,7 @@ const GET_AUDIT = gql`
       _id
       walkType
       reference
+      status
       auditorId
       participantsIds
       auditType {
@@ -115,6 +115,18 @@ const GET_AUDIT_DATA = gql`
     }
   }
 `;
+const UPDATE_AUDIT = gql`
+  mutation UpdateAudit($audit: AuditModifyInput!) {
+    updateAudit(auditInput: $audit) {
+      _id
+    }
+  }
+`;
+const SUBMIT_AUDIT = gql`
+  mutation SubmitAudit($auditId: ID!) {
+    submitAudit(auditId: $auditId)
+  }
+`;
 const ADD_QUESTION = gql`
   mutation AddQuestion($question: QuestionCreateInput!) {
     createQuestion(question: $question) {
@@ -189,6 +201,9 @@ const AuditProvider = ({ children }) => {
   const { id }: { id: string } = useParams();
   const { navigateTo } = useNavigate();
 
+  const [updateAudit] = useMutation(UPDATE_AUDIT);
+  const [submitAudit] = useMutation(SUBMIT_AUDIT);
+
   const [createQuestion] = useMutation(ADD_QUESTION);
   const [saveQuestion] = useMutation(SAVE_QUESTION);
   const [deleteQuestion] = useMutation(DELETE_QUESTION);
@@ -198,7 +213,7 @@ const AuditProvider = ({ children }) => {
   const [deleteAnswer] = useMutation(DELETE_ANSWER);
 
   const [selectedQuestion, setSelectedQuestion] =
-    useState<TQuestionWithAnswer>();
+    useState<TDeepPartial<TQuestionWithAnswer>>();
 
   const {
     data,
@@ -243,6 +258,12 @@ const AuditProvider = ({ children }) => {
     );
   }, [JSON.stringify(auditData), JSON.stringify(auditType)]);
 
+  const customQuestionsCategories = useMemo(
+    () =>
+      questionsCategories.filter((category) => category.allowCustomQuestions),
+    [questionsCategories],
+  );
+
   // Group (custom and predefined) questions by category
   const questions: IQuestionsByCategories = useMemo(() => {
     if (!auditData?.auditCustomQuestions) return {};
@@ -279,15 +300,14 @@ const AuditProvider = ({ children }) => {
     await refetchAuditData();
   };
 
-  const addCustomQuestionAndAnswer = async (question: {
-    type: TQuestionType;
-    questionsCategoryId: string;
-  }) => {
+  const createCustomQuestionAndAnswer = async (
+    questionValues: TDeepPartial<TQuestionWithAnswer>,
+  ) => {
+    const { _id, answer, ...question } = questionValues;
     const createdQuestionRes = await createQuestion({
       variables: {
         question: {
           ...question,
-          question: '',
           scope: {
             type: 'audit',
             _id: audit?._id,
@@ -296,22 +316,20 @@ const AuditProvider = ({ children }) => {
       },
     });
     const createdQuestion = createdQuestionRes.data.createQuestion;
-    const createdAnswerRes = await createAnswer({
-      variables: {
-        answer: {
-          questionId: createdQuestion._id,
-          scope: {
-            type: 'audit',
-            _id: audit?._id,
+    if (answer) {
+      await createAnswer({
+        variables: {
+          answer: {
+            ...answer,
+            questionId: createdQuestion._id,
+            scope: {
+              type: 'audit',
+              _id: audit?._id,
+            },
           },
         },
-      },
-    });
-    const createdAnswer = createdAnswerRes.data.createAnswer;
-    setSelectedQuestion({
-      ...createdQuestion,
-      answer: createdAnswer,
-    });
+      });
+    }
     refetch();
   };
 
@@ -324,27 +342,31 @@ const AuditProvider = ({ children }) => {
         question,
       },
     });
-    await saveAnswer({
-      variables: {
-        answer,
-      },
-    });
+    if (answer) {
+      await saveAnswer({
+        variables: {
+          answer,
+        },
+      });
+    }
     refetch();
   };
 
   const deleteCustomQuestionAndAnswer = async (
-    question: TQuestionWithAnswer,
+    question: TDeepPartial<TQuestionWithAnswer>,
   ) => {
     await deleteQuestion({
       variables: {
         _id: question._id,
       },
     });
-    await deleteAnswer({
-      variables: {
-        _id: question.answer._id,
-      },
-    });
+    if (question.answer) {
+      await deleteAnswer({
+        variables: {
+          _id: question.answer?._id,
+        },
+      });
+    }
     refetch();
   };
 
@@ -357,13 +379,16 @@ const AuditProvider = ({ children }) => {
       site,
       area,
       questionsCategories,
+      customQuestionsCategories,
       questions,
       loading,
       selectedQuestion,
       setSelectedQuestion,
-      addCustomQuestionAndAnswer,
+      createCustomQuestionAndAnswer,
       saveCustomQuestionAndAnswer,
       deleteCustomQuestionAndAnswer,
+      updateAudit,
+      submitAudit,
       refetch,
     }),
     [

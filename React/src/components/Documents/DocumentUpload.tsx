@@ -6,7 +6,6 @@ import axios from 'axios';
 
 import { toastFailed } from '../../bootstrap/config';
 import UploadIcon from '../../icons/UploadIcon';
-import { IBase } from '../../interfaces/IBase';
 import DocumentUploading from '../Response/DocumentUploading';
 
 const defaultFileTypes = [
@@ -25,14 +24,14 @@ const defaultFileTypes = [
 ];
 
 const DocumentUpload = ({
-  element,
+  elementId,
   documentName,
   callback,
   doNotAwaitCallback,
   acceptedFileTypes = defaultFileTypes,
 }: {
-  element: IBase & object;
-  documentName: string;
+  elementId: string;
+  documentName?: string;
   callback?: (
     uploaded: {
       name: string;
@@ -54,16 +53,14 @@ const DocumentUpload = ({
     acceptedFiles: File[];
     rejectedFiles: FileRejection[];
   }) => {
-    if (!element) return;
-
     if (rejectedFiles?.length > 0) setRejected(true);
     else {
       const acceptedFilesNames = acceptedFiles.map((file) => file.name);
       setUploading((uploading) => [...uploading, ...acceptedFilesNames]);
       try {
         const documentsData = new FormData();
-        documentsData.append('elementId', element._id);
-        documentsData.append('documentName', documentName);
+        documentsData.append('elementId', elementId);
+        if (documentName) documentsData.append('documentName', documentName);
         acceptedFiles.forEach((file) => documentsData.append('document', file));
         const res = await axios.post(
           `${process.env.REACT_APP_API_URL}/files/document`,
@@ -86,8 +83,6 @@ const DocumentUpload = ({
       }
     }
   };
-
-  if (!element) return null;
 
   return (
     <Flex flexDirection="column" fontWeight="700" w="full">

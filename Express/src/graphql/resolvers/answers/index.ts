@@ -42,6 +42,7 @@ export const answersTypeDefs = `
     answer: String
     status: String
     options: Any
+    attachments: [DocumentInput]
     scope: ScopeInput!
   }
   

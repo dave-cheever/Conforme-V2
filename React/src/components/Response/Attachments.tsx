@@ -95,7 +95,7 @@ const Attachments = () => {
                     refetch();
                   }}
                   documentName="attachment"
-                  element={response}
+                  elementId={response._id}
                 />
               )}
             />

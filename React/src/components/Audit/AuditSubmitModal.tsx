@@ -13,24 +13,33 @@ import {
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 
-const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
-  const { selectedQuestion, deleteCustomQuestionAndAnswer } = useAuditContext();
+const AuditSubmitModal = ({ isOpen, onClose }) => {
+  const { audit, submitAudit, refetch } = useAuditContext();
 
-  if (!selectedQuestion) return null;
+  if (!audit) return null;
 
   return (
     <Modal isCentered isOpen={isOpen} onClose={onClose} size="sm">
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
-            Delete question
+            Submit audit
           </Text>
           <ModalCloseButton />
         </ModalHeader>
         <ModalBody mb="40px">
           <Stack>
-            <Text>Are you sure you want to delete the following element?</Text>
-            <Text fontStyle="italic">{selectedQuestion?.question}</Text>
+            <Text>
+              Are you sure you want to submit the{' '}
+              {audit.walkType === 'virtual' ? (
+                'virtual audit'
+              ) : (
+                <Text as="span">
+                  audit in <strong>{audit.area?.name}</strong>
+                </Text>
+              )}{' '}
+              as completed?
+            </Text>
           </Stack>
         </ModalBody>
         <ModalFooter>
@@ -41,12 +50,17 @@ const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
             <Button
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              onClick={() => {
-                deleteCustomQuestionAndAnswer(selectedQuestion);
+              onClick={async () => {
+                await submitAudit({
+                  variables: {
+                    auditId: audit._id,
+                  },
+                });
+                refetch();
                 onClose();
               }}
             >
-              Delete
+              Submit
             </Button>
           </HStack>
         </ModalFooter>
@@ -70,4 +84,4 @@ export const auditNewQuestionModalStyles = {
   },
 };
 
-export default AuditDeleteQuestionModal;
+export default AuditSubmitModal;

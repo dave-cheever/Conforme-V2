@@ -1,24 +1,37 @@
 import { Button, IconButton } from '@chakra-ui/react';
 
-const AuditHeaderButton = ({ icon, name, onClick, loading = false }) => (
+const AuditHeaderButton = ({
+  icon,
+  name,
+  onClick,
+  loading = false,
+  bgColor = 'auditHeader.buttonLightBg',
+  fontColor = 'auditHeader.buttonLightColor',
+  disabled = false,
+}) => (
   <>
     <Button
-      _hover={{
-        bg: 'auditHeader.buttonLightBgHover',
-        color: 'auditHeader.buttonLightColorHover',
-        cursor: 'pointer',
-        stroke: 'green',
-      }}
-      bg="auditHeader.buttonLightBg"
+      _hover={
+        disabled
+          ? {}
+          : {
+              bg: 'auditHeader.buttonLightBgHover',
+              color: 'auditHeader.buttonLightColorHover',
+              cursor: 'pointer',
+              stroke: 'green',
+            }
+      }
+      bg={bgColor}
       borderRadius="10px"
-      color="auditHeader.buttonLightColor"
+      color={fontColor}
+      disabled={disabled}
       display={['none', icon ? 'none' : 'flex', 'flex']}
       fontSize="14px"
       fontWeight="bold"
       isLoading={loading}
       leftIcon={icon}
       ml="15px"
-      onClick={onClick}
+      onClick={() => !disabled && onClick()}
       px={4}
       role="group"
     >

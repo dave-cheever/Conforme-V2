@@ -3,6 +3,8 @@ import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAnswer, IAnswerModel } from 'app-interfaces';
+import { Organizations } from 'app-models';
+import { GraphService } from 'app-services';
 import { genMetatags } from 'app-utils';
 
 const answersSchema = new Schema<IAnswer, IAnswerModel>({
@@ -57,6 +59,22 @@ answersSchema.statics.customCreate = async function (
     organizationId,
     metatags: genMetatags('added', userId),
   });
+
+  // Move attachments to right SP folder
+  if (answer.attachments && answer.attachments.length) {
+    const organization = await Organizations.customFindById(
+      organizationId,
+      organizationId,
+    );
+    answer.attachments?.forEach((attachment) => {
+      GraphService.moveDocument(
+        attachment.id,
+        createdAnswer._id,
+        attachment.name,
+        organization,
+      );
+    });
+  }
 
   return createdAnswer;
 };

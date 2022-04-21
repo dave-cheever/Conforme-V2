@@ -16,7 +16,9 @@ import { ActionsIcon, EditIcon, Trashcan } from '../../icons';
 
 const Audit = () => {
   const {
+    audit,
     questionsCategories,
+    customQuestionsCategories,
     questions,
     selectedQuestion,
     setSelectedQuestion,
@@ -54,18 +56,20 @@ const Audit = () => {
         <Text fontSize="xxl" fontWeight="semibold">
           Walk Items
         </Text>
-        {!(selectedQuestion && !isDeleteQuestionModalOpen) && (
-          <Button
-            bg="auditItem.addButton.bg"
-            borderRadius="10px"
-            color="auditItem.addButton.color"
-            fontSize="ssm"
-            h="28px"
-            onClick={() => handleNewQuestionModalOpen()}
-          >
-            Add
-          </Button>
-        )}
+        {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
+          audit.status === 'inProgress' &&
+          customQuestionsCategories.length && (
+            <Button
+              bg="auditItem.addButton.bg"
+              borderRadius="10px"
+              color="auditItem.addButton.color"
+              fontSize="ssm"
+              h="28px"
+              onClick={() => handleNewQuestionModalOpen()}
+            >
+              Add
+            </Button>
+          )}
       </HStack>
       {!(selectedQuestion && !isDeleteQuestionModalOpen) && (
         <Stack>
@@ -108,22 +112,24 @@ const Audit = () => {
                           />
                         ))}
                       </HStack>
-                      <Stack>
-                        <EditIcon
-                          cursor="pointer"
-                          onClick={() => setSelectedQuestion(question)}
-                          stroke="auditItem.listItem.editIcon"
-                        />
-                        <Spacer />
-                        <Trashcan
-                          cursor="pointer"
-                          onClick={() => {
-                            setSelectedQuestion(question);
-                            handleDeleteQuestionModalOpen();
-                          }}
-                          stroke="auditItem.listItem.deleteIcon"
-                        />
-                      </Stack>
+                      {audit.status === 'inProgress' && (
+                        <Stack>
+                          <EditIcon
+                            cursor="pointer"
+                            onClick={() => setSelectedQuestion(question)}
+                            stroke="auditItem.listItem.editIcon"
+                          />
+                          <Spacer />
+                          <Trashcan
+                            cursor="pointer"
+                            onClick={() => {
+                              setSelectedQuestion(question);
+                              handleDeleteQuestionModalOpen();
+                            }}
+                            stroke="auditItem.listItem.deleteIcon"
+                          />
+                        </Stack>
+                      )}
                     </HStack>
                   ))}
                 </Stack>

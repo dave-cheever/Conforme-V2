@@ -18,18 +18,18 @@ const AuditAnswer = ({
   question,
   handleClose,
 }: {
-  question: TQuestionWithAnswer;
+  question: TDeepPartial<TQuestionWithAnswer>;
   handleClose: () => void;
 }) => {
   const {
     questionsCategories,
+    createCustomQuestionAndAnswer,
     saveCustomQuestionAndAnswer,
-    deleteCustomQuestionAndAnswer,
   } = useAuditContext();
   const questionsCategory = questionsCategories.find(
     ({ _id }) => _id === question.questionsCategoryId,
   );
-  const isCustomQuestion = !!question.scope._id;
+  const isCustomQuestion = !!question.scope?._id;
   const { answer } = question;
 
   const { control, formState, watch, reset, setValue } = useForm({
@@ -40,9 +40,10 @@ const AuditAnswer = ({
 
   useEffect(() => {
     reset({
-      question: question.question,
-      options: question.answer.options,
-      attachments: question.answer.attachments,
+      question: question.question || '',
+      options: answer?.options || {},
+      attachments: answer?.attachments || [],
+      answer: answer?.answer || '',
     });
   }, [question]);
 
@@ -55,7 +56,9 @@ const AuditAnswer = ({
       rounded="10px"
       spacing={4}
     >
-      <Text>{questionsCategory.name}</Text>
+      <Text fontSize="md" fontWeight="semibold">
+        {questionsCategory.name}
+      </Text>
       <Stack>
         {questionsCategory.withAnswers ? (
           <Stack>
@@ -115,8 +118,7 @@ const AuditAnswer = ({
           callback={async (uploaded) => {
             setValue('attachments', [...values.attachments, ...uploaded]);
           }}
-          documentName={question.question}
-          element={answer}
+          elementId={answer?._id || `temp-${question._id}`}
         />
         {values.attachments?.map((attachment, i) => (
           <Flex flexDir="column" key={i} mb={2}>
@@ -134,6 +136,22 @@ const AuditAnswer = ({
           </Flex>
         ))}
       </Stack>
+      <Stack spacing={4}>
+        <Text fontSize="smm" fontWeight="semibold">
+          Actions
+        </Text>
+        <Button
+          bgColor="auditAnswer.buttons.addAction.bg"
+          color="auditAnswer.buttons.addAction.color"
+          fontSize="ssm"
+          fontWeight="semibold"
+          h="28px"
+          rounded="10px"
+          w="fit-content"
+        >
+          Add action
+        </Button>
+      </Stack>
       <HStack>
         <Button
           bgColor="auditAnswer.buttons.cancel.bg"
@@ -141,13 +159,7 @@ const AuditAnswer = ({
           fontSize="smm"
           fontWeight="semibold"
           h="40px"
-          onClick={() => {
-            if (!answer.metatags?.updatedAt) {
-              // Remove answer if cancelled without saving
-              deleteCustomQuestionAndAnswer(question);
-            }
-            handleClose();
-          }}
+          onClick={handleClose}
           rounded="10px"
         >
           Cancel
@@ -164,8 +176,9 @@ const AuditAnswer = ({
             const questionWithAnswer: TDeepPartial<TQuestionWithAnswer> = {
               _id: question._id,
               answer: {
-                _id: question.answer._id,
+                _id: question.answer?._id,
                 options: values.options,
+                answer: values.answer,
                 attachments: values.attachments.map((attachment) => ({
                   id: attachment.id,
                   name: attachment.name,
@@ -174,7 +187,15 @@ const AuditAnswer = ({
               },
               question: values.question,
             };
-            saveCustomQuestionAndAnswer(questionWithAnswer);
+            if (answer?._id) saveCustomQuestionAndAnswer(questionWithAnswer);
+            else {
+              createCustomQuestionAndAnswer({
+                ...questionWithAnswer,
+                type: question.type,
+                questionsCategoryId: question.questionsCategoryId,
+              });
+            }
+
             handleClose();
           }}
           rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
@@ -191,6 +212,10 @@ export const auditAnswerStyles = {
   auditAnswer: {
     bg: '#fff',
     buttons: {
+      addAction: {
+        bg: '#DC0043',
+        color: '#fff',
+      },
       cancel: {
         bg: '#F4F3F5',
         color: '#787486',
