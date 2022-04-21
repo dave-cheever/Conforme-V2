@@ -320,29 +320,29 @@ const Audits = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Button
-              _hover={{
-                bg: 'reasponseHeader.buttonLightBgHover',
-                color: 'reasponseHeader.buttonLightColorHover',
-                cursor: 'pointer',
-                '&:hover svg path': { stroke: 'white' },
-              }}
-              bg="white"
-              borderRadius="10px"
-              ml="15px"
-              rightIcon={<ExportIcon height="15px" width="15px" />}
+            <CSVLink
+              data={csvData}
+              filename="audits.csv"
+              headers={csvHeaders}
+              target="_blank"
             >
-              <CSVLink
-                data={csvData}
-                filename="audits.csv"
-                headers={csvHeaders}
-                target="_blank"
+              <Button
+                _hover={{
+                  bg: 'reasponseHeader.buttonLightBgHover',
+                  color: 'reasponseHeader.buttonLightColorHover',
+                  cursor: 'pointer',
+                  '&:hover svg path': { stroke: 'white' },
+                }}
+                bg="white"
+                borderRadius="10px"
+                ml="15px"
+                rightIcon={<ExportIcon height="15px" width="15px" />}
               >
                 <Text fontSize="smm" fontWeight="bold">
                   Export
                 </Text>
-              </CSVLink>
-            </Button>
+              </Button>
+            </CSVLink>
           </>
         )}
       </Header>

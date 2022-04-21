@@ -1,10 +1,16 @@
-import { IBase, IDocument, IScope, TQuestionValue } from 'app-interfaces';
+import {
+  IBase,
+  IDocument,
+  IScope,
+  TAnswerStatus,
+  TQuestionValue,
+} from 'app-interfaces';
 
 export interface IAnswer extends IBase {
   questionId: string;
   answer?: TQuestionValue;
   attachments?: IDocument[];
-  status?: 'open' | 'ignored' | 'closed';
+  status?: TAnswerStatus;
   options?: {
     [name: string]: boolean;
   };

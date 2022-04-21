@@ -21,7 +21,7 @@ const answersSchema = new Schema<IAnswer, IAnswerModel>({
   ],
   status: {
     type: String,
-    enum: ['open', 'ignored', 'closed'],
+    enum: ['open', 'resolved', 'closed'],
   },
   options: {
     type: Map,
@@ -56,6 +56,7 @@ answersSchema.statics.customCreate = async function (
   const createdAnswer = await this.create({
     ...answer,
     _id: uuidv4(),
+    status: 'open',
     organizationId,
     metatags: genMetatags('added', userId),
   });
