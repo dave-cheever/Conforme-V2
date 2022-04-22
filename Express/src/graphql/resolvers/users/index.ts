@@ -42,7 +42,7 @@ export const usersTypeDefs = `
     sessionExpiration: Date!
   }
 
-  input SearchQuery {
+  input SearchUserQuery {
     searchText: String
   }
 
@@ -59,7 +59,7 @@ export const usersTypeDefs = `
 export const usersQueryDefs = `
   session: Session!
   users: [User!]!
-  searchUsers(searchQuery: SearchQuery): [User!]!
+  searchUsers(searchQuery: SearchUserQuery): [User!]!
   usersById(userQueryInput: UserQueryInput): [User!]!
 `;
 

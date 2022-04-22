@@ -39,7 +39,10 @@ AuditLogSchema.statics.customAudit = async function (
     ...auditLog,
     _id: uuidv4(),
     organizationId,
-    metatags: genMetatags('added', userId) as { addedBy: string; addedAt: Date },
+    metatags: genMetatags('added', userId) as {
+      addedBy: string;
+      addedAt: Date;
+    },
   };
   const createdAuditLog = await this.create(newAuditLog);
   return createdAuditLog;

@@ -1,5 +1,10 @@
-import { IBaseModel, IResponse } from 'app-interfaces';
+import { IBaseModel, IResponse, IUser } from 'app-interfaces';
 
 export interface IResponseModel extends IBaseModel<IResponse> {
+  customSearch: (
+    searchQuery: any,
+    user: IUser,
+    organizationId: string,
+  ) => Promise<IResponse>;
   customRecalculateResponse: (responseId: string) => Promise<void>;
 }

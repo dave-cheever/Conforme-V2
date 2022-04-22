@@ -1,9 +1,10 @@
+import { response } from 'express';
 import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAudit, IAuditModel } from 'app-interfaces';
-import { genMetatags } from 'app-utils';
+import { genMetatags, isPermitted, join } from 'app-utils';
 
 const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
@@ -59,6 +60,77 @@ auditsSchema.statics.customCreate = async function (
   });
 
   return createdAudit;
+};
+
+auditsSchema.statics.customSearch = async function (
+  searchQuery,
+  user,
+  organizationId,
+): Promise<IAudit[]> {
+  const { searchText } = searchQuery;
+  const pipeline: any[] = [
+    {
+      $match: {
+        organizationId,
+      },
+    },
+  ];
+
+  if (
+    !isPermitted({
+      user,
+      action: 'audits.viewAll',
+      data: { response },
+    })
+  ) {
+    pipeline.push({
+      $match: {
+        $or: [
+          { auditorId: user._id },
+          { participantsIds: { $in: [user._id] } },
+        ],
+      },
+    });
+  }
+
+  // Join business unit
+  join({
+    pipeline,
+    collection: 'businessUnits',
+    from: 'areaId',
+    to: 'area',
+  });
+
+  // Filter by search text (in area)
+  pipeline.push({
+    $match: {
+      'area.name': new RegExp(searchText, 'i'),
+    },
+  });
+
+  join({
+    pipeline,
+    collection: 'locations',
+    from: 'siteId',
+    to: 'site',
+  });
+
+  pipeline.push({
+    $limit: 5,
+  });
+
+  pipeline.push({
+    $project: {
+      _id: 1,
+      primaryText: '$area.name',
+      secondaryText: '$site.name',
+      type: 'audits',
+    },
+  });
+
+  const data = await this.aggregate(pipeline);
+
+  return data;
 };
 
 auditsSchema.statics.customFind = async function (

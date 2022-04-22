@@ -1,4 +1,5 @@
 import { diff } from 'deep-object-diff';
+import { response } from 'express';
 import { GraphQLError } from 'graphql';
 import _difference from 'lodash/difference';
 import { model, Schema } from 'mongoose';
@@ -26,6 +27,8 @@ import {
   getAuditValueForString,
   getNextRenewalDate,
   getPrevRenewalDate,
+  isPermitted,
+  join,
   removeDatabaseFields,
 } from 'app-utils';
 
@@ -367,6 +370,92 @@ responseSchema.statics.customCreate = async function (
   }
 
   return createdResponse;
+};
+
+responseSchema.statics.customSearch = async function (
+  searchQuery,
+  user,
+  organizationId,
+): Promise<IResponse[]> {
+  const { searchText } = searchQuery;
+  const pipeline: any[] = [
+    {
+      $match: {
+        organizationId,
+      },
+    },
+  ];
+
+  if (
+    !isPermitted({
+      user,
+      action: 'responses.viewAll',
+      data: { response },
+    })
+  ) {
+    pipeline.push({
+      $match: {
+        $or: [
+          { accountableId: user._id },
+          { responsibleId: user._id },
+          { contributorsIds: { $in: [user._id] } },
+          { followersIds: { $in: [user._id] } },
+        ],
+      },
+    });
+  }
+
+  if (
+    !(
+      searchQuery?.includeNotPublished &&
+      isPermitted({ user, action: 'responses.viewAll' })
+    )
+  ) {
+    pipeline.push({
+      $match: {
+        published: true,
+      },
+    });
+  }
+
+  join({
+    pipeline,
+    collection: 'complianceItems',
+    from: 'complianceItemId',
+    to: 'complianceItem',
+  });
+
+  // Filter by search text (in compliance item)
+  pipeline.push({
+    $match: {
+      'complianceItem.name': new RegExp(searchText, 'i'),
+    },
+  });
+
+  // Join business unit
+  join({
+    pipeline,
+    collection: 'businessUnits',
+    from: 'businessUnitId',
+    to: 'businessUnit',
+  });
+
+  pipeline.push({
+    $limit: 5,
+  });
+
+  pipeline.push({
+    $project: {
+      _id: 1,
+      primaryText: '$complianceItem.name',
+      secondaryText: '$businessUnit.name',
+      type: 'compliance-item',
+    },
+  });
+
+  const data = await this.aggregate(pipeline);
+
+  return data;
 };
 
 responseSchema.statics.customFind = async function (

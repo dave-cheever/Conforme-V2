@@ -135,7 +135,7 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
                 </Box>
                 Searching...
               </Flex>
-            ) : data.searchUsers.length > 0 ? (
+            ) : data?.searchUsers.length > 0 ? (
               <VStack
                 alignItems="flex-start"
                 h="full"
@@ -143,7 +143,7 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
                 overflow="auto"
                 spacing="10px"
               >
-                {data.searchUsers.map((user) => (
+                {data?.searchUsers.map((user) => (
                   <Flex align="center" key={user._id}>
                     {/* added this instead of checkbox, because of console error on checkbox */}
                     <Flex

@@ -14,6 +14,11 @@ export const searchTypeDefs = `
     type: String!
   }
 
+  type SearchQueryResult {
+    audits: [SearchResult!]!
+    responses: [SearchResult!]!
+  }
+
   input SearchQuery {
     searchText: String!
     includeNotPublished: Boolean
@@ -21,7 +26,7 @@ export const searchTypeDefs = `
 `;
 
 export const searchQueryDefs = `
-  search(searchQuery: SearchQuery): [SearchResult!]!
+  search(searchQuery: SearchQuery): SearchQueryResult!
 `;
 
 export default searchResolvers;

@@ -7,7 +7,7 @@ import { IUser } from '../interfaces/IUser';
 import { useAppContext } from './AppProvider';
 
 const SEARCH_USERS = gql`
-  query ($searchQuery: SearchQuery) {
+  query ($searchQuery: SearchUserQuery) {
     searchUsers(searchQuery: $searchQuery) {
       _id
       firstName

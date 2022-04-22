@@ -24,10 +24,18 @@ import Loader from './Loader';
 const GET_SEARCH_RESULTS = gql`
   query SearchResults($searchQuery: SearchQuery) {
     search(searchQuery: $searchQuery) {
-      _id
-      primaryText
-      secondaryText
-      type
+      audits {
+        _id
+        primaryText
+        secondaryText
+        type
+      }
+      responses {
+        _id
+        primaryText
+        secondaryText
+        type
+      }
     }
   }
 `;
@@ -45,8 +53,8 @@ const GET_SEARCH_HISTORY = gql`
 `;
 
 const SearchBar = () => {
+  const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
-  const { user } = useAppContext();
   const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } =
     useNavigationTopContext();
 
@@ -164,9 +172,15 @@ const SearchBar = () => {
             <Loader size="sm" />
           ) : (
             data &&
-            (data.search.length > 0 ? (
+            ((module?.type === 'tracker'
+              ? data.search.responses
+              : data.search.audits
+            ).length > 0 ? (
               <Stack>
-                {data?.search?.map((searchResult) => (
+                {(module?.type === 'tracker'
+                  ? data?.search?.responses
+                  : data?.search?.audits
+                )?.map((searchResult) => (
                   <Stack
                     _hover={{
                       textDecoration: 'underline',
