@@ -7,6 +7,7 @@ import {
   CalendarIcon,
   DetailIcon,
   Home,
+  ListIcon,
   // Insights,
   ProgressIcon,
   QuestionIcon,
@@ -76,6 +77,13 @@ export const auditsMenuItems: INavItem[] = [
     label: 'Actions',
     url: '/actions',
     icon: CalendarIcon,
+    permission: 'actions.view',
+  },
+  {
+    type: 'menuItem',
+    label: 'Walk items',
+    url: '/walk-items',
+    icon: ListIcon,
     permission: 'actions.view',
   },
   {

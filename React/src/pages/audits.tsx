@@ -179,9 +179,9 @@ const Audits = () => {
 
   const viewIcon = useMemo(
     () => ({
-      Grid: <GridIcon boxSize="18px" />,
-      List: <ListIcon boxSize="18px" />,
-      Group: <GroupIcon boxSize="18px" />,
+      Grid: <GridIcon boxSize="18px" stroke="currentColor" />,
+      List: <ListIcon boxSize="18px" stroke="currentColor" />,
+      Group: <GroupIcon boxSize="18px" stroke="currentColor" />,
     }),
     [],
   );

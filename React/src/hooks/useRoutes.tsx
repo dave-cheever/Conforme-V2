@@ -40,6 +40,7 @@ import Logout from '../pages/logout';
 import Mentions from '../pages/mentions';
 import PrivacyPolicy from '../pages/privacy-policy';
 import Terms from '../pages/terms';
+import WalkItems from '../pages/walk-items';
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -81,6 +82,13 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Audits,
     layout: FilterLayout,
+  },
+  {
+    path: '/walk-items',
+    key: 'walk-items',
+    exact: true,
+    component: WalkItems,
+    layout: DefaultLayout,
   },
   {
     path: '/audits/:id',

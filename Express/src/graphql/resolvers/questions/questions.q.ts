@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Questions } from 'app-models';
-import { doesPathExist } from 'app-utils';
+import { doesPathExist, getProjectFields, join } from 'app-utils';
 
 const questions = async (
   _,
@@ -52,6 +52,15 @@ const questions = async (
       );
     }
 
+    if (shouldJoin(['questionsCategory'])) {
+      join({
+        pipeline,
+        collection: 'questionsCategories',
+        from: 'questionsCategoryId',
+        to: 'questionsCategory',
+      });
+    }
+
     if (shouldJoin(['answer', 'actions'])) {
       pipeline.push({
         $lookup: {
@@ -62,6 +71,8 @@ const questions = async (
         },
       });
     }
+
+    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'questions') });
 
     const questions = await Questions.aggregate(pipeline);
     return questions.sort((a, b) => a.question.localeCompare(b.question));

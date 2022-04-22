@@ -2,6 +2,7 @@ import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
+import { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
@@ -34,7 +35,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             pt="3px"
             textOverflow="ellipsis"
           >
-            {audit.area?.name ?? 'Virtual'}
+            {auditWalkTypes[audit.walkType]}
           </Flex>
         </Flex>
         <Flex w="12%">

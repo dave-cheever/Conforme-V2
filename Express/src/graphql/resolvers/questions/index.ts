@@ -20,7 +20,8 @@ export const questionsTypeDefs = `
     type: String!
     question: String
     description: String
-    questionsCategoryId: String
+    questionsCategoryId: ID
+    questionsCategory: QuestionsCategory
     required: Boolean
     notApplicable: Boolean
     positiveValue: Any

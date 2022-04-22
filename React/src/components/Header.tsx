@@ -4,6 +4,7 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useNavigate from '../hooks/useNavigate';
 import { ArrowRight, Filter } from '../icons';
 
 interface IHeader {
@@ -22,6 +23,8 @@ const Header: FunctionComponent<IHeader> = ({
     setShowFiltersPanel,
     numberOfSelectedFilters,
   } = useFiltersContext();
+  const { isPathActive } = useNavigate();
+  const isAuditPage = isPathActive('/audits') || isPathActive('/dashboard');
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => {
@@ -66,7 +69,7 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex justify="flex-end" mr="20px" w="full">
           {children}
         </Flex>
-        {usedFilters && usedFilters.length > 0 && (
+        {usedFilters && isAuditPage && usedFilters.length > 0 && (
           <Flex
             align="center"
             bg="header.filterBackgroundColor"
