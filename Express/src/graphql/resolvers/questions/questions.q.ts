@@ -9,8 +9,9 @@ const questions = async (
   { organization },
   info: GraphQLResolveInfo,
 ) => {
-  const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ['questions', element]);
+  const shouldJoin = (elements: string[]) =>
+    doesPathExist(info.fieldNodes, ['questions', ...elements]);
+
   try {
     const pipeline: object[] = [
       {
@@ -32,7 +33,7 @@ const questions = async (
       });
     }
 
-    if (shouldJoin('answer')) {
+    if (shouldJoin(['answer'])) {
       pipeline.push(
         {
           $lookup: {
@@ -49,6 +50,17 @@ const questions = async (
           },
         },
       );
+    }
+
+    if (shouldJoin(['answer', 'actions'])) {
+      pipeline.push({
+        $lookup: {
+          from: 'actions',
+          localField: 'answer._id',
+          foreignField: 'scope._id',
+          as: 'answer.actions',
+        },
+      });
     }
 
     const questions = await Questions.aggregate(pipeline);

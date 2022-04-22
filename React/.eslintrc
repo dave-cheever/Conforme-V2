@@ -36,7 +36,7 @@
     "prefer-destructuring": "warn",
     "import/no-cycle": "off",
     "import-helpers/order-imports": [
-      "error",
+      "warn",
       {
         "alphabetize": {
           "ignoreCase": true,

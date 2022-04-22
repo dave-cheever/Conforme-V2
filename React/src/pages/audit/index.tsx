@@ -1,27 +1,18 @@
-import {
-  Button,
-  HStack,
-  Spacer,
-  Stack,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Button, HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
 
 import AuditAnswer from '../../components/Audit/AuditAnswer';
 import AuditDeleteQuestionModal from '../../components/Audit/AuditDeleteQuestionModal';
 import AuditNewQuestionModal from '../../components/Audit/AuditNewQuestionModal';
-import DocumentThumbnail from '../../components/Documents/DocumentThumbnail';
+import AuditQuestionsCategory from '../../components/Audit/AuditQuestionsCategory';
 import { useAuditContext } from '../../contexts/AuditProvider';
-import { ActionsIcon, EditIcon, Trashcan } from '../../icons';
 
 const Audit = () => {
   const {
     audit,
     questionsCategories,
-    customQuestionsCategories,
-    questions,
     selectedQuestion,
     setSelectedQuestion,
+    customQuestionsCategories,
   } = useAuditContext();
   const {
     isOpen: isNewQuestionModalOpen,
@@ -73,69 +64,13 @@ const Audit = () => {
       </HStack>
       {!(selectedQuestion && !isDeleteQuestionModalOpen) && (
         <Stack>
-          {questionsCategories.map((category) => {
-            const categoryQuestions = questions[category._id];
-            if (!categoryQuestions) return null;
-
-            return (
-              <Stack key={category._id} spacing={4} w="full">
-                <Text fontWeight="semibold">{category.name}</Text>
-                <Stack>
-                  {categoryQuestions.map((question) => (
-                    <HStack
-                      bgColor="auditItem.listItem.bg"
-                      h="90px"
-                      key={question._id}
-                      p={4}
-                      rounded="10px"
-                    >
-                      <Stack flexGrow={1} spacing={2}>
-                        <Text fontSize="smm">{question.question}</Text>
-                        <HStack>
-                          <ActionsIcon
-                            fill="transparent"
-                            stroke="auditItem.listItem.action.icon"
-                          />
-                          <Text
-                            color="auditItem.listItem.action.color"
-                            fontSize="ssm"
-                          >
-                            {0} Actions
-                          </Text>
-                        </HStack>
-                      </Stack>
-                      <HStack>
-                        {question.answer?.attachments?.map((attachment) => (
-                          <DocumentThumbnail
-                            document={attachment}
-                            key={attachment.id}
-                          />
-                        ))}
-                      </HStack>
-                      {audit.status === 'inProgress' && (
-                        <Stack>
-                          <EditIcon
-                            cursor="pointer"
-                            onClick={() => setSelectedQuestion(question)}
-                            stroke="auditItem.listItem.editIcon"
-                          />
-                          <Spacer />
-                          <Trashcan
-                            cursor="pointer"
-                            onClick={() => {
-                              setSelectedQuestion(question);
-                              handleDeleteQuestionModalOpen();
-                            }}
-                            stroke="auditItem.listItem.deleteIcon"
-                          />
-                        </Stack>
-                      )}
-                    </HStack>
-                  ))}
-                </Stack>
-              </Stack>
-            );
-          })}
+          {questionsCategories.map((category) => (
+            <AuditQuestionsCategory
+              handleDelete={handleDeleteQuestionModalOpen}
+              key={category._id}
+              questionsCategory={category}
+            />
+          ))}
         </Stack>
       )}
       {selectedQuestion && !isDeleteQuestionModalOpen && (

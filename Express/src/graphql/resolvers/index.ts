@@ -1,4 +1,5 @@
 import scalars from '../scalars';
+import actionsResolvers from './actions';
 import answersResolvers from './answers';
 import auditLogsResolvers from './auditLogs';
 import auditsResolvers from './audits';
@@ -22,6 +23,7 @@ export default {
   Any: scalars.anyScalar,
   Date: scalars.dateScalar,
   Query: {
+    ...actionsResolvers.Query,
     ...answersResolvers.Query,
     ...auditLogsResolvers.Query,
     ...auditsResolvers.Query,
@@ -42,6 +44,7 @@ export default {
     ...usersResolvers.Query,
   },
   Mutation: {
+    ...actionsResolvers.Mutation,
     ...answersResolvers.Mutation,
     ...auditsResolvers.Mutation,
     ...auditTypesResolvers.Mutation,

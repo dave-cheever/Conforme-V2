@@ -28,6 +28,7 @@ export const answersTypeDefs = `
     status: String
     options: Any
     scope: Scope
+    actions: [Action]
     metatags: Metatags
   }
 

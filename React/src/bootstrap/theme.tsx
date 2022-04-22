@@ -1,6 +1,8 @@
 import { theme } from '@chakra-ui/react';
 import { merge } from 'lodash';
 
+import { actionFormStyles } from '../components/Actions/ActionForm';
+import { actionListElementStyles } from '../components/Actions/ActionListItem';
 import { adminModalStyles } from '../components/Admin/AdminModal';
 import { adminTableHeaderStyles } from '../components/Admin/AdminTableHeader';
 import { adminTableHeaderElementStyles } from '../components/Admin/AdminTableHeaderElement';
@@ -148,14 +150,8 @@ const getTheme = (organizationTheme?: any) => {
     colors: merge(
       {
         ...theme.colors,
-        ...auditHeaderStyles,
-        ...auditHeaderMenuItemStyles,
-        ...auditItemStyles,
-        ...auditsGroupStyles,
-        ...auditLeftNavigationStyles,
-        ...auditLeftTabItemStyles,
-        ...auditsListStyles,
-        ...auditSquareStyles,
+        ...actionFormStyles,
+        ...actionListElementStyles,
         ...adminModalStyles,
         ...additionalDetailsStyles,
         ...addComplianceItemAttributeStyles,
@@ -164,13 +160,21 @@ const getTheme = (organizationTheme?: any) => {
         ...adminTableHeaderStyles,
         ...alertDialogStyles,
         ...auditAnswerStyles,
+        ...auditHeaderMenuItemStyles,
+        ...auditHeaderStyles,
+        ...auditItemStyles,
+        ...auditLeftNavigationStyles,
+        ...auditLeftTabItemStyles,
         ...auditLogDayStyles,
         ...auditLogRecordStyles,
         ...auditLogStyles,
         ...auditModalStyles,
         ...auditNewQuestionModalStyles,
+        ...auditSquareStyles,
         ...auditTeamModalStyles,
         ...auditTypesAdminStyles,
+        ...auditsGroupStyles,
+        ...auditsListStyles,
         ...avatarUserStyles,
         ...barChartStyles,
         ...businessUnitsModalStyles,

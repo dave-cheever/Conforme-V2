@@ -1,4 +1,5 @@
-import { IBase, IScope } from 'app-interfaces';
+import { IBase } from './IBase';
+import { IScope } from './IScope';
 
 export interface IAction extends IBase {
   title: string;

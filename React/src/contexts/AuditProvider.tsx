@@ -5,6 +5,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useToast } from '@chakra-ui/react';
 
 import useNavigate from '../hooks/useNavigate';
+import { IAction } from '../interfaces/IAction';
 import { IAnswer } from '../interfaces/IAnswer';
 import { IAuditContext } from '../interfaces/IAuditContext';
 import { IQuestion } from '../interfaces/IQuestion';
@@ -81,6 +82,14 @@ const GET_AUDIT_DATA = gql`
         metatags {
           updatedAt
         }
+        actions {
+          _id
+          title
+          dueDate
+          priority
+          description
+          assigneeId
+        }
       }
       questionsCategoryId
       scope {
@@ -104,6 +113,14 @@ const GET_AUDIT_DATA = gql`
         options
         metatags {
           updatedAt
+        }
+        actions {
+          _id
+          title
+          dueDate
+          priority
+          description
+          assigneeId
         }
       }
       questionsCategoryId
@@ -131,13 +148,6 @@ const ADD_QUESTION = gql`
   mutation AddQuestion($question: QuestionCreateInput!) {
     createQuestion(question: $question) {
       _id
-      question
-      questionsCategoryId
-      scope {
-        component
-        type
-        _id
-      }
     }
   }
 `;
@@ -157,13 +167,6 @@ const ADD_ANSWER = gql`
   mutation AddAnswer($answer: AnswerCreateInput!) {
     createAnswer(answer: $answer) {
       _id
-      answer
-      attachments {
-        id
-        name
-        addedAt
-      }
-      options
     }
   }
 `;
@@ -177,6 +180,25 @@ const SAVE_ANSWER = gql`
 const DELETE_ANSWER = gql`
   mutation ($_id: ID!) {
     deleteAnswer(_id: $_id)
+  }
+`;
+const ADD_ACTION = gql`
+  mutation AddAction($action: ActionCreateInput!) {
+    createAction(action: $action) {
+      _id
+    }
+  }
+`;
+const SAVE_ACTION = gql`
+  mutation SaveAction($action: ActionModifyInput!) {
+    updateAction(actionInput: $action) {
+      _id
+    }
+  }
+`;
+const DELETE_ACTION = gql`
+  mutation ($_id: ID!) {
+    deleteAction(_id: $_id)
   }
 `;
 
@@ -212,8 +234,13 @@ const AuditProvider = ({ children }) => {
   const [saveAnswer] = useMutation(SAVE_ANSWER);
   const [deleteAnswer] = useMutation(DELETE_ANSWER);
 
+  const [createAction] = useMutation(ADD_ACTION);
+  const [saveAction] = useMutation(SAVE_ACTION);
+  const [deleteAction] = useMutation(DELETE_ACTION);
+
   const [selectedQuestion, setSelectedQuestion] =
     useState<TDeepPartial<TQuestionWithAnswer>>();
+  const [selectedAction, setSelectedAction] = useState<Partial<IAction>>();
 
   const {
     data,
@@ -300,9 +327,75 @@ const AuditProvider = ({ children }) => {
     await refetchAuditData();
   };
 
+  const updateActions = async (
+    actions: Partial<IAction>[],
+    answerId: string,
+  ) => {
+    const addedActions: Partial<IAction>[] = actions.filter(({ _id }) =>
+      _id?.includes('temp'),
+    );
+    const addedActionsPromises = addedActions.map(async (action) => {
+      await createAction({
+        variables: {
+          action: {
+            title: action.title,
+            dueDate: action.dueDate,
+            done: false,
+            priority: action.priority,
+            description: action.description,
+            assigneeId: action.assigneeId,
+            scope: {
+              type: 'answer',
+              _id: answerId,
+            },
+          },
+        },
+      });
+    });
+
+    const updatedActions: Partial<IAction>[] = actions.filter(
+      ({ _id }) => !_id?.includes('temp'),
+    );
+    const updatedActionsPromises = updatedActions.map(async (action) => {
+      await saveAction({
+        variables: {
+          action: {
+            _id: action._id,
+            title: action.title,
+            dueDate: action.dueDate,
+            priority: action.priority,
+            description: action.description,
+            assigneeId: action.assigneeId,
+          },
+        },
+      });
+    });
+
+    const deletedActionsIds: string[] =
+      selectedQuestion?.answer?.actions?.reduce((acc, curr) => {
+        if (curr?._id && !actions.find(({ _id }) => _id === curr._id))
+          return [...acc, curr._id];
+
+        return acc;
+      }, [] as string[]) || [];
+    const deletedActionsPromises = deletedActionsIds.map(async (_id) => {
+      await deleteAction({
+        variables: {
+          _id,
+        },
+      });
+    });
+
+    await Promise.all([
+      ...addedActionsPromises,
+      ...updatedActionsPromises,
+      ...deletedActionsPromises,
+    ]);
+  };
+
   const createCustomQuestionAndAnswer = async (
     questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ) => {
+  ): Promise<{ questionId: string; answerId?: string }> => {
     const { _id, answer, ...question } = questionValues;
     const createdQuestionRes = await createQuestion({
       variables: {
@@ -317,7 +410,7 @@ const AuditProvider = ({ children }) => {
     });
     const createdQuestion = createdQuestionRes.data.createQuestion;
     if (answer) {
-      await createAnswer({
+      const createdAnswerRes = await createAnswer({
         variables: {
           answer: {
             ...answer,
@@ -329,8 +422,15 @@ const AuditProvider = ({ children }) => {
           },
         },
       });
+      const createdAnswer = createdAnswerRes.data.createAnswer;
+      return {
+        questionId: createdQuestion._id,
+        answerId: createdAnswer._id,
+      };
     }
-    refetch();
+    return {
+      questionId: createdQuestion._id,
+    };
   };
 
   const saveCustomQuestionAndAnswer = async (
@@ -349,7 +449,6 @@ const AuditProvider = ({ children }) => {
         },
       });
     }
-    refetch();
   };
 
   const deleteCustomQuestionAndAnswer = async (
@@ -367,7 +466,6 @@ const AuditProvider = ({ children }) => {
         },
       });
     }
-    refetch();
   };
 
   const value = useMemo(
@@ -384,9 +482,12 @@ const AuditProvider = ({ children }) => {
       loading,
       selectedQuestion,
       setSelectedQuestion,
+      selectedAction,
+      setSelectedAction,
       createCustomQuestionAndAnswer,
       saveCustomQuestionAndAnswer,
       deleteCustomQuestionAndAnswer,
+      updateActions,
       updateAudit,
       submitAudit,
       refetch,
@@ -401,6 +502,7 @@ const AuditProvider = ({ children }) => {
       questions,
       loading,
       selectedQuestion,
+      selectedAction,
     ],
   );
 

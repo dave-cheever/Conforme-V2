@@ -80,7 +80,11 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
                   <Stack align="center" spacing={0}>
                     <Text fontSize="smm">{category.name}</Text>
                     {category.maxQuestionsNumber && (
-                      <Text fontSize="smm">{questionsLeft} left</Text>
+                      <Text fontSize="smm">
+                        {questionsLeft
+                          ? `${questionsLeft} left`
+                          : 'Limit reached'}
+                      </Text>
                     )}
                   </Stack>
                 </Stack>

@@ -18,12 +18,12 @@ export const actionsTypeDefs = `
   type Action {
     _id: ID!
     title: ID!
-    auditId: String!
-    dueDate: Date!
+    dueDate: Date
     done: Boolean!
-    priority: String!,
-    description: String!,
-    assignedId: ID!
+    priority: String!
+    description: String
+    assigneeId: ID!
+    scope: Scope!
     metatags: Metatags
   }
 
@@ -34,23 +34,22 @@ export const actionsTypeDefs = `
 
   input ActionCreateInput {
     title: ID!
-    auditId: String!
-    dueDate: Date!
+    dueDate: Date
     done: Boolean!
-    priority: String!,
-    description: String!,
-    assignedId: ID!
+    priority: String!
+    description: String
+    assigneeId: ID!
+    scope: ScopeInput!
   }
   
   input ActionModifyInput {
     _id: ID!
-    title: ID!
-    auditId: String!
-    dueDate: Date!
-    done: Boolean!
-    priority: String!,
-    description: String!,
-    assignedId: ID!
+    title: ID
+    dueDate: Date
+    done: Boolean
+    priority: String
+    description: String
+    assigneeId: ID
   }
 `;
 

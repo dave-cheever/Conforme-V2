@@ -1,3 +1,4 @@
+import { IAction } from './IAction';
 import { IBase } from './IBase';
 import { IDocument } from './IResponse';
 import { IScope } from './IScope';
@@ -12,4 +13,7 @@ export interface IAnswer extends IBase {
     [name: string]: boolean;
   };
   scope: IScope;
+
+  // Additional fields - can be added in the API
+  actions?: IAction[];
 }

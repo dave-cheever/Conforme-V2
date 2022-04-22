@@ -12,6 +12,7 @@ import {
   IQuestionsByCategories,
   TQuestionWithAnswer,
 } from '../contexts/AuditProvider';
+import { IAction } from './IAction';
 import { IAudit } from './IAudit';
 import { IAuditType } from './IAuditType';
 import { IBusinessUnit } from './IBusinessUnit';
@@ -31,19 +32,27 @@ export interface IAuditContext {
   customQuestionsCategories: IQuestionsCategory[];
   questions: IQuestionsByCategories;
   loading: boolean;
-  selectedQuestion?: TDeepPartial<TQuestionWithAnswer>;
 
+  selectedQuestion?: TDeepPartial<TQuestionWithAnswer>;
   setSelectedQuestion: Dispatch<
     SetStateAction<TDeepPartial<TQuestionWithAnswer> | undefined>
   >;
+
+  selectedAction?: Partial<IAction>;
+  setSelectedAction: Dispatch<SetStateAction<Partial<IAction> | undefined>>;
+
   createCustomQuestionAndAnswer: (
     questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ) => Promise<void>;
+  ) => Promise<{ questionId: string; answerId?: string }>;
   saveCustomQuestionAndAnswer: (
     questionValues: TDeepPartial<TQuestionWithAnswer>,
   ) => Promise<void>;
   deleteCustomQuestionAndAnswer: (
     questionValues: TDeepPartial<TQuestionWithAnswer>,
+  ) => Promise<void>;
+  updateActions: (
+    actions: Partial<IAction>[],
+    answerId: string,
   ) => Promise<void>;
 
   updateAudit: (

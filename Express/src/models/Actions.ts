@@ -15,7 +15,7 @@ const actionsSchema = new Schema<IAction, IActionModel>({
     enum: ['low', 'medium', 'high'],
   },
   description: String,
-  assignedId: String,
+  assigneeId: String,
   scope: {
     component: {
       type: String,

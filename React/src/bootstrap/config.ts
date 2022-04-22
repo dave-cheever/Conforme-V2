@@ -340,3 +340,18 @@ export const SwitchOptions = [
     value: 'no',
   },
 ];
+
+export const priorities = [
+  {
+    value: 'low',
+    label: 'Low',
+  },
+  {
+    value: 'medium',
+    label: 'Medium',
+  },
+  {
+    value: 'high',
+    label: 'High',
+  },
+];

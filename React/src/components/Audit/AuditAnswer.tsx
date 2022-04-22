@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text } from '@chakra-ui/react';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   TQuestionWithAnswer,
@@ -9,6 +10,8 @@ import {
 } from '../../contexts/AuditProvider';
 import { CheckIcon } from '../../icons';
 import { TDeepPartial } from '../../interfaces/TDeepPartial';
+import ActionForm from '../Actions/ActionForm';
+import ActionListItem from '../Actions/ActionListItem';
 import DocumentUpload from '../Documents/DocumentUpload';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 import { TextInput, Toggle } from '../Forms';
@@ -25,6 +28,10 @@ const AuditAnswer = ({
     questionsCategories,
     createCustomQuestionAndAnswer,
     saveCustomQuestionAndAnswer,
+    updateActions,
+    selectedAction,
+    setSelectedAction,
+    refetch,
   } = useAuditContext();
   const questionsCategory = questionsCategories.find(
     ({ _id }) => _id === question.questionsCategoryId,
@@ -44,8 +51,9 @@ const AuditAnswer = ({
       options: answer?.options || {},
       attachments: answer?.attachments || [],
       answer: answer?.answer || '',
+      actions: answer?.actions || [],
     });
-  }, [question]);
+  }, [JSON.stringify(question)]);
 
   if (!questionsCategory) return null;
   return (
@@ -140,17 +148,53 @@ const AuditAnswer = ({
         <Text fontSize="smm" fontWeight="semibold">
           Actions
         </Text>
-        <Button
-          bgColor="auditAnswer.buttons.addAction.bg"
-          color="auditAnswer.buttons.addAction.color"
-          fontSize="ssm"
-          fontWeight="semibold"
-          h="28px"
-          rounded="10px"
-          w="fit-content"
-        >
-          Add action
-        </Button>
+        {selectedAction ? (
+          <ActionForm
+            handleSave={(action) => {
+              if (!action._id) {
+                setValue('actions', [
+                  ...values.actions,
+                  { ...action, _id: `temp-${uuidv4()}` },
+                ]);
+              } else {
+                const actionIndex = values.actions.findIndex(
+                  ({ _id }) => _id === action._id,
+                );
+                const actions = [...values.actions];
+                actions[actionIndex] = action;
+                setValue('actions', actions);
+              }
+            }}
+          />
+        ) : (
+          <Stack>
+            {values.actions?.map((action, index) => (
+              <ActionListItem
+                action={action}
+                index={index}
+                key={action._id}
+                onDelete={() =>
+                  setValue(
+                    'actions',
+                    values.actions.filter((a, i) => i !== index),
+                  )
+                }
+              />
+            ))}
+            <Button
+              bgColor="auditAnswer.buttons.addAction.bg"
+              color="auditAnswer.buttons.addAction.color"
+              fontSize="ssm"
+              fontWeight="semibold"
+              h="28px"
+              onClick={() => setSelectedAction({})}
+              rounded="10px"
+              w="fit-content"
+            >
+              Add action
+            </Button>
+          </Stack>
+        )}
       </Stack>
       <HStack>
         <Button
@@ -172,7 +216,8 @@ const AuditAnswer = ({
           fontSize="smm"
           fontWeight="semibold"
           h="40px"
-          onClick={() => {
+          onClick={async () => {
+            // Add or update question and answer
             const questionWithAnswer: TDeepPartial<TQuestionWithAnswer> = {
               _id: question._id,
               answer: {
@@ -187,15 +232,17 @@ const AuditAnswer = ({
               },
               question: values.question,
             };
-            if (answer?._id) saveCustomQuestionAndAnswer(questionWithAnswer);
+            let answerId = answer?._id;
+            if (answerId) saveCustomQuestionAndAnswer(questionWithAnswer);
             else {
-              createCustomQuestionAndAnswer({
+              ({ answerId } = await createCustomQuestionAndAnswer({
                 ...questionWithAnswer,
                 type: question.type,
                 questionsCategoryId: question.questionsCategoryId,
-              });
+              }));
             }
-
+            if (answerId) await updateActions(values.actions, answerId);
+            refetch();
             handleClose();
           }}
           rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
