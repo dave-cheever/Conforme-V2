@@ -17,6 +17,7 @@ const GET_AUDIT = gql`
   query GetAudit($auditQueryInput: AuditQueryInput) {
     audits(auditQueryInput: $auditQueryInput) {
       _id
+      auditTypeId
       walkType
       reference
       status
@@ -41,10 +42,12 @@ const GET_AUDIT = gql`
       auditor {
         _id
         displayName
+        imgUrl
       }
       participants {
         _id
         displayName
+        imgUrl
       }
     }
   }
@@ -61,6 +64,7 @@ const GET_AUDIT_DATA = gql`
       withAnswers
       allowCustomQuestions
       maxQuestionsNumber
+      editableSubmitted
       icon
       options {
         name

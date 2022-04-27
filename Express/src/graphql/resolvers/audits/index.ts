@@ -34,6 +34,7 @@ export const auditsTypeDefs = `
     participantsIds: [ID]
     participants: [User]
     metatags: Metatags
+    questions: [Question]
   }
 
   input AuditUsersInput {
@@ -44,6 +45,7 @@ export const auditsTypeDefs = `
   input AuditQueryInput {
     _id: ID
     status: [String]
+    auditTypesIds: [ID]
     walkType: [String]
     areasIds: [ID]
     sitesIds: [ID]

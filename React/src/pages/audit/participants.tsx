@@ -1,130 +1,198 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AddIcon } from '@chakra-ui/icons';
 import {
   Avatar,
-  Box,
   Flex,
   Grid,
   GridItem,
   IconButton,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 
+import { toastSuccess } from '../../bootstrap/config';
 import AuditTeamModal from '../../components/AuditModal/AuditTeamModal';
-import AuditModalProvider from '../../contexts/AuditModalProvider';
+import { useAuditContext } from '../../contexts/AuditProvider';
 import AuditTeamProvider, {
   useAuditTeamContext,
 } from '../../contexts/AuditTeamProvider';
 
 const AuditParticipants = () => {
-  const { selectedAuditor, selectedParticipants } = useAuditTeamContext();
+  const toast = useToast();
+  const { audit, updateAudit, refetch } = useAuditContext();
+  const {
+    selectedAuditor,
+    setSelectedAuditor,
+    selectedParticipants,
+    setSelectedParticipants,
+  } = useAuditTeamContext();
   const [auditorModalOpen, setAuditorModalOpen] = useState(false);
   const [participantsModalOpen, setParticipantsModalOpen] = useState(false);
 
+  useEffect(() => {
+    if (audit.auditor) setSelectedAuditor(audit.auditor);
+    if (audit.participants) setSelectedParticipants(audit.participants);
+  }, [JSON.stringify(audit)]);
+
+  const handleAuditorSelect = async () => {
+    setAuditorModalOpen(false);
+    await updateAudit({
+      variables: {
+        audit: {
+          _id: audit._id,
+          auditorId: selectedAuditor._id,
+        },
+      },
+    });
+    toast({ ...toastSuccess, description: 'Auditor updated' });
+    refetch();
+  };
+
+  const handleParticipantsSelect = async () => {
+    setParticipantsModalOpen(false);
+    await updateAudit({
+      variables: {
+        audit: {
+          _id: audit._id,
+          participantsIds: selectedParticipants.map((user) => user?._id),
+        },
+      },
+    });
+    toast({ ...toastSuccess, description: 'Participants updated' });
+    refetch();
+  };
+
   return (
     <>
-      <Flex flexDir="column" h={['fit-content', 'full']} w="full">
+      <AuditTeamModal
+        isOpen={auditorModalOpen}
+        multiple={false}
+        onClose={handleAuditorSelect}
+      />
+      <AuditTeamModal
+        isOpen={participantsModalOpen}
+        multiple
+        onClose={handleParticipantsSelect}
+      />
+      <Stack h={['fit-content', 'full']} spacing={4} w="full">
         <Flex justifyContent={['space-between', 'initial']}>
           <Text fontSize="xxl" fontWeight="semibold">
             Participants
           </Text>
         </Flex>
-        <Flex
-          bg="auditItem.bg"
+        <Stack
+          bg="auditParticipants.bg"
           borderRadius="20px"
-          flexDir="column"
           h="full"
-          mt={4}
-          p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
+          px={6}
+          py={4}
+          rounded="20px"
+          spacing={6}
           w="full"
         >
-          <Flex direction="column" mb="8">
-            <Box mb={10}>
-              <AuditTeamModal
-                isOpen={auditorModalOpen}
-                multiple={false}
-                onClose={() => setAuditorModalOpen(false)}
+          <Stack spacing={4}>
+            <Text fontSize="smm" fontWeight="semibold">
+              Audited by
+            </Text>
+            <Flex
+              align="center"
+              direction="column"
+              fontSize={['14px', '24px']}
+              position="relative"
+              textAlign="center"
+              w="64px"
+            >
+              <Avatar
+                cursor={audit.status === 'inProgress' ? 'pointer' : 'default'}
+                name={selectedAuditor?.displayName}
+                onClick={() =>
+                  audit.status === 'inProgress' && setAuditorModalOpen(true)
+                }
+                rounded="full"
+                size="lg"
+                src={selectedAuditor?.imgUrl}
               />
-              <Text fontSize="smm" fontWeight="semibold" mb={5} size="md">
-                Audited by
+              <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                {selectedAuditor.firstName || selectedAuditor.lastName
+                  ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
+                  : selectedAuditor.displayName}
               </Text>
-              <Stack align="center" fontSize={['14px', '24px']} w="fit-content">
-                <Avatar
-                  cursor="pointer"
-                  name={selectedAuditor?.displayName}
-                  onClick={() => setAuditorModalOpen(true)}
-                  rounded="full"
-                  size="lg"
-                  src={selectedAuditor?.imgUrl}
-                />
-                <Text fontSize="smm" opacity={0.5}>
-                  {selectedAuditor?.displayName}
-                </Text>
-              </Stack>
-            </Box>
-            <Box mb={10}>
-              <AuditTeamModal
-                isOpen={participantsModalOpen}
-                multiple
-                onClose={() => setParticipantsModalOpen(false)}
-              />
-              <Text fontSize="smm" fontWeight="semibold" mb={5} size="md">
+            </Flex>
+          </Stack>
+          {(selectedParticipants.length > 0 ||
+            audit.status === 'inProgress') && (
+            <Stack spacing={4}>
+              <Text fontSize="smm" fontWeight="semibold">
                 Participants
               </Text>
               <Grid
-                alignItems="center"
                 fontSize={['14px', '24px']}
-                gap={5}
-                templateColumns="repeat(auto-fill, 50px)"
+                gap={6}
+                templateColumns="repeat(auto-fill, 64px)"
               >
-                {selectedParticipants?.map((participant) => (
-                  <Stack
-                    align="center"
-                    fontSize={['14px', '24px']}
-                    w="fit-content"
-                  >
-                    <Avatar
-                      cursor="pointer"
-                      name={participant?.displayName}
-                      onClick={() => setAuditorModalOpen(true)}
-                      rounded="full"
-                      size="lg"
-                      src={participant?.imgUrl}
+                {selectedParticipants?.map((participant) => {
+                  if (!participant) return null;
+                  return (
+                    <GridItem key={participant._id}>
+                      <Flex
+                        align="center"
+                        direction="column"
+                        fontSize={['14px', '24px']}
+                        position="relative"
+                        textAlign="center"
+                        w="64px"
+                      >
+                        <Avatar
+                          cursor="pointer"
+                          name={participant.displayName}
+                          rounded="full"
+                          size="lg"
+                          src={participant.imgUrl}
+                        />
+                        <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                          {participant.firstName || participant.lastName
+                            ? `${participant.firstName} ${participant.lastName}`
+                            : participant.displayName}
+                        </Text>
+                      </Flex>
+                    </GridItem>
+                  );
+                })}
+                {audit.status === 'inProgress' && (
+                  <GridItem>
+                    <IconButton
+                      aria-label="Add participant"
+                      bg="auditModal.addParticipant.bg"
+                      color="auditModal.addParticipant.color"
+                      h="64px"
+                      icon={<AddIcon />}
+                      isRound
+                      onClick={() => setParticipantsModalOpen(true)}
+                      w="64px"
                     />
-                    <Text fontSize="smm" opacity={0.5}>
-                      {participant?.displayName}
-                    </Text>
-                  </Stack>
-                ))}
-                <GridItem>
-                  <IconButton
-                    aria-label="Add participant"
-                    bg="auditModal.tabs.bottomButton.bg"
-                    color="auditModal.participantsButton.color"
-                    h="64px"
-                    icon={<AddIcon />}
-                    isRound
-                    onClick={() => setParticipantsModalOpen(true)}
-                    w="64px"
-                  />
-                </GridItem>
+                  </GridItem>
+                )}
               </Grid>
-            </Box>
-          </Flex>
-        </Flex>
-      </Flex>
+            </Stack>
+          )}
+        </Stack>
+      </Stack>
     </>
   );
 };
 
 const AuditsParticipantsWithContext = () => (
   <AuditTeamProvider>
-    <AuditModalProvider>
-      <AuditParticipants />
-    </AuditModalProvider>
+    <AuditParticipants />
   </AuditTeamProvider>
 );
 
 export default AuditsParticipantsWithContext;
+
+export const auditParticipantsStyles = {
+  auditParticipants: {
+    bg: '#FFF',
+  },
+};

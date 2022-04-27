@@ -25,6 +25,7 @@ import Sites from '../pages/admin/sites';
 import Users from '../pages/admin/users';
 import Assets from '../pages/assets';
 import Audit from '../pages/audit';
+import AuditHistory from '../pages/audit/history';
 import AuditParticipants from '../pages/audit/participants';
 import Audits from '../pages/audits';
 import ComplianceItemAuditLog from '../pages/compliance-item/audit-log';
@@ -99,9 +100,16 @@ const protectedRoutes: Array<IRoute> = [
   },
   {
     path: '/audits/:id/participants',
-    key: 'audit',
+    key: 'audit-participants',
     exact: true,
     component: AuditParticipants,
+    layout: AuditLayout,
+  },
+  {
+    path: '/audits/:id/history',
+    key: 'audit-history',
+    exact: true,
+    component: AuditHistory,
     layout: AuditLayout,
   },
   {

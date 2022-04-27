@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { AddIcon } from '@chakra-ui/icons';
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   Grid,
@@ -232,81 +231,77 @@ const AuditModal = ({ refetch }) => {
             <Text fontSize="smm" fontWeight="semibold">
               Audited by
             </Text>
-            <Box>
-              <Flex
-                align="center"
-                direction="column"
-                fontSize={['14px', '24px']}
-                position="relative"
-                textAlign="center"
-                w="64px"
-              >
-                <Avatar
-                  cursor="pointer"
-                  name={selectedAuditor?.displayName}
-                  onClick={() => setAuditorModalOpen(true)}
-                  rounded="full"
-                  size="lg"
-                  src={selectedAuditor?.imgUrl}
-                />
-                <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                  {selectedAuditor.firstName || selectedAuditor.lastName
-                    ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
-                    : selectedAuditor.displayName}
-                </Text>
-              </Flex>
-            </Box>
+            <Flex
+              align="center"
+              direction="column"
+              fontSize={['14px', '24px']}
+              position="relative"
+              textAlign="center"
+              w="64px"
+            >
+              <Avatar
+                cursor="pointer"
+                name={selectedAuditor?.displayName}
+                onClick={() => setAuditorModalOpen(true)}
+                rounded="full"
+                size="lg"
+                src={selectedAuditor?.imgUrl}
+              />
+              <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                {selectedAuditor.firstName || selectedAuditor.lastName
+                  ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
+                  : selectedAuditor.displayName}
+              </Text>
+            </Flex>
             <Text fontSize="smm" fontWeight="semibold">
               Participants
             </Text>
-            <Box>
-              <Grid
-                fontSize={['14px', '24px']}
-                gap={6}
-                templateColumns="repeat(auto-fill, 64px)"
-              >
-                {selectedParticipants?.map((participant) => {
-                  if (!participant) return null;
-                  return (
-                    <GridItem key={participant._id}>
-                      <Flex
-                        align="center"
-                        direction="column"
-                        fontSize={['14px', '24px']}
-                        position="relative"
-                        textAlign="center"
-                        w="64px"
-                      >
-                        <Avatar
-                          cursor="pointer"
-                          name={participant.displayName}
-                          rounded="full"
-                          size="lg"
-                          src={participant.imgUrl}
-                        />
-                        <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                          {participant.firstName || participant.lastName
-                            ? `${participant.firstName} ${participant.lastName}`
-                            : participant.displayName}
-                        </Text>
-                      </Flex>
-                    </GridItem>
-                  );
-                })}
-                <GridItem>
-                  <IconButton
-                    aria-label="Add participant"
-                    bg="auditModal.addParticipant.bg"
-                    color="auditModal.addParticipant.color"
-                    h="64px"
-                    icon={<AddIcon />}
-                    isRound
-                    onClick={() => setParticipantsModalOpen(true)}
-                    w="64px"
-                  />
-                </GridItem>
-              </Grid>
-            </Box>
+            <Grid
+              fontSize={['14px', '24px']}
+              gap={6}
+              templateColumns="repeat(auto-fill, 64px)"
+            >
+              {selectedParticipants?.map((participant) => {
+                if (!participant) return null;
+                return (
+                  <GridItem key={participant._id}>
+                    <Flex
+                      align="center"
+                      direction="column"
+                      fontSize={['14px', '24px']}
+                      position="relative"
+                      textAlign="center"
+                      w="64px"
+                    >
+                      <Avatar
+                        cursor="pointer"
+                        name={participant.displayName}
+                        rounded="full"
+                        size="lg"
+                        src={participant.imgUrl}
+                      />
+                      <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                        {participant.firstName || participant.lastName
+                          ? `${participant.firstName} ${participant.lastName}`
+                          : participant.displayName}
+                      </Text>
+                    </Flex>
+                  </GridItem>
+                );
+              })}
+              <GridItem>
+                <IconButton
+                  aria-label="Add participant"
+                  bg="auditModal.addParticipant.bg"
+                  color="auditModal.addParticipant.color"
+                  h="64px"
+                  icon={<AddIcon />}
+                  isRound
+                  onClick={() => setParticipantsModalOpen(true)}
+                  w="64px"
+                />
+              </GridItem>
+            </Grid>
             <Spacer />
             <Flex justifyContent="flex-end" w="full">
               <Button

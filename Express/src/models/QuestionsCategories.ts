@@ -19,6 +19,7 @@ const questionsCategoriesSchema = new Schema<
   withAnswers: Boolean,
   allowCustomQuestions: Boolean,
   maxQuestionsNumber: Number,
+  editableSubmitted: Boolean,
   icon: String,
   options: [
     {

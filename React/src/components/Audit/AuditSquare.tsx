@@ -65,7 +65,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           noOfLines={2}
           w="full"
         >
-          {audit?.walkType === 'physical' ? audit?.site?.name : 'Virtual walk'}
+          {audit?.walkType === 'physical' ? audit?.area?.name : 'Virtual walk'}
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">

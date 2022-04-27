@@ -267,6 +267,7 @@ const getUsers = async ({
         lastName: surname,
         email: userPrincipalName,
         jobTitle,
+        imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${id}`,
       }),
     );
   } catch (error: any) {

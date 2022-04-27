@@ -105,6 +105,8 @@ import { locationsStyles } from '../pages/admin/locations';
 import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
 import { userItemStyles } from '../pages/admin/users';
 import { auditItemStyles } from '../pages/audit';
+import { auditHistoryStyles } from '../pages/audit/history';
+import { auditParticipantsStyles } from '../pages/audit/participants';
 import { auditsStyles } from '../pages/audits';
 import { historyPageStyles } from '../pages/compliance-item/history';
 import { complianceItemResponseStyles } from '../pages/compliance-item/index';
@@ -170,6 +172,7 @@ const getTheme = (organizationTheme?: any) => {
         ...auditAnswerStyles,
         ...auditHeaderMenuItemStyles,
         ...auditHeaderStyles,
+        ...auditHistoryStyles,
         ...auditItemStyles,
         ...auditLeftNavigationStyles,
         ...auditLeftTabItemStyles,
@@ -178,6 +181,7 @@ const getTheme = (organizationTheme?: any) => {
         ...auditLogStyles,
         ...auditModalStyles,
         ...auditNewQuestionModalStyles,
+        ...auditParticipantsStyles,
         ...auditSquareStyles,
         ...auditTeamModalStyles,
         ...auditTypesAdminStyles,

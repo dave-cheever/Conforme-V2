@@ -26,6 +26,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
       withAnswers
       allowCustomQuestions
       maxQuestionsNumber
+      editableSubmitted
       icon
       options {
         type
@@ -152,6 +153,7 @@ const QuestionsCategories = () => {
       withAnswers: questionsCategory?.withAnswers,
       allowCustomQuestions: questionsCategory?.allowCustomQuestions,
       maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+      editableSubmitted: questionsCategory?.editableSubmitted,
       icon: questionsCategory?.icon,
       selectedOption: (questionsCategory?.options || [])[0]?.name || '',
       scope: questionsCategory?.scope,
@@ -208,6 +210,7 @@ const QuestionsCategories = () => {
               withAnswers: questionsCategory?.withAnswers,
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+              editableSubmitted: questionsCategory?.editableSubmitted,
               icon: questionsCategory?.icon,
               options: questionsCategory?.selectedOption
                 ? [
@@ -345,6 +348,14 @@ const QuestionsCategories = () => {
             placeholder="Max number of questions"
             required
             tooltip="0 means no limit"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            label="Editable after submission"
+            name="editableSubmitted"
+            placeholder="Editable after submission"
+            tooltip="If enabled, questions and answers in this category will be editable after submission"
             variant="secondaryVariant"
           />
           <TextInput

@@ -14,6 +14,7 @@ const SEARCH_USERS = gql`
       lastName
       displayName
       email
+      imgUrl
     }
   }
 `;

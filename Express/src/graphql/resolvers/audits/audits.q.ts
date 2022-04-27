@@ -47,6 +47,14 @@ const audits = async (
       });
     }
 
+    if (auditQueryInput?.auditTypesIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          auditTypeId: { $in: auditQueryInput.auditTypesIds },
+        },
+      });
+    }
+
     if (auditQueryInput?.sitesIds?.length > 0) {
       pipeline.push({
         $match: {
@@ -108,7 +116,25 @@ const audits = async (
       });
     }
 
-    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'audits') });
+    if (shouldJoin(['questions'])) {
+      pipeline.push({
+        $lookup: {
+          from: 'questions',
+          localField: '_id',
+          foreignField: 'scope._id',
+          as: 'questions',
+        },
+      });
+    }
+
+    pipeline.push({
+      $project: {
+        auditorId: shouldJoin(['auditor']),
+        participantsIds: shouldJoin(['participants']),
+        ...getProjectFields(info.fieldNodes, 'audits'),
+        metatags: 1,
+      },
+    });
 
     let audits = await Audits.aggregate(pipeline);
 

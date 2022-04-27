@@ -48,7 +48,10 @@ const Audit = () => {
           Walk Items
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
-          audit.status === 'inProgress' &&
+          (audit.status === 'inProgress' ||
+            questionsCategories.some(
+              ({ editableSubmitted }) => editableSubmitted,
+            )) &&
           customQuestionsCategories.length && (
             <Button
               bg="auditItem.addButton.bg"

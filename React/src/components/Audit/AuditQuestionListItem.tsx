@@ -16,7 +16,10 @@ const AuditQuestionListItem = ({
   question: TQuestionWithAnswer;
   handleDelete: () => void;
 }) => {
-  const { audit, setSelectedQuestion } = useAuditContext();
+  const { audit, questionsCategories, setSelectedQuestion } = useAuditContext();
+  const questionsCategory = questionsCategories.find(
+    (category) => category._id === question.questionsCategoryId,
+  );
   const numberOfActions = (question?.answer?.actions || []).length;
   return (
     <HStack
@@ -43,7 +46,8 @@ const AuditQuestionListItem = ({
           <DocumentThumbnail document={attachment} key={attachment.id} />
         ))}
       </HStack>
-      {audit.status === 'inProgress' && (
+      {(audit.status === 'inProgress' ||
+        questionsCategory?.editableSubmitted) && (
         <Stack>
           <EditIcon
             cursor="pointer"

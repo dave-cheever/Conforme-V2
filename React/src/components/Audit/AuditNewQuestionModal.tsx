@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import {
   Flex,
   Modal,
@@ -20,6 +22,13 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
     useAuditContext();
   const device = useDevice();
 
+  const enabledQuestionsCategories = useMemo(() => {
+    if (audit.status === 'inProgress') return customQuestionsCategories;
+    return customQuestionsCategories.filter(
+      ({ editableSubmitted }) => editableSubmitted,
+    );
+  }, [JSON.stringify(customQuestionsCategories)]);
+
   const countQuestionsLeft = (category: IQuestionsCategory) =>
     category.maxQuestionsNumber
       ? category.maxQuestionsNumber - (questions[category._id] || []).length
@@ -41,7 +50,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
         </ModalHeader>
         <ModalBody mb={['none', '40px']}>
           <Flex justify="space-around" wrap="wrap">
-            {customQuestionsCategories.map((category) => {
+            {enabledQuestionsCategories.map((category) => {
               const questionsLeft = countQuestionsLeft(category);
               const isDisabled = !questionsLeft;
               return (

@@ -1,4 +1,11 @@
-import { IBase } from 'app-interfaces';
+import {
+  IAuditType,
+  IBase,
+  IBusinessUnit,
+  ILocation,
+  IQuestion,
+  IUser,
+} from 'app-interfaces';
 
 export interface IAudit extends IBase {
   auditTypeId: string;
@@ -10,5 +17,12 @@ export interface IAudit extends IBase {
   areaId?: string;
   auditorId: string;
   participantsIds: string[];
-  organizationId: string;
+
+  // Additional fields
+  auditType?: IAuditType;
+  site?: ILocation;
+  area?: IBusinessUnit;
+  auditor?: IUser;
+  participants?: IUser[];
+  questions?: IQuestion<any>[];
 }

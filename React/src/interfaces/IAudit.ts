@@ -2,6 +2,7 @@ import { IAuditType } from './IAuditType';
 import { IBase } from './IBase';
 import { IBusinessUnit } from './IBusinessUnit';
 import { ILocation } from './ILocation';
+import { IQuestion } from './IQuestion';
 import { IUser } from './IUser';
 
 export interface IAudit extends IBase {
@@ -21,4 +22,5 @@ export interface IAudit extends IBase {
   area?: IBusinessUnit;
   auditor?: IUser;
   participants?: IUser[];
+  questions?: IQuestion<any>[];
 }
