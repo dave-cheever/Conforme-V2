@@ -90,18 +90,12 @@ const AuditHeader = () => {
                 <Text fontSize="smm">{auditor?.displayName}</Text>
               </Box>
             </Stack>
-            <Flex direction="column" justify="center">
-              <Text fontSize="11px" opacity={0.5}>
-                Site
-              </Text>
-              <Text fontSize="smm">{site?.name}</Text>
-            </Flex>
-            {area?.name && (
+            {audit?.walkType === 'physical' && (
               <Flex direction="column" justify="center">
                 <Text fontSize="11px" opacity={0.5}>
-                  Area
+                  Site
                 </Text>
-                <Text fontSize="smm">{area?.name}</Text>
+                <Text fontSize="smm">{site?.name}</Text>
               </Flex>
             )}
             <Flex direction="column" justify="center">
@@ -137,7 +131,13 @@ const AuditHeader = () => {
             />
           )}
         </Flex>
-        <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px">
+        <Flex
+          alignItems="center"
+          display={['flex', 'none']}
+          h="40px"
+          mr="25px"
+          mt={4}
+        >
           <Menu>
             {({ isOpen }) => (
               <>

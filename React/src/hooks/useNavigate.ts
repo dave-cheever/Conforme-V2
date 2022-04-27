@@ -20,9 +20,14 @@ const useNavigate = () => {
     history.push(`/${module?.path}${path}`, state);
   };
 
+  const openInNewTab = (path: string) => {
+    window.open(`/${module?.path}${path}`, '_blank');
+  };
+
   return {
     isPathActive,
     navigateTo,
+    openInNewTab,
   };
 };
 

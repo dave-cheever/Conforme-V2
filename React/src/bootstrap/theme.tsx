@@ -1,8 +1,9 @@
 import { theme } from '@chakra-ui/react';
 import { merge } from 'lodash';
 
-import { actionFormStyles } from '../components/Actions/ActionForm';
 import { actionListElementStyles } from '../components/Actions/ActionListItem';
+import { actionModalStyles } from '../components/Actions/ActionModal';
+import { actionSquareStyles } from '../components/Actions/ActionSquare';
 import { adminModalStyles } from '../components/Admin/AdminModal';
 import { adminTableHeaderStyles } from '../components/Admin/AdminTableHeader';
 import { adminTableHeaderElementStyles } from '../components/Admin/AdminTableHeaderElement';
@@ -19,6 +20,7 @@ import { questionsModalStyles } from '../components/AdminComplianceItemModal/Que
 import { summaryModalStyles } from '../components/AdminComplianceItemModal/Summary';
 import { summaryItemModalStyles } from '../components/AdminComplianceItemModal/SummaryItem';
 import { alertDialogStyles } from '../components/AlertDialog';
+import { auditActionFormStyles } from '../components/Audit/AuditActionForm';
 import { auditAnswerStyles } from '../components/Audit/AuditAnswer';
 import { auditHeaderStyles } from '../components/Audit/AuditHeader';
 import { auditHeaderMenuItemStyles } from '../components/Audit/AuditHeaderMenuItem';
@@ -93,6 +95,7 @@ import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
+import { actionsStyles } from '../pages/actions';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
 import { businessUnitsStyles } from '../pages/admin/business-units';
 import { categoriesStyles } from '../pages/admin/categories';
@@ -150,8 +153,10 @@ const getTheme = (organizationTheme?: any) => {
     colors: merge(
       {
         ...theme.colors,
-        ...actionFormStyles,
         ...actionListElementStyles,
+        ...actionModalStyles,
+        ...actionSquareStyles,
+        ...actionsStyles,
         ...adminModalStyles,
         ...additionalDetailsStyles,
         ...addComplianceItemAttributeStyles,
@@ -159,6 +164,7 @@ const getTheme = (organizationTheme?: any) => {
         ...adminTableHeaderElementStyles,
         ...adminTableHeaderStyles,
         ...alertDialogStyles,
+        ...auditActionFormStyles,
         ...auditAnswerStyles,
         ...auditHeaderMenuItemStyles,
         ...auditHeaderStyles,

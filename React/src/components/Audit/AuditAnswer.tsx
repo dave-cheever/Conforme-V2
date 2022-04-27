@@ -10,12 +10,12 @@ import {
 } from '../../contexts/AuditProvider';
 import { CheckIcon } from '../../icons';
 import { TDeepPartial } from '../../interfaces/TDeepPartial';
-import ActionForm from '../Actions/ActionForm';
 import ActionListItem from '../Actions/ActionListItem';
 import DocumentUpload from '../Documents/DocumentUpload';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 import { TextInput, Toggle } from '../Forms';
 import TextInputMultiline from '../Forms/TextInputMultiline';
+import AuditActionForm from './AuditActionForm';
 
 const AuditAnswer = ({
   question,
@@ -149,7 +149,7 @@ const AuditAnswer = ({
           Actions
         </Text>
         {selectedAction ? (
-          <ActionForm
+          <AuditActionForm
             handleSave={(action) => {
               if (!action._id) {
                 setValue('actions', [

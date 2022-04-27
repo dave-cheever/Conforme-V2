@@ -7,10 +7,14 @@ import AuditLeftNavigationTablet from '../components/Audit/AuditLeftNavigationTa
 import Loader from '../components/Loader';
 import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
+import ShareModal from '../components/ShareModal';
 import AuditProvider, { useAuditContext } from '../contexts/AuditProvider';
+// import useDevice from '../hooks/useDevice';
 
 const AuditLayout = ({ component: Component }: { component: any }) => {
   const { loading, audit } = useAuditContext();
+  // const device = useDevice();
+  // const isTabletAndMobile = device === 'tablet' || device === 'mobile';
 
   if (loading && !audit) {
     return (
@@ -25,23 +29,40 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
       <ModuleSwitcher />
       <AuditLeftNavigation />
       <AuditLeftNavigationTablet />
-      <Flex direction="column" flexGrow={1}>
+      <Flex
+        direction="column"
+        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
+      >
         <NavigationTop />
         <Flex
           bg="layout.bg"
-          direction="column"
+          flexDirection="column"
+          h={['calc(100vh - 126px)', 'calc(100vh - 80px)']}
           mt={['65px', 0]}
           overflow="auto"
-          w="full"
+          position="absolute"
+          pt={['25px', 0]}
+          top={[0, '80px']}
+          w={['full', 'calc(100% - 130px)', 'calc(100% - 290px)']}
+          zIndex={4}
         >
+          <ShareModal />
           <AuditHeader />
-          <Flex
-            h={['calc(100vh - 140px)', 'calc(100vh - 195px)']}
-            pb="25px"
-            px={6}
-          >
-            <Component />
+          <Flex h="full" px="25px" w="full">
+            <Flex
+              flexDirection="column"
+              h="full"
+              maxH={['none', 'calc(100vh - 210px)']}
+              minH={['calc(100vh - 200px)', 'calc(100vh - 210px)']}
+              pb="25px"
+              pt={['40px', '0px']}
+              w="full"
+            >
+              <Component />
+            </Flex>
+            {/* {device === 'desktop' && <ResponseChat />} */}
           </Flex>
+          {/* {isTabletAndMobile && <ResponseChatMobileAndTablet />} */}
         </Flex>
         <AuditLeftNavigationMobile />
       </Flex>

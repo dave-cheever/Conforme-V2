@@ -23,15 +23,15 @@ export const answersTypeDefs = `
     _id: ID!
     questionId: ID!
     question: Question
-    audit: Audit!
     answer: String
     attachments: [Document]
     status: String
     options: Any
     scope: Scope
+    audit: Audit!
+    metatags: Metatags
     addedBy: User!
     actions: [Action]
-    metatags: Metatags
   }
 
   input AnswerQuery {

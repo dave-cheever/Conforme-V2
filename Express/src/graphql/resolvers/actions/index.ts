@@ -23,8 +23,11 @@ export const actionsTypeDefs = `
     priority: String!
     description: String
     assigneeId: ID!
+    attachments: [Document]
     scope: Scope!
+    answer: Answer
     metatags: Metatags
+    assignee: User!
   }
 
   input ActionQueryInput {
@@ -39,6 +42,7 @@ export const actionsTypeDefs = `
     priority: String!
     description: String
     assigneeId: ID!
+    attachments: [DocumentInput]
     scope: ScopeInput!
   }
   
@@ -50,17 +54,18 @@ export const actionsTypeDefs = `
     priority: String
     description: String
     assigneeId: ID
+    attachments: [DocumentInput]
   }
 `;
 
 export const actionsQueryDefs = `
-  actions: [Action!]!
+  actions(actionQueryInput: ActionQueryInput): [Action!]!
 `;
 
 export const actionsMutationDefs = `
   createAction(action: ActionCreateInput!): Action!
   updateAction(actionInput: ActionModifyInput!): Action!
-  deleteAction(_id: String!): Boolean!
+  deleteAction(_id: ID!): Boolean!
 `;
 
 export default actionsResolvers;

@@ -1,5 +1,7 @@
 import { IAction } from './IAction';
+import { IAudit } from './IAudit';
 import { IBase } from './IBase';
+import { IQuestion } from './IQuestion';
 import { IDocument } from './IResponse';
 import { IScope } from './IScope';
 import { TQuestionValue } from './TQuestionValue';
@@ -15,5 +17,7 @@ export interface IAnswer extends IBase {
   scope: IScope;
 
   // Additional fields - can be added in the API
+  audit?: IAudit;
+  question?: IQuestion<any>;
   actions?: IAction[];
 }

@@ -28,7 +28,7 @@ interface IPeoplePicker extends IField {
 }
 
 const SEARCH_USERS = gql`
-  query ($searchQuery: SearchQuery) {
+  query ($searchQuery: SearchUserQuery) {
     searchUsers(searchQuery: $searchQuery) {
       _id
       firstName

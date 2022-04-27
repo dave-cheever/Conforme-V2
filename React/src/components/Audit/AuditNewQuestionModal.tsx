@@ -11,12 +11,14 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
+import useDevice from '../../hooks/useDevice';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
 import Icon from '../Icon';
 
 const AuditNewQuestionModal = ({ isOpen, onClose }) => {
   const { audit, questions, customQuestionsCategories, setSelectedQuestion } =
     useAuditContext();
+  const device = useDevice();
 
   const countQuestionsLeft = (category: IQuestionsCategory) =>
     category.maxQuestionsNumber
@@ -24,7 +26,12 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
       : 1;
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose} size="2xl">
+    <Modal
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      size={device === 'mobile' ? 'full' : '2xl'}
+    >
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
@@ -32,7 +39,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
           </Text>
           <ModalCloseButton />
         </ModalHeader>
-        <ModalBody mb="40px">
+        <ModalBody mb={['none', '40px']}>
           <Flex justify="space-around" wrap="wrap">
             {customQuestionsCategories.map((category) => {
               const questionsLeft = countQuestionsLeft(category);

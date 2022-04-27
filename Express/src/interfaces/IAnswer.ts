@@ -1,6 +1,9 @@
 import {
+  IAction,
+  IAudit,
   IBase,
   IDocument,
+  IQuestion,
   IScope,
   TAnswerStatus,
   TQuestionValue,
@@ -15,4 +18,9 @@ export interface IAnswer extends IBase {
     [name: string]: boolean;
   };
   scope: IScope;
+
+  // Additional fields - can be added in the API
+  audit?: IAudit;
+  question?: IQuestion<any>;
+  actions?: IAction[];
 }

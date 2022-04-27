@@ -30,7 +30,7 @@ const ActionForm = ({ handleSave }) => {
   };
 
   return (
-    <Stack bg="actionForm.bg" p={4} rounded="10px">
+    <Stack bg="auditActionForm.bg" p={4} rounded="10px">
       <Text fontSize="smm" fontWeight="semibold">
         Action details
       </Text>
@@ -78,8 +78,8 @@ const ActionForm = ({ handleSave }) => {
       />
       <HStack justify="flex-end" pb={3} pt={4} w="full">
         <Button
-          bgColor="actionForm.buttons.cancel.bg"
-          color="actionForm.buttons.cancel.color"
+          bgColor="auditActionForm.buttons.cancel.bg"
+          color="auditActionForm.buttons.cancel.color"
           fontSize="ssm"
           fontWeight="semibold"
           h="28px"
@@ -89,8 +89,8 @@ const ActionForm = ({ handleSave }) => {
           Cancel
         </Button>
         <Button
-          bgColor="actionForm.buttons.save.bg"
-          color="actionForm.buttons.save.color"
+          bgColor="auditActionForm.buttons.save.bg"
+          color="auditActionForm.buttons.save.color"
           disabled={!isValid}
           fontSize="ssm"
           fontWeight="semibold"
@@ -108,8 +108,8 @@ const ActionForm = ({ handleSave }) => {
   );
 };
 
-export const actionFormStyles = {
-  actionForm: {
+export const auditActionFormStyles = {
+  auditActionForm: {
     bg: '#F4F3F5',
     buttons: {
       cancel: {

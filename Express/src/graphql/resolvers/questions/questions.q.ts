@@ -72,10 +72,29 @@ const questions = async (
       });
     }
 
-    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'questions') });
+    pipeline.push({
+      $project: {
+        'answer.actions.metatags': shouldJoin(['answer', 'actions']) ? 1 : 0,
+        ...getProjectFields(info.fieldNodes, 'questions'),
+      },
+    });
 
-    const questions = await Questions.aggregate(pipeline);
-    return questions.sort((a, b) => a.question.localeCompare(b.question));
+    let questions: any = await Questions.aggregate(pipeline);
+
+    // Because CosmosBD doesn't support $filter pipeline stage, we need to filter out removed actions manually
+    if (shouldJoin(['answer', 'actions'])) {
+      questions = questions.map((question) => ({
+        ...question,
+        answer: {
+          ...question.answer,
+          actions: question.answer.actions.filter(
+            (action) => !action.metatags.removedAt,
+          ),
+        },
+      }));
+    }
+
+    return questions;
   } catch (err: any) {
     throw new Error(err);
   }

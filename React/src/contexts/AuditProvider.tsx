@@ -375,7 +375,6 @@ const AuditProvider = ({ children }) => {
       selectedQuestion?.answer?.actions?.reduce((acc, curr) => {
         if (curr?._id && !actions.find(({ _id }) => _id === curr._id))
           return [...acc, curr._id];
-
         return acc;
       }, [] as string[]) || [];
     const deletedActionsPromises = deletedActionsIds.map(async (_id) => {

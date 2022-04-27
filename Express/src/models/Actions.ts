@@ -16,6 +16,14 @@ const actionsSchema = new Schema<IAction, IActionModel>({
   },
   description: String,
   assigneeId: String,
+  attachments: [
+    {
+      _id: false,
+      id: String,
+      name: String,
+      addedAt: Date,
+    },
+  ],
   scope: {
     component: {
       type: String,

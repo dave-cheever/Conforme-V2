@@ -67,6 +67,7 @@ import MinusIcon from './MinusIcon';
 import Move from './Move';
 import NotesIcon from './NotesIcon';
 import NotificationIcon from './NotificationIcon';
+import OpenExternalIcon from './OpenExternalIcon';
 import OpenMenuArrow from './OpenMenuArrow';
 import PlusIcon from './PlusIcon';
 import Policies from './Policies';
@@ -95,6 +96,7 @@ import UnFollowIcon from './UnFollowIcon';
 import UploadedCross from './UploadedCross';
 import UploadedTick from './UploadedTick';
 import UploadIcon from './UploadIcon';
+import WarningIcon from './WarningIcon';
 
 export {
   Accidents,
@@ -166,6 +168,7 @@ export {
   Move,
   NotesIcon,
   NotificationIcon,
+  OpenExternalIcon,
   OpenMenuArrow,
   PlusIcon,
   Policies,
@@ -194,4 +197,5 @@ export {
   UploadedCross,
   UploadedTick,
   UploadIcon,
+  WarningIcon,
 };

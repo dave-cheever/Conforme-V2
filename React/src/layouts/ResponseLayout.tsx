@@ -54,7 +54,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           position="absolute"
           pt={['25px', 0]}
           top={[0, '80px']}
-          w={['full', 'calc(100% - 80px)', 'calc(100% - 290px)']}
+          w={['full', 'calc(100% - 130px)', 'calc(100% - 290px)']}
           zIndex={4}
         >
           <ShareModal />
