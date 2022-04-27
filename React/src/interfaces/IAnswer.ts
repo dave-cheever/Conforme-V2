@@ -4,11 +4,13 @@ import { IBase } from './IBase';
 import { IQuestion } from './IQuestion';
 import { IDocument } from './IResponse';
 import { IScope } from './IScope';
+import { IUser } from './IUser';
 import { TQuestionValue } from './TQuestionValue';
 
 export interface IAnswer extends IBase {
   questionId: string;
   answer?: TQuestionValue;
+  addedBy?: IUser;
   attachments?: IDocument[];
   status?: 'open' | 'ignored' | 'closed';
   options?: {

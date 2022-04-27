@@ -1,4 +1,5 @@
 import { IBase } from './IBase';
+import { IQuestionsCategory } from './IQuestionsCategory';
 import { IScope } from './IScope';
 import { TQuestionType } from './TQuestionType';
 
@@ -7,6 +8,7 @@ export interface IQuestion<ValueType> extends IBase {
   question: string;
   description?: string;
   questionsCategoryId?: string;
+  questionsCategory?: IQuestionsCategory;
   required?: boolean;
   notApplicable?: boolean;
   positiveValue?: ValueType;

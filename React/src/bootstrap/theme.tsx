@@ -94,6 +94,7 @@ import { statusSelectorStyles } from '../components/StatusSelector';
 import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
+import { walkItemsListStyles } from '../components/WalkItems/WalkItemsList';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
 import { actionsStyles } from '../pages/actions';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
@@ -111,6 +112,7 @@ import { teamPageStyles } from '../pages/compliance-item/team';
 import { complianceItemStyles } from '../pages/compliance-items';
 import { loginPageStyles } from '../pages/login';
 import { logoutPageStyles } from '../pages/logout';
+import { walkItemsStyles } from '../pages/walk-items';
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -265,6 +267,8 @@ const getTheme = (organizationTheme?: any) => {
         ...auditsStyles,
         ...userMenuStyles,
         ...userSelectorStyles,
+        ...walkItemsStyles,
+        ...walkItemsListStyles,
 
         purpleHeart: {
           50: '#ede9ff',
