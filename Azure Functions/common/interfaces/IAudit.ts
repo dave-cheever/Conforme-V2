@@ -1,11 +1,17 @@
-import { IBase } from "./IBase";
+import { IAuditType } from './IAuditType';
+import { IBase } from './IBase';
 
 export interface IAudit extends IBase {
   auditTypeId: string;
-  walkType: "physical" | "virtual";
+  reference: string;
+  status: 'inProgress' | 'completed';
+  dueDate: Date;
+  walkType: 'physical' | 'virtual';
   siteId?: string;
   areaId?: string;
   auditorId: string;
   participantsIds: string[];
   organizationId: string;
+
+  auditType?: IAuditType;
 }

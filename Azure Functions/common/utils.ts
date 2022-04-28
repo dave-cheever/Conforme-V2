@@ -1,16 +1,15 @@
-import { AUDITS_WEEKLY_DIGEST_EMAIL } from "./services/notifications";
+import { differenceInDays } from 'date-fns';
+import { IAudit } from './interfaces/IAudit';
+import { AUDITS_WEEKLY_DIGEST_EMAIL, AUDITS_STATUS_REMINDER } from './services/notifications';
 
 export const getProtocol = () => {
-  return process.env.ENV?.toLowerCase() === "dev" ? "http://" : "https://";
+  return process.env.ENV?.toLowerCase() === 'dev' ? 'http://' : 'https://';
 };
 
-export const genMetatags = (
-  action: "added" | "updated" | "removed",
-  userId: string
-) => {
+export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: string) => {
   return {
     [`${action}By`]: userId,
-    [`${action}At`]: new Date(),
+    [`${action}At`]: new Date()
   };
 };
 
@@ -22,9 +21,37 @@ export const getTemplateDetails = (
 } => {
   switch (emailType) {
     case AUDITS_WEEKLY_DIGEST_EMAIL:
+    case AUDITS_STATUS_REMINDER:
       return {
-        templateSettingName: "auditsWeeklyDigestEmailTemplate",
-        emailSettingName: "auditsWeeklyDigestEmailAddress",
+        templateSettingName: 'auditsWeeklyDigestEmailTemplate',
+        emailSettingName: 'auditsWeeklyDigestEmailAddress'
       };
   }
+};
+
+export const getAuditStatus = (audit: IAudit, auditsComingUpTriggers) => {
+  if (!audit) return;
+
+  const { dueDate, status } = audit;
+  const daysToDueDate = audit.auditType?.startingDate
+    ? differenceInDays(new Date(dueDate), new Date(audit.auditType?.startingDate!))
+    : 0;
+
+  if (
+    status === 'completed' &&
+    daysToDueDate !== undefined &&
+    audit.auditType?.frequency &&
+    daysToDueDate !== null &&
+    daysToDueDate < auditsComingUpTriggers?.value?.[audit.auditType?.frequency] &&
+    daysToDueDate >= 0
+  ) {
+    // If there is less then or equal comingUpTriggers value and at least 0 days to due date
+    return 'comingUp';
+  }
+
+  if (audit.status === 'completed' && (!daysToDueDate || daysToDueDate >= 0)) return 'completed';
+
+  if (audit.status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
+
+  return 'overdue';
 };

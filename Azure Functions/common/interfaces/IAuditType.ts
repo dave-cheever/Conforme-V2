@@ -1,11 +1,11 @@
-import { IAuditSection } from "./IAuditSection";
-import { IBase } from "./IBase";
-import { TFrequency } from "./TFrequency";
+import { IAuditSection } from './IAuditSection';
+import { IBase } from './IBase';
+import { TFrequency } from './TFrequency';
 
 export interface IAuditType extends IBase {
   name: string;
   frequency: TFrequency;
+  startingDate: Date;
+  view: 'categorized' | 'singlePage';
   sections: IAuditSection[];
-  view: "categorized" | "singlePage";
-  organizationId: String;
 }

@@ -5,6 +5,7 @@ import { IAudit } from '../interfaces/IAudit';
 export const auditStatuses = {
   completed: 'Completed',
   inProgress: 'In progress',
+  comingUp: 'Coming up',
   overdue: 'Overdue',
 };
 

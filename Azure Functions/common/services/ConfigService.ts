@@ -1,7 +1,7 @@
-import * as mongoose from "mongoose";
-import IConfig from "../interfaces/IConfig";
-import { IOrganization } from "../interfaces/IOrganization";
-import Organizations from "./collections/Organizations";
+import * as mongoose from 'mongoose';
+import IConfig from '../interfaces/IConfig';
+import { IOrganization } from '../interfaces/IOrganization';
+import Organizations from './collections/Organizations';
 
 export class ConfigService {
   private _config: IConfig;
@@ -12,38 +12,35 @@ export class ConfigService {
   ): Promise<IConfig> {
     this._config = {
       Environment: process.env.ENV,
-      DebugMode: process.env.DEBUG == "true" ? true : false,
+      DebugMode: process.env.DEBUG == 'true' ? true : false,
       GraphScope: process.env.MS_GRAPH_SCOPE,
       GraphUrl: process.env.MS_GRAPH_URL,
       GraphTokenEndpoint: process.env.TOKEN_ENDPOINT,
       MongoConnectionString: process.env.MONGO_CONNECTION_STRING,
       EmailSender: process.env.EMAIL_SENDER,
-      StorageConnectionString: process.env.AzureWebJobsStorage,
+      StorageConnectionString: process.env.AzureWebJobsStorage
     };
 
     // 0 = disconnected
     // 1 = connected
     if (mongoose.connection.readyState === 1) {
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId
-      );
+      const organization = await Organizations.customFindById(organizationId);
       this._organization = organization;
       this._config = {
         ...this._config,
         GraphTenantId: organization.tenantId,
         GraphAppId: organization.clientId,
-        GraphSecret: organization.secret,
+        GraphSecret: organization.secret
       };
     }
 
     // Set up environment specific configuration
     switch (this._config.Environment.toLowerCase()) {
-      case "dev":
+      case 'dev':
         break;
-      case "sit":
+      case 'sit':
         break;
-      case "sat":
+      case 'sat':
         break;
       default:
         break;

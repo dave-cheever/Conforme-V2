@@ -1,18 +1,21 @@
-import { IOrganization } from "../../interfaces/IOrganization";
-import Organizations from "../collections/Organizations";
-import getAuditsWeeklyDigestEmailTemplate from "./audits-weekly-digest";
-import getMentionEmail from "./mentionEmail";
-import getSkeleton from "./template";
+import { IOrganization } from '../../interfaces/IOrganization';
+import Organizations from '../collections/Organizations';
+import getAuditsWeeklyDigestEmailTemplate from './audits-weekly-digest';
+import getMentionEmail from './mentionEmail';
+import getSkeleton from './template';
 
 export const MENTION_EMAIL = 0;
 export const AUDITS_WEEKLY_DIGEST_EMAIL = 1;
+export const AUDITS_STATUS_REMINDER = 2;
 
 const getEmailSubject = (emailType: number, emailData = {}) => {
   switch (emailType) {
     case MENTION_EMAIL:
-      return "You have been mentioned in chat";
+      return 'You have been mentioned in chat';
     case AUDITS_WEEKLY_DIGEST_EMAIL:
-      return "Audits weekly digest";
+      return 'Audits weekly digest';
+    case AUDITS_STATUS_REMINDER:
+      return 'Audits status reminder';
   }
 };
 
@@ -21,7 +24,7 @@ const getEmailTemplate = async ({
   template,
   emailData,
   organization,
-  organizationId,
+  organizationId
 }: {
   emailType: number;
   emailData: any;
@@ -40,12 +43,9 @@ const getEmailTemplate = async ({
   }
   if (!organization) {
     if (!organizationId) {
-      throw Error("You need to pass either organization or organizationId");
+      throw Error('You need to pass either organization or organizationId');
     }
-    organization = await Organizations.customFindById(
-      organizationId,
-      organizationId
-    );
+    organization = await Organizations.customFindById(organizationId);
   }
   return getSkeleton(body, organization);
 };

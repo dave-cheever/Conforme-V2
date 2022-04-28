@@ -304,6 +304,111 @@ Maximum delegates:
 }
 ```
 
+Email address receiving weekly digest:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditsWeeklyDigestEmailAddress",
+  "label": "Email address for receiving the weekly digest",
+  "value": [
+    "hazem.krimi@cielocosta.com"
+  ],
+  "type": "defaultSettings",
+  "description": "Use this setting to select who should recieve email digest regarding audits.",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649318496996"
+      }
+    }
+  },
+  "inputType": "text"
+}
+```
+
+Weekly digest email template:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditsWeeklyDigestEmailTemplate",
+  "label": "Weekly digest",
+  "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Weekly audits digest</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 18px;\">Number of audits last week: %NumberOfAudits%</span><br></p><p><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Conforme Team</span>&nbsp;<br></p>",
+  "type": "emailTemplate",
+  "options": ["NumberOfAudits"],
+  "description": "",
+  "inputType": "emailTemplate",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649318086034"
+      }
+    }
+  }
+}
+```
+
+Coming up audits triggers:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditsComingUpTriggers",
+  "label": "The number of days before an audit due date that its status changes to \"Coming up\"",
+  "value": {
+    "Daily": 1,
+    "Weekly": 1,
+    "Monthly": 7,
+    "Quarterly": 30,
+    "6 months": 40,
+    "Annual": 60,
+    "2 years": 60,
+    "3 years": 60,
+    "5 years": 90
+  },
+  "type": "defaultSettings",
+  "inputType": "dataGrid",
+  "description": "Use this setting to select when the audit should become \"Coming up\" for different renewal frequencies",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649742835206"
+      }
+    }
+  },
+}
+```
+
+Audits status reminders triggers:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditsStatusReminderTriggers",
+  "label": "The days of month when to send coming up and overdue audit notifications",
+  "value": [1, 26],
+  "type": "defaultSettings",
+  "inputType": "text",
+  "description": "Use this setting to select dayf of month when to send coming up and overdue audit notifications",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649742835206"
+      }
+    }
+  },
+}
+```
+
 ## Run the app locally
 
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.
@@ -352,6 +457,7 @@ Deployment of Functions app will be proceed by Azure Pipelines.
 
 To make the app working on every scenario (some of browsers doesn't support 3rd party cookies) you need to configure custom domain to both: client and server.
 First of all you need to register a new custom domain. If you have it, follow these steps to configure it separately for client and server:
+
 - Start by opening the [App Service section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/appservice)
 - Open your app service
 - Navigate to **Custom domains** menu option

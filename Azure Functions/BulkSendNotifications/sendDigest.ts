@@ -1,18 +1,15 @@
-import Audits from "../common/services/collections/Audits";
-import Organizations from "../common/services/collections/Organizations";
-import Settings from "../common/services/collections/Settings";
-import { GraphService } from "../common/services/GraphService";
-import {
-  getEmailSubject,
-  getEmailTemplate,
-} from "../common/services/notifications";
-import { getTemplateDetails } from "../common/utils";
+import Audits from '../common/services/collections/Audits';
+import Organizations from '../common/services/collections/Organizations';
+import Settings from '../common/services/collections/Settings';
+import { GraphService } from '../common/services/GraphService';
+import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
+import { getTemplateDetails } from '../common/utils';
 
 const sendDigest = async (
   {
     since,
     to,
-    emailType,
+    emailType
   }: {
     since: Date;
     to: Date;
@@ -23,33 +20,26 @@ const sendDigest = async (
   const audits = await Audits.aggregate([
     {
       $match: {
-        "metatags.addedAt": { $gte: since, $lt: to },
-      },
+        'metatags.addedAt': { $gte: since, $lt: to }
+      }
     },
     {
       $group: {
-        _id: "$organizationId",
+        _id: '$organizationId',
         numberOfAudits: {
-          $sum: 1,
-        },
-      },
-    },
+          $sum: 1
+        }
+      }
+    }
   ]);
 
   const organizationsIds: string[] = audits.map(({ _id }) => _id);
-  const { templateSettingName, emailSettingName } =
-    getTemplateDetails(emailType);
-  const templates = await Settings.customFindByName(
-    templateSettingName,
-    organizationsIds
-  );
+  const { templateSettingName, emailSettingName } = getTemplateDetails(emailType);
+  const templates = await Settings.customFindByName(templateSettingName, organizationsIds);
 
-  templates.forEach(async (template) => {
+  templates.forEach(async template => {
     try {
-      const organization = await Organizations.customFindById(
-        template.organizationId,
-        template.organizationId
-      );
+      const organization = await Organizations.customFindById(template.organizationId);
 
       const subject = getEmailSubject(emailType);
 
@@ -58,23 +48,20 @@ const sendDigest = async (
       const body = await getEmailTemplate({
         emailType,
         emailData: {
-          numberOfAudits: audit?.numberOfAudits,
+          numberOfAudits: audit?.numberOfAudits
         },
         template: template.value,
-        organization,
+        organization
       });
 
-      const emailAddress = await Settings.customFindOneByName(
-        emailSettingName,
-        organizationsIds
-      );
+      const emailAddress = await Settings.customFindOneByName(emailSettingName, organizationsIds);
 
       const graphService = new GraphService(config);
       await graphService.sendDirectEmail({
         from: config.EmailSender,
         to: emailAddress.value,
         subject,
-        body,
+        body
       });
     } catch (e) {
       console.log(e);

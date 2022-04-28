@@ -23,8 +23,8 @@ import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
+import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
-import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
 import { ChevronRight } from '../../icons';
 import { IAuditType } from '../../interfaces/IAuditType';
 
@@ -79,7 +79,7 @@ const defaultValues: Partial<IAuditType> = {
 const AuditTypes = () => {
   const toast = useToast();
   const frequencyOptions = useMemo(
-    () => complianceItemFrequencies.map((f) => ({ value: f, label: f })),
+    () => auditFrequencies.map((f) => ({ value: f, label: f })),
     [],
   );
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
