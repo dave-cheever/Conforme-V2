@@ -289,7 +289,7 @@ const Audits = () => {
                   fontSize="14px"
                   onClick={() => changeViewMode('Grid')}
                 >
-                  <GridIcon mr={3} />
+                  <GridIcon mr={3} stroke="currentColor" />
                   Card
                 </MenuItem>
                 <MenuItem
@@ -302,7 +302,7 @@ const Audits = () => {
                   fontSize="14px"
                   onClick={() => changeViewMode('List')}
                 >
-                  <ListIcon mr={3} />
+                  <ListIcon mr={3} stroke="currentColor" />
                   List
                 </MenuItem>
                 <MenuItem
@@ -315,7 +315,7 @@ const Audits = () => {
                   fontSize="14px"
                   onClick={() => changeViewMode('Group')}
                 >
-                  <GroupIcon mr={3} />
+                  <GroupIcon mr={3} stroke="currentColor" />
                   Group
                 </MenuItem>
               </MenuList>
