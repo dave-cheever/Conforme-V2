@@ -198,7 +198,7 @@ export const switchStyles = {
       color: '#ffffff',
     },
     form: {
-      labelColor: '#1F1F1F',
+      labelColor: '#2B3236',
       textInput: {
         error: '#E53E3E',
       },

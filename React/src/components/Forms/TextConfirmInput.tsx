@@ -188,7 +188,7 @@ export const textConfirmInputStyles = {
     font: '#777777',
     bg: '#FFFFFF',
     labelFont: {
-      normal: '#1F1F1F',
+      normal: '#2B3236',
       error: '#E53E3E',
     },
     iconAsterisk: '#E93C44',

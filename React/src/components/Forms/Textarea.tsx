@@ -73,9 +73,11 @@ const Textarea = ({
                   {required && (
                     <Asterisk
                       fill="questionListElement.iconAsterisk"
+                      h="9px"
                       mb="8px"
                       ml="5px"
                       stroke="textMultilineConfirmInput.iconAsterisk"
+                      w="9px"
                     />
                   )}{' '}
                   {tooltip && (

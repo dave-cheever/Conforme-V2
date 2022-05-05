@@ -100,7 +100,7 @@ export default MultipleChoices;
 export const multipleChoicesStyles = {
   multipleChoices: {
     labelFont: {
-      normal: '#1F1F1F',
+      normal: '#2B3236',
     },
     iconAsterisk: '#E93C44',
     icon: {
