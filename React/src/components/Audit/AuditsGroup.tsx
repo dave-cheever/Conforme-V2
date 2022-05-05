@@ -68,7 +68,9 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
 
   return (
     <Flex h="full" overflow="auto" pt="3" w="full">
-      {Object.keys(auditStatuses).map((status) => renderGroup(status))}
+      {Object.keys(auditStatuses)
+        .filter((status) => status !== 'comingUp')
+        .map((status) => renderGroup(status))}
     </Flex>
   );
 };
