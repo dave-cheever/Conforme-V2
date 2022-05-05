@@ -12,6 +12,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { actionStatuses } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionSquare from '../components/Actions/ActionSquare';
 import Header from '../components/Header';
@@ -131,7 +132,7 @@ const Actions = () => {
               key={tab}
               mr={2}
             >
-              {tab}
+              {actionStatuses[tab]}
             </Tab>
           ))}
         </TabList>

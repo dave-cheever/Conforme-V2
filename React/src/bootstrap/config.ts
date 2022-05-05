@@ -64,6 +64,11 @@ export const trackerMenuItems: INavItem[] = [
   },
 ];
 
+export const actionStatuses = {
+  inProgress: 'In progress',
+  completed: 'Completed',
+};
+
 export const auditsMenuItems: INavItem[] = [
   {
     type: 'menuItem',
