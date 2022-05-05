@@ -170,8 +170,8 @@ const ResponseChat = () => {
         <ModalContent>
           <ModalHeader>List of all participants</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Flex flexDirection="column">
+          <ModalBody pr={2}>
+            <Flex flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
               {users?.map((user) => (
                 <Flex
                   align="center"
