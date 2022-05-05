@@ -18,6 +18,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { uniqBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { priorities, toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -313,10 +314,13 @@ const ActionModal = ({
                   </Text>
                   <DocumentUpload
                     callback={async (uploaded) => {
-                      setValue('attachments', [
-                        ...values.attachments,
-                        ...uploaded,
-                      ]);
+                      setValue(
+                        'attachments',
+                        uniqBy(
+                          [...values.attachments, ...uploaded],
+                          (attachment) => attachment.id,
+                        ),
+                      );
                     }}
                     elementId={action ? action._id : `temp-${uuidv4()}`}
                   />
