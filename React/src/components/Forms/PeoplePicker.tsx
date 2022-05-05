@@ -10,6 +10,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Text,
   Tooltip,
 } from '@chakra-ui/react';
 
@@ -204,6 +205,7 @@ const PeoplePicker = ({
                       h="30px"
                       justify="space-between"
                       key={user._id}
+                      mb={1}
                       onClick={() => {
                         setShowResults(false);
                         setSearchText('');
@@ -212,12 +214,18 @@ const PeoplePicker = ({
                       }}
                       pl={3}
                       role="group"
-                      rounded="md"
                       w="full"
                     >
-                      <Flex direction="column">
-                        <Flex>{user.displayName}</Flex>
-                      </Flex>
+                      <Box overflowX="hidden" title={user.displayName}>
+                        <Text
+                          fontSize={['sm', 'md']}
+                          overflowX="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                        >
+                          {user.displayName}
+                        </Text>
+                      </Box>
                     </Flex>
                   ))
                 ) : (
