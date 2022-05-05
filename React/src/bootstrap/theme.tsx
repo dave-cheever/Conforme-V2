@@ -3,6 +3,7 @@ import { merge } from 'lodash';
 
 import { actionListElementStyles } from '../components/Actions/ActionListItem';
 import { actionModalStyles } from '../components/Actions/ActionModal';
+import { actionsListStyles } from '../components/Actions/ActionsList';
 import { actionSquareStyles } from '../components/Actions/ActionSquare';
 import { adminModalStyles } from '../components/Admin/AdminModal';
 import { adminTableHeaderStyles } from '../components/Admin/AdminTableHeader';
@@ -157,6 +158,7 @@ const getTheme = (organizationTheme?: any) => {
     colors: merge(
       {
         ...theme.colors,
+        ...actionsListStyles,
         ...actionListElementStyles,
         ...actionModalStyles,
         ...actionSquareStyles,

@@ -19,6 +19,7 @@ export const actionsTypeDefs = `
     _id: ID!
     title: ID!
     dueDate: Date
+    completedDate: Date
     done: Boolean!
     priority: String!
     description: String

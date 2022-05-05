@@ -220,7 +220,9 @@ const Audits = () => {
           ...audit
         }) => ({
           ...audit,
-          dueDate: format(new Date(audit?.dueDate), 'd MMM yyyy'),
+          dueDate: audit?.dueDate
+            ? format(new Date(audit?.dueDate), 'd MMM yyyy')
+            : 'No due date',
           participants: audit?.participants
             ?.map((participant) => participant.displayName)
             .join(', '),

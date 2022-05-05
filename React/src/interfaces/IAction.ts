@@ -7,6 +7,7 @@ import { IUser } from './IUser';
 export interface IAction extends IBase {
   title: string;
   dueDate?: Date;
+  completedDate?: Date;
   done: boolean;
   priority: 'low' | 'medium' | 'high';
   description?: string;

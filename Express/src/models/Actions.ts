@@ -9,6 +9,7 @@ const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
   title: String,
   dueDate: String,
+  completedDate: String,
   done: Boolean,
   priority: {
     type: String,
@@ -108,6 +109,7 @@ actionsSchema.statics.customUpdateOne = async function (
   const updatedAction = {
     ...action,
     ...updates,
+    completedDate: updates.done ? new Date() : undefined,
     metatags: {
       ...action?.metatags,
       ...genMetatags('updated', userId),
