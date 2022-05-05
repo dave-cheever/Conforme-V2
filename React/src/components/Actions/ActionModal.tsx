@@ -170,7 +170,7 @@ const ActionModal = ({
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody h="calc(100% - 175px)" p="0">
+        <ModalBody h="calc(100% - 175px)" overflow="auto" px={['0', '2']}>
           <Stack h="full" spacing={4}>
             <Stack spacing={6}>
               <Stack spacing={4}>
