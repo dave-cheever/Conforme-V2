@@ -22,9 +22,8 @@ const FiltersPanel = () => {
       flexShrink={0}
       h="100vh"
       overflow="auto"
-      position={['absolute', 'absolute', 'relative']}
+      position={['relative', 'absolute', 'relative']}
       right="0"
-      top="0"
       w={['full', '320px']}
       zIndex="10"
     >
@@ -33,7 +32,12 @@ const FiltersPanel = () => {
           Filter items by
         </Box>
       </Flex>
-      <Flex flexDir="column" h="calc(100vh - 115px)" overflow="auto" px="4">
+      <Flex
+        flexDir="column"
+        h={['calc(100vh - 180px)', 'calc(100vh - 120px)']}
+        overflow="hidden"
+        px="4"
+      >
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name))
             return <FiltersPanelItem filter={value} key={name} name={name} />;
@@ -44,11 +48,9 @@ const FiltersPanel = () => {
       <Flex
         align="center"
         bg="white"
-        bottom="0px"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
-        h="50px"
+        h="55px"
         justify="center"
-        position="absolute"
         py={2}
         w={['full', '290px']}
       >
