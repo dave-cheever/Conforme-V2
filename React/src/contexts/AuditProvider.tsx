@@ -270,7 +270,8 @@ const AuditProvider = ({ children }) => {
           _ids: auditType?.sections.map(({ _id }) => _id),
         },
         auditTypeQuestionQuery: {
-          scope: { type: 'auditType', _id: audit?.auditType._id },
+          questionsCategoriesIds: auditType?.sections.map(({ _id }) => _id),
+          scope: { component: 'audits' },
         },
         auditCustomQuestionQuery: { scope: { type: 'audit', _id: audit?._id } },
       },
@@ -297,11 +298,12 @@ const AuditProvider = ({ children }) => {
 
   // Group (custom and predefined) questions by category
   const questions: IQuestionsByCategories = useMemo(() => {
-    if (!auditData?.auditCustomQuestions) return {};
+    if (!auditData?.auditCustomQuestions && !auditData?.auditTypeQuestions)
+      return {};
 
     const questionsByCategories: IQuestionsByCategories = {};
 
-    auditData.auditTypeQuestionQuery?.forEach((question) => {
+    auditData.auditTypeQuestions?.forEach((question) => {
       if (!questionsByCategories[question.questionsCategoryId])
         questionsByCategories[question.questionsCategoryId] = [];
       questionsByCategories[question.questionsCategoryId].push(question);
@@ -396,81 +398,6 @@ const AuditProvider = ({ children }) => {
     ]);
   };
 
-  const createCustomQuestionAndAnswer = async (
-    questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ): Promise<{ questionId: string; answerId?: string }> => {
-    const { _id, answer, ...question } = questionValues;
-    const createdQuestionRes = await createQuestion({
-      variables: {
-        question: {
-          ...question,
-          scope: {
-            type: 'audit',
-            _id: audit?._id,
-          },
-        },
-      },
-    });
-    const createdQuestion = createdQuestionRes.data.createQuestion;
-    if (answer) {
-      const createdAnswerRes = await createAnswer({
-        variables: {
-          answer: {
-            ...answer,
-            questionId: createdQuestion._id,
-            scope: {
-              type: 'audit',
-              _id: audit?._id,
-            },
-          },
-        },
-      });
-      const createdAnswer = createdAnswerRes.data.createAnswer;
-      return {
-        questionId: createdQuestion._id,
-        answerId: createdAnswer._id,
-      };
-    }
-    return {
-      questionId: createdQuestion._id,
-    };
-  };
-
-  const saveCustomQuestionAndAnswer = async (
-    questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ) => {
-    const { answer, ...question } = questionValues;
-    await saveQuestion({
-      variables: {
-        question,
-      },
-    });
-    if (answer) {
-      await saveAnswer({
-        variables: {
-          answer,
-        },
-      });
-    }
-  };
-
-  const deleteCustomQuestionAndAnswer = async (
-    question: TDeepPartial<TQuestionWithAnswer>,
-  ) => {
-    await deleteQuestion({
-      variables: {
-        _id: question._id,
-      },
-    });
-    if (question.answer) {
-      await deleteAnswer({
-        variables: {
-          _id: question.answer?._id,
-        },
-      });
-    }
-  };
-
   const value = useMemo(
     () => ({
       audit,
@@ -487,9 +414,12 @@ const AuditProvider = ({ children }) => {
       setSelectedQuestion,
       selectedAction,
       setSelectedAction,
-      createCustomQuestionAndAnswer,
-      saveCustomQuestionAndAnswer,
-      deleteCustomQuestionAndAnswer,
+      createQuestion,
+      saveQuestion,
+      deleteQuestion,
+      createAnswer,
+      saveAnswer,
+      deleteAnswer,
       updateActions,
       updateAudit,
       submitAudit,

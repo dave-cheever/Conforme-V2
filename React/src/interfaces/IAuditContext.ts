@@ -21,6 +21,15 @@ import { IQuestionsCategory } from './IQuestionsCategory';
 import { IUser } from './IUser';
 import { TDeepPartial } from './TDeepPartial';
 
+type gqlFunction = (
+  options?: MutationFunctionOptions<
+    any,
+    OperationVariables,
+    DefaultContext,
+    ApolloCache<any>
+  >,
+) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+
 export interface IAuditContext {
   audit: IAudit;
   auditType: IAuditType;
@@ -41,15 +50,13 @@ export interface IAuditContext {
   selectedAction?: Partial<IAction>;
   setSelectedAction: Dispatch<SetStateAction<Partial<IAction> | undefined>>;
 
-  createCustomQuestionAndAnswer: (
-    questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ) => Promise<{ questionId: string; answerId?: string }>;
-  saveCustomQuestionAndAnswer: (
-    questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ) => Promise<void>;
-  deleteCustomQuestionAndAnswer: (
-    questionValues: TDeepPartial<TQuestionWithAnswer>,
-  ) => Promise<void>;
+  createQuestion: gqlFunction;
+  saveQuestion: gqlFunction;
+  deleteQuestion: gqlFunction;
+  createAnswer: gqlFunction;
+  saveAnswer: gqlFunction;
+  deleteAnswer: gqlFunction;
+
   updateActions: (
     actions: Partial<IAction>[],
     answerId: string,

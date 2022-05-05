@@ -7,7 +7,7 @@ import { ITeamContext } from '../interfaces/ITeamContext';
 import { IUser } from '../interfaces/IUser';
 
 const SEARCH_USERS = gql`
-  query ($searchQuery: SearchQuery) {
+  query ($searchQuery: SearchUserQuery) {
     searchUsers(searchQuery: $searchQuery) {
       _id
       firstName

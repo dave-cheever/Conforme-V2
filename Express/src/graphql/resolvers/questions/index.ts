@@ -33,6 +33,7 @@ export const questionsTypeDefs = `
 
   input QuestionQuery {
     _id: ID
+    questionsCategoriesIds: [ID]
     scope: ScopeInput
   }
 

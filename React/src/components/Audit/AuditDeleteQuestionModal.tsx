@@ -14,7 +14,7 @@ import {
 import { useAuditContext } from '../../contexts/AuditProvider';
 
 const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
-  const { selectedQuestion, deleteCustomQuestionAndAnswer, refetch } =
+  const { selectedQuestion, deleteQuestion, deleteAnswer, refetch } =
     useAuditContext();
 
   if (!selectedQuestion) return null;
@@ -43,7 +43,18 @@ const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
               onClick={async () => {
-                await deleteCustomQuestionAndAnswer(selectedQuestion);
+                await deleteQuestion({
+                  variables: {
+                    _id: selectedQuestion._id,
+                  },
+                });
+                if (selectedQuestion.answer) {
+                  await deleteAnswer({
+                    variables: {
+                      _id: selectedQuestion.answer?._id,
+                    },
+                  });
+                }
                 refetch();
                 onClose();
               }}

@@ -25,10 +25,15 @@ const questions = async (
     if (questionQuery.scope) {
       pipeline.push({
         $match: {
-          scope: {
-            type: questionQuery.scope.type,
-            _id: questionQuery.scope._id,
-          },
+          scope: questionQuery.scope,
+        },
+      });
+    }
+
+    if (questionQuery.questionsCategoriesIds) {
+      pipeline.push({
+        $match: {
+          questionsCategoryId: { $in: questionQuery.questionsCategoriesIds },
         },
       });
     }
@@ -85,12 +90,14 @@ const questions = async (
     if (shouldJoin(['answer', 'actions'])) {
       questions = questions.map((question) => ({
         ...question,
-        answer: {
-          ...question.answer,
-          actions: question.answer.actions.filter(
-            (action) => !action.metatags.removedAt,
-          ),
-        },
+        answer: question.answer._id
+          ? {
+              ...question.answer,
+              actions: question.answer.actions.filter(
+                (action) => !action.metatags.removedAt,
+              ),
+            }
+          : undefined,
       }));
     }
 

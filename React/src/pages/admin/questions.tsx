@@ -19,8 +19,8 @@ import { IQuestion } from '../../interfaces/IQuestion';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 
 const GET_QUESTIONS = gql`
-  query {
-    questions {
+  query ($questionQuery: QuestionQuery) {
+    questions(questionQuery: $questionQuery) {
       _id
       type
       question
@@ -74,7 +74,15 @@ const defaultValues: Partial<IQuestion<TQuestionValue>> = {
 const Questions = () => {
   const toast = useToast();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
-  const { data, loading, refetch } = useQuery(GET_QUESTIONS);
+  const { data, loading, refetch } = useQuery(GET_QUESTIONS, {
+    variables: {
+      questionQuery: {
+        scope: {
+          component: 'audits',
+        },
+      },
+    },
+  });
   const [createFunction] = useMutation(CREATE_QUESTION);
   const [updateFunction] = useMutation(UPDATE_QUESTION);
   const [deleteFunction] = useMutation(DELETE_QUESTION);

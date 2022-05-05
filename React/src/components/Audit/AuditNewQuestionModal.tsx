@@ -27,7 +27,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
     return customQuestionsCategories.filter(
       ({ editableSubmitted }) => editableSubmitted,
     );
-  }, [JSON.stringify(customQuestionsCategories)]);
+  }, [audit.status, JSON.stringify(customQuestionsCategories)]);
 
   const countQuestionsLeft = (category: IQuestionsCategory) =>
     category.maxQuestionsNumber

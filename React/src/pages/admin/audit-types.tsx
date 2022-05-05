@@ -250,10 +250,10 @@ const AuditTypes = () => {
     }
   };
 
-  const moveSection = (sectionIndex: number, newPosition: number) => {
+  const moveSection = (sectionIndex: number, newPosition?: number) => {
     const sectionsCopy = [...sections];
     const section = sectionsCopy.splice(sectionIndex, 1)[0];
-    sectionsCopy.splice(newPosition, 0, section);
+    if (newPosition) sectionsCopy.splice(newPosition, 0, section);
     setValue('sections', sectionsCopy);
   };
 
@@ -389,6 +389,18 @@ const AuditTypes = () => {
                           move down
                         </Text>
                       )}
+
+                      <Text
+                        _hover={{
+                          textDecoration: 'underline',
+                        }}
+                        color="auditTypesAdmin.linkColor"
+                        cursor="pointer"
+                        fontSize="xs"
+                        onClick={() => moveSection(i)}
+                      >
+                        remove
+                      </Text>
                     </HStack>
                     {section.type === 'questionsCategory' && (
                       <Select

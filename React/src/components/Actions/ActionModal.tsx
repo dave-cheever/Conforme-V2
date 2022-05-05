@@ -222,24 +222,25 @@ const ActionModal = ({
                           key={attachment.id}
                         />
                       ))}
-                    {(action?.answer?.attachments || [])[2] ? (
-                      <DocumentThumbnail
-                        document={action!.answer!.attachments![2]}
-                        key={action!.answer!.attachments![2].id}
-                      />
-                    ) : (
-                      <Flex
-                        align="center"
-                        border="1px solid black"
-                        cursor="default"
-                        h="55px"
-                        justify="center"
-                        rounded="3px"
-                        w="55px"
-                      >
-                        +1
-                      </Flex>
-                    )}
+                    {(action?.answer?.attachments || []).length > 2 &&
+                      ((action?.answer?.attachments || []).length === 3 ? (
+                        <DocumentThumbnail
+                          document={action!.answer!.attachments![2]}
+                          key={action!.answer!.attachments![2].id}
+                        />
+                      ) : (
+                        <Flex
+                          align="center"
+                          border="1px solid black"
+                          cursor="default"
+                          h="55px"
+                          justify="center"
+                          rounded="3px"
+                          w="55px"
+                        >
+                          +{(action?.answer?.attachments || []).length - 2}
+                        </Flex>
+                      ))}
                   </HStack>
                 </HStack>
               </Stack>

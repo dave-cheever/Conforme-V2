@@ -25,9 +25,12 @@ const AuditAnswer = ({
   handleClose: () => void;
 }) => {
   const {
+    audit,
     questionsCategories,
-    createCustomQuestionAndAnswer,
-    saveCustomQuestionAndAnswer,
+    createQuestion,
+    saveQuestion,
+    createAnswer,
+    saveAnswer,
     updateActions,
     selectedAction,
     setSelectedAction,
@@ -54,6 +57,71 @@ const AuditAnswer = ({
       actions: answer?.actions || [],
     });
   }, [JSON.stringify(question)]);
+
+  const saveData = async () => {
+    const questionData = {
+      _id: question._id,
+      question: values.question,
+    };
+
+    const answerData = {
+      _id: question.answer?._id,
+      options: values.options,
+      answer: values.answer,
+      attachments: values.attachments.map((attachment) => ({
+        id: attachment.id,
+        name: attachment.name,
+        addedAt: attachment.addedAt,
+      })),
+    };
+
+    let answerId = answer?._id;
+    if (answerId) {
+      // Answer already exist, needs to be updated
+      if (isCustomQuestion)
+        await saveQuestion({ variables: { question: questionData } });
+      await saveAnswer({ variables: { answer: answerData } });
+    } else {
+      // Answer does not exist, needs to be created
+      let questionId = question._id;
+      if (isCustomQuestion) {
+        const { _id, ...questionValues } = questionData;
+        const createdQuestionRes = await createQuestion({
+          variables: {
+            question: {
+              ...questionValues,
+              type: question.type,
+              questionsCategoryId: question.questionsCategoryId,
+              scope: {
+                type: 'audit',
+                _id: audit?._id,
+              },
+            },
+          },
+        });
+        const createdQuestion = createdQuestionRes.data.createQuestion;
+        questionId = createdQuestion._id;
+      }
+
+      const createdAnswerRes = await createAnswer({
+        variables: {
+          answer: {
+            ...answer,
+            questionId,
+            scope: {
+              type: 'audit',
+              _id: audit?._id,
+            },
+          },
+        },
+      });
+      const createdAnswer = createdAnswerRes.data.createAnswer;
+      answerId = createdAnswer._id;
+    }
+    if (answerId) await updateActions(values.actions, answerId);
+    refetch();
+    handleClose();
+  };
 
   if (!questionsCategory) return null;
   return (
@@ -216,35 +284,7 @@ const AuditAnswer = ({
           fontSize="smm"
           fontWeight="semibold"
           h="40px"
-          onClick={async () => {
-            // Add or update question and answer
-            const questionWithAnswer: TDeepPartial<TQuestionWithAnswer> = {
-              _id: question._id,
-              answer: {
-                _id: question.answer?._id,
-                options: values.options,
-                answer: values.answer,
-                attachments: values.attachments.map((attachment) => ({
-                  id: attachment.id,
-                  name: attachment.name,
-                  addedAt: attachment.addedAt,
-                })),
-              },
-              question: values.question,
-            };
-            let answerId = answer?._id;
-            if (answerId) saveCustomQuestionAndAnswer(questionWithAnswer);
-            else {
-              ({ answerId } = await createCustomQuestionAndAnswer({
-                ...questionWithAnswer,
-                type: question.type,
-                questionsCategoryId: question.questionsCategoryId,
-              }));
-            }
-            if (answerId) await updateActions(values.actions, answerId);
-            refetch();
-            handleClose();
-          }}
+          onClick={saveData}
           rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
           rounded="10px"
         >
