@@ -13,6 +13,10 @@ interface IAuditUserFilterObject {
   participantsIds: string[] | null;
 }
 
+interface IActionUserFilterObject {
+  assigneesIds: string[] | null;
+}
+
 export interface IUserFilter {
   name: string;
   value: IUserFilterObject | null;
@@ -21,6 +25,10 @@ export interface IUserFilter {
 export interface IAuditUserFilter {
   name: string;
   value: IAuditUserFilterObject | null;
+}
+export interface IActionUserFilter {
+  name: string;
+  value: IActionUserFilterObject | null;
 }
 
 export interface IResponseFilters {
@@ -37,6 +45,12 @@ export interface IAuditFilters {
   walkType?: IFilterString;
   usersIds?: IAuditUserFilter;
 }
+export interface IActionFilters {
+  sitesIds?: IFilter;
+  areasIds?: IFilter;
+  status?: IFilterString;
+  usersIds?: IActionUserFilter;
+}
 
 export default interface IFilters {
   complianceItemsIds?: IFilter;
@@ -49,7 +63,7 @@ export default interface IFilters {
   usersRoles?: IFilter;
   collections?: IFilter;
   action?: IFilter;
-  usersIds?: IUserFilter | IAuditUserFilter;
+  usersIds?: IUserFilter | IAuditUserFilter | IActionUserFilter;
   locationsIds?: IFilter;
   sitesIds?: IFilter;
   areasIds?: IFilter;

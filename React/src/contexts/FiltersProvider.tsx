@@ -4,6 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 
 import useFiltersUtils from '../hooks/useFiltersUtils';
 import IFilters, {
+  IActionFilters,
   IAuditFilters,
   IResponseFilters,
 } from '../interfaces/IFilters';
@@ -69,6 +70,9 @@ const FiltersProvider = ({ children }) => {
   const [responseFiltersValue, setResponseFiltersValue] =
     useState<IResponseFilters>({});
   const [auditFiltersValue, setAuditFiltersValue] = useState<IAuditFilters>({});
+  const [actionFiltersValue, setActionFiltersValue] = useState<IActionFilters>(
+    {},
+  );
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(
     null,
@@ -77,14 +81,14 @@ const FiltersProvider = ({ children }) => {
     [statusName: string]: number;
   }>({});
   const numberOfSelectedFilters = Object.values(filtersValues).filter(
-    (filter) => filter?.value && filter?.value.length > 0,
+    (filter) =>
+      filter?.value && !filter?.hideFromPanel && filter?.value.length > 0,
   ).length;
 
   const setFilters = (filters = {}) => {
     setFiltersValues(
       getFilters({
         usedFilters,
-        oldFilters: filtersValues,
         newFilters: filters,
       }),
     );
@@ -120,6 +124,8 @@ const FiltersProvider = ({ children }) => {
       setResponseFiltersValue,
       auditFiltersValue,
       setAuditFiltersValue,
+      actionFiltersValue,
+      setActionFiltersValue,
       numberOfSelectedFilters,
       complianceItems: data?.complianceItems,
       categories: data?.categories,

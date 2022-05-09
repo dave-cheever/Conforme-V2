@@ -1,9 +1,10 @@
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
 
 const useNavigate = () => {
   const history = useHistory();
+  const location = useLocation();
   const { module } = useAppContext();
 
   const isPathActive = (path: string, options: { exact?: boolean } = {}) => {
@@ -16,6 +17,8 @@ const useNavigate = () => {
     return currentPath.includes(path);
   };
 
+  const getPath = () => location.pathname.split('/')[2];
+
   const navigateTo = (path: string, state?: any) => {
     history.push(`/${module?.path}${path}`, state);
   };
@@ -25,6 +28,7 @@ const useNavigate = () => {
   };
 
   return {
+    getPath,
     isPathActive,
     navigateTo,
     openInNewTab,

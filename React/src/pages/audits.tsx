@@ -135,8 +135,8 @@ const Audits = () => {
           !value.value ||
           (Array.isArray(value.value) && value.value.length === 0) ||
           (key === 'usersIds' &&
-            value.value.auditorsIds.length === 0 &&
-            value.value.participantsIds.length === 0)
+            value.value?.auditorsIds?.length === 0 &&
+            value.value?.participantsIds?.length === 0)
         )
           return acc;
 
@@ -202,15 +202,8 @@ const Audits = () => {
 
   const csvData = useMemo(
     () =>
-      (data?.audits ?? []).map(
-        ({
-          typename,
-          participantsIds,
-          auditorId,
-          reference,
-          metatags,
-          ...audit
-        }) => ({
+      (filteredAudits ?? []).map(
+        ({ participantsIds, auditorId, reference, metatags, ...audit }) => ({
           ...audit,
           dueDate: audit?.dueDate
             ? format(new Date(audit?.dueDate), 'd MMM yyyy')
@@ -220,7 +213,7 @@ const Audits = () => {
             .join(', '),
         }),
       ),
-    [JSON.stringify(data?.audits)],
+    [JSON.stringify(filteredAudits)],
   );
 
   return (

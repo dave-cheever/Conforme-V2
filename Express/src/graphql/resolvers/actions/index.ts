@@ -31,9 +31,17 @@ export const actionsTypeDefs = `
     assignee: User!
   }
 
+  input ActionUsersInput {
+    assigneesIds: [ID]
+  }
+
   input ActionQueryInput {
     _id: ID
     scope: ScopeInput
+    status: [String]
+    areasIds: [ID]
+    sitesIds: [ID]
+    usersIds: ActionUsersInput
   }
 
   input ActionCreateInput {

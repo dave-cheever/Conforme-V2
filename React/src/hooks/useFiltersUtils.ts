@@ -1,12 +1,11 @@
-import { format } from 'date-fns';
+import { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
-import { useFiltersContext } from '../contexts/FiltersProvider';
 import IFilter from '../interfaces/IFilter';
 import IFilters, {
+  IActionFilters,
   IAuditFilters,
-  IAuditUserFilter,
-  IUserFilter,
 } from '../interfaces/IFilters';
 
 export const initialFilters: IFilters = {
@@ -87,6 +86,28 @@ export const initialAuditFilters: IAuditFilters = {
   },
 };
 
+export const initialActionFilters: IActionFilters = {
+  status: {
+    name: 'Status',
+    value: [],
+    hideFromPanel: true,
+  },
+  sitesIds: {
+    name: 'Site',
+    value: [],
+  },
+  areasIds: {
+    name: 'Area',
+    value: [],
+  },
+  usersIds: {
+    name: 'User',
+    value: {
+      assigneesIds: [],
+    },
+  },
+};
+
 export const auditStatuses = {
   inProgress: 'In progress',
   completed: 'Completed',
@@ -133,40 +154,41 @@ export const actions = {
 
 const useFiltersUtils = () => {
   const { module } = useAppContext();
-  const {
-    filtersValues,
-    complianceItems,
-    categories,
-    regulatoryBodies,
-    businessUnits,
-    users,
-    locations,
-    areas,
-    sites,
-  } = useFiltersContext();
+  const location = useLocation();
+
+  const cleanAuditFilters = useMemo(() => {
+    switch (location.pathname.split('/')[2]) {
+      case 'actions':
+        return initialActionFilters;
+      case 'audits':
+      default:
+        return initialAuditFilters;
+    }
+  }, [location.pathname]);
+
+  // Make a copy of initial filters
+  const cleanFilters = useMemo(
+    () =>
+      JSON.parse(
+        JSON.stringify(
+          module?.type === 'tracker' ? initialFilters : cleanAuditFilters,
+        ),
+      ),
+    [module?.type, location.pathname],
+  );
 
   const getFilters = ({
     usedFilters = [],
-    oldFilters = {},
     newFilters = {},
   }: {
     usedFilters?: string[];
-    oldFilters?: object;
     newFilters?: object;
   } = {}) => {
-    // Make a copy of initial filters
-    const cleanFilters = JSON.parse(
-      JSON.stringify(
-        module?.type === 'tracker' ? initialFilters : initialAuditFilters,
-      ),
-    );
-
     const filters = {};
     let filterName = '';
     for (filterName of usedFilters) {
       // Get filter config from existing or initial filters
-      const filter: IFilter =
-        oldFilters[filterName] || cleanFilters[filterName];
+      const filter: IFilter = cleanFilters[filterName];
 
       // Check if value was set
       if (newFilters[filterName] !== undefined)
@@ -179,88 +201,8 @@ const useFiltersUtils = () => {
     return filters;
   };
 
-  // Looks up friendly filter name for display
-  const getFirstValue = (filterKey: string) => {
-    switch (filterKey) {
-      case 'complianceItemsIds': {
-        const value: any = filtersValues.complianceItemsIds?.value;
-        return complianceItems.find((f) => f._id === value[0])?.name;
-      }
-      case 'categoriesIds': {
-        const value: any = filtersValues.categoriesIds?.value;
-        return categories.find((f) => f._id === value[0])?.name;
-      }
-      case 'locationIds': {
-        const value: any = filtersValues.locationsIds?.value;
-        return locations.find((f) => f._id === value[0])?.name;
-      }
-      case 'businessUnitsIds': {
-        const value: any = filtersValues.businessUnitsIds?.value;
-        return businessUnits.find((f) => f._id === value[0])?.name;
-      }
-      case 'itemStatus': {
-        const value: any = filtersValues.itemStatus?.value;
-        return complianceItemStatuses[value[0]];
-      }
-      case 'regulatoryBodiesIds': {
-        const value: any = filtersValues.regulatoryBodiesIds?.value;
-        return regulatoryBodies.find((f) => f._id === value[0])?.name;
-      }
-      case 'dueDate': {
-        const [value, startDate, endDate] = filtersValues.dueDate?.value || [];
-        switch (value) {
-          case 'exactDate':
-            return format(
-              startDate ? new Date(startDate) : new Date(),
-              'd MMM yy',
-            ).toString();
-          case 'dateRange':
-            return `${format(
-              startDate ? new Date(startDate) : new Date(),
-              'd MMM yy',
-            ).toString()} - ${format(
-              endDate ? new Date(endDate) : new Date(),
-              'd MMM yy',
-            ).toString()}`;
-          default:
-            return dates[value];
-        }
-      }
-      case 'isVerified': {
-        const value: any = filtersValues.isVerified?.value;
-        return value === '1' ? 'Yes' : 'No';
-      }
-      case 'collections': {
-        const value: any = filtersValues.collections?.value;
-        return collections[value[0]];
-      }
-      case 'action': {
-        const value: any = filtersValues.action?.value;
-        return actions[value[0]];
-      }
-      case 'usersIds': {
-        const value: any =
-          module?.type === 'tracker'
-            ? (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds
-            : (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds;
-        return users.find((f) => f._id === value[0])?.displayName;
-      }
-      case 'sitesIds': {
-        const value: any = filtersValues.areasIds?.value;
-        return areas.find((f) => f._id === value[0])?.name;
-      }
-      case 'areasIds': {
-        const value: any = filtersValues.sitesIds?.value;
-        return sites.find((f) => f._id === value[0])?.name;
-      }
-      default:
-        break;
-    }
-  };
-
   return {
     getFilters,
-    getFirstValue,
   };
 };
 

@@ -54,6 +54,22 @@ const actions = async (
       });
     }
 
+    if (actionQueryInput?.status?.length === 1) {
+      pipeline.push({
+        $match: {
+          done: actionQueryInput.status[0] === 'completed',
+        },
+      });
+    }
+
+    if (actionQueryInput?.usersIds?.assigneesIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          assigneeId: { $in: actionQueryInput.usersIds?.assigneesIds },
+        },
+      });
+    }
+
     if (shouldJoin(['answer'])) {
       join({
         pipeline,
@@ -96,6 +112,22 @@ const actions = async (
         collection: 'questions',
         from: 'answer.questionId',
         to: 'answer.question',
+      });
+    }
+
+    if (actionQueryInput?.sitesIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          'answer.audit.siteId': { $in: actionQueryInput.sitesIds },
+        },
+      });
+    }
+
+    if (actionQueryInput?.areasIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          'answer.audit.areaId': { $in: actionQueryInput.areasIds },
+        },
       });
     }
 

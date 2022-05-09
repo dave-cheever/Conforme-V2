@@ -24,7 +24,10 @@ const Header: FunctionComponent<IHeader> = ({
     numberOfSelectedFilters,
   } = useFiltersContext();
   const { isPathActive } = useNavigate();
-  const isAuditPage = isPathActive('/audits') || isPathActive('/dashboard');
+  const isAuditPage =
+    isPathActive('/audits') ||
+    isPathActive('/actions') ||
+    isPathActive('/dashboard');
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => {

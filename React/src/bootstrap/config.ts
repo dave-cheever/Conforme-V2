@@ -301,6 +301,13 @@ export const auditUserRoles = [
   },
 ];
 
+export const actionUserRoles = [
+  {
+    value: 'assignee',
+    label: 'Assignee',
+  },
+];
+
 export const questionTypes = [
   {
     value: 'text',

@@ -25,7 +25,10 @@ const FiltersPanelItem = ({
   const { setFilters, filtersValues } = useFiltersContext();
 
   const filtersLength = useMemo(
-    () => filtersValues?.[name]?.value?.length || 0,
+    () =>
+      Array.isArray(filtersValues?.[name]?.value)
+        ? filtersValues?.[name]?.value?.length
+        : 0,
     [filtersValues, name],
   );
 

@@ -11,7 +11,6 @@ const FiltersPanel = () => {
     setShowFiltersPanel,
     cleanFilters,
   } = useFiltersContext();
-
   if (!showFiltersPanel) return null;
 
   return (
@@ -39,7 +38,7 @@ const FiltersPanel = () => {
         px="4"
       >
         {Object.entries(filtersValues).map(([name, value]) => {
-          if (usedFilters.includes(name))
+          if (usedFilters.includes(name) && !value?.hideFromPanel)
             return <FiltersPanelItem filter={value} key={name} name={name} />;
 
           return null;

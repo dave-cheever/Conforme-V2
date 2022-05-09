@@ -18,6 +18,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { isEmpty } from 'lodash';
 
 import { actionStatuses } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
@@ -28,6 +29,7 @@ import Icon from '../components/Icon';
 import Loader from '../components/Loader';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
+import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import { ChevronRight, ExportIcon, GridIcon, ListIcon } from '../icons';
 import { IAction } from '../interfaces/IAction';
@@ -83,29 +85,104 @@ const GET_ACTIONS = gql`
 `;
 
 const Actions = () => {
+  const {
+    filtersValues,
+    setUsedFilters,
+    setFilters,
+    setShowFiltersPanel,
+    actionFiltersValue,
+    setActionFiltersValue,
+    usedFilters,
+  } = useFiltersContext();
   const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
+  const tabs = ['inProgress', 'completed'];
+  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
+  const [filteredActions, setFilteredActions] = useState<IAction[]>([]);
   const { data, loading, error, refetch } = useQuery(GET_ACTIONS, {
     variables: {
       actionQueryInput: {
         scope: {
           type: 'answer',
         },
+        status: tabs[selectedTabIndex],
       },
     },
     fetchPolicy: 'no-cache',
   });
-  const actions = data?.actions || [];
-  const tabs = ['inProgress', 'completed'];
-  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
-  const filteredActions: IAction[] = useMemo(
-    () =>
-      tabs[selectedTabIndex] === 'inProgress'
-        ? actions.filter((action) => !action.done)
-        : actions.filter((action) => action.done),
-    [JSON.stringify(actions), selectedTabIndex],
-  );
+
+  useEffect(() => {
+    setUsedFilters(['status', 'sitesIds', 'areasIds', 'usersIds']);
+    return () => setShowFiltersPanel(false);
+  }, []);
+
+  useEffect(() => {
+    setFilters({ status: tabs[selectedTabIndex] });
+  }, [selectedTabIndex]);
+
+  useEffect(() => {
+    if (
+      actionFiltersValue &&
+      !isEmpty(actionFiltersValue) &&
+      !isEmpty(filtersValues) &&
+      !isEmpty(usedFilters)
+    ) {
+      setFilters(actionFiltersValue);
+      setActionFiltersValue({});
+    }
+  }, [
+    filtersValues,
+    usedFilters,
+    setActionFiltersValue,
+    actionFiltersValue,
+    setFilters,
+  ]);
+
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters = Object.entries(filtersValues).reduce(
+      (acc, filter) => {
+        if (!filter || !filter[1]) return { ...acc };
+
+        const [key, value] = filter;
+
+        if (
+          !value.value ||
+          (Array.isArray(value.value) && value.value.length === 0) ||
+          (key === 'usersIds' && value.value?.assigneesIds?.length === 0)
+        )
+          return acc;
+
+        return {
+          ...acc,
+          [key]: value?.value,
+        };
+      },
+      {},
+    );
+
+    if (parsedFilters) {
+      refetch({
+        actionQueryInput: {
+          ...parsedFilters,
+          status: tabs[selectedTabIndex],
+          scope: {
+            type: 'answer',
+          },
+        },
+      });
+    }
+  }, [filtersValues]);
+
+  useEffect(() => {
+    if (data && data?.actions && !error) {
+      const items = [...data?.actions];
+
+      setFilteredActions(items);
+    }
+  }, [data?.actions]);
+
   const [selectedAction, setSelectedAction] = useState<IAction>();
 
   const handleOpenModal = (action: IAction) => {

@@ -3,7 +3,11 @@ import { Dispatch, SetStateAction } from 'react';
 import { IBaseWithName } from './IBaseWithName';
 import { IBusinessUnit } from './IBusinessUnit';
 import { IComplianceItem } from './IComplianceItem';
-import IFilters, { IAuditFilters, IResponseFilters } from './IFilters';
+import IFilters, {
+  IActionFilters,
+  IAuditFilters,
+  IResponseFilters,
+} from './IFilters';
 import { ILocation } from './ILocation';
 import { IUser } from './IUser';
 import TAuditStatus from './TAuditStatus';
@@ -34,6 +38,8 @@ export interface IFiltersContext {
   setResponseFiltersValue: Dispatch<SetStateAction<IResponseFilters>>;
   auditFiltersValue: IAuditFilters;
   setAuditFiltersValue: Dispatch<SetStateAction<IAuditFilters>>;
+  actionFiltersValue: IActionFilters;
+  setActionFiltersValue: Dispatch<SetStateAction<IActionFilters>>;
 
   numberOfSelectedFilters: number;
 
