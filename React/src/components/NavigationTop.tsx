@@ -34,19 +34,27 @@ const NavigationTop = () => {
     setAdminModalState('add');
     if (
       module?.type === 'tracker' &&
-      ['/', '/admin/users', '/admin/audit-log', '/admin/settings'].includes(
-        history.location.pathname,
-      )
+      [
+        `/${module?.path}/`,
+        `/${module?.path}/admin/users`,
+        `/${module?.path}/admin/audit-log`,
+        `/${module?.path}/admin/settings`,
+      ].includes(history.location.pathname)
     )
-      pageRedirect('/admin/compliance-items');
+      return pageRedirect('/admin/compliance-items');
     if (
       module?.type === 'audits' &&
-      (['/', '/admin/users', '/admin/audit-log', '/admin/settings'].includes(
-        history.location.pathname,
-      ) ||
+      ([
+        `/${module?.path}/`,
+        `/${module?.path}/actions`,
+        `/${module?.path}/walk-items`,
+        `/${module?.path}/users`,
+        `/${module?.path}/admin/audit-log`,
+        `/${module?.path}/admin/settings`,
+      ].includes(history.location.pathname) ||
         /\/audits/.test(history.location.pathname))
     )
-      pageRedirect('/audits');
+      return pageRedirect('/audits');
   };
 
   return (
