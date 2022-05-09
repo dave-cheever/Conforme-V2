@@ -24,17 +24,12 @@ import ActionModal from '../components/Actions/ActionModal';
 import ActionsList from '../components/Actions/ActionsList';
 import ActionSquare from '../components/Actions/ActionSquare';
 import Header from '../components/Header';
+import Icon from '../components/Icon';
 import Loader from '../components/Loader';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
-import {
-  ChevronRight,
-  ExportIcon,
-  GridIcon,
-  GroupIcon,
-  ListIcon,
-} from '../icons';
+import { ChevronRight, ExportIcon, GridIcon, ListIcon } from '../icons';
 import { IAction } from '../interfaces/IAction';
 
 const GET_ACTIONS = gql`
@@ -120,28 +115,19 @@ const Actions = () => {
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'Grid' || savedView === 'List'))
+    if (savedView && (savedView === 'grid' || savedView === 'list'))
       return savedView;
 
-    return 'List';
+    return 'list';
   }, [user]);
 
-  const [viewMode, setViewMode] = useState<'Grid' | 'List'>(initialViewMode);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(initialViewMode);
 
   useEffect(() => {
-    if (device === 'mobile') setViewMode('Grid');
+    if (device === 'mobile') setViewMode('grid');
   }, [device]);
 
-  const viewIcon = useMemo(
-    () => ({
-      Grid: <GridIcon boxSize="18px" stroke="currentColor" />,
-      List: <ListIcon boxSize="18px" stroke="currentColor" />,
-      Group: <GroupIcon boxSize="18px" stroke="currentColor" />,
-    }),
-    [],
-  );
-
-  const changeViewMode = useCallback((_viewMode: 'Grid' | 'List') => {
+  const changeViewMode = useCallback((_viewMode: 'grid' | 'list') => {
     setViewMode(_viewMode);
     localStorage.setItem('viewMode', _viewMode);
   }, []);
@@ -211,7 +197,11 @@ const Actions = () => {
                   rounded="10px"
                 >
                   <Flex align="center" mr="1">
-                    {viewIcon[viewMode]}
+                    <Icon
+                      boxSize="18px"
+                      icon={viewMode}
+                      stroke="currentColor"
+                    />
                   </Flex>
                 </MenuButton>
               }
@@ -219,27 +209,27 @@ const Actions = () => {
                 <MenuItem
                   _focus={{ color: 'actions.header.menuItemFocus' }}
                   color={
-                    viewMode === 'Grid'
+                    viewMode === 'grid'
                       ? 'actions.header.menuItemFontSelected'
                       : 'actions.header.menuItemFont'
                   }
                   fontSize="14px"
-                  onClick={() => changeViewMode('Grid')}
+                  onClick={() => changeViewMode('grid')}
                 >
-                  <GridIcon mr={3} />
+                  <GridIcon mr={3} stroke="currentColor" />
                   Card
                 </MenuItem>
                 <MenuItem
                   _focus={{ color: 'actions.header.menuItemFocus' }}
                   color={
-                    viewMode === 'List'
+                    viewMode === 'list'
                       ? 'actions.header.menuItemFontSelected'
                       : 'actions.header.menuItemFont'
                   }
                   fontSize="14px"
-                  onClick={() => changeViewMode('List')}
+                  onClick={() => changeViewMode('list')}
                 >
-                  <ListIcon mr={3} />
+                  <ListIcon mr={3} stroke="currentColor" />
                   List
                 </MenuItem>
               </MenuList>
@@ -305,7 +295,7 @@ const Actions = () => {
           <Loader center />
         ) : (
           <>
-            {viewMode === 'Grid' && (
+            {viewMode === 'grid' && (
               <Grid
                 display={['grid', 'flex', 'flex']}
                 flexWrap="wrap"
@@ -332,7 +322,7 @@ const Actions = () => {
                 )}
               </Grid>
             )}
-            {viewMode === 'List' && <ActionsList actions={data.actions} />}
+            {viewMode === 'list' && <ActionsList actions={data.actions} />}
           </>
         )}
       </Flex>

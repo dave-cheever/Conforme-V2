@@ -22,6 +22,7 @@ import AuditsList from '../components/Audit/AuditsList';
 import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
 import Header from '../components/Header';
+import Icon from '../components/Icon';
 import Loader from '../components/Loader';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -162,29 +163,20 @@ const Audits = () => {
     const savedView = localStorage.getItem('viewMode');
     if (
       savedView &&
-      (savedView === 'Grid' || savedView === 'List' || savedView === 'Group')
+      (savedView === 'grid' || savedView === 'list' || savedView === 'group')
     )
       return savedView;
 
-    return 'List';
+    return 'list';
   }, [user]);
 
-  const [viewMode, setViewMode] = useState<'Grid' | 'List' | 'Group'>(
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'group'>(
     initialViewMode,
   );
 
   useEffect(() => {
-    if (device === 'mobile') setViewMode('Grid');
+    if (device === 'mobile') setViewMode('grid');
   }, [device]);
-
-  const viewIcon = useMemo(
-    () => ({
-      Grid: <GridIcon boxSize="18px" stroke="currentColor" />,
-      List: <ListIcon boxSize="18px" stroke="currentColor" />,
-      Group: <GroupIcon boxSize="18px" stroke="currentColor" />,
-    }),
-    [],
-  );
 
   const onCloseModal = async () => {
     await trigger();
@@ -192,7 +184,7 @@ const Audits = () => {
     setAdminModalState('closed');
   };
 
-  const changeViewMode = useCallback((_viewMode: 'Grid' | 'List' | 'Group') => {
+  const changeViewMode = useCallback((_viewMode: 'grid' | 'list' | 'group') => {
     setViewMode(_viewMode);
     localStorage.setItem('viewMode', _viewMode);
   }, []);
@@ -276,7 +268,11 @@ const Audits = () => {
                   rounded="10px"
                 >
                   <Flex align="center" mr="1">
-                    {viewIcon[viewMode]}
+                    <Icon
+                      boxSize="18px"
+                      icon={viewMode}
+                      stroke="currentColor"
+                    />
                   </Flex>
                 </MenuButton>
               }
@@ -284,12 +280,12 @@ const Audits = () => {
                 <MenuItem
                   _focus={{ color: 'auditsItems.header.menuItemFocus' }}
                   color={
-                    viewMode === 'Grid'
+                    viewMode === 'grid'
                       ? 'auditsItems.header.menuItemFontSelected'
                       : 'auditsItems.header.menuItemFont'
                   }
                   fontSize="14px"
-                  onClick={() => changeViewMode('Grid')}
+                  onClick={() => changeViewMode('grid')}
                 >
                   <GridIcon mr={3} stroke="currentColor" />
                   Card
@@ -297,12 +293,12 @@ const Audits = () => {
                 <MenuItem
                   _focus={{ color: 'auditsItems.header.menuItemFocus' }}
                   color={
-                    viewMode === 'List'
+                    viewMode === 'list'
                       ? 'auditsItems.header.menuItemFontSelected'
                       : 'auditsItems.header.menuItemFont'
                   }
                   fontSize="14px"
-                  onClick={() => changeViewMode('List')}
+                  onClick={() => changeViewMode('list')}
                 >
                   <ListIcon mr={3} stroke="currentColor" />
                   List
@@ -310,12 +306,12 @@ const Audits = () => {
                 <MenuItem
                   _focus={{ color: 'auditsItems.header.menuItemFocus' }}
                   color={
-                    viewMode === 'Group'
+                    viewMode === 'group'
                       ? 'auditsItems.header.menuItemFontSelected'
                       : 'auditsItems.header.menuItemFont'
                   }
                   fontSize="14px"
-                  onClick={() => changeViewMode('Group')}
+                  onClick={() => changeViewMode('group')}
                 >
                   <GroupIcon mr={3} stroke="currentColor" />
                   Group
@@ -355,7 +351,7 @@ const Audits = () => {
           <Loader center />
         ) : (
           <>
-            {viewMode === 'Grid' && (
+            {viewMode === 'grid' && (
               <Grid
                 display={['grid', 'grid', 'flex']}
                 flexWrap="wrap"
@@ -378,8 +374,8 @@ const Audits = () => {
                 )}
               </Grid>
             )}
-            {viewMode === 'List' && <AuditsList audits={data.audits} />}
-            {viewMode === 'Group' && <AuditsGroup audits={data.audits} />}
+            {viewMode === 'list' && <AuditsList audits={data.audits} />}
+            {viewMode === 'group' && <AuditsGroup audits={data.audits} />}
           </>
         )}
       </Flex>

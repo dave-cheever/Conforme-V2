@@ -96,6 +96,7 @@ import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { walkItemsListStyles } from '../components/WalkItems/WalkItemsList';
+import { walkItemSquareStyles } from '../components/WalkItems/WalkItemSquare';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
 import { actionsStyles } from '../pages/actions';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
@@ -275,6 +276,7 @@ const getTheme = (organizationTheme?: any) => {
         ...userSelectorStyles,
         ...walkItemsStyles,
         ...walkItemsListStyles,
+        ...walkItemSquareStyles,
 
         purpleHeart: {
           50: '#ede9ff',

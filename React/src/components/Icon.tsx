@@ -1,4 +1,11 @@
-import { DangerIcon, NotesIcon, ThumbUpIcon } from '../icons';
+import {
+  DangerIcon,
+  GridIcon,
+  GroupIcon,
+  ListIcon,
+  NotesIcon,
+  ThumbUpIcon,
+} from '../icons';
 
 const Icon = ({ icon, ...props }) => {
   switch (icon) {
@@ -8,6 +15,12 @@ const Icon = ({ icon, ...props }) => {
       return <ThumbUpIcon {...props} />;
     case 'notes':
       return <NotesIcon {...props} />;
+    case 'grid':
+      return <GridIcon {...props} />;
+    case 'list':
+      return <ListIcon {...props} />;
+    case 'group':
+      return <GroupIcon {...props} />;
     default:
       return null;
   }
