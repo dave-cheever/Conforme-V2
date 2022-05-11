@@ -27,10 +27,12 @@ import ActionSquare from '../components/Actions/ActionSquare';
 import Header from '../components/Header';
 import Icon from '../components/Icon';
 import Loader from '../components/Loader';
+import SortButton from '../components/SortButton';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useSort from '../hooks/useSort';
 import { ChevronRight, ExportIcon, GridIcon, ListIcon } from '../icons';
 import { IAction } from '../interfaces/IAction';
 
@@ -111,6 +113,20 @@ const Actions = () => {
     },
     fetchPolicy: 'no-cache',
   });
+  const {
+    sortedData: sortedActions,
+    sortOrder,
+    sortType,
+    setSortType,
+    setSortOrder,
+  } = useSort(filteredActions);
+  const sortBy = [
+    { label: 'Assignee', key: 'assignee.displayName' },
+    { label: 'Due date', key: 'dueDate' },
+    { label: 'Completed date', key: 'completedDate' },
+    { label: 'Area', key: 'area.name' },
+    { label: 'Site', key: 'site.name' },
+  ];
 
   useEffect(() => {
     setUsedFilters(['status', 'sitesIds', 'areasIds', 'usersIds']);
@@ -334,6 +350,13 @@ const Actions = () => {
                 </Text>
               </Button>
             </CSVLink>
+            <SortButton
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
           </>
         )}
       </Header>
@@ -384,8 +407,8 @@ const Actions = () => {
                 templateColumns={['repeat(1, 1fr)', '', '']}
                 w="full"
               >
-                {filteredActions.length > 0 ? (
-                  filteredActions?.map((action) => (
+                {sortedActions.length > 0 ? (
+                  sortedActions?.map((action) => (
                     <ActionSquare
                       action={action}
                       editAction={handleOpenModal}
@@ -399,7 +422,15 @@ const Actions = () => {
                 )}
               </Grid>
             )}
-            {viewMode === 'list' && <ActionsList actions={data.actions} />}
+            {viewMode === 'list' && (
+              <ActionsList
+                actions={sortedActions}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType}
+              />
+            )}
           </>
         )}
       </Flex>

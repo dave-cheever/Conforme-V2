@@ -91,6 +91,7 @@ import { emailTemplateStyles } from '../components/Settings/EmailTemplate';
 import { emailTemplatesStyles } from '../components/Settings/EmailTemplates';
 import { settingsTabItemStyles } from '../components/Settings/TabItem';
 import { shareModalStyles } from '../components/ShareModal';
+import { sortButtonStyles } from '../components/SortButton';
 import { statusSelectorStyles } from '../components/StatusSelector';
 import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { userMenuStyles } from '../components/UserMenu';
@@ -259,6 +260,7 @@ const getTheme = (organizationTheme?: any) => {
         ...shareModalStyles,
         ...settingsTabItemStyles,
         ...shareModalStyles,
+        ...sortButtonStyles,
         ...statusSelectorStyles,
         ...subSectionStyles,
         ...summaryItemModalStyles,

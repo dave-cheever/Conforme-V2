@@ -24,6 +24,7 @@ import AuditModal from '../components/AuditModal/AuditModal';
 import Header from '../components/Header';
 import Icon from '../components/Icon';
 import Loader from '../components/Loader';
+import SortButton from '../components/SortButton';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, {
@@ -32,6 +33,7 @@ import AuditModalProvider, {
 import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useSort from '../hooks/useSort';
 import {
   ChevronRight,
   ExportIcon,
@@ -99,6 +101,20 @@ const Audits = () => {
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
   const { audit } = useAuditModalContext();
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
+  const {
+    sortedData: sortedAudits,
+    sortOrder,
+    sortType,
+    setSortType,
+    setSortOrder,
+  } = useSort(filteredAudits, 'walkType');
+  const sortBy = [
+    { label: 'Walk Type', key: 'walkType' },
+    { label: 'Auditor', key: 'auditor.displayName' },
+    { label: 'Due date', key: 'dueDate' },
+    { label: 'Area', key: 'area.name' },
+    { label: 'Status', key: 'status' },
+  ];
 
   useEffect(() => {
     setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds']);
@@ -334,6 +350,13 @@ const Audits = () => {
                 </Text>
               </Button>
             </CSVLink>
+            <SortButton
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
           </>
         )}
       </Header>
@@ -356,8 +379,8 @@ const Audits = () => {
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
                 w="full"
               >
-                {filteredAudits.length > 0 ? (
-                  filteredAudits?.map((audit) => (
+                {sortedAudits.length > 0 ? (
+                  sortedAudits?.map((audit) => (
                     <AuditSquare audit={audit} key={audit._id} />
                   ))
                 ) : (
@@ -367,7 +390,15 @@ const Audits = () => {
                 )}
               </Grid>
             )}
-            {viewMode === 'list' && <AuditsList audits={data.audits} />}
+            {viewMode === 'list' && (
+              <AuditsList
+                audits={sortedAudits}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType}
+              />
+            )}
             {viewMode === 'group' && <AuditsGroup audits={data.audits} />}
           </>
         )}
