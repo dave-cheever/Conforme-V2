@@ -16,4 +16,8 @@ export interface IUser extends IBase {
   accountableCount?: number;
   contributorCount?: number;
   followerCount?: number;
+  completedAuditsCount?: number;
+  upcomingAuditsCount?: number;
+  overdueAuditsCount?: number;
+  totalAuditsCount?: number;
 }

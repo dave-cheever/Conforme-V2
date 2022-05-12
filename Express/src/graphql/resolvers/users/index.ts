@@ -22,6 +22,7 @@ export const usersTypeDefs = `
     firstName: String
     lastName: String
     displayName: String!
+    userPrincipalName: String!
     email: String!
     jobTitle: String
     role: String!
@@ -35,6 +36,10 @@ export const usersTypeDefs = `
     accountableCount: Int
     contributorCount: Int
     followerCount: Int
+    completedAuditsCount: Int
+    upcomingAuditsCount: Int
+    overdueAuditsCount: Int
+    totalAuditsCount: Int
   }
   
   type Session {

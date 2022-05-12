@@ -10,7 +10,9 @@ import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElem
 import { isPermitted } from '../../components/can';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import UserAuditsCount from '../../components/UserAuditsCount';
 import UserResponseCount from '../../components/UserResponseCount';
+import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { ArrowDownIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
@@ -22,6 +24,7 @@ const GET_USERS = gql`
       firstName
       lastName
       displayName
+      email
       role
       jobTitle
       lastLogin
@@ -31,6 +34,10 @@ const GET_USERS = gql`
       accountableCount
       contributorCount
       followerCount
+      completedAuditsCount
+      upcomingAuditsCount
+      overdueAuditsCount
+      totalAuditsCount
     }
   }
 `;
@@ -44,6 +51,7 @@ const UPDATE_USER = gql`
 `;
 
 const Users = () => {
+  const { module } = useAppContext();
   const device = useDevice();
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
@@ -107,11 +115,166 @@ const Users = () => {
     if (isPermitted({ user, action: 'adminPanel' })) {
       pages.push({
         name: 'Admin Page',
-        url: '/admin/compliance-items',
+        url: module?.type === 'tracker' ? '/admin/compliance-items' : '/audits',
       });
     }
     return pages;
   };
+
+  const renderCountHeaders = () =>
+    module?.type === 'tracker' ? (
+      <>
+        <AdminTableHeaderElement
+          label="R"
+          ml="13px"
+          onClick={() => {
+            setSortType('responsibleCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'responsibleCount'}
+          sortOrder={sortType === 'responsibleCount' && !sortOrder}
+          tooltip="Responsible on number of responses"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="A"
+          ml="13px"
+          onClick={() => {
+            setSortType('accountableCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'accountableCount'}
+          sortOrder={sortType === 'accountableCount' && !sortOrder}
+          tooltip="Accountable on number of responses"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="C"
+          ml="13px"
+          onClick={() => {
+            setSortType('contributorCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'contributorCount'}
+          sortOrder={sortType === 'contributorCount' && !sortOrder}
+          tooltip="Contributor on number of responses"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="F"
+          ml="13px"
+          onClick={() => {
+            setSortType('followerCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'followerCount'}
+          sortOrder={sortType === 'followerCount' && !sortOrder}
+          tooltip="Follower on number of responses"
+          w="calc(25% - 13px)"
+        />
+      </>
+    ) : (
+      <>
+        <AdminTableHeaderElement
+          label="C"
+          ml="13px"
+          onClick={() => {
+            setSortType('completedAuditsCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'completedAuditsCount'}
+          sortOrder={sortType === 'completedAuditsCount' && !sortOrder}
+          tooltip="Number of completed audits"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="U"
+          ml="13px"
+          onClick={() => {
+            setSortType('upcomingAuditsCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'upcomingAuditsCount'}
+          sortOrder={sortType === 'upcomingAuditsCount' && !sortOrder}
+          tooltip="Number of upcoming audits"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="O"
+          ml="13px"
+          onClick={() => {
+            setSortType('overdueAuditsCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'overdueAuditsCount'}
+          sortOrder={sortType === 'overdueAuditsCount' && !sortOrder}
+          tooltip="Number of overdue audits"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="T"
+          ml="13px"
+          onClick={() => {
+            setSortType('totalAuditsCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'totalAuditsCount'}
+          sortOrder={sortType === 'totalAuditsCount' && !sortOrder}
+          tooltip="Total number of audits"
+          w="calc(25% - 13px)"
+        />
+      </>
+    );
+
+  const renderCounts = (user: IUser) =>
+    module?.type === 'tracker' ? (
+      <>
+        <UserResponseCount
+          responseCount={user.responsibleCount}
+          // eslint-disable-next-line jsx-a11y/aria-role
+          role="responsible"
+          userId={user._id}
+        />
+        <UserResponseCount
+          responseCount={user.accountableCount}
+          // eslint-disable-next-line jsx-a11y/aria-role
+          role="accountable"
+          userId={user._id}
+        />
+        <UserResponseCount
+          responseCount={user.contributorCount}
+          // eslint-disable-next-line jsx-a11y/aria-role
+          role="contributor"
+          userId={user._id}
+        />
+        <UserResponseCount
+          responseCount={user.followerCount}
+          // eslint-disable-next-line jsx-a11y/aria-role
+          role="follower"
+          userId={user._id}
+        />
+      </>
+    ) : (
+      <>
+        <UserAuditsCount
+          auditsCount={user.completedAuditsCount}
+          status="completed"
+          userId={user._id}
+        />
+        <UserAuditsCount
+          auditsCount={user.upcomingAuditsCount}
+          userId={user._id}
+        />
+        <UserAuditsCount
+          auditsCount={user.overdueAuditsCount}
+          userId={user._id}
+        />
+        <UserAuditsCount
+          auditsCount={user.totalAuditsCount}
+          userId={user._id}
+        />
+      </>
+    );
 
   const renderUserRow = (user: IUser, i: number) => (
     <Flex
@@ -185,30 +348,7 @@ const Users = () => {
         </>
       )}
       <Flex h="100%" w="20%">
-        <UserResponseCount
-          responseCount={user.responsibleCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="responsible"
-          userId={user._id}
-        />
-        <UserResponseCount
-          responseCount={user.accountableCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="accountable"
-          userId={user._id}
-        />
-        <UserResponseCount
-          responseCount={user.contributorCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="contributor"
-          userId={user._id}
-        />
-        <UserResponseCount
-          responseCount={user.followerCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="follower"
-          userId={user._id}
-        />
+        {renderCounts(user)}
       </Flex>
       <Flex align="center" ml="20px" w="calc(16% - 20px)">
         {user?.lastLogin
@@ -276,56 +416,7 @@ const Users = () => {
                 />
               </>
             )}
-            <Flex w="20%">
-              <AdminTableHeaderElement
-                label="R"
-                ml="13px"
-                onClick={() => {
-                  setSortType('responsibleCount');
-                  setSortOrder(!sortOrder);
-                }}
-                showSortingIcon={sortType === 'responsibleCount'}
-                sortOrder={sortType === 'responsibleCount' && !sortOrder}
-                tooltip="Responsible on number of responses"
-                w="calc(25% - 13px)"
-              />
-              <AdminTableHeaderElement
-                label="A"
-                ml="13px"
-                onClick={() => {
-                  setSortType('accountableCount');
-                  setSortOrder(!sortOrder);
-                }}
-                showSortingIcon={sortType === 'accountableCount'}
-                sortOrder={sortType === 'accountableCount' && !sortOrder}
-                tooltip="Accountable on number of responses"
-                w="calc(25% - 13px)"
-              />
-              <AdminTableHeaderElement
-                label="C"
-                ml="13px"
-                onClick={() => {
-                  setSortType('contributorCount');
-                  setSortOrder(!sortOrder);
-                }}
-                showSortingIcon={sortType === 'contributorCount'}
-                sortOrder={sortType === 'contributorCount' && !sortOrder}
-                tooltip="Contributor on number of responses"
-                w="calc(25% - 13px)"
-              />
-              <AdminTableHeaderElement
-                label="F"
-                ml="13px"
-                onClick={() => {
-                  setSortType('followerCount');
-                  setSortOrder(!sortOrder);
-                }}
-                showSortingIcon={sortType === 'followerCount'}
-                sortOrder={sortType === 'followerCount' && !sortOrder}
-                tooltip="Follower on number of responses"
-                w="calc(25% - 13px)"
-              />
-            </Flex>
+            <Flex w="20%">{renderCountHeaders()}</Flex>
             <AdminTableHeaderElement
               label="Last login"
               ml="20px"
@@ -363,5 +454,6 @@ export default Users;
 export const userItemStyles = {
   userItem: {
     responseCountBg: '#F0F2F5',
+    iconColor: '#282F36',
   },
 };

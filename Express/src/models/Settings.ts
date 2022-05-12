@@ -1,4 +1,3 @@
-
 import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 
@@ -55,9 +54,8 @@ settingSchema.statics.customFindById = async function (
     organizationId,
     'metatags.removedAt': { $eq: null },
   }).lean();
-  if (!setting) 
-    throw new Error('Setting not found');
-  
+  if (!setting) throw new Error('Setting not found');
+
   return setting;
 };
 
@@ -73,6 +71,18 @@ settingSchema.statics.customFindByType = async function (
   return settings;
 };
 
+settingSchema.statics.customFindByName = async function (
+  name: string,
+  organizationId: string,
+): Promise<ISetting[]> {
+  const settings = await this.find({
+    name,
+    organizationId,
+    'metatags.removedAt': { $eq: null },
+  }).lean();
+  return settings;
+};
+
 settingSchema.statics.customUpdateOne = async function (
   selector: object = {},
   updates: Partial<ISetting>,
@@ -80,8 +90,7 @@ settingSchema.statics.customUpdateOne = async function (
   organizationId: string,
 ): Promise<ISetting> {
   const setting = await this.customFindOne(selector, organizationId);
-  if (!setting) 
-    throw new GraphQLError("Setting doesn't exist");
+  if (!setting) throw new GraphQLError("Setting doesn't exist");
 
   const updatedSetting = {
     ...setting,

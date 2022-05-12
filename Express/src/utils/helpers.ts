@@ -3,6 +3,7 @@ import {
   addMonths,
   addWeeks,
   addYears,
+  differenceInDays,
   format,
   subDays,
   subMonths,
@@ -13,7 +14,7 @@ import { diff } from 'deep-object-diff';
 import { StatusCodes } from 'http-status-codes';
 import { difference } from 'lodash';
 
-import { IAuditValues, IOrganization, IUser } from 'app-interfaces';
+import { IAudit, IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import { Users } from 'app-models';
 import { GraphService } from 'app-services';
 
@@ -717,6 +718,39 @@ export const getAuditValueForLookupsArray = async ({
     };
   }
   return value;
+};
+
+export const getAuditStatus = (audit: IAudit, auditsComingUpTriggers) => {
+  if (!audit) return;
+
+  const { dueDate, status } = audit;
+  const daysToDueDate = audit.auditType?.startingDate
+    ? differenceInDays(
+        new Date(dueDate),
+        new Date(audit.auditType?.startingDate!),
+      )
+    : 0;
+
+  if (
+    status === 'completed' &&
+    daysToDueDate !== undefined &&
+    audit.auditType?.frequency &&
+    daysToDueDate !== null &&
+    daysToDueDate <
+      auditsComingUpTriggers?.value?.[audit.auditType?.frequency] &&
+    daysToDueDate >= 0
+  ) {
+    // If there is less then or equal comingUpTriggers value and at least 0 days to due date
+    return 'comingUp';
+  }
+
+  if (audit.status === 'completed' && (!daysToDueDate || daysToDueDate >= 0))
+    return 'completed';
+
+  if (audit.status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0))
+    return 'inProgress';
+
+  return 'overdue';
 };
 
 export const getAuditValueForUser = async ({
