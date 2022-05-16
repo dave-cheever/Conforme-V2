@@ -3,16 +3,11 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Questions } from 'app-models';
 import { doesPathExist, getProjectFields, join } from 'app-utils';
 
-const questions = async (
-  _,
-  { questionQuery },
-  { organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (elements: string[]) =>
-    doesPathExist(info.fieldNodes, ['questions', ...elements]);
+const questions = async (_, { questionQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['questions', ...elements]);
 
   try {
+    const user = await authorize();
     const pipeline: object[] = [
       {
         $match: {
@@ -34,6 +29,28 @@ const questions = async (
       pipeline.push({
         $match: {
           questionsCategoryId: { $in: questionQuery.questionsCategoriesIds },
+        },
+      });
+    }
+
+    // For "user" role filter answers
+    if (user.role === 'user') {
+      join({
+        pipeline,
+        collection: 'audits',
+        from: 'scope._id',
+        to: 'audit',
+      });
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              'audit.auditorId': user._id,
+            },
+            {
+              'audit.participantsIds': user._id,
+            },
+          ],
         },
       });
     }
@@ -93,9 +110,7 @@ const questions = async (
         answer: question.answer._id
           ? {
               ...question.answer,
-              actions: question.answer.actions.filter(
-                (action) => !action.metatags.removedAt,
-              ),
+              actions: question.answer.actions.filter((action) => !action.metatags.removedAt),
             }
           : undefined,
       }));

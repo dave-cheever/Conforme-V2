@@ -1,19 +1,19 @@
 import { Actions } from 'app-models';
-import { isPermitted } from 'app-utils';
+import { checkActionPermission } from 'app-utils';
 
 const createAction = async (_, { action }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: 'actions.add' }))
-      throw new Error('User is not permitted');
-
-    const createdAction = await Actions.customCreate(
+    const isPermitted = checkActionPermission({
+      user,
       action,
-      user._id,
-      organization._id,
-    );
+      organization,
+      permissionAction: 'add',
+    });
+    if (!isPermitted) throw new Error('User is not permitted to create an action.');
 
+    const createdAction = await Actions.customCreate(action, user._id, organization._id);
     return createdAction;
   } catch (err: any) {
     throw new Error(err);

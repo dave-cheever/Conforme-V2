@@ -5,14 +5,12 @@ const deleteAudit = async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: 'audits.delete', data: { _id } }))
-      throw new Error('User is not permitted');
+    const audit = await Audits.customFindById(_id, organization._id);
+    if (!audit) throw new Error("Audit doesn't exist");
 
-    const deletedResult = await Audits.customDelete(
-      { _id },
-      user._id,
-      organization._id
-    );
+    if (!isPermitted({ user, action: 'audits.delete', data: { audit } })) throw new Error('User is not permitted to delete this audit.');
+
+    const deletedResult = await Audits.customDelete({ _id }, user._id, organization._id);
     return deletedResult;
   } catch (err: any) {
     throw new Error(err);

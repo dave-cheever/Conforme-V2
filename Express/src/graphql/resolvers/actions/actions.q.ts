@@ -3,16 +3,10 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Actions, Users } from 'app-models';
 import { doesPathExist, getProjectFields, join, priorities } from 'app-utils';
 
-const actions = async (
-  _,
-  { actionQueryInput },
-  { organization },
-  info: GraphQLResolveInfo,
-) => {
+const actions = async (_, { actionQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['actions', ...elements]);
   try {
-    const shouldJoin = (elements: string[]) =>
-      doesPathExist(info.fieldNodes, ['actions', ...elements]);
-
+    const user = await authorize();
     const pipeline: any[] = [
       {
         $match: {
@@ -70,7 +64,7 @@ const actions = async (
       });
     }
 
-    if (shouldJoin(['answer'])) {
+    if (shouldJoin(['answer']) || user.role === 'user') {
       join({
         pipeline,
         collection: 'answers',
@@ -79,12 +73,31 @@ const actions = async (
       });
     }
 
-    if (shouldJoin(['answer', 'audit'])) {
+    if (shouldJoin(['answer', 'audit']) || user.role === 'user') {
       join({
         pipeline,
         collection: 'audits',
         from: 'answer.scope._id',
         to: 'answer.audit',
+      });
+    }
+
+    // For "user" role filter actions
+    if (user.role === 'user') {
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              'answer.audit.auditorId': user._id,
+            },
+            {
+              'answer.audit.participantsIds': user._id,
+            },
+            {
+              assigneeId: user._id,
+            },
+          ],
+        },
       });
     }
 
@@ -157,9 +170,7 @@ const actions = async (
       );
     }
 
-    return actions.sort(
-      (a, b) => priorities[a.priority] - priorities[b.priority],
-    );
+    return actions.sort((a, b) => priorities[a.priority] - priorities[b.priority]);
   } catch (err: any) {
     throw new Error(err);
   }

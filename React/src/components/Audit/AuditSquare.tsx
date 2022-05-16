@@ -1,13 +1,5 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Skeleton,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
@@ -31,67 +23,29 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       <Flex align="center" justify="space-between">
         <Flex align="center">
           <Flex h="12px" rounded="full" w="12px" />
-          <Box
-            color="auditSquare.fontColor"
-            fontSize="11px"
-            opacity="1"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
+          <Box color="auditSquare.fontColor" fontSize="11px" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             <Flex>{audit?.auditType?.name}</Flex>
           </Box>
         </Flex>
       </Flex>
-      {/* eslint-disable-next-line react/jsx-max-props-per-line */}
       <Flex align="center" h="52px" ml={2} mt={2} position="relative" w="full">
         <Skeleton isLoaded={!!audit} rounded="full">
           <Tooltip label={audit?.auditor?.displayName}>
-            <Avatar
-              boxSize="24px"
-              cursor="pointer"
-              name={audit?.auditor?.displayName}
-              size="sm"
-              src={audit?.auditor?.imgUrl}
-            />
+            <Avatar boxSize="24px" cursor="pointer" name={audit?.auditor?.displayName} size="sm" src={audit?.auditor?.imgUrl} />
           </Tooltip>
         </Skeleton>
-        <Text
-          color="auditSquare.nameFontColor"
-          fontSize="16px"
-          fontWeight="700"
-          lineHeight="20px"
-          ml={3}
-          noOfLines={2}
-          w="full"
-        >
+        <Text color="auditSquare.nameFontColor" fontSize="16px" fontWeight="700" lineHeight="20px" ml={3} noOfLines={2} w="full">
           {audit?.walkType === 'physical' ? audit?.area?.name : 'Virtual walk'}
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">
         {audit?.walkType === 'physical' && (
-          <Box
-            fontSize="14px"
-            lineHeight="20px"
-            overflow="hidden"
-            pl={2}
-            textOverflow="ellipsis"
-            w="200px"
-            whiteSpace="nowrap"
-          >
+          <Box fontSize="14px" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
             <Text color="auditSquare.titleFontColor">Site</Text>
             <Text>{audit?.site?.name}</Text>
           </Box>
         )}
-        <Box
-          fontSize="14px"
-          lineHeight="20px"
-          overflow="hidden"
-          pl={2}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap"
-        >
+        <Box fontSize="14px" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="auditSquare.titleFontColor">Type</Text>
           <Text textTransform="capitalize">{audit?.walkType}</Text>
         </Box>
@@ -99,18 +53,8 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       <Flex alignItems="flex-start" h="50px" py="4" w="full">
         <Box color="auditSquare.titleFontColor" fontSize="11px" ml={2} w="50%">
           <Box>Due for</Box>
-          <Box
-            color="auditSquare.dueDateColor"
-            fontSize="13px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
-            {audit?.dueDate ? (
-              format(new Date(audit?.dueDate), 'd MMM yyyy')
-            ) : (
-              <Flex fontStyle="italic">No due date</Flex>
-            )}
+          <Box color="auditSquare.dueDateColor" fontSize="13px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            {audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
           </Box>
         </Box>
       </Flex>
@@ -124,20 +68,12 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           fontSize="11px"
           h="28px"
           onClick={() => navigateTo(`/audits/${audit._id}/`)}
-          rightIcon={
-            <ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />
-          }
+          rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
           w="85px"
         >
           More
         </Button>
-        <Flex
-          align="center"
-          color="auditSquare.nameFontColor"
-          flexDirection="column"
-          justify="center"
-          mr={1}
-        >
+        <Flex align="center" color="auditSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
           <Box fontSize="11px" fontWeight="700">
             {auditStatuses[audit?.status]}
           </Box>

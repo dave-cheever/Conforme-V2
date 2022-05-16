@@ -11,23 +11,17 @@ const ActionsList = ({
   sortType,
   setSortType,
   setSortOrder,
+  editAction,
 }: {
   actions: IAction[];
   sortOrder: boolean;
   sortType: string;
   setSortType: (key: string) => void;
   setSortOrder: (order: boolean) => void;
+  editAction: (action: IAction) => void;
 }) => (
   <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
-    <Box
-      bg="actionsList.bg"
-      borderRadius="20px"
-      h="fit-content"
-      mb={7}
-      minH="full"
-      pb={7}
-      w="full"
-    >
+    <Box bg="actionsList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
       <AdminTableHeader>
         <AdminTableHeaderElement
           label="Title"
@@ -100,14 +94,9 @@ const ActionsList = ({
           w="12.5%"
         />
       </AdminTableHeader>
-      <Flex
-        flexDir="column"
-        h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']}
-        overflowY="auto"
-        w="full"
-      >
+      <Flex flexDir="column" h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']} overflowY="auto" w="full">
         {actions?.map((action) => (
-          <ActionsListItem action={action} key={action._id} />
+          <ActionsListItem action={action} editAction={editAction} key={action._id} />
         ))}
       </Flex>
     </Box>

@@ -87,7 +87,7 @@
     "react/jsx-max-props-per-line": [
       "error",
       {
-        "maximum": 5
+        "maximum": 7
       }
     ],
     "react/jsx-sort-props": [

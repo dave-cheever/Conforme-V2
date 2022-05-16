@@ -8,15 +8,9 @@ const submitAudit = async (_, { auditId }, { authorize, organization }) => {
     const audit = await Audits.customFindById(auditId, organization._id);
     if (!audit) throw new Error("Audit doesn't exist");
 
-    if (!isPermitted({ user, action: 'audits.submit', data: audit }))
-      throw new Error('User is not permitted');
+    if (!isPermitted({ user, action: 'audits.edit', data: { audit } })) throw new Error('User is not permitted to update this audit.');
 
-    await Audits.customUpdateOne(
-      { _id: audit._id },
-      { status: 'completed' },
-      user._id,
-      organization._id,
-    );
+    await Audits.customUpdateOne({ _id: audit._id }, { status: 'completed' }, user._id, organization._id);
 
     return true;
   } catch (err: any) {

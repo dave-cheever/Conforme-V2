@@ -1,33 +1,14 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Skeleton,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, HStack, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { formatDistanceToNow, isBefore } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon, WarningIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
 
-const ActionSquare = ({
-  action,
-  editAction,
-}: {
-  action: IAction;
-  editAction: (action: IAction) => void;
-}) => {
+const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (action: IAction) => void }) => {
   const { openInNewTab } = useNavigate();
 
-  const isOverdue =
-    action.dueDate &&
-    !action.done &&
-    isBefore(new Date(action.dueDate), new Date());
+  const isOverdue = action.dueDate && !action.done && isBefore(new Date(action.dueDate), new Date());
 
   return (
     <Stack
@@ -42,78 +23,36 @@ const ActionSquare = ({
       w={['full', '350px', '350px']}
     >
       <Flex align="center" justify="space-between">
-        <Box
-          color="actionSquare.audit"
-          fontSize="ssm"
-          opacity="1"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-        >
+        <Box color="actionSquare.audit" fontSize="ssm" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           <Flex>{action?.answer?.audit?.auditType?.name}</Flex>
         </Box>
         {!action?.metatags?.updatedAt && (
-          <Box
-            bg="actionSquare.badge.bg"
-            color="actionSquare.badge.color"
-            fontSize="ssm"
-            px={2}
-            py="1px"
-            rounded="full"
-          >
+          <Box bg="actionSquare.badge.bg" color="actionSquare.badge.color" fontSize="ssm" px={2} py="1px" rounded="full">
             New
           </Box>
         )}
       </Flex>
-      {/* eslint-disable-next-line react/jsx-max-props-per-line */}
       <Flex w="full">
         <Skeleton isLoaded={!!action} rounded="full">
           <Tooltip label={action?.assignee?.displayName}>
-            <Avatar
-              boxSize="24px"
-              cursor="pointer"
-              name={action?.assignee?.displayName}
-              size="sm"
-              src={action?.assignee?.imgUrl}
-            />
+            <Avatar boxSize="24px" cursor="pointer" name={action?.assignee?.displayName} size="sm" src={action?.assignee?.imgUrl} />
           </Tooltip>
         </Skeleton>
-        <Text
-          color="actionSquare.title"
-          fontSize="md"
-          fontWeight="bold"
-          isTruncated
-          ml={3}
-          w="calc(100% - 24px)"
-        >
+        <Text color="actionSquare.title" fontSize="md" fontWeight="bold" isTruncated ml={3} w="calc(100% - 24px)">
           {action?.title}
         </Text>
       </Flex>
       <Flex w="full">
-        <Box
-          overflow="hidden"
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap"
-        >
+        <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="actionSquare.section.title" fontSize="ssm">
             Priority
           </Text>
-          <Text
-            color="actionSquare.section.text"
-            fontSize="md"
-            textTransform="capitalize"
-          >
+          <Text color="actionSquare.section.text" fontSize="md" textTransform="capitalize">
             {action?.priority}
           </Text>
         </Box>
         {action?.dueDate && (
-          <Box
-            overflow="hidden"
-            textOverflow="ellipsis"
-            w="200px"
-            whiteSpace="nowrap"
-          >
+          <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
             <Text color="actionSquare.section.title" fontSize="ssm">
               Due in
             </Text>
@@ -135,8 +74,7 @@ const ActionSquare = ({
           spacing={2}
         >
           <Text color="actionSquare.section.text" fontSize="md" isTruncated>
-            {action?.answer?.question?.question},{' '}
-            {action?.answer?.audit?.area?.name}
+            {action?.answer?.question?.question}, {action?.answer?.audit?.area?.name}
           </Text>
           <OpenExternalIcon fill="transparent" stroke="black" />
         </Stack>
@@ -147,37 +85,19 @@ const ActionSquare = ({
             bg: `actionSquare.button.${isOverdue ? 'overdue' : 'default'}.bg`,
           }}
           bg={`actionSquare.button.${isOverdue ? 'overdue' : 'default'}.bg`}
-          color={`actionSquare.button.${
-            isOverdue ? 'overdue' : 'default'
-          }.color`}
+          color={`actionSquare.button.${isOverdue ? 'overdue' : 'default'}.color`}
           fontSize="ssm"
           h="28px"
           onClick={() => editAction(action)}
-          rightIcon={
-            <ChevronRight
-              boxSize="15px"
-              color={`actionSquare.button.${
-                isOverdue ? 'overdue' : 'default'
-              }.color`}
-            />
-          }
+          rightIcon={<ChevronRight boxSize="15px" color={`actionSquare.button.${isOverdue ? 'overdue' : 'default'}.color`} />}
           w="85px"
         >
           More
         </Button>
         {isOverdue && (
           <HStack align="center" spacing={2}>
-            <WarningIcon
-              fill="actionSquare.overdue.icon.fill"
-              h="22px"
-              stroke="actionSquare.overdue.icon.stroke"
-              w="18px"
-            />
-            <Text
-              color="actionSquare.overdue.color"
-              fontSize="ssm"
-              fontWeight="bold"
-            >
+            <WarningIcon fill="actionSquare.overdue.icon.fill" h="22px" stroke="actionSquare.overdue.icon.stroke" w="18px" />
+            <Text color="actionSquare.overdue.color" fontSize="ssm" fontWeight="bold">
               Overdue
             </Text>
           </HStack>

@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  Skeleton,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Avatar, Box, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
 import { OpenExternalIcon } from '../../icons';
@@ -28,56 +20,26 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
       w={['full', '350px', '350px']}
     >
       <Flex align="center" justify="space-between">
-        <Box
-          color="walkItemSquare.audit"
-          fontSize="ssm"
-          opacity="1"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-        >
+        <Box color="walkItemSquare.audit" fontSize="ssm" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           <Flex>{answer?.audit?.auditType?.name}</Flex>
         </Box>
       </Flex>
-      {/* eslint-disable-next-line react/jsx-max-props-per-line */}
       <Flex w="full">
         <Skeleton isLoaded={!!answer} rounded="full">
           <Tooltip label={answer?.addedBy?.displayName}>
-            <Avatar
-              boxSize="24px"
-              cursor="pointer"
-              name={answer?.addedBy?.displayName}
-              size="sm"
-              src={answer?.addedBy?.imgUrl}
-            />
+            <Avatar boxSize="24px" cursor="pointer" name={answer?.addedBy?.displayName} size="sm" src={answer?.addedBy?.imgUrl} />
           </Tooltip>
         </Skeleton>
-        <Text
-          color="walkItemSquare.title"
-          fontSize="md"
-          fontWeight="bold"
-          isTruncated
-          ml={3}
-          w="calc(100% - 24px)"
-        >
+        <Text color="walkItemSquare.title" fontSize="md" fontWeight="bold" isTruncated ml={3} w="calc(100% - 24px)">
           {answer?.question?.question}
         </Text>
       </Flex>
       <Flex w="full">
-        <Box
-          overflow="hidden"
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap"
-        >
+        <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>
-          <Text
-            color="walkItemSquare.section.text"
-            fontSize="md"
-            textTransform="capitalize"
-          >
+          <Text color="walkItemSquare.section.text" fontSize="md" textTransform="capitalize">
             {answer?.status}
           </Text>
         </Box>

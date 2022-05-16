@@ -1,29 +1,22 @@
 import { Actions } from 'app-models';
-import { isPermitted } from 'app-utils';
+import { checkActionPermission } from 'app-utils';
 
-const updateAction = async (
-  _,
-  { actionInput },
-  { authorize, organization }
-) => {
+const updateAction = async (_, { actionInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: 'actions.edit', data: actionInput }))
-      throw new Error('User is not permitted');
-
-    const action = await Actions.customFindById(
-      actionInput._id,
-      organization._id
-    );
+    const action = await Actions.customFindById(actionInput._id, organization._id);
     if (!action) throw new Error("Action doesn't exist");
 
-    const updatedAction = await Actions.customUpdateOne(
-      { _id: action._id },
-      actionInput,
-      user._id,
-      organization._id
-    );
+    const isPermitted = checkActionPermission({
+      user,
+      action,
+      organization,
+      permissionAction: 'edit',
+    });
+    if (!isPermitted) throw new Error('User is not permitted to update this action.');
+
+    const updatedAction = await Actions.customUpdateOne({ _id: action._id }, actionInput, user._id, organization._id);
     return updatedAction;
   } catch (err: any) {
     throw new Error(err);

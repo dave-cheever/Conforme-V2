@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Flex, HStack, Spacer, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  TQuestionWithAnswer,
-  useAuditContext,
-} from '../../contexts/AuditProvider';
+import { toastFailed } from '../../bootstrap/config';
+import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 import { CheckIcon } from '../../icons';
 import { TDeepPartial } from '../../interfaces/TDeepPartial';
 import ActionListItem from '../Actions/ActionListItem';
@@ -17,13 +15,8 @@ import { TextInput, Toggle } from '../Forms';
 import TextInputMultiline from '../Forms/TextInputMultiline';
 import AuditActionForm from './AuditActionForm';
 
-const AuditAnswer = ({
-  question,
-  handleClose,
-}: {
-  question: TDeepPartial<TQuestionWithAnswer>;
-  handleClose: () => void;
-}) => {
+const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuestionWithAnswer>; handleClose: () => void }) => {
+  const toast = useToast();
   const {
     audit,
     questionsCategories,
@@ -36,10 +29,8 @@ const AuditAnswer = ({
     setSelectedAction,
     refetch,
   } = useAuditContext();
-  const questionsCategory = questionsCategories.find(
-    ({ _id }) => _id === question.questionsCategoryId,
-  );
-  const isCustomQuestion = !!question.scope?._id;
+  const questionsCategory = questionsCategories.find(({ _id }) => _id === question.questionsCategoryId);
+  const isCustomQuestion = !!question.scope?._id; // If there is no scope _id, it means that the question is a custom one
   const { answer } = question;
 
   const { control, formState, watch, reset, setValue } = useForm({
@@ -75,23 +66,39 @@ const AuditAnswer = ({
       })),
     };
 
-    let answerId = answer?._id;
-    if (answerId) {
-      // Answer already exist, needs to be updated
-      if (isCustomQuestion)
-        await saveQuestion({ variables: { question: questionData } });
-      await saveAnswer({ variables: { answer: answerData } });
-    } else {
-      // Answer does not exist, needs to be created
-      let questionId = question._id;
-      if (isCustomQuestion) {
-        const { _id, ...questionValues } = questionData;
-        const createdQuestionRes = await createQuestion({
+    try {
+      let answerId = answer?._id;
+      if (answerId) {
+        // Answer already exist, needs to be updated
+        if (isCustomQuestion) await saveQuestion({ variables: { question: questionData } });
+        await saveAnswer({ variables: { answer: answerData } });
+      } else {
+        // Answer does not exist, needs to be created
+        let questionId = question._id;
+        if (isCustomQuestion) {
+          const { _id, ...questionValues } = questionData;
+          const createdQuestionRes = await createQuestion({
+            variables: {
+              question: {
+                ...questionValues,
+                type: question.type,
+                questionsCategoryId: question.questionsCategoryId,
+                scope: {
+                  type: 'audit',
+                  _id: audit?._id,
+                },
+              },
+            },
+          });
+          const createdQuestion = createdQuestionRes.data.createQuestion;
+          questionId = createdQuestion._id;
+        }
+
+        const createdAnswerRes = await createAnswer({
           variables: {
-            question: {
-              ...questionValues,
-              type: question.type,
-              questionsCategoryId: question.questionsCategoryId,
+            answer: {
+              ...answer,
+              questionId,
               scope: {
                 type: 'audit',
                 _id: audit?._id,
@@ -99,39 +106,23 @@ const AuditAnswer = ({
             },
           },
         });
-        const createdQuestion = createdQuestionRes.data.createQuestion;
-        questionId = createdQuestion._id;
+        const createdAnswer = createdAnswerRes.data.createAnswer;
+        answerId = createdAnswer._id;
       }
-
-      const createdAnswerRes = await createAnswer({
-        variables: {
-          answer: {
-            ...answer,
-            questionId,
-            scope: {
-              type: 'audit',
-              _id: audit?._id,
-            },
-          },
-        },
+      if (answerId) await updateActions(values.actions, answerId);
+      refetch();
+      handleClose();
+    } catch (e: any) {
+      toast({
+        ...toastFailed,
+        description: e.message,
       });
-      const createdAnswer = createdAnswerRes.data.createAnswer;
-      answerId = createdAnswer._id;
     }
-    if (answerId) await updateActions(values.actions, answerId);
-    refetch();
-    handleClose();
   };
 
   if (!questionsCategory) return null;
   return (
-    <Stack
-      bgColor="auditAnswer.bg"
-      boxShadow="0px 0px 30px 0px #31323340"
-      p={4}
-      rounded="10px"
-      spacing={4}
-    >
+    <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" p={4} rounded="10px" spacing={4}>
       <Text fontSize="md" fontWeight="semibold">
         {questionsCategory.name}
       </Text>
@@ -176,13 +167,7 @@ const AuditAnswer = ({
       {questionsCategory.options && (
         <Stack>
           {questionsCategory.options.map(({ name }) => (
-            <Toggle
-              control={control}
-              falseLabel={name}
-              key={name}
-              name={`options[${name}]`}
-              trueLabel={name}
-            />
+            <Toggle control={control} falseLabel={name} key={name} name={`options[${name}]`} trueLabel={name} />
           ))}
         </Stack>
       )}
@@ -219,15 +204,9 @@ const AuditAnswer = ({
         {selectedAction ? (
           <AuditActionForm
             handleSave={(action) => {
-              if (!action._id) {
-                setValue('actions', [
-                  ...values.actions,
-                  { ...action, _id: `temp-${uuidv4()}` },
-                ]);
-              } else {
-                const actionIndex = values.actions.findIndex(
-                  ({ _id }) => _id === action._id,
-                );
+              if (!action._id) setValue('actions', [...values.actions, { ...action, _id: `temp-${uuidv4()}` }]);
+              else {
+                const actionIndex = values.actions.findIndex(({ _id }) => _id === action._id);
                 const actions = [...values.actions];
                 actions[actionIndex] = action;
                 setValue('actions', actions);

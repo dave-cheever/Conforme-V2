@@ -2,21 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Button,
-  Flex,
-  Grid,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalOverlay,
-  Tab,
-  TabList,
-  Tabs,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 
@@ -87,15 +73,8 @@ const GET_ACTIONS = gql`
 `;
 
 const Actions = () => {
-  const {
-    filtersValues,
-    setUsedFilters,
-    setFilters,
-    setShowFiltersPanel,
-    actionFiltersValue,
-    setActionFiltersValue,
-    usedFilters,
-  } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, actionFiltersValue, setActionFiltersValue, usedFilters } =
+    useFiltersContext();
   const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -113,13 +92,7 @@ const Actions = () => {
     },
     fetchPolicy: 'no-cache',
   });
-  const {
-    sortedData: sortedActions,
-    sortOrder,
-    sortType,
-    setSortType,
-    setSortOrder,
-  } = useSort(filteredActions);
+  const { sortedData: sortedActions, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredActions);
   const sortBy = [
     { label: 'Assignee', key: 'assignee.displayName' },
     { label: 'Due date', key: 'dueDate' },
@@ -138,45 +111,31 @@ const Actions = () => {
   }, [selectedTabIndex]);
 
   useEffect(() => {
-    if (
-      actionFiltersValue &&
-      !isEmpty(actionFiltersValue) &&
-      !isEmpty(filtersValues) &&
-      !isEmpty(usedFilters)
-    ) {
+    if (actionFiltersValue && !isEmpty(actionFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
       setFilters(actionFiltersValue);
       setActionFiltersValue({});
     }
-  }, [
-    filtersValues,
-    usedFilters,
-    setActionFiltersValue,
-    actionFiltersValue,
-    setFilters,
-  ]);
+  }, [filtersValues, usedFilters, setActionFiltersValue, actionFiltersValue, setFilters]);
 
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce(
-      (acc, filter) => {
-        if (!filter || !filter[1]) return { ...acc };
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1]) return { ...acc };
 
-        const [key, value] = filter;
+      const [key, value] = filter;
 
-        if (
-          !value.value ||
-          (Array.isArray(value.value) && value.value.length === 0) ||
-          (key === 'usersIds' && value.value?.assigneesIds?.length === 0)
-        )
-          return acc;
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' && value.value?.assigneesIds?.length === 0)
+      )
+        return acc;
 
-        return {
-          ...acc,
-          [key]: value?.value,
-        };
-      },
-      {},
-    );
+      return {
+        ...acc,
+        [key]: value?.value,
+      };
+    }, {});
 
     if (parsedFilters) {
       refetch({
@@ -208,8 +167,7 @@ const Actions = () => {
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'grid' || savedView === 'list'))
-      return savedView;
+    if (savedView && (savedView === 'grid' || savedView === 'list')) return savedView;
 
     return 'list';
   }, [user]);
@@ -240,12 +198,8 @@ const Actions = () => {
     () =>
       (data?.actions ?? []).map(({ typename, metatags, ...action }) => ({
         ...action,
-        dueDate: action?.dueDate
-          ? format(new Date(action?.dueDate), 'd MMM yyyy')
-          : 'No due date',
-        completedDate: action?.completedDate
-          ? format(new Date(action?.dueDate), 'd MMM yyyy')
-          : 'No completion date',
+        dueDate: action?.dueDate ? format(new Date(action?.dueDate), 'd MMM yyyy') : 'No due date',
+        completedDate: action?.completedDate ? format(new Date(action?.dueDate), 'd MMM yyyy') : 'No completion date',
         status: action.done ? 'closed' : 'open',
       })),
     [JSON.stringify(data?.actions)],
@@ -278,34 +232,18 @@ const Actions = () => {
                   fontWeight="700"
                   h="40px"
                   ml={['15px', '0']}
-                  rightIcon={
-                    <ChevronRight
-                      color="actions.header.rightIcon"
-                      h="12px"
-                      mt="3px"
-                      transform="rotate(90deg)"
-                      w="12px"
-                    />
-                  }
+                  rightIcon={<ChevronRight color="actions.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                   rounded="10px"
                 >
                   <Flex align="center" mr="1">
-                    <Icon
-                      boxSize="18px"
-                      icon={viewMode}
-                      stroke="currentColor"
-                    />
+                    <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
                   </Flex>
                 </MenuButton>
               }
               <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
                 <MenuItem
                   _focus={{ color: 'actions.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'grid'
-                      ? 'actions.header.menuItemFontSelected'
-                      : 'actions.header.menuItemFont'
-                  }
+                  color={viewMode === 'grid' ? 'actions.header.menuItemFontSelected' : 'actions.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('grid')}
                 >
@@ -314,11 +252,7 @@ const Actions = () => {
                 </MenuItem>
                 <MenuItem
                   _focus={{ color: 'actions.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'list'
-                      ? 'actions.header.menuItemFontSelected'
-                      : 'actions.header.menuItemFont'
-                  }
+                  color={viewMode === 'list' ? 'actions.header.menuItemFontSelected' : 'actions.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('list')}
                 >
@@ -327,12 +261,7 @@ const Actions = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <CSVLink
-              data={csvData}
-              filename="actions.csv"
-              headers={csvHeaders}
-              target="_blank"
-            >
+            <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{
                   bg: 'reasponseHeader.buttonLightBgHover',
@@ -350,23 +279,11 @@ const Actions = () => {
                 </Text>
               </Button>
             </CSVLink>
-            <SortButton
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
+            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
           </>
         )}
       </Header>
-      <Tabs
-        defaultIndex={selectedTabIndex}
-        mt={1}
-        onChange={(index) => setSelectedTabIndex(index)}
-        variant="unstyled"
-        w="full"
-      >
+      <Tabs defaultIndex={selectedTabIndex} mt={1} onChange={(index) => setSelectedTabIndex(index)} variant="unstyled" w="full">
         <TabList pb={[0, 5]} px={[4, 8]}>
           {tabs.map((tab) => (
             <Tab
@@ -408,13 +325,7 @@ const Actions = () => {
                 w="full"
               >
                 {sortedActions.length > 0 ? (
-                  sortedActions?.map((action) => (
-                    <ActionSquare
-                      action={action}
-                      editAction={handleOpenModal}
-                      key={action._id}
-                    />
-                  ))
+                  sortedActions?.map((action) => <ActionSquare action={action} editAction={handleOpenModal} key={action._id} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
                     No actions found
@@ -425,6 +336,7 @@ const Actions = () => {
             {viewMode === 'list' && (
               <ActionsList
                 actions={sortedActions}
+                editAction={handleOpenModal}
                 setSortOrder={setSortOrder}
                 setSortType={setSortType}
                 sortOrder={sortOrder}

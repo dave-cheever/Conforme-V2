@@ -13,23 +13,16 @@
 // Next parameters you can define on restricted permission function definition.
 //
 
-const ifRACHasAccess = ({ user, response }) =>
-  user &&
-  (response?.contributorsIds?.includes(user._id) ||
-    response?.accountableId === user._id ||
-    response?.responsibleId === user._id);
-
-const ifRACFHasAccess = ({ user, response }) =>
-  user &&
-  (response?.contributorsIds?.includes(user._id) ||
-    response?.followersIds?.includes(user._id) ||
-    response?.accountableId === user._id ||
-    response?.responsibleId === user._id);
-
-const ifRAHasAccess = ({ user, response }) =>
-  user &&
-  (response?.accountableId === user._id ||
-    response?.responsibleId === user._id);
+import {
+  ifHasActionAccess,
+  ifHasAnswerAccess,
+  ifHasAuditAccess,
+  ifHasQuestionAccess,
+  ifHasQuestionEditAccess,
+  ifRACFHasAccess,
+  ifRACHasAccess,
+  ifRAHasAccess,
+} from './permissions-checkers';
 
 const defaultPermissions = [
   'home.view',
@@ -44,21 +37,32 @@ const defaultPermissions = [
   'settings.view',
   'businessUnits.view',
   'complianceItems.view',
+  'audits.add',
 ];
 
 const roles = {
   user: {
-    normal: [...defaultPermissions, 'audits'],
+    normal: [...defaultPermissions],
     restricted: {
       'auditLogs.view': ifRACHasAccess,
       'responses.view': ifRACHasAccess,
       'responses.edit': ifRACHasAccess,
-      'responses.manageResponsible': ({ user, response }) =>
-        user && response?.accountableId === user._id,
+      'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
       'responses.manageContributor': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
       'responses.manageMultipleFollowers': ifRAHasAccess,
+      'actions.add': ifHasActionAccess,
+      'actions.edit': ifHasActionAccess,
+      'actions.delete': ifHasActionAccess,
+      'answers.add': ifHasAnswerAccess,
+      'answers.edit': ifHasAnswerAccess,
+      'answers.delete': ifHasAnswerAccess,
+      'audits.edit': ifHasAuditAccess,
+      'audits.delete': ifHasAuditAccess,
+      'questions.add': ifHasQuestionAccess,
+      'questions.edit': ifHasQuestionEditAccess,
+      'questions.delete': ifHasQuestionEditAccess,
     },
   },
 
@@ -75,12 +79,22 @@ const roles = {
     ],
     restricted: {
       'responses.edit': ifRACHasAccess,
-      'responses.manageResponsible': ({ user, response }) =>
-        user && response?.accountableId === user._id,
+      'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
       'responses.manageContributor': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
       'responses.manageMultipleFollowers': ifRAHasAccess,
+      'actions.add': ifHasActionAccess,
+      'actions.edit': ifHasActionAccess,
+      'actions.delete': ifHasActionAccess,
+      'answers.add': ifHasAnswerAccess,
+      'answers.edit': ifHasAnswerAccess,
+      'answers.delete': ifHasAnswerAccess,
+      'audits.edit': ifHasAuditAccess,
+      'audits.delete': ifHasAuditAccess,
+      'questions.add': ifHasQuestionAccess,
+      'questions.edit': ifHasQuestionEditAccess,
+      'questions.delete': ifHasQuestionEditAccess,
     },
   },
 

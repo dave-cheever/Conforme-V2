@@ -1,10 +1,5 @@
 import { priorities } from './constants';
-import {
-  emailPreview,
-  getEmailSubject,
-  getEmailTemplate,
-  MENTION_EMAIL,
-} from './email';
+import { emailPreview, getEmailSubject, getEmailTemplate, MENTION_EMAIL } from './email';
 import {
   CORSConfig,
   doesPathExist,
@@ -38,9 +33,15 @@ import {
   sessionizeOrganization,
   sessionizeUser,
 } from './helpers';
+import checkActionPermission from './permissions-checkers/actions';
+import checkAnswerPermission from './permissions-checkers/answers';
+import checkQuestionPermission from './permissions-checkers/question';
 import roles from './roles';
 
 export {
+  checkActionPermission,
+  checkAnswerPermission,
+  checkQuestionPermission,
   emailPreview,
   getEmailTemplate,
   getEmailSubject,

@@ -4,15 +4,10 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Answers, Users } from 'app-models';
 import { doesPathExist, getProjectFields, join } from 'app-utils';
 
-const answers = async (
-  _,
-  { answerQuery },
-  { organization },
-  info: GraphQLResolveInfo,
-) => {
+const answers = async (_, { answerQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['answers', ...elements]);
   try {
-    const shouldJoin = (elements: string[]) =>
-      doesPathExist(info.fieldNodes, ['answers', ...elements]);
+    const user = await authorize();
     const pipeline: any[] = [
       {
         $match: {
@@ -59,12 +54,28 @@ const answers = async (
       });
     }
 
-    if (shouldJoin(['audit'])) {
+    if (shouldJoin(['audit']) || user.role === 'user') {
       join({
         pipeline,
         collection: 'audits',
         from: 'scope._id',
         to: 'audit',
+      });
+    }
+
+    // For "user" role filter answers
+    if (user.role === 'user') {
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              'audit.auditorId': user._id,
+            },
+            {
+              'audit.participantsIds': user._id,
+            },
+          ],
+        },
       });
     }
 
@@ -104,12 +115,7 @@ const answers = async (
       );
     }
 
-    return answers.sort((a, b) =>
-      compareDesc(
-        new Date(a?.metatags?.addedAt),
-        new Date(b?.metatags?.addedAt),
-      ),
-    );
+    return answers.sort((a, b) => compareDesc(new Date(a?.metatags?.addedAt), new Date(b?.metatags?.addedAt)));
   } catch (err: any) {
     throw new Error(err);
   }

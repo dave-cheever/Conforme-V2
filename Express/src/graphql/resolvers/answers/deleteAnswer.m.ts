@@ -1,18 +1,22 @@
 import { Answers } from 'app-models';
-import { isPermitted } from 'app-utils';
+import { checkAnswerPermission } from 'app-utils';
 
 const deleteAnswer = async (_, { _id }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: 'answers.delete', data: { _id } }))
-      throw new Error('User is not permitted');
+    const answer = await Answers.customFindById(_id, organization._id);
+    if (!answer) throw new Error("Answer doesn't exist");
 
-    const deletedResult = await Answers.customDelete(
-      { _id },
-      user._id,
-      organization._id,
-    );
+    const isPermitted = checkAnswerPermission({
+      user,
+      answer,
+      organization,
+      permissionAction: 'delete',
+    });
+    if (!isPermitted) throw new Error('User is not permitted to delete this answer.');
+
+    const deletedResult = await Answers.customDelete({ _id }, user._id, organization._id);
 
     return deletedResult;
   } catch (err: any) {

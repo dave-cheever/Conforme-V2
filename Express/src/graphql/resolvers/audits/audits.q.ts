@@ -4,16 +4,10 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Audits, Users } from 'app-models';
 import { doesPathExist, getProjectFields, join } from 'app-utils';
 
-const audits = async (
-  _,
-  { auditQueryInput },
-  { authorize, organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (elements: string[]) =>
-    doesPathExist(info.fieldNodes, ['audits', ...elements]);
+const audits = async (_, { auditQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['audits', ...elements]);
   try {
-    await authorize();
+    const user = await authorize();
     const pipeline: any[] = [
       {
         $match: {
@@ -22,6 +16,22 @@ const audits = async (
         },
       },
     ];
+
+    // For "user" role filter audits
+    if (user.role === 'user') {
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              auditorId: user._id,
+            },
+            {
+              participantsIds: user._id,
+            },
+          ],
+        },
+      });
+    }
 
     if (auditQueryInput?._id) {
       pipeline.push({
@@ -168,10 +178,7 @@ const audits = async (
             // eslint-disable-next-line no-async-promise-executor
             new Promise<any>(async (resolve, reject) => {
               try {
-                if (
-                  !audit?.participantsIds ||
-                  audit?.participantsIds?.length === 0
-                ) {
+                if (!audit?.participantsIds || audit?.participantsIds?.length === 0) {
                   resolve({
                     ...audit,
                   });
@@ -183,12 +190,10 @@ const audits = async (
                   ...audit,
                   participants: await Promise.all(
                     audit.participantsIds.map(async (id) => {
-                      const participant = await Users.customFindByIdWithDetails(
-                        {
-                          userId: id,
-                          organization,
-                        },
-                      );
+                      const participant = await Users.customFindByIdWithDetails({
+                        userId: id,
+                        organization,
+                      });
 
                       return participant;
                     }),
@@ -203,9 +208,7 @@ const audits = async (
       );
     }
 
-    return audits.sort((a, b) =>
-      compareDesc(new Date(a.metatags.addedAt), new Date(b.metatags.addedAt)),
-    );
+    return audits.sort((a, b) => compareDesc(new Date(a.metatags.addedAt), new Date(b.metatags.addedAt)));
   } catch (err: any) {
     throw new Error(err);
   }

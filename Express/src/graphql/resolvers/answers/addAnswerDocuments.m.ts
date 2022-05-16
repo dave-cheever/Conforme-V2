@@ -1,12 +1,8 @@
 import { IAnswer } from 'app-interfaces';
 import { Answers } from 'app-models';
-import { isPermitted } from 'app-utils';
+import { checkAnswerPermission } from 'app-utils';
 
-const addAnswerDocuments = async (
-  _,
-  { answerDocumentsAddInput },
-  { authorize, organization },
-) => {
+const addAnswerDocuments = async (_, { answerDocumentsAddInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
     const { _id, uploaded } = answerDocumentsAddInput;
@@ -14,24 +10,20 @@ const addAnswerDocuments = async (
     const answer = await Answers.customFindById(_id, organization._id);
     if (!answer) throw new Error("Answer doesn't exist");
 
-    const isUserPermitted = isPermitted({
+    const isPermitted = checkAnswerPermission({
       user,
-      action: 'answers.edit',
-      data: { answer },
+      answer,
+      organization,
+      permissionAction: 'edit',
     });
-    if (!isUserPermitted) throw new Error('Access denied');
+    if (!isPermitted) throw new Error('User is not permitted to update this answer.');
 
     const update: Partial<IAnswer> = {
       attachments: answer.attachments,
     };
     uploaded.forEach((document) => update.attachments?.push(document));
 
-    const updatedAnswer = await Answers.customUpdateOne(
-      { _id },
-      update,
-      user._id,
-      organization._id,
-    );
+    const updatedAnswer = await Answers.customUpdateOne({ _id }, update, user._id, organization._id);
 
     return !!updatedAnswer;
   } catch (error: any) {
