@@ -70,6 +70,16 @@ const AuditsList = ({
           w="20%"
         />
         <AdminTableHeaderElement
+          label="Site"
+          onClick={() => {
+            setSortType('site.name');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'site.name'}
+          sortOrder={sortType === 'site.name' && !sortOrder}
+          w="20%"
+        />
+        <AdminTableHeaderElement
           label="Area"
           onClick={() => {
             setSortType('area.name');

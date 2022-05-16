@@ -107,6 +107,24 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
               w="full"
               whiteSpace="nowrap"
             >
+              {audit.site?.name ?? 'Virtual'}
+            </Text>
+          </Flex>
+        </Box>
+        <Box w="20%">
+          <Flex>
+            <LocationIcon boxSize="12px" mt="2px" />
+            <Text
+              color="auditsList.fontColor"
+              fontSize="13px"
+              lineHeight="17px"
+              opacity="1"
+              overflow="hidden"
+              pl={2}
+              textOverflow="ellipsis"
+              w="full"
+              whiteSpace="nowrap"
+            >
               {audit.area?.name ?? 'Virtual'}
             </Text>
           </Flex>
