@@ -39,7 +39,11 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>
-          <Text color="walkItemSquare.section.text" fontSize="md" textTransform="capitalize">
+          <Text
+            color="walkItemSquare.section.text"
+            fontSize="ssm"
+            textTransform="capitalize"
+          >
             {answer?.status}
           </Text>
         </Box>
@@ -55,7 +59,7 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
           onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
           spacing={2}
         >
-          <Text color="walkItemSquare.section.text" fontSize="md" isTruncated>
+          <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated>
             {answer?.question?.question}, {answer?.audit?.area?.name}
           </Text>
           <OpenExternalIcon fill="transparent" stroke="black" />

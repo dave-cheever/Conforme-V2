@@ -40,12 +40,28 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       </Flex>
       <Flex align="center" h="40px" w="full">
         {audit?.walkType === 'physical' && (
-          <Box fontSize="14px" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+          <Box
+            fontSize="ssm"
+            lineHeight="20px"
+            overflow="hidden"
+            pl={2}
+            textOverflow="ellipsis"
+            w="200px"
+            whiteSpace="nowrap"
+          >
             <Text color="auditSquare.titleFontColor">Site</Text>
             <Text>{audit?.site?.name}</Text>
           </Box>
         )}
-        <Box fontSize="14px" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+        <Box
+          fontSize="ssm"
+          lineHeight="20px"
+          overflow="hidden"
+          pl={2}
+          textOverflow="ellipsis"
+          w="200px"
+          whiteSpace="nowrap"
+        >
           <Text color="auditSquare.titleFontColor">Type</Text>
           <Text textTransform="capitalize">{audit?.walkType}</Text>
         </Box>
@@ -53,8 +69,18 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       <Flex alignItems="flex-start" h="50px" py="4" w="full">
         <Box color="auditSquare.titleFontColor" fontSize="11px" ml={2} w="50%">
           <Box>Due for</Box>
-          <Box color="auditSquare.dueDateColor" fontSize="13px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
+          <Box
+            color="auditSquare.dueDateColor"
+            fontSize="ssm"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {audit?.dueDate ? (
+              format(new Date(audit?.dueDate), 'd MMM yyyy')
+            ) : (
+              <Flex fontStyle="italic">No due date</Flex>
+            )}
           </Box>
         </Box>
       </Flex>
@@ -65,7 +91,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           }}
           bg="auditSquare.buttonBg"
           color="auditSquare.fontColor"
-          fontSize="11px"
+          fontSize="ssm"
           h="28px"
           onClick={() => navigateTo(`/audits/${audit._id}/`)}
           rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
@@ -73,8 +99,14 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         >
           More
         </Button>
-        <Flex align="center" color="auditSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
-          <Box fontSize="11px" fontWeight="700">
+        <Flex
+          align="center"
+          color="auditSquare.nameFontColor"
+          flexDirection="column"
+          justify="center"
+          mr={1}
+        >
+          <Box fontSize="ssm" fontWeight="700">
             {auditStatuses[audit?.status]}
           </Box>
         </Flex>
