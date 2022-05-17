@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -15,6 +15,7 @@ import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
+import useSort from '../../hooks/useSort';
 import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 
@@ -28,7 +29,7 @@ const GET_BUSINESS_UNITS = gql`
         displayName
       }
       imgUrl
-      complianceItemsResponsesCount
+      totalAuditsCount
     }
   }
 `;
@@ -67,38 +68,8 @@ const Areas = () => {
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const device = useDevice();
   const { navigateTo } = useNavigate();
-  const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
 
-  const getBusinessUnits = (businessUnitsArray: IBusinessUnit[]) => {
-    if (!businessUnitsArray) return [];
-
-    return [...businessUnitsArray].sort((a, b) => a.name.localeCompare(b.name));
-  };
-  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>(
-    getBusinessUnits(data?.businessUnits),
-  );
-
-  useEffect(() => {
-    setBusinessUnits(getBusinessUnits(data?.businessUnits));
-  }, [data]);
-
-  useEffect(() => {
-    const sort = (a, b) => {
-      if (sortType === 'owner') {
-        return (a.owner?.displayName || '').localeCompare(
-          b.owner?.displayName || '',
-        );
-      }
-
-      return (a[sortType] || 0)
-        .toString()
-        .localeCompare((b[sortType] || 0).toString());
-    };
-    if (sortOrder)
-      setBusinessUnits([...businessUnits].sort((a, b) => sort(a, b)));
-    else setBusinessUnits([...businessUnits].sort((a, b) => sort(b, a)));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+  const { sortedData: areas, sortType, setSortType, sortOrder, setSortOrder } = useSort(data?.businessUnits ?? []);
 
   const {
     control,
@@ -117,10 +88,7 @@ const Areas = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openBusinessUnitModal = (
-    action: 'edit' | 'delete',
-    businessUnit: IBusinessUnit,
-  ) => {
+  const openBusinessUnitModal = (action: 'edit' | 'delete', businessUnit: IBusinessUnit) => {
     setAdminModalState(action);
     reset({
       _id: businessUnit?._id,
@@ -218,7 +186,7 @@ const Areas = () => {
     <Flex
       alignItems="center"
       bg="#FFFFFF"
-      borderBottomRadius={i === businessUnits.length - 1 ? 'lg' : ''}
+      borderBottomRadius={i === areas.length - 1 ? 'lg' : ''}
       boxShadow="sm"
       flexShrink={0}
       h="73px"
@@ -227,14 +195,7 @@ const Areas = () => {
       p={4}
       w="full"
     >
-      <Flex
-        cursor="pointer"
-        flexDir="column"
-        mr={4}
-        onClick={() => openBusinessUnitModal('edit', businessUnit)}
-        pl={1}
-        w={['80%', '30%']}
-      >
+      <Flex cursor="pointer" flexDir="column" mr={4} onClick={() => openBusinessUnitModal('edit', businessUnit)} pl={1} w={['80%', '30%']}>
         <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {businessUnit.name}
         </Text>
@@ -245,15 +206,13 @@ const Areas = () => {
         </>
       )}
       <Flex align="center" w={['20%', 'calc(70% / 2)']}>
-        <Text>{businessUnit.complianceItemsResponsesCount || 0}</Text>
+        <Text>{businessUnit.totalAuditsCount || 0}</Text>
         <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"
             h="10px"
             ml="13px"
-            onClick={() =>
-              navigateTo('/', { businessUnitsIds: [businessUnit._id] })
-            }
+            onClick={() => navigateTo('/', { businessUnitsIds: [businessUnit._id] })}
             stroke="#282F36"
             w="10px"
           />
@@ -264,16 +223,8 @@ const Areas = () => {
 
   return (
     <>
-      <AdminModal
-        collection="areas"
-        isOpenModal={adminModalState !== 'closed'}
-        modalType={adminModalState}
-        onAction={handleAction}
-      >
-        <Stack
-          spacing={2}
-          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
-        >
+      <AdminModal collection="areas" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
+        <Stack spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
             control={control}
             label="Name"
@@ -298,11 +249,7 @@ const Areas = () => {
       </AdminModal>
       <Header breadcrumbs={['Admin', 'Areas']} mobileBreadcrumbs={['Areas']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box
-          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-          p={[0, '0 25px 30px 30px']}
-          w="full"
-        >
+        <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Area name"
@@ -311,56 +258,39 @@ const Areas = () => {
                 setSortOrder(!sortOrder);
               }}
               showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' && !sortOrder}
+              sortOrder={sortType === 'name' && sortOrder}
               w={['80%', '30%']}
             />
             {device !== 'mobile' && (
               <AdminTableHeaderElement
                 label="Owner"
                 onClick={() => {
-                  setSortType('owner');
+                  setSortType('owner.displayName');
                   setSortOrder(!sortOrder);
                 }}
-                showSortingIcon={sortType === 'owner'}
-                sortOrder={sortType === 'owner' && !sortOrder}
+                showSortingIcon={sortType === 'owner.displayName'}
+                sortOrder={sortType === 'owner.displayName' && sortOrder}
                 w="calc(70% / 2)"
               />
             )}
             <AdminTableHeaderElement
-              label="# of responses"
+              label="# of audits"
               onClick={() => {
-                setSortType('complianceItemsResponsesCount');
+                setSortType('totalAuditsCount');
                 setSortOrder(!sortOrder);
               }}
-              showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-              sortOrder={
-                sortType === 'complianceItemsResponsesCount' && !sortOrder
-              }
+              showSortingIcon={sortType === 'totalAuditsCount'}
+              sortOrder={sortType === 'totalAuditsCount' && sortOrder}
               w={['20%', 'calc(70% / 2)']}
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center />
-            ) : businessUnits?.length > 0 ? (
-              businessUnits?.map(renderBusinessUnitRow)
+            ) : areas?.length > 0 ? (
+              areas?.map(renderBusinessUnitRow)
             ) : (
-              <Flex
-                fontSize="18px"
-                fontStyle="italic"
-                h="full"
-                justify="center"
-                mt={4}
-                w="full"
-              >
+              <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No areas found
               </Flex>
             )}

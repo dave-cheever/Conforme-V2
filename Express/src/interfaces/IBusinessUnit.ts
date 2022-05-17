@@ -9,5 +9,6 @@ export interface IBusinessUnit extends IBase {
 
   // Additional fields - can be added when getting from database
   complianceItemsResponsesCount?: number;
+  totalAuditsCount?: number;
   owner?: IUser;
 }

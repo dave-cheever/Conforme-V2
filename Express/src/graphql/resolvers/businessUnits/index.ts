@@ -23,6 +23,7 @@ export const businessUnitsTypeDefs = `
     ownerId: String
     owner: User
     complianceItemsResponsesCount: Int
+    totalAuditsCount: Int
     metatags: Metatags!
   }
 

@@ -1,22 +1,13 @@
 import { GraphQLResolveInfo } from 'graphql';
 
 import { IBusinessUnit } from 'app-interfaces';
-import { BusinessUnits, Responses, Users } from 'app-models';
+import { Audits, BusinessUnits, Responses, Users } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
 
-const businessUnits = async (
-  _,
-  { businessUnitQueryInput = {} },
-  { organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ['businessUnits', element]);
+const businessUnits = async (_, { businessUnitQueryInput = {} }, { organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['businessUnits', element]);
   try {
-    let businessUnits = await BusinessUnits.customFind(
-      businessUnitQueryInput,
-      organization._id,
-    );
+    let businessUnits = await BusinessUnits.customFind(businessUnitQueryInput, organization._id);
 
     if (shouldJoin('complianceItemsResponsesCount')) {
       businessUnits = await Promise.all(
@@ -56,6 +47,23 @@ const businessUnits = async (
             }),
         ),
       );
+    }
+
+    if (shouldJoin('totalAuditsCount')) {
+      for (const businessUnit of businessUnits) {
+        businessUnit.totalAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                areaId: businessUnit._id,
+                organizationId: organization._id,
+              },
+            },
+            { $count: '_id' },
+          ])
+        )[0]._id;
+      }
     }
 
     if (shouldJoin('owner')) {
