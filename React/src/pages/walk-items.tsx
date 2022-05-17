@@ -3,6 +3,7 @@ import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 
 import Header from '../components/Header';
 import Icon from '../components/Icon';
@@ -10,12 +11,14 @@ import Loader from '../components/Loader';
 import WalkItemsList from '../components/WalkItems/WalkItemsList';
 import WalkItemSquare from '../components/WalkItems/WalkItemSquare';
 import { useAppContext } from '../contexts/AppProvider';
+import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import { ChevronRight, ExportIcon, GridIcon, ListIcon } from '../icons';
+import { IAnswer } from '../interfaces/IAnswer';
 
 const GET_ANSWERS = gql`
-  query {
-    answers {
+  query ($answerQuery: AnswerQuery) {
+    answers(answerQuery: $answerQuery) {
       _id
       question {
         question
@@ -40,10 +43,13 @@ const GET_ANSWERS = gql`
       }
       status
       actions {
+        _id
         scope {
           _id
         }
-        _id
+        metatags {
+          removedAt
+        }
       }
       metatags {
         addedAt
@@ -51,26 +57,82 @@ const GET_ANSWERS = gql`
         updatedAt
       }
     }
-    questionsCategories {
-      _id
-      name
-    }
   }
 `;
 
 const WalkItems = () => {
+  const {
+    filtersValues,
+    setUsedFilters,
+    setFilters,
+    setShowFiltersPanel,
+    walkItemFiltersValue,
+    setWalkItemFiltersValue,
+    usedFilters,
+    questionsCategories,
+  } = useFiltersContext();
   const { user } = useAppContext();
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
-  const panels = useMemo(() => [{ _id: 'all', name: 'All' }, ...(data?.questionsCategories ?? [])], [data?.questionsCategories]);
+  const panels = useMemo(() => [{ _id: 'all', name: 'All' }, ...(questionsCategories ?? [])], [questionsCategories]);
   const [selectedPanel, setSelectedPanel] = useState(0);
-  const answers = useMemo(
-    () =>
-      selectedPanel === 0
-        ? data?.answers
-        : data?.answers.filter((answer) => answer?.question?.questionsCategoryId === panels[selectedPanel]?._id),
-    [data, selectedPanel],
-  );
+  const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
+
+  useEffect(() => {
+    setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds']);
+    return () => setShowFiltersPanel(false);
+  }, []);
+
+  useEffect(() => {
+    setFilters({
+      questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : undefined,
+    });
+  }, [selectedPanel]);
+
+  useEffect(() => {
+    if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      setFilters(walkItemFiltersValue);
+      setWalkItemFiltersValue({});
+    }
+  }, [filtersValues, usedFilters, setWalkItemFiltersValue, walkItemFiltersValue, setFilters]);
+
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1]) return { ...acc };
+
+      const [key, value] = filter;
+
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' && value.value?.addedByIds?.length === 0)
+      )
+        return acc;
+
+      return {
+        ...acc,
+        [key]: value?.value,
+      };
+    }, {});
+
+    if (parsedFilters) {
+      refetch({
+        answerQuery: {
+          ...parsedFilters,
+          questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : undefined,
+        },
+      });
+    }
+  }, [filtersValues]);
+
+  useEffect(() => {
+    if (data && data?.answers && !error) {
+      const items = [...data?.answers];
+
+      setFilteredAnswers(items);
+    }
+  }, [data?.answers]);
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
@@ -104,10 +166,10 @@ const WalkItems = () => {
     () =>
       (data?.answers ?? []).map(({ typename, metatags, ...answer }) => ({
         ...answer,
-        numberOfActions: answer?.actions?.length,
+        numberOfActions: answer?.actions?.filter((action) => action?.metatags?.removedAt === null).length,
         area: answer?.area?.name || 'Virtual',
       })),
-    [JSON.stringify(data?.actions)],
+    [JSON.stringify(filteredAnswers)],
   );
 
   return (
@@ -219,12 +281,12 @@ const WalkItems = () => {
                         templateColumns={['repeat(1, 1fr)', '', '']}
                         w="full"
                       >
-                        {answers.map((answer) => (
+                        {filteredAnswers.map((answer) => (
                           <WalkItemSquare answer={answer} key={answer._id} />
                         ))}
                       </Grid>
                     )}
-                    {viewMode === 'list' && <WalkItemsList answers={answers} refetchAnswers={refetch}></WalkItemsList>}
+                    {viewMode === 'list' && <WalkItemsList answers={filteredAnswers} refetchAnswers={refetch}></WalkItemsList>}
                   </TabPanel>
                 ))}
               </TabPanels>

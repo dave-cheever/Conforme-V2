@@ -7,8 +7,10 @@ import IFilters, {
   IActionFilters,
   IAuditFilters,
   IResponseFilters,
+  IWalkItemFilters,
 } from './IFilters';
 import { ILocation } from './ILocation';
+import { IQuestionsCategory } from './IQuestionsCategory';
 import { IUser } from './IUser';
 import TAuditStatus from './TAuditStatus';
 import TAuditWalkType from './TAuditWalkType';
@@ -40,6 +42,8 @@ export interface IFiltersContext {
   setAuditFiltersValue: Dispatch<SetStateAction<IAuditFilters>>;
   actionFiltersValue: IActionFilters;
   setActionFiltersValue: Dispatch<SetStateAction<IActionFilters>>;
+  walkItemFiltersValue: IWalkItemFilters;
+  setWalkItemFiltersValue: Dispatch<SetStateAction<IWalkItemFilters>>;
 
   numberOfSelectedFilters: number;
 
@@ -53,4 +57,5 @@ export interface IFiltersContext {
   auditWalkTypes: TAuditWalkType[];
   sites: Partial<ILocation>[];
   areas: Partial<IBusinessUnit>[];
+  questionsCategories: Partial<IQuestionsCategory>[];
 }

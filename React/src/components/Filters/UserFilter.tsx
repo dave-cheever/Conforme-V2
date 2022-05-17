@@ -15,14 +15,17 @@ import {
   actionUserRoles,
   auditUserRoles,
   userRoles,
+  walkItemUserRoles,
 } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { ArrowDownIcon, CrossIcon, Magnifier } from '../../icons';
 import {
   IActionUserFilter,
   IAuditUserFilter,
   IUserFilter,
+  IWalkItemUserFilter,
 } from '../../interfaces/IFilters';
 import { IUser } from '../../interfaces/IUser';
 import UsersSelector from '../UsersSelector';
@@ -30,33 +33,64 @@ import UsersSelector from '../UsersSelector';
 const UserFilter = () => {
   const { module } = useAppContext();
   const location = useLocation();
+  const { getPath } = useNavigate();
   const { filtersValues, setFilters, users } = useFiltersContext();
   const [searchText, setSearchText] = useState<string>('');
+
+  const auditSelectedUserRole = useMemo(() => {
+    switch (getPath()) {
+      case 'actions':
+        return 'assignee';
+      case 'walk-items':
+        return 'addedBy';
+      case 'audits':
+      default:
+        return 'auditor';
+    }
+  }, [location.pathname]);
   const [selectedRole, setSelectedRole] = useState<string>(
-    module?.type === 'tracker'
-      ? 'responsible'
-      : location.pathname.split('/')[2] === 'actions'
-      ? 'assignee'
-      : 'auditor',
+    module?.type === 'tracker' ? 'responsible' : auditSelectedUserRole,
   );
 
   const baseAuditUserRoles = useMemo(() => {
-    switch (location.pathname.split('/')[2]) {
+    switch (getPath()) {
       case 'actions':
         return actionUserRoles;
+      case 'walk-items':
+        return walkItemUserRoles;
       case 'audits':
       default:
         return auditUserRoles;
     }
   }, [location.pathname]);
+  const auditUserIdsFilter = useMemo(() => {
+    switch (getPath()) {
+      case 'actions':
+        return filtersValues.usersIds as IActionUserFilter;
+      case 'walkItems':
+        return filtersValues.usersIds as IWalkItemUserFilter;
+      case 'audits':
+      default:
+        filtersValues.usersIds as IAuditUserFilter;
+    }
+  }, [location.pathname]);
   const selectedAuditRoleUsers = useMemo(() => {
-    switch (location.pathname.split('/')[2]) {
+    switch (getPath()) {
       case 'actions':
         return [
           {
             name: 'assignee',
             count:
               (filtersValues.usersIds as IActionUserFilter)?.value?.assigneesIds
+                ?.length || 0,
+          },
+        ];
+      case 'walk-items':
+        return [
+          {
+            name: 'addedBy',
+            count:
+              (filtersValues.usersIds as IWalkItemUserFilter)?.value?.addedByIds
                 ?.length || 0,
           },
         ];
@@ -126,13 +160,16 @@ const UserFilter = () => {
       case 'assignee':
         return (filtersValues.usersIds as IActionUserFilter)?.value
           ?.assigneesIds;
+      case 'addedBy':
+        return (filtersValues.usersIds as IWalkItemUserFilter)?.value
+          ?.addedByIds;
       case 'participant':
         return (filtersValues.usersIds as IAuditUserFilter)?.value
           ?.participantsIds;
       default:
         break;
     }
-  }, [filtersValues, selectedRole]) as string[];
+  }, [filtersValues, selectedRole, location.pathname]) as string[];
 
   const handleUserChange = ({ target: { userRole, value } }) => {
     const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
@@ -175,11 +212,7 @@ const UserFilter = () => {
   };
 
   const handleAuditUserChange = ({ target: { userRole, value } }) => {
-    const userIdsFilter = (
-      location.pathname.split('/')[2] === 'actions'
-        ? (filtersValues.usersIds as IActionUserFilter)
-        : (filtersValues.usersIds as IAuditUserFilter)
-    )?.value;
+    const userIdsFilter = auditUserIdsFilter?.value;
     switch (userRole) {
       case 'auditor':
         setFilters({
@@ -194,6 +227,14 @@ const UserFilter = () => {
           usersIds: {
             ...userIdsFilter,
             assigneesIds: value,
+          },
+        });
+        break;
+      case 'addedBy':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            addedByIds: value,
           },
         });
         break;
@@ -212,6 +253,7 @@ const UserFilter = () => {
 
   const handleClearFilter = (selectedRoleUser) => {
     const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
+
     switch (selectedRoleUser.name) {
       case 'responsible':
         setFilters({
@@ -251,11 +293,8 @@ const UserFilter = () => {
   };
 
   const handleClearAuditFilter = (selectedRoleUser) => {
-    const userIdsFilter = (
-      location.pathname.split('/')[2] === 'actions'
-        ? (filtersValues.usersIds as IActionUserFilter)
-        : (filtersValues.usersIds as IAuditUserFilter)
-    )?.value;
+    const userIdsFilter = auditUserIdsFilter?.value;
+
     switch (selectedRoleUser.name) {
       case 'auditor':
         setFilters({
@@ -270,6 +309,14 @@ const UserFilter = () => {
           usersIds: {
             ...userIdsFilter,
             assigneesIds: [],
+          },
+        });
+        break;
+      case 'addedBy':
+        setFilters({
+          usersIds: {
+            ...userIdsFilter,
+            addedByIds: [],
           },
         });
         break;

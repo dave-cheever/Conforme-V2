@@ -106,7 +106,11 @@ const WalkItemsListItem = ({
               pt="3px"
               textOverflow="ellipsis"
             >
-              {answer?.actions?.length}
+              {
+                answer?.actions?.filter(
+                  (action) => action?.metatags?.removedAt === null,
+                ).length
+              }
             </Flex>
           </Flex>
           <Box w="20%">

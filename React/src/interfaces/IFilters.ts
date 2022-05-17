@@ -17,6 +17,10 @@ interface IActionUserFilterObject {
   assigneesIds: string[] | null;
 }
 
+interface IWalkItemUserFilterObject {
+  addedByIds: string[] | null;
+}
+
 export interface IUserFilter {
   name: string;
   value: IUserFilterObject | null;
@@ -29,6 +33,11 @@ export interface IAuditUserFilter {
 export interface IActionUserFilter {
   name: string;
   value: IActionUserFilterObject | null;
+}
+
+export interface IWalkItemUserFilter {
+  name: string;
+  value: IWalkItemUserFilterObject | null;
 }
 
 export interface IResponseFilters {
@@ -52,6 +61,12 @@ export interface IActionFilters {
   usersIds?: IActionUserFilter;
 }
 
+export interface IWalkItemFilters {
+  areasIds?: IFilter;
+  questionsCategoriesIds?: IFilter;
+  usersIds?: IWalkItemUserFilter;
+}
+
 export default interface IFilters {
   complianceItemsIds?: IFilter;
   categoriesIds?: IFilter;
@@ -63,7 +78,11 @@ export default interface IFilters {
   usersRoles?: IFilter;
   collections?: IFilter;
   action?: IFilter;
-  usersIds?: IUserFilter | IAuditUserFilter | IActionUserFilter;
+  usersIds?:
+    | IUserFilter
+    | IAuditUserFilter
+    | IActionUserFilter
+    | IWalkItemUserFilter;
   locationsIds?: IFilter;
   sitesIds?: IFilter;
   areasIds?: IFilter;

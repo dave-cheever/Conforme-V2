@@ -27,6 +27,7 @@ const Header: FunctionComponent<IHeader> = ({
   const isAuditPage =
     isPathActive('/audits') ||
     isPathActive('/actions') ||
+    isPathActive('/walk-items') ||
     isPathActive('/dashboard');
 
   const device = useDevice();

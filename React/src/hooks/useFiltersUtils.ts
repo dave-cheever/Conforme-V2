@@ -6,6 +6,7 @@ import IFilter from '../interfaces/IFilter';
 import IFilters, {
   IActionFilters,
   IAuditFilters,
+  IWalkItemFilters,
 } from '../interfaces/IFilters';
 
 export const initialFilters: IFilters = {
@@ -108,6 +109,24 @@ export const initialActionFilters: IActionFilters = {
   },
 };
 
+export const initialWalkItemFilters: IWalkItemFilters = {
+  questionsCategoriesIds: {
+    name: 'Type',
+    value: [],
+    hideFromPanel: true,
+  },
+  areasIds: {
+    name: 'Area',
+    value: [],
+  },
+  usersIds: {
+    name: 'User',
+    value: {
+      addedByIds: [],
+    },
+  },
+};
+
 export const auditStatuses = {
   inProgress: 'In progress',
   completed: 'Completed',
@@ -160,6 +179,8 @@ const useFiltersUtils = () => {
     switch (location.pathname.split('/')[2]) {
       case 'actions':
         return initialActionFilters;
+      case 'walk-items':
+        return initialWalkItemFilters;
       case 'audits':
       default:
         return initialAuditFilters;

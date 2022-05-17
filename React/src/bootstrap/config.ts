@@ -308,6 +308,13 @@ export const actionUserRoles = [
   },
 ];
 
+export const walkItemUserRoles = [
+  {
+    value: 'addedBy',
+    label: 'Added by',
+  },
+];
+
 export const questionTypes = [
   {
     value: 'text',

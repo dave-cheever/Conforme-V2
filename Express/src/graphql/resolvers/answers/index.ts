@@ -34,9 +34,16 @@ export const answersTypeDefs = `
     actions: [Action]
   }
 
+  input AnswerUsersInput {
+    addedByIds: [ID]
+  }
+
   input AnswerQuery {
     _id: ID
     questionsIds: [ID]
+    questionsCategoriesIds: [ID]
+    areasIds: [ID]
+    usersIds: AnswerUsersInput
     scope: ScopeInput
   }
 

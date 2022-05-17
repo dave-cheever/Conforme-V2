@@ -7,6 +7,7 @@ import IFilters, {
   IActionFilters,
   IAuditFilters,
   IResponseFilters,
+  IWalkItemFilters,
 } from '../interfaces/IFilters';
 import { IFiltersContext } from '../interfaces/IFiltersContext';
 import TAuditStatus from '../interfaces/TAuditStatus';
@@ -34,6 +35,10 @@ const GET_FILTERS_DATA = gql`
       name
     }
     businessUnits {
+      _id
+      name
+    }
+    questionsCategories {
       _id
       name
     }
@@ -73,6 +78,8 @@ const FiltersProvider = ({ children }) => {
   const [actionFiltersValue, setActionFiltersValue] = useState<IActionFilters>(
     {},
   );
+  const [walkItemFiltersValue, setWalkItemFiltersValue] =
+    useState<IWalkItemFilters>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(
     null,
@@ -104,6 +111,8 @@ const FiltersProvider = ({ children }) => {
 
   useEffect(() => {
     setFilters();
+
+    return () => cleanFilters();
   }, [usedFilters]);
 
   const value = useMemo(
@@ -126,6 +135,8 @@ const FiltersProvider = ({ children }) => {
       setAuditFiltersValue,
       actionFiltersValue,
       setActionFiltersValue,
+      walkItemFiltersValue,
+      setWalkItemFiltersValue,
       numberOfSelectedFilters,
       complianceItems: data?.complianceItems,
       categories: data?.categories,
@@ -139,6 +150,7 @@ const FiltersProvider = ({ children }) => {
       auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],
       sites: data?.locations,
       areas: data?.businessUnits,
+      questionsCategories: data?.questionsCategories,
     }),
 
     [

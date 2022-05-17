@@ -32,6 +32,16 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
         from: 'questionId',
         to: 'question',
       });
+
+      if (answerQuery?.questionsCategoriesIds?.length > 0) {
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': {
+              $in: answerQuery.questionsCategoriesIds,
+            },
+          },
+        });
+      }
     }
 
     if (shouldJoin(['question', 'questionsCategory'])) {
@@ -88,6 +98,23 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
+    if (shouldJoin(['audit', 'area'])) {
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'audit.areaId',
+        to: 'audit.area',
+      });
+    }
+
+    if (answerQuery?.areasIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          'audit.areaId': { $in: answerQuery.areasIds },
+        },
+      });
+    }
+
     pipeline.push({ $project: getProjectFields(info.fieldNodes, 'answers') });
 
     let answers = await Answers.aggregate(pipeline);
@@ -114,6 +141,9 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
         ),
       );
     }
+
+    if (answerQuery?.usersIds?.addedByIds?.length > 0)
+      answers = answers.filter((answer) => answerQuery.usersIds.addedByIds.includes(answer.addedBy._id));
 
     return answers.sort((a, b) => compareDesc(new Date(a?.metatags?.addedAt), new Date(b?.metatags?.addedAt)));
   } catch (err: any) {
