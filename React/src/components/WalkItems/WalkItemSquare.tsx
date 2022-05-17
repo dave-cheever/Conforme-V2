@@ -35,7 +35,7 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
         </Text>
       </Flex>
       <Flex w="full">
-        <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+        <Box overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>

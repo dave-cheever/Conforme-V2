@@ -2,21 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Button,
-  Flex,
-  Grid,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 
 import Header from '../components/Header';
 import Icon from '../components/Icon';
@@ -76,27 +62,19 @@ const WalkItems = () => {
   const { user } = useAppContext();
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
-  const panels = useMemo(
-    () => [{ _id: 'all', name: 'All' }, ...(data?.questionsCategories ?? [])],
-    [data?.questionsCategories],
-  );
+  const panels = useMemo(() => [{ _id: 'all', name: 'All' }, ...(data?.questionsCategories ?? [])], [data?.questionsCategories]);
   const [selectedPanel, setSelectedPanel] = useState(0);
   const answers = useMemo(
     () =>
       selectedPanel === 0
         ? data?.answers
-        : data?.answers.filter(
-            (answer) =>
-              answer?.question?.questionsCategoryId ===
-              panels[selectedPanel]?._id,
-          ),
+        : data?.answers.filter((answer) => answer?.question?.questionsCategoryId === panels[selectedPanel]?._id),
     [data, selectedPanel],
   );
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'grid' || savedView === 'list'))
-      return savedView;
+    if (savedView && (savedView === 'grid' || savedView === 'list')) return savedView;
 
     return 'list';
   }, [user]);
@@ -150,34 +128,18 @@ const WalkItems = () => {
                   fontWeight="700"
                   h="40px"
                   ml={['15px', '0']}
-                  rightIcon={
-                    <ChevronRight
-                      color="walkItems.header.rightIcon"
-                      h="12px"
-                      mt="3px"
-                      transform="rotate(90deg)"
-                      w="12px"
-                    />
-                  }
+                  rightIcon={<ChevronRight color="walkItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                   rounded="10px"
                 >
                   <Flex align="center" mr="1">
-                    <Icon
-                      boxSize="18px"
-                      icon={viewMode}
-                      stroke="currentColor"
-                    />
+                    <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
                   </Flex>
                 </MenuButton>
               }
               <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
                 <MenuItem
                   _focus={{ color: 'actions.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'grid'
-                      ? 'walkItems.header.menuItemFontSelected'
-                      : 'walkItems.header.menuItemFont'
-                  }
+                  color={viewMode === 'grid' ? 'walkItems.header.menuItemFontSelected' : 'walkItems.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('grid')}
                 >
@@ -186,11 +148,7 @@ const WalkItems = () => {
                 </MenuItem>
                 <MenuItem
                   _focus={{ color: 'walkItems.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'list'
-                      ? 'walkItems.header.menuItemFontSelected'
-                      : 'walkItems.header.menuItemFont'
-                  }
+                  color={viewMode === 'list' ? 'walkItems.header.menuItemFontSelected' : 'walkItems.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('list')}
                 >
@@ -199,12 +157,7 @@ const WalkItems = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <CSVLink
-              data={csvData}
-              filename="walk-items.csv"
-              headers={csvHeaders}
-              target="_blank"
-            >
+            <CSVLink data={csvData} filename="walk-items.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{
                   bg: 'reasponseHeader.buttonLightBgHover',
@@ -225,11 +178,7 @@ const WalkItems = () => {
           </>
         )}
       </Header>
-      <Flex
-        h={['calc(100vh - 210px)', 'calc(100vh - 150px)']}
-        overflow="auto"
-        pt="3"
-      >
+      <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto" pt="3">
         {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>
@@ -237,12 +186,7 @@ const WalkItems = () => {
           <Loader center={true} />
         ) : (
           <>
-            <Tabs
-              defaultIndex={selectedPanel}
-              onChange={(index) => setSelectedPanel(index)}
-              variant="unstyled"
-              w="full"
-            >
+            <Tabs defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
               <TabList px={[4, 8]}>
                 {panels?.map((panel) => (
                   <Tab
@@ -271,7 +215,7 @@ const WalkItems = () => {
                         h="fit-content"
                         pb={[0, 8]}
                         pt="3"
-                        px={[4, 8]}
+                        px={4}
                         templateColumns={['repeat(1, 1fr)', '', '']}
                         w="full"
                       >
@@ -280,12 +224,7 @@ const WalkItems = () => {
                         ))}
                       </Grid>
                     )}
-                    {viewMode === 'list' && (
-                      <WalkItemsList
-                        answers={answers}
-                        refetchAnswers={refetch}
-                      ></WalkItemsList>
-                    )}
+                    {viewMode === 'list' && <WalkItemsList answers={answers} refetchAnswers={refetch}></WalkItemsList>}
                   </TabPanel>
                 ))}
               </TabPanels>

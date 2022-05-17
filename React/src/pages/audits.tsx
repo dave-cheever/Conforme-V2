@@ -2,18 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Button,
-  Flex,
-  Grid,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalOverlay,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 
@@ -27,20 +16,12 @@ import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
-import AuditModalProvider, {
-  useAuditModalContext,
-} from '../contexts/AuditModalProvider';
+import AuditModalProvider, { useAuditModalContext } from '../contexts/AuditModalProvider';
 import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
-import {
-  ChevronRight,
-  ExportIcon,
-  GridIcon,
-  GroupIcon,
-  ListIcon,
-} from '../icons';
+import { ChevronRight, ExportIcon, GridIcon, GroupIcon, ListIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 
 const GET_AUDITS = gql`
@@ -86,28 +67,15 @@ const GET_AUDITS = gql`
 
 const Audits = () => {
   const { user } = useAppContext();
-  const {
-    filtersValues,
-    setUsedFilters,
-    setFilters,
-    setShowFiltersPanel,
-    auditFiltersValue,
-    setAuditFiltersValue,
-    usedFilters,
-  } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, auditFiltersValue, setAuditFiltersValue, usedFilters } =
+    useFiltersContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
   const { audit } = useAuditModalContext();
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
-  const {
-    sortedData: sortedAudits,
-    sortOrder,
-    sortType,
-    setSortType,
-    setSortOrder,
-  } = useSort(filteredAudits, 'walkType');
+  const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'walkType');
   const sortBy = [
     { label: 'Walk Type', key: 'walkType' },
     { label: 'Auditor', key: 'auditor.displayName' },
@@ -122,47 +90,31 @@ const Audits = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      auditFiltersValue &&
-      !isEmpty(auditFiltersValue) &&
-      !isEmpty(filtersValues) &&
-      !isEmpty(usedFilters)
-    ) {
+    if (auditFiltersValue && !isEmpty(auditFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
       setFilters(auditFiltersValue);
       setAuditFiltersValue({});
     }
-  }, [
-    filtersValues,
-    usedFilters,
-    setAuditFiltersValue,
-    auditFiltersValue,
-    setFilters,
-  ]);
+  }, [filtersValues, usedFilters, setAuditFiltersValue, auditFiltersValue, setFilters]);
 
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce(
-      (acc, filter) => {
-        if (!filter || !filter[1]) return { ...acc };
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1]) return { ...acc };
 
-        const [key, value] = filter;
+      const [key, value] = filter;
 
-        if (
-          !value.value ||
-          (Array.isArray(value.value) && value.value.length === 0) ||
-          (key === 'usersIds' &&
-            value.value?.auditorsIds?.length === 0 &&
-            value.value?.participantsIds?.length === 0)
-        )
-          return acc;
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' && value.value?.auditorsIds?.length === 0 && value.value?.participantsIds?.length === 0)
+      )
+        return acc;
 
-        return {
-          ...acc,
-          [key]: value?.value,
-        };
-      },
-      {},
-    );
+      return {
+        ...acc,
+        [key]: value?.value,
+      };
+    }, {});
 
     if (parsedFilters) refetch({ auditQueryInput: parsedFilters });
   }, [filtersValues]);
@@ -177,18 +129,12 @@ const Audits = () => {
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
-    if (
-      savedView &&
-      (savedView === 'grid' || savedView === 'list' || savedView === 'group')
-    )
-      return savedView;
+    if (savedView && (savedView === 'grid' || savedView === 'list' || savedView === 'group')) return savedView;
 
     return 'list';
   }, [user]);
 
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'group'>(
-    initialViewMode,
-  );
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'group'>(initialViewMode);
 
   useEffect(() => {
     if (device === 'mobile') setViewMode('grid');
@@ -218,17 +164,11 @@ const Audits = () => {
 
   const csvData = useMemo(
     () =>
-      (filteredAudits ?? []).map(
-        ({ participantsIds, auditorId, reference, metatags, ...audit }) => ({
-          ...audit,
-          dueDate: audit?.dueDate
-            ? format(new Date(audit?.dueDate), 'd MMM yyyy')
-            : 'No due date',
-          participants: audit?.participants
-            ?.map((participant) => participant.displayName)
-            .join(', '),
-        }),
-      ),
+      (filteredAudits ?? []).map(({ participantsIds, auditorId, reference, metatags, ...audit }) => ({
+        ...audit,
+        dueDate: audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : 'No due date',
+        participants: audit?.participants?.map((participant) => participant.displayName).join(', '),
+      })),
     [JSON.stringify(filteredAudits)],
   );
 
@@ -238,13 +178,7 @@ const Audits = () => {
         isOpen={adminModalState !== 'closed'}
         key={audit._id}
         onClose={onCloseModal}
-        size={
-          device === 'desktop' ||
-          device === 'tablet' ||
-          adminModalState === 'delete'
-            ? '2xl'
-            : 'full'
-        }
+        size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
       >
         <ModalOverlay />
@@ -265,34 +199,18 @@ const Audits = () => {
                   fontWeight="700"
                   h="40px"
                   ml={['15px', '0']}
-                  rightIcon={
-                    <ChevronRight
-                      color="auditsItems.header.rightIcon"
-                      h="12px"
-                      mt="3px"
-                      transform="rotate(90deg)"
-                      w="12px"
-                    />
-                  }
+                  rightIcon={<ChevronRight color="auditsItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                   rounded="10px"
                 >
                   <Flex align="center" mr="1">
-                    <Icon
-                      boxSize="18px"
-                      icon={viewMode}
-                      stroke="currentColor"
-                    />
+                    <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
                   </Flex>
                 </MenuButton>
               }
               <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
                 <MenuItem
                   _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'grid'
-                      ? 'auditsItems.header.menuItemFontSelected'
-                      : 'auditsItems.header.menuItemFont'
-                  }
+                  color={viewMode === 'grid' ? 'auditsItems.header.menuItemFontSelected' : 'auditsItems.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('grid')}
                 >
@@ -301,11 +219,7 @@ const Audits = () => {
                 </MenuItem>
                 <MenuItem
                   _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'list'
-                      ? 'auditsItems.header.menuItemFontSelected'
-                      : 'auditsItems.header.menuItemFont'
-                  }
+                  color={viewMode === 'list' ? 'auditsItems.header.menuItemFontSelected' : 'auditsItems.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('list')}
                 >
@@ -314,11 +228,7 @@ const Audits = () => {
                 </MenuItem>
                 <MenuItem
                   _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                  color={
-                    viewMode === 'group'
-                      ? 'auditsItems.header.menuItemFontSelected'
-                      : 'auditsItems.header.menuItemFont'
-                  }
+                  color={viewMode === 'group' ? 'auditsItems.header.menuItemFontSelected' : 'auditsItems.header.menuItemFont'}
                   fontSize="14px"
                   onClick={() => changeViewMode('group')}
                 >
@@ -327,12 +237,7 @@ const Audits = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <CSVLink
-              data={csvData}
-              filename="audits.csv"
-              headers={csvHeaders}
-              target="_blank"
-            >
+            <CSVLink data={csvData} filename="audits.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{
                   bg: 'reasponseHeader.buttonLightBgHover',
@@ -350,13 +255,7 @@ const Audits = () => {
                 </Text>
               </Button>
             </CSVLink>
-            <SortButton
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
+            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
           </>
         )}
       </Header>
@@ -380,9 +279,7 @@ const Audits = () => {
                 w="full"
               >
                 {sortedAudits.length > 0 ? (
-                  sortedAudits?.map((audit) => (
-                    <AuditSquare audit={audit} key={audit._id} />
-                  ))
+                  sortedAudits?.map((audit) => <AuditSquare audit={audit} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
                     No audits found

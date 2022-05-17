@@ -40,47 +40,21 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       </Flex>
       <Flex align="center" h="40px" w="full">
         {audit?.walkType === 'physical' && (
-          <Box
-            fontSize="ssm"
-            lineHeight="20px"
-            overflow="hidden"
-            pl={2}
-            textOverflow="ellipsis"
-            w="200px"
-            whiteSpace="nowrap"
-          >
+          <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
             <Text color="auditSquare.titleFontColor">Site</Text>
             <Text>{audit?.site?.name}</Text>
           </Box>
         )}
-        <Box
-          fontSize="ssm"
-          lineHeight="20px"
-          overflow="hidden"
-          pl={2}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap"
-        >
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="auditSquare.titleFontColor">Type</Text>
           <Text textTransform="capitalize">{audit?.walkType}</Text>
         </Box>
       </Flex>
       <Flex alignItems="flex-start" h="50px" py="4" w="full">
-        <Box color="auditSquare.titleFontColor" fontSize="11px" ml={2} w="50%">
-          <Box>Due for</Box>
-          <Box
-            color="auditSquare.dueDateColor"
-            fontSize="ssm"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
-            {audit?.dueDate ? (
-              format(new Date(audit?.dueDate), 'd MMM yyyy')
-            ) : (
-              <Flex fontStyle="italic">No due date</Flex>
-            )}
+        <Box fontSize="ssm" ml={2} w="50%">
+          <Text color="auditSquare.titleFontColor">Due for</Text>
+          <Box fontSize="ssm" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            {audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
           </Box>
         </Box>
       </Flex>
@@ -99,13 +73,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         >
           More
         </Button>
-        <Flex
-          align="center"
-          color="auditSquare.nameFontColor"
-          flexDirection="column"
-          justify="center"
-          mr={1}
-        >
+        <Flex align="center" color="auditSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
           <Box fontSize="ssm" fontWeight="700">
             {auditStatuses[audit?.status]}
           </Box>
