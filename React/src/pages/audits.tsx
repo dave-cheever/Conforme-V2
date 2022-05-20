@@ -34,6 +34,7 @@ const GET_AUDITS = gql`
       reference
       auditorId
       participantsIds
+      numberOfActions
       auditType {
         _id
         name

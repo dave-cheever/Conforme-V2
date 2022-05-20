@@ -35,6 +35,7 @@ export const auditsTypeDefs = `
     participants: [User]
     metatags: Metatags
     questions: [Question]
+    numberOfActions: Int
   }
 
   input AuditUsersInput {

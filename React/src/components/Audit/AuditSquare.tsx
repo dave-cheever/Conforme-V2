@@ -1,9 +1,10 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Button, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
+import { ActionsIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 const AuditSquare = ({ audit }: { audit: IAudit }) => {
@@ -74,9 +75,14 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           More
         </Button>
         <Flex align="center" color="auditSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
-          <Box fontSize="ssm" fontWeight="700">
-            {auditStatuses[audit?.status]}
-          </Box>
+          <Flex fontSize="11px" fontWeight="700">
+            <Text as="span">{auditStatuses[audit?.status]}</Text>
+            <Divider color="lightgray" h="auto" mx="15px" orientation="vertical" />
+            <ActionsIcon fill="transparent" h="16px" stroke="#D2D1D7" w="16px" />
+            <Text as="span" ml={2}>
+              {audit?.numberOfActions}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
     </Box>

@@ -146,6 +146,34 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       },
     });
 
+    if (shouldJoin(['numberOfActions'])) {
+      pipeline.push({
+        $lookup: {
+          from: 'answers',
+          localField: '_id',
+          foreignField: 'scope._id',
+          as: 'answers',
+        },
+      });
+      pipeline.push({
+        $lookup: {
+          from: 'actions',
+          localField: 'answers._id',
+          foreignField: 'scope._id',
+          as: 'actions',
+        },
+      });
+      pipeline.push({
+        $project: {
+          auditorId: shouldJoin(['auditor']),
+          participantsIds: shouldJoin(['participants']),
+          ...getProjectFields(info.fieldNodes, 'audits'),
+          metatags: 1,
+          actions: 1,
+        },
+      });
+    }
+
     let audits = await Audits.aggregate(pipeline);
 
     if (shouldJoin(['auditor'])) {
@@ -206,6 +234,13 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
             }),
         ),
       );
+    }
+
+    if (shouldJoin(['numberOfActions'])) {
+      audits = audits.map((audit) => ({
+        ...audit,
+        numberOfActions: audit.actions?.filter((action) => !action.metatags.removedAt)?.length ?? 0,
+      }));
     }
 
     return audits.sort((a, b) => compareDesc(new Date(a.metatags.addedAt), new Date(b.metatags.addedAt)));
