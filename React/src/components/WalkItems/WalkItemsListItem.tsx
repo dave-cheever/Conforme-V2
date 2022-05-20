@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  HStack,
-  IconButton,
-  Skeleton,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Avatar, Box, Flex, HStack, IconButton, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
@@ -16,34 +7,14 @@ import { IAnswer } from '../../interfaces/IAnswer';
 import { IAudit } from '../../interfaces/IAudit';
 import WalkItemDeleteModal from './WalkItemDeleteModal';
 
-const WalkItemsListItem = ({
-  answer,
-  audit,
-  refetchAnswers,
-}: {
-  answer: IAnswer;
-  audit: IAudit;
-  refetchAnswers: () => void;
-}) => {
+const WalkItemsListItem = ({ answer, audit, refetchAnswers }: { answer: IAnswer; audit: IAudit; refetchAnswers: () => void }) => {
   const { navigateTo } = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <WalkItemDeleteModal
-        answer={answer}
-        isOpen={isOpen}
-        onClose={onClose}
-        refetchAnswers={refetchAnswers}
-      />
-      <Box
-        bg="white"
-        borderBottomColor="walkItemsList.headerBorderColor"
-        borderBottomWidth="1px"
-        p="15px 25px"
-        py={[1, 0]}
-        w="full"
-      >
+      <WalkItemDeleteModal answer={answer} isOpen={isOpen} onClose={onClose} refetchAnswers={refetchAnswers} />
+      <Box bg="white" borderBottomColor="walkItemsList.headerBorderColor" borderBottomWidth="1px" p="15px 25px" py={[1, 0]} w="full">
         <Flex align="center" h={['full', '73px']} position="relative" w="full">
           <Flex flexDir="column" w="20%">
             <Flex
@@ -106,22 +77,14 @@ const WalkItemsListItem = ({
               pt="3px"
               textOverflow="ellipsis"
             >
-              {
-                answer?.actions?.filter(
-                  (action) => action?.metatags?.removedAt === null,
-                ).length
-              }
+              {answer?.actions?.filter((action) => action?.metatags?.removedAt === null).length}
             </Flex>
           </Flex>
           <Box w="20%">
             <Skeleton isLoaded={!!answer} rounded="full">
               {answer.addedBy ? (
                 <Flex align="center" direction="row">
-                  <Avatar
-                    name={answer.addedBy?.displayName}
-                    size="xs"
-                    src={answer.addedBy?.imgUrl}
-                  />
+                  <Avatar name={answer.addedBy?.displayName} size="xs" src={answer.addedBy?.imgUrl} />
                   <Text
                     color="walkItemsList.fontColor"
                     fontSize="13px"
@@ -144,12 +107,7 @@ const WalkItemsListItem = ({
             </Skeleton>
           </Box>
           <Flex w="10%">
-            <Flex
-              color="walkItemsList.fontColor"
-              fontSize="14px"
-              fontWeight="400"
-              opacity="1"
-            >
+            <Flex color="walkItemsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
               {answer?.metatags?.addedAt ? (
                 format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
               ) : (
@@ -158,12 +116,7 @@ const WalkItemsListItem = ({
             </Flex>
           </Flex>
           <Flex w="10%">
-            <Flex
-              color="walkItemsList.fontColor"
-              fontSize="14px"
-              fontWeight="400"
-              opacity="1"
-            >
+            <Flex color="walkItemsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
               <HStack>
                 <IconButton
                   _hover={{ opacity: 0.7 }}

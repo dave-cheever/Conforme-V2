@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  Spacer,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Menu, MenuButton, MenuList, Spacer, Text } from '@chakra-ui/react';
 
 import { ChevronRight } from '../icons';
 
@@ -38,15 +28,7 @@ const SortButton = ({
             fontWeight="700"
             h="40px"
             ml={['15px', '0']}
-            rightIcon={
-              <ChevronRight
-                color="sortButton.rightIcon"
-                h="12px"
-                mt="3px"
-                transform="rotate(90deg)"
-                w="12px"
-              />
-            }
+            rightIcon={<ChevronRight color="sortButton.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
             rounded="10px"
           >
             <Flex align="center" mr="1">
@@ -67,41 +49,7 @@ const SortButton = ({
                 <HStack>
                   <Box
                     align="center"
-                    bg={
-                      sortType === sortItem.key && sortOrder === false
-                        ? 'sortButton.menuItemFocus'
-                        : undefined
-                    }
-                    h="30px"
-                    justify="center"
-                    onClick={() => {
-                      setSortType(sortItem.key);
-                      setSortOrder(false);
-                      onClose();
-                    }}
-                    rounded="5px"
-                    w="30px"
-                  >
-                    <ChevronRight
-                      color={
-                        sortType === sortItem.key && sortOrder === false
-                          ? 'sortButton.icon.active'
-                          : 'sortButton.icon.default'
-                      }
-                      cursor="pointer"
-                      h="12px"
-                      transform="rotate(-90deg)"
-                      w="12px"
-                    />
-                  </Box>
-                  <Spacer />
-                  <Flex
-                    align="center"
-                    bg={
-                      sortType === sortItem.key && sortOrder === true
-                        ? 'sortButton.menuItemFocus'
-                        : undefined
-                    }
+                    bg={sortType === sortItem.key && sortOrder === true ? 'sortButton.menuItemFocus' : undefined}
                     h="30px"
                     justify="center"
                     onClick={() => {
@@ -113,11 +61,29 @@ const SortButton = ({
                     w="30px"
                   >
                     <ChevronRight
-                      color={
-                        sortType === sortItem.key && sortOrder === true
-                          ? 'sortButton.icon.active'
-                          : 'sortButton.icon.default'
-                      }
+                      color={sortType === sortItem.key && sortOrder === true ? 'sortButton.icon.active' : 'sortButton.icon.default'}
+                      cursor="pointer"
+                      h="12px"
+                      transform="rotate(-90deg)"
+                      w="12px"
+                    />
+                  </Box>
+                  <Spacer />
+                  <Flex
+                    align="center"
+                    bg={sortType === sortItem.key && sortOrder === false ? 'sortButton.menuItemFocus' : undefined}
+                    h="30px"
+                    justify="center"
+                    onClick={() => {
+                      setSortType(sortItem.key);
+                      setSortOrder(false);
+                      onClose();
+                    }}
+                    rounded="5px"
+                    w="30px"
+                  >
+                    <ChevronRight
+                      color={sortType === sortItem.key && sortOrder === false ? 'sortButton.icon.active' : 'sortButton.icon.default'}
                       cursor="pointer"
                       h="12px"
                       transform="rotate(90deg)"

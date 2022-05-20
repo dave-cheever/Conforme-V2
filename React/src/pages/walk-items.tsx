@@ -8,11 +8,13 @@ import { isEmpty } from 'lodash';
 import Header from '../components/Header';
 import Icon from '../components/Icon';
 import Loader from '../components/Loader';
+import SortButton from '../components/SortButton';
 import WalkItemsList from '../components/WalkItems/WalkItemsList';
 import WalkItemSquare from '../components/WalkItems/WalkItemSquare';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useSort from '../hooks/useSort';
 import { ChevronRight, ExportIcon, GridIcon, ListIcon } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 
@@ -77,6 +79,14 @@ const WalkItems = () => {
   const panels = useMemo(() => [{ _id: 'all', name: 'All' }, ...(questionsCategories ?? [])], [questionsCategories]);
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
+  const { sortedData: sortedAnswers, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAnswers);
+  const sortBy = [
+    { label: 'Type', key: 'question.questionsCategory.name' },
+    { label: 'Description', key: 'question.question' },
+    { label: 'Belongs to', key: 'audit.area.name' },
+    { label: 'Added by', key: 'addedBy.displayName' },
+    { label: 'Added at', key: 'metatags.addedAt' },
+  ];
 
   useEffect(() => {
     setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds']);
@@ -237,6 +247,7 @@ const WalkItems = () => {
                 </Text>
               </Button>
             </CSVLink>
+            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
           </>
         )}
       </Header>
@@ -281,12 +292,21 @@ const WalkItems = () => {
                         templateColumns={['repeat(1, 1fr)', '', '']}
                         w="full"
                       >
-                        {filteredAnswers.map((answer) => (
+                        {sortedAnswers.map((answer) => (
                           <WalkItemSquare answer={answer} key={answer._id} />
                         ))}
                       </Grid>
                     )}
-                    {viewMode === 'list' && <WalkItemsList answers={filteredAnswers} refetchAnswers={refetch}></WalkItemsList>}
+                    {viewMode === 'list' && (
+                      <WalkItemsList
+                        answers={sortedAnswers}
+                        refetchAnswers={refetch}
+                        setSortOrder={setSortOrder}
+                        setSortType={setSortType}
+                        sortOrder={sortOrder}
+                        sortType={sortType}
+                      ></WalkItemsList>
+                    )}
                   </TabPanel>
                 ))}
               </TabPanels>
