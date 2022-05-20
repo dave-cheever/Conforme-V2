@@ -66,7 +66,7 @@ const ActionsList = ({
         <AdminTableHeaderElement
           label="Assignee"
           onClick={() => {
-            setSortType('assignee');
+            setSortType('assignee.displayName');
             setSortOrder(!sortOrder);
           }}
           showSortingIcon={sortType === 'assignee.displayName'}
@@ -76,7 +76,7 @@ const ActionsList = ({
         <AdminTableHeaderElement
           label="Site"
           onClick={() => {
-            setSortType('site');
+            setSortType('site.name');
             setSortOrder(!sortOrder);
           }}
           showSortingIcon={sortType === 'site.name'}
@@ -86,7 +86,7 @@ const ActionsList = ({
         <AdminTableHeaderElement
           label="Area"
           onClick={() => {
-            setSortType('area');
+            setSortType('area.name');
             setSortOrder(!sortOrder);
           }}
           showSortingIcon={sortType === 'area.name'}
