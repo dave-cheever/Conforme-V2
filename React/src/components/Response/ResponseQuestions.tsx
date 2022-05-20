@@ -163,7 +163,7 @@ const ResponseQuestions = () => {
           fontWeight="bold"
           onClick={() => updateResponseQuestions()}
         >
-          Submit
+          Save
           <ChevronRight ml="5px" />
         </Button>
       </Flex>
