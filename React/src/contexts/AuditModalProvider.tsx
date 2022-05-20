@@ -36,11 +36,8 @@ const GET_FORM_DATA = gql`
 
 export const useAuditModalContext = () => {
   const context = useContext(AuditModalContext);
-  if (!context) {
-    throw new Error(
-      'useAuditModalContext must be used within the AuditModalProvider',
-    );
-  }
+  if (!context) throw new Error('useAuditModalContext must be used within the AuditModalProvider');
+
   return context;
 };
 
@@ -50,6 +47,7 @@ const AuditModalProvider = ({ children }) => {
 
   const defaultValues: Partial<IAudit> = {
     auditorId: user?._id,
+    participantsIds: [],
     metatags: {
       addedAt: new Date(),
     },
@@ -62,7 +60,8 @@ const AuditModalProvider = ({ children }) => {
     setValue: setFormValue,
     trigger,
     reset,
-  } = useForm({
+    resetField,
+  } = useForm<IAudit>({
     mode: 'all',
     defaultValues,
   });
@@ -76,10 +75,12 @@ const AuditModalProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       control,
+      defaultValues,
       errors,
       setValue,
       trigger,
       reset,
+      resetField,
       refetch,
       audit,
       auditTypes: data?.auditTypes || [],
@@ -90,11 +91,7 @@ const AuditModalProvider = ({ children }) => {
     [control, errors, audit, data?.auditTypes, data],
   ) as IAuditModalContext;
 
-  return (
-    <AuditModalContext.Provider value={value}>
-      {children}
-    </AuditModalContext.Provider>
-  );
+  return <AuditModalContext.Provider value={value}>{children}</AuditModalContext.Provider>;
 };
 
 export default AuditModalProvider;

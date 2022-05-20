@@ -8,10 +8,12 @@ import { IUser } from './IUser';
 
 export interface IAuditModalContext {
   control: Control<IAudit>;
+  defaultValues: Partial<IAudit>;
   errors: { [fieldName: string]: object };
   setValue: UseFormSetValue<Partial<IAudit>>;
   trigger: UseFormTrigger<IAudit>;
-  reset: (complianceItem?: Partial<IAudit>, setSection?: number) => void;
+  reset: (values?: Record<string, any>, options?: Record<string, boolean>) => void;
+  resetField: (name: string, options?: Record<string, boolean | any>) => void;
 
   audit: Partial<IAudit>;
   refetch: () => void;

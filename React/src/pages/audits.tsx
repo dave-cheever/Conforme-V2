@@ -280,7 +280,7 @@ const Audits = () => {
                 w="full"
               >
                 {sortedAudits.length > 0 ? (
-                  sortedAudits?.map((audit) => <AuditSquare audit={audit} />)
+                  sortedAudits?.map((audit) => <AuditSquare audit={audit} key={audit._id} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
                     No audits found

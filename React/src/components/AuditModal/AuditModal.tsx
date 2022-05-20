@@ -26,6 +26,7 @@ import { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 import useAuditModal from '../../hooks/useAuditModal';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, TickIcon } from '../../icons';
+import { IUser } from '../../interfaces/IUser';
 import { Datepicker, Dropdown } from '../Forms';
 import AuditTeamModal from './AuditTeamModal';
 
@@ -33,16 +34,8 @@ const AuditModal = ({ refetch }) => {
   const toast = useToast();
   const { navigateTo } = useNavigate();
   const { user } = useAppContext();
-  const {
-    audit,
-    control,
-    setValue,
-    auditTypes,
-    locations,
-    businessUnits,
-    reset,
-  } = useAuditModalContext();
-  const { selectedAuditor, selectedParticipants } = useAuditTeamContext();
+  const { audit, control, defaultValues, setValue, auditTypes, locations, businessUnits, reset } = useAuditModalContext();
+  const { selectedAuditor, selectedParticipants, setSelectedAuditor, setSelectedParticipants } = useAuditTeamContext();
   const { saveAudit, closeModal } = useAuditModal(refetch);
   const { setAdminModalState } = useContext(AdminContext);
   const [auditorModalOpen, setAuditorModalOpen] = useState(false);
@@ -61,12 +54,8 @@ const AuditModal = ({ refetch }) => {
   }, [selectedAuditor]);
 
   useEffect(() => {
-    if (selectedParticipants.length > 0) {
-      setValue(
-        'participantsIds',
-        selectedParticipants.map((participant) => participant?._id) as string[],
-      );
-    }
+    if (selectedParticipants.length > 0)
+      setValue('participantsIds', selectedParticipants.map((participant) => participant?._id) as string[]);
   }, [selectedParticipants]);
 
   const handlePrimaryButtonClick = async () => {
@@ -91,46 +80,34 @@ const AuditModal = ({ refetch }) => {
       <AuditTeamModal
         isOpen={auditorModalOpen}
         multiple={false}
-        onClose={() => setAuditorModalOpen(false)}
+        onCancel={() => {
+          setAuditorModalOpen(false);
+          setValue('auditorId', defaultValues.auditorId);
+          setSelectedAuditor(user as IUser);
+        }}
+        onClose={() => {
+          setParticipantsModalOpen(false);
+        }}
       />
       <AuditTeamModal
         isOpen={participantsModalOpen}
         multiple
+        onCancel={() => {
+          setParticipantsModalOpen(false);
+          setValue('participantsIds', defaultValues.participantsIds);
+          setSelectedParticipants([]);
+        }}
         onClose={() => setParticipantsModalOpen(false)}
       />
-      <ModalContent
-        bg="auditModal.bg"
-        h="100%"
-        m="0"
-        p={['25px', '35px']}
-        position="absolute"
-        rounded="0"
-      >
-        <ModalHeader
-          alignItems="center"
-          fontSize="xxl"
-          fontWeight="bold"
-          p="0 0 20px 0"
-        >
+      <ModalContent bg="auditModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
+        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
-              <Avatar
-                mr={3}
-                name={user?.displayName}
-                rounded="full"
-                size="xs"
-                src={user?.imgUrl}
-              />
+              <Avatar mr={3} name={user?.displayName} rounded="full" size="xs" src={user?.imgUrl} />
               New walk
             </Flex>
             <Flex alignItems="center">
-              <Close
-                cursor="pointer"
-                h="15px"
-                onClick={closeModal}
-                stroke="auditModal.closeIcon"
-                w="15px"
-              />
+              <Close cursor="pointer" h="15px" onClick={closeModal} stroke="auditModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>
@@ -231,14 +208,7 @@ const AuditModal = ({ refetch }) => {
             <Text fontSize="smm" fontWeight="semibold">
               Audited by
             </Text>
-            <Flex
-              align="center"
-              direction="column"
-              fontSize={['14px', '24px']}
-              position="relative"
-              textAlign="center"
-              w="64px"
-            >
+            <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
               <Avatar
                 cursor="pointer"
                 name={selectedAuditor?.displayName}
@@ -256,30 +226,13 @@ const AuditModal = ({ refetch }) => {
             <Text fontSize="smm" fontWeight="semibold">
               Participants
             </Text>
-            <Grid
-              fontSize={['14px', '24px']}
-              gap={6}
-              templateColumns="repeat(auto-fill, 64px)"
-            >
+            <Grid fontSize={['14px', '24px']} gap={6} templateColumns="repeat(auto-fill, 64px)">
               {selectedParticipants?.map((participant) => {
                 if (!participant) return null;
                 return (
                   <GridItem key={participant._id}>
-                    <Flex
-                      align="center"
-                      direction="column"
-                      fontSize={['14px', '24px']}
-                      position="relative"
-                      textAlign="center"
-                      w="64px"
-                    >
-                      <Avatar
-                        cursor="pointer"
-                        name={participant.displayName}
-                        rounded="full"
-                        size="lg"
-                        src={participant.imgUrl}
-                      />
+                    <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
+                      <Avatar cursor="pointer" name={participant.displayName} rounded="full" size="lg" src={participant.imgUrl} />
                       <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
                         {participant.firstName || participant.lastName
                           ? `${participant.firstName} ${participant.lastName}`
@@ -307,11 +260,7 @@ const AuditModal = ({ refetch }) => {
               <Button
                 bg="auditModal.tabs.bottomButton.bg"
                 color="auditModal.tabs.bottomButton.color"
-                disabled={
-                  !audit.walkType ||
-                  (audit.walkType === 'physical' &&
-                    (!audit.siteId || !audit.areaId))
-                }
+                disabled={!audit.walkType || (audit.walkType === 'physical' && (!audit.siteId || !audit.areaId))}
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
@@ -319,13 +268,7 @@ const AuditModal = ({ refetch }) => {
                 onClick={() => {
                   handlePrimaryButtonClick();
                 }}
-                rightIcon={
-                  <Icon
-                    as={TickIcon}
-                    size={24}
-                    stroke="auditModal.tabs.bottomButton.icon"
-                  />
-                }
+                rightIcon={<Icon as={TickIcon} size={24} stroke="auditModal.tabs.bottomButton.icon" />}
                 rounded="10px"
                 w="fit-content"
               >

@@ -28,40 +28,25 @@ type AuditModalProps = {
   isOpen: boolean;
   multiple: boolean;
   onClose: () => void;
+  onCancel: () => void;
 };
 
-const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
-  const {
-    loading,
-    data,
-    searchQuery,
-    setSearchQuery,
-    selectedAuditor,
-    setSelectedAuditor,
-    selectedParticipants,
-    setSelectedParticipants,
-  } = useAuditTeamContext();
+const AuditTeamModal = ({ isOpen, multiple, onCancel, onClose }: AuditModalProps) => {
+  const { loading, data, searchQuery, setSearchQuery, selectedAuditor, setSelectedAuditor, selectedParticipants, setSelectedParticipants } =
+    useAuditTeamContext();
   const [searchText, setSearchText] = useState<string>('');
 
   const handleClose = () => {
     setSearchText('');
     setSearchQuery('');
-    onClose();
+    onCancel();
   };
 
   const handleSelectUser = (user: IUser) => {
     if (multiple) {
-      if (
-        selectedParticipants.find(
-          (participant) => (participant as IUser)?._id === user._id,
-        )
-      ) {
-        setSelectedParticipants([
-          ...selectedParticipants.filter(
-            (participant) => (participant as IUser)?._id !== user._id,
-          ),
-        ]);
-      } else setSelectedParticipants([...selectedParticipants, user as IUser]);
+      if (selectedParticipants.find((participant) => (participant as IUser)?._id === user._id))
+        setSelectedParticipants([...selectedParticipants.filter((participant) => (participant as IUser)?._id !== user._id)]);
+      else setSelectedParticipants([...selectedParticipants, user as IUser]);
     } else setSelectedAuditor(user);
   };
 
@@ -78,11 +63,7 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
   };
 
   const isSelected = (userId: string) => {
-    if (multiple) {
-      return (
-        selectedParticipants.filter((user) => user?._id === userId)?.length > 0
-      );
-    }
+    if (multiple) return selectedParticipants.filter((user) => user?._id === userId)?.length > 0;
 
     return selectedAuditor._id === userId;
   };
@@ -116,13 +97,7 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
           </InputGroup>
           <Flex>
             {multiple && (
-              <Text
-                color="auditTeamModal.radioButtonFont"
-                fontSize="smm"
-                fontWeight="semi_medium"
-                ml="2"
-                mt={2}
-              >
+              <Text color="auditTeamModal.radioButtonFont" fontSize="smm" fontWeight="semi_medium" ml="2" mt={2}>
                 {selectedParticipants.length} users selected
               </Text>
             )}
@@ -136,23 +111,13 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
                 Searching...
               </Flex>
             ) : data?.searchUsers.length > 0 ? (
-              <VStack
-                alignItems="flex-start"
-                h="full"
-                mb="20px"
-                overflow="auto"
-                spacing="10px"
-              >
+              <VStack alignItems="flex-start" h="full" mb="20px" overflow="auto" spacing="10px">
                 {data?.searchUsers.map((user) => (
                   <Flex align="center" key={user._id}>
                     {/* added this instead of checkbox, because of console error on checkbox */}
                     <Flex
                       align="center"
-                      bg={
-                        isSelected(user._id)
-                          ? 'auditTeamModal.button.add.bg'
-                          : 'white'
-                      }
+                      bg={isSelected(user._id) ? 'auditTeamModal.button.add.bg' : 'white'}
                       borderColor="#81819750"
                       borderRadius="full"
                       borderWidth="1px"
@@ -169,14 +134,7 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
                       <Text color="black" fontSize="smm" fontWeight="semibold">
                         {user.displayName}
                       </Text>
-                      <Box
-                        fontSize="sm"
-                        overflow="hidden"
-                        position="relative"
-                        textOverflow="ellipsis"
-                        top="-4px"
-                        w="290px"
-                      >
+                      <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px" w="290px">
                         {user.email}
                       </Box>
                     </Flex>
@@ -185,13 +143,7 @@ const AuditTeamModal = ({ isOpen, multiple, onClose }: AuditModalProps) => {
               </VStack>
             ) : (
               searchQuery && (
-                <Flex
-                  align="center"
-                  fontStyle="italic"
-                  h="50px"
-                  maxWidth="400px"
-                  pl={5}
-                >
+                <Flex align="center" fontStyle="italic" h="50px" maxWidth="400px" pl={5}>
                   No results found
                 </Flex>
               )
