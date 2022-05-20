@@ -15,17 +15,17 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
     const user = await authorize();
 
     const response = await Responses.customFindById(_id, organization._id);
-    if (!response) 
+    if (!response)
       throw new Error("Response doesn't exist");
 
-    if (!isPermitted({ user, action: 'responses.edit', data: { response } })) 
+    if (!isPermitted({ user, action: 'responses.edit', data: { response } }))
       throw new Error('User is not permitted');
 
     const complianceItem = await ComplianceItems.customFindById(
       response.complianceItemId,
       organization._id,
     );
-    if (!complianceItem) 
+    if (!complianceItem)
       throw new Error("Compliance item assigned to response doesn't exist");
 
     const createSnapshot = async () => {
@@ -105,7 +105,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
     const newQuestions = [
       ...response.questions
         .filter(({ outdated }) => !outdated)
-        .map(({ type, name, description, required, value }) => {
+        .map(({ type, name, description, required, value, requiredAnswer }) => {
           if (type === 'multipleChoice') {
             return {
               type,
@@ -118,7 +118,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
               })),
             };
           }
-          return { type, name, description, required, value: null };
+          return { type, name, description, required, requiredAnswer,  value: null };
         }),
     ];
     const nextStatus = getStatus(complianceItem.frequency || '');
