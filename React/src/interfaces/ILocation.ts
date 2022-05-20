@@ -8,5 +8,6 @@ export interface ILocation extends IBase {
   organizationId: string;
   notes: string;
   complianceItemsResponsesCount?: number;
+  totalAuditsCount?: number;
   owner?: IUser;
 }

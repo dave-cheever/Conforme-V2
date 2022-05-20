@@ -1,21 +1,12 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Locations, Responses, Users } from 'app-models';
+import { Audits, Locations, Responses, Users } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
 
-const locations = async (
-  _,
-  { locationQueryInput = {} },
-  { organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ['locations', element]);
+const locations = async (_, { locationQueryInput = {} }, { organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
   try {
-    const locations = await Locations.customFind(
-      locationQueryInput,
-      organization._id,
-    );
+    const locations = await Locations.customFind(locationQueryInput, organization._id);
 
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const location of locations) {
@@ -37,8 +28,24 @@ const locations = async (
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0)
-          location.complianceItemsResponsesCount = responses[0].count;
+        if (responses && responses.length > 0) location.complianceItemsResponsesCount = responses[0].count;
+      }
+    }
+
+    if (shouldJoin('totalAuditsCount')) {
+      for (const location of locations) {
+        location.totalAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                siteId: location._id,
+                organizationId: organization._id,
+              },
+            },
+            { $count: '_id' },
+          ])
+        )[0]._id;
       }
     }
 

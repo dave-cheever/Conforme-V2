@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -16,6 +16,7 @@ import Loader from '../../components/Loader';
 import LocationListItem from '../../components/LocationListItem';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
+import useSort from '../../hooks/useSort';
 import { ILocation } from '../../interfaces/ILocation';
 
 const GET_LOCATIONS = gql`
@@ -30,7 +31,7 @@ const GET_LOCATIONS = gql`
         displayName
         imgUrl
       }
-      complianceItemsResponsesCount
+      totalAuditsCount
     }
   }
 `;
@@ -69,38 +70,8 @@ const Sites = () => {
   const [updateFunction] = useMutation(UPDATE_LOCATION);
   const [deleteFunction] = useMutation(DELETE_LOCATION);
   const device = useDevice();
-  const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
 
-  const getLocations = (locationsArray: ILocation[]) => {
-    if (!locationsArray) return [];
-
-    return [...locationsArray].sort((a, b) => a.name.localeCompare(b.name));
-  };
-  const [locations, setLocations] = useState<ILocation[]>(
-    getLocations(data?.locations),
-  );
-
-  useEffect(() => {
-    setLocations(getLocations(data?.locations));
-  }, [data]);
-
-  useEffect(() => {
-    const sort = (a, b) => {
-      if (sortType === 'owner') {
-        return (a.owner?.displayName || '').localeCompare(
-          b.owner?.displayName || '',
-        );
-      }
-      if (sortType === 'notes')
-        return (a.notes || '-').localeCompare(b.notes || '-');
-      return (a[sortType] || 0)
-        .toString()
-        .localeCompare((b[sortType] || 0).toString());
-    };
-    if (sortOrder) setLocations([...locations].sort((a, b) => sort(a, b)));
-    else setLocations([...locations].sort((a, b) => sort(b, a)));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+  const { sortedData: sites, sortType, setSortType, sortOrder, setSortOrder } = useSort(data?.locations ?? []);
 
   const {
     control,
@@ -119,10 +90,7 @@ const Sites = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openLocationModal = (
-    action: 'edit' | 'delete',
-    location: ILocation,
-  ) => {
+  const openLocationModal = (action: 'edit' | 'delete', location: ILocation) => {
     setAdminModalState(action);
     reset({
       _id: location._id,
@@ -219,12 +187,7 @@ const Sites = () => {
 
   return (
     <>
-      <AdminModal
-        collection="site"
-        isOpenModal={adminModalState !== 'closed'}
-        modalType={adminModalState}
-        onAction={handleAction}
-      >
+      <AdminModal collection="site" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
         <Flex align="flex-start" direction="column" w={['full', '70%']}>
           <TextInput
             control={control}
@@ -236,12 +199,7 @@ const Sites = () => {
               notEmpty: true,
             }}
           />
-          <TextInputMultiline
-            control={control}
-            label="Notes"
-            name="notes"
-            placeholder="Add your notes here"
-          />
+          <TextInputMultiline control={control} label="Notes" name="notes" placeholder="Add your notes here" />
           <PeoplePicker
             control={control}
             label="Owner"
@@ -257,11 +215,7 @@ const Sites = () => {
       <Header breadcrumbs={['Admin', 'Sites']} />
       <Box h="calc(100vh - 160px)" p={['0', '0 25px 30px 30px']}>
         <Flex h="full" px={['25px', 0]}>
-          <Box
-            h={['calc(100% - 170px)', 'calc(100% - 35px)']}
-            mr={[0, 0, '50px']}
-            w={['full', 'full', 'calc(100%)']}
-          >
+          <Box h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100%)']}>
             <AdminTableHeader>
               <AdminTableHeaderElement
                 label="Site name"
@@ -270,7 +224,7 @@ const Sites = () => {
                   setSortOrder(!sortOrder);
                 }}
                 showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' && !sortOrder}
+                sortOrder={sortType === 'name' && sortOrder}
                 w={['max-content', '50%']}
               />
               {device !== 'mobile' && device !== 'tablet' && (
@@ -282,32 +236,30 @@ const Sites = () => {
                       setSortOrder(!sortOrder);
                     }}
                     showSortingIcon={sortType === 'notes'}
-                    sortOrder={sortType === 'notes' && !sortOrder}
+                    sortOrder={sortType === 'notes' && sortOrder}
                     w={['100%', '50%']}
                   />
                   <AdminTableHeaderElement
                     label="Owner"
                     onClick={() => {
-                      setSortType('owner');
+                      setSortType('owner.displayName');
                       setSortOrder(!sortOrder);
                     }}
-                    showSortingIcon={sortType === 'owner'}
-                    sortOrder={sortType === 'owner' && !sortOrder}
+                    showSortingIcon={sortType === 'owner.displayName'}
+                    sortOrder={sortType === 'owner.displayName' && sortOrder}
                     w={['100%', '50%']}
                   />
                 </>
               )}
               <Spacer display={['block', 'none']} />
               <AdminTableHeaderElement
-                label="No. of responses"
+                label="No. of audits"
                 onClick={() => {
-                  setSortType('complianceItemsResponsesCount');
+                  setSortType('totalAuditsCount');
                   setSortOrder(!sortOrder);
                 }}
-                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-                sortOrder={
-                  sortType === 'complianceItemsResponsesCount' && !sortOrder
-                }
+                showSortingIcon={sortType === 'totalAuditsCount'}
+                sortOrder={sortType === 'totalAuditsCount' && sortOrder}
                 w={['max-content', '50%']}
               />
             </AdminTableHeader>
@@ -317,30 +269,11 @@ const Sites = () => {
                 <Loader center />
               </Box>
             ) : (
-              <Stack
-                bg="white"
-                borderBottomRadius="10px"
-                h="full"
-                overflow="auto"
-                spacing="1px"
-              >
-                {locations?.length > 0 ? (
-                  locations?.map((location, i) => (
-                    <LocationListItem
-                      key={i}
-                      location={location}
-                      openLocationModal={openLocationModal}
-                    />
-                  ))
+              <Stack bg="white" borderBottomRadius="10px" h="full" overflow="auto" spacing="1px">
+                {sites?.length > 0 ? (
+                  sites?.map((site, i) => <LocationListItem key={i} location={site} openLocationModal={openLocationModal} />)
                 ) : (
-                  <Flex
-                    fontSize="18px"
-                    fontStyle="italic"
-                    h="full"
-                    justify="center"
-                    mt={4}
-                    w="full"
-                  >
+                  <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                     No sites found
                   </Flex>
                 )}

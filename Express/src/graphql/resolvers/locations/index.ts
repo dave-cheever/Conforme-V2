@@ -22,6 +22,7 @@ export const locationsTypeDefs = `
     organizationId: String
     notes: String!
     complianceItemsResponsesCount: Int
+    totalAuditsCount: Int
     owner: User
     metatags: Metatags!
   }
