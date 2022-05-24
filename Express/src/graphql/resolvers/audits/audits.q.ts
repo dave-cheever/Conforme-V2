@@ -218,12 +218,20 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
                   ...audit,
                   participants: await Promise.all(
                     audit.participantsIds.map(async (id) => {
-                      const participant = await Users.customFindByIdWithDetails({
-                        userId: id,
-                        organization,
-                      });
+                      try {
+                        const participant = await Users.customFindByIdWithDetails({
+                          userId: id,
+                          organization,
+                        });
 
-                      return participant;
+                        return participant;
+                      } catch {
+                        return {
+                          _id: id,
+                          displayName: 'Unknown',
+                          imgUrl: null,
+                        };
+                      }
                     }),
                   ),
                 });
