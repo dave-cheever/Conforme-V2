@@ -20,7 +20,6 @@ const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
       '2 years',
       '3 years',
       '5 years',
-      'Variable',
       'Ad-hoc',
     ],
   },

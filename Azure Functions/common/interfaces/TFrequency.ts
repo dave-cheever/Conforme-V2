@@ -8,5 +8,4 @@ export type TFrequency =
   | '2 years'
   | '3 years'
   | '5 years'
-  | 'Variable'
   | 'Ad-hoc';

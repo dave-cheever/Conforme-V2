@@ -253,10 +253,6 @@ export const getStatus = (frequency: String) => {
       status = 'completed';
       break;
 
-    case 'Variable':
-      status = 'completed';
-      break;
-
     default:
       status = '';
       break;
