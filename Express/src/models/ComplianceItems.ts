@@ -444,7 +444,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
         // If CI question exist in response, leave it but update with possible changes
         updatedResponse.questions.push({
           ...existingQuestion,
-          value: question.value,
+          value: existingQuestion.value,
           description: question.description,
           required: question.required,
           requiredAnswer: question.requiredAnswer,
