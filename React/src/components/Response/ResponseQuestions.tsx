@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { Prompt } from "react-router-dom";
 
 import { gql, useMutation } from '@apollo/client';
 import {
@@ -16,6 +17,7 @@ import { isEqual } from 'lodash';
 import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import usePrompt from '../../hooks/usePrompt';
 import { ChevronRight, MessageSquareIcon } from '../../icons';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 import { isPermitted } from '../can';
@@ -34,11 +36,12 @@ const styles = {
     font: '#1F1F1F',
   },
 };
+
 const ResponseQuestions = () => {
   const toast = useToast();
   const [update] = useMutation(UPDATE_QUESTIONS);
   const { user } = useAppContext();
-  const { response, snapshot, refetch } = useResponseContext();
+  const { response, snapshot, refetch, setIsQuestionFormDirty } = useResponseContext();
   const isUserPermitted = useMemo(
     () => isPermitted({ user, action: 'responses.edit', data: { response } }),
     [user, response],
@@ -47,7 +50,7 @@ const ResponseQuestions = () => {
     ({ outdated }) => !outdated,
   );
 
-  const { control, watch } = useForm({
+  const { control, watch, formState: { isDirty } } = useForm({
     mode: 'all',
     defaultValues: questions?.reduce(
       (acc, { name, value }) =>
@@ -85,9 +88,20 @@ const ResponseQuestions = () => {
     }
   };
 
+  usePrompt(isDirty, "You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?");
+
+  useEffect(() => {
+    setIsQuestionFormDirty(isDirty);
+  }, [isDirty]);
+
   if (!response) return null;
 
   return (
+    <>
+    <Prompt
+      message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
+      when={isDirty}
+    />
     <Stack
       h="full"
       minH={['50vh', 'none']}
@@ -168,6 +182,7 @@ const ResponseQuestions = () => {
         </Button>
       </Flex>
     </Stack>
+    </>
   );
 };
 

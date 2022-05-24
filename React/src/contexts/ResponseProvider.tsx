@@ -156,6 +156,7 @@ const ResponseProvider = ({ children }) => {
   );
   const toast = useToast();
   const [activeTab, setActiveTab] = useState(0);
+  const [isQuestionFormDirty, setIsQuestionFormDirty] = useState(false);
   const [
     getParticipants,
     { data: participantsData, loading: participantsLoading },
@@ -259,6 +260,8 @@ const ResponseProvider = ({ children }) => {
       isConfirmationOpen,
       handleConfirmationOpen,
       handleConfirmationClose,
+      isQuestionFormDirty,
+      setIsQuestionFormDirty,
       isRenewalOpen,
       handleRenewalOpen,
       handleRenewalClose,
@@ -283,6 +286,7 @@ const ResponseProvider = ({ children }) => {
       participantsData,
       isShareOpen,
       isConfirmationOpen,
+      isQuestionFormDirty,
       isRenewalOpen,
       isDueDateOpen,
       isOpenMessage,

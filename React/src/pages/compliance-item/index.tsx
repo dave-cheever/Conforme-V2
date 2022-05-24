@@ -13,7 +13,7 @@ import { useResponseContext } from '../../contexts/ResponseProvider';
 import useResponseUtils from '../../hooks/useResponseUtils';
 
 const ComplianceItemResponse = () => {
-  const { activeTab, setActiveTab, response, snapshot } = useResponseContext();
+  const { activeTab, setActiveTab:updateActiveTab, response, snapshot, isQuestionFormDirty, setIsQuestionFormDirty } = useResponseContext();
   const { getStatus } = useResponseUtils();
   const [run, setRun] = useState(false);
 
@@ -36,6 +36,16 @@ const ComplianceItemResponse = () => {
         break;
     }
   };
+
+  const setActiveTab = (activeTab: number) => {
+    if(isQuestionFormDirty){
+      const confirm = window.confirm('You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?'); // eslint-disable-line no-alert
+      if(!confirm) return;
+      setIsQuestionFormDirty(false);
+    }
+    updateActiveTab(activeTab);
+  }
+
   return (
     <>
       <RenewalModal />

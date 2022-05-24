@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import { IResponse } from './IResponse';
 import { IUser } from './IUser';
 
@@ -9,6 +10,9 @@ export interface IResponseContext {
 
   activeTab: number;
   setActiveTab(tab: number): void;
+
+  isQuestionFormDirty: boolean;
+  setIsQuestionFormDirty: Dispatch<SetStateAction<boolean>>;
 
   isShareOpen: boolean;
   handleShareOpen: () => void;
