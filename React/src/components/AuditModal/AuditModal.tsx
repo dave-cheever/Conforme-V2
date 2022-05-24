@@ -86,7 +86,7 @@ const AuditModal = ({ refetch }) => {
           setSelectedAuditor(user as IUser);
         }}
         onClose={() => {
-          setParticipantsModalOpen(false);
+          setAuditorModalOpen(false);
         }}
       />
       <AuditTeamModal
@@ -113,148 +113,150 @@ const AuditModal = ({ refetch }) => {
         </ModalHeader>
         <ModalBody h="calc(100% - 175px)" p="0">
           <Stack h="full" spacing={4}>
-            <Flex direction="column">
-              <Text fontSize="smm" fontWeight="semibold">
-                Walk details
-              </Text>
-              <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
-                {auditTypes?.length > 1 && !audit?.auditTypeId && (
+            <Stack overflowY="auto">
+              <Flex direction="column">
+                <Text fontSize="smm" fontWeight="semibold">
+                  Walk details
+                </Text>
+                <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
+                  {auditTypes?.length > 1 && !audit?.auditTypeId && (
+                    <GridItem w="100%">
+                      <Dropdown
+                        control={control}
+                        label="Audit Type"
+                        name="auditTypeId"
+                        options={(auditTypes ?? []).map((auditType) => ({
+                          value: auditType._id,
+                          label: auditType.name,
+                        }))}
+                        placeholder="Select audit type"
+                        stroke="dropdown.icon"
+                        validations={{
+                          notEmpty: true,
+                        }}
+                      />
+                    </GridItem>
+                  )}
                   <GridItem w="100%">
                     <Dropdown
                       control={control}
-                      label="Audit Type"
-                      name="auditTypeId"
-                      options={(auditTypes ?? []).map((auditType) => ({
-                        value: auditType._id,
-                        label: auditType.name,
-                      }))}
-                      placeholder="Select audit type"
+                      label="Type"
+                      name="walkType"
+                      options={[
+                        { value: 'virtual', label: 'Virtual' },
+                        { value: 'physical', label: 'Physical' },
+                      ]}
+                      placeholder="Select walk type"
+                      required
                       stroke="dropdown.icon"
                       validations={{
                         notEmpty: true,
                       }}
+                      variant="secondaryVariant"
                     />
                   </GridItem>
-                )}
-                <GridItem w="100%">
-                  <Dropdown
-                    control={control}
-                    label="Type"
-                    name="walkType"
-                    options={[
-                      { value: 'virtual', label: 'Virtual' },
-                      { value: 'physical', label: 'Physical' },
-                    ]}
-                    placeholder="Select walk type"
-                    required
-                    stroke="dropdown.icon"
-                    validations={{
-                      notEmpty: true,
-                    }}
-                    variant="secondaryVariant"
+                  {audit.walkType === 'physical' && (
+                    <>
+                      <GridItem w="100%">
+                        <Datepicker
+                          control={control}
+                          disabled
+                          label="Start date (today)"
+                          name="metatags.addedAt"
+                          variant="secondaryVariant"
+                        />
+                      </GridItem>
+                      <GridItem w="100%">
+                        <Dropdown
+                          control={control}
+                          label="Site"
+                          name="siteId"
+                          options={(locations ?? []).map((location) => ({
+                            value: location._id,
+                            label: location.name,
+                          }))}
+                          placeholder="Select site"
+                          required
+                          stroke="dropdown.icon"
+                          validations={{
+                            notEmpty: true,
+                          }}
+                          variant="secondaryVariant"
+                        />
+                      </GridItem>
+                      <GridItem w="100%">
+                        <Dropdown
+                          control={control}
+                          label="Area"
+                          name="areaId"
+                          options={(businessUnits ?? []).map((businessUnit) => ({
+                            value: businessUnit._id,
+                            label: businessUnit.name,
+                          }))}
+                          placeholder="Select Area"
+                          required
+                          stroke="dropdown.icon"
+                          validations={{
+                            notEmpty: true,
+                          }}
+                          variant="secondaryVariant"
+                        />
+                      </GridItem>
+                    </>
+                  )}
+                </Grid>
+              </Flex>
+              <Text fontSize="smm" fontWeight="semibold">
+                Audited by
+              </Text>
+              <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
+                <Avatar
+                  cursor="pointer"
+                  name={selectedAuditor?.displayName}
+                  onClick={() => setAuditorModalOpen(true)}
+                  rounded="full"
+                  size="lg"
+                  src={selectedAuditor?.imgUrl}
+                />
+                <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                  {selectedAuditor.firstName || selectedAuditor.lastName
+                    ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
+                    : selectedAuditor.displayName}
+                </Text>
+              </Flex>
+              <Text fontSize="smm" fontWeight="semibold">
+                Participants
+              </Text>
+              <Grid fontSize={['14px', '24px']} gap={6} templateColumns="repeat(auto-fill, 64px)">
+                {selectedParticipants?.map((participant) => {
+                  if (!participant) return null;
+                  return (
+                    <GridItem key={participant._id}>
+                      <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
+                        <Avatar cursor="pointer" name={participant.displayName} rounded="full" size="lg" src={participant.imgUrl} />
+                        <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
+                          {participant.firstName || participant.lastName
+                            ? `${participant.firstName} ${participant.lastName}`
+                            : participant.displayName}
+                        </Text>
+                      </Flex>
+                    </GridItem>
+                  );
+                })}
+                <GridItem>
+                  <IconButton
+                    aria-label="Add participant"
+                    bg="auditModal.addParticipant.bg"
+                    color="auditModal.addParticipant.color"
+                    h="64px"
+                    icon={<AddIcon />}
+                    isRound
+                    onClick={() => setParticipantsModalOpen(true)}
+                    w="64px"
                   />
                 </GridItem>
-                {audit.walkType === 'physical' && (
-                  <>
-                    <GridItem w="100%">
-                      <Datepicker
-                        control={control}
-                        disabled
-                        label="Start date (today)"
-                        name="metatags.addedAt"
-                        variant="secondaryVariant"
-                      />
-                    </GridItem>
-                    <GridItem w="100%">
-                      <Dropdown
-                        control={control}
-                        label="Site"
-                        name="siteId"
-                        options={(locations ?? []).map((location) => ({
-                          value: location._id,
-                          label: location.name,
-                        }))}
-                        placeholder="Select site"
-                        required
-                        stroke="dropdown.icon"
-                        validations={{
-                          notEmpty: true,
-                        }}
-                        variant="secondaryVariant"
-                      />
-                    </GridItem>
-                    <GridItem w="100%">
-                      <Dropdown
-                        control={control}
-                        label="Area"
-                        name="areaId"
-                        options={(businessUnits ?? []).map((businessUnit) => ({
-                          value: businessUnit._id,
-                          label: businessUnit.name,
-                        }))}
-                        placeholder="Select Area"
-                        required
-                        stroke="dropdown.icon"
-                        validations={{
-                          notEmpty: true,
-                        }}
-                        variant="secondaryVariant"
-                      />
-                    </GridItem>
-                  </>
-                )}
               </Grid>
-            </Flex>
-            <Text fontSize="smm" fontWeight="semibold">
-              Audited by
-            </Text>
-            <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
-              <Avatar
-                cursor="pointer"
-                name={selectedAuditor?.displayName}
-                onClick={() => setAuditorModalOpen(true)}
-                rounded="full"
-                size="lg"
-                src={selectedAuditor?.imgUrl}
-              />
-              <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                {selectedAuditor.firstName || selectedAuditor.lastName
-                  ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
-                  : selectedAuditor.displayName}
-              </Text>
-            </Flex>
-            <Text fontSize="smm" fontWeight="semibold">
-              Participants
-            </Text>
-            <Grid fontSize={['14px', '24px']} gap={6} templateColumns="repeat(auto-fill, 64px)">
-              {selectedParticipants?.map((participant) => {
-                if (!participant) return null;
-                return (
-                  <GridItem key={participant._id}>
-                    <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
-                      <Avatar cursor="pointer" name={participant.displayName} rounded="full" size="lg" src={participant.imgUrl} />
-                      <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                        {participant.firstName || participant.lastName
-                          ? `${participant.firstName} ${participant.lastName}`
-                          : participant.displayName}
-                      </Text>
-                    </Flex>
-                  </GridItem>
-                );
-              })}
-              <GridItem>
-                <IconButton
-                  aria-label="Add participant"
-                  bg="auditModal.addParticipant.bg"
-                  color="auditModal.addParticipant.color"
-                  h="64px"
-                  icon={<AddIcon />}
-                  isRound
-                  onClick={() => setParticipantsModalOpen(true)}
-                  w="64px"
-                />
-              </GridItem>
-            </Grid>
+            </Stack>
             <Spacer />
             <Flex justifyContent="flex-end" w="full">
               <Button
