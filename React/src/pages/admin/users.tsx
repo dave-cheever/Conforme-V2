@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Select, Text } from '@chakra-ui/react';
@@ -14,6 +14,7 @@ import UserAuditsCount from '../../components/UserAuditsCount';
 import UserResponseCount from '../../components/UserResponseCount';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
+import useSort from '../../hooks/useSort';
 import { ArrowDownIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 
@@ -56,41 +57,13 @@ const Users = () => {
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
   const [loadingUsers, setLoadingUsers] = useState<string[]>([]);
-  const [sortType, setSortType] = useState('displayName');
-  const [sortOrder, setSortOrder] = useState(true);
-
-  const getUsers = (usersArray: IUser[]) => {
-    if (!usersArray) return [];
-
-    return [...usersArray].sort((a, b) =>
-      a.displayName.localeCompare(b.displayName),
-    );
-  };
-  const [users, setUsers] = useState<IUser[]>(getUsers(data?.users));
-
-  useEffect(() => {
-    setUsers(getUsers(data?.users));
-  }, [data]);
-
-  useEffect(() => {
-    if (sortOrder) {
-      setUsers(
-        [...users].sort((a, b) =>
-          (a[sortType] || 0)
-            .toString()
-            .localeCompare((b[sortType] || 0).toString()),
-        ),
-      );
-    } else {
-      setUsers(
-        [...users].sort((a, b) =>
-          (b[sortType] || 0)
-            .toString()
-            .localeCompare((a[sortType] || 0).toString()),
-        ),
-      );
-    }
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+  const {
+    sortedData: users,
+    sortOrder,
+    sortType,
+    setSortOrder,
+    setSortType,
+  } = useSort(data?.users ?? [], 'displayName');
 
   const onHomePageChange = async (e, userId) => {
     setLoadingUsers((currentLoadingUsers) => [...currentLoadingUsers, userId]);
@@ -176,6 +149,18 @@ const Users = () => {
     ) : (
       <>
         <AdminTableHeaderElement
+          label="T"
+          ml="13px"
+          onClick={() => {
+            setSortType('totalAuditsCount');
+            setSortOrder(!sortOrder);
+          }}
+          showSortingIcon={sortType === 'totalAuditsCount'}
+          sortOrder={sortType === 'totalAuditsCount' && !sortOrder}
+          tooltip="Total number of audits"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
           label="C"
           ml="13px"
           onClick={() => {
@@ -200,7 +185,7 @@ const Users = () => {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          label="O"
+          label="M"
           ml="13px"
           onClick={() => {
             setSortType('overdueAuditsCount');
@@ -209,18 +194,6 @@ const Users = () => {
           showSortingIcon={sortType === 'overdueAuditsCount'}
           sortOrder={sortType === 'overdueAuditsCount' && !sortOrder}
           tooltip="Number of overdue audits"
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          label="T"
-          ml="13px"
-          onClick={() => {
-            setSortType('totalAuditsCount');
-            setSortOrder(!sortOrder);
-          }}
-          showSortingIcon={sortType === 'totalAuditsCount'}
-          sortOrder={sortType === 'totalAuditsCount' && !sortOrder}
-          tooltip="Total number of audits"
           w="calc(25% - 13px)"
         />
       </>
@@ -257,6 +230,10 @@ const Users = () => {
     ) : (
       <>
         <UserAuditsCount
+          auditsCount={user.totalAuditsCount}
+          userId={user._id}
+        />
+        <UserAuditsCount
           auditsCount={user.completedAuditsCount}
           status="completed"
           userId={user._id}
@@ -267,10 +244,6 @@ const Users = () => {
         />
         <UserAuditsCount
           auditsCount={user.overdueAuditsCount}
-          userId={user._id}
-        />
-        <UserAuditsCount
-          auditsCount={user.totalAuditsCount}
           userId={user._id}
         />
       </>

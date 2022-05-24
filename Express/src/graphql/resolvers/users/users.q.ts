@@ -8,6 +8,12 @@ import { doesPathExist, getAuditStatus, getProtocol } from 'app-utils';
 const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) =>
     doesPathExist(info.fieldNodes, ['users', ...elements]);
+
+  const auditsComingUpTriggerSetting = await Settings.customFindByName(
+    'auditsComingUpTriggers',
+    organization._id,
+  );
+
   try {
     // Lookup all users in organisation
     const users: IUser[] = await Users.customFind(
@@ -127,18 +133,31 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
           user.followerCount = responses[0].count;
         }
 
-        const auditsComingUpTriggers = await Settings.customFindByName(
-          'auditsComingUpTriggers',
-          organization._id,
-        );
+        if (shouldJoin(['totalAuditsCount'])) {
+          const audits = await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                auditorId: user._id,
+                organizationId: organization._id,
+              },
+            },
+            {
+              $count: 'count',
+            },
+          ]);
+          // eslint-disable-next-line no-param-reassign
+          user.totalAuditsCount = audits[0].count;
+        }
 
         if (shouldJoin(['completedAuditsCount'])) {
           const audits = await Audits.aggregate([
             {
               $match: {
+                'metatags.removedAt': { $eq: null },
                 auditorId: user._id,
-                organizationId: organization._id,
                 status: 'completed',
+                organizationId: organization._id,
               },
             },
             {
@@ -153,38 +172,7 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
           const audits = await Audits.aggregate([
             {
               $match: {
-                auditorId: user._id,
-                organizationId: organization._id,
-              },
-            },
-          ]);
-          // eslint-disable-next-line no-param-reassign
-          user.upcomingAuditsCount = audits.filter(
-            (audit) =>
-              getAuditStatus(audit, auditsComingUpTriggers) === 'comingUp',
-          ).length;
-        }
-
-        if (shouldJoin(['overdueAuditsCount'])) {
-          const audits = await Audits.aggregate([
-            {
-              $match: {
-                auditorId: user._id,
-                organizationId: organization._id,
-              },
-            },
-          ]);
-          // eslint-disable-next-line no-param-reassign
-          user.overdueAuditsCount = audits.filter(
-            (audit) =>
-              getAuditStatus(audit, auditsComingUpTriggers) === 'overdue',
-          ).length;
-        }
-
-        if (shouldJoin(['totalAuditsCount'])) {
-          const audits = await Audits.aggregate([
-            {
-              $match: {
+                'metatags.removedAt': { $eq: null },
                 auditorId: user._id,
                 organizationId: organization._id,
               },
@@ -194,7 +182,31 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
             },
           ]);
           // eslint-disable-next-line no-param-reassign
-          user.totalAuditsCount = audits[0].count;
+          user.completedAuditsCount = audits.filter(
+            (audit) =>
+              getAuditStatus(audit, auditsComingUpTriggerSetting) ===
+              'comingUp',
+          ).length;
+        }
+
+        if (shouldJoin(['overdueAuditsCount'])) {
+          const audits = await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                auditorId: user._id,
+                organizationId: organization._id,
+              },
+            },
+            {
+              $count: 'count',
+            },
+          ]);
+          // eslint-disable-next-line no-param-reassign
+          user.completedAuditsCount = audits.filter(
+            (audit) =>
+              getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue',
+          ).length;
         }
 
         usersWithDetails.push({

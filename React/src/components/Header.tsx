@@ -5,7 +5,8 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
-import { ArrowRight, Filter } from '../icons';
+import { ArrowRight } from '../icons';
+import FilterButton from './FilterButton';
 
 interface IHeader {
   breadcrumbs: string[];
@@ -17,12 +18,7 @@ const Header: FunctionComponent<IHeader> = ({
   breadcrumbs,
   mobileBreadcrumbs,
 }) => {
-  const {
-    usedFilters,
-    showFiltersPanel,
-    setShowFiltersPanel,
-    numberOfSelectedFilters,
-  } = useFiltersContext();
+  const { usedFilters } = useFiltersContext();
   const { isPathActive } = useNavigate();
   const isAuditPage =
     isPathActive('/audits') ||
@@ -74,47 +70,7 @@ const Header: FunctionComponent<IHeader> = ({
           {children}
         </Flex>
         {usedFilters && isAuditPage && usedFilters.length > 0 && (
-          <Flex
-            align="center"
-            bg="header.filterBackgroundColor"
-            borderRadius="10px"
-            color="brand.primaryFont"
-            cursor="pointer"
-            flexShrink={0}
-            fontSize="sm"
-            h="40px"
-            justify="space-between"
-            minW="120px"
-            mr={[6, 6, 4]}
-            onClick={() => setShowFiltersPanel(!showFiltersPanel)}
-            p={4}
-          >
-            <Flex color="white" fontSize="14px" fontWeight="bold">
-              Filters
-            </Flex>
-            {numberOfSelectedFilters > 0 && (
-              <Flex
-                align="center"
-                bg="header.selectedFilterColor"
-                borderRadius="10px"
-                color="white"
-                fontSize="12px"
-                fontWeight="400"
-                h="20px"
-                justify="center"
-                lineHeight="14px"
-                mx="2"
-                w="27px"
-              >
-                {numberOfSelectedFilters}
-              </Flex>
-            )}
-            <Filter
-              h="18px"
-              ml={3}
-              transform={numberOfSelectedFilters > 0 ? 'rotate(180deg)' : ''}
-            />
-          </Flex>
+          <FilterButton />
         )}
       </Flex>
     </Flex>

@@ -23,6 +23,9 @@ export const locationsTypeDefs = `
     notes: String!
     complianceItemsResponsesCount: Int
     totalAuditsCount: Int
+    completedAuditsCount: Int
+    upcomingAuditsCount: Int
+    overdueAuditsCount: Int
     owner: User
     metatags: Metatags!
   }

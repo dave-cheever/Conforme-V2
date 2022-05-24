@@ -31,7 +31,7 @@ const AdminTableHeaderElement = ({
     <Tooltip hasArrow isDisabled={tooltip === ''} label={tooltip}>
       <Text color="adminTableHeaderElement.fontColor">{label}</Text>
     </Tooltip>
-    {sortOrder != null && !sortOrder ? (
+    {sortOrder !== null && !sortOrder ? (
       <ArrowDownIcon
         _hover={{ color: onClick ? '#282F36' : '#FFFFFF' }}
         color={

@@ -8,7 +8,10 @@ export interface IBusinessUnit extends IBase {
   imgUrl?: string;
 
   // Additional fields - can be added when getting from database
+  owner?: IUser;
   complianceItemsResponsesCount?: number;
   totalAuditsCount?: number;
-  owner?: IUser;
+  completedAuditsCount?: number;
+  upcomingAuditsCount?: number;
+  overdueAuditsCount?: number;
 }

@@ -57,6 +57,7 @@ import { textInputStyles } from '../components/Forms/TextInput';
 import { textMultilineConfirmInputStyles } from '../components/Forms/TextMultilineConfirmInput';
 import { toggleStyles } from '../components/Forms/Toggle';
 import { headerStyles } from '../components/Header';
+import { auditsUsersInsightsStyles } from '../components/Insights/AuditsUsersInsights';
 import { locationsSelectorStyles } from '../components/LocationsSelector';
 import { moduleSwitcherStyles } from '../components/ModuleSwitcher';
 import { navigationBottomMobileStyles } from '../components/NavigationBottomMobile';
@@ -115,6 +116,8 @@ import { historyPageStyles } from '../pages/compliance-item/history';
 import { complianceItemResponseStyles } from '../pages/compliance-item/index';
 import { teamPageStyles } from '../pages/compliance-item/team';
 import { complianceItemStyles } from '../pages/compliance-items';
+import { insightsStyles } from '../pages/insights';
+import { auditsInsightsStyles } from '../pages/insights/audits';
 import { loginPageStyles } from '../pages/login';
 import { logoutPageStyles } from '../pages/logout';
 import { walkItemsStyles } from '../pages/walk-items';
@@ -219,6 +222,7 @@ const getTheme = (organizationTheme?: any) => {
         ...headerStyles,
         ...historicalListItemStyles,
         ...historyPageStyles,
+        ...insightsStyles,
         ...loginPageStyles,
         ...locationsStyles,
         ...locationsFormModalStyles,
@@ -279,6 +283,8 @@ const getTheme = (organizationTheme?: any) => {
         ...walkItemsStyles,
         ...walkItemsListStyles,
         ...walkItemSquareStyles,
+        ...auditsInsightsStyles,
+        ...auditsUsersInsightsStyles,
 
         purpleHeart: {
           50: '#ede9ff',

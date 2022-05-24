@@ -1,11 +1,12 @@
 import { GraphQLResolveInfo } from 'graphql';
 
 import { IBusinessUnit } from 'app-interfaces';
-import { Audits, BusinessUnits, Responses, Users } from 'app-models';
-import { doesPathExist, join } from 'app-utils';
+import { Audits, BusinessUnits, Responses, Settings, Users } from 'app-models';
+import { doesPathExist, getAuditStatus, join } from 'app-utils';
 
 const businessUnits = async (_, { businessUnitQueryInput = {} }, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['businessUnits', element]);
+
   try {
     let businessUnits = await BusinessUnits.customFind(businessUnitQueryInput, organization._id);
 
@@ -63,6 +64,60 @@ const businessUnits = async (_, { businessUnitQueryInput = {} }, { organization 
             { $count: '_id' },
           ])
         )[0]._id;
+      }
+    }
+
+    if (shouldJoin('completedAuditsCount')) {
+      for (const businessUnit of businessUnits) {
+        businessUnit.completedAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                areaId: businessUnit._id,
+                status: 'completed',
+                organizationId: organization._id,
+              },
+            },
+            { $count: '_id' },
+          ])
+        )[0]._id;
+      }
+    }
+
+    if (shouldJoin('upcomingAuditsCount')) {
+      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
+
+      for (const businessUnit of businessUnits) {
+        businessUnit.upcomingAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                areaId: businessUnit._id,
+                organizationId: organization._id,
+              },
+            },
+          ])
+        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp').length;
+      }
+    }
+
+    if (shouldJoin('overdueAuditsCount')) {
+      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
+
+      for (const businessUnit of businessUnits) {
+        businessUnit.overdueAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                areaId: businessUnit._id,
+                organizationId: organization._id,
+              },
+            },
+          ])
+        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue').length;
       }
     }
 

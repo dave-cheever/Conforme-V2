@@ -52,6 +52,7 @@ import GroupIcon from './GroupIcon';
 import HealthKitIcon from './HealthKitIcon';
 import Home from './Home';
 import Insights from './Insights';
+import InsightsCardDots from './InsightsCardDots';
 import InvestigationIcon from './InvestigationIcon';
 import InvestigationWhiteIcon from './InvestigationWhiteIcon';
 import Licenses from './Licenses';
@@ -154,6 +155,7 @@ export {
   HealthKitIcon,
   Home,
   Insights,
+  InsightsCardDots,
   InvestigationIcon,
   InvestigationWhiteIcon,
   Licenses,

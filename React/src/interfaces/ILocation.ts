@@ -7,7 +7,12 @@ export interface ILocation extends IBase {
   ownerId: string;
   organizationId: string;
   notes: string;
+
+  // Additional fields - can be added when getting from database
+  owner?: IUser;
   complianceItemsResponsesCount?: number;
   totalAuditsCount?: number;
-  owner?: IUser;
+  completedAuditsCount?: number;
+  upcomingAuditsCount?: number;
+  overdueAuditsCount?: number;
 }

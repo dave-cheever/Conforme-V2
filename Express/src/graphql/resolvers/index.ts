@@ -9,6 +9,7 @@ import categoriesResolvers from './categories';
 import commentsResolvers from './comments';
 import complianceItemsResolvers from './complianceItems';
 import graphResolvers from './graph';
+import insightsResolvers from './insights';
 import locationsResolvers from './locations';
 import organizationsResolvers from './organizations';
 import questionsResolvers from './questions';
@@ -33,6 +34,7 @@ export default {
     ...commentsResolvers.Query,
     ...complianceItemsResolvers.Query,
     ...graphResolvers.Query,
+    ...insightsResolvers.Query,
     ...locationsResolvers.Query,
     ...organizationsResolvers.Query,
     ...questionsCategoriesResolvers.Query,

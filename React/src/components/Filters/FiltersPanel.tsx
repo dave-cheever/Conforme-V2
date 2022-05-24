@@ -31,12 +31,7 @@ const FiltersPanel = () => {
           Filter items by
         </Box>
       </Flex>
-      <Flex
-        flexDir="column"
-        h={['calc(100vh - 180px)', 'calc(100vh - 120px)']}
-        overflow="hidden"
-        px="4"
-      >
+      <Flex flexDir="column" h="calc(100vh - 120px)" overflow="hidden" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel)
             return <FiltersPanelItem filter={value} key={name} name={name} />;

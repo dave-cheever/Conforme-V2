@@ -11,4 +11,7 @@ export interface ILocation extends IBase {
   owner?: IUser;
   complianceItemsResponsesCount?: number;
   totalAuditsCount?: number;
+  completedAuditsCount?: number;
+  upcomingAuditsCount?: number;
+  overdueAuditsCount?: number;
 }

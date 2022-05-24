@@ -24,6 +24,9 @@ export const businessUnitsTypeDefs = `
     owner: User
     complianceItemsResponsesCount: Int
     totalAuditsCount: Int
+    completedAuditsCount: Int
+    upcomingAuditsCount: Int
+    overdueAuditsCount: Int
     metatags: Metatags!
   }
 

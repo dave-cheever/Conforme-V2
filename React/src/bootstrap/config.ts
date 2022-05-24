@@ -7,6 +7,7 @@ import {
   CalendarIcon,
   DetailIcon,
   Home,
+  Insights,
   ListIcon,
   // Insights,
   ProgressIcon,
@@ -93,6 +94,13 @@ export const auditsMenuItems: INavItem[] = [
   },
   {
     type: 'menuItem',
+    label: 'Insights',
+    url: '/insights',
+    icon: Insights,
+    permission: 'insights.view',
+  },
+  {
+    type: 'menuItem',
     label: 'Admin',
     url: '/admin',
     icon: Admin,
@@ -109,6 +117,32 @@ export const auditsMenuItems: INavItem[] = [
     ],
   },
 ];
+
+export const auditsInsightsTypes = {
+  total: 'Total',
+  completed: 'Completed',
+  upcoming: 'Upcoming',
+  overdue: 'Missed',
+};
+
+export const insightsCardsDotsPosition = {
+  total: {
+    top: '-25.2%',
+    right: '-23.33%',
+  },
+  completed: {
+    top: '-8.26%',
+    right: '-25.56%',
+  },
+  upcoming: {
+    top: '-38.26%',
+    right: '24.95%',
+  },
+  overdue: {
+    top: '42.17%',
+    right: '-21.1%',
+  },
+};
 
 export const userMenus = [
   {

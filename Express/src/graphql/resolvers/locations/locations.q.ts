@@ -1,10 +1,11 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Audits, Locations, Responses, Users } from 'app-models';
-import { doesPathExist, join } from 'app-utils';
+import { Audits, Locations, Responses, Settings, Users } from 'app-models';
+import { doesPathExist, getAuditStatus, join } from 'app-utils';
 
 const locations = async (_, { locationQueryInput = {} }, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
+
   try {
     const locations = await Locations.customFind(locationQueryInput, organization._id);
 
@@ -46,6 +47,77 @@ const locations = async (_, { locationQueryInput = {} }, { organization }, info:
             { $count: '_id' },
           ])
         )[0]._id;
+      }
+    }
+
+    if (shouldJoin('totalAuditsCount')) {
+      for (const location of locations) {
+        location.totalAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                siteId: location._id,
+                organizationId: organization._id,
+              },
+            },
+            { $count: '_id' },
+          ])
+        )[0]._id;
+      }
+    }
+
+    if (shouldJoin('completedAuditsCount')) {
+      for (const location of locations) {
+        location.completedAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                siteId: location._id,
+                status: 'completed',
+                organizationId: organization._id,
+              },
+            },
+            { $count: '_id' },
+          ])
+        )[0]._id;
+      }
+    }
+
+    if (shouldJoin('upcomingAuditsCount')) {
+      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
+
+      for (const location of locations) {
+        location.upcomingAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                siteId: location._id,
+                organizationId: organization._id,
+              },
+            },
+          ])
+        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp').length;
+      }
+    }
+
+    if (shouldJoin('overdueAuditsCount')) {
+      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
+
+      for (const location of locations) {
+        location.overdueAuditsCount = (
+          await Audits.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                siteId: location._id,
+                organizationId: organization._id,
+              },
+            },
+          ])
+        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue').length;
       }
     }
 

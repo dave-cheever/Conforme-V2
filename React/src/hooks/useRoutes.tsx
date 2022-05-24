@@ -152,7 +152,7 @@ const protectedRoutes: Array<IRoute> = [
     key: 'insights',
     exact: true,
     component: Insights,
-    layout: DefaultLayout,
+    layout: FilterLayout,
   },
   {
     path: '/licenses',

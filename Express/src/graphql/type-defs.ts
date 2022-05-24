@@ -41,6 +41,7 @@ import {
   complianceItemsTypeDefs,
 } from './resolvers/complianceItems';
 import { graphQueryDefs, graphTypeDefs } from './resolvers/graph';
+import { insightsQueryDefs, insightsTypeDefs } from './resolvers/insights';
 import {
   locationsMutationDefs,
   locationsQueryDefs,
@@ -141,6 +142,7 @@ const typeDefs = gql`
   ${commnentsTypeDefs}
   ${complianceItemsTypeDefs}
   ${graphTypeDefs}
+  ${insightsTypeDefs}
   ${locationsTypeDefs}
   ${organizationsTypeDefs}
   ${questionsTypeDefs}
@@ -161,6 +163,7 @@ const typeDefs = gql`
     ${commentsQueryDefs}
     ${complianceItemsQueryDefs}
     ${graphQueryDefs}
+    ${insightsQueryDefs}
     ${locationsQueryDefs}
     ${organizationsQueryDefs}
     ${questionsCategoriesQueryDefs}
