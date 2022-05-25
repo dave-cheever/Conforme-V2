@@ -37,26 +37,15 @@ const AuditModal = ({ refetch }) => {
   const { audit, control, defaultValues, setValue, auditTypes, locations, businessUnits, reset } = useAuditModalContext();
   const { selectedAuditor, selectedParticipants, setSelectedAuditor, setSelectedParticipants } = useAuditTeamContext();
   const { saveAudit, closeModal } = useAuditModal(refetch);
-  const { setAdminModalState } = useContext(AdminContext);
+  const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const [auditorModalOpen, setAuditorModalOpen] = useState(false);
   const [participantsModalOpen, setParticipantsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (auditTypes.length === 1) setValue('auditTypeId', auditTypes[0]._id);
+    if (adminModalState !== 'closed' && auditTypes.length === 1) setValue('auditTypeId', auditTypes[0]._id);
 
-    return () => {
-      reset({ ...audit });
-    };
-  }, [auditTypes]);
-
-  useEffect(() => {
-    if (selectedAuditor) setValue('auditorId', selectedAuditor._id);
-  }, [selectedAuditor]);
-
-  useEffect(() => {
-    if (selectedParticipants.length > 0)
-      setValue('participantsIds', selectedParticipants.map((participant) => participant?._id) as string[]);
-  }, [selectedParticipants]);
+    return () => reset({ ...audit });
+  }, [adminModalState]);
 
   const handlePrimaryButtonClick = async () => {
     if (!audit.auditTypeId) {
