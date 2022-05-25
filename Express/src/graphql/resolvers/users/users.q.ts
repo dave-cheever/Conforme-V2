@@ -16,10 +16,7 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
 
   try {
     // Lookup all users in organisation
-    const users: IUser[] = await Users.customFind(
-      { organization },
-      organization._id,
-    );
+    const users: IUser[] = await Users.customFind({ organization }, organization._id);
     const usersWithDetails: IUser[] = [];
 
     // Lookup info for users in parallel using promise.all
@@ -29,14 +26,6 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
           userId: user._id,
           organization,
         });
-        const {
-          givenName,
-          surname,
-          displayName,
-          mail,
-          jobTitle,
-          userPrincipalName,
-        } = userDetails;
         if (shouldJoin(['role'])) {
           // eslint-disable-next-line no-param-reassign
           user.role = 'user';
@@ -60,9 +49,7 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
 
         if (shouldJoin(['imgUrl'])) {
           // eslint-disable-next-line no-param-reassign
-          user.imgUrl = `${getProtocol()}${process.env.API_URL}/files/photo/${
-            user._id
-          }`;
+          user.imgUrl = `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`;
         }
 
         if (shouldJoin(['responsibleCount'])) {
@@ -211,11 +198,11 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
 
         usersWithDetails.push({
           ...user,
-          firstName: givenName!,
-          lastName: surname!,
-          displayName: displayName!,
-          email: mail || userPrincipalName!,
-          jobTitle: jobTitle!,
+          firstName: userDetails?.givenName || '',
+          lastName: userDetails?.surname || '',
+          displayName: userDetails?.displayName || '',
+          email: userDetails?.mail || userDetails?.userPrincipalName || '',
+          jobTitle: userDetails?.jobTitle || '',
         });
       }),
     );

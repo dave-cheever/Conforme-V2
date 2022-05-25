@@ -31,15 +31,11 @@ const GET_AUDITS = gql`
       walkType
       dueDate
       status
-      reference
       auditorId
-      participantsIds
       numberOfActions
       auditType {
         _id
         name
-        frequency
-        startingDate
       }
       site {
         _id
@@ -53,14 +49,6 @@ const GET_AUDITS = gql`
         _id
         displayName
         imgUrl
-      }
-      participants {
-        _id
-        displayName
-        imgUrl
-      }
-      metatags {
-        addedAt
       }
     }
   }

@@ -1,9 +1,6 @@
 import { isBefore } from 'date-fns';
 import { PassportStatic } from 'passport';
-import {
-  IOIDCStrategyOptionWithRequest,
-  OIDCStrategy,
-} from 'passport-azure-ad';
+import { IOIDCStrategyOptionWithRequest, OIDCStrategy } from 'passport-azure-ad';
 
 import { IUser } from 'app-interfaces';
 import { Organizations, Users } from 'app-models';
@@ -13,8 +10,7 @@ import { sessionizeUser } from 'app-utils';
 const initPassport = (passport: PassportStatic) => {
   // Azure AD
   const azureADStrategyOptions: IOIDCStrategyOptionWithRequest = {
-    identityMetadata:
-      'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+    identityMetadata: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
     clientID: process.env.AZURE_AD_CLIENT_ID || 'clientId',
     responseType: 'id_token',
     responseMode: 'form_post',
@@ -36,16 +32,8 @@ const initPassport = (passport: PassportStatic) => {
 
     // Check if logged user is from allowed tenant
     // If allowed tenant is 'all', app is open to users from all tenants
-    if (
-      !organization.allowedTenantsIds.includes('all') &&
-      !organization.allowedTenantsIds.includes(tenantId)
-    ) {
-      return done(
-        null,
-        { organization },
-        'User from this tenant is not allowed',
-      );
-    }
+    if (!organization.allowedTenantsIds.includes('all') && !organization.allowedTenantsIds.includes(tenantId))
+      return done(null, { organization }, 'User from this tenant is not allowed');
 
     // Check if logged user belong to access group (if configured)
     if (organization.accessGroupId) {
@@ -56,13 +44,7 @@ const initPassport = (passport: PassportStatic) => {
         },
         organization,
       });
-      if (!groups.access) {
-        return done(
-          null,
-          { organization },
-          "User doesn't exist in Conforme AAD group",
-        );
-      }
+      if (!groups.access) return done(null, { organization }, "User doesn't exist in Conforme AAD group");
     }
 
     let user: IUser;
@@ -72,6 +54,13 @@ const initPassport = (passport: PassportStatic) => {
     };
     try {
       user = await Users.customFindByIdWithDetails(userQuery);
+      if (!user.organizationsIds?.includes(organization._id)) {
+        user = {
+          ...user,
+          organizationsIds: [...(user.organizationsIds || []), organization._id],
+        };
+        await Users.updateOne({ _id: user._id }, user);
+      }
     } catch (e) {
       const newUser = {
         _id,
@@ -79,13 +68,8 @@ const initPassport = (passport: PassportStatic) => {
       await Users.customAdd(newUser, _id, organization._id);
       user = await Users.customFindByIdWithDetails(userQuery);
     }
-    if (!user) {
-      return done(
-        null,
-        { organization },
-        'Internal server error - Azure AD auth',
-      );
-    }
+    if (!user) return done(null, { organization }, 'Internal server error - Azure AD auth');
+
     const sessionUser = await sessionizeUser(user);
     return done(null, { user: sessionUser, organization });
   };

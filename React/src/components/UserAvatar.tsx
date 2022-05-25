@@ -9,11 +9,7 @@ const GET_USER = gql`
   query ($userQueryInput: UserQueryInput) {
     usersById(userQueryInput: $userQueryInput) {
       _id
-      firstName
-      lastName
       displayName
-      email
-      jobTitle
       imgUrl
     }
   }
