@@ -19,7 +19,7 @@ mongoose
     console.log('MongoDB connected');
     const app = await getApp();
     app.listen(port, () => {
-      logger.info(`Express server started on port: ${  port}`);
+      logger.info(`Express server started on port: ${port}`);
     });
   })
   .then(() => console.log(`Server is listening on ${port}`))

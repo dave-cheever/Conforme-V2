@@ -1,26 +1,35 @@
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { useEffect } from 'react';
+
+import { Box, Button, Flex, Spacer } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
+import useDevice from '../../hooks/useDevice';
 import FiltersPanelItem from './FiltersPanelItem';
 
 const FiltersPanel = () => {
-  const {
-    filtersValues,
-    usedFilters,
-    showFiltersPanel,
-    setShowFiltersPanel,
-    cleanFilters,
-  } = useFiltersContext();
+  const device = useDevice();
+  const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
+
+  useEffect(() => {
+    if (showFiltersPanel && device === 'mobile') document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [device, showFiltersPanel]);
+
   if (!showFiltersPanel) return null;
 
   return (
-    <Box
+    <Flex
       bg="filterPanel.bg"
       borderBottomStartRadius={['0px', '20px']}
       boxShadow="md"
+      flexDir="column"
       flexShrink={0}
-      h="100vh"
-      overflow="auto"
+      minH="100vh"
+      overflowY="hidden"
+      overscrollBehavior="contain"
       position={['relative', 'absolute', 'relative']}
       right="0"
       w={['full', '320px']}
@@ -31,20 +40,21 @@ const FiltersPanel = () => {
           Filter items by
         </Box>
       </Flex>
-      <Flex flexDir="column" h="calc(100vh - 120px)" overflow="hidden" px="4">
+      <Flex flexDir="column" h="calc(100vh - 7.5rem)" overflowY="hidden" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
-          if (usedFilters.includes(name) && !value?.hideFromPanel)
-            return <FiltersPanelItem filter={value} key={name} name={name} />;
+          if (usedFilters.includes(name) && !value?.hideFromPanel) return <FiltersPanelItem filter={value} key={name} name={name} />;
 
           return null;
         })}
       </Flex>
+      <Spacer />
       <Flex
         align="center"
         bg="white"
+        bottom="3.438rem"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
-        h="55px"
         justify="center"
+        position={['sticky', 'relative']}
         py={2}
         w={['full', '290px']}
       >
@@ -70,7 +80,7 @@ const FiltersPanel = () => {
           Done
         </Button>
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 
