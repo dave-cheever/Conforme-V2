@@ -10,10 +10,10 @@ const SortButton = ({
   setSortOrder,
 }: {
   sortBy: { label: string; key: string }[];
-  sortOrder: boolean;
+  sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
-  setSortOrder: (order: boolean) => void;
+  setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
   <Box ml="15px">
     <Menu autoSelect={false}>
@@ -49,19 +49,19 @@ const SortButton = ({
                 <HStack>
                   <Box
                     align="center"
-                    bg={sortType === sortItem.key && sortOrder === true ? 'sortButton.menuItemFocus' : undefined}
+                    bg={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.menuItemFocus' : undefined}
                     h="30px"
                     justify="center"
                     onClick={() => {
                       setSortType(sortItem.key);
-                      setSortOrder(true);
+                      setSortOrder('asc');
                       onClose();
                     }}
                     rounded="5px"
                     w="30px"
                   >
                     <ChevronRight
-                      color={sortType === sortItem.key && sortOrder === true ? 'sortButton.icon.active' : 'sortButton.icon.default'}
+                      color={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
                       cursor="pointer"
                       h="12px"
                       transform="rotate(-90deg)"
@@ -71,19 +71,19 @@ const SortButton = ({
                   <Spacer />
                   <Flex
                     align="center"
-                    bg={sortType === sortItem.key && sortOrder === false ? 'sortButton.menuItemFocus' : undefined}
+                    bg={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.menuItemFocus' : undefined}
                     h="30px"
                     justify="center"
                     onClick={() => {
                       setSortType(sortItem.key);
-                      setSortOrder(false);
+                      setSortOrder('desc');
                       onClose();
                     }}
                     rounded="5px"
                     w="30px"
                   >
                     <ChevronRight
-                      color={sortType === sortItem.key && sortOrder === false ? 'sortButton.icon.active' : 'sortButton.icon.default'}
+                      color={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
                       cursor="pointer"
                       h="12px"
                       transform="rotate(90deg)"

@@ -59,19 +59,18 @@ const DELETE_QUESTION_CATEGORY = gql`
   }
 `;
 
-const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } =
-  {
-    _id: undefined,
-    name: '',
-    withAnswers: false,
-    allowCustomQuestions: false,
-    maxQuestionsNumber: 5,
-    icon: '',
-    selectedOption: '',
-    scope: {
-      component: 'audits',
-    },
-  };
+const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } = {
+  _id: undefined,
+  name: '',
+  withAnswers: false,
+  allowCustomQuestions: false,
+  maxQuestionsNumber: 5,
+  icon: '',
+  selectedOption: '',
+  scope: {
+    component: 'audits',
+  },
+};
 
 const QuestionsCategories = () => {
   const toast = useToast();
@@ -82,20 +81,14 @@ const QuestionsCategories = () => {
   const [deleteFunction] = useMutation(DELETE_QUESTION_CATEGORY);
   const device = useDevice();
   const [sortType, setSortType] = useState('questionsCategory');
-  const [sortOrder, setSortOrder] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const getQuestionsCategories = (
-    questionsCategoriesArray: IQuestionsCategory[],
-  ) => {
+  const getQuestionsCategories = (questionsCategoriesArray: IQuestionsCategory[]) => {
     if (!questionsCategoriesArray) return [];
 
-    return [...questionsCategoriesArray].sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
+    return [...questionsCategoriesArray].sort((a, b) => a.name.localeCompare(b.name));
   };
-  const [questionsCategories, setQuestionsCategories] = useState<
-    IQuestionsCategory[]
-  >(getQuestionsCategories(data?.questionsCategories));
+  const [questionsCategories, setQuestionsCategories] = useState<IQuestionsCategory[]>(getQuestionsCategories(data?.questionsCategories));
 
   useEffect(() => {
     setQuestionsCategories(getQuestionsCategories(data?.questionsCategories));
@@ -103,24 +96,12 @@ const QuestionsCategories = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') {
-        return (a.owner?.displayName || '').localeCompare(
-          b.owner?.displayName || '',
-        );
-      }
-      return (a[sortType] || 0)
-        .toString()
-        .localeCompare((b[sortType] || 0).toString());
+      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+
+      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
     };
-    if (sortOrder) {
-      setQuestionsCategories(
-        [...questionsCategories].sort((a, b) => sort(a, b)),
-      );
-    } else {
-      setQuestionsCategories(
-        [...questionsCategories].sort((a, b) => sort(b, a)),
-      );
-    }
+    if (sortOrder) setQuestionsCategories([...questionsCategories].sort((a, b) => sort(a, b)));
+    else setQuestionsCategories([...questionsCategories].sort((a, b) => sort(b, a)));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
@@ -142,10 +123,7 @@ const QuestionsCategories = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openQuestionsCategoryModal = (
-    action: 'edit' | 'delete',
-    questionsCategory: IQuestionsCategory,
-  ) => {
+  const openQuestionsCategoryModal = (action: 'edit' | 'delete', questionsCategory: IQuestionsCategory) => {
     setAdminModalState(action);
     reset({
       _id: questionsCategory?._id,
@@ -274,10 +252,7 @@ const QuestionsCategories = () => {
     }
   };
 
-  const renderQuestionsCategoryRow = (
-    questionsCategory: IQuestionsCategory,
-    i: number,
-  ) => (
+  const renderQuestionsCategoryRow = (questionsCategory: IQuestionsCategory, i: number) => (
     <Flex
       alignItems="center"
       bg="#FFFFFF"
@@ -290,14 +265,7 @@ const QuestionsCategories = () => {
       p={4}
       w="full"
     >
-      <Flex
-        cursor="pointer"
-        flexDir="column"
-        mr={4}
-        onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
-        pl={1}
-        w="full"
-      >
+      <Flex cursor="pointer" flexDir="column" mr={4} onClick={() => openQuestionsCategoryModal('edit', questionsCategory)} pl={1} w="full">
         <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {questionsCategory.name}
         </Text>
@@ -313,10 +281,7 @@ const QuestionsCategories = () => {
         modalType={adminModalState}
         onAction={handleAction}
       >
-        <Stack
-          spacing={2}
-          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
-        >
+        <Stack spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
             control={control}
             label="Name"
@@ -327,13 +292,7 @@ const QuestionsCategories = () => {
               notEmpty: true,
             }}
           />
-          <Toggle
-            control={control}
-            label="Allow answers"
-            name="withAnswers"
-            placeholder="Allow answers"
-            variant="secondaryVariant"
-          />
+          <Toggle control={control} label="Allow answers" name="withAnswers" placeholder="Allow answers" variant="secondaryVariant" />
           <Toggle
             control={control}
             label="Allow custom questions"
@@ -389,50 +348,28 @@ const QuestionsCategories = () => {
           </Stack>
         </Stack>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Questions categories']}
-        mobileBreadcrumbs={['Questions categories']}
-      />
+      <Header breadcrumbs={['Admin', 'Questions categories']} mobileBreadcrumbs={['Questions categories']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box
-          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-          p={[0, '0 25px 30px 30px']}
-          w="full"
-        >
+        <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Question Categories"
               onClick={() => {
                 setSortType('questionCategory');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' && sortType === 'questionCategory' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'questionCategory'}
-              sortOrder={sortType === 'questionCategory' && !sortOrder}
+              sortOrder={sortType === 'questionCategory' ? sortOrder : undefined}
               w="full"
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center />
             ) : questionsCategories?.length > 0 ? (
               questionsCategories?.map(renderQuestionsCategoryRow)
             ) : (
-              <Flex
-                fontSize="18px"
-                fontStyle="italic"
-                h="full"
-                justify="center"
-                mt={4}
-                w="full"
-              >
+              <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No questions categories found
               </Flex>
             )}

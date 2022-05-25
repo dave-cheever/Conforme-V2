@@ -88,18 +88,14 @@ const Questions = () => {
   const [deleteFunction] = useMutation(DELETE_QUESTION);
   const device = useDevice();
   const [sortType, setSortType] = useState('question');
-  const [sortOrder, setSortOrder] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const getQuestions = (questionsArray: IQuestion<TQuestionValue>[]) => {
     if (!questionsArray) return [];
 
-    return [...questionsArray].sort((a, b) =>
-      (a.question || '').localeCompare(b.question || ''),
-    );
+    return [...questionsArray].sort((a, b) => (a.question || '').localeCompare(b.question || ''));
   };
-  const [questions, setQuestions] = useState<IQuestion<TQuestionValue>[]>(
-    getQuestions(data?.questions),
-  );
+  const [questions, setQuestions] = useState<IQuestion<TQuestionValue>[]>(getQuestions(data?.questions));
 
   useEffect(() => {
     setQuestions(getQuestions(data?.questions));
@@ -109,15 +105,9 @@ const Questions = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') {
-        return (a.owner?.displayName || '').localeCompare(
-          b.owner?.displayName || '',
-        );
-      }
+      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
 
-      return (a[sortType] || 0)
-        .toString()
-        .localeCompare((b[sortType] || 0).toString());
+      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
     };
     if (sortOrder) setQuestions([...questions].sort((a, b) => sort(a, b)));
     else setQuestions([...questions].sort((a, b) => sort(b, a)));
@@ -140,10 +130,7 @@ const Questions = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openQuestionModal = (
-    action: 'edit' | 'delete',
-    question: IQuestion<TQuestionValue>,
-  ) => {
+  const openQuestionModal = (action: 'edit' | 'delete', question: IQuestion<TQuestionValue>) => {
     setAdminModalState(action);
     reset({
       _id: question?._id,
@@ -246,10 +233,7 @@ const Questions = () => {
     }
   };
 
-  const renderQuestionRow = (
-    question: IQuestion<TQuestionValue>,
-    i: number,
-  ) => (
+  const renderQuestionRow = (question: IQuestion<TQuestionValue>, i: number) => (
     <Flex
       alignItems="center"
       bg="#FFFFFF"
@@ -262,14 +246,7 @@ const Questions = () => {
       p={4}
       w="full"
     >
-      <Flex
-        cursor="pointer"
-        flexDir="column"
-        mr={4}
-        onClick={() => openQuestionModal('edit', question)}
-        pl={1}
-        w="full"
-      >
+      <Flex cursor="pointer" flexDir="column" mr={4} onClick={() => openQuestionModal('edit', question)} pl={1} w="full">
         <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {question.question}
         </Text>
@@ -279,16 +256,8 @@ const Questions = () => {
 
   return (
     <>
-      <AdminModal
-        collection="questions"
-        isOpenModal={adminModalState !== 'closed'}
-        modalType={adminModalState}
-        onAction={handleAction}
-      >
-        <Stack
-          spacing={2}
-          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
-        >
+      <AdminModal collection="questions" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
+        <Stack spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <Dropdown
             control={control}
             label="Questions Category"
@@ -310,70 +279,33 @@ const Questions = () => {
               notEmpty: true,
             }}
           />
-          <TextInputMultiline
-            control={control}
-            label="Description"
-            name="description"
-            placeholder="Description"
-          />
-          <TextInput
-            control={control}
-            label="Positive value"
-            name="positiveValue"
-            placeholder="Positive value"
-          />
-          <TextInput
-            control={control}
-            label="Negative value"
-            name="negativeValue"
-            placeholder="Negative value"
-          />
+          <TextInputMultiline control={control} label="Description" name="description" placeholder="Description" />
+          <TextInput control={control} label="Positive value" name="positiveValue" placeholder="Positive value" />
+          <TextInput control={control} label="Negative value" name="negativeValue" placeholder="Negative value" />
         </Stack>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Questions']}
-        mobileBreadcrumbs={['Questions']}
-      />
+      <Header breadcrumbs={['Admin', 'Questions']} mobileBreadcrumbs={['Questions']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box
-          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-          p={[0, '0 25px 30px 30px']}
-          w="full"
-        >
+        <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Question"
               onClick={() => {
                 setSortType('question');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' && sortType === 'question' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'question'}
-              sortOrder={sortType === 'question' && !sortOrder}
+              sortOrder={sortType === 'question' ? sortOrder : undefined}
               w="full"
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center />
             ) : questions?.length > 0 ? (
               questions?.map(renderQuestionRow)
             ) : (
-              <Flex
-                fontSize="18px"
-                fontStyle="italic"
-                h="full"
-                justify="center"
-                mt={4}
-                w="full"
-              >
+              <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No questions found
               </Flex>
             )}

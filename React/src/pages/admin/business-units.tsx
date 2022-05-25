@@ -70,18 +70,15 @@ const BusinessUnits = () => {
   const device = useDevice();
   const { navigateTo } = useNavigate();
   const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
-  const [currentBusinessUnitName, setCurrentBusinessUnitName] =
-    useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [currentBusinessUnitName, setCurrentBusinessUnitName] = useState<string>('');
 
   const getBusinessUnits = (businessUnitsArray: IBusinessUnit[]) => {
     if (!businessUnitsArray) return [];
 
     return [...businessUnitsArray].sort((a, b) => a.name.localeCompare(b.name));
   };
-  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>(
-    getBusinessUnits(data?.businessUnits),
-  );
+  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>(getBusinessUnits(data?.businessUnits));
 
   useEffect(() => {
     setBusinessUnits(getBusinessUnits(data?.businessUnits));
@@ -89,18 +86,11 @@ const BusinessUnits = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') {
-        return (a.owner?.displayName || '').localeCompare(
-          b.owner?.displayName || '',
-        );
-      }
+      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
 
-      return (a[sortType] || 0)
-        .toString()
-        .localeCompare((b[sortType] || 0).toString());
+      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
     };
-    if (sortOrder)
-      setBusinessUnits([...businessUnits].sort((a, b) => sort(a, b)));
+    if (sortOrder) setBusinessUnits([...businessUnits].sort((a, b) => sort(a, b)));
     else setBusinessUnits([...businessUnits].sort((a, b) => sort(b, a)));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -124,10 +114,7 @@ const BusinessUnits = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openBusinessUnitModal = (
-    action: 'edit' | 'delete',
-    businessUnit: IBusinessUnit,
-  ) => {
+  const openBusinessUnitModal = (action: 'edit' | 'delete', businessUnit: IBusinessUnit) => {
     setAdminModalState(action);
     setCurrentBusinessUnitName(businessUnit?.name);
     reset({
@@ -226,14 +213,7 @@ const BusinessUnits = () => {
       p={4}
       w="full"
     >
-      <Flex
-        cursor="pointer"
-        flexDir="column"
-        mr={4}
-        onClick={() => openBusinessUnitModal('edit', businessUnit)}
-        pl={1}
-        w={['80%', '30%']}
-      >
+      <Flex cursor="pointer" flexDir="column" mr={4} onClick={() => openBusinessUnitModal('edit', businessUnit)} pl={1} w={['80%', '30%']}>
         <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {businessUnit.name}
         </Text>
@@ -264,16 +244,8 @@ const BusinessUnits = () => {
 
   return (
     <>
-      <AdminModal
-        collection="business unit"
-        isOpenModal={adminModalState !== 'closed'}
-        modalType={adminModalState}
-        onAction={handleAction}
-      >
-        <Stack
-          spacing={2}
-          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
-        >
+      <AdminModal collection="business unit" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
+        <Stack spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
             control={control}
             initialValue={currentBusinessUnitName.toLowerCase()}
@@ -296,25 +268,18 @@ const BusinessUnits = () => {
           />
         </Stack>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Business units']}
-        mobileBreadcrumbs={['Business units']}
-      />
+      <Header breadcrumbs={['Admin', 'Business units']} mobileBreadcrumbs={['Business units']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box
-          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-          p={[0, '0 25px 30px 30px']}
-          w="full"
-        >
+        <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Unit name"
               onClick={() => {
                 setSortType('name');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' && !sortOrder}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
               w={['80%', '30%']}
             />
             {device !== 'mobile' && (
@@ -322,10 +287,10 @@ const BusinessUnits = () => {
                 label="Owner"
                 onClick={() => {
                   setSortType('owner');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'owner'}
-                sortOrder={sortType === 'owner' && !sortOrder}
+                sortOrder={sortType === 'owner' ? sortOrder : undefined}
                 w="calc(70% / 2)"
               />
             )}
@@ -333,38 +298,21 @@ const BusinessUnits = () => {
               label="Responses count"
               onClick={() => {
                 setSortType('complianceItemsResponsesCount');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-              sortOrder={
-                sortType === 'complianceItemsResponsesCount' && !sortOrder
-              }
+              sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
               tooltip="Only published items"
               w={['20%', 'calc(70% / 2)']}
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center />
             ) : businessUnits?.length > 0 ? (
               businessUnits?.map(renderBusinessUnitRow)
             ) : (
-              <Flex
-                fontSize="18px"
-                fontStyle="italic"
-                h="full"
-                justify="center"
-                mt={4}
-                w="full"
-              >
+              <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No business units found
               </Flex>
             )}

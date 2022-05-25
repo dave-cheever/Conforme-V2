@@ -62,7 +62,7 @@ const Categories = () => {
   const [deleteFunction] = useMutation(DELETE_CATEGORY);
   const device = useDevice();
   const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [currentCategoryName, setCurrentCategoryName] = useState('');
 
   const getCategories = (categoriesArray: IBaseWithName[]) => {
@@ -70,32 +70,16 @@ const Categories = () => {
 
     return [...categoriesArray].sort((a, b) => a.name.localeCompare(b.name));
   };
-  const [categories, setCategories] = useState<IBaseWithName[]>(
-    getCategories(data?.categories),
-  );
+  const [categories, setCategories] = useState<IBaseWithName[]>(getCategories(data?.categories));
 
   useEffect(() => {
     setCategories(getCategories(data?.categories));
   }, [data]);
 
   useEffect(() => {
-    if (sortOrder) {
-      setCategories(
-        [...categories].sort((a, b) =>
-          (a[sortType] || 0)
-            .toString()
-            .localeCompare((b[sortType] || 0).toString()),
-        ),
-      );
-    } else {
-      setCategories(
-        [...categories].sort((a, b) =>
-          (b[sortType] || 0)
-            .toString()
-            .localeCompare((a[sortType] || 0).toString()),
-        ),
-      );
-    }
+    if (sortOrder)
+      setCategories([...categories].sort((a, b) => (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())));
+    else setCategories([...categories].sort((a, b) => (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
@@ -118,10 +102,7 @@ const Categories = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openCategoryModal = (
-    action: 'edit' | 'delete',
-    category: IBaseWithName,
-  ) => {
+  const openCategoryModal = (action: 'edit' | 'delete', category: IBaseWithName) => {
     setAdminModalState(action);
     setCurrentCategoryName(category.name);
     reset({
@@ -208,12 +189,7 @@ const Categories = () => {
 
   return (
     <>
-      <AdminModal
-        collection="category"
-        isOpenModal={adminModalState !== 'closed'}
-        modalType={adminModalState}
-        onAction={handleAction}
-      >
+      <AdminModal collection="category" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
         <Flex align="flex-start" direction="column" w="full">
           <TextInput
             control={control}
@@ -228,54 +204,34 @@ const Categories = () => {
           />
         </Flex>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Categories']}
-        mobileBreadcrumbs={['Categories']}
-      />
-      <Box
-        h="calc(100vh - 160px)"
-        overflow="auto"
-        p={['0', '0 25px 30px 30px']}
-      >
+      <Header breadcrumbs={['Admin', 'Categories']} mobileBreadcrumbs={['Categories']} />
+      <Box h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex h="full" px={['25px', 0]}>
-          <Box
-            h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-            mr={[0, 0, '50px']}
-            w={['full', 'full', 'calc(100% - 250px)']}
-          >
+          <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100% - 250px)']}>
             <AdminTableHeader>
               <AdminTableHeaderElement
                 label="Category"
                 onClick={() => {
                   setSortType('name');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' && !sortOrder}
+                sortOrder={sortType === 'name' ? sortOrder : undefined}
                 w={['80%', '50%']}
               />
               <AdminTableHeaderElement
                 label="Responses count"
                 onClick={() => {
                   setSortType('complianceItemsResponsesCount');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-                sortOrder={
-                  sortType === 'complianceItemsResponsesCount' && !sortOrder
-                }
+                sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
                 tooltip="Only published items"
                 w={['20%', '50%']}
               />
             </AdminTableHeader>
-            <Stack
-              bg="white"
-              borderBottomRadius="20px"
-              h={loading ? 'full' : 'fit-content'}
-              minH="full"
-              pb="3"
-              spacing="1px"
-            >
+            <Stack bg="white" borderBottomRadius="20px" h={loading ? 'full' : 'fit-content'} minH="full" pb="3" spacing="1px">
               {loading ? (
                 <Loader center />
               ) : categories?.length > 0 ? (
@@ -288,34 +244,21 @@ const Categories = () => {
                   />
                 ))
               ) : (
-                <Flex
-                  fontSize="18px"
-                  fontStyle="italic"
-                  h="full"
-                  justify="center"
-                  mt={4}
-                  w="full"
-                >
+                <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                   No categories found
                 </Flex>
               )}
             </Stack>
           </Box>
           {device === 'desktop' && (
-            <Flex
-              alignItems="center"
-              flexDirection="column"
-              w={['100%', '220px']}
-            >
+            <Flex alignItems="center" flexDirection="column" w={['100%', '220px']}>
               <Box w="100%">
                 {categories && (
                   <BarChart
-                    data={categories.map(
-                      ({ _id, complianceItemsResponsesCount }) => ({
-                        _id,
-                        count: complianceItemsResponsesCount,
-                      }),
-                    )}
+                    data={categories.map(({ _id, complianceItemsResponsesCount }) => ({
+                      _id,
+                      count: complianceItemsResponsesCount,
+                    }))}
                     label="Categories"
                   />
                 )}

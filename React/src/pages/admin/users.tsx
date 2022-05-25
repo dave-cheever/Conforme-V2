@@ -57,13 +57,7 @@ const Users = () => {
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
   const [loadingUsers, setLoadingUsers] = useState<string[]>([]);
-  const {
-    sortedData: users,
-    sortOrder,
-    sortType,
-    setSortOrder,
-    setSortType,
-  } = useSort(data?.users ?? [], 'displayName');
+  const { sortedData: users, sortOrder, sortType, setSortOrder, setSortType } = useSort(data?.users ?? [], 'displayName');
 
   const onHomePageChange = async (e, userId) => {
     setLoadingUsers((currentLoadingUsers) => [...currentLoadingUsers, userId]);
@@ -71,9 +65,7 @@ const Users = () => {
       variables: { values: { _id: userId, defaultPage: e.target.value } },
     });
     await refetch();
-    setLoadingUsers((currentLoadingUsers) =>
-      currentLoadingUsers.filter((id) => id !== userId),
-    );
+    setLoadingUsers((currentLoadingUsers) => currentLoadingUsers.filter((id) => id !== userId));
   };
 
   const getDefaultPages = (userId) => {
@@ -102,10 +94,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('responsibleCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'responsibleCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'responsibleCount'}
-          sortOrder={sortType === 'responsibleCount' && !sortOrder}
+          sortOrder={sortType === 'responsibleCount' ? sortOrder : undefined}
           tooltip="Responsible on number of responses"
           w="calc(25% - 13px)"
         />
@@ -114,10 +106,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('accountableCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'accountableCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'accountableCount'}
-          sortOrder={sortType === 'accountableCount' && !sortOrder}
+          sortOrder={sortType === 'accountableCount' ? sortOrder : undefined}
           tooltip="Accountable on number of responses"
           w="calc(25% - 13px)"
         />
@@ -126,10 +118,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('contributorCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'contributorCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'contributorCount'}
-          sortOrder={sortType === 'contributorCount' && !sortOrder}
+          sortOrder={sortType === 'contributorCount' ? sortOrder : undefined}
           tooltip="Contributor on number of responses"
           w="calc(25% - 13px)"
         />
@@ -138,10 +130,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('followerCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'followerCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'followerCount'}
-          sortOrder={sortType === 'followerCount' && !sortOrder}
+          sortOrder={sortType === 'followerCount' ? sortOrder : undefined}
           tooltip="Follower on number of responses"
           w="calc(25% - 13px)"
         />
@@ -153,10 +145,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('totalAuditsCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'totalAuditsCount'}
-          sortOrder={sortType === 'totalAuditsCount' && !sortOrder}
+          sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
           tooltip="Total number of audits"
           w="calc(25% - 13px)"
         />
@@ -165,10 +157,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('completedAuditsCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'completedAuditsCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'completedAuditsCount'}
-          sortOrder={sortType === 'completedAuditsCount' && !sortOrder}
+          sortOrder={sortType === 'completedAuditsCount' ? sortOrder : undefined}
           tooltip="Number of completed audits"
           w="calc(25% - 13px)"
         />
@@ -177,10 +169,10 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('upcomingAuditsCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'upcomingAuditsCount'}
-          sortOrder={sortType === 'upcomingAuditsCount' && !sortOrder}
+          sortOrder={sortType === 'upcomingAuditsCount' ? sortOrder : undefined}
           tooltip="Number of upcoming audits"
           w="calc(25% - 13px)"
         />
@@ -189,11 +181,23 @@ const Users = () => {
           ml="13px"
           onClick={() => {
             setSortType('overdueAuditsCount');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'overdueAuditsCount' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'overdueAuditsCount'}
-          sortOrder={sortType === 'overdueAuditsCount' && !sortOrder}
+          sortOrder={sortType === 'overdueAuditsCount' ? sortOrder : undefined}
           tooltip="Number of overdue audits"
+          w="calc(25% - 13px)"
+        />
+        <AdminTableHeaderElement
+          label="T"
+          ml="13px"
+          onClick={() => {
+            setSortType('totalAuditsCount');
+            setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
+          }}
+          showSortingIcon={sortType === 'totalAuditsCount'}
+          sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
+          tooltip="Total number of audits"
           w="calc(25% - 13px)"
         />
       </>
@@ -229,23 +233,10 @@ const Users = () => {
       </>
     ) : (
       <>
-        <UserAuditsCount
-          auditsCount={user.totalAuditsCount}
-          userId={user._id}
-        />
-        <UserAuditsCount
-          auditsCount={user.completedAuditsCount}
-          status="completed"
-          userId={user._id}
-        />
-        <UserAuditsCount
-          auditsCount={user.upcomingAuditsCount}
-          userId={user._id}
-        />
-        <UserAuditsCount
-          auditsCount={user.overdueAuditsCount}
-          userId={user._id}
-        />
+        <UserAuditsCount auditsCount={user.completedAuditsCount} status="completed" userId={user._id} />
+        <UserAuditsCount auditsCount={user.upcomingAuditsCount} userId={user._id} />
+        <UserAuditsCount auditsCount={user.overdueAuditsCount} userId={user._id} />
+        <UserAuditsCount auditsCount={user.totalAuditsCount} userId={user._id} />
       </>
     );
 
@@ -267,36 +258,22 @@ const Users = () => {
         <Avatar
           borderColor="brand.active"
           mr={3}
-          name={
-            user.firstName && user.lastName
-              ? `${user.firstName} ${user.lastName}`
-              : `${user.displayName}`
-          }
+          name={user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
           rounded="full"
           size="sm"
           src={user.imgUrl}
         />
         <Text lineHeight="32px" noOfLines={1} pr={3} textOverflow="ellipsis">
-          {user.firstName && user.lastName
-            ? `${user.firstName} ${user.lastName}`
-            : `${user.displayName}`}
+          {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
         </Text>
       </Flex>
       {device !== 'mobile' && (
         <>
           <Box w="16%">{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
-          <Box w="16%">
-            {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
-          </Box>
+          <Box w="16%">{user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}</Box>
           <Flex flexDir="column" w="16%">
             {getDefaultPages(user._id).length === 1 ? (
-              <Box>
-                {
-                  getDefaultPages(user._id).find(
-                    ({ url }) => url === user.defaultPage,
-                  )?.name
-                }
-              </Box>
+              <Box>{getDefaultPages(user._id).find(({ url }) => url === user.defaultPage)?.name}</Box>
             ) : loadingUsers.includes(user._id) ? (
               <Flex w="130px">
                 <Loader size="sm" />
@@ -339,20 +316,16 @@ const Users = () => {
     <>
       <Header breadcrumbs={['Admin', 'Users']} mobileBreadcrumbs={['Users']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box
-          h={['calc(100% - 80px)', 'calc(100% - 35px)']}
-          p={[0, '0 25px 30px 30px']}
-          w="full"
-        >
+        <Box h={['calc(100% - 80px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Name"
               onClick={() => {
                 setSortType('displayName');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'displayName'}
-              sortOrder={sortType === 'displayName' && !sortOrder}
+              sortOrder={sortType === 'displayName' ? sortOrder : undefined}
               w={['80%', '16%']}
             />
             {device !== 'mobile' && (
@@ -361,30 +334,30 @@ const Users = () => {
                   label="Job title"
                   onClick={() => {
                     setSortType('jobTitle');
-                    setSortOrder(!sortOrder);
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
                   }}
                   showSortingIcon={sortType === 'jobTitle'}
-                  sortOrder={sortType === 'jobTitle' && !sortOrder}
+                  sortOrder={sortType === 'jobTitle' ? sortOrder : undefined}
                   w="16%"
                 />
                 <AdminTableHeaderElement
                   label="Role"
                   onClick={() => {
                     setSortType('role');
-                    setSortOrder(!sortOrder);
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
                   }}
                   showSortingIcon={sortType === 'role'}
-                  sortOrder={sortType === 'role' && !sortOrder}
+                  sortOrder={sortType === 'role' ? sortOrder : undefined}
                   w="16%"
                 />
                 <AdminTableHeaderElement
                   label="Default page"
                   onClick={() => {
                     setSortType('defaultPage');
-                    setSortOrder(!sortOrder);
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
                   }}
                   showSortingIcon={sortType === 'defaultPage'}
-                  sortOrder={sortType === 'defaultPage' && !sortOrder}
+                  sortOrder={sortType === 'defaultPage' ? sortOrder : undefined}
                   w="16%"
                 />
               </>
@@ -395,26 +368,15 @@ const Users = () => {
               ml="20px"
               onClick={() => {
                 setSortType('lastLogin');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'lastLogin'}
-              sortOrder={sortType === 'lastLogin' && !sortOrder}
+              sortOrder={sortType === 'lastLogin' ? sortOrder : undefined}
               w="calc(16% - 20px)"
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="10px"
-            flexDir="column"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
-            {loading ? (
-              <Loader center />
-            ) : (
-              users.map((user, i) => renderUserRow(user, i))
-            )}
+          <Flex bg="white" borderBottomRadius="10px" flexDir="column" h="full" overflow="auto" w="full">
+            {loading ? <Loader center /> : users.map((user, i) => renderUserRow(user, i))}
           </Flex>
         </Box>
       </Flex>

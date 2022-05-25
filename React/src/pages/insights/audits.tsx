@@ -77,8 +77,7 @@ const GET_AUDITS_INSIGHTS = gql`
 
 const AuditsInsights = () => {
   const { data, loading, error } = useQuery(GET_AUDITS_INSIGHTS);
-  const [selectedAuditsStatsCount, setSelectedAuditsStatsCount] =
-    useState('total');
+  const [selectedAuditsStatsCount, setSelectedAuditsStatsCount] = useState('total');
   const auditsStatsCounts = useMemo(
     () => [
       {
@@ -143,25 +142,19 @@ const AuditsInsights = () => {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: auditsStatsCounts.find(
-          (filter) => filter.type === selectedAuditsStatsCount,
-        )?.chart?.dates,
+        data: auditsStatsCounts.find((filter) => filter.type === selectedAuditsStatsCount)?.chart?.dates,
       },
       yAxis: {
         type: 'value',
       },
       series: [
         {
-          data: auditsStatsCounts.find(
-            (filter) => filter.type === selectedAuditsStatsCount,
-          )?.chart?.counts,
+          data: auditsStatsCounts.find((filter) => filter.type === selectedAuditsStatsCount)?.chart?.counts,
           smooth: true,
           symbol: 'circle',
           type: 'line',
           itemStyle: {
-            color: auditsStatsCounts.find(
-              (filter) => filter.type === selectedAuditsStatsCount,
-            )?.color as string,
+            color: auditsStatsCounts.find((filter) => filter.type === selectedAuditsStatsCount)?.color as string,
           },
           areaStyle: {
             color: new graphic.LinearGradient(1, 0, 1, 1, [
@@ -210,11 +203,7 @@ const AuditsInsights = () => {
             ))}
           </Flex>
           <Text
-            color={
-              auditsStatsCounts.find(
-                (filter) => filter.type === selectedAuditsStatsCount,
-              )?.color
-            }
+            color={auditsStatsCounts.find((filter) => filter.type === selectedAuditsStatsCount)?.color}
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}
@@ -228,10 +217,7 @@ const AuditsInsights = () => {
           <Text fontSize="xxl" fontWeight="bold" my={['15px', '25px']}>
             Top Walkers
           </Text>
-          <Grid
-            gap="20px"
-            templateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
-          >
+          <Grid gap="20px" templateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}>
             {data?.auditsInsights?.topAuditors?.map((auditor) => (
               <GridItem key={auditor.user._id} w="100%">
                 <Box bg="auditsInsights.topWalkers.bg" rounded="20px">
@@ -264,77 +250,58 @@ const AuditsInsights = () => {
             sortType={usersSortType}
             users={users}
           />
-          <Grid
-            alignItems="stretch"
-            gap="20px"
-            my={['15px', '25px']}
-            templateColumns={['1fr', 'repeat(2, 1fr)']}
-          >
+          <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
-              <Box
-                bg="auditsInsights.list.bg"
-                borderRadius="20px"
-                h="100%"
-                pb={7}
-                w="full"
-              >
+              <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
                 <AdminTableHeader title="Walks per site">
                   <AdminTableHeaderElement
                     label="Site"
                     onClick={() => {
                       setSitesSortType('name');
-                      setSitesSortOrder(!sitesSortOrder);
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'name' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sitesSortType === 'name'}
-                    sortOrder={sitesSortType === 'name' && sitesSortOrder}
+                    sortOrder={sitesSortType === 'name' ? sitesSortOrder : undefined}
                     w="60%"
                   />
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
                       setSitesSortType('totalAuditsCount');
-                      setSitesSortOrder(!sitesSortOrder);
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'totalAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sitesSortType === 'totalAuditsCount'}
-                    sortOrder={
-                      sitesSortType === 'totalAuditsCount' && sitesSortOrder
-                    }
+                    sortOrder={sitesSortType === 'totalAuditsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
                       setSitesSortType('completedAuditsCount');
-                      setSitesSortOrder(!sitesSortOrder);
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'completedAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sitesSortType === 'completedAuditsCount'}
-                    sortOrder={
-                      sitesSortType === 'completedAuditsCount' && sitesSortOrder
-                    }
+                    sortOrder={sitesSortType === 'completedAuditsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="U"
                     onClick={() => {
                       setSitesSortType('upcomingAuditsCount');
-                      setSitesSortOrder(!sitesSortOrder);
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sitesSortType === 'upcomingAuditsCount'}
-                    sortOrder={
-                      sitesSortType === 'upcomingAuditsCount' && sitesSortOrder
-                    }
+                    sortOrder={sitesSortType === 'upcomingAuditsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
                       setSitesSortType('overdueAuditsCount');
-                      setSitesSortOrder(!sitesSortOrder);
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'overdueAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sitesSortType === 'overdueAuditsCount'}
-                    sortOrder={
-                      sitesSortType === 'overdueAuditsCount' && sitesSortOrder
-                    }
+                    sortOrder={sitesSortType === 'overdueAuditsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
@@ -346,70 +313,56 @@ const AuditsInsights = () => {
               </Box>
             </GridItem>
             <GridItem h="100%" w="100%">
-              <Box
-                bg="auditsInsights.list.bg"
-                borderRadius="20px"
-                h="100%"
-                pb={7}
-                w="full"
-              >
+              <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
                 <AdminTableHeader title="Walks per area">
                   <AdminTableHeaderElement
                     label="Area"
                     onClick={() => {
                       setAreasSortType('name');
-                      setAreasSortOrder(!areasSortOrder);
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'name' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={areasSortType === 'name'}
-                    sortOrder={areasSortType === 'name' && areasSortOrder}
+                    sortOrder={areasSortType === 'name' ? areasSortOrder : undefined}
                     w="60%"
                   />
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
                       setAreasSortType('totalAuditsCount');
-                      setAreasSortOrder(!areasSortOrder);
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'totalAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={areasSortType === 'totalAuditsCount'}
-                    sortOrder={
-                      areasSortType === 'totalAuditsCount' && areasSortOrder
-                    }
+                    sortOrder={areasSortType === 'totalAuditsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
                       setAreasSortType('completedAuditsCount');
-                      setAreasSortOrder(!areasSortOrder);
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'completedAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={areasSortType === 'completedAuditsCount'}
-                    sortOrder={
-                      areasSortType === 'completedAuditsCount' && areasSortOrder
-                    }
+                    sortOrder={areasSortType === 'completedAuditsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="U"
                     onClick={() => {
                       setAreasSortType('upcomingAuditsCount');
-                      setAreasSortOrder(!areasSortOrder);
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={areasSortType === 'upcomingAuditsCount'}
-                    sortOrder={
-                      areasSortType === 'upcomingAuditsCount' && areasSortOrder
-                    }
+                    sortOrder={areasSortType === 'upcomingAuditsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
                       setAreasSortType('overdueAuditsCount');
-                      setAreasSortOrder(!areasSortOrder);
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'overdueAuditsCount' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={areasSortType === 'overdueAuditsCount'}
-                    sortOrder={
-                      areasSortType === 'overdueAuditsCount' && areasSortOrder
-                    }
+                    sortOrder={areasSortType === 'overdueAuditsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>

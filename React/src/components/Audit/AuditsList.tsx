@@ -13,89 +13,76 @@ const AuditsList = ({
   setSortOrder,
 }: {
   audits: IAudit[];
-  sortOrder: boolean;
+  sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
-  setSortOrder: (order: boolean) => void;
+  setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
   <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
-    <Box
-      bg="auditsList.bg"
-      borderRadius="20px"
-      h="fit-content"
-      mb={7}
-      minH="full"
-      pb={7}
-      w="full"
-    >
+    <Box bg="auditsList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
       <AdminTableHeader>
         <AdminTableHeaderElement
           label="Walk type"
           onClick={() => {
             setSortType('walkType');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'walkType' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'walkType'}
-          sortOrder={sortType === 'walkType' && !sortOrder}
+          sortOrder={sortType === 'walkType' ? sortOrder : undefined}
           w="20%"
         />
         <AdminTableHeaderElement
           label="Due date"
           onClick={() => {
             setSortType('dueDate');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'dueDate'}
-          sortOrder={sortType === 'dueDate' && !sortOrder}
+          sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
           w="12%"
         />
         <AdminTableHeaderElement
           label="Status"
           onClick={() => {
             setSortType('status');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'status' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'status'}
-          sortOrder={sortType === 'status' && !sortOrder}
+          sortOrder={sortType === 'status' ? sortOrder : undefined}
           w="10%"
         />
         <AdminTableHeaderElement
           label="Audior"
           onClick={() => {
             setSortType('auditor.displayName');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'auditor.displayName' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'auditor.displayName'}
-          sortOrder={sortType === 'auditor.displayName' && !sortOrder}
+          sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
           w="20%"
         />
         <AdminTableHeaderElement
           label="Site"
           onClick={() => {
             setSortType('site.name');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'site.name' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'site.name'}
-          sortOrder={sortType === 'site.name' && !sortOrder}
+          sortOrder={sortType === 'site.name' ? sortOrder : undefined}
           w="20%"
         />
         <AdminTableHeaderElement
           label="Area"
           onClick={() => {
             setSortType('area.name');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'area.name' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'area.name'}
-          sortOrder={sortType === 'area.name' && !sortOrder}
+          sortOrder={sortType === 'area.name' ? sortOrder : undefined}
           w="20%"
         />
       </AdminTableHeader>
-      <Flex
-        flexDir="column"
-        h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
-        overflowY="auto"
-        w="full"
-      >
+      <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
         {audits?.map((audit) => (
           <AuditListItem audit={audit} key={audit._id} />
         ))}

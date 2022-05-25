@@ -221,10 +221,10 @@ const Sites = () => {
                 label="Site name"
                 onClick={() => {
                   setSortType('name');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' && sortOrder}
+                sortOrder={sortType === 'name' ? sortOrder : undefined}
                 w={['max-content', '50%']}
               />
               {device !== 'mobile' && device !== 'tablet' && (
@@ -233,20 +233,20 @@ const Sites = () => {
                     label="Notes"
                     onClick={() => {
                       setSortType('notes');
-                      setSortOrder(!sortOrder);
+                      setSortOrder(sortOrder === 'asc' && sortType === 'notes' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sortType === 'notes'}
-                    sortOrder={sortType === 'notes' && sortOrder}
+                    sortOrder={sortType === 'notes' ? sortOrder : undefined}
                     w={['100%', '50%']}
                   />
                   <AdminTableHeaderElement
                     label="Owner"
                     onClick={() => {
                       setSortType('owner.displayName');
-                      setSortOrder(!sortOrder);
+                      setSortOrder(sortOrder === 'asc' && sortType === 'owner.displayName' ? 'desc' : 'asc');
                     }}
                     showSortingIcon={sortType === 'owner.displayName'}
-                    sortOrder={sortType === 'owner.displayName' && sortOrder}
+                    sortOrder={sortType === 'owner.displayName' ? sortOrder : undefined}
                     w={['100%', '50%']}
                   />
                 </>
@@ -256,10 +256,10 @@ const Sites = () => {
                 label="No. of audits"
                 onClick={() => {
                   setSortType('totalAuditsCount');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'totalAuditsCount'}
-                sortOrder={sortType === 'totalAuditsCount' && sortOrder}
+                sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
                 w={['max-content', '50%']}
               />
             </AdminTableHeader>

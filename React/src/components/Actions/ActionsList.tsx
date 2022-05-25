@@ -14,10 +14,10 @@ const ActionsList = ({
   editAction,
 }: {
   actions: IAction[];
-  sortOrder: boolean;
+  sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
-  setSortOrder: (order: boolean) => void;
+  setSortOrder: (order: 'asc' | 'desc') => void;
   editAction: (action: IAction) => void;
 }) => (
   <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
@@ -27,70 +27,70 @@ const ActionsList = ({
           label="Title"
           onClick={() => {
             setSortType('title');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'title' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'title'}
-          sortOrder={sortType === 'title' && !sortOrder}
+          sortOrder={sortType === 'title' ? sortOrder : undefined}
           w="25%"
         />
         <AdminTableHeaderElement
           label="Due date"
           onClick={() => {
             setSortType('dueDate');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'dueDate'}
-          sortOrder={sortType === 'dueDate' && !sortOrder}
+          sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
           w="10%"
         />
         <AdminTableHeaderElement
           label="Completed date"
           onClick={() => {
             setSortType('completedDate');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'completedDate' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'completedDate'}
-          sortOrder={sortType === 'completedDate' && !sortOrder}
+          sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
           w="10%"
         />
         <AdminTableHeaderElement
           label="Status"
           onClick={() => {
             setSortType('status');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'status' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'status'}
-          sortOrder={sortType === 'status' && !sortOrder}
+          sortOrder={sortType === 'status' ? sortOrder : undefined}
           w="10%"
         />
         <AdminTableHeaderElement
           label="Assignee"
           onClick={() => {
             setSortType('assignee.displayName');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'assignee.displayName' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'assignee.displayName'}
-          sortOrder={sortType === 'assignee.displayName' && !sortOrder}
+          sortOrder={sortType === 'assignee.displayName' ? sortOrder : undefined}
           w="20%"
         />
         <AdminTableHeaderElement
           label="Site"
           onClick={() => {
             setSortType('site.name');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'site.name' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'site.name'}
-          sortOrder={sortType === 'site.name' && !sortOrder}
+          sortOrder={sortType === 'site.name' ? sortOrder : undefined}
           w="12.5%"
         />
         <AdminTableHeaderElement
           label="Area"
           onClick={() => {
             setSortType('area.name');
-            setSortOrder(!sortOrder);
+            setSortOrder(sortOrder === 'asc' && sortType === 'area.name' ? 'desc' : 'asc');
           }}
           showSortingIcon={sortType === 'area.name'}
-          sortOrder={sortType === 'area.name' && !sortOrder}
+          sortOrder={sortType === 'area.name' ? sortOrder : undefined}
           w="12.5%"
         />
       </AdminTableHeader>

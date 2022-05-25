@@ -17,40 +17,18 @@ const AdminTableHeaderElement = ({
   ml?: string;
   label: string;
   onClick?;
-  sortOrder?: boolean;
+  sortOrder?: 'asc' | 'desc';
   showSortingIcon?: boolean;
   tooltip?: string;
 }) => (
-  <Flex
-    alignItems="center"
-    cursor="pointer"
-    ml={ml || '0'}
-    onClick={onClick}
-    w={w}
-  >
+  <Flex alignItems="center" cursor="pointer" ml={ml || '0'} onClick={onClick} w={w}>
     <Tooltip hasArrow isDisabled={tooltip === ''} label={tooltip}>
       <Text color="adminTableHeaderElement.fontColor">{label}</Text>
     </Tooltip>
-    {sortOrder !== null && !sortOrder ? (
-      <ArrowDownIcon
-        _hover={{ color: onClick ? '#282F36' : '#FFFFFF' }}
-        color={
-          showSortingIcon
-            ? 'adminTableHeaderElement.colorEnabled'
-            : 'adminTableHeaderElement.colorDisabled'
-        }
-        ml="10px"
-      />
+    {sortOrder !== null && sortOrder === 'desc' ? (
+      <ArrowDownIcon color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'} ml="10px" />
     ) : (
-      <ArrowUpIcon
-        _hover={{ color: onClick ? '#282F36' : '#FFFFFF' }}
-        color={
-          showSortingIcon
-            ? 'adminTableHeaderElement.colorEnabled'
-            : 'adminTableHeaderElement.colorDisabled'
-        }
-        ml="10px"
-      />
+      <ArrowUpIcon color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'} ml="10px" />
     )}
   </Flex>
 );

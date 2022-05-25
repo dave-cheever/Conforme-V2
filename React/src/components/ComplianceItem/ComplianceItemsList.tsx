@@ -11,46 +11,28 @@ import ComplianceListItem from './ComplianceListItem';
 const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   const { getStatus } = useResponseUtils();
   const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortedData, setSortedData] = useState<any>([]);
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'name')
-        return a.complianceItem?.name.localeCompare(b.complianceItem?.name);
-      if (sortType === 'regulatoryBody') {
-        return a.complianceItem.regulatoryBody?.name!.localeCompare(
-          b.complianceItem.regulatoryBody?.name!,
-        );
-      }
-      if (sortType === 'businessUnit')
-        return a.businessUnit?.name!.localeCompare(b.businessUnit?.name!);
-      if (sortType === 'category') {
-        return (a.complianceItem?.category?.name).localeCompare(
-          b.complianceItem?.category?.name,
-        );
-      }
-      if (sortType === 'compliant') {
-        return (getStatus(a) === 'nonCompliant' ? 'Yes' : 'No').localeCompare(
-          getStatus(b) === 'nonCompliant' ? 'Yes' : 'No',
-        );
-      }
+      if (sortType === 'name') return a.complianceItem?.name.localeCompare(b.complianceItem?.name);
+      if (sortType === 'regulatoryBody')
+        return a.complianceItem.regulatoryBody?.name!.localeCompare(b.complianceItem.regulatoryBody?.name!);
+
+      if (sortType === 'businessUnit') return a.businessUnit?.name!.localeCompare(b.businessUnit?.name!);
+      if (sortType === 'category') return (a.complianceItem?.category?.name).localeCompare(b.complianceItem?.category?.name);
+
+      if (sortType === 'compliant')
+        return (getStatus(a) === 'nonCompliant' ? 'Yes' : 'No').localeCompare(getStatus(b) === 'nonCompliant' ? 'Yes' : 'No');
+
       if (sortType === 'evidence') {
-        return (
-          a.evidence?.find(({ uploaded }) => uploaded === undefined)
-            ? 'Missing'
-            : 'Uploaded'
-        ).localeCompare(
-          b.evidence?.find(({ uploaded }) => uploaded === undefined)
-            ? 'Missing'
-            : 'Uploaded',
+        return (a.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded').localeCompare(
+          b.evidence?.find(({ uploaded }) => uploaded === undefined) ? 'Missing' : 'Uploaded',
         );
       }
-      if (sortType === 'responsible') {
-        return (a.responsible?.displayName || 'unassigned').localeCompare(
-          b.responsible?.displayName || 'unassigned',
-        );
-      }
+      if (sortType === 'responsible')
+        return (a.responsible?.displayName || 'unassigned').localeCompare(b.responsible?.displayName || 'unassigned');
 
       if (a[sortType] === null) return 1;
 
@@ -63,92 +45,75 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setSortedData(
-      [...responses].sort((a, b) =>
-        a.complianceItem?.name.localeCompare(b.complianceItem?.name),
-      ),
-    );
+    setSortedData([...responses].sort((a, b) => a.complianceItem?.name.localeCompare(b.complianceItem?.name)));
   }, [responses]);
 
   return (
     <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
-      <Box
-        bg="complianceList.bg"
-        borderRadius="20px"
-        h="fit-content"
-        mb={7}
-        minH="full"
-        pb={7}
-        w="full"
-      >
+      <Box bg="complianceList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
         <AdminTableHeader>
           <AdminTableHeaderElement
             label="Item name"
             onClick={() => {
               setSortType('name');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'name'}
-            sortOrder={sortType === 'name' && !sortOrder}
+            sortOrder={sortType === 'name' ? sortOrder : undefined}
             w="20%"
           />
           <AdminTableHeaderElement
             label="Expires on"
             onClick={() => {
               setSortType('nextRenewalDate');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'nextRenewalDate' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'nextRenewalDate'}
-            sortOrder={sortType === 'nextRenewalDate' && !sortOrder}
+            sortOrder={sortType === 'nextRenewalDate' ? sortOrder : undefined}
             w="12%"
           />
           <AdminTableHeaderElement
             label="Compliant"
             onClick={() => {
               setSortType('compliant');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'compliant' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'compliant'}
-            sortOrder={sortType === 'compliant' && !sortOrder}
+            sortOrder={sortType === 'compliant' ? sortOrder : undefined}
             w="10%"
           />
           <AdminTableHeaderElement
             label="Regulatory body"
             onClick={() => {
               setSortType('regulatoryBody');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'regulatoryBody' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'regulatoryBody'}
-            sortOrder={sortType === 'regulatoryBody' && !sortOrder}
+            sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
             w="18%"
           />
           <AdminTableHeaderElement
             label="Responsible"
             onClick={() => {
               setSortType('responsible');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'responsible' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'responsible'}
-            sortOrder={sortType === 'responsible' && !sortOrder}
+            sortOrder={sortType === 'responsible' ? sortOrder : undefined}
             w="20%"
           />
           <AdminTableHeaderElement
             label="Business unit"
             onClick={() => {
               setSortType('businessUnit');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'businessUnit'}
-            sortOrder={sortType === 'businessUnit' && !sortOrder}
+            sortOrder={sortType === 'businessUnit' ? sortOrder : undefined}
             w="20%"
           />
         </AdminTableHeader>
-        <Flex
-          flexDir="column"
-          h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
-          overflowY="auto"
-          w="full"
-        >
+        <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
           {sortedData?.map((response) => (
             <ComplianceListItem key={response._id} response={response} />
           ))}

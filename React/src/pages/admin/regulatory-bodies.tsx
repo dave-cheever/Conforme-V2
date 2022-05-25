@@ -62,43 +62,25 @@ const RegulatoryBodies = () => {
   const [deleteFunction] = useMutation(DELETE_REGULATORY_BODY);
   const device = useDevice();
   const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
-  const [currentRegulatoryBodyName, setCurrentRegulatoryBodyName] =
-    useState<string>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [currentRegulatoryBodyName, setCurrentRegulatoryBodyName] = useState<string>('');
 
   const getRegulatoryBodies = (regulatoryBodiesArray: IBaseWithName[]) => {
     if (!regulatoryBodiesArray) return [];
 
-    return [...regulatoryBodiesArray].sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
+    return [...regulatoryBodiesArray].sort((a, b) => a.name.localeCompare(b.name));
   };
-  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>(
-    getRegulatoryBodies(data?.regulatoryBodies),
-  );
+  const [regulatoryBodies, setRegulatoryBodies] = useState<IBaseWithName[]>(getRegulatoryBodies(data?.regulatoryBodies));
 
   useEffect(() => {
     setRegulatoryBodies(getRegulatoryBodies(data?.regulatoryBodies));
   }, [data]);
 
   useEffect(() => {
-    if (sortOrder) {
-      setRegulatoryBodies(
-        [...regulatoryBodies].sort((a, b) =>
-          (a[sortType] || 0)
-            .toString()
-            .localeCompare((b[sortType] || 0).toString()),
-        ),
-      );
-    } else {
-      setRegulatoryBodies(
-        [...regulatoryBodies].sort((a, b) =>
-          (b[sortType] || 0)
-            .toString()
-            .localeCompare((a[sortType] || 0).toString()),
-        ),
-      );
-    }
+    if (sortOrder)
+      setRegulatoryBodies([...regulatoryBodies].sort((a, b) => (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())));
+    else
+      setRegulatoryBodies([...regulatoryBodies].sort((a, b) => (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
@@ -121,10 +103,7 @@ const RegulatoryBodies = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openRegulatoryBodyModal = (
-    action: 'edit' | 'delete',
-    regulatoryBody: IBaseWithName,
-  ) => {
+  const openRegulatoryBodyModal = (action: 'edit' | 'delete', regulatoryBody: IBaseWithName) => {
     setAdminModalState(action);
     setCurrentRegulatoryBodyName(regulatoryBody.name);
     reset({
@@ -226,60 +205,38 @@ const RegulatoryBodies = () => {
             placeholder="Regulatory body name"
             validations={{
               notEmpty: true,
-              uniqueValue: regulatoryBodies.map(({ name }) =>
-                name.toLowerCase(),
-              ),
+              uniqueValue: regulatoryBodies.map(({ name }) => name.toLowerCase()),
             }}
           />
         </Flex>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Regulatory bodies']}
-        mobileBreadcrumbs={['Regulatory bodies']}
-      />
-      <Box
-        h={['full', 'calc(100vh - 160px)']}
-        overflow="auto"
-        p={['0', '0 25px 30px 30px']}
-      >
+      <Header breadcrumbs={['Admin', 'Regulatory bodies']} mobileBreadcrumbs={['Regulatory bodies']} />
+      <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex h="full" px={['25px', 0]}>
-          <Box
-            h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-            mr={[0, 0, '50px']}
-            w={['full', 'full', 'calc(100% - 250px)']}
-          >
+          <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100% - 250px)']}>
             <AdminTableHeader>
               <AdminTableHeaderElement
                 label="Regulatory body"
                 onClick={() => {
                   setSortType('name');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' && !sortOrder}
+                sortOrder={sortType === 'name' ? sortOrder : undefined}
                 w={['80%', '50%']}
               />
               <AdminTableHeaderElement
                 label="Responses count (only published items)"
                 onClick={() => {
                   setSortType('complianceItemsResponsesCount');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-                sortOrder={
-                  sortType === 'complianceItemsResponsesCount' && !sortOrder
-                }
+                sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
                 w={['20%', '50%']}
               />
             </AdminTableHeader>
-            <Stack
-              bg="white"
-              borderBottomRadius="20px"
-              h={loading ? 'full' : 'fit-content'}
-              minH="full"
-              pb="5"
-              spacing="1px"
-            >
+            <Stack bg="white" borderBottomRadius="20px" h={loading ? 'full' : 'fit-content'} minH="full" pb="5" spacing="1px">
               {loading ? (
                 <Loader center />
               ) : regulatoryBodies?.length > 0 ? (
@@ -292,34 +249,21 @@ const RegulatoryBodies = () => {
                   />
                 ))
               ) : (
-                <Flex
-                  fontSize="18px"
-                  fontStyle="italic"
-                  h="full"
-                  justify="center"
-                  mt={4}
-                  w="full"
-                >
+                <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                   No regulatory bodies found
                 </Flex>
               )}
             </Stack>
           </Box>
           {device === 'desktop' && (
-            <Flex
-              alignItems="center"
-              flexDirection="column"
-              w={['100%', '220px']}
-            >
+            <Flex alignItems="center" flexDirection="column" w={['100%', '220px']}>
               <Flex flexDir="column" h="full" w="100%">
                 {regulatoryBodies && (
                   <BarChart
-                    data={regulatoryBodies.map(
-                      ({ _id, complianceItemsResponsesCount }) => ({
-                        _id,
-                        count: complianceItemsResponsesCount,
-                      }),
-                    )}
+                    data={regulatoryBodies.map(({ _id, complianceItemsResponsesCount }) => ({
+                      _id,
+                      count: complianceItemsResponsesCount,
+                    }))}
                     label="Regulatory bodies"
                   />
                 )}

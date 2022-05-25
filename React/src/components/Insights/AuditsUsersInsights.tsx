@@ -18,18 +18,12 @@ const AuditsUsersInsights = ({
     type: string;
     color: string;
   }[];
-  sortOrder: boolean;
+  sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
-  setSortOrder: (order: boolean) => void;
+  setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
-  <Box
-    bg="white"
-    my={['15px', '25px']}
-    overflowX="auto"
-    p="15px 25px"
-    rounded="20px"
-  >
+  <Box bg="white" my={['15px', '25px']} overflowX="auto" p="15px 25px" rounded="20px">
     <Box mb="30px">
       <Text fontSize="smm" fontWeight="bold">
         Walks per person
@@ -76,7 +70,7 @@ const AuditsUsersInsights = ({
             minW="130px"
             onClick={() => {
               setSortType(`${count.type}AuditsCount`);
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === `${count.type}AuditsCount` ? 'desc' : 'asc');
             }}
             p="8px"
             rounded="10px"
@@ -87,22 +81,14 @@ const AuditsUsersInsights = ({
             </Text>
             {sortOrder !== null && !sortOrder ? (
               <ArrowDownIcon
-                color={
-                  new RegExp(count.type).test(sortType)
-                    ? 'auditsUsersInsights.colors.white'
-                    : 'auditsUsersInsights.colors.hidden'
-                }
+                color={new RegExp(count.type).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
                 h="12px"
                 ml="10px"
                 w="12px"
               />
             ) : (
               <ArrowUpIcon
-                color={
-                  new RegExp(count.type).test(sortType)
-                    ? 'auditsUsersInsights.colors.white'
-                    : 'auditsUsersInsights.colors.hidden'
-                }
+                color={new RegExp(count.type).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
                 h="12px"
                 ml="10px"
                 w="12px"
@@ -113,13 +99,7 @@ const AuditsUsersInsights = ({
       </Flex>
       {users.map((user) => (
         <Flex flexDir="column" key={user._id} ml="10px">
-          <Box
-            bg="auditsUsersInsights.colors.statCell"
-            mb="5px"
-            p="8px"
-            rounded="10px"
-            w="100px"
-          >
+          <Box bg="auditsUsersInsights.colors.statCell" mb="5px" p="8px" rounded="10px" w="100px">
             <Text fontSize="smm" textAlign="center">
               {user.totalAuditsCount ?? 0}
             </Text>
@@ -129,13 +109,7 @@ const AuditsUsersInsights = ({
               {user.completedAuditsCount ?? 0}
             </Text>
           </Box>
-          <Box
-            bg="auditsUsersInsights.colors.statCell"
-            mb="5px"
-            p="8px"
-            rounded="10px"
-            w="100px"
-          >
+          <Box bg="auditsUsersInsights.colors.statCell" mb="5px" p="8px" rounded="10px" w="100px">
             <Text fontSize="smm" textAlign="center">
               {user.upcomingAuditsCount ?? 0}
             </Text>

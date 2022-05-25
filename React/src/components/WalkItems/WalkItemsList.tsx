@@ -31,10 +31,10 @@ const WalkItemsList = ({
   refetchAnswers,
 }: {
   answers: IAnswer[];
-  sortOrder: boolean;
+  sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
-  setSortOrder: (order: boolean) => void;
+  setSortOrder: (order: 'asc' | 'desc') => void;
   refetchAnswers: () => void;
 }) => {
   const { data } = useQuery(GET_AUDITS);
@@ -47,30 +47,30 @@ const WalkItemsList = ({
             label="Type"
             onClick={() => {
               setSortType('question.questionsCategory.name');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'question.questionsCategory.name' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'question.questionsCategory.name'}
-            sortOrder={sortType === 'question.questionsCategory.name' && sortOrder}
+            sortOrder={sortType === 'question.questionsCategory.name' ? sortOrder : undefined}
             w="20%"
           />
           <AdminTableHeaderElement
             label="Description"
             onClick={() => {
               setSortType('question.question');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'question.question' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'question.question'}
-            sortOrder={sortType === 'question.question' && sortOrder}
+            sortOrder={sortType === 'question.question' ? sortOrder : undefined}
             w="25%"
           />
           <AdminTableHeaderElement
             label="Belongs to"
             onClick={() => {
               setSortType('audit.area.name');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'audit.area.name' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'audit.area.name'}
-            sortOrder={sortType === 'audit.area.name' && !sortOrder}
+            sortOrder={sortType === 'audit.area.name' ? sortOrder : undefined}
             w="15%"
           />
           <AdminTableHeaderElement label="# of actions" w="15%" />
@@ -78,20 +78,20 @@ const WalkItemsList = ({
             label="Added by"
             onClick={() => {
               setSortType('addedBy.displayName');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'addedBy.displayName' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'addedBy.displayName'}
-            sortOrder={sortType === 'addedBy.displayName' && sortOrder}
+            sortOrder={sortType === 'addedBy.displayName' ? sortOrder : undefined}
             w="20%"
           />
           <AdminTableHeaderElement
             label="Added at"
             onClick={() => {
               setSortType('metatags.addedAt');
-              setSortOrder(!sortOrder);
+              setSortOrder(sortOrder === 'asc' && sortType === 'metatags.addedAt' ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === 'metatags.addedAt'}
-            sortOrder={sortType === 'metatags.addedAt' && sortOrder}
+            sortOrder={sortType === 'metatags.addedAt' ? sortOrder : undefined}
             w="20%"
           />
         </AdminTableHeader>

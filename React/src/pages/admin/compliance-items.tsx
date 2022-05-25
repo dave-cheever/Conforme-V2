@@ -1,15 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Box,
-  Flex,
-  Modal,
-  ModalOverlay,
-  Spacer,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Modal, ModalOverlay, Spacer, Stack, Text } from '@chakra-ui/react';
 
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
@@ -19,9 +11,7 @@ import DeleteComplianceItemModal from '../../components/AdminComplianceItemModal
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { useAdminContext } from '../../contexts/AdminProvider';
-import ComplianceItemModalProvider, {
-  useComplianceItemModalContext,
-} from '../../contexts/ComplianceItemModalProvider';
+import ComplianceItemModalProvider, { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import { Copy, Trashcan } from '../../icons';
@@ -64,30 +54,17 @@ const GET_COMPLIANCE_ITEMS = gql`
 
 const ComplianceItemsAdmin = () => {
   const device = useDevice();
-  const { filtersValues, setUsedFilters, setShowFiltersPanel, cleanFilters } =
-    useFiltersContext();
+  const { filtersValues, setUsedFilters, setShowFiltersPanel, cleanFilters } = useFiltersContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_COMPLIANCE_ITEMS);
   const { complianceItem, reset } = useComplianceItemModalContext();
-  const complianceItems = useMemo(
-    () =>
-      [...(data?.complianceItems || [])].sort((a, b) =>
-        a.name.localeCompare(b.name),
-      ),
-    [data],
-  );
+  const complianceItems = useMemo(() => [...(data?.complianceItems || [])].sort((a, b) => a.name.localeCompare(b.name)), [data]);
   const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortedData, setSortedData] = useState<any>([]);
 
   useEffect(() => {
-    setUsedFilters([
-      'complianceItemsIds',
-      'categoriesIds',
-      'locationsIds',
-      'businessUnitsIds',
-      'regulatoryBodiesIds',
-    ]);
+    setUsedFilters(['complianceItemsIds', 'categoriesIds', 'locationsIds', 'businessUnitsIds', 'regulatoryBodiesIds']);
     return () => {
       setShowFiltersPanel(false);
       cleanFilters();
@@ -95,32 +72,27 @@ const ComplianceItemsAdmin = () => {
   }, []);
 
   useEffect(() => {
-    setSortedData(
-      [...complianceItems].sort((a, b) => a.name.localeCompare(b.name)),
-    );
+    setSortedData([...complianceItems].sort((a, b) => a.name.localeCompare(b.name)));
   }, [complianceItems]);
 
   useEffect(() => {
-    const parsedFilters = Object.entries(filtersValues).reduce(
-      (acc, [key, value]) => {
-        if (
-          !value.value ||
-          (Array.isArray(value.value) && value.value.length === 0) ||
-          (key === 'usersIds' &&
-            value.value.responsibleIds.length === 0 &&
-            value.value.accountableIds.length === 0 &&
-            value.value.contributorIds.length === 0 &&
-            value.value.followerIds.length === 0)
-        )
-          return acc;
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, [key, value]) => {
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' &&
+          value.value.responsibleIds.length === 0 &&
+          value.value.accountableIds.length === 0 &&
+          value.value.contributorIds.length === 0 &&
+          value.value.followerIds.length === 0)
+      )
+        return acc;
 
-        return {
-          ...acc,
-          [key]: value.value,
-        };
-      },
-      {},
-    );
+      return {
+        ...acc,
+        [key]: value.value,
+      };
+    }, {});
     refetch({ complianceItemsQueryInput: parsedFilters });
   }, [filtersValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -128,22 +100,16 @@ const ComplianceItemsAdmin = () => {
     if (sortOrder) {
       setSortedData(
         [...complianceItems].sort((a, b) => {
-          if (sortType === 'regulatoryBody') {
-            return a.regulatoryBody?.name
-              .toString()
-              .localeCompare(b.regulatoryBody?.name.toString());
-          }
+          if (sortType === 'regulatoryBody') return a.regulatoryBody?.name.toString().localeCompare(b.regulatoryBody?.name.toString());
+
           return a[sortType].localeCompare(b[sortType]);
         }),
       );
     } else {
       setSortedData(
         [...complianceItems].sort((a, b) => {
-          if (sortType === 'regulatoryBody') {
-            return b.regulatoryBody?.name
-              .toString()
-              .localeCompare(a.regulatoryBody?.name.toString());
-          }
+          if (sortType === 'regulatoryBody') return b.regulatoryBody?.name.toString().localeCompare(a.regulatoryBody?.name.toString());
+
           return b[sortType].localeCompare(a[sortType]);
         }),
       );
@@ -154,10 +120,7 @@ const ComplianceItemsAdmin = () => {
     if (adminModalState === 'closed') reset();
   }, [adminModalState]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const openModal = (
-    action: AdminModalState,
-    complianceItem: IComplianceItem,
-  ) => {
+  const openModal = (action: AdminModalState, complianceItem: IComplianceItem) => {
     setAdminModalState(action);
     reset(
       {
@@ -193,13 +156,7 @@ const ComplianceItemsAdmin = () => {
         isOpen={adminModalState !== 'closed'}
         key={complianceItem._id}
         onClose={() => {}}
-        size={
-          device === 'desktop' ||
-          device === 'tablet' ||
-          adminModalState === 'delete'
-            ? '2xl'
-            : 'full'
-        }
+        size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
       >
         <ModalOverlay />
@@ -211,25 +168,18 @@ const ComplianceItemsAdmin = () => {
           <ComplianceItemModal refetch={refetch} />
         )}
       </Modal>
-      <Header
-        breadcrumbs={['Admin', 'Compliance items']}
-        mobileBreadcrumbs={['Compliance items']}
-      />
-      <Box
-        h={['full', 'calc(100vh - 160px)']}
-        overflow="auto"
-        p="0 25px 30px 30px"
-      >
+      <Header breadcrumbs={['Admin', 'Compliance items']} mobileBreadcrumbs={['Compliance items']} />
+      <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
         <Box h={['calc(100% - 45px)', 'calc(100% - 35px)']} w="100%">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Compliance items"
               onClick={() => {
                 setSortType('name');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' && !sortOrder}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
               w={['80%', 'calc(100% / 4)']}
             />
             {device !== 'mobile' && (
@@ -238,27 +188,25 @@ const ComplianceItemsAdmin = () => {
                   label="Frequency"
                   onClick={() => {
                     setSortType('frequency');
-                    setSortOrder(!sortOrder);
+                    setSortOrder(sortOrder === 'asc' && sortType === 'frequency' ? 'desc' : 'asc');
                   }}
                   showSortingIcon={sortType === 'frequency'}
-                  sortOrder={sortType === 'frequency' && !sortOrder}
+                  sortOrder={sortType === 'frequency' ? sortOrder : undefined}
                   w="calc(100% / 4)"
                 />
                 <AdminTableHeaderElement
                   label="Regulatory body"
                   onClick={() => {
                     setSortType('regulatoryBody');
-                    setSortOrder(!sortOrder);
+                    setSortOrder(sortOrder === 'asc' && sortType === 'regulatoryBody' ? 'desc' : 'asc');
                   }}
                   showSortingIcon={sortType === 'regulatoryBody'}
-                  sortOrder={sortType === 'regulatoryBody' && !sortOrder}
+                  sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
                   w="calc(100% / 4)"
                 />
                 <Flex w="calc(100% / 4)">
                   <Spacer />
-                  <Text color="complianceItemsAdminWithContext.labelColor">
-                    Actions
-                  </Text>
+                  <Text color="complianceItemsAdminWithContext.labelColor">Actions</Text>
                 </Flex>
               </>
             )}
@@ -292,20 +240,13 @@ const ComplianceItemsAdmin = () => {
                   >
                     <Box fontSize="smm">
                       {complianceItem.name || (
-                        <Text
-                          color="adminComplianceItems.element.unnamed"
-                          fontStyle="italic"
-                        >
+                        <Text color="adminComplianceItems.element.unnamed" fontStyle="italic">
                           Unnamed compliance item
                         </Text>
                       )}
                     </Box>
                     <Flex alignItems="center">
-                      <Box
-                        color="adminComplianceItems.element.category"
-                        fontSize="11px"
-                        lineHeight="25px"
-                      >
+                      <Box color="adminComplianceItems.element.category" fontSize="11px" lineHeight="25px">
                         {complianceItem.category?.name}
                       </Box>
                       {!complianceItem.published && (
@@ -324,16 +265,10 @@ const ComplianceItemsAdmin = () => {
                   </Flex>
                   {device !== 'mobile' && (
                     <>
-                      <Box
-                        onClick={() => openModal('edit', complianceItem)}
-                        w="calc(100% / 4)"
-                      >
+                      <Box onClick={() => openModal('edit', complianceItem)} w="calc(100% / 4)">
                         {complianceItem.frequency}{' '}
                       </Box>
-                      <Box
-                        onClick={() => openModal('edit', complianceItem)}
-                        w="calc(100% / 4)"
-                      >
+                      <Box onClick={() => openModal('edit', complianceItem)} w="calc(100% / 4)">
                         {complianceItem.regulatoryBody?.name}
                       </Box>
                     </>

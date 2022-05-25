@@ -2,17 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Select,
-  Spacer,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Select, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -78,10 +68,7 @@ const defaultValues: Partial<IAuditType> = {
 
 const AuditTypes = () => {
   const toast = useToast();
-  const frequencyOptions = useMemo(
-    () => auditFrequencies.map((f) => ({ value: f, label: f })),
-    [],
-  );
+  const frequencyOptions = useMemo(() => auditFrequencies.map((f) => ({ value: f, label: f })), []);
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_AUDIT_TYPES);
   const [createFunction] = useMutation(CREATE_AUDIT_TYPE);
@@ -89,7 +76,7 @@ const AuditTypes = () => {
   const [deleteFunction] = useMutation(DELETE_AUDIT_TYPE);
   const device = useDevice();
   const [sortType, setSortType] = useState('name');
-  const [sortOrder, setSortOrder] = useState(true);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const getAuditTypes = (auditTypesArray: IAuditType[]) => {
     if (!auditTypesArray) return [];
@@ -101,9 +88,7 @@ const AuditTypes = () => {
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
   };
-  const [auditTypes, setAuditTypes] = useState<IAuditType[]>(
-    getAuditTypes(data?.auditTypes),
-  );
+  const [auditTypes, setAuditTypes] = useState<IAuditType[]>(getAuditTypes(data?.auditTypes));
 
   useEffect(() => {
     setAuditTypes(getAuditTypes(data?.auditTypes));
@@ -113,15 +98,9 @@ const AuditTypes = () => {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') {
-        return (a.owner?.displayName || '').localeCompare(
-          b.owner?.displayName || '',
-        );
-      }
+      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
 
-      return (a[sortType] || 0)
-        .toString()
-        .localeCompare((b[sortType] || 0).toString());
+      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
     };
     if (sortOrder) setAuditTypes([...auditTypes].sort((a, b) => sort(a, b)));
     else setAuditTypes([...auditTypes].sort((a, b) => sort(b, a)));
@@ -148,10 +127,7 @@ const AuditTypes = () => {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openAuditTypeModal = (
-    action: 'edit' | 'delete',
-    auditType: IAuditType,
-  ) => {
+  const openAuditTypeModal = (action: 'edit' | 'delete', auditType: IAuditType) => {
     setAdminModalState(action);
     reset({
       _id: auditType?._id,
@@ -270,14 +246,7 @@ const AuditTypes = () => {
       p={4}
       w="full"
     >
-      <Flex
-        cursor="pointer"
-        flexDir="column"
-        mr={4}
-        onClick={() => openAuditTypeModal('edit', auditType)}
-        pl={1}
-        w="full"
-      >
+      <Flex cursor="pointer" flexDir="column" mr={4} onClick={() => openAuditTypeModal('edit', auditType)} pl={1} w="full">
         <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {auditType.name}
         </Text>
@@ -287,16 +256,8 @@ const AuditTypes = () => {
 
   return (
     <>
-      <AdminModal
-        collection="audit types"
-        isOpenModal={adminModalState !== 'closed'}
-        modalType={adminModalState}
-        onAction={handleAction}
-      >
-        <Stack
-          spacing={2}
-          w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}
-        >
+      <AdminModal collection="audit types" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
+        <Stack spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
             control={control}
             label="Audit type name"
@@ -346,14 +307,7 @@ const AuditTypes = () => {
           />
           <Stack>
             <Flex align="center" justify="space-between" mb="none" pt={4}>
-              <Box
-                color="dropdown.labelFont.normal"
-                fontSize="14px"
-                fontWeight="bold"
-                left="none"
-                position="static"
-                zIndex={1}
-              >
+              <Box color="dropdown.labelFont.normal" fontSize="14px" fontWeight="bold" left="none" position="static" zIndex={1}>
                 Sections
               </Box>
             </Flex>
@@ -417,12 +371,7 @@ const AuditTypes = () => {
                         css={{ paddingTop: '0' }}
                         fontSize="smm"
                         h="42px"
-                        icon={
-                          <ChevronRight
-                            stroke="dropdown.chevronDownIcon"
-                            transform="rotate(90deg)"
-                          />
-                        }
+                        icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
                         onChange={(e) =>
                           setValue(
                             'sections',
@@ -440,9 +389,7 @@ const AuditTypes = () => {
                         top="5px"
                         value={section._id}
                       >
-                        <option value={undefined}>
-                          Please select questions category
-                        </option>
+                        <option value={undefined}>Please select questions category</option>
                         {questionsCategories?.map(({ _id, name }) => (
                           <option key={_id} value={_id}>
                             {name}
@@ -464,62 +411,35 @@ const AuditTypes = () => {
               fontSize="smm"
               fontWeight="bold"
               mt={16}
-              onClick={() =>
-                setValue('sections', [
-                  ...sections,
-                  { type: 'questionsCategory' },
-                ])
-              }
+              onClick={() => setValue('sections', [...sections, { type: 'questionsCategory' }])}
             >
               Add section
             </Button>
           </Stack>
         </Stack>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Audit types']}
-        mobileBreadcrumbs={['Audit types']}
-      />
+      <Header breadcrumbs={['Admin', 'Audit types']} mobileBreadcrumbs={['Audit types']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box
-          h={['calc(100% - 90px)', 'calc(100% - 35px)']}
-          p={[0, '0 25px 30px 30px']}
-          w="full"
-        >
+        <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Name"
               onClick={() => {
                 setSortType('name');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' && !sortOrder}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
               w="full"
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center />
             ) : auditTypes?.length > 0 ? (
               auditTypes?.map(renderAuditTypeRow)
             ) : (
-              <Flex
-                fontSize="18px"
-                fontStyle="italic"
-                h="full"
-                justify="center"
-                mt={4}
-                w="full"
-              >
+              <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No audit types found
               </Flex>
             )}

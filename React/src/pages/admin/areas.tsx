@@ -255,10 +255,10 @@ const Areas = () => {
               label="Area name"
               onClick={() => {
                 setSortType('name');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' && sortOrder}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
               w={['80%', '30%']}
             />
             {device !== 'mobile' && (
@@ -266,10 +266,10 @@ const Areas = () => {
                 label="Owner"
                 onClick={() => {
                   setSortType('owner.displayName');
-                  setSortOrder(!sortOrder);
+                  setSortOrder(sortOrder === 'asc' && sortType === 'owner.displayName' ? 'desc' : 'asc');
                 }}
                 showSortingIcon={sortType === 'owner.displayName'}
-                sortOrder={sortType === 'owner.displayName' && sortOrder}
+                sortOrder={sortType === 'owner.displayName' ? sortOrder : undefined}
                 w="calc(70% / 2)"
               />
             )}
@@ -277,10 +277,10 @@ const Areas = () => {
               label="# of audits"
               onClick={() => {
                 setSortType('totalAuditsCount');
-                setSortOrder(!sortOrder);
+                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
               }}
               showSortingIcon={sortType === 'totalAuditsCount'}
-              sortOrder={sortType === 'totalAuditsCount' && sortOrder}
+              sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
               w={['20%', 'calc(70% / 2)']}
             />
           </AdminTableHeader>
