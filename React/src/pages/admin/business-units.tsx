@@ -231,7 +231,7 @@ const BusinessUnits = () => {
             h="10px"
             ml="13px"
             onClick={() => {
-              setResponseFiltersValue({ businessUnitsIds: [businessUnit._id] });
+              setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
               navigateTo('/');
             }}
             stroke="#282F36"

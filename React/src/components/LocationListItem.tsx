@@ -8,13 +8,7 @@ import useNavigate from '../hooks/useNavigate';
 import { ArrowCount } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
 
-const LocationListItem = ({
-  location,
-  openLocationModal,
-}: {
-  location: ILocation;
-  openLocationModal;
-}) => {
+const LocationListItem = ({ location, openLocationModal }: { location: ILocation; openLocationModal }) => {
   const device = useDevice();
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
@@ -70,7 +64,7 @@ const LocationListItem = ({
             h="10px"
             ml="13px"
             onClick={() => {
-              setResponseFiltersValue({ locationsIds: [location._id] });
+              setResponseFiltersValue({ locationsIds: { value: [location._id] } });
               navigateTo('/');
             }}
             stroke="locations.tooltipStroke"

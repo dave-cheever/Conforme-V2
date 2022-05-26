@@ -2,37 +2,23 @@ import { Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useNavigate from '../hooks/useNavigate';
-import { IAuditFilters } from '../interfaces/IFilters';
 
-const UserAuditsCount = ({
-  status,
-  auditsCount,
-  userId,
-}: {
-  status?: string;
-  auditsCount?: number;
-  userId: string;
-}) => {
-  const { filtersValues, setFilters } = useFiltersContext();
+const UserAuditsCount = ({ status, auditsCount, userId }: { status?: string; auditsCount?: number; userId: string }) => {
+  const { setAuditFiltersValue } = useFiltersContext();
   const { navigateTo } = useNavigate();
 
-  const handleFilter = ({ status, userId }) => {
-    const statusFilter = (filtersValues as IAuditFilters).status?.value;
-    const userFilter = (filtersValues as IAuditFilters).usersIds?.value;
-
-    setFilters({
-      usersIds: {
-        ...userFilter,
-        auditorIds: [userId],
-      },
-      status: [...(statusFilter ?? []), status],
-    });
-  };
-
   const handleClick = () => {
-    localStorage.setItem('viewMode', 'grid');
     navigateTo('/');
-    handleFilter({ status, userId });
+    setAuditFiltersValue({
+      usersIds: {
+        value: {
+          auditorsIds: [userId],
+        },
+      },
+      status: {
+        value: status ? [status] : null,
+      },
+    });
   };
 
   return (

@@ -15,14 +15,8 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Responses, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
-const responses = async (
-  _,
-  { responsesQuery },
-  { authorize, organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (elements: string[]) =>
-    doesPathExist(info.fieldNodes, ['responses', ...elements]);
+const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['responses', ...elements]);
   try {
     const user = await authorize();
     const pipeline: any[] = [
@@ -33,9 +27,7 @@ const responses = async (
       },
     ];
 
-    if (
-      !isPermitted({ user, action: 'responses.viewAll', data: { response } })
-    ) {
+    if (!isPermitted({ user, action: 'responses.viewAll', data: { response } })) {
       pipeline.push({
         $match: {
           $or: [
@@ -176,12 +168,7 @@ const responses = async (
     }
 
     // Filter by published state
-    if (
-      !(
-        responsesQuery?.includeNotPublished &&
-        isPermitted({ user, action: 'responses.viewAll' })
-      )
-    ) {
+    if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
       pipeline.push({
         $match: {
           published: true,
@@ -226,22 +213,22 @@ const responses = async (
     // Filter by user id (in compliance item)
     if (responsesQuery?.usersIds) {
       const conds: any = [];
-      if (responsesQuery?.usersIds.responsibleIds.length > 0) {
+      if (responsesQuery?.usersIds.responsibleIds?.length > 0) {
         conds.push({
           responsibleId: { $in: responsesQuery.usersIds.responsibleIds },
         });
       }
-      if (responsesQuery?.usersIds.accountableIds.length > 0) {
+      if (responsesQuery?.usersIds.accountableIds?.length > 0) {
         conds.push({
           accountableId: { $in: responsesQuery.usersIds.accountableIds },
         });
       }
-      if (responsesQuery?.usersIds.contributorIds.length > 0) {
+      if (responsesQuery?.usersIds.contributorIds?.length > 0) {
         conds.push({
           contributorsIds: { $in: responsesQuery.usersIds.contributorIds },
         });
       }
-      if (responsesQuery?.usersIds.followerIds.length > 0) {
+      if (responsesQuery?.usersIds.followerIds?.length > 0) {
         conds.push({
           followersIds: { $in: responsesQuery.usersIds.followerIds },
         });

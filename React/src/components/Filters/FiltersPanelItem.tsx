@@ -14,21 +14,12 @@ import RegulatoryBodyFilter from './RegulatoryBodyFilter';
 import StateChoiceFilter from './StateChoiceFilter';
 import UserFilter from './UserFilter';
 
-const FiltersPanelItem = ({
-  name,
-  filter,
-}: {
-  name: string;
-  filter: IFilter;
-}) => {
+const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) => {
   const { isOpen, onToggle } = useDisclosure();
   const { setFilters, filtersValues } = useFiltersContext();
 
   const filtersLength = useMemo(
-    () =>
-      Array.isArray(filtersValues?.[name]?.value)
-        ? filtersValues?.[name]?.value?.length
-        : 0,
+    () => (Array.isArray(filtersValues?.[name]?.value) ? filtersValues?.[name]?.value?.length : 0),
     [filtersValues, name],
   );
 
@@ -80,19 +71,8 @@ const FiltersPanelItem = ({
       p="3"
       w="full"
     >
-      <Flex
-        align="center"
-        cursor="pointer"
-        justify="space-between"
-        mb={isOpen ? '4' : '0'}
-        w="full"
-      >
-        <Text
-          color="filtersPanelItem.fontColor"
-          fontSize="14px"
-          onClick={onToggle}
-          w="full"
-        >
+      <Flex align="center" cursor="pointer" justify="space-between" mb={isOpen ? '4' : '0'} w="full">
+        <Text color="filtersPanelItem.fontColor" fontSize="14px" onClick={onToggle} w="full">
           {filter?.name}
         </Text>
         <Flex>
@@ -109,14 +89,8 @@ const FiltersPanelItem = ({
               {filtersLength}
             </Box>
           )}
-          {isOpen && filtersLength > 0 && (
-            <ResetIcon mr={3} onClick={resetFilter} />
-          )}
-          {isOpen ? (
-            <ArrowUpIcon onClick={onToggle} />
-          ) : (
-            <ArrowDownIcon onClick={onToggle} />
-          )}
+          {isOpen && filtersLength > 0 && <ResetIcon mr={3} onClick={resetFilter} />}
+          {isOpen ? <ArrowUpIcon onClick={onToggle} /> : <ArrowDownIcon onClick={onToggle} />}
         </Flex>
       </Flex>
       {isOpen && renderPanel()}

@@ -41,10 +41,11 @@ export interface IWalkItemUserFilter {
 }
 
 export interface IResponseFilters {
-  locationsIds?: string[] | undefined;
-  categoriesIds?: string[] | undefined;
-  businessUnitsIds?: string[] | undefined;
-  regulatoryBodiesIds?: string[] | undefined;
+  locationsIds?: IFilter;
+  categoriesIds?: IFilter;
+  businessUnitsIds?: IFilter;
+  regulatoryBodiesIds?: IFilter;
+  usersIds?: IUserFilter;
 }
 
 export interface IAuditFilters {
@@ -78,11 +79,7 @@ export default interface IFilters {
   usersRoles?: IFilter;
   collections?: IFilter;
   action?: IFilter;
-  usersIds?:
-    | IUserFilter
-    | IAuditUserFilter
-    | IActionUserFilter
-    | IWalkItemUserFilter;
+  usersIds?: IUserFilter | IAuditUserFilter | IActionUserFilter | IWalkItemUserFilter;
   locationsIds?: IFilter;
   sitesIds?: IFilter;
   areasIds?: IFilter;

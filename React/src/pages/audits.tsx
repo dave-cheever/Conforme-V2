@@ -80,8 +80,12 @@ const Audits = () => {
 
   useEffect(() => {
     if (auditFiltersValue && !isEmpty(auditFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
-      setFilters(auditFiltersValue);
-      setAuditFiltersValue({});
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(auditFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setAuditFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
     }
   }, [filtersValues, usedFilters, setAuditFiltersValue, auditFiltersValue, setFilters]);
 

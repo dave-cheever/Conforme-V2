@@ -2,56 +2,47 @@ import { Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useNavigate from '../hooks/useNavigate';
-import { IUserFilter } from '../interfaces/IFilters';
 
 const UserResponseCount = ({ userId, role, responseCount }) => {
-  const { filtersValues, setFilters } = useFiltersContext();
+  const { setFilters, setResponseFiltersValue } = useFiltersContext();
   const { navigateTo } = useNavigate();
 
-  const handleUserChange = ({ userRole, value }) => {
-    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
-    switch (userRole) {
+  const handleClick = () => {
+    navigateTo('/');
+    switch (role) {
       case 'responsible':
-        setFilters({
+        setResponseFiltersValue({
           usersIds: {
-            ...userIdsFilter,
-            responsibleIds: value,
+            value: {
+              responsibleIds: [userId],
+            },
           },
         });
         break;
       case 'accountable':
         setFilters({
           usersIds: {
-            ...userIdsFilter,
-            accountableIds: value,
+            accountableIds: [userId],
           },
         });
         break;
       case 'contributor':
         setFilters({
           usersIds: {
-            ...userIdsFilter,
-            contributorIds: value,
+            contributorIds: [userId],
           },
         });
         break;
       case 'follower':
         setFilters({
           usersIds: {
-            ...userIdsFilter,
-            followerIds: value,
+            followerIds: [userId],
           },
         });
         break;
       default:
         break;
     }
-  };
-
-  const handleClick = () => {
-    localStorage.setItem('viewMode', 'Grid');
-    navigateTo('/');
-    handleUserChange({ userRole: role, value: [userId] });
   };
 
   return (

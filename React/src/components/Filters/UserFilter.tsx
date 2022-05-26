@@ -1,32 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import {
-  Box,
-  Flex,
-  Input,
-  InputGroup,
-  Select,
-  Spacer,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Input, InputGroup, Select, Spacer, Text } from '@chakra-ui/react';
 
-import {
-  actionUserRoles,
-  auditUserRoles,
-  userRoles,
-  walkItemUserRoles,
-} from '../../bootstrap/config';
+import { actionUserRoles, auditUserRoles, userRoles, walkItemUserRoles } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowDownIcon, CrossIcon, Magnifier } from '../../icons';
-import {
-  IActionUserFilter,
-  IAuditUserFilter,
-  IUserFilter,
-  IWalkItemUserFilter,
-} from '../../interfaces/IFilters';
+import { IActionUserFilter, IAuditUserFilter, IUserFilter, IWalkItemUserFilter } from '../../interfaces/IFilters';
 import { IUser } from '../../interfaces/IUser';
 import UsersSelector from '../UsersSelector';
 
@@ -48,9 +30,7 @@ const UserFilter = () => {
         return 'auditor';
     }
   }, [location.pathname]);
-  const [selectedRole, setSelectedRole] = useState<string>(
-    module?.type === 'tracker' ? 'responsible' : auditSelectedUserRole,
-  );
+  const [selectedRole, setSelectedRole] = useState<string>(module?.type === 'tracker' ? 'responsible' : auditSelectedUserRole);
 
   const baseAuditUserRoles = useMemo(() => {
     switch (getPath()) {
@@ -80,18 +60,14 @@ const UserFilter = () => {
         return [
           {
             name: 'assignee',
-            count:
-              (filtersValues.usersIds as IActionUserFilter)?.value?.assigneesIds
-                ?.length || 0,
+            count: (filtersValues.usersIds as IActionUserFilter)?.value?.assigneesIds?.length || 0,
           },
         ];
       case 'walk-items':
         return [
           {
             name: 'addedBy',
-            count:
-              (filtersValues.usersIds as IWalkItemUserFilter)?.value?.addedByIds
-                ?.length || 0,
+            count: (filtersValues.usersIds as IWalkItemUserFilter)?.value?.addedByIds?.length || 0,
           },
         ];
       case 'audits':
@@ -99,15 +75,11 @@ const UserFilter = () => {
         return [
           {
             name: 'auditor',
-            count:
-              (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds
-                ?.length || 0,
+            count: (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds?.length || 0,
           },
           {
             name: 'participant',
-            count:
-              (filtersValues.usersIds as IAuditUserFilter)?.value
-                ?.participantsIds?.length || 0,
+            count: (filtersValues.usersIds as IAuditUserFilter)?.value?.participantsIds?.length || 0,
           },
         ];
     }
@@ -118,27 +90,19 @@ const UserFilter = () => {
         ? [
             {
               name: 'responsible',
-              count:
-                (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds
-                  ?.length || 0,
+              count: (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds?.length || 0,
             },
             {
               name: 'accountable',
-              count:
-                (filtersValues.usersIds as IUserFilter)?.value?.accountableIds
-                  ?.length || 0,
+              count: (filtersValues.usersIds as IUserFilter)?.value?.accountableIds?.length || 0,
             },
             {
               name: 'contributor',
-              count:
-                (filtersValues.usersIds as IUserFilter)?.value?.contributorIds
-                  ?.length || 0,
+              count: (filtersValues.usersIds as IUserFilter)?.value?.contributorIds?.length || 0,
             },
             {
               name: 'follower',
-              count:
-                (filtersValues.usersIds as IUserFilter)?.value?.followerIds
-                  ?.length || 0,
+              count: (filtersValues.usersIds as IUserFilter)?.value?.followerIds?.length || 0,
             },
           ]
         : selectedAuditRoleUsers,
@@ -158,14 +122,11 @@ const UserFilter = () => {
       case 'auditor':
         return (filtersValues.usersIds as IAuditUserFilter)?.value?.auditorsIds;
       case 'assignee':
-        return (filtersValues.usersIds as IActionUserFilter)?.value
-          ?.assigneesIds;
+        return (filtersValues.usersIds as IActionUserFilter)?.value?.assigneesIds;
       case 'addedBy':
-        return (filtersValues.usersIds as IWalkItemUserFilter)?.value
-          ?.addedByIds;
+        return (filtersValues.usersIds as IWalkItemUserFilter)?.value?.addedByIds;
       case 'participant':
-        return (filtersValues.usersIds as IAuditUserFilter)?.value
-          ?.participantsIds;
+        return (filtersValues.usersIds as IAuditUserFilter)?.value?.participantsIds;
       default:
         break;
     }
@@ -360,13 +321,11 @@ const UserFilter = () => {
           setSelectedRole(value.target.value);
         }}
       >
-        {(module?.type === 'tracker' ? userRoles : baseAuditUserRoles).map(
-          (role, i) => (
-            <option key={i} value={role.value}>
-              {role.label}
-            </option>
-          ),
-        )}
+        {(module?.type === 'tracker' ? userRoles : baseAuditUserRoles).map((role, i) => (
+          <option key={i} value={role.value}>
+            {role.label}
+          </option>
+        ))}
       </Select>
 
       <InputGroup>
@@ -391,12 +350,7 @@ const UserFilter = () => {
           ?.filter((selectedRoleUser) => selectedRoleUser.count !== 0)
           .map((selectedRoleUser, i) => (
             <Flex key={i} py="5px">
-              <Text
-                color="usersSelector.roles.selectedRole.label"
-                fontSize="smm"
-                fontWeight="semi_medium"
-                textTransform="capitalize"
-              >
+              <Text color="usersSelector.roles.selectedRole.label" fontSize="smm" fontWeight="semi_medium" textTransform="capitalize">
                 {`${selectedRoleUser.count} ${selectedRoleUser.name}`}
               </Text>
               <Spacer />
@@ -404,9 +358,7 @@ const UserFilter = () => {
                 cursor="pointer"
                 h="15px"
                 onClick={() =>
-                  module?.type === 'tracker'
-                    ? handleClearFilter(selectedRoleUser)
-                    : handleClearAuditFilter(selectedRoleUser)
+                  module?.type === 'tracker' ? handleClearFilter(selectedRoleUser) : handleClearAuditFilter(selectedRoleUser)
                 }
                 stroke="usersSelector.roles.selectedRole.crossIcon"
                 w="15px"
@@ -416,9 +368,7 @@ const UserFilter = () => {
       </Box>
 
       <UsersSelector
-        handleChange={
-          module?.type === 'tracker' ? handleUserChange : handleAuditUserChange
-        }
+        handleChange={module?.type === 'tracker' ? handleUserChange : handleAuditUserChange}
         searchText={searchText}
         selected={selectedUsers}
         selectedRole={selectedRole}

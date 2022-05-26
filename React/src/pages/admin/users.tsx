@@ -188,18 +188,6 @@ const Users = () => {
           tooltip="Number of overdue audits"
           w="calc(25% - 13px)"
         />
-        <AdminTableHeaderElement
-          label="T"
-          ml="13px"
-          onClick={() => {
-            setSortType('totalAuditsCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'totalAuditsCount'}
-          sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
-          tooltip="Total number of audits"
-          w="calc(25% - 13px)"
-        />
       </>
     );
 
@@ -233,10 +221,10 @@ const Users = () => {
       </>
     ) : (
       <>
+        <UserAuditsCount auditsCount={user.totalAuditsCount} userId={user._id} />
         <UserAuditsCount auditsCount={user.completedAuditsCount} status="completed" userId={user._id} />
         <UserAuditsCount auditsCount={user.upcomingAuditsCount} userId={user._id} />
         <UserAuditsCount auditsCount={user.overdueAuditsCount} userId={user._id} />
-        <UserAuditsCount auditsCount={user.totalAuditsCount} userId={user._id} />
       </>
     );
 

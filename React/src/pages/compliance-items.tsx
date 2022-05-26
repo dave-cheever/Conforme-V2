@@ -1,16 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Button,
-  Flex,
-  Grid,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 
 import ComplianceItemsGroup from '../components/ComplianceItem/ComplianceItemsGroup';
@@ -101,22 +92,15 @@ const ComplianceItems = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      responseFiltersValue &&
-      !isEmpty(responseFiltersValue) &&
-      !isEmpty(filtersValues) &&
-      !isEmpty(usedFilters)
-    ) {
-      setFilters(responseFiltersValue);
-      setResponseFiltersValue({});
+    if (responseFiltersValue && !isEmpty(responseFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(responseFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setResponseFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
     }
-  }, [
-    filtersValues,
-    usedFilters,
-    setResponseFiltersValue,
-    responseFiltersValue,
-    setFilters,
-  ]);
+  }, [filtersValues, usedFilters, setResponseFiltersValue, responseFiltersValue, setFilters]);
 
   useEffect(() => {
     const responsesStatusesCounts = {
@@ -137,20 +121,14 @@ const ComplianceItems = () => {
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
-    if (
-      savedView &&
-      (savedView === 'Grid' || savedView === 'List' || savedView === 'Group')
-    )
-      return savedView;
+    if (savedView && (savedView === 'Grid' || savedView === 'List' || savedView === 'Group')) return savedView;
 
     if (user?.role === 'admin') return 'List';
 
     return 'Grid';
   }, [user]);
 
-  const [viewMode, setViewMode] = useState<'Grid' | 'List' | 'Group'>(
-    initialViewMode,
-  );
+  const [viewMode, setViewMode] = useState<'Grid' | 'List' | 'Group'>(initialViewMode);
 
   // use Memo not working for hook, used this for mobile
   useEffect(() => {
@@ -169,34 +147,31 @@ const ComplianceItems = () => {
   // Filter responses (server side)
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce(
-      (acc, filter) => {
-        if (!filter || !filter[1]) return { ...acc };
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1]) return { ...acc };
 
-        const [key, value] = filter;
+      const [key, value] = filter;
 
-        if (key === 'itemStatus') {
-          // itemStatus is client side filter
-          return acc;
-        }
-        if (
-          !value.value ||
-          (Array.isArray(value.value) && value.value.length === 0) ||
-          (key === 'usersIds' &&
-            value.value.responsibleIds.length === 0 &&
-            value.value.accountableIds.length === 0 &&
-            value.value.contributorIds.length === 0 &&
-            value.value.followerIds.length === 0)
-        )
-          return acc;
+      if (key === 'itemStatus') {
+        // itemStatus is client side filter
+        return acc;
+      }
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' &&
+          value.value.responsibleIds.length === 0 &&
+          value.value.accountableIds.length === 0 &&
+          value.value.contributorIds.length === 0 &&
+          value.value.followerIds.length === 0)
+      )
+        return acc;
 
-        return {
-          ...acc,
-          [key]: value.value,
-        };
-      },
-      {},
-    );
+      return {
+        ...acc,
+        [key]: value.value,
+      };
+    }, {});
     refetch({ responsesQuery: parsedFilters });
   }, [filtersValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -209,35 +184,14 @@ const ComplianceItems = () => {
 
     if (data && data?.responses?.length !== 0 && !error) {
       let items = [...data?.responses];
-      if (
-        filtersValues?.itemStatus?.value &&
-        filtersValues?.itemStatus?.value?.length! > 0
-      ) {
+      if (filtersValues?.itemStatus?.value && filtersValues?.itemStatus?.value?.length! > 0) {
         const statusFilteredResults: IResponse[] = [];
         for (const filter of filtersValues?.itemStatus?.value!) {
-          if (
-            [
-              'notStarted',
-              'inProgress',
-              'completed',
-              'comingUp',
-              'overdue',
-            ].includes(filter)
-          ) {
-            statusFilteredResults.push(
-              ...items.filter(
-                (response) => getRenewalStatus(response) === filter,
-              ),
-            );
-          } else if (['compliant', 'nonCompliant'].includes(filter)) {
-            statusFilteredResults.push(
-              ...items.filter((response) => getStatus(response) === filter),
-            );
-          } else if (filter === 'noDueDate') {
-            statusFilteredResults.push(
-              ...items.filter((response) => response.daysToDueDate === null),
-            );
-          }
+          if (['notStarted', 'inProgress', 'completed', 'comingUp', 'overdue'].includes(filter))
+            statusFilteredResults.push(...items.filter((response) => getRenewalStatus(response) === filter));
+          else if (['compliant', 'nonCompliant'].includes(filter))
+            statusFilteredResults.push(...items.filter((response) => getStatus(response) === filter));
+          else if (filter === 'noDueDate') statusFilteredResults.push(...items.filter((response) => response.daysToDueDate === null));
         }
         items = Array.from(new Set(statusFilteredResults.flat()));
       }
@@ -252,10 +206,7 @@ const ComplianceItems = () => {
 
   return (
     <>
-      <Header
-        breadcrumbs={['Compliance items']}
-        mobileBreadcrumbs={['Compliance items']}
-      >
+      <Header breadcrumbs={['Compliance items']} mobileBreadcrumbs={['Compliance items']}>
         {device !== 'mobile' && (
           <Menu autoSelect={false}>
             {
@@ -269,15 +220,7 @@ const ComplianceItems = () => {
                 fontWeight="700"
                 h="40px"
                 ml={['15px', '0']}
-                rightIcon={
-                  <ChevronRight
-                    color="complianceItems.header.rightIcon"
-                    h="12px"
-                    mt="3px"
-                    transform="rotate(90deg)"
-                    w="12px"
-                  />
-                }
+                rightIcon={<ChevronRight color="complianceItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                 rounded="10px"
               >
                 <Flex align="center" mr="1">
@@ -288,11 +231,7 @@ const ComplianceItems = () => {
             <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
               <MenuItem
                 _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-                color={
-                  viewMode === 'Grid'
-                    ? 'complianceItems.header.menuItemFontSelected'
-                    : 'complianceItems.header.menuItemFont'
-                }
+                color={viewMode === 'Grid' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
                 fontSize="14px"
                 onClick={() => changeViewMode('Grid')}
               >
@@ -301,11 +240,7 @@ const ComplianceItems = () => {
               </MenuItem>
               <MenuItem
                 _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-                color={
-                  viewMode === 'List'
-                    ? 'complianceItems.header.menuItemFontSelected'
-                    : 'complianceItems.header.menuItemFont'
-                }
+                color={viewMode === 'List' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
                 fontSize="14px"
                 onClick={() => changeViewMode('List')}
               >
@@ -314,11 +249,7 @@ const ComplianceItems = () => {
               </MenuItem>
               <MenuItem
                 _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-                color={
-                  viewMode === 'Group'
-                    ? 'complianceItems.header.menuItemFontSelected'
-                    : 'complianceItems.header.menuItemFont'
-                }
+                color={viewMode === 'Group' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
                 fontSize="14px"
                 onClick={() => changeViewMode('Group')}
               >
@@ -358,17 +289,10 @@ const ComplianceItems = () => {
                         return -1;
                       }
                       return a['nextRenewalDate'] && b['nextRenewalDate']
-                        ? a['nextRenewalDate']
-                            .toString()
-                            .localeCompare(b.nextRenewalDate.toString())
+                        ? a['nextRenewalDate'].toString().localeCompare(b.nextRenewalDate.toString())
                         : 0;
                     })
-                    ?.map((response) => (
-                      <ComplianceItemSquare
-                        key={response._id}
-                        response={response}
-                      />
-                    ))
+                    ?.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
                     No compliance items found
@@ -376,12 +300,8 @@ const ComplianceItems = () => {
                 )}
               </Grid>
             )}
-            {viewMode === 'List' && (
-              <ComplianceItemsList responses={filteredResponses} />
-            )}
-            {viewMode === 'Group' && (
-              <ComplianceItemsGroup responses={filteredResponses} />
-            )}
+            {viewMode === 'List' && <ComplianceItemsList responses={filteredResponses} />}
+            {viewMode === 'Group' && <ComplianceItemsGroup responses={filteredResponses} />}
           </>
         )}
         {/* eslint-enable */}
