@@ -110,6 +110,15 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
+    if (shouldJoin(['answer', 'audit', 'site'])) {
+      join({
+        pipeline,
+        collection: 'locations',
+        from: 'answer.audit.siteId',
+        to: 'answer.audit.site',
+      });
+    }
+
     if (shouldJoin(['answer', 'audit', 'area'])) {
       join({
         pipeline,

@@ -76,21 +76,21 @@ const ActionsList = ({
         <AdminTableHeaderElement
           label="Site"
           onClick={() => {
-            setSortType('site.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'site.name' ? 'desc' : 'asc');
+            setSortType('answer.audit.site.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.site.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'site.name'}
-          sortOrder={sortType === 'site.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'answer.audit.site.name'}
+          sortOrder={sortType === 'answer.audit.site.name' ? sortOrder : undefined}
           w="12.5%"
         />
         <AdminTableHeaderElement
           label="Area"
           onClick={() => {
-            setSortType('area.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'area.name' ? 'desc' : 'asc');
+            setSortType('answer.audit.area.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.area.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'area.name'}
-          sortOrder={sortType === 'area.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'answer.audit.area.name'}
+          sortOrder={sortType === 'answer.audit.area.name' ? sortOrder : undefined}
           w="12.5%"
         />
       </AdminTableHeader>
