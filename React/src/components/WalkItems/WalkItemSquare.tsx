@@ -17,7 +17,7 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
       h="250px"
       p="20px 25px 20px 25px"
       spacing={6}
-      w={['full', '350px', '350px']}
+      w={['full', 'full', '350px']}
     >
       <Flex align="center" justify="space-between">
         <Box color="walkItemSquare.audit" fontSize="ssm" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
@@ -39,11 +39,7 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>
-          <Text
-            color="walkItemSquare.section.text"
-            fontSize="ssm"
-            textTransform="capitalize"
-          >
+          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
             {answer?.status}
           </Text>
         </Box>

@@ -44,15 +44,15 @@ const NavigationLeftItemTablet = ({
       >
         <Flex align="center" h="100%">
           <Flex
-            alignItems="center"
+            align="center"
             bg={
               menuItem.subSections
                 ? isPathActive(url)
                   ? 'navigationLeftItemTablet.selectedLabelBg'
                   : 'navigationLeftItemTablet.unselectedLabelBg'
                 : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItemTablet.selectedLabelBg'
-                  : 'navigationLeftItemTablet.unselectedLabelBg'
+                ? 'navigationLeftItemTablet.selectedLabelBg'
+                : 'navigationLeftItemTablet.unselectedLabelBg'
             }
             h="30px"
             justifyContent="center"
@@ -65,6 +65,9 @@ const NavigationLeftItemTablet = ({
               } else if (menuItem.url === '/admin') {
                 setSubsectionOpen(!subsectionOpen);
                 setFiltersOpen(false);
+              } else {
+                setMenuOpen(!menuOpen);
+                navigateTo(url);
               }
             }}
             rounded="8px"
@@ -79,13 +82,13 @@ const NavigationLeftItemTablet = ({
                     ? 'navigationLeftItemTablet.selectedIconStroke'
                     : 'navigationLeftItemTablet.unselectedIconStroke'
                   : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItemTablet.selectedIconStroke'
-                    : 'navigationLeftItemTablet.unselectedIconStroke'
+                  ? 'navigationLeftItemTablet.selectedIconStroke'
+                  : 'navigationLeftItemTablet.unselectedIconStroke'
               }
               w="15px"
             />
           </Flex>
-          <ArrowRight boxSize="10px" ml="10px" stroke="#818197" />
+          {menuItem.subSections && <ArrowRight boxSize="10px" ml="10px" stroke="#818197" viewBox="0 0 10 10" />}
         </Flex>
         {filtersOpen && menuItem.url === '/' && (
           <Box
@@ -101,22 +104,13 @@ const NavigationLeftItemTablet = ({
           >
             {Object.keys(responsesStatusesCounts).length !== 0 && (
               <NavigationLeftFilters
-                filter={[
-                  'all',
-                  responsesStatusesCounts.compliant +
-                  responsesStatusesCounts.nonCompliant,
-                ]}
+                filter={['all', responsesStatusesCounts.compliant + responsesStatusesCounts.nonCompliant]}
                 menuOpen={menuOpen}
                 setFiltersOpen={setFiltersOpen}
               />
             )}
             {Object.entries(responsesStatusesCounts).map((filter) => (
-              <NavigationLeftFilters
-                filter={filter}
-                key={filter[0]}
-                menuOpen={menuOpen}
-                setFiltersOpen={setFiltersOpen}
-              />
+              <NavigationLeftFilters filter={filter} key={filter[0]} menuOpen={menuOpen} setFiltersOpen={setFiltersOpen} />
             ))}
           </Box>
         )}
@@ -133,12 +127,7 @@ const NavigationLeftItemTablet = ({
             zIndex="5"
           >
             {menuItem.subSections?.map((subSection) => (
-              <SubSection
-                key={subSection.label}
-                menuOpen={menuOpen}
-                setMenuOpen={setMenuOpen}
-                subsection={subSection}
-              />
+              <SubSection key={subSection.label} menuOpen={menuOpen} setMenuOpen={setMenuOpen} subsection={subSection} />
             ))}
           </Box>
         )}

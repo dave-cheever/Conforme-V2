@@ -282,14 +282,14 @@ const WalkItems = () => {
                   <TabPanel key={panel._id}>
                     {viewMode === 'grid' && (
                       <Grid
-                        display={['grid', 'flex', 'flex']}
+                        display={['grid', 'grid', 'flex']}
                         flexWrap="wrap"
-                        gap={6}
+                        gap={[4, 4, 6]}
                         h="fit-content"
                         pb={[0, 8]}
                         pt="3"
                         px={4}
-                        templateColumns={['repeat(1, 1fr)', '', '']}
+                        templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
                         w="full"
                       >
                         {sortedAnswers.map((answer) => (

@@ -34,15 +34,7 @@ const NavigationBottomItem = ({
           marginLeft: '25px',
         },
       }}
-      flexGrow={
-        menuItem.subSections
-          ? isPathActive(url)
-            ? 1
-            : 0
-          : isPathActive(url, { exact: true })
-            ? 1
-            : 0
-      }
+      flexGrow={menuItem.subSections ? (isPathActive(url) ? 1 : 0) : isPathActive(url, { exact: true }) ? 1 : 0}
       onClick={() => {
         if (menuItem.url === '/') {
           setFiltersOpen(!filtersOpen);
@@ -51,7 +43,7 @@ const NavigationBottomItem = ({
         } else if (menuItem.url === '/admin') {
           setSubsectionOpen(!subsectionOpen);
           setFiltersOpen(false);
-        }
+        } else navigateTo(url);
       }}
       pos="relative"
     >
@@ -63,8 +55,8 @@ const NavigationBottomItem = ({
               ? 'navigationLeftItemTablet.selectedLabelBg'
               : 'navigationLeftItemTablet.unselectedLabelBg'
             : isPathActive(url, { exact: true })
-              ? 'navigationLeftItemTablet.selectedLabelBg'
-              : 'navigationLeftItemTablet.unselectedLabelBg'
+            ? 'navigationLeftItemTablet.selectedLabelBg'
+            : 'navigationLeftItemTablet.unselectedLabelBg'
         }
         h="30px"
         justifyContent="center"
@@ -80,26 +72,20 @@ const NavigationBottomItem = ({
                 ? 'navigationLeftItemTablet.selectedIconStroke'
                 : 'navigationLeftItemTablet.unselectedIconStroke'
               : isPathActive(url, { exact: true })
-                ? 'navigationLeftItemTablet.selectedIconStroke'
-                : 'navigationLeftItemTablet.unselectedIconStroke'
+              ? 'navigationLeftItemTablet.selectedIconStroke'
+              : 'navigationLeftItemTablet.unselectedIconStroke'
           }
           w="15px"
         />
       </Flex>
-      {((menuItem.subSections && isPathActive(url)) ||
-        (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
-          <>
-            <Text color="#818197" fontSize="11px" ml="15px">
-              {label}
-            </Text>
-            <ArrowRight
-              boxSize="10px"
-              ml="15px"
-              stroke="#818197"
-              transform="rotate(270deg)"
-            />
-          </>
-        )}
+      {((menuItem.subSections && isPathActive(url)) || (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
+        <>
+          <Text color="#818197" fontSize="11px" ml="15px">
+            {label}
+          </Text>
+          {menuItem.subSections && <ArrowRight boxSize="10px" ml="15px" stroke="#818197" transform="rotate(270deg)" />}
+        </>
+      )}
       {filtersOpen && menuItem.url === '/' && (
         <Box
           bg="white"
@@ -114,20 +100,12 @@ const NavigationBottomItem = ({
         >
           {Object.keys(responsesStatusesCounts).length !== 0 && (
             <NavigationLeftFilters
-              filter={[
-                'all',
-                responsesStatusesCounts.compliant +
-                responsesStatusesCounts.nonCompliant,
-              ]}
+              filter={['all', responsesStatusesCounts.compliant + responsesStatusesCounts.nonCompliant]}
               setFiltersOpen={setFiltersOpen}
             />
           )}
           {Object.entries(responsesStatusesCounts).map((filter) => (
-            <NavigationLeftFilters
-              filter={filter}
-              key={filter[0]}
-              setFiltersOpen={setFiltersOpen}
-            />
+            <NavigationLeftFilters filter={filter} key={filter[0]} setFiltersOpen={setFiltersOpen} />
           ))}
         </Box>
       )}
@@ -136,15 +114,7 @@ const NavigationBottomItem = ({
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          left={
-            menuItem.subSections
-              ? isPathActive(url)
-                ? '0'
-                : '-200px'
-              : isPathActive(url, { exact: true })
-                ? '0'
-                : '-200px'
-          }
+          left={menuItem.subSections ? (isPathActive(url) ? '0' : '-200px') : isPathActive(url, { exact: true }) ? '0' : '-200px'}
           pos="absolute"
           py="15px"
           rounded="10px"

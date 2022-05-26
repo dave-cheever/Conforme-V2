@@ -8,8 +8,7 @@ export const ConfigContext = createContext({} as IConfigContext);
 
 export const useConfigContext = () => {
   const context = useContext(ConfigContext);
-  if (!context)
-    throw new Error('useConfigContext must be used within the ConnfigProvider');
+  if (!context) throw new Error('useConfigContext must be used within the ConnfigProvider');
 
   return context;
 };
@@ -17,11 +16,10 @@ export const useConfigContext = () => {
 const ConfigProvider = ({ children }) => {
   const { organizationConfig, module } = useAppContext();
   const menuItems = useMemo(() => {
-    if (module?.type === 'audits')
-      return auditsMenuItems;
+    if (module?.type === 'audits') return auditsMenuItems;
 
     return trackerMenuItems;
-  }, [organizationConfig]);
+  }, [organizationConfig, module]);
 
   const value = useMemo(
     () => ({
@@ -31,9 +29,7 @@ const ConfigProvider = ({ children }) => {
     [menuItems],
   );
 
-  return (
-    <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
-  );
+  return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>;
 };
 
 export default ConfigProvider;
