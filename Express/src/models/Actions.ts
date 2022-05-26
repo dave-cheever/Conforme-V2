@@ -51,14 +51,14 @@ actionsSchema.statics.customCreate = async function (
   userId: string,
   organizationId: string,
 ): Promise<IAction> {
-  const createdAnswer = await this.create({
+  const createdAction = await this.create({
     ...action,
     _id: uuidv4(),
     organizationId,
     metatags: genMetatags('added', userId),
   });
 
-  return createdAnswer;
+  return createdAction;
 };
 
 actionsSchema.statics.customFind = async function (

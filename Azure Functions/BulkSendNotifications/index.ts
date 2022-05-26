@@ -3,20 +3,19 @@ Initialize();
 
 import { AzureFunction, Context } from '@azure/functions';
 
-import Notifications from '../common/services/collections/Notifications';
 import { ConfigService } from '../common/services/ConfigService';
-import { GraphService } from '../common/services/GraphService';
 import { LoggingService } from '../common/services/LoggingService';
 import { StorageService } from '../common/services/StorageService';
-import AuditLogs from '../common/services/collections/AuditLogs';
 import { endOfWeek, isSameDay, isSameWeek, parseISO, startOfWeek, sub } from 'date-fns';
 import sendDigest from './sendDigest';
 import {
+  AUDITS_ACTION_OVERDUE,
   AUDITS_STATUS_REMINDER,
   AUDITS_WEEKLY_DIGEST_EMAIL
 } from '../common/services/notifications';
 import sendComingUpAudits from './sendComingUpAudits';
 import sendOverdueAudits from './sendOverdueAudits';
+import sendOverdueActions from './sendOverdueActions';
 
 const timerTrigger: AzureFunction = async function (context: Context): Promise<void> {
   const configService = new ConfigService();
@@ -48,9 +47,10 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
       );
     }
 
-    if (!isSameDay(new Date(), lastBulkScanDate)) {
+    if (isSameDay(new Date(), lastBulkScanDate)) {
       await sendComingUpAudits(AUDITS_STATUS_REMINDER, config);
       await sendOverdueAudits(AUDITS_STATUS_REMINDER, config);
+      await sendOverdueActions(AUDITS_ACTION_OVERDUE, config);
     }
 
     // TODO

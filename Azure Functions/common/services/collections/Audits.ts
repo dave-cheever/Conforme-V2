@@ -1,16 +1,14 @@
-import { model, Schema } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
+import { model, Schema } from 'mongoose';
 
-import { IAudit } from "../../interfaces/IAudit";
-import { IAuditModel } from "../../interfaces/IAuditModel";
-import { genMetatags } from "../../utils";
+import { IAudit } from '../../interfaces/IAudit';
+import { IAuditModel } from '../../interfaces/IAuditModel';
 
 const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
   auditTypeId: String,
   walkType: {
     type: String,
-    enum: ["physical", "virtual"],
+    enum: ['physical', 'virtual']
   },
   siteId: String,
   areaId: String,
@@ -23,8 +21,8 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
     updatedAt: Date,
     updatedBy: String,
     removedAt: Date,
-    removedBy: String,
-  },
+    removedBy: String
+  }
 });
 
 auditsSchema.statics.customFind = async function (
@@ -34,7 +32,7 @@ auditsSchema.statics.customFind = async function (
   const audits = await this.find({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null }
   }).lean();
   return audits;
 };
@@ -46,23 +44,21 @@ auditsSchema.statics.customFindOne = async function (
   const audit = await this.findOne({
     ...selector,
     organizationId,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null }
   }).lean();
   return audit;
 };
 
-auditsSchema.statics.customFindById = async function (
-  _id: string
-): Promise<IAudit> {
+auditsSchema.statics.customFindById = async function (_id: string): Promise<IAudit> {
   const audit = await this.findOne({
     _id,
-    "metatags.removedAt": { $eq: null },
+    'metatags.removedAt': { $eq: null }
   }).lean();
-  if (!audit) throw new Error("Audit not found");
+  if (!audit) throw new Error('Audit not found');
 
   return audit;
 };
 
-const auditsModel = model<IAudit, IAuditModel>("Audit", auditsSchema);
+const auditsModel = model<IAudit, IAuditModel>('Audit', auditsSchema);
 
 export default auditsModel;

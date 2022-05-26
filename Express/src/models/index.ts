@@ -8,6 +8,7 @@ import Categories from './Categories';
 import Comments from './Comments';
 import ComplianceItems from './ComplianceItems';
 import Locations from './Locations';
+import Notifications from './Notifications';
 import Organizations from './Organizations';
 import Questions from './Questions';
 import QuestionsCategories from './QuestionsCategories';
@@ -27,11 +28,12 @@ export {
   Comments,
   ComplianceItems,
   Locations,
+  Notifications,
   Organizations,
   QuestionsCategories,
   Questions,
   RegulatoryBodies,
   Responses,
   Settings,
-  Users
+  Users,
 };

@@ -24,6 +24,8 @@ import { IDocument } from './IDocument';
 import { ILocation } from './ILocation';
 import { ILocationModel } from './ILocationModel';
 import { IModule } from './IModule';
+import { INotification } from './INotification';
+import { INotificationModel } from './INotificationModel';
 import { IOrganization } from './IOrganization';
 import { IOrganizationModel } from './IOrganizationModel';
 import { IQuestion } from './IQuestion';
@@ -76,6 +78,8 @@ export {
   ILocation,
   ILocationModel,
   IModule,
+  INotification,
+  INotificationModel,
   IOrganization,
   IOrganizationModel,
   IQuestion,

@@ -4,7 +4,7 @@ export interface IUserModel extends IBaseModel<IUser> {
   customAdd: (
     user: Partial<IUser>,
     userId: string,
-    organizationId?: string
+    organizationId?: string,
   ) => Promise<IUser>;
   customFindByIdWithDetails: ({
     userId,
