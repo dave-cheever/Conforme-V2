@@ -1,6 +1,5 @@
-import FunctionService from 'src/services/function';
-
 import { Actions, Answers, Notifications, Users } from 'app-models';
+import { FunctionsService } from 'app-services';
 import { AUDITS_ACTION_COMPLETED } from 'app-shared';
 import { checkActionPermission } from 'app-utils';
 
@@ -70,7 +69,7 @@ const updateAction = async (_, { actionInput }, { authorize, organization }) => 
         organization._id,
       );
 
-      await FunctionService.sendNotification(organization._id, createdNotification._id);
+      await FunctionsService.sendNotification(organization._id, createdNotification._id);
     }
 
     return updatedAction;

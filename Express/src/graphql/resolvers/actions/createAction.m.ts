@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
-import FunctionService from 'src/services/function';
 
 import { Actions, Notifications, Users } from 'app-models';
+import { FunctionsService } from 'app-services';
 import { AUDITS_ACTION_ASSIGNED } from 'app-shared';
 import { checkActionPermission } from 'app-utils';
 
@@ -34,7 +34,7 @@ const createAction = async (_, { action }, { authorize, organization }) => {
       organization._id,
     );
 
-    await FunctionService.sendNotification(organization._id, createdNotification._id);
+    await FunctionsService.sendNotification(organization._id, createdNotification._id);
 
     return createdAction;
   } catch (err: any) {
