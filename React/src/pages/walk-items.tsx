@@ -251,7 +251,7 @@ const WalkItems = () => {
           </>
         )}
       </Header>
-      <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto" pt="3">
+      <Flex h={['calc(100vh - 210px)', '100vh']} overflow="auto">
         {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>

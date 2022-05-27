@@ -40,7 +40,7 @@ const WalkItemsList = ({
   const { data } = useQuery(GET_AUDITS);
 
   return (
-    <Box h="full" ml={['0px', '10px']} overflow="none" p={[0, 1]} w="full">
+    <Box h="full" ml="10px" overflow="none" p={[0, 1]} w="full">
       <Box bg="walkItemsList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
         <AdminTableHeader>
           <AdminTableHeaderElement
@@ -95,7 +95,7 @@ const WalkItemsList = ({
             w="20%"
           />
         </AdminTableHeader>
-        <Flex flexDir="column" h={['full', 'calc(100vh - 450px)', 'calc(100vh - 500px)']} overflowY="auto" w="full">
+        <Flex flexDir="column" h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']} overflowY="auto" w="full">
           {answers?.map((answer) => (
             <WalkItemsListItem
               answer={answer}
