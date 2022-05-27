@@ -2,6 +2,8 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Button, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
+import { useAdminContext } from '../../contexts/AdminProvider';
+import { useAuditModalContext } from '../../contexts/AuditModalProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
 import { ActionsIcon } from '../../icons';
@@ -9,6 +11,8 @@ import { IAudit } from '../../interfaces/IAudit';
 
 const AuditSquare = ({ audit }: { audit: IAudit }) => {
   const { navigateTo } = useNavigate();
+  const { setAdminModalState } = useAdminContext();
+  const { setValue } = useAuditModalContext();
 
   return (
     <Box
@@ -68,7 +72,15 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           color="auditSquare.fontColor"
           fontSize="ssm"
           h="28px"
-          onClick={() => navigateTo(`/audits/${audit._id}/`)}
+          onClick={() => {
+            if (audit._id.includes('_next')) {
+              setAdminModalState('add');
+              setValue('auditTypeId', audit.auditType?._id);
+              setValue('walkType', 'physical');
+              setValue('siteId', audit.site?._id);
+              setValue('areaId', audit.area?._id);
+            } else navigateTo(`/audits/${audit._id}/`);
+          }}
           rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
           w="85px"
         >
@@ -77,11 +89,15 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         <Flex align="center" color="auditSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
           <Flex fontSize="11px" fontWeight="700">
             <Text as="span">{auditStatuses[audit?.status]}</Text>
-            <Divider color="lightgray" h="auto" mx="15px" orientation="vertical" />
-            <ActionsIcon fill="transparent" h="16px" stroke="#D2D1D7" w="16px" />
-            <Text as="span" ml={2}>
-              {audit?.numberOfActions}
-            </Text>
+            {audit?.status !== 'comingUp' && (
+              <>
+                <Divider color="lightgray" h="auto" mx="15px" orientation="vertical" />
+                <ActionsIcon fill="transparent" h="16px" stroke="#D2D1D7" w="16px" />
+                <Text as="span" ml={2}>
+                  {audit?.numberOfActions}
+                </Text>
+              </>
+            )}
           </Flex>
         </Flex>
       </Flex>

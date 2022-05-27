@@ -102,7 +102,7 @@ const roles = {
     normal: [
       ...defaultPermissions,
       'actions',
-      'adminPanel', // permission to see admin items in menu
+      // 'adminPanel.view', // permission to see admin items in menu
       'answers',
       'auditLogs',
       'audits',
@@ -123,6 +123,10 @@ const roles = {
     ],
     restricted: {
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
+      adminPanel: ({ permission, revokedPermissions }) => {
+        if (revokedPermissions?.includes(permission)) return false;
+        return true;
+      },
     },
   },
 };

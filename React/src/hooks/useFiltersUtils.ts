@@ -3,11 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
 import IFilter from '../interfaces/IFilter';
-import IFilters, {
-  IActionFilters,
-  IAuditFilters,
-  IWalkItemFilters,
-} from '../interfaces/IFilters';
+import IFilters, { IActionFilters, IAuditFilters, IWalkItemFilters } from '../interfaces/IFilters';
 
 export const initialFilters: IFilters = {
   complianceItemsIds: {
@@ -127,11 +123,6 @@ export const initialWalkItemFilters: IWalkItemFilters = {
   },
 };
 
-export const auditStatuses = {
-  inProgress: 'In progress',
-  completed: 'Completed',
-};
-
 export const auditWalkTypes = {
   virtual: 'Virtual',
   physical: 'Physical',
@@ -189,12 +180,7 @@ const useFiltersUtils = () => {
 
   // Make a copy of initial filters
   const cleanFilters = useMemo(
-    () =>
-      JSON.parse(
-        JSON.stringify(
-          module?.type === 'tracker' ? initialFilters : cleanAuditFilters,
-        ),
-      ),
+    () => JSON.parse(JSON.stringify(module?.type === 'tracker' ? initialFilters : cleanAuditFilters)),
     [module?.type, location.pathname],
   );
 
@@ -212,8 +198,7 @@ const useFiltersUtils = () => {
       const filter: IFilter = cleanFilters[filterName];
 
       // Check if value was set
-      if (newFilters[filterName] !== undefined)
-        filter.value = newFilters[filterName];
+      if (newFilters[filterName] !== undefined) filter.value = newFilters[filterName];
 
       // Set new filter
       filters[filterName] = filter;

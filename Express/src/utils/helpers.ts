@@ -1,15 +1,4 @@
-import {
-  addDays,
-  addMonths,
-  addWeeks,
-  addYears,
-  differenceInDays,
-  format,
-  subDays,
-  subMonths,
-  subWeeks,
-  subYears,
-} from 'date-fns';
+import { addDays, addMonths, addWeeks, addYears, differenceInDays, format, subDays, subMonths, subWeeks, subYears } from 'date-fns';
 import { diff } from 'deep-object-diff';
 import { StatusCodes } from 'http-status-codes';
 import { difference } from 'lodash';
@@ -20,33 +9,19 @@ import { GraphService } from 'app-services';
 
 import roles from './roles';
 
-export const getProtocol = () =>
-  process.env.APPSETTING_NODE_ENV === 'dev' ? 'http://' : 'https://';
+export const getProtocol = () => (process.env.APPSETTING_NODE_ENV === 'dev' ? 'http://' : 'https://');
 
 export const getClientUrl = (req): string => req.headers.referer?.slice(0, -1);
 
-export const getDomain = (req): string =>
-  getClientUrl(req)?.replace(getProtocol(), '');
+export const getDomain = (req): string => getClientUrl(req)?.replace(getProtocol(), '');
 
 export const CORSConfig = {
   credentials: true,
   origin: (origin, callback) => {
-    if (
-      process.env.APPSETTING_NODE_ENV === 'dev' &&
-      origin === 'https://studio.apollographql.com'
-    )
-      return callback(null, true);
+    if (process.env.APPSETTING_NODE_ENV === 'dev' && origin === 'https://studio.apollographql.com') return callback(null, true);
 
-    const whitelist = [
-      ...(process.env.ALLOWED_DOMAINS || '').split(';'),
-      'login.microsoftonline.com',
-    ];
-    if (
-      !origin ||
-      origin === 'null' ||
-      whitelist.indexOf(origin.replace(getProtocol(), '')) !== -1
-    )
-      return callback(null, true);
+    const whitelist = [...(process.env.ALLOWED_DOMAINS || '').split(';'), 'login.microsoftonline.com'];
+    if (!origin || origin === 'null' || whitelist.indexOf(origin.replace(getProtocol(), '')) !== -1) return callback(null, true);
 
     callback(new Error(`${origin} is not allowed by CORS`));
   },
@@ -85,6 +60,7 @@ export const sessionizeOrganization = ({
   bgImageTabletUrl,
   theme,
   modules,
+  revokedPermissions,
   spSiteUrl,
   spLibraryId,
   accessGroupId,
@@ -100,6 +76,7 @@ export const sessionizeOrganization = ({
   theme,
   // licenceExpirationDate,
   modules,
+  revokedPermissions,
   domain,
   // clientId,
   // tenantId,
@@ -115,10 +92,12 @@ export const isPermitted = ({
   user,
   action,
   data = {},
+  revokedPermissions,
 }: {
   user: IUser;
   action?: string;
   data?: any;
+  revokedPermissions?: string[];
 }): boolean => {
   if (!action) return true;
 
@@ -129,15 +108,12 @@ export const isPermitted = ({
 
   const [scope] = action.split('.');
   const { normal, restricted } = permission;
-  if (normal && (normal.includes(action) || normal.includes(scope)))
-    return true;
+  if (normal && (normal.includes(action) || normal.includes(scope))) return true;
 
   if (
     restricted &&
-    ((typeof restricted[action] === 'function' &&
-      restricted[action]({ user, ...data })) ||
-      (typeof restricted[scope] === 'function' &&
-        restricted[scope]({ user, ...data })))
+    ((typeof restricted[action] === 'function' && restricted[action]({ revokedPermissions, permission: action, user, ...data })) ||
+      (typeof restricted[scope] === 'function' && restricted[scope]({ revokedPermissions, permission: action, user, ...data })))
   )
     return true;
 
@@ -165,21 +141,13 @@ export const isRoutePermitted = (req, res, next, action, data?) => {
     });
   }
 
-  if (!isPermitted({ user, action, data })) {
-    return res
-      .status(StatusCodes.FORBIDDEN)
-      .json({ code: 'notPermitted', message: 'User is not permitted' });
-  }
+  if (!isPermitted({ user, action, data }))
+    return res.status(StatusCodes.FORBIDDEN).json({ code: 'notPermitted', message: 'User is not permitted' });
 
   next();
 };
 
-export const redirectAfterLogin = async (
-  req,
-  res,
-  errorMessage,
-  organization,
-) => {
+export const redirectAfterLogin = async (req, res, errorMessage, organization) => {
   let redirectUrl;
   const { user } = req;
   const clientUrl = `${getProtocol()}${organization.domain}`;
@@ -187,20 +155,15 @@ export const redirectAfterLogin = async (
   const params = req.headers.referer?.split('?')[1];
   if (params) {
     const [paramName, paramValue] = params.split('=');
-    if (paramName === 'redirect' && paramValue.indexOf(clientUrl) === 0)
-      redirectUrl = paramValue;
+    if (paramName === 'redirect' && paramValue.indexOf(clientUrl) === 0) redirectUrl = paramValue;
   }
   redirectUrl = `${clientUrl}${user?.defaultPage || ''}`;
 
   if (errorMessage) redirectUrl += `/login?errorMessage=${errorMessage}`;
 
   // update the last Login of user
-  if (user) {
-    await Users.updateOne(
-      { _id: user._id },
-      { ...user, lastLogin: Date.now() },
-    );
-  }
+  if (user) await Users.updateOne({ _id: user._id }, { ...user, lastLogin: Date.now() });
+
   return res.redirect(redirectUrl);
 };
 
@@ -260,10 +223,7 @@ export const getStatus = (frequency: String) => {
   return status;
 };
 
-export const genMetatags = (
-  action: 'added' | 'updated' | 'removed',
-  userId: string,
-) => ({
+export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: string) => ({
   [`${action}By`]: userId,
   [`${action}At`]: new Date(),
 });
@@ -282,17 +242,7 @@ export const doesPathExist = (nodes, path) => {
 };
 
 // This method is used to build a MongoDB pipeline to join a collection item
-export const join = ({
-  pipeline,
-  collection,
-  from,
-  to,
-}: {
-  pipeline;
-  collection: string;
-  from: string;
-  to: string;
-}) => {
+export const join = ({ pipeline, collection, from, to }: { pipeline; collection: string; from: string; to: string }) => {
   pipeline.push(
     {
       $lookup: {
@@ -327,12 +277,8 @@ export const getProjectFields = (nodes: any, methodName: string) => {
   for (const selection of selections) {
     if (selection.name.value === '__typename') continue;
 
-    if (selection.selectionSet) {
-      project[selection.name.value] = getProjectFields(
-        [selection],
-        selection.name.value,
-      );
-    } else project[selection.name.value] = 1;
+    if (selection.selectionSet) project[selection.name.value] = getProjectFields([selection], selection.name.value);
+    else project[selection.name.value] = 1;
   }
   return project;
 };
@@ -348,10 +294,7 @@ export const mentionParser = (markup) => {
   return [...new Set(mentions)];
 };
 
-export const getNextRenewalDate = (
-  nextRenewalDate: Date,
-  frequency: string,
-) => {
+export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => {
   let newNextRenewalDate;
 
   switch (frequency) {
@@ -398,10 +341,7 @@ export const getNextRenewalDate = (
   return newNextRenewalDate;
 };
 
-export const getPrevRenewalDate = (
-  nextRenewalDate: Date,
-  frequency: string,
-) => {
+export const getPrevRenewalDate = (nextRenewalDate: Date, frequency: string) => {
   let newNextRenewalDate;
   switch (frequency) {
     case 'Daily':
@@ -445,17 +385,8 @@ export const getPrevRenewalDate = (
 
 // Audit log methods
 
-export const getBasicElement = ({
-  _id,
-  name,
-}: {
-  _id: string;
-  name: string;
-}) => ({ _id, name });
-export const getForeignElement = (
-  { _id, name }: { _id: string; name: string },
-  self_id: string,
-) => ({ _id, name, self_id });
+export const getBasicElement = ({ _id, name }: { _id: string; name: string }) => ({ _id, name });
+export const getForeignElement = ({ _id, name }: { _id: string; name: string }, self_id: string) => ({ _id, name, self_id });
 
 export const removeDatabaseFields = (item) => {
   const cleanItem = { ...item };
@@ -467,10 +398,7 @@ export const removeDatabaseFields = (item) => {
 };
 
 // This method works for strings and numbers
-export const getAuditValueForString = (
-  oldValue?: string,
-  newValue?: string,
-) => {
+export const getAuditValueForString = (oldValue?: string, newValue?: string) => {
   const value: any = {};
   if (oldValue) {
     value.old = {
@@ -487,10 +415,7 @@ export const getAuditValueForString = (
   return value;
 };
 
-export const getAuditValueForStringsArray = (
-  oldValue?: string[],
-  newValue?: string[],
-) => {
+export const getAuditValueForStringsArray = (oldValue?: string[], newValue?: string[]) => {
   const value: any = {};
   const removed = difference(oldValue || [], newValue || []);
   if (removed.length > 0) {
@@ -526,10 +451,7 @@ export const getAuditValueForDate = (oldValue?: string, newValue?: string) => {
   return value;
 };
 
-export const getAuditValueForBoolean = (
-  oldValue?: string,
-  newValue?: string,
-) => {
+export const getAuditValueForBoolean = (oldValue?: string, newValue?: string) => {
   const value: any = {};
   if (oldValue !== undefined) {
     value.old = {
@@ -546,28 +468,18 @@ export const getAuditValueForBoolean = (
   return value;
 };
 
-export const getAuditValueForLookup = async ({
-  collection,
-  labelField,
-  oldValue,
-  newValue,
-  organization,
-}) => {
+export const getAuditValueForLookup = async ({ collection, labelField, oldValue, newValue, organization }) => {
   const value: any = {};
   if (oldValue) {
     let item;
-    if (collection === Users)
-      item = await GraphService.getUserData({ userId: oldValue, organization });
+    if (collection === Users) item = await GraphService.getUserData({ userId: oldValue, organization });
     else item = await collection.customFindById(oldValue);
 
     if (item) {
       let label;
       if (collection === Users) {
         // If a collection is Users, get his name
-        label =
-          item.givenName !== null || item.surname !== null
-            ? `${item.givenName} ${item.surname}`
-            : item.displayName;
+        label = item.givenName !== null || item.surname !== null ? `${item.givenName} ${item.surname}` : item.displayName;
       } else if (typeof labelField === 'string') {
         // If a 'labelField' is an array of strings, concat them
         label = item[labelField];
@@ -581,18 +493,14 @@ export const getAuditValueForLookup = async ({
   }
   if (newValue) {
     let item;
-    if (collection === Users)
-      item = await GraphService.getUserData({ userId: newValue, organization });
+    if (collection === Users) item = await GraphService.getUserData({ userId: newValue, organization });
     else item = await collection.customFindById(newValue);
 
     if (item) {
       let label;
       if (collection === Users) {
         // If a collection is Users, get his name
-        label =
-          item.givenName !== null || item.surname !== null
-            ? `${item.givenName} ${item.surname}`
-            : item.displayName;
+        label = item.givenName !== null || item.surname !== null ? `${item.givenName} ${item.surname}` : item.displayName;
       } else if (typeof labelField === 'string') {
         // If a 'labelField' is an array of strings, concat them
         label = item[labelField];
@@ -607,32 +515,18 @@ export const getAuditValueForLookup = async ({
   return value;
 };
 
-export const getAuditValueForLookupsArray = async ({
-  collection,
-  labelField,
-  oldValue,
-  newValue,
-  organization,
-}) => {
+export const getAuditValueForLookupsArray = async ({ collection, labelField, oldValue, newValue, organization }) => {
   const value: any = {};
   const removedIds = difference(oldValue || [], newValue || []);
   const addedIds = difference(newValue || [], oldValue || []);
 
   let user;
-  if (
-    collection === Users &&
-    removedIds.length !== 0 &&
-    typeof removedIds[0] === 'string'
-  ) {
+  if (collection === Users && removedIds.length !== 0 && typeof removedIds[0] === 'string') {
     user = await GraphService.getUserData({
       userId: removedIds[0],
       organization,
     });
-  } else if (
-    collection === Users &&
-    addedIds.length === 1 &&
-    typeof addedIds[0] === 'string'
-  ) {
+  } else if (collection === Users && addedIds.length === 1 && typeof addedIds[0] === 'string') {
     user = await GraphService.getUserData({
       userId: addedIds[0],
       organization,
@@ -655,13 +549,8 @@ export const getAuditValueForLookupsArray = async ({
 
     // If a 'labelField' is an array of strings, concat them
     let labels = [];
-    if (typeof labelField === 'string')
-      labels = items.map((item) => item[labelField]);
-    else {
-      labels = items.map((item) =>
-        labelField.map((field) => item[field]).join(' '),
-      );
-    }
+    if (typeof labelField === 'string') labels = items.map((item) => item[labelField]);
+    else labels = items.map((item) => labelField.map((field) => item[field]).join(' '));
 
     value.old = {
       value: items.map(({ id }) => id),
@@ -670,10 +559,7 @@ export const getAuditValueForLookupsArray = async ({
   } else if (removedIds.length > 0 && collection === Users) {
     value.old = {
       value: user.id,
-      label:
-        user.givenName !== null || user.surname !== null
-          ? `${user.givenName} ${user.surname}`
-          : user.displayName,
+      label: user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName,
     };
   }
   if (addedIds.length > 0 && collection !== Users) {
@@ -681,13 +567,8 @@ export const getAuditValueForLookupsArray = async ({
 
     // If a 'labelField' is an array of strings, concat them
     let labels = [];
-    if (typeof labelField === 'string')
-      labels = items.map((item) => item[labelField]);
-    else {
-      labels = items.map((item) =>
-        labelField.map((field) => item[field]).join(' '),
-      );
-    }
+    if (typeof labelField === 'string') labels = items.map((item) => item[labelField]);
+    else labels = items.map((item) => labelField.map((field) => item[field]).join(' '));
 
     value.new = {
       value: items.map(({ id }) => id),
@@ -697,20 +578,13 @@ export const getAuditValueForLookupsArray = async ({
     value.new = {
       value: users.map(({ id }) => id),
       label: users
-        .map((user) =>
-          user.givenName !== null || user.surname !== null
-            ? `${user.givenName} ${user.surname}`
-            : user.displayName,
-        )
+        .map((user) => (user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName))
         .join(', '),
     };
   } else if (addedIds.length > 0 && collection === Users) {
     value.new = {
       value: user.id,
-      label:
-        user.givenName !== null || user.surname !== null
-          ? `${user.givenName} ${user.surname}`
-          : user.displayName,
+      label: user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName,
     };
   }
   return value;
@@ -720,40 +594,28 @@ export const getAuditStatus = (audit: IAudit, auditsComingUpTriggers) => {
   if (!audit) return;
 
   const { dueDate, status } = audit;
-  const daysToDueDate = audit.auditType?.startingDate
-    ? differenceInDays(
-        new Date(dueDate),
-        new Date(audit.auditType?.startingDate!),
-      )
-    : 0;
+  const daysToDueDate = audit.auditType?.startingDate ? differenceInDays(new Date(dueDate), new Date(audit.auditType?.startingDate!)) : 0;
 
   if (
     status === 'completed' &&
     daysToDueDate !== undefined &&
     audit.auditType?.frequency &&
     daysToDueDate !== null &&
-    daysToDueDate <
-      auditsComingUpTriggers?.value?.[audit.auditType?.frequency] &&
+    daysToDueDate < auditsComingUpTriggers?.value?.[audit.auditType?.frequency] &&
     daysToDueDate >= 0
   ) {
     // If there is less then or equal comingUpTriggers value and at least 0 days to due date
     return 'comingUp';
   }
 
-  if (audit.status === 'completed' && (!daysToDueDate || daysToDueDate >= 0))
-    return 'completed';
+  if (audit.status === 'completed' && (!daysToDueDate || daysToDueDate >= 0)) return 'completed';
 
-  if (audit.status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0))
-    return 'inProgress';
+  if (audit.status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
 
   return 'overdue';
 };
 
-export const getAuditValueForUser = async ({
-  oldValue,
-  newValue,
-  organization,
-}) => {
+export const getAuditValueForUser = async ({ oldValue, newValue, organization }) => {
   const value: any = {};
   if (oldValue) {
     const item = await Users.customFindByIdWithDetails({
@@ -782,23 +644,15 @@ export const getAuditValueForUser = async ({
   return value;
 };
 
-export const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-}): Promise<IAuditValues> => {
+export const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
 
   // and fills the audit record obejct with these differencies
   const auditRecordValues = fields.reduce((acc, field) => {
-    if (
-      (oldValues[field] && typeof oldValues[field] !== 'string') ||
-      (newValues[field] && typeof newValues[field] !== 'string')
-    ) {
-      console.warn(
-        `Audit log method defaultGetAuditRecordValues works only on strings, please create custom method for ${field} field!`,
-      );
+    if ((oldValues[field] && typeof oldValues[field] !== 'string') || (newValues[field] && typeof newValues[field] !== 'string')) {
+      console.warn(`Audit log method defaultGetAuditRecordValues works only on strings, please create custom method for ${field} field!`);
       return acc;
     }
 

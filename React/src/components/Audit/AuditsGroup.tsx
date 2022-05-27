@@ -2,37 +2,24 @@ import { useEffect, useState } from 'react';
 
 import { Flex, Stack } from '@chakra-ui/react';
 
-import useAuditUtils, { auditStatuses } from '../../hooks/useAuditUtils';
+import { auditStatuses } from '../../hooks/useAuditUtils';
 import { IAudit } from '../../interfaces/IAudit';
 import AuditSquare from './AuditSquare';
 
 const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
   const [filteredResults, setFilteredResults] = useState<any>({});
-  const { getStatus } = useAuditUtils();
 
   useEffect(() => {
     const filteredAudits: any = {};
-    filteredAudits.completed = audits.filter(
-      (audit) => getStatus(audit) === 'completed',
-    );
-    filteredAudits.inProgress = audits.filter(
-      (audit) => getStatus(audit) === 'inProgress',
-    );
-    filteredAudits.overdue = audits.filter(
-      (audit) => getStatus(audit) === 'overdue',
-    );
+    filteredAudits.overdue = audits.filter((audit) => audit.status === 'overdue');
+    filteredAudits.comingUp = audits.filter((audit) => audit.status === 'comingUp');
+    filteredAudits.inProgress = audits.filter((audit) => audit.status === 'inProgress');
+    filteredAudits.completed = audits.filter((audit) => audit.status === 'completed');
     setFilteredResults(filteredAudits);
   }, [audits]);
 
   const renderGroup = (group: string) => (
-    <Flex
-      direction="column"
-      key={group}
-      minW="calc(347px + 1rem)"
-      pl={8}
-      pr={3}
-      pt={2}
-    >
+    <Flex direction="column" key={group} minW="calc(347px + 1rem)" pl={8} pr={3} pt={2}>
       <Flex
         align="center"
         bg={`auditsGroup.${group}`}
@@ -55,9 +42,7 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
 
             if (b.dueDate === null) return -1;
 
-            return a.dueDate && b.dueDate
-              ? a.dueDate.toString().localeCompare(b.dueDate.toString())
-              : 0;
+            return a.dueDate && b.dueDate ? a.dueDate.toString().localeCompare(b.dueDate.toString()) : 0;
           })
           ?.map((audit: IAudit) => (
             <AuditSquare audit={audit} key={audit._id} />
@@ -68,9 +53,7 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
 
   return (
     <Flex h="full" overflow="auto" pt="3" w="full">
-      {Object.keys(auditStatuses)
-        .filter((status) => status !== 'comingUp')
-        .map((status) => renderGroup(status))}
+      {Object.keys(auditStatuses).map((status) => renderGroup(status))}
     </Flex>
   );
 };
@@ -81,6 +64,7 @@ export const auditsGroupStyles = {
   auditsGroup: {
     completed: '#62c240',
     inProgress: '#FFA012',
+    comingUp: '#CCCCCC',
     overdue: '#FC5960',
   },
 };

@@ -9,4 +9,5 @@ export interface IOrganization extends IBase {
   bgImageTabletUrl: string;
   theme: object;
   modules: IModule[];
+  revokedPermissions?: string[];
 }

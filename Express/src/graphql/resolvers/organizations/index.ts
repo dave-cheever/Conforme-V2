@@ -24,6 +24,7 @@ export const organizationsTypeDefs = `
     bgImageTabletUrl: String
     theme: Object!
     modules: [Module]
+    revokedPermissions: [String]
     clientId: String
     tenantId: String
     secret: String

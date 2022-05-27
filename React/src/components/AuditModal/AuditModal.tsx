@@ -102,7 +102,7 @@ const AuditModal = ({ refetch }) => {
         </ModalHeader>
         <ModalBody h="calc(100% - 175px)" p="0">
           <Stack h="full" spacing={4}>
-            <Stack overflowY="auto">
+            <Stack overflowY="auto" spacing={4}>
               <Flex direction="column">
                 <Text fontSize="smm" fontWeight="semibold">
                   Walk details

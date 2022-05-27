@@ -165,8 +165,6 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
       );
     }
 
-    // console.log(totalAuditsChart);
-
     return {
       totalAudits,
       completedAudits,

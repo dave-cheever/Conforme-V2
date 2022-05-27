@@ -1,6 +1,7 @@
-interface ISubSection {
+export interface ISubSection {
   label: string;
   url: string;
+  permission?: string;
 }
 
 export interface INavItem {

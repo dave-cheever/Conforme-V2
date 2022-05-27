@@ -39,23 +39,15 @@ const ORGANIZATION = gql`
         path
         showInNavigation
       }
+      revokedPermissions
     }
   }
 `;
 
 const useInit = () => {
-  const {
-    loading: loadingSettings,
-    error: settingsError,
-    data: settingsData,
-  } = useQuery(SETTINGS);
-  const {
-    loading: loadingOrganization,
-    error: organizationError,
-    data: organizationData,
-  } = useQuery(ORGANIZATION);
-  const { user, setRoles, setOrganizationConfig, setModule, setSettings } =
-    useAppContext();
+  const { loading: loadingSettings, error: settingsError, data: settingsData } = useQuery(SETTINGS);
+  const { loading: loadingOrganization, error: organizationError, data: organizationData } = useQuery(ORGANIZATION);
+  const { user, setRoles, setOrganizationConfig, setModule, setSettings } = useAppContext();
   const location = useLocation();
   const history = useHistory();
 
@@ -83,8 +75,7 @@ const useInit = () => {
       }
 
       setModule(module);
-      if (module && user)
-        document.title = `${module.name} - ${organization.name} - Conforme`;
+      if (module && user) document.title = `${module.name} - ${organization.name} - Conforme`;
       else document.title = `${organization.name} - Conforme`;
     }
   }, [user, organizationError, organizationData]); // eslint-disable-line react-hooks/exhaustive-deps

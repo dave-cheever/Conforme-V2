@@ -39,26 +39,13 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
           </Flex>
         </Flex>
         <Flex w="12%">
-          <Flex
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="400"
-            opacity="1"
-          >
-            {audit?.dueDate ? (
-              format(new Date(audit?.dueDate), 'd MMM yyyy')
-            ) : (
-              <Flex fontStyle="italic">No due date</Flex>
-            )}
+          <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+            {audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
           </Flex>
         </Flex>
         <Flex w="10%">
           <Flex align="center">
-            <Flex
-              color={`auditsList.${audit?.status}`}
-              fontSize="14px"
-              fontWeight="700"
-            >
+            <Flex color={`auditsList.${audit?.status}`} fontSize="14px" fontWeight="700">
               {auditStatuses[audit?.status]}
             </Flex>
           </Flex>
@@ -67,11 +54,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
           <Skeleton isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
               <Flex align="center" direction="row">
-                <Avatar
-                  name={audit.auditor?.displayName}
-                  size="xs"
-                  src={audit.auditor?.imgUrl}
-                />
+                <Avatar name={audit.auditor?.displayName} size="xs" src={audit.auditor?.imgUrl} />
                 <Text
                   color="auditsList.fontColor"
                   fontSize="13px"

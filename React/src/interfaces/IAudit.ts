@@ -8,7 +8,7 @@ import { IUser } from './IUser';
 export interface IAudit extends IBase {
   auditTypeId: string;
   reference: string;
-  status: 'inProgress' | 'completed';
+  status: 'inProgress' | 'completed' | 'comingUp' | 'overdue'; // 'comingUp' and 'overdue' are not getting saved to the DB - both are calculated base on dueDate and frequency
   dueDate: Date;
   walkType: 'physical' | 'virtual';
   siteId?: string;

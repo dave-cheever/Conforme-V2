@@ -9,6 +9,7 @@ export interface IOrganization extends IBase {
   bgImageTabletUrl: string;
   theme: object;
   modules: IModule[];
+  revokedPermissions: string[]; // list of permissions that are revoked for organization
   allowedTenantsIds: string[]; // 'all' for all tenants
   accessGroupId?: string; // ID of Azure AD group if required to login
   readersGroupId?: string; // ID of Azure AD group of users with role "reader"

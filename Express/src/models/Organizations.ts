@@ -11,15 +11,18 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   bgImageUrl: String,
   bgImageTabletUrl: String,
   theme: Object,
-  modules: [{
-    type: {
-      type: String,
-      enum: ['audits', 'tracker'],
+  modules: [
+    {
+      type: {
+        type: String,
+        enum: ['audits', 'tracker'],
+      },
+      name: String,
+      path: String,
+      showInNavigation: Boolean,
     },
-    name: String,
-    path: String,
-    showInNavigation: Boolean,
-  }],
+  ],
+  revokedPermissions: [String],
   allowedTenantsIds: [String],
   accessGroupId: String,
   readersGroupId: String,
@@ -42,28 +45,19 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-organizationSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IOrganization> {
+organizationSchema.statics.customFindById = async function (_id: string): Promise<IOrganization> {
   const organization = await this.findById(_id).lean();
-  if (!organization)
-    throw new Error('Organization not found');
+  if (!organization) throw new Error('Organization not found');
 
   return organization;
 };
 
-organizationSchema.statics.customFindByDomain = async function (
-  domain: string,
-): Promise<IOrganization> {
+organizationSchema.statics.customFindByDomain = async function (domain: string): Promise<IOrganization> {
   const organization = await this.findOne({ domain }).lean();
-  if (!organization)
-    throw new Error('Organization not found');
+  if (!organization) throw new Error('Organization not found');
 
   return organization;
 };
 
-const organizationModel = model<IOrganization, IOrganizationModel>(
-  'Organization',
-  organizationSchema,
-);
+const organizationModel = model<IOrganization, IOrganizationModel>('Organization', organizationSchema);
 export default organizationModel;

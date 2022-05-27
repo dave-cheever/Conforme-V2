@@ -1,14 +1,14 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
-import { ISubsection } from '../../interfaces/IMenu';
+import { ISubSection } from '../../interfaces/INavItem';
 
 const SubSection = ({
   subsection,
   setMenuOpen,
   menuOpen,
 }: {
-  subsection: ISubsection;
+  subsection: ISubSection;
   menuOpen?: boolean;
   setMenuOpen?: (value: boolean) => void;
 }) => {
@@ -18,11 +18,7 @@ const SubSection = ({
   return (
     <Flex
       alignItems="center"
-      color={
-        isPathActive(url, { exact: true })
-          ? 'subSection.selectedFontColor'
-          : 'subSection.unselectedFontColor'
-      }
+      color={isPathActive(url, { exact: true }) ? 'subSection.selectedFontColor' : 'subSection.unselectedFontColor'}
       cursor="pointer"
       fontSize="14px"
       fontWeight="400"
@@ -35,11 +31,7 @@ const SubSection = ({
       }}
     >
       <Box
-        bg={
-          isPathActive(url, { exact: true })
-            ? 'subSection.selectedIndicator'
-            : 'subSection.unselectedIndicator'
-        }
+        bg={isPathActive(url, { exact: true }) ? 'subSection.selectedIndicator' : 'subSection.unselectedIndicator'}
         h="8px"
         rounded="50%"
         w="8px"

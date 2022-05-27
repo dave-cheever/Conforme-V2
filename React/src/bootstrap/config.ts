@@ -108,7 +108,7 @@ export const auditsMenuItems: INavItem[] = [
     subSections: [
       { label: 'Sites', url: '/admin/sites' },
       { label: 'Areas', url: '/admin/areas' },
-      { label: 'Questions', url: '/admin/questions' },
+      { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions' },
       { label: 'Questions categories', url: '/admin/questions-categories' },
       { label: 'Audit types', url: '/admin/audit-types' },
       { label: 'Users', url: '/admin/users' },

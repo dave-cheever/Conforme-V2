@@ -5,10 +5,12 @@ export const isPermitted = ({
   user,
   action,
   data = {},
+  revokedPermissions,
 }: {
   user: IUser | null | undefined;
   action?: string;
   data?: object;
+  revokedPermissions?: string[];
 }): boolean => {
   if (!action) return true;
 
@@ -21,15 +23,12 @@ export const isPermitted = ({
 
   const scope = action.split('.')[0];
   const { normal, restricted } = permission;
-  if (normal && (normal.includes(action) || normal.includes(scope)))
-    return true;
+  if (normal && (normal.includes(action) || normal.includes(scope))) return true;
 
   if (
     restricted &&
-    ((typeof restricted[action] === 'function' &&
-      restricted[action]({ user, ...data })) ||
-      (typeof restricted[scope] === 'function' &&
-        restricted[scope]({ user, ...data })))
+    ((typeof restricted[action] === 'function' && restricted[action]({ revokedPermissions, permission: action, user, ...data })) ||
+      (typeof restricted[scope] === 'function' && restricted[scope]({ revokedPermissions, permission: action, user, ...data })))
   )
     return true;
 
@@ -47,9 +46,9 @@ const Can = ({
   yes?: () => JSX.Element | true;
   no?: () => JSX.Element | false;
 }): any => {
-  const { user } = useAppContext();
+  const { user, organizationConfig } = useAppContext();
 
-  if (isPermitted({ user, action, data })) return yes();
+  if (isPermitted({ user, action, data, revokedPermissions: organizationConfig?.revokedPermissions })) return yes();
 
   return no();
 };
