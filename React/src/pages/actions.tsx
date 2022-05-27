@@ -97,8 +97,8 @@ const Actions = () => {
     { label: 'Assignee', key: 'assignee.displayName' },
     { label: 'Due date', key: 'dueDate' },
     { label: 'Completed date', key: 'completedDate' },
-    { label: 'Area', key: 'area.name' },
-    { label: 'Site', key: 'site.name' },
+    { label: 'Site', key: 'answer.audit.site.name' },
+    { label: 'Area', key: 'answer.audit.area.name' },
   ];
 
   useEffect(() => {
