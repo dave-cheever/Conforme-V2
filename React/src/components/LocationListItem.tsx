@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Avatar, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
 
+import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
@@ -10,8 +11,9 @@ import { ILocation } from '../interfaces/ILocation';
 
 const LocationListItem = ({ location, openLocationModal }: { location: ILocation; openLocationModal }) => {
   const device = useDevice();
+  const { module } = useAppContext();
   const { navigateTo } = useNavigate();
-  const { setResponseFiltersValue } = useFiltersContext();
+  const { setResponseFiltersValue, setAuditFiltersValue } = useFiltersContext();
 
   return (
     <Flex
@@ -26,12 +28,13 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
       fontWeight="semi_medium"
       h="73px"
       mt="0px"
-      onClick={() => openLocationModal('edit', location)}
       overflow="hidden"
       pl={6}
       w="calc(100% - 22px)"
     >
-      <Flex w={['max-content', 'full']}>{location.name}</Flex>
+      <Flex onClick={() => openLocationModal('edit', location)} w={['max-content', 'full']}>
+        {location.name}
+      </Flex>
       {device !== 'mobile' && device !== 'tablet' && (
         <>
           <Flex w="full">
@@ -57,14 +60,15 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
       )}
       <Spacer display={['block', 'none']} />
       <Flex alignItems="center" w={['97px', 'full']}>
-        {location.complianceItemsResponsesCount || '0'}
+        {module?.type === 'tracker' ? location.complianceItemsResponsesCount || '0' : location.totalAuditsCount || 0}
         <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"
             h="10px"
             ml="13px"
             onClick={() => {
-              setResponseFiltersValue({ locationsIds: { value: [location._id] } });
+              if (module?.type === 'tracker') setResponseFiltersValue({ locationsIds: { value: [location._id] } });
+              else setAuditFiltersValue({ sitesIds: { value: [location._id] } });
               navigateTo('/');
             }}
             stroke="locations.tooltipStroke"

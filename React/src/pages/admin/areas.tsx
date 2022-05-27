@@ -13,6 +13,7 @@ import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
+import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import useSort from '../../hooks/useSort';
@@ -68,6 +69,7 @@ const Areas = () => {
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
   const device = useDevice();
   const { navigateTo } = useNavigate();
+  const { setAuditFiltersValue } = useFiltersContext();
 
   const { sortedData: areas, sortType, setSortType, sortOrder, setSortOrder } = useSort(data?.businessUnits ?? []);
 
@@ -212,7 +214,10 @@ const Areas = () => {
             cursor="pointer"
             h="10px"
             ml="13px"
-            onClick={() => navigateTo('/', { businessUnitsIds: [businessUnit._id] })}
+            onClick={() => {
+              setAuditFiltersValue({ areasIds: { value: [businessUnit._id] } });
+              navigateTo('/');
+            }}
             stroke="#282F36"
             w="10px"
           />
