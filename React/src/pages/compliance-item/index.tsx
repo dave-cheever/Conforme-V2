@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Confetti from 'react-confetti';
 
 import { Button, Flex } from '@chakra-ui/react';
@@ -10,12 +10,14 @@ import RenewalModal from '../../components/Response/RenewalModal';
 import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import useDevice from '../../hooks/useDevice';
 import useResponseUtils from '../../hooks/useResponseUtils';
 
 const ComplianceItemResponse = () => {
   const { activeTab, setActiveTab:updateActiveTab, response, snapshot, isQuestionFormDirty, setIsQuestionFormDirty } = useResponseContext();
   const { getStatus } = useResponseUtils();
   const [run, setRun] = useState(false);
+  const device = useDevice();
 
   useEffect(() => {
     if (getStatus(response) === 'compliant' && !snapshot) setRun(false); // TODO: needs to be updated, fix dimensions and trigger
@@ -46,20 +48,32 @@ const ComplianceItemResponse = () => {
     updateActiveTab(activeTab);
   }
 
+  const confettiHeight = useMemo(() => {
+    if(device === "desktop") return window.innerHeight - 100;
+
+    if(device === "tablet") return window.innerHeight - 100;
+
+    return window.innerHeight - 200;
+
+  }, [device, window]);
+
+  const confettiWidth = useMemo(() => {
+    if(device === "desktop") return window.innerWidth - 300;
+
+    if(device === "tablet") return window.innerWidth - 200;
+
+    return window.innerWidth - 80;
+
+  }, [device, window]);
+
   return (
     <>
       <RenewalModal />
       <Confetti
-        confettiSource={{
-          x: 625,
-          y: 350,
-          w: 10,
-          h: 10,
-        }}
-        height={1100}
+        height={confettiHeight}
         recycle={false}
         run={run}
-        width={1250}
+        width={confettiWidth}
       />
       <Flex direction="column" h="full" w="full">
         <Flex
@@ -70,7 +84,7 @@ const ComplianceItemResponse = () => {
           p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
           w="full"
         >
-          <Flex align="center" justify="space-between" mb="8">
+          <Flex align="center" justify="space-between" mb={["0", "8"]}>
             <Flex justify={['center', 'flex-start']} w="full">
               {responseTabItems.map(({ index, label, icon }) => (
                 <ResponseTabItem

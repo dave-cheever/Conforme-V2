@@ -48,8 +48,8 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
         <Flex
           bg="layout.bg"
           flexDirection="column"
-          h={['calc(100vh - 126px)', 'calc(100vh - 80px)']}
-          mt={['65px', 0]}
+          h={['calc(100vh - 134px)', 'calc(100vh - 80px)']}
+          mt={['72px', 0]}
           overflow="auto"
           position="absolute"
           pt={['25px', 0]}
@@ -92,7 +92,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
               flexDirection="column"
               h="full"
               maxH={['none', 'calc(100vh - 210px)']}
-              minH={['calc(100vh - 200px)', 'calc(100vh - 210px)']}
+              minH={['none', 'calc(100vh - 200px)', 'calc(100vh - 210px)']}
               pb="25px"
               pt={['40px', '0px']}
               w="full"
