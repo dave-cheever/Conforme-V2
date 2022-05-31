@@ -52,7 +52,7 @@ const AuditsList = ({
           w="10%"
         />
         <AdminTableHeaderElement
-          label="Audior"
+          label="Auditor"
           onClick={() => {
             setSortType('auditor.displayName');
             setSortOrder(sortOrder === 'asc' && sortType === 'auditor.displayName' ? 'desc' : 'asc');
