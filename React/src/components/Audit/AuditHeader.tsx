@@ -16,50 +16,22 @@ import {
 } from '@chakra-ui/react';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
-import { ArrowDownIcon, ShareIcon } from '../../icons';
+import { ArrowDownIcon } from '../../icons';
 import AuditHeaderButton from './AuditHeaderButton';
-import AuditHeaderMenuItem from './AuditHeaderMenuItem';
 import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
   const { audit, auditor, site, area } = useAuditContext();
-  const {
-    isOpen: isSubmitModalOpen,
-    onOpen: handleSubmitModalOpen,
-    onClose: handleSubmitModalClose,
-  } = useDisclosure();
+  const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
 
   if (!audit) return null;
 
   return (
     <>
-      <AuditSubmitModal
-        isOpen={isSubmitModalOpen}
-        onClose={handleSubmitModalClose}
-      />
-      <Flex
-        bg="auditHeader.bg"
-        direction="column"
-        mb="15px"
-        minH="100px"
-        pl={6}
-        w="full"
-        zIndex={1}
-      >
-        <Stack
-          align="center"
-          direction="row"
-          h="40px"
-          mb="15px"
-          spacing={4}
-          w="full"
-        >
-          <Heading
-            alignItems={['flex-start', 'center']}
-            color="auditHeader.heading"
-            fontSize="xxl"
-            fontWeight="bold"
-          >
+      <AuditSubmitModal isOpen={isSubmitModalOpen} onClose={handleSubmitModalClose} />
+      <Flex bg="auditHeader.bg" direction="column" mb="15px" minH="100px" pl={6} w="full" zIndex={1}>
+        <Stack align="center" direction="row" h="40px" mb="15px" spacing={4} w="full">
+          <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold">
             {area?.name ?? 'Virtual'}
           </Heading>
           {audit.status === 'completed' && (
@@ -77,12 +49,7 @@ const AuditHeader = () => {
               <Text fontSize="smm">{audit?.reference}</Text>
             </Flex>
             <Stack align="center" direction="row" spacing={2}>
-              <Avatar
-                name={auditor?.displayName}
-                rounded="full"
-                size="xs"
-                src={auditor?.imgUrl}
-              />
+              <Avatar name={auditor?.displayName} rounded="full" size="xs" src={auditor?.imgUrl} />
               <Box>
                 <Text fontSize="11px" opacity={0.5}>
                   Owner
@@ -108,7 +75,8 @@ const AuditHeader = () => {
             </Flex>
           </Stack>
           <Spacer display={['none', 'flex']} />
-          <AuditHeaderButton
+          {/* Hidden for now according to feature 44736 */}
+          {/* <AuditHeaderButton
             icon={
               <ShareIcon
                 _groupHover={{
@@ -120,34 +88,18 @@ const AuditHeader = () => {
             }
             name="Share"
             onClick={() => {}}
-          />
+          /> */}
           {audit.status === 'inProgress' && (
-            <AuditHeaderButton
-              bgColor="#DC0043"
-              fontColor="white"
-              icon={null}
-              name="Submit"
-              onClick={handleSubmitModalOpen}
-            />
+            <AuditHeaderButton bgColor="#DC0043" fontColor="white" icon={null} name="Submit" onClick={handleSubmitModalOpen} />
           )}
         </Flex>
-        <Flex
-          alignItems="center"
-          display={['flex', 'none']}
-          h="40px"
-          mr="25px"
-          mt={4}
-        >
+        <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px" mt={4}>
           <Menu>
             {({ isOpen }) => (
               <>
                 <MenuButton
                   as={Button}
-                  bg={
-                    isOpen
-                      ? 'auditHeader.optionsMenuBgOpen'
-                      : 'auditHeader.optionsMenuBg'
-                  }
+                  bg={isOpen ? 'auditHeader.optionsMenuBgOpen' : 'auditHeader.optionsMenuBg'}
                   borderRadius="10px"
                   color="auditHeader.optionsMenuButtonColor"
                   colorScheme="auditHeader.optionsMenuColorScheme"
@@ -171,7 +123,8 @@ const AuditHeader = () => {
                   minW={['calc(100vw - 50px)', '325px']}
                   w="100%"
                 >
-                  <AuditHeaderMenuItem
+                  {/* Hidden for now according to feature 44736 */}
+                  {/* <AuditHeaderMenuItem
                     icon={
                       <ShareIcon
                         _groupHover={{
@@ -183,12 +136,8 @@ const AuditHeader = () => {
                     }
                     onClick={() => {}}
                     title="Share"
-                  />
-                  <MenuItem
-                    color="auditHeadeMenuItem.optionsMenuColor"
-                    onClick={() => {}}
-                    w="100%"
-                  >
+                  /> */}
+                  <MenuItem color="auditHeadeMenuItem.optionsMenuColor" onClick={() => {}} w="100%">
                     <Box p="2">Save</Box>
                   </MenuItem>
                 </MenuList>

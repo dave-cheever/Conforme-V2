@@ -7,7 +7,6 @@ import AuditLeftNavigationTablet from '../components/Audit/AuditLeftNavigationTa
 import Loader from '../components/Loader';
 import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
-import ShareModal from '../components/ShareModal';
 import AuditProvider, { useAuditContext } from '../contexts/AuditProvider';
 // import useDevice from '../hooks/useDevice';
 
@@ -29,10 +28,7 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
       <ModuleSwitcher />
       <AuditLeftNavigation />
       <AuditLeftNavigationTablet />
-      <Flex
-        direction="column"
-        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
-      >
+      <Flex direction="column" w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
         <NavigationTop />
         <Flex
           bg="layout.bg"
@@ -46,7 +42,7 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
           w={['full', 'calc(100% - 130px)', 'calc(100% - 290px)']}
           zIndex={4}
         >
-          <ShareModal />
+          {/* <ShareModal /> */}
           <AuditHeader />
           <Flex h="full" px="25px" w="full">
             <Flex
