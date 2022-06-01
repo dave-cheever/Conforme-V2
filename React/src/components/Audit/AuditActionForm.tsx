@@ -21,7 +21,7 @@ const ActionForm = ({ handleSave }) => {
   useEffect(() => {
     reset({
       ...selectedAction,
-      priority: selectedAction?.priority || priorities[0].value,
+      priority: selectedAction?.priority || priorities[1].value,
     });
   }, [JSON.stringify(selectedAction)]);
 
@@ -71,11 +71,7 @@ const ActionForm = ({ handleSave }) => {
           />
         </GridItem>
       </Grid>
-      <TextInputMultiline
-        control={control}
-        label="Description"
-        name="description"
-      />
+      <TextInputMultiline control={control} label="Description" name="description" />
       <HStack justify="flex-end" pb={3} pt={4} w="full">
         <Button
           bgColor="auditActionForm.buttons.cancel.bg"

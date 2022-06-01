@@ -60,11 +60,7 @@ const Dropdown = ({
             {label && (
               <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'dropdown.labelFont.error'
-                      : 'dropdown.labelFont.normal'
-                  }
+                  color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
                   left="none"
@@ -102,15 +98,11 @@ const Dropdown = ({
                   cursor: 'not-allowed',
                 }}
                 _focus={{
-                  borderColor: error
-                    ? 'dropdown.border.focus.error'
-                    : 'dropdown.border.focus.normal',
+                  borderColor: error ? 'dropdown.border.focus.error' : 'dropdown.border.focus.normal',
                 }}
                 _placeholder={{ color: 'dropdown.placeholder' }}
                 bg="dropdown.bg"
-                borderColor={
-                  error ? 'dropdown.border.error' : 'dropdown.border.normal'
-                }
+                borderColor={error ? 'dropdown.border.error' : 'dropdown.border.normal'}
                 borderRadius="8px"
                 borderWidth="1px"
                 color="dropdown.font"
@@ -118,12 +110,7 @@ const Dropdown = ({
                 cursor="pointer"
                 fontSize="smm"
                 h="42px"
-                icon={
-                  <ChevronRight
-                    stroke="dropdown.chevronDownIcon"
-                    transform="rotate(90deg)"
-                  />
-                }
+                icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
                 isDisabled={disabled}
                 name={name}
                 onBlur={onBlur}
@@ -138,15 +125,7 @@ const Dropdown = ({
                   </option>
                 ))}
               </Select>
-              {Icon && onAction && (
-                <Icon
-                  cursor="pointer"
-                  ml="20px"
-                  mt="10px"
-                  onClick={() => onAction(attributeType)}
-                  stroke={stroke}
-                />
-              )}
+              {Icon && onAction && <Icon cursor="pointer" ml="20px" mt="10px" onClick={() => onAction(attributeType)} stroke={stroke} />}
             </Flex>
             {error && (
               <Box color="dropdown.error" fontSize="smm" ml={1} mt={1}>
