@@ -70,11 +70,12 @@ const AuditModal = ({ refetch }) => {
         isOpen={auditorModalOpen}
         multiple={false}
         onCancel={() => {
-          setAuditorModalOpen(false);
           setValue('auditorId', defaultValues.auditorId);
           setSelectedAuditor(user as IUser);
+          setAuditorModalOpen(false);
         }}
         onClose={() => {
+          setValue('auditorId', selectedAuditor._id);
           setAuditorModalOpen(false);
         }}
       />
@@ -82,11 +83,17 @@ const AuditModal = ({ refetch }) => {
         isOpen={participantsModalOpen}
         multiple
         onCancel={() => {
-          setParticipantsModalOpen(false);
           setValue('participantsIds', defaultValues.participantsIds);
           setSelectedParticipants([]);
+          setParticipantsModalOpen(false);
         }}
-        onClose={() => setParticipantsModalOpen(false)}
+        onClose={() => {
+          setValue(
+            'participantsIds',
+            selectedParticipants.map((participant) => (participant as IUser)?._id),
+          );
+          setParticipantsModalOpen(false);
+        }}
       />
       <ModalContent bg="auditModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
