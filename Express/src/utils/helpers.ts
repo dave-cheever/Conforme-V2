@@ -3,7 +3,7 @@ import { diff } from 'deep-object-diff';
 import { StatusCodes } from 'http-status-codes';
 import { difference } from 'lodash';
 
-import { IAudit, IAuditValues, IOrganization, IUser } from 'app-interfaces';
+import { IAction, IAudit, IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import { Users } from 'app-models';
 import { GraphService } from 'app-services';
 
@@ -588,6 +588,22 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
     };
   }
   return value;
+};
+
+export const getActionStatus = (action: IAction) => {
+  if (!action) return;
+
+  const { dueDate, done } = action;
+
+  if (!dueDate) return done ? 'completed' : 'inProgress';
+
+  const daysToDueDate = dueDate ? differenceInDays(new Date(dueDate), new Date(action.metatags.addedAt)) : 0;
+
+  if (action.done && (!daysToDueDate || daysToDueDate >= 0)) return 'completed';
+
+  if (!action.done && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
+
+  return 'overdue';
 };
 
 export const getAuditStatus = (audit: IAudit, auditsComingUpTriggers) => {

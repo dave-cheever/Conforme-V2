@@ -4,10 +4,9 @@ import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Grid, GridItem, Spacer, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
 
-import { auditsInsightsTypes } from '../../bootstrap/config';
+import { actionsInsightsTypes } from '../../bootstrap/config';
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
-import AuditsUsersInsights from '../../components/Insights/AuditsUsersInsights';
 import InsightListItem from '../../components/Insights/InsightListItem';
 import InsightsCard from '../../components/Insights/InsightsCard';
 import InsightsChart from '../../components/Insights/InsightsChart';
@@ -15,93 +14,84 @@ import Loader from '../../components/Loader';
 import UserAvatar from '../../components/UserAvatar';
 import useSort from '../../hooks/useSort';
 
-const GET_AUDITS_INSIGHTS = gql`
+const GET_ACTIONS_INSIGHTS = gql`
   query {
-    auditsInsights {
-      totalAudits
-      completedAudits
-      upcomingAudits
-      overdueAudits
-      totalAuditsChart {
+    actionsInsights {
+      totalActions
+      completedActions
+      inProgressActions
+      overdueActions
+      totalActionsChart {
         dates
         counts
       }
-      completedAuditsChart {
+      completedActionsChart {
         dates
         counts
       }
-      upcomingAuditsChart {
+      inProgressActionsChart {
         dates
         counts
       }
-      overdueAuditsChart {
+      overdueActionsChart {
         dates
         counts
       }
-      topAuditors {
+      mostAddedBy {
         user {
           _id
           displayName
           imgUrl
         }
-        audits
+        actions
       }
     }
     locations {
       _id
       name
-      totalAuditsCount
-      completedAuditsCount
-      upcomingAuditsCount
-      overdueAuditsCount
+      totalActionsCount
+      completedActionsCount
+      inProgressActionsCount
+      overdueActionsCount
     }
     businessUnits {
       _id
       name
-      totalAuditsCount
-      completedAuditsCount
-      upcomingAuditsCount
-      overdueAuditsCount
-    }
-    users {
-      _id
-      displayName
-      imgUrl
-      totalAuditsCount
-      completedAuditsCount
-      upcomingAuditsCount
-      overdueAuditsCount
+      totalActionsCount
+      completedActionsCount
+      inProgressActionsCount
+      overdueActionsCount
     }
   }
 `;
 
-const AuditsInsights = () => {
-  const { data, loading, error } = useQuery(GET_AUDITS_INSIGHTS);
-  const [selectedAuditsStatsCount, setSelectedAuditsStatsCount] = useState('total');
-  const auditsStatsCounts = useMemo(
+const ActionsInsights = () => {
+  const { data, loading, error } = useQuery(GET_ACTIONS_INSIGHTS);
+  const [selectedActionsStatsCount, setSelectedActionsStatsCount] = useState('total');
+  const actionsStatsCounts = useMemo(
     () => [
       {
         status: 'total',
-        audits: data?.auditsInsights?.totalAudits,
-        chart: data?.auditsInsights?.totalAuditsChart,
+        actions: data?.actionsInsights?.totalActions,
+        chart: data?.actionsInsights?.totalActionsChart,
         color: '#1E1836',
       },
       {
         status: 'completed',
-        audits: data?.auditsInsights?.completedAudits,
-        chart: data?.auditsInsights?.completedAuditsChart,
+        actions: data?.actionsInsights?.completedActions,
+        chart: data?.actionsInsights?.completedActionsChart,
         color: '#41B916',
       },
       {
-        status: 'upcoming',
-        audits: data?.auditsInsights?.upcomingAudits,
-        chart: data?.auditsInsights?.upcomingAuditsChart,
+        status: 'inProgress',
+        actions: data?.actionsInsights?.inProgressActions,
+        chart: data?.actionsInsights?.inProgressActionsChart,
         color: '#FF9A00',
       },
       {
         status: 'overdue',
-        audits: data?.auditsInsights?.overdueAudits,
-        chart: data?.auditsInsights?.overdueAuditsChart,
+        actions: data?.actionsInsights?.overdueActions,
+        chart: data?.actionsInsights?.overdueActionsChart,
         color: '#E93C44',
       },
     ],
@@ -121,13 +111,6 @@ const AuditsInsights = () => {
     setSortOrder: setAreasSortOrder,
     setSortType: setAreasSortType,
   } = useSort(data?.businessUnits ?? []);
-  const {
-    sortedData: users,
-    sortOrder: usersSortOrder,
-    sortType: usersSortType,
-    setSortOrder: setUsersSortOrder,
-    setSortType: setUsersSortType,
-  } = useSort(data?.users ?? [], 'totalAuditsCount');
 
   const echartsOption = useMemo(
     () => ({
@@ -142,19 +125,19 @@ const AuditsInsights = () => {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.chart?.dates,
+        data: actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.chart?.dates,
       },
       yAxis: {
         type: 'value',
       },
       series: [
         {
-          data: auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.chart?.counts,
+          data: actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.chart?.counts,
           smooth: true,
           symbol: 'circle',
           type: 'line',
           itemStyle: {
-            color: auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color as string,
+            color: actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.color as string,
           },
           areaStyle: {
             color: new graphic.LinearGradient(1, 0, 1, 1, [
@@ -171,7 +154,7 @@ const AuditsInsights = () => {
         },
       ],
     }),
-    [data, selectedAuditsStatsCount],
+    [data, selectedActionsStatsCount],
   ) as EChartsOption;
 
   return (
@@ -192,68 +175,61 @@ const AuditsInsights = () => {
               },
             }}
           >
-            {auditsStatsCounts.map((filter) => (
+            {actionsStatsCounts.map((filter) => (
               <InsightsCard
-                count={filter.audits}
+                count={filter.actions}
                 key={filter.status}
-                onSelect={setSelectedAuditsStatsCount}
-                selected={selectedAuditsStatsCount === filter.status}
+                onSelect={setSelectedActionsStatsCount}
+                selected={selectedActionsStatsCount === filter.status}
                 status={filter.status}
+                type="actions"
               />
             ))}
           </Flex>
           <Text
-            color={auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color}
+            color={actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.color}
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}
           >
-            {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
+            {actionsInsightsTypes[selectedActionsStatsCount]}{' '}
             <Text as="span" color="insights.secondaryText">
-              walks
+              actions
             </Text>
           </Text>
           <InsightsChart option={echartsOption} />
           <Text fontSize="xxl" fontWeight="bold" my={['15px', '25px']}>
-            Top Walkers
+            Most added by
           </Text>
           <Grid gap="20px" templateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}>
-            {data?.auditsInsights?.topAuditors?.map((auditor) => (
-              <GridItem key={auditor.user._id} w="100%">
-                <Box bg="auditsInsights.topWalkers.bg" rounded="20px">
+            {data?.actionsInsights?.mostAddedBy?.map((actionCreator) => (
+              <GridItem key={actionCreator.user._id} w="100%">
+                <Box bg="actionsInsights.mostAddedBy.bg" rounded="20px">
                   <Flex align="center" px="20px" py="15px">
                     <Flex align="center">
-                      <UserAvatar size="xs" userId={auditor.user._id} />
+                      <UserAvatar size="xs" userId={actionCreator.user._id} />
                       <Text
                         ml="10px"
                         overflowX="hidden"
                         textOverflow="ellipsis"
-                        title={auditor.user.displayName}
+                        title={actionCreator.user.displayName}
                         w={['100px', '100px', 'full']}
                         whiteSpace="nowrap"
                       >
-                        {auditor.user.displayName}
+                        {actionCreator.user.displayName}
                       </Text>
                     </Flex>
                     <Spacer />
-                    <Text fontWeight="bold">{auditor.audits}</Text>
+                    <Text fontWeight="bold">{actionCreator.actions}</Text>
                   </Flex>
                 </Box>
               </GridItem>
             ))}
           </Grid>
-          <AuditsUsersInsights
-            auditsStatsCounts={auditsStatsCounts}
-            setSortOrder={setUsersSortOrder}
-            setSortType={setUsersSortType}
-            sortOrder={usersSortOrder}
-            sortType={usersSortType}
-            users={users}
-          />
           <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
-              <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
-                <AdminTableHeader title="Walks per site">
+              <Box bg="actionsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
+                <AdminTableHeader title="Actions per site">
                   <AdminTableHeaderElement
                     label="Site"
                     onClick={() => {
@@ -267,54 +243,54 @@ const AuditsInsights = () => {
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
-                      setSitesSortType('totalAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                      setSitesSortType('totalActionsCount');
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'totalActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'totalAuditsCount'}
-                    sortOrder={sitesSortType === 'totalAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={sitesSortType === 'totalActionsCount'}
+                    sortOrder={sitesSortType === 'totalActionsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
-                      setSitesSortType('completedAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'completedAuditsCount' ? 'desc' : 'asc');
+                      setSitesSortType('completedActionsCount');
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'completedActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'completedAuditsCount'}
-                    sortOrder={sitesSortType === 'completedAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={sitesSortType === 'completedActionsCount'}
+                    sortOrder={sitesSortType === 'completedActionsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
-                    label="U"
+                    label="O"
                     onClick={() => {
-                      setSitesSortType('upcomingAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
+                      setSitesSortType('inProgressActionsCount');
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'inProgressActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'upcomingAuditsCount'}
-                    sortOrder={sitesSortType === 'upcomingAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={sitesSortType === 'inProgressActionsCount'}
+                    sortOrder={sitesSortType === 'inProgressActionsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
-                      setSitesSortType('overdueAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'overdueAuditsCount' ? 'desc' : 'asc');
+                      setSitesSortType('overdueActionsCount');
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'overdueActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'overdueAuditsCount'}
-                    sortOrder={sitesSortType === 'overdueAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={sitesSortType === 'overdueActionsCount'}
+                    sortOrder={sitesSortType === 'overdueActionsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} />
+                    <InsightListItem item={site} key={site._id} type="actions" />
                   ))}
                 </Flex>
               </Box>
             </GridItem>
             <GridItem h="100%" w="100%">
-              <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
-                <AdminTableHeader title="Walks per area">
+              <Box bg="actionsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
+                <AdminTableHeader title="Actions per area">
                   <AdminTableHeaderElement
                     label="Area"
                     onClick={() => {
@@ -328,47 +304,47 @@ const AuditsInsights = () => {
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
-                      setAreasSortType('totalAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                      setAreasSortType('totalActionsCount');
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'totalActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'totalAuditsCount'}
-                    sortOrder={areasSortType === 'totalAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={areasSortType === 'totalActionsCount'}
+                    sortOrder={areasSortType === 'totalActionsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
-                      setAreasSortType('completedAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'completedAuditsCount' ? 'desc' : 'asc');
+                      setAreasSortType('completedActionsCount');
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'completedActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'completedAuditsCount'}
-                    sortOrder={areasSortType === 'completedAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={areasSortType === 'completedActionsCount'}
+                    sortOrder={areasSortType === 'completedActionsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
-                    label="U"
+                    label="O"
                     onClick={() => {
-                      setAreasSortType('upcomingAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
+                      setAreasSortType('inProgressActionsCount');
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'inProgressActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'upcomingAuditsCount'}
-                    sortOrder={areasSortType === 'upcomingAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={areasSortType === 'inProgressActionsCount'}
+                    sortOrder={areasSortType === 'inProgressActionsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
-                      setAreasSortType('overdueAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'overdueAuditsCount' ? 'desc' : 'asc');
+                      setAreasSortType('overdueActionsCount');
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'overdueActionsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'overdueAuditsCount'}
-                    sortOrder={areasSortType === 'overdueAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={areasSortType === 'overdueActionsCount'}
+                    sortOrder={areasSortType === 'overdueActionsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
                 <Flex flexDir="column" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} />
+                    <InsightListItem item={area} key={area._id} type="actions" />
                   ))}
                 </Flex>
               </Box>
@@ -380,11 +356,11 @@ const AuditsInsights = () => {
   );
 };
 
-export default AuditsInsights;
+export default ActionsInsights;
 
-export const auditsInsightsStyles = {
-  auditsInsights: {
-    topWalkers: {
+export const actionsInsightsStyles = {
+  actionsInsights: {
+    mostAddedBy: {
       bg: 'white',
     },
     list: {

@@ -27,6 +27,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
       allowCustomQuestions
       maxQuestionsNumber
       editableSubmitted
+      showInInsights
       icon
       options {
         type
@@ -65,6 +66,7 @@ const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } = 
   withAnswers: false,
   allowCustomQuestions: false,
   maxQuestionsNumber: 5,
+  showInInsights: false,
   icon: '',
   selectedOption: '',
   scope: {
@@ -132,6 +134,7 @@ const QuestionsCategories = () => {
       allowCustomQuestions: questionsCategory?.allowCustomQuestions,
       maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
       editableSubmitted: questionsCategory?.editableSubmitted,
+      showInInsights: questionsCategory?.showInInsights,
       icon: questionsCategory?.icon,
       selectedOption: (questionsCategory?.options || [])[0]?.name || '',
       scope: questionsCategory?.scope,
@@ -149,6 +152,7 @@ const QuestionsCategories = () => {
               withAnswers: questionsCategory?.withAnswers,
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+              showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
               options: questionsCategory?.selectedOption
                 ? [
@@ -189,6 +193,7 @@ const QuestionsCategories = () => {
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
               editableSubmitted: questionsCategory?.editableSubmitted,
+              showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
               options: questionsCategory?.selectedOption
                 ? [
@@ -315,6 +320,14 @@ const QuestionsCategories = () => {
             name="editableSubmitted"
             placeholder="Editable after submission"
             tooltip="If enabled, questions and answers in this category will be editable after submission"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            label="Show in insights"
+            name="showInInsights"
+            placeholder="Show in insights"
+            tooltip="If enabled, answers related to this questions category will be shown in insights"
             variant="secondaryVariant"
           />
           <TextInput

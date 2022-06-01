@@ -15,7 +15,7 @@ const AuditsUsersInsights = ({
 }: {
   users: IUser[];
   auditsStatsCounts: {
-    type: string;
+    status: string;
     color: string;
   }[];
   sortOrder: 'asc' | 'desc';
@@ -65,30 +65,30 @@ const AuditsUsersInsights = ({
             bg={count.color}
             cursor="pointer"
             justify="end"
-            key={count.type}
+            key={count.status}
             mb="5px"
             minW="130px"
             onClick={() => {
-              setSortType(`${count.type}AuditsCount`);
-              setSortOrder(sortOrder === 'asc' && sortType === `${count.type}AuditsCount` ? 'desc' : 'asc');
+              setSortType(`${count.status}AuditsCount`);
+              setSortOrder(sortOrder === 'asc' && sortType === `${count.status}AuditsCount` ? 'desc' : 'asc');
             }}
             p="8px"
             rounded="10px"
             userSelect="none"
           >
             <Text color="white" fontSize="smm">
-              {auditsInsightsTypes[count.type]}
+              {auditsInsightsTypes[count.status]}
             </Text>
             {sortOrder !== null && !sortOrder ? (
               <ArrowDownIcon
-                color={new RegExp(count.type).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
+                color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
                 h="12px"
                 ml="10px"
                 w="12px"
               />
             ) : (
               <ArrowUpIcon
-                color={new RegExp(count.type).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
+                color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
                 h="12px"
                 ml="10px"
                 w="12px"

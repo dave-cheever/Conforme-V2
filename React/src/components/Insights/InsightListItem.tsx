@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { Box, Flex } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
@@ -5,8 +7,41 @@ import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import InsightCount from './InsightCount';
 
-const InsightListItem = ({ item }: { item: ILocation | IBusinessUnit }) => {
+const InsightListItem = ({ item, type = 'audits' }: { item: ILocation | IBusinessUnit; type?: 'audits' | 'actions' | 'answers' }) => {
   const { navigateTo } = useNavigate();
+
+  const counts = useMemo(() => {
+    switch (type) {
+      case 'actions':
+        return (
+          <>
+            <InsightCount count={item.totalActionsCount} />
+            <InsightCount count={item.completedActionsCount} />
+            <InsightCount count={item.inProgressActionsCount} />
+            <InsightCount count={item.overdueActionsCount} />
+          </>
+        );
+      case 'answers':
+        return (
+          <>
+            <InsightCount count={item.totalAnswersCount} />
+            <InsightCount count={item.openAnswersCount} />
+            <InsightCount count={item.resolvedAnswersCount} />
+            <InsightCount count={item.closedAnswersCount} />
+          </>
+        );
+      case 'audits':
+      default:
+        return (
+          <>
+            <InsightCount count={item.totalAuditsCount} />
+            <InsightCount count={item.completedAuditsCount} />
+            <InsightCount count={item.upcomingAuditsCount} />
+            <InsightCount count={item.overdueAuditsCount} />
+          </>
+        );
+    }
+  }, [type]);
 
   return (
     <Box
@@ -37,17 +72,8 @@ const InsightListItem = ({ item }: { item: ILocation | IBusinessUnit }) => {
           </Flex>
         </Flex>
         <Flex h="100%" w="40%">
-          <InsightCount count={item.totalAuditsCount} />
-          <InsightCount count={item.completedAuditsCount} />
-          <InsightCount count={item.upcomingAuditsCount} />
-          <InsightCount count={item.overdueAuditsCount} />
+          {counts}
         </Flex>
-        {/* <Flex h="100%" w="10%">
-        </Flex>
-        <Flex h="100%" w="10%">
-        </Flex>
-        <Flex h="100%" w="10%">
-        </Flex> */}
       </Flex>
     </Box>
   );

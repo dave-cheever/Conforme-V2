@@ -58,6 +58,7 @@ import { textMultilineConfirmInputStyles } from '../components/Forms/TextMultili
 import { toggleStyles } from '../components/Forms/Toggle';
 import { headerStyles } from '../components/Header';
 import { auditsUsersInsightsStyles } from '../components/Insights/AuditsUsersInsights';
+import { insightsCardStyles } from '../components/Insights/InsightsCard';
 import { locationsSelectorStyles } from '../components/LocationsSelector';
 import { moduleSwitcherStyles } from '../components/ModuleSwitcher';
 import { navigationBottomMobileStyles } from '../components/NavigationBottomMobile';
@@ -117,6 +118,8 @@ import { complianceItemResponseStyles } from '../pages/compliance-item/index';
 import { teamPageStyles } from '../pages/compliance-item/team';
 import { complianceItemStyles } from '../pages/compliance-items';
 import { insightsStyles } from '../pages/insights';
+import { actionsInsightsStyles } from '../pages/insights/actions';
+import { answersInsightsStyles } from '../pages/insights/answers';
 import { auditsInsightsStyles } from '../pages/insights/audits';
 import { loginPageStyles } from '../pages/login';
 import { logoutPageStyles } from '../pages/logout';
@@ -223,6 +226,7 @@ const getTheme = (organizationTheme?: any) => {
         ...historicalListItemStyles,
         ...historyPageStyles,
         ...insightsStyles,
+        ...insightsCardStyles,
         ...loginPageStyles,
         ...locationsStyles,
         ...locationsFormModalStyles,
@@ -283,6 +287,8 @@ const getTheme = (organizationTheme?: any) => {
         ...walkItemsStyles,
         ...walkItemsListStyles,
         ...walkItemSquareStyles,
+        ...actionsInsightsStyles,
+        ...answersInsightsStyles,
         ...auditsInsightsStyles,
         ...auditsUsersInsightsStyles,
 
@@ -597,8 +603,7 @@ const getTheme = (organizationTheme?: any) => {
               justifyContent: 'flex-end',
             },
             overlay: {
-              background:
-                'linear-gradient(to right, transparent 0%, black 200%)',
+              background: 'linear-gradient(to right, transparent 0%, black 200%)',
             },
           },
           deleteModal: {
@@ -609,8 +614,7 @@ const getTheme = (organizationTheme?: any) => {
               justifyContent: 'flex-end',
             },
             overlay: {
-              background:
-                'linear-gradient(to right, transparent 0%, black 200%)',
+              background: 'linear-gradient(to right, transparent 0%, black 200%)',
             },
           },
           adminModal: {
@@ -621,8 +625,7 @@ const getTheme = (organizationTheme?: any) => {
               justifyContent: 'flex-end',
             },
             overlay: {
-              background:
-                'linear-gradient(to right, transparent 0%, black 200%)',
+              background: 'linear-gradient(to right, transparent 0%, black 200%)',
             },
           },
           shareModal: {

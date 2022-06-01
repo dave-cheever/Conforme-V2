@@ -1,10 +1,15 @@
 import { GraphQLResolveInfo } from 'graphql';
 
 import { IBusinessUnit } from 'app-interfaces';
-import { Audits, BusinessUnits, Responses, Settings, Users } from 'app-models';
-import { doesPathExist, getAuditStatus, join } from 'app-utils';
+import { Actions, Answers, Audits, BusinessUnits, Responses, Settings, Users } from 'app-models';
+import { doesPathExist, getActionStatus, getAuditStatus, join } from 'app-utils';
 
-const businessUnits = async (_, { businessUnitQueryInput = {} }, { organization }, info: GraphQLResolveInfo) => {
+const businessUnits = async (
+  _,
+  { businessUnitQueryInput = {}, businessUnitsAnswersCountInput },
+  { organization },
+  info: GraphQLResolveInfo,
+) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['businessUnits', element]);
 
   try {
@@ -118,6 +123,276 @@ const businessUnits = async (_, { businessUnitQueryInput = {} }, { organization 
             },
           ])
         ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue').length;
+      }
+    }
+
+    if (shouldJoin('totalActionsCount')) {
+      for (const businessUnit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': businessUnit._id,
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        businessUnit.totalActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('completedActionsCount')) {
+      for (const businessUnit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': businessUnit._id,
+            done: true,
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        businessUnit.completedActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('inProgressActionsCount')) {
+      for (const businessUnit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': businessUnit._id,
+          },
+        });
+
+        businessUnit.inProgressActionsCount =
+          (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'inProgress')?.length ?? 0;
+      }
+    }
+
+    if (shouldJoin('overdueActionsCount')) {
+      for (const businessUnit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': businessUnit._id,
+          },
+        });
+
+        businessUnit.overdueActionsCount =
+          (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'overdue')?.length ?? 0;
+      }
+    }
+
+    if (shouldJoin('totalAnswersCount') && businessUnitsAnswersCountInput?.questionsCategoriesId) {
+      for (const businessunit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': businessUnitsAnswersCountInput.questionsCategoriesId,
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        businessunit.totalAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('openAnswersCount') && businessUnitsAnswersCountInput?.questionsCategoriesId) {
+      for (const businessunit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': businessUnitsAnswersCountInput.questionsCategoriesId,
+            status: 'open',
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        businessunit.openAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('resolvedAnswersCount') && businessUnitsAnswersCountInput?.questionsCategoriesId) {
+      for (const businessunit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': businessUnitsAnswersCountInput.questionsCategoriesId,
+            status: 'resolved',
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        businessunit.resolvedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('closedAnswersCount') && businessUnitsAnswersCountInput?.questionsCategoriesId) {
+      for (const businessunit of businessUnits) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': businessUnitsAnswersCountInput.questionsCategoriesId,
+            status: 'closed',
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        businessunit.closedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
       }
     }
 

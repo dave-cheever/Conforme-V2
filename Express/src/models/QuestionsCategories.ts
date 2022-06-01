@@ -4,22 +4,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IQuestionsCategory, IQuestionsCategoryModel } from 'app-interfaces';
 import { AuditLogs } from 'app-models';
-import {
-  genMetatags,
-  getAuditRecordValues,
-  removeDatabaseFields,
-} from 'app-utils';
+import { genMetatags, getAuditRecordValues, removeDatabaseFields } from 'app-utils';
 
-const questionsCategoriesSchema = new Schema<
-  IQuestionsCategory,
-  IQuestionsCategoryModel
->({
+const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCategoryModel>({
   _id: String,
   name: String,
   withAnswers: Boolean,
   allowCustomQuestions: Boolean,
   maxQuestionsNumber: Number,
   editableSubmitted: Boolean,
+  showInInsights: Boolean,
   icon: String,
   options: [
     {
@@ -67,10 +61,7 @@ questionsCategoriesSchema.statics.customCreate = async function (
   return createdQuestionCategory;
 };
 
-questionsCategoriesSchema.statics.customFind = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IQuestionsCategory[]> {
+questionsCategoriesSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IQuestionsCategory[]> {
   const questionsCategories = await this.find({
     ...selector,
     organizationId,
@@ -91,9 +82,7 @@ questionsCategoriesSchema.statics.customFindOne = async function (
   return questionCategory;
 };
 
-questionsCategoriesSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IQuestionsCategory> {
+questionsCategoriesSchema.statics.customFindById = async function (_id: string): Promise<IQuestionsCategory> {
   const questionCategory = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
@@ -110,8 +99,7 @@ questionsCategoriesSchema.statics.customUpdateOne = async function (
   organizationId: string,
 ): Promise<IQuestionsCategory> {
   const questionCategory = await this.customFindOne(selector, organizationId);
-  if (!questionCategory)
-    throw new GraphQLError("Question category doesn't exist");
+  if (!questionCategory) throw new GraphQLError("Question category doesn't exist");
 
   const updatedQuestion = {
     ...questionCategory,
@@ -154,8 +142,7 @@ questionsCategoriesSchema.statics.customDelete = async function (
   organizationId: string,
 ): Promise<number> {
   const questionCategory = await this.customFindOne(selector, organizationId);
-  if (!questionCategory)
-    throw new GraphQLError("Question category doesn't exist");
+  if (!questionCategory) throw new GraphQLError("Question category doesn't exist");
 
   const updatedQuestionCategory = {
     ...questionCategory,
@@ -190,8 +177,9 @@ questionsCategoriesSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
-const questionsCategoryModel = model<
-  IQuestionsCategory,
-  IQuestionsCategoryModel
->('QuestionsCategory', questionsCategoriesSchema, 'questionsCategories');
+const questionsCategoryModel = model<IQuestionsCategory, IQuestionsCategoryModel>(
+  'QuestionsCategory',
+  questionsCategoriesSchema,
+  'questionsCategories',
+);
 export default questionsCategoryModel;

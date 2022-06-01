@@ -28,6 +28,7 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     editableSubmitted: Boolean
+    showInInsights: Boolean
     icon: String!
     options: [QuestionsCategoryOption!]
     scope: Scope!
@@ -37,6 +38,7 @@ export const questionsCategoriesTypeDefs = `
   input QuestionsCategoryQuery {
     _id: ID
     _ids: [ID]
+    showInInsights: Boolean
     scope: ScopeInput
   }
 
@@ -52,6 +54,7 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     editableSubmitted: Boolean
+    showInInsights: Boolean!
     icon: String!
     options: [QuestionsCategoryOptionInput!]
     scope: ScopeInput!
@@ -64,6 +67,7 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     editableSubmitted: Boolean
+    showInInsights: Boolean!
     icon: String!
     options: [QuestionsCategoryOptionInput!]
   }

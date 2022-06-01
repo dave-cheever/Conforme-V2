@@ -27,6 +27,14 @@ export const businessUnitsTypeDefs = `
     completedAuditsCount: Int
     upcomingAuditsCount: Int
     overdueAuditsCount: Int
+    totalActionsCount: Int
+    completedActionsCount: Int
+    inProgressActionsCount: Int
+    overdueActionsCount: Int
+    totalAnswersCount: Int
+    openAnswersCount: Int
+    resolvedAnswersCount: Int
+    closedAnswersCount: Int
     metatags: Metatags!
   }
 
@@ -45,10 +53,14 @@ export const businessUnitsTypeDefs = `
   input BusinessUnitQueryInput {
     _id: ID!
   }
+
+  input BusinessUnitsAnswersCountInput {
+    questionsCategoriesId: ID!
+  }
 `;
 
 export const businessUnitsQueryDefs = `
-  businessUnits(businessUnitQueryInput: BusinessUnitQueryInput): [BusinessUnit!]!
+  businessUnits(businessUnitQueryInput: BusinessUnitQueryInput, businessUnitsAnswersCountInput: BusinessUnitsAnswersCountInput): [BusinessUnit!]!
 `;
 
 export const businessUnitsMutationDefs = `

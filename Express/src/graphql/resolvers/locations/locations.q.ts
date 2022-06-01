@@ -1,9 +1,9 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Audits, Locations, Responses, Settings, Users } from 'app-models';
-import { doesPathExist, getAuditStatus, join } from 'app-utils';
+import { Actions, Answers, Audits, Locations, Responses, Settings, Users } from 'app-models';
+import { doesPathExist, getActionStatus, getAuditStatus, join } from 'app-utils';
 
-const locations = async (_, { locationQueryInput = {} }, { organization }, info: GraphQLResolveInfo) => {
+const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInput }, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
 
   try {
@@ -30,23 +30,6 @@ const locations = async (_, { locationQueryInput = {} }, { organization }, info:
         });
         const responses = await Responses.aggregate(pipeline);
         if (responses && responses.length > 0) location.complianceItemsResponsesCount = responses[0].count;
-      }
-    }
-
-    if (shouldJoin('totalAuditsCount')) {
-      for (const location of locations) {
-        location.totalAuditsCount = (
-          await Audits.aggregate([
-            {
-              $match: {
-                'metatags.removedAt': { $eq: null },
-                siteId: location._id,
-                organizationId: organization._id,
-              },
-            },
-            { $count: '_id' },
-          ])
-        )[0]._id;
       }
     }
 
@@ -121,6 +104,276 @@ const locations = async (_, { locationQueryInput = {} }, { organization }, info:
       }
     }
 
+    if (shouldJoin('totalActionsCount')) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': location._id,
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        location.totalActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('completedActionsCount')) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': location._id,
+            done: true,
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        location.completedActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('inProgressActionsCount')) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': location._id,
+          },
+        });
+
+        location.inProgressActionsCount =
+          (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'inProgress')?.length ?? 0;
+      }
+    }
+
+    if (shouldJoin('overdueActionsCount')) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'answers',
+          from: 'scope._id',
+          to: 'answer',
+        });
+
+        join({
+          pipeline,
+          collection: 'audits',
+          from: 'answer.scope._id',
+          to: 'answer.audit',
+        });
+
+        pipeline.push({
+          $match: {
+            'answer.audit.siteId': location._id,
+          },
+        });
+
+        location.overdueActionsCount =
+          (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'overdue')?.length ?? 0;
+      }
+    }
+
+    if (shouldJoin('totalAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        location.totalAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('openAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
+            status: 'open',
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        location.openAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('resolvedAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
+            status: 'resolved',
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        location.resolvedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
+    if (shouldJoin('closedAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
+      for (const location of locations) {
+        const pipeline: any[] = [
+          {
+            $match: {
+              'metatags.removedAt': { $eq: null },
+              organizationId: organization._id,
+            },
+          },
+        ];
+
+        join({
+          pipeline,
+          collection: 'questions',
+          from: 'questionId',
+          to: 'question',
+        });
+
+        pipeline.push({
+          $match: {
+            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
+            status: 'closed',
+          },
+        });
+
+        pipeline.push({ $count: '_id' });
+
+        location.closedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+      }
+    }
+
     if (shouldJoin('owner')) {
       for (const location of locations) {
         try {
@@ -136,6 +389,7 @@ const locations = async (_, { locationQueryInput = {} }, { organization }, info:
 
     return locations?.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
+    console.error(err);
     throw new Error(err);
   }
 };

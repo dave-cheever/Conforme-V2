@@ -26,6 +26,14 @@ export const locationsTypeDefs = `
     completedAuditsCount: Int
     upcomingAuditsCount: Int
     overdueAuditsCount: Int
+    totalActionsCount: Int
+    completedActionsCount: Int
+    inProgressActionsCount: Int
+    overdueActionsCount: Int
+    totalAnswersCount: Int
+    openAnswersCount: Int
+    resolvedAnswersCount: Int
+    closedAnswersCount: Int
     owner: User
     metatags: Metatags!
   }
@@ -46,10 +54,14 @@ export const locationsTypeDefs = `
   input LocationQueryInput {
     _id: ID!
   }
+  
+  input LocationsAnswersCountInput {
+    questionsCategoriesId: ID!
+  }
 `;
 
 export const locationsQueryDefs = `
-  locations(locationQueryInput: LocationQueryInput): [Location!]!
+  locations(locationQueryInput: LocationQueryInput, locationsAnswersCountInput: LocationsAnswersCountInput): [Location!]!
 `;
 
 export const locationsMutationDefs = `

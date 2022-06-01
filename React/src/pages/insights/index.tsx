@@ -1,34 +1,49 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import {
-  Flex,
-  Spacer,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
+import { gql, useQuery } from '@apollo/client';
+import { Flex, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 
 import FilterButton from '../../components/FilterButton';
 import Header from '../../components/Header';
+import Loader from '../../components/Loader';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
+import ActionsInsights from './actions';
+import AnswersInsights from './answers';
 import AuditsInsights from './audits';
 
+const GET_QUESTIONS_CATEGORIES = gql`
+  query ($questionsCategoryQuery: QuestionsCategoryQuery) {
+    questionsCategories(questionsCategoryQuery: $questionsCategoryQuery) {
+      _id
+      name
+      showInInsights
+    }
+  }
+`;
+
 const Insights = () => {
+  const { data, loading, error } = useQuery(GET_QUESTIONS_CATEGORIES, {
+    variables: {
+      questionsCategoryQuery: {
+        showInInsights: true,
+      },
+    },
+  });
   const device = useDevice();
   const { setUsedFilters, setShowFiltersPanel } = useFiltersContext();
-  const panels = [
-    { _id: 'walks', name: 'Walks', component: <AuditsInsights /> },
-    { _id: 'hazards', name: 'Hazards', component: <Flex>Hazards</Flex> },
-    {
-      _id: 'behaviours',
-      name: 'Positive Safety Behaviours',
-      component: <Flex>Behaviours</Flex>,
-    },
-    { _id: 'actions', name: 'Actions', component: <Flex>Actions</Flex> },
-  ];
+  const panels = useMemo(
+    () => [
+      { _id: 'walks', name: 'Walks', component: <AuditsInsights /> },
+      ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
+        _id: questionsCategory._id,
+        name: questionsCategory.name,
+        component: <AnswersInsights answerType={questionsCategory.name} questionsCategoriesId={questionsCategory._id} />,
+      })),
+      { _id: 'actions', name: 'Actions', component: <ActionsInsights /> },
+    ],
+    [data],
+  );
   const [selectedPanel, setSelectedPanel] = useState(0);
 
   useEffect(() => {
@@ -42,45 +57,46 @@ const Insights = () => {
         {device === 'mobile' && <FilterButton insightsFilter />}
       </Header>
 
-      <Flex direction="column" pt="3" px={[4, 8]}>
-        {device === 'tablet' && (
-          <Flex mb={[2, 4]}>
-            <Spacer />
-            <FilterButton insightsFilter />
-          </Flex>
-        )}
-        <Tabs
-          defaultIndex={selectedPanel}
-          onChange={(index) => setSelectedPanel(index)}
-          variant="unstyled"
-          w="full"
-        >
-          <TabList>
-            {panels?.map((panel) => (
-              <Tab
-                _selected={{
-                  bg: 'insights.tabBg',
-                  color: 'insights.tabColor',
-                }}
-                borderRadius="10px"
-                fontSize="smm"
-                fontWeight="bold"
-                key={panel._id}
-                mr={[1, 2]}
-              >
-                {panel.name}
-              </Tab>
-            ))}
-          </TabList>
-          <TabPanels>
-            {panels?.map((panel) => (
-              <TabPanel key={panel._id} px={0}>
-                {panel.component}
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs>
-      </Flex>
+      {error ? (
+        <Text>{error.message}</Text>
+      ) : loading ? (
+        <Loader center />
+      ) : (
+        <Flex direction="column" pt="3" px={[4, 8]}>
+          {device === 'tablet' && (
+            <Flex mb={[2, 4]}>
+              <Spacer />
+              <FilterButton insightsFilter />
+            </Flex>
+          )}
+          <Tabs defaultIndex={selectedPanel} isLazy onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
+            <TabList>
+              {panels?.map((panel) => (
+                <Tab
+                  _selected={{
+                    bg: 'insights.tabBg',
+                    color: 'insights.tabColor',
+                  }}
+                  borderRadius="10px"
+                  fontSize="smm"
+                  fontWeight="bold"
+                  key={panel._id}
+                  mr={[1, 2]}
+                >
+                  {panel.name}
+                </Tab>
+              ))}
+            </TabList>
+            <TabPanels>
+              {panels?.map((panel) => (
+                <TabPanel key={panel._id} px={0}>
+                  {panel.component}
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
+        </Flex>
+      )}
     </>
   );
 };

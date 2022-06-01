@@ -118,6 +118,13 @@ export const auditsMenuItems: INavItem[] = [
   },
 ];
 
+export const actionsInsightsTypes = {
+  total: 'Total',
+  completed: 'Closed',
+  inProgress: 'Open',
+  overdue: 'Overdue',
+};
+
 export const auditsInsightsTypes = {
   total: 'Total',
   completed: 'Completed',
@@ -135,6 +142,10 @@ export const insightsCardsDotsPosition = {
     right: '-25.56%',
   },
   upcoming: {
+    top: '-38.26%',
+    right: '24.95%',
+  },
+  inProgress: {
     top: '-38.26%',
     right: '24.95%',
   },
