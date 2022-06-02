@@ -34,18 +34,6 @@ const getApp = async () => {
   });
   await server.start();
 
-  // // Daily CRON jobs
-  // const responseDueCron = new CronJob('0 0 8 * * *', () => {
-  //   responseDueEmail();
-  // });
-  // responseDueCron.start();
-
-  // // Weekly cron jobs
-  // const responseWeekCon = new CronJob('0 0 * * 0', () => {
-  //   responseWeeklyEmail();
-  // });
-  // responseWeekCon.start();
-
   initPassport(passport);
   app.disable('x-powered-by');
   app.use(cors(CORSConfig));

@@ -211,81 +211,88 @@ Audit log limit:
 }
 ```
 
-Response email reminder:
+Response due email days:
 
 ```
 {
-  "id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "responseEmailReminders",
-  "label": "Days from due date email reminders are sent",
-  "value": [
-      90,
-      30,
-      7,
-      -1
-  ],
-  "type": "configValue",
-  "description": "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning compliance item responses.",
-  "metatags": {}
+    "id" : <random generated UUID>,
+    "organizationId": <organization's id>,
+    "name" : "responseDueEmailDays",
+    "label" : "Days from due date email reminders are sent",
+    "value" : [
+        90,
+        30,
+        7,
+        -1
+    ],
+    "type" : "defaultSettings",
+    "inputType" : "table",
+    "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning compliance item responses.",
+    "metatags": {},
 }
+
 ```
 
 Overview email:
 
 ```
+
 {
-  "id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "overviewMail",
-  "label": "Weekly Summary",
-  "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Items Overview</strong></span></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 20px;\">Hospital Responses</span><br></p><p><span style=\"font-size: 20px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">%CorporateTable%</span></p><p><br></p><p><br></p><p><span style=\"font-size: 20px;\">Corporate Responses</span></p><p><span style=\"font-size: 20px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">%CorporateTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
-  "type": "emailTemplate",
-  "options": [
-      "HospitalTable",
-      "CorporateTable"
-  ],
-  "description": "",
-  "metatags": {}
+    "id": <random generated UUID>,
+    "organizationId": <organization's id>,
+    "name" : "responseWeeklyEmailTemplate",
+    "label" : "Weekly Summary",
+    "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance Item Overview</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 12px;\">Responses</span></p><p><span style=\"font-size: 12px;\">%ResponseTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-size: 16px;\">Gloratio</span></p>",
+    "type" : "emailTemplate",
+    "options" : [
+        "ResponseTable"
+    ],
+    "description" : "",
+    "inputType" : "emailTemplate",
+    "metatags": {},
 }
+
 ```
 
 Overview email address:
 
 ```
+
 {
-  "id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "overviewEmailAddress",
-  "label": "Email adress for receving the weekly emails",
-  "value": [
-      "admin@ccbmidev.onmicrosoft.com"
-  ],
-  "type": "configValue",
-  "description": "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
-  "metatags": {},
+    "id": <random generated UUID>,
+    "organizationId": <organization's id>,
+    "name" : "responseWeeklyEmailAddress",
+    "label" : "Email adress for receving the weekly emails",
+    "value" : [
+        "admin@ccbmidev.onmicrosoft.com"
+    ],
+    "type" : "defaultSettings",
+    "inputType" : "table",
+    "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
+    "metatags": {},
 }
 ```
 
 Due email:
 
 ```
+
 {
-  "id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "dueMail",
-  "label": "Response reminders",
-  "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%, %DelegatesNames%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that compliance item %ComplianceItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
-  "type": "emailTemplate",
-  "options": [
-      "FirstName",
-      "DeletagesNames",
-      "ComplianceItemName",
-      "DueText",
-      "Link"
-  ],
-  "description": "",
-  "metatags": {}
+    "id": <random generated UUID>,
+    "organizationId": <organization's id>,
+    "name" : "responseRemainderEmailTemplate",
+    "label" : "Response reminders",
+    "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that compliance item %ComplianceItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+    "type" : "emailTemplate",
+    "options" : [
+        "FirstName",
+        "ComplianceItemName",
+        "DueText",
+        "Link"
+    ],
+    "description" : "",
+    "inputType" : "emailTemplate",
+     "metatags": {}
 }
 ```
 

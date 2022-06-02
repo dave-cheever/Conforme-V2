@@ -3,6 +3,8 @@ import { getProtocol } from '../../utils';
 import Organizations from '../collections/Organizations';
 import getAuditsWeeklyDigestEmailTemplate from './audits-weekly-digest';
 import getMentionEmail from './mentionEmail';
+import getReponseDueMail from './response-due-mail';
+import getResponseWeeklyEmail from './response-weekly-email';
 import getSkeleton from './template';
 
 export const MENTION_EMAIL = 0;
@@ -11,11 +13,13 @@ export const AUDITS_STATUS_REMINDER = 2;
 export const AUDITS_ACTION_ASSIGNED = 3;
 export const AUDITS_ACTION_COMPLETED = 4;
 export const AUDITS_ACTION_OVERDUE = 5;
+export const RESPONSE_REMINDER_EMAIL = 6;
+export const RESPONSE_WEEKLY_EMAIL = 7;
 
-const getEmailSubject = (emailType: number, emailData = {}) => {
+const getEmailSubject = (emailType: number, emailData:any = {}) => {
   switch (emailType) {
     case MENTION_EMAIL:
-      return 'You have been mentioned in chat';
+      return "You have been mentioned in chat";
     case AUDITS_WEEKLY_DIGEST_EMAIL:
       return 'Audits weekly digest';
     case AUDITS_ACTION_ASSIGNED:
@@ -26,6 +30,10 @@ const getEmailSubject = (emailType: number, emailData = {}) => {
       return 'Audit action overdue';
     case AUDITS_STATUS_REMINDER:
       return 'Audits status reminder';
+    case RESPONSE_REMINDER_EMAIL:
+      return `Compliance Item Reminder: ${emailData.complianceName}`;
+    case RESPONSE_WEEKLY_EMAIL:
+      return `Compliance Item Weekly Overview`;
   }
 };
 
@@ -34,7 +42,7 @@ const getEmailTemplate = async ({
   template,
   emailData,
   organization,
-  organizationId
+  organizationId,
 }: {
   emailType: number;
   emailData: any;
@@ -72,10 +80,16 @@ const getEmailTemplate = async ({
         organization.domain
       }/safetywalk/audits/${emailData.actionAuditId}">here</a>
       </p>`;
+    case RESPONSE_REMINDER_EMAIL:
+      body = getReponseDueMail(template, emailData);
+      break;
+    case RESPONSE_WEEKLY_EMAIL:
+      body = getResponseWeeklyEmail(template, emailData);
+      break;
   }
   if (!organization) {
     if (!organizationId) {
-      throw Error('You need to pass either organization or organizationId');
+      throw Error("You need to pass either organization or organizationId");
     }
     organization = await Organizations.customFindById(organizationId);
   }

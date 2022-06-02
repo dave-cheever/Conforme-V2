@@ -6,7 +6,7 @@ export interface IUser extends IBase {
   displayName: string;
   email: string;
   jobTitle?: string;
-  role: string;
+  role?: string;
   imgUrl?: string;
   defaultPage?: string;
   organizationsIds?: string[];

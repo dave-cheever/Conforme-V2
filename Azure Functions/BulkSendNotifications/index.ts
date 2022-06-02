@@ -11,11 +11,15 @@ import sendDigest from './sendDigest';
 import {
   AUDITS_ACTION_OVERDUE,
   AUDITS_STATUS_REMINDER,
-  AUDITS_WEEKLY_DIGEST_EMAIL
+  AUDITS_WEEKLY_DIGEST_EMAIL,
+  RESPONSE_REMINDER_EMAIL,
+  RESPONSE_WEEKLY_EMAIL
 } from '../common/services/notifications';
 import sendComingUpAudits from './sendComingUpAudits';
 import sendOverdueAudits from './sendOverdueAudits';
 import sendOverdueActions from './sendOverdueActions';
+import sendResponseWeeklyEmail from './sendResponseWeeklyEmail';
+import sendResponseDueEmail from './sendResponseDueEmail';
 
 const timerTrigger: AzureFunction = async function (context: Context): Promise<void> {
   const configService = new ConfigService();
@@ -45,12 +49,14 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
         },
         config
       );
+      await sendResponseWeeklyEmail( RESPONSE_WEEKLY_EMAIL , config);
     }
 
-    if (isSameDay(new Date(), lastBulkScanDate)) {
+    if (!isSameDay(new Date(), lastBulkScanDate)) {
       await sendComingUpAudits(AUDITS_STATUS_REMINDER, config);
       await sendOverdueAudits(AUDITS_STATUS_REMINDER, config);
       await sendOverdueActions(AUDITS_ACTION_OVERDUE, config);
+      await sendResponseDueEmail(RESPONSE_REMINDER_EMAIL, config);
     }
 
     // TODO
