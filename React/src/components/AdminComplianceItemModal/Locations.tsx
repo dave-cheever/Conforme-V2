@@ -61,10 +61,10 @@ const LocationsForm = () => {
         <Flex
           flexDir={['column', 'row']}
           justifyContent="space-between"
-          mb="32px"
-          mt="25px"
+          mb="30px"
+          w={['full', "calc(100% - 80px)"]}
         >
-          <Flex flexDir="column">
+          <Flex flexDir="column" pt="3" w="full">
             <Text
               color="locationsFormModal.filterTextColor"
               fontFamily="Helvetica"
@@ -80,7 +80,6 @@ const LocationsForm = () => {
               borderColor="locationsFormModal.inputBorderColor"
               h="42px"
               rounded="10px"
-              w={['full', '190px']}
             >
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="locationsFormModal.searchIcon" />
@@ -96,7 +95,7 @@ const LocationsForm = () => {
             </InputGroup>
           </Flex>
         </Flex>
-        <Flex mb="33px">
+        <Flex mb="30px">
           <Checkbox
             borderColor="locationsFormModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"
@@ -192,7 +191,7 @@ export default LocationsForm;
 
 export const locationsFormModalStyles = {
   locationsFormModal: {
-    filterTextColor: '#818197',
+    filterTextColor: '#2B3236',
     searchIcon: '#818197',
     searchBarText: '#818197',
     selectBg: '#FFFFFF',

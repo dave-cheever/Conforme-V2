@@ -2,12 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Icon, Input, Text } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
-import { Move, PlusIcon, Trashcan } from '../../icons';
+import { Move, OpenMenuArrow, PlusIcon, Trashcan } from '../../icons';
 import { IQuestionChoice } from '../../interfaces/IQuestionChoice';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
 import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
@@ -286,7 +285,7 @@ const QuestionMultiChoiceForm = ({
           bg="questionMultiChoiceForm.button.secondary.bg"
           color="questionMultiChoiceForm.button.secondary.font"
           fontSize="sm"
-          fontWeight="medium"
+          fontWeight="700"
           h="27px"
           onClick={() => {
             setShowQuestionForm(false);
@@ -294,7 +293,6 @@ const QuestionMultiChoiceForm = ({
             setEditQuestionIndex(undefined);
             setEditQuestion('');
           }}
-          opacity="0.5"
           p="17px"
         >
           Cancel
@@ -318,10 +316,16 @@ const QuestionMultiChoiceForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
+          rightIcon={
+            <Icon
+              as={OpenMenuArrow}
+              stroke="complianceItemModal.tabs.bottomButton.icon"
+              transform="rotate(270deg)"
+            />
+          }
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
-          <ChevronRightIcon ml="5px" />
         </Button>
       </Flex>
     </Flex>
@@ -350,8 +354,8 @@ export const questionMultiChoiceFormStyles = {
         font: '#FFFFFF',
       },
       secondary: {
-        bg: '#9A9EA1',
-        font: '#FFFFFF',
+        bg: '#F0F2F5',
+        font: '#818197',
       },
     },
   },

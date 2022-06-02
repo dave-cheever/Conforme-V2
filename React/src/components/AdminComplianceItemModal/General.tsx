@@ -74,7 +74,7 @@ const GeneralForm = () => {
           refetch={refetch}
         />
       )}
-      <Stack overflow="auto" px={[0, 0, 3]} spacing={4} w="full">
+      <Stack overflow="auto" spacing={4} w="full">
         <Box w="calc(100% - 80px)">
           <SectionHeader label="General details" />
           <Stack pb={3} spacing={2} w="full">

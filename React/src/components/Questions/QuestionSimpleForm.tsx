@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Flex, HStack, Text, useRadioGroup } from '@chakra-ui/react';
+import { Button, Flex, HStack, Icon, Text, useRadioGroup } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 
 import { SwitchOptions } from '../../bootstrap/config';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { OpenMenuArrow } from '../../icons';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
 import { questionHeader } from '../../utils/helpers';
 import CustomRadioButton from '../CustomRadioButton';
@@ -161,6 +162,22 @@ const QuestionSimpleForm = ({
       )}
       <Flex justifyContent="space-between" mt="15px">
         <Button
+          bg="questionsSimple.form.button.secondary.bg"
+          color="questionsSimple.form.button.secondary.font"
+          fontSize="sm"
+          fontWeight="700"
+          h="27px"
+          onClick={() => {
+            setShowQuestionForm(false);
+            setIsEdit(false);
+            setEditQuestionIndex(undefined);
+            setEditQuestion('');
+          }}
+          p="17px"
+        >
+          Cancel
+        </Button>
+        <Button
           bg="questionsSimple.form.button.primary.bg"
           color="questionsSimple.form.button.primary.font"
           disabled={
@@ -177,26 +194,16 @@ const QuestionSimpleForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
+          rightIcon={
+            <Icon
+              as={OpenMenuArrow}
+              stroke="complianceItemModal.tabs.bottomButton.icon"
+              transform="rotate(270deg)"
+            />
+          }
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
-        </Button>
-        <Button
-          bg="questionsSimple.form.button.secondary.bg"
-          color="questionsSimple.form.button.secondary.font"
-          fontSize="sm"
-          fontWeight="medium"
-          h="27px"
-          onClick={() => {
-            setShowQuestionForm(false);
-            setIsEdit(false);
-            setEditQuestionIndex(undefined);
-            setEditQuestion('');
-          }}
-          opacity="0.5"
-          p="17px"
-        >
-          Cancel
         </Button>
       </Flex>
     </>
@@ -215,8 +222,8 @@ export const questionSimpleFormStyles = {
           font: '#FFFFFF',
         },
         secondary: {
-          bg: '#9A9EA1',
-          font: '#FFFFFF',
+          bg: '#F0F2F5',
+          font: '#818197',
         },
       },
     },

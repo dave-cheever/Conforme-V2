@@ -60,13 +60,13 @@ const BusinessUnitsForm = () => {
         <Flex
           flexDir={['column', 'row']}
           justifyContent="space-between"
-          mb="32px"
-          mt="25px"
+          mb="30px"
+          w={['full', "calc(100% - 80px)"]}
         >
-          <Flex flexDir="column">
+          <Flex flexDir="column" pt="3" w="full">
             <Flex align="center" justify="space-between">
               <Text
-                color="dropdown.labelFont.secondaryVariant"
+                color="locationsFormModal.filterTextColor"
                 fontFamily="Helvetica"
                 fontSize="ssm"
                 fontWeight="bold"
@@ -83,7 +83,6 @@ const BusinessUnitsForm = () => {
               borderColor="rgba(129, 129, 151, 0.4)"
               h="42px"
               rounded="10px"
-              w={['full', '190px']}
             >
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="businessUnitsModal.searchIcon" />
@@ -91,14 +90,14 @@ const BusinessUnitsForm = () => {
               <Input
                 fontSize="14px"
                 onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Search business unit"
+                placeholder="Search"
                 rounded="10px"
               />
             </InputGroup>
           </Flex>
         </Flex>
 
-        <Flex mb="33px">
+        <Flex mb="30px">
           <Checkbox
             borderColor="businessUnitsModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"

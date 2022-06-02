@@ -26,7 +26,7 @@ const AdditionalDetailsForm = () => {
   };
 
   return (
-    <Stack px={[0, 0, 3]} spacing={4} w="full">
+    <Stack spacing={4} w="full">
       <SectionHeader label="Please define the expected evidence and action for this compliance item." />
       <Stack overflow="auto" pb={3} spacing={2} w="full">
         <Box bg="additionalDetails.evidence.bg" borderRadius="4px" w="full">
@@ -82,13 +82,14 @@ const AdditionalDetailsForm = () => {
             <Button
               bgColor="additionalDetails.evidence.add.bg"
               color="additionalDetails.evidence.add.font"
+              fontSize="11px"
               fontWeight="400"
+              h="28px"
               leftIcon={<AddIcon stroke="additionalDetails.addIcon" />}
               mb={4}
               mt={complianceItem.evidenceItems?.length === 0 ? 0 : 3}
               onClick={addEvidenceItem}
               px={4}
-              size="xs"
             >
               {complianceItem.evidenceItems?.length === 0
                 ? 'Require evidence'

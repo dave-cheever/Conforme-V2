@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Button, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { OpenMenuArrow } from '../../icons';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
 import { questionHeader } from '../../utils/helpers';
 import Checkbox from '../Forms/Checkbox';
@@ -61,6 +62,23 @@ const QuestionEmailForm = ({
       />
       <Flex justifyContent="space-between" mt="15px">
         <Button
+          bg="questionEmailForm.button.secondary.bg"
+          color="questionEmailForm.button.secondary.font"
+          fontSize="sm"
+          fontWeight="700"
+          h="27px"
+          onClick={() => {
+            setShowQuestionForm(false);
+            setIsEdit(false);
+            setEditQuestionIndex(undefined);
+            setEditQuestion('');
+          }}
+          opacity="0.5"
+          p="17px"
+        >
+          Cancel
+        </Button>
+        <Button
           bg="questionEmailForm.button.primary.bg"
           color="questionEmailForm.button.primary.font"
           disabled={
@@ -77,26 +95,16 @@ const QuestionEmailForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
+          rightIcon={
+            <Icon
+              as={OpenMenuArrow}
+              stroke="complianceItemModal.tabs.bottomButton.icon"
+              transform="rotate(270deg)"
+            />
+          }
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
-        </Button>
-        <Button
-          bg="questionEmailForm.button.secondary.bg"
-          color="questionEmailForm.button.secondary.font"
-          fontSize="sm"
-          fontWeight="medium"
-          h="27px"
-          onClick={() => {
-            setShowQuestionForm(false);
-            setIsEdit(false);
-            setEditQuestionIndex(undefined);
-            setEditQuestion('');
-          }}
-          opacity="0.5"
-          p="17px"
-        >
-          Cancel
         </Button>
       </Flex>
     </>
@@ -113,8 +121,8 @@ export const questionEmailFormStyles = {
         font: '#FFFFFF',
       },
       secondary: {
-        bg: '#9A9EA1',
-        font: '#FFFFFF',
+        bg: '#F0F2F5',
+        font: '#818197',
       },
     },
   },
