@@ -40,7 +40,7 @@ const FiltersPanel = () => {
           Filter items by
         </Box>
       </Flex>
-      <Flex flexDir="column" h="calc(100vh - 7.5rem)" overflowY="hidden" px="4">
+      <Flex flexDir="column" h="calc(100vh - 7.5rem)" overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel) return <FiltersPanelItem filter={value} key={name} name={name} />;
 
@@ -51,12 +51,12 @@ const FiltersPanel = () => {
       <Flex
         align="center"
         bg="white"
-        bottom="3.438rem"
+        bottom=".5rem"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
         justify="center"
         position={['sticky', 'relative']}
         py={2}
-        w={['full', '290px']}
+        w="full"
       >
         <Button
           _hover={{ opacity: 0.9 }}
