@@ -23,7 +23,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { priorities, toastFailed, toastSuccess } from '../../bootstrap/config';
 import { AdminContext } from '../../contexts/AdminProvider';
-import { useAppContext } from '../../contexts/AppProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, OpenExternalIcon, TickIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
@@ -47,16 +46,9 @@ const DELETE_ACTION = gql`
   }
 `;
 
-const ActionModal = ({
-  action,
-  refetch,
-}: {
-  action?: IAction;
-  refetch: () => void;
-}) => {
+const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => void }) => {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
-  const { user } = useAppContext();
   const { setAdminModalState } = useContext(AdminContext);
 
   const [saveAction] = useMutation(SAVE_ACTION);
@@ -135,39 +127,15 @@ const ActionModal = ({
 
   return (
     <>
-      <ModalContent
-        bg="actionModal.bg"
-        h="100%"
-        m="0"
-        p={['25px', '35px']}
-        position="absolute"
-        rounded="0"
-      >
-        <ModalHeader
-          alignItems="center"
-          fontSize="xxl"
-          fontWeight="bold"
-          p="0 0 20px 0"
-        >
+      <ModalContent bg="actionModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
+        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
-              <Avatar
-                mr={3}
-                name={user?.displayName}
-                rounded="full"
-                size="xs"
-                src={user?.imgUrl}
-              />
+              <Avatar mr={3} name={action?.assignee?.displayName} rounded="full" size="xs" src={action?.assignee?.imgUrl} />
               {action?.title}
             </Flex>
             <Flex alignItems="center">
-              <Close
-                cursor="pointer"
-                h="15px"
-                onClick={() => setAdminModalState('closed')}
-                stroke="actionModal.closeIcon"
-                w="15px"
-              />
+              <Close cursor="pointer" h="15px" onClick={() => setAdminModalState('closed')} stroke="actionModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>
@@ -196,16 +164,10 @@ const ActionModal = ({
                       }}
                       align="center"
                       direction="row"
-                      onClick={() =>
-                        openInNewTab(`/audits/${action?.answer?.audit?._id}`)
-                      }
+                      onClick={() => openInNewTab(`/audits/${action?.answer?.audit?._id}`)}
                       spacing={2}
                     >
-                      <Text
-                        color="actionModal.question.color"
-                        fontSize="smm"
-                        isTruncated
-                      >
+                      <Text color="actionModal.question.color" fontSize="smm" isTruncated>
                         {action?.answer?.question?.question}
                       </Text>
                       <OpenExternalIcon fill="transparent" stroke="black" />
@@ -215,30 +177,14 @@ const ActionModal = ({
                     </Text>
                   </Stack>
                   <HStack spacing={2}>
-                    {(action?.answer?.attachments || [])
-                      .slice(0, 2)
-                      .map((attachment) => (
-                        <DocumentThumbnail
-                          document={attachment}
-                          key={attachment.id}
-                        />
-                      ))}
+                    {(action?.answer?.attachments || []).slice(0, 2).map((attachment) => (
+                      <DocumentThumbnail document={attachment} key={attachment.id} />
+                    ))}
                     {(action?.answer?.attachments || []).length > 2 &&
                       ((action?.answer?.attachments || []).length === 3 ? (
-                        <DocumentThumbnail
-                          document={action!.answer!.attachments![2]}
-                          key={action!.answer!.attachments![2].id}
-                        />
+                        <DocumentThumbnail document={action!.answer!.attachments![2]} key={action!.answer!.attachments![2].id} />
                       ) : (
-                        <Flex
-                          align="center"
-                          border="1px solid black"
-                          cursor="default"
-                          h="55px"
-                          justify="center"
-                          rounded="3px"
-                          w="55px"
-                        >
+                        <Flex align="center" border="1px solid black" cursor="default" h="55px" justify="center" rounded="3px" w="55px">
                           +{(action?.answer?.attachments || []).length - 2}
                         </Flex>
                       ))}
@@ -273,11 +219,7 @@ const ActionModal = ({
                     />
                   </GridItem>
                   <GridItem>
-                    <Datepicker
-                      control={control}
-                      label="Due date"
-                      name="dueDate"
-                    />
+                    <Datepicker control={control} label="Due date" name="dueDate" />
                   </GridItem>
                   <GridItem>
                     <Dropdown
@@ -303,11 +245,7 @@ const ActionModal = ({
                     />
                   </GridItem>
                 </Grid>
-                <TextInputMultiline
-                  control={control}
-                  label="Description"
-                  name="description"
-                />
+                <TextInputMultiline control={control} label="Description" name="description" />
                 <Stack>
                   <Text fontSize="11px" fontWeight="700" mb={2}>
                     Add photos or files
@@ -316,10 +254,7 @@ const ActionModal = ({
                     callback={async (uploaded) => {
                       setValue(
                         'attachments',
-                        uniqBy(
-                          [...values.attachments, ...uploaded],
-                          (attachment) => attachment.id,
-                        ),
+                        uniqBy([...values.attachments, ...uploaded], (attachment) => attachment.id),
                       );
                     }}
                     elementId={action ? action._id : `temp-${uuidv4()}`}
@@ -330,9 +265,7 @@ const ActionModal = ({
                         callback={async () => {
                           setValue(
                             'attachments',
-                            values.attachments.filter(
-                              ({ id }) => id !== attachment.id,
-                            ),
+                            values.attachments.filter(({ id }) => id !== attachment.id),
                           );
                         }}
                         document={attachment}
@@ -368,13 +301,7 @@ const ActionModal = ({
                 h="40px"
                 ml={3}
                 onClick={handlePrimaryButtonClick}
-                rightIcon={
-                  <Icon
-                    as={TickIcon}
-                    size={24}
-                    stroke="actionModal.buttons.primary.icon"
-                  />
-                }
+                rightIcon={<Icon as={TickIcon} size={24} stroke="actionModal.buttons.primary.icon" />}
                 rounded="10px"
                 w="fit-content"
               >
