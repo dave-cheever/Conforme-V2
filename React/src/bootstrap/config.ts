@@ -1,19 +1,6 @@
 import { RepeatClockIcon } from '@chakra-ui/icons';
 
-import {
-  Admin,
-  AttachmentIcon,
-  AuditIcon,
-  CalendarIcon,
-  DetailIcon,
-  Home,
-  Insights,
-  ListIcon,
-  // Insights,
-  ProgressIcon,
-  QuestionIcon,
-  TeamsIcon,
-} from '../icons';
+import { Admin, AttachmentIcon, AuditIcon, DetailIcon, Home, ProgressIcon, QuestionIcon, TeamsIcon } from '../icons';
 import { INavItem } from '../interfaces/INavItem';
 
 export const toastSuccess: any = {
@@ -69,54 +56,6 @@ export const actionStatuses = {
   inProgress: 'In progress',
   completed: 'Completed',
 };
-
-export const auditsMenuItems: INavItem[] = [
-  {
-    type: 'menuItem',
-    label: 'Audits',
-    url: '/dashboard',
-    icon: Home,
-    permission: 'home.view',
-  },
-  {
-    type: 'menuItem',
-    label: 'Actions',
-    url: '/actions',
-    icon: CalendarIcon,
-    permission: 'actions.view',
-  },
-  {
-    type: 'menuItem',
-    label: 'Walk items',
-    url: '/walk-items',
-    icon: ListIcon,
-    permission: 'actions.view',
-  },
-  {
-    type: 'menuItem',
-    label: 'Insights',
-    url: '/insights',
-    icon: Insights,
-    permission: 'insights.view',
-  },
-  {
-    type: 'menuItem',
-    label: 'Admin',
-    url: '/admin',
-    icon: Admin,
-    permission: 'adminPanel.view',
-    subSections: [
-      { label: 'Sites', url: '/admin/sites' },
-      { label: 'Areas', url: '/admin/areas' },
-      { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions' },
-      { label: 'Questions categories', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories' },
-      { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes' },
-      { label: 'Users', url: '/admin/users' },
-      { label: 'Audit log', url: '/admin/audit-log' },
-      { label: 'Other settings', url: '/admin/settings' },
-    ],
-  },
-];
 
 export const actionsInsightsTypes = {
   total: 'Total',
@@ -298,24 +237,6 @@ export const navigationTabs = [
   },
 ];
 
-export const auditNavigationTabs = [
-  {
-    label: 'Walk',
-    url: '/',
-    icon: ProgressIcon,
-  },
-  {
-    label: 'Participants',
-    url: '/participants',
-    icon: TeamsIcon,
-  },
-  {
-    label: 'History',
-    url: '/history',
-    icon: RepeatClockIcon,
-  },
-];
-
 export const userRoles = [
   {
     value: 'responsible',
@@ -353,7 +274,7 @@ export const actionUserRoles = [
   },
 ];
 
-export const walkItemUserRoles = [
+export const questionsUserRoles = [
   {
     value: 'addedBy',
     label: 'Added by',

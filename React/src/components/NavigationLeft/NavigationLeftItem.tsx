@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Box, Flex, Icon } from '@chakra-ui/react';
+import { capitalize } from 'lodash';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -91,7 +92,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
             fontWeight="400"
             ml="5"
           >
-            {!showFiltersPanel && label}
+            {!showFiltersPanel && capitalize(label)}
           </Box>
         )}
       </Box>

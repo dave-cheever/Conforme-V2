@@ -323,27 +323,15 @@ const useRoutes = () => {
       component: () => (
         <Can
           action={route.permission}
-          no={() => (
-            <Redirect
-              key="not-found"
-              to={{ pathname: module ? `/${module.path}/dashboard` : '/' }}
-            />
-          )}
-          yes={() => (
-            <route.layout component={route.component} key={route.key} />
-          )}
+          no={() => <Redirect key="not-found" to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />}
+          yes={() => <route.layout component={route.component} key={route.key} />}
         />
       ),
     })),
     {
       path: '*',
       key: 'not-found',
-      component: () => (
-        <Redirect
-          key="not-found"
-          to={{ pathname: module ? `/${module.path}/dashboard` : '/' }}
-        />
-      ),
+      component: () => <Redirect key="not-found" to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />,
       layout: DefaultLayout,
     },
   ];

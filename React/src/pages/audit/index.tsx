@@ -1,4 +1,7 @@
 import { Button, HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import AuditAnswer from '../../components/Audit/AuditAnswer';
 import AuditDeleteQuestionModal from '../../components/Audit/AuditDeleteQuestionModal';
@@ -7,18 +10,8 @@ import AuditQuestionsCategory from '../../components/Audit/AuditQuestionsCategor
 import { useAuditContext } from '../../contexts/AuditProvider';
 
 const Audit = () => {
-  const {
-    audit,
-    questionsCategories,
-    selectedQuestion,
-    setSelectedQuestion,
-    customQuestionsCategories,
-  } = useAuditContext();
-  const {
-    isOpen: isNewQuestionModalOpen,
-    onOpen: handleNewQuestionModalOpen,
-    onClose: handleNewQuestionModalClose,
-  } = useDisclosure();
+  const { audit, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories } = useAuditContext();
+  const { isOpen: isNewQuestionModalOpen, onOpen: handleNewQuestionModalOpen, onClose: handleNewQuestionModalClose } = useDisclosure();
   const {
     isOpen: isDeleteQuestionModalOpen,
     onOpen: handleDeleteQuestionModalOpen,
@@ -27,10 +20,7 @@ const Audit = () => {
 
   return (
     <Stack h={['fit-content', 'full']} w="full">
-      <AuditNewQuestionModal
-        isOpen={isNewQuestionModalOpen}
-        onClose={handleNewQuestionModalClose}
-      />
+      <AuditNewQuestionModal isOpen={isNewQuestionModalOpen} onClose={handleNewQuestionModalClose} />
       <AuditDeleteQuestionModal
         isOpen={isDeleteQuestionModalOpen}
         onClose={() => {
@@ -38,20 +28,12 @@ const Audit = () => {
           handleDeleteQuestionModalClose();
         }}
       />
-      <HStack
-        align="center"
-        justify={['space-between', 'initial']}
-        spacing={4}
-        w="full"
-      >
+      <HStack align="center" justify={['space-between', 'initial']} spacing={4} w="full">
         <Text fontSize="xxl" fontWeight="semibold">
-          Walk Items
+          {capitalize(pluralize(t('question')))}
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
-          (audit.status === 'inProgress' ||
-            questionsCategories.some(
-              ({ editableSubmitted }) => editableSubmitted,
-            )) &&
+          (audit.status === 'inProgress' || questionsCategories.some(({ editableSubmitted }) => editableSubmitted)) &&
           customQuestionsCategories.length && (
             <Button
               bg="auditItem.addButton.bg"
@@ -68,19 +50,12 @@ const Audit = () => {
       {!(selectedQuestion && !isDeleteQuestionModalOpen) && (
         <Stack>
           {questionsCategories.map((category) => (
-            <AuditQuestionsCategory
-              handleDelete={handleDeleteQuestionModalOpen}
-              key={category._id}
-              questionsCategory={category}
-            />
+            <AuditQuestionsCategory handleDelete={handleDeleteQuestionModalOpen} key={category._id} questionsCategory={category} />
           ))}
         </Stack>
       )}
       {selectedQuestion && !isDeleteQuestionModalOpen && (
-        <AuditAnswer
-          handleClose={() => setSelectedQuestion(undefined)}
-          question={selectedQuestion}
-        />
+        <AuditAnswer handleClose={() => setSelectedQuestion(undefined)} question={selectedQuestion} />
       )}
     </Stack>
   );

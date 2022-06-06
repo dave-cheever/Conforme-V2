@@ -1,11 +1,12 @@
 import { Divider, Flex } from '@chakra-ui/react';
 
-import { auditNavigationTabs } from '../../bootstrap/config';
+import useConfig from '../../hooks/useConfig';
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 const AuditLeftNavigationMobile = () => {
+  const { auditNavigationTabs } = useConfig();
   const { navigateTo } = useNavigate();
 
   return (
@@ -41,14 +42,7 @@ const AuditLeftNavigationMobile = () => {
         <Flex justify="space-between" w="full">
           <Flex w="full">
             {auditNavigationTabs.map(({ label, icon, url }) => (
-              <AuditLeftTabItem
-                icon={icon}
-                isDesktop={false}
-                isMobile
-                key={url}
-                label={label}
-                url={url}
-              />
+              <AuditLeftTabItem icon={icon} isDesktop={false} isMobile key={url} label={label} url={url} />
             ))}
           </Flex>
         </Flex>

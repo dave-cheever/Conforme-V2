@@ -1,16 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
-import {
-  Button,
-  HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Button, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { IAnswer } from '../../interfaces/IAnswer';
 
@@ -45,7 +35,7 @@ const WalkItemDeleteModal = ({
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
-            Delete walk item
+            Delete {t('question')}
           </Text>
           <ModalCloseButton />
         </ModalHeader>

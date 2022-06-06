@@ -1,12 +1,13 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
-import { auditNavigationTabs } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
+import useConfig from '../../hooks/useConfig';
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, Conforme } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 const AuditLeftNavigation = () => {
+  const { auditNavigationTabs } = useConfig();
   const { navigateTo } = useNavigate();
   const { organizationConfig } = useAppContext();
 
@@ -23,19 +24,8 @@ const AuditLeftNavigation = () => {
       w="240px"
     >
       <Flex flexDirection="column">
-        <Box
-          alignItems="center"
-          cursor="pointer"
-          display="flex"
-          h="80px"
-          onClick={() => navigateTo('/')}
-        >
-          <Text
-            color="navigationLeft.organizationNameFontColor"
-            fontSize="16px"
-            fontWeight="bold"
-            w="80px"
-          >
+        <Box alignItems="center" cursor="pointer" display="flex" h="80px" onClick={() => navigateTo('/')}>
+          <Text color="navigationLeft.organizationNameFontColor" fontSize="16px" fontWeight="bold" w="80px">
             {organizationConfig?.name}
           </Text>
         </Box>

@@ -13,18 +13,10 @@ interface IHeader {
   mobileBreadcrumbs?: string[];
 }
 
-const Header: FunctionComponent<IHeader> = ({
-  children,
-  breadcrumbs,
-  mobileBreadcrumbs,
-}) => {
+const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBreadcrumbs }) => {
   const { usedFilters } = useFiltersContext();
   const { isPathActive } = useNavigate();
-  const isAuditPage =
-    isPathActive('/audits') ||
-    isPathActive('/actions') ||
-    isPathActive('/walk-items') ||
-    isPathActive('/dashboard');
+  const isAuditPage = isPathActive('/audits') || isPathActive('/actions') || isPathActive('/walk-items') || isPathActive('/dashboard');
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => {
@@ -35,25 +27,14 @@ const Header: FunctionComponent<IHeader> = ({
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex align="center" h="full" key={`bc-${i}`}>
-      {i > 0 && (
-        <ArrowRight
-          color="#818197"
-          display="flex"
-          ml={2}
-          mr={1}
-          mt={['0px', '5px']}
-        />
-      )}
+      {i > 0 && <ArrowRight color="#818197" display="flex" ml={2} mr={1} mt={['0px', '5px']} />}
       <Text
-        color={
-          i === breadCrumbs.length - 1
-            ? 'header.breadcrumbPrimary'
-            : 'header.breadcrumbSecondary'
-        }
+        color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
         display={i === breadCrumbs.length - 1 ? 'flex' : 'flex'}
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
         mr={1}
         pl={[0, 2]}
+        textTransform="capitalize"
       >
         {breadcrumb}
       </Text>
@@ -69,9 +50,7 @@ const Header: FunctionComponent<IHeader> = ({
         <Flex justify="flex-end" mr="20px" w="full">
           {children}
         </Flex>
-        {usedFilters && isAuditPage && usedFilters.length > 0 && (
-          <FilterButton />
-        )}
+        {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton />}
       </Flex>
     </Flex>
   );

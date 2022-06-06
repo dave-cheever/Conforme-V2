@@ -17,6 +17,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { toastFailed } from '../../bootstrap/config';
 import { AdminContext } from '../../contexts/AdminProvider';
@@ -100,7 +101,7 @@ const AuditModal = ({ refetch }) => {
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar mr={3} name={user?.displayName} rounded="full" size="xs" src={user?.imgUrl} />
-              New walk
+              New {t('audit')}
             </Flex>
             <Flex alignItems="center">
               <Close cursor="pointer" h="15px" onClick={closeModal} stroke="auditModal.closeIcon" w="15px" />
@@ -112,7 +113,7 @@ const AuditModal = ({ refetch }) => {
             <Stack overflowY="auto" spacing={4}>
               <Flex direction="column">
                 <Text fontSize="smm" fontWeight="semibold">
-                  Walk details
+                  Details
                 </Text>
                 <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
                   {auditTypes?.length > 1 && !audit?.auditTypeId && (

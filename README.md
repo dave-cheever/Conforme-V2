@@ -69,6 +69,9 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
     "type": "audits",
     "path": <module path>,
     "showInNavigation": <true/false>
+    "translations": {
+      "audit": "walk"
+    }
   }, {
     "name": <module name>,
     "type": "tracker",
@@ -95,6 +98,13 @@ In next steps in this instruction, you'll find some values that needs to be save
 Please fill the model with the following data: `<organization's id>`, `<organization's name>`, `<logo url>` (random logo).
 
 `<domain>` is a domain that you'll run the app locally, so it is `localhost`, and you have to add a port to is. Please take a look at the databse and scan `organizations` collection to see which ports are not already in use. Example of `<domain>` is: `localhost:3000`.
+
+### Translations
+In order to change a translation in a module, just add a new property to the module configuration.
+Possible translations:
+ - audit
+ - auditor
+ - question
 
 ## Azure AD application
 
@@ -257,19 +267,17 @@ Overview email:
 Overview email address:
 
 ```
-
 {
-    "id": <random generated UUID>,
-    "organizationId": <organization's id>,
-    "name" : "responseWeeklyEmailAddress",
-    "label" : "Email adress for receving the weekly emails",
-    "value" : [
-        "admin@ccbmidev.onmicrosoft.com"
-    ],
-    "type" : "defaultSettings",
-    "inputType" : "table",
-    "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
-    "metatags": {},
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "overviewEmailAddress",
+  "label": "Email adress for receving the weekly emails",
+  "value": [
+      "admin@ccbmidev.onmicrosoft.com"
+  ],
+  "type": "configValue",
+  "description": "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
+  "metatags": {},
 }
 ```
 
@@ -320,7 +328,7 @@ Email address receiving weekly digest:
   "name": "auditsWeeklyDigestEmailAddress",
   "label": "Email address for receiving the weekly digest",
   "value": [
-    "hazem.krimi@cielocosta.com"
+    "admin@ccbmidev.onmicrosoft.com"
   ],
   "type": "defaultSettings",
   "description": "Use this setting to select who should recieve email digest regarding audits.",
@@ -360,39 +368,6 @@ Weekly digest email template:
 }
 ```
 
-Coming up audits triggers:
-
-```
-{
-  "id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "auditsComingUpTriggers",
-  "label": "The number of days before an audit due date that its status changes to \"Coming up\"",
-  "value": {
-    "Daily": 1,
-    "Weekly": 1,
-    "Monthly": 7,
-    "Quarterly": 30,
-    "6 months": 40,
-    "Annual": 60,
-    "2 years": 60,
-    "3 years": 60,
-    "5 years": 90
-  },
-  "type": "defaultSettings",
-  "inputType": "dataGrid",
-  "description": "Use this setting to select when the audit should become \"Coming up\" for different renewal frequencies",
-  "metatags": {
-    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
-    "updatedAt": {
-      "$date": {
-        "$numberLong": "1649742835206"
-      }
-    }
-  },
-}
-```
-
 Audits status reminders triggers:
 
 ```
@@ -401,7 +376,7 @@ Audits status reminders triggers:
   "organizationId": <organization's id>,
   "name": "auditsStatusReminderTriggers",
   "label": "The days of month when to send coming up and overdue audit notifications",
-  "value": [1, 26],
+  "value": [1],
   "type": "defaultSettings",
   "inputType": "text",
   "description": "Use this setting to select dayf of month when to send coming up and overdue audit notifications",

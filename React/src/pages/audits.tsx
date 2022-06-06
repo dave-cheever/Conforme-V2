@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
+import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
+import pluralize from 'pluralize';
 
 import AuditsGroup from '../components/Audit/AuditsGroup';
 import AuditsList from '../components/Audit/AuditsList';
@@ -61,6 +63,7 @@ const GET_AUDITS = gql`
 `;
 
 const Audits = () => {
+  const { t } = useTranslation();
   const { user } = useAppContext();
   const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, auditFiltersValue, setAuditFiltersValue, usedFilters } =
     useFiltersContext();
@@ -73,7 +76,7 @@ const Audits = () => {
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
   const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'walkType');
   const sortBy = [
-    { label: 'Walk Type', key: 'walkType' },
+    { label: 'Walk type', key: 'walkType' },
     { label: 'Auditor', key: 'auditor.displayName' },
     { label: 'Due date', key: 'dueDate' },
     { label: 'Area', key: 'area.name' },
@@ -203,7 +206,7 @@ const Audits = () => {
         <ModalOverlay />
         <AuditModal refetch={refetch} />
       </Modal>
-      <Header breadcrumbs={['Audits']} mobileBreadcrumbs={['Audits']}>
+      <Header breadcrumbs={[pluralize(t('audit'))]} mobileBreadcrumbs={[pluralize(t('audit'))]}>
         {device !== 'mobile' && (
           <>
             <Menu autoSelect={false}>

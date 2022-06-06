@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 
-import { auditsMenuItems, trackerMenuItems } from '../bootstrap/config';
+import { trackerMenuItems } from '../bootstrap/config';
+import useConfig from '../hooks/useConfig';
 import { IConfigContext } from '../interfaces/IConfigContext';
 import { useAppContext } from './AppProvider';
 
@@ -15,6 +16,7 @@ export const useConfigContext = () => {
 
 const ConfigProvider = ({ children }) => {
   const { organizationConfig, module } = useAppContext();
+  const { auditsMenuItems } = useConfig();
   const menuItems = useMemo(() => {
     if (module?.type === 'audits') return auditsMenuItems;
 

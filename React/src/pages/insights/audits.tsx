@@ -3,6 +3,9 @@ import { useMemo, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Grid, GridItem, Spacer, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { auditsInsightsTypes } from '../../bootstrap/config';
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
@@ -210,17 +213,17 @@ const AuditsInsights = () => {
           >
             {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
             <Text as="span" color="insights.secondaryText">
-              walks
+              {pluralize(t('audit'))}
             </Text>
           </Text>
           <InsightsChart option={echartsOption} />
           <Text fontSize="xxl" fontWeight="bold" my={['15px', '25px']}>
-            Top Walkers
+            Top {pluralize(t('auditor'))}
           </Text>
           <Grid gap="20px" templateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}>
             {data?.auditsInsights?.topAuditors?.map((auditor) => (
               <GridItem key={auditor.user._id} w="100%">
-                <Box bg="auditsInsights.topWalkers.bg" rounded="20px">
+                <Box bg="auditsInsights.auditors.bg" rounded="20px">
                   <Flex align="center" px="20px" py="15px">
                     <Flex align="center">
                       <UserAvatar size="xs" userId={auditor.user._id} />
@@ -253,7 +256,7 @@ const AuditsInsights = () => {
           <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
               <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
-                <AdminTableHeader title="Walks per site">
+                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per site`}>
                   <AdminTableHeaderElement
                     label="Site"
                     onClick={() => {
@@ -314,7 +317,7 @@ const AuditsInsights = () => {
             </GridItem>
             <GridItem h="100%" w="100%">
               <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
-                <AdminTableHeader title="Walks per area">
+                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per area`}>
                   <AdminTableHeaderElement
                     label="Area"
                     onClick={() => {
@@ -384,7 +387,7 @@ export default AuditsInsights;
 
 export const auditsInsightsStyles = {
   auditsInsights: {
-    topWalkers: {
+    auditors: {
       bg: 'white',
     },
     list: {

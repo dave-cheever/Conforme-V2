@@ -1,16 +1,10 @@
 import { useMemo } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, HStack, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { t } from 'i18next';
+import a from 'indefinite';
 import { countBy } from 'lodash';
 
 import Icon from '../../components/Icon';
@@ -64,10 +58,7 @@ const AuditHistory = () => {
       const day = format(date, 'd MMMM yy');
       const auditWithCount = {
         ...curr,
-        questionsCategoriesCount: countBy(
-          curr.questions,
-          'questionsCategoryId',
-        ),
+        questionsCategoriesCount: countBy(curr.questions, 'questionsCategoryId'),
       };
       if (!acc[day]) {
         return {
@@ -114,40 +105,22 @@ const AuditHistory = () => {
                   spacing={4}
                   w="full"
                 >
-                  <Avatar
-                    alignSelf="flex-start"
-                    name={audit?.auditor?.displayName}
-                    size="sm"
-                    src={audit?.auditor?.imgUrl}
-                  />
+                  <Avatar alignSelf="flex-start" name={audit?.auditor?.displayName} size="sm" src={audit?.auditor?.imgUrl} />
                   <Stack flexGrow={1} spacing={2}>
                     <Flex direction="column">
-                      <Text
-                        color="auditHistory.listItem.auditor"
-                        fontSize="ssm"
-                      >
+                      <Text color="auditHistory.listItem.auditor" fontSize="ssm">
                         {audit.auditor?.displayName}
-                        {audit.metatags?.addedAt &&
-                          ` - ${format(
-                            new Date(audit.metatags.addedAt),
-                            'H:mm',
-                          )}`}
+                        {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
                       </Text>
                       <Text color="auditHistory.listItem.title" fontSize="smm">
-                        Completed a new walk
+                        Completed {a(t('audit') as string)}
                       </Text>
                     </Flex>
                     <HStack fontSize="smm" spacing={6}>
                       {questionsCategories.map((questionsCategory) => (
                         <HStack
                           key={questionsCategory._id}
-                          opacity={
-                            audit.questionsCategoriesCount[
-                              questionsCategory._id
-                            ]
-                              ? 1
-                              : 0.25
-                          }
+                          opacity={audit.questionsCategoriesCount[questionsCategory._id] ? 1 : 0.25}
                           spacing={2}
                         >
                           <Icon
@@ -157,11 +130,7 @@ const AuditHistory = () => {
                             stroke="auditHistory.listItem.icon.stroke"
                             w="13px"
                           />
-                          <Text>
-                            {audit.questionsCategoriesCount[
-                              questionsCategory._id
-                            ] || 0}
-                          </Text>
+                          <Text>{audit.questionsCategoriesCount[questionsCategory._id] || 0}</Text>
                         </HStack>
                       ))}
                     </HStack>

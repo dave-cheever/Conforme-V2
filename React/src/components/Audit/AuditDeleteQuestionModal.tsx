@@ -1,21 +1,10 @@
-import {
-  Button,
-  HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Button, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 
 const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
-  const { selectedQuestion, deleteQuestion, deleteAnswer, refetch } =
-    useAuditContext();
+  const { selectedQuestion, deleteQuestion, deleteAnswer, refetch } = useAuditContext();
 
   if (!selectedQuestion) return null;
 
@@ -24,7 +13,7 @@ const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
-            Delete question
+            Delete {t('question')}
           </Text>
           <ModalCloseButton />
         </ModalHeader>

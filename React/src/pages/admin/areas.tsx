@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -279,7 +282,7 @@ const Areas = () => {
               />
             )}
             <AdminTableHeaderElement
-              label="# of audits"
+              label={`${capitalize(pluralize(t('audit')))} count`}
               onClick={() => {
                 setSortType('totalAuditsCount');
                 setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');

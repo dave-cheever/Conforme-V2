@@ -1,12 +1,13 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
-import { auditNavigationTabs } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
+import useConfig from '../../hooks/useConfig';
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, ConformeSmall } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 const AuditLeftNavigationTablet = () => {
+  const { auditNavigationTabs } = useConfig();
   const { navigateTo } = useNavigate();
   const { organizationConfig } = useAppContext();
 
@@ -25,19 +26,8 @@ const AuditLeftNavigationTablet = () => {
       w="80px"
     >
       <Flex flexDirection="column">
-        <Box
-          alignItems="center"
-          cursor="pointer"
-          display="flex"
-          h="80px"
-          justifyContent="center"
-          onClick={() => navigateTo('/')}
-        >
-          <Text
-            color="auditLeftNavigation.organizationNameFontColor"
-            fontSize="16px"
-            fontWeight="bold"
-          >
+        <Box alignItems="center" cursor="pointer" display="flex" h="80px" justifyContent="center" onClick={() => navigateTo('/')}>
+          <Text color="auditLeftNavigation.organizationNameFontColor" fontSize="16px" fontWeight="bold">
             {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
@@ -55,13 +45,7 @@ const AuditLeftNavigationTablet = () => {
         </Flex>
         <Flex flexDirection="column" mb={2}>
           {auditNavigationTabs.map(({ label, icon, url }) => (
-            <AuditLeftTabItem
-              icon={icon}
-              isDesktop={false}
-              key={url}
-              label={label}
-              url={url}
-            />
+            <AuditLeftTabItem icon={icon} isDesktop={false} key={url} label={label} url={url} />
           ))}
         </Flex>
       </Flex>

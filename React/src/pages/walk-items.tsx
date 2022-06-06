@@ -3,7 +3,9 @@ import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
-import { isEmpty } from 'lodash';
+import { t } from 'i18next';
+import { capitalize, isEmpty } from 'lodash';
+import pluralize from 'pluralize';
 
 import Header from '../components/Header';
 import Icon from '../components/Icon';
@@ -184,7 +186,7 @@ const WalkItems = () => {
 
   return (
     <>
-      <Header breadcrumbs={['Walk Items']} mobileBreadcrumbs={['Walk Items']}>
+      <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         {device !== 'mobile' && (
           <>
             <Menu autoSelect={false}>

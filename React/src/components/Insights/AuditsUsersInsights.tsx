@@ -1,4 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { auditsInsightsTypes } from '../../bootstrap/config';
 import { ArrowDownIcon, ArrowUpIcon } from '../../icons';
@@ -26,7 +29,7 @@ const AuditsUsersInsights = ({
   <Box bg="white" my={['15px', '25px']} overflowX="auto" p="15px 25px" rounded="20px">
     <Box mb="30px">
       <Text fontSize="smm" fontWeight="bold">
-        Walks per person
+        {capitalize(pluralize(t('audit')))} per person
       </Text>
     </Box>
     <Flex ml="140px">

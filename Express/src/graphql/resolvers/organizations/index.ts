@@ -13,6 +13,7 @@ export const organizationsTypeDefs = `
     name: String!
     path: String!
     showInNavigation: Boolean
+    translations: Any
   }
 
   type Organization {

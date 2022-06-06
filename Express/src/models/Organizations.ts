@@ -20,6 +20,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
       name: String,
       path: String,
       showInNavigation: Boolean,
+      translations: Object,
     },
   ],
   revokedPermissions: [String],

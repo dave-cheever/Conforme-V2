@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { Flex, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import FilterButton from '../../components/FilterButton';
 import Header from '../../components/Header';
@@ -34,7 +37,7 @@ const Insights = () => {
   const { setUsedFilters, setShowFiltersPanel } = useFiltersContext();
   const panels = useMemo(
     () => [
-      { _id: 'walks', name: 'Walks', component: <AuditsInsights /> },
+      { _id: 'audits', name: capitalize(pluralize(t('audit'))), component: <AuditsInsights /> },
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
         _id: questionsCategory._id,
         name: questionsCategory.name,

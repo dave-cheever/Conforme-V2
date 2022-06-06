@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { Box, Flex, Input, InputGroup, Select, Spacer, Text } from '@chakra-ui/react';
 
-import { actionUserRoles, auditUserRoles, userRoles, walkItemUserRoles } from '../../bootstrap/config';
+import { actionUserRoles, auditUserRoles, questionsUserRoles, userRoles } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
@@ -37,7 +37,7 @@ const UserFilter = () => {
       case 'actions':
         return actionUserRoles;
       case 'walk-items':
-        return walkItemUserRoles;
+        return questionsUserRoles;
       case 'audits':
       default:
         return auditUserRoles;
