@@ -64,7 +64,7 @@ const GET_AUDIT_DATA = gql`
       withAnswers
       allowCustomQuestions
       maxQuestionsNumber
-      editableSubmitted
+      notBlockedAfterCompletion
       icon
       options {
         name
@@ -216,8 +216,7 @@ export interface IQuestionsByCategories {
 
 export const useAuditContext = () => {
   const context = useContext(AuditContext);
-  if (!context)
-    throw new Error('useAuditContext must be used within the AuditProvider');
+  if (!context) throw new Error('useAuditContext must be used within the AuditProvider');
 
   return context;
 };
@@ -242,8 +241,7 @@ const AuditProvider = ({ children }) => {
   const [saveAction] = useMutation(SAVE_ACTION);
   const [deleteAction] = useMutation(DELETE_ACTION);
 
-  const [selectedQuestion, setSelectedQuestion] =
-    useState<TDeepPartial<TQuestionWithAnswer>>();
+  const [selectedQuestion, setSelectedQuestion] = useState<TDeepPartial<TQuestionWithAnswer>>();
   const [selectedAction, setSelectedAction] = useState<Partial<IAction>>();
 
   const {
@@ -262,56 +260,45 @@ const AuditProvider = ({ children }) => {
   const auditor = audit?.auditor;
   const participants = audit?.participants;
 
-  const { data: auditData, refetch: refetchAuditData } = useQuery(
-    GET_AUDIT_DATA,
-    {
-      variables: {
-        questionsCategoryQuery: {
-          _ids: auditType?.sections.map(({ _id }) => _id),
-        },
-        auditTypeQuestionQuery: {
-          questionsCategoriesIds: auditType?.sections.map(({ _id }) => _id),
-          scope: { component: 'audits' },
-        },
-        auditCustomQuestionQuery: { scope: { type: 'audit', _id: audit?._id } },
+  const { data: auditData, refetch: refetchAuditData } = useQuery(GET_AUDIT_DATA, {
+    variables: {
+      questionsCategoryQuery: {
+        _ids: auditType?.sections.map(({ _id }) => _id),
       },
-      skip: !audit,
+      auditTypeQuestionQuery: {
+        questionsCategoriesIds: auditType?.sections.map(({ _id }) => _id),
+        scope: { component: 'audits' },
+      },
+      auditCustomQuestionQuery: { scope: { type: 'audit', _id: audit?._id } },
     },
-  );
+    skip: !audit,
+  });
 
   // Save questions categories in the same order as defined in audit type
   const questionsCategories = useMemo(() => {
     if (!auditData || !auditType?.sections) return [];
 
-    return auditType?.sections?.map(({ _id }) =>
-      auditData?.questionsCategories?.find(
-        ({ _id: categoryId }) => categoryId === _id,
-      ),
-    );
+    return auditType?.sections?.map(({ _id }) => auditData?.questionsCategories?.find(({ _id: categoryId }) => categoryId === _id));
   }, [JSON.stringify(auditData), JSON.stringify(auditType)]);
 
   const customQuestionsCategories = useMemo(
-    () =>
-      questionsCategories.filter((category) => category.allowCustomQuestions),
+    () => questionsCategories.filter((category) => category.allowCustomQuestions),
     [questionsCategories],
   );
 
   // Group (custom and predefined) questions by category
   const questions: IQuestionsByCategories = useMemo(() => {
-    if (!auditData?.auditCustomQuestions && !auditData?.auditTypeQuestions)
-      return {};
+    if (!auditData?.auditCustomQuestions && !auditData?.auditTypeQuestions) return {};
 
     const questionsByCategories: IQuestionsByCategories = {};
 
     auditData.auditTypeQuestions?.forEach((question) => {
-      if (!questionsByCategories[question.questionsCategoryId])
-        questionsByCategories[question.questionsCategoryId] = [];
+      if (!questionsByCategories[question.questionsCategoryId]) questionsByCategories[question.questionsCategoryId] = [];
       questionsByCategories[question.questionsCategoryId].push(question);
     });
 
     auditData.auditCustomQuestions?.forEach((question) => {
-      if (!questionsByCategories[question.questionsCategoryId])
-        questionsByCategories[question.questionsCategoryId] = [];
+      if (!questionsByCategories[question.questionsCategoryId]) questionsByCategories[question.questionsCategoryId] = [];
       questionsByCategories[question.questionsCategoryId].push(question);
     });
 
@@ -333,13 +320,8 @@ const AuditProvider = ({ children }) => {
     await refetchAuditData();
   };
 
-  const updateActions = async (
-    actions: Partial<IAction>[],
-    answerId: string,
-  ) => {
-    const addedActions: Partial<IAction>[] = actions.filter(({ _id }) =>
-      _id?.includes('temp'),
-    );
+  const updateActions = async (actions: Partial<IAction>[], answerId: string) => {
+    const addedActions: Partial<IAction>[] = actions.filter(({ _id }) => _id?.includes('temp'));
     const addedActionsPromises = addedActions.map(async (action) => {
       await createAction({
         variables: {
@@ -359,9 +341,7 @@ const AuditProvider = ({ children }) => {
       });
     });
 
-    const updatedActions: Partial<IAction>[] = actions.filter(
-      ({ _id }) => !_id?.includes('temp'),
-    );
+    const updatedActions: Partial<IAction>[] = actions.filter(({ _id }) => !_id?.includes('temp'));
     const updatedActionsPromises = updatedActions.map(async (action) => {
       await saveAction({
         variables: {
@@ -379,8 +359,7 @@ const AuditProvider = ({ children }) => {
 
     const deletedActionsIds: string[] =
       selectedQuestion?.answer?.actions?.reduce((acc, curr) => {
-        if (curr?._id && !actions.find(({ _id }) => _id === curr._id))
-          return [...acc, curr._id];
+        if (curr?._id && !actions.find(({ _id }) => _id === curr._id)) return [...acc, curr._id];
         return acc;
       }, [] as string[]) || [];
     const deletedActionsPromises = deletedActionsIds.map(async (_id) => {
@@ -391,11 +370,7 @@ const AuditProvider = ({ children }) => {
       });
     });
 
-    await Promise.all([
-      ...addedActionsPromises,
-      ...updatedActionsPromises,
-      ...deletedActionsPromises,
-    ]);
+    await Promise.all([...addedActionsPromises, ...updatedActionsPromises, ...deletedActionsPromises]);
   };
 
   const value = useMemo(
@@ -425,23 +400,10 @@ const AuditProvider = ({ children }) => {
       submitAudit,
       refetch,
     }),
-    [
-      audit,
-      auditType,
-      auditor,
-      participants,
-      site,
-      area,
-      questions,
-      loading,
-      selectedQuestion,
-      selectedAction,
-    ],
+    [audit, auditType, auditor, participants, site, area, questions, loading, selectedQuestion, selectedAction],
   );
 
-  return (
-    <AuditContext.Provider value={value}>{children}</AuditContext.Provider>
-  );
+  return <AuditContext.Provider value={value}>{children}</AuditContext.Provider>;
 };
 
 export default AuditProvider;

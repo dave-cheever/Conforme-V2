@@ -27,7 +27,7 @@ export const questionsCategoriesTypeDefs = `
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
-    editableSubmitted: Boolean
+    notBlockedAfterCompletion: Boolean
     showInInsights: Boolean
     icon: String!
     options: [QuestionsCategoryOption!]
@@ -53,7 +53,7 @@ export const questionsCategoriesTypeDefs = `
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
-    editableSubmitted: Boolean
+    notBlockedAfterCompletion: Boolean
     showInInsights: Boolean!
     icon: String!
     options: [QuestionsCategoryOptionInput!]
@@ -66,7 +66,7 @@ export const questionsCategoriesTypeDefs = `
     withAnswers: Boolean!
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
-    editableSubmitted: Boolean
+    notBlockedAfterCompletion: Boolean
     showInInsights: Boolean!
     icon: String!
     options: [QuestionsCategoryOptionInput!]

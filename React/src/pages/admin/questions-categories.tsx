@@ -26,7 +26,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
       withAnswers
       allowCustomQuestions
       maxQuestionsNumber
-      editableSubmitted
+      notBlockedAfterCompletion
       showInInsights
       icon
       options {
@@ -133,7 +133,7 @@ const QuestionsCategories = () => {
       withAnswers: questionsCategory?.withAnswers,
       allowCustomQuestions: questionsCategory?.allowCustomQuestions,
       maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
-      editableSubmitted: questionsCategory?.editableSubmitted,
+      notBlockedAfterCompletion: questionsCategory?.notBlockedAfterCompletion,
       showInInsights: questionsCategory?.showInInsights,
       icon: questionsCategory?.icon,
       selectedOption: (questionsCategory?.options || [])[0]?.name || '',
@@ -192,7 +192,7 @@ const QuestionsCategories = () => {
               withAnswers: questionsCategory?.withAnswers,
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
-              editableSubmitted: questionsCategory?.editableSubmitted,
+              notBlockedAfterCompletion: questionsCategory?.notBlockedAfterCompletion,
               showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
               options: questionsCategory?.selectedOption
@@ -317,7 +317,7 @@ const QuestionsCategories = () => {
           <Toggle
             control={control}
             label="Editable after submission"
-            name="editableSubmitted"
+            name="notBlockedAfterCompletion"
             placeholder="Editable after submission"
             tooltip="If enabled, questions and answers in this category will be editable after submission"
             variant="secondaryVariant"

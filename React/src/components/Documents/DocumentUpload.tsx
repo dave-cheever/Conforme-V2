@@ -8,28 +8,17 @@ import { toastFailed } from '../../bootstrap/config';
 import UploadIcon from '../../icons/UploadIcon';
 import DocumentUploading from '../Response/DocumentUploading';
 
-const defaultFileTypes = [
-  '.pdf',
-  '.doc',
-  '.docx',
-  '.xls',
-  '.xlsx',
-  '.txt',
-  'image/*',
-  '.zip',
-  '.html',
-  '.pptx',
-  '.ppt',
-  '.msg',
-];
+const defaultFileTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', 'image/*', '.zip', '.html', '.pptx', '.ppt', '.msg'];
 
 const DocumentUpload = ({
   elementId,
   documentName,
   callback,
+  disabled = false,
   doNotAwaitCallback,
   acceptedFileTypes = defaultFileTypes,
 }: {
+  disabled?: boolean;
   elementId: string;
   documentName?: string;
   callback?: (
@@ -46,13 +35,7 @@ const DocumentUpload = ({
   const [rejected, setRejected] = useState<boolean>(false);
   const [uploading, setUploading] = useState<string[]>([]);
 
-  const upload = async ({
-    acceptedFiles,
-    rejectedFiles,
-  }: {
-    acceptedFiles: File[];
-    rejectedFiles: FileRejection[];
-  }) => {
+  const upload = async ({ acceptedFiles, rejectedFiles }: { acceptedFiles: File[]; rejectedFiles: FileRejection[] }) => {
     if (rejectedFiles?.length > 0) setRejected(true);
     else {
       const acceptedFilesNames = acceptedFiles.map((file) => file.name);
@@ -62,10 +45,7 @@ const DocumentUpload = ({
         documentsData.append('elementId', elementId);
         if (documentName) documentsData.append('documentName', documentName);
         acceptedFiles.forEach((file) => documentsData.append('document', file));
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URL}/files/document`,
-          documentsData,
-        );
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/files/document`, documentsData);
         if (callback) {
           if (doNotAwaitCallback) callback(res.data);
           else await callback(res.data);
@@ -77,9 +57,7 @@ const DocumentUpload = ({
           description: 'Failed to upload document',
         });
       } finally {
-        setUploading((uploading) =>
-          uploading.filter((name) => !acceptedFilesNames.includes(name)),
-        );
+        setUploading((uploading) => uploading.filter((name) => !acceptedFilesNames.includes(name)));
       }
     }
   };
@@ -95,19 +73,12 @@ const DocumentUpload = ({
       ) : (
         <Dropzone
           accept={acceptedFileTypes}
+          disabled={disabled}
           multiple
-          onDrop={(acceptedFiles, rejectedFiles) =>
-            upload({ acceptedFiles, rejectedFiles })
-          }
+          onDrop={(acceptedFiles, rejectedFiles) => upload({ acceptedFiles, rejectedFiles })}
         >
           {({ getRootProps, getInputProps }) => (
-            <Box
-              {...getRootProps()}
-              cursor="pointer"
-              mb={3}
-              minH="65px"
-              w="full"
-            >
+            <Box {...getRootProps()} cursor="pointer" mb={3} minH="65px" w="full">
               <input {...getInputProps()} />
               <Flex
                 align="center"
@@ -139,8 +110,7 @@ const DocumentUpload = ({
       )}
       {rejected && (
         <Flex color="red.500" fontSize="12px" fontWeight="bold" mt={2}>
-          Document not uploaded. Accepted file types include{' '}
-          {acceptedFileTypes.map((file) => `${file} `)}
+          Document not uploaded. Accepted file types include {acceptedFileTypes.map((file) => `${file} `)}
         </Flex>
       )}
     </Flex>

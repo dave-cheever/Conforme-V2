@@ -105,7 +105,13 @@ const AuditParticipants = () => {
                   return (
                     <GridItem key={participant._id}>
                       <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
-                        <Avatar cursor="pointer" name={participant.displayName} rounded="full" size="lg" src={participant.imgUrl} />
+                        <Avatar
+                          cursor={audit.status === 'inProgress' ? 'pointer' : 'default'}
+                          name={participant.displayName}
+                          rounded="full"
+                          size="lg"
+                          src={participant.imgUrl}
+                        />
                         <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
                           {participant.firstName || participant.lastName
                             ? `${participant.firstName} ${participant.lastName}`

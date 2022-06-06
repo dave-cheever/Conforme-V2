@@ -1,15 +1,6 @@
 import { useMemo } from 'react';
 
-import {
-  Flex,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, Stack, Text } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
@@ -18,29 +9,19 @@ import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
 import Icon from '../Icon';
 
 const AuditNewQuestionModal = ({ isOpen, onClose }) => {
-  const { audit, questions, customQuestionsCategories, setSelectedQuestion } =
-    useAuditContext();
+  const { audit, questions, customQuestionsCategories, setSelectedQuestion } = useAuditContext();
   const device = useDevice();
 
   const enabledQuestionsCategories = useMemo(() => {
     if (audit.status === 'inProgress') return customQuestionsCategories;
-    return customQuestionsCategories.filter(
-      ({ editableSubmitted }) => editableSubmitted,
-    );
+    return customQuestionsCategories.filter(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion);
   }, [audit.status, JSON.stringify(customQuestionsCategories)]);
 
   const countQuestionsLeft = (category: IQuestionsCategory) =>
-    category.maxQuestionsNumber
-      ? category.maxQuestionsNumber - (questions[category._id] || []).length
-      : 1;
+    category.maxQuestionsNumber ? category.maxQuestionsNumber - (questions[category._id] || []).length : 1;
 
   return (
-    <Modal
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size={device === 'mobile' ? 'full' : '2xl'}
-    >
+    <Modal isCentered isOpen={isOpen} onClose={onClose} size={device === 'mobile' ? 'full' : '2xl'}>
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
@@ -56,9 +37,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
               return (
                 <Stack
                   _hover={{
-                    bg: isDisabled
-                      ? 'auditNewQuestionModal.tile.bg.default'
-                      : 'auditNewQuestionModal.tile.bg.hover',
+                    bg: isDisabled ? 'auditNewQuestionModal.tile.bg.default' : 'auditNewQuestionModal.tile.bg.hover',
                   }}
                   align="center"
                   bgColor="auditNewQuestionModal.tile.bg.default"
@@ -95,13 +74,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
                   />
                   <Stack align="center" spacing={0}>
                     <Text fontSize="smm">{category.name}</Text>
-                    {category.maxQuestionsNumber && (
-                      <Text fontSize="smm">
-                        {questionsLeft
-                          ? `${questionsLeft} left`
-                          : 'Limit reached'}
-                      </Text>
-                    )}
+                    {category.maxQuestionsNumber && <Text fontSize="smm">{questionsLeft ? `${questionsLeft} left` : 'Limit reached'}</Text>}
                   </Stack>
                 </Stack>
               );

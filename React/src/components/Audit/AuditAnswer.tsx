@@ -121,6 +121,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   };
 
   if (!questionsCategory) return null;
+  const isDisabled = !!(audit.status === 'completed' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true));
   return (
     <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" p={4} rounded="10px" spacing={4}>
       <Text fontSize="md" fontWeight="semibold">
@@ -132,6 +133,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
             {isCustomQuestion ? (
               <TextInput
                 control={control}
+                disabled={isDisabled}
                 label="Question"
                 name="question"
                 required
@@ -144,6 +146,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
             )}
             <TextInputMultiline
               control={control}
+              disabled={isDisabled}
               label="Answer"
               name="answer"
               required
@@ -155,6 +158,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         ) : (
           <TextInputMultiline
             control={control}
+            disabled={isDisabled}
             label="Description"
             name="question"
             required
@@ -167,7 +171,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
       {questionsCategory.options && (
         <Stack>
           {questionsCategory.options.map(({ name }) => (
-            <Toggle control={control} falseLabel={name} key={name} name={`options[${name}]`} trueLabel={name} />
+            <Toggle control={control} disabled={isDisabled} falseLabel={name} key={name} name={`options[${name}]`} trueLabel={name} />
           ))}
         </Stack>
       )}
@@ -175,12 +179,14 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         <Text fontSize="11px" fontWeight="700" mb={2}>
           Attachments
         </Text>
-        <DocumentUpload
-          callback={async (uploaded) => {
-            setValue('attachments', [...values.attachments, ...uploaded]);
-          }}
-          elementId={answer?._id || `temp-${question._id}`}
-        />
+        {!isDisabled && (
+          <DocumentUpload
+            callback={async (uploaded) => {
+              setValue('attachments', [...values.attachments, ...uploaded]);
+            }}
+            elementId={answer?._id || `temp-${question._id}`}
+          />
+        )}
         {values.attachments?.map((attachment, i) => (
           <Flex flexDir="column" key={i} mb={2}>
             <DocumentUploaded
@@ -192,57 +198,62 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
               }}
               document={attachment}
               downloadable
-              removable
+              removable={!isDisabled}
             />
           </Flex>
         ))}
+        {values.attachments?.length === 0 && isDisabled && <Text fontSize="sm">No uploaded attachments</Text>}
       </Stack>
-      <Stack spacing={4}>
-        <Text fontSize="smm" fontWeight="semibold">
-          Actions
-        </Text>
-        {selectedAction ? (
-          <AuditActionForm
-            handleSave={(action) => {
-              if (!action._id) setValue('actions', [...values.actions, { ...action, _id: `temp-${uuidv4()}` }]);
-              else {
-                const actionIndex = values.actions.findIndex(({ _id }) => _id === action._id);
-                const actions = [...values.actions];
-                actions[actionIndex] = action;
-                setValue('actions', actions);
-              }
-            }}
-          />
-        ) : (
-          <Stack>
-            {values.actions?.map((action, index) => (
-              <ActionListItem
-                action={action}
-                index={index}
-                key={action._id}
-                onDelete={() =>
-                  setValue(
-                    'actions',
-                    values.actions.filter((a, i) => i !== index),
-                  )
+      {!isDisabled && (
+        <Stack spacing={4}>
+          <Text fontSize="smm" fontWeight="semibold">
+            Actions
+          </Text>
+          {selectedAction ? (
+            <AuditActionForm
+              handleSave={(action) => {
+                if (!action._id) setValue('actions', [...values.actions, { ...action, _id: `temp-${uuidv4()}` }]);
+                else {
+                  const actionIndex = values.actions.findIndex(({ _id }) => _id === action._id);
+                  const actions = [...values.actions];
+                  actions[actionIndex] = action;
+                  setValue('actions', actions);
                 }
-              />
-            ))}
-            <Button
-              bgColor="auditAnswer.buttons.addAction.bg"
-              color="auditAnswer.buttons.addAction.color"
-              fontSize="ssm"
-              fontWeight="semibold"
-              h="28px"
-              onClick={() => setSelectedAction({})}
-              rounded="10px"
-              w="fit-content"
-            >
-              Add action
-            </Button>
-          </Stack>
-        )}
-      </Stack>
+              }}
+            />
+          ) : (
+            <Stack>
+              {values.actions?.map((action, index) => (
+                <ActionListItem
+                  action={action}
+                  disabled={isDisabled}
+                  index={index}
+                  key={action._id}
+                  onDelete={() =>
+                    setValue(
+                      'actions',
+                      values.actions.filter((a, i) => i !== index),
+                    )
+                  }
+                />
+              ))}
+
+              <Button
+                bgColor="auditAnswer.buttons.addAction.bg"
+                color="auditAnswer.buttons.addAction.color"
+                fontSize="ssm"
+                fontWeight="semibold"
+                h="28px"
+                onClick={() => setSelectedAction({})}
+                rounded="10px"
+                w="fit-content"
+              >
+                Add action
+              </Button>
+            </Stack>
+          )}
+        </Stack>
+      )}
       <HStack>
         <Button
           bgColor="auditAnswer.buttons.cancel.bg"
@@ -253,22 +264,24 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           onClick={handleClose}
           rounded="10px"
         >
-          Cancel
+          {isDisabled ? 'Close' : 'Cancel'}
         </Button>
         <Spacer />
-        <Button
-          bgColor="auditAnswer.buttons.save.bg"
-          color="auditAnswer.buttons.save.color"
-          disabled={!isValid}
-          fontSize="smm"
-          fontWeight="semibold"
-          h="40px"
-          onClick={saveData}
-          rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
-          rounded="10px"
-        >
-          Save
-        </Button>
+        {!isDisabled && (
+          <Button
+            bgColor="auditAnswer.buttons.save.bg"
+            color="auditAnswer.buttons.save.color"
+            disabled={!isValid}
+            fontSize="smm"
+            fontWeight="semibold"
+            h="40px"
+            onClick={saveData}
+            rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
+            rounded="10px"
+          >
+            Save
+          </Button>
+        )}
       </HStack>
     </Stack>
   );

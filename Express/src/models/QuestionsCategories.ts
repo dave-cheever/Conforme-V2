@@ -12,7 +12,7 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
   withAnswers: Boolean,
   allowCustomQuestions: Boolean,
   maxQuestionsNumber: Number,
-  editableSubmitted: Boolean,
+  notBlockedAfterCompletion: Boolean,
   showInInsights: Boolean,
   icon: String,
   options: [

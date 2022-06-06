@@ -5,7 +5,7 @@ export interface IQuestionsCategory extends IBase {
   withAnswers: boolean; // Defines if questions can have answers
   allowCustomQuestions: boolean; // Defines if custom questions can be added to this category
   maxQuestionsNumber: number; // Defines maximum number of questions that can be added to this category
-  editableSubmitted: boolean; // Defines if user can edit questions and answers after an audit was submitted
+  notBlockedAfterCompletion: boolean; // Defines if user can edit questions and answers after an audit was submitted
   showInInsights: boolean;
   icon: string;
   options: IAuditOption[];
