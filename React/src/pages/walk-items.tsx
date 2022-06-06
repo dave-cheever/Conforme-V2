@@ -179,7 +179,7 @@ const WalkItems = () => {
       (data?.answers ?? []).map(({ typename, metatags, ...answer }) => ({
         ...answer,
         numberOfActions: answer?.actions?.filter((action) => action?.metatags?.removedAt === null).length,
-        area: answer?.area?.name || 'Virtual',
+        area: answer?.audit?.area?.name || 'Virtual',
       })),
     [JSON.stringify(filteredAnswers)],
   );
@@ -307,7 +307,7 @@ const WalkItems = () => {
                         setSortType={setSortType}
                         sortOrder={sortOrder}
                         sortType={sortType}
-                      ></WalkItemsList>
+                      />
                     )}
                   </TabPanel>
                 ))}
