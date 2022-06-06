@@ -69,9 +69,7 @@ const TeamModal = () => {
         variables: {
           responseParticipantModify: {
             _id: response?._id,
-            participantIds: selectedParticipants.map(
-              (participant) => participant._id,
-            ),
+            participantIds: selectedParticipants.map((participant) => participant._id),
             permission: responsePermissionByFilterType(filterType),
           },
         },
@@ -104,10 +102,7 @@ const TeamModal = () => {
   const isSelected = (userId: string) => {
     if (selectedParticipants.length === 0) return false;
 
-    return (
-      selectedParticipants.filter((participant) => participant._id === userId)
-        ?.length > 0
-    );
+    return selectedParticipants.filter((participant) => participant._id === userId)?.length > 0;
   };
 
   const handleSelectParticipant = (user) => {
@@ -117,13 +112,9 @@ const TeamModal = () => {
 
       setSelectedParticipants([user]);
     } else {
-      if (filterType === 'contributorsIds' || filterType === 'followersIds') {
-        return setSelectedParticipants([
-          ...selectedParticipants.filter(
-            (participant) => participant._id !== user._id,
-          ),
-        ]);
-      }
+      if (filterType === 'contributorsIds' || filterType === 'followersIds')
+        return setSelectedParticipants([...selectedParticipants.filter((participant) => participant._id !== user._id)]);
+
       setSelectedParticipants([]);
     }
   };
@@ -162,15 +153,8 @@ const TeamModal = () => {
             />
           </InputGroup>
           <Flex>
-            {(filterType === 'contributorsIds' ||
-              filterType === 'followersIds') && (
-              <Text
-                color="teamPage.radioButtonFont"
-                fontSize="smm"
-                fontWeight="semi_medium"
-                ml="2"
-                mt={2}
-              >
+            {(filterType === 'contributorsIds' || filterType === 'followersIds') && (
+              <Text color="teamPage.radioButtonFont" fontSize="smm" fontWeight="semi_medium" ml="2" mt={2}>
                 {selectedParticipants.length} users selected
               </Text>
             )}
@@ -184,23 +168,13 @@ const TeamModal = () => {
                 Searching...
               </Flex>
             ) : userSearchResults.length > 0 ? (
-              <VStack
-                alignItems="flex-start"
-                h="full"
-                mb="20px"
-                overflow="auto"
-                spacing="10px"
-              >
+              <VStack alignItems="flex-start" h="full" mb="20px" overflow="auto" spacing="10px">
                 {userSearchResults.map((user) => (
                   <Flex align="center" key={user._id}>
                     {/* added this instead of checkbox, because of console error on checkbox */}
                     <Flex
                       align="center"
-                      bg={
-                        isSelected(user._id)
-                          ? 'teamPage.button.add.bg'
-                          : 'white'
-                      }
+                      bg={isSelected(user._id) ? 'teamPage.button.add.bg' : 'white'}
                       borderColor="#81819750"
                       borderRadius="full"
                       borderWidth="1px"
@@ -214,21 +188,10 @@ const TeamModal = () => {
                       <TickIcon h="10px" stroke="white" w="10px" />
                     </Flex>
                     <Flex direction="column" ml="2">
-                      <Text
-                        color="black"
-                        fontSize="smm"
-                        fontWeight="semibold"
-                      >
-                        {user.displayName}
+                      <Text color="black" fontSize="smm" fontWeight="semibold">
+                        {user.displayName} - {user.jobTitle || 'No job title'}
                       </Text>
-                      <Box
-                        fontSize="sm"
-                        overflow="hidden"
-                        position="relative"
-                        textOverflow="ellipsis"
-                        top="-4px"
-                        w="290px"
-                      >
+                      <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px" w="290px">
                         {user.email}
                       </Box>
                     </Flex>
@@ -237,13 +200,7 @@ const TeamModal = () => {
               </VStack>
             ) : (
               searchQuery && (
-                <Flex
-                  align="center"
-                  fontStyle="italic"
-                  h="50px"
-                  maxWidth="400px"
-                  pl={5}
-                >
+                <Flex align="center" fontStyle="italic" h="50px" maxWidth="400px" pl={5}>
                   No results found
                 </Flex>
               )
@@ -263,11 +220,7 @@ const TeamModal = () => {
             onClick={handleAddParticipant}
             w="68px"
           >
-            {isReplaceAccountable
-              ? 'Replace'
-              : !isReplaceAccountable && filterType === 'accountableId'
-              ? 'Select'
-              : 'Add'}
+            {isReplaceAccountable ? 'Replace' : !isReplaceAccountable && filterType === 'accountableId' ? 'Select' : 'Add'}
           </Button>
         </ModalFooter>
       </ModalContent>

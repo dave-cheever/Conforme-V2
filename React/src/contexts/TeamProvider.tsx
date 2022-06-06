@@ -13,7 +13,9 @@ const SEARCH_USERS = gql`
       firstName
       lastName
       displayName
+      jobTitle
       email
+      imgUrl
     }
   }
 `;
@@ -22,8 +24,7 @@ export const TeamContext = createContext({} as ITeamContext);
 
 export const useTeamContext = () => {
   const context = useContext(TeamContext);
-  if (!context)
-    throw new Error('useTeamContext must be used within the TeamProvider');
+  if (!context) throw new Error('useTeamContext must be used within the TeamProvider');
 
   return context;
 };
@@ -34,8 +35,7 @@ const TeamProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedParticipants, setSelectedParticipants] = useState<IUser[]>([]);
   const [filterType, setFilterType] = useState('');
-  const [isReplaceAccountable, setIsReplaceAccountable] =
-    useState<boolean>(false);
+  const [isReplaceAccountable, setIsReplaceAccountable] = useState<boolean>(false);
   const {
     data,
     loading,
@@ -64,15 +64,7 @@ const TeamProvider = ({ children }) => {
       setIsReplaceAccountable,
     }),
 
-    [
-      data,
-      loading,
-      filterType,
-      isOpen,
-      userSearchResults,
-      searchQuery,
-      selectedParticipants,
-    ],
+    [data, loading, filterType, isOpen, userSearchResults, searchQuery, selectedParticipants],
   );
 
   return <TeamContext.Provider value={value}>{children}</TeamContext.Provider>;

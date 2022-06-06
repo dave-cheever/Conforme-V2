@@ -13,6 +13,7 @@ const SEARCH_USERS = gql`
       firstName
       lastName
       displayName
+      jobTitle
       email
       imgUrl
     }
@@ -23,8 +24,7 @@ export const AuditTeamContext = createContext({} as IAuditTeamContext);
 
 export const useAuditTeamContext = () => {
   const context = useContext(AuditTeamContext);
-  if (!context)
-    throw new Error('useAuditTeamContext must be used within the TeamProvider');
+  if (!context) throw new Error('useAuditTeamContext must be used within the TeamProvider');
 
   return context;
 };
@@ -33,9 +33,7 @@ const AuditTeamProvider = ({ children }) => {
   const { user } = useAppContext();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedAuditor, setSelectedAuditor] = useState<Partial<IUser>>(user!);
-  const [selectedParticipants, setSelectedParticipants] = useState<
-    Partial<IUser[]>
-  >([]);
+  const [selectedParticipants, setSelectedParticipants] = useState<Partial<IUser[]>>([]);
   const { data, loading } = useQuery(SEARCH_USERS, {
     variables: { searchQuery: { searchText: searchQuery } },
   });
@@ -55,11 +53,7 @@ const AuditTeamProvider = ({ children }) => {
     [data, loading, searchQuery, selectedAuditor, selectedParticipants],
   );
 
-  return (
-    <AuditTeamContext.Provider value={value}>
-      {children}
-    </AuditTeamContext.Provider>
-  );
+  return <AuditTeamContext.Provider value={value}>{children}</AuditTeamContext.Provider>;
 };
 
 export default AuditTeamProvider;

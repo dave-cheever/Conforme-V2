@@ -132,7 +132,7 @@ const AuditTeamModal = ({ isOpen, multiple, onCancel, onClose }: AuditModalProps
                     </Flex>
                     <Flex direction="column" ml="2">
                       <Text color="black" fontSize="smm" fontWeight="semibold">
-                        {user.displayName}
+                        {user.displayName} - {user.jobTitle || 'No job title'}
                       </Text>
                       <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px" w="290px">
                         {user.email}
