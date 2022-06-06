@@ -1,3 +1,5 @@
+import { isAfter } from 'date-fns';
+
 import { Audits, AuditTypes } from 'app-models';
 import { getNextRenewalDate, isPermitted } from 'app-utils';
 
@@ -11,12 +13,15 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
     if (!auditType) throw new Error('Audit type not found');
     if (!auditType?.startingDate) throw new Error('Audit type starting date is required');
 
-    const dueDate = getNextRenewalDate(new Date(auditType.startingDate), auditType.frequency);
+    let dueDate = auditType.startingDate;
+    do dueDate = getNextRenewalDate(dueDate, auditType.frequency);
+    while (isAfter(new Date(), dueDate));
+
     const reference = await Audits.customGenerateReference();
     const newAudit = {
       ...audit,
       reference,
-      status: 'inProgress',
+      status: 'upcoming',
       dueDate,
     };
 

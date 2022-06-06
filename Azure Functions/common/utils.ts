@@ -1,17 +1,8 @@
-import {
-  differenceInDays,
-  differenceInCalendarDays,
-  isSameDay,
-} from "date-fns";
+import { addDays, addMonths, addWeeks, addYears, differenceInDays } from 'date-fns';
 
-import { IAudit } from "./interfaces/IAudit";
+import { IAudit } from './interfaces/IAudit';
 import { IResponse } from "./interfaces/IResponse";
-import {
-  AUDITS_WEEKLY_DIGEST_EMAIL,
-  AUDITS_STATUS_REMINDER,
-  RESPONSE_REMINDER_EMAIL,
-  RESPONSE_WEEKLY_EMAIL,
-} from "./services/notifications";
+import { AUDITS_WEEKLY_DIGEST_EMAIL, AUDITS_STATUS_REMINDER, RESPONSE_REMINDER_EMAIL, RESPONSE_WEEKLY_EMAIL } from './services/notifications';
 
 export const getProtocol = () => {
   return process.env.ENV?.toLowerCase() === "dev" ? "http://" : "https://";
@@ -55,37 +46,78 @@ export const getTemplateDetails = (
   }
 };
 
+const getNextDueDate = (dueDate: Date, frequency: string) => {
+  let newdueDate;
+
+  switch (frequency) {
+    case 'Daily':
+      newdueDate = addDays(dueDate, 1);
+      break;
+
+    case 'Weekly':
+      newdueDate = addWeeks(dueDate, 1);
+      break;
+
+    case 'Monthly':
+      newdueDate = addMonths(dueDate, 1);
+      break;
+
+    case 'Quarterly':
+      newdueDate = addMonths(dueDate, 3);
+      break;
+
+    case '6 months':
+      newdueDate = addMonths(dueDate, 6);
+      break;
+
+    case 'Annual':
+      newdueDate = addYears(dueDate, 1);
+      break;
+
+    case '2 years':
+      newdueDate = addYears(dueDate, 2);
+      break;
+
+    case '3 years':
+      newdueDate = addYears(dueDate, 3);
+      break;
+
+    case '5 years':
+      newdueDate = addYears(dueDate, 5);
+      break;
+
+    default:
+      newdueDate = null;
+      break;
+  }
+  return newdueDate;
+};
+
 export const getAuditStatus = (audit: IAudit, auditsComingUpTriggers) => {
   if (!audit) return;
 
-  const { dueDate, status } = audit;
-  const daysToDueDate = audit.auditType?.startingDate
-    ? differenceInDays(
-        new Date(dueDate),
-        new Date(audit.auditType?.startingDate!)
-      )
-    : 0;
+  const { dueDate, status, auditType, walkType } = audit;
+  const daysToDueDate = differenceInDays(
+    getNextDueDate(new Date(dueDate), auditType?.frequency!),
+    new Date()
+  );
 
   if (
     status === "completed" &&
     daysToDueDate !== undefined &&
-    audit.auditType?.frequency &&
     daysToDueDate !== null &&
-    daysToDueDate <
-      auditsComingUpTriggers?.value?.[audit.auditType?.frequency] &&
-    daysToDueDate >= 0
-  ) {
-    // If there is less then or equal comingUpTriggers value and at least 0 days to due date
-    return "comingUp";
-  }
+    daysToDueDate >= 0 &&
+    auditType?.frequency &&
+    daysToDueDate < auditsComingUpTriggers?.value?.[auditType?.frequency] &&
+    walkType === 'physical'
+  )
+    return 'comingUp';
 
-  if (audit.status === "completed" && (!daysToDueDate || daysToDueDate >= 0))
-    return "completed";
+  if (status === 'completed') return 'completed';
 
-  if (audit.status === "inProgress" && (!daysToDueDate || daysToDueDate >= 0))
-    return "inProgress";
+  if (status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
 
-  return "overdue";
+  return 'missed';
 };
 
 // get daysToDueDate for response

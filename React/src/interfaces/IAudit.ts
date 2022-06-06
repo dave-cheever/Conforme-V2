@@ -4,12 +4,14 @@ import { IBusinessUnit } from './IBusinessUnit';
 import { ILocation } from './ILocation';
 import { IQuestion } from './IQuestion';
 import { IUser } from './IUser';
+import { TAuditStatus } from './TAuditStatus';
 
 export interface IAudit extends IBase {
   auditTypeId: string;
   reference: string;
-  status: 'inProgress' | 'completed' | 'comingUp' | 'overdue'; // 'comingUp' and 'overdue' are not getting saved to the DB - both are calculated base on dueDate and frequency
+  status: TAuditStatus;
   dueDate: Date;
+  submittedDate?: Date;
   walkType: 'physical' | 'virtual';
   siteId?: string;
   areaId?: string;

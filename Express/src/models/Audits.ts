@@ -12,9 +12,10 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
   reference: String,
   status: {
     type: String,
-    enum: ['inProgress', 'completed'],
+    enum: ['upcoming', 'completed', 'missed'],
   },
   dueDate: Date,
+  submittedDate: Date,
   walkType: {
     type: String,
     enum: ['physical', 'virtual'],
@@ -34,24 +35,17 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
   },
 });
 
-auditsSchema.statics.customGenerateReference =
-  async function (): Promise<string> {
-    let reference = '0000001';
-    const lastAudit = await this.findOne({})
-      .sort({ 'metatags.addedAt': -1 })
-      .lean();
-    if (lastAudit && lastAudit.reference) {
-      const newReference = parseInt(lastAudit.reference, 10) + 1;
-      reference = `000000${newReference}`.slice(-7);
-    }
-    return reference;
-  };
+auditsSchema.statics.customGenerateReference = async function (): Promise<string> {
+  let reference = '0000001';
+  const lastAudit = await this.findOne({}).sort({ 'metatags.addedAt': -1 }).lean();
+  if (lastAudit && lastAudit.reference) {
+    const newReference = parseInt(lastAudit.reference, 10) + 1;
+    reference = `000000${newReference}`.slice(-7);
+  }
+  return reference;
+};
 
-auditsSchema.statics.customCreate = async function (
-  audit: IAudit,
-  userId: string,
-  organizationId: string,
-): Promise<IAudit> {
+auditsSchema.statics.customCreate = async function (audit: IAudit, userId: string, organizationId: string): Promise<IAudit> {
   const createdAudit = await this.create({
     ...audit,
     _id: uuidv4(),
@@ -62,11 +56,7 @@ auditsSchema.statics.customCreate = async function (
   return createdAudit;
 };
 
-auditsSchema.statics.customSearch = async function (
-  searchQuery,
-  user,
-  organizationId,
-): Promise<IAudit[]> {
+auditsSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IAudit[]> {
   const { searchText } = searchQuery;
   const pipeline: any[] = [
     {
@@ -85,10 +75,7 @@ auditsSchema.statics.customSearch = async function (
   ) {
     pipeline.push({
       $match: {
-        $or: [
-          { auditorId: user._id },
-          { participantsIds: { $in: [user._id] } },
-        ],
+        $or: [{ auditorId: user._id }, { participantsIds: { $in: [user._id] } }],
       },
     });
   }
@@ -133,10 +120,7 @@ auditsSchema.statics.customSearch = async function (
   return data;
 };
 
-auditsSchema.statics.customFind = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IAudit[]> {
+auditsSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IAudit[]> {
   const audits = await this.find({
     ...selector,
     organizationId,
@@ -145,10 +129,7 @@ auditsSchema.statics.customFind = async function (
   return audits;
 };
 
-auditsSchema.statics.customFindOne = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IAudit | null> {
+auditsSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IAudit | null> {
   const audit = await this.findOne({
     ...selector,
     organizationId,
@@ -157,9 +138,7 @@ auditsSchema.statics.customFindOne = async function (
   return audit;
 };
 
-auditsSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IAudit> {
+auditsSchema.statics.customFindById = async function (_id: string): Promise<IAudit> {
   const audit = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
@@ -191,11 +170,7 @@ auditsSchema.statics.customUpdateOne = async function (
   return updatedAudit;
 };
 
-auditsSchema.statics.customDelete = async function (
-  selector: object = {},
-  userId: string,
-  organizationId: string,
-): Promise<number> {
+auditsSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
   const audit = await this.customFindOne(selector, organizationId);
   if (!audit) throw new GraphQLError("Audit doesn't exist");
 

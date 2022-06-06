@@ -2,8 +2,8 @@ import { format } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 import { groupBy, sumBy } from 'lodash';
 
-import { Audits, Settings, Users } from 'app-models';
-import { doesPathExist, getAuditStatus } from 'app-utils';
+import { Audits, Users } from 'app-models';
+import { doesPathExist } from 'app-utils';
 
 const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['auditsInsights', ...elements]);
@@ -19,28 +19,20 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
     let totalAudits;
     let completedAudits;
     let upcomingAudits;
-    let overdueAudits;
+    let missedAudits;
     let totalAuditsChart;
     let completedAuditsChart;
     let upcomingAuditsChart;
-    let overdueAuditsChart;
+    let missedAuditsChart;
     let topAuditors;
 
     if (shouldJoin(['totalAudits'])) totalAudits = audits.length;
 
     if (shouldJoin(['completedAudits'])) completedAudits = audits.filter((audit) => audit.status === 'completed').length;
 
-    if (shouldJoin(['upcomingAudits'])) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
+    if (shouldJoin(['upcomingAudits'])) upcomingAudits = audits.filter((audit) => audit.status === 'upcoming').length;
 
-      upcomingAudits = audits.filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp').length;
-    }
-
-    if (shouldJoin(['overdueAudits'])) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
-      overdueAudits = audits.filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue').length;
-    }
+    if (shouldJoin(['missedAudits'])) missedAudits = audits.filter((audit) => audit.status === 'missed').length;
 
     if (shouldJoin(['totalAuditsChart'])) {
       const auditsGroupedByMonth = groupBy(
@@ -84,12 +76,10 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
     }
 
     if (shouldJoin(['upcomingAuditsChart'])) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
       const auditsGroupedByDate = groupBy(
         Object.entries(
           groupBy(
-            audits.filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp'),
+            audits.filter(({ status }) => status === 'upcoming'),
             'metatags.addedAt',
           ),
         ).map(([key, value]) => ({
@@ -108,13 +98,11 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
       );
     }
 
-    if (shouldJoin(['overdueAuditsChart'])) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
+    if (shouldJoin(['missedAuditsChart'])) {
       const auditsGroupedByDate = groupBy(
         Object.entries(
           groupBy(
-            audits.filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue'),
+            audits.filter(({ status }) => status === 'missed'),
             'metatags.addedAt',
           ),
         ).map(([key, value]) => ({
@@ -124,7 +112,7 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
         'date',
       );
 
-      overdueAuditsChart = Object.entries(auditsGroupedByDate).reduce(
+      missedAuditsChart = Object.entries(auditsGroupedByDate).reduce(
         (acc: { dates: string[]; counts: number[] }, [key, value]) => ({
           dates: [...acc?.dates, key],
           counts: [...acc?.counts, (value as Array<any>).length],
@@ -169,11 +157,11 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
       totalAudits,
       completedAudits,
       upcomingAudits,
-      overdueAudits,
+      missedAudits,
       totalAuditsChart,
       completedAuditsChart,
       upcomingAuditsChart,
-      overdueAuditsChart,
+      missedAuditsChart,
       topAuditors,
     };
   } catch (err: any) {

@@ -37,7 +37,7 @@ const InsightListItem = ({ item, type = 'audits' }: { item: ILocation | IBusines
             <InsightCount count={item.totalAuditsCount} />
             <InsightCount count={item.completedAuditsCount} />
             <InsightCount count={item.upcomingAuditsCount} />
-            <InsightCount count={item.overdueAuditsCount} />
+            <InsightCount count={item.missedAuditsCount} />
           </>
         );
     }

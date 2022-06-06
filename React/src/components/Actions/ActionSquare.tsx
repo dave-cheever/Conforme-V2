@@ -83,23 +83,23 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
       <Flex align="center" justify="space-between" w="full">
         <Button
           _hover={{
-            bg: `actionSquare.button.${isOverdue ? 'overdue' : 'default'}.bg`,
+            bg: `actionSquare.button.${isOverdue ? 'missed' : 'default'}.bg`,
           }}
-          bg={`actionSquare.button.${isOverdue ? 'overdue' : 'default'}.bg`}
-          color={`actionSquare.button.${isOverdue ? 'overdue' : 'default'}.color`}
+          bg={`actionSquare.button.${isOverdue ? 'missed' : 'default'}.bg`}
+          color={`actionSquare.button.${isOverdue ? 'missed' : 'default'}.color`}
           fontSize="ssm"
           h="28px"
           onClick={() => editAction(action)}
-          rightIcon={<ChevronRight boxSize="15px" color={`actionSquare.button.${isOverdue ? 'overdue' : 'default'}.color`} />}
+          rightIcon={<ChevronRight boxSize="15px" color={`actionSquare.button.${isOverdue ? 'missed' : 'default'}.color`} />}
           w="85px"
         >
           More
         </Button>
         {isOverdue && (
           <HStack align="center" spacing={2}>
-            <WarningIcon fill="actionSquare.overdue.icon.fill" h="22px" stroke="actionSquare.overdue.icon.stroke" w="18px" />
-            <Text color="actionSquare.overdue.color" fontSize="ssm" fontWeight="bold">
-              Overdue
+            <WarningIcon fill="actionSquare.missed.icon.fill" h="22px" stroke="actionSquare.missed.icon.stroke" w="18px" />
+            <Text color="actionSquare.missed.color" fontSize="ssm" fontWeight="bold">
+              Missed
             </Text>
           </HStack>
         )}
@@ -127,12 +127,12 @@ export const actionSquareStyles = {
         bg: '#1315351A',
         color: '#1E1836',
       },
-      overdue: {
+      missed: {
         bg: '#DC0043',
         color: '#FFFFFF',
       },
     },
-    overdue: {
+    missed: {
       icon: {
         stroke: '#DC0043',
         fill: 'transparent',

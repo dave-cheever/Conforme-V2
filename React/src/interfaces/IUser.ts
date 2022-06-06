@@ -18,6 +18,6 @@ export interface IUser extends IBase {
   followerCount?: number;
   completedAuditsCount?: number;
   upcomingAuditsCount?: number;
-  overdueAuditsCount?: number;
+  missedAuditsCount?: number;
   totalAuditsCount?: number;
 }

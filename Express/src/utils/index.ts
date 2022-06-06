@@ -1,3 +1,4 @@
+import calculateAudits from './calculateAudits';
 import { priorities } from './constants';
 import { emailPreview, getEmailSubject, getEmailTemplate, MENTION_EMAIL } from './email';
 import {
@@ -6,7 +7,6 @@ import {
   genMetatags,
   getActionStatus,
   getAuditRecordValues,
-  getAuditStatus,
   getAuditValueForBoolean,
   getAuditValueForDate,
   getAuditValueForLookup,
@@ -40,6 +40,7 @@ import checkQuestionPermission from './permissions-checkers/question';
 import roles from './roles';
 
 export {
+  calculateAudits,
   checkActionPermission,
   checkAnswerPermission,
   checkQuestionPermission,
@@ -70,7 +71,6 @@ export {
   getAuditValueForUser,
   getAuditRecordValues,
   getActionStatus,
-  getAuditStatus,
   getStatus,
   genMetatags,
   doesPathExist,

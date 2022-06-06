@@ -21,7 +21,6 @@ import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, { useAuditModalContext } from '../contexts/AuditModalProvider';
 import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
-import useAuditUtils from '../hooks/useAuditUtils';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
 import { ChevronRight, ExportIcon, GridIcon, GroupIcon, ListIcon } from '../icons';
@@ -33,6 +32,7 @@ const GET_AUDITS = gql`
       _id
       walkType
       dueDate
+      submittedDate
       status
       auditorId
       numberOfActions
@@ -69,10 +69,8 @@ const Audits = () => {
     useFiltersContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
-  const { reset, trigger } = useAuditModalContext();
+  const { audit, reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
-  const { audit } = useAuditModalContext();
-  const { getNextDueDate, getStatus, isComingUp } = useAuditUtils();
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
   const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'walkType');
   const sortBy = [
@@ -88,6 +86,7 @@ const Audits = () => {
     return () => setShowFiltersPanel(false);
   }, []);
 
+  // Set pre-defined filters
   useEffect(() => {
     if (auditFiltersValue && !isEmpty(auditFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
       // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
@@ -122,31 +121,9 @@ const Audits = () => {
     if (parsedFilters) refetch({ auditQueryInput: parsedFilters });
   }, [filtersValues]);
 
+  // Load audits
   useEffect(() => {
-    if (data && data?.audits && !error) {
-      const items = (data?.audits || []).map((audit) => ({ ...audit, status: getStatus(audit) }));
-
-      // Find uniq audits
-      const uniqAudits = items
-        .filter(({ walkType }) => walkType === 'physical')
-        .sort(({ metatags: a }, { metatags: b }) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime())
-        .reduce((acc, item) => {
-          if (!acc.some((audit) => audit.auditType._id === item.auditType._id && audit.area._id === item.area._id)) acc.push(item);
-          return acc;
-        }, []);
-
-      // And add "coming up" to the list
-      const comingUpAudits = uniqAudits
-        .filter((audit) => isComingUp(audit))
-        .map((audit) => ({
-          ...audit,
-          _id: `${audit._id}_next`,
-          status: 'comingUp',
-          dueDate: getNextDueDate(new Date(audit.dueDate), audit.auditType.frequency),
-        }));
-
-      setFilteredAudits([...comingUpAudits, ...items]);
-    }
+    if (data && data?.audits && !error) setFilteredAudits(data?.audits);
   }, [data?.audits]);
 
   const initialViewMode = useMemo(() => {

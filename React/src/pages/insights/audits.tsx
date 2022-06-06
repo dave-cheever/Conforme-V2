@@ -24,7 +24,7 @@ const GET_AUDITS_INSIGHTS = gql`
       totalAudits
       completedAudits
       upcomingAudits
-      overdueAudits
+      missedAudits
       totalAuditsChart {
         dates
         counts
@@ -37,7 +37,7 @@ const GET_AUDITS_INSIGHTS = gql`
         dates
         counts
       }
-      overdueAuditsChart {
+      missedAuditsChart {
         dates
         counts
       }
@@ -56,7 +56,7 @@ const GET_AUDITS_INSIGHTS = gql`
       totalAuditsCount
       completedAuditsCount
       upcomingAuditsCount
-      overdueAuditsCount
+      missedAuditsCount
     }
     businessUnits {
       _id
@@ -64,7 +64,7 @@ const GET_AUDITS_INSIGHTS = gql`
       totalAuditsCount
       completedAuditsCount
       upcomingAuditsCount
-      overdueAuditsCount
+      missedAuditsCount
     }
     users {
       _id
@@ -73,7 +73,7 @@ const GET_AUDITS_INSIGHTS = gql`
       totalAuditsCount
       completedAuditsCount
       upcomingAuditsCount
-      overdueAuditsCount
+      missedAuditsCount
     }
   }
 `;
@@ -102,9 +102,9 @@ const AuditsInsights = () => {
         color: '#FF9A00',
       },
       {
-        status: 'overdue',
-        audits: data?.auditsInsights?.overdueAudits,
-        chart: data?.auditsInsights?.overdueAuditsChart,
+        status: 'missed',
+        audits: data?.auditsInsights?.missedAudits,
+        chart: data?.auditsInsights?.missedAuditsChart,
         color: '#E93C44',
       },
     ],
@@ -300,11 +300,11 @@ const AuditsInsights = () => {
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
-                      setSitesSortType('overdueAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'overdueAuditsCount' ? 'desc' : 'asc');
+                      setSitesSortType('missedAuditsCount');
+                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'missedAuditsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'overdueAuditsCount'}
-                    sortOrder={sitesSortType === 'overdueAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={sitesSortType === 'missedAuditsCount'}
+                    sortOrder={sitesSortType === 'missedAuditsCount' ? sitesSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
@@ -361,11 +361,11 @@ const AuditsInsights = () => {
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
-                      setAreasSortType('overdueAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'overdueAuditsCount' ? 'desc' : 'asc');
+                      setAreasSortType('missedAuditsCount');
+                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'missedAuditsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'overdueAuditsCount'}
-                    sortOrder={areasSortType === 'overdueAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={areasSortType === 'missedAuditsCount'}
+                    sortOrder={areasSortType === 'missedAuditsCount' ? areasSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
@@ -387,6 +387,15 @@ export default AuditsInsights;
 
 export const auditsInsightsStyles = {
   auditsInsights: {
+    types: {
+      total: '#1E1836',
+      completed: '#41B916',
+      upcoming: '#FF9A00',
+      missed: '#E93C44',
+    },
+    insightsCard: {
+      color: 'white',
+    },
     auditors: {
       bg: 'white',
     },

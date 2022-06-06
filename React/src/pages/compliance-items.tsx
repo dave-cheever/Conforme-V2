@@ -187,7 +187,7 @@ const ComplianceItems = () => {
       if (filtersValues?.itemStatus?.value && filtersValues?.itemStatus?.value?.length! > 0) {
         const statusFilteredResults: IResponse[] = [];
         for (const filter of filtersValues?.itemStatus?.value!) {
-          if (['notStarted', 'inProgress', 'completed', 'comingUp', 'overdue'].includes(filter))
+          if (['notStarted', 'inProgress', 'completed', 'comingUp', 'missed'].includes(filter))
             statusFilteredResults.push(...items.filter((response) => getRenewalStatus(response) === filter));
           else if (['compliant', 'nonCompliant'].includes(filter))
             statusFilteredResults.push(...items.filter((response) => getStatus(response) === filter));

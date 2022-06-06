@@ -25,7 +25,7 @@ export const locationsTypeDefs = `
     totalAuditsCount: Int
     completedAuditsCount: Int
     upcomingAuditsCount: Int
-    overdueAuditsCount: Int
+    missedAuditsCount: Int
     totalActionsCount: Int
     completedActionsCount: Int
     inProgressActionsCount: Int

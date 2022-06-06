@@ -80,9 +80,9 @@ const AuditParticipants = () => {
             </Text>
             <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
               <Avatar
-                cursor={audit.status === 'inProgress' ? 'pointer' : 'default'}
+                cursor={audit.status === 'upcoming' ? 'pointer' : 'default'}
                 name={audit.auditor?.displayName}
-                onClick={() => audit.status === 'inProgress' && setAuditorModalOpen(true)}
+                onClick={() => audit.status === 'upcoming' && setAuditorModalOpen(true)}
                 rounded="full"
                 size="lg"
                 src={audit.auditor?.imgUrl}
@@ -94,7 +94,7 @@ const AuditParticipants = () => {
               </Text>
             </Flex>
           </Stack>
-          {((audit.participants || []).length > 0 || audit.status === 'inProgress') && (
+          {((audit.participants || []).length > 0 || audit.status === 'upcoming') && (
             <Stack spacing={4}>
               <Text fontSize="smm" fontWeight="semibold">
                 Participants
@@ -121,7 +121,7 @@ const AuditParticipants = () => {
                     </GridItem>
                   );
                 })}
-                {audit.status === 'inProgress' && (
+                {audit.status === 'upcoming' && (
                   <GridItem>
                     <IconButton
                       aria-label="Add participant"

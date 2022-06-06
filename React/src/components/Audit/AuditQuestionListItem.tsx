@@ -25,7 +25,7 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
           <DocumentThumbnail document={attachment} key={attachment.id} />
         ))}
       </HStack>
-      {audit.status === 'inProgress' && (
+      {audit.status === 'upcoming' && (
         <Stack>
           <EditIcon cursor="pointer" onClick={() => setSelectedQuestion(question)} stroke="auditItem.listItem.editIcon" />
           <Spacer />

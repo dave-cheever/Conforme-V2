@@ -1,8 +1,8 @@
 import { GraphQLResolveInfo } from 'graphql';
 
 import { IBusinessUnit } from 'app-interfaces';
-import { Actions, Answers, Audits, BusinessUnits, Responses, Settings, Users } from 'app-models';
-import { doesPathExist, getActionStatus, getAuditStatus, join } from 'app-utils';
+import { Actions, Answers, Audits, BusinessUnits, Responses, Users } from 'app-models';
+import { doesPathExist, getActionStatus, join } from 'app-utils';
 
 const businessUnits = async (
   _,
@@ -91,8 +91,6 @@ const businessUnits = async (
     }
 
     if (shouldJoin('upcomingAuditsCount')) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
       for (const businessUnit of businessUnits) {
         businessUnit.upcomingAuditsCount = (
           await Audits.aggregate([
@@ -100,29 +98,31 @@ const businessUnits = async (
               $match: {
                 'metatags.removedAt': { $eq: null },
                 areaId: businessUnit._id,
+                status: 'upcoming',
                 organizationId: organization._id,
               },
             },
+            { $count: 'count' },
           ])
-        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp').length;
+        )[0].count;
       }
     }
 
-    if (shouldJoin('overdueAuditsCount')) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
+    if (shouldJoin('missedAuditsCount')) {
       for (const businessUnit of businessUnits) {
-        businessUnit.overdueAuditsCount = (
+        businessUnit.missedAuditsCount = (
           await Audits.aggregate([
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
                 areaId: businessUnit._id,
+                status: 'missed',
                 organizationId: organization._id,
               },
             },
+            { $count: 'count' },
           ])
-        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue').length;
+        )[0].count;
       }
     }
 

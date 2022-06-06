@@ -136,7 +136,7 @@ export const complianceItemStatuses = {
   completed: 'Completed',
   noDueDate: 'No due date',
   comingUp: 'Coming Up',
-  overdue: 'Overdue',
+  missed: 'Missed',
 };
 
 export const dates = {

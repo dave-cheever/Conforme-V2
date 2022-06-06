@@ -13,7 +13,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
   const device = useDevice();
 
   const enabledQuestionsCategories = useMemo(() => {
-    if (audit.status === 'inProgress') return customQuestionsCategories;
+    if (audit.status === 'upcoming') return customQuestionsCategories;
     return customQuestionsCategories.filter(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion);
   }, [audit.status, JSON.stringify(customQuestionsCategories)]);
 

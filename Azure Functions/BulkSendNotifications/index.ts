@@ -16,8 +16,8 @@ import {
   RESPONSE_WEEKLY_EMAIL
 } from '../common/services/notifications';
 import sendComingUpAudits from './sendComingUpAudits';
-import sendOverdueAudits from './sendOverdueAudits';
-import sendOverdueActions from './sendOverdueActions';
+import sendMissedAudits from './sendMissedAudits';
+import sendMissedActions from './sendMissedActions';
 import sendResponseWeeklyEmail from './sendResponseWeeklyEmail';
 import sendResponseDueEmail from './sendResponseDueEmail';
 
@@ -54,8 +54,8 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
 
     if (!isSameDay(new Date(), lastBulkScanDate)) {
       await sendComingUpAudits(AUDITS_STATUS_REMINDER, config);
-      await sendOverdueAudits(AUDITS_STATUS_REMINDER, config);
-      await sendOverdueActions(AUDITS_ACTION_OVERDUE, config);
+      await sendMissedAudits(AUDITS_STATUS_REMINDER, config);
+      await sendMissedActions(AUDITS_ACTION_OVERDUE, config);
       await sendResponseDueEmail(RESPONSE_REMINDER_EMAIL, config);
     }
 

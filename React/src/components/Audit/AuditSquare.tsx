@@ -2,17 +2,13 @@ import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Button, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
-import { useAdminContext } from '../../contexts/AdminProvider';
-import { useAuditModalContext } from '../../contexts/AuditModalProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { ActionsIcon } from '../../icons';
+import { ActionsIcon, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 const AuditSquare = ({ audit }: { audit: IAudit }) => {
   const { navigateTo } = useNavigate();
-  const { setAdminModalState } = useAdminContext();
-  const { setValue } = useAuditModalContext();
 
   return (
     <Box
@@ -64,36 +60,33 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         </Box>
       </Flex>
       <Flex align="center" justify="space-between" pt="50px" w="full">
-        <Button
-          _hover={{
-            bg: 'auditSquare.buttonBg',
-          }}
-          bg="auditSquare.buttonBg"
-          color="auditSquare.fontColor"
-          fontSize="ssm"
-          h="28px"
-          onClick={() => {
-            if (audit._id.includes('_next')) {
-              setAdminModalState('add');
-              setValue('auditTypeId', audit.auditType?._id);
-              setValue('walkType', 'physical');
-              setValue('siteId', audit.site?._id);
-              setValue('areaId', audit.area?._id);
-            } else navigateTo(`/audits/${audit._id}/`);
-          }}
-          rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
-          w="85px"
-        >
-          More
-        </Button>
-        <Flex align="center" color="auditSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
+        {audit?.status !== 'missed' ? (
+          <Button
+            _hover={{
+              bg: 'auditSquare.buttonBg',
+            }}
+            bg="auditSquare.buttonBg"
+            color="auditSquare.fontColor"
+            fontSize="ssm"
+            h="28px"
+            onClick={() => navigateTo(`/audits/${audit._id}/`)}
+            rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
+            w="85px"
+          >
+            More
+          </Button>
+        ) : (
+          <Box h="28px" />
+        )}
+        <Flex align="center" color={`auditSquare.${audit?.status}`} flexDirection="column" justify="center" mr={1}>
           <Flex fontSize="11px" fontWeight="700">
+            {audit?.status === 'missed' && <WarningIcon fill="transparent" h="16px" mr={2} stroke="auditSquare.missed" w="16px" />}
             <Text as="span">{auditStatuses[audit?.status]}</Text>
-            {audit?.status !== 'comingUp' && (
+            {audit?.status === 'completed' && (
               <>
                 <Divider color="lightgray" h="auto" mx="15px" orientation="vertical" />
                 <ActionsIcon fill="transparent" h="16px" stroke="#D2D1D7" w="16px" />
-                <Text as="span" ml={2}>
+                <Text as="span" color="auditSquare.nameFontColor" ml={2}>
                   {audit?.numberOfActions}
                 </Text>
               </>
@@ -110,8 +103,8 @@ export default AuditSquare;
 export const auditSquareStyles = {
   auditSquare: {
     completed: '#62c240',
-    overdue: '#FC5960',
-    inProgress: '#FFA012',
+    missed: '#FC5960',
+    upcoming: '#282F36',
     statusFontColor: '#FFFFFF',
     imageBg: '#ffffff',
     rightIcon: '#9A9EA1',

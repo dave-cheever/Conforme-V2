@@ -39,11 +39,11 @@ export const insightsTypeDefs = `
     totalAudits: Int
     completedAudits: Int
     upcomingAudits: Int
-    overdueAudits: Int
+    missedAudits: Int
     totalAuditsChart: Chart
     completedAuditsChart: Chart
     upcomingAuditsChart: Chart
-    overdueAuditsChart: Chart
+    missedAuditsChart: Chart
     topAuditors: [TopAuditor!]!
   }
 

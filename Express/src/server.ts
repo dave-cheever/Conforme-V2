@@ -1,13 +1,14 @@
 import { ApolloServer } from 'apollo-server-express';
 import session from 'cookie-session';
 import cors from 'cors';
+import { CronJob } from 'cron';
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import logger from 'morgan';
 import passport from 'passport';
 
 import { ISession, IUser } from 'app-interfaces';
-import { CORSConfig, getProtocol } from 'app-utils';
+import { calculateAudits, CORSConfig, getProtocol } from 'app-utils';
 
 import { context, resolvers, typeDefs } from './graphql';
 import initPassport from './passport-config';
@@ -34,6 +35,11 @@ const getApp = async () => {
   });
   await server.start();
 
+  const calculateAuditsCRON = new CronJob('0 0 0 * * *', () => {
+    calculateAudits();
+  });
+  calculateAuditsCRON.start();
+
   initPassport(passport);
   app.disable('x-powered-by');
   app.use(cors(CORSConfig));
@@ -46,10 +52,7 @@ const getApp = async () => {
       secret: process.env.SESS_SECRET || 'sessionSecret',
       secure: process.env.APPSETTING_NODE_ENV !== 'dev',
       httpOnly: true,
-      domain:
-        process.env.APPSETTING_NODE_ENV === 'dev'
-          ? undefined
-          : process.env.API_URL,
+      domain: process.env.APPSETTING_NODE_ENV === 'dev' ? undefined : process.env.API_URL,
       sameSite: process.env.APPSETTING_NODE_ENV === 'dev' ? false : 'none',
       maxAge: Number(process.env.SESS_LIFETIME_IN_MINUTES || 15) * 60 * 1000,
     }),
@@ -60,11 +63,7 @@ const getApp = async () => {
   // app.use(setOrganization);
   app.use('/', baseRouter(passport));
   app.use('/images', express.static('public'));
-  app.use('/images', (req, res) =>
-    res
-      .status(StatusCodes.PERMANENT_REDIRECT)
-      .redirect(`${global.apiUrl}/images/placeholder.png`),
-  );
+  app.use('/images', (req, res) => res.status(StatusCodes.PERMANENT_REDIRECT).redirect(`${global.apiUrl}/images/placeholder.png`));
 
   server.applyMiddleware({
     app,

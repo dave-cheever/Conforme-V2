@@ -9,7 +9,7 @@ import Organizations from '../common/services/collections/Organizations';
 import { GraphService } from '../common/services/GraphService';
 import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 
-const sendOverdueActions = async (emailType: number, config) => {
+const sendMissedActions = async (emailType: number, config) => {
   const audits = await Audits.aggregate([
     {
       $match: {
@@ -95,4 +95,4 @@ const sendOverdueActions = async (emailType: number, config) => {
   );
 };
 
-export default sendOverdueActions;
+export default sendMissedActions;

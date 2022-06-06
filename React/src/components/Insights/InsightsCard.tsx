@@ -49,6 +49,7 @@ export const insightsCardStyles = {
       upcoming: '#FF9A00',
       inProgress: '#FF9A00',
       overdue: '#E93C44',
+      missed: '#E93C44',
     },
     color: 'white',
   },

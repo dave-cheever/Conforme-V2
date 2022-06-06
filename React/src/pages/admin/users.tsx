@@ -35,10 +35,10 @@ const GET_USERS = gql`
       accountableCount
       contributorCount
       followerCount
+      totalAuditsCount
       completedAuditsCount
       upcomingAuditsCount
-      overdueAuditsCount
-      totalAuditsCount
+      missedAuditsCount
     }
   }
 `;
@@ -180,12 +180,12 @@ const Users = () => {
           label="M"
           ml="13px"
           onClick={() => {
-            setSortType('overdueAuditsCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'overdueAuditsCount' ? 'desc' : 'asc');
+            setSortType('missedAuditsCount');
+            setSortOrder(sortOrder === 'asc' && sortType === 'missedAuditsCount' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'overdueAuditsCount'}
-          sortOrder={sortType === 'overdueAuditsCount' ? sortOrder : undefined}
-          tooltip="Number of overdue audits"
+          showSortingIcon={sortType === 'missedAuditsCount'}
+          sortOrder={sortType === 'missedAuditsCount' ? sortOrder : undefined}
+          tooltip="Number of missed audits"
           w="calc(25% - 13px)"
         />
       </>
@@ -223,8 +223,8 @@ const Users = () => {
       <>
         <UserAuditsCount auditsCount={user.totalAuditsCount} userId={user._id} />
         <UserAuditsCount auditsCount={user.completedAuditsCount} status="completed" userId={user._id} />
-        <UserAuditsCount auditsCount={user.upcomingAuditsCount} userId={user._id} />
-        <UserAuditsCount auditsCount={user.overdueAuditsCount} userId={user._id} />
+        <UserAuditsCount auditsCount={user.upcomingAuditsCount} status="upcoming" userId={user._id} />
+        <UserAuditsCount auditsCount={user.missedAuditsCount} status="missed" userId={user._id} />
       </>
     );
 

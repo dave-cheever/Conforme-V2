@@ -27,7 +27,7 @@ const getEmailSubject = (emailType: number, emailData:any = {}) => {
     case AUDITS_ACTION_COMPLETED:
       return 'Audit action completed';
     case AUDITS_ACTION_OVERDUE:
-      return 'Audit action overdue';
+      return 'Audit action missed';
     case AUDITS_STATUS_REMINDER:
       return 'Audits status reminder';
     case RESPONSE_REMINDER_EMAIL:
@@ -76,7 +76,7 @@ const getEmailTemplate = async ({
       </p>`;
     case AUDITS_ACTION_OVERDUE:
       body = `<p>
-        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${
+        Action "${emailData.actionTitle}" is missed, to view click <a href="${getProtocol()}${
         organization.domain
       }/safetywalk/audits/${emailData.actionAuditId}">here</a>
       </p>`;

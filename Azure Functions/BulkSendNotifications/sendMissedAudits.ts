@@ -6,7 +6,7 @@ import { getEmailSubject } from '../common/services/notifications';
 import getSkeleton from '../common/services/notifications/template';
 import { getAuditStatus, getTemplateDetails } from '../common/utils';
 
-const sendOverdueAudits = async (emailType: number, config) => {
+const sendMissedAudits = async (emailType: number, config) => {
   const audits = await Audits.aggregate([
     {
       $match: {
@@ -56,12 +56,12 @@ const sendOverdueAudits = async (emailType: number, config) => {
 
       const audits = await Audits.aggregate(pipeline);
       const overdueAudits = audits.filter(
-        audit => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue'
+        audit => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'missed'
       ).length;
       const { emailSettingName } = getTemplateDetails(emailType);
       const organization = await Organizations.customFindById(organizationId);
       const subject = getEmailSubject(emailType);
-      const body = getSkeleton(`Number of overdue audits: ${overdueAudits}`, organization);
+      const body = getSkeleton(`Number of missed audits: ${overdueAudits}`, organization);
       const emailAddress = await Settings.customFindOneByName(emailSettingName, organizationId);
       const graphService = new GraphService(config);
 
@@ -75,4 +75,4 @@ const sendOverdueAudits = async (emailType: number, config) => {
   );
 };
 
-export default sendOverdueAudits;
+export default sendMissedAudits;

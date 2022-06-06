@@ -41,14 +41,6 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       });
     }
 
-    if (auditQueryInput?.status?.length > 0) {
-      pipeline.push({
-        $match: {
-          status: { $in: auditQueryInput.status },
-        },
-      });
-    }
-
     if (auditQueryInput?.walkType?.length > 0) {
       pipeline.push({
         $match: {
@@ -94,6 +86,16 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
         $match: {
           participantsIds: {
             $in: auditQueryInput.usersIds?.participantsIds,
+          },
+        },
+      });
+    }
+
+    if (auditQueryInput?.status?.length > 0) {
+      pipeline.push({
+        $match: {
+          status: {
+            $in: auditQueryInput.status,
           },
         },
       });

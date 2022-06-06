@@ -7,7 +7,7 @@ import IFilters, { IActionFilters, IAuditFilters, IResponseFilters, IWalkItemFil
 import { ILocation } from './ILocation';
 import { IQuestionsCategory } from './IQuestionsCategory';
 import { IUser } from './IUser';
-import TAuditStatus from './TAuditStatus';
+import { TAuditStatus } from './TAuditStatus';
 import TAuditWalkType from './TAuditWalkType';
 import { TDeepPartial } from './TDeepPartial';
 

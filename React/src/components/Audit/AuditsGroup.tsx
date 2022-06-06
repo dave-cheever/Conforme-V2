@@ -11,10 +11,9 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
 
   useEffect(() => {
     const filteredAudits: any = {};
-    filteredAudits.overdue = audits.filter((audit) => audit.status === 'overdue');
-    filteredAudits.comingUp = audits.filter((audit) => audit.status === 'comingUp');
-    filteredAudits.inProgress = audits.filter((audit) => audit.status === 'inProgress');
+    filteredAudits.upcoming = audits.filter((audit) => audit.status === 'upcoming');
     filteredAudits.completed = audits.filter((audit) => audit.status === 'completed');
+    filteredAudits.missed = audits.filter((audit) => audit.status === 'missed');
     setFilteredResults(filteredAudits);
   }, [audits]);
 
@@ -63,8 +62,7 @@ export default AuditsGroup;
 export const auditsGroupStyles = {
   auditsGroup: {
     completed: '#62c240',
-    inProgress: '#FFA012',
-    comingUp: '#CCCCCC',
-    overdue: '#FC5960',
+    upcoming: '#FFA012',
+    missed: '#FC5960',
   },
 };

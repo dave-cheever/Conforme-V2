@@ -89,7 +89,7 @@ const AuditHeader = () => {
             name="Share"
             onClick={() => {}}
           /> */}
-          {audit.status === 'inProgress' && (
+          {audit.status === 'upcoming' && (
             <AuditHeaderButton bgColor="#DC0043" fontColor="white" icon={null} name="Submit" onClick={handleSubmitModalOpen} />
           )}
         </Flex>

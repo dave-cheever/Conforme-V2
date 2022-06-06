@@ -24,6 +24,7 @@ export const auditsTypeDefs = `
     reference: String!
     status: String!
     dueDate: Date!
+    submittedDate: Date
     auditType: AuditType!
     siteId: ID
     site: Location

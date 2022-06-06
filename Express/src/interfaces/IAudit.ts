@@ -1,17 +1,11 @@
-import {
-  IAuditType,
-  IBase,
-  IBusinessUnit,
-  ILocation,
-  IQuestion,
-  IUser,
-} from 'app-interfaces';
+import { IAuditType, IBase, IBusinessUnit, ILocation, IQuestion, IUser, TAuditStatus } from 'app-interfaces';
 
 export interface IAudit extends IBase {
   auditTypeId: string;
   reference: string;
-  status: 'inProgress' | 'completed';
-  dueDate: Date;
+  status: TAuditStatus;
+  dueDate: Date; // Calculated base on auditType frequency, start date and status
+  submittedDate?: Date;
   walkType: 'physical' | 'virtual';
   siteId?: string;
   areaId?: string;

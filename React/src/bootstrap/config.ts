@@ -68,7 +68,7 @@ export const auditsInsightsTypes = {
   total: 'Total',
   completed: 'Completed',
   upcoming: 'Upcoming',
-  overdue: 'Missed',
+  missed: 'Missed',
 };
 
 export const insightsCardsDotsPosition = {
@@ -84,11 +84,7 @@ export const insightsCardsDotsPosition = {
     top: '-38.26%',
     right: '24.95%',
   },
-  inProgress: {
-    top: '-38.26%',
-    right: '24.95%',
-  },
-  overdue: {
+  missed: {
     top: '42.17%',
     right: '-21.1%',
   },

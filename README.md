@@ -375,11 +375,11 @@ Audits status reminders triggers:
   "id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "auditsStatusReminderTriggers",
-  "label": "The days of month when to send coming up and overdue audit notifications",
+  "label": "The days of month when to send upcoming and missed audit notifications",
   "value": [1],
   "type": "defaultSettings",
   "inputType": "text",
-  "description": "Use this setting to select dayf of month when to send coming up and overdue audit notifications",
+  "description": "Use this setting to select dayf of month when to send coming up and missed audit notifications",
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {

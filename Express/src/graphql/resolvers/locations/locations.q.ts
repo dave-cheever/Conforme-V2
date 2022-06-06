@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Actions, Answers, Audits, Locations, Responses, Settings, Users } from 'app-models';
-import { doesPathExist, getActionStatus, getAuditStatus, join } from 'app-utils';
+import { Actions, Answers, Audits, Locations, Responses, Users } from 'app-models';
+import { doesPathExist, getActionStatus, join } from 'app-utils';
 
 const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInput }, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
@@ -69,8 +69,6 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
     }
 
     if (shouldJoin('upcomingAuditsCount')) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
       for (const location of locations) {
         location.upcomingAuditsCount = (
           await Audits.aggregate([
@@ -78,29 +76,31 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
               $match: {
                 'metatags.removedAt': { $eq: null },
                 siteId: location._id,
+                status: 'upcoming',
                 organizationId: organization._id,
               },
             },
+            { $count: 'count' },
           ])
-        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp').length;
+        )[0].count;
       }
     }
 
-    if (shouldJoin('overdueAuditsCount')) {
-      const auditsComingUpTriggerSetting = await Settings.customFindByName('auditsComingUpTriggers', organization._id);
-
+    if (shouldJoin('missedAuditsCount')) {
       for (const location of locations) {
-        location.overdueAuditsCount = (
+        location.missedAuditsCount = (
           await Audits.aggregate([
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
                 siteId: location._id,
+                status: 'missed',
                 organizationId: organization._id,
               },
             },
+            { $count: 'count' },
           ])
-        ).filter((audit) => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'overdue').length;
+        )[0].count;
       }
     }
 

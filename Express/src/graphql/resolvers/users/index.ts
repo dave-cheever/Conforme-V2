@@ -38,7 +38,7 @@ export const usersTypeDefs = `
     followerCount: Int
     completedAuditsCount: Int
     upcomingAuditsCount: Int
-    overdueAuditsCount: Int
+    missedAuditsCount: Int
     totalAuditsCount: Int
   }
   

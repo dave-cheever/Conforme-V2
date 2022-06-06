@@ -13,7 +13,7 @@ export interface IBusinessUnit extends IBase {
   totalAuditsCount?: number;
   completedAuditsCount?: number;
   upcomingAuditsCount?: number;
-  overdueAuditsCount?: number;
+  missedAuditsCount?: number;
   totalActionsCount?: number;
   completedActionsCount?: number;
   inProgressActionsCount?: number;

@@ -33,7 +33,7 @@ const Audit = () => {
           {capitalize(pluralize(t('question')))}
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
-          (audit.status === 'inProgress' || questionsCategories.some(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion)) &&
+          (audit.status === 'upcoming' || questionsCategories.some(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion)) &&
           customQuestionsCategories.length && (
             <Button
               bg="auditItem.addButton.bg"

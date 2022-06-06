@@ -5,7 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 import useFiltersUtils from '../hooks/useFiltersUtils';
 import IFilters, { IActionFilters, IAuditFilters, IResponseFilters, IWalkItemFilters } from '../interfaces/IFilters';
 import { IFiltersContext } from '../interfaces/IFiltersContext';
-import TAuditStatus from '../interfaces/TAuditStatus';
+import { TAuditStatus } from '../interfaces/TAuditStatus';
 import TAuditWalkType from '../interfaces/TAuditWalkType';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
 
@@ -130,7 +130,7 @@ const FiltersProvider = ({ children }) => {
       regulatoryBodies: data?.regulatoryBodies,
       businessUnits: data?.businessUnits,
       users: [...(data?.users || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
-      auditStatuses: ['inProgress', 'completed'] as TAuditStatus[],
+      auditStatuses: ['upcoming', 'completed', 'missed'] as TAuditStatus[],
       auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],
       sites: data?.locations,
       areas: data?.businessUnits,

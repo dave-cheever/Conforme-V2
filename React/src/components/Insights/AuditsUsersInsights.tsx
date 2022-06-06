@@ -119,7 +119,7 @@ const AuditsUsersInsights = ({
           </Box>
           <Box mb="5px" p="8px" rounded="10px" w="100px">
             <Text fontSize="smm" textAlign="center">
-              {user.overdueAuditsCount ?? 0}
+              {user.missedAuditsCount ?? 0}
             </Text>
           </Box>
         </Flex>
