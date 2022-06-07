@@ -73,7 +73,16 @@ const WalkItemsList = ({
             sortOrder={sortType === 'audit.area.name' ? sortOrder : undefined}
             w="15%"
           />
-          <AdminTableHeaderElement label="# of actions" w="15%" />
+          <AdminTableHeaderElement
+            label="# of actions"
+            onClick={() => {
+              setSortType('actions.length');
+              setSortOrder(sortOrder === 'asc' && sortType === 'actions.length' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'actions.length'}
+            sortOrder={sortType === 'actions.length' ? sortOrder : undefined}
+            w="15%"
+          />
           <AdminTableHeaderElement
             label="Added by"
             onClick={() => {

@@ -119,6 +119,8 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
 
     let answers = await Answers.aggregate(pipeline);
 
+    answers = answers.map((answer) => ({ ...answer, actions: answer.actions.filter((action) => !action?.metatags?.removedAt) }));
+
     if (shouldJoin(['addedBy'])) {
       answers = await Promise.all(
         answers.map(

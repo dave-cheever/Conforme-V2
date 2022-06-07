@@ -86,6 +86,7 @@ const WalkItems = () => {
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },
     { label: 'Belongs to', key: 'audit.area.name' },
+    { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },
     { label: 'Added at', key: 'metatags.addedAt' },
   ];
@@ -178,7 +179,7 @@ const WalkItems = () => {
     () =>
       (data?.answers ?? []).map(({ typename, metatags, ...answer }) => ({
         ...answer,
-        numberOfActions: answer?.actions?.filter((action) => action?.metatags?.removedAt === null).length,
+        numberOfActions: answer?.actions?.length,
         area: answer?.audit?.area?.name || 'Virtual',
       })),
     [JSON.stringify(filteredAnswers)],

@@ -77,7 +77,7 @@ const WalkItemsListItem = ({ answer, audit, refetchAnswers }: { answer: IAnswer;
               pt="3px"
               textOverflow="ellipsis"
             >
-              {answer?.actions?.filter((action) => action?.metatags?.removedAt === null).length}
+              {answer?.actions?.length}
             </Flex>
           </Flex>
           <Box w="20%">
