@@ -4,7 +4,7 @@ import Settings from '../common/services/collections/Settings';
 import { GraphService } from '../common/services/GraphService';
 import { getEmailSubject } from '../common/services/notifications';
 import getSkeleton from '../common/services/notifications/template';
-import { getAuditStatus, getTemplateDetails } from '../common/utils';
+import { getTemplateDetails } from '../common/utils';
 
 const sendMissedAudits = async (emailType: number, config) => {
   const audits = await Audits.aggregate([
@@ -55,9 +55,7 @@ const sendMissedAudits = async (emailType: number, config) => {
       ];
 
       const audits = await Audits.aggregate(pipeline);
-      const overdueAudits = audits.filter(
-        audit => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'missed'
-      ).length;
+      const overdueAudits = audits.filter(({ status }) => status === 'missed').length;
       const { emailSettingName } = getTemplateDetails(emailType);
       const organization = await Organizations.customFindById(organizationId);
       const subject = getEmailSubject(emailType);

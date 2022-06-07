@@ -5,7 +5,7 @@ import Settings from '../common/services/collections/Settings';
 import { GraphService } from '../common/services/GraphService';
 import { getEmailSubject } from '../common/services/notifications';
 import getSkeleton from '../common/services/notifications/template';
-import { getAuditStatus, getTemplateDetails } from '../common/utils';
+import { getTemplateDetails } from '../common/utils';
 
 const sendComingUpAudits = async (emailType: number, config) => {
   const audits = await Audits.aggregate([
@@ -63,9 +63,7 @@ const sendComingUpAudits = async (emailType: number, config) => {
         ];
 
         const audits = await Audits.aggregate(pipeline);
-        const comingUpAudits = audits.filter(
-          audit => getAuditStatus(audit, auditsComingUpTriggerSetting) === 'comingUp'
-        ).length;
+        const comingUpAudits = audits.filter(({ status }) => status === 'upcoming').length;
         const { emailSettingName } = getTemplateDetails(emailType);
         const organization = await Organizations.customFindById(organizationId);
         const subject = getEmailSubject(emailType);

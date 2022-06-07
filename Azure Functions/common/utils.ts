@@ -1,6 +1,5 @@
-import { addDays, addMonths, addWeeks, addYears, differenceInDays } from 'date-fns';
+import { addDays, addMonths, addWeeks, addYears, differenceInCalendarDays, differenceInDays, isSameDay } from 'date-fns';
 
-import { IAudit } from './interfaces/IAudit';
 import { IResponse } from "./interfaces/IResponse";
 import { AUDITS_WEEKLY_DIGEST_EMAIL, AUDITS_STATUS_REMINDER, RESPONSE_REMINDER_EMAIL, RESPONSE_WEEKLY_EMAIL } from './services/notifications';
 
@@ -91,33 +90,6 @@ const getNextDueDate = (dueDate: Date, frequency: string) => {
       break;
   }
   return newdueDate;
-};
-
-export const getAuditStatus = (audit: IAudit, auditsComingUpTriggers) => {
-  if (!audit) return;
-
-  const { dueDate, status, auditType, walkType } = audit;
-  const daysToDueDate = differenceInDays(
-    getNextDueDate(new Date(dueDate), auditType?.frequency!),
-    new Date()
-  );
-
-  if (
-    status === "completed" &&
-    daysToDueDate !== undefined &&
-    daysToDueDate !== null &&
-    daysToDueDate >= 0 &&
-    auditType?.frequency &&
-    daysToDueDate < auditsComingUpTriggers?.value?.[auditType?.frequency] &&
-    walkType === 'physical'
-  )
-    return 'comingUp';
-
-  if (status === 'completed') return 'completed';
-
-  if (status === 'inProgress' && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
-
-  return 'missed';
 };
 
 // get daysToDueDate for response
