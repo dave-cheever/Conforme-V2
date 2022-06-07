@@ -261,7 +261,7 @@ const Actions = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank">
+            <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank" >
               <Button
                 _hover={{
                   bg: 'reasponseHeader.buttonLightBgHover',
@@ -271,6 +271,7 @@ const Actions = () => {
                 }}
                 bg="white"
                 borderRadius="10px"
+                display="none"
                 ml="15px"
                 rightIcon={<ExportIcon height="15px" width="15px" />}
               >

@@ -242,6 +242,7 @@ const WalkItems = () => {
                 }}
                 bg="white"
                 borderRadius="10px"
+                display="none"
                 ml="15px"
                 rightIcon={<ExportIcon height="15px" width="15px" />}
               >
