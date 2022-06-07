@@ -104,7 +104,7 @@ const ResponseQuestions = () => {
     />
     <Stack
       h="full"
-      minH={['50vh', 'none']}
+      minH={["80vh", 0]}
       mt={2}
       overflow={['visible', 'auto']}
       w="full"
