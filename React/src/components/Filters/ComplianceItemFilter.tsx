@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
 import { CheckboxGroup, Input, InputGroup, Stack } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { Magnifier } from '../../icons';
@@ -44,7 +45,7 @@ const ComplianceItemFilter = () => {
           mb={3}
           onChange={({ target: { value } }) => setSearch(value)}
           pl={8}
-          placeholder="Search compliance item"
+          placeholder={`Search ${t('complianceItem')}`}
           value={search}
           w="full"
         />

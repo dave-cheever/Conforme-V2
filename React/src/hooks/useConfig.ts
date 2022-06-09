@@ -4,6 +4,7 @@ import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { Admin, CalendarIcon, Home, Insights, ListIcon, ProgressIcon, TeamsIcon } from '../icons';
+import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
 
 const useConfig = () => {
@@ -73,7 +74,92 @@ const useConfig = () => {
     },
   ];
 
-  return { auditsMenuItems, auditNavigationTabs };
+  const trackerMenuItems: INavItem[] = [
+    {
+      type: 'menuItem',
+      label: pluralize(t('complianceItem')),
+      url: '/dashboard',
+      icon: Home,
+      permission: 'home.view',
+    },
+    {
+      //   type: "menuItem",
+      //   label: "Insights",
+      //   url: "/insights",
+      //   icon: Insights,
+      //   permission: "insights.view"
+      // }, {
+      type: 'menuItem',
+      label: 'Admin',
+      url: '/admin',
+      icon: Admin,
+      permission: 'adminPanel.view',
+      subSections: [
+        { label:  capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items' },
+        { label: 'Regulatory bodies', url: '/admin/regulatory-bodies' },
+        { label: 'Categories', url: '/admin/categories' },
+        { label: 'Locations', url: '/admin/locations' },
+        { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units' },
+        { label: 'Users', url: '/admin/users' },
+        { label: 'Audit log', url: '/admin/audit-log' },
+        { label: 'Other settings', url: '/admin/settings' },
+      ],
+    },
+  ];
+
+  const initialFilters: IFilters = {
+    complianceItemsIds: {
+      name: capitalize(t('complianceItem')),
+      value: [],
+    },
+    categoriesIds: {
+      name: 'Category',
+      value: [],
+    },
+    businessUnitsIds: {
+      name: capitalize(t('businessUnit')),
+      value: [],
+    },
+    itemStatus: {
+      name: 'Item status',
+      value: [],
+    },
+    regulatoryBodiesIds: {
+      name: 'Regulatory body',
+      value: [],
+    },
+    dueDate: {
+      name: 'Expires on',
+      value: null,
+    },
+    isVerified: {
+      name: 'Verified',
+      value: null,
+    },
+    collections: {
+      name: 'Data type',
+      value: [],
+    },
+    action: {
+      name: 'Action',
+      value: [],
+    },
+    usersIds: {
+      name: 'User',
+      value: {
+        responsibleIds: [],
+        accountableIds: [],
+        contributorIds: [],
+        followerIds: [],
+      },
+    },
+    locationsIds: {
+      name: 'Location',
+      value: [],
+    },
+  };
+
+  return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems };
 };
 
 export default useConfig;

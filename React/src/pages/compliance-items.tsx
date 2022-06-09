@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
 import { isEmpty } from 'lodash';
+import pluralize from 'pluralize';
 
 import ComplianceItemsGroup from '../components/ComplianceItem/ComplianceItemsGroup';
 import ComplianceItemsList from '../components/ComplianceItem/ComplianceItemsList';
@@ -206,7 +208,7 @@ const ComplianceItems = () => {
 
   return (
     <>
-      <Header breadcrumbs={['Compliance items']} mobileBreadcrumbs={['Compliance items']}>
+      <Header breadcrumbs={[pluralize(t('complianceItem'))]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]}>
         {device !== 'mobile' && (
           <Menu autoSelect={false}>
             {
@@ -295,7 +297,7 @@ const ComplianceItems = () => {
                     ?.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
-                    No compliance items found
+                    No {pluralize(t('complianceItem'))} found
                   </Flex>
                 )}
               </Grid>

@@ -8,6 +8,8 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { Magnifier, MinusIcon } from '../icons';
@@ -126,7 +128,7 @@ const BusinessUnitsSelector = ({
                 pl={8}
                 placeholder={
                   module?.type === 'tracker'
-                    ? 'Search business units'
+                    ? `Search ${pluralize(t('businessUnit'))}`
                     : 'Search areas'
                 }
                 value={searchText}

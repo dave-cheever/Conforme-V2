@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Modal, ModalOverlay, Spacer, Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
@@ -168,12 +171,12 @@ const ComplianceItemsAdmin = () => {
           <ComplianceItemModal refetch={refetch} />
         )}
       </Modal>
-      <Header breadcrumbs={['Admin', 'Compliance items']} mobileBreadcrumbs={['Compliance items']} />
+      <Header breadcrumbs={['Admin', pluralize(t('complianceItem')) ]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]} />
       <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
         <Box h={['calc(100% - 45px)', 'calc(100% - 35px)']} w="100%">
           <AdminTableHeader>
             <AdminTableHeaderElement
-              label="Compliance items"
+              label={capitalize(t('complianceItem'))}
               onClick={() => {
                 setSortType('name');
                 setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');

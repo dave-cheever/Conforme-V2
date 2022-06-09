@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Input, Stack } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import SectionHeader from './SectionHeader';
@@ -27,7 +28,7 @@ const AdditionalDetailsForm = () => {
 
   return (
     <Stack spacing={4} w="full">
-      <SectionHeader label="Please define the expected evidence and action for this compliance item." />
+      <SectionHeader label={`Please define the expected evidence and action for this ${t('complianceItem')}.`} />
       <Stack overflow="auto" pb={3} spacing={2} w="full">
         <Box bg="additionalDetails.evidence.bg" borderRadius="4px" w="full">
           {complianceItem.evidenceItems?.map((item, index) => (

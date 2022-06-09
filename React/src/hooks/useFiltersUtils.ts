@@ -3,59 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
 import IFilter from '../interfaces/IFilter';
-import IFilters, { IActionFilters, IAuditFilters, IWalkItemFilters } from '../interfaces/IFilters';
-
-export const initialFilters: IFilters = {
-  complianceItemsIds: {
-    name: 'Compliance item',
-    value: [],
-  },
-  categoriesIds: {
-    name: 'Category',
-    value: [],
-  },
-  businessUnitsIds: {
-    name: 'Business unit',
-    value: [],
-  },
-  itemStatus: {
-    name: 'Item status',
-    value: [],
-  },
-  regulatoryBodiesIds: {
-    name: 'Regulatory body',
-    value: [],
-  },
-  dueDate: {
-    name: 'Expires on',
-    value: null,
-  },
-  isVerified: {
-    name: 'Verified',
-    value: null,
-  },
-  collections: {
-    name: 'Data type',
-    value: [],
-  },
-  action: {
-    name: 'Action',
-    value: [],
-  },
-  usersIds: {
-    name: 'User',
-    value: {
-      responsibleIds: [],
-      accountableIds: [],
-      contributorIds: [],
-      followerIds: [],
-    },
-  },
-  locationsIds: {
-    name: 'Location',
-    value: [],
-  },
-};
+import { IActionFilters, IAuditFilters, IWalkItemFilters } from '../interfaces/IFilters';
+import useConfig from './useConfig';
 
 export const initialAuditFilters: IAuditFilters = {
   walkType: {
@@ -164,6 +113,7 @@ export const actions = {
 
 const useFiltersUtils = () => {
   const { module } = useAppContext();
+  const { initialFilters } = useConfig();
   const location = useLocation();
 
   const cleanAuditFilters = useMemo(() => {

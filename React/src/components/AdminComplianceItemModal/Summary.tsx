@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 
 import { Box, Flex, Grid, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
@@ -46,7 +48,7 @@ const Summary = () => {
       w={['full', 'calc(100% - 180px - 1rem)']}
     >
       <Box mb="15px">
-        <SectionHeader label="Review compliance item" />
+        <SectionHeader label={`Review ${t('complianceItem')}`} />
       </Box>
       <SectionHeader label="Details" />
 
@@ -75,7 +77,7 @@ const Summary = () => {
       </Grid>
 
       {selectedBusinessUnits.length !== 0 && (
-        <SectionHeader label="Business unit(s)" />
+        <SectionHeader label={`${capitalize(t('businessUnit'))}(s)`} />
       )}
       {selectedBusinessUnits?.map((businessUnit) => (
         <Flex
@@ -129,8 +131,7 @@ const Summary = () => {
         complianceItem.evidenceItems?.length > 0 &&
         complianceItem.evidenceItems?.some((evidence) => evidence === '') && (
           <Text color="summaryModal.error">
-            Evidence title cannot be empty in order to have a valid compliance
-            item.
+            Evidence title cannot be empty in order to have a valid {t('complianceItem')}
           </Text>
         )}
 

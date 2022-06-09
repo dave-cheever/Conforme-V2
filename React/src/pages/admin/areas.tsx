@@ -118,7 +118,7 @@ const Areas = () => {
     } catch (e: any) {
       toast({
         ...toastFailed,
-        description: e.message.replace('Business unit', 'Area'),
+        description: e.message.replace(capitalize(t('businessUnit')), 'Area'),
       });
     } finally {
       setAdminModalState('closed');
@@ -141,7 +141,7 @@ const Areas = () => {
     } catch (e: any) {
       toast({
         ...toastFailed,
-        description: e.message.replace('Business unit', 'Area'),
+        description: e.message.replace(capitalize(t('businessUnit')), 'Area'),
       });
     } finally {
       setAdminModalState('closed');
@@ -157,7 +157,7 @@ const Areas = () => {
     } catch (e: any) {
       toast({
         ...toastFailed,
-        description: e.message.replace('Business unit', 'Area'),
+        description: e.message.replace(capitalize(t('businessUnit')), 'Area'),
       });
     } finally {
       setAdminModalState('closed');

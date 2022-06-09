@@ -5,6 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { Briefcase } from '../icons';
 
@@ -22,7 +23,7 @@ const BriefcaseIcon = () => (
       w="180px"
     >
       <PopoverArrow bg="brand.secondary" />
-      <PopoverBody>Corporate business unit</PopoverBody>
+      <PopoverBody>Corporate {t('businessUnit')}</PopoverBody>
     </PopoverContent>
   </Popover>
 );

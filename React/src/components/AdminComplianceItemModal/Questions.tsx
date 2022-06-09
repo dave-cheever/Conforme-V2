@@ -10,6 +10,7 @@ import {
   useRadioGroup,
   VStack,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { questionTypes } from '../../bootstrap/config';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -65,8 +66,7 @@ const QuestionsForm = () => {
         fontSize="11px"
         opacity="0.7"
       >
-        If you need to add any additional questions regarding this compliance
-        item, you can use this section to create them.
+        If you need to add any additional questions regarding this {t('complianceItem')}, you can use this section to create them.
       </Text>
       {!showQuestionForm && (
         <Button

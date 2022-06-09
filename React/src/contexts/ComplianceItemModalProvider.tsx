@@ -2,6 +2,9 @@ import { createContext, useContext, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import AdditionalDetailsForm from '../components/AdminComplianceItemModal/AdditionalDetails';
 import BusinessUnitsForm from '../components/AdminComplianceItemModal/BusinessUnits';
@@ -92,7 +95,7 @@ const ComplianceItemModalProvider = ({ children }) => {
       Component: LocationsForm,
     },
     {
-      name: 'Business units',
+      name: pluralize(capitalize(t('businessUnit'))),
       fields: {
         businessUnitsIds: [],
       },

@@ -11,6 +11,9 @@ import {
   Text,
   UnorderedList,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { ComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import useComplianceItemModal from '../../hooks/useComplianceItemModal';
@@ -54,7 +57,7 @@ const CloneComplianceItemModal = ({ refetch }) => {
             <ListItem>Regulatory Body</ListItem>
             <ListItem>Expires on</ListItem>
             <ListItem>Frequency</ListItem>
-            <ListItem>Business Unit</ListItem>
+            <ListItem>{pluralize(capitalize(t('businessUnit')))}</ListItem>
             <ListItem>Evidence</ListItem>
             <ListItem>Questions</ListItem>
           </UnorderedList>

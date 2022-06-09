@@ -3,6 +3,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { gql, useQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Icon, Text, useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { navigationTabs, toastSuccess } from '../../../bootstrap/config';
 import { useAppContext } from '../../../contexts/AppProvider';
@@ -142,7 +144,7 @@ const ResponseLeftNavigation = () => {
           </Flex>
         </Box>
         <ResponseLeftItem
-          heading="Business unit"
+          heading={capitalize(t('businessUnit'))}
           value={response?.businessUnit?.name || '-'}
         />
         <Box h="50px" mt={2}>

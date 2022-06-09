@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { Box, Flex } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import useResponseUtils from '../../hooks/useResponseUtils';
 import { IResponse } from '../../interfaces/IResponse';
@@ -103,7 +105,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
             w="20%"
           />
           <AdminTableHeaderElement
-            label="Business unit"
+            label={capitalize(t('businessUnit'))}
             onClick={() => {
               setSortType('businessUnit');
               setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit' ? 'desc' : 'asc');

@@ -12,6 +12,8 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { toastSuccess } from '../../../bootstrap/config';
 import { ArrowRight, Copy, DetailIcon } from '../../../icons';
@@ -96,7 +98,7 @@ const ResponseDetail = ({ response }) => {
                   </Flex>
                 </Box>
                 <ResponseLeftItem
-                  heading="Business unit"
+                  heading={capitalize(t('businessUnit'))}
                   value={response?.businessUnit?.name || '-'}
                 />
                 <Box h="50px" mt={1}>

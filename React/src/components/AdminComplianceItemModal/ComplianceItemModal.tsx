@@ -10,6 +10,8 @@ import {
   ModalHeader,
   useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -68,7 +70,7 @@ const ComplianceItemModal = ({ refetch }) => {
           isOpen: true,
           title: `Unpublish ${complianceItem.name}`,
           description:
-            'Are you sure you wish to unpublish this compliance item? It will hide all existing responses.',
+            `Are you sure you wish to unpublish this ${t('complianceItem')}? It will hide all existing responses.`,
           state: undefined,
           showButtons: true,
           action: () =>
@@ -92,7 +94,7 @@ const ComplianceItemModal = ({ refetch }) => {
         isOpen: true,
         title: `Publish ${complianceItem.name}`,
         description:
-          'Are you sure you wish to publish this compliance item? It will become available for completion by all relevant business units.',
+          `Are you sure you wish to publish this ${t('complianceItem')}? It will become available for completion by all relevant ${pluralize(t('businessUnit'))}.`,
         state: undefined,
         showButtons: true,
         action: () =>
@@ -111,7 +113,7 @@ const ComplianceItemModal = ({ refetch }) => {
       isOpen: true,
       title: `Save ${complianceItem.name}`,
       description: undefined,
-      state: 'Saving compliance item',
+      state: `Saving ${t('complianceItem')}`,
       showButtons: false,
     };
     trigger();
@@ -128,9 +130,9 @@ const ComplianceItemModal = ({ refetch }) => {
 
     if (complianceItem.published) return 'Unpublish';
 
-    if (complianceItem.hasOwnProperty('_id')) return 'Publish compliance item';
+    if (complianceItem.hasOwnProperty('_id')) return `Publish ${t('complianceItem')}`;
 
-    return 'Add compliance item';
+    return `Add ${t('complianceItem')}`;
   }, [complianceItem, selectedSection]);
 
   return (
@@ -158,8 +160,7 @@ const ComplianceItemModal = ({ refetch }) => {
                 size="xs"
                 src={user?.imgUrl}
               />
-              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} compliance
-              item
+              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} {t('complianceItem')}
             </Flex>
             <Flex alignItems="center">
               <Button

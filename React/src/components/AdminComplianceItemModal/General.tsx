@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 
 import { Box, Flex, Stack } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
@@ -82,7 +84,7 @@ const GeneralForm = () => {
               control={control}
               label="Item name"
               name="name"
-              placeholder="Compliance item name"
+              placeholder={`${capitalize(t('complianceItem'))} name`}
               validations={{
                 notEmpty: true,
               }}
@@ -92,7 +94,7 @@ const GeneralForm = () => {
               control={control}
               label="Description"
               name="description"
-              placeholder="Describe the compliance item"
+              placeholder={`Describe the ${t('complianceItem')}`}
               validations={{
                 notEmpty: true,
               }}
@@ -140,7 +142,7 @@ const GeneralForm = () => {
               control={control}
               label="Expires on (optional)"
               name="dueDate"
-              placeholder="Define when the compliance item is due"
+              placeholder={`Define when the ${t('complianceItem')} is due`}
               variant="secondaryVariant"
             />
             <Dropdown

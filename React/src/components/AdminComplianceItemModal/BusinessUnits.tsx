@@ -12,6 +12,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { CheckIcon, MinusIcon } from '../../icons';
@@ -55,7 +56,7 @@ const BusinessUnitsForm = () => {
   return (
     <Box w="full">
       <Flex direction="column">
-        <SectionHeader label="Select business unit(s)" />
+        <SectionHeader label={`Select ${t('businessUnit')}(s)`} />
 
         <Flex
           flexDir={['column', 'row']}
@@ -75,7 +76,7 @@ const BusinessUnitsForm = () => {
                 mb="5px"
                 zIndex={1}
               >
-                Search by business unit name
+                Search by {t('businessUnit')} name
               </Text>
             </Flex>
             <InputGroup

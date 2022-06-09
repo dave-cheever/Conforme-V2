@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { complianceItemFrequencies } from '../../hooks/useResponseUtils';
@@ -32,7 +33,7 @@ const DetailsForm = () => {
         fontSize="14px"
         opacity="0.7"
       >
-        Please make sure that all compliance item details are
+        Please make sure that all {t('complianceItem')} details are
         completed/accurate.
       </Text>
       <Stack overflow="auto" pb={3} spacing={2} w="full">

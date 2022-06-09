@@ -1,7 +1,6 @@
 import { RepeatClockIcon } from '@chakra-ui/icons';
 
-import { Admin, AttachmentIcon, AuditIcon, DetailIcon, Home, ProgressIcon, QuestionIcon, TeamsIcon } from '../icons';
-import { INavItem } from '../interfaces/INavItem';
+import {  AttachmentIcon, AuditIcon, DetailIcon, ProgressIcon, QuestionIcon, TeamsIcon } from '../icons';
 
 export const toastSuccess: any = {
   title: 'Success',
@@ -18,39 +17,6 @@ export const toastFailed: any = {
   isClosable: true,
   position: 'top',
 };
-
-export const trackerMenuItems: INavItem[] = [
-  {
-    type: 'menuItem',
-    label: 'Compliance items',
-    url: '/dashboard',
-    icon: Home,
-    permission: 'home.view',
-  },
-  {
-    //   type: "menuItem",
-    //   label: "Insights",
-    //   url: "/insights",
-    //   icon: Insights,
-    //   permission: "insights.view"
-    // }, {
-    type: 'menuItem',
-    label: 'Admin',
-    url: '/admin',
-    icon: Admin,
-    permission: 'adminPanel.view',
-    subSections: [
-      { label: 'Compliance items', url: '/admin/compliance-items' },
-      { label: 'Regulatory bodies', url: '/admin/regulatory-bodies' },
-      { label: 'Categories', url: '/admin/categories' },
-      { label: 'Locations', url: '/admin/locations' },
-      { label: 'Business units', url: '/admin/business-units' },
-      { label: 'Users', url: '/admin/users' },
-      { label: 'Audit log', url: '/admin/audit-log' },
-      { label: 'Other settings', url: '/admin/settings' },
-    ],
-  },
-];
 
 export const actionStatuses = {
   inProgress: 'In progress',

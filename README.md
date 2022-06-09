@@ -76,7 +76,10 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
     "name": <module name>,
     "type": "tracker",
     "path": <module path>,
-    "showInNavigation": <true/false>
+    "showInNavigation": <true/false>,
+    "translations": {
+      "complianceItem": "document"
+    }
   }],
   "allowedTenantsIds": [
     <tenant id>
@@ -101,10 +104,15 @@ Please fill the model with the following data: `<organization's id>`, `<organiza
 
 ### Translations
 In order to change a translation in a module, just add a new property to the module configuration.
-Possible translations:
+
+Possible translations for safetywalk module:
  - audit
  - auditor
  - question
+
+Possible translations for compliance item module:
+ - complianceItem
+ - businessUnit
 
 ## Azure AD application
 

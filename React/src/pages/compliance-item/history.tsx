@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { getTime } from 'date-fns';
+import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import Loader from '../../components/Loader';
 import HistoricalListItem from '../../components/Response/HistoricalListItem';
@@ -20,15 +22,7 @@ const Team = () => {
   }
 
   return (
-    <Box
-      bg="historyPage.bg"
-      borderRadius="20px"
-      h="fit-content"
-      mb={7}
-      minH="full"
-      pb={7}
-      w="full"
-    >
+    <Box bg="historyPage.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
       <Flex
         bg="white"
         borderBottom="1px solid"
@@ -52,28 +46,13 @@ const Team = () => {
           <Text>Last updated by</Text>
         </Flex>
       </Flex>
-      <Flex
-        flexDir="column"
-        h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
-        overflowY="auto"
-        w="full"
-      >
+      <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
         {snapshots.map((response) => (
-          <HistoricalListItem
-            key={getTime(new Date(response.lastRenewalDate!))}
-            response={response}
-          />
+          <HistoricalListItem key={getTime(new Date(response.lastRenewalDate!))} response={response} />
         ))}
         {snapshots.length === 0 && (
-          <Flex
-            fontSize="18px"
-            fontStyle="italic"
-            h="full"
-            justify="center"
-            mt={4}
-            w="full"
-          >
-            No historical compliance item responses found
+          <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+            No historical {pluralize(t('complianceItem'))} responses found
           </Flex>
         )}
       </Flex>

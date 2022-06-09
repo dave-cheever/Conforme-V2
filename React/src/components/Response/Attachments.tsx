@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
@@ -63,7 +64,7 @@ const Attachments = () => {
           )}
         </Text>
         <Text fontSize="sm" my={1}>
-          Upload all expected evidence and complete any required question to record this compliance item as complete.
+          Upload all expected evidence and complete any required question to record this {t('complianceItem')} as complete.
         </Text>
         <Stack align={['center', 'flex-start']} spacing={4} w="full">
           {response?.evidence

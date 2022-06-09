@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -130,7 +133,7 @@ const BusinessUnits = () => {
         const values = getValues();
         await createFunction({ variables: { values } });
         refetch();
-        toast({ ...toastSuccess, description: 'Business Unit added' });
+        toast({ ...toastSuccess, description: `${capitalize(t('businessUnit'))} added` });
       } else {
         toast({
           ...toastFailed,
@@ -150,7 +153,7 @@ const BusinessUnits = () => {
         const values = getValues();
         await updateFunction({ variables: { values } });
         refetch();
-        toast({ ...toastSuccess, description: 'Business Unit updated' });
+        toast({ ...toastSuccess, description: `${capitalize(t('businessUnit'))} updated` });
       } else {
         toast({
           ...toastFailed,
@@ -169,7 +172,7 @@ const BusinessUnits = () => {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
       refetch();
-      toast({ ...toastSuccess, description: 'Business Unit deleted' });
+      toast({ ...toastSuccess, description: `${capitalize(t('businessUnit'))} deleted` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
@@ -244,7 +247,12 @@ const BusinessUnits = () => {
 
   return (
     <>
-      <AdminModal collection="business unit" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
+      <AdminModal
+        collection={t('businessUnit')}
+        isOpenModal={adminModalState !== 'closed'}
+        modalType={adminModalState}
+        onAction={handleAction}
+      >
         <Stack spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
             control={control}
@@ -268,12 +276,15 @@ const BusinessUnits = () => {
           />
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Business units']} mobileBreadcrumbs={['Business units']} />
+      <Header
+        breadcrumbs={['Admin', pluralize(capitalize(t('businessUnit')))]}
+        mobileBreadcrumbs={[pluralize(capitalize(t('businessUnit')))]}
+      />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
-              label="Unit name"
+              label={`${capitalize(t('businessUnit'))} name`}
               onClick={() => {
                 setSortType('name');
                 setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
@@ -313,7 +324,7 @@ const BusinessUnits = () => {
               businessUnits?.map(renderBusinessUnitRow)
             ) : (
               <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                No business units found
+                No {pluralize(t('businessUnit'))} found
               </Flex>
             )}
           </Flex>
