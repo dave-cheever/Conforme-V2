@@ -123,7 +123,7 @@ const WalkItemsListItem = ({ answer, audit, refetchAnswers }: { answer: IAnswer;
                   aria-label="Audit"
                   bg="none"
                   icon={<RedirectIcon stroke="walkItemsList.iconColor" />}
-                  onClick={() => navigateTo(`/audits/${audit._id}`)}
+                  onClick={() => navigateTo(`/audits/${audit._id}?questionId=${answer?.questionId}`)}
                 />
                 <IconButton
                   _hover={{ opacity: 0.7 }}

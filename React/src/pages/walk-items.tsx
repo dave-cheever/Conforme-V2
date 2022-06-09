@@ -24,6 +24,7 @@ const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
     answers(answerQuery: $answerQuery) {
       _id
+      questionId
       question {
         question
         questionsCategoryId
@@ -44,6 +45,8 @@ const GET_ANSWERS = gql`
         area {
           name
         }
+        auditorId
+        participantsIds
       }
       status
       actions {
@@ -145,7 +148,7 @@ const WalkItems = () => {
 
       setFilteredAnswers(items);
     }
-  }, [data?.answers]);
+  }, [data?.answers, user]);
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');

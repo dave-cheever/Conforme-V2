@@ -2,7 +2,7 @@ import { compareDesc } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Audits, Users } from 'app-models';
-import { doesPathExist, getProjectFields, join } from 'app-utils';
+import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
 const audits = async (_, { auditQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['audits', ...elements]);
@@ -18,7 +18,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     ];
 
     // For "user" role filter audits
-    if (user.role === 'user') {
+    if (!isPermitted({ user, action: 'audits.viewAll' })) {
       pipeline.push({
         $match: {
           $or: [

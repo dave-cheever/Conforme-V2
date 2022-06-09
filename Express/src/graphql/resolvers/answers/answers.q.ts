@@ -2,7 +2,7 @@ import { compareDesc } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Answers, Users } from 'app-models';
-import { doesPathExist, getProjectFields, join } from 'app-utils';
+import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
 const answers = async (_, { answerQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['answers', ...elements]);
@@ -64,7 +64,7 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
-    if (shouldJoin(['audit']) || user.role === 'user') {
+    if (shouldJoin(['audit']) || !isPermitted({ user, action: 'answers.viewAll' })) {
       join({
         pipeline,
         collection: 'audits',
@@ -74,7 +74,7 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
     }
 
     // For "user" role filter answers
-    if (user.role === 'user') {
+    if (!isPermitted({ user, action: 'answers.viewAll' })) {
       pipeline.push({
         $match: {
           $or: [

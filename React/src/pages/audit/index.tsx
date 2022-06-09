@@ -1,22 +1,37 @@
+import { useEffect } from 'react';
+
 import { Button, HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
+import queryString from 'query-string';
 
 import AuditAnswer from '../../components/Audit/AuditAnswer';
 import AuditDeleteQuestionModal from '../../components/Audit/AuditDeleteQuestionModal';
 import AuditNewQuestionModal from '../../components/Audit/AuditNewQuestionModal';
 import AuditQuestionsCategory from '../../components/Audit/AuditQuestionsCategory';
-import { useAuditContext } from '../../contexts/AuditProvider';
+import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 
 const Audit = () => {
-  const { audit, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories } = useAuditContext();
+  const { audit, questions, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories } = useAuditContext();
   const { isOpen: isNewQuestionModalOpen, onOpen: handleNewQuestionModalOpen, onClose: handleNewQuestionModalClose } = useDisclosure();
   const {
     isOpen: isDeleteQuestionModalOpen,
     onOpen: handleDeleteQuestionModalOpen,
     onClose: handleDeleteQuestionModalClose,
   } = useDisclosure();
+  const queryStringParams = queryString.parse(window.location.search);
+
+  useEffect(() => {
+    if (Object.keys(queryStringParams).length > 0) {
+      const question = Object.entries(questions).reduce((acc, [, questions]) => {
+        const q = questions.find((question) => question._id === queryStringParams.questionId);
+        if (q) return q;
+        return acc;
+      }, {} as TQuestionWithAnswer);
+      setSelectedQuestion(question);
+    }
+  }, [JSON.stringify(queryStringParams), JSON.stringify(questions)]);
 
   return (
     <Stack h={['fit-content', 'full']} w="full">

@@ -41,6 +41,7 @@ const GET_ACTIONS = gql`
       }
       answer {
         status
+        questionId
         audit {
           _id
           walkType
@@ -56,6 +57,7 @@ const GET_ACTIONS = gql`
         }
         question {
           question
+          questionsCategoryId
         }
         attachments {
           id
@@ -156,7 +158,7 @@ const Actions = () => {
 
       setFilteredActions(items);
     }
-  }, [data?.actions]);
+  }, [data?.actions, user]);
 
   const [selectedAction, setSelectedAction] = useState<IAction>();
 

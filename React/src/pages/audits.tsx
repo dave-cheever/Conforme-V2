@@ -55,6 +55,7 @@ const GET_AUDITS = gql`
         displayName
         imgUrl
       }
+      participantsIds
       metatags {
         addedAt
       }

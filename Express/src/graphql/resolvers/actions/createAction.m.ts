@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-import { Actions, Notifications, Users } from 'app-models';
+import { Actions, Answers, Audits, Notifications, Users } from 'app-models';
 import { FunctionsService } from 'app-services';
 import { AUDITS_ACTION_ASSIGNED } from 'app-shared';
 import { checkActionPermission } from 'app-utils';
@@ -18,6 +18,41 @@ const createAction = async (_, { action }, { authorize, organization }) => {
     if (!isPermitted) throw new Error('User is not permitted to create an action.');
 
     const createdAction = await Actions.customCreate(action, user._id, organization._id);
+
+    if (action.scope.type === 'answer') {
+      const actionAnswer = await Answers.aggregate([
+        {
+          $match: {
+            _id: action.scope._id,
+            'scope.type': 'audit',
+          },
+        },
+        {
+          $lookup: {
+            from: 'audits',
+            localField: 'scope._id',
+            foreignField: '_id',
+            as: 'audit',
+          },
+        },
+        {
+          $unwind: {
+            path: `$audit`,
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]);
+
+      if (actionAnswer) {
+        await Audits.customUpdateOne(
+          { _id: actionAnswer?.[0]?.audit._id },
+          { participantsIds: [...actionAnswer?.[0]?.audit.participantsIds, createdAction.assigneeId] },
+          user._id,
+          organization._id,
+        );
+      }
+    }
+
     const assignee = await Users.customFindByIdWithDetails({ userId: createdAction.assigneeId, organization });
     const createdNotification = await Notifications.customCreate(
       {

@@ -164,7 +164,11 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                       }}
                       align="center"
                       direction="row"
-                      onClick={() => openInNewTab(`/audits/${action?.answer?.audit?._id}`)}
+                      onClick={() =>
+                        openInNewTab(
+                          `/audits/${action?.answer?.audit?._id}?questionId=${action?.answer?.questionId}&questionsCategoryId=${action?.answer?.question?.questionsCategoryId}`,
+                        )
+                      }
                       spacing={2}
                     >
                       <Text color="actionModal.question.color" fontSize="smm" isTruncated>

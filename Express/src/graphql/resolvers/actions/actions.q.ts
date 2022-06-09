@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Actions, Users } from 'app-models';
-import { doesPathExist, getProjectFields, join, priorities } from 'app-utils';
+import { doesPathExist, getProjectFields, isPermitted, join, priorities } from 'app-utils';
 
 const actions = async (_, { actionQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['actions', ...elements]);
@@ -15,6 +15,14 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
         },
       },
     ];
+
+    if (!isPermitted({ user, action: 'actions.viewAll' })) {
+      pipeline.push({
+        $match: {
+          assigneeId: user._id,
+        },
+      });
+    }
 
     if (actionQueryInput?._id) {
       pipeline.push({
