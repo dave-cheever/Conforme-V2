@@ -14,6 +14,7 @@ const userSchema = new Schema<IUser, IUserModel>({
   email: String,
   jobTitle: String,
   role: String,
+  managerId: String,
   defaultPage: String,
   organizationsIds: [String],
   userCreated: Date,
@@ -54,6 +55,65 @@ userSchema.statics.customAdd = async function (user: IUser, userId: string, orga
 };
 
 // This method includes user details from MS Graph
+userSchema.statics.customFindWithDetails = async function ({
+  selector = {},
+  organization,
+}: {
+  selector: any;
+  organization: IOrganization;
+}): Promise<IUser[]> {
+  if (!organization) return [];
+  let users = await this.find({
+    ...selector,
+    organizationsIds: { $in: [organization._id] as any }, // There is TS issue inside mongoose library with $in type
+    'metatags.removedAt': { $eq: null },
+  }).lean();
+
+  // Refresh user data if it wasn't refreshed in the last 5 minutes
+  users = await Promise.all(
+    users.map(async (user) => {
+      if (isBefore(new Date(user.metatags?.updatedAt || 0), subMinutes(new Date(), 5))) {
+        const userDetails = await GraphService.getUserData({ userId: user._id, organization });
+        const managerId = await GraphService.getLineManagerId({ userId: user._id, organization });
+
+        let role = 'user';
+        const roles: any = await GraphService.checkMemberGroups({
+          userId: user._id,
+          groups: {
+            admin: organization.adminsGroupId || '',
+            reader: organization.readersGroupId || '',
+          },
+          organization,
+        });
+
+        if (roles.admin) role = 'admin';
+        else if (roles.reader) role = 'reader';
+
+        const updatedUser = {
+          ...user,
+          firstName: userDetails?.givenName || '',
+          lastName: userDetails?.surname || '',
+          displayName: userDetails?.displayName || '',
+          email: userDetails?.mail || userDetails?.userPrincipalName || '',
+          jobTitle: userDetails?.jobTitle || '',
+          role,
+          managerId,
+          metatags: {
+            ...user.metatags,
+            ...genMetatags('updated', user._id),
+          },
+        };
+        await Users.updateOne({ _id: user._id }, updatedUser);
+        return updatedUser;
+      }
+      return user;
+    }),
+  );
+
+  return users.map((user) => ({ ...user, imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}` }));
+};
+
+// This method includes user details from MS Graph
 userSchema.statics.customFindByIdWithDetails = async function ({
   userId,
   organization,
@@ -61,46 +121,9 @@ userSchema.statics.customFindByIdWithDetails = async function ({
   userId: string;
   organization: IOrganization;
 }): Promise<IUser> {
-  let user = await this.customFindById(userId, organization._id);
-  if (!user) throw new Error('User not found');
-
-  // Refresh user data if it wasn't refreshed in the last 5 minutes
-  if (isBefore(new Date(user.metatags?.updatedAt || 0), subMinutes(new Date(), 5))) {
-    const userDetails = await GraphService.getUserData({ userId, organization });
-
-    let role = 'user';
-    const roles: any = await GraphService.checkMemberGroups({
-      userId,
-      groups: {
-        admin: organization.adminsGroupId || '',
-        reader: organization.readersGroupId || '',
-      },
-      organization,
-    });
-
-    if (roles.admin) role = 'admin';
-    else if (roles.reader) role = 'reader';
-
-    user = {
-      ...user,
-      firstName: userDetails?.givenName || '',
-      lastName: userDetails?.surname || '',
-      displayName: userDetails?.displayName || '',
-      email: userDetails?.mail || userDetails?.userPrincipalName || '',
-      jobTitle: userDetails?.jobTitle || '',
-      role,
-      metatags: {
-        ...user.metatags,
-        ...genMetatags('updated', user._id),
-      },
-    };
-    await Users.updateOne({ _id: user._id }, user);
-  }
-
-  return {
-    ...user,
-    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`,
-  };
+  const users = await this.customFindWithDetails({ selector: { _id: userId }, organization });
+  if (!users || users.length === 0) throw new Error('User not found');
+  return users[0];
 };
 
 const userModel = model<IUser, IUserModel>('User', userSchema);

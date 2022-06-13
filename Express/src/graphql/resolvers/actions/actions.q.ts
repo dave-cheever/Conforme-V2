@@ -72,7 +72,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (shouldJoin(['answer']) || user.role === 'user') {
+    if (shouldJoin(['answer']) || !isPermitted({ user, action: 'actions.viewAll' })) {
       join({
         pipeline,
         collection: 'answers',
@@ -81,7 +81,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (shouldJoin(['answer', 'audit']) || user.role === 'user') {
+    if (shouldJoin(['answer', 'audit']) || !isPermitted({ user, action: 'actions.viewAll' })) {
       join({
         pipeline,
         collection: 'audits',
@@ -91,20 +91,58 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     }
 
     // For "user" role filter actions
-    if (user.role === 'user') {
-      pipeline.push({
-        $match: {
-          $or: [
+    if (!isPermitted({ user, action: 'actions.viewAll' })) {
+      // If user doesn't have permissions to get all actions
+      // need to check if he is an area or site owner
+      join({
+        pipeline,
+        collection: 'locations',
+        from: 'answer.audit.siteId',
+        to: 'answer.audit.site',
+      });
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'answer.audit.areaId',
+        to: 'answer.audit.area',
+      });
+
+      /**
+       * User's direct reports. The user is a manager of these users.
+       */
+      const users = await Users.customFindWithDetails({ selector: { managerId: user._id }, organization });
+
+      /**
+       * Array of all users including the user himself and his direct reports
+       */
+      const userIds = [user._id, ...users.map((user) => user._id)];
+
+      const $or: { [key: string]: string }[] = [];
+      userIds.forEach((_id) => {
+        $or.push(
+          ...[
             {
-              'answer.audit.auditorId': user._id,
+              'answer.audit.auditorId': _id,
             },
             {
-              'answer.audit.participantsIds': user._id,
+              'answer.audit.participantsIds': _id,
             },
             {
-              assigneeId: user._id,
+              'answer.audit.site.ownerId': _id,
+            },
+            {
+              'answer.audit.area.ownerId': _id,
+            },
+            {
+              assigneeId: _id,
             },
           ],
+        );
+      });
+
+      pipeline.push({
+        $match: {
+          $or,
         },
       });
     }

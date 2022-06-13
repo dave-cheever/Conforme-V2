@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation } from '@apollo/client';
@@ -22,10 +22,12 @@ import { uniqBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { priorities, toastFailed, toastSuccess } from '../../bootstrap/config';
-import { AdminContext } from '../../contexts/AdminProvider';
+import { useAdminContext } from '../../contexts/AdminProvider';
+import { useAppContext } from '../../contexts/AppProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, OpenExternalIcon, TickIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
+import { isPermitted } from '../can';
 import DocumentThumbnail from '../Documents/DocumentThumbnail';
 import DocumentUpload from '../Documents/DocumentUpload';
 import DocumentUploaded from '../Documents/DocumentUploaded';
@@ -49,7 +51,13 @@ const DELETE_ACTION = gql`
 const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => void }) => {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
-  const { setAdminModalState } = useContext(AdminContext);
+  const { user } = useAppContext();
+  const { setAdminModalState } = useAdminContext();
+  const isUserPermittedToModify = isPermitted({
+    user,
+    action: 'actions.edit',
+    data: { action, answer: action?.answer, audit: action?.answer?.audit },
+  });
 
   const [saveAction] = useMutation(SAVE_ACTION);
   const [deleteAction] = useMutation(DELETE_ACTION);
@@ -203,6 +211,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                   <GridItem>
                     <TextInput
                       control={control}
+                      disabled={!isUserPermittedToModify}
                       label="Title"
                       name="title"
                       required
@@ -212,14 +221,15 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                     />
                   </GridItem>
                   <GridItem>
-                    <PeoplePicker control={control} label="Assign to" name="assigneeId" />
+                    <PeoplePicker control={control} disabled={!isUserPermittedToModify} label="Assign to" name="assigneeId" />
                   </GridItem>
                   <GridItem>
-                    <Datepicker control={control} label="Due date" name="dueDate" />
+                    <Datepicker control={control} disabled={!isUserPermittedToModify} label="Due date" name="dueDate" />
                   </GridItem>
                   <GridItem>
                     <Dropdown
                       control={control}
+                      disabled={!isUserPermittedToModify}
                       label="Priority"
                       name="priority"
                       options={priorities}
@@ -230,6 +240,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                   <GridItem>
                     <Dropdown
                       control={control}
+                      disabled={!isUserPermittedToModify}
                       label="Status"
                       name="status"
                       options={[
@@ -241,20 +252,24 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                     />
                   </GridItem>
                 </Grid>
-                <TextInputMultiline control={control} label="Description" name="description" />
+                <TextInputMultiline control={control} disabled={!isUserPermittedToModify} label="Description" name="description" />
                 <Stack>
-                  <Text fontSize="11px" fontWeight="700" mb={2}>
-                    Add photos or files
-                  </Text>
-                  <DocumentUpload
-                    callback={async (uploaded) => {
-                      setValue(
-                        'attachments',
-                        uniqBy([...values.attachments, ...uploaded], (attachment) => attachment.id),
-                      );
-                    }}
-                    elementId={action ? action._id : `temp-${uuidv4()}`}
-                  />
+                  {isUserPermittedToModify && (
+                    <>
+                      <Text fontSize="11px" fontWeight="700" mb={2}>
+                        Add photos or files
+                      </Text>
+                      <DocumentUpload
+                        callback={async (uploaded) => {
+                          setValue(
+                            'attachments',
+                            uniqBy([...values.attachments, ...uploaded], (attachment) => attachment.id),
+                          );
+                        }}
+                        elementId={action ? action._id : `temp-${uuidv4()}`}
+                      />
+                    </>
+                  )}
                   {values.attachments?.map((attachment, i) => (
                     <Flex flexDir="column" key={i} mb={2}>
                       <DocumentUploaded
@@ -270,6 +285,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                       />
                     </Flex>
                   ))}
+                  {values.attachments?.length === 0 && !isUserPermittedToModify && <Text fontSize="sm">No uploaded attachments</Text>}
                 </Stack>
               </Stack>
             </Stack>

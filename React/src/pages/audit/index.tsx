@@ -10,9 +10,12 @@ import AuditAnswer from '../../components/Audit/AuditAnswer';
 import AuditDeleteQuestionModal from '../../components/Audit/AuditDeleteQuestionModal';
 import AuditNewQuestionModal from '../../components/Audit/AuditNewQuestionModal';
 import AuditQuestionsCategory from '../../components/Audit/AuditQuestionsCategory';
+import { isPermitted } from '../../components/can';
+import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 
 const Audit = () => {
+  const { user } = useAppContext();
   const { audit, questions, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories } = useAuditContext();
   const { isOpen: isNewQuestionModalOpen, onOpen: handleNewQuestionModalOpen, onClose: handleNewQuestionModalClose } = useDisclosure();
   const {
@@ -49,6 +52,7 @@ const Audit = () => {
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
           (audit.status === 'upcoming' || questionsCategories.some(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion)) &&
+          isPermitted({ user, action: 'audits.edit', data: { audit } }) &&
           customQuestionsCategories.length && (
             <Button
               bg="auditItem.addButton.bg"

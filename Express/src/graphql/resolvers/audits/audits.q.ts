@@ -17,18 +17,59 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       },
     ];
 
+    if (shouldJoin(['site']) || !isPermitted({ user, action: 'audits.viewAll' })) {
+      join({
+        pipeline,
+        collection: 'locations',
+        from: 'siteId',
+        to: 'site',
+      });
+    }
+
+    if (shouldJoin(['area']) || !isPermitted({ user, action: 'audits.viewAll' })) {
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'areaId',
+        to: 'area',
+      });
+    }
+
     // For "user" role filter audits
     if (!isPermitted({ user, action: 'audits.viewAll' })) {
-      pipeline.push({
-        $match: {
-          $or: [
+      /**
+       * User's direct reports. The user is a manager of these users.
+       */
+      const users = await Users.customFindWithDetails({ selector: { managerId: user._id }, organization });
+
+      /**
+       * Array of all users including the user himself and his direct reports
+       */
+      const userIds = [user._id, ...users.map((user) => user._id)];
+
+      const $or: { [key: string]: string }[] = [];
+      userIds.forEach((_id) => {
+        $or.push(
+          ...[
             {
-              auditorId: user._id,
+              auditorId: _id,
             },
             {
-              participantsIds: user._id,
+              participantsIds: _id,
+            },
+            {
+              'site.ownerId': _id,
+            },
+            {
+              'area.ownerId': _id,
             },
           ],
+        );
+      });
+
+      pipeline.push({
+        $match: {
+          $or,
         },
       });
     }
@@ -107,24 +148,6 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
         collection: 'auditTypes',
         from: 'auditTypeId',
         to: 'auditType',
-      });
-    }
-
-    if (shouldJoin(['site'])) {
-      join({
-        pipeline,
-        collection: 'locations',
-        from: 'siteId',
-        to: 'site',
-      });
-    }
-
-    if (shouldJoin(['area'])) {
-      join({
-        pipeline,
-        collection: 'businessUnits',
-        from: 'areaId',
-        to: 'area',
       });
     }
 

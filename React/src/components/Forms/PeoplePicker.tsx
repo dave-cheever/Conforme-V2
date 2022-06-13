@@ -3,16 +3,7 @@ import { Controller } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Flex,
-  Icon,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Box, Flex, Icon, Input, InputGroup, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { Asterisk, ChevronRight } from '../../icons';
@@ -92,19 +83,9 @@ const PeoplePicker = ({
         return (
           <Box id={name} mt="none" position="relative" w="full">
             {label && (
-              <Flex
-                align="center"
-                justify="space-between"
-                mb="none"
-                pb={1}
-                pt={2}
-              >
+              <Flex align="center" justify="space-between" mb="none" pb={1} pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'peoplePicker.labelFont.error'
-                      : 'peoplePicker.labelFont.normal'
-                  }
+                  color={error ? 'peoplePicker.labelFont.error' : 'peoplePicker.labelFont.normal'}
                   fontSize={11}
                   fontWeight="bold"
                   left="none"
@@ -133,48 +114,39 @@ const PeoplePicker = ({
             <InputGroup>
               <Input
                 _active={{
-                  bg: disabled
-                    ? 'peoplePicker.disabled.bg'
-                    : 'peoplePicker.activeBg',
+                  bg: disabled ? 'peoplePicker.disabled.bg' : 'peoplePicker.activeBg',
                 }}
                 _focus={{
-                  borderColor: error
-                    ? 'peoplePicker.border.focus.error'
-                    : 'peoplePicker.border.focus.normal',
+                  borderColor: error ? 'peoplePicker.border.focus.error' : 'peoplePicker.border.focus.normal',
                 }}
                 _placeholder={{ color: 'peoplePicker.placeholder' }}
-                bg="peoplePicker.bg"
-                borderColor={
-                  error
-                    ? 'peoplePicker.border.error'
-                    : 'peoplePicker.border.normal'
-                }
+                bg={disabled ? 'peoplePicker.disabled.bg' : 'peoplePicker.bg'}
+                borderColor={disabled ? 'peoplePicker.disabled.border' : error ? 'peoplePicker.border.error' : 'peoplePicker.border.normal'}
                 borderRadius="8px"
                 borderWidth="1px"
                 color="peoplePicker.font"
+                disabled={disabled}
                 fontSize="smm"
                 h="40px"
                 mb={0}
-                onBlur={() => setTimeout(() => setShowResults(false), 200)}
+                onBlur={() => !disabled && setTimeout(() => setShowResults(false), 200)}
                 onChange={(e) => {
+                  if (disabled) return;
+
                   setTimeout(() => setSearchText(e.target.value), 1000);
                   setSearchedInputValue(e.target.value);
                   onChange({ target: { name, value: '' } });
                 }}
-                onFocus={() => setShowResults(true)}
+                onFocus={() => !disabled && setShowResults(true)}
                 placeholder={placeholder}
                 value={searchedInputValue}
                 zIndex={2}
               />
-              <InputRightElement
-                cursor="pointer"
-                onClick={() => setShowResults(!showResults)}
-              >
-                <ChevronRight
-                  stroke="peoplePicker.icon"
-                  transform="rotate(90deg)"
-                />
-              </InputRightElement>
+              {!disabled && (
+                <InputRightElement cursor="pointer" onClick={() => setShowResults(!showResults)}>
+                  <ChevronRight stroke="peoplePicker.icon" transform="rotate(90deg)" />
+                </InputRightElement>
+              )}
             </InputGroup>
             {showResults && (
               <Flex
@@ -217,12 +189,7 @@ const PeoplePicker = ({
                       w="full"
                     >
                       <Box overflowX="hidden" title={user.displayName}>
-                        <Text
-                          fontSize={['sm', 'md']}
-                          overflowX="hidden"
-                          textOverflow="ellipsis"
-                          whiteSpace="nowrap"
-                        >
+                        <Text fontSize={['sm', 'md']} overflowX="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
                           {user.displayName}
                         </Text>
                       </Box>

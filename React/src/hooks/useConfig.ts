@@ -28,7 +28,7 @@ const useConfig = () => {
       label: pluralize(t('question')),
       url: '/walk-items',
       icon: ListIcon,
-      permission: 'actions.view',
+      permission: 'questions.view',
     },
     {
       type: 'menuItem',

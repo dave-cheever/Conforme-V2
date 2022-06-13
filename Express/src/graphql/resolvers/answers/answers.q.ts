@@ -75,16 +75,54 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
 
     // For "user" role filter answers
     if (!isPermitted({ user, action: 'answers.viewAll' })) {
-      pipeline.push({
-        $match: {
-          $or: [
+      // If user doesn't have permissions to get all answers
+      // need to check if he is an area or site owner
+      join({
+        pipeline,
+        collection: 'locations',
+        from: 'audit.siteId',
+        to: 'audit.site',
+      });
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'audit.areaId',
+        to: 'audit.area',
+      });
+
+      /**
+       * User's direct reports. The user is a manager of these users.
+       */
+      const users = await Users.customFindWithDetails({ selector: { managerId: user._id }, organization });
+
+      /**
+       * Array of all users including the user himself and his direct reports
+       */
+      const userIds = [user._id, ...users.map((user) => user._id)];
+
+      const $or: { [key: string]: string }[] = [];
+      userIds.forEach((_id) => {
+        $or.push(
+          ...[
             {
-              'audit.auditorId': user._id,
+              'audit.auditorId': _id,
             },
             {
-              'audit.participantsIds': user._id,
+              'audit.participantsIds': _id,
+            },
+            {
+              'audit.site.ownerId': _id,
+            },
+            {
+              'audit.area.ownerId': _id,
             },
           ],
+        );
+      });
+
+      pipeline.push({
+        $match: {
+          $or,
         },
       });
     }

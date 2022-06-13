@@ -15,12 +15,15 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import { ArrowDownIcon } from '../../icons';
+import { isPermitted } from '../can';
 import AuditHeaderButton from './AuditHeaderButton';
 import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
+  const { user } = useAppContext();
   const { audit, auditor, site, area } = useAuditContext();
   const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
 
@@ -89,7 +92,7 @@ const AuditHeader = () => {
             name="Share"
             onClick={() => {}}
           /> */}
-          {audit.status === 'upcoming' && (
+          {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
             <AuditHeaderButton bgColor="#DC0043" fontColor="white" icon={null} name="Submit" onClick={handleSubmitModalOpen} />
           )}
         </Flex>

@@ -31,6 +31,7 @@ const defaultPermissions = [
   'contact.view',
   'items.view',
   'actions.view',
+  'questions.view',
   'categories.view',
   'locations.view',
   'regulatoryBodies.view',
@@ -76,6 +77,9 @@ const roles = {
       'responses.view',
       'users.searchInAAD',
       'responses.manageFollower',
+      'audits.viewAll',
+      'actions.viewAll',
+      'questions.viewAll',
     ],
     restricted: {
       'responses.edit': ifRACHasAccess,

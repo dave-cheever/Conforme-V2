@@ -52,13 +52,7 @@ const Datepicker = ({
             {label && (
               <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'datepicker.labelFont.error'
-                      : styles
-                      ? styles?.textInput?.font
-                      : 'datepicker.labelFont.normal'
-                  }
+                  color={error ? 'datepicker.labelFont.error' : styles ? styles?.textInput?.font : 'datepicker.labelFont.normal'}
                   fontSize="ssm"
                   fontWeight="bold"
                   left="none"
@@ -67,14 +61,7 @@ const Datepicker = ({
                 >
                   {label}
                   {required && (
-                    <Asterisk
-                      fill="questionListElement.iconAsterisk"
-                      h="9px"
-                      mb="8px"
-                      ml="5px"
-                      stroke="datepicker.iconAsterisk"
-                      w="9px"
-                    />
+                    <Asterisk fill="questionListElement.iconAsterisk" h="9px" mb="8px" ml="5px" stroke="datepicker.iconAsterisk" w="9px" />
                   )}{' '}
                   {tooltip && (
                     <Tooltip hasArrow label={tooltip} placement="top">
@@ -89,15 +76,11 @@ const Datepicker = ({
                 bg: disabled ? 'datepicker.disabled.bg' : 'datepicker.activeBg',
               }}
               _focus={{
-                borderColor: error
-                  ? 'datepicker.border.focus.error'
-                  : 'datepicker.border.focus.normal',
+                borderColor: error ? 'datepicker.border.focus.error' : 'datepicker.border.focus.normal',
               }}
               align="center"
-              bg="datepicker.bg"
-              borderColor={
-                error ? 'datepicker.border.error' : 'datepicker.border.normal'
-              }
+              bg={disabled ? 'datepicker.disabled.bg' : 'datepicker.bg'}
+              borderColor={disabled ? 'datepicker.disabled.border' : error ? 'datepicker.border.error' : 'datepicker.border.normal'}
               borderRadius="8px"
               borderWidth="1px"
               color="datepicker.font"

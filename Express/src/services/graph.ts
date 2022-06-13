@@ -179,6 +179,16 @@ const checkMemberGroups = async ({
   }
 };
 
+// userId can be AAD ID or email
+const getLineManagerId = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
+  try {
+    await graphSetup(organization._id);
+    const client = await getClient(organization._id);
+    const res = await client.get(`users/${userId}/manager`);
+    return res.data.id;
+  } catch (e: any) {}
+};
+
 const addMemberToAccessGroup = async ({
   userId,
   groupId,
@@ -407,6 +417,7 @@ export default {
   getUserData,
   getUserPhoto,
   checkMemberGroups,
+  getLineManagerId,
   getUsers,
   uploadDocuments,
   getBasicUsers,

@@ -6,15 +6,19 @@ import { Avatar, Flex, Grid, GridItem, IconButton, Stack, Text, useToast } from 
 import { toastSuccess } from '../../bootstrap/config';
 import AuditTeamModal from '../../components/AuditModal/AuditTeamModal';
 import AuditTeamParticipantAvatar from '../../components/AuditModal/AuditTeamParticipantAvatar';
+import { isPermitted } from '../../components/can';
+import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import AuditTeamProvider, { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 
 const AuditParticipants = () => {
   const toast = useToast();
+  const { user } = useAppContext();
   const { audit, updateAudit, refetch } = useAuditContext();
   const { selectedAuditor, setSelectedAuditor, selectedParticipants, setSelectedParticipants } = useAuditTeamContext();
   const [auditorModalOpen, setAuditorModalOpen] = useState(false);
   const [participantsModalOpen, setParticipantsModalOpen] = useState(false);
+  const isUserPermittedToModify = isPermitted({ user, action: 'audits.edit', data: { audit } });
 
   useEffect(() => {
     setSelectedAuditor(audit.auditor ?? {});
@@ -81,9 +85,9 @@ const AuditParticipants = () => {
             </Text>
             <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
               <Avatar
-                cursor={audit.status === 'upcoming' ? 'pointer' : 'default'}
+                cursor={audit.status === 'upcoming' && isUserPermittedToModify ? 'pointer' : 'default'}
                 name={audit.auditor?.displayName}
-                onClick={() => audit.status === 'upcoming' && setAuditorModalOpen(true)}
+                onClick={() => audit.status === 'upcoming' && isUserPermittedToModify && setAuditorModalOpen(true)}
                 rounded="full"
                 size="lg"
                 src={audit.auditor?.imgUrl}
@@ -95,7 +99,7 @@ const AuditParticipants = () => {
               </Text>
             </Flex>
           </Stack>
-          {((audit.participants || []).length > 0 || audit.status === 'upcoming') && (
+          {((audit.participants || []).length > 0 || (audit.status === 'upcoming' && isUserPermittedToModify)) && (
             <Stack spacing={4}>
               <Text fontSize="smm" fontWeight="semibold">
                 Participants
@@ -109,7 +113,7 @@ const AuditParticipants = () => {
                     </GridItem>
                   );
                 })}
-                {audit.status === 'upcoming' && (
+                {audit.status === 'upcoming' && isUserPermittedToModify && (
                   <GridItem>
                     <IconButton
                       aria-label="Add participant"

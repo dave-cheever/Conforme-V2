@@ -5,10 +5,12 @@ import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/
 import { v4 as uuidv4 } from 'uuid';
 
 import { toastFailed } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 import { CheckIcon } from '../../icons';
 import { TDeepPartial } from '../../interfaces/TDeepPartial';
 import ActionListItem from '../Actions/ActionListItem';
+import { isPermitted } from '../can';
 import DocumentUpload from '../Documents/DocumentUpload';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 import { TextInput, Toggle } from '../Forms';
@@ -17,6 +19,7 @@ import AuditActionForm from './AuditActionForm';
 
 const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuestionWithAnswer>; handleClose: () => void }) => {
   const toast = useToast();
+  const { user } = useAppContext();
   const {
     audit,
     questionsCategories,
@@ -32,6 +35,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   const questionsCategory = questionsCategories.find(({ _id }) => _id === question.questionsCategoryId);
   const isCustomQuestion = !!question.scope?._id; // If there is no scope _id, it means that the question is a custom one
   const { answer } = question;
+  const isUserPermittedToModify = isPermitted({ user, action: 'audits.edit', data: { audit } });
 
   const { control, formState, watch, reset, setValue } = useForm({
     mode: 'all',
@@ -122,7 +126,9 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   };
 
   if (!questionsCategory) return null;
-  const isDisabled = !!(audit.status !== 'upcoming' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true));
+  const isDisabled =
+    !!(audit.status === 'completed' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true)) || !isUserPermittedToModify;
+
   return (
     <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" p={4} rounded="10px" spacing={4}>
       <Text fontSize="md" fontWeight="semibold">

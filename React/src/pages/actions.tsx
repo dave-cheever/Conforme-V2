@@ -39,9 +39,15 @@ const GET_ACTIONS = gql`
         addedAt
         thumbnail
       }
+      scope {
+        type
+      }
       answer {
         status
         questionId
+        scope {
+          type
+        }
         audit {
           _id
           walkType
@@ -54,6 +60,8 @@ const GET_ACTIONS = gql`
           site {
             name
           }
+          auditorId
+          participantsIds
         }
         question {
           question
@@ -263,7 +271,7 @@ const Actions = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank" >
+            <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{
                   bg: 'reasponseHeader.buttonLightBgHover',

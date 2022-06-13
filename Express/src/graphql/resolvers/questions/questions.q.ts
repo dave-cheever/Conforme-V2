@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Questions } from 'app-models';
-import { doesPathExist, getProjectFields, join } from 'app-utils';
+import { Questions, Users } from 'app-models';
+import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
 const questions = async (_, { questionQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['questions', ...elements]);
@@ -34,23 +34,61 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
     }
 
     // For "user" role filter answers
-    if (user.role === 'user') {
+    if (!isPermitted({ user, action: 'questions.viewAll' })) {
+      // If user doesn't have permissions to get all questions
+      // need to check if he is an area or site owner
       join({
         pipeline,
         collection: 'audits',
         from: 'scope._id',
         to: 'audit',
       });
-      pipeline.push({
-        $match: {
-          $or: [
+      join({
+        pipeline,
+        collection: 'locations',
+        from: 'audit.siteId',
+        to: 'audit.site',
+      });
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'audit.areaId',
+        to: 'audit.area',
+      });
+
+      /**
+       * User's direct reports. The user is a manager of these users.
+       */
+      const users = await Users.customFindWithDetails({ selector: { managerId: user._id }, organization });
+
+      /**
+       * Array of all users including the user himself and his direct reports
+       */
+      const userIds = [user._id, ...users.map((user) => user._id)];
+
+      const $or: { [key: string]: string }[] = [];
+      userIds.forEach((_id) => {
+        $or.push(
+          ...[
             {
-              'audit.auditorId': user._id,
+              'audit.auditorId': _id,
             },
             {
-              'audit.participantsIds': user._id,
+              'audit.participantsIds': _id,
+            },
+            {
+              'audit.site.ownerId': _id,
+            },
+            {
+              'audit.area.ownerId': _id,
             },
           ],
+        );
+      });
+
+      pipeline.push({
+        $match: {
+          $or,
         },
       });
     }
