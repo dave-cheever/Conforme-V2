@@ -163,44 +163,44 @@ const AuditModal = ({ refetch }) => {
                           variant="secondaryVariant"
                         />
                       </GridItem>
-                      <GridItem w="100%">
-                        <Dropdown
-                          control={control}
-                          label="Site"
-                          name="siteId"
-                          options={(locations ?? []).map((location) => ({
-                            value: location._id,
-                            label: location.name,
-                          }))}
-                          placeholder="Select site"
-                          required
-                          stroke="dropdown.icon"
-                          validations={{
-                            notEmpty: true,
-                          }}
-                          variant="secondaryVariant"
-                        />
-                      </GridItem>
-                      <GridItem w="100%">
-                        <Dropdown
-                          control={control}
-                          label="Area"
-                          name="areaId"
-                          options={(businessUnits ?? []).map((businessUnit) => ({
-                            value: businessUnit._id,
-                            label: businessUnit.name,
-                          }))}
-                          placeholder="Select Area"
-                          required
-                          stroke="dropdown.icon"
-                          validations={{
-                            notEmpty: true,
-                          }}
-                          variant="secondaryVariant"
-                        />
-                      </GridItem>
                     </>
                   )}
+                  <GridItem w="100%">
+                    <Dropdown
+                      control={control}
+                      label="Site"
+                      name="siteId"
+                      options={(locations ?? []).map((location) => ({
+                        value: location._id,
+                        label: location.name,
+                      }))}
+                      placeholder="Select site"
+                      required
+                      stroke="dropdown.icon"
+                      validations={{
+                        notEmpty: true,
+                      }}
+                      variant="secondaryVariant"
+                    />
+                  </GridItem>
+                  <GridItem w="100%">
+                    <Dropdown
+                      control={control}
+                      label="Area"
+                      name="areaId"
+                      options={(businessUnits ?? []).map((businessUnit) => ({
+                        value: businessUnit._id,
+                        label: businessUnit.name,
+                      }))}
+                      placeholder="Select Area"
+                      required
+                      stroke="dropdown.icon"
+                      validations={{
+                        notEmpty: true,
+                      }}
+                      variant="secondaryVariant"
+                    />
+                  </GridItem>
                 </Grid>
               </Flex>
               <Text fontSize="smm" fontWeight="semibold">
