@@ -171,6 +171,8 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
             // eslint-disable-next-line no-async-promise-executor
             new Promise<any>(async (resolve, reject) => {
               try {
+                if (!action.assigneeId) resolve({ ...action });
+
                 resolve({
                   ...action,
                   assignee: await Users.customFindByIdWithDetails({
@@ -189,6 +191,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
 
     return actions.sort((a, b) => priorities[a.priority] - priorities[b.priority]);
   } catch (err: any) {
+    console.error(err);
     throw new Error(err);
   }
 };

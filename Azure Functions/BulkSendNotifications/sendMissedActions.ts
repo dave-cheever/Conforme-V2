@@ -65,10 +65,6 @@ const sendMissedActions = async (emailType: number, config) => {
               }
             ]);
 
-            const assignee = await Users.customFindByIdWithDetails({
-              userId: action.assigneeId,
-              organization
-            });
             const subject = getEmailSubject(emailType);
             const body = await getEmailTemplate({
               emailType,
@@ -80,10 +76,22 @@ const sendMissedActions = async (emailType: number, config) => {
             });
             const graphService = new GraphService(config);
 
-            if (assignee?.email) {
+            if (action.assigneeId) {
+              const assignee = await Users.customFindByIdWithDetails({
+                userId: action.assigneeId,
+                organization
+              });
+
               await graphService.sendDirectEmail({
                 from: config.EmailSender,
-                to: [assignee.email, actionAnswers?.[0]?.audit.auditorId],
+                to: [assignee?.email, actionAnswers?.[0]?.audit.auditorId],
+                subject,
+                body
+              });
+            } else {
+              await graphService.sendDirectEmail({
+                from: config.EmailSender,
+                to: [actionAnswers?.[0]?.audit.auditorId],
                 subject,
                 body
               });

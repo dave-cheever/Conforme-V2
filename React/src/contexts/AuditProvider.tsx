@@ -331,7 +331,7 @@ const AuditProvider = ({ children }) => {
             done: false,
             priority: action.priority,
             description: action.description,
-            assigneeId: action.assigneeId,
+            assigneeId: action?.assigneeId,
             scope: {
               type: 'answer',
               _id: answerId,
@@ -351,7 +351,7 @@ const AuditProvider = ({ children }) => {
             dueDate: action.dueDate,
             priority: action.priority,
             description: action.description,
-            assigneeId: action.assigneeId,
+            assigneeId: action?.assigneeId,
           },
         },
       });

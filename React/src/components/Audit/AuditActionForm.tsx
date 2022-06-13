@@ -47,15 +47,7 @@ const ActionForm = ({ handleSave }) => {
           />
         </GridItem>
         <GridItem>
-          <PeoplePicker
-            control={control}
-            label="Assign to"
-            name="assigneeId"
-            required
-            validations={{
-              notEmpty: true,
-            }}
-          />
+          <PeoplePicker control={control} label="Assign to" name="assigneeId" />
         </GridItem>
         <GridItem>
           <Datepicker control={control} label="Due date" name="dueDate" />

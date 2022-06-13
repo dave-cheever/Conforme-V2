@@ -11,7 +11,7 @@ export interface IAction extends IBase {
   done: boolean;
   priority: 'low' | 'medium' | 'high';
   description?: string;
-  assigneeId: string;
+  assigneeId?: string;
   attachments?: IDocument[];
   scope: IScope;
 

@@ -37,7 +37,7 @@ const ActionListItem = ({
         {index + 1}
       </Flex>
       <HStack bg="actionListElement.bg" flexGrow={1} px={5} py={3} rounded="10px" spacing={5}>
-        <UserAvatar callback={setAssigneeDetails} h="36px" userId={action.assigneeId} w="36px" />
+        {action?.assigneeId && <UserAvatar callback={setAssigneeDetails} h="36px" userId={action.assigneeId} w="36px" />}
         <Stack flexGrow={1} spacing={0}>
           <HStack color="actionListElement.color" fontSize="ssm" spacing={4}>
             <Text>{assigneeDetails?.displayName}</Text>

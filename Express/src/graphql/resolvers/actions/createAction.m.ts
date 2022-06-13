@@ -53,23 +53,25 @@ const createAction = async (_, { action }, { authorize, organization }) => {
       }
     }
 
-    const assignee = await Users.customFindByIdWithDetails({ userId: createdAction.assigneeId, organization });
-    const createdNotification = await Notifications.customCreate(
-      {
-        emailType: AUDITS_ACTION_ASSIGNED,
-        emailData: {
-          actionTitle: createdAction.title,
-          actionAuditId: createdAction.scope._id as string,
-          actionDueDate: createdAction.dueDate ? `Due ${format(new Date(createdAction.dueDate), 'd LLLL Y')}` : 'No due date',
+    if (createdAction.assigneeId) {
+      const assignee = await Users.customFindByIdWithDetails({ userId: createdAction.assigneeId, organization });
+      const createdNotification = await Notifications.customCreate(
+        {
+          emailType: AUDITS_ACTION_ASSIGNED,
+          emailData: {
+            actionTitle: createdAction.title,
+            actionAuditId: createdAction.scope._id as string,
+            actionDueDate: createdAction.dueDate ? `Due ${format(new Date(createdAction.dueDate), 'd LLLL Y')}` : 'No due date',
+          },
+          status: 'pending',
+          to: [assignee?.email],
         },
-        status: 'pending',
-        to: [assignee?.email],
-      },
-      user._id,
-      organization._id,
-    );
+        user._id,
+        organization._id,
+      );
 
-    await FunctionsService.sendNotification(organization._id, createdNotification._id);
+      await FunctionsService.sendNotification(organization._id, createdNotification._id);
+    }
 
     return createdAction;
   } catch (err: any) {

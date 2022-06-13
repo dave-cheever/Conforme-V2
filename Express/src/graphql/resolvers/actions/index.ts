@@ -23,12 +23,12 @@ export const actionsTypeDefs = `
     done: Boolean!
     priority: String!
     description: String
-    assigneeId: ID!
+    assigneeId: ID
     attachments: [Document]
     scope: Scope!
     answer: Answer
     metatags: Metatags
-    assignee: User!
+    assignee: User
   }
 
   input ActionUsersInput {
@@ -50,7 +50,7 @@ export const actionsTypeDefs = `
     done: Boolean!
     priority: String!
     description: String
-    assigneeId: ID!
+    assigneeId: ID
     attachments: [DocumentInput]
     scope: ScopeInput!
   }
