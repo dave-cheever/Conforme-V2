@@ -30,6 +30,7 @@ import { Close, TickIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 import { Datepicker, Dropdown } from '../Forms';
 import AuditTeamModal from './AuditTeamModal';
+import AuditTeamParticipantAvatar from './AuditTeamParticipantAvatar';
 
 const AuditModal = ({ refetch }) => {
   const toast = useToast();
@@ -229,14 +230,7 @@ const AuditModal = ({ refetch }) => {
                   if (!participant) return null;
                   return (
                     <GridItem key={participant._id}>
-                      <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
-                        <Avatar cursor="pointer" name={participant.displayName} rounded="full" size="lg" src={participant.imgUrl} />
-                        <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                          {participant.firstName || participant.lastName
-                            ? `${participant.firstName} ${participant.lastName}`
-                            : participant.displayName}
-                        </Text>
-                      </Flex>
+                      <AuditTeamParticipantAvatar participant={participant} setParticipantsModalOpen={setParticipantsModalOpen} />
                     </GridItem>
                   );
                 })}

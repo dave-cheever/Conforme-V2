@@ -5,6 +5,7 @@ import { Avatar, Flex, Grid, GridItem, IconButton, Stack, Text, useToast } from 
 
 import { toastSuccess } from '../../bootstrap/config';
 import AuditTeamModal from '../../components/AuditModal/AuditTeamModal';
+import AuditTeamParticipantAvatar from '../../components/AuditModal/AuditTeamParticipantAvatar';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import AuditTeamProvider, { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 
@@ -104,20 +105,7 @@ const AuditParticipants = () => {
                   if (!participant) return null;
                   return (
                     <GridItem key={participant._id}>
-                      <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
-                        <Avatar
-                          cursor={audit.status === 'upcoming' ? 'pointer' : 'default'}
-                          name={participant.displayName}
-                          rounded="full"
-                          size="lg"
-                          src={participant.imgUrl}
-                        />
-                        <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                          {participant.firstName || participant.lastName
-                            ? `${participant.firstName} ${participant.lastName}`
-                            : participant.displayName}
-                        </Text>
-                      </Flex>
+                      <AuditTeamParticipantAvatar audit={audit} participant={participant} setParticipantsModalOpen={setParticipantsModalOpen} />
                     </GridItem>
                   );
                 })}
