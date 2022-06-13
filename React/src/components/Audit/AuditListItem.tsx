@@ -22,60 +22,11 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
       w="full"
     >
       <Flex align="center" h={['full', '73px']} position="relative" w="full">
-        <Flex flexDir="column" w="20%">
-          <Flex
-            align="flex-start"
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="400"
-            h="50%"
-            lineHeight="18px"
-            noOfLines={1}
-            opacity="1"
-            pt="3px"
-            textOverflow="ellipsis"
-          >
-            {auditWalkTypes[audit.walkType]}
-          </Flex>
-        </Flex>
         <Flex w="12%">
           <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
-            {audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
+            {audit?.dueDate ? format(new Date(audit?.dueDate), 'MMM-yy') : <Flex fontStyle="italic">No due date</Flex>}
           </Flex>
         </Flex>
-        <Flex w="10%">
-          <Flex align="center">
-            <Flex color={`auditsList.${audit?.status}`} fontSize="14px" fontWeight="700">
-              {auditStatuses[audit?.status]}
-            </Flex>
-          </Flex>
-        </Flex>
-        <Box w="20%">
-          <Skeleton isLoaded={!!audit} rounded="full">
-            {audit.auditor ? (
-              <Flex align="center" direction="row">
-                <Avatar name={audit.auditor?.displayName} size="xs" src={audit.auditor?.imgUrl} />
-                <Text
-                  color="auditsList.fontColor"
-                  fontSize="13px"
-                  lineHeight="17px"
-                  opacity="1"
-                  overflow="hidden"
-                  pl={3}
-                  textOverflow="ellipsis"
-                  w="full"
-                  whiteSpace="nowrap"
-                >
-                  {audit.auditor?.displayName}
-                </Text>
-              </Flex>
-            ) : (
-              <Flex fontSize="13px" fontStyle="italic">
-                Unassigned
-              </Flex>
-            )}
-          </Skeleton>
-        </Box>
         <Box w="20%">
           <Flex>
             <LocationIcon boxSize="12px" mt="2px" />
@@ -112,6 +63,60 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             </Text>
           </Flex>
         </Box>
+        <Flex w="10%">
+          <Flex align="center">
+            <Flex color={`auditsList.${audit?.status}`} fontSize="14px" fontWeight="700">
+              {auditStatuses[audit?.status]}
+            </Flex>
+          </Flex>
+        </Flex>
+        <Flex flexDir="column" w="15%">
+          <Flex
+            align="flex-start"
+            color="auditsList.fontColor"
+            fontSize="14px"
+            fontWeight="400"
+            h="50%"
+            lineHeight="18px"
+            noOfLines={1}
+            opacity="1"
+            pt="3px"
+            textOverflow="ellipsis"
+          >
+            {auditWalkTypes[audit.walkType]}
+          </Flex>
+        </Flex>
+        <Box w="25%">
+          <Skeleton isLoaded={!!audit} rounded="full">
+            {audit.auditor ? (
+              <Flex align="center" direction="row">
+                <Avatar name={audit.auditor?.displayName} size="xs" src={audit.auditor?.imgUrl} />
+                <Text
+                  color="auditsList.fontColor"
+                  fontSize="13px"
+                  lineHeight="17px"
+                  opacity="1"
+                  overflow="hidden"
+                  pl={3}
+                  textOverflow="ellipsis"
+                  w="full"
+                  whiteSpace="nowrap"
+                >
+                  {audit.auditor?.displayName}
+                </Text>
+              </Flex>
+            ) : (
+              <Flex fontSize="13px" fontStyle="italic">
+                Unassigned
+              </Flex>
+            )}
+          </Skeleton>
+        </Box>
+        <Flex w="12%">
+          <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+            {audit?.submittedDate ? format(new Date(audit?.submittedDate), 'MMM-yy') : <Flex fontStyle="italic">No submitted date</Flex>}
+          </Flex>
+        </Flex>
       </Flex>
     </Box>
   );
