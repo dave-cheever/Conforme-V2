@@ -283,7 +283,7 @@ const ActionsInsights = () => {
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} type="actions" />
+                    <InsightListItem item={site} key={site._id} navigation='/admin/sites' type="actions" />
                   ))}
                 </Flex>
               </Box>
@@ -344,7 +344,7 @@ const ActionsInsights = () => {
                 </AdminTableHeader>
                 <Flex flexDir="column" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} type="actions" />
+                    <InsightListItem item={area} key={area._id} navigation='/admin/areas' type="actions" />
                   ))}
                 </Flex>
               </Box>

@@ -310,7 +310,7 @@ const AuditsInsights = () => {
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} />
+                    <InsightListItem item={site} key={site._id} navigation='/admin/sites' />
                   ))}
                 </Flex>
               </Box>
@@ -371,7 +371,7 @@ const AuditsInsights = () => {
                 </AdminTableHeader>
                 <Flex flexDir="column" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} />
+                    <InsightListItem item={area} key={area._id} navigation='/admin/areas' />
                   ))}
                 </Flex>
               </Box>

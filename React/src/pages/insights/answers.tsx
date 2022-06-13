@@ -239,7 +239,7 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} type="answers" />
+                    <InsightListItem item={site} key={site._id} navigation='/admin/sites' type="answers" />
                   ))}
                 </Flex>
               </Box>
@@ -300,7 +300,7 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
                 </AdminTableHeader>
                 <Flex flexDir="column" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} type="answers" />
+                    <InsightListItem item={area} key={area._id} navigation='/admin/areas' type="answers" />
                   ))}
                 </Flex>
               </Box>

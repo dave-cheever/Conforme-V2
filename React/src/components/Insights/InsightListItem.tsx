@@ -7,7 +7,7 @@ import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import InsightCount from './InsightCount';
 
-const InsightListItem = ({ item, type = 'audits' }: { item: ILocation | IBusinessUnit; type?: 'audits' | 'actions' | 'answers' }) => {
+const InsightListItem = ({ item, navigation, type = 'audits' }: { item: ILocation | IBusinessUnit; navigation: string; type?: 'audits' | 'actions' | 'answers'; }) => {
   const { navigateTo } = useNavigate();
 
   const counts = useMemo(() => {
@@ -49,7 +49,7 @@ const InsightListItem = ({ item, type = 'audits' }: { item: ILocation | IBusines
       borderBottomColor="auditsInsights.list.headerBorderColor"
       borderBottomWidth="1px"
       cursor="pointer"
-      onClick={() => navigateTo(`/admin/sites`)}
+      onClick={() => navigateTo(navigation)}
       p="15px 25px"
       py={[1, 0]}
       w="full"
