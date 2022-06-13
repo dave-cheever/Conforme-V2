@@ -1,18 +1,12 @@
 import { useHistory } from 'react-router-dom';
 
-import {
-  Avatar,
-  Menu,
-  MenuButton,
-  MenuList,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Avatar, Menu, MenuButton, MenuList, Text, useDisclosure } from '@chakra-ui/react';
 import addHours from 'date-fns/addHours';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useNavigate from '../hooks/useNavigate';
+import { isPermitted } from './can';
 
 const UserMenu = () => {
   const { user, setUser } = useAppContext();
@@ -47,11 +41,7 @@ const UserMenu = () => {
       <MenuButton color="white" display="flex" ml="1" mr={['0', '6']} w="65px">
         <Avatar
           bg="userMenu.avatar.bg"
-          borderColor={
-            isOpen
-              ? 'userMenu.avatar.borderColorOpened'
-              : 'userMenu.avatar.borderColor'
-          }
+          borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
           borderWidth="5px"
           color="userMenu.avatar.color"
           h="41px"
@@ -71,12 +61,7 @@ const UserMenu = () => {
         p="15px 20px 15px 20px"
         textAlign="right"
       >
-        <Text
-          fontWeight="semibold"
-          noOfLines={1}
-          textOverflow="ellipsis"
-          w="full"
-        >
+        <Text fontWeight="semibold" noOfLines={1} textOverflow="ellipsis" w="full">
           {user?.displayName}
         </Text>
         <Text
@@ -92,19 +77,21 @@ const UserMenu = () => {
         >
           {user?.jobTitle}
         </Text>
-        {userMenus.map(({ label, url }) => (
-          <Text
-            _hover={{ color: 'userMenu.hoverColor' }}
-            color="userMenu.text"
-            cursor="pointer"
-            fontSize="smm"
-            key={label}
-            my="10px"
-            onClick={() => pageRedirect(url)}
-          >
-            {label}
-          </Text>
-        ))}
+        {userMenus
+          .filter((userMenu) => !userMenu.permission || isPermitted({ user, action: userMenu.permission }))
+          .map(({ label, url }) => (
+            <Text
+              _hover={{ color: 'userMenu.hoverColor' }}
+              color="userMenu.text"
+              cursor="pointer"
+              fontSize="smm"
+              key={label}
+              my="10px"
+              onClick={() => pageRedirect(url)}
+            >
+              {label}
+            </Text>
+          ))}
 
         <Text
           _hover={{ color: 'userMenu.hoverColor' }}

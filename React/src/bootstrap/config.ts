@@ -72,6 +72,7 @@ export const userMenus = [
   {
     label: 'Settings',
     url: '/admin/settings',
+    permission: 'adminPanel.view',
   },
 ];
 
