@@ -51,7 +51,7 @@ const Audit = () => {
           {capitalize(pluralize(t('question')))}
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
-          (audit.status === 'upcoming' || questionsCategories.some(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion)) &&
+          (audit?.status === 'upcoming' || questionsCategories.some(({ notBlockedAfterCompletion }) => notBlockedAfterCompletion)) &&
           isPermitted({ user, action: 'audits.edit', data: { audit } }) &&
           customQuestionsCategories.length && (
             <Button

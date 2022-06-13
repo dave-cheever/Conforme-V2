@@ -142,13 +142,12 @@ const useFiltersUtils = () => {
     newFilters?: object;
   } = {}) => {
     const filters = {};
-    let filterName = '';
-    for (filterName of usedFilters) {
+    for (const filterName of usedFilters) {
       // Get filter config from existing or initial filters
       const filter: IFilter = cleanFilters[filterName];
 
       // Check if value was set
-      if (newFilters[filterName] !== undefined) filter.value = newFilters[filterName];
+      filter.value = newFilters[filterName];
 
       // Set new filter
       filters[filterName] = filter;
