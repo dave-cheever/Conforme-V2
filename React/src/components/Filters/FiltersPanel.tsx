@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Box, Button, Flex, Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
@@ -27,10 +27,8 @@ const FiltersPanel = () => {
       boxShadow="md"
       flexDir="column"
       flexShrink={0}
-      minH="100vh"
-      overflowY="hidden"
-      overscrollBehavior="contain"
-      position={['relative', 'absolute', 'relative']}
+      h="100vh"
+      position={['relative', 'absolute']}
       right="0"
       w={['full', '320px']}
       zIndex="10"
@@ -40,19 +38,19 @@ const FiltersPanel = () => {
           Filter items by
         </Box>
       </Flex>
-      <Flex flexDir="column" h="calc(100vh - 7.5rem)" overflowY="auto" px="4">
+      <Flex flexDir="column" minH="calc(100vh - 180px)" overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel) return <FiltersPanelItem filter={value} key={name} name={name} />;
 
           return null;
         })}
       </Flex>
-      <Spacer />
       <Flex
         align="center"
         bg="white"
-        bottom=".5rem"
+        bottom="0px"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
+        h="70px"
         justify="center"
         position={['sticky', 'relative']}
         py={2}

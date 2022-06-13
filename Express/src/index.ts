@@ -6,11 +6,9 @@ import { logger } from 'app-shared';
 import getApp from './server';
 
 const ENV_VERSION = '1';
-if (ENV_VERSION !== process.env.VERSION) {
-  logger.error(
-    `Please update environment variables. Latest version: ${ENV_VERSION}. Your version: ${process.env.VERSION}`,
-  );
-}
+if (ENV_VERSION !== process.env.VERSION)
+  logger.error(`Please update environment variables. Latest version: ${ENV_VERSION}. Your version: ${process.env.VERSION}`);
+
 const port = process.env.PORT || 3000;
 
 mongoose
