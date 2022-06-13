@@ -1,8 +1,4 @@
-import { format } from 'date-fns';
-
-import { Actions, Answers, Audits, Notifications, Users } from 'app-models';
-import { FunctionsService } from 'app-services';
-import { AUDITS_ACTION_ASSIGNED } from 'app-shared';
+import { Actions, Answers, Audits } from 'app-models';
 import { checkActionPermission } from 'app-utils';
 
 const createAction = async (_, { action }, { authorize, organization }) => {
@@ -53,25 +49,26 @@ const createAction = async (_, { action }, { authorize, organization }) => {
       }
     }
 
-    if (createdAction.assigneeId) {
-      const assignee = await Users.customFindByIdWithDetails({ userId: createdAction.assigneeId, organization });
-      const createdNotification = await Notifications.customCreate(
-        {
-          emailType: AUDITS_ACTION_ASSIGNED,
-          emailData: {
-            actionTitle: createdAction.title,
-            actionAuditId: createdAction.scope._id as string,
-            actionDueDate: createdAction.dueDate ? `Due ${format(new Date(createdAction.dueDate), 'd LLLL Y')}` : 'No due date',
-          },
-          status: 'pending',
-          to: [assignee?.email],
-        },
-        user._id,
-        organization._id,
-      );
+    // TODO: Turn on notifications for actions
+    // if (createdAction.assigneeId) {
+    //   const assignee = await Users.customFindByIdWithDetails({ userId: createdAction.assigneeId, organization });
+    //   const createdNotification = await Notifications.customCreate(
+    //     {
+    //       emailType: AUDITS_ACTION_ASSIGNED,
+    //       emailData: {
+    //         actionTitle: createdAction.title,
+    //         actionAuditId: createdAction.scope._id as string,
+    //         actionDueDate: createdAction.dueDate ? `Due ${format(new Date(createdAction.dueDate), 'd LLLL Y')}` : 'No due date',
+    //       },
+    //       status: 'pending',
+    //       to: [assignee?.email],
+    //     },
+    //     user._id,
+    //     organization._id,
+    //   );
 
-      await FunctionsService.sendNotification(organization._id, createdNotification._id);
-    }
+    //   await FunctionsService.sendNotification(organization._id, createdNotification._id);
+    // }
 
     return createdAction;
   } catch (err: any) {
