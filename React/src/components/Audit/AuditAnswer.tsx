@@ -98,6 +98,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           variables: {
             answer: {
               ...answer,
+              ...answerData,
               questionId,
               scope: {
                 type: 'audit',
@@ -121,7 +122,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   };
 
   if (!questionsCategory) return null;
-  const isDisabled = !!(audit.status === 'completed' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true));
+  const isDisabled = !!(audit.status !== 'upcoming' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true));
   return (
     <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" p={4} rounded="10px" spacing={4}>
       <Text fontSize="md" fontWeight="semibold">

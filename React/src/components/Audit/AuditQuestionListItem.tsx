@@ -39,7 +39,7 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
           />
         </Stack>
       )}
-      {audit.status === 'completed' && (
+      {audit.status !== 'upcoming' && (
         <Stack>
           <Eye cursor="pointer" onClick={() => setSelectedQuestion(question)} stroke="auditItem.listItem.editIcon" />
         </Stack>
