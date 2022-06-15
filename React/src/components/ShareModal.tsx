@@ -28,7 +28,7 @@ import { AddIcon, Copy, CrossIcon } from '../icons';
 
 const ShareModal = () => {
   const toast = useToast();
-  const { user } = useAppContext();
+  const { organizationConfig, module, user } = useAppContext();
   const { response, snapshot, isShareOpen, handleShareClose } =
     useContext(ResponseContext);
   const [mails, setMails] = useState<string[]>([]);
@@ -41,24 +41,13 @@ const ShareModal = () => {
       : `${displayName}`;
   };
 
-  const URL = `${process.env.REACT_APP_CLIENT_URL}/compliance-item/${
-    response?._id
-  }${snapshot ? `?snapshot=${snapshot}` : ''}`;
+  const URL = `${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id
+    }${snapshot ? `?snapshot=${snapshot}` : ''}`;
 
   const email = useMemo(
     () =>
-      `mailto:${[...mails, mail].join(',')}?subject=${getFullName(
-        user,
-      )} has shared
-      ${response?.complianceItem.name} with you&body=${getFullName(
-        user,
-      )} has shared compliance item
-      '${
-        response?.complianceItem.name
-      }' with you. You can view it at the following
-        link:%0A%0A${URL}%0A%0ACielo Costa`,
-
-    [response, mail, mails],
+      `mailto:${[...mails, mail].join(';')}?subject=${response?.complianceItem.name} - ${module?.name} - ${organizationConfig?.name}&body=Please click on this link to access the '${response?.complianceItem.name}' in ${module?.name}:%0A%0A${URL}%0A%0ACielo Costa`,
+    [response, mail, mails, module, organizationConfig],
   );
 
   const updateMails = () => {

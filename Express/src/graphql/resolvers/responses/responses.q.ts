@@ -289,20 +289,16 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
     if (shouldJoin(['responsible'])) {
       Promise.all(
         responses.map(
-          (response) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<void>(async (resolve, reject) => {
-              try {
-                response.responsible = await Users.customFindByIdWithDetails({
-                  userId: response.responsibleId,
-                  organization,
-                });
-                resolve();
-              } catch (e) {
-                console.log(`Error occured for ${response._id}: ${e}`);
-                reject();
-              }
-            }),
+          async (response) => {
+            try {
+              response.responsible = await Users.customFindByIdWithDetails({
+                userId: response.responsibleId,
+                organization,
+              });
+            } catch (e) {
+              console.log(`Error occured for ${response._id}: ${e}`);
+            }
+          },
         ),
       );
     }
