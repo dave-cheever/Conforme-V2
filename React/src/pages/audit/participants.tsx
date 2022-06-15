@@ -65,12 +65,19 @@ const AuditParticipants = () => {
 
   return (
     <>
-      <AuditTeamModal isOpen={auditorModalOpen} multiple={false} onCancel={handleAuditorSelectionCancel} onClose={handleAuditorSelect} />
+      <AuditTeamModal
+        isOpen={auditorModalOpen}
+        multiple={false}
+        onCancel={handleAuditorSelectionCancel}
+        onClose={handleAuditorSelect}
+        selection="auditor"
+      />
       <AuditTeamModal
         isOpen={participantsModalOpen}
         multiple
         onCancel={handleParticipantsSelectionCancel}
         onClose={handleParticipantsSelect}
+        selection="participants"
       />
       <Stack h={['fit-content', 'full']} spacing={4} w="full">
         <Flex justifyContent={['space-between', 'initial']}>
@@ -109,7 +116,11 @@ const AuditParticipants = () => {
                   if (!participant) return null;
                   return (
                     <GridItem key={participant._id}>
-                      <AuditTeamParticipantAvatar audit={audit} participant={participant} setParticipantsModalOpen={setParticipantsModalOpen} />
+                      <AuditTeamParticipantAvatar
+                        audit={audit}
+                        participant={participant}
+                        setParticipantsModalOpen={setParticipantsModalOpen}
+                      />
                     </GridItem>
                   );
                 })}

@@ -27,11 +27,12 @@ import Loader from '../Loader';
 type AuditModalProps = {
   isOpen: boolean;
   multiple: boolean;
+  selection: 'auditor' | 'participants';
   onClose: () => void;
   onCancel: () => void;
 };
 
-const AuditTeamModal = ({ isOpen, multiple, onCancel, onClose }: AuditModalProps) => {
+const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: AuditModalProps) => {
   const { loading, data, searchQuery, setSearchQuery, selectedAuditor, setSelectedAuditor, selectedParticipants, setSelectedParticipants } =
     useAuditTeamContext();
   const [searchText, setSearchText] = useState<string>('');
@@ -67,6 +68,35 @@ const AuditTeamModal = ({ isOpen, multiple, onCancel, onClose }: AuditModalProps
 
     return selectedAuditor._id === userId;
   };
+
+  const auditTeamUser = (user: IUser) => (
+    <Flex align="center" key={user._id}>
+      {/* added this instead of checkbox, because of console error on checkbox */}
+      <Flex
+        align="center"
+        bg={isSelected(user._id) ? 'auditTeamModal.button.add.bg' : 'white'}
+        borderColor="#81819750"
+        borderRadius="full"
+        borderWidth="1px"
+        cursor="pointer"
+        h="20px"
+        justify="center"
+        onClick={() => handleSelectUser(user)}
+        pt="1"
+        w="20px"
+      >
+        <TickIcon h="10px" stroke="white" w="10px" />
+      </Flex>
+      <Flex direction="column" ml="2">
+        <Text color="black" fontSize="smm" fontWeight="semibold">
+          {user.displayName} - {user.jobTitle || 'No job title'}
+        </Text>
+        <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px" w="290px">
+          {user.email}
+        </Box>
+      </Flex>
+    </Flex>
+  );
 
   return (
     <Modal isCentered isOpen={isOpen} onClose={handleClose}>
@@ -112,34 +142,19 @@ const AuditTeamModal = ({ isOpen, multiple, onCancel, onClose }: AuditModalProps
               </Flex>
             ) : data?.searchUsers.length > 0 ? (
               <VStack alignItems="flex-start" h="full" mb="20px" overflow="auto" spacing="10px">
-                {data?.searchUsers.map((user) => (
-                  <Flex align="center" key={user._id}>
-                    {/* added this instead of checkbox, because of console error on checkbox */}
-                    <Flex
-                      align="center"
-                      bg={isSelected(user._id) ? 'auditTeamModal.button.add.bg' : 'white'}
-                      borderColor="#81819750"
-                      borderRadius="full"
-                      borderWidth="1px"
-                      cursor="pointer"
-                      h="20px"
-                      justify="center"
-                      onClick={() => handleSelectUser(user)}
-                      pt="1"
-                      w="20px"
-                    >
-                      <TickIcon h="10px" stroke="white" w="10px" />
-                    </Flex>
-                    <Flex direction="column" ml="2">
-                      <Text color="black" fontSize="smm" fontWeight="semibold">
-                        {user.displayName} - {user.jobTitle || 'No job title'}
-                      </Text>
-                      <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px" w="290px">
-                        {user.email}
-                      </Box>
-                    </Flex>
-                  </Flex>
-                ))}
+                {selection === 'auditor' && selectedAuditor && <>{auditTeamUser(selectedAuditor as IUser)}</>}
+                {selection === 'participants' &&
+                  selectedParticipants?.length > 0 &&
+                  selectedParticipants.map((participant) => <>{auditTeamUser(participant!)}</>)}
+                {data?.searchUsers
+                  .filter((user) =>
+                    selection === 'participants'
+                      ? !selectedParticipants.find((participant) => participant?._id === user._id)
+                      : user._id !== selectedAuditor?._id,
+                  )
+                  .map((user) => (
+                    <>{auditTeamUser(user)}</>
+                  ))}
               </VStack>
             ) : (
               searchQuery && (

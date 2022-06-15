@@ -80,6 +80,7 @@ const AuditModal = ({ refetch }) => {
           setValue('auditorId', selectedAuditor._id);
           setAuditorModalOpen(false);
         }}
+        selection="auditor"
       />
       <AuditTeamModal
         isOpen={participantsModalOpen}
@@ -96,6 +97,7 @@ const AuditModal = ({ refetch }) => {
           );
           setParticipantsModalOpen(false);
         }}
+        selection="participants"
       />
       <ModalContent bg="auditModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">

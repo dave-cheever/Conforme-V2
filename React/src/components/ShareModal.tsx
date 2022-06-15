@@ -28,25 +28,18 @@ import { AddIcon, Copy, CrossIcon } from '../icons';
 
 const ShareModal = () => {
   const toast = useToast();
-  const { organizationConfig, module, user } = useAppContext();
-  const { response, snapshot, isShareOpen, handleShareClose } =
-    useContext(ResponseContext);
+  const { organizationConfig, module } = useAppContext();
+  const { response, snapshot, isShareOpen, handleShareClose } = useContext(ResponseContext);
   const [mails, setMails] = useState<string[]>([]);
   const [mail, setMail] = useState<string>('');
 
-  const getFullName = (user) => {
-    const { firstName, lastName, displayName } = user;
-    return firstName && lastName
-      ? `${firstName} ${lastName}`
-      : `${displayName}`;
-  };
-
-  const URL = `${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id
-    }${snapshot ? `?snapshot=${snapshot}` : ''}`;
+  const URL = `${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`;
 
   const email = useMemo(
     () =>
-      `mailto:${[...mails, mail].join(';')}?subject=${response?.complianceItem.name} - ${module?.name} - ${organizationConfig?.name}&body=Please click on this link to access the '${response?.complianceItem.name}' in ${module?.name}:%0A%0A${URL}%0A%0ACielo Costa`,
+      `mailto:${[...mails, mail].join(';')}?subject=${response?.complianceItem.name} - ${module?.name} - ${
+        organizationConfig?.name
+      }&body=Please click on this link to access the '${response?.complianceItem.name}' in ${module?.name}:%0A%0A${URL}%0A%0ACielo Costa`,
     [response, mail, mails, module, organizationConfig],
   );
 
@@ -67,10 +60,7 @@ const ShareModal = () => {
     setMails(removedMails);
   };
 
-  const isSendDisabled = useMemo(
-    () => mails.length === 0 && mail === '',
-    [mails, mail],
-  );
+  const isSendDisabled = useMemo(() => mails.length === 0 && mail === '', [mails, mail]);
 
   const updateMail = (mail, index) => {
     const updatedMail = [...mails];
@@ -82,12 +72,7 @@ const ShareModal = () => {
   };
 
   return (
-    <Modal
-      isCentered
-      isOpen={isShareOpen}
-      onClose={handleShareClose}
-      variant="shareModal"
-    >
+    <Modal isCentered isOpen={isShareOpen} onClose={handleShareClose} variant="shareModal">
       <ModalContent rounded="20px" shadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
         <ModalHeader color="shareModal.header" fontSize="smm" fontWeight="bold">
           Share item
@@ -186,11 +171,7 @@ const ShareModal = () => {
                         value={m}
                       />
                       <InputRightElement h="40px">
-                        <CrossIcon
-                          mr={2}
-                          onClick={() => removeMail(m)}
-                          stroke="shareModal.crossIcon"
-                        />
+                        <CrossIcon mr={2} onClick={() => removeMail(m)} stroke="shareModal.crossIcon" />
                       </InputRightElement>
                     </InputGroup>
                   ))}
@@ -206,20 +187,11 @@ const ShareModal = () => {
                       value={mail}
                     />
                     <InputRightElement h="40px">
-                      <AddIcon
-                        mr={2}
-                        onClick={updateMails}
-                        stroke="shareModal.addIcon"
-                      />
+                      <AddIcon mr={2} onClick={updateMails} stroke="shareModal.addIcon" />
                     </InputRightElement>
                   </InputGroup>
 
-                  <Link
-                    _hover={{}}
-                    alignSelf="flex-end"
-                    href={email}
-                    isExternal
-                  >
+                  <Link _hover={{}} alignSelf="flex-end" href={email} isExternal>
                     <Button
                       border="10px"
                       colorScheme="purpleHeart"
