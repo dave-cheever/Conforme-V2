@@ -147,7 +147,7 @@ const useFiltersUtils = () => {
       const filter: IFilter = cleanFilters[filterName];
 
       // Check if value was set
-      filter.value = newFilters[filterName];
+      filter.value = newFilters[filterName] ? newFilters[filterName] : filterName === 'usersIds' ? {} : [];
 
       // Set new filter
       filters[filterName] = filter;
