@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { Box, Flex, Input, Stack, useToast } from '@chakra-ui/react';
+import { Box, Flex, Input, Stack, Text, useToast } from '@chakra-ui/react';
 
 import { toastFailed } from '../../bootstrap/config';
 import useValidate from '../../hooks/useValidate';
@@ -27,8 +27,7 @@ const definedValidations: TDefinedValidations = {
     if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue)
-      return `${label} can be maximum ${validationValue} characters length`;
+    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
   isEmail: (label, validationValue, value) => {
     const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
@@ -36,38 +35,35 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Table = ({
-  control,
-  name,
-  label,
-  headings,
-  help,
-  tooltip = '',
-  validations = {},
-  disabled,
-}: ITable) => {
+const Table = ({ control, name, label, help, tooltip = '', validations = {}, disabled }: ITable) => {
   const toast = useToast();
   const validate = useValidate(label || name, validations, definedValidations);
 
   const addRow = (value, onChange) => {
-    if (value[value.length - 1]) {
-      const rowIsEmpty = !Object.values(value[value.length - 1]).some(
-        (x: any) => x !== '',
-      );
-      if (rowIsEmpty) {
-        toast({
-          ...toastFailed,
-          description: 'Please complete the last row before creating a new one',
-        });
-        return;
-      }
+    // TODO: Update the table to new settings approach
+    // if (value[value.length - 1]) {
+    //   const rowIsEmpty = !Object.values(value[value.length - 1]).some((x: any) => x !== '');
+    //   if (rowIsEmpty) {
+    //     toast({
+    //       ...toastFailed,
+    //       description: 'Please complete the last row before creating a new one',
+    //     });
+    //     return;
+    //   }
+    // }
+    // const newRow = {};
+    // headings?.cols.forEach((col) => {
+    //   newRow[col.name] = '';
+    // });
+    // const newValue = [...value, newRow];
+    if (value.some((v) => v === '')) {
+      toast({
+        ...toastFailed,
+        description: 'Please complete all rows before creating a new one.',
+      });
+      return;
     }
-    const newRow = {};
-    headings?.cols.forEach((col) => {
-      newRow[col.name] = '';
-    });
-    const newValue = [...value, newRow];
-    onChange({ target: { name, value: newValue } });
+    onChange({ target: { name, value: [...value, ''] } });
   };
 
   const removeRow = (index, value, onChange) => {
@@ -88,11 +84,7 @@ const Table = ({
             {label && (
               <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'dropdown.labelFont.error'
-                      : 'dropdown.labelFont.normal'
-                  }
+                  color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
                   fontSize="14px"
                   fontWeight="bold"
                   left="none"
@@ -110,17 +102,11 @@ const Table = ({
             )}
             <Stack mt="10px" w="full">
               {value?.map((row, index) => (
-                <Flex
-                  align="center"
-                  justify="space-between"
-                  key={`row-${index}`}
-                >
+                <Flex align="center" justify="space-between" key={`row-${index}`}>
                   <Flex mr={2} w="full">
                     <Input
                       _active={{
-                        bg: disabled
-                          ? 'form.textInput.disabled.bg'
-                          : 'form.textInput.activeBg',
+                        bg: disabled ? 'form.textInput.disabled.bg' : 'form.textInput.activeBg',
                       }}
                       _disabled={{
                         bg: 'form.textInput.disabled.bg',
@@ -135,11 +121,7 @@ const Table = ({
                       }}
                       _hover={{ cursor: 'auto' }}
                       bg="form.textInput.bg"
-                      borderColor={
-                        error
-                          ? 'form.textInput.border.error'
-                          : 'form.textInput.border.normal'
-                      }
+                      borderColor={error ? 'form.textInput.border.error' : 'form.textInput.border.normal'}
                       borderRadius="8px"
                       borderWidth="1px"
                       color="form.textInput.font"
@@ -149,29 +131,21 @@ const Table = ({
                       name={name}
                       onBlur={onBlur}
                       onChange={(e) => {
-                        value[index] = /^-?\d+$/.test(e.target.value)
-                          ? parseInt(e.target.value, 10)
-                          : e.target.value;
+                        value[index] = /^-?\d+$/.test(e.target.value) ? parseInt(e.target.value, 10) : e.target.value;
                         onChange({ target: { name, value } });
                       }}
                       value={row}
                       w="full"
                     />
                   </Flex>
-                  <Trashcan
-                    cursor="pointer"
-                    onClick={() => removeRow(index, value, onChange)}
-                  />
+                  <Trashcan cursor="pointer" onClick={() => removeRow(index, value, onChange)} stroke="form.textInput.font" />
                 </Flex>
               ))}
-              {validations?.maxLength && value.length < validations.maxLength && (
-                <Box
-                  cursor="pointer"
-                  onClick={() => addRow(value, onChange)}
-                  pl={2}
-                >
-                  <PlusIcon /> Add row
-                </Box>
+              {(validations.maxLength ? value.length < validations.maxLength : true) && (
+                <Stack align="center" cursor="pointer" direction="row" onClick={() => addRow(value, onChange)} pl={2} spacing={2}>
+                  <PlusIcon stroke="form.textInput.font" />
+                  <Text color="form.textInput.font">Add row</Text>
+                </Stack>
               )}
             </Stack>
             {error && (

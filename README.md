@@ -348,7 +348,7 @@ Email address receiving weekly digest:
       }
     }
   },
-  "inputType": "text"
+  "inputType": "table"
 }
 ```
 

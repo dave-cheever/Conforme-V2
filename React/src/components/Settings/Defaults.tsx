@@ -44,11 +44,7 @@ const Defaults = () => {
     await updateSetting({
       variables: { settingsUpdate: { _id, name, value: updatedValue } },
     });
-    await refetch();
-    reset({
-      ...formValues,
-      [name]: updatedValue,
-    });
+    refetch();
   };
 
   const wasFieldChanged = (inputType, name, initialValue) => {

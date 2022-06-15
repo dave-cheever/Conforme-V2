@@ -6,22 +6,17 @@ import { Box, Button, Flex, Image, useDisclosure } from '@chakra-ui/react';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Defaults from '../../components/Settings/Defaults';
-// import Notification from "../../components/Settings/Notification";
 import EmailTemplates from '../../components/Settings/EmailTemplates';
 import Tabs from '../../components/Settings/Tabs';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import SettingsProvider, {
-  useSettingsContext,
-} from '../../contexts/SettingsProvider';
+import SettingsProvider, { useSettingsContext } from '../../contexts/SettingsProvider';
 import useDevice from '../../hooks/useDevice';
 import { ISetting } from '../../interfaces/ISettings';
 
 const Settings = () => {
   const { loading, activeTab } = useSettingsContext();
   const { setUsedFilters } = useFiltersContext();
-  const [selectedTemplate, setSelectedTemplate] = useState<ISetting | null>(
-    null,
-  );
+  const [selectedTemplate, setSelectedTemplate] = useState<ISetting | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [updateImage, setUpdateImage] = useState<number>(0);
   const device = useDevice();
@@ -52,9 +47,6 @@ const Settings = () => {
           />
         );
 
-      // case 2:
-      //   return <Notification />;
-
       default:
         return null;
     }
@@ -62,15 +54,8 @@ const Settings = () => {
 
   return (
     <Box h="full" w="full">
-      <Header
-        breadcrumbs={['Admin', 'Other settings']}
-        mobileBreadcrumbs={['Other settings']}
-      />
-      <Flex
-        flexDirection="row"
-        px="25px"
-        w={['full', 'calc(100vw - 80px)', 'calc(100vw - 240px)']}
-      >
+      <Header breadcrumbs={['Admin', 'Other settings']} mobileBreadcrumbs={['Other settings']} />
+      <Flex flexDirection="row" px="25px" w={['full', 'calc(100vw - 80px)', 'calc(100vw - 240px)']}>
         <Flex
           bg="white"
           borderRadius="20px"
@@ -78,15 +63,7 @@ const Settings = () => {
           h={['full', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
           mb={['25px', '0px']}
           p={['25px 30px', '25px 30px']}
-          w={
-            activeTab === 1
-              ? [
-                  'full',
-                  selectedTemplate ? 'fit-content' : 'full',
-                  'fit-content',
-                ]
-              : 'full'
-          }
+          w={activeTab === 1 ? ['full', selectedTemplate ? 'fit-content' : 'full', 'fit-content'] : 'full'}
         >
           {loading ? (
             <Loader center />
@@ -118,15 +95,7 @@ const Settings = () => {
               {device === 'mobile' ? (
                 <CloseIcon onClick={closeTemplatePreview} />
               ) : (
-                <Button
-                  borderRadius="10px"
-                  colorScheme="purpleHeart"
-                  fontSize="11px"
-                  fontWeight="700"
-                  h="28px"
-                  onClick={onOpen}
-                  w="51px"
-                >
+                <Button borderRadius="10px" colorScheme="purpleHeart" fontSize="11px" fontWeight="700" h="28px" onClick={onOpen} w="51px">
                   Edit
                 </Button>
               )}
