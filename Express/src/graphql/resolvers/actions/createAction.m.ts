@@ -39,7 +39,7 @@ const createAction = async (_, { action }, { authorize, organization }) => {
         },
       ]);
 
-      if (actionAnswer) {
+      if (actionAnswer && createdAction.assigneeId) {
         await Audits.customUpdateOne(
           { _id: actionAnswer?.[0]?.audit._id },
           { participantsIds: [...actionAnswer?.[0]?.audit.participantsIds, createdAction.assigneeId] },

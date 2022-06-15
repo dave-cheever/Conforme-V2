@@ -33,8 +33,7 @@ const definedValidations: TDefinedValidations = {
       return `${label} already taken`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue)
-      return `${label} can be maximum ${validationValue} characters length`;
+    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
   isEmail: (label, validationValue, value) => {
     const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
@@ -54,12 +53,7 @@ const TextInput = ({
   styles,
   initialValue,
 }: ITextInput) => {
-  const validate = useValidate(
-    label || name,
-    validations,
-    definedValidations,
-    initialValue,
-  );
+  const validate = useValidate(label || name, validations, definedValidations, initialValue);
   return (
     <Controller
       control={control}
@@ -70,21 +64,9 @@ const TextInput = ({
         return (
           <Box id={name} mt="none" w="full">
             {label && (
-              <Flex
-                align="center"
-                justify="space-between"
-                mb="none"
-                pb={1}
-                pt={2}
-              >
+              <Flex align="center" justify="space-between" mb="none" pb={1} pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'textInput.labelFont.error'
-                      : styles
-                      ? styles?.textInput?.font
-                      : 'textInput.labelFont.normal'
-                  }
+                  color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
                   fontSize="11px"
                   fontWeight="bold"
                   left="none"
@@ -121,16 +103,13 @@ const TextInput = ({
                 cursor: 'not-allowed',
               }}
               _focus={{
-                borderColor: error
-                  ? 'textInput.border.focus.error'
-                  : 'textInput.border.focus.normal',
+                borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
               }}
               _hover={{ cursor: 'auto' }}
               _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
+              autocomplete="off"
               bg="textInput.bg"
-              borderColor={
-                error ? 'textInput.border.error' : 'textInput.border.normal'
-              }
+              borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
               borderRadius="8px"
               borderWidth="1px"
               color="textInput.font"
@@ -139,11 +118,7 @@ const TextInput = ({
               fontSize="smm"
               h="40px"
               isDisabled={disabled}
-              maxLength={
-                validations && validations.forceMaxLength
-                  ? (validations.maxLength as number)
-                  : undefined
-              }
+              maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
               name={name}
               onBlur={onBlur}
               onChange={onChange}

@@ -40,7 +40,7 @@ const ActionListItem = ({
         {action?.assigneeId && <UserAvatar callback={setAssigneeDetails} h="36px" userId={action.assigneeId} w="36px" />}
         <Stack flexGrow={1} spacing={0}>
           <HStack color="actionListElement.color" fontSize="ssm" spacing={4}>
-            <Text>{assigneeDetails?.displayName}</Text>
+            {action?.assigneeId && <Text>{assigneeDetails?.displayName}</Text>}
             {action.dueDate && <Text>{format(new Date(action.dueDate), 'd LLLL Y')}</Text>}
           </HStack>
           <Text color="actionListElement.color" fontSize="smm">

@@ -211,40 +211,41 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         ))}
         {values.attachments?.length === 0 && isDisabled && <Text fontSize="sm">No uploaded attachments</Text>}
       </Stack>
-      {!isDisabled && (
-        <Stack spacing={4}>
-          <Text fontSize="smm" fontWeight="semibold">
-            Actions
-          </Text>
-          {selectedAction ? (
-            <AuditActionForm
-              handleSave={(action) => {
-                if (!action._id) setValue('actions', [...values.actions, { ...action, _id: `temp-${uuidv4()}` }]);
-                else {
-                  const actionIndex = values.actions.findIndex(({ _id }) => _id === action._id);
-                  const actions = [...values.actions];
-                  actions[actionIndex] = action;
-                  setValue('actions', actions);
-                }
-              }}
-            />
-          ) : (
-            <Stack>
-              {values.actions?.map((action, index) => (
-                <ActionListItem
-                  action={action}
-                  disabled={isDisabled}
-                  index={index}
-                  key={action._id}
-                  onDelete={() =>
-                    setValue(
-                      'actions',
-                      values.actions.filter((a, i) => i !== index),
-                    )
-                  }
-                />
-              ))}
 
+      <Stack spacing={4}>
+        <Text fontSize="smm" fontWeight="semibold">
+          Actions
+        </Text>
+        {selectedAction ? (
+          <AuditActionForm
+            handleSave={(action) => {
+              if (!action._id) setValue('actions', [...values.actions, { ...action, _id: `temp-${uuidv4()}` }]);
+              else {
+                const actionIndex = values.actions.findIndex(({ _id }) => _id === action._id);
+                const actions = [...values.actions];
+                actions[actionIndex] = action;
+                setValue('actions', actions);
+              }
+            }}
+          />
+        ) : (
+          <Stack>
+            {values.actions?.map((action, index) => (
+              <ActionListItem
+                action={action}
+                disabled={isDisabled}
+                index={index}
+                key={action._id}
+                onDelete={() =>
+                  setValue(
+                    'actions',
+                    values.actions.filter((a, i) => i !== index),
+                  )
+                }
+              />
+            ))}
+
+            {!isDisabled && (
               <Button
                 bgColor="auditAnswer.buttons.addAction.bg"
                 color="auditAnswer.buttons.addAction.color"
@@ -257,10 +258,11 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
               >
                 Add action
               </Button>
-            </Stack>
-          )}
-        </Stack>
-      )}
+            )}
+          </Stack>
+        )}
+      </Stack>
+
       <HStack>
         <Button
           bgColor="auditAnswer.buttons.cancel.bg"
