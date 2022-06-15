@@ -1,6 +1,6 @@
 export const auditStatuses = {
-  upcoming: 'Upcoming',
   missed: 'Missed',
+  upcoming: 'Upcoming',
   completed: 'Completed',
 };
 
