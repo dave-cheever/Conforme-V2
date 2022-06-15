@@ -89,7 +89,7 @@ const ActionForm = ({ handleSave }) => {
           }}
           rounded="10px"
         >
-          Save
+          Save action
         </Button>
       </HStack>
     </Stack>
