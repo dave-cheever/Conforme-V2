@@ -91,7 +91,7 @@ const WalkItems = () => {
     { label: capitalize(t('area')), key: 'audit.area.name' },
     { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },
-    { label: 'Added at', key: 'metatags.addedAt' },
+    { label: 'Date added', key: 'metatags.addedAt' },
   ];
 
   useEffect(() => {

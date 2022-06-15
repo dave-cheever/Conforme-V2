@@ -96,7 +96,7 @@ const WalkItemsList = ({
             w="20%"
           />
           <AdminTableHeaderElement
-            label="Added at"
+            label="Date added"
             onClick={() => {
               setSortType('metatags.addedAt');
               setSortOrder(sortOrder === 'asc' && sortType === 'metatags.addedAt' ? 'desc' : 'asc');
