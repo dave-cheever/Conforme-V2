@@ -267,7 +267,7 @@ const AuditModal = ({ refetch }) => {
                 rounded="10px"
                 w="fit-content"
               >
-                Start Audit
+                Start {t('audit')}
               </Button>
             </Flex>
           </Stack>
