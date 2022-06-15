@@ -10,12 +10,6 @@ const DELETE_ANSWER = gql`
   }
 `;
 
-const DELETE_ACTION = gql`
-  mutation ($_id: ID!) {
-    deleteAction(_id: $_id)
-  }
-`;
-
 const WalkItemDeleteModal = ({
   answer,
   isOpen,
@@ -28,7 +22,6 @@ const WalkItemDeleteModal = ({
   refetchAnswers: () => void;
 }) => {
   const [deleteAnswer] = useMutation(DELETE_ANSWER);
-  const [deleteAction] = useMutation(DELETE_ACTION);
 
   return (
     <Modal isCentered isOpen={isOpen} onClose={onClose} size="sm">
@@ -59,11 +52,6 @@ const WalkItemDeleteModal = ({
                     _id: answer._id,
                   },
                 });
-                await Promise.all(
-                  (answer?.actions ?? []).map(async (action) => {
-                    await deleteAction({ variables: { _id: action._id } });
-                  }),
-                );
                 refetchAnswers();
                 onClose();
               }}
