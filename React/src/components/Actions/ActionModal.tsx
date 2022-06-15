@@ -18,7 +18,8 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { uniqBy } from 'lodash';
+import { t } from 'i18next';
+import { capitalize, uniqBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { priorities, toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -152,7 +153,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
             <Stack spacing={6}>
               <Stack spacing={4}>
                 <Text fontSize="smm" fontWeight="semibold">
-                  Belongs to
+                  {capitalize(t('question'))}
                 </Text>
                 <HStack
                   bg="actionModal.question.bg"

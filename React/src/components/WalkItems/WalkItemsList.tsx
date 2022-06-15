@@ -1,5 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { IAnswer } from '../../interfaces/IAnswer';
 import AdminTableHeader from '../Admin/AdminTableHeader';
@@ -64,7 +66,7 @@ const WalkItemsList = ({
             w="25%"
           />
           <AdminTableHeaderElement
-            label="Belongs to"
+            label={capitalize(t('area'))}
             onClick={() => {
               setSortType('audit.area.name');
               setSortOrder(sortOrder === 'asc' && sortType === 'audit.area.name' ? 'desc' : 'asc');
