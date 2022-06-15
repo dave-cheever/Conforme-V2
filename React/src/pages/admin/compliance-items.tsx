@@ -100,7 +100,7 @@ const ComplianceItemsAdmin = () => {
   }, [filtersValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (sortOrder) {
+    if (sortOrder === 'asc') {
       setSortedData(
         [...complianceItems].sort((a, b) => {
           if (sortType === 'regulatoryBody') return a.regulatoryBody?.name.toString().localeCompare(b.regulatoryBody?.name.toString());
@@ -171,7 +171,7 @@ const ComplianceItemsAdmin = () => {
           <ComplianceItemModal refetch={refetch} />
         )}
       </Modal>
-      <Header breadcrumbs={['Admin', pluralize(t('complianceItem')) ]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]} />
+      <Header breadcrumbs={['Admin', pluralize(t('complianceItem'))]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]} />
       <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
         <Box h={['calc(100% - 45px)', 'calc(100% - 35px)']} w="100%">
           <AdminTableHeader>
