@@ -98,6 +98,7 @@ const Datepicker = ({
                 </Text>
               ) : (
                 <ReactDatepicker
+                  calendarStartDay={1}
                   dateFormat="d MMM yyyy"
                   dateFormatCalendar="MMMM"
                   disabledKeyboardNavigation
