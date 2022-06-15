@@ -2,6 +2,8 @@ import { useCallback, useContext } from 'react';
 
 import { gql, useMutation } from '@apollo/client';
 import { useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { toastFailed, toastSuccess } from '../bootstrap/config';
 import { AdminContext } from '../contexts/AdminProvider';
@@ -16,7 +18,7 @@ const CREATE_AUDIT = gql`
   }
 `;
 
-const useAuditModal = (refetch = () => {}) => {
+const useAuditModal = (refetch = () => { }) => {
   const toast = useToast();
   const { setAdminModalState } = useContext(AdminContext);
   const { reset } = useAuditModalContext();
@@ -33,7 +35,7 @@ const useAuditModal = (refetch = () => {}) => {
       refetch();
       toast({
         ...toastSuccess,
-        description: `Audit ${audit.hasOwnProperty('_id') ? 'saved' : 'added'}`,
+        description: `${capitalize(t('audit'))} ${audit.hasOwnProperty('_id') ? 'saved' : 'added'}`,
       });
 
       return auditId;

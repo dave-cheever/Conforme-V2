@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import useNavigate from '../hooks/useNavigate';
 import { IAction } from '../interfaces/IAction';
@@ -308,8 +310,8 @@ const AuditProvider = ({ children }) => {
   useEffect(() => {
     if (!loading && error) {
       toast({
-        title: 'Audit not found',
-        description: 'Audit does not exist',
+        title: `${capitalize(t('audit'))} not found`,
+        description: `${capitalize(t('audit'))} does not exist`,
       });
       navigateTo('/');
     }
