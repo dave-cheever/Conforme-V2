@@ -1,12 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import {
-  Box,
-  Flex,
-  IconButton,
-  Image,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, IconButton, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { BlankPage, DownloadIcon, Trashcan } from '../../icons';
@@ -42,11 +35,7 @@ const DocumentUploaded = ({
   const { data } = useQuery(GET_DOCUMENT_DETAILS, {
     variables: { filesDetailsQuery: { ids: [document?.id] } },
   });
-  const {
-    onOpen: openDeleteModal,
-    onClose: handleDeleteModalClose,
-    isOpen: isDeleteModalOpen,
-  } = useDisclosure();
+  const { onOpen: openDeleteModal, onClose: handleDeleteModalClose, isOpen: isDeleteModalOpen } = useDisclosure();
   const documentDetails = (data?.filesDetails || [])[0];
 
   const remove = async () => {
@@ -62,10 +51,7 @@ const DocumentUploaded = ({
         handleClose={handleDeleteModalClose}
         handleDelete={remove}
         isOpen={isDeleteModalOpen}
-        message={
-          deleteModalMessage ||
-          `Are you sure you wish to delete ${document?.name}?`
-        }
+        message={deleteModalMessage || `Are you sure you wish to delete ${document?.name}?`}
       />
       <Flex
         align="center"
@@ -80,16 +66,7 @@ const DocumentUploaded = ({
         w="full"
       >
         <Flex align="center" justify="space-between" w="full">
-          <Box
-            bg="documentUploaded.thumbnailBg"
-            borderRadius="10px"
-            flexShrink={0}
-            fontSize="12px"
-            h="55px"
-            ml="5px"
-            mr={2}
-            w="55px"
-          >
+          <Box bg="documentUploaded.thumbnailBg" borderRadius="10px" flexShrink={0} fontSize="12px" h="55px" ml="5px" mr={2} w="55px">
             <Image
               fallback={
                 <Flex align="center" h="full">
@@ -101,28 +78,11 @@ const DocumentUploaded = ({
               src={documentDetails?.thumbnail}
             />
           </Box>
-          <Flex
-            direction="column"
-            fontSize="12px"
-            mr={2}
-            overflow="hidden"
-            textOverflow="ellipsis"
-          >
-            <Text
-              cursor="pointer"
-              fontWeight="700"
-              noOfLines={1}
-              onClick={() => {
-                if (documentDetails?.preview)
-                  window.open(documentDetails?.preview);
-              }}
-              textOverflow="ellipsis"
-            >
+          <Flex direction="column" fontSize="12px" mr={2} overflow="hidden" textOverflow="ellipsis">
+            <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
               {document?.name}
             </Text>
-            <Flex opacity="0.6">
-              Uploaded {document && format(new Date(document.addedAt), 'Pp')}
-            </Flex>
+            <Flex opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
           </Flex>
           <Flex>
             {downloadable && (
