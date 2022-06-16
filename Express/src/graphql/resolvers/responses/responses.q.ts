@@ -296,7 +296,7 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
                 organization,
               });
             } catch (e) {
-              console.log(`Error occured for ${response._id}: ${e}`);
+              console.log(`Error occured for response with ID ${response._id}: ${e}`);
             }
           },
         ),

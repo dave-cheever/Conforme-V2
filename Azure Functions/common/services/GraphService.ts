@@ -98,7 +98,7 @@ export class GraphService {
     organization
   }: {
     from: string;
-    emailType: number;
+    emailType: string;
     emailData: any;
     to: string[];
     organization: IOrganization;
@@ -129,7 +129,7 @@ export class GraphService {
       const sent = await client.post(`users/${from}/sendMail`, options);
       return sent.status === 202;
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       console.log(`Failed to send '${emailType}' email to '${to.join(', ')}'`);
     }
   }

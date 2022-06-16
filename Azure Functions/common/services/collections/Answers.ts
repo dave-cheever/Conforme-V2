@@ -24,10 +24,11 @@ const answersSchema = new Schema<IAnswer, IAnswerModel>({
     of: Boolean
   },
   scope: {
-    component: {
+    module: {
       type: String,
       enum: ['audits', 'tracker']
     },
+    moduleId: String,
     type: {
       type: String
     },

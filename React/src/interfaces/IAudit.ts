@@ -3,6 +3,7 @@ import { IBase } from './IBase';
 import { IBusinessUnit } from './IBusinessUnit';
 import { ILocation } from './ILocation';
 import { IQuestion } from './IQuestion';
+import { IScope } from './IScope';
 import { IUser } from './IUser';
 import { TAuditStatus } from './TAuditStatus';
 
@@ -11,12 +12,13 @@ export interface IAudit extends IBase {
   reference: string;
   status: TAuditStatus;
   dueDate: Date;
-  submittedDate?: Date;
+  completedDate?: Date;
   walkType: 'physical' | 'virtual';
   siteId?: string;
   areaId?: string;
   auditorId: string;
   participantsIds: string[];
+  scope: IScope;
 
   // Additional fields
   auditType?: IAuditType;

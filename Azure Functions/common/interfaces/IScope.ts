@@ -1,7 +1,8 @@
 import { TModuleType } from './TModuleType';
 
 export interface IScope {
-  component: TModuleType;
+  module?: TModuleType;
+  moduleId?: string;
   type?: string;
   _id?: string;
 }

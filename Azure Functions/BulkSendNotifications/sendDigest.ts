@@ -1,21 +1,20 @@
+import IConfig from '../common/interfaces/IConfig';
 import Audits from '../common/services/collections/Audits';
 import Organizations from '../common/services/collections/Organizations';
 import Settings from '../common/services/collections/Settings';
 import { GraphService } from '../common/services/GraphService';
-import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
+import { AUDITS_WEEKLY_SUMMARY, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 import { getTemplateDetails } from '../common/utils';
 
 const sendDigest = async (
   {
     since,
     to,
-    emailType
   }: {
     since: Date;
     to: Date;
-    emailType: number;
   },
-  config
+  config: IConfig
 ) => {
   const audits = await Audits.aggregate([
     {
@@ -34,19 +33,19 @@ const sendDigest = async (
   ]);
 
   const organizationsIds: string[] = audits.map(({ _id }) => _id);
-  const { templateSettingName, emailSettingName } = getTemplateDetails(emailType);
+  const { templateSettingName, emailSettingName } = getTemplateDetails(AUDITS_WEEKLY_SUMMARY);
   const templates = await Settings.customFindByName(templateSettingName, organizationsIds);
 
   templates.forEach(async template => {
     try {
       const organization = await Organizations.customFindById(template.organizationId);
 
-      const subject = getEmailSubject(emailType);
+      const subject = getEmailSubject(AUDITS_WEEKLY_SUMMARY);
 
       const audit = audits.find(({ _id }) => _id === template.organizationId);
 
       const body = await getEmailTemplate({
-        emailType,
+        emailType: AUDITS_WEEKLY_SUMMARY,
         emailData: {
           numberOfAudits: audit?.numberOfAudits
         },

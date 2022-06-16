@@ -1,5 +1,4 @@
 import { Comments, Responses } from 'app-models';
-import { EmailService } from 'app-services';
 import { isPermitted, mentionParser } from 'app-utils';
 
 const createComment = async (
@@ -32,11 +31,11 @@ const createComment = async (
     const mentionedUserIds = mentionParser(newComment.text);
 
     if (mentionedUserIds?.length > 0) {
-      EmailService.sendMentionedEmail({
-        userIds: mentionedUserIds,
-        organization,
-        message: newComment.text,
-      });
+      // EmailService.sendMentionedEmail({
+      //   userIds: mentionedUserIds,
+      //   organization,
+      //   message: newComment.text,
+      // });
     }
 
     return createdCommment;

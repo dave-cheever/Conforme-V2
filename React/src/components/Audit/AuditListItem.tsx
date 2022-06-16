@@ -114,7 +114,11 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
         </Box>
         <Flex w="12%">
           <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
-            {audit?.submittedDate ? format(new Date(audit?.submittedDate), 'MMM-yy') : <Flex fontStyle="italic">No submitted date</Flex>}
+            {audit?.status === 'completed' && audit?.completedDate ? (
+              format(new Date(audit?.completedDate), 'MMM-yy')
+            ) : (
+              <Flex fontStyle="italic">No submitted date</Flex>
+            )}
           </Flex>
         </Flex>
       </Flex>

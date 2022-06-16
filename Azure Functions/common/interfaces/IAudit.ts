@@ -6,6 +6,7 @@ export interface IAudit extends IBase {
   reference: string;
   status: 'inProgress' | 'completed';
   dueDate: Date;
+  completedDate?: Date;
   walkType: 'physical' | 'virtual';
   siteId?: string;
   areaId?: string;

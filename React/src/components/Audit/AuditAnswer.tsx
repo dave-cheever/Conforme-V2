@@ -19,7 +19,7 @@ import AuditActionForm from './AuditActionForm';
 
 const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuestionWithAnswer>; handleClose: () => void }) => {
   const toast = useToast();
-  const { user } = useAppContext();
+  const { user, module } = useAppContext();
   const {
     audit,
     questionsCategories,
@@ -88,6 +88,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                 type: question.type,
                 questionsCategoryId: question.questionsCategoryId,
                 scope: {
+                  moduleId: module?._id,
                   type: 'audit',
                   _id: audit?._id,
                 },
@@ -105,6 +106,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
               ...answerData,
               questionId,
               scope: {
+                moduleId: module?._id,
                 type: 'audit',
                 _id: audit?._id,
               },

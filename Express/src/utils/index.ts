@@ -1,6 +1,6 @@
 import calculateAudits from './calculateAudits';
 import { priorities } from './constants';
-import { emailPreview, getEmailSubject, getEmailTemplate, MENTION_EMAIL } from './email';
+import { emailPreview } from './email';
 import {
   CORSConfig,
   doesPathExist,
@@ -44,11 +44,8 @@ export {
   checkActionPermission,
   checkAnswerPermission,
   checkQuestionPermission,
-  emailPreview,
-  getEmailTemplate,
-  getEmailSubject,
-  MENTION_EMAIL,
   CORSConfig,
+  emailPreview,
   getProtocol,
   getClientUrl,
   getDomain,

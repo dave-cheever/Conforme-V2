@@ -7,6 +7,7 @@ import { capitalize } from 'lodash';
 
 import { toastFailed, toastSuccess } from '../bootstrap/config';
 import { AdminContext } from '../contexts/AdminProvider';
+import { useAppContext } from '../contexts/AppProvider';
 import { useAuditModalContext } from '../contexts/AuditModalProvider';
 import { IAudit } from '../interfaces/IAudit';
 
@@ -20,6 +21,7 @@ const CREATE_AUDIT = gql`
 
 const useAuditModal = (refetch = () => { }) => {
   const toast = useToast();
+  const { module } = useAppContext();
   const { setAdminModalState } = useContext(AdminContext);
   const { reset } = useAuditModalContext();
   const [create] = useMutation(CREATE_AUDIT);
@@ -28,7 +30,16 @@ const useAuditModal = (refetch = () => { }) => {
 
   const saveAudit = async (audit: Partial<IAudit>) => {
     try {
-      const { data } = await create({ variables: { audit } });
+      const { data } = await create({
+        variables: {
+          audit: {
+            ...audit,
+            scope: {
+              moduleId: module?._id,
+            },
+          },
+        },
+      });
       const auditId = data.createAudit._id;
       reset({ ...audit, _id: auditId });
 

@@ -12,7 +12,7 @@ const context = ({ req, res }) => {
   // Throws an error if session is not valid
   const authorize = async (): Promise<IUser> => {
     const { user } = req;
-    if (!user) 
+    if (!user)
       throw new AuthenticationError('Invalid session');
 
     // Check organization licence
@@ -30,9 +30,9 @@ const context = ({ req, res }) => {
         new Date(latestOrganization.licenceExpirationDate),
         new Date(),
       );
-      if (!isLicenceValid) 
+      if (!isLicenceValid)
         throw new AuthenticationError("Organization's licence expired");
-      
+
       req.session.passport.licenceLastChecked = new Date();
       req.session.organization = sessionizeOrganization(latestOrganization);
     }

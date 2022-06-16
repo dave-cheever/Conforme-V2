@@ -1,4 +1,4 @@
-import { TModuleType } from 'app-interfaces';
+import { TModuleType } from "./TModuleType";
 
 export interface IModule {
   _id: string;

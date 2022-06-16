@@ -6,9 +6,7 @@ import multer from 'multer';
 import { IOrganization } from 'app-interfaces';
 import { Organizations } from 'app-models';
 import { logger } from 'app-shared';
-import { getEmailSubject, getEmailTemplate, getProtocol } from 'app-utils';
-
-// import { getEmailSubject, getEmailTemplate } from 'app-utils';
+import { getProtocol } from 'app-utils';
 
 const inMemoryStorage = multer.memoryStorage();
 const inMemoryStrategy = multer({ storage: inMemoryStorage });
@@ -186,7 +184,9 @@ const getLineManagerId = async ({ userId, organization }: { userId: string; orga
     const client = await getClient(organization._id);
     const res = await client.get(`users/${userId}/manager`);
     return res.data.id;
-  } catch (e: any) {}
+  } catch (e: any) {
+    console.log(`Line manager not found for user with ID ${userId}`);
+  }
 };
 
 const addMemberToAccessGroup = async ({
@@ -345,7 +345,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
       // Delete old folder if empty
       if (tempFolderDetails.data.folder.childCount === 0)
         await client.delete(`sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`);
-    } catch (deleteErr: any) {} // do not do anything if folder was already removed
+    } catch (deleteErr: any) { } // do not do anything if folder was already removed
 
     return true;
   } catch (e: any) {
@@ -372,46 +372,6 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
   }
 };
 
-const sendEmail = async ({
-  emailType,
-  organization,
-  emailData,
-  from,
-  to,
-}: {
-  emailType: number;
-  organization: IOrganization;
-  emailData: any;
-  from: string;
-  to: string[];
-}) => {
-  try {
-    const client = await getClient(organization._id);
-    if (!to) return logger.error('Graph error: Wrong Email configuration');
-
-    const toRecipients = to.map((address) => ({
-      emailAddress: {
-        address,
-      },
-    }));
-
-    const options = {
-      message: {
-        subject: getEmailSubject(emailType, emailData),
-        body: {
-          contentType: 'HTML',
-          content: await getEmailTemplate(emailType, emailData, organization),
-        },
-        toRecipients,
-      },
-    };
-    const sent = await client.post(`users/${from}/sendMail`, options);
-    return sent.status === 202;
-  } catch (error) {
-    return false;
-  }
-};
-
 export default {
   inMemoryStrategy,
   getUserData,
@@ -425,5 +385,4 @@ export default {
   moveDocument,
   deleteDocument,
   getFileDetails,
-  sendEmail,
 };

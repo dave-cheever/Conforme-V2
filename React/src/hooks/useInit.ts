@@ -47,6 +47,7 @@ const ORGANIZATION = gql`
       bgImageTabletUrl
       theme
       modules {
+        _id
         type
         name
         path

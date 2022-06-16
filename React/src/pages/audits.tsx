@@ -32,7 +32,7 @@ const GET_AUDITS = gql`
       _id
       walkType
       dueDate
-      submittedDate
+      completedDate
       status
       auditorId
       numberOfActions

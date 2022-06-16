@@ -24,7 +24,7 @@ export const auditsTypeDefs = `
     reference: String!
     status: String!
     dueDate: Date!
-    submittedDate: Date
+    completedDate: Date
     auditType: AuditType!
     siteId: ID
     site: Location
@@ -37,6 +37,7 @@ export const auditsTypeDefs = `
     metatags: Metatags
     questions: [Question]
     numberOfActions: Int
+    scope: Scope!
   }
 
   input AuditUsersInput {
@@ -61,6 +62,7 @@ export const auditsTypeDefs = `
     areaId: ID
     auditorId: ID!
     participantsIds: [ID]
+    scope: ScopeInput!
   }
   
   input AuditModifyInput {

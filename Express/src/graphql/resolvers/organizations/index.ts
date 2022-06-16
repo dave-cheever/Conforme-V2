@@ -9,6 +9,7 @@ const organizationsResolvers = {
 
 export const organizationsTypeDefs = `
   type Module {
+    _id: ID!
     type: String!
     name: String!
     path: String!

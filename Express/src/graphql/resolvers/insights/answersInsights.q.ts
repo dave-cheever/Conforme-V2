@@ -92,7 +92,7 @@ const answersInsights = async (_, { answersInsightsQuery }, { authorize, organiz
                   }),
                 });
               } catch (e) {
-                console.error(`Error occured for ${user?._id}: ${e}`);
+                console.error(`Error occured in answers insights for user with ID ${user?._id}: ${e}`);
                 reject();
               }
             }),

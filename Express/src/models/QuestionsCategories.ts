@@ -26,10 +26,11 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
     },
   ],
   scope: {
-    component: {
+    module: {
       type: String,
       enum: ['audits', 'tracker'],
     },
+    moduleId: String,
     type: {
       type: String,
     },

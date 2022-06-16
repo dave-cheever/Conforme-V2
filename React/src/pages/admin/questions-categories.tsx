@@ -35,7 +35,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
         value
       }
       scope {
-        component
+        module
       }
     }
   }
@@ -70,7 +70,7 @@ const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } = 
   icon: '',
   selectedOption: '',
   scope: {
-    component: 'audits',
+    module: 'audits',
   },
 };
 

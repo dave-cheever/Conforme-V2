@@ -12,6 +12,7 @@ import { IAnswer } from '../interfaces/IAnswer';
 import { IAuditContext } from '../interfaces/IAuditContext';
 import { IQuestion } from '../interfaces/IQuestion';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
+import { useAppContext } from './AppProvider';
 
 export const AuditContext = createContext({} as IAuditContext);
 
@@ -99,7 +100,8 @@ const GET_AUDIT_DATA = gql`
       }
       questionsCategoryId
       scope {
-        component
+        module
+        moduleId
         type
         _id
       }
@@ -131,7 +133,8 @@ const GET_AUDIT_DATA = gql`
       }
       questionsCategoryId
       scope {
-        component
+        module
+        moduleId
         type
         _id
       }
@@ -227,6 +230,7 @@ const AuditProvider = ({ children }) => {
   const toast = useToast();
   const { id }: { id: string } = useParams();
   const { navigateTo } = useNavigate();
+  const { module } = useAppContext();
 
   const [updateAudit] = useMutation(UPDATE_AUDIT);
   const [submitAudit] = useMutation(SUBMIT_AUDIT);
@@ -269,7 +273,7 @@ const AuditProvider = ({ children }) => {
       },
       auditTypeQuestionQuery: {
         questionsCategoriesIds: auditType?.sections.map(({ _id }) => _id),
-        scope: { component: 'audits' },
+        scope: { module: 'audits' },
       },
       auditCustomQuestionQuery: { scope: { type: 'audit', _id: audit?._id } },
     },
@@ -333,8 +337,9 @@ const AuditProvider = ({ children }) => {
             done: false,
             priority: action.priority,
             description: action.description,
-            assigneeId: action?.assigneeId,
+            assigneeId: action.assigneeId,
             scope: {
+              moduleId: module?._id,
               type: 'answer',
               _id: answerId,
             },
@@ -353,7 +358,7 @@ const AuditProvider = ({ children }) => {
             dueDate: action.dueDate,
             priority: action.priority,
             description: action.description,
-            assigneeId: action?.assigneeId,
+            assigneeId: action.assigneeId,
           },
         },
       });

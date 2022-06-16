@@ -15,7 +15,7 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
     enum: ['upcoming', 'completed', 'missed'],
   },
   dueDate: Date,
-  submittedDate: Date,
+  completedDate: Date,
   walkType: {
     type: String,
     enum: ['physical', 'virtual'],
@@ -24,6 +24,17 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
   areaId: String,
   auditorId: String,
   participantsIds: [String],
+  scope: {
+    module: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    moduleId: String,
+    type: {
+      type: String,
+    },
+    _id: String,
+  },
   organizationId: String,
   metatags: {
     addedAt: Date,

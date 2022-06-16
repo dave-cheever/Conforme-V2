@@ -160,7 +160,7 @@ const ComplianceItems = () => {
       }
       if (
         !value.value ||
-        (Array.isArray(value.value) && value.value.length === 0) ||
+        (typeof value.value === 'object' && Object.keys(value.value).length === 0) ||
         (key === 'usersIds' &&
           value.value.responsibleIds.length === 0 &&
           value.value.accountableIds.length === 0 &&

@@ -382,7 +382,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
             organization,
           });
         } catch (e) {
-          console.log(`Error occured for ${location._id}: ${e}`);
+          console.log(`Error occured for location with ID ${location._id}: ${e}`);
         }
       }
     }

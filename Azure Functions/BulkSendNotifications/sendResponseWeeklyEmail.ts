@@ -9,7 +9,7 @@ import {
 } from "../common/services/notifications";
 import { getTemplateDetails } from "../common/utils";
 
-const sendResponseWeeklyEmail = async (emailType: number, config) => {
+const sendResponseWeeklyEmail = async (emailType: string, config) => {
   const organizations = await Organizations.aggregate([
     {
       $match: {

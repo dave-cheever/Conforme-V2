@@ -1,7 +1,7 @@
 import { IBase } from "./IBase";
 
 export interface INotification extends IBase {
-  emailType: number;
+  emailType: string;
   emailData: {
     [key: string]: string;
   };

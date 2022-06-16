@@ -111,7 +111,8 @@ const typeDefs = gql`
   }
   
   type Scope {
-    component: String
+    module: String
+    moduleId: String
     type: String
     _id: String
   }
@@ -128,7 +129,8 @@ const typeDefs = gql`
   }
   
   input ScopeInput {
-    component: String
+    module: String
+    moduleId: String
     type: String
     _id: String
   }

@@ -5,6 +5,8 @@ import { Audits, AuditTypes, Organizations } from 'app-models';
 import { getNextRenewalDate } from 'app-utils';
 
 const shouldCalculate = (startDate: Date, frequency: TFrequency) => {
+  // If today is start day then calculate
+  return true;
   if (frequency === 'Monthly') return getDate(new Date()) === getDate(startDate);
 };
 
@@ -26,7 +28,7 @@ const calculateAudits = async () => {
           .forEach(async (audit) => {
             await Audits.customUpdateOne(
               { _id: audit._id },
-              { ...audit, status: 'missed' },
+              { ...audit, status: 'missed', completedDate: new Date() },
               audit.metatags.updatedBy || audit.metatags.addedBy,
               organization._id,
             );
@@ -34,10 +36,10 @@ const calculateAudits = async () => {
 
         // Create upcoming audits
         const upcomingAudits = audits
-          // Get only completed audits
-          .filter(({ status }) => status === 'completed')
+          // Get upcoming and completed audits
+          .filter(({ status }) => status !== 'missed')
           // Sort by submission date to get the latest
-          .sort(({ submittedDate: a }, { submittedDate: b }) => new Date(b!).getTime() - new Date(a!).getTime())
+          .sort(({ completedDate: a }, { completedDate: b }) => new Date(b!).getTime() - new Date(a!).getTime())
           // Get the first one per area
           .reduce((acc, item) => {
             if (!acc.some((audit) => audit.areaId === item.areaId)) acc.push(item);

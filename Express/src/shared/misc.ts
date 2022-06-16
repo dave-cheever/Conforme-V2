@@ -8,9 +8,11 @@ export const pErr = (err: Error) => {
 
 export const getRandomInt = () => Math.floor(Math.random() * 1_000_000_000_000);
 
-export const MENTION_EMAIL = 0;
-export const AUDITS_WEEKLY_DIGEST_EMAIL = 1;
-export const AUDITS_STATUS_REMINDER = 2;
-export const AUDITS_ACTION_ASSIGNED = 3;
-export const AUDITS_ACTION_COMPLETED = 4;
-export const AUDITS_ACTION_OVERDUE = 5;
+export const ACTION_ASSIGNED = 'ACTION_ASSIGNED';
+export const ACTION_COMPLETED = 'ACTION_COMPLETED';
+export const ACTION_OVERDUE = 'ACTION_OVERDUE';
+export const AUDIT_MISSED = 'AUDIT_MISSED';
+export const AUDITS_WEEKLY_SUMMARY = 'AUDITS_WEEKLY_SUMMARY';
+export const MENTION_NOTIFICATION = 'MENTION_NOTIFICATION';
+export const TRACKER_REMINDER = 'TRACKER_REMINDER';
+export const TRACKER_WEEKLY_SUMMARY = 'TRACKER_WEEKLY_SUMMARY';

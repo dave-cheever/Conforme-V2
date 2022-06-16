@@ -174,7 +174,7 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
                   }),
                 });
               } catch (e) {
-                console.log(`Error occured for ${answer._id}: ${e}`);
+                console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
                 reject();
               }
             }),

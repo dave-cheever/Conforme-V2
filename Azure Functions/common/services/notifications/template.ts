@@ -136,11 +136,9 @@ const getSkeleton = (body: string, organization: IOrganization) => `
           <tr>
             <td style="width:108px;">
 
-      <a href="${getProtocol()}${
-  organization.domain
-}" rel="noreferrer noopener"><img height="20px" src="${
-  organization.logoUrl
-}" style="margin-top:20px;margin-bottom:20px;border:0;color:#FC5960;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="108"></a>
+      <a href="${getProtocol()}${organization.domain
+  }" rel="noreferrer noopener"><img height="20px" src="${organization.logoUrl
+  }" style="margin-top:20px;margin-bottom:20px;border:0;color:#FC5960;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="108"></a>
     
             </td>
           </tr>
@@ -348,11 +346,9 @@ const getSkeleton = (body: string, organization: IOrganization) => `
               <td align="center" style="font-size:0px;padding:5px 5px 5px 5px;word-break:break-word;">
                 
       <div style="font-family: Arial, Helvetica, sans-serif;font-size:11px;line-height:1.5;text-align:center;color:#000000;margin-top:20px;">
-        <p style="font-size: 11px;"><span style="color: #73787b;"><a href="${getProtocol()}${
-  organization.domain
-}/termsandconditions" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Terms of Use</span></a>&#xA0; &#xA0; &#xA0; <a href="${getProtocol()}${
-  organization.domain
-}/help" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Help Centre</span></span></a></p>
+        <p style="font-size: 11px;"><span style="color: #73787b;"><a href="${getProtocol()}${organization.domain
+  }/termsandconditions" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Terms of Use</span></a>&#xA0; &#xA0; &#xA0; <a href="${getProtocol()}${organization.domain
+  }/help" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Help Centre</span></span></a></p>
       </div>
     
               </td>
@@ -362,7 +358,7 @@ const getSkeleton = (body: string, organization: IOrganization) => `
               <td align="center" style="font-size:0px;padding:5px 5px 5px 5px;word-break:break-word;">
                 
       <div style="font-family: Arial, Helvetica, sans-serif;font-size:11px;line-height:1.5;text-align:center;color:#000000;">
-        <p><span style="color: #73787b;">Cielo Costa</span></p>
+        <p><span style="color: #73787b;">${organization.name}</span></p>
       </div>
     
               </td>

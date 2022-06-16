@@ -32,10 +32,10 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (actionQueryInput?.scope?.component) {
+    if (actionQueryInput?.scope?.module) {
       pipeline.push({
         $match: {
-          'scope.component': actionQueryInput.scope.component,
+          'scope.module': actionQueryInput.scope.module,
         },
       });
     }
@@ -219,7 +219,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
                   }),
                 });
               } catch (e) {
-                console.log(`Error occured for ${action._id}: ${e}`);
+                console.log(`Error occured for action with ID ${action._id}: ${e}`);
                 reject();
               }
             }),

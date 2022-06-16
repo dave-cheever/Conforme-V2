@@ -13,7 +13,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   bgImageUrl: String,
   bgImageTabletUrl: String,
   theme: Object,
-  addons: Object,
+  modules: Object,
   allowedTenantsIds: [String],
   accessGroupId: String,
   readersGroupId: String,

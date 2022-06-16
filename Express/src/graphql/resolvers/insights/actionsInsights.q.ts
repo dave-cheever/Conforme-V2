@@ -145,7 +145,7 @@ const actionsInsights = async (_, __, { authorize, organization }, info: GraphQL
                   }),
                 });
               } catch (e) {
-                console.error(`Error occured for ${user?._id}: ${e}`);
+                console.error(`Error occured in actions insights for user with ID ${user?._id}: ${e}`);
                 reject();
               }
             }),

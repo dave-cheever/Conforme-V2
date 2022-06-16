@@ -10,4 +10,7 @@ export default interface IConfig {
   MongoConnectionString: string;
   EmailSender: string;
   StorageConnectionString: string;
+  ScheduledStartHour: number;
+  ScheduledEndHour: number;
+  ScheduledFrequency: number;
 }

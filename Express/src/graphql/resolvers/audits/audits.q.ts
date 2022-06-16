@@ -216,7 +216,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
                   }),
                 });
               } catch (e) {
-                console.log(`Error occured for ${audit._id}: ${e}`);
+                console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
                 reject();
               }
             }),
@@ -261,7 +261,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
                   ),
                 });
               } catch (e) {
-                console.log(`Error occured for ${audit._id}: ${e}`);
+                console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
                 reject();
               }
             }),

@@ -18,7 +18,10 @@ export class ConfigService {
       GraphTokenEndpoint: process.env.TOKEN_ENDPOINT,
       MongoConnectionString: process.env.MONGO_CONNECTION_STRING,
       EmailSender: process.env.EMAIL_SENDER,
-      StorageConnectionString: process.env.AzureWebJobsStorage
+      StorageConnectionString: process.env.AzureWebJobsStorage,
+      ScheduledStartHour: Number(process.env.SCHEDULED_NOTIFICATIONS_START_HOUR || '7'),
+      ScheduledEndHour: Number(process.env.SCHEDULED_NOTIFICATIONS_END_HOUR || '20'),
+      ScheduledFrequency: Number(process.env.SCHEDULED_NOTIFICATIONS_FREQUENCY || '3'),
     };
 
     // 0 = disconnected

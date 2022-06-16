@@ -410,7 +410,7 @@ const businessUnits = async (
                 });
                 resolve();
               } catch (e) {
-                console.log(`Error occured for ${businessUnit._id}: ${e}`);
+                console.log(`Error occured for business unit with ID ${businessUnit._id}: ${e}`);
                 reject();
               }
             }),

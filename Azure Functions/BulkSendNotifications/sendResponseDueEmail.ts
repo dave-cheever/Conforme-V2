@@ -9,7 +9,7 @@ import {
 } from "../common/services/notifications";
 import { getDaysToDueDate, getTemplateDetails } from "../common/utils";
 
-const sendResponseDueEmail = async (emailType: number, config) => {
+const sendResponseDueEmail = async (emailType: string, config) => {
   const organizations = await Organizations.aggregate([
     {
       $match: {

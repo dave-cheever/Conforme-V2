@@ -13,6 +13,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   theme: Object,
   modules: [
     {
+      _id: String,
       type: {
         type: String,
         enum: ['audits', 'tracker'],

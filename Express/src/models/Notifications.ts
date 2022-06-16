@@ -7,7 +7,7 @@ import { genMetatags } from '../utils';
 
 const notificationsSchema = new Schema<INotification, INotificationModel>({
   _id: String,
-  emailType: Number,
+  emailType: String,
   emailData: Schema.Types.Mixed,
   to: [String],
   status: {

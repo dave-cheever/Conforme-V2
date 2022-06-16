@@ -22,10 +22,11 @@ const actionsSchema = new Schema<IAction, IActionModel>({
     }
   ],
   scope: {
-    component: {
+    module: {
       type: String,
       enum: ['audits', 'tracker']
     },
+    moduleId: String,
     type: {
       type: String
     },
@@ -45,12 +46,13 @@ actionsSchema.statics.customFind = async function (
   selector: any = {},
   organizationId: string
 ): Promise<IAction[]> {
-  const answers = await this.find({
+  console.log('selector', selector);
+  const actions = await this.find({
     ...selector,
     organizationId,
     'metatags.removedAt': { $eq: null }
   }).lean();
-  return answers;
+  return actions;
 };
 
 actionsSchema.statics.customFindOne = async function (

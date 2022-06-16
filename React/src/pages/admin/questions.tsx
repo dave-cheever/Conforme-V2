@@ -29,7 +29,7 @@ const GET_QUESTIONS = gql`
       positiveValue
       negativeValue
       scope {
-        component
+        module
       }
     }
     questionsCategories {
@@ -67,7 +67,7 @@ const defaultValues: Partial<IQuestion<TQuestionValue>> = {
   positiveValue: null,
   negativeValue: null,
   scope: {
-    component: 'audits',
+    module: 'audits',
   },
 };
 
@@ -78,7 +78,7 @@ const Questions = () => {
     variables: {
       questionQuery: {
         scope: {
-          component: 'audits',
+          module: 'audits',
         },
       },
     },

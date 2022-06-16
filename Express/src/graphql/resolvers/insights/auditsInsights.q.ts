@@ -145,7 +145,7 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
                   }),
                 });
               } catch (e) {
-                console.error(`Error occured for ${auditor?._id}: ${e}`);
+                console.error(`Error occured in audits insights for user with ID ${auditor?._id}: ${e}`);
                 reject();
               }
             }),

@@ -24,10 +24,11 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   positiveValue: Schema.Types.Mixed,
   negativeValue: Schema.Types.Mixed,
   scope: {
-    component: {
+    module: {
       type: String,
       enum: ['audits', 'tracker'],
     },
+    moduleId: String,
     type: {
       type: String,
     },
