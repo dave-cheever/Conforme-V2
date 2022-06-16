@@ -44,6 +44,10 @@ export const useAuditModalContext = () => {
 const AuditModalProvider = ({ children }) => {
   const { user } = useAppContext();
   const { data, refetch } = useQuery(GET_FORM_DATA);
+  const auditTypes = data?.auditTypes || [];
+  const locations = data?.locations || [];
+  const businessUnits = data?.businessUnits || [];
+  const users = data?.users || [];
 
   const defaultValues: Partial<IAudit> = {
     auditorId: user?._id,
@@ -83,10 +87,10 @@ const AuditModalProvider = ({ children }) => {
       resetField,
       refetch,
       audit,
-      auditTypes: data?.auditTypes || [],
-      locations: data?.locations || [],
-      businessUnits: data?.businessUnits || [],
-      users: data?.users || [],
+      auditTypes,
+      locations,
+      businessUnits,
+      users,
     }),
     [control, errors, audit, data?.auditTypes, data],
   ) as IAuditModalContext;

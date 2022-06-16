@@ -142,19 +142,17 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
               </Flex>
             ) : data?.searchUsers.length > 0 ? (
               <VStack alignItems="flex-start" h="full" mb="20px" overflow="auto" spacing="10px">
-                {selection === 'auditor' && selectedAuditor && <>{auditTeamUser(selectedAuditor as IUser)}</>}
+                {selection === 'auditor' && selectedAuditor && auditTeamUser(selectedAuditor as IUser)}
                 {selection === 'participants' &&
                   selectedParticipants?.length > 0 &&
-                  selectedParticipants.map((participant) => <>{auditTeamUser(participant!)}</>)}
+                  selectedParticipants.map((participant) => auditTeamUser(participant!))}
                 {data?.searchUsers
                   .filter((user) =>
                     selection === 'participants'
                       ? !selectedParticipants.find((participant) => participant?._id === user._id)
                       : user._id !== selectedAuditor?._id,
                   )
-                  .map((user) => (
-                    <>{auditTeamUser(user)}</>
-                  ))}
+                  .map((user) => auditTeamUser(user))}
               </VStack>
             ) : (
               searchQuery && (

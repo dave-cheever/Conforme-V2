@@ -45,9 +45,8 @@ const AuditModal = ({ refetch }) => {
 
   useEffect(() => {
     if (adminModalState !== 'closed' && auditTypes.length === 1) setValue('auditTypeId', auditTypes[0]._id);
-
     return () => reset({ ...audit });
-  }, [adminModalState]);
+  }, [adminModalState, JSON.stringify(auditTypes)]);
 
   const handlePrimaryButtonClick = async () => {
     if (!audit.auditTypeId) {
