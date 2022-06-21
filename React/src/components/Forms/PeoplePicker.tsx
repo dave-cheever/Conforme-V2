@@ -26,6 +26,8 @@ const SEARCH_USERS = gql`
       firstName
       lastName
       displayName
+      email
+      jobTitle
     }
   }
 `;
@@ -153,7 +155,7 @@ const PeoplePicker = ({
                 bg="peoplePicker.bg"
                 boxShadow="lg"
                 direction="column"
-                maxH="50vh"
+                maxH="48vh"
                 overflowY="auto"
                 position="absolute"
                 rounded="lg"
@@ -185,14 +187,19 @@ const PeoplePicker = ({
                         onChange({ target: { name, value: user._id } });
                       }}
                       pl={3}
+                      pt="1"
                       role="group"
                       w="full"
+                      mt="10px"
                     >
-                      <Box overflowX="hidden" title={user.displayName}>
-                        <Text fontSize={['sm', 'md']} overflowX="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-                          {user.displayName}
+                      <Flex direction="column" ml="2" overflowX="hidden">
+                        <Text color="black" fontSize="smm" fontWeight="semibold">
+                          {user?.displayName} - {user.jobTitle || 'No job title'}
                         </Text>
-                      </Box>
+                        <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px">
+                          {user?.email}
+                        </Box>
+                      </Flex>
                     </Flex>
                   ))
                 ) : (
