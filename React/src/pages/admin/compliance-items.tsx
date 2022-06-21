@@ -84,10 +84,10 @@ const ComplianceItemsAdmin = () => {
         !value.value ||
         (Array.isArray(value.value) && value.value.length === 0) ||
         (key === 'usersIds' &&
-          value.value.responsibleIds.length === 0 &&
-          value.value.accountableIds.length === 0 &&
-          value.value.contributorIds.length === 0 &&
-          value.value.followerIds.length === 0)
+          value.value.responsibleIds?.length === 0 &&
+          value.value.accountableIds?.length === 0 &&
+          value.value.contributorIds?.length === 0 &&
+          value.value.followerIds?.length === 0)
       )
         return acc;
 

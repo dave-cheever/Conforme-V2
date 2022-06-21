@@ -36,6 +36,7 @@ const NavigationTop = () => {
       module?.type === 'tracker' &&
       [
         `/${module?.path}/`,
+        `/${module?.path}/dashboard`,
         `/${module?.path}/admin/users`,
         `/${module?.path}/admin/audit-log`,
         `/${module?.path}/admin/settings`,
