@@ -23,29 +23,19 @@ const DescriptionText = () => {
     </Button>
   );
 
+  if (!response?.complianceItem?.description) return null;
   return (
-    <Box
-      color="complianceItemResponse.textColor"
-      fontSize="14px"
-      lineHeight="20px"
-      mt="5"
-    >
-      {response && response?.complianceItem?.description?.length < 300 ? (
-        <Box whiteSpace="break-spaces">
-          {response?.complianceItem?.description}
-        </Box>
+    <Box color="complianceItemResponse.textColor" fontSize="14px" lineHeight="20px" mt="5">
+      {response.complianceItem.description.length < 300 ? (
+        <Box whiteSpace="break-spaces">{response?.complianceItem?.description}</Box>
       ) : !expandDescription ? (
         <>
-          <Box whiteSpace="break-spaces">
-            {response?.complianceItem?.description?.slice(0, 297)}...
-          </Box>
+          <Box whiteSpace="break-spaces">{response.complianceItem.description.slice(0, 297)}...</Box>
           {expandButton('more')}
         </>
       ) : (
         <>
-          <Box whiteSpace="break-spaces">
-            {response?.complianceItem?.description}
-          </Box>
+          <Box whiteSpace="break-spaces">{response.complianceItem.description}</Box>
           {expandButton('less')}
         </>
       )}

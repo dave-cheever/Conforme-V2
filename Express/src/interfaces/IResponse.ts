@@ -6,7 +6,7 @@ import {
   IDocument,
   ITrackerQuestion,
   IUser,
-  TQuestionValue
+  TQuestionValue,
 } from 'app-interfaces';
 
 export interface IEvidence {

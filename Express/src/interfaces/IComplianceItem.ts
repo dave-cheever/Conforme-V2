@@ -9,7 +9,7 @@ import {
 
 export interface IComplianceItem extends IBase {
   name: string;
-  description: string;
+  description?: string;
   categoryId: string;
   regulatoryBodyId: string;
   frequency: string;

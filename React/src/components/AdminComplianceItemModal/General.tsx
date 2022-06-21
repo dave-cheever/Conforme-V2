@@ -95,9 +95,6 @@ const GeneralForm = () => {
               label="Description"
               name="description"
               placeholder={`Describe the ${t('complianceItem')}`}
-              validations={{
-                notEmpty: true,
-              }}
               variant="secondaryVariant"
             />
           </Stack>
