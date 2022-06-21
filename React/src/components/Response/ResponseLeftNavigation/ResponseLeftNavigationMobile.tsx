@@ -5,7 +5,7 @@ import { Divider, Flex } from '@chakra-ui/react';
 import { navigationTabs } from '../../../bootstrap/config';
 import { useResponseContext } from '../../../contexts/ResponseProvider';
 import useNavigate from '../../../hooks/useNavigate';
-import { ChevronRight } from '../../../icons';
+import { Home } from '../../../icons';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 import ResponseDetail from './ResponseDetail';
 
@@ -41,7 +41,7 @@ const ResponseLeftNavigationMobile = () => {
           mr={3}
           onClick={() => navigateTo('/compliance-items')}
         >
-          <ChevronRight ml={2} transform="Rotate(180deg)" />
+          <Home ml={2} stroke="responseLeftNavigation.goBackColor" />
           <Divider ml={3} orientation="vertical" />
         </Flex>
         <Flex justify="space-between" w="full">
