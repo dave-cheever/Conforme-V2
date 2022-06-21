@@ -45,9 +45,8 @@ const ReasponseHeader = () => {
       toast({
         ...toastSuccess,
         title: 'Response completed',
-        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is compliant until ${
-          response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
-        } `,
+        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is compliant until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
+          } `,
       });
       return setStatus('compliant');
     }
