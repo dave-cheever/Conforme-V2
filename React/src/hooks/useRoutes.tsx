@@ -216,6 +216,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: ComplianceItemsAdmin,
     layout: FilterLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/regulatory-bodies',
@@ -223,6 +224,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: RegulatoryBodies,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/categories',
@@ -230,6 +232,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Categories,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/locations',
@@ -237,6 +240,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Locations,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/sites',
@@ -244,6 +248,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Sites,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/business-units',
@@ -251,6 +256,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: BusinessUnits,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/areas',
@@ -258,6 +264,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Areas,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/questions-categories',
@@ -265,6 +272,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: QuestionsCategories,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/questions',
@@ -272,6 +280,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Questions,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/audit-types',
@@ -279,6 +288,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: AuditTypes,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/users',
@@ -286,6 +296,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Users,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/audit-log',
@@ -293,6 +304,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: AuditLog,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/admin/settings',
@@ -300,6 +312,7 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: Settings,
     layout: DefaultLayout,
+    permission: 'adminPanel',
   },
   {
     path: '/help',
