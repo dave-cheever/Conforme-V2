@@ -6,12 +6,9 @@ import { AzureFunction, Context } from '@azure/functions';
 import { ConfigService } from '../common/services/ConfigService';
 import { LoggingService } from '../common/services/LoggingService';
 import { StorageService } from '../common/services/StorageService';
-import { endOfWeek, getHours, getMinutes, getTime, isAfter, isBefore, isSameDay, isSameWeek, parseISO, setHours, startOfWeek, sub } from 'date-fns';
+import { endOfWeek, getHours, getMinutes, isAfter, isBefore, isSameDay, isSameWeek, parseISO, set, startOfWeek, sub } from 'date-fns';
 import sendDigest from './sendDigest';
 import {
-  ACTION_OVERDUE,
-  AUDIT_MISSED,
-  AUDITS_WEEKLY_SUMMARY,
   TRACKER_REMINDER,
   TRACKER_WEEKLY_SUMMARY
 } from '../common/services/notifications';
@@ -34,11 +31,13 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
 
     // Scheduled notifications are sent only between the configured hours
     if (
-      isAfter(now, setHours(now, config.ScheduledStartHour)) && // after scheduled start hour
-      isBefore(now, setHours(now, config.ScheduledEndHour)) && // before scheduled end hour
+      isAfter(now, set(now, { hours: config.ScheduledStartHour, minutes: 0, seconds: 0, milliseconds: 0 })) && // after scheduled start hour
+      isBefore(now, set(now, { hours: config.ScheduledEndHour, minutes: 0, seconds: 0, milliseconds: 0 })) && // before scheduled end hour
       getMinutes(now) === 0 && // at the beginning of an hour
       ((getHours(now) - config.ScheduledStartHour) % config.ScheduledFrequency) === 0 // every x hours depends on configured frequency
     ) {
+      loggingService.Write('Scheduled notifications triggered');
+
       // Get last scheduled notification date
       const lastBulkScanDateEntity = await storageService.getItem('lastBulkScanDate');
       const lastBulkScanDate = parseISO(lastBulkScanDateEntity?.Value?._) || new Date(0);
@@ -48,6 +47,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
 
       // Send weekly digest if now and last scan date is different week
       if (!isSameWeek(now, lastBulkScanDate)) {
+        loggingService.Write('Weekly notifications triggered');
         const lastWeek = sub(now, { weeks: 1 });
         await sendDigest(
           {
@@ -61,6 +61,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
 
       // Send daily digest if now and last scan date is different day
       if (!isSameDay(now, lastBulkScanDate)) {
+        loggingService.Write('Daily notifications triggered');
         await sendUpcomingAudits(config);
         await sendMissedAudits(config);
         await sendOverdueActions(config);
