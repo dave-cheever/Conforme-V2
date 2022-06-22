@@ -23,8 +23,9 @@ import {
   getAuditValueForBoolean,
   getAuditValueForDate,
   getAuditValueForLookup,
-  getAuditValueForLookupsArray,
   getAuditValueForString,
+  getAuditValueForUser,
+  getAuditValueForUsersArray,
   getNextRenewalDate,
   getPrevRenewalDate,
   isPermitted,
@@ -129,7 +130,6 @@ const getAuditRecordValues = async ({
           labelField: 'name',
           oldValue,
           newValue,
-          organization,
         });
         break;
 
@@ -140,16 +140,13 @@ const getAuditRecordValues = async ({
           labelField: 'name',
           oldValue,
           newValue,
-          organization,
         });
         break;
 
       // If updated 'accountableId' or 'responsibleId' fields, get users from database and set value as array of ids and label as joined full names
       case 'accountableId':
       case 'responsibleId':
-        value = await getAuditValueForLookup({
-          collection: Users,
-          labelField: ['firstName', 'lastName'],
+        value = await getAuditValueForUser({
           oldValue,
           newValue,
           organization,
@@ -159,9 +156,7 @@ const getAuditRecordValues = async ({
       // If updated 'contributorsIds' or 'followersIds' fields, get users from database and set value as array of ids and label as joined full names
       case 'contributorsIds':
       case 'followersIds':
-        value = await getAuditValueForLookupsArray({
-          collection: Users,
-          labelField: ['firstName', 'lastName'],
+        value = await getAuditValueForUsersArray({
           oldValue,
           newValue,
           organization,
@@ -201,7 +196,7 @@ const getAuditRecordValues = async ({
         break;
       }
 
-      // If updated 'attachments' field, set value as evidence name and file name and label as file details
+      // If updated 'attachments' field, set value as attachments name and file name and label as file details
       case 'attachments': {
         const getAttachmentsPathsArray = (arr) =>
           arr.map(({ uploaded }) => uploaded?.path);
@@ -286,7 +281,7 @@ const getAuditRecordValues = async ({
               const newChoices = questionNew.value.map(
                 (option, index) => `${index}-${option.isCorrect}`,
               );
-              const [updatedChoice] = difference(oldChoices, newChoices);
+              const [updatedChoice]: string[] = difference(oldChoices, newChoices);
               const [choiceIndex, choiceValue] = updatedChoice?.split('-');
 
               // choiceValue keeps the previous value of the choice

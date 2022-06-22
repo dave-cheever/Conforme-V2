@@ -3,7 +3,7 @@ import { IActionModel } from './IActionModel';
 import { IAnswer } from './IAnswer';
 import { IAnswerModel } from './IAnswerModel';
 import { IAudit } from './IAudit';
-import { IAuditLog, IAuditValues } from './IAuditLog';
+import { IAuditFieldValue, IAuditLog, IAuditValue, IAuditValues } from './IAuditLog';
 import { IAuditLogModel } from './IAuditLogModel';
 import { IAuditModel } from './IAuditModel';
 import { IAuditOption } from './IAuditOption';
@@ -56,7 +56,9 @@ export {
   IAnswer,
   IAnswerModel,
   IAudit,
+  IAuditFieldValue,
   IAuditLog,
+  IAuditValue,
   IAuditValues,
   IAuditLogModel,
   IAuditModel,

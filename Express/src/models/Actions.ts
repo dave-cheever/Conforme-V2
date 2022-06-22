@@ -1,12 +1,14 @@
 import { format } from 'date-fns';
+import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
+import { difference } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IAction, IActionModel, IOrganization } from 'app-interfaces';
-import { Answers, Audits, Notifications, Users } from 'app-models';
+import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
+import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
-import { genMetatags } from 'app-utils';
+import { genMetatags, getAuditValueForBoolean, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, removeDatabaseFields } from 'app-utils';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -50,6 +52,89 @@ const actionsSchema = new Schema<IAction, IActionModel>({
   },
 });
 
+// This method is used to prepare values object for audit log
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+  organization,
+}): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValuesPromise = fields.reduce(async (accP, field) => {
+    const acc = await accP;
+    let value: IAuditValue = {};
+    const oldValue = oldValues[field];
+    const newValue = newValues[field];
+
+    switch (field) {
+      case 'dueDate':
+      case 'completedDate':
+        value = getAuditValueForDate(oldValue, newValue);
+        break;
+
+      case 'done':
+        value = getAuditValueForBoolean(oldValue, newValue);
+        break;
+
+      // If updated 'assigneeId' field, set user's ID as value and full name as label
+      case 'assigneeId':
+        value = await getAuditValueForUser({
+          oldValue,
+          newValue,
+          organization,
+        });
+        break;
+
+      // If updated 'attachments' field, set value as attachments name and file name and label as file details
+      case 'attachments': {
+        const getAttachmentsPathsArray = (arr) =>
+          arr.map(({ uploaded }) => uploaded?.path);
+        const removedAttachments = difference(
+          getAttachmentsPathsArray(oldValue || []),
+          getAttachmentsPathsArray(newValue || []),
+        ).filter(Boolean);
+        if (removedAttachments.length > 0) {
+          const document = oldValue.find(
+            ({ uploaded }) => uploaded.path === removedAttachments[0],
+          );
+          value.old = {
+            value: document.uploaded,
+            label: `${document.name} - ${document.uploaded.name}`,
+          };
+        }
+        const addedAttachments = difference(
+          getAttachmentsPathsArray(newValue || []),
+          getAttachmentsPathsArray(oldValue || []),
+        ).filter(Boolean);
+        if (addedAttachments.length > 0) {
+          const document = newValue.find(
+            ({ uploaded }) => uploaded.path === addedAttachments[0],
+          );
+          value.new = {
+            value: document.uploaded,
+            label: `${document.name} - ${document.uploaded.name}`,
+          };
+        }
+        break;
+      }
+
+      default:
+        if (typeof oldValue === 'string' || typeof newValue === 'string')
+          value = getAuditValueForString(oldValue, newValue);
+    }
+    return {
+      ...acc,
+      [field]: value,
+    };
+  }, Promise.resolve({}));
+
+  const auditRecordValues = await auditRecordValuesPromise;
+  return auditRecordValues;
+};
+
 actionsSchema.statics.customCreate = async function (action: IAction, userId: string, organizationId: string): Promise<IAction> {
   // Add assignee to the database if doesn't exist
   if (action.assigneeId) await Users.customAssertUser({ userId: action.assigneeId, organizationId });
@@ -60,6 +145,31 @@ actionsSchema.statics.customCreate = async function (action: IAction, userId: st
     organizationId,
     metatags: genMetatags('added', userId),
   });
+
+  if (createdAction?._doc) {
+    const addAuditLog = async () => {
+      const newValues = removeDatabaseFields(createdAction._doc);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({ newValues, organization });
+      AuditLogs.customAudit(
+        {
+          coll: 'actions',
+          action: 'add',
+          element: {
+            _id: createdAction._doc._id,
+            name: createdAction._doc.title,
+          },
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return createdAction;
 };
@@ -113,7 +223,33 @@ actionsSchema.statics.customUpdateOne = async function (
       ...genMetatags('updated', userId),
     },
   };
-  await this.updateOne(selector, updatedAction);
+  const updatedResult = await this.updateOne(selector, updatedAction);
+
+  if (updatedResult?.modifiedCount) {
+    const addAuditLog = async () => {
+      const oldValues = removeDatabaseFields(action);
+      const newValues = removeDatabaseFields(updatedAction);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({ oldValues, newValues, organization });
+      AuditLogs.customAudit(
+        {
+          coll: 'actions',
+          action: 'update',
+          element: {
+            _id: updatedAction._id,
+            name: updatedAction.title,
+          },
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return updatedAction;
 };
@@ -130,6 +266,31 @@ actionsSchema.statics.customDelete = async function (selector: object = {}, user
     },
   };
   const deletedResult = await this.updateOne(selector, updatedAction);
+
+  if (deletedResult?.modifiedCount) {
+    const addAuditLog = async () => {
+      const oldValues = removeDatabaseFields(action);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({ oldValues, organization });
+      AuditLogs.customAudit(
+        {
+          coll: 'actions',
+          action: 'delete',
+          element: {
+            _id: action._id,
+            name: action.title,
+          },
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return deletedResult?.modifiedCount;
 };

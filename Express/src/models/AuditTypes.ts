@@ -1,9 +1,11 @@
+import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IAuditType, IAuditTypeModel } from 'app-interfaces';
-import { genMetatags } from 'app-utils';
+import { IAuditType, IAuditTypeModel, IAuditValue, IAuditValues } from 'app-interfaces';
+import { AuditLogs, QuestionsCategories } from 'app-models';
+import { genMetatags, getAuditValueForDate, getAuditValueForLookupsArray, getAuditValueForString, getBasicElement, removeDatabaseFields } from 'app-utils';
 
 const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
   _id: String,
@@ -48,6 +50,56 @@ const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
   },
 });
 
+// This method is used to prepare values object for audit log
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+}): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValuesPromise = fields.reduce(async (accP, field) => {
+    const acc = await accP;
+    let value: IAuditValue = {};
+    const oldValue = oldValues[field];
+    const newValue = newValues[field];
+
+    switch (field) {
+      case 'startingDate':
+        value = getAuditValueForDate(oldValue, newValue);
+        break;
+
+      // If updated 'sections' field, set value as section item ID and label as section item name
+      case 'sections': {
+        const getSectionsIdsArray = (arr) => arr.map(({ _id }) => _id);
+        const oldIds = getSectionsIdsArray(oldValue || []);
+        const newIds = getSectionsIdsArray(newValue || []);
+
+        value = await getAuditValueForLookupsArray({
+          collection: QuestionsCategories,
+          labelField: 'name',
+          oldValue: oldIds,
+          newValue: newIds,
+        });
+        break;
+      }
+
+      default:
+        if (typeof oldValue === 'string' || typeof newValue === 'string')
+          value = getAuditValueForString(oldValue, newValue);
+    }
+    return {
+      ...acc,
+      [field]: value,
+    };
+  }, Promise.resolve({}));
+
+  const auditRecordValues = await auditRecordValuesPromise;
+  return auditRecordValues;
+};
+
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
 auditTypesSchema.statics.customCreate = async function (
@@ -62,22 +114,24 @@ auditTypesSchema.statics.customCreate = async function (
     metatags: genMetatags('added', userId),
   });
 
-  // if (createdQuestion?._doc) {
-  //   const addAuditLog = async () => {
-  //     const newValues = removeDatabaseFields(createdQuestion._doc);
-  //     const values = await getAuditRecordValues({ newValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "add",
-  //       element: {
-  //         _id: createdQuestion._id,
-  //         name: question.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
+  if (createdAuditType?._doc) {
+    const addAuditLog = async () => {
+      const element = getBasicElement(createdAuditType._doc);
+      const newValues = removeDatabaseFields(createdAuditType._doc);
+      const values = await getAuditRecordValues({ newValues });
+      AuditLogs.customAudit(
+        {
+          coll: 'auditTypes',
+          action: 'add',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return createdAuditType;
 };
@@ -135,25 +189,27 @@ auditTypesSchema.statics.customUpdateOne = async function (
       ...genMetatags('updated', userId),
     },
   };
-  await this.updateOne(selector, updatedAuditType);
+  const updatedResult = await this.updateOne(selector, updatedAuditType);
 
-  // if (updatedResult?.modifiedCount) {
-  //   const addAuditLog = async () => {
-  //     const oldValues = removeDatabaseFields(auditType);
-  //     const newValues = removeDatabaseFields(updatedQuestion);
-  //     const values = await getAuditRecordValues({ oldValues, newValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "update",
-  //       element: {
-  //         _id: auditType._id,
-  //         name: auditType.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
+  if (updatedResult?.modifiedCount) {
+    const addAuditLog = async () => {
+      const element = getBasicElement(updatedAuditType);
+      const oldValues = removeDatabaseFields(auditType);
+      const newValues = removeDatabaseFields(updatedAuditType);
+      const values = await getAuditRecordValues({ oldValues, newValues });
+      AuditLogs.customAudit(
+        {
+          coll: 'auditTypes',
+          action: 'update',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return updatedAuditType;
 };

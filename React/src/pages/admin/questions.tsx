@@ -53,7 +53,7 @@ const UPDATE_QUESTION = gql`
   }
 `;
 const DELETE_QUESTION = gql`
-  mutation ($_id: String!) {
+  mutation ($_id: ID!) {
     deleteQuestion(_id: $_id)
   }
 `;

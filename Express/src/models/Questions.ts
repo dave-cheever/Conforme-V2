@@ -1,12 +1,15 @@
+import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IQuestion, IQuestionModel, TQuestionValue } from 'app-interfaces';
-import { AuditLogs } from 'app-models';
+import { IAuditValue, IAuditValues, IQuestion, IQuestionModel, TQuestionValue } from 'app-interfaces';
+import { AuditLogs, QuestionsCategories } from 'app-models';
 import {
   genMetatags,
-  getAuditRecordValues,
+  getAuditValueForBoolean,
+  getAuditValueForLookup,
+  getAuditValueForString,
   removeDatabaseFields,
 } from 'app-utils';
 
@@ -45,6 +48,52 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   },
 });
 
+// This method is used to prepare values object for audit log
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+}): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValuesPromise = fields.reduce(async (accP, field) => {
+    const acc = await accP;
+    let value: IAuditValue = {};
+    const oldValue = oldValues[field];
+    const newValue = newValues[field];
+
+    switch (field) {
+      case 'notApplicable':
+      case 'required':
+        value = getAuditValueForBoolean(oldValue, newValue);
+        break;
+
+      // If updated 'questionsCategoryId' field, get questions category from database and set value as id and label as name
+      case 'questionsCategoryId':
+        value = await getAuditValueForLookup({
+          collection: QuestionsCategories,
+          labelField: 'name',
+          oldValue,
+          newValue,
+        });
+        break;
+
+      default:
+        if (typeof oldValue === 'string' || typeof newValue === 'string')
+          value = getAuditValueForString(oldValue, newValue);
+    }
+    return {
+      ...acc,
+      [field]: value,
+    };
+  }, Promise.resolve({}));
+
+  const auditRecordValues = await auditRecordValuesPromise;
+  return auditRecordValues;
+};
+
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
 questionsSchema.statics.customCreate = async function (
@@ -59,22 +108,22 @@ questionsSchema.statics.customCreate = async function (
     metatags: genMetatags('added', userId),
   });
 
-  // if (createdQuestion?._doc) {
-  //   const addAuditLog = async () => {
-  //     const newValues = removeDatabaseFields(createdQuestion._doc);
-  //     const values = await getAuditRecordValues({ newValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "add",
-  //       element: {
-  //         _id: createdQuestion._id,
-  //         name: question.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
+  if (createdQuestion?._doc) {
+    const addAuditLog = async () => {
+      const newValues = removeDatabaseFields(createdQuestion._doc);
+      const values = await getAuditRecordValues({ newValues });
+      AuditLogs.customAudit({
+        coll: 'questions',
+        action: "add",
+        element: {
+          _id: createdQuestion._doc._id,
+          name: question.question,
+        },
+        values,
+      }, userId, organizationId);
+    };
+    addAuditLog();
+  }
 
   return createdQuestion;
 };

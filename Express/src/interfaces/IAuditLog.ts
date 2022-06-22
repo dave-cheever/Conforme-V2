@@ -13,16 +13,18 @@ export interface IAuditLogElement {
   self_id?: string; // Used if element is foreign element
 }
 
-export interface IAuditValue {
+export interface IAuditFieldValue {
   value: string | string[] | object;
   label: string;
 }
 
+export interface IAuditValue {
+  old?: IAuditFieldValue;
+  new?: IAuditFieldValue;
+};
+
 export interface IAuditValues {
-  [field: string]: {
-    old?: IAuditValue;
-    new?: IAuditValue;
-  };
+  [field: string]: IAuditValue;
 }
 
 export interface IAuditLog extends IBase {

@@ -54,7 +54,7 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     notBlockedAfterCompletion: Boolean
-    showInInsights: Boolean!
+    showInInsights: Boolean
     icon: String!
     options: [QuestionsCategoryOptionInput!]
     scope: ScopeInput!
@@ -67,7 +67,7 @@ export const questionsCategoriesTypeDefs = `
     allowCustomQuestions: Boolean!
     maxQuestionsNumber: Int!
     notBlockedAfterCompletion: Boolean
-    showInInsights: Boolean!
+    showInInsights: Boolean
     icon: String!
     options: [QuestionsCategoryOptionInput!]
   }

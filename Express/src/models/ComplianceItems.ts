@@ -15,7 +15,6 @@ import {
   AuditLogs,
   BusinessUnits,
   Categories,
-  Organizations,
   RegulatoryBodies,
   Responses,
 } from 'app-models';
@@ -81,7 +80,6 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
 const getAuditRecordValues = async ({
   oldValues = {},
   newValues = {},
-  organization,
 }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
@@ -104,7 +102,6 @@ const getAuditRecordValues = async ({
           labelField: 'name',
           oldValue: oldValues[field],
           newValue: newValues[field],
-          organization,
         });
         break;
 
@@ -115,7 +112,6 @@ const getAuditRecordValues = async ({
           labelField: 'name',
           oldValue: oldValues[field],
           newValue: newValues[field],
-          organization,
         });
         break;
 
@@ -126,7 +122,6 @@ const getAuditRecordValues = async ({
           labelField: 'name',
           oldValue: oldValues[field],
           newValue: newValues[field],
-          organization,
         });
         break;
 
@@ -178,11 +173,7 @@ complianceItemSchema.statics.customCreate = async function (
     const addAuditLog = async () => {
       const element = getBasicElement(createdComplianceItem._doc);
       const newValues = removeDatabaseFields(createdComplianceItem._doc);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
-      const values = await getAuditRecordValues({ newValues, organization });
+      const values = await getAuditRecordValues({ newValues });
       AuditLogs.customAudit(
         {
           coll: 'complianceItems',
@@ -258,14 +249,9 @@ complianceItemSchema.statics.customUpdateOne = async function (
       const element = getBasicElement(updatedComplianceItem);
       const oldValues = removeDatabaseFields(complianceItem);
       const newValues = removeDatabaseFields(updatedComplianceItem);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
-        organization,
       });
       AuditLogs.customAudit(
         {
@@ -305,11 +291,7 @@ complianceItemSchema.statics.customDelete = async function (
     const addAuditLog = async () => {
       const element = getBasicElement(complianceItem);
       const oldValues = removeDatabaseFields(complianceItem);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
-      const values = await getAuditRecordValues({ oldValues, organization });
+      const values = await getAuditRecordValues({ oldValues });
       AuditLogs.customAudit(
         {
           coll: 'complianceItems',

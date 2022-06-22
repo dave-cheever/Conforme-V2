@@ -1,10 +1,11 @@
+import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IQuestionsCategory, IQuestionsCategoryModel } from 'app-interfaces';
+import { IAuditValue, IAuditValues, IQuestionsCategory, IQuestionsCategoryModel } from 'app-interfaces';
 import { AuditLogs } from 'app-models';
-import { genMetatags, getAuditRecordValues, removeDatabaseFields } from 'app-utils';
+import { genMetatags, getAuditValueForBoolean, getAuditValueForString, getAuditValueForStringsArray, getBasicElement, removeDatabaseFields } from 'app-utils';
 
 const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCategoryModel>({
   _id: String,
@@ -47,6 +48,56 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
   },
 });
 
+// This method is used to prepare values object for audit log
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+}): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValuesPromise = fields.reduce(async (accP, field) => {
+    const acc = await accP;
+    let value: IAuditValue = {};
+    const oldValue = oldValues[field];
+    const newValue = newValues[field];
+
+    switch (field) {
+      case 'withAnswers':
+      case 'allowCustomQuestions':
+      case 'notBlockedAfterCompletion':
+      case 'showInInsights':
+        value = getAuditValueForBoolean(oldValue, newValue);
+        break;
+
+      case 'maxQuestionsNumber':
+        value = getAuditValueForString(oldValue, newValue);
+        break;
+
+      case 'options': {
+        const getOptionsNamesArray = (arr) => arr.map(({ name }) => name);
+        const oldNames = getOptionsNamesArray(oldValue || []);
+        const newNames = getOptionsNamesArray(newValue || []);
+        value = getAuditValueForStringsArray(oldNames, newNames);
+        break;
+      }
+
+      default:
+        if (typeof oldValue === 'string' || typeof newValue === 'string')
+          value = getAuditValueForString(oldValue, newValue);
+    }
+    return {
+      ...acc,
+      [field]: value,
+    };
+  }, Promise.resolve({}));
+
+  const auditRecordValues = await auditRecordValuesPromise;
+  return auditRecordValues;
+};
+
 questionsCategoriesSchema.statics.customCreate = async function (
   questionCategory: IQuestionsCategory,
   userId: string,
@@ -58,6 +109,25 @@ questionsCategoriesSchema.statics.customCreate = async function (
     organizationId,
     metatags: genMetatags('added', userId),
   });
+
+  if (createdQuestionCategory?._doc) {
+    const addAuditLog = async () => {
+      const element = getBasicElement(createdQuestionCategory._doc);
+      const newValues = removeDatabaseFields(createdQuestionCategory._doc);
+      const values = await getAuditRecordValues({ newValues });
+      AuditLogs.customAudit(
+        {
+          coll: 'questionsCategories',
+          action: 'add',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return createdQuestionCategory;
 };
@@ -114,17 +184,15 @@ questionsCategoriesSchema.statics.customUpdateOne = async function (
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
+      const element = getBasicElement(updatedQuestion);
       const oldValues = removeDatabaseFields(questionCategory);
       const newValues = removeDatabaseFields(updatedQuestion);
       const values = await getAuditRecordValues({ oldValues, newValues });
       AuditLogs.customAudit(
         {
-          coll: 'questionCategories',
+          coll: 'questionsCategories',
           action: 'update',
-          element: {
-            _id: questionCategory._id,
-            name: questionCategory.name,
-          },
+          element,
           values,
         },
         userId,
@@ -156,16 +224,14 @@ questionsCategoriesSchema.statics.customDelete = async function (
 
   if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
+      const element = getBasicElement(questionCategory);
       const oldValues = removeDatabaseFields(questionCategory);
       const values = await getAuditRecordValues({ oldValues });
       AuditLogs.customAudit(
         {
-          coll: 'questionCategories',
+          coll: 'questionsCategories',
           action: 'delete',
-          element: {
-            _id: questionCategory._id,
-            name: questionCategory.name,
-          },
+          element,
           values,
         },
         userId,

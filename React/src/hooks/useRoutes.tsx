@@ -176,6 +176,13 @@ const protectedRoutes: Array<IRoute> = [
     layout: FilterLayout,
   },
   {
+    path: '/actions/:actionId',
+    key: 'action',
+    exact: true,
+    component: Actions,
+    layout: FilterLayout,
+  },
+  {
     path: '/accidents',
     key: 'accidents',
     exact: true,

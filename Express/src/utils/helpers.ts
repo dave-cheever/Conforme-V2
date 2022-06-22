@@ -5,7 +5,6 @@ import { difference } from 'lodash';
 
 import { IAction, IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import { Users } from 'app-models';
-import { GraphService } from 'app-services';
 
 import roles from './roles';
 
@@ -470,19 +469,20 @@ export const getAuditValueForBoolean = (oldValue?: string, newValue?: string) =>
   return value;
 };
 
-export const getAuditValueForLookup = async ({ collection, labelField, oldValue, newValue, organization }) => {
+export const getAuditValueForLookup = async ({ collection, labelField, oldValue, newValue }) => {
   const value: any = {};
+
+  if (collection === Users) {
+    console.log('getAuditValueForLookup: For Users collection please use method getAuditValueForUser.');
+    return;
+  }
+
   if (oldValue) {
-    let item;
-    if (collection === Users) item = await GraphService.getUserData({ userId: oldValue, organization });
-    else item = await collection.customFindById(oldValue);
+    const item = await collection.customFindById(oldValue);
 
     if (item) {
       let label;
-      if (collection === Users) {
-        // If a collection is Users, get his name
-        label = item.givenName !== null || item.surname !== null ? `${item.givenName} ${item.surname}` : item.displayName;
-      } else if (typeof labelField === 'string') {
+      if (typeof labelField === 'string') {
         // If a 'labelField' is an array of strings, concat them
         label = item[labelField];
       } else label = labelField.map((field) => item[field]).join(' ');
@@ -494,16 +494,11 @@ export const getAuditValueForLookup = async ({ collection, labelField, oldValue,
     }
   }
   if (newValue) {
-    let item;
-    if (collection === Users) item = await GraphService.getUserData({ userId: newValue, organization });
-    else item = await collection.customFindById(newValue);
+    const item = await collection.customFindById(newValue);
 
     if (item) {
       let label;
-      if (collection === Users) {
-        // If a collection is Users, get his name
-        label = item.givenName !== null || item.surname !== null ? `${item.givenName} ${item.surname}` : item.displayName;
-      } else if (typeof labelField === 'string') {
+      if (typeof labelField === 'string') {
         // If a 'labelField' is an array of strings, concat them
         label = item[labelField];
       } else label = labelField.map((field) => item[field]).join(' ');
@@ -517,36 +512,17 @@ export const getAuditValueForLookup = async ({ collection, labelField, oldValue,
   return value;
 };
 
-export const getAuditValueForLookupsArray = async ({ collection, labelField, oldValue, newValue, organization }) => {
+export const getAuditValueForLookupsArray = async ({ collection, labelField, oldValue, newValue }) => {
   const value: any = {};
-  const removedIds = difference(oldValue || [], newValue || []);
-  const addedIds = difference(newValue || [], oldValue || []);
+  const removedIds: string[] = difference(oldValue || [], newValue || []);
+  const addedIds: string[] = difference(newValue || [], oldValue || []);
 
-  let user;
-  if (collection === Users && removedIds.length !== 0 && typeof removedIds[0] === 'string') {
-    user = await GraphService.getUserData({
-      userId: removedIds[0],
-      organization,
-    });
-  } else if (collection === Users && addedIds.length === 1 && typeof addedIds[0] === 'string') {
-    user = await GraphService.getUserData({
-      userId: addedIds[0],
-      organization,
-    });
+  if (collection === Users) {
+    console.log('getAuditValueForLookupsArray: For Users collection please use method getAuditValueForUsersArray.');
+    return;
   }
 
-  const users: any[] = [];
-  if (collection === Users && addedIds.length > 1) {
-    for (const addedId of addedIds) {
-      const data = await GraphService.getUserData({
-        userId: addedId,
-        organization,
-      });
-      users.push(data);
-    }
-  }
-
-  if (removedIds.length > 0 && collection !== Users) {
+  if (removedIds.length > 0) {
     const items = await collection.find({ _id: { $in: removedIds } });
 
     // If a 'labelField' is an array of strings, concat them
@@ -558,13 +534,8 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
       value: items.map(({ id }) => id),
       label: labels.join(', '),
     };
-  } else if (removedIds.length > 0 && collection === Users) {
-    value.old = {
-      value: user.id,
-      label: user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName,
-    };
   }
-  if (addedIds.length > 0 && collection !== Users) {
+  if (addedIds.length > 0) {
     const items = await collection.find({ _id: { $in: addedIds } });
 
     // If a 'labelField' is an array of strings, concat them
@@ -575,18 +546,6 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
     value.new = {
       value: items.map(({ id }) => id),
       label: labels.join(', '),
-    };
-  } else if (addedIds.length > 1 && collection === Users) {
-    value.new = {
-      value: users.map(({ id }) => id),
-      label: users
-        .map((user) => (user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName))
-        .join(', '),
-    };
-  } else if (addedIds.length > 0 && collection === Users) {
-    value.new = {
-      value: user.id,
-      label: user.givenName !== null || user.surname !== null ? `${user.givenName} ${user.surname}` : user.displayName,
     };
   }
   return value;
@@ -634,6 +593,62 @@ export const getAuditValueForUser = async ({ oldValue, newValue, organization })
       };
     }
   }
+  return value;
+};
+
+export const getAuditValueForUsersArray = async ({ oldValue, newValue, organization }) => {
+  const value: any = {};
+  const removedIds: string[] = difference(oldValue || [], newValue || []);
+  const addedIds: string[] = difference(newValue || [], oldValue || []);
+
+  if (removedIds.length > 0) {
+    const items = await Promise.all(removedIds.map(async id => {
+      const item = await Users.customFindByIdWithDetails({
+        userId: id,
+        organization,
+      });
+      if (!item) {
+        return {
+          id,
+          label: 'User not found',
+        };
+      }
+      return {
+        id,
+        label: `${item.firstName} ${item.lastName}`,
+      };
+    }));
+
+    value.old = {
+      value: items.map(({ id }) => id),
+      label: items.map(({ label }) => label).join(', '),
+    };
+  }
+
+  if (addedIds.length > 0) {
+    const items = await Promise.all(addedIds.map(async id => {
+      const item = await Users.customFindByIdWithDetails({
+        userId: id,
+        organization,
+      });
+      if (!item) {
+        return {
+          id,
+          label: 'User not found',
+        };
+      }
+      return {
+        id,
+        label: `${item.firstName} ${item.lastName}`,
+      };
+    }));
+
+    value.new = {
+      value: items.map(({ id }) => id),
+      label: items.map(({ label }) => label).join(', '),
+    };
+  }
+
   return value;
 };
 

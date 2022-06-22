@@ -155,23 +155,47 @@ export const getFieldNameByAction = (action: string) => {
   return fieldAction;
 };
 
-export const getCollectionNameByAction = (collection: string) => {
+export const getSingularCollectionName = (collection: string) => {
   let fieldCollection = '';
   switch (collection) {
+    case 'actions':
+      fieldCollection = 'action';
+      break;
+    case 'answers':
+      fieldCollection = 'answer';
+      break;
+    case 'audits':
+      fieldCollection = 'audit';
+      break;
+    case 'auditTypes':
+      fieldCollection = 'audit type';
+      break;
+    case 'businessUnits':
+      fieldCollection = 'business unit';
+      break;
     case 'categories':
       fieldCollection = 'category';
       break;
     case 'complianceItems':
       fieldCollection = 'compliance item';
       break;
+    case 'comments':
+      fieldCollection = 'comment';
+      break;
     case 'functionalAreas':
       fieldCollection = 'functional area';
       break;
+    case 'locations':
+      fieldCollection = 'location';
+      break;
+    case 'questions':
+      fieldCollection = 'question';
+      break;
+    case 'questionsCategories':
+      fieldCollection = 'questions category';
+      break;
     case 'regulatoryBodies':
       fieldCollection = 'regulatory body';
-      break;
-    case 'businessUnits':
-      fieldCollection = 'business unit';
       break;
     case 'responses':
       fieldCollection = 'response';
@@ -179,18 +203,27 @@ export const getCollectionNameByAction = (collection: string) => {
     case 'settings':
       fieldCollection = 'setting';
       break;
-    case 'comments':
-      fieldCollection = 'comment';
-      break;
-    case 'locations':
-      fieldCollection = 'location';
-      break;
     default:
       break;
   }
 
   return fieldCollection;
 };
+
+export const getPathByCollectionName = (collection: string) => {
+  let path = '';
+  switch (collection) {
+    case 'actions':
+      path = 'actions';
+      break;
+    case 'complianceItems':
+      path = 'compliance-item';
+      break;
+
+    default: break;
+  }
+  return path;
+}
 
 export const getLabelByField = (field: string) => {
   let fieldName = '';
@@ -263,6 +296,69 @@ export const getLabelByField = (field: string) => {
       break;
     case 'nextRenewalDate':
       fieldName = 'Date of Next Renewal';
+      break;
+    case 'auditorId':
+      fieldName = 'Auditor';
+      break;
+    case 'participantsIds':
+      fieldName = 'Participants';
+      break;
+    case 'auditTypeId':
+      fieldName = 'Audit type';
+      break;
+    case 'dueDate':
+      fieldName = 'Due date';
+      break;
+    case 'walkType':
+      fieldName = 'Walk type';
+      break;
+    case 'siteId':
+      fieldName = 'Site';
+      break;
+    case 'areaId':
+      fieldName = 'Area';
+      break;
+    case 'startingDate':
+      fieldName = 'Starting date';
+      break;
+    case 'sections':
+      fieldName = 'Sections';
+      break;
+    case 'type':
+      fieldName = 'Type';
+      break;
+    case 'question':
+      fieldName = 'Question';
+      break;
+    case 'questionsCategoryId':
+      fieldName = 'Questions category';
+      break;
+    case 'positiveValue':
+      fieldName = 'Positive value';
+      break;
+    case 'negativeValue':
+      fieldName = 'Negative value';
+      break;
+    case 'withAnswers':
+      fieldName = 'With answers';
+      break;
+    case 'allowCustomQuestions':
+      fieldName = 'Allow custom questions';
+      break;
+    case 'maxQuestionsNumber':
+      fieldName = 'Max questions number';
+      break;
+    case 'icon':
+      fieldName = 'Icon';
+      break;
+    case 'options':
+      fieldName = 'Options';
+      break;
+    case 'showInInsights':
+      fieldName = 'Show in insights';
+      break;
+    case 'notBlockedAfterCompletion':
+      fieldName = 'Not blocked after completion';
       break;
     default:
       fieldName = field;

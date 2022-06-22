@@ -1,12 +1,22 @@
-import { response } from 'express';
+import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { uniq } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IAudit, IAuditModel } from 'app-interfaces';
-import { Users } from 'app-models';
-import { genMetatags, isPermitted, join } from 'app-utils';
+import { IAudit, IAuditModel, IAuditValue, IAuditValues } from 'app-interfaces';
+import { AuditLogs, AuditTypes, BusinessUnits, Locations, Organizations, Users } from 'app-models';
+import {
+  genMetatags,
+  getAuditValueForDate,
+  getAuditValueForLookup,
+  getAuditValueForString,
+  getAuditValueForUser,
+  getAuditValueForUsersArray,
+  isPermitted,
+  join,
+  removeDatabaseFields,
+} from 'app-utils';
 
 const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
@@ -48,6 +58,91 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
   },
 });
 
+// This method is used to prepare values object for audit log
+const getAuditRecordValues = async ({
+  oldValues = {},
+  newValues = {},
+  organization,
+}): Promise<IAuditValues> => {
+  // It takes all the differencies between old and new object
+  const differencies = diff(oldValues, newValues);
+  const fields = Object.keys(differencies);
+
+  // and fills the audit record obejct with these differencies
+  const auditRecordValuesPromise = fields.reduce(async (accP, field) => {
+    const acc = await accP;
+    let value: IAuditValue = {};
+    const oldValue = oldValues[field];
+    const newValue = newValues[field];
+
+    switch (field) {
+      // If updated 'auditTypeId' field, get audit type from database and set value as id and label as name
+      case 'auditTypeId':
+        value = await getAuditValueForLookup({
+          collection: AuditTypes,
+          labelField: 'name',
+          oldValue,
+          newValue,
+        });
+        break;
+
+      case 'dueDate':
+      case 'completedDate':
+        value = getAuditValueForDate(oldValue, newValue);
+        break;
+
+      // If updated 'participantsIds' field, set user's ID as value and full name as label
+      case 'participantsIds':
+        value = await getAuditValueForUsersArray({
+          oldValue,
+          newValue,
+          organization,
+        });
+        break;
+
+      // If updated 'auditorId' field, set user's ID as value and full name as label
+      case 'auditorId':
+        value = await getAuditValueForUser({
+          oldValue,
+          newValue,
+          organization,
+        });
+        break;
+
+      // If updated 'siteId' field, get location from database and set value as id and label as name
+      case 'siteId':
+        value = await getAuditValueForLookup({
+          collection: Locations,
+          labelField: 'name',
+          oldValue,
+          newValue,
+        });
+        break;
+
+      // If updated 'areaId' field, get business unit from database and set value as id and label as name
+      case 'areaId':
+        value = await getAuditValueForLookup({
+          collection: BusinessUnits,
+          labelField: 'name',
+          oldValue,
+          newValue,
+        });
+        break;
+
+      default:
+        if (typeof oldValue === 'string' || typeof newValue === 'string')
+          value = getAuditValueForString(oldValue, newValue);
+    }
+    return {
+      ...acc,
+      [field]: value,
+    };
+  }, Promise.resolve({}));
+
+  const auditRecordValues = await auditRecordValuesPromise;
+  return auditRecordValues;
+};
+
 auditsSchema.statics.customGenerateReference = async function (): Promise<string> {
   let reference = '0000001';
   const lastAudit = await this.findOne({}).sort({ 'metatags.addedAt': -1 }).lean();
@@ -73,6 +168,31 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
     metatags: genMetatags('added', userId),
   });
 
+  if (createdAudit?._doc) {
+    const addAuditLog = async () => {
+      const newValues = removeDatabaseFields(createdAudit._doc);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({ newValues, organization });
+      AuditLogs.customAudit(
+        {
+          coll: 'audits',
+          action: 'add',
+          element: {
+            _id: createdAudit._doc._id,
+            name: values.areaId.new?.label || 'Virtual',
+          },
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
+
   return createdAudit;
 };
 
@@ -90,7 +210,6 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     !isPermitted({
       user,
       action: 'audits.viewAll',
-      data: { response },
     })
   ) {
     pipeline.push({
@@ -190,7 +309,45 @@ auditsSchema.statics.customUpdateOne = async function (
       ...genMetatags('updated', userId),
     },
   };
-  await this.updateOne(selector, updatedAudit);
+  const updatedResult = await this.updateOne(selector, updatedAudit);
+
+  if (updatedResult?.modifiedCount) {
+    const addAuditLog = async () => {
+      const element = {
+        _id: audit._id,
+        name: 'Virtual',
+      };
+      if (audit.areaId) {
+        const area = await BusinessUnits.customFindById(
+          audit.areaId,
+          organizationId,
+        );
+        element.name = area.name;
+      }
+      const oldValues = removeDatabaseFields(audit);
+      const newValues = removeDatabaseFields(updatedAudit);
+      const organization = await Organizations.customFindById(
+        organizationId,
+        organizationId,
+      );
+      const values = await getAuditRecordValues({
+        oldValues,
+        newValues,
+        organization,
+      });
+      AuditLogs.customAudit(
+        {
+          coll: 'audits',
+          action: 'update',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return updatedAudit;
 };
