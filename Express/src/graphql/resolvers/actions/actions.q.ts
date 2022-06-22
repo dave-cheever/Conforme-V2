@@ -32,27 +32,12 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (actionQueryInput?.scope?.module) {
+    if (actionQueryInput?.scope) {
       pipeline.push({
-        $match: {
-          'scope.module': actionQueryInput.scope.module,
-        },
-      });
-    }
-
-    if (actionQueryInput?.scope?.type) {
-      pipeline.push({
-        $match: {
-          'scope.type': actionQueryInput.scope.type,
-        },
-      });
-    }
-
-    if (actionQueryInput?.scope?._id) {
-      pipeline.push({
-        $match: {
-          'scope._id': actionQueryInput.scope._id,
-        },
+        $match: Object.entries(actionQueryInput.scope).reduce((acc, [key, value]) => {
+          acc[`scope.${key}`] = value;
+          return acc;
+        }, {}),
       });
     }
 
@@ -205,24 +190,21 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     if (shouldJoin(['assignee'])) {
       actions = await Promise.all(
         actions.map(
-          (action) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<any>(async (resolve, reject) => {
-              try {
-                if (!action.assigneeId) resolve({ ...action });
-
-                resolve({
-                  ...action,
-                  assignee: await Users.customFindByIdWithDetails({
-                    userId: action?.assigneeId,
-                    organization,
-                  }),
-                });
-              } catch (e) {
-                console.log(`Error occured for action with ID ${action._id}: ${e}`);
-                reject();
-              }
-            }),
+          async (action) => {
+            if (!action.assigneeId) return action;
+            try {
+              return {
+                ...action,
+                assignee: await Users.customFindByIdWithDetails({
+                  userId: action?.assigneeId,
+                  organization,
+                }),
+              };
+            } catch (e) {
+              console.log(`Error occured for action with ID ${action._id}: ${e}`);
+              return action;
+            }
+          },
         ),
       );
     }

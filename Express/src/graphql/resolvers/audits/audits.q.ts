@@ -204,22 +204,20 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     if (shouldJoin(['auditor'])) {
       audits = await Promise.all(
         audits.map(
-          (audit) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<any>(async (resolve, reject) => {
-              try {
-                resolve({
-                  ...audit,
-                  auditor: await Users.customFindByIdWithDetails({
-                    userId: audit.auditorId,
-                    organization,
-                  }),
-                });
-              } catch (e) {
-                console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
-                reject();
-              }
-            }),
+          async (audit) => {
+            try {
+              return {
+                ...audit,
+                auditor: await Users.customFindByIdWithDetails({
+                  userId: audit.auditorId,
+                  organization,
+                }),
+              };
+            } catch (e) {
+              console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
+              return audit;
+            }
+          },
         ),
       );
     }
@@ -227,44 +225,37 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     if (shouldJoin(['participants'])) {
       audits = await Promise.all(
         audits.map(
-          (audit) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<any>(async (resolve, reject) => {
-              try {
-                if (!audit?.participantsIds || audit?.participantsIds?.length === 0) {
-                  resolve({
-                    ...audit,
-                  });
+          async (audit) => {
+            try {
+              if (!audit?.participantsIds || audit?.participantsIds?.length === 0)
+                return audit;
 
-                  return;
-                }
+              return {
+                ...audit,
+                participants: await Promise.all(
+                  audit.participantsIds.map(async (id) => {
+                    try {
+                      const participant = await Users.customFindByIdWithDetails({
+                        userId: id,
+                        organization,
+                      });
 
-                resolve({
-                  ...audit,
-                  participants: await Promise.all(
-                    audit.participantsIds.map(async (id) => {
-                      try {
-                        const participant = await Users.customFindByIdWithDetails({
-                          userId: id,
-                          organization,
-                        });
-
-                        return participant;
-                      } catch {
-                        return {
-                          _id: id,
-                          displayName: 'Unknown',
-                          imgUrl: null,
-                        };
-                      }
-                    }),
-                  ),
-                });
-              } catch (e) {
-                console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
-                reject();
-              }
-            }),
+                      return participant;
+                    } catch {
+                      return {
+                        _id: id,
+                        displayName: 'Unknown',
+                        imgUrl: null,
+                      };
+                    }
+                  }),
+                ),
+              };
+            } catch (e) {
+              console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
+              return audit;
+            }
+          },
         ),
       );
     }

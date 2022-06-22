@@ -133,22 +133,20 @@ const actionsInsights = async (_, __, { authorize, organization }, info: GraphQL
     if (shouldJoin(['mostAddedBy', 'user'])) {
       mostAddedBy = await Promise.all(
         mostAddedBy.map(
-          (user) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<any>(async (resolve, reject) => {
-              try {
-                resolve({
-                  ...user,
-                  user: await Users.customFindByIdWithDetails({
-                    userId: user?._id,
-                    organization,
-                  }),
-                });
-              } catch (e) {
-                console.error(`Error occured in actions insights for user with ID ${user?._id}: ${e}`);
-                reject();
-              }
-            }),
+          async (user) => {
+            try {
+              return {
+                ...user,
+                user: await Users.customFindByIdWithDetails({
+                  userId: user?._id,
+                  organization,
+                }),
+              };
+            } catch (e) {
+              console.error(`Error occured in actions insights for user with ID ${user?._id}: ${e}`);
+              return { user };
+            }
+          },
         ),
       );
     }

@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { response } from 'express';
 import { GraphQLError } from 'graphql';
-import _difference from 'lodash/difference';
+import { difference, uniq } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -172,7 +172,7 @@ const getAuditRecordValues = async ({
       case 'evidence': {
         const getUploadedPathsArray = (arr) =>
           arr.map(({ uploaded }) => uploaded?.id);
-        const removedEvidence = _difference(
+        const removedEvidence = difference(
           getUploadedPathsArray(oldValue || []),
           getUploadedPathsArray(newValue || []),
         ).filter(Boolean);
@@ -185,7 +185,7 @@ const getAuditRecordValues = async ({
             label: `${document.name} - ${document.uploaded.name}`,
           };
         }
-        const addedEvidence = _difference(
+        const addedEvidence = difference(
           getUploadedPathsArray(newValue || []),
           getUploadedPathsArray(oldValue || []),
         ).filter(Boolean);
@@ -205,7 +205,7 @@ const getAuditRecordValues = async ({
       case 'attachments': {
         const getAttachmentsPathsArray = (arr) =>
           arr.map(({ uploaded }) => uploaded?.path);
-        const removedAttachments = _difference(
+        const removedAttachments = difference(
           getAttachmentsPathsArray(oldValue || []),
           getAttachmentsPathsArray(newValue || []),
         ).filter(Boolean);
@@ -218,7 +218,7 @@ const getAuditRecordValues = async ({
             label: `${document.name} - ${document.uploaded.name}`,
           };
         }
-        const addedAttachments = _difference(
+        const addedAttachments = difference(
           getAttachmentsPathsArray(newValue || []),
           getAttachmentsPathsArray(oldValue || []),
         ).filter(Boolean);
@@ -248,7 +248,7 @@ const getAuditRecordValues = async ({
 
             return `${index}-${value}`;
           });
-        const updatedQuestion = _difference(
+        const updatedQuestion = difference(
           getAnswersArray(oldValue || []),
           getAnswersArray(newValue || []),
         ) as string[];
@@ -286,7 +286,7 @@ const getAuditRecordValues = async ({
               const newChoices = questionNew.value.map(
                 (option, index) => `${index}-${option.isCorrect}`,
               );
-              const [updatedChoice] = _difference(oldChoices, newChoices);
+              const [updatedChoice] = difference(oldChoices, newChoices);
               const [choiceIndex, choiceValue] = updatedChoice?.split('-');
 
               // choiceValue keeps the previous value of the choice
@@ -337,6 +337,15 @@ responseSchema.statics.customCreate = async function (
   userId: string,
   organizationId: string,
 ): Promise<IResponse> {
+  // Add users assigned to the response to database if doesn't exist
+  const usersIds = [
+    response.responsibleId,
+    response.accountableId,
+    ...(response.contributorsIds || []),
+    ...(response.followersIds || []),
+  ];
+  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+
   const createdResponse = await this.create({
     ...response,
     _id: uuidv4(),
@@ -512,21 +521,14 @@ responseSchema.statics.customUpdateOne = async function (
   const updatedResult = await this.updateOne(selector, updatedResponse);
   await this.customRecalculateResponse(response._id);
 
-  const assertAttendees = async () => {
-    const usersIds = [
-      ...(updates.contributorsIds || []),
-      ...(updates.followersIds || []),
-    ];
-    if (updates.responsibleId) usersIds.push(updates.responsibleId);
-
-    if (updates.accountableId) usersIds.push(updates.accountableId);
-
-    for (const userId of usersIds) {
-      const user = await Users.customFindById(userId, organizationId);
-      if (!user) await Users.customAdd({ _id: userId }, userId, organizationId);
-    }
-  };
-  assertAttendees();
+  // Add users assigned to the response to database if doesn't exist
+  const usersIds = [
+    ...(updates.contributorsIds || []),
+    ...(updates.followersIds || []),
+  ];
+  if (updates.responsibleId) usersIds.push(updates.responsibleId);
+  if (updates.accountableId) usersIds.push(updates.accountableId);
+  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {

@@ -84,19 +84,15 @@ locationsSchema.statics.customCreate = async function (
   userId: string,
   organizationId: string,
 ): Promise<ILocation> {
+  // Add owner to the database if doesn't exist
+  await Users.customAssertUser({ userId: location.ownerId, organizationId });
+
   const createdLocation = await this.create({
     ...location,
     _id: uuidv4(),
     organizationId,
     metatags: genMetatags('added', userId),
   });
-
-  // Add owner to the database if doesn't exist
-  const { ownerId } = location;
-  if (ownerId) {
-    const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
-  }
 
   if (createdLocation?._doc) {
     const addAuditLog = async () => {
@@ -198,11 +194,7 @@ locationsSchema.statics.customUpdateOne = async function (
   const updatedResult = await this.updateOne(selector, updatedLocation);
 
   // Add owner to the database if doesn't exist
-  const { ownerId } = updatedLocation;
-  if (ownerId) {
-    const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
-  }
+  await Users.customAssertUser({ userId: updatedLocation.ownerId, organizationId });
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {

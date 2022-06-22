@@ -133,22 +133,20 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
     if (shouldJoin(['topAuditors', 'user'])) {
       topAuditors = await Promise.all(
         topAuditors.map(
-          (auditor) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<any>(async (resolve, reject) => {
-              try {
-                resolve({
-                  ...auditor,
-                  user: await Users.customFindByIdWithDetails({
-                    userId: auditor?._id,
-                    organization,
-                  }),
-                });
-              } catch (e) {
-                console.error(`Error occured in audits insights for user with ID ${auditor?._id}: ${e}`);
-                reject();
-              }
-            }),
+          async (auditor) => {
+            try {
+              return {
+                ...auditor,
+                user: await Users.customFindByIdWithDetails({
+                  userId: auditor?._id,
+                  organization,
+                }),
+              };
+            } catch (e) {
+              console.error(`Error occured in audits insights for user with ID ${auditor?._id}: ${e}`);
+              return { auditor };
+            }
+          },
         ),
       );
     }

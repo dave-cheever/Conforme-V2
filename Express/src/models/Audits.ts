@@ -1,9 +1,11 @@
 import { response } from 'express';
 import { GraphQLError } from 'graphql';
+import { uniq } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAudit, IAuditModel } from 'app-interfaces';
+import { Users } from 'app-models';
 import { genMetatags, isPermitted, join } from 'app-utils';
 
 const auditsSchema = new Schema<IAudit, IAuditModel>({
@@ -57,6 +59,13 @@ auditsSchema.statics.customGenerateReference = async function (): Promise<string
 };
 
 auditsSchema.statics.customCreate = async function (audit: IAudit, userId: string, organizationId: string): Promise<IAudit> {
+  // Add auditor and participants to the database if doesn't exist
+  const usersIds = [
+    audit.auditorId,
+    ...(audit.participantsIds || []),
+  ];
+  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+
   const createdAudit = await this.create({
     ...audit,
     _id: uuidv4(),
@@ -167,6 +176,11 @@ auditsSchema.statics.customUpdateOne = async function (
 ): Promise<IAudit> {
   const audit = await this.customFindOne(selector, organizationId);
   if (!audit) throw new GraphQLError("Audit doesn't exist");
+
+  // Add auditor and participants to the database if doesn't exist
+  const usersIds = updates.participantsIds || [];
+  if (updates.auditorId) usersIds.push(updates.auditorId);
+  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
 
   const updatedAudit = {
     ...audit,

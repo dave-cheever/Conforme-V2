@@ -162,22 +162,20 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
     if (shouldJoin(['addedBy'])) {
       answers = await Promise.all(
         answers.map(
-          (answer) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<any>(async (resolve, reject) => {
-              try {
-                resolve({
-                  ...answer,
-                  addedBy: await Users.customFindByIdWithDetails({
-                    userId: answer?.metatags?.addedBy,
-                    organization,
-                  }),
-                });
-              } catch (e) {
-                console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
-                reject();
-              }
-            }),
+          async (answer) => {
+            try {
+              return {
+                ...answer,
+                addedBy: await Users.customFindByIdWithDetails({
+                  userId: answer?.metatags?.addedBy,
+                  organization,
+                }),
+              };
+            } catch (e) {
+              console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
+              return answer;
+            }
+          },
         ),
       );
     }

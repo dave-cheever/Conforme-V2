@@ -2,7 +2,7 @@ import { isBefore, subMinutes } from 'date-fns';
 import { model, Schema } from 'mongoose';
 
 import { IOrganization, IUser, IUserModel } from 'app-interfaces';
-import { Users } from 'app-models';
+import { Organizations, Users } from 'app-models';
 import { GraphService } from 'app-services';
 import { genMetatags, getProtocol } from 'app-utils';
 
@@ -44,7 +44,7 @@ userSchema.statics.customFindById = async function (userId: string): Promise<IUs
   return user;
 };
 
-userSchema.statics.customAdd = async function (user: IUser, userId: string, organizationId: string): Promise<IUser> {
+userSchema.statics.customAdd = async function (user: IUser, organizationId: string): Promise<IUser> {
   const newUser = await this.create({
     ...user,
     defaultPage: '/',
@@ -124,6 +124,58 @@ userSchema.statics.customFindByIdWithDetails = async function ({
   const users = await this.customFindWithDetails({ selector: { _id: userId }, organization });
   if (!users || users.length === 0) throw new Error('User not found');
   return users[0];
+};
+
+userSchema.statics.customAssertUser = async function ({
+  userId,
+  organizationId,
+}: {
+  userId: string;
+  organizationId: string;
+}): Promise<void> {
+  try {
+    const organization = await Organizations.customFindById(organizationId, organizationId);
+    const user = await Users.findById(userId).lean();
+    if (user) {
+      if (!user.organizationsIds?.includes(organization._id))
+        await Users.updateOne({ _id: user._id }, { organizationsIds: [...(user.organizationsIds || []), organization._id] });
+    } else {
+      const userDetails = await GraphService.getUserData({ userId, organization });
+      if (!userDetails) {
+        console.log(`User with ID ${userId} couldn't be asserted as doesn't exist in AAD`);
+        return;
+      }
+
+      const managerId = await GraphService.getLineManagerId({ userId, organization });
+
+      let role = 'user';
+      const roles: any = await GraphService.checkMemberGroups({
+        userId,
+        groups: {
+          admin: organization.adminsGroupId || '',
+          reader: organization.readersGroupId || '',
+        },
+        organization,
+      });
+
+      if (roles.admin) role = 'admin';
+      else if (roles.reader) role = 'reader';
+
+      const newUser = {
+        _id: userId,
+        firstName: userDetails?.givenName || '',
+        lastName: userDetails?.surname || '',
+        displayName: userDetails?.displayName || '',
+        email: userDetails?.mail || userDetails?.userPrincipalName || '',
+        jobTitle: userDetails?.jobTitle || '',
+        role,
+        managerId,
+      };
+      await Users.customAdd(newUser, organization._id);
+    }
+  } catch (e) {
+    console.log(`User with ID ${userId} couldn't be asserted`);
+  }
 };
 
 const userModel = model<IUser, IUserModel>('User', userSchema);

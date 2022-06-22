@@ -91,19 +91,15 @@ businessUnitSchema.statics.customCreate = async function (
   userId: string,
   organizationId: string,
 ): Promise<IBusinessUnit> {
+  // Add owner to the database if doesn't exist
+  await Users.customAssertUser({ userId: businessUnit.ownerId, organizationId });
+
   const createdBusinessUnit = await this.create({
     ...businessUnit,
     _id: uuidv4(),
     organizationId,
     metatags: genMetatags('added', userId),
   });
-
-  // Add owner to the database if doesn't exist
-  const { ownerId } = businessUnit;
-  if (ownerId) {
-    const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
-  }
 
   if (createdBusinessUnit?._doc) {
     const addAuditLog = async () => {
@@ -186,11 +182,7 @@ businessUnitSchema.statics.customUpdateOne = async function (
   const updatedResult = await this.updateOne(selector, updatedBusinessUnit);
 
   // Add owner to the database if doesn't exist
-  const { ownerId } = updatedBusinessUnit;
-  if (ownerId) {
-    const owner = await Users.customFindById(ownerId, organizationId);
-    if (!owner) await Users.customAdd({ _id: ownerId }, userId, organizationId);
-  }
+  await Users.customAssertUser({ userId: updatedBusinessUnit.ownerId, organizationId });
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {

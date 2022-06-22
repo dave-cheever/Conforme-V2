@@ -19,9 +19,10 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
 
     if (questionQuery.scope) {
       pipeline.push({
-        $match: {
-          scope: questionQuery.scope,
-        },
+        $match: Object.entries(questionQuery.scope).reduce((acc, [key, value]) => {
+          acc[`scope.${key}`] = value;
+          return acc;
+        }, {}),
       });
     }
 
@@ -147,9 +148,9 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
         ...question,
         answer: question.answer._id
           ? {
-              ...question.answer,
-              actions: question.answer.actions.filter((action) => !action.metatags.removedAt),
-            }
+            ...question.answer,
+            actions: question.answer.actions.filter((action) => !action.metatags.removedAt),
+          }
           : undefined,
       }));
     }

@@ -47,27 +47,8 @@ const initPassport = (passport: PassportStatic) => {
       if (!groups.access) return done(null, { organization }, "User doesn't exist in Conforme AAD group");
     }
 
-    let user: IUser;
-    const userQuery = {
-      userId: _id,
-      organization,
-    };
-    try {
-      user = await Users.customFindByIdWithDetails(userQuery);
-      if (!user.organizationsIds?.includes(organization._id)) {
-        user = {
-          ...user,
-          organizationsIds: [...(user.organizationsIds || []), organization._id],
-        };
-        await Users.updateOne({ _id: user._id }, user);
-      }
-    } catch (e) {
-      const newUser = {
-        _id,
-      };
-      await Users.customAdd(newUser, _id, organization._id);
-      user = await Users.customFindByIdWithDetails(userQuery);
-    }
+    await Users.customAssertUser({ userId: _id, organizationId: organization._id });
+    const user = await Users.customFindByIdWithDetails({ userId: _id, organization });
     if (!user) return done(null, { organization }, 'Internal server error - Azure AD auth');
 
     const sessionUser = await sessionizeUser(user);

@@ -51,6 +51,9 @@ const actionsSchema = new Schema<IAction, IActionModel>({
 });
 
 actionsSchema.statics.customCreate = async function (action: IAction, userId: string, organizationId: string): Promise<IAction> {
+  // Add assignee to the database if doesn't exist
+  if (action.assigneeId) await Users.customAssertUser({ userId: action.assigneeId, organizationId });
+
   const createdAction = await this.create({
     ...action,
     _id: uuidv4(),
@@ -98,6 +101,9 @@ actionsSchema.statics.customUpdateOne = async function (
   const action = await this.customFindOne(selector, organizationId);
   if (!action) throw new GraphQLError("Action doesn't exist");
 
+  // Add assignee to the database if doesn't exist
+  if (action.assigneeId) await Users.customAssertUser({ userId: action.assigneeId, organizationId });
+
   const updatedAction = {
     ...action,
     ...updates,
@@ -130,10 +136,10 @@ actionsSchema.statics.customDelete = async function (selector: object = {}, user
 
 actionsSchema.statics.customAssertAssignee = async function (actionId: string): Promise<void> {
   const action = await this.findById(actionId).lean();
-  if (!action) return;
+  if (!action || !action.assigneeId) return;
 
   // If action was created in an answer, in an audit, add assignee as participant
-  if (action.scope.type === 'answer' && action.assigneeId) {
+  if (action.scope.type === 'answer') {
     const actionAnswer = await Answers.aggregate([
       {
         $match: {

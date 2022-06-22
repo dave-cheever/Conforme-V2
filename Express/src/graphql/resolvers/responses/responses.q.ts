@@ -287,7 +287,7 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     // Join responsible
     if (shouldJoin(['responsible'])) {
-      Promise.all(
+      await Promise.all(
         responses.map(
           async (response) => {
             try {

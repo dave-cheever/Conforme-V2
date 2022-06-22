@@ -399,21 +399,20 @@ const businessUnits = async (
     if (shouldJoin('owner')) {
       await Promise.all(
         businessUnits.map(
-          (businessUnit) =>
-            // eslint-disable-next-line no-async-promise-executor
-            new Promise<void>(async (resolve, reject) => {
-              try {
-                // eslint-disable-next-line no-param-reassign
-                businessUnit.owner = await Users.customFindByIdWithDetails({
+          async (businessUnit) => {
+            try {
+              return {
+                ...businessUnit,
+                owner: await Users.customFindByIdWithDetails({
                   userId: businessUnit.ownerId,
                   organization,
-                });
-                resolve();
-              } catch (e) {
-                console.log(`Error occured for business unit with ID ${businessUnit._id}: ${e}`);
-                reject();
-              }
-            }),
+                }),
+              };
+            } catch (e) {
+              console.log(`Error occured for business unit with ID ${businessUnit._id}: ${e}`);
+              return businessUnit;
+            }
+          },
         ),
       );
     }
