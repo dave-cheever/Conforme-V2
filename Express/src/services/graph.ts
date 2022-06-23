@@ -255,10 +255,33 @@ const uploadDocuments = async (
     logger.error('Graph error: Wrong SharePoint site configuration');
     return [];
   }
+
+  const incrementFileName = (name: string, increment: number) => {
+    if (increment === 0) return name;
+
+    const extension = name.match(/\..*$/)?.[0] ?? '';
+    const withoutExtensionAndParentheses = name.replace(/\..*$/, '').replace(/\(|\)/, '');
+
+    return `${withoutExtensionAndParentheses.split(' ')[0]} (${increment})${extension}`;
+  };
+
   const uploadedDocuments = await Promise.all(
     documents.map(async (document) => {
       try {
-        const uploadSession = await client.post(`sites/${id}/drive/root:/${path}/${document.originalname}:/createUploadSession`, {});
+        let documentExistantTimes = 0;
+
+        try {
+          (await client.get(`sites/${id}/drive/root:/${path}:/children`))?.data?.value?.map((file) => {
+            if (new RegExp(document.originalname.split('.')[0]).test(file?.name)) documentExistantTimes += 1;
+
+            return undefined;
+          });
+        } catch {}
+
+        const uploadSession = await client.post(
+          `sites/${id}/drive/root:/${path}/${incrementFileName(document.originalname, documentExistantTimes)}:/createUploadSession`,
+          {},
+        );
         const { uploadUrl } = uploadSession.data;
         if (!uploadUrl) throw new Error('Graph error: Cannot generate upload url');
 
@@ -287,7 +310,7 @@ const uploadDocuments = async (
         const result = await upload();
         const siteId = await getItemId(result);
         return {
-          name: document.originalname,
+          name: incrementFileName(document.originalname, documentExistantTimes),
           id: siteId,
           addedAt: new Date(),
         };
@@ -345,7 +368,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
       // Delete old folder if empty
       if (tempFolderDetails.data.folder.childCount === 0)
         await client.delete(`sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`);
-    } catch (deleteErr: any) { } // do not do anything if folder was already removed
+    } catch (deleteErr: any) {} // do not do anything if folder was already removed
 
     return true;
   } catch (e: any) {
