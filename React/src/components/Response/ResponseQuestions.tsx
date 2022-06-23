@@ -1,17 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { Prompt } from "react-router-dom";
+import { Prompt } from 'react-router-dom';
 
 import { gql, useMutation } from '@apollo/client';
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Stack, Text, useToast } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 
 import { toastFailed } from '../../bootstrap/config';
@@ -25,9 +17,7 @@ import Field from '../Forms/Field';
 
 const UPDATE_QUESTIONS = gql`
   mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
-    updateResponseQuestions(
-      updateResponseQuestionsModify: $updateResponseQuestionsModify
-    )
+    updateResponseQuestions(updateResponseQuestionsModify: $updateResponseQuestionsModify)
   }
 `;
 
@@ -42,15 +32,14 @@ const ResponseQuestions = () => {
   const [update] = useMutation(UPDATE_QUESTIONS);
   const { user } = useAppContext();
   const { response, snapshot, refetch, setIsQuestionFormDirty } = useResponseContext();
-  const isUserPermitted = useMemo(
-    () => isPermitted({ user, action: 'responses.edit', data: { response } }),
-    [user, response],
-  );
-  const questions = (response?.questions || []).filter(
-    ({ outdated }) => !outdated,
-  );
+  const isUserPermitted = useMemo(() => isPermitted({ user, action: 'responses.edit', data: { response } }), [user, response]);
+  const questions = (response?.questions || []).filter(({ outdated }) => !outdated);
 
-  const { control, watch, formState: { isDirty } } = useForm({
+  const {
+    control,
+    watch,
+    formState: { isDirty },
+  } = useForm({
     mode: 'all',
     defaultValues: questions?.reduce(
       (acc, { name, value }) =>
@@ -65,9 +54,7 @@ const ResponseQuestions = () => {
   const answers = watch();
 
   const updateResponseQuestions = async () => {
-    const wasQuestionUpdated = questions.find(
-      ({ name, value }) => !isEqual(value, answers[name]),
-    );
+    const wasQuestionUpdated = questions.find(({ name, value }) => !isEqual(value, answers[name]));
     if (wasQuestionUpdated) {
       try {
         await update({
@@ -78,6 +65,7 @@ const ResponseQuestions = () => {
             },
           },
         });
+        setIsQuestionFormDirty(false);
         refetch();
       } catch (e: any) {
         toast({
@@ -88,7 +76,7 @@ const ResponseQuestions = () => {
     }
   };
 
-  usePrompt(isDirty, "You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?");
+  usePrompt(isDirty, 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?');
 
   useEffect(() => {
     setIsQuestionFormDirty(isDirty);
@@ -98,41 +86,19 @@ const ResponseQuestions = () => {
 
   return (
     <>
-    <Prompt
-      message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
-      when={isDirty}
-    />
-    <Stack
-      h="full"
-      minH={["80vh", 0]}
-      mt={2}
-      overflow={['visible', 'auto']}
-      w="full"
-    >
-      <Grid gap={4} templateColumns="1fr" w={['full', '80%', '50%']}>
-        {questions.length === 0 && (
-          <Text color="responseQuestions.NoQuestion.color" fontSize="smm">
-            <MessageSquareIcon
-              h="16px"
-              stroke="responseQuestions.NoQuestion.icon"
-              w="16px"
-            />
-            &nbsp; This item has no questions yet
-          </Text>
-        )}
-        {questions.map(
-          (
-            {
-              type,
-              name,
-              description,
-              required,
-              value,
-              requiredAnswer,
-              notApplicable,
-            },
-            i,
-          ) => (
+      <Prompt
+        message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
+        when={isDirty}
+      />
+      <Stack h="full" minH={['80vh', 0]} mt={2} overflow={['visible', 'auto']} w="full">
+        <Grid gap={4} templateColumns="1fr" w={['full', '80%', '50%']}>
+          {questions.length === 0 && (
+            <Text color="responseQuestions.NoQuestion.color" fontSize="smm">
+              <MessageSquareIcon h="16px" stroke="responseQuestions.NoQuestion.icon" w="16px" />
+              &nbsp; This item has no questions yet
+            </Text>
+          )}
+          {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable }, i) => (
             <Flex key={name}>
               <Box
                 bg="responseQuestions.sectionNumber.bg"
@@ -164,24 +130,25 @@ const ResponseQuestions = () => {
                 type={type}
               />
             </Flex>
-          ),
+          ))}
+        </Grid>
+        <br />
+        {questions.length > 0 && (
+          <Flex>
+            <Button
+              _hover={{ bg: 'responseQuestions.button.hover' }}
+              bg="responseQuestions.button.bg"
+              color="responseQuestions.button.color"
+              fontSize="smm"
+              fontWeight="bold"
+              onClick={() => updateResponseQuestions()}
+            >
+              Save
+              <ChevronRight ml="5px" />
+            </Button>
+          </Flex>
         )}
-      </Grid>
-      <br />
-      <Flex>
-        <Button
-          _hover={{ bg: 'responseQuestions.button.hover' }}
-          bg="responseQuestions.button.bg"
-          color="responseQuestions.button.color"
-          fontSize="smm"
-          fontWeight="bold"
-          onClick={() => updateResponseQuestions()}
-        >
-          Save
-          <ChevronRight ml="5px" />
-        </Button>
-      </Flex>
-    </Stack>
+      </Stack>
     </>
   );
 };

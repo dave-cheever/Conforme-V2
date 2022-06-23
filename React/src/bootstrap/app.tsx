@@ -34,13 +34,7 @@ function App() {
     return (
       <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
         <Flex alignItems="center" h="100vh" justifyContent="center" w="100vw">
-          <Spinner
-            color="brand.primary"
-            emptyColor="gray.200"
-            size="xl"
-            speed="0.65s"
-            thickness="4px"
-          />
+          <Spinner color="brand.primary" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
         </Flex>
       </ChakraProvider>
     );
