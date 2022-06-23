@@ -180,6 +180,7 @@ const PeoplePicker = ({
                       justify="space-between"
                       key={user._id}
                       mb={1}
+                      mt="10px"
                       onClick={() => {
                         setShowResults(false);
                         setSearchText('');
@@ -190,7 +191,6 @@ const PeoplePicker = ({
                       pt="1"
                       role="group"
                       w="full"
-                      mt="10px"
                     >
                       <Flex direction="column" ml="2" overflowX="hidden">
                         <Text color="black" fontSize="smm" fontWeight="semibold">

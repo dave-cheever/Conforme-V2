@@ -90,7 +90,10 @@ const ComplianceItems = () => {
       'regulatoryBodiesIds',
       'dueDate',
     ]);
-    return () => setShowFiltersPanel(false);
+    return () => {
+      setShowFiltersPanel(false);
+      setUsedFilters([]);
+    };
   }, []);
 
   useEffect(() => {

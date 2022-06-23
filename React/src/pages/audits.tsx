@@ -84,7 +84,10 @@ const Audits = () => {
 
   useEffect(() => {
     setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds']);
-    return () => setShowFiltersPanel(false);
+    return () => {
+      setShowFiltersPanel(false);
+      setUsedFilters([]);
+    };
   }, []);
 
   // Set pre-defined filters

@@ -30,25 +30,10 @@ const EvidenceExpected = ({ evidence }) => {
   const { user } = useAppContext();
   const { response, snapshot, refetch } = useResponseContext();
   const acceptedFileTypes = useMemo(
-    () => [
-      '.pdf',
-      '.doc',
-      '.docx',
-      '.xls',
-      '.xlsx',
-      '.txt',
-      'image/*',
-      '.zip',
-      '.html',
-      '.pptx',
-      '.ppt',
-      '.msg',
-    ],
+    () => ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', 'image/*', '.zip', '.html', '.pptx', '.ppt', '.msg'],
     [],
   );
-  const [status, setStatus] = useState<'idle' | 'uploading' | 'rejected'>(
-    'idle',
-  );
+  const [status, setStatus] = useState<'idle' | 'uploading' | 'rejected'>('idle');
   const [saveEvidence] = useMutation(ADD_DOCUMENTS);
   const [removeDocument] = useMutation(REMOVE_DOCUMENT);
   const removeEvidence = async () => {
@@ -63,13 +48,7 @@ const EvidenceExpected = ({ evidence }) => {
     });
   };
 
-  const upload = async ({
-    acceptedFile,
-    rejectedFile,
-  }: {
-    acceptedFile: File;
-    rejectedFile: FileRejection;
-  }) => {
+  const upload = async ({ acceptedFile, rejectedFile }: { acceptedFile: File; rejectedFile: FileRejection }) => {
     if (!response) return;
 
     if (rejectedFile) setStatus('rejected');
@@ -81,10 +60,7 @@ const EvidenceExpected = ({ evidence }) => {
         documentsData.append('documentName', evidence.name);
         documentsData.append('documentType', 'evidence');
         documentsData.append('document', acceptedFile);
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URL}/files/document`,
-          documentsData,
-        );
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/files/document`, documentsData);
         await saveEvidence({
           variables: {
             responseDocumentsAddInput: {
@@ -113,22 +89,9 @@ const EvidenceExpected = ({ evidence }) => {
   return (
     <Flex direction="column" maxW="342px" w="full">
       <Flex align="center" mb={2} mt={3}>
-        <Box
-          color="evidence.fontColor"
-          fontSize={11}
-          fontWeight="700"
-          lineHeight="16px"
-          width="300px"
-        >
+        <Box color="evidence.fontColor" fontSize={11} fontWeight="700" lineHeight="16px" width="300px">
           {evidence.name}
-          <Asterisk
-            fill="questionListElement.iconAsterisk"
-            h="9px"
-            mb="5px"
-            ml="5px"
-            stroke="datepicker.iconAsterisk"
-            w="9px"
-          />
+          <Asterisk fill="questionListElement.iconAsterisk" h="9px" mb="5px" ml="5px" stroke="datepicker.iconAsterisk" w="9px" />
         </Box>
       </Flex>
       {evidence.uploaded?.id ? (
@@ -142,8 +105,8 @@ const EvidenceExpected = ({ evidence }) => {
             document={evidence.uploaded}
             downloadable={isPermitted({
               user,
-              action: 'responses.edit',
-              data: response,
+              action: 'responses.view',
+              data: { response },
             })}
             removable={
               !snapshot &&
@@ -151,7 +114,7 @@ const EvidenceExpected = ({ evidence }) => {
               isPermitted({
                 user,
                 action: 'responses.edit',
-                data: response,
+                data: { response },
               })
             }
           />
@@ -174,13 +137,7 @@ const EvidenceExpected = ({ evidence }) => {
               }
             >
               {({ getRootProps, getInputProps }) => (
-                <Box
-                  {...getRootProps()}
-                  cursor="pointer"
-                  h="65px"
-                  maxW="380px"
-                  w="full"
-                >
+                <Box {...getRootProps()} cursor="pointer" h="65px" maxW="380px" w="full">
                   <input {...getInputProps()} />
                   <Flex
                     align="center"
@@ -213,8 +170,7 @@ const EvidenceExpected = ({ evidence }) => {
       )}
       {status === 'rejected' && (
         <Flex color="red.500" fontSize="12px" fontWeight="bold" mt={2}>
-          Document not uploaded. Accepted file types include{' '}
-          {acceptedFileTypes.map((file) => `${file} `)}
+          Document not uploaded. Accepted file types include {acceptedFileTypes.map((file) => `${file} `)}
         </Flex>
       )}
     </Flex>

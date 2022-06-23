@@ -2,17 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Divider,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, Input, InputGroup, InputLeftElement, InputRightElement, Stack, Text } from '@chakra-ui/react';
 import { debounce } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
@@ -55,13 +45,12 @@ const GET_SEARCH_HISTORY = gql`
 const SearchBar = () => {
   const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
-  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } =
-    useNavigationTopContext();
+  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } = useNavigationTopContext();
 
-  const { data: historyData } = useQuery(GET_SEARCH_HISTORY, {
+  const { data: historyData, refetch } = useQuery(GET_SEARCH_HISTORY, {
     variables: {
       SearchHistoryQuery: {
-        action: 'search',
+        actions: ['search'],
         userId: user?._id,
         limit: 3,
       },
@@ -71,14 +60,11 @@ const SearchBar = () => {
 
   const recentlySearchPhrases =
     historyData?.auditLogs?.reduce((acc, curr) => {
-      const searchPhrases = curr.records
-        .filter(({ action }) => action === 'search')
-        .map((record) => record.values?.searchText?.new?.value);
+      const searchPhrases = curr.records.filter(({ action }) => action === 'search').map((record) => record.values?.searchText?.new?.value);
       return [...acc, ...searchPhrases];
     }, []) || [];
 
-  const [getSearchResults, { loading, data }] =
-    useLazyQuery(GET_SEARCH_RESULTS);
+  const [getSearchResults, { loading, data }] = useLazyQuery(GET_SEARCH_RESULTS);
 
   const search = useCallback(
     debounce((searchText) => {
@@ -90,6 +76,7 @@ const SearchBar = () => {
             },
           },
         });
+        refetch();
       }
     }, 750),
     [],
@@ -106,20 +93,10 @@ const SearchBar = () => {
         w={['calc(100vw - 30px)', isSearchBarOpen ? '550px' : '260px']}
         zIndex={1}
       >
-        <InputLeftElement
-          color="navigationTop.inputIconColor"
-          pointerEvents="none"
-        >
-          <SearchIcon
-            fill="navigationTop.searchBarIcon"
-            opacity="1"
-            stroke="brand.outerSpace"
-          />
+        <InputLeftElement color="navigationTop.inputIconColor" pointerEvents="none">
+          <SearchIcon fill="navigationTop.searchBarIcon" opacity="1" stroke="brand.outerSpace" />
         </InputLeftElement>
-        <InputRightElement
-          display={isSearchBarOpen ? 'block' : 'none'}
-          h="full"
-        >
+        <InputRightElement display={isSearchBarOpen ? 'block' : 'none'} h="full">
           <CrossIcon
             _active={{}}
             _hover={{
@@ -150,37 +127,20 @@ const SearchBar = () => {
         />
       </InputGroup>
       <Box
-        display={
-          isSearchBarOpen &&
-          (recentlySearchPhrases?.length > 0 || data?.search || loading)
-            ? 'block'
-            : 'none'
-        }
+        display={isSearchBarOpen && (recentlySearchPhrases?.length > 0 || data?.search || loading) ? 'block' : 'none'}
         position="absolute"
         pt={[6, 12]}
         w="full"
         zIndex={0}
       >
-        <Stack
-          bg="white"
-          boxShadow="0px 3px 10px rgba(0, 0, 0, .1)"
-          fontSize="smm"
-          p={4}
-          rounded="20px"
-        >
+        <Stack bg="white" boxShadow="0px 3px 10px rgba(0, 0, 0, .1)" fontSize="smm" p={4} rounded="20px">
           {loading ? (
             <Loader size="sm" />
           ) : (
             data &&
-            ((module?.type === 'tracker'
-              ? data.search.responses
-              : data.search.audits
-            ).length > 0 ? (
+            ((module?.type === 'tracker' ? data.search.responses : data.search.audits).length > 0 ? (
               <Stack>
-                {(module?.type === 'tracker'
-                  ? data?.search?.responses
-                  : data?.search?.audits
-                )?.map((searchResult) => (
+                {(module?.type === 'tracker' ? data?.search?.responses : data?.search?.audits)?.map((searchResult) => (
                   <Stack
                     _hover={{
                       textDecoration: 'underline',
@@ -188,9 +148,7 @@ const SearchBar = () => {
                     cursor="pointer"
                     direction="row"
                     key={searchResult._id}
-                    onClick={() =>
-                      navigateTo(`/${searchResult.type}/${searchResult._id}`)
-                    }
+                    onClick={() => navigateTo(`/${searchResult.type}/${searchResult._id}`)}
                   >
                     <Text>{searchResult.primaryText}</Text>
                     <Text>•</Text>

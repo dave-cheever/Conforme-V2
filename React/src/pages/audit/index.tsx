@@ -67,7 +67,7 @@ const Audit = () => {
           )}
       </HStack>
       {!(selectedQuestion && !isDeleteQuestionModalOpen) && (
-        <Stack>
+        <Stack pb="25px">
           {questionsCategories.map((category) => (
             <AuditQuestionsCategory handleDelete={handleDeleteQuestionModalOpen} key={category._id} questionsCategory={category} />
           ))}

@@ -78,7 +78,7 @@ const DocumentUploaded = ({
               src={documentDetails?.thumbnail}
             />
           </Box>
-          <Flex direction="column" fontSize="12px" mr={2} overflow="hidden" textOverflow="ellipsis">
+          <Flex direction="column" fontSize="12px" grow={1} mr={2} overflow="hidden" textOverflow="ellipsis">
             <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
               {document?.name}
             </Text>

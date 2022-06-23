@@ -51,16 +51,8 @@ const GET_USERS_BY_ID = gql`
 
 const Team = () => {
   const { response, snapshot } = useResponseContext();
-  const {
-    data,
-    filterType,
-    searchQuery,
-    onOpen,
-    refetchUsers,
-    setFilterType,
-    setSelectedParticipants,
-    setUserSearchResults,
-  } = useTeamContext();
+  const { data, filterType, searchQuery, onOpen, refetchUsers, setFilterType, setSelectedParticipants, setUserSearchResults } =
+    useTeamContext();
 
   const maxDelegates = 5;
 
@@ -88,13 +80,10 @@ const Team = () => {
 
   useEffect(() => {
     refetchUsers();
-    if (filterType === 'responsible' || filterType === 'accountable')
-      setSelectedParticipants([]);
+    if (filterType === 'responsible' || filterType === 'accountable') setSelectedParticipants([]);
 
     if (data?.searchUsers && searchQuery) {
-      const filteredUsers = data.searchUsers.filter(
-        ({ _id }) => response && !response[filterType].includes(_id),
-      );
+      const filteredUsers = data.searchUsers.filter(({ _id }) => response && !response[filterType].includes(_id));
 
       setUserSearchResults(filteredUsers);
     } else setUserSearchResults([]);
@@ -105,13 +94,9 @@ const Team = () => {
   }, [filterType]);
 
   const accountable: IUser =
-    racfData?.responseAccountable &&
-    racfData?.responseAccountable?.length !== 0 &&
-    racfData?.responseAccountable[0];
+    racfData?.responseAccountable && racfData?.responseAccountable?.length !== 0 && racfData?.responseAccountable[0];
   const responsible: IUser =
-    racfData?.responseResponsible &&
-    racfData?.responseResponsible?.length !== 0 &&
-    racfData?.responseResponsible[0];
+    racfData?.responseResponsible && racfData?.responseResponsible?.length !== 0 && racfData?.responseResponsible[0];
 
   if (loading) {
     return (
@@ -144,17 +129,11 @@ const Team = () => {
             onOpen={onOpen}
             setFilterType={() => setFilterType('accountableId')}
           />
-          {racfData?.responseAccountable &&
-            racfData?.responseAccountable?.length !== 0 && (
-              <Flex>
-                <AvatarUser
-                  action="responses"
-                  isReplaceable
-                  permission="accountable"
-                  user={accountable}
-                />
-              </Flex>
-            )}
+          {racfData?.responseAccountable && racfData?.responseAccountable?.length !== 0 && (
+            <Flex>
+              <AvatarUser action="responses" isReplaceable permission="accountable" user={accountable} />
+            </Flex>
+          )}
         </Flex>
         <Flex flexDir="column" ml="26px">
           <TeamHeader
@@ -164,17 +143,11 @@ const Team = () => {
             onOpen={onOpen}
             setFilterType={() => setFilterType('responsibleId')}
           />
-          {racfData?.responseResponsible &&
-            racfData?.responseResponsible?.length !== 0 && (
-              <Flex>
-                <AvatarUser
-                  action="responses.manageResponsible"
-                  isReplaceable
-                  permission="responsible"
-                  user={responsible}
-                />
-              </Flex>
-            )}
+          {racfData?.responseResponsible && racfData?.responseResponsible?.length !== 0 && (
+            <Flex>
+              <AvatarUser action="responses.manageResponsible" isReplaceable permission="responsible" user={responsible} />
+            </Flex>
+          )}
         </Flex>
       </Flex>
       <Flex>
@@ -186,24 +159,11 @@ const Team = () => {
             onOpen={onOpen}
             setFilterType={() => setFilterType('contributorsIds')}
           />
-          <Grid
-            gap={[0, 6]}
-            templateColumns={[
-              'repeat(3, 1fr)',
-              'repeat(4, 1fr)',
-              'repeat(6, 1fr)',
-            ]}
-            w="full"
-          >
-            {(racfData?.contributors || [])
+          <Grid gap={[0, 6]} templateColumns={['repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(6, 1fr)']} w="full">
+            {[...(racfData?.contributors || [])]
               .sort((a, b) => a.displayName.localeCompare(b.displayName))
               .map((contributor) => (
-                <AvatarUser
-                  action="responses.manageContributor"
-                  key={contributor._id}
-                  permission="contributor"
-                  user={contributor}
-                />
+                <AvatarUser action="responses.manageContributor" key={contributor._id} permission="contributor" user={contributor} />
               ))}
           </Grid>
         </Flex>
@@ -216,24 +176,11 @@ const Team = () => {
             onOpen={onOpen}
             setFilterType={() => setFilterType('followersIds')}
           />
-          <Grid
-            gap={[0, 6]}
-            templateColumns={[
-              'repeat(3, 1fr)',
-              'repeat(4, 1fr)',
-              'repeat(6, 1fr)',
-            ]}
-            w="full"
-          >
-            {(racfData?.followers || [])
+          <Grid gap={[0, 6]} templateColumns={['repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(6, 1fr)']} w="full">
+            {[...(racfData?.followers || [])]
               .sort((a, b) => a.displayName.localeCompare(b.displayName))
               .map((follower) => (
-                <AvatarUser
-                  action="responses.manageMultipleFollowers"
-                  key={follower._id}
-                  permission="follower"
-                  user={follower}
-                />
+                <AvatarUser action="responses.manageMultipleFollowers" key={follower._id} permission="follower" user={follower} />
               ))}
           </Grid>
         </Flex>

@@ -16,7 +16,12 @@ interface IHeader {
 const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBreadcrumbs }) => {
   const { usedFilters } = useFiltersContext();
   const { isPathActive } = useNavigate();
-  const isAuditPage = isPathActive('/audits') || isPathActive('/actions') || isPathActive('/walk-items') || isPathActive('/dashboard');
+  const isAuditPage =
+    isPathActive('/audits') ||
+    isPathActive('/actions') ||
+    isPathActive('/walk-items') ||
+    isPathActive('/dashboard') ||
+    isPathActive('/compliance-items');
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => {

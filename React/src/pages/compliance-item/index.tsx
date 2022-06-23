@@ -1,6 +1,3 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import Confetti from 'react-confetti';
-
 import { Button, Flex } from '@chakra-ui/react';
 
 import { responseTabItems } from '../../bootstrap/config';
@@ -10,18 +7,16 @@ import RenewalModal from '../../components/Response/RenewalModal';
 import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import useDevice from '../../hooks/useDevice';
-import useResponseUtils from '../../hooks/useResponseUtils';
 
 const ComplianceItemResponse = () => {
-  const { activeTab, setActiveTab:updateActiveTab, response, snapshot, isQuestionFormDirty, setIsQuestionFormDirty } = useResponseContext();
-  const { getStatus } = useResponseUtils();
-  const [run, setRun] = useState(false);
-  const device = useDevice();
+  const { response, activeTab, setActiveTab: updateActiveTab, isQuestionFormDirty, setIsQuestionFormDirty } = useResponseContext();
+  // const { getStatus } = useResponseUtils();
+  // const [run, setRun] = useState(false);
+  // const device = useDevice();
 
-  useEffect(() => {
-    if (getStatus(response) === 'compliant' && !snapshot) setRun(false); // TODO: needs to be updated, fix dimensions and trigger
-  }, [response]);
+  // useEffect(() => {
+  //   if (getStatus(response) === 'compliant' && !snapshot) setRun(false); // TODO: needs to be updated, fix dimensions and trigger
+  // }, [response]);
 
   const renderSection = () => {
     switch (activeTab) {
@@ -40,41 +35,34 @@ const ComplianceItemResponse = () => {
   };
 
   const setActiveTab = (activeTab: number) => {
-    if(isQuestionFormDirty){
-      const confirm = window.confirm('You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?'); // eslint-disable-line no-alert
-      if(!confirm) return;
+    if (isQuestionFormDirty) {
+      // eslint-disable-next-line no-alert
+      const confirm = window.confirm(
+        'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?',
+      );
+      if (!confirm) return;
       setIsQuestionFormDirty(false);
     }
     updateActiveTab(activeTab);
-  }
+  };
 
-  const confettiHeight = useMemo(() => {
-    if(device === "desktop") return window.innerHeight - 100;
+  // TODO: Fix confetti
+  // const confettiHeight = useMemo(() => {
+  //   if (device === 'desktop') return window.innerHeight - 100;
+  //   if (device === 'tablet') return window.innerHeight - 100;
+  //   return window.innerHeight - 200;
+  // }, [device, window]);
 
-    if(device === "tablet") return window.innerHeight - 100;
-
-    return window.innerHeight - 200;
-
-  }, [device, window]);
-
-  const confettiWidth = useMemo(() => {
-    if(device === "desktop") return window.innerWidth - 300;
-
-    if(device === "tablet") return window.innerWidth - 200;
-
-    return window.innerWidth - 80;
-
-  }, [device, window]);
+  // const confettiWidth = useMemo(() => {
+  //   if (device === 'desktop') return window.innerWidth - 300;
+  //   if (device === 'tablet') return window.innerWidth - 200;
+  //   return window.innerWidth - 80;
+  // }, [device, window]);
 
   return (
     <>
       <RenewalModal />
-      <Confetti
-        height={confettiHeight}
-        recycle={false}
-        run={run}
-        width={confettiWidth}
-      />
+      {/* <Confetti height={confettiHeight} recycle={false} run={run} width={confettiWidth} /> */}
       <Flex direction="column" h="full" w="full">
         <Flex
           bg="complianceItemResponse.bg"
@@ -84,18 +72,23 @@ const ComplianceItemResponse = () => {
           p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
           w="full"
         >
-          <Flex align="center" justify="space-between" mb={["0", "8"]}>
+          <Flex align="center" justify="space-between" mb={['0', '8']}>
             <Flex justify={['center', 'flex-start']} w="full">
-              {responseTabItems.map(({ index, label, icon }) => (
-                <ResponseTabItem
-                  active={activeTab === index}
-                  icon={icon}
-                  index={index}
-                  key={label}
-                  label={label}
-                  setActiveTab={setActiveTab}
-                />
-              ))}
+              {responseTabItems
+                .filter(
+                  ({ index }) =>
+                    !(!response?.complianceItem?.allowAttachments && response?.complianceItem?.evidenceItems.length === 0 && index === 1),
+                )
+                .map(({ index, label, icon }) => (
+                  <ResponseTabItem
+                    active={activeTab === index}
+                    icon={icon}
+                    index={index}
+                    key={label}
+                    label={label}
+                    setActiveTab={setActiveTab}
+                  />
+                ))}
             </Flex>
             {activeTab > 0 && (
               <Button

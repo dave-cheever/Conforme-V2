@@ -44,27 +44,16 @@ const ResponseLeftNavigation = () => {
   const { showFiltersPanel } = useFiltersContext();
 
   const { response } = useResponseContext();
-  const {
-    data: {
-      accountable: responseAccountable,
-      responsible: responseResponsible,
-    } = [],
-  } = useQuery(GET_USERS_BY_ID, {
+  const { data: { accountable: responseAccountable, responsible: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, {
     variables: {
       accountableQuery: { usersIds: response?.accountableId || [] },
       responsibleQuery: { usersIds: response?.responsibleId || [] },
     },
   });
 
-  const accountable: IUser =
-    responseAccountable &&
-    responseAccountable?.length !== 0 &&
-    responseAccountable[0];
+  const accountable: IUser = responseAccountable && responseAccountable?.length !== 0 && responseAccountable[0];
 
-  const responsible: IUser =
-    responseResponsible &&
-    responseResponsible?.length !== 0 &&
-    responseResponsible[0];
+  const responsible: IUser = responseResponsible && responseResponsible?.length !== 0 && responseResponsible[0];
 
   return (
     <Flex
@@ -79,19 +68,8 @@ const ResponseLeftNavigation = () => {
       w="240px"
     >
       <Flex flexDirection="column">
-        <Box
-          alignItems="center"
-          cursor="pointer"
-          display="flex"
-          h="80px"
-          onClick={() => navigateTo('/')}
-        >
-          <Text
-            color="navigationLeft.organizationNameFontColor"
-            fontSize="16px"
-            fontWeight="bold"
-            w="80px"
-          >
+        <Box alignItems="center" cursor="pointer" display="flex" h="80px" onClick={() => navigateTo('/')}>
+          <Text color="navigationLeft.organizationNameFontColor" fontSize="16px" fontWeight="bold" w="full">
             {showFiltersPanel ? getInitials(module?.name) : module?.name}
           </Text>
         </Box>
@@ -109,12 +87,7 @@ const ResponseLeftNavigation = () => {
         </Flex>
         <Flex flexDirection="column" mb={2}>
           {navigationTabs.map(({ label, icon, url }) => (
-            <ResponseLeftTabItem
-              icon={icon}
-              key={url}
-              label={label}
-              url={url}
-            />
+            <ResponseLeftTabItem icon={icon} key={url} label={label} url={url} />
           ))}
         </Flex>
         <Box h="50px">
@@ -133,20 +106,11 @@ const ResponseLeftNavigation = () => {
               }
               text={response?.complianceItem.reference}
             >
-              <Copy
-                _hover={{ opacity: 0.6, cursor: 'pointer' }}
-                color="responseLeftNavigation.copy"
-                h="17px"
-                mt={1}
-                w="17px"
-              />
+              <Copy _hover={{ opacity: 0.6, cursor: 'pointer' }} color="responseLeftNavigation.copy" h="17px" mt={1} w="17px" />
             </CopyToClipboard>
           </Flex>
         </Box>
-        <ResponseLeftItem
-          heading={capitalize(t('businessUnit'))}
-          value={response?.businessUnit?.name || '-'}
-        />
+        <ResponseLeftItem heading={capitalize(t('businessUnit'))} value={response?.businessUnit?.name || '-'} />
         <Box h="50px" mt={2}>
           <Box fontSize="11px" opacity={0.5}>
             Accountable
@@ -195,18 +159,9 @@ const ResponseLeftNavigation = () => {
             </Flex>
           </Flex>
         </Box>
-        <ResponseLeftItem
-          heading="Category"
-          value={response?.complianceItem?.category?.name || '-'}
-        />
-        <ResponseLeftItem
-          heading="Regulatory body"
-          value={response?.complianceItem?.regulatoryBody?.name || '-'}
-        />
-        <ResponseLeftItem
-          heading="Frequency"
-          value={response?.complianceItem?.frequency || '-'}
-        />
+        <ResponseLeftItem heading="Category" value={response?.complianceItem?.category?.name || '-'} />
+        <ResponseLeftItem heading="Regulatory body" value={response?.complianceItem?.regulatoryBody?.name || '-'} />
+        <ResponseLeftItem heading="Frequency" value={response?.complianceItem?.frequency || '-'} />
       </Flex>
       <Flex>
         <Icon as={Conforme} h="35px" mb="20px" w="103px" />

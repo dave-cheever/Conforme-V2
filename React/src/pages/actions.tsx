@@ -113,7 +113,10 @@ const Actions = () => {
 
   useEffect(() => {
     setUsedFilters(['status', 'sitesIds', 'areasIds', 'usersIds']);
-    return () => setShowFiltersPanel(false);
+    return () => {
+      setShowFiltersPanel(false);
+      setUsedFilters([]);
+    };
   }, []);
 
   useEffect(() => {

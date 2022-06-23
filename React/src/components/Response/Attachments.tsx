@@ -63,9 +63,15 @@ const Attachments = () => {
             </Box>
           )}
         </Text>
-        <Text fontSize="sm" my={1}>
-          Upload all expected evidence and complete any required question to record this {t('complianceItem')} as complete.
-        </Text>
+        {response.complianceItem.evidenceItems.length === 0 ? (
+          <Text fontSize="sm" my={1}>
+            There is no required evidence in this {t('complianceItem')}.
+          </Text>
+        ) : (
+          <Text fontSize="sm" my={1}>
+            Upload all expected evidence and complete any required question to record this {t('complianceItem')} as complete.
+          </Text>
+        )}
         <Stack align={['center', 'flex-start']} spacing={4} w="full">
           {response?.evidence
             .filter(({ outdated }) => !outdated)
@@ -75,62 +81,64 @@ const Attachments = () => {
           <EvidenceHistoryList />
         </Stack>
       </Flex>
-      <Stack h="full" justify={['center', 'flex-start']} ml={[0, 2]} w="full">
-        <Stack maxW="380px">
-          <Text fontSize="11px" fontWeight="700" mb={2}>
-            Other attachments
-          </Text>
-          {!snapshot && (
-            <Can
-              action="responses.edit"
-              data={{ response }}
-              yes={() => (
-                <DocumentUpload
-                  callback={async (uploaded) => {
-                    await uploadAttachments(uploaded);
+      {response.complianceItem?.allowAttachments && (
+        <Stack h="full" justify={['center', 'flex-start']} ml={[0, 2]} w="full">
+          <Stack maxW="380px">
+            <Text fontSize="11px" fontWeight="700" mb={2}>
+              Other attachments
+            </Text>
+            {!snapshot && (
+              <Can
+                action="responses.edit"
+                data={{ response }}
+                yes={() => (
+                  <DocumentUpload
+                    callback={async (uploaded) => {
+                      await uploadAttachments(uploaded);
+                      refetch();
+                    }}
+                    documentName="attachment"
+                    elementId={response._id}
+                  />
+                )}
+              />
+            )}
+          </Stack>
+
+          <Stack>
+            {response.attachments.length > 0 && (
+              <Flex fontSize="11px" fontWeight="bold" my={2}>
+                Uploaded attachments
+              </Flex>
+            )}
+
+            {response.attachments?.map((attachment, i) => (
+              <Flex flexDir="column" key={i} maxW="380px" mb={2}>
+                <DocumentUploaded
+                  callback={async () => {
+                    await removeAttachment(attachment);
                     refetch();
                   }}
-                  documentName="attachment"
-                  elementId={response._id}
-                />
-              )}
-            />
-          )}
-        </Stack>
-
-        <Stack>
-          {response.attachments.length > 0 && (
-            <Flex fontSize="11px" fontWeight="bold" my={2}>
-              Uploaded attachments
-            </Flex>
-          )}
-
-          {response.attachments?.map((attachment, i) => (
-            <Flex flexDir="column" key={i} maxW="380px" mb={2}>
-              <DocumentUploaded
-                callback={async () => {
-                  await removeAttachment(attachment);
-                  refetch();
-                }}
-                document={attachment}
-                downloadable={isPermitted({
-                  user,
-                  action: 'responses.edit',
-                  data: response,
-                })}
-                removable={
-                  !snapshot &&
-                  isPermitted({
+                  document={attachment}
+                  downloadable={isPermitted({
                     user,
                     action: 'responses.edit',
                     data: response,
-                  })
-                }
-              />
-            </Flex>
-          ))}
+                  })}
+                  removable={
+                    !snapshot &&
+                    isPermitted({
+                      user,
+                      action: 'responses.edit',
+                      data: response,
+                    })
+                  }
+                />
+              </Flex>
+            ))}
+          </Stack>
         </Stack>
-      </Stack>
+      )}
     </Flex>
   );
 };

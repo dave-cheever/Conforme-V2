@@ -51,7 +51,10 @@ const Insights = () => {
 
   useEffect(() => {
     setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds']);
-    return () => setShowFiltersPanel(false);
+    return () => {
+      setShowFiltersPanel(false);
+      setUsedFilters([]);
+    };
   }, []);
 
   return (

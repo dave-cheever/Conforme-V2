@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
@@ -68,6 +62,7 @@ const GET_RESPONSES = gql`
         description
         evidenceItems
         frequency
+        allowAttachments
         category {
           name
         }
@@ -125,11 +120,7 @@ const GET_PARTICIPANTS = gql`
 
 export const useResponseContext = () => {
   const context = useContext(ResponseContext);
-  if (!context) {
-    throw new Error(
-      'useResponseContext must be used within the ResponseProvider',
-    );
-  }
+  if (!context) throw new Error('useResponseContext must be used within the ResponseProvider');
   return context;
 };
 
@@ -142,50 +133,24 @@ const ResponseProvider = ({ children }) => {
   const { data, loading, refetch } = useQuery(GET_RESPONSES, {
     variables: { responsesQuery: { _id: id } },
   });
-  const { data: snapshotsData, loading: snapshotsLoading } = useQuery(
-    GET_RESPONSE_SNAPSHOTS,
-    {
-      variables: {
-        HistoricalResponsesQuery: {
-          action: 'snapshot',
-          elementId: id,
-        },
+  const { data: snapshotsData, loading: snapshotsLoading } = useQuery(GET_RESPONSE_SNAPSHOTS, {
+    variables: {
+      HistoricalResponsesQuery: {
+        actions: ['snapshot'],
+        elementId: id,
       },
-      fetchPolicy: 'network-only',
     },
-  );
+    fetchPolicy: 'network-only',
+  });
   const toast = useToast();
   const [activeTab, setActiveTab] = useState(0);
   const [isQuestionFormDirty, setIsQuestionFormDirty] = useState(false);
-  const [
-    getParticipants,
-    { data: participantsData, loading: participantsLoading },
-  ] = useLazyQuery(GET_PARTICIPANTS);
-  const {
-    isOpen: isShareOpen,
-    onOpen: handleShareOpen,
-    onClose: handleShareClose,
-  } = useDisclosure();
-  const {
-    isOpen: isConfirmationOpen,
-    onOpen: handleConfirmationOpen,
-    onClose: handleConfirmationClose,
-  } = useDisclosure();
-  const {
-    isOpen: isRenewalOpen,
-    onOpen: handleRenewalOpen,
-    onClose: handleRenewalClose,
-  } = useDisclosure();
-  const {
-    isOpen: isDueDateOpen,
-    onOpen: handleDueDateOpen,
-    onClose: handleDueDateClose,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenMessage,
-    onOpen: handleOpenMessage,
-    onClose: handleCloseMessage,
-  } = useDisclosure();
+  const [getParticipants, { data: participantsData, loading: participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
+  const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
+  const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
+  const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
+  const { isOpen: isDueDateOpen, onOpen: handleDueDateOpen, onClose: handleDueDateClose } = useDisclosure();
+  const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
 
   const snapshots: IResponse[] =
     snapshotsData?.auditLogs?.reduce((acc, curr) => {
@@ -198,9 +163,7 @@ const ResponseProvider = ({ children }) => {
   let response: IResponse = data?.responses[0];
   if (snapshot) {
     const responseSnapshot = snapshots.find(
-      ({ lastRenewalDate }) =>
-        lastRenewalDate &&
-        isEqual(new Date(lastRenewalDate), new Date(parseInt(snapshot, 10))),
+      ({ lastRenewalDate }) => lastRenewalDate && isEqual(new Date(lastRenewalDate), new Date(parseInt(snapshot, 10))),
     );
     if (responseSnapshot) response = responseSnapshot;
   }
@@ -214,27 +177,19 @@ const ResponseProvider = ({ children }) => {
     navigateTo('/');
   }
 
-  const participants: IUser[] = useMemo(
-    () => participantsData?.participants || [],
-    [participantsData],
-  );
+  const participants: IUser[] = useMemo(() => participantsData?.participants || [], [participantsData]);
 
-  const getUpdatedDisplayName = (userId: string) =>
-    participants?.filter((participant) => participant._id === userId)[0]
-      ?.displayName;
+  const getUpdatedDisplayName = (userId: string) => participants?.filter((participant) => participant._id === userId)[0]?.displayName;
 
-  const getParticipantDetailById = (userId: string) =>
-    participants?.filter((participant) => participant._id === userId)[0];
+  const getParticipantDetailById = (userId: string) => participants?.filter((participant) => participant._id === userId)[0];
 
   useEffect(() => {
     if (response) {
       let participants: string[] = [];
       // handle the empty responsible and accountable cases
-      if (response.accountableId !== '')
-        participants.push(response?.accountableId);
+      if (response.accountableId !== '') participants.push(response?.accountableId);
 
-      if (response.responsibleId !== '')
-        participants.push(response?.responsibleId);
+      if (response.responsibleId !== '') participants.push(response?.responsibleId);
 
       participants = participants.concat(response.followersIds || []);
       participants = participants.concat(response.contributorsIds || []);
@@ -297,11 +252,7 @@ const ResponseProvider = ({ children }) => {
     ],
   );
 
-  return (
-    <ResponseContext.Provider value={value}>
-      {children}
-    </ResponseContext.Provider>
-  );
+  return <ResponseContext.Provider value={value}>{children}</ResponseContext.Provider>;
 };
 
 export default ResponseProvider;

@@ -107,7 +107,7 @@ const TextInput = ({
               }}
               _hover={{ cursor: 'auto' }}
               _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
-              autocomplete="off"
+              autoComplete="off"
               bg="textInput.bg"
               borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
               borderRadius="8px"

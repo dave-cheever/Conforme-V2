@@ -42,6 +42,7 @@ export const complianceItemsTypeDefs = `
     locations: [Location]
     locationsIds: [ID]
     evidenceItems: [String!]
+    allowAttachments: Boolean
     questions: [Question]
     published: Boolean
     reference: String
@@ -68,6 +69,7 @@ export const complianceItemsTypeDefs = `
     businessUnitsIds: [ID!]
     locationsIds: [ID!]
     evidenceItems: [String!]
+    allowAttachments: Boolean
     questions: [QuestionInput]
     published: Boolean
   }
@@ -92,6 +94,7 @@ export const complianceItemsTypeDefs = `
     businessUnitsIds: [ID!]
     locationsIds: [ID!]
     evidenceItems: [String!]
+    allowAttachments: Boolean
     questions: [QuestionInput]
     published: Boolean
   }

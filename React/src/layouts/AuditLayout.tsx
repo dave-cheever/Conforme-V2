@@ -28,7 +28,7 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
       <ModuleSwitcher />
       <AuditLeftNavigation />
       <AuditLeftNavigationTablet />
-      <Flex direction="column" w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
+      <Flex direction="column" grow={1} w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
         <NavigationTop />
         <Flex
           bg="layout.bg"
@@ -36,11 +36,9 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
           h={['calc(100vh - 126px)', 'calc(100vh - 80px)']}
           mt={['65px', 0]}
           overflow="auto"
-          position="absolute"
           pt={['25px', 0]}
           top={[0, '80px']}
-          w={['full', 'calc(100% - 130px)', 'calc(100% - 290px)']}
-          zIndex={4}
+          w="full"
         >
           {/* <ShareModal /> */}
           <AuditHeader />
@@ -49,7 +47,7 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
               flexDirection="column"
               h="full"
               maxH={['none', 'calc(100vh - 210px)']}
-              minH={['calc(100vh - 200px)', 'calc(100vh - 210px)']}
+              minH={['calc(100vh - 266px)', 'calc(100vh - 210px)']}
               pb="25px"
               pt={['40px', '0px']}
               w="full"

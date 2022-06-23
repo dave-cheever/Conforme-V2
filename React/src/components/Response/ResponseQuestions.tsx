@@ -133,7 +133,7 @@ const ResponseQuestions = () => {
           ))}
         </Grid>
         <br />
-        {questions.length > 0 && (
+        {isUserPermitted && questions.length > 0 && (
           <Flex>
             <Button
               _hover={{ bg: 'responseQuestions.button.hover' }}

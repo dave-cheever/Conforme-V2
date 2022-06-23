@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Input, Stack } from '@chakra-ui/react';
+import { Box, Button, Flex, Input, Stack, Switch } from '@chakra-ui/react';
 import { t } from 'i18next';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -32,22 +32,9 @@ const AdditionalDetailsForm = () => {
       <Stack overflow="auto" pb={3} spacing={2} w="full">
         <Box bg="additionalDetails.evidence.bg" borderRadius="4px" w="full">
           {complianceItem.evidenceItems?.map((item, index) => (
-            <Stack
-              align="center"
-              direction="row"
-              key={`item-${index}`}
-              mb={2}
-              pr={5}
-              spacing={4}
-            >
+            <Stack align="center" direction="row" key={`item-${index}`} mb={2} pr={5} spacing={4}>
               <Box flexGrow={1}>
-                <Box
-                  color="additionalDetails.evidence.label"
-                  fontSize={11}
-                  fontWeight="bold"
-                  mb="5px"
-                  zIndex={2}
-                >
+                <Box color="additionalDetails.evidence.label" fontSize={11} fontWeight="bold" mb="5px" zIndex={2}>
                   Evidence {index + 1}
                 </Box>
                 <Flex alignItems="center">
@@ -63,9 +50,7 @@ const AdditionalDetailsForm = () => {
                     h="42px"
                     mb={0}
                     name="evidenceItems"
-                    onChange={({ target }) =>
-                      handleEvidenceItemChange(target.value, index)
-                    }
+                    onChange={({ target }) => handleEvidenceItemChange(target.value, index)}
                     placeholder="Type in the evidence title"
                     value={item}
                   />
@@ -92,11 +77,31 @@ const AdditionalDetailsForm = () => {
               onClick={addEvidenceItem}
               px={4}
             >
-              {complianceItem.evidenceItems?.length === 0
-                ? 'Require evidence'
-                : 'Add another'}
+              {complianceItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}
             </Button>
           )}
+          <Flex align="center" mt={3}>
+            <Switch
+              colorScheme="toogle.color"
+              css={{
+                '.chakra-switch__thumb': {
+                  '&[data-checked]': {
+                    background: '#462AC4',
+                  },
+                },
+              }}
+              isChecked={!!complianceItem.allowAttachments}
+              onChange={() => setValue('allowAttachments', !complianceItem.allowAttachments)}
+            />
+            <Flex
+              color={complianceItem.allowAttachments ? 'toogle.enableColor' : 'toogle.disableColor'}
+              fontSize="14px"
+              fontWeight="400"
+              ml={3}
+            >
+              Allow attachments
+            </Flex>
+          </Flex>
         </Box>
       </Stack>
     </Stack>

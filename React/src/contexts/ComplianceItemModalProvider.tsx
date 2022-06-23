@@ -16,9 +16,7 @@ import { IComplianceItem } from '../interfaces/IComplianceItem';
 import { IComplianceItemModalContext } from '../interfaces/IComplianceItemModalContext';
 import { IComplianceItemModalDialogDetails } from '../interfaces/IComplianceItemModalDialogDetails';
 
-export const ComplianceItemModalContext = createContext(
-  {} as IComplianceItemModalContext,
-);
+export const ComplianceItemModalContext = createContext({} as IComplianceItemModalContext);
 
 const GET_FORM_DATA = gql`
   query {
@@ -60,18 +58,14 @@ export interface IComplianceItemModalSection {
 
 export const useComplianceItemModalContext = () => {
   const context = useContext(ComplianceItemModalContext);
-  if (!context) {
-    throw new Error(
-      'useComplianceItemModalContext must be used within the ComplianceItemModalProvider',
-    );
-  }
+  if (!context) throw new Error('useComplianceItemModalContext must be used within the ComplianceItemModalProvider');
+
   return context;
 };
 
 const ComplianceItemModalProvider = ({ children }) => {
   const { data, refetch } = useQuery(GET_FORM_DATA);
-  const [savingDialogDetails, setSavingDialogDetails] =
-    useState<IComplianceItemModalDialogDetails>(initialDialogDetails);
+  const [savingDialogDetails, setSavingDialogDetails] = useState<IComplianceItemModalDialogDetails>(initialDialogDetails);
   const [visitedTab, setVisitedTab] = useState<number>(0);
 
   const complianceItemModalSections: IComplianceItemModalSection[] = [
@@ -105,6 +99,7 @@ const ComplianceItemModalProvider = ({ children }) => {
       name: 'Evidence',
       fields: {
         evidenceItems: [],
+        allowAttachments: true,
       },
       Component: AdditionalDetailsForm,
     },
@@ -146,13 +141,9 @@ const ComplianceItemModalProvider = ({ children }) => {
   });
   const complianceItem = watch() as Partial<IComplianceItem>;
 
-  const [selectedSection, setSelectedSection] =
-    useState<IComplianceItemModalSection>(complianceItemModalSections[0]);
+  const [selectedSection, setSelectedSection] = useState<IComplianceItemModalSection>(complianceItemModalSections[0]);
   const selectedSectionIndex = useMemo(
-    () =>
-      complianceItemModalSections.findIndex(
-        ({ name }) => name === selectedSection.name,
-      ),
+    () => complianceItemModalSections.findIndex(({ name }) => name === selectedSection.name),
 
     [selectedSection],
   );
@@ -167,17 +158,12 @@ const ComplianceItemModalProvider = ({ children }) => {
     trigger(name, value);
   };
 
-  const reset = (
-    complianceItem?: Partial<IComplianceItem>,
-    sectionIndex = 0,
-  ) => {
+  const reset = (complianceItem?: Partial<IComplianceItem>, sectionIndex = 0) => {
     resetForm(complianceItem || defaultValues);
     setTimeout(() => {
       if (sectionIndex) {
         // Validate first page when opening the form in other page
-        trigger(
-          Object.keys(complianceItemModalSections[0].fields || []) as any,
-        );
+        trigger(Object.keys(complianceItemModalSections[0].fields || []) as any);
       }
       setSelectedSection(complianceItemModalSections[sectionIndex]);
       setVisitedTab(sectionIndex);
@@ -207,23 +193,10 @@ const ComplianceItemModalProvider = ({ children }) => {
       setVisitedTab,
     }),
 
-    [
-      control,
-      errors,
-      complianceItem,
-      data,
-      selectedSection,
-      selectedSectionIndex,
-      savingDialogDetails,
-      visitedTab,
-    ],
+    [control, errors, complianceItem, data, selectedSection, selectedSectionIndex, savingDialogDetails, visitedTab],
   ) as IComplianceItemModalContext;
 
-  return (
-    <ComplianceItemModalContext.Provider value={value}>
-      {children}
-    </ComplianceItemModalContext.Provider>
-  );
+  return <ComplianceItemModalContext.Provider value={value}>{children}</ComplianceItemModalContext.Provider>;
 };
 
 export default ComplianceItemModalProvider;

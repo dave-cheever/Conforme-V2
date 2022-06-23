@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { CloseIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Image, useDisclosure } from '@chakra-ui/react';
@@ -8,23 +8,16 @@ import Loader from '../../components/Loader';
 import Defaults from '../../components/Settings/Defaults';
 import EmailTemplates from '../../components/Settings/EmailTemplates';
 import Tabs from '../../components/Settings/Tabs';
-import { useFiltersContext } from '../../contexts/FiltersProvider';
 import SettingsProvider, { useSettingsContext } from '../../contexts/SettingsProvider';
 import useDevice from '../../hooks/useDevice';
 import { ISetting } from '../../interfaces/ISettings';
 
 const Settings = () => {
   const { loading, activeTab } = useSettingsContext();
-  const { setUsedFilters } = useFiltersContext();
   const [selectedTemplate, setSelectedTemplate] = useState<ISetting | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [updateImage, setUpdateImage] = useState<number>(0);
   const device = useDevice();
-
-  useEffect(() => {
-    // remove the filter, as no needed on admin settings.
-    setUsedFilters([]);
-  }, []);
 
   const closeTemplatePreview = () => {
     setSelectedTemplate(null);

@@ -6,7 +6,6 @@ import { getNextRenewalDate } from 'app-utils';
 
 const shouldCalculate = (startDate: Date, frequency: TFrequency) => {
   // If today is start day then calculate
-  return true;
   if (frequency === 'Monthly') return getDate(new Date()) === getDate(startDate);
 };
 

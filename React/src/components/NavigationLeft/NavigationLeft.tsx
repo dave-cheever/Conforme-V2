@@ -25,8 +25,7 @@ const NavigationLeft = () => {
   const device = useDevice();
 
   useEffect(() => {
-    if (!(isPathActive('/', { exact: true }) || isPathActive('/items')))
-      cleanFilters();
+    if (!(isPathActive('/', { exact: true }) || isPathActive('/items'))) cleanFilters();
   }, [history.location.pathname]);
 
   return (
@@ -36,43 +35,21 @@ const NavigationLeft = () => {
         display={['none', 'block', 'block']}
         fontWeight="semibold"
         h="100vh"
-        w={
-          showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '240px']
-        }
+        w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '240px']}
       >
-        <Box
-          alignItems="center"
-          cursor="pointer"
-          display="flex"
-          h="80px"
-          onClick={() => navigateTo('/')}
-        >
-          <Text
-            color="navigationLeft.organizationNameFontColor"
-            fontSize="16px"
-            fontWeight="bold"
-            ml="25px"
-            w="full"
-          >
-            {showFiltersPanel || device === 'tablet'
-              ? getInitials(module?.name)
-              : module?.name}
+        <Box alignItems="center" cursor="pointer" display="flex" h="80px" onClick={() => navigateTo('/')}>
+          <Text color="navigationLeft.organizationNameFontColor" fontSize="16px" fontWeight="bold" ml="24px" w="full">
+            {showFiltersPanel || device === 'tablet' ? getInitials(module?.name) : module?.name}
           </Text>
         </Box>
-        <Flex
-          direction="column"
-          h="calc(100% - 80px)"
-          justify="space-between"
-          pt={['0px', '10px']}
-        >
+        <Flex direction="column" h="calc(100% - 80px)" justify="space-between" pt={['0px', '10px']}>
           <Box>
             {menuItems.map((menuItem: any, i) => (
               <Can
                 action={menuItem.permission}
                 key={`menu${i}`}
                 yes={() => {
-                  if (device === 'desktop')
-                    return <NavigationLeftItem menuItem={menuItem} />;
+                  if (device === 'desktop') return <NavigationLeftItem menuItem={menuItem} />;
 
                   if (device === 'tablet') {
                     return (
@@ -91,17 +68,9 @@ const NavigationLeft = () => {
             ))}
           </Box>
           {device === 'desktop' && (
-            <Icon
-              as={showFiltersPanel ? ConformeSmall : Conforme}
-              h="30px"
-              mb="20px"
-              ml="20px"
-              w={showFiltersPanel ? '27px' : '103px'}
-            />
+            <Icon as={showFiltersPanel ? ConformeSmall : Conforme} h="30px" mb="20px" ml="20px" w={showFiltersPanel ? '27px' : '103px'} />
           )}
-          {device === 'tablet' && (
-            <Icon as={ConformeSmall} h="30px" mb="20px" ml="20px" w="27px" />
-          )}
+          {device === 'tablet' && <Icon as={ConformeSmall} h="30px" mb="20px" ml="20px" w="27px" />}
         </Flex>
       </Box>
     </>

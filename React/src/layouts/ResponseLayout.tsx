@@ -10,20 +10,12 @@ import ResponseLeftNavigation from '../components/Response/ResponseLeftNavigatio
 import ResponseLeftNavigationMobile from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationMobile';
 import ResponseLeftNavigationTablet from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationTablet';
 import ShareModal from '../components/ShareModal';
-import ResponseProvider, {
-  useResponseContext,
-} from '../contexts/ResponseProvider';
+import ResponseProvider, { useResponseContext } from '../contexts/ResponseProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
 
 const ResponseLayout = ({ component: Component }: { component: any }) => {
-  const {
-    loading,
-    response,
-    isOpenMessage,
-    handleOpenMessage,
-    handleCloseMessage,
-  } = useResponseContext();
+  const { loading, response, isOpenMessage, handleOpenMessage, handleCloseMessage } = useResponseContext();
   const device = useDevice();
   const isTabletAndMobile = device === 'tablet' || device === 'mobile';
 
@@ -40,10 +32,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
       <ModuleSwitcher />
       <ResponseLeftNavigation />
       <ResponseLeftNavigationTablet />
-      <Flex
-        direction="column"
-        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
-      >
+      <Flex direction="column" grow={1} w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
         <NavigationTop />
         <Flex
           bg="layout.bg"
@@ -51,11 +40,9 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
           h={['calc(100vh - 134px)', 'calc(100vh - 80px)']}
           mt={['72px', 0]}
           overflow="auto"
-          position="absolute"
           pt={['25px', 0]}
           top={[0, '80px']}
-          w={['full', 'calc(100% - 130px)', 'calc(100% - 290px)']}
-          zIndex={4}
+          w="full"
         >
           <ShareModal />
           <ReasponseHeader />
@@ -70,16 +57,10 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
               flexShrink={0}
               h="52px"
               icon={
-                isOpenMessage ? (
-                  <CrossIcon h="21px" ml="5px" stroke="white" w="22px" />
-                ) : (
-                  <MessageIcon h="21px" stroke="white" w="22px" />
-                )
+                isOpenMessage ? <CrossIcon h="21px" ml="5px" stroke="white" w="22px" /> : <MessageIcon h="21px" stroke="white" w="22px" />
               }
               mr="2px"
-              onClick={() =>
-                isOpenMessage ? handleCloseMessage() : handleOpenMessage()
-              }
+              onClick={() => (isOpenMessage ? handleCloseMessage() : handleOpenMessage())}
               position="fixed"
               right="16px"
               rounded="20px"
@@ -101,9 +82,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
             </Flex>
             {device === 'desktop' && <ResponseChat />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile && (
-            <ResponseChatMobileAndTablet />
-          )}
+          {isOpenMessage && isTabletAndMobile && <ResponseChatMobileAndTablet />}
         </Flex>
         <ResponseLeftNavigationMobile />
       </Flex>

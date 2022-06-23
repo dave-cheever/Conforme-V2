@@ -2,21 +2,11 @@ import { useMemo } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Skeleton,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
 import useNavigate from '../../hooks/useNavigate';
-import useResponseUtils, {
-  responseStatuses,
-} from '../../hooks/useResponseUtils';
+import useResponseUtils, { responseStatuses } from '../../hooks/useResponseUtils';
 import { LocationIcon, UploadedTick } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
@@ -34,24 +24,15 @@ const GET_USERS_BY_ID = gql`
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const { navigateTo } = useNavigate();
   const { getStatus, getRenewalStatus } = useResponseUtils();
-  const responseStatus = useMemo(
-    () => getStatus(response),
-    [getStatus, response],
-  );
-  const {
-    data: { usersById: responseResponsible } = [],
-    loading: responsibleLoading,
-  } = useQuery(GET_USERS_BY_ID, {
+  const responseStatus = useMemo(() => getStatus(response), [getStatus, response]);
+  const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
       userQueryInput: {
         usersIds: response?.responsibleId || [],
       },
     },
   });
-  const responsible: IUser =
-    responseResponsible &&
-    responseResponsible.length !== 0 &&
-    responseResponsible[0];
+  const responsible: IUser = responseResponsible && responseResponsible.length !== 0 && responseResponsible[0];
 
   return (
     <Box
@@ -59,19 +40,17 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       bg="white"
       borderRadius="20px"
       boxShadow="sm"
+      cursor="pointer"
       flexShrink={0}
       h="290px"
+      onClick={() => navigateTo(`/compliance-item/${response._id}`)}
       p="20px 25px 20px 25px"
       w={['full', 'full', '350px']}
     >
       <Flex align="center" justify="space-between">
         <Flex align="center">
           <Flex
-            bgColor={
-              getRenewalStatus(response) === 'comingUp'
-                ? 'complianceSquare.comingUp'
-                : `complianceSquare.${responseStatus}`
-            }
+            bgColor={getRenewalStatus(response) === 'comingUp' ? 'complianceSquare.comingUp' : `complianceSquare.${responseStatus}`}
             h="12px"
             rounded="full"
             w="12px"
@@ -85,11 +64,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            {response.complianceItem?.category?.name ? (
-              response.complianceItem?.category?.name
-            ) : (
-              <Flex fontStyle="italic">Unassigned</Flex>
-            )}
+            {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle="italic">Unassigned</Flex>}
           </Box>
         </Flex>
         <Flex align="center">
@@ -107,24 +82,10 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       <Flex align="center" h="52px" mt={2} position="relative" w="full">
         <Skeleton isLoaded={!responsibleLoading} rounded="full">
           <Tooltip label={responsible?.displayName}>
-            <Avatar
-              boxSize="24px"
-              cursor="pointer"
-              name={responsible?.displayName}
-              size="sm"
-              src={responsible?.imgUrl}
-            />
+            <Avatar boxSize="24px" cursor="pointer" name={responsible?.displayName} size="sm" src={responsible?.imgUrl} />
           </Tooltip>
         </Skeleton>
-        <Text
-          color="complianceSquare.nameFontColor"
-          fontSize="16px"
-          fontWeight="700"
-          lineHeight="20px"
-          ml={3}
-          noOfLines={2}
-          w="full"
-        >
+        <Text color="complianceSquare.nameFontColor" fontSize="16px" fontWeight="700" lineHeight="20px" ml={3} noOfLines={2} w="full">
           {response.complianceItem?.name}
         </Text>
       </Flex>
@@ -146,13 +107,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       <Flex alignItems="flex-start" h="50px" py="4" w="full">
         <Box color="complianceSquare.categoryFontColor" fontSize="11px" w="50%">
           <Box>Regulatory body</Box>
-          <Box
-            color="complianceSquare.nameFontColor"
-            fontSize="14px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
+          <Box color="complianceSquare.nameFontColor" fontSize="14px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {response.complianceItem?.regulatoryBody?.name ? (
               response.complianceItem?.regulatoryBody?.name
             ) : (
@@ -160,20 +115,9 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
             )}
           </Box>
         </Box>
-        <Box
-          color="complianceSquare.regulatoryFontColor"
-          fontSize="11px"
-          ml={3}
-          w="50%"
-        >
+        <Box color="complianceSquare.regulatoryFontColor" fontSize="11px" ml={3} w="50%">
           <Box>Next renewal on</Box>
-          <Box
-            color="complianceSquare.nameFontColor"
-            fontSize="13px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
+          <Box color="complianceSquare.nameFontColor" fontSize="13px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {response?.nextRenewalDate ? (
               format(new Date(response?.nextRenewalDate), 'd MMM yyyy')
             ) : (
@@ -185,45 +129,19 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
       <Flex align="center" justify="space-between" pt="50px" w="full">
         <Button
           _hover={{
-            bg:
-              responseStatus === 'nonCompliant'
-                ? 'complianceSquare.nonCompliant'
-                : 'complianceSquare.buttonBg',
+            bg: responseStatus === 'nonCompliant' ? 'complianceSquare.nonCompliant' : 'complianceSquare.buttonBg',
           }}
-          bg={
-            responseStatus === 'nonCompliant'
-              ? 'complianceSquare.nonCompliant'
-              : 'complianceSquare.buttonBg'
-          }
-          color={
-            responseStatus === 'nonCompliant'
-              ? 'white'
-              : 'complianceSquare.fontColor'
-          }
+          bg={responseStatus === 'nonCompliant' ? 'complianceSquare.nonCompliant' : 'complianceSquare.buttonBg'}
+          color={responseStatus === 'nonCompliant' ? 'white' : 'complianceSquare.fontColor'}
           fontSize="11px"
           h="28px"
           onClick={() => navigateTo(`/compliance-item/${response._id}`)}
-          rightIcon={
-            <ChevronRightIcon
-              boxSize="20px"
-              color={
-                responseStatus === 'nonCompliant'
-                  ? 'white'
-                  : 'complianceSquare.fontColor'
-              }
-            />
-          }
+          rightIcon={<ChevronRightIcon boxSize="20px" color={responseStatus === 'nonCompliant' ? 'white' : 'complianceSquare.fontColor'} />}
           w="85px"
         >
           Details
         </Button>
-        <Flex
-          align="center"
-          color="complianceSquare.nameFontColor"
-          flexDirection="column"
-          justify="center"
-          mr={1}
-        >
+        <Flex align="center" color="complianceSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
           <Box fontSize="11px" fontWeight="700">
             {responseStatus && responseStatuses[responseStatus]}
           </Box>

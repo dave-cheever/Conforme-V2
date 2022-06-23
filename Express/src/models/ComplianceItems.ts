@@ -40,6 +40,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   frequency: String,
   businessUnitsIds: [String],
   evidenceItems: [String],
+  allowAttachments: Boolean,
   organizationId: String,
   questions: [
     {
@@ -133,7 +134,8 @@ const getAuditRecordValues = async ({
         );
         break;
 
-      // If updated 'published' field, set value as boolean and label as Yes/No
+      // If updated boolean field, set value as boolean and label as Yes/No
+      case 'allowAttachments':
       case 'published':
         value = getAuditValueForBoolean(oldValues[field], newValues[field]);
         break;

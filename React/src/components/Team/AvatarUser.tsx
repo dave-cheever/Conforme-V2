@@ -33,22 +33,18 @@ const REMOVE_PARTICIPANT = gql`
 const AvatarUser = ({
   user,
   permission,
-  removable = true,
+  isRemovable = true,
   action,
   isReplaceable,
 }: {
   user: IUser;
   permission: string;
-  removable?: boolean;
+  isRemovable?: boolean;
   action: string;
   isReplaceable?: boolean;
 }) => {
   const { response, snapshot, refetch: refetchResponse } = useResponseContext();
-  const {
-    onOpen: onReplace,
-    setFilterType,
-    setIsReplaceAccountable,
-  } = useTeamContext();
+  const { onOpen: onReplace, setFilterType, setIsReplaceAccountable } = useTeamContext();
   const { firstName, lastName, displayName, imgUrl, _id } = user;
   const [showDelete, setShowDelete] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -72,9 +68,7 @@ const AvatarUser = ({
             <ModalCloseButton />
           </ModalHeader>
           <ModalBody>
-            <Text color="avatarUser.modal.body">
-              This action cannot be undone
-            </Text>
+            <Text color="avatarUser.modal.body">This action cannot be undone</Text>
           </ModalBody>
           <ModalFooter justifyContent="space-between">
             <Button
@@ -119,20 +113,11 @@ const AvatarUser = ({
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Flex
-        align="center"
-        flexDirection="column"
-        mr="30px"
-        position="relative"
-        textAlign="center"
-        w="60px"
-      >
+      <Flex align="center" flexDirection="column" mr="30px" position="relative" textAlign="center" w="60px">
         <Avatar
-          cursor={removable ? 'pointer' : 'default'}
+          cursor="default"
           h={['55px', '64px']}
-          name={
-            firstName || lastName ? `${firstName} ${lastName}` : displayName
-          }
+          name={firstName || lastName ? `${firstName} ${lastName}` : displayName}
           onMouseOver={() => !snapshot && setShowDelete(true)}
           src={imgUrl}
           w={['55px', '64px']}
@@ -141,26 +126,20 @@ const AvatarUser = ({
           action={action}
           data={{ response }}
           yes={() =>
-            showDelete && removable ? (
+            showDelete && isRemovable ? (
               <Flex
                 alignItems="center"
                 cursor="pointer"
                 justifyContent="center"
                 onClick={async () => {
-                  if (removable) {
+                  if (isRemovable) {
                     OpenReplaceOrDeleteModal();
                     setShowDelete(false);
                   }
                 }}
                 pos="absolute"
               >
-                <Flex
-                  bg="avatarUser.overlay"
-                  h="64px"
-                  onMouseOut={() => setShowDelete(false)}
-                  rounded="50%"
-                  w="64px"
-                />
+                <Flex bg="avatarUser.overlay" h="64px" onMouseOut={() => setShowDelete(false)} rounded="50%" w="64px" />
                 {isReplaceable ? (
                   <ReplaceIcon
                     h="20px"
@@ -211,8 +190,7 @@ export const avatarUserStyles = {
         },
       },
     },
-    overlay:
-      'linear-gradient(0deg, rgba(232, 60, 67, 0.8), rgba(232, 60, 67, 0.8)), url(.png)',
+    overlay: 'linear-gradient(0deg, rgba(232, 60, 67, 0.8), rgba(232, 60, 67, 0.8)), url(.png)',
     icon: '#FFFFFF',
   },
 };

@@ -2,7 +2,7 @@ import { AuditLogs } from 'app-models';
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
-    const { skip, limit, action, dateLimit, elementId, userId, fields } =
+    const { skip, limit, actions, dateLimit, elementId, userId, fields } =
       auditLogsQuery;
 
     const pipeline: any = [
@@ -28,9 +28,11 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
       });
     }
 
-    if (action) {
+    if (actions?.length > 0) {
       pipeline.push({
-        $match: { action },
+        $match: {
+          $or: actions.map(action => ({ action })),
+        },
       });
     }
 

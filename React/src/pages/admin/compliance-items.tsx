@@ -57,7 +57,7 @@ const GET_COMPLIANCE_ITEMS = gql`
 
 const ComplianceItemsAdmin = () => {
   const device = useDevice();
-  const { filtersValues, setUsedFilters, setShowFiltersPanel, cleanFilters } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setShowFiltersPanel } = useFiltersContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_COMPLIANCE_ITEMS);
   const { complianceItem, reset } = useComplianceItemModalContext();
@@ -70,7 +70,7 @@ const ComplianceItemsAdmin = () => {
     setUsedFilters(['complianceItemsIds', 'categoriesIds', 'locationsIds', 'businessUnitsIds', 'regulatoryBodiesIds']);
     return () => {
       setShowFiltersPanel(false);
-      cleanFilters();
+      setUsedFilters([]);
     };
   }, []);
 
@@ -231,7 +231,7 @@ const ComplianceItemsAdmin = () => {
                   h="73px"
                   key={complianceItem._id}
                   mt="0px"
-                  pl={5}
+                  px="25px"
                   w="full"
                   zIndex={4}
                 >
@@ -239,10 +239,13 @@ const ComplianceItemsAdmin = () => {
                     flexDirection="column"
                     fontWeight="semi_medium"
                     onClick={() => openModal('edit', complianceItem)}
+                    pr={2}
                     w={['80%', 'calc(100% / 4)']}
                   >
                     <Box fontSize="smm">
-                      {complianceItem.name || (
+                      {complianceItem.name ? (
+                        <Text isTruncated>{complianceItem.name}</Text>
+                      ) : (
                         <Text color="adminComplianceItems.element.unnamed" fontStyle="italic">
                           Unnamed compliance item
                         </Text>
@@ -276,7 +279,7 @@ const ComplianceItemsAdmin = () => {
                       </Box>
                     </>
                   )}
-                  <Box mr="30" textAlign="end" w="calc(100% / 4)" zIndex={5}>
+                  <Box textAlign="end" w="calc(100% / 4)" zIndex={5}>
                     <Copy
                       _hover={{
                         color: 'complianceItemsAdminWithContext.strokeHover',

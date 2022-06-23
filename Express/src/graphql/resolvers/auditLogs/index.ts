@@ -31,7 +31,7 @@ type AuditLog {
 input AuditLogsQuery {
   skip: Int
   limit: Int
-  action: String
+  actions: [String]
   dateLimit: Date
   elementId: String
   userId: String

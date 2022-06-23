@@ -14,6 +14,7 @@ export interface IComplianceItem extends IBase {
   frequency: string;
   businessUnitsIds: string[];
   evidenceItems: string[];
+  allowAttachments?: boolean;
   questions?: ITrackerQuestion<TQuestionValue>[];
   locationsIds?: string[];
   published: boolean;

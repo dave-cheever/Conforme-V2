@@ -30,25 +30,17 @@ const Details = () => {
     if (response?.daysToDueDate === undefined) return -1;
 
     if (response.lastCompletionDate && response.nextRenewalDate) {
-      const totalDays = differenceInCalendarDays(
-        new Date(response.nextRenewalDate),
-        new Date(response.lastCompletionDate),
-      );
+      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.lastCompletionDate));
 
-      if (isToday(new Date(response.nextRenewalDate)))
-        return (1 / totalDays) * 100;
+      if (isToday(new Date(response.nextRenewalDate))) return (1 / totalDays) * 100;
 
       return (response.daysToDueDate / totalDays) * 100;
     }
 
     if (response.metatags?.addedAt && response.nextRenewalDate) {
-      const totalDays = differenceInCalendarDays(
-        new Date(response.nextRenewalDate),
-        new Date(response.metatags.addedAt),
-      );
+      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.metatags.addedAt));
 
-      if (isToday(new Date(response.nextRenewalDate)))
-        return (1 / totalDays) * 100;
+      if (isToday(new Date(response.nextRenewalDate))) return (1 / totalDays) * 100;
 
       return (response.daysToDueDate / totalDays) * 100;
     }
@@ -72,25 +64,9 @@ const Details = () => {
   if (!response) return null;
 
   return (
-    <Flex
-      flexDir="column"
-      h="full"
-      minH={['50vh', 'none']}
-      overflow={['visible', 'auto']}
-      w="full"
-    >
-      <Grid
-        gap={[3, 6]}
-        mb={5}
-        templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}
-      >
-        <Flex
-          align="center"
-          flexDir={['column', 'row']}
-          h="full"
-          justify="space-between"
-          w="full"
-        >
+    <Flex flexDir="column" h="full" minH={['50vh', 'none']} overflow={['visible', 'auto']} w="full">
+      <Grid gap={[3, 6]} mb={5} templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}>
+        <Flex align="center" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
           <Flex
             align={['center', 'flex-start']}
             bg="responseRenewalDetails.bg"
@@ -105,23 +81,12 @@ const Details = () => {
               First completed
             </Text>
             <Text color="responseRenewalDetails.textColor" fontSize="14px">
-              {response.firstCompletionDate
-                ? format(new Date(response.firstCompletionDate), 'dd MMMM yyyy')
-                : 'N/A'}
+              {response.firstCompletionDate ? format(new Date(response.firstCompletionDate), 'dd MMMM yyyy') : 'N/A'}
             </Text>
           </Flex>
-          <ArrowDownIcon
-            color="responseRenewalDetails.labelColor"
-            transform={['', 'rotate(270deg)']}
-          />
+          <ArrowDownIcon color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />
         </Flex>
-        <Flex
-          align="center"
-          flexDir={['column', 'row']}
-          h="full"
-          justify="space-between"
-          w="full"
-        >
+        <Flex align="center" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
           <Flex
             align={['center', 'flex-start']}
             bg="responseRenewalDetails.bg"
@@ -136,15 +101,10 @@ const Details = () => {
               Last completed
             </Text>
             <Text color="responseRenewalDetails.textColor" fontSize="14px">
-              {response.lastCompletionDate
-                ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy')
-                : 'N/A'}
+              {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'N/A'}
             </Text>
           </Flex>
-          <ArrowDownIcon
-            color="responseRenewalDetails.labelColor"
-            transform={['', 'rotate(270deg)']}
-          />
+          <ArrowDownIcon color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />
         </Flex>
         <Flex
           align="center"
@@ -158,28 +118,19 @@ const Details = () => {
         >
           {progress >= 0 && (
             <CircularProgress
-              color={
-                progress <= 10 ? 'red' : 'responseRenewalDetails.progressColor'
-              }
+              color={progress <= 10 ? 'red' : 'responseRenewalDetails.progressColor'}
               display={['none', 'block']}
               size="28px"
               value={progress}
             />
           )}
-          <Flex
-            align={['center', 'flex-start']}
-            flexDir="column"
-            ml={progress >= 0 ? 3 : 0}
-            w="full"
-          >
+          <Flex align={['center', 'flex-start']} flexDir="column" ml={progress >= 0 ? 3 : 0} w="full">
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
               Due for renewal
             </Text>
             <Flex>
               <Text color="responseRenewalDetails.textColor" fontSize="14px">
-                {response.nextRenewalDate
-                  ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy')
-                  : 'No due date'}
+                {response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'No due date'}
               </Text>
               {!snapshot && (
                 <Can
@@ -194,19 +145,10 @@ const Details = () => {
                         dropdownMode="select"
                         onChange={(date) => updateResponseDate(date)}
                         ref={startRef}
-                        selected={
-                          response?.nextRenewalDate
-                            ? new Date(response?.nextRenewalDate)
-                            : new Date()
-                        }
+                        selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
                         showYearDropdown
                       >
-                        <Button
-                          colorScheme="purpleHeart"
-                          onClick={() => updateResponseDate(null)}
-                          size="sm"
-                          w="full"
-                        >
+                        <Button colorScheme="purpleHeart" onClick={() => updateResponseDate(null)} size="sm" w="full">
                           No due date
                         </Button>
                       </DatePicker>
@@ -218,9 +160,11 @@ const Details = () => {
           </Flex>
         </Flex>
       </Grid>
-      <Text color="responseRenewalDetails.labelColor" fontSize="14px">
-        Description
-      </Text>
+      {response?.complianceItem?.description && (
+        <Text color="responseRenewalDetails.labelColor" fontSize="14px">
+          Description
+        </Text>
+      )}
       <DescriptionText />
     </Flex>
   );

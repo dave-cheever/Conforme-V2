@@ -36,21 +36,10 @@ const AuditLog = () => {
   const auditLogLimit = useMemo(() => {
     if (settings.length === 0) return 5;
 
-    if (
-      settings?.filter((settings) => settings.name === 'auditLogLimit')
-        .length === 0
-    )
-      return 5;
+    if (settings?.filter((settings) => settings.name === 'auditLogLimit').length === 0) return 5;
 
-    if (
-      settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
-        ?.value
-    ) {
-      return Number(
-        settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
-          ?.value,
-      );
-    }
+    if (settings?.filter((settings) => settings.name === 'auditLogLimit')[0]?.value)
+      return Number(settings?.filter((settings) => settings.name === 'auditLogLimit')[0]?.value);
 
     return 5;
   }, [settings]);
@@ -61,6 +50,7 @@ const AuditLog = () => {
         skip: 0,
         limit: auditLogLimit,
         dateLimit,
+        actions: ['add', 'update', 'delete'],
       },
     },
   });
@@ -73,6 +63,7 @@ const AuditLog = () => {
         skip,
         limit: auditLogLimit,
         dateLimit,
+        actions: ['add', 'update', 'delete'],
       },
     });
   }, [skip, dateLimit, refetch, auditLogLimit]);
@@ -85,11 +76,7 @@ const AuditLog = () => {
           const currentLog = newAcc.find(({ _id }) => _id === curr._id);
           if (currentLog) {
             curr.records.forEach((record) => {
-              if (
-                !currentLog.records.some(({ metatags: { addedAt } }) =>
-                  isEqual(new Date(record.metatags.addedAt), new Date(addedAt)),
-                )
-              )
+              if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt))))
                 currentLog.records.push(record);
             });
           } else {
@@ -114,22 +101,10 @@ const AuditLog = () => {
     <>
       <Header breadcrumbs={['Admin', 'Audit log']} />
       <Box h="calc(100vh - 150px)" overflow="auto" p="30px" pt="0px">
-        <Flex
-          bg="white"
-          borderRadius="20px"
-          flexDir="column"
-          h="fit-content"
-          pt="3"
-          px="6"
-        >
+        <Flex bg="white" borderRadius="20px" flexDir="column" h="fit-content" pt="3" px="6">
           <AuditLogComponent auditLogs={auditLogs} loading={loading} />
           {!loading && (
-            <Text
-              color="auditLog.loadMore"
-              cursor="pointer"
-              mb={4}
-              onClick={() => setSkip((prev) => prev + 5)}
-            >
+            <Text color="auditLog.loadMore" cursor="pointer" mb={4} onClick={() => setSkip((prev) => prev + 5)}>
               Load more audit logs
             </Text>
           )}
