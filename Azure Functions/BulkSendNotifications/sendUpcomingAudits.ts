@@ -26,7 +26,7 @@ const sendComingUpAudits = async (config: IConfig) => {
     },
     {
       $unwind: {
-        path: `$area`,
+        path: '$area',
         preserveNullAndEmptyArrays: true,
       },
     },
