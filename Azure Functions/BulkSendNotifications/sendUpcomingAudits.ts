@@ -14,7 +14,6 @@ const sendComingUpAudits = async (config: IConfig) => {
       $match: {
         'metatags.removedAt': { $eq: null },
         status: 'upcoming',
-        organizationId: "underio"
       },
     },
     {
