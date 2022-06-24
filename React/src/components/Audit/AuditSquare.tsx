@@ -60,24 +60,20 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         </Box>
       </Flex>
       <Flex align="center" justify="space-between" pt="50px" w="full">
-        {audit?.status !== 'missed' ? (
-          <Button
-            _hover={{
-              bg: 'auditSquare.buttonBg',
-            }}
-            bg="auditSquare.buttonBg"
-            color="auditSquare.fontColor"
-            fontSize="ssm"
-            h="28px"
-            onClick={() => navigateTo(`/audits/${audit._id}/`)}
-            rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
-            w="85px"
-          >
-            More
-          </Button>
-        ) : (
-          <Box h="28px" />
-        )}
+        <Button
+          _hover={{
+            bg: 'auditSquare.buttonBg',
+          }}
+          bg="auditSquare.buttonBg"
+          color="auditSquare.fontColor"
+          fontSize="ssm"
+          h="28px"
+          onClick={() => navigateTo(`/audits/${audit._id}/`)}
+          rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
+          w="85px"
+        >
+          More
+        </Button>
         <Flex align="center" color={`auditSquare.${audit?.status}`} flexDirection="column" justify="center" mr={1}>
           <Flex fontSize="11px" fontWeight="700">
             {audit?.status === 'missed' && <WarningIcon fill="transparent" h="16px" mr={2} stroke="auditSquare.missed" w="16px" />}
