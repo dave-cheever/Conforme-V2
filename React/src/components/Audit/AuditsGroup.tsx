@@ -35,17 +35,9 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
         {auditStatuses[group]}
       </Flex>
       <Stack align="center" direction="column" pb={5} spacing={6} w="full">
-        {filteredResults[group]
-          ?.sort((a, b) => {
-            if (a.dueDate === null) return 1;
-
-            if (b.dueDate === null) return -1;
-
-            return a.dueDate && b.dueDate ? a.dueDate.toString().localeCompare(b.dueDate.toString()) : 0;
-          })
-          ?.map((audit: IAudit) => (
-            <AuditSquare audit={audit} key={audit._id} />
-          ))}
+        {filteredResults[group]?.map((audit: IAudit) => (
+          <AuditSquare audit={audit} key={audit._id} />
+        ))}
       </Stack>
     </Flex>
   );
