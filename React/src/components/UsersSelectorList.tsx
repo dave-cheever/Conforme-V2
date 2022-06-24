@@ -13,18 +13,8 @@ interface IUsersSelectorList {
   handleChange: (any) => void;
 }
 
-const UsersSelectorList = ({
-  filteredUsers,
-  selected,
-  selectedRole,
-  handleChange,
-}: IUsersSelectorList) => (
-  <CheckboxGroup
-    onChange={(value) =>
-      handleChange({ target: { userRole: selectedRole, value } })
-    }
-    value={selected}
-  >
+const UsersSelectorList = ({ filteredUsers, selected, selectedRole, handleChange }: IUsersSelectorList) => (
+  <CheckboxGroup onChange={(value) => handleChange({ target: { userRole: selectedRole, value } })} value={selected ?? []}>
     <Stack direction="column" w="full">
       {filteredUsers?.map(({ displayName, _id }) => (
         <FilterCheckBox key={_id} label={displayName} value={_id} />

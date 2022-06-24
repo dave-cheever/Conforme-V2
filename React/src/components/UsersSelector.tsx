@@ -16,15 +16,7 @@ interface IUsersSelector {
   handleChange: (any) => void;
 }
 
-const UsersSelector = ({
-  users,
-  searchText,
-  selected,
-  selectedRole,
-  note,
-  disabled,
-  handleChange,
-}: IUsersSelector) => {
+const UsersSelector = ({ users, searchText, selected, selectedRole, note, disabled, handleChange }: IUsersSelector) => {
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const areAllSelected = useMemo(
     () => filteredUsers?.every(({ _id }) => selected?.includes(_id)),
@@ -34,13 +26,9 @@ const UsersSelector = ({
 
   useEffect(() => {
     let filteredUsers: IUser[] = [];
-    if (disabled)
-      filteredUsers = users?.filter(({ _id }) => selected?.includes(_id));
-    else {
-      filteredUsers = users?.filter(({ displayName }) =>
-        displayName.toLowerCase().includes(searchText?.toLowerCase()),
-      );
-    }
+    if (disabled) filteredUsers = users?.filter(({ _id }) => selected?.includes(_id));
+    else filteredUsers = users?.filter(({ displayName }) => displayName.toLowerCase().includes(searchText?.toLowerCase()));
+
     setFilteredUsers(filteredUsers);
   }, [users, disabled, selected, searchText]);
 
@@ -78,12 +66,7 @@ const UsersSelector = ({
       <Stack overflow="auto" pb={3} w="full">
         <>
           {note && (
-            <Text
-              color="usersSelector.note"
-              fontSize="12px"
-              fontStyle="italic"
-              opacity="0.3"
-            >
+            <Text color="usersSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3">
               {note}
             </Text>
           )}
@@ -119,20 +102,18 @@ const UsersSelector = ({
               </Text>
             </Checkbox>
           )}
+          {selected?.length > 0 && (
+            <UsersSelectorList
+              disabled={disabled}
+              filteredUsers={filteredUsers.filter((filteredUser) => selected?.includes(filteredUser._id))}
+              handleChange={handleChange}
+              selected={selected}
+              selectedRole={selectedRole}
+            />
+          )}
           <UsersSelectorList
             disabled={disabled}
-            filteredUsers={filteredUsers.filter((filteredUser) =>
-              selected?.includes(filteredUser._id),
-            )}
-            handleChange={handleChange}
-            selected={selected}
-            selectedRole={selectedRole}
-          />
-          <UsersSelectorList
-            disabled={disabled}
-            filteredUsers={filteredUsers.filter(
-              (filteredUser) => !selected?.includes(filteredUser._id),
-            )}
+            filteredUsers={filteredUsers.filter((filteredUser) => !selected?.includes(filteredUser._id))}
             handleChange={handleChange}
             selected={selected}
             selectedRole={selectedRole}
