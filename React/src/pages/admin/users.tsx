@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Select, Text } from '@chakra-ui/react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { t } from 'i18next';
 import { upperFirst } from 'lodash';
+import pluralize from 'pluralize';
 
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
@@ -149,7 +151,7 @@ const Users = () => {
           }}
           showSortingIcon={sortType === 'totalAuditsCount'}
           sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
-          tooltip="Total number of audits"
+          tooltip={`Total number of ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
@@ -161,7 +163,7 @@ const Users = () => {
           }}
           showSortingIcon={sortType === 'completedAuditsCount'}
           sortOrder={sortType === 'completedAuditsCount' ? sortOrder : undefined}
-          tooltip="Number of completed audits"
+          tooltip={`Number of completed ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
@@ -173,7 +175,7 @@ const Users = () => {
           }}
           showSortingIcon={sortType === 'upcomingAuditsCount'}
           sortOrder={sortType === 'upcomingAuditsCount' ? sortOrder : undefined}
-          tooltip="Number of upcoming audits"
+          tooltip={`Number of upcoming ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
@@ -185,7 +187,7 @@ const Users = () => {
           }}
           showSortingIcon={sortType === 'missedAuditsCount'}
           sortOrder={sortType === 'missedAuditsCount' ? sortOrder : undefined}
-          tooltip="Number of missed audits"
+          tooltip={`Number of missed ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)"
         />
       </>
