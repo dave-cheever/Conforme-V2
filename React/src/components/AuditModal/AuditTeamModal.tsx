@@ -145,7 +145,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
                 {selection === 'auditor' && selectedAuditor && auditTeamUser(selectedAuditor as IUser)}
                 {selection === 'participants' &&
                   selectedParticipants?.length > 0 &&
-                  selectedParticipants.map((participant) => auditTeamUser(participant!))}
+                  selectedParticipants.map((participant) => auditTeamUser(participant as IUser))}
                 {data?.searchUsers
                   .filter((user) =>
                     selection === 'participants'

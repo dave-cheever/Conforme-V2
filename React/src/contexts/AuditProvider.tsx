@@ -46,11 +46,15 @@ const GET_AUDIT = gql`
         _id
         displayName
         imgUrl
+        email
+        jobTitle
       }
       participants {
         _id
         displayName
         imgUrl
+        email
+        jobTitle
       }
     }
   }
