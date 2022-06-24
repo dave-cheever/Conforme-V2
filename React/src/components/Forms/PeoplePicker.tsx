@@ -187,10 +187,11 @@ const PeoplePicker = ({
                         setSearchedInputValue(user.displayName);
                         onChange({ target: { name, value: user._id } });
                       }}
-                      pl={3}
+                      px={3}
                       py={1}
                       role="group"
                       w="full"
+                      wordBreak="break-word"
                     >
                       <Flex direction="column" ml={2}>
                         <Text color="black" fontSize="smm" fontWeight="semibold">
