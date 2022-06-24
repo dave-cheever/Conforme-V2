@@ -176,7 +176,7 @@ const PeoplePicker = ({
                       align="center"
                       color="peoplePicker.font"
                       fontWeight="400"
-                      h="30px"
+                      h="auto"
                       justify="space-between"
                       key={user._id}
                       mb={1}
@@ -188,15 +188,15 @@ const PeoplePicker = ({
                         onChange({ target: { name, value: user._id } });
                       }}
                       pl={3}
-                      pt="1"
+                      py={1}
                       role="group"
                       w="full"
                     >
-                      <Flex direction="column" ml="2" overflowX="hidden">
+                      <Flex direction="column" ml={2}>
                         <Text color="black" fontSize="smm" fontWeight="semibold">
                           {user?.displayName} - {user.jobTitle || 'No job title'}
                         </Text>
-                        <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px">
+                        <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis">
                           {user?.email}
                         </Box>
                       </Flex>
