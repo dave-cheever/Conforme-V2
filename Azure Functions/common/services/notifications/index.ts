@@ -58,27 +58,27 @@ const getEmailTemplate = async ({
     case ACTION_ASSIGNED:
       body = `<p>
         You have been assigned to action "${emailData.actionTitle} (${emailData.actionDueDate
-        })", to view click <a href="${getProtocol()}${process.env.API_URL}/${emailData.actionPath}">here</a>.
+        })", to view click <a href="${getProtocol()}${emailData.actionPath}">here</a>.
         </p>`;
       break;
     case ACTION_COMPLETED:
       body = `<p>
-        Action "${emailData.actionTitle}" has been completed, to view click <a href = "${getProtocol()}${process.env.API_URL}/${emailData.actionPath}">here</a>.
+        Action "${emailData.actionTitle}" has been completed, to view click <a href = "${getProtocol()}${emailData.actionPath}">here</a>.
       </p>`;
       break;
     case ACTION_OVERDUE:
       body = `<p>
-        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${process.env.API_URL}/${emailData.actionPath}">here</a>.
+        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${emailData.actionPath}">here</a>.
       </p>`;
       break;
     case AUDIT_MISSED:
       body = `<p>
-        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${process.env.API_URL}/${emailData.auditPath}">here</a>.
+        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath}">here</a>.
       </p>`;
       break;
     case AUDIT_UPCOMING:
       body = `<p>
-        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${process.env.API_URL}/${emailData.auditPath}">here</a>.
+        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath}">here</a>.
       </p>`;
       break;
     case AUDITS_WEEKLY_SUMMARY:

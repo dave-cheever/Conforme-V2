@@ -79,7 +79,7 @@ const sendOverdueActions = async (config: IConfig) => {
               },
             ]);
             const answer = answers[0];
-            if (module && answer) actionPath = `/${module.path}/audits/${answer.scope._id}`;
+            if (module && answer) actionPath = `${organization.domain}/${module.path}/audits/${answer.scope._id}`;
 
             const auditor = await Users.customFindByIdWithDetails({
               userId: answer?.audit.auditorId,

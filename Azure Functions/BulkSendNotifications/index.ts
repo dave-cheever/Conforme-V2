@@ -68,7 +68,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
         await sendResponseDueEmail(TRACKER_REMINDER, config);
       }
 
-      loggingService.Write('Scheduled notifications sent.');
+      loggingService.Write('Scheduled notifications sent');
 
       // TODO: Send Audits and Tracker responses changes after last scan date
     }
