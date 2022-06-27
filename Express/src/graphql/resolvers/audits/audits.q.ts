@@ -1,6 +1,7 @@
 import { compareDesc } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
+import { IUser } from 'app-interfaces';
 import { Audits, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
@@ -201,55 +202,26 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
 
     let audits = await Audits.aggregate(pipeline);
 
-    if (shouldJoin(['auditor'])) {
+    if (shouldJoin(['auditor']) || shouldJoin(['participants'])) {
       audits = await Promise.all(
         audits.map(
           async (audit) => {
             try {
-              return {
-                ...audit,
-                auditor: await Users.customFindByIdWithDetails({
+              let auditor;
+              let participants: IUser[] = [];
+              if (shouldJoin(['auditor'])) {
+                auditor = await Users.customFindByIdWithDetails({
                   userId: audit.auditorId,
                   organization,
-                }),
-              };
-            } catch (e) {
-              console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
-              return audit;
-            }
-          },
-        ),
-      );
-    }
-
-    if (shouldJoin(['participants'])) {
-      audits = await Promise.all(
-        audits.map(
-          async (audit) => {
-            try {
-              if (!audit?.participantsIds || audit?.participantsIds?.length === 0)
-                return audit;
+                });
+              }
+              if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0)
+                participants = await Users.customFindWithDetails({ selector: { _id: { $in: audit.participantsIds } }, organization });
 
               return {
                 ...audit,
-                participants: await Promise.all(
-                  audit.participantsIds.map(async (id) => {
-                    try {
-                      const participant = await Users.customFindByIdWithDetails({
-                        userId: id,
-                        organization,
-                      });
-
-                      return participant;
-                    } catch {
-                      return {
-                        _id: id,
-                        displayName: 'Unknown',
-                        imgUrl: null,
-                      };
-                    }
-                  }),
-                ),
+                auditor,
+                participants,
               };
             } catch (e) {
               console.log(`Error occured for audit with ID ${audit._id}: ${e}`);

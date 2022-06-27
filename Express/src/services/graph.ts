@@ -48,10 +48,14 @@ const getClient = async (organizationId: string) => {
 // userId can be AAD ID or email
 const getUserPhoto = async ({ userId, organization }) => {
   try {
+    const client = await getClient(organization._id);
     await graphSetup(organization);
-    return await graph.users.getById(userId).photo.getBuffer();
+    const res = await client.get(`users/${userId}/photos/96x96/$value`, {
+      responseType: 'arraybuffer',
+    });
+    return Buffer.from(res.data);
   } catch (e) {
-    console.log(e);
+    console.log(`Not found profile photo for user with ID ${userId}`);
     return undefined;
   }
 };
@@ -276,7 +280,7 @@ const uploadDocuments = async (
 
             return undefined;
           });
-        } catch {}
+        } catch { }
 
         const uploadSession = await client.post(
           `sites/${id}/drive/root:/${path}/${incrementFileName(document.originalname, documentExistantTimes)}:/createUploadSession`,
@@ -368,7 +372,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
       // Delete old folder if empty
       if (tempFolderDetails.data.folder.childCount === 0)
         await client.delete(`sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`);
-    } catch (deleteErr: any) {} // do not do anything if folder was already removed
+    } catch (deleteErr: any) { } // do not do anything if folder was already removed
 
     return true;
   } catch (e: any) {

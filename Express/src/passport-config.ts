@@ -48,7 +48,7 @@ const initPassport = (passport: PassportStatic) => {
     }
 
     await Users.customAssertUser({ userId: _id, organizationId: organization._id });
-    const user = await Users.customFindByIdWithDetails({ userId: _id, organization });
+    const user = await Users.customFindByIdWithDetails({ userId: _id, organization, awaitForResponse: true });
     if (!user) return done(null, { organization }, 'Internal server error - Azure AD auth');
 
     const sessionUser = await sessionizeUser(user);

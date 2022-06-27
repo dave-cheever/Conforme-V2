@@ -1,51 +1,18 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { IUser } from 'app-interfaces';
 import { Audits, Responses, Users } from 'app-models';
-import { GraphService } from 'app-services';
-import { doesPathExist, getProtocol } from 'app-utils';
+import { doesPathExist } from 'app-utils';
 
 const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['users', ...elements]);
 
   try {
     // Lookup all users in organisation
-    const users: IUser[] = await Users.customFind({ organization }, organization._id);
-    const usersWithDetails: IUser[] = [];
+    let users = await Users.customFindWithDetails({ selector: {}, organization });
 
     // Lookup info for users in parallel using promise.all
-    await Promise.all(
+    users = await Promise.all(
       users.map(async (user) => {
-        const userDetails = await GraphService.getUserData({
-          userId: user._id,
-          organization,
-        });
-        if (shouldJoin(['role'])) {
-          // eslint-disable-next-line no-param-reassign
-          user.role = 'user';
-
-          const roles: any = await GraphService.checkMemberGroups({
-            userId: user._id,
-            groups: {
-              admin: organization.adminsGroupId || '',
-              reader: organization.readersGroupId || '',
-            },
-            organization,
-          });
-
-          if (roles.admin)
-            // eslint-disable-next-line no-param-reassign
-            user.role = 'admin';
-          else if (roles.reader)
-            // eslint-disable-next-line no-param-reassign
-            user.role = 'reader';
-        }
-
-        if (shouldJoin(['imgUrl'])) {
-          // eslint-disable-next-line no-param-reassign
-          user.imgUrl = `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`;
-        }
-
         if (shouldJoin(['responsibleCount'])) {
           const responses = await Responses.aggregate([
             {
@@ -185,17 +152,10 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
           }
         }
 
-        usersWithDetails.push({
-          ...user,
-          firstName: userDetails?.givenName || '',
-          lastName: userDetails?.surname || '',
-          displayName: userDetails?.displayName || '',
-          email: userDetails?.mail || userDetails?.userPrincipalName || '',
-          jobTitle: userDetails?.jobTitle || '',
-        });
+        return user;
       }),
     );
-    return usersWithDetails;
+    return users;
   } catch (err: any) {
     throw new Error(err);
   }

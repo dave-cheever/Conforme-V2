@@ -58,9 +58,11 @@ userSchema.statics.customAdd = async function (user: IUser, organizationId: stri
 userSchema.statics.customFindWithDetails = async function ({
   selector = {},
   organization,
+  awaitForResponse = false,
 }: {
   selector: any;
   organization: IOrganization;
+  awaitForResponse: boolean;
 }): Promise<IUser[]> {
   if (!organization) return [];
   let users = await this.find({
@@ -70,45 +72,44 @@ userSchema.statics.customFindWithDetails = async function ({
   }).lean();
 
   // Refresh user data if it wasn't refreshed in the last 5 minutes
-  users = await Promise.all(
-    users.map(async (user) => {
-      if (isBefore(new Date(user.metatags?.updatedAt || 0), subMinutes(new Date(), 5))) {
-        const userDetails = await GraphService.getUserData({ userId: user._id, organization });
-        const managerId = await GraphService.getLineManagerId({ userId: user._id, organization });
+  const syncedUsersPromises = users.map(async (user) => {
+    if (isBefore(new Date(user.metatags?.updatedAt || 0), subMinutes(new Date(), 5))) {
+      const userDetails = await GraphService.getUserData({ userId: user._id, organization });
+      const managerId = await GraphService.getLineManagerId({ userId: user._id, organization });
 
-        let role = 'user';
-        const roles: any = await GraphService.checkMemberGroups({
-          userId: user._id,
-          groups: {
-            admin: organization.adminsGroupId || '',
-            reader: organization.readersGroupId || '',
-          },
-          organization,
-        });
+      let role = 'user';
+      const roles: any = await GraphService.checkMemberGroups({
+        userId: user._id,
+        groups: {
+          admin: organization.adminsGroupId || '',
+          reader: organization.readersGroupId || '',
+        },
+        organization,
+      });
 
-        if (roles.admin) role = 'admin';
-        else if (roles.reader) role = 'reader';
+      if (roles.admin) role = 'admin';
+      else if (roles.reader) role = 'reader';
 
-        const updatedUser = {
-          ...user,
-          firstName: userDetails?.givenName || '',
-          lastName: userDetails?.surname || '',
-          displayName: userDetails?.displayName || '',
-          email: userDetails?.mail || userDetails?.userPrincipalName || '',
-          jobTitle: userDetails?.jobTitle || '',
-          role,
-          managerId,
-          metatags: {
-            ...user.metatags,
-            ...genMetatags('updated', user._id),
-          },
-        };
-        await Users.updateOne({ _id: user._id }, updatedUser);
-        return updatedUser;
-      }
-      return user;
-    }),
-  );
+      const updatedUser = {
+        ...user,
+        firstName: userDetails?.givenName || '',
+        lastName: userDetails?.surname || '',
+        displayName: userDetails?.displayName || '',
+        email: userDetails?.mail || userDetails?.userPrincipalName || '',
+        jobTitle: userDetails?.jobTitle || '',
+        role,
+        managerId,
+        metatags: {
+          ...user.metatags,
+          ...genMetatags('updated', user._id),
+        },
+      };
+      await Users.updateOne({ _id: user._id }, updatedUser);
+      return updatedUser;
+    }
+    return user;
+  });
+  if (awaitForResponse) users = await Promise.all(syncedUsersPromises);
 
   return users.map((user) => ({ ...user, imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}` }));
 };
@@ -117,11 +118,13 @@ userSchema.statics.customFindWithDetails = async function ({
 userSchema.statics.customFindByIdWithDetails = async function ({
   userId,
   organization,
+  awaitForResponse = false,
 }: {
   userId: string;
   organization: IOrganization;
+  awaitForResponse: boolean;
 }): Promise<IUser> {
-  const users = await this.customFindWithDetails({ selector: { _id: userId }, organization });
+  const users = await this.customFindWithDetails({ selector: { _id: userId }, organization, awaitForResponse });
   if (!users || users.length === 0) throw new Error('User not found');
   return users[0];
 };

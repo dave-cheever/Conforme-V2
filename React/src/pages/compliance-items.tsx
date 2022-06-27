@@ -53,6 +53,8 @@ const GET_RESPONSES = gql`
       }
       responsible {
         displayName
+        imgUrl
+        role
       }
       metatags {
         addedBy

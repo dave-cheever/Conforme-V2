@@ -146,6 +146,8 @@ const useFiltersUtils = () => {
       // Get filter config from existing or initial filters
       const filter: IFilter = cleanFilters[filterName];
 
+      if (!filter) continue;
+
       // Check if value was set
       filter.value = newFilters[filterName] ? newFilters[filterName] : filterName === 'usersIds' ? {} : [];
 

@@ -61,6 +61,7 @@
       }
     ],
     "consistent-return": "off",
+    "no-continue": "off",
     "no-prototype-builtins": "off",
     "no-restricted-syntax": "off",
     "no-underscore-dangle": "off",

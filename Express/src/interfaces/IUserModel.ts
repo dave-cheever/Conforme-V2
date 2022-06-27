@@ -2,8 +2,8 @@ import { IBaseModel, IOrganization, IUser } from 'app-interfaces';
 
 export interface IUserModel extends IBaseModel<IUser> {
   customAdd: (user: Partial<IUser>, organizationId?: string) => Promise<IUser>;
-  customFindWithDetails: ({ selector, organization }: { selector: any; organization: IOrganization }) => Promise<IUser[]>;
-  customFindByIdWithDetails: ({ userId, organization }: { userId: string; organization: IOrganization }) => Promise<IUser>;
+  customFindWithDetails: ({ selector, organization, awaitForResponse }: { selector: any; organization: IOrganization, awaitForResponse?: boolean }) => Promise<IUser[]>;
+  customFindByIdWithDetails: ({ userId, organization, awaitForResponse }: { userId: string; organization: IOrganization, awaitForResponse?: boolean }) => Promise<IUser>;
 
   /**
    * This function has a couple of purposes:

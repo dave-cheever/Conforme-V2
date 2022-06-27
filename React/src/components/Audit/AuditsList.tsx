@@ -29,7 +29,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'dueDate'}
           sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-          w="12%"
+          w="10%"
         />
         <AdminTableHeaderElement
           label="Site"
@@ -69,7 +69,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'walkType'}
           sortOrder={sortType === 'walkType' ? sortOrder : undefined}
-          w="15%"
+          w="10%"
         />
         <AdminTableHeaderElement
           label="Auditor"
@@ -79,7 +79,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'auditor.displayName'}
           sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
-          w="25%"
+          w="20%"
         />
         <AdminTableHeaderElement
           label="Date submitted"
@@ -89,7 +89,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'dateSubmitted'}
           sortOrder={sortType === 'dateSubmitted' ? sortOrder : undefined}
-          w="12%"
+          w="10%"
         />
       </AdminTableHeader>
       <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
