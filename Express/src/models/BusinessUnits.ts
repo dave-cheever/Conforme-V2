@@ -92,7 +92,8 @@ businessUnitSchema.statics.customCreate = async function (
   organizationId: string,
 ): Promise<IBusinessUnit> {
   // Add owner to the database if doesn't exist
-  await Users.customAssertUser({ userId: businessUnit.ownerId, organizationId });
+  if (businessUnit.ownerId)
+    await Users.customAssertUser({ userId: businessUnit.ownerId, organizationId });
 
   const createdBusinessUnit = await this.create({
     ...businessUnit,
@@ -182,7 +183,8 @@ businessUnitSchema.statics.customUpdateOne = async function (
   const updatedResult = await this.updateOne(selector, updatedBusinessUnit);
 
   // Add owner to the database if doesn't exist
-  await Users.customAssertUser({ userId: updatedBusinessUnit.ownerId, organizationId });
+  if (updatedBusinessUnit.ownerId)
+    await Users.customAssertUser({ userId: updatedBusinessUnit.ownerId, organizationId });
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {

@@ -265,15 +265,7 @@ const BusinessUnits = () => {
               uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),
             }}
           />
-          <PeoplePicker
-            control={control}
-            label="Owner"
-            name="ownerId"
-            placeholder="Select"
-            validations={{
-              notEmpty: true,
-            }}
-          />
+          <PeoplePicker control={control} label="Owner" name="ownerId" placeholder="Select" />
         </Stack>
       </AdminModal>
       <Header

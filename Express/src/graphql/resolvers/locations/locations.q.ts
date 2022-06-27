@@ -7,7 +7,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
 
   try {
-    const locations = await Locations.customFind(locationQueryInput, organization._id);
+    let locations = await Locations.customFind(locationQueryInput, organization._id);
 
     if (shouldJoin('complianceItemsResponsesCount')) {
       for (const location of locations) {
@@ -375,16 +375,25 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
     }
 
     if (shouldJoin('owner')) {
-      for (const location of locations) {
-        try {
-          location.owner = await Users.customFindByIdWithDetails({
-            userId: location.ownerId,
-            organization,
-          });
-        } catch (e) {
-          console.log(`Error occured for location with ID ${location._id}: ${e}`);
-        }
-      }
+      locations = await Promise.all(
+        locations.map(
+          async (location) => {
+            try {
+              if (!location.ownerId) return location;
+              return {
+                ...location,
+                owner: await Users.customFindByIdWithDetails({
+                  userId: location.ownerId,
+                  organization,
+                }),
+              };
+            } catch (e) {
+              console.log(`Error occured for business unit with ID ${location._id}: ${e}`);
+              return location;
+            }
+          },
+        ),
+      );
     }
 
     return locations?.sort((a, b) => a.name.localeCompare(b.name));

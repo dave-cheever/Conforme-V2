@@ -8,7 +8,7 @@ const deleteLocation = async (_, { _id }, { authorize, organization }) => {
     if (!isPermitted({ user, action: 'locations.delete', data: { _id } }))
       throw new Error('User is not permitted');
 
-    const location = await Locations.customFindById(_id);
+    const location = await Locations.customFindById(_id, organization._id);
     if (!location) throw new Error("Location doesn't exist");
 
     const deletedResult = await Locations.customDelete(

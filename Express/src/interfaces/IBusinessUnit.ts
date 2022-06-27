@@ -3,7 +3,7 @@ import { IBase, IUser } from 'app-interfaces';
 export interface IBusinessUnit extends IBase {
   identifier: string;
   name: string;
-  ownerId: string;
+  ownerId?: string;
   imgUrl?: string;
   organizationId: string;
 

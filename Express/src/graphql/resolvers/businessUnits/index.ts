@@ -41,13 +41,13 @@ export const businessUnitsTypeDefs = `
   input BusinessUnitInput {
     identifier: String
     name: String!
-    ownerId: String!
+    ownerId: String
   }
 
   input BusinessUnitModifyInput {
     _id: ID!
     name: String!
-    ownerId: String!
+    ownerId: String
   }
 
   input BusinessUnitQueryInput {

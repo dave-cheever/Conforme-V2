@@ -21,7 +21,7 @@ const updateLocation = async (
     )
       throw new Error('User is not permitted');
 
-    const location = await Locations.customFindById(_id);
+    const location = await Locations.customFindById(_id, organization._id);
     if (!location) throw new Error("Location doesn't exist");
 
     const updatedLocation = await Locations.customUpdateOne(

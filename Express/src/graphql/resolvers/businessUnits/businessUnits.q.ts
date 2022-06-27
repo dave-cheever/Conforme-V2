@@ -397,10 +397,11 @@ const businessUnits = async (
     }
 
     if (shouldJoin('owner')) {
-      await Promise.all(
+      businessUnits = await Promise.all(
         businessUnits.map(
           async (businessUnit) => {
             try {
+              if (!businessUnit.ownerId) return businessUnit;
               return {
                 ...businessUnit,
                 owner: await Users.customFindByIdWithDetails({

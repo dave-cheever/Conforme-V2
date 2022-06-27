@@ -88,7 +88,7 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
                 w="full"
                 whiteSpace="nowrap"
               >
-                {response.responsible.role}
+                {response.responsible.displayName}
               </Text>
             </Flex>
           ) : (

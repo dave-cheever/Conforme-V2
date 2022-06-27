@@ -127,7 +127,7 @@ locationsSchema.statics.customFind = async function (
     ...selector,
     organizationId,
     'metatags.removedAt': { $eq: null },
-  });
+  }).lean();
   return locations;
 };
 
@@ -149,10 +149,10 @@ locationsSchema.statics.customFindById = async function (
   const location = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
-  });
+  }).lean();
   if (!location) throw new Error('Location not found');
 
-  return location._doc;
+  return location;
 };
 
 locationsSchema.statics.customFindByOwnerId = async function (
@@ -162,7 +162,7 @@ locationsSchema.statics.customFindByOwnerId = async function (
   const location = await this.customFindOne({ ownerId }, organizationId);
   if (!location) throw new Error('Location not found');
 
-  return location._doc;
+  return location;
 };
 
 locationsSchema.statics.customFindByOrganizationId = async function (
@@ -171,7 +171,7 @@ locationsSchema.statics.customFindByOrganizationId = async function (
   const location = await this.customFindOne({ organizationId }, organizationId);
   if (!location) throw new Error('Location not found');
 
-  return location._doc;
+  return location;
 };
 
 locationsSchema.statics.customUpdateOne = async function (
