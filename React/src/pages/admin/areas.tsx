@@ -243,16 +243,7 @@ const Areas = () => {
               notEmpty: true,
             }}
           />
-          <PeoplePicker
-            control={control}
-            label="Owner"
-            name="ownerId"
-            placeholder="Select"
-            required
-            validations={{
-              notEmpty: true,
-            }}
-          />
+          <PeoplePicker control={control} label="Owner" name="ownerId" placeholder="Select" />
         </Stack>
       </AdminModal>
       <Header breadcrumbs={['Admin', 'Areas']} mobileBreadcrumbs={['Areas']} />
