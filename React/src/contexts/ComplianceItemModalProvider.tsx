@@ -78,6 +78,7 @@ const ComplianceItemModalProvider = ({ children }) => {
         regulatoryBodyId: undefined,
         dueDate: undefined,
         frequency: undefined,
+        dueDateCalculation: 'fromDueDate',
       },
       Component: GeneralForm,
     },

@@ -11,6 +11,7 @@ export interface IComplianceItem extends IBase {
   categoryId: string;
   regulatoryBodyId: string;
   dueDate: Date;
+  dueDateCalculation: 'fromDueDate' | 'fromCompletionDate';
   frequency: string;
   businessUnitsIds: string[];
   evidenceItems: string[];

@@ -604,20 +604,19 @@ responseSchema.statics.customRecalculateResponse = async function (
     newStatus = 'completed';
 
   let { nextRenewalDate } = response;
-  if (response.status === 'completed' && newStatus === 'inProgress') {
-    nextRenewalDate = getPrevRenewalDate(
-      response.nextRenewalDate || new Date(),
-      complianceItem.frequency,
-    );
-  } else if (
+
+  // Calculate prev and next due date base on Tracker Item configuration
+  const sourceDate = complianceItem.dueDateCalculation === 'fromDueDate' && response.nextRenewalDate ? response.nextRenewalDate : new Date();
+
+  // If status was changed from completed to inprogress, set previous date as due date
+  if (response.status === 'completed' && newStatus === 'inProgress') nextRenewalDate = getPrevRenewalDate(sourceDate, complianceItem.frequency);
+
+  // If status was changed to completed, or remains completed, set next date as due date
+  else if (
     (response.status === 'completed' && newStatus) ||
     newStatus === 'completed'
-  ) {
-    nextRenewalDate = getNextRenewalDate(
-      response.nextRenewalDate || new Date(),
-      complianceItem.frequency,
-    );
-  }
+  ) nextRenewalDate = getNextRenewalDate(sourceDate, complianceItem.frequency);
+
   response.nextRenewalDate = nextRenewalDate;
 
   if (newStatus) {

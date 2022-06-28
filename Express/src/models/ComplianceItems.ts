@@ -37,6 +37,13 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
   categoryId: String,
   regulatoryBodyId: String,
   dueDate: Date,
+  dueDateCalculation: {
+    type: String,
+    enum: [
+      'fromDueDate',
+      'fromCompletionDate',
+    ],
+  },
   frequency: String,
   businessUnitsIds: [String],
   evidenceItems: [String],

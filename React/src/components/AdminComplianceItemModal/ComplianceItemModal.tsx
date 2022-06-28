@@ -1,24 +1,12 @@
 import React, { useMemo } from 'react';
 
-import {
-  Avatar,
-  Button,
-  Flex,
-  Icon,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  useToast,
-} from '@chakra-ui/react';
+import { Avatar, Button, Flex, Icon, ModalBody, ModalContent, ModalHeader, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import pluralize from 'pluralize';
 
 import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
-import {
-  initialDialogDetails,
-  useComplianceItemModalContext,
-} from '../../contexts/ComplianceItemModalProvider';
+import { initialDialogDetails, useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import useComplianceItemModal from '../../hooks/useComplianceItemModal';
 import useDevice from '../../hooks/useDevice';
 import { Close, OpenMenuArrow, Save } from '../../icons';
@@ -46,15 +34,12 @@ const ComplianceItemModal = ({ refetch }) => {
   // Boolean summarizing if at least one evidence is experted OR at least one required question is added
   const isActionRequiredToComplete = useMemo(() => {
     // If evidence with no title exists
-    if (complianceItem.evidenceItems?.some((evidence) => evidence === ''))
-      return true;
+    if (complianceItem.evidenceItems?.some((evidence) => evidence === '')) return true;
 
     // If no evidence or no questions
     if (
       (complianceItem.evidenceItems || []).length === 0 &&
-      (complianceItem.questions || []).filter(
-        ({ required, outdated }) => required && !outdated,
-      )?.length === 0
+      (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length === 0
     )
       return true;
 
@@ -69,8 +54,7 @@ const ComplianceItemModal = ({ refetch }) => {
         const savingDialogDetails = {
           isOpen: true,
           title: `Unpublish ${complianceItem.name}`,
-          description:
-            `Are you sure you wish to unpublish this ${t('complianceItem')}? It will hide all existing responses.`,
+          description: `Are you sure you wish to unpublish this ${t('complianceItem')}? It will hide all existing responses.`,
           state: undefined,
           showButtons: true,
           action: () =>
@@ -93,8 +77,9 @@ const ComplianceItemModal = ({ refetch }) => {
       const savingDialogDetails = {
         isOpen: true,
         title: `Publish ${complianceItem.name}`,
-        description:
-          `Are you sure you wish to publish this ${t('complianceItem')}? It will become available for completion by all relevant ${pluralize(t('businessUnit'))}.`,
+        description: `Are you sure you wish to publish this ${t(
+          'complianceItem',
+        )}? It will become available for completion by all relevant ${pluralize(t('businessUnit'))}.`,
         state: undefined,
         showButtons: true,
         action: () =>
@@ -137,29 +122,11 @@ const ComplianceItemModal = ({ refetch }) => {
 
   return (
     <>
-      <ModalContent
-        bg="complianceItemModal.bg"
-        h="100%"
-        m="0"
-        p={['25px', '35px']}
-        position="absolute"
-        rounded="0"
-      >
-        <ModalHeader
-          alignItems="center"
-          fontSize="xxl"
-          fontWeight="bold"
-          p="0 0 20px 0"
-        >
+      <ModalContent bg="complianceItemModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
+        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
-              <Avatar
-                mr={3}
-                name={user?.displayName}
-                rounded="full"
-                size="xs"
-                src={user?.imgUrl}
-              />
+              <Avatar mr={3} name={user?.displayName} rounded="full" size="xs" src={user?.imgUrl} />
               {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} {t('complianceItem')}
             </Flex>
             <Flex alignItems="center">
@@ -176,25 +143,14 @@ const ComplianceItemModal = ({ refetch }) => {
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
-                leftIcon={
-                  <Icon
-                    as={Save}
-                    stroke="complianceItemModal.saveButton.icon"
-                  />
-                }
+                leftIcon={<Icon as={Save} stroke="complianceItemModal.saveButton.icon" />}
                 mr="26px"
                 onClick={handleSecondaryButtonClick}
                 w="93px"
               >
                 Save
               </Button>
-              <Close
-                cursor="pointer"
-                h="15px"
-                onClick={closeModal}
-                stroke="complianceItemModal.closeIcon"
-                w="15px"
-              />
+              <Close cursor="pointer" h="15px" onClick={closeModal} stroke="complianceItemModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>
@@ -214,14 +170,7 @@ const ComplianceItemModal = ({ refetch }) => {
               <Flex mb="20px" minH="calc(100% - 60px)" overflowY="auto">
                 <Component />
               </Flex>
-              <Flex
-                justifyContent={
-                  selectedSection.name !== 'Details'
-                    ? 'space-between'
-                    : 'flex-end'
-                }
-                w="full"
-              >
+              <Flex justifyContent={selectedSection.name !== 'Details' ? 'space-between' : 'flex-end'} w="full">
                 {selectedSection.name !== 'Details' && (
                   <Button
                     _hover={{
@@ -232,13 +181,7 @@ const ComplianceItemModal = ({ refetch }) => {
                     fontSize="smm"
                     fontWeight="700"
                     h="40px"
-                    leftIcon={
-                      <Icon
-                        as={OpenMenuArrow}
-                        stroke="complianceItemModal.tabs.bottomButton.icon"
-                        transform="rotate(90deg)"
-                      />
-                    }
+                    leftIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(90deg)" />}
                     onClick={handlePreviousButtonClick}
                     rounded="10px"
                     w="fit-content"
@@ -266,13 +209,7 @@ const ComplianceItemModal = ({ refetch }) => {
                     trigger(Object.keys(selectedSection.fields || []) as any);
                     handlePrimaryButtonClick();
                   }}
-                  rightIcon={
-                    <Icon
-                      as={OpenMenuArrow}
-                      stroke="complianceItemModal.tabs.bottomButton.icon"
-                      transform="rotate(270deg)"
-                    />
-                  }
+                  rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
                   rounded="10px"
                   w="fit-content"
                 >
@@ -316,6 +253,13 @@ export const complianceItemModalStyles = {
         color: '#ffffff',
         icon: '#ffffff',
         hover: '#462AC4',
+      },
+    },
+    toggle: {
+      color: '#818197',
+      label: {
+        default: '#818197',
+        active: '#282F36',
       },
     },
   },

@@ -30,6 +30,7 @@ const GET_COMPLIANCE_ITEMS = gql`
       businessUnitsIds
       frequency
       dueDate
+      dueDateCalculation
       published
       evidenceItems
       questions {
@@ -134,6 +135,7 @@ const ComplianceItemsAdmin = () => {
         regulatoryBodyId: complianceItem.regulatoryBodyId,
         dueDate: complianceItem.dueDate,
         frequency: complianceItem.frequency,
+        dueDateCalculation: complianceItem.dueDateCalculation,
         businessUnitsIds: complianceItem.businessUnitsIds,
         locationsIds: complianceItem.locationsIds,
         evidenceItems: complianceItem.evidenceItems,
