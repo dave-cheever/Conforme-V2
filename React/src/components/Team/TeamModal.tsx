@@ -127,8 +127,8 @@ const TeamModal = () => {
             {isReplaceAccountable
               ? 'Replace'
               : !isReplaceAccountable && filterType === 'accountableId'
-              ? 'Select'
-              : `Add ${responsePermissionByFilterType(filterType)}s`}
+                ? 'Select'
+                : `Add ${responsePermissionByFilterType(filterType)}s`}
           </Text>
           <ModalCloseButton />
         </ModalHeader>
@@ -141,6 +141,7 @@ const TeamModal = () => {
               autoFocus
               borderColor="teamPage.modal.inputBorder"
               borderWidth="1px"
+              placeholder='Name'
               fontSize="smm"
               h="40px"
               mb={0}
