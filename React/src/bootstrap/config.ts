@@ -1,6 +1,6 @@
 import { RepeatClockIcon } from '@chakra-ui/icons';
 
-import {  AttachmentIcon, AuditIcon, DetailIcon, ProgressIcon, QuestionIcon, TeamsIcon } from '../icons';
+import { AttachmentIcon, AuditIcon, DetailIcon, ProgressIcon, QuestionIcon, TeamsIcon } from '../icons';
 
 export const toastSuccess: any = {
   title: 'Success',
@@ -194,7 +194,7 @@ export const navigationTabs = [
     icon: TeamsIcon,
   },
   {
-    label: 'History',
+    label: 'Review history',
     url: '/history',
     icon: RepeatClockIcon,
   },
