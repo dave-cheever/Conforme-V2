@@ -1,16 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Image,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
 
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
@@ -53,12 +44,8 @@ const Login = () => {
     }
   }, [refresh]);
 
-  const redirectUrl = params
-    .find((str) => str.includes('redirectUrl'))
-    ?.split('=')[1];
-  const errorMessage = params
-    .find((str) => str.includes('errorMessage'))
-    ?.split('=')[1];
+  const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
+  const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
 
   useEffect(() => {
     if (errorMessage) {
@@ -71,12 +58,7 @@ const Login = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loginWithAzureAD = async () => {
-    window.open(
-      `${process.env.REACT_APP_API_URL}/auth/aad${
-        redirectUrl ? `?redirect=${redirectUrl}` : ''
-      }`,
-      '_self',
-    );
+    window.open(`${process.env.REACT_APP_API_URL}/auth/aad${redirectUrl ? `?redirect=${redirectUrl}` : ''}`, '_self');
   };
 
   const removeUser = () => {
@@ -85,20 +67,9 @@ const Login = () => {
   };
 
   return (
-    <Flex
-      bg="loginPage.bg"
-      flexDir={['column', 'column', 'row']}
-      h="100vh"
-      w="full"
-    >
+    <Flex bg="loginPage.bg" flexDir={['column', 'column', 'row']} h="100vh" w="full">
       {user ? (
-        <Flex
-          align="center"
-          h="full"
-          justify={['center', 'center', 'flex-end']}
-          order={[2, 2, 1]}
-          w={['full', 'full', '30%']}
-        >
+        <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[2, 2, 1]} w={['full', 'full', '30%']}>
           <VStack align="center" spacing={5} textAlign="center">
             <Flex
               color="loginPage.organizationNameColor"
@@ -112,24 +83,14 @@ const Login = () => {
             >
               {organizationConfig?.name}
             </Flex>
-            <Flex
-              bg="white"
-              borderColor="loginPage.avatarBorderColor"
-              borderWidth="10px"
-              rounded="full"
-            >
-              <Avatar
-                borderColor="white"
-                borderWidth="4px"
-                h="75px"
-                name={user?.displayName}
-                src={user?.imgUrl}
-                w="75px"
-              />
+            <Flex bg="white" borderColor="loginPage.avatarBorderColor" borderWidth="10px" rounded="full">
+              <Avatar borderColor="white" borderWidth="4px" h="75px" name={user?.displayName} src={user?.imgUrl} w="75px" />
             </Flex>
             <Button
+              _hover={{ bg: 'loginPage.hoverColor' }}
+              bg="loginPage.button.bg"
               borderRadius="10px"
-              colorScheme="purpleHeart"
+              color="loginPage.button.color"
               fontSize="14px"
               h="40px"
               lineHeight="18px"
@@ -138,31 +99,16 @@ const Login = () => {
             >
               Login as {user?.firstName}
             </Button>
-            <Flex
-              align="center"
-              color="loginPage.descriptionColor"
-              flexDir="column"
-              fontSize="11px"
-            >
+            <Flex align="center" color="loginPage.descriptionColor" flexDir="column" fontSize="11px">
               <Flex>Not {user?.firstName}?</Flex>
-              <Flex
-                _hover={{ color: 'loginPage.hoverColor' }}
-                cursor="pointer"
-                onClick={removeUser}
-              >
+              <Flex _hover={{ color: 'loginPage.hoverColor' }} cursor="pointer" onClick={removeUser}>
                 Login as someone else
               </Flex>
             </Flex>
           </VStack>
         </Flex>
       ) : (
-        <Flex
-          align="center"
-          h="full"
-          justify={['center', 'center', 'flex-end']}
-          order={[2, 2, 1]}
-          w={['full', 'full', '30%']}
-        >
+        <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[2, 2, 1]} w={['full', 'full', '30%']}>
           <Flex flexDir="column" textAlign={['center', 'center', 'start']}>
             <Text
               color="loginPage.organizationNameColor"
@@ -177,8 +123,10 @@ const Login = () => {
               {organizationConfig?.name}
             </Text>
             <Button
+              _hover={{ bg: 'loginPage.hoverColor' }}
+              bg="loginPage.button.bg"
               borderRadius="10px"
-              colorScheme="purpleHeart"
+              color="loginPage.button.color"
               fontSize="14px"
               h="40px"
               lineHeight="18px"
@@ -191,22 +139,12 @@ const Login = () => {
           </Flex>
         </Flex>
       )}
-      <Flex
-        align="center"
-        h="full"
-        justify={['center', 'center', 'flex-end']}
-        order={[1, 1, 2]}
-        w={['full', 'full', '70%']}
-      >
+      <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[1, 1, 2]} w={['full', 'full', '70%']}>
         <Box h={['30vh', '40vh', '95vh']} overflow="hidden">
           <Image
             h="full"
             maxW="max-content"
-            src={
-              device === 'desktop'
-                ? organizationConfig?.bgImageUrl
-                : organizationConfig?.bgImageTabletUrl
-            }
+            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl}
           />
         </Box>
       </Flex>
@@ -223,5 +161,9 @@ export const loginPageStyles = {
     avatarBorderColor: '#6d649845',
     descriptionColor: '#818197',
     hoverColor: '#462AC4',
+    button: {
+      bg: 'purpleHeart',
+      color: 'white',
+    },
   },
 };
