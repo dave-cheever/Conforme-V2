@@ -189,8 +189,8 @@ export const navigationTabs = [
     icon: AuditIcon,
   },
   {
-    label: 'Team',
-    url: '/team',
+    label: 'Participants',
+    url: '/participants',
     icon: TeamsIcon,
   },
   {

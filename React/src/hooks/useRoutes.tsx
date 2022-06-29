@@ -134,7 +134,7 @@ const protectedRoutes: Array<IRoute> = [
     layout: ResponseLayout,
   },
   {
-    path: '/compliance-item/:id/team',
+    path: '/compliance-item/:id/participants',
     key: 'complianceItem-team',
     exact: true,
     component: Team,
