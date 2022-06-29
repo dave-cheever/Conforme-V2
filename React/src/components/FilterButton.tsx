@@ -3,13 +3,8 @@ import { Flex } from '@chakra-ui/react';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import { Filter } from '../icons';
 
-const FilterButton = ({
-  insightsFilter = false,
-}: {
-  insightsFilter?: boolean;
-}) => {
-  const { showFiltersPanel, setShowFiltersPanel, numberOfSelectedFilters } =
-    useFiltersContext();
+const FilterButton = ({ insightsFilter = false }: { insightsFilter?: boolean }) => {
+  const { showFiltersPanel, setShowFiltersPanel, numberOfSelectedFilters } = useFiltersContext();
 
   return (
     <Flex
@@ -27,7 +22,7 @@ const FilterButton = ({
       onClick={() => setShowFiltersPanel(!showFiltersPanel)}
       p={4}
     >
-      <Flex color="white" fontSize="14px" fontWeight="bold">
+      <Flex color="white" fontSize="smm" fontWeight="semi_medium">
         Filters
       </Flex>
       {numberOfSelectedFilters > 0 && (
@@ -47,11 +42,7 @@ const FilterButton = ({
           {numberOfSelectedFilters}
         </Flex>
       )}
-      <Filter
-        h="18px"
-        ml={3}
-        transform={numberOfSelectedFilters > 0 ? 'rotate(180deg)' : ''}
-      />
+      <Filter h="18px" ml={3} transform={numberOfSelectedFilters > 0 ? 'rotate(180deg)' : ''} />
     </Flex>
   );
 };

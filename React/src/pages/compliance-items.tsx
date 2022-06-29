@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -230,9 +230,12 @@ const ComplianceItems = () => {
                 rightIcon={<ChevronRight color="complianceItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                 rounded="10px"
               >
-                <Flex align="center" mr="1">
+                <Stack direction="row" spacing={2}>
                   {viewIcon[viewMode]}
-                </Flex>
+                  <Text fontSize="smm" fontWeight="semi_medium">
+                    Change view
+                  </Text>
+                </Stack>
               </MenuButton>
             }
             <MenuList border="none" rounded="lg" w="100px" zIndex={2}>

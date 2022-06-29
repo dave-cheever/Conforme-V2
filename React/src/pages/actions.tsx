@@ -2,7 +2,22 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Grid,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalOverlay,
+  Stack,
+  Tab,
+  TabList,
+  Tabs,
+  Text,
+} from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 
@@ -248,9 +263,12 @@ const Actions = () => {
                   rightIcon={<ChevronRight color="actions.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                   rounded="10px"
                 >
-                  <Flex align="center" mr="1">
+                  <Stack direction="row" spacing={2}>
                     <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
-                  </Flex>
+                    <Text fontSize="smm" fontWeight="semi_medium">
+                      Change view
+                    </Text>
+                  </Stack>
                 </MenuButton>
               }
               <MenuList border="none" rounded="lg" w="100px" zIndex={2}>

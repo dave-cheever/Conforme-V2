@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -205,9 +205,12 @@ const Audits = () => {
                   rightIcon={<ChevronRight color="auditsItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
                   rounded="10px"
                 >
-                  <Flex align="center" mr="1">
+                  <Stack direction="row" spacing={2}>
                     <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
-                  </Flex>
+                    <Text fontSize="smm" fontWeight="semi_medium">
+                      Change view
+                    </Text>
+                  </Stack>
                 </MenuButton>
               }
               <MenuList border="none" rounded="lg" w="100px" zIndex={2}>

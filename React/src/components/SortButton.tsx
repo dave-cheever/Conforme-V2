@@ -32,7 +32,7 @@ const SortButton = ({
             rounded="10px"
           >
             <Flex align="center" mr="1">
-              <Text fontSize="smm" fontWeight="bold">
+              <Text fontSize="smm" fontWeight="semi_medium">
                 Sort by
               </Text>
             </Flex>
