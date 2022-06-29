@@ -127,7 +127,7 @@ const protectedRoutes: Array<IRoute> = [
     layout: ResponseLayout,
   },
   {
-    path: '/compliance-item/:id/audit-log',
+    path: '/compliance-item/:id/change-log',
     key: 'complianceItem-audit',
     exact: true,
     component: ComplianceItemAuditLog,

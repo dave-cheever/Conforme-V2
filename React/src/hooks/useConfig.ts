@@ -95,7 +95,7 @@ const useConfig = () => {
       icon: Admin,
       permission: 'adminPanel.view',
       subSections: [
-        { label:  capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items' },
+        { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items' },
         { label: 'Regulatory bodies', url: '/admin/regulatory-bodies' },
         { label: 'Categories', url: '/admin/categories' },
         { label: 'Locations', url: '/admin/locations' },

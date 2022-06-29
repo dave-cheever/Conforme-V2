@@ -5,9 +5,7 @@ import { Flex, IconButton, Stack, Text } from '@chakra-ui/react';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
-import NavigationTopProvider, {
-  useNavigationTopContext,
-} from '../contexts/NavigationTopProvider';
+import NavigationTopProvider, { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
 import { AddIcon, SearchIcon } from '../icons';
@@ -86,14 +84,7 @@ const NavigationTop = () => {
           h="80px"
           onClick={() => navigateTo('/')}
         >
-          <Text
-            color="navigationTop.organizationName"
-            fontSize="md"
-            fontWeight="bold"
-            lineHeight="19px"
-            ml={['26px', 0]}
-            w="full"
-          >
+          <Text color="navigationTop.organizationName" fontSize="md" fontWeight="bold" lineHeight="19px" ml={['26px', 0]} w="full">
             {showFiltersPanel ? getInitials(module?.name) : module?.name}
           </Text>
         </Flex>
@@ -109,20 +100,11 @@ const NavigationTop = () => {
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
                 display={
-                  [
-                    '/',
-                    '/admin/users',
-                    '/admin/settings',
-                    '/admin/audit-log',
-                  ].includes(history.location.pathname)
-                    ? 'none'
-                    : 'block'
+                  ['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'
                 }
                 flexShrink={0}
                 h={['52px', '45px']}
-                icon={
-                  <AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />
-                }
+                icon={<AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />}
                 mr="30px"
                 onClick={handleAddButtonClick}
                 position={['fixed', 'relative']}
@@ -145,20 +127,10 @@ const NavigationTop = () => {
                 bottom={['75px', '0']}
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
-                display={
-                  [
-                    '/admin/users',
-                    '/admin/settings',
-                    '/admin/audit-log',
-                  ].includes(history.location.pathname)
-                    ? 'none'
-                    : 'block'
-                }
+                display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
                 flexShrink={0}
                 h={['52px', '45px']}
-                icon={
-                  <AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />
-                }
+                icon={<AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />}
                 mr="30px"
                 onClick={handleAddButtonClick}
                 position={['fixed', 'relative']}
@@ -170,35 +142,18 @@ const NavigationTop = () => {
             )}
           />
         )}
-        <Flex
-          display={
-            device !== 'mobile' || (device === 'mobile' && isSearchBarOpen)
-              ? 'block'
-              : 'none'
-          }
-        >
+        <Flex display={device !== 'mobile' || (device === 'mobile' && isSearchBarOpen) ? 'block' : 'none'}>
           <SearchBar />
         </Flex>
       </Stack>
 
-      <Flex
-        align="center"
-        display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}
-      >
+      <Flex align="center" display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}>
         <IconButton
           aria-label="Search responses"
           bg="navigationTop.searchIconBackground"
           borderRadius="20px"
           display={['block', 'none']}
-          icon={
-            <SearchIcon
-              fill="navigationTop.searchBarIcon"
-              h="22px"
-              opacity="1"
-              stroke="brand.outerSpace"
-              w="18px"
-            />
-          }
+          icon={<SearchIcon fill="navigationTop.searchBarIcon" h="22px" opacity="1" stroke="brand.outerSpace" w="18px" />}
           mr="27.5px"
           onClick={() => setIsSearchBarOpen(true)}
         />

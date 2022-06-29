@@ -184,8 +184,8 @@ export const navigationTabs = [
     icon: ProgressIcon,
   },
   {
-    label: 'Audit log',
-    url: '/audit-log',
+    label: 'Change log',
+    url: '/change-log',
     icon: AuditIcon,
   },
   {
