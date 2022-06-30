@@ -82,9 +82,13 @@ const GET_AUDIT_DATA = gql`
     auditTypeQuestions: questions(questionQuery: $auditTypeQuestionQuery) {
       _id
       question
+      questionsCategory {
+        useStatus
+      }
       answer {
         _id
         answer
+        status
         attachments {
           id
           name
@@ -115,9 +119,13 @@ const GET_AUDIT_DATA = gql`
     auditCustomQuestions: questions(questionQuery: $auditCustomQuestionQuery) {
       _id
       question
+      questionsCategory {
+        useStatus
+      }
       answer {
         _id
         answer
+        status
         attachments {
           id
           name

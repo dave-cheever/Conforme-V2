@@ -1,10 +1,10 @@
-import { Avatar, Box, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
-import { OpenExternalIcon } from '../../icons';
+import { ChevronRight, OpenExternalIcon } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 
-const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
+const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) => {
   const { openInNewTab } = useNavigate();
 
   return (
@@ -48,18 +48,34 @@ const WalkItemSquare = ({ answer }: { answer: IAnswer }) => {
         <Text color="walkItemSquare.section.title" fontSize="ssm">
           Linked to
         </Text>
-        <Stack
-          _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
-          align="center"
-          direction="row"
-          onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
-          spacing={2}
-        >
-          <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated>
-            {answer?.question?.question}, {answer?.audit?.area?.name}
-          </Text>
-          <OpenExternalIcon fill="transparent" stroke="black" />
-        </Stack>
+        <Flex align="center" justify="space-between" w="full">
+          <Stack
+            _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+            align="center"
+            direction="row"
+            onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
+            spacing={2}
+          >
+            <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated maxWidth="150px">
+              {answer?.question?.question}, {answer?.audit?.area?.name}
+            </Text>
+            <OpenExternalIcon fill="transparent" stroke="black" />
+          </Stack>
+          <Button
+            _hover={{
+              bg: 'walkItemSquare.button.default.bg',
+            }}
+            bg="walkItemSquare.button.default.bg"
+            color="walkItemSquare.button.default.color"
+            fontSize="ssm"
+            h="28px"
+            onClick={() => editAnswer(answer)}
+            rightIcon={<ChevronRight boxSize="15px" color="walkItemSquare.button.default.color" />}
+            w="85px"
+          >
+            More
+          </Button>
+        </Flex>
       </Box>
     </Stack>
   );

@@ -10,6 +10,8 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Modal,
+  ModalOverlay,
   Stack,
   Tab,
   TabList,
@@ -26,8 +28,10 @@ import Header from '../components/Header';
 import Icon from '../components/Icon';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
+import WalkItemModal from '../components/WalkItems/WalkItemModal';
 import WalkItemsList from '../components/WalkItems/WalkItemsList';
 import WalkItemSquare from '../components/WalkItems/WalkItemSquare';
+import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
@@ -41,10 +45,19 @@ const GET_ANSWERS = gql`
       _id
       questionId
       question {
+        _id
         question
         questionsCategoryId
         questionsCategory {
           name
+          useStatus
+          notBlockedAfterCompletion
+          options {
+            name
+          }
+        }
+        scope {
+          _id
         }
       }
       addedBy {
@@ -60,12 +73,23 @@ const GET_ANSWERS = gql`
         area {
           name
         }
+        status
         auditorId
         participantsIds
       }
       status
+      options
+      attachments {
+        id
+        name
+        addedAt
+        thumbnail
+      }
       actions {
         _id
+        title
+        dueDate
+        assigneeId
         scope {
           _id
         }
@@ -94,6 +118,7 @@ const WalkItems = () => {
     questionsCategories,
   } = useFiltersContext();
   const { user } = useAppContext();
+  const { adminModalState, setAdminModalState } = useAdminContext();
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
   const panels = useMemo(() => [{ _id: 'all', name: 'All' }, ...(questionsCategories ?? [])], [questionsCategories]);
@@ -111,7 +136,10 @@ const WalkItems = () => {
 
   useEffect(() => {
     setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds']);
-    return () => setShowFiltersPanel(false);
+    return () => {
+      setShowFiltersPanel(false);
+      setAdminModalState('closed');
+    };
   }, []);
 
   useEffect(() => {
@@ -165,6 +193,13 @@ const WalkItems = () => {
     }
   }, [data?.answers, user]);
 
+  const [selectedWalkItem, setSelectedWalkItem] = useState<IAnswer>();
+
+  const handleOpenModal = (answer: IAnswer) => {
+    setSelectedWalkItem(answer);
+    setAdminModalState('edit');
+  };
+
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
     if (savedView && (savedView === 'grid' || savedView === 'list')) return savedView;
@@ -205,6 +240,15 @@ const WalkItems = () => {
 
   return (
     <>
+      <Modal
+        isOpen={adminModalState !== 'closed'}
+        onClose={() => setAdminModalState('closed')}
+        size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
+        variant="adminModal"
+      >
+        <ModalOverlay />
+        <WalkItemModal refetch={refetch} walkItem={selectedWalkItem} />
+      </Modal>
       <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         {device !== 'mobile' && (
           <>
@@ -318,13 +362,14 @@ const WalkItems = () => {
                         w="full"
                       >
                         {sortedAnswers.map((answer) => (
-                          <WalkItemSquare answer={answer} key={answer._id} />
+                          <WalkItemSquare answer={answer} editAnswer={handleOpenModal} key={answer._id} />
                         ))}
                       </Grid>
                     )}
                     {viewMode === 'list' && (
                       <WalkItemsList
                         answers={sortedAnswers}
+                        editAnswer={handleOpenModal}
                         refetchAnswers={refetch}
                         setSortOrder={setSortOrder}
                         setSortType={setSortType}

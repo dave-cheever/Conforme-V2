@@ -5,7 +5,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IAuditValue, IAuditValues, IQuestionsCategory, IQuestionsCategoryModel } from 'app-interfaces';
 import { AuditLogs } from 'app-models';
-import { genMetatags, getAuditValueForBoolean, getAuditValueForString, getAuditValueForStringsArray, getBasicElement, removeDatabaseFields } from 'app-utils';
+import {
+  genMetatags,
+  getAuditValueForBoolean,
+  getAuditValueForString,
+  getAuditValueForStringsArray,
+  getBasicElement,
+  removeDatabaseFields,
+} from 'app-utils';
 
 const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCategoryModel>({
   _id: String,
@@ -14,6 +21,7 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
   allowCustomQuestions: Boolean,
   maxQuestionsNumber: Number,
   notBlockedAfterCompletion: Boolean,
+  useStatus: Boolean,
   showInInsights: Boolean,
   icon: String,
   options: [
@@ -50,10 +58,7 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -86,8 +91,7 @@ const getAuditRecordValues = async ({
       }
 
       default:
-        if (typeof oldValue === 'string' || typeof newValue === 'string')
-          value = getAuditValueForString(oldValue, newValue);
+        if (typeof oldValue === 'string' || typeof newValue === 'string') value = getAuditValueForString(oldValue, newValue);
     }
     return {
       ...acc,

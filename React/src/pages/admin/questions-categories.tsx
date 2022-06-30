@@ -27,6 +27,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
       allowCustomQuestions
       maxQuestionsNumber
       notBlockedAfterCompletion
+      useStatus
       showInInsights
       icon
       options {
@@ -134,6 +135,7 @@ const QuestionsCategories = () => {
       allowCustomQuestions: questionsCategory?.allowCustomQuestions,
       maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
       notBlockedAfterCompletion: questionsCategory?.notBlockedAfterCompletion,
+      useStatus: questionsCategory?.useStatus,
       showInInsights: questionsCategory?.showInInsights,
       icon: questionsCategory?.icon,
       selectedOption: (questionsCategory?.options || [])[0]?.name || '',
@@ -194,6 +196,7 @@ const QuestionsCategories = () => {
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
               notBlockedAfterCompletion: questionsCategory?.notBlockedAfterCompletion,
+              useStatus: questionsCategory?.useStatus,
               showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
               options: questionsCategory?.selectedOption
@@ -322,6 +325,14 @@ const QuestionsCategories = () => {
             name="notBlockedAfterCompletion"
             placeholder="Editable after submission"
             tooltip="If enabled, questions and answers in this category will be editable after submission"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            label="Use status"
+            name="useStatus"
+            placeholder="Use status"
+            tooltip="If disabled, status will not show for associated answers"
             variant="secondaryVariant"
           />
           <Toggle

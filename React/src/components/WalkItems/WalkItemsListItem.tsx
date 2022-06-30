@@ -1,5 +1,6 @@
 import { Avatar, Box, Flex, HStack, IconButton, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { capitalize } from 'lodash';
 
 import useNavigate from '../../hooks/useNavigate';
 import { RedirectIcon, Trashcan } from '../../icons';
@@ -7,14 +8,33 @@ import { IAnswer } from '../../interfaces/IAnswer';
 import { IAudit } from '../../interfaces/IAudit';
 import WalkItemDeleteModal from './WalkItemDeleteModal';
 
-const WalkItemsListItem = ({ answer, audit, refetchAnswers }: { answer: IAnswer; audit: IAudit; refetchAnswers: () => void }) => {
+const WalkItemsListItem = ({
+  answer,
+  audit,
+  refetchAnswers,
+  editAnswer,
+}: {
+  answer: IAnswer;
+  audit: IAudit;
+  refetchAnswers: () => void;
+  editAnswer: (answer: IAnswer) => void;
+}) => {
   const { navigateTo } = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <WalkItemDeleteModal answer={answer} isOpen={isOpen} onClose={onClose} refetchAnswers={refetchAnswers} />
-      <Box bg="white" borderBottomColor="walkItemsList.headerBorderColor" borderBottomWidth="1px" p="15px 25px" py={[1, 0]} w="full">
+      <Box
+        bg="white"
+        borderBottomColor="walkItemsList.headerBorderColor"
+        borderBottomWidth="1px"
+        cursor="pointer"
+        onClick={() => editAnswer(answer)}
+        p="15px 25px"
+        py={[1, 0]}
+        w="full"
+      >
         <Flex align="center" h={['full', '73px']} position="relative" w="full">
           <Flex flexDir="column" w="20%">
             <Flex
@@ -32,7 +52,7 @@ const WalkItemsListItem = ({ answer, audit, refetchAnswers }: { answer: IAnswer;
               {answer?.question?.questionsCategory?.name}
             </Flex>
           </Flex>
-          <Flex flexDir="column" w="25%">
+          <Flex flexDir="column" w="15%">
             <Flex
               align="flex-start"
               color="walkItemsList.fontColor"
@@ -46,6 +66,22 @@ const WalkItemsListItem = ({ answer, audit, refetchAnswers }: { answer: IAnswer;
               textOverflow="ellipsis"
             >
               {answer?.question?.question ?? 'No description'}
+            </Flex>
+          </Flex>
+          <Flex flexDir="column" w="10%">
+            <Flex
+              align="flex-start"
+              color="walkItemsList.fontColor"
+              fontSize="14px"
+              fontWeight="400"
+              h="50%"
+              lineHeight="18px"
+              noOfLines={1}
+              opacity="1"
+              pt="3px"
+              textOverflow="ellipsis"
+            >
+              {answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
             </Flex>
           </Flex>
           <Flex flexDir="column" w="15%">

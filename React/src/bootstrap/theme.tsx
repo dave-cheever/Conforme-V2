@@ -98,6 +98,7 @@ import { statusSelectorStyles } from '../components/StatusSelector';
 import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
+import { walkItemModalStyles } from '../components/WalkItems/WalkItemModal';
 import { walkItemsListStyles } from '../components/WalkItems/WalkItemsList';
 import { walkItemSquareStyles } from '../components/WalkItems/WalkItemSquare';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
@@ -287,6 +288,7 @@ const getTheme = (organizationTheme?: any) => {
         ...walkItemsStyles,
         ...walkItemsListStyles,
         ...walkItemSquareStyles,
+        ...walkItemModalStyles,
         ...actionsInsightsStyles,
         ...answersInsightsStyles,
         ...auditsInsightsStyles,

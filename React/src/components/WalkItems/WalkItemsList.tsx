@@ -31,6 +31,7 @@ const WalkItemsList = ({
   setSortType,
   setSortOrder,
   refetchAnswers,
+  editAnswer,
 }: {
   answers: IAnswer[];
   sortOrder: 'asc' | 'desc';
@@ -38,6 +39,7 @@ const WalkItemsList = ({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
   refetchAnswers: () => void;
+  editAnswer: (answer: IAnswer) => void;
 }) => {
   const { data } = useQuery(GET_AUDITS);
 
@@ -63,7 +65,17 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'question.question'}
             sortOrder={sortType === 'question.question' ? sortOrder : undefined}
-            w="25%"
+            w="15%"
+          />
+          <AdminTableHeaderElement
+            label="Status"
+            onClick={() => {
+              setSortType('status');
+              setSortOrder(sortOrder === 'asc' && sortType === 'status' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'status'}
+            sortOrder={sortType === 'status' ? sortOrder : undefined}
+            w="10%"
           />
           <AdminTableHeaderElement
             label={capitalize(t('area'))}
@@ -111,6 +123,7 @@ const WalkItemsList = ({
             <WalkItemsListItem
               answer={answer}
               audit={data?.audits?.find((audit) => audit._id === answer?.scope?._id)}
+              editAnswer={editAnswer}
               key={answer._id}
               refetchAnswers={refetchAnswers}
             />
