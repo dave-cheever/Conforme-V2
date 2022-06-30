@@ -84,12 +84,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
             $and: [
               {
                 nextRenewalDate: {
-                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
+                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
                 },
               },
               {
                 nextRenewalDate: {
-                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }).valueOf(),
+                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
                 },
               },
             ],
@@ -100,12 +100,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
             $and: [
               {
                 nextRenewalDate: {
-                  $gte: startOfMonth(new Date()).valueOf(),
+                  $gte: startOfMonth(new Date()),
                 },
               },
               {
                 nextRenewalDate: {
-                  $lte: endOfMonth(new Date()).valueOf(),
+                  $lte: endOfMonth(new Date()),
                 },
               },
             ],
@@ -116,12 +116,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
             $and: [
               {
                 nextRenewalDate: {
-                  $gte: startOfMonth(addMonths(new Date(), 1)).valueOf(),
+                  $gte: startOfMonth(addMonths(new Date(), 1)),
                 },
               },
               {
                 nextRenewalDate: {
-                  $lte: endOfMonth(addMonths(new Date(), 1)).valueOf(),
+                  $lte: endOfMonth(addMonths(new Date(), 1)),
                 },
               },
             ],
@@ -132,12 +132,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
             $and: [
               {
                 nextRenewalDate: {
-                  $gte: startOfDay(new Date(startDate)).valueOf(),
+                  $gte: startOfDay(new Date(startDate)),
                 },
               },
               {
                 nextRenewalDate: {
-                  $lte: endOfDay(new Date(startDate)).valueOf(),
+                  $lte: endOfDay(new Date(startDate)),
                 },
               },
             ],
@@ -149,12 +149,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
               $and: [
                 {
                   nextRenewalDate: {
-                    $gte: startOfDay(new Date(startDate)).valueOf(),
+                    $gte: startOfDay(new Date(startDate)),
                   },
                 },
                 {
                   nextRenewalDate: {
-                    $lte: endOfDay(new Date(endDate)).valueOf(),
+                    $lte: endOfDay(new Date(endDate)),
                   },
                 },
               ],
@@ -288,18 +288,16 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
     // Join responsible
     if (shouldJoin(['responsible'])) {
       await Promise.all(
-        responses.map(
-          async (response) => {
-            try {
-              response.responsible = await Users.customFindByIdWithDetails({
-                userId: response.responsibleId,
-                organization,
-              });
-            } catch (e) {
-              console.log(`Error occured for response with ID ${response._id}: ${e}`);
-            }
-          },
-        ),
+        responses.map(async (response) => {
+          try {
+            response.responsible = await Users.customFindByIdWithDetails({
+              userId: response.responsibleId,
+              organization,
+            });
+          } catch (e) {
+            console.log(`Error occured for response with ID ${response._id}: ${e}`);
+          }
+        }),
       );
     }
 

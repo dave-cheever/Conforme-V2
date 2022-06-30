@@ -49,6 +49,7 @@ const ORGANIZATION = gql`
       modules {
         _id
         type
+        defaultFilters
         name
         path
         showInNavigation

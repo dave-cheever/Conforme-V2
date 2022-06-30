@@ -67,6 +67,11 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
   "modules": [{
     "name": <module name>,
     "type": "audits",
+    "defaultFilters": {
+      "audits": <audits default filters>
+      "actions": <actions default filters>
+      ...
+    }
     "path": <module path>,
     "showInNavigation": <true/false>
     "translations": {
@@ -103,16 +108,19 @@ Please fill the model with the following data: `<organization's id>`, `<organiza
 `<domain>` is a domain that you'll run the app locally, so it is `localhost`, and you have to add a port to is. Please take a look at the databse and scan `organizations` collection to see which ports are not already in use. Example of `<domain>` is: `localhost:3000`.
 
 ### Translations
+
 In order to change a translation in a module, just add a new property to the module configuration.
 
 Possible translations for safetywalk module:
- - audit
- - auditor
- - question
+
+- audit
+- auditor
+- question
 
 Possible translations for compliance item module:
- - complianceItem
- - businessUnit
+
+- complianceItem
+- businessUnit
 
 ## Azure AD application
 

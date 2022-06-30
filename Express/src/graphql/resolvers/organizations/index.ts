@@ -12,6 +12,7 @@ export const organizationsTypeDefs = `
     _id: ID!
     type: String!
     name: String!
+    defaultFilters: Any
     path: String!
     showInNavigation: Boolean
     translations: Any

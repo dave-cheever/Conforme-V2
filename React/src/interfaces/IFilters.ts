@@ -54,6 +54,7 @@ export interface IAuditFilters {
   status?: IFilterString;
   walkType?: IFilterString;
   usersIds?: IAuditUserFilter;
+  createdDate?: IFilterString;
 }
 export interface IActionFilters {
   sitesIds?: IFilter;
@@ -85,4 +86,5 @@ export default interface IFilters {
   areasIds?: IFilter;
   status?: IFilterString;
   walkType?: IFilterString;
+  createdDate?: IFilterString;
 }

@@ -8,7 +8,7 @@ import IFilter from '../../interfaces/IFilter';
 import BusinessUnitFilter from './BusinessUnitFilter';
 import CategoryFilter from './CategoryFilter';
 import ComplianceItemFilter from './ComplianceItemFilter';
-import DueDateFilter from './DueDateFilter';
+import DateFilter from './DateFilter';
 import LocationFilter from './LocationFilter';
 import RegulatoryBodyFilter from './RegulatoryBodyFilter';
 import StateChoiceFilter from './StateChoiceFilter';
@@ -36,7 +36,8 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
         return <ComplianceItemFilter />;
 
       case 'dueDate':
-        return <DueDateFilter />;
+      case 'createdDate':
+        return <DateFilter />;
 
       case 'locationsIds':
       case 'sitesIds':

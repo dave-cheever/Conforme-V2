@@ -53,6 +53,7 @@ export const auditsTypeDefs = `
     areasIds: [ID]
     sitesIds: [ID]
     usersIds: AuditUsersInput
+    createdDate: [String]
   }
 
   input AuditCreateInput {

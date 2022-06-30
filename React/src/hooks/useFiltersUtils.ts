@@ -30,6 +30,10 @@ export const initialAuditFilters: IAuditFilters = {
       participantsIds: [],
     },
   },
+  createdDate: {
+    name: 'Created date',
+    value: [],
+  },
 };
 
 export const initialActionFilters: IActionFilters = {
@@ -88,7 +92,15 @@ export const complianceItemStatuses = {
   missed: 'Missed',
 };
 
-export const dates = {
+export const auditsFilterDates = {
+  thisWeek: 'This week',
+  thisMonth: 'This month',
+  thisYear: 'This year',
+  exactDate: 'Exact date',
+  dateRange: 'Date Range',
+};
+
+export const trackerFilterDates = {
   noDueDate: 'No due date',
   thisWeek: 'This week',
   thisMonth: 'This month',

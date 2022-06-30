@@ -4,24 +4,29 @@ import DatePicker from 'react-datepicker';
 
 import { Box, Checkbox, Stack, Text } from '@chakra-ui/react';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import { dates } from '../../hooks/useFiltersUtils';
+import { auditsFilterDates, trackerFilterDates } from '../../hooks/useFiltersUtils';
 import { MinusIcon } from '../../icons';
 
-const DueDateFilter = () => {
+const DateFilter = () => {
   const { filtersValues, setFilters } = useFiltersContext();
-  const value = useMemo(() => filtersValues.dueDate?.value, [filtersValues]);
+  const { module } = useAppContext();
+  const value = useMemo(
+    () => (module?.type === 'tracker' ? filtersValues.dueDate : filtersValues.createdDate)?.value,
+    [filtersValues, module?.type],
+  );
   const [filterValue, startDate, endDate] = value || [];
 
   const onChange = (e, key) => {
-    if (e.target.checked) setFilters({ dueDate: [key] });
-    else setFilters({ dueDate: [] });
+    if (e.target.checked) setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: [key] });
+    else setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: [] });
   };
 
   return (
-    <Box className="dueDate" w="full">
+    <Box w="full">
       <Stack direction="column" mb={5}>
-        {Object.entries(dates).map(([key, label]) => (
+        {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsFilterDates).map(([key, label]) => (
           <Checkbox
             colorScheme="purpleHeart"
             css={{
@@ -56,7 +61,7 @@ const DueDateFilter = () => {
       {filterValue === 'exactDate' && (
         <DatePicker
           inline
-          onChange={(date) => setFilters({ dueDate: ['exactDate', date] })}
+          onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: ['exactDate', date] })}
           selected={startDate ? new Date(startDate) : new Date()}
         />
       )}
@@ -67,7 +72,7 @@ const DueDateFilter = () => {
           inline
           onChange={(dates) => {
             const [start, end] = dates;
-            setFilters({ dueDate: ['dateRange', start, end] });
+            setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: ['dateRange', start, end] });
           }}
           selected={startDate}
           selectsRange
@@ -78,4 +83,4 @@ const DueDateFilter = () => {
   );
 };
 
-export default DueDateFilter;
+export default DateFilter;

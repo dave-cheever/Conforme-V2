@@ -69,6 +69,7 @@ const Audits = () => {
   const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, auditFiltersValue, setAuditFiltersValue, usedFilters } =
     useFiltersContext();
   const device = useDevice();
+  const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { audit, reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
@@ -83,7 +84,8 @@ const Audits = () => {
   ];
 
   useEffect(() => {
-    setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds']);
+    setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds', 'createdDate']);
+
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);
@@ -101,6 +103,37 @@ const Audits = () => {
       }, 100);
     }
   }, [filtersValues, usedFilters, setAuditFiltersValue, auditFiltersValue, setFilters]);
+
+  // Set default filters
+  useEffect(() => {
+    if (!isEmpty(module?.defaultFilters?.audits)) {
+      /**
+       * Convert filters from
+       *
+       * {
+       *  filterName: ["filterValue"]
+       * }
+       *
+       * to
+       *
+       * {
+       *  filterName: {
+       *    value: ["filterValue"]
+       *  }
+       * }
+       */
+      const defaultFilters = Object.entries(module!.defaultFilters.audits!).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: {
+            value,
+          },
+        }),
+        {},
+      );
+      setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
+    }
+  }, []);
 
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
