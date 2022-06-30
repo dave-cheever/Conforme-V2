@@ -118,7 +118,7 @@ const NavigationTop = () => {
         )}
         {module?.type === 'audits' && (
           <Can
-            action="audits"
+            action="audits.add"
             yes={() => (
               <IconButton
                 _hover={{ opacity: 0.7 }}
