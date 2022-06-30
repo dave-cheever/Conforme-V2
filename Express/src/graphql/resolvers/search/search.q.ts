@@ -13,7 +13,7 @@ const search = async (
     doesPathExist(info.fieldNodes, ['search', ...elements]);
   try {
     const user = await authorize();
-    const { searchText } = searchQuery;
+    const { searchText, moduleId } = searchQuery;
     const data: any = {
       audits: [],
       responses: [],
@@ -56,6 +56,7 @@ const search = async (
           },
           user._id,
           organization._id,
+          moduleId
         );
       }),
     );

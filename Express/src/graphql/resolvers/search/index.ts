@@ -21,6 +21,7 @@ export const searchTypeDefs = `
 
   input SearchQuery {
     searchText: String!
+    moduleId: ID!
     includeNotPublished: Boolean
   }
 `;

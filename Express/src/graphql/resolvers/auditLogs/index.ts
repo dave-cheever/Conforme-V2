@@ -35,6 +35,7 @@ input AuditLogsQuery {
   dateLimit: Date
   elementId: String
   userId: String
+  moduleId: String
   fields: [String]
 }
 `;

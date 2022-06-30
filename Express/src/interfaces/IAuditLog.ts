@@ -33,4 +33,5 @@ export interface IAuditLog extends IBase {
   coll: string;
   values: IAuditValues;
   organizationId: string;
+  moduleId: string;
 }

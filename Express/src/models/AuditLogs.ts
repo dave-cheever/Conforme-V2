@@ -18,6 +18,7 @@ const AuditLogSchema = new Schema<IAuditLog, IAuditLogModel>({
   coll: String,
   values: Schema.Types.Mixed,
   organizationId: String,
+  moduleId: String, // Used to distinguish between multiple searches
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -34,11 +35,13 @@ AuditLogSchema.statics.customAudit = async function (
   auditLog: Partial<IAuditLog>,
   userId: string,
   organizationId: string,
+  moduleId?: string,
 ): Promise<IAuditLog> {
   const newAuditLog = {
     ...auditLog,
     _id: uuidv4(),
     organizationId,
+    ...(moduleId && { moduleId }),
     metatags: genMetatags('added', userId) as {
       addedBy: string;
       addedAt: Date;

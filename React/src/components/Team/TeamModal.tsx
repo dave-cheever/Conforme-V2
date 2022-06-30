@@ -141,13 +141,13 @@ const TeamModal = () => {
               autoFocus
               borderColor="teamPage.modal.inputBorder"
               borderWidth="1px"
-              placeholder='Name'
               fontSize="smm"
               h="40px"
               mb={0}
               onChange={({ target: { value } }) => {
                 onQueryChanged(value);
               }}
+              placeholder='Name'
               rounded="10px"
               value={searchText}
               zIndex={2}

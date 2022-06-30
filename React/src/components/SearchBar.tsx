@@ -52,6 +52,7 @@ const SearchBar = () => {
       SearchHistoryQuery: {
         actions: ['search'],
         userId: user?._id,
+        moduleId: module?._id,
         limit: 3,
       },
     },
@@ -73,6 +74,7 @@ const SearchBar = () => {
           variables: {
             searchQuery: {
               searchText,
+              moduleId: module?._id,
             },
           },
         });
