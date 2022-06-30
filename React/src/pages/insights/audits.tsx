@@ -255,7 +255,7 @@ const AuditsInsights = () => {
           />
           <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
-              <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
+              <Box bg="auditsInsights.list.bg" borderRadius="20px" pb={7} w="full">
                 <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per site`}>
                   <AdminTableHeaderElement
                     label="Site"
@@ -310,13 +310,13 @@ const AuditsInsights = () => {
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} navigation='/admin/sites' />
+                    <InsightListItem item={site} key={site._id} navigation="/admin/sites" />
                   ))}
                 </Flex>
               </Box>
             </GridItem>
             <GridItem h="100%" w="100%">
-              <Box bg="auditsInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
+              <Box bg="auditsInsights.list.bg" borderRadius="20px" pb={7} w="full">
                 <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per area`}>
                   <AdminTableHeaderElement
                     label="Area"
@@ -369,9 +369,9 @@ const AuditsInsights = () => {
                     w="10%"
                   />
                 </AdminTableHeader>
-                <Flex flexDir="column" overflowY="auto" w="full">
+                <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} navigation='/admin/areas' />
+                    <InsightListItem item={area} key={area._id} navigation="/admin/areas" />
                   ))}
                 </Flex>
               </Box>

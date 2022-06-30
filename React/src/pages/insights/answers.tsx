@@ -184,7 +184,7 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
           </Grid>
           <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
-              <Box bg="answersInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
+              <Box bg="answersInsights.list.bg" borderRadius="20px" pb={7} w="full">
                 <AdminTableHeader title={`${answerType} per site`}>
                   <AdminTableHeaderElement
                     label="Site"
@@ -239,13 +239,13 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} navigation='/admin/sites' type="answers" />
+                    <InsightListItem item={site} key={site._id} navigation="/admin/sites" type="answers" />
                   ))}
                 </Flex>
               </Box>
             </GridItem>
             <GridItem h="100%" w="100%">
-              <Box bg="answersInsights.list.bg" borderRadius="20px" h="100%" pb={7} w="full">
+              <Box bg="answersInsights.list.bg" borderRadius="20px" pb={7} w="full">
                 <AdminTableHeader title={`${answerType} per area`}>
                   <AdminTableHeaderElement
                     label="Area"
@@ -298,9 +298,9 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
                     w="10%"
                   />
                 </AdminTableHeader>
-                <Flex flexDir="column" overflowY="auto" w="full">
+                <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} navigation='/admin/areas' type="answers" />
+                    <InsightListItem item={area} key={area._id} navigation="/admin/areas" type="answers" />
                   ))}
                 </Flex>
               </Box>
