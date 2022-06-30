@@ -1,4 +1,3 @@
-import _difference from "lodash/difference";
 import { model, Schema } from "mongoose";
 import { IResponse } from "../../interfaces/IResponse";
 import { IResponseModel } from "../../interfaces/IResponseModel";

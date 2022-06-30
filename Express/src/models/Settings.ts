@@ -83,6 +83,14 @@ settingSchema.statics.customFindByName = async function (
   return settings;
 };
 
+settingSchema.statics.customFindOneByName = async function (
+  name: string,
+  organizationId: string | string[],
+): Promise<ISetting> {
+  const settings = await this.customFindByName(name, organizationId);
+  return settings[0];
+};
+
 settingSchema.statics.customUpdateOne = async function (
   selector: object = {},
   updates: Partial<ISetting>,

@@ -1,6 +1,9 @@
+import { capitalize } from 'lodash';
+
 import { IOrganization } from '../../interfaces/IOrganization';
-import { getProtocol } from '../../utils';
+import { getProtocol, t } from '../../utils';
 import Organizations from '../collections/Organizations';
+import Settings from '../collections/Settings';
 import getAuditsWeeklyDigestEmailTemplate from './audits-weekly-digest';
 import getMentionEmail from './mentionEmail';
 import getReponseDueMail from './response-due-mail';
@@ -17,26 +20,28 @@ export const MENTION_NOTIFICATION = 'MENTION_NOTIFICATION';
 export const TRACKER_REMINDER = 'TRACKER_REMINDER';
 export const TRACKER_WEEKLY_SUMMARY = 'TRACKER_WEEKLY_SUMMARY';
 
-const getEmailSubject = (emailType: string, emailData: any = {}) => {
+const getEmailSubject = (emailType: string, emailData: any = {}, translations: { [word: string]: string; } = {}) => {
   switch (emailType) {
     case ACTION_ASSIGNED:
       return 'You have been assigned to an action';
     case ACTION_COMPLETED:
       return 'An action has been completed';
     case ACTION_OVERDUE:
-      return 'Audit action overdue';
+      return `${capitalize(t('audit', translations))} action overdue`;
     case AUDIT_MISSED:
-      return 'Audit has been missed';
+      return `${capitalize(t('audit', translations))} has been missed`;
     case AUDIT_UPCOMING:
-      return 'Upcoming audit';
+      return `Upcoming ${t('audit', translations)}`;
     case AUDITS_WEEKLY_SUMMARY:
-      return 'Audits weekly digest';
+      return `${capitalize(t('audit', translations))} weekly digest`;
     case MENTION_NOTIFICATION:
       return "You have been mentioned in chat";
     case TRACKER_REMINDER:
       return `Compliance Item Reminder: ${emailData.complianceName}`;
     case TRACKER_WEEKLY_SUMMARY:
       return `Compliance Item Weekly Overview`;
+    default:
+      return emailData.subject;
   }
 };
 
@@ -93,6 +98,14 @@ const getEmailTemplate = async ({
     case TRACKER_WEEKLY_SUMMARY:
       body = getResponseWeeklyEmail(template, emailData);
       break;
+    default:
+      const emailTemplate = await Settings.customFindOneByName(emailData.template, organization._id);
+      if (emailTemplate) {
+        body = emailTemplate.value;
+        for (const option of emailTemplate.options) {
+          body = body.split(`%${option}%`).join(emailData[option]);
+        }
+      }
   }
   if (!organization) {
     if (!organizationId) {

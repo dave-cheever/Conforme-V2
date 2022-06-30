@@ -1,8 +1,9 @@
 import { endOfDay, startOfDay } from 'date-fns';
+import { IAudit } from '../common/interfaces/IAudit';
 
 import IConfig from '../common/interfaces/IConfig';
+import { IOrganization } from '../common/interfaces/IOrganization';
 import Audits from '../common/services/collections/Audits';
-import Organizations from '../common/services/collections/Organizations';
 import Settings from '../common/services/collections/Settings';
 import Users from '../common/services/collections/Users';
 import { GraphService } from '../common/services/GraphService';
@@ -10,7 +11,11 @@ import { AUDIT_MISSED, getEmailSubject, getEmailTemplate } from '../common/servi
 import { getTemplateDetails } from '../common/utils';
 
 const sendMissedAudits = async (config: IConfig) => {
-  const auditsByOrganization = await Audits.aggregate([
+  const auditsByOrganization: {
+    _id: string; // Organization ID,
+    organization: IOrganization;
+    audits: IAudit[];
+  }[] = await Audits.aggregate([
     {
       $match: {
         'metatags.removedAt': { $eq: null },
@@ -36,7 +41,7 @@ const sendMissedAudits = async (config: IConfig) => {
     },
     {
       $unwind: {
-        path: `$area`,
+        path: '$area',
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -53,17 +58,30 @@ const sendMissedAudits = async (config: IConfig) => {
         },
       },
     },
+    {
+      $lookup: {
+        from: 'organizations',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'organization',
+      },
+    },
+    {
+      $unwind: {
+        path: '$organization',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
   ]);
 
   await Promise.all(
-    auditsByOrganization.map(async ({ _id: organizationId, audits }) => {
+    auditsByOrganization.map(async ({ audits, organization }) => {
       const graphService = new GraphService(config);
-      const organization = await Organizations.customFindById(organizationId);
       const { emailSettingName } = getTemplateDetails(AUDIT_MISSED);
-      const subject = getEmailSubject(AUDIT_MISSED);
 
       await Promise.all(audits.map(async audit => {
         const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
+        const subject = getEmailSubject(AUDIT_MISSED, {}, module.translations);
         const body = await getEmailTemplate({
           emailType: AUDIT_MISSED,
           emailData: {
@@ -74,7 +92,7 @@ const sendMissedAudits = async (config: IConfig) => {
         });
 
         let recipients: string[] = [];
-        const emailAddress = await Settings.customFindOneByName(emailSettingName, organizationId);
+        const emailAddress = await Settings.customFindOneByName(emailSettingName, organization._id);
         if (emailAddress) recipients = emailAddress.value;
 
         const auditor = await Users.customFindByIdWithDetails({

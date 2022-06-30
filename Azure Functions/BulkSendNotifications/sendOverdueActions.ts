@@ -30,12 +30,24 @@ const sendOverdueActions = async (config: IConfig) => {
         },
       },
     },
+    {
+      $lookup: {
+        from: 'organizations',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'organization',
+      },
+    },
+    {
+      $unwind: {
+        path: '$organization',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
   ]);
 
   await Promise.all(
-    actionsByOrganization.map(async ({ _id: organizationId, actions }) => {
-      const organization = await Organizations.customFindById(organizationId);
-
+    actionsByOrganization.map(async ({ actions, organization }) => {
       await Promise.all(
         actions.map(async action => {
           const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
@@ -73,7 +85,7 @@ const sendOverdueActions = async (config: IConfig) => {
               },
               {
                 $unwind: {
-                  path: `$audit`,
+                  path: '$audit',
                   preserveNullAndEmptyArrays: true,
                 },
               },
@@ -88,7 +100,7 @@ const sendOverdueActions = async (config: IConfig) => {
             if (auditor) recipients.push(auditor.email);
           }
 
-          const subject = getEmailSubject(ACTION_OVERDUE);
+          const subject = getEmailSubject(ACTION_OVERDUE, {}, module.translations);
           const body = await getEmailTemplate({
             emailType: ACTION_OVERDUE,
             emailData: {

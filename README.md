@@ -399,6 +399,32 @@ Audits status reminders triggers:
 }
 ```
 
+HSE notification:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "HSENotificationEmailTemplate",
+  "label": "HSE Notification",
+  "value": "",
+  "type": "emailTemplate",
+  "options": [
+    "LinkTo"
+  ],
+  "inputType": "emailTemplate",
+  "description": "",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649742835206"
+      }
+    }
+  }
+}
+```
+
 ## Run the app locally
 
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.

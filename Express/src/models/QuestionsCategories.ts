@@ -18,6 +18,7 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
   icon: String,
   options: [
     {
+      _id: false,
       type: {
         type: String,
         enum: ['notification'],

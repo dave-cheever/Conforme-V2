@@ -154,11 +154,12 @@ const QuestionsCategories = () => {
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
               showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
-              options: questionsCategory?.selectedOption
+              options: questionsCategory?.selectedOption // TODO: Implement dynamic options
                 ? [
                     {
                       type: 'notification',
-                      name: questionsCategory.selectedOption,
+                      name: 'Inform HSE or Estates',
+                      value: 'INFORM_HSE',
                     },
                   ]
                 : [],
@@ -199,7 +200,8 @@ const QuestionsCategories = () => {
                 ? [
                     {
                       type: 'notification',
-                      name: questionsCategory.selectedOption,
+                      name: 'Inform HSE or Estates',
+                      value: 'INFORM_HSE',
                     },
                   ]
                 : [],
@@ -354,7 +356,7 @@ const QuestionsCategories = () => {
                 },
                 {
                   label: 'Inform HSE or Estates',
-                  value: 'Inform HSE or Estates',
+                  value: 'INFORM_HSE',
                 },
               ]}
             />

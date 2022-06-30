@@ -55,3 +55,14 @@ export const getDaysToDueDate = (response: IResponse) => {
 
   return differenceInCalendarDays(start, end);
 };
+
+/**
+ * 
+ * This function is used to do one-time translation with passed translations object
+ * 
+ * @param word Word to be translated
+ * @param translations Module configuration object with translations
+ */
+export const t = (word: string, translations: { [word: string]: string; }) => {
+  return translations[word] || word;
+};

@@ -16,7 +16,7 @@ const sendDigest = async (
   },
   config: IConfig
 ) => {
-  const audits = await Audits.aggregate([
+  const auditsByModule = await Audits.aggregate([
     {
       $match: {
         'metatags.addedAt': { $gte: since, $lt: to }
@@ -24,30 +24,50 @@ const sendDigest = async (
     },
     {
       $group: {
-        _id: '$organizationId',
-        numberOfAudits: {
-          $sum: 1
-        }
+        _id: "$scope.moduleId",
+        organizationId: {
+          $first: "$organizationId",
+        },
+        audits: {
+          $push: {
+            _id: '$_id',
+            auditorId: '$auditorId',
+            scope: '$scope',
+            area: '$area',
+          },
+        },
       }
-    }
+    },
+    {
+      $lookup: {
+        from: 'organizations',
+        localField: 'organizationId',
+        foreignField: '_id',
+        as: 'organization',
+      },
+    },
+    {
+      $unwind: {
+        path: '$organization',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
   ]);
 
-  const organizationsIds: string[] = audits.map(({ _id }) => _id);
+  const organizationsIds: string[] = auditsByModule.map(({ organizationId }) => organizationId);
   const { templateSettingName, emailSettingName } = getTemplateDetails(AUDITS_WEEKLY_SUMMARY);
   const templates = await Settings.customFindByName(templateSettingName, organizationsIds);
 
-  templates.forEach(async template => {
+  auditsByModule.forEach(async ({ _id: moduleId, organization, audits }) => {
     try {
-      const organization = await Organizations.customFindById(template.organizationId);
-
-      const subject = getEmailSubject(AUDITS_WEEKLY_SUMMARY);
-
-      const audit = audits.find(({ _id }) => _id === template.organizationId);
+      const module = organization.modules.find(({ _id }) => _id === moduleId);
+      const subject = getEmailSubject(AUDITS_WEEKLY_SUMMARY, {}, module.translations);
+      const template = templates.find(({ organizationId }) => organizationId === organization._id);
 
       const body = await getEmailTemplate({
         emailType: AUDITS_WEEKLY_SUMMARY,
         emailData: {
-          numberOfAudits: audit?.numberOfAudits
+          numberOfAudits: audits.length,
         },
         template: template.value,
         organization

@@ -2,12 +2,13 @@ import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { difference } from 'lodash';
 import { model, Schema } from 'mongoose';
+import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAnswer, IAnswerModel, IAuditValue, IAuditValues } from 'app-interfaces';
-import { AuditLogs, Organizations } from 'app-models';
+import { AuditLogs, Notifications, Organizations, Questions, QuestionsCategories, Settings } from 'app-models';
 import { GraphService } from 'app-services';
-import { genMetatags, getAuditValueForString, removeDatabaseFields } from 'app-utils';
+import { genMetatags, getAuditValueForString, getProtocol, removeDatabaseFields } from 'app-utils';
 
 const answersSchema = new Schema<IAnswer, IAnswerModel>({
   _id: String,
@@ -128,12 +129,13 @@ answersSchema.statics.customCreate = async function (
     metatags: genMetatags('added', userId),
   });
 
+  const organization = await Organizations.customFindById(
+    organizationId,
+    organizationId,
+  );
+
   // Move attachments to right SP folder
   if (answer.attachments && answer.attachments.length) {
-    const organization = await Organizations.customFindById(
-      organizationId,
-      organizationId,
-    );
     answer.attachments?.forEach((attachment) => {
       GraphService.moveDocument(
         attachment.id,
@@ -143,6 +145,37 @@ answersSchema.statics.customCreate = async function (
       );
     });
   }
+
+  // Set notifications if configured
+  const sendNotifications = async () => {
+    const question = await Questions.customFindById(answer.questionId, organizationId);
+    if (!answer.options || !question.questionsCategoryId) return;
+    const module = organization.modules.find(({ _id }) => _id === answer.scope?.moduleId);
+
+    const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
+    const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && answer.options![value]);
+
+    const emailAddress = await Settings.customFindOneByName("auditsWeeklyDigestEmailAddress", organization._id);
+    if (emailAddress) {
+      for (const notification of notifications) {
+        await Notifications.customCreate(
+          {
+            emailType: notification.value,
+            emailData: {
+              subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
+              template: 'HSENotificationEmailTemplate',
+              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id}" target="_blank">here</a>`,
+            },
+            status: 'pending',
+            to: emailAddress.value,
+          },
+          userId,
+          organizationId,
+        );
+      }
+    }
+  };
+  sendNotifications();
 
   if (createdAnswer?._doc) {
     const addAuditLog = async () => {
@@ -222,6 +255,41 @@ answersSchema.statics.customUpdateOne = async function (
     },
   };
   const updatedResult = await this.updateOne(selector, updatedAnswer);
+
+  // Set notifications if configured
+  const sendNotifications = async () => {
+    const organization = await Organizations.customFindById(
+      organizationId,
+      organizationId,
+    );
+    const question = await Questions.customFindById(answer.questionId, organizationId);
+    if (!answer.options || !question.questionsCategoryId) return;
+    const module = organization.modules.find(({ _id }) => _id === answer.scope?.moduleId);
+
+    const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
+    const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && !answer.options![value] && updatedAnswer.options![value]);
+
+    const emailAddress = await Settings.customFindOneByName("auditsWeeklyDigestEmailAddress", organization._id);
+    if (emailAddress) {
+      for (const notification of notifications) {
+        await Notifications.customCreate(
+          {
+            emailType: notification.value,
+            emailData: {
+              subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
+              template: 'HSENotificationEmailTemplate',
+              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id}" target="_blank">here</a>`,
+            },
+            status: 'pending',
+            to: emailAddress.value,
+          },
+          userId,
+          organizationId,
+        );
+      }
+    }
+  };
+  sendNotifications();
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {

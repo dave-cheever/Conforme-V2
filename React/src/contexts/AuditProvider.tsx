@@ -74,7 +74,9 @@ const GET_AUDIT_DATA = gql`
       notBlockedAfterCompletion
       icon
       options {
+        type
         name
+        value
       }
     }
     auditTypeQuestions: questions(questionQuery: $auditTypeQuestionQuery) {

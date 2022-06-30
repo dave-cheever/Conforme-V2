@@ -43,6 +43,7 @@
     "multer": "^1.4.3",
     "passport": "^0.4.1",
     "passport-azure-ad": "^4.3.0",
+    "pluralize": "^8.0.0",
     "winston": "^3.3.3",
     "wkhtmltoimage": "^0.1.5"
   },
@@ -53,6 +54,7 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^16.4.13",
     "@types/passport": "^1.0.7",
+    "@types/pluralize": "^0.0.29",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^7.11.0",

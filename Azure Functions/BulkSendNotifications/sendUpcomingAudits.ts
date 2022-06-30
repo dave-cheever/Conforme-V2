@@ -43,22 +43,35 @@ const sendComingUpAudits = async (config: IConfig) => {
         },
       },
     },
+    {
+      $lookup: {
+        from: 'organizations',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'organization',
+      },
+    },
+    {
+      $unwind: {
+        path: '$organization',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
   ]);
 
   await Promise.all(
-    auditsByOrganization.map(async ({ _id: organizationId, audits }) => {
+    auditsByOrganization.map(async ({ audits, organization }) => {
       const auditsStatusReminderTriggerSetting = await Settings.customFindByName(
         'auditsStatusReminderTriggers',
-        organizationId
+        organization._id
       );
       const triggerDaysOfMonth = auditsStatusReminderTriggerSetting?.[0]?.value;
       if (triggerDaysOfMonth?.includes(getDate(new Date()))) {
         const graphService = new GraphService(config);
-        const organization = await Organizations.customFindById(organizationId);
-        const subject = getEmailSubject(AUDIT_UPCOMING);
 
         await Promise.all(audits.map(async audit => {
           const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
+          const subject = getEmailSubject(AUDIT_UPCOMING, {}, module.translations);
           const body = await getEmailTemplate({
             emailType: AUDIT_UPCOMING,
             emailData: {

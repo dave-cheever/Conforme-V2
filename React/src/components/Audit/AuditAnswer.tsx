@@ -179,8 +179,8 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Stack>
       {questionsCategory.options && (
         <Stack>
-          {questionsCategory.options.map(({ name }) => (
-            <Toggle control={control} disabled={isDisabled} falseLabel={name} key={name} name={`options[${name}]`} trueLabel={name} />
+          {questionsCategory.options.map(({ name, value }) => (
+            <Toggle control={control} disabled={isDisabled} falseLabel={name} key={value} name={`options[${value}]`} trueLabel={name} />
           ))}
         </Stack>
       )}

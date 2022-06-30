@@ -9,4 +9,8 @@ export interface ISettingModel extends IBaseModel<ISetting> {
     name: string,
     organizationId: string | string[],
   ) => Promise<ISetting[]>;
+  customFindOneByName: (
+    name: string,
+    organizationId: string | string[]
+  ) => Promise<ISetting>;
 }
