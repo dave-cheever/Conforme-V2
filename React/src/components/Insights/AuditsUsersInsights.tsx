@@ -40,8 +40,9 @@ const AuditsUsersInsights = ({
           justify="center"
           key={user._id}
           mb="15px"
-          mr={index !== users.length ? '10px' : undefined}
-          w="100px"
+          ml={index === 0 ? '10px' : '20px'}
+          mr="10px"
+          w="80px"
         >
           <UserAvatar userId={user._id} />
           <Text
@@ -82,7 +83,7 @@ const AuditsUsersInsights = ({
             <Text color="white" fontSize="smm">
               {auditsInsightsTypes[count.status]}
             </Text>
-            {sortOrder !== null && !sortOrder ? (
+            {sortOrder !== null && sortOrder === 'desc' ? (
               <ArrowDownIcon
                 color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
                 h="12px"
