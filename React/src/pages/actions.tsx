@@ -266,7 +266,7 @@ const Actions = () => {
                   <Stack direction="row" spacing={2}>
                     <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
                     <Text fontSize="smm" fontWeight="semi_medium">
-                      Change view
+                      Change views
                     </Text>
                   </Stack>
                 </MenuButton>
