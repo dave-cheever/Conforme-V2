@@ -8,7 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
 import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
-import { genMetatags, getAuditValueForBoolean, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, removeDatabaseFields } from 'app-utils';
+import {
+  genMetatags,
+  getAuditValueForBoolean,
+  getAuditValueForDate,
+  getAuditValueForString,
+  getAuditValueForUser,
+  removeDatabaseFields,
+} from 'app-utils';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -53,11 +60,7 @@ const actionsSchema = new Schema<IAction, IActionModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-  organization,
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -90,29 +93,22 @@ const getAuditRecordValues = async ({
 
       // If updated 'attachments' field, set value as attachments name and file name and label as file details
       case 'attachments': {
-        const getAttachmentsPathsArray = (arr) =>
-          arr.map(({ uploaded }) => uploaded?.path);
-        const removedAttachments = difference(
-          getAttachmentsPathsArray(oldValue || []),
-          getAttachmentsPathsArray(newValue || []),
-        ).filter(Boolean);
+        const getAttachmentsPathsArray = (arr) => arr.map(({ uploaded }) => uploaded?.path);
+        const removedAttachments = difference(getAttachmentsPathsArray(oldValue || []), getAttachmentsPathsArray(newValue || [])).filter(
+          Boolean,
+        );
         if (removedAttachments.length > 0) {
-          const document = oldValue.find(
-            ({ uploaded }) => uploaded.path === removedAttachments[0],
-          );
+          const document = oldValue.find(({ uploaded }) => uploaded.path === removedAttachments[0]);
           value.old = {
             value: document.uploaded,
             label: `${document.name} - ${document.uploaded.name}`,
           };
         }
-        const addedAttachments = difference(
-          getAttachmentsPathsArray(newValue || []),
-          getAttachmentsPathsArray(oldValue || []),
-        ).filter(Boolean);
+        const addedAttachments = difference(getAttachmentsPathsArray(newValue || []), getAttachmentsPathsArray(oldValue || [])).filter(
+          Boolean,
+        );
         if (addedAttachments.length > 0) {
-          const document = newValue.find(
-            ({ uploaded }) => uploaded.path === addedAttachments[0],
-          );
+          const document = newValue.find(({ uploaded }) => uploaded.path === addedAttachments[0]);
           value.new = {
             value: document.uploaded,
             label: `${document.name} - ${document.uploaded.name}`,
@@ -122,8 +118,7 @@ const getAuditRecordValues = async ({
       }
 
       default:
-        if (typeof oldValue === 'string' || typeof newValue === 'string')
-          value = getAuditValueForString(oldValue, newValue);
+        if (typeof oldValue === 'string' || typeof newValue === 'string') value = getAuditValueForString(oldValue, newValue);
     }
     return {
       ...acc,
@@ -149,10 +144,7 @@ actionsSchema.statics.customCreate = async function (action: IAction, userId: st
   if (createdAction?._doc) {
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdAction._doc);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId, organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -229,10 +221,7 @@ actionsSchema.statics.customUpdateOne = async function (
     const addAuditLog = async () => {
       const oldValues = removeDatabaseFields(action);
       const newValues = removeDatabaseFields(updatedAction);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId, organizationId);
       const values = await getAuditRecordValues({ oldValues, newValues, organization });
       AuditLogs.customAudit(
         {
@@ -270,10 +259,7 @@ actionsSchema.statics.customDelete = async function (selector: object = {}, user
   if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const oldValues = removeDatabaseFields(action);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId, organizationId);
       const values = await getAuditRecordValues({ oldValues, organization });
       AuditLogs.customAudit(
         {
@@ -342,7 +328,7 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
   const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
   let actionPath = '';
 
-  // If action was created in an answer, in an audit, 
+  // If action was created in an answer, in an audit,
   if (action.scope?._id && action.scope?.type === 'answer') {
     const answer = await Answers.customFindOne({ _id: action.scope._id, 'scope.type': 'audit' }, organization._id);
     if (module && answer) actionPath = `/${module.path}/audits/${answer.scope._id}`;
@@ -351,6 +337,7 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
   // If there is no action path, do not send the notification
   if (actionPath) {
     const assignee = await Users.customFindByIdWithDetails({ userId: action.assigneeId, organization });
+    const assignor = await Users.customFindByIdWithDetails({ userId: action.metatags.updatedBy ?? action.metatags.addedBy, organization });
     await Notifications.customCreate(
       {
         emailType: ACTION_ASSIGNED,
@@ -358,6 +345,7 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
           actionTitle: action.title,
           actionPath,
           actionDueDate: action.dueDate ? `Due ${format(new Date(action.dueDate), 'd LLLL Y')}` : 'No due date',
+          assignedBy: assignor.displayName,
         },
         status: 'pending',
         to: [assignee?.email],
@@ -381,7 +369,7 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
     if (assignee) recipients.push(assignee.email);
   }
 
-  // If action was created in an answer, in an audit, 
+  // If action was created in an answer, in an audit,
   if (action.scope?._id && action.scope?.type === 'answer') {
     const answers = await Answers.aggregate([
       {

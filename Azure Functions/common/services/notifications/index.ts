@@ -20,7 +20,11 @@ export const MENTION_NOTIFICATION = 'MENTION_NOTIFICATION';
 export const TRACKER_REMINDER = 'TRACKER_REMINDER';
 export const TRACKER_WEEKLY_SUMMARY = 'TRACKER_WEEKLY_SUMMARY';
 
-const getEmailSubject = (emailType: string, emailData: any = {}, translations: { [word: string]: string; } = {}) => {
+const getEmailSubject = (
+  emailType: string,
+  emailData: any = {},
+  translations: { [word: string]: string } = {}
+) => {
   switch (emailType) {
     case ACTION_ASSIGNED:
       return 'You have been assigned to an action';
@@ -35,7 +39,7 @@ const getEmailSubject = (emailType: string, emailData: any = {}, translations: {
     case AUDITS_WEEKLY_SUMMARY:
       return `${capitalize(t('audit', translations))} weekly digest`;
     case MENTION_NOTIFICATION:
-      return "You have been mentioned in chat";
+      return 'You have been mentioned in chat';
     case TRACKER_REMINDER:
       return `Compliance Item Reminder: ${emailData.complianceName}`;
     case TRACKER_WEEKLY_SUMMARY:
@@ -50,7 +54,7 @@ const getEmailTemplate = async ({
   template,
   emailData,
   organization,
-  organizationId,
+  organizationId
 }: {
   emailType: string;
   emailData: any;
@@ -62,28 +66,41 @@ const getEmailTemplate = async ({
   switch (emailType) {
     case ACTION_ASSIGNED:
       body = `<p>
-        You have been assigned to action "${emailData.actionTitle} (${emailData.actionDueDate
-        })", to view click <a href="${getProtocol()}${emailData.actionPath}">here</a>.
+        You have been assigned to action "${emailData.actionTitle} (${
+        emailData.actionDueDate
+      })" by ${emailData.assignedBy}, to view click <a href="${getProtocol()}${
+        emailData.actionPath
+      }">here</a>.
         </p>`;
       break;
     case ACTION_COMPLETED:
       body = `<p>
-        Action "${emailData.actionTitle}" has been completed, to view click <a href = "${getProtocol()}${emailData.actionPath}">here</a>.
+        Action "${
+          emailData.actionTitle
+        }" has been completed, to view click <a href = "${getProtocol()}${
+        emailData.actionPath
+      }">here</a>.
       </p>`;
       break;
     case ACTION_OVERDUE:
       body = `<p>
-        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${emailData.actionPath}">here</a>.
+        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${
+        emailData.actionPath
+      }">here</a>.
       </p>`;
       break;
     case AUDIT_MISSED:
       body = `<p>
-        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath}">here</a>.
+        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${
+        emailData.auditPath
+      }">here</a>.
       </p>`;
       break;
     case AUDIT_UPCOMING:
       body = `<p>
-        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath}">here</a>.
+        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${
+        emailData.auditPath
+      }">here</a>.
       </p>`;
       break;
     case AUDITS_WEEKLY_SUMMARY:
@@ -99,7 +116,10 @@ const getEmailTemplate = async ({
       body = getResponseWeeklyEmail(template, emailData);
       break;
     default:
-      const emailTemplate = await Settings.customFindOneByName(emailData.template, organization._id);
+      const emailTemplate = await Settings.customFindOneByName(
+        emailData.template,
+        organization._id
+      );
       if (emailTemplate) {
         body = emailTemplate.value;
         for (const option of emailTemplate.options) {
@@ -109,7 +129,7 @@ const getEmailTemplate = async ({
   }
   if (!organization) {
     if (!organizationId) {
-      throw Error("You need to pass either organization or organizationId");
+      throw Error('You need to pass either organization or organizationId');
     }
     organization = await Organizations.customFindById(organizationId);
   }
