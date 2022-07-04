@@ -1,5 +1,5 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { Box, HStack, Spacer, Stack, Text } from '@chakra-ui/react';
+import { HStack, Spacer, Stack, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
@@ -20,6 +20,11 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
       <Stack flexGrow={1} spacing={2}>
         <Text fontSize="smm">{question.question}</Text>
         <HStack>
+          {question.questionsCategory?.useStatus && (
+            <Text color="auditItem.listItem.action.color" fontSize="ssm">
+              {capitalize(question.answer?.status)}
+            </Text>
+          )}
           <ActionsIcon fill="transparent" stroke="auditItem.listItem.action.icon" />
           <Text color="auditItem.listItem.action.color" fontSize="ssm">
             {numberOfActions} {pluralize('Action', numberOfActions)}
@@ -27,11 +32,6 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
         </HStack>
       </Stack>
       <HStack>
-        {question.questionsCategory?.useStatus && (
-          <Box mr={2}>
-            <Text fontWeight="bold">{capitalize(question.answer?.status)}</Text>
-          </Box>
-        )}
         {question.answer?.attachments?.map((attachment) => (
           <DocumentThumbnail document={attachment} key={attachment.id} />
         ))}
