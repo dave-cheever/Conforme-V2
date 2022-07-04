@@ -13,8 +13,12 @@ import {
   Stack,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
+import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import { ArrowDownIcon } from '../../icons';
@@ -23,6 +27,7 @@ import AuditHeaderButton from './AuditHeaderButton';
 import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
+  const toast = useToast();
   const { user } = useAppContext();
   const { audit, auditor, site, area } = useAuditContext();
   const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
@@ -31,7 +36,16 @@ const AuditHeader = () => {
 
   return (
     <>
-      <AuditSubmitModal isOpen={isSubmitModalOpen} onClose={handleSubmitModalClose} />
+      <AuditSubmitModal
+        isOpen={isSubmitModalOpen}
+        onClose={() => {
+          handleSubmitModalClose();
+          toast({
+            ...toastSuccess,
+            description: `${capitalize(t('audit'))} completed`,
+          });
+        }}
+      />
       <Flex bg="auditHeader.bg" direction="column" mb="15px" minH="100px" pl={6} w="full" zIndex={1}>
         <Stack align="center" direction="row" h="40px" mb="15px" spacing={4} w="full">
           <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold">
