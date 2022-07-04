@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Button, HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -66,12 +66,20 @@ const Audit = () => {
             </Button>
           )}
       </HStack>
-      {!(selectedQuestion && !isDeleteQuestionModalOpen) && (
-        <Stack pb="25px">
-          {questionsCategories.map((category) => (
-            <AuditQuestionsCategory handleDelete={handleDeleteQuestionModalOpen} key={category._id} questionsCategory={category} />
-          ))}
-        </Stack>
+      {!(selectedQuestion && !isDeleteQuestionModalOpen && Object.entries(questions).length > 0) && (
+        <>
+          {selectedQuestion || Object.entries(questions).length > 0 ? (
+            <Stack pb="25px">
+              {questionsCategories.map((category) => (
+                <AuditQuestionsCategory handleDelete={handleDeleteQuestionModalOpen} key={category._id} questionsCategory={category} />
+              ))}
+            </Stack>
+          ) : (
+            <Box fontSize="18px" fontStyle="italic" h="full" w="full">
+              <Text>No {pluralize(t('question'))} found</Text>
+            </Box>
+          )}
+        </>
       )}
       {selectedQuestion && !isDeleteQuestionModalOpen && (
         <AuditAnswer handleClose={() => setSelectedQuestion(undefined)} question={selectedQuestion} />
