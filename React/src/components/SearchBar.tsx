@@ -32,11 +32,14 @@ const GET_SEARCH_RESULTS = gql`
 
 const GET_SEARCH_HISTORY = gql`
   query SearchHistory($SearchHistoryQuery: AuditLogsQuery) {
-    auditLogs(auditLogsQuery: $SearchHistoryQuery) {
+    auditLog(auditLogsQuery: $SearchHistoryQuery) {
       _id
-      records {
-        action
-        values
+      auditLogs{
+          _id
+          records {
+          action
+          values
+        }
       }
     }
   }
@@ -60,7 +63,7 @@ const SearchBar = () => {
   });
 
   const recentlySearchPhrases =
-    historyData?.auditLogs?.reduce((acc, curr) => {
+    historyData?.auditLog?.auditLogs?.reduce((acc, curr) => {
       const searchPhrases = curr.records.filter(({ action }) => action === 'search').map((record) => record.values?.searchText?.new?.value);
       return [...acc, ...searchPhrases];
     }, []) || [];

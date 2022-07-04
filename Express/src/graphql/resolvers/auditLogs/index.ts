@@ -1,8 +1,8 @@
-import auditLogs from './auditLogs.q';
+import auditLog from './auditLogs.q';
 
 const auditLogsResolvers = {
   Query: {
-    auditLogs,
+    auditLog,
   },
   Mutation: {},
 };
@@ -23,9 +23,16 @@ type AuditLogRecord {
   metatags: Metatags!
 }
 
+type AuditLogsData {
+  _id: ID!
+  totalAuditLogs: Int
+  records: [AuditLogRecord]!
+}
+
 type AuditLog {
   _id: ID!
-  records: [AuditLogRecord]!
+  totalAuditLogs: Int
+  auditLogs: [AuditLogsData!]!
 }
 
 input AuditLogsQuery {
@@ -41,7 +48,7 @@ input AuditLogsQuery {
 `;
 
 export const auditLogsQueryDefs = `
-  auditLogs(auditLogsQuery: AuditLogsQuery): [AuditLog!]!
+  auditLog(auditLogsQuery: AuditLogsQuery): AuditLog!
 `;
 
 export const auditLogsMutationDefs = `

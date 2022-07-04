@@ -39,6 +39,7 @@ export const auditLogStyles = {
     bg: '#FFFFFF',
     border: '#424B50',
     loadMore: '#000000',
+    noLogs: '#818197'
   },
 };
 

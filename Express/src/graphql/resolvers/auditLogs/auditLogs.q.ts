@@ -1,4 +1,6 @@
 import { AuditLogs } from 'app-models';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
@@ -121,8 +123,28 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
       },
     });
 
-    const auditLogs = await AuditLogs.aggregate(pipeline);
-    return auditLogs;
+    const [auditLogs, totalAuditLogs] = await Promise.all([
+      AuditLogs.aggregate(pipeline),
+      AuditLogs.find({
+        organizationId: organization._id,
+        ...(elementId && { 'element._id': elementId }),
+        ...(userId && { 'metatags.addedBy': userId }),
+        ...(moduleId && { 'moduleId': moduleId }),
+        ...(actions?.length > 0 && { $or: actions.map(action => ({ action })) }),
+        ...(dateLimit && {
+          $match: {
+            'metatags.addedAt': {
+              $lte: new Date(dateLimit),
+            },
+          }
+        }),
+      }).count()
+    ]);
+    return {
+      _id: uuidv4(),
+      totalAuditLogs,
+      auditLogs
+    };
   } catch (err: any) {
     throw new Error(err);
   }

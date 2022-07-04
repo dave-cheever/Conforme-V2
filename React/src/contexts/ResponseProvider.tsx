@@ -83,19 +83,22 @@ const GET_RESPONSES = gql`
 
 const GET_RESPONSE_SNAPSHOTS = gql`
   query HistoricalResponses($HistoricalResponsesQuery: AuditLogsQuery) {
-    auditLogs(auditLogsQuery: $HistoricalResponsesQuery) {
+    auditLog(auditLogsQuery: $HistoricalResponsesQuery) {
       _id
-      records {
-        action
-        coll
-        element {
+      auditLogs{
           _id
-          name
-        }
-        values
-        metatags {
-          addedAt
-          addedBy
+          records {
+          action
+          coll
+          element {
+            _id
+            name
+          }
+          values
+          metatags {
+            addedAt
+            addedBy
+          }
         }
       }
     }
@@ -153,7 +156,7 @@ const ResponseProvider = ({ children }) => {
   const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
 
   const snapshots: IResponse[] =
-    snapshotsData?.auditLogs?.reduce((acc, curr) => {
+    snapshotsData?.auditLog?.auditLogs?.reduce((acc, curr) => {
       const responsesRecords = curr.records
         .filter(({ action }) => action === 'snapshot')
         .map((record) => record.values?.response?.old?.value);

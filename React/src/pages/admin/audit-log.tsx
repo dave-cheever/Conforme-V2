@@ -11,19 +11,22 @@ import { IAuditLog } from '../../interfaces/IAuditLog';
 
 const GET_AUDIT_LOGS = gql`
   query AuditLogs($auditLogsQuery: AuditLogsQuery) {
-    auditLogs(auditLogsQuery: $auditLogsQuery) {
+    auditLog(auditLogsQuery: $auditLogsQuery) {
       _id
-      records {
-        action
-        coll
-        element {
-          _id
-          name
-        }
-        values
-        metatags {
-          addedAt
-          addedBy
+      totalAuditLogs
+      auditLogs{
+          records {
+          action
+          coll
+          element {
+            _id
+            name
+          }
+          values
+          metatags {
+            addedAt
+            addedBy
+          }
         }
       }
     }
@@ -56,6 +59,8 @@ const AuditLog = () => {
   });
   const [skip, setSkip] = useState<number>(0);
   const [auditLogs, setAuditLogs] = useState<IAuditLog[]>([]);
+  const [totalAuditLogs, setTotalAuditLogs] = useState<Number>(0);
+  const [countAuditLogs, setCountAuditLogs] = useState<number>(0);
 
   useEffect(() => {
     refetch({
@@ -71,29 +76,35 @@ const AuditLog = () => {
   useEffect(() => {
     if (data) {
       setAuditLogs((currentLogs) =>
-        data.auditLogs.reduce((acc, curr) => {
+        data.auditLog.auditLogs.reduce((acc, curr) => {
           const newAcc = [...acc];
           const currentLog = newAcc.find(({ _id }) => _id === curr._id);
           if (currentLog) {
-            curr.records.forEach((record) => {
-              if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt))))
+            curr.records.forEach((record, index) => {
+              if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt)))) {
+                setCountAuditLogs(prevValue => prevValue + 1)
                 currentLog.records.push(record);
+              }
             });
           } else {
             newAcc.push({
               _id: curr._id,
-              records: curr.records.map((record) => ({
-                action: record.action,
-                coll: record.coll,
-                element: record.element,
-                values: record.values,
-                metatags: record.metatags,
-              })),
+              records: curr.records.map((record, index) => {
+                setCountAuditLogs(index + 1)
+                return {
+                  action: record.action,
+                  coll: record.coll,
+                  element: record.element,
+                  values: record.values,
+                  metatags: record.metatags,
+                }
+              }),
             });
           }
           return newAcc;
         }, currentLogs),
       );
+      setTotalAuditLogs(data?.auditLog?.totalAuditLogs > 0 ? data?.auditLog?.totalAuditLogs : 0)
     }
   }, [data]);
 
@@ -104,9 +115,15 @@ const AuditLog = () => {
         <Flex bg="white" borderRadius="20px" flexDir="column" h="fit-content" pt="3" px="6">
           <AuditLogComponent auditLogs={auditLogs} loading={loading} />
           {!loading && (
-            <Text color="auditLog.loadMore" cursor="pointer" mb={4} onClick={() => setSkip((prev) => prev + 5)}>
-              Load more audit logs
-            </Text>
+            totalAuditLogs === countAuditLogs
+              ?
+              <Text color="auditLog.noLogs" mb={4}>
+                No more logs
+              </Text>
+              :
+              <Text color="auditLog.loadMore" cursor="pointer" mb={4} onClick={() => setSkip((prev) => prev + 5)}>
+                Load more audit logs
+              </Text>
           )}
         </Flex>
       </Box>

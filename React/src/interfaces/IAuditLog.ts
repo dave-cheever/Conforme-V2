@@ -31,5 +31,6 @@ export interface IAuditLogRecord extends IBase {
 
 export interface IAuditLog {
   _id: string;
+  totalAuditLogs: number;
   records: IAuditLogRecord[];
 }
