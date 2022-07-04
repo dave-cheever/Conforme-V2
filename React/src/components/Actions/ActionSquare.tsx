@@ -99,7 +99,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
           <HStack align="center" spacing={2}>
             <WarningIcon fill="actionSquare.missed.icon.fill" h="22px" stroke="actionSquare.missed.icon.stroke" w="18px" />
             <Text color="actionSquare.missed.color" fontSize="ssm" fontWeight="bold">
-              Missed
+              Overdue
             </Text>
           </HStack>
         )}
