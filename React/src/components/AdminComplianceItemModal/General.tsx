@@ -122,7 +122,7 @@ const GeneralForm = () => {
             />
             <Dropdown
               control={control}
-              label="Frequencye"
+              label="Frequency"
               name="frequency"
               options={frequencyOptions}
               placeholder="Define how often it needs to be renewed"
