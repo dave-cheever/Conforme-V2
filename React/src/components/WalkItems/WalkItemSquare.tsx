@@ -1,4 +1,5 @@
 import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon } from '../../icons';
@@ -14,7 +15,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       borderRadius="20px"
       boxShadow="sm"
       flexShrink={0}
-      h="250px"
+      h="290px"
       p="20px 25px 20px 25px"
       spacing={6}
       w={['full', 'full', '350px']}
@@ -43,12 +44,32 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             {answer?.status}
           </Text>
         </Box>
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+          <Text color="walkItemSquare.section.title">Date</Text>
+          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
+            {format(new Date(answer?.metatags?.addedAt!), 'LLL/y')}
+          </Text>
+        </Box>
       </Flex>
-      <Box w="full">
-        <Text color="walkItemSquare.section.title" fontSize="ssm">
-          Linked to
-        </Text>
-        <Flex align="center" justify="space-between" w="full">
+      <Flex w="full">
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+          <Text color="walkItemSquare.section.title">Site</Text>
+          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
+            {answer?.audit?.site?.name ?? 'Virtual'}
+          </Text>
+        </Box>
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+          <Text color="walkItemSquare.section.title">Area</Text>
+          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
+            {answer?.audit?.area?.name ?? 'Virtual'}
+          </Text>
+        </Box>
+      </Flex>
+      <Flex align="center" justify="space-between" w="full">
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+          <Text color="walkItemSquare.section.title" fontSize="ssm">
+            Linked to
+          </Text>
           <Stack
             _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
             align="center"
@@ -56,27 +77,27 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
             spacing={2}
           >
-            <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated maxWidth="150px">
-              {answer?.question?.question}, {answer?.audit?.area?.name}
+            <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated maxWidth="250px">
+              {answer?.audit?.area?.name}
             </Text>
             <OpenExternalIcon fill="transparent" stroke="black" />
           </Stack>
-          <Button
-            _hover={{
-              bg: 'walkItemSquare.button.default.bg',
-            }}
-            bg="walkItemSquare.button.default.bg"
-            color="walkItemSquare.button.default.color"
-            fontSize="ssm"
-            h="28px"
-            onClick={() => editAnswer(answer)}
-            rightIcon={<ChevronRight boxSize="15px" color="walkItemSquare.button.default.color" />}
-            w="85px"
-          >
-            More
-          </Button>
-        </Flex>
-      </Box>
+        </Box>
+        <Button
+          _hover={{
+            bg: 'walkItemSquare.button.default.bg',
+          }}
+          bg="walkItemSquare.button.default.bg"
+          color="walkItemSquare.button.default.color"
+          fontSize="ssm"
+          h="28px"
+          onClick={() => editAnswer(answer)}
+          rightIcon={<ChevronRight boxSize="15px" color="walkItemSquare.button.default.color" />}
+          w="85px"
+        >
+          Update
+        </Button>
+      </Flex>
     </Stack>
   );
 };
