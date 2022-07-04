@@ -106,8 +106,9 @@ export default AuditsList;
 export const auditsListStyles = {
   auditsList: {
     bg: 'white',
-    completed: '#62c240',
+    completed: '#818197',
     missed: '#FC5960',
+    upcoming: '#818197',
     fontColor: '#282F36',
     buildingIcon: '#2B3236',
     crossIcon: '#FC5960',

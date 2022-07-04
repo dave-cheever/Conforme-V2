@@ -40,7 +40,7 @@ const WalkItemsListItem = ({
             <Flex
               align="flex-start"
               color="walkItemsList.fontColor"
-              fontSize="14px"
+              fontSize="smm"
               fontWeight="400"
               h="50%"
               lineHeight="18px"
@@ -56,7 +56,7 @@ const WalkItemsListItem = ({
             <Flex
               align="flex-start"
               color="walkItemsList.fontColor"
-              fontSize="14px"
+              fontSize="smm"
               fontWeight="400"
               h="50%"
               lineHeight="18px"
@@ -71,9 +71,8 @@ const WalkItemsListItem = ({
           <Flex flexDir="column" w="10%">
             <Flex
               align="flex-start"
-              color="walkItemsList.fontColor"
-              fontSize="14px"
-              fontWeight="400"
+              color={`walkItemsList.${answer?.status}`}
+              fontSize="smm"
               h="50%"
               lineHeight="18px"
               noOfLines={1}
@@ -88,7 +87,7 @@ const WalkItemsListItem = ({
             <Flex
               align="flex-start"
               color="walkItemsList.fontColor"
-              fontSize="14px"
+              fontSize="smm"
               fontWeight="400"
               h="50%"
               lineHeight="18px"
@@ -104,7 +103,7 @@ const WalkItemsListItem = ({
             <Flex
               align="flex-start"
               color="walkItemsList.fontColor"
-              fontSize="14px"
+              fontSize="smm"
               fontWeight="400"
               h="50%"
               lineHeight="18px"
@@ -143,7 +142,7 @@ const WalkItemsListItem = ({
             </Skeleton>
           </Box>
           <Flex w="10%">
-            <Flex color="walkItemsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+            <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
               {answer?.metatags?.addedAt ? (
                 format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
               ) : (
@@ -152,7 +151,7 @@ const WalkItemsListItem = ({
             </Flex>
           </Flex>
           <Flex w="10%">
-            <Flex color="walkItemsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+            <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
               <HStack>
                 <IconButton
                   _hover={{ opacity: 0.7 }}

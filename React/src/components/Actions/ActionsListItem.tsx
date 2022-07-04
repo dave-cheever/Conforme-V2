@@ -20,7 +20,7 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
         <Flex
           align="flex-start"
           color="actionsList.fontColor"
-          fontSize="14px"
+          fontSize="smm"
           fontWeight="400"
           h="50%"
           lineHeight="18px"
@@ -33,18 +33,18 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
         </Flex>
       </Flex>
       <Flex w="10%">
-        <Flex color="actionsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+        <Flex color="actionsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
           {action?.dueDate ? format(new Date(action?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No date</Flex>}
         </Flex>
       </Flex>
       <Flex w="10%">
-        <Flex color="actionsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+        <Flex color="actionsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
           {action?.completedDate ? format(new Date(action?.completedDate), 'd MMM yyyy') : <Flex fontStyle="italic">No date</Flex>}
         </Flex>
       </Flex>
       <Flex w="10%">
         <Flex align="center">
-          <Flex color={`actionsList.${action.done ? 'open' : 'closed'}`} fontSize="14px" fontWeight="700">
+          <Flex color={`actionsList.${action.done ? 'closed' : 'open'}`} fontSize="smm">
             {action.done ? 'Closed' : 'Open'}
           </Flex>
         </Flex>

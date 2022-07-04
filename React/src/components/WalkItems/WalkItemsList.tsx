@@ -141,5 +141,7 @@ export const walkItemsListStyles = {
     bg: 'white',
     headerBorderColor: '#F0F0F0',
     iconColor: '#282F36',
+    open: '#282F36',
+    closed: '#282F36',
   },
 };

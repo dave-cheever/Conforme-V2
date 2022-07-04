@@ -108,8 +108,8 @@ export default ActionsList;
 export const actionsListStyles = {
   actionsList: {
     bg: 'white',
-    open: '#62c240',
-    closed: '#FC5960',
+    open: '#282F36',
+    closed: '#282F36',
     inProgress: '#282F36',
     fontColor: '#282F36',
     buildingIcon: '#2B3236',
