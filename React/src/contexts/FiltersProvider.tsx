@@ -67,8 +67,8 @@ const FiltersProvider = ({ children }) => {
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
   const [responseFiltersValue, setResponseFiltersValue] = useState<TDeepPartial<IResponseFilters>>({});
   const [auditFiltersValue, setAuditFiltersValue] = useState<TDeepPartial<IAuditFilters>>({});
-  const [actionFiltersValue, setActionFiltersValue] = useState<IActionFilters>({});
-  const [walkItemFiltersValue, setWalkItemFiltersValue] = useState<IWalkItemFilters>({});
+  const [actionFiltersValue, setActionFiltersValue] = useState<TDeepPartial<IActionFilters>>({});
+  const [walkItemFiltersValue, setWalkItemFiltersValue] = useState<TDeepPartial<IWalkItemFilters>>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(null);
   const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{
@@ -146,6 +146,12 @@ const FiltersProvider = ({ children }) => {
       numberOfSelectedFilters,
       responseFiltersValue,
       setResponseFiltersValue,
+      auditFiltersValue,
+      setAuditFiltersValue,
+      actionFiltersValue,
+      setActionFiltersValue,
+      walkItemFiltersValue,
+      setWalkItemFiltersValue,
       data,
     ],
   );

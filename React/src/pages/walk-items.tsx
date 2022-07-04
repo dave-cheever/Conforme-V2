@@ -135,12 +135,24 @@ const WalkItems = () => {
   ];
 
   useEffect(() => {
-    setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds']);
+    setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds', 'sitesIds', 'status']);
     return () => {
       setShowFiltersPanel(false);
       setAdminModalState('closed');
     };
   }, []);
+
+  // Set pre-defined filters
+  useEffect(() => {
+    if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(walkItemFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setWalkItemFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
+    }
+  }, [filtersValues, usedFilters, setWalkItemFiltersValue, walkItemFiltersValue, setFilters]);
 
   useEffect(() => {
     setFilters({
@@ -149,15 +161,8 @@ const WalkItems = () => {
   }, [selectedPanel]);
 
   useEffect(() => {
-    if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
-      setFilters(walkItemFiltersValue);
-      setWalkItemFiltersValue({});
-    }
-  }, [filtersValues, usedFilters, setWalkItemFiltersValue, walkItemFiltersValue, setFilters]);
-
-  useEffect(() => {
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+    const parsedFilters: any = Object.entries(filtersValues).reduce((acc, filter) => {
       if (!filter || !filter[1]) return { ...acc };
 
       const [key, value] = filter;
@@ -179,7 +184,8 @@ const WalkItems = () => {
       refetch({
         answerQuery: {
           ...parsedFilters,
-          questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : undefined,
+          questionsCategoriesIds:
+            panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : parsedFilters?.questionsCategoriesIds ?? [],
         },
       });
     }

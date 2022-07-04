@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
-const InsightCount = ({ count }) => (
+const InsightCount = ({ count, onClick }) => (
   <Flex
     alignItems="center"
     bg="userItem.responseCountBg"
@@ -9,6 +9,7 @@ const InsightCount = ({ count }) => (
     justifyContent="center"
     mr="1px"
     mt="1px"
+    onClick={onClick}
     w="calc(25% - 1px)"
   >
     {count || 0}

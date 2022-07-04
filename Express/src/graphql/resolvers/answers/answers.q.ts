@@ -25,7 +25,17 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
-    if (shouldJoin(['question'])) {
+    if (answerQuery?.status?.length > 0) {
+      pipeline.push({
+        $match: {
+          status: {
+            $in: answerQuery.status,
+          },
+        },
+      });
+    }
+
+    if (shouldJoin(['question']) || answerQuery?.questionsCategoriesIds?.length > 0) {
       join({
         pipeline,
         collection: 'questions',
@@ -145,6 +155,14 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
+    if (answerQuery?.sitesIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          'audit.siteId': { $in: answerQuery.sitesIds },
+        },
+      });
+    }
+
     if (answerQuery?.areasIds?.length > 0) {
       pipeline.push({
         $match: {
@@ -161,22 +179,20 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
 
     if (shouldJoin(['addedBy'])) {
       answers = await Promise.all(
-        answers.map(
-          async (answer) => {
-            try {
-              return {
-                ...answer,
-                addedBy: await Users.customFindByIdWithDetails({
-                  userId: answer?.metatags?.addedBy,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
-              return answer;
-            }
-          },
-        ),
+        answers.map(async (answer) => {
+          try {
+            return {
+              ...answer,
+              addedBy: await Users.customFindByIdWithDetails({
+                userId: answer?.metatags?.addedBy,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
+            return answer;
+          }
+        }),
       );
     }
 

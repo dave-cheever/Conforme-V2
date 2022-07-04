@@ -34,10 +34,10 @@ export interface IFiltersContext {
   setResponseFiltersValue: Dispatch<SetStateAction<TDeepPartial<IResponseFilters>>>;
   auditFiltersValue: TDeepPartial<IAuditFilters>;
   setAuditFiltersValue: Dispatch<SetStateAction<TDeepPartial<IAuditFilters>>>;
-  actionFiltersValue: IActionFilters;
-  setActionFiltersValue: Dispatch<SetStateAction<IActionFilters>>;
-  walkItemFiltersValue: IWalkItemFilters;
-  setWalkItemFiltersValue: Dispatch<SetStateAction<IWalkItemFilters>>;
+  actionFiltersValue: TDeepPartial<IActionFilters>;
+  setActionFiltersValue: Dispatch<SetStateAction<TDeepPartial<IActionFilters>>>;
+  walkItemFiltersValue: TDeepPartial<IWalkItemFilters>;
+  setWalkItemFiltersValue: Dispatch<SetStateAction<TDeepPartial<IWalkItemFilters>>>;
 
   numberOfSelectedFilters: number;
 

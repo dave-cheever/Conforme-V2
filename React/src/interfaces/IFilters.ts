@@ -64,7 +64,9 @@ export interface IActionFilters {
 }
 
 export interface IWalkItemFilters {
+  sitesIds?: IFilter;
   areasIds?: IFilter;
+  status?: IFilterString;
   questionsCategoriesIds?: IFilter;
   usersIds?: IWalkItemUserFilter;
 }

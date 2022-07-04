@@ -371,7 +371,7 @@ const AuditsInsights = () => {
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
                   {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} navigation="/admin/areas" />
+                    <InsightListItem item={area} itemType="businessUnit" key={area._id} navigation="/admin/areas" />
                   ))}
                 </Flex>
               </Box>

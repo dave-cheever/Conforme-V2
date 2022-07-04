@@ -59,8 +59,18 @@ export const initialActionFilters: IActionFilters = {
 };
 
 export const initialWalkItemFilters: IWalkItemFilters = {
+  status: {
+    name: 'Status',
+    value: [],
+    hideFromPanel: true,
+  },
   questionsCategoriesIds: {
     name: 'Type',
+    value: [],
+    hideFromPanel: true,
+  },
+  sitesIds: {
+    name: 'Site',
     value: [],
     hideFromPanel: true,
   },
