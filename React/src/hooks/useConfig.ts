@@ -3,7 +3,7 @@ import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
-import { Admin, CalendarIcon, Home, Insights, ListIcon, ProgressIcon, TeamsIcon } from '../icons';
+import { Admin, CalendarIcon, Home, ListIcon, ProgressIcon, TeamsIcon } from '../icons';
 import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
 
@@ -30,13 +30,14 @@ const useConfig = () => {
       icon: ListIcon,
       permission: 'questions.view',
     },
-    {
-      type: 'menuItem',
-      label: 'Insights',
-      url: '/insights',
-      icon: Insights,
-      permission: 'insights.view',
-    },
+    // Hidden for now
+    // {
+    //   type: 'menuItem',
+    //   label: 'Insights',
+    //   url: '/insights',
+    //   icon: Insights,
+    //   permission: 'insights.view',
+    // },
     {
       type: 'menuItem',
       label: 'Admin',

@@ -34,7 +34,6 @@ import ComplianceItemResponse from '../pages/compliance-item/index';
 import Team from '../pages/compliance-item/team';
 import Dashboard from '../pages/dashboard';
 import Help from '../pages/help';
-import Insights from '../pages/insights';
 import Licenses from '../pages/licenses';
 import Login from '../pages/login';
 import Logout from '../pages/logout';
@@ -147,13 +146,14 @@ const protectedRoutes: Array<IRoute> = [
     component: History,
     layout: ResponseLayout,
   },
-  {
-    path: '/insights',
-    key: 'insights',
-    exact: true,
-    component: Insights,
-    layout: FilterLayout,
-  },
+  // Hidden for now
+  // {
+  //   path: '/insights',
+  //   key: 'insights',
+  //   exact: true,
+  //   component: Insights,
+  //   layout: FilterLayout,
+  // },
   {
     path: '/licenses',
     key: 'licences',
