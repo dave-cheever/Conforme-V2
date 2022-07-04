@@ -122,15 +122,15 @@ const Attachments = () => {
                   document={attachment}
                   downloadable={isPermitted({
                     user,
-                    action: 'responses.edit',
-                    data: response,
+                    action: 'responses.view',
+                    data: { response },
                   })}
                   removable={
                     !snapshot &&
                     isPermitted({
                       user,
                       action: 'responses.edit',
-                      data: response,
+                      data: { response },
                     })
                   }
                 />

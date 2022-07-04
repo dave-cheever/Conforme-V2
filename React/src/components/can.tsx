@@ -17,7 +17,6 @@ export const isPermitted = ({
   if (!user) return false;
 
   if (!globalThis.roles) return false;
-
   const permission = globalThis.roles[user.role];
   if (!permission) return false;
 
