@@ -24,13 +24,7 @@ interface IAdminModal {
   children: JSX.Element | JSX.Element[];
 }
 
-const AdminModal = ({
-  isOpenModal,
-  modalType,
-  onAction,
-  collection,
-  children,
-}: IAdminModal) => {
+const AdminModal = ({ isOpenModal, modalType, onAction, collection, children }: IAdminModal) => {
   const { user } = useAppContext();
   const { onClose } = useDisclosure();
 
@@ -44,46 +38,20 @@ const AdminModal = ({
     >
       <ModalOverlay />
       {modalType !== 'delete' && (
-        <ModalContent
-          bg="adminModal.content.bg"
-          h={window.innerHeight}
-          position="absolute"
-          rounded="0"
-          top={['-60px']}
-        >
+        <ModalContent bg="adminModal.content.bg" h={window.innerHeight} position="absolute" rounded="0" top={['-60px']}>
           <ModalHeader pl="18px">
             <Flex alignItems="center" justifyContent="space-between" pt="10px">
               <Flex>
-                <Avatar
-                  mx={3}
-                  name={user?.displayName}
-                  rounded="full"
-                  size="sm"
-                  src={user?.imgUrl}
-                />
+                <Avatar mx={3} name={user?.displayName} rounded="full" size="sm" src={user?.imgUrl} />
                 <Box fontSize="xxl" fontWeight="bold">
-                  {modalType === 'edit'
-                    ? `Edit ${collection}`
-                    : `Add ${collection}`}
+                  {modalType === 'edit' ? `Edit ${collection}` : `Add ${collection}`}
                 </Box>
               </Flex>
-              <Close
-                cursor="pointer"
-                h="15px"
-                onClick={onAction}
-                stroke="adminModal.closeIcon"
-                w="15px"
-              />
+              <Close cursor="pointer" h="15px" onClick={onAction} stroke="adminModal.closeIcon" w="15px" />
             </Flex>
           </ModalHeader>
           <ModalBody bg="adminModal.body.bg" overflowY="auto">
-            <Flex
-              bgColor="#F0F2F5"
-              borderRadius={['0', '20px']}
-              direction="column"
-              minH="98%"
-              p={25}
-            >
+            <Flex bgColor="#F0F2F5" borderRadius={['0', '20px']} direction="column" minH="98%" p={25}>
               {children}
               <Spacer />
               <Flex justify="space-between" mt={5}>
@@ -96,7 +64,7 @@ const AdminModal = ({
                     fontWeight="bold"
                     onClick={() => onAction('delete')}
                   >
-                    Remove
+                    Delete
                   </Button>
                 )}
                 <Button
@@ -124,25 +92,11 @@ const AdminModal = ({
           right={['0', '15px']}
           top={['-60px', '-45px']}
         >
-          <Flex
-            alignItems="center"
-            flexDirection="column"
-            h="100%"
-            justifyContent="center"
-          >
-            <Box
-              color="adminModal.button.color"
-              fontSize="fontSize.xxl"
-              fontWeight="fontWeights.bold"
-              mb="45px"
-            >
-              Remove
+          <Flex alignItems="center" flexDirection="column" h="100%" justifyContent="center">
+            <Box color="adminModal.button.color" fontSize="fontSize.xxl" fontWeight="fontWeights.bold" mb="45px">
+              Delete
             </Box>
-            <Box
-              color="adminModal.text.color"
-              textAlign="center"
-              whiteSpace="pre"
-            >
+            <Box color="adminModal.text.color" textAlign="center" whiteSpace="pre">
               {`All the information will be lost and you will need \n to re-create it from scratch.`}
             </Box>
             <Box mt="34px">
@@ -157,12 +111,8 @@ const AdminModal = ({
               >
                 Keep
               </Button>
-              <Button
-                borderRadius="4px"
-                onClick={() => onAction(modalType)}
-                p="10px 40px"
-              >
-                Remove
+              <Button borderRadius="4px" onClick={() => onAction(modalType)} p="10px 40px">
+                Delete
               </Button>
             </Box>
           </Flex>

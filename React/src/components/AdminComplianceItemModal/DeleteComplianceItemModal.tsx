@@ -11,30 +11,11 @@ const DeleteComplianceItemModal = ({ refetch }) => {
   const { deleteComplianceItem, closeModal } = useComplianceItemModal(refetch);
 
   return (
-    <ModalContent
-      bg="deleteComplianceItemModal.bg"
-      borderRadius="20px"
-      m="auto"
-      p="20px  25px"
-      position="relative"
-      w="330px"
-    >
+    <ModalContent bg="deleteComplianceItemModal.bg" borderRadius="20px" m="auto" p="20px  25px" position="relative" w="330px">
       <Flex flexDirection="column" h="100%" justifyContent="left">
-        <Flex
-          color="deleteComplianceItemModal.heading"
-          fontSize="xxl"
-          fontWeight="bold"
-          justifyContent="space-between"
-          mb="15px"
-          w="full"
-        >
-          Remove item?
-          <CrossIcon
-            cursor="pointer"
-            onClick={closeModal}
-            stroke="deleteComplianceItemModal.crossIcon"
-            w="20px"
-          />
+        <Flex color="deleteComplianceItemModal.heading" fontSize="xxl" fontWeight="bold" justifyContent="space-between" mb="15px" w="full">
+          Delete item?
+          <CrossIcon cursor="pointer" onClick={closeModal} stroke="deleteComplianceItemModal.crossIcon" w="20px" />
         </Flex>
         <Box color="deleteComplianceItemModal.subHeading" whiteSpace="pre">
           The action cannot be undone.

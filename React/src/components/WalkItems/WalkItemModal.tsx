@@ -355,7 +355,7 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
                 rounded="10px"
                 w="fit-content"
               >
-                Remove
+                Delete
               </Button>
               <Button
                 bg="walkItemModal.buttons.primary.bg"
