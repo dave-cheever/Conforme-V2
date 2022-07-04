@@ -59,6 +59,15 @@ const Field = ({ control, ...field }) => {
     case 'text': {
       return <TextInput key={name} {...props} />;
     }
+    case 'url': {
+      return <TextInput
+        key={name}
+        {...props}
+        isUrl
+        validations={{
+          isUrl: true,
+        }} />;
+    }
     case 'dropdown': {
       return <Dropdown key={name} {...props} />;
     }

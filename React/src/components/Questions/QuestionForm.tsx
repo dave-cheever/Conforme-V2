@@ -29,18 +29,19 @@ const QuestionForm = ({
     {(questionType === 'text' ||
       questionType === 'textMultiline' ||
       questionType === 'switch' ||
+      questionType === 'url' ||
       questionType === 'datepicker') && (
-      <QuestionSimpleForm
-        addOrUpdateQuestion={addOrUpdateQuestion}
-        editableValue={value as ITrackerQuestion<string>}
-        editQuestionIndex={editQuestionIndex}
-        questionType={questionType}
-        setEditQuestion={setEditQuestion}
-        setEditQuestionIndex={setEditQuestionIndex}
-        setIsEdit={setIsEdit}
-        setShowQuestionForm={setShowQuestionForm}
-      />
-    )}
+        <QuestionSimpleForm
+          addOrUpdateQuestion={addOrUpdateQuestion}
+          editableValue={value as ITrackerQuestion<string>}
+          editQuestionIndex={editQuestionIndex}
+          questionType={questionType}
+          setEditQuestion={setEditQuestion}
+          setEditQuestionIndex={setEditQuestionIndex}
+          setIsEdit={setIsEdit}
+          setShowQuestionForm={setShowQuestionForm}
+        />
+      )}
     {questionType === 'multipleChoice' && (
       <QuestionMultiChoiceForm
         addOrUpdateQuestion={addOrUpdateQuestion}

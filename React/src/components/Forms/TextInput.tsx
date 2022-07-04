@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { Box, Flex, Icon, Input, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Icon, Input, Text, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { Asterisk } from '../../icons';
@@ -12,6 +12,7 @@ interface ITextInput extends IField {
   placeholder?: string;
   variant?: string;
   initialValue?: string;
+  isUrl?: boolean
   styles?: {
     textInput?: {
       font?: string;
@@ -39,6 +40,10 @@ const definedValidations: TDefinedValidations = {
     const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
     if (!value.match(regexEmail)) return 'Invalid Email';
   },
+  isUrl: (label, validationValue, value) => {
+    const regex = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+    if (!value.match(regex)) return 'Invalid URL';
+  }
 };
 
 const TextInput = ({
@@ -52,6 +57,7 @@ const TextInput = ({
   required,
   styles,
   initialValue,
+  isUrl,
 }: ITextInput) => {
   const validate = useValidate(label || name, validations, definedValidations, initialValue);
   return (
@@ -92,6 +98,19 @@ const TextInput = ({
                 </Box>
               </Flex>
             )}
+            {isUrl &&
+              <Text
+                color={error ? 'textInput.labelFont.error' : 'textInput.labelFont.normal'}
+                fontSize="ssm"
+                fontWeight="bold"
+                mb={1}
+                cursor={error ? 'auto' : 'pointer'}
+                onClick={() => {
+                  if (!error) window.open(value)
+                }}
+              >
+                {value}
+              </Text>}
             <Input
               _active={{
                 bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',

@@ -265,6 +265,10 @@ export const questionTypes = [
     value: 'multipleChoice',
     label: 'Multiple choices',
   },
+  {
+    value: "url",
+    label: "URL"
+  }
   // {
   //   value: "singleChoice",
   //   label: "Single choice"
@@ -276,10 +280,7 @@ export const questionTypes = [
   // {
   //   value: "phoneNumber",
   //   label: "Phone number"
-  // }, {
-  //   value: "url",
-  //   label: "URL"
-  // }
+  // },
   // {
   //   value: "numeric",
   //   label: "Numeric"
