@@ -90,7 +90,6 @@ const roles = {
       'responses.manageMultipleFollowers': ifRAHasAccess,
       'actions.add': ifHasActionAccess,
       'actions.edit': ifHasActionAccess,
-      'actions.delete': ifHasActionAccess,
       'answers.add': ifHasAnswerAccess,
       'answers.edit': ifHasAnswerAccess,
       'answers.delete': ifHasAnswerAccess,

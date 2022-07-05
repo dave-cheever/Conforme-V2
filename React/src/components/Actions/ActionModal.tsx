@@ -292,19 +292,23 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
             </Stack>
             <Spacer />
             <Flex justify="space-between" w="full">
-              <Button
-                bg="actionModal.buttons.secondary.bg"
-                color="actionModal.buttons.secondary.color"
-                fontSize="smm"
-                fontWeight="700"
-                h="40px"
-                ml={3}
-                onClick={handleSecondaryButtonClick}
-                rounded="10px"
-                w="fit-content"
-              >
-                Delete
-              </Button>
+              {isPermitted({ user, action: 'actions.delete' }) ? (
+                <Button
+                  bg="actionModal.buttons.secondary.bg"
+                  color="actionModal.buttons.secondary.color"
+                  fontSize="smm"
+                  fontWeight="700"
+                  h="40px"
+                  ml={3}
+                  onClick={handleSecondaryButtonClick}
+                  rounded="10px"
+                  w="fit-content"
+                >
+                  Remove
+                </Button>
+              ) : (
+                <Spacer />
+              )}
               <Button
                 bg="actionModal.buttons.primary.bg"
                 color="actionModal.buttons.primary.color"
