@@ -1,11 +1,5 @@
-import {
-  Flex,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-} from '@chakra-ui/react';
+import { Flex, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { QuestionIcon } from '../icons';
 
@@ -17,18 +11,10 @@ const MissingQuestions = ({ questionsLeft }: { questionsLeft: number }) => (
         <Flex opacity="0.75">{questionsLeft} left</Flex>
       </Flex>
     </PopoverTrigger>
-    <PopoverContent
-      bg="brand.secondary"
-      color="brand.lightGrey"
-      fontSize="14px"
-      mb="5px"
-      ml="10px"
-      w="260px"
-    >
+    <PopoverContent bg="brand.secondary" color="brand.lightGrey" fontSize="14px" mb="5px" ml="10px" w="260px">
       <PopoverArrow bg="brand.secondary" />
       <PopoverBody color="brand.primaryFont">
-        This compliance item has {questionsLeft} mandatory questions without
-        response
+        This {t('complianceItem')} has {questionsLeft} mandatory questions without response
       </PopoverBody>
     </PopoverContent>
   </Popover>

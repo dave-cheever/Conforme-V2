@@ -3,6 +3,7 @@ import { useCallback, useContext } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useToast } from '@chakra-ui/react';
 
+import { t } from 'i18next';
 import { toastFailed, toastSuccess } from '../bootstrap/config';
 import { AdminContext } from '../contexts/AdminProvider';
 import {
@@ -38,7 +39,7 @@ const CLONE_COMPLIANCE_ITEM = gql`
   }
 `;
 
-const useComplianceItemModal = (refetch = () => {}) => {
+const useComplianceItemModal = (refetch = () => { }) => {
   const toast = useToast();
   const { setAdminModalState } = useContext(AdminContext);
   const { reset, setValue, selectedSectionIndex, setSavingDialogDetails } =
@@ -56,7 +57,7 @@ const useComplianceItemModal = (refetch = () => {}) => {
     try {
       setSavingDialogDetails((details) => ({
         ...details,
-        state: 'Saving compliance item',
+        state: `Saving ${t('complianceItem')}`,
       }));
       const changeState = setTimeout(() => {
         setSavingDialogDetails((details) => ({
@@ -83,9 +84,8 @@ const useComplianceItemModal = (refetch = () => {}) => {
       refetch();
       toast({
         ...toastSuccess,
-        description: `${complianceItemInput.name} ${
-          complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'
-        }`,
+        description: `${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'
+          }`,
       });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
@@ -117,7 +117,7 @@ const useComplianceItemModal = (refetch = () => {}) => {
     try {
       setSavingDialogDetails((details) => ({
         ...details,
-        state: 'Saving compliance item',
+        state: `Saving ${t('complianceItem')}`,
       }));
       const changeState = setTimeout(() => {
         setSavingDialogDetails((details) => ({

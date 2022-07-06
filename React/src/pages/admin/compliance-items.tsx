@@ -249,7 +249,7 @@ const ComplianceItemsAdmin = () => {
                         <Text isTruncated>{complianceItem.name}</Text>
                       ) : (
                         <Text color="adminComplianceItems.element.unnamed" fontStyle="italic">
-                          Unnamed compliance item
+                          Unnamed {t('complianceItem')}
                         </Text>
                       )}
                     </Box>

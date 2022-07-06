@@ -94,7 +94,7 @@ const Summary = () => {
       {complianceItem.evidenceItems?.length === 0 &&
         complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 && (
           <Text color="summaryModal.error">
-            You must add at least one evidence item OR one mandatory question in order to have a valid compliance item.
+            You must add at least one evidence item OR one mandatory question in order to have a valid {t('complianceItem')}.
           </Text>
         )}
     </Stack>

@@ -61,7 +61,7 @@ const DetailsForm = () => {
           control={control}
           label="Expires on (optional)"
           name="dueDate"
-          placeholder="Define when the compliance item is due"
+          placeholder={`Define when the ${t('complianceItem')} is due`}
         />
         <Dropdown
           control={control}
