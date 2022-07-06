@@ -23,6 +23,11 @@ export const actionStatuses = {
   completed: 'Completed',
 };
 
+export const walkItemStatuses = {
+  open: 'Open',
+  closed: 'Closed',
+};
+
 export const actionsInsightsTypes = {
   total: 'Total',
   completed: 'Closed',
@@ -266,9 +271,9 @@ export const questionTypes = [
     label: 'Multiple choices',
   },
   {
-    value: "url",
-    label: "URL"
-  }
+    value: 'url',
+    label: 'URL',
+  },
   // {
   //   value: "singleChoice",
   //   label: "Single choice"

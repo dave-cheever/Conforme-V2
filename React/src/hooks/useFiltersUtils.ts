@@ -62,7 +62,6 @@ export const initialWalkItemFilters: IWalkItemFilters = {
   status: {
     name: 'Status',
     value: [],
-    hideFromPanel: true,
   },
   questionsCategoriesIds: {
     name: 'Type',

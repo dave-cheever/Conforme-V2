@@ -8,6 +8,7 @@ import { IFiltersContext } from '../interfaces/IFiltersContext';
 import { TAuditStatus } from '../interfaces/TAuditStatus';
 import TAuditWalkType from '../interfaces/TAuditWalkType';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
+import { TWalkItemStatus } from '../interfaces/TWalkItemStatus';
 
 export const FiltersContext = createContext({} as IFiltersContext);
 
@@ -131,6 +132,7 @@ const FiltersProvider = ({ children }) => {
       businessUnits: data?.businessUnits,
       users: [...(data?.users || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
       auditStatuses: ['upcoming', 'completed', 'missed'] as TAuditStatus[],
+      walkItemStatuses: ['open', 'closed'] as TWalkItemStatus[],
       auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],
       sites: data?.locations,
       areas: data?.businessUnits,

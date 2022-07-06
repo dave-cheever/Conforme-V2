@@ -10,6 +10,7 @@ import { IUser } from './IUser';
 import { TAuditStatus } from './TAuditStatus';
 import TAuditWalkType from './TAuditWalkType';
 import { TDeepPartial } from './TDeepPartial';
+import { TWalkItemStatus } from './TWalkItemStatus';
 
 export interface IFiltersContext {
   filtersValues: IFilters;
@@ -48,6 +49,7 @@ export interface IFiltersContext {
   users: Partial<IUser>[];
   locations: Partial<ILocation>[];
   auditStatuses: TAuditStatus[];
+  walkItemStatuses: TWalkItemStatus[];
   auditWalkTypes: TAuditWalkType[];
   sites: Partial<ILocation>[];
   areas: Partial<IBusinessUnit>[];
