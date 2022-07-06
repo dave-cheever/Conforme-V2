@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { Box, Flex, Icon, Input, InputGroup, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
+import { InfoOutlineIcon, SearchIcon } from '@chakra-ui/icons';
+import { Box, Flex, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { Asterisk, ChevronRight } from '../../icons';
@@ -17,6 +17,7 @@ interface IPeoplePicker extends IField {
   variant?: string;
   help?: string;
   required?: boolean;
+  showAsDropdown?: boolean
 }
 
 const SEARCH_USERS = gql`
@@ -38,6 +39,52 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
+const UserData = (
+  { name, user, setShowResults, setSearchText, setSearchedInputValue, onChange }:
+    {
+      name: string,
+      user: IUser,
+      setShowResults: (x: boolean) => void,
+      setSearchText: (x: string) => void,
+      setSearchedInputValue: (x: string) => void,
+      onChange: (x: any) => void,
+    },
+) => (
+  <Flex
+    _hover={{
+      cursor: 'pointer',
+      bg: 'peoplePicker.hover.bg',
+    }}
+    align="center"
+    color="peoplePicker.font"
+    fontWeight="400"
+    h="auto"
+    justify="space-between"
+    mb={1}
+    mt="10px"
+    onClick={() => {
+      setShowResults(false);
+      setSearchText('');
+      setSearchedInputValue(user.displayName);
+      onChange({ target: { name, value: user._id } });
+    }}
+    px={3}
+    py={1}
+    role="group"
+    w="full"
+    wordBreak="break-word"
+  >
+    <Flex direction="column" ml={2}>
+      <Text color="black" fontSize="smm" fontWeight="semibold">
+        {user?.displayName} - {user.jobTitle || 'No job title'}
+      </Text>
+      <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis">
+        {user?.email}
+      </Box>
+    </Flex>
+  </Flex>
+)
+
 const PeoplePicker = ({
   control,
   name,
@@ -47,6 +94,7 @@ const PeoplePicker = ({
   validations = {},
   disabled = false,
   required,
+  showAsDropdown = true,
 }: IPeoplePicker) => {
   const [showResults, setShowResults] = useState<boolean>(false);
   const [searchText, setSearchText] = useState('');
@@ -144,7 +192,13 @@ const PeoplePicker = ({
                 value={searchedInputValue}
                 zIndex={2}
               />
-              {!disabled && (
+              {!showAsDropdown &&
+                <InputLeftElement zIndex={50}>
+                  <SearchIcon fill="peoplePicker.searchIcon" />
+                </InputLeftElement>
+              }
+
+              {!disabled && showAsDropdown && (
                 <InputRightElement cursor="pointer" onClick={() => setShowResults(!showResults)}>
                   <ChevronRight stroke="peoplePicker.icon" transform="rotate(90deg)" />
                 </InputRightElement>
@@ -163,53 +217,48 @@ const PeoplePicker = ({
                 zIndex={10}
               >
                 {loading ? (
-                  <Box p={4}>
-                    <Loader size="sm" />
-                  </Box>
-                ) : users.length > 0 ? (
-                  users.map((user) => (
-                    <Flex
-                      _hover={{
-                        cursor: 'pointer',
-                        bg: 'peoplePicker.hover.bg',
-                      }}
-                      align="center"
-                      color="peoplePicker.font"
-                      fontWeight="400"
-                      h="auto"
-                      justify="space-between"
-                      key={user._id}
-                      mb={1}
-                      mt="10px"
-                      onClick={() => {
-                        setShowResults(false);
-                        setSearchText('');
-                        setSearchedInputValue(user.displayName);
-                        onChange({ target: { name, value: user._id } });
-                      }}
-                      px={3}
-                      py={1}
-                      role="group"
-                      w="full"
-                      wordBreak="break-word"
-                    >
-                      <Flex direction="column" ml={2}>
-                        <Text color="black" fontSize="smm" fontWeight="semibold">
-                          {user?.displayName} - {user.jobTitle || 'No job title'}
-                        </Text>
-                        <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis">
-                          {user?.email}
-                        </Box>
-                      </Flex>
-                    </Flex>
-                  ))
-                ) : (
-                  <Flex align="center" fontStyle="italic" h="35px" pl={5}>
-                    No results found
+                  <Flex align="center" fontStyle="italic" h="50px" justifyContent={showAsDropdown ? 'center' : ''} px={3} w="full" >
+                    <Box mr={3} w="40px">
+                      <Loader size="md" />
+                    </Box>
+                    {!showAsDropdown && 'Searching...'}
                   </Flex>
-                )}
+                ) : users.length > 0 ?
+                  !showAsDropdown ? searchText &&
+                    (
+                      users.map((user) => (
+                        <UserData
+                          key={user._id}
+                          name={name}
+                          onChange={onChange}
+                          setSearchedInputValue={setSearchedInputValue}
+                          setSearchText={setSearchText}
+                          setShowResults={setShowResults}
+                          user={user}
+                        />
+                      ))
+                    ) : (
+                    users.map((user) => (
+                      <UserData
+                        key={user._id}
+                        name={name}
+                        onChange={onChange}
+                        setSearchedInputValue={setSearchedInputValue}
+                        setSearchText={setSearchText}
+                        setShowResults={setShowResults}
+                        user={user} />
+                    ))
+                  ) : (
+                    !showAsDropdown ? searchText && <Flex align="center" fontStyle="italic" h="35px" pl={5}>
+                      No results found
+                    </Flex> :
+                      <Flex align="center" fontStyle="italic" h="35px" pl={5}>
+                        No results found
+                      </Flex>
+                  )}
               </Flex>
-            )}
+            )
+            }
             {error && (
               <Box color="peoplePicker.error" fontSize="smm" mt={1} pl={3}>
                 {error.message}
@@ -223,7 +272,7 @@ const PeoplePicker = ({
                 </Box>
               </Flex>
             )}
-          </Box>
+          </Box >
         );
       }}
       rules={{ validate }}
@@ -259,8 +308,9 @@ export const peoplePickerStyles = {
       bg: '#f7f7f7',
     },
     icon: '#282F36',
-    placeholder: '#282F36',
+    placeholder: '#CBCCCD',
     error: '#E53E3E',
     tooltip: '#9A9EA1',
+    searchIcon: '#434B4F',
   },
 };

@@ -222,7 +222,8 @@ const Locations = () => {
             control={control}
             label="Owner"
             name="ownerId"
-            placeholder="Select"
+            placeholder="Name"
+            showAsDropdown={false}
             validations={{
               notEmpty: true,
             }}

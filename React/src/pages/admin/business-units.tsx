@@ -265,7 +265,7 @@ const BusinessUnits = () => {
               uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),
             }}
           />
-          <PeoplePicker control={control} label="Owner" name="ownerId" placeholder="Select" />
+          <PeoplePicker control={control} label="Owner" name="ownerId" placeholder="Name" showAsDropdown={false} />
         </Stack>
       </AdminModal>
       <Header
