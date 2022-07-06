@@ -307,7 +307,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                   rounded="10px"
                   w="fit-content"
                 >
-                  Remove
+                  Delete
                 </Button>
               ) : (
                 <Spacer />
