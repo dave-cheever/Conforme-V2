@@ -36,7 +36,7 @@ const AuditHistory = () => {
   const { navigateTo } = useNavigate();
   const { audit, questionsCategories } = useAuditContext();
 
-  const { data, loading } = useQuery(GET_HISTORICAL_AUDITS, {
+  const { data, loading, error } = useQuery(GET_HISTORICAL_AUDITS, {
     variables: {
       auditQueryInput: {
         auditTypesIds: [audit?.auditTypeId],
@@ -75,91 +75,100 @@ const AuditHistory = () => {
 
   return (
     <Stack bg="auditHistory.bg" px={6} py={6} rounded="20px" w="full">
-      {loading && <Loader />}
-      <Stack spacing={4}>
-        {Object.entries(days).map(([day, audits]) => (
-          <HStack align="flex-start" key={day} spacing={4}>
-            <Box
-              bg="auditHistory.date.bg"
-              color="auditHistory.date.color"
-              flexShrink={0}
-              fontSize="smm"
-              fontWeight="bold"
-              px={4}
-              py={1}
-              rounded="10px"
-            >
-              {day}
-            </Box>
-            <Stack spacing={4} w="full">
-              {audits.map((audit) => (
-                <HStack
-                  _hover={{
-                    bg: 'auditHistory.listItem.bg.hover',
-                  }}
-                  bg="auditHistory.listItem.bg.default"
-                  key={audit._id}
-                  p={4}
-                  role="group"
+      {loading ? (
+        <Loader />
+      ) : (
+        <Stack spacing={4}>
+          {Object.entries(days).length > 0 ? (
+            Object.entries(days).map(([day, audits]) => (
+              <HStack align="flex-start" key={day} spacing={4}>
+                <Box
+                  bg="auditHistory.date.bg"
+                  color="auditHistory.date.color"
+                  flexShrink={0}
+                  fontSize="smm"
+                  fontWeight="bold"
+                  px={4}
+                  py={1}
                   rounded="10px"
-                  spacing={4}
-                  w="full"
                 >
-                  <Avatar alignSelf="flex-start" name={audit?.auditor?.displayName} size="sm" src={audit?.auditor?.imgUrl} />
-                  <Stack flexGrow={1} spacing={2}>
-                    <Flex direction="column">
-                      <Text color="auditHistory.listItem.auditor" fontSize="ssm">
-                        {audit.auditor?.displayName}
-                        {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
-                      </Text>
-                      <Text color="auditHistory.listItem.title" fontSize="smm">
-                        Completed {a(t('audit') as string)}
-                      </Text>
-                    </Flex>
-                    <HStack fontSize="smm" spacing={6}>
-                      {questionsCategories.map((questionsCategory) => (
-                        <HStack
-                          key={questionsCategory._id}
-                          opacity={audit.questionsCategoriesCount[questionsCategory._id] ? 1 : 0.25}
-                          spacing={2}
-                        >
-                          <Icon
-                            fill="auditHistory.listItem.icon.fill"
-                            h="13px"
-                            icon={questionsCategory.icon}
-                            stroke="auditHistory.listItem.icon.stroke"
-                            w="13px"
-                          />
-                          <Text>{audit.questionsCategoriesCount[questionsCategory._id] || 0}</Text>
-                        </HStack>
-                      ))}
-                    </HStack>
-                  </Stack>
-                  <Flex
-                    _groupHover={{
-                      display: 'flex',
-                    }}
-                    align="center"
-                    display="none"
-                  >
-                    <Button
-                      bg="auditHistory.listItem.button.bg"
-                      color="auditHistory.listItem.button.color"
-                      fontSize="ssm"
-                      fontWeight="bold"
-                      h="28px"
-                      onClick={() => navigateTo(`/audits/${audit._id}`)}
+                  {day}
+                </Box>
+                <Stack spacing={4} w="full">
+                  {audits.map((audit) => (
+                    <HStack
+                      _hover={{
+                        bg: 'auditHistory.listItem.bg.hover',
+                      }}
+                      bg="auditHistory.listItem.bg.default"
+                      key={audit._id}
+                      p={4}
+                      role="group"
                       rounded="10px"
+                      spacing={4}
+                      w="full"
                     >
-                      Load walk
-                    </Button>
-                  </Flex>
-                </HStack>
-              ))}
-            </Stack>
-          </HStack>
-        ))}
-      </Stack>
+                      <Avatar alignSelf="flex-start" name={audit?.auditor?.displayName} size="sm" src={audit?.auditor?.imgUrl} />
+                      <Stack flexGrow={1} spacing={2}>
+                        <Flex direction="column">
+                          <Text color="auditHistory.listItem.auditor" fontSize="ssm">
+                            {audit.auditor?.displayName}
+                            {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
+                          </Text>
+                          <Text color="auditHistory.listItem.title" fontSize="smm">
+                            Completed {a(t('audit') as string)}
+                          </Text>
+                        </Flex>
+                        <HStack fontSize="smm" spacing={6}>
+                          {questionsCategories.map((questionsCategory) => (
+                            <HStack
+                              key={questionsCategory._id}
+                              opacity={audit.questionsCategoriesCount[questionsCategory._id] ? 1 : 0.25}
+                              spacing={2}
+                            >
+                              <Icon
+                                fill="auditHistory.listItem.icon.fill"
+                                h="13px"
+                                icon={questionsCategory.icon}
+                                stroke="auditHistory.listItem.icon.stroke"
+                                w="13px"
+                              />
+                              <Text>{audit.questionsCategoriesCount[questionsCategory._id] || 0}</Text>
+                            </HStack>
+                          ))}
+                        </HStack>
+                      </Stack>
+                      <Flex
+                        _groupHover={{
+                          display: 'flex',
+                        }}
+                        align="center"
+                        display="none"
+                      >
+                        <Button
+                          bg="auditHistory.listItem.button.bg"
+                          color="auditHistory.listItem.button.color"
+                          fontSize="ssm"
+                          fontWeight="bold"
+                          h="28px"
+                          onClick={() => navigateTo(`/audits/${audit._id}`)}
+                          rounded="10px"
+                        >
+                          Load walk
+                        </Button>
+                      </Flex>
+                    </HStack>
+                  ))}
+                </Stack>
+              </HStack>
+            ))
+          ) : (
+            <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
+              {error || 'No history'}
+            </Flex>
+          )}
+        </Stack>
+      )}
     </Stack>
   );
 };
