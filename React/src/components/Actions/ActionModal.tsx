@@ -16,6 +16,7 @@ import {
   Spacer,
   Stack,
   Text,
+  Tooltip,
   useToast,
 } from '@chakra-ui/react';
 import { t } from 'i18next';
@@ -140,7 +141,9 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
-              <Avatar mr={3} name={action?.assignee?.displayName} rounded="full" size="xs" src={action?.assignee?.imgUrl} />
+              <Tooltip label={action?.assignee?.displayName ?? 'No assignee'}>
+                <Avatar mr={3} name={action?.assignee?.displayName} rounded="full" size="xs" src={action?.assignee?.imgUrl} />
+              </Tooltip>
               {action?.title}
             </Flex>
             <Flex alignItems="center">

@@ -35,7 +35,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
       {/* eslint-disable-next-line react/jsx-max-props-per-line */}
       <Flex w="full">
         <Skeleton isLoaded={!!action} rounded="full">
-          <Tooltip label={action?.assignee?.displayName}>
+          <Tooltip label={action?.assignee?.displayName ?? 'No assignee'}>
             <Avatar boxSize="24px" cursor="pointer" name={action?.assignee?.displayName} size="sm" src={action?.assignee?.imgUrl} />
           </Tooltip>
         </Skeleton>
