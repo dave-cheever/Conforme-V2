@@ -63,11 +63,11 @@ export const insightsCardsDotsPosition = {
 
 export const userMenus = [
   {
-    label: 'Terms and Conditions',
+    label: 'Terms and conditions',
     url: '/terms-and-conditions',
   },
   {
-    label: 'Privacy Policy',
+    label: 'Privacy policy',
     url: '/privacy-policy',
   },
   {
