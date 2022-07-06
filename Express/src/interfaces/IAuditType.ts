@@ -1,4 +1,4 @@
-import { IAuditSection, IBase, TFrequency } from 'app-interfaces';
+import { IAuditSection, IBase, IQuestionsCategory, TFrequency } from 'app-interfaces';
 
 export interface IAuditType extends IBase {
   name: string;
@@ -6,4 +6,7 @@ export interface IAuditType extends IBase {
   startingDate: Date;
   view: 'categorized' | 'singlePage';
   sections: IAuditSection[];
+
+  // Additional fields
+  questionsCategories: IQuestionsCategory[];
 }

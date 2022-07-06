@@ -1,6 +1,7 @@
 import { IAuditOption } from './IAuditOption';
 import { IAuditSection } from './IAuditSection';
 import { IBase } from './IBase';
+import { IQuestionsCategory } from './IQuestionsCategory';
 import { TFrequency } from './TFrequency';
 
 export interface IAuditType extends IBase {
@@ -10,4 +11,7 @@ export interface IAuditType extends IBase {
   view: 'categorized' | 'singlePage';
   sections: IAuditSection[];
   options?: IAuditOption[];
+
+  // Additional fields
+  questionsCategories: IQuestionsCategory[];
 }

@@ -33,6 +33,7 @@ export const auditTypesTypeDefs = `
     startingDate: Date!
     view: String!
     sections: [AuditSection!]!
+    questionsCategories: [QuestionsCategory!]!
     options: [AuditOption!]
     metatags: Metatags
   }

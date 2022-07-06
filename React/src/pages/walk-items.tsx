@@ -103,25 +103,30 @@ const GET_ANSWERS = gql`
         updatedAt
       }
     }
+    auditTypes {
+      _id
+      questionsCategories {
+        _id
+        name
+      }
+    }
   }
 `;
 
 const WalkItems = () => {
-  const {
-    filtersValues,
-    setUsedFilters,
-    setFilters,
-    setShowFiltersPanel,
-    walkItemFiltersValue,
-    setWalkItemFiltersValue,
-    usedFilters,
-    questionsCategories,
-  } = useFiltersContext();
+  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, walkItemFiltersValue, setWalkItemFiltersValue, usedFilters } =
+    useFiltersContext();
   const { user } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
-  const panels = useMemo(() => [{ _id: 'all', name: 'All' }, ...(questionsCategories ?? [])], [questionsCategories]);
+  const panels = useMemo(
+    () => [
+      { _id: 'all', name: 'All' },
+      ...(data?.auditTypes ?? []).reduce((acc, auditType) => [...acc, ...(auditType.questionsCategories ?? [])], []),
+    ],
+    [data?.auditTypes],
+  );
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
   const { sortedData: sortedAnswers, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAnswers);
