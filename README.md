@@ -287,7 +287,7 @@ Overview email address:
   "id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "overviewEmailAddress",
-  "label": "Email adress for receving the weekly emails",
+  "label": "Email address for receiving the weekly emails",
   "value": [
       "admin@ccbmidev.onmicrosoft.com"
   ],
@@ -395,7 +395,7 @@ Audits status reminders triggers:
   "value": [1],
   "type": "defaultSettings",
   "inputType": "text",
-  "description": "Use this setting to select dayf of month when to send coming up and missed audit notifications",
+  "description": "Use this setting to select day of month when to send coming up and missed audit notifications",
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {
