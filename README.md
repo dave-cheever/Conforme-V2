@@ -22,7 +22,203 @@ Then in settings.json add the following object to configure ESLint's working dir
 You will find some commands in package.json that enable checking for errors/warnings, formatting with Prettier
 and linting with ESLint automatically. These commands are: lint:check, lint:fix, format:check, format:fix
 
+## Azure AD application
+
+In order to authenticate with your local development site and also to be able to authorise your users to access the site (through group memberships) you will need to configure the Azure AD from your O365 dev tenant
+
+- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
+- Navigate to Azure Active Directory
+- Select 'App Registration'
+- Click on 'New registration'
+- Enter app name (i.e. 'conforme')
+- Select the option 'Accounts in this organizational directory only (Single tenant)'
+- Enter 'http://<API_URL>/auth/aad/callback' in redirect URL
+- Click on Register
+- Copy the Application (client) ID and add to your organization as `<AAD app id>`
+- Copy the Directory (tenant) ID and add to your organization as `<tenant id>`
+- Give app permissions
+  - Click on 'API permissions'
+  - Click on 'Add a permission'
+  - Select 'Microsoft Graph'
+  - Select 'Application permissions'
+  - Find and select 'Group.Read.All'
+  - Press 'Add permissions'
+  - Press 'Grant admin consent for ...' and then 'Yes'
+- Do the same for 'User.Read.All'
+- Do the same for 'Files.ReadWrite.All'
+- Grant required authentication data
+  - Click on 'Authentication'
+  - Under 'Implicit grant' select 'ID tokens'
+  - Press 'Save' button
+- Generate the Client Secret
+  - Click on 'Certificates & secrets'
+  - Click on 'New client secret'
+  - Select 'Never' for when the secret should expire
+  - Copy the value from Key and add to your organization as `<AAD app secret>`
+
+## Access Security Group
+
+In order to access the application you must configure a main security group to allow access.
+
+- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
+- Navigate to Azure Active Directory
+- Click on Groups
+- Select New group
+- Make sure 'Security' type is selected
+- Enter 'Conforme Access' as the group name
+- Click on Owners and add the admin user from your dev tenant
+- Click on Members and add any users from your dev tenant that you intend to use for testing locally
+- Click on create
+- Copy the Oject Id from the group and add to your organization as `<access group id>`
+
+Follow the same for Readers (`<reader's group id>`) and Admins (`<admin's group id>`) AD groups.
+
+## SharePoint
+
+- You will need to create a site on your development O365 tenant.
+
+### Creating the site
+
+Within any SharePoint site, click the "SharePoint" text on the top-left of your screen to get to home screen and follow these steps to create new one:
+
+- Click 'Create site' on top navitagion menu
+- Choose 'Team site' from the options provided
+- Name the site accordingly (i.e. Conforme)
+- Click 'Finish' when done
+  and your site will be ready for use.
+  Note - the sharepoint url must contain /sites/ to work correctly
+
+Update your organization with the URL of this site for the following field:
+
+`<sharepoint site url>` = https://TENANTNAME.sharepoint.com/sites/Conforme
+
+Then go to `<sharepoint site url>`/Shared%20Documents/
+
+- Click the settings Cog top right
+- Click libary settings
+- Take the library id value from the url params eg List=%7B`<library id>`%7D
+- Add `<library id>` to your organization
+
+### AD app permissions
+
+You must grant SharePoint permissions to the Azure AD app to allow it to upload documents to the SharePoint library.
+
+- Open app registration page (`<sharepoint site url>`/\_layouts/15/appinv.aspx)
+- In 'App Id' paste your `<AAD app id>`
+- Press 'Lookup' button
+- Type 'localhost' in 'App Domain'
+- Paste the following to 'Permission Request XML':
+
+```
+<AppPermissionRequests>
+  <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl"/>
+</AppPermissionRequests>
+```
+
+- Press 'Create'
+- Press 'Trust It'
+
+## Emails service
+
+Conforme uses Azure Functions app to send notifications.
+
+- Start by opening the [Function App section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp)
+- Click the **Create** button in the top menu
+- Fill in the following values depending on environment:
+  - SIT
+    - Subscription: Conforme - SIT
+    - Resource group: rg-conforme-web-sit
+    - Function App name: conforme-functions-sit
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+  - SAT
+    - Subscription: Conforme - SAT
+    - Resource group: rg-conforme-web-sat
+    - Registry name: conforme-functions-sat
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+  - PROD
+    - Subscription: Conforme - Production
+    - Resource group: rg-conforme-web-prod
+    - Registry name: conforme-functions-prod
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+- Click the **Next: Hosting >** button in the top menu
+- Select "Linux" as operating system
+- Go to the **Review + create** tab
+- Read it carefully and make sure everything is correct, then click on the **Create** button
+
+Deployment of Functions app will be proceed by Azure Pipelines.
+
+## Configure app services custom domain
+
+To make the app working on every scenario (some of browsers doesn't support 3rd party cookies) you need to configure custom domain to both: client and server.
+First of all you need to register a new custom domain. If you have it, follow these steps to configure it separately for client and server:
+
+- Start by opening the [App Service section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/appservice)
+- Open your app service
+- Navigate to **Custom domains** menu option
+- Select **Add custom domain** option
+- Enter a domain with a subdomain (e.g. cielocosta.conforme.app)
+- Press **Validate** button
+- As a **Hostname record type** select **CNAME**
+- Open the DNS settings for your domain in the provider you chosen
+- Add **CNAME** DNS record with host as **<subdomain>** (e.g. cielocosta) and value as your default app service URL (e.g. conforme.azurewebsites.net)
+- Add **TXT** DNS record with host as **asuid.<subdomain>** (e.g. asuid.cielocosta) and value as your **Custom Domain Verification ID** that you can copy from **Add custom domain** modal
+- Once you save your DNS settings get back to **Add custom domain** modal and press **Validate** button again
+- It could take a time to apply DNS settings in your domain provider, so try to validate it as long as **Domain ownership** won't be green and chacked
+- On Azure open **TLS/SSL settings** and select **Private Key Certificates (.pfx)** from the top
+- Press **Create App Service Managed Certificate** option
+- In the dropdown select your custom domain and press **Create**
+- Once certificate is created navigate to **Custom domains** tab
+- Find your domain on a list and press **Add binding**
+- Select your domain, created certificate, **SNI SSL** as type and press **Add binding**
+
 ## Database
+
+Conforme uses a CosmosDB service running in Azure.
+
+- Start by opening the [Cosmos DB section of Azure](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DocumentDb%2FdatabaseAccounts)
+- Press **+ Create** button at the top
+- Select **Azure Cosmos DB API for MongoDB**
+- Fill in the following values depending on environment:
+  - SIT
+    - Subscription: Conforme - SIT
+    - Resource group: rg-conforme-web-sit
+    - Account name: conforme-db-sit
+    - Location: (Europe) UK West
+    - Capacity mode: Provisioned throughtput
+    - Apply Free Tier Discount: Apply
+    - Limit total account throughput: selected
+    - Version: 4.2
+  - SAT
+    - Subscription: Conforme - SAT
+    - Resource group: rg-conforme-web-sat
+    - Registry name: conforme-db-sat
+    - Location: (Europe) UK West
+    - Capacity mode: Provisioned throughtput
+    - Apply Free Tier Discount: Apply
+    - Limit total account throughput: selected
+    - Version: 4.2
+  - PROD
+    - Subscription: Conforme - Production
+    - Resource group: rg-conforme-web-prod
+    - Registry name: conforme-db-prod
+    - Location: (Europe) UK West
+    - Capacity mode: Provisioned throughtput
+    - Apply Free Tier Discount: Apply
+    - Limit total account throughput: selected
+    - Version: 4.2
+- Go to the **Review + create** tab
+- Read it carefully and make sure everything is correct, then click on the **Create** button
+
+After the first app run all the collections will be created in the database.
 
 ### Collections indexes
 
@@ -37,10 +233,6 @@ In complianceItems collection:
 In auditLogs collection:
 
 - metatags.addedAt
-
-### CosmosDB
-
-Conforme uses a CosmosDB service running in Azure the details should be in the standard env file so nothing needs to change here.
 
 ### Your organization
 
@@ -122,103 +314,26 @@ Possible translations for compliance item module:
 - complianceItem
 - businessUnit
 
-## Azure AD application
-
-In order to authenticate with your local development site and also to be able to authorise your users to access the site (through group memberships) you will need to configure the Azure AD from your O365 dev tenant
-
-- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
-- Navigate to Azure Active Directory
-- Select 'App Registration'
-- Click on 'New registration'
-- Enter app name (i.e. 'conforme')
-- Select the option 'Accounts in this organizational directory only (Single tenant)'
-- Enter 'http://<API_URL>/auth/aad/callback' in redirect URL
-- Click on Register
-- Copy the Application (client) ID and add to your organization as `<AAD app id>`
-- Copy the Directory (tenant) ID and add to your organization as `<tenant id>`
-- Give app permissions
-  - Click on 'API permissions'
-  - Click on 'Add a permission'
-  - Select 'Microsoft Graph'
-  - Select 'Application permissions'
-  - Find and select 'Group.Read.All'
-  - Press 'Add permissions'
-  - Press 'Grant admin consent for ...' and then 'Yes'
-- Do the same for 'User.Read.All'
-- Do the same for 'Files.ReadWrite.All'
-- Grant required authentication data
-  - Click on 'Authentication'
-  - Under 'Implicit grant' select 'ID tokens'
-  - Press 'Save' button
-- Generate the Client Secret
-  - Click on 'Certificates & secrets'
-  - Click on 'New client secret'
-  - Select 'Never' for when the secret should expire
-  - Copy the value from Key and add to your organization as `<AAD app secret>`
-
-### Access Security Group
-
-In order to access the application you must configure a main security group to allow access.
-
-- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
-- Navigate to Azure Active Directory
-- Click on Groups
-- Select New group
-- Make sure 'Security' type is selected
-- Enter 'Conforme Access' as the group name
-- Click on Owners and add the admin user from your dev tenant
-- Click on Members and add any users from your dev tenant that you intend to use for testing locally
-- Click on create
-- Copy the Oject Id from the group and add to your organization as `<access group id>`
-
-Follow the same for Readers (`<reader's group id>`) and Admins (`<admin's group id>`) AD groups.
-
-## SharePoint
-
-- You will need to create a site on your development O365 tenant.
-
-### Creating the site
-
-Within any SharePoint site, click the "SharePoint" text on the top-left of your screen to get to home screen and follow these steps to create new one:
-
-- Click 'Create site' on top navitagion menu
-- Choose 'Team site' from the options provided
-- Name the site accordingly (i.e. Conforme)
-- Click 'Finish' when done
-  and your site will be ready for use.
-  Note - the sharepoint url must contain /sites/ to work correctly
-
-Update your organization with the URL of this site for the following field:
-
-`<sharepoint site url>` = https://TENANTNAME.sharepoint.com/sites/Conforme
-
-Then go to `<sharepoint site url>`/Shared%20Documents/
-
-- Click the settings Cog top right
-- Click libary settings
-- Take the library id value from the url params eg List=%7B`<library id>`%7D
-- Add `<library id>` to your organization
-
-### AD app permissions
-
-You must grant SharePoint permissions to the Azure AD app to allow it to upload documents to the SharePoint library.
-
-- Open app registration page (`<sharepoint site url>`/\_layouts/15/appinv.aspx)
-- In 'App Id' paste your `<AAD app id>`
-- Press 'Lookup' button
-- Type 'localhost' in 'App Domain'
-- Paste the following to 'Permission Request XML':
+### Theme
+To change a theme you need to update `theme` object in organization config in the database. Use styling structure that was implemented in app, and put it inside of `colors` property.
+Example theme that changes plus button color and delete icon color in audit questions list:
 
 ```
-<AppPermissionRequests>
-  <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl"/>
-</AppPermissionRequests>
+    "theme": {
+        "colors": {
+            "navigationTop": {
+                "addButton": "green"
+            },
+            "auditItem": {
+                "listItem": {
+                    "deleteIcon": "green"
+                }
+            }
+        }
+    },
 ```
 
-- Press 'Create'
-- Press 'Trust It'
-
-## Your organization's settings
+### Your organization's settings
 
 Every organization also needs its system settings to be configured in the database. In the Settings collection, please add the following data models to create required settings objects for your organization.
 
@@ -438,65 +553,3 @@ HSE notification:
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.
 
 Follow the instructions in the readme files for the API (Express) and Client (REACT) applications.
-
-## Emails service
-
-Conforme uses Azure Functions app to send notifications.
-
-- Start by opening the [Function App section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp)
-- Click the **Create** button in the top menu
-- Fill in the following values depending on environment:
-  - SIT
-    - Subscription: Conforme - SIT
-    - Resource group: rg-conforme-web-sit
-    - Function App name: conforme-functions-sit
-    - Publish: Code
-    - Runtime stack: Node.js
-    - Version: 14 LTS
-    - Location: UK South
-  - SAT
-    - Subscription: Conforme - SAT
-    - Resource group: rg-conforme-web-sat
-    - Registry name: conforme-functions-sat
-    - Publish: Code
-    - Runtime stack: Node.js
-    - Version: 14 LTS
-    - Location: UK South
-  - PROD
-    - Subscription: Conforme - Production
-    - Resource group: rg-conforme-web-prod
-    - Registry name: conforme-functions-prod
-    - Publish: Code
-    - Runtime stack: Node.js
-    - Version: 14 LTS
-    - Location: UK South
-- Click the **Next: Hosting >** button in the top menu
-- Select "Linux" as operating system
-- Go to the **Review + create** tab
-- Read it carefully and make sure everything is correct, then click on the **Create** button
-
-Deployment of Functions app will be proceed by Azure Pipelines.
-
-## Configure app services custom domain
-
-To make the app working on every scenario (some of browsers doesn't support 3rd party cookies) you need to configure custom domain to both: client and server.
-First of all you need to register a new custom domain. If you have it, follow these steps to configure it separately for client and server:
-
-- Start by opening the [App Service section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/appservice)
-- Open your app service
-- Navigate to **Custom domains** menu option
-- Select **Add custom domain** option
-- Enter a domain with a subdomain (e.g. cielocosta.conforme.app)
-- Press **Validate** button
-- As a **Hostname record type** select **CNAME**
-- Open the DNS settings for your domain in the provider you chosen
-- Add **CNAME** DNS record with host as **<subdomain>** (e.g. cielocosta) and value as your default app service URL (e.g. conforme.azurewebsites.net)
-- Add **TXT** DNS record with host as **asuid.<subdomain>** (e.g. asuid.cielocosta) and value as your **Custom Domain Verification ID** that you can copy from **Add custom domain** modal
-- Once you save your DNS settings get back to **Add custom domain** modal and press **Validate** button again
-- It could take a time to apply DNS settings in your domain provider, so try to validate it as long as **Domain ownership** won't be green and chacked
-- On Azure open **TLS/SSL settings** and select **Private Key Certificates (.pfx)** from the top
-- Press **Create App Service Managed Certificate** option
-- In the dropdown select your custom domain and press **Create**
-- Once certificate is created navigate to **Custom domains** tab
-- Find your domain on a list and press **Add binding**
-- Select your domain, created certificate, **SNI SSL** as type and press **Add binding**
