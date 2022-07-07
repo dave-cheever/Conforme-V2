@@ -16,7 +16,8 @@ import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvid
 
 const Audit = () => {
   const { user } = useAppContext();
-  const { audit, questions, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories } = useAuditContext();
+  const { audit, questions, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories, refetch } =
+    useAuditContext();
   const { isOpen: isNewQuestionModalOpen, onOpen: handleNewQuestionModalOpen, onClose: handleNewQuestionModalClose } = useDisclosure();
   const {
     isOpen: isDeleteQuestionModalOpen,
@@ -82,7 +83,13 @@ const Audit = () => {
         </>
       )}
       {selectedQuestion && !isDeleteQuestionModalOpen && (
-        <AuditAnswer handleClose={() => setSelectedQuestion(undefined)} question={selectedQuestion} />
+        <AuditAnswer
+          handleClose={() => {
+            refetch();
+            setSelectedQuestion(undefined);
+          }}
+          question={selectedQuestion}
+        />
       )}
     </Stack>
   );

@@ -12,7 +12,6 @@ import { IAnswer } from '../interfaces/IAnswer';
 import { IAuditContext } from '../interfaces/IAuditContext';
 import { IQuestion } from '../interfaces/IQuestion';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
-import { useAppContext } from './AppProvider';
 
 export const AuditContext = createContext({} as IAuditContext);
 
@@ -244,7 +243,6 @@ const AuditProvider = ({ children }) => {
   const toast = useToast();
   const { id }: { id: string } = useParams();
   const { navigateTo } = useNavigate();
-  const { module } = useAppContext();
 
   const [updateAudit] = useMutation(UPDATE_AUDIT);
   const [submitAudit] = useMutation(SUBMIT_AUDIT);
@@ -340,60 +338,6 @@ const AuditProvider = ({ children }) => {
     await refetchAuditData();
   };
 
-  const updateActions = async (actions: Partial<IAction>[], answerId: string) => {
-    const addedActions: Partial<IAction>[] = actions.filter(({ _id }) => _id?.includes('temp'));
-    const addedActionsPromises = addedActions.map(async (action) => {
-      await createAction({
-        variables: {
-          action: {
-            title: action.title,
-            dueDate: action.dueDate,
-            done: false,
-            priority: action.priority,
-            description: action.description,
-            assigneeId: action.assigneeId,
-            scope: {
-              moduleId: module?._id,
-              type: 'answer',
-              _id: answerId,
-            },
-          },
-        },
-      });
-    });
-
-    const updatedActions: Partial<IAction>[] = actions.filter(({ _id }) => !_id?.includes('temp'));
-    const updatedActionsPromises = updatedActions.map(async (action) => {
-      await saveAction({
-        variables: {
-          action: {
-            _id: action._id,
-            title: action.title,
-            dueDate: action.dueDate,
-            priority: action.priority,
-            description: action.description,
-            assigneeId: action.assigneeId,
-          },
-        },
-      });
-    });
-
-    const deletedActionsIds: string[] =
-      selectedQuestion?.answer?.actions?.reduce((acc, curr) => {
-        if (curr?._id && !actions.find(({ _id }) => _id === curr._id)) return [...acc, curr._id];
-        return acc;
-      }, [] as string[]) || [];
-    const deletedActionsPromises = deletedActionsIds.map(async (_id) => {
-      await deleteAction({
-        variables: {
-          _id,
-        },
-      });
-    });
-
-    await Promise.all([...addedActionsPromises, ...updatedActionsPromises, ...deletedActionsPromises]);
-  };
-
   const value = useMemo(
     () => ({
       audit,
@@ -416,7 +360,9 @@ const AuditProvider = ({ children }) => {
       createAnswer,
       saveAnswer,
       deleteAnswer,
-      updateActions,
+      createAction,
+      saveAction,
+      deleteAction,
       updateAudit,
       submitAudit,
       refetch,

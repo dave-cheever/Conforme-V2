@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
-import { v4 as uuidv4 } from 'uuid';
 
-import { toastFailed } from '../../bootstrap/config';
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 import { CheckIcon } from '../../icons';
+import { IAction } from '../../interfaces/IAction';
 import { TDeepPartial } from '../../interfaces/TDeepPartial';
 import ActionListItem from '../Actions/ActionListItem';
 import { isPermitted } from '../can';
@@ -27,7 +27,9 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
     saveQuestion,
     createAnswer,
     saveAnswer,
-    updateActions,
+    createAction,
+    saveAction,
+    deleteAction,
     selectedAction,
     setSelectedAction,
     refetch,
@@ -77,9 +79,10 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         if (isCustomQuestion) await saveQuestion({ variables: { question: questionData } });
         await saveAnswer({ variables: { answer: answerData } });
       } else {
-        // Answer does not exist, needs to be created
+        // Answer does not exist
         let questionId = question._id;
         if (isCustomQuestion) {
+          // Create a question if it is custom
           const { _id, ...questionValues } = questionData;
           const createdQuestionRes = await createQuestion({
             variables: {
@@ -99,6 +102,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           questionId = createdQuestion._id;
         }
 
+        // Create answer
         const createdAnswerRes = await createAnswer({
           variables: {
             answer: {
@@ -115,8 +119,30 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         });
         const createdAnswer = createdAnswerRes.data.createAnswer;
         answerId = createdAnswer._id;
+
+        // Create actions
+        await Promise.all(
+          values.actions.map(async (action: Partial<IAction>) => {
+            await createAction({
+              variables: {
+                action: {
+                  title: action.title,
+                  dueDate: action.dueDate,
+                  done: false,
+                  priority: action.priority,
+                  description: action.description,
+                  assigneeId: action.assigneeId,
+                  scope: {
+                    moduleId: module?._id,
+                    type: 'answer',
+                    _id: answerId,
+                  },
+                },
+              },
+            });
+          }),
+        );
       }
-      if (answerId) await updateActions(values.actions, answerId);
       refetch();
       handleClose();
     } catch (e: any) {
@@ -220,9 +246,48 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         </Text>
         {selectedAction ? (
           <AuditActionForm
-            handleSave={(action) => {
-              if (!action._id) setValue('actions', [...values.actions, { ...action, _id: `temp-${uuidv4()}` }]);
-              else {
+            handleSave={async (action) => {
+              // If action doesn't exist, needs to be created
+              if (!action._id) {
+                const createdAction = await createAction({
+                  variables: {
+                    action: {
+                      title: action.title,
+                      dueDate: action.dueDate,
+                      done: false,
+                      priority: action.priority,
+                      description: action.description,
+                      assigneeId: action.assigneeId,
+                      scope: {
+                        moduleId: module?._id,
+                        type: 'answer',
+                        _id: answer?._id,
+                      },
+                    },
+                  },
+                });
+                toast({
+                  ...toastSuccess,
+                  description: 'Action created',
+                });
+                setValue('actions', [...values.actions, { ...action, _id: createdAction.data?.createAction?._id }]);
+              } else {
+                await saveAction({
+                  variables: {
+                    action: {
+                      _id: action._id,
+                      title: action.title,
+                      dueDate: action.dueDate,
+                      priority: action.priority,
+                      description: action.description,
+                      assigneeId: action.assigneeId,
+                    },
+                  },
+                });
+                toast({
+                  ...toastSuccess,
+                  description: 'Action updated',
+                });
                 const actionIndex = values.actions.findIndex(({ _id }) => _id === action._id);
                 const actions = [...values.actions];
                 actions[actionIndex] = action;
@@ -238,12 +303,23 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                 disabled={isDisabled}
                 index={index}
                 key={action._id}
-                onDelete={() =>
-                  setValue(
-                    'actions',
-                    values.actions.filter((a, i) => i !== index),
-                  )
-                }
+                onDelete={async () => {
+                  const deletedAction = await deleteAction({
+                    variables: {
+                      _id: action._id,
+                    },
+                  });
+                  if (deletedAction.data?.deleteAction) {
+                    toast({
+                      ...toastSuccess,
+                      description: 'Action deleted',
+                    });
+                    setValue(
+                      'actions',
+                      values.actions.filter((a, i) => i !== index),
+                    );
+                  }
+                }}
               />
             ))}
 

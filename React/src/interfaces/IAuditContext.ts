@@ -56,11 +56,9 @@ export interface IAuditContext {
   createAnswer: gqlFunction;
   saveAnswer: gqlFunction;
   deleteAnswer: gqlFunction;
-
-  updateActions: (
-    actions: Partial<IAction>[],
-    answerId: string,
-  ) => Promise<void>;
+  createAction: gqlFunction;
+  saveAction: gqlFunction;
+  deleteAction: gqlFunction;
 
   updateAudit: (
     options?: MutationFunctionOptions<
