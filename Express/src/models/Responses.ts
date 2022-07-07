@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   IAuditValues,
+  IOrganization,
   IQuestionChoice,
   IResponse,
   IResponseModel,
@@ -15,9 +16,11 @@ import {
   AuditLogs,
   BusinessUnits,
   ComplianceItems,
+  Notifications,
   Organizations,
   Users,
 } from 'app-models';
+import { TRACKER_RESPONSE_ASSIGNED } from 'app-shared';
 import {
   genMetatags,
   getAuditValueForBoolean,
@@ -28,6 +31,7 @@ import {
   getAuditValueForUsersArray,
   getNextRenewalDate,
   getPrevRenewalDate,
+  getProtocol,
   isPermitted,
   join,
   removeDatabaseFields,
@@ -79,6 +83,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
           'switch',
           'datepicker',
           'multipleChoice',
+          'url',
         ],
       },
       name: String,
@@ -628,6 +633,41 @@ responseSchema.statics.customRecalculateResponse = async function (
   }
 
   await this.updateOne({ _id: responseId }, response);
+};
+
+responseSchema.statics.customAssigneeNotification = async function (responseId: string, participantsIds: string[], assignedRole: string, organization: IOrganization): Promise<void> {
+  const response = await this.findById(responseId).lean();
+  if (!response) return;
+
+  const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organization._id);
+  if (!complianceItem) return;
+
+  // TODO: For now take the first tracker module.
+  // Need to add module scope to tracker objects in order to fix it.
+  const module = organization.modules.find(({ type }) => type === 'tracker');
+  if (module) {
+    const assignor = await Users.customFindByIdWithDetails({ userId: response.metatags.updatedBy ?? response.metatags.addedBy, organization });
+    await Promise.all(participantsIds.map(async userId => {
+      const assignee = await Users.customFindByIdWithDetails({ userId, organization });
+      await Notifications.customCreate(
+        {
+          emailType: TRACKER_RESPONSE_ASSIGNED,
+          emailData: {
+            subject: `You have been assigned to ${complianceItem.name}`,
+            template: 'trackerResponseAssigneeTemplate',
+            ItemName: complianceItem.name,
+            LinkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/compliance-item/${responseId}">here</a>`,
+            AssignedRole: assignedRole,
+            AssignedBy: assignor.displayName,
+          },
+          status: 'pending',
+          to: [assignee?.email],
+        },
+        assignor._id,
+        organization._id,
+      );
+    }));
+  }
 };
 
 const responseModel = model<IResponse, IResponseModel>(

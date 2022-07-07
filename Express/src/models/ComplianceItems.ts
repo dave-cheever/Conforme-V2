@@ -15,6 +15,7 @@ import {
   AuditLogs,
   BusinessUnits,
   Categories,
+  Organizations,
   RegulatoryBodies,
   Responses,
 } from 'app-models';
@@ -342,6 +343,7 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
   organizationId: string;
   prevDueDate?: Date;
 }) {
+  const organization = await Organizations.customFindById(organizationId, organizationId);
   const responses = await Responses.customFind(
     { complianceItemId: complianceItem._id },
     organizationId,
@@ -495,13 +497,14 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
       organizationId,
     );
 
-    await Responses.customCreate(
+    const assignee = businessUnit.ownerId || userId;
+    const response = await Responses.customCreate(
       {
         _id: uuidv4(),
         complianceItemId: complianceItem._id,
         businessUnitId,
-        accountableId: businessUnit.ownerId || userId,
-        responsibleId: businessUnit.ownerId || userId,
+        accountableId: assignee,
+        responsibleId: assignee,
         contributorsIds: [],
         followersIds: [],
         status: 'notStarted',
@@ -519,6 +522,9 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
       userId,
       organizationId,
     );
+
+    // Send notification to assignee
+    await Responses.customAssigneeNotification(response._id, [assignee], 'accountable', organization);
   }
 };
 

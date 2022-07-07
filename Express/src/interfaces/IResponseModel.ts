@@ -1,4 +1,4 @@
-import { IBaseModel, IResponse, IUser } from 'app-interfaces';
+import { IBaseModel, IOrganization, IResponse, IUser } from 'app-interfaces';
 
 export interface IResponseModel extends IBaseModel<IResponse> {
   customSearch: (
@@ -7,4 +7,5 @@ export interface IResponseModel extends IBaseModel<IResponse> {
     organizationId: string,
   ) => Promise<IResponse>;
   customRecalculateResponse: (responseId: string) => Promise<void>;
+  customAssigneeNotification: (responseId: string, participantsIds: string[], assignedRole: string, organization: IOrganization) => Promise<void>;
 }

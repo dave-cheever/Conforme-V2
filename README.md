@@ -377,6 +377,35 @@ Response due email days:
 
 ```
 
+Response assiged notification:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "trackerResponseAssigneeTemplate",
+  "label": "Tracker response assigned notification",
+  "value": "<p>You have been assigned to %ItemName% as %AssignedRole% by %AssignedBy%.</p><p>To open it, click %LinkTo%.</p>",
+  "type": "emailTemplate",
+  "options": [
+    "ItemName",
+    "AssignedRole",
+    "AssignedBy",
+    "LinkTo"
+  ],
+  "inputType": "emailTemplate",
+  "description": "",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649742835206"
+      }
+    }
+  }
+}
+```
+
 Overview email:
 
 ```

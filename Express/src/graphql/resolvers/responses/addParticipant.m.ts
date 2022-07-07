@@ -81,13 +81,18 @@ const addParticipant = async (
         break;
     }
 
-    const updatedResponse = await Responses.customUpdateOne(
-      { _id },
-      update,
-      user._id,
-      organization._id,
-    );
-    return updatedResponse;
+    if (Object.keys(update).length > 0) {
+      await Responses.customAssigneeNotification(_id, participantIds, permission, organization);
+      const updatedResponse = await Responses.customUpdateOne(
+        { _id },
+        update,
+        user._id,
+        organization._id,
+      );
+      return updatedResponse;
+    }
+
+    return response;
   } catch (error: any) {
     throw new Error(error);
   }
