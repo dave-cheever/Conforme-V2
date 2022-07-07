@@ -27,6 +27,7 @@ export const settingsTypeDefs = `
     placeholder: String
     inputType: String
     help: String
+    scope: Scope
   }
 
   input SettingsUpdate {
@@ -42,7 +43,7 @@ export const settingsTypeDefs = `
 `;
 
 export const settingsQueryDefs = `
-  settings(type: String): [SettingsGet!]!
+  settings(type: String, moduleId: ID): [SettingsGet!]!
   roles: String!
 `;
 

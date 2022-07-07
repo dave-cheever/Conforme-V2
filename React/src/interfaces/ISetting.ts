@@ -1,4 +1,5 @@
 import { IBase } from './IBase';
+import { IScope } from './IScope';
 
 export interface ISetting extends IBase {
   name: string;
@@ -12,4 +13,5 @@ export interface ISetting extends IBase {
   inputType: string;
   variant?: string;
   help?: string;
+  scope: IScope;
 }

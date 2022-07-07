@@ -1,4 +1,4 @@
-import { IBase } from 'app-interfaces';
+import { IBase, IScope } from 'app-interfaces';
 
 export interface ISetting extends IBase {
   name: string;
@@ -10,4 +10,5 @@ export interface ISetting extends IBase {
   organizationId: string;
   placeholder?: string;
   inputType: string;
+  scope: IScope;
 }

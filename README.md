@@ -356,20 +356,23 @@ Response due email days:
 
 ```
 {
-    "id" : <random generated UUID>,
-    "organizationId": <organization's id>,
-    "name" : "responseDueEmailDays",
-    "label" : "Days from due date email reminders are sent",
-    "value" : [
-        90,
-        30,
-        7,
-        -1
-    ],
-    "type" : "defaultSettings",
-    "inputType" : "table",
-    "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning compliance item responses.",
-    "metatags": {},
+  "id" : <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name" : "responseDueEmailDays",
+  "label" : "Days from due date email reminders are sent",
+  "value" : [
+      90,
+      30,
+      7,
+      -1
+  ],
+  "type" : "defaultSettings",
+  "inputType" : "table",
+  "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning compliance item responses.",
+  "scope": {
+    moduleId: <module id>
+  },
+  "metatags": {},
 }
 
 ```
@@ -379,18 +382,21 @@ Overview email:
 ```
 
 {
-    "id": <random generated UUID>,
-    "organizationId": <organization's id>,
-    "name" : "responseWeeklyEmailTemplate",
-    "label" : "Weekly Summary",
-    "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance Item Overview</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 12px;\">Responses</span></p><p><span style=\"font-size: 12px;\">%ResponseTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-size: 16px;\">Gloratio</span></p>",
-    "type" : "emailTemplate",
-    "options" : [
-        "ResponseTable"
-    ],
-    "description" : "",
-    "inputType" : "emailTemplate",
-    "metatags": {},
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name" : "responseWeeklyEmailTemplate",
+  "label" : "Weekly Summary",
+  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance Item Overview</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 12px;\">Responses</span></p><p><span style=\"font-size: 12px;\">%ResponseTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-size: 16px;\">Gloratio</span></p>",
+  "type" : "emailTemplate",
+  "options" : [
+      "ResponseTable"
+  ],
+  "description" : "",
+  "inputType" : "emailTemplate",
+  "scope": {
+    moduleId: <module id>
+  },
+  "metatags": {},
 }
 
 ```
@@ -408,6 +414,9 @@ Overview email address:
   ],
   "type": "configValue",
   "description": "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
+  "scope": {
+    moduleId: <module id>
+  },
   "metatags": {},
 }
 ```
@@ -417,21 +426,24 @@ Due email:
 ```
 
 {
-    "id": <random generated UUID>,
-    "organizationId": <organization's id>,
-    "name" : "responseRemainderEmailTemplate",
-    "label" : "Response reminders",
-    "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that compliance item %ComplianceItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
-    "type" : "emailTemplate",
-    "options" : [
-        "FirstName",
-        "ComplianceItemName",
-        "DueText",
-        "Link"
-    ],
-    "description" : "",
-    "inputType" : "emailTemplate",
-     "metatags": {}
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name" : "responseRemainderEmailTemplate",
+  "label" : "Response reminders",
+  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that compliance item %ComplianceItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+  "type" : "emailTemplate",
+  "options" : [
+      "FirstName",
+      "ComplianceItemName",
+      "DueText",
+      "Link"
+  ],
+  "description" : "",
+  "inputType" : "emailTemplate",
+  "scope": {
+    moduleId: <module id>
+  },
+  "metatags": {}
 }
 ```
 
@@ -446,6 +458,9 @@ Maximum delegates:
   "value": "2",
   "type": "configValue",
   "description": "Use this setting to default to a specific maximum number of Delegates",
+  "scope": {
+    moduleId: <module id>
+  },
   "metatags": {},
 }
 ```
@@ -463,6 +478,10 @@ Email address receiving weekly digest:
   ],
   "type": "defaultSettings",
   "description": "Use this setting to select who should recieve email digest regarding audits.",
+  "inputType": "table",
+  "scope": {
+    moduleId: <module id>
+  },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {
@@ -470,8 +489,7 @@ Email address receiving weekly digest:
         "$numberLong": "1649318496996"
       }
     }
-  },
-  "inputType": "table"
+  }
 }
 ```
 
@@ -488,6 +506,9 @@ Weekly digest email template:
   "options": ["NumberOfAudits"],
   "description": "",
   "inputType": "emailTemplate",
+  "scope": {
+    moduleId: <module id>
+  },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {
@@ -511,6 +532,9 @@ Audits status reminders triggers:
   "type": "defaultSettings",
   "inputType": "text",
   "description": "Use this setting to select day of month when to send coming up and missed audit notifications",
+  "scope": {
+    moduleId: <module id>
+  },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {
@@ -537,6 +561,9 @@ HSE notification:
   ],
   "inputType": "emailTemplate",
   "description": "",
+  "scope": {
+    moduleId: <module id>
+  },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {

@@ -21,6 +21,17 @@ const settingSchema = new Schema<ISetting, ISettingModel>({
   organizationId: String,
   placeholder: String,
   inputType: String,
+  scope: {
+    module: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    moduleId: String,
+    type: {
+      type: String,
+    },
+    _id: String,
+  },
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -32,6 +43,42 @@ const settingSchema = new Schema<ISetting, ISettingModel>({
 });
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
+
+settingSchema.statics.customFind = async function (
+  selector: any = {},
+  organizationId: string,
+): Promise<ISetting[]> {
+  const settings = await this.find({
+    ...selector,
+    organizationId,
+    'metatags.removedAt': { $eq: null },
+  }).lean();
+  return settings;
+};
+
+settingSchema.statics.customFindByType = async function (
+  type: string,
+  organizationId: string,
+): Promise<ISetting[]> {
+  const settings = await this.find({
+    type,
+    organizationId,
+    'metatags.removedAt': { $eq: null },
+  }).lean();
+  return settings;
+};
+
+settingSchema.statics.customFindByName = async function (
+  name: string,
+  organizationId: string,
+): Promise<ISetting[]> {
+  const settings = await this.find({
+    name,
+    organizationId,
+    'metatags.removedAt': { $eq: null },
+  }).lean();
+  return settings;
+};
 
 settingSchema.statics.customFindOne = async function (
   selector: any = {},
@@ -57,30 +104,6 @@ settingSchema.statics.customFindById = async function (
   if (!setting) throw new Error('Setting not found');
 
   return setting;
-};
-
-settingSchema.statics.customFindByType = async function (
-  type: string,
-  organizationId: string,
-): Promise<ISetting[]> {
-  const settings = await this.find({
-    type,
-    organizationId,
-    'metatags.removedAt': { $eq: null },
-  }).lean();
-  return settings;
-};
-
-settingSchema.statics.customFindByName = async function (
-  name: string,
-  organizationId: string,
-): Promise<ISetting[]> {
-  const settings = await this.find({
-    name,
-    organizationId,
-    'metatags.removedAt': { $eq: null },
-  }).lean();
-  return settings;
 };
 
 settingSchema.statics.customFindOneByName = async function (

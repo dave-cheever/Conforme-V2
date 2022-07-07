@@ -33,6 +33,9 @@ const SETTINGS = gql`
       inputType
       placeholder
       help
+      scope {
+        moduleId
+      }
     }
   }
 `;
@@ -61,9 +64,9 @@ const ORGANIZATION = gql`
 `;
 
 const useInit = () => {
+  const { user, setRoles, setOrganizationConfig, setModule, setSettings } = useAppContext();
   const { loading: loadingSettings, error: settingsError, data: settingsData } = useQuery(SETTINGS);
   const { loading: loadingOrganization, error: organizationError, data: organizationData } = useQuery(ORGANIZATION);
-  const { user, setRoles, setOrganizationConfig, setModule, setSettings } = useAppContext();
   const location = useLocation();
   const history = useHistory();
 
@@ -74,7 +77,7 @@ const useInit = () => {
       setRoles(parsedRoles);
       setSettings(settingsData?.settings || []);
     }
-  }, [settingsError, settingsData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [settingsError, JSON.stringify(settingsData)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (organizationError) throw organizationError;

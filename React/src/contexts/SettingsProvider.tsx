@@ -1,21 +1,16 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
 
 import { ISettingsContext } from '../interfaces/ISettingsProvider';
+import { useAppContext } from './AppProvider';
 
 export const SettingsContext = createContext({} as ISettingsContext);
 
 const GET_SETTINGS_DATA = gql`
-  query {
-    defaultSettings: settings(type: "defaultSettings") {
+  query GetSettings($moduleId: ID) {
+    defaultSettings: settings(type: "defaultSettings", moduleId: $moduleId) {
       _id
       name
       value
@@ -26,7 +21,7 @@ const GET_SETTINGS_DATA = gql`
       placeholder
       help
     }
-    notificationSettings: settings(type: "notificationSettings") {
+    notificationSettings: settings(type: "notificationSettings", moduleId: $moduleId) {
       _id
       name
       value
@@ -82,16 +77,17 @@ export const settingSections: settingsSection[] = [
 
 export const useSettingsContext = () => {
   const context = useContext(SettingsContext);
-  if (!context) {
-    throw new Error(
-      'useSettingsContext must be used within the ComplianceItemModalProvider',
-    );
-  }
+  if (!context) throw new Error('useSettingsContext must be used within the ComplianceItemModalProvider');
   return context;
 };
 
 const SettingsProvider = ({ children }) => {
-  const { data, loading, refetch } = useQuery(GET_SETTINGS_DATA);
+  const { module } = useAppContext();
+  const { data, loading, refetch } = useQuery(GET_SETTINGS_DATA, {
+    variables: {
+      moduleId: module?._id,
+    },
+  });
 
   const defaultSettingsValues: object = useMemo(() => {
     let values = {};
@@ -167,11 +163,7 @@ const SettingsProvider = ({ children }) => {
     [control, errors, data, activeTab, formValues, reset],
   ) as unknown as ISettingsContext;
 
-  return (
-    <SettingsContext.Provider value={value}>
-      {children}
-    </SettingsContext.Provider>
-  );
+  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 };
 
 export default SettingsProvider;
