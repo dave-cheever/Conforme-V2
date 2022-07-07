@@ -68,7 +68,8 @@ const FiltersPanel = () => {
         </Button>
         <Button
           _hover={{ opacity: 0.9 }}
-          colorScheme="purpleHeart"
+          bg="filterPanel.doneButtonBg"
+          color="filterPanel.doneButtonColor"
           fontSize="14px"
           h="35px"
           ml="10px"
@@ -87,6 +88,8 @@ export default FiltersPanel;
 export const filtersPanelStyles = {
   filterPanel: {
     bg: 'white',
+    doneButtonBg: "#462AC4",
+    doneButtonColor: "#ffffff",
     resetButtonBg: '#F0F2F5',
     resetButtonColor: '#818197',
     checkboxLabelColor: '#818197',
