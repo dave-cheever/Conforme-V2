@@ -10,7 +10,6 @@ import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
 import {
   genMetatags,
-  getAuditValueForBoolean,
   getAuditValueForDate,
   getAuditValueForString,
   getAuditValueForUser,
@@ -80,10 +79,6 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
       case 'dueDate':
       case 'completedDate':
         value = getAuditValueForDate(oldValue, newValue);
-        break;
-
-      case 'done':
-        value = getAuditValueForBoolean(oldValue, newValue);
         break;
 
       // If updated 'assigneeId' field, set user's ID as value and full name as label

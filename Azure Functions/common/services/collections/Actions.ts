@@ -6,7 +6,11 @@ const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
   title: String,
   dueDate: String,
-  done: Boolean,
+  status: {
+    type: String,
+    default: 'open',
+    enum: ['open', 'closed'],
+  },
   priority: {
     type: String,
     enum: ['low', 'medium', 'high']

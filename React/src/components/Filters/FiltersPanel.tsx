@@ -47,7 +47,7 @@ const FiltersPanel = () => {
       </Flex>
       <Flex
         align="center"
-        bg="white"
+        bg="transparent"
         bottom="0px"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
         h="70px"
@@ -55,6 +55,7 @@ const FiltersPanel = () => {
         position={['sticky', 'relative']}
         py={2}
         w="full"
+        mt="auto"
       >
         <Button
           _hover={{ opacity: 0.9 }}
