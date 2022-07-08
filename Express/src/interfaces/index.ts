@@ -42,6 +42,7 @@ import { ISettingModel } from './ISettingModel';
 import { ITrackerQuestion } from './ITrackerQuestion';
 import { IGraphUser, IUser } from './IUser';
 import { IUserModel } from './IUserModel';
+import { TActionStatus } from './TActionStatus';
 import { TAnswerStatus } from './TAnswerStatus';
 import { TAuditStatus } from './TAuditStatus';
 import { TCollection } from './TCollection';
@@ -101,6 +102,7 @@ export {
   IUserModel,
   TAnswerStatus,
   TAuditStatus,
+  TActionStatus,
   TCollection,
   TFrequency,
   TModuleType,

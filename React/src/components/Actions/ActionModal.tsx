@@ -76,7 +76,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
       assigneeId: action?.assigneeId,
       dueDate: action?.dueDate,
       priority: action?.priority,
-      status: action?.done ? 'closed' : 'open',
+      status: action?.status,
       description: action?.description,
       attachments: action?.attachments,
     });
@@ -91,7 +91,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
             _id: action._id,
             title: values.title,
             dueDate: values.dueDate,
-            done: values.status === 'closed',
+            status: values?.status,
             priority: values.priority,
             description: values.description,
             assigneeId: values.assigneeId,

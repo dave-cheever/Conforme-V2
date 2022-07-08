@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { CheckboxGroup, Stack } from '@chakra-ui/react';
 
-import { walkItemStatuses } from '../../bootstrap/config';
+import { actionStatuses, walkItemStatuses } from '../../bootstrap/config';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import { auditWalkTypes, complianceItemStatuses } from '../../hooks/useFiltersUtils';
@@ -14,6 +14,18 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
   const { filtersValues, setFilters } = useFiltersContext();
   const location = useLocation();
   const { getPath } = useNavigate();
+
+  const usedStatuses = useMemo(() => {
+    switch (getPath()) {
+      case 'actions':
+        return actionStatuses;
+      case 'walk-items':
+        return walkItemStatuses;
+      case 'audits':
+      default:
+        return auditStatuses;
+    }
+  }, [location.pathname]);
 
   const value = useMemo(() => {
     switch (name) {
@@ -33,9 +45,7 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
       case 'itemStatus':
         return Object.entries(complianceItemStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       case 'status':
-        return Object.entries(getPath() === 'walk-items' ? walkItemStatuses : auditStatuses).map(([key, label]) => (
-          <FilterCheckBox key={key} label={label} value={key} />
-        ));
+        return Object.entries(usedStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       case 'walkType':
         return Object.entries(auditWalkTypes).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       default:

@@ -3,12 +3,13 @@ import { IBase } from './IBase';
 import { IDocument } from './IResponse';
 import { IScope } from './IScope';
 import { IUser } from './IUser';
+import { TActionStatus } from './TActionStatus';
 
 export interface IAction extends IBase {
   title: string;
   dueDate?: Date;
   completedDate?: Date;
-  done: boolean;
+  status: TActionStatus;
   priority: 'low' | 'medium' | 'high';
   description?: string;
   assigneeId?: string;

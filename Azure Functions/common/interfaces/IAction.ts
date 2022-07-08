@@ -2,11 +2,12 @@ import { IAnswer } from './IAnswer';
 import { IBase } from './IBase';
 import { IDocument } from './IDocument';
 import { IScope } from './IScope';
+import { TActionStatus } from './TActionStatus';
 
 export interface IAction extends IBase {
   title: string;
   dueDate?: Date;
-  done: boolean;
+  status: TActionStatus;
   priority: 'low' | 'medium' | 'high';
   description?: string;
   assigneeId?: string;

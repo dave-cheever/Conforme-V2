@@ -1,3 +1,4 @@
+import { addMonths, endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Actions, Users } from 'app-models';
@@ -44,7 +45,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     if (actionQueryInput?.status?.length === 1) {
       pipeline.push({
         $match: {
-          done: actionQueryInput.status[0] === 'completed',
+          status: { $in: actionQueryInput.status },
         },
       });
     }
@@ -55,6 +56,124 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
           assigneeId: { $in: actionQueryInput.usersIds?.assigneesIds },
         },
       });
+    }
+
+    // Filter by due date
+    if (actionQueryInput?.dueDate) {
+      const [filter, startDate, endDate] = actionQueryInput?.dueDate;
+      let $match;
+      switch (filter) {
+        case 'overdue':
+          $match = {
+            status: 'open',
+            dueDate: {
+              $lt: new Date(),
+            },
+          };
+          break;
+        case 'thisWeek':
+          $match = {
+            $and: [
+              {
+                dueDate: {
+                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+              {
+                dueDate: {
+                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisMonth':
+          $match = {
+            $and: [
+              {
+                dueDate: {
+                  $gte: startOfMonth(new Date()),
+                },
+              },
+              {
+                dueDate: {
+                  $lte: endOfMonth(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisYear':
+          $match = {
+            $and: [
+              {
+                dueDate: {
+                  $gte: startOfYear(new Date()),
+                },
+              },
+              {
+                dueDate: {
+                  $lte: endOfYear(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'nextMonth':
+          $match = {
+            $and: [
+              {
+                dueDate: {
+                  $gte: startOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+              {
+                dueDate: {
+                  $lte: endOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'exactDate':
+          $match = {
+            $and: [
+              {
+                dueDate: {
+                  $gte: startOfDay(new Date(startDate)),
+                },
+              },
+              {
+                dueDate: {
+                  $lte: endOfDay(new Date(startDate)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'dateRange':
+          if (startDate && endDate) {
+            $match = {
+              $and: [
+                {
+                  dueDate: {
+                    $gte: startOfDay(new Date(startDate)),
+                  },
+                },
+                {
+                  dueDate: {
+                    $lte: endOfDay(new Date(endDate)),
+                  },
+                },
+              ],
+            };
+          }
+          break;
+        default:
+          break;
+      }
+
+      if ($match) pipeline.push({ $match });
     }
 
     if (shouldJoin(['answer']) || !isPermitted({ user, action: 'actions.viewAll' })) {
@@ -189,23 +308,21 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
 
     if (shouldJoin(['assignee'])) {
       actions = await Promise.all(
-        actions.map(
-          async (action) => {
-            if (!action.assigneeId) return action;
-            try {
-              return {
-                ...action,
-                assignee: await Users.customFindByIdWithDetails({
-                  userId: action?.assigneeId,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.log(`Error occured for action with ID ${action._id}: ${e}`);
-              return action;
-            }
-          },
-        ),
+        actions.map(async (action) => {
+          if (!action.assigneeId) return action;
+          try {
+            return {
+              ...action,
+              assignee: await Users.customFindByIdWithDetails({
+                userId: action?.assigneeId,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for action with ID ${action._id}: ${e}`);
+            return action;
+          }
+        }),
       );
     }
 

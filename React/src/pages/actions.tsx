@@ -19,9 +19,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { isEmpty } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 
-import { actionStatuses } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionsList from '../components/Actions/ActionsList';
 import ActionSquare from '../components/Actions/ActionSquare';
@@ -44,10 +43,10 @@ const GET_ACTIONS = gql`
       title
       dueDate
       completedDate
-      done
       priority
       description
       assigneeId
+      status
       attachments {
         id
         name
@@ -103,7 +102,7 @@ const Actions = () => {
   const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
-  const tabs = ['inProgress', 'completed'];
+  const tabs = ['open', 'closed', 'overdue'];
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [filteredActions, setFilteredActions] = useState<IAction[]>([]);
   const { data, loading, error, refetch } = useQuery(GET_ACTIONS, {
@@ -112,7 +111,8 @@ const Actions = () => {
         scope: {
           type: 'answer',
         },
-        status: tabs[selectedTabIndex],
+        [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
+          tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],
       },
     },
     fetchPolicy: 'no-cache',
@@ -127,7 +127,7 @@ const Actions = () => {
   ];
 
   useEffect(() => {
-    setUsedFilters(['status', 'sitesIds', 'areasIds', 'usersIds']);
+    setUsedFilters(['status', 'sitesIds', 'areasIds', 'usersIds', 'dueDate']);
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);
@@ -135,7 +135,10 @@ const Actions = () => {
   }, []);
 
   useEffect(() => {
-    setFilters({ status: tabs[selectedTabIndex] });
+    setFilters({
+      [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
+        tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],
+    });
   }, [selectedTabIndex]);
 
   useEffect(() => {
@@ -169,7 +172,8 @@ const Actions = () => {
       refetch({
         actionQueryInput: {
           ...parsedFilters,
-          status: tabs[selectedTabIndex],
+          [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
+            tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],
           scope: {
             type: 'answer',
           },
@@ -332,7 +336,7 @@ const Actions = () => {
               key={tab}
               mr={2}
             >
-              {actionStatuses[tab]}
+              {capitalize(tab)}
             </Tab>
           ))}
         </TabList>

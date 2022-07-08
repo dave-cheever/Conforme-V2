@@ -4,7 +4,11 @@ import Users from '../common/services/collections/Users';
 import Organizations from '../common/services/collections/Organizations';
 
 import { GraphService } from '../common/services/GraphService';
-import { ACTION_OVERDUE, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
+import {
+  ACTION_OVERDUE,
+  getEmailSubject,
+  getEmailTemplate
+} from '../common/services/notifications';
 import IConfig from '../common/interfaces/IConfig';
 
 const sendOverdueActions = async (config: IConfig) => {
@@ -12,9 +16,9 @@ const sendOverdueActions = async (config: IConfig) => {
     {
       $match: {
         'metatags.removedAt': { $eq: null },
-        done: false,
+        status: 'open',
         dueDate: { $lt: new Date() }
-      },
+      }
     },
     {
       $group: {
@@ -25,25 +29,25 @@ const sendOverdueActions = async (config: IConfig) => {
             title: '$title',
             assigneeId: '$assigneeId',
             dueDate: '$dueDate',
-            scope: '$scope',
+            scope: '$scope'
           }
-        },
-      },
+        }
+      }
     },
     {
       $lookup: {
         from: 'organizations',
         localField: '_id',
         foreignField: '_id',
-        as: 'organization',
-      },
+        as: 'organization'
+      }
     },
     {
       $unwind: {
         path: '$organization',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
+        preserveNullAndEmptyArrays: true
+      }
+    }
   ]);
 
   await Promise.all(
@@ -55,47 +59,51 @@ const sendOverdueActions = async (config: IConfig) => {
           const recipients: string[] = [];
 
           if (action.assigneeId) {
-            const assignee = await Users.customFindByIdWithDetails({ userId: action.assigneeId, organization });
+            const assignee = await Users.customFindByIdWithDetails({
+              userId: action.assigneeId,
+              organization
+            });
             if (assignee) recipients.push(assignee.email);
           }
 
-          // If action was created in an answer, in an audit, 
+          // If action was created in an answer, in an audit,
           if (action.scope?._id && action.scope?.type === 'answer') {
             const answers = await Answers.aggregate([
               {
                 $match: {
                   $and: [
                     {
-                      'metatags.removedAt': { $eq: null },
+                      'metatags.removedAt': { $eq: null }
                     },
                     {
                       _id: action.scope._id,
-                      'scope.type': 'audit',
-                    },
-                  ],
-                },
+                      'scope.type': 'audit'
+                    }
+                  ]
+                }
               },
               {
                 $lookup: {
                   from: 'audits',
                   localField: 'scope._id',
                   foreignField: '_id',
-                  as: 'audit',
-                },
+                  as: 'audit'
+                }
               },
               {
                 $unwind: {
                   path: '$audit',
-                  preserveNullAndEmptyArrays: true,
-                },
-              },
+                  preserveNullAndEmptyArrays: true
+                }
+              }
             ]);
             const answer = answers[0];
-            if (module && answer) actionPath = `${organization.domain}/${module.path}/audits/${answer.scope._id}`;
+            if (module && answer)
+              actionPath = `${organization.domain}/${module.path}/audits/${answer.scope._id}`;
 
             const auditor = await Users.customFindByIdWithDetails({
               userId: answer?.audit.auditorId,
-              organization,
+              organization
             });
             if (auditor) recipients.push(auditor.email);
           }
@@ -105,7 +113,7 @@ const sendOverdueActions = async (config: IConfig) => {
             emailType: ACTION_OVERDUE,
             emailData: {
               actionTitle: action.title,
-              actionPath,
+              actionPath
             },
             organization
           });

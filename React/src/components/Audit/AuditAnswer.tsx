@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -128,7 +129,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                 action: {
                   title: action.title,
                   dueDate: action.dueDate,
-                  done: false,
+                  status: 'open',
                   priority: action.priority,
                   description: action.description,
                   assigneeId: action.assigneeId,
@@ -249,28 +250,32 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
             handleSave={async (action) => {
               // If action doesn't exist, needs to be created
               if (!action._id) {
-                const createdAction = await createAction({
-                  variables: {
-                    action: {
-                      title: action.title,
-                      dueDate: action.dueDate,
-                      done: false,
-                      priority: action.priority,
-                      description: action.description,
-                      assigneeId: action.assigneeId,
-                      scope: {
-                        moduleId: module?._id,
-                        type: 'answer',
-                        _id: answer?._id,
+                let createdActionId = `temp-${uuidv4()}`;
+                if (answer) {
+                  const actionResponse = await createAction({
+                    variables: {
+                      action: {
+                        title: action.title,
+                        dueDate: action.dueDate,
+                        status: 'open',
+                        priority: action.priority,
+                        description: action.description,
+                        assigneeId: action.assigneeId,
+                        scope: {
+                          moduleId: module?._id,
+                          type: 'answer',
+                          _id: answer?._id,
+                        },
                       },
                     },
-                  },
-                });
+                  });
+                  createdActionId = actionResponse.data?.createAction._id;
+                }
                 toast({
                   ...toastSuccess,
                   description: 'Action created',
                 });
-                setValue('actions', [...values.actions, { ...action, _id: createdAction.data?.createAction?._id }]);
+                setValue('actions', [...values.actions, { ...action, _id: createdActionId }]);
               } else {
                 await saveAction({
                   variables: {

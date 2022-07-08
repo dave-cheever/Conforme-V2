@@ -22,10 +22,11 @@ const updateAction = async (_, { actionInput }, { authorize, organization }) => 
     Actions.customAssertAssignee(action._id);
 
     // Sent notification if action was reassigned
-    if (actionInput.assigneeId && actionInput.assigneeId !== action.assigneeId) Actions.customAssigneeNotification(action._id, organization);
+    if (actionInput.assigneeId && actionInput.assigneeId !== action.assigneeId)
+      Actions.customAssigneeNotification(action._id, organization);
 
     // Send notification if action was completed
-    if (updatedAction.done) Actions.customCompletedNotification(action._id, organization);
+    if (updatedAction.status === 'closed') Actions.customCompletedNotification(action._id, organization);
 
     return updatedAction;
   } catch (err: any) {

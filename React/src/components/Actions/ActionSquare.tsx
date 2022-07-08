@@ -8,7 +8,7 @@ import { IAction } from '../../interfaces/IAction';
 const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (action: IAction) => void }) => {
   const { openInNewTab } = useNavigate();
 
-  const isOverdue = action.dueDate && !action.done && isBefore(new Date(action.dueDate), new Date());
+  const isOverdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
 
   return (
     <Stack

@@ -22,7 +22,11 @@ const actionsSchema = new Schema<IAction, IActionModel>({
   title: String,
   dueDate: Date,
   completedDate: Date,
-  done: Boolean,
+  status: {
+    type: String,
+    default: 'open',
+    enum: ['open', 'closed'],
+  },
   priority: {
     type: String,
     enum: ['low', 'medium', 'high'],
@@ -209,7 +213,7 @@ actionsSchema.statics.customUpdateOne = async function (
   const updatedAction = {
     ...action,
     ...updates,
-    completedDate: updates.done ? new Date() : undefined,
+    completedDate: updates.status === 'closed' ? new Date() : undefined,
     metatags: {
       ...action?.metatags,
       ...genMetatags('updated', userId),
@@ -358,7 +362,7 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
 
 actionsSchema.statics.customCompletedNotification = async function (actionId: string, organization: IOrganization): Promise<void> {
   const action = await this.findById(actionId).lean();
-  if (!action || !action.done) return;
+  if (!action || action.status !== 'closed') return;
 
   const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
   let actionPath = '';

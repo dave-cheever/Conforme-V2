@@ -1,32 +1,67 @@
 import { useMemo } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
+import { useLocation } from 'react-router-dom';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { Box, Checkbox, Stack, Text } from '@chakra-ui/react';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import { auditsFilterDates, trackerFilterDates } from '../../hooks/useFiltersUtils';
+import { actionsFilterDates, auditsFilterDates, trackerFilterDates } from '../../hooks/useFiltersUtils';
+import useNavigate from '../../hooks/useNavigate';
 import { MinusIcon } from '../../icons';
 
 const DateFilter = () => {
   const { filtersValues, setFilters } = useFiltersContext();
   const { module } = useAppContext();
+  const location = useLocation();
+  const { getPath } = useNavigate();
+
+  const auditsUsedFilters = useMemo(() => {
+    switch (getPath()) {
+      case 'actions':
+        return actionsFilterDates;
+      case 'audits':
+      default:
+        return auditsFilterDates;
+    }
+  }, [location.pathname]);
+
+  const auditsFiltersValue = useMemo(() => {
+    switch (getPath()) {
+      case 'actions':
+        return filtersValues.dueDate;
+      case 'audits':
+      default:
+        return filtersValues.createdDate;
+    }
+  }, [location.pathname]);
+
+  const auditsOnChangeKey = useMemo(() => {
+    switch (getPath()) {
+      case 'actions':
+        return 'dueDate';
+      case 'audits':
+      default:
+        return 'createdDate';
+    }
+  }, [location.pathname]);
+
   const value = useMemo(
-    () => (module?.type === 'tracker' ? filtersValues.dueDate : filtersValues.createdDate)?.value,
+    () => (module?.type === 'tracker' ? filtersValues.dueDate : auditsFiltersValue)?.value,
     [filtersValues, module?.type],
   );
   const [filterValue, startDate, endDate] = value || [];
 
   const onChange = (e, key) => {
-    if (e.target.checked) setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: [key] });
+    if (e.target.checked) setFilters({ [module?.type === 'tracker' ? 'dueDate' : auditsOnChangeKey]: [key] });
     else setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: [] });
   };
 
   return (
     <Box w="full">
       <Stack direction="column" mb={5}>
-        {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsFilterDates).map(([key, label]) => (
+        {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(([key, label]) => (
           <Checkbox
             colorScheme="purpleHeart"
             css={{

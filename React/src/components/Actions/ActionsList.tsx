@@ -110,7 +110,7 @@ export const actionsListStyles = {
     bg: 'white',
     open: '#282F36',
     closed: '#282F36',
-    inProgress: '#282F36',
+    overdue: '#FC5960',
     fontColor: '#282F36',
     buildingIcon: '#2B3236',
     crossIcon: '#FC5960',

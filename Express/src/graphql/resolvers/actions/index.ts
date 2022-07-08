@@ -20,7 +20,7 @@ export const actionsTypeDefs = `
     title: ID!
     dueDate: Date
     completedDate: Date
-    done: Boolean!
+    status: String!
     priority: String!
     description: String
     assigneeId: ID
@@ -42,12 +42,13 @@ export const actionsTypeDefs = `
     areasIds: [ID]
     sitesIds: [ID]
     usersIds: ActionUsersInput
+    dueDate: [String]
   }
 
   input ActionCreateInput {
     title: ID!
     dueDate: Date
-    done: Boolean!
+    status: String
     priority: String!
     description: String
     assigneeId: ID
@@ -59,7 +60,7 @@ export const actionsTypeDefs = `
     _id: ID!
     title: ID
     dueDate: Date
-    done: Boolean
+    status: String
     priority: String
     description: String
     assigneeId: ID

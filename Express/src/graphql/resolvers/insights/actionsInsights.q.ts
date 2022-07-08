@@ -28,7 +28,7 @@ const actionsInsights = async (_, __, { authorize, organization }, info: GraphQL
 
     if (shouldJoin(['totalActions'])) totalActions = actions.length;
 
-    if (shouldJoin(['completedActions'])) completedActions = actions.filter((action) => action.done).length;
+    if (shouldJoin(['completedActions'])) completedActions = actions.filter((action) => action.status === 'closed').length;
 
     if (shouldJoin(['inProgressActions'])) inProgressActions = actions.filter((action) => getActionStatus(action) === 'inProgress').length;
 
@@ -56,7 +56,7 @@ const actionsInsights = async (_, __, { authorize, organization }, info: GraphQL
       const actionsGroupedByMonth = groupBy(
         Object.entries(
           groupBy(
-            actions.filter((action) => action.done),
+            actions.filter((action) => action.status === 'closed'),
             'metatags.addedAt',
           ),
         ).map(([key, value]) => ({
@@ -132,22 +132,20 @@ const actionsInsights = async (_, __, { authorize, organization }, info: GraphQL
 
     if (shouldJoin(['mostAddedBy', 'user'])) {
       mostAddedBy = await Promise.all(
-        mostAddedBy.map(
-          async (user) => {
-            try {
-              return {
-                ...user,
-                user: await Users.customFindByIdWithDetails({
-                  userId: user?._id,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.error(`Error occured in actions insights for user with ID ${user?._id}: ${e}`);
-              return { user };
-            }
-          },
-        ),
+        mostAddedBy.map(async (user) => {
+          try {
+            return {
+              ...user,
+              user: await Users.customFindByIdWithDetails({
+                userId: user?._id,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.error(`Error occured in actions insights for user with ID ${user?._id}: ${e}`);
+            return { user };
+          }
+        }),
       );
     }
 

@@ -61,6 +61,7 @@ export interface IActionFilters {
   areasIds?: IFilter;
   status?: IFilterString;
   usersIds?: IActionUserFilter;
+  dueDate?: IFilterString;
 }
 
 export interface IWalkItemFilters {

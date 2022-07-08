@@ -19,8 +19,8 @@ export const toastFailed: any = {
 };
 
 export const actionStatuses = {
-  inProgress: 'In progress',
-  completed: 'Completed',
+  open: 'Open',
+  closed: 'Closed',
 };
 
 export const walkItemStatuses = {

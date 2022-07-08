@@ -1,10 +1,10 @@
-import { IAnswer, IBase, IDocument, IScope } from 'app-interfaces';
+import { IAnswer, IBase, IDocument, IScope, TActionStatus } from 'app-interfaces';
 
 export interface IAction extends IBase {
   title: string;
   dueDate?: Date;
   completedDate?: Date;
-  done: boolean;
+  status: TActionStatus;
   priority: 'low' | 'medium' | 'high';
   description?: string;
   assigneeId?: string;

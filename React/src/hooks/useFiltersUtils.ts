@@ -40,7 +40,6 @@ export const initialActionFilters: IActionFilters = {
   status: {
     name: 'Status',
     value: [],
-    hideFromPanel: true,
   },
   sitesIds: {
     name: 'Site',
@@ -55,6 +54,10 @@ export const initialActionFilters: IActionFilters = {
     value: {
       assigneesIds: [],
     },
+  },
+  dueDate: {
+    name: 'Due date',
+    value: [],
   },
 };
 
@@ -102,6 +105,15 @@ export const complianceItemStatuses = {
 };
 
 export const auditsFilterDates = {
+  thisWeek: 'This week',
+  thisMonth: 'This month',
+  thisYear: 'This year',
+  exactDate: 'Exact date',
+  dateRange: 'Date Range',
+};
+
+export const actionsFilterDates = {
+  overdue: 'Overdue',
   thisWeek: 'This week',
   thisMonth: 'This month',
   thisYear: 'This year',

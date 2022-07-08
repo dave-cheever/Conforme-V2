@@ -554,15 +554,15 @@ export const getAuditValueForLookupsArray = async ({ collection, labelField, old
 export const getActionStatus = (action: IAction) => {
   if (!action) return;
 
-  const { dueDate, done } = action;
+  const { dueDate, status } = action;
 
-  if (!dueDate) return done ? 'completed' : 'inProgress';
+  if (!dueDate) return status === 'closed' ? 'completed' : 'inProgress';
 
   const daysToDueDate = dueDate ? differenceInDays(new Date(dueDate), new Date(action.metatags.addedAt)) : 0;
 
-  if (action.done && (!daysToDueDate || daysToDueDate >= 0)) return 'completed';
+  if (status === 'closed' && (!daysToDueDate || daysToDueDate >= 0)) return 'completed';
 
-  if (!action.done && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
+  if (status !== 'closed' && (!daysToDueDate || daysToDueDate >= 0)) return 'inProgress';
 
   return 'overdue';
 };
@@ -602,22 +602,24 @@ export const getAuditValueForUsersArray = async ({ oldValue, newValue, organizat
   const addedIds: string[] = difference(newValue || [], oldValue || []);
 
   if (removedIds.length > 0) {
-    const items = await Promise.all(removedIds.map(async id => {
-      const item = await Users.customFindByIdWithDetails({
-        userId: id,
-        organization,
-      });
-      if (!item) {
+    const items = await Promise.all(
+      removedIds.map(async (id) => {
+        const item = await Users.customFindByIdWithDetails({
+          userId: id,
+          organization,
+        });
+        if (!item) {
+          return {
+            id,
+            label: 'User not found',
+          };
+        }
         return {
           id,
-          label: 'User not found',
+          label: `${item.firstName} ${item.lastName}`,
         };
-      }
-      return {
-        id,
-        label: `${item.firstName} ${item.lastName}`,
-      };
-    }));
+      }),
+    );
 
     value.old = {
       value: items.map(({ id }) => id),
@@ -626,22 +628,24 @@ export const getAuditValueForUsersArray = async ({ oldValue, newValue, organizat
   }
 
   if (addedIds.length > 0) {
-    const items = await Promise.all(addedIds.map(async id => {
-      const item = await Users.customFindByIdWithDetails({
-        userId: id,
-        organization,
-      });
-      if (!item) {
+    const items = await Promise.all(
+      addedIds.map(async (id) => {
+        const item = await Users.customFindByIdWithDetails({
+          userId: id,
+          organization,
+        });
+        if (!item) {
+          return {
+            id,
+            label: 'User not found',
+          };
+        }
         return {
           id,
-          label: 'User not found',
+          label: `${item.firstName} ${item.lastName}`,
         };
-      }
-      return {
-        id,
-        label: `${item.firstName} ${item.lastName}`,
-      };
-    }));
+      }),
+    );
 
     value.new = {
       value: items.map(({ id }) => id),
