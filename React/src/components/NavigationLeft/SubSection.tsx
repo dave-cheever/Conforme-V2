@@ -1,5 +1,6 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
+import { useAdminContext } from '../../contexts/AdminProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ISubSection } from '../../interfaces/INavItem';
 
@@ -7,35 +8,43 @@ const SubSection = ({
   subsection,
   setMenuOpen,
   menuOpen,
+  showIcon,
 }: {
   subsection: ISubSection;
   menuOpen?: boolean;
+  showIcon?: boolean;
   setMenuOpen?: (value: boolean) => void;
 }) => {
   const { navigateTo, isPathActive } = useNavigate();
-  const { url, label } = subsection;
+  const { setAdminModalState } = useAdminContext();
+  const { url, label, icon } = subsection;
 
   return (
     <Flex
       alignItems="center"
-      color={isPathActive(url, { exact: true }) ? 'subSection.selectedFontColor' : 'subSection.unselectedFontColor'}
+      color={isPathActive(url, { exact: true }) && !showIcon ? 'subSection.selectedFontColor' : 'subSection.unselectedFontColor'}
       cursor="pointer"
       fontSize="14px"
       fontWeight="400"
       key={label}
       lineHeight="40px"
-      ml={[menuOpen ? '35px' : '10px', '20px', '35px']}
+      ml={[menuOpen ? '35px' : '10px', '20px', showIcon ? 6 : '35px']}
       onClick={() => {
         navigateTo(url);
+        if (showIcon) setAdminModalState('add');
         if (setMenuOpen) setMenuOpen(!menuOpen);
       }}
     >
-      <Box
-        bg={isPathActive(url, { exact: true }) ? 'subSection.selectedIndicator' : 'subSection.unselectedIndicator'}
-        h="8px"
-        rounded="50%"
-        w="8px"
-      />
+      {!showIcon && (
+        <Box
+          bg={isPathActive(url, { exact: true }) && !showIcon ? 'subSection.selectedIndicator' : 'subSection.unselectedIndicator'}
+          h="8px"
+          rounded="50%"
+          w="8px"
+        />
+      )}
+
+      {showIcon && <Icon as={icon as any} h="15px" stroke="subSection.iconStroke" w="15px" />}
       <Text ml="25px">{label}</Text>
     </Flex>
   );
@@ -49,5 +58,6 @@ export const subSectionStyles = {
     unselectedFontColor: '#818197',
     selectedIndicator: '#462AC4',
     unselectedIndicator: '#ffffff',
+    iconStroke: '#818197',
   },
 };

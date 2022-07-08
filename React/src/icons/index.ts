@@ -21,6 +21,7 @@ import BlankPage from './BlankPage';
 import Briefcase from './Briefcase';
 import Building from './Building';
 import CalendarIcon from './CalendarIcon';
+import CategoryIcon from './CategoryIcon';
 import CheckIcon from './CheckIcon';
 import ChevronRight from './ChevronRight';
 import CircleChecked from './CircleChecked';
@@ -81,6 +82,7 @@ import QuestionTextIcon from './QuestionTextIcon';
 import QuestionToggleIcon from './QuestionToggleIcon';
 import RedDotIcon from './RedDotIcon';
 import RedirectIcon from './RedirectIcon';
+import RegulatoryBodyIcon from './RegulatoryBodyIcon';
 import ReplaceIcon from './ReplaceIcon';
 import RequiredIcon from './RequiredIcon';
 import ResetIcon from './Reset';
@@ -90,6 +92,7 @@ import SearchIcon from './SearchIcon';
 import SendMessageIcon from './SendMessageIcon';
 import Share from './Share';
 import ShareIcon from './ShareIcon';
+import SiteIcon from './SiteIcon';
 import TeamsIcon from './TeamsIcon';
 import ThumbUpIcon from './ThumbUpIcon';
 import TickIcon from './TickIcon';
@@ -124,6 +127,7 @@ export {
   Briefcase,
   Building,
   CalendarIcon,
+  CategoryIcon,
   CheckIcon,
   ChevronRight,
   CircleChecked,
@@ -184,6 +188,7 @@ export {
   QuestionToggleIcon,
   RedDotIcon,
   RedirectIcon,
+  RegulatoryBodyIcon,
   ReplaceIcon,
   RequiredIcon,
   ResetIcon,
@@ -193,6 +198,7 @@ export {
   SendMessageIcon,
   Share,
   ShareIcon,
+  SiteIcon,
   TeamsIcon,
   ThumbUpIcon,
   TickIcon,

@@ -43,7 +43,7 @@ const definedValidations: TDefinedValidations = {
   isUrl: (label, validationValue, value) => {
     const regex = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
     if (!value.match(regex)) return 'Invalid URL';
-  }
+  },
 };
 
 const TextInput = ({
@@ -101,10 +101,10 @@ const TextInput = ({
             {isUrl &&
               <Text
                 color={error ? 'textInput.labelFont.error' : 'textInput.labelFont.normal'}
+                cursor={error ? 'auto' : 'pointer'}
                 fontSize="ssm"
                 fontWeight="bold"
                 mb={1}
-                cursor={error ? 'auto' : 'pointer'}
                 onClick={() => {
                   if (!error) window.open(value)
                 }}

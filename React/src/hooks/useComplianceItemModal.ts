@@ -2,8 +2,8 @@ import { useCallback, useContext } from 'react';
 
 import { gql, useMutation } from '@apollo/client';
 import { useToast } from '@chakra-ui/react';
-
 import { t } from 'i18next';
+
 import { toastFailed, toastSuccess } from '../bootstrap/config';
 import { AdminContext } from '../contexts/AdminProvider';
 import {

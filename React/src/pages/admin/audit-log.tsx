@@ -80,7 +80,7 @@ const AuditLog = () => {
           const newAcc = [...acc];
           const currentLog = newAcc.find(({ _id }) => _id === curr._id);
           if (currentLog) {
-            curr.records.forEach((record, index) => {
+            curr.records.forEach((record) => {
               if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt)))) {
                 setCountAuditLogs(prevValue => prevValue + 1)
                 currentLog.records.push(record);

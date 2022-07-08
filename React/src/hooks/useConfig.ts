@@ -3,7 +3,7 @@ import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
-import { Admin, CalendarIcon, Home, ListIcon, ProgressIcon, TeamsIcon } from '../icons';
+import { Admin, BlankPage, CalendarIcon, CategoryIcon, Home, ListIcon, LocationIcon, ProgressIcon, QuestionMarkIcon, RegulatoryBodyIcon, SiteIcon, TeamsIcon } from '../icons';
 import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
 
@@ -160,7 +160,24 @@ const useConfig = () => {
     },
   };
 
-  return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems };
+  const auditAddItems = [
+    { label: capitalize(pluralize(t('question'))), url: '/walk-items', permission: 'questions.view', icon: ListIcon },
+    { label: 'Sites', url: '/admin/sites', permission: 'adminPanel.view', icon: SiteIcon },
+    { label: 'Areas', url: '/admin/areas', permission: 'adminPanel.view', icon: LocationIcon },
+    { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionMarkIcon },
+    { label: 'Questions categories', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
+    { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
+  ]
+
+  const trackerAddItems = [
+    { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items', icon: BlankPage },
+    { label: 'Regulatory bodies', url: '/admin/regulatory-bodies', icon: RegulatoryBodyIcon },
+    { label: 'Categories', url: '/admin/categories', icon: CategoryIcon },
+    { label: 'Locations', url: '/admin/locations', icon: LocationIcon },
+    { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units', icon: TeamsIcon },
+  ]
+
+  return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems, trackerAddItems, auditAddItems };
 };
 
 export default useConfig;

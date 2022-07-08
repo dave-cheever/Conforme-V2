@@ -2,6 +2,7 @@ export interface ISubSection {
   label: string;
   url: string;
   permission?: string;
+  icon?: any;
 }
 
 export interface INavItem {

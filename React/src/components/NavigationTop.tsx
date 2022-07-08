@@ -1,60 +1,30 @@
 import { useHistory } from 'react-router-dom';
 
-import { Flex, IconButton, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Stack, Text, useDisclosure } from '@chakra-ui/react';
 
-import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import NavigationTopProvider, { useNavigationTopContext } from '../contexts/NavigationTopProvider';
+import useConfig from '../hooks/useConfig';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
-import { AddIcon, SearchIcon } from '../icons';
+import { AddIcon, CrossIcon, SearchIcon } from '../icons';
 import { getInitials } from '../utils/helpers';
 import Can from './can';
+import SubSection from './NavigationLeft/SubSection';
 import SearchBar from './SearchBar';
 import UserMenu from './UserMenu';
 
 const NavigationTop = () => {
   const device = useDevice();
   const history = useHistory();
+  const { trackerAddItems, auditAddItems } = useConfig();
   const { isPathActive, navigateTo } = useNavigate();
   const { module } = useAppContext();
-  const { setAdminModalState } = useAdminContext();
   const { showFiltersPanel } = useFiltersContext();
   const { isSearchBarOpen, setIsSearchBarOpen } = useNavigationTopContext();
-
-  const pageRedirect = (page: string) => {
-    navigateTo(page);
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const isComplianceItemPage = isPathActive('/compliance-item/');
-
-  const handleAddButtonClick = () => {
-    setAdminModalState('add');
-    if (
-      module?.type === 'tracker' &&
-      [
-        `/${module?.path}/`,
-        `/${module?.path}/dashboard`,
-        `/${module?.path}/admin/users`,
-        `/${module?.path}/admin/audit-log`,
-        `/${module?.path}/admin/settings`,
-      ].includes(history.location.pathname)
-    )
-      return pageRedirect('/admin/compliance-items');
-    if (
-      module?.type === 'audits' &&
-      ([
-        `/${module?.path}/`,
-        `/${module?.path}/actions`,
-        `/${module?.path}/walk-items`,
-        `/${module?.path}/users`,
-        `/${module?.path}/admin/audit-log`,
-        `/${module?.path}/admin/settings`,
-      ].includes(history.location.pathname) ||
-        /\/audits/.test(history.location.pathname))
-    )
-      return pageRedirect('/audits');
-  };
 
   return (
     <Flex
@@ -66,6 +36,33 @@ const NavigationTop = () => {
       w={['100vw', 'full']}
       zIndex={10}
     >
+      {isOpen && (
+        <Box
+          bg="white"
+          bottom={['140px', 'auto']}
+          boxShadow="0px 0px 15px rgba(49, 50, 51, 0.25)"
+          left={['auto', '25px']}
+          position={['fixed', 'absolute']}
+          py={4}
+          right={['15px', 'auto']}
+          rounded="10px"
+          top={['auto', '80px']}
+          w="235px"
+          zIndex="5"
+        >
+          {module?.type === 'audits'
+            ? auditAddItems.map((item) => {
+                if (item.permission) {
+                  return (
+                    <Can action={item.permission} key={item.url} yes={() => <SubSection key={item.label} showIcon subsection={item} />} />
+                  );
+                }
+                return <SubSection key={item.label} showIcon subsection={item} />;
+              })
+            : trackerAddItems.map((item) => <SubSection key={item.label} showIcon subsection={item} />)}
+        </Box>
+      )}
+
       <Stack
         align="center"
         direction="row"
@@ -104,9 +101,15 @@ const NavigationTop = () => {
                 }
                 flexShrink={0}
                 h={['52px', '45px']}
-                icon={<AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />}
+                icon={
+                  isOpen ? (
+                    <CrossIcon h="20px" ml="1" stroke="navigationTop.addIcon" w="20px" />
+                  ) : (
+                    <AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />
+                  )
+                }
                 mr="30px"
-                onClick={handleAddButtonClick}
+                onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
                 rounded={['20px', '8px']}
@@ -130,9 +133,15 @@ const NavigationTop = () => {
                 display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
                 flexShrink={0}
                 h={['52px', '45px']}
-                icon={<AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />}
+                icon={
+                  isOpen ? (
+                    <CrossIcon h="20px" ml="1" stroke="navigationTop.addIcon" w="20px" />
+                  ) : (
+                    <AddIcon h="20px" stroke="navigationTop.addIcon" w="20px" />
+                  )
+                }
                 mr="30px"
-                onClick={handleAddButtonClick}
+                onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
                 rounded={['20px', '8px']}
