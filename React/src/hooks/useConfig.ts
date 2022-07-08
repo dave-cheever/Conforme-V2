@@ -161,7 +161,7 @@ const useConfig = () => {
   };
 
   const auditAddItems = [
-    { label: capitalize(pluralize(t('question'))), url: '/walk-items', permission: 'questions.view', icon: ListIcon },
+    { label: 'Safety Walk', url: '/', permission: 'audits.add', icon: ListIcon },
     { label: 'Sites', url: '/admin/sites', permission: 'adminPanel.view', icon: SiteIcon },
     { label: 'Areas', url: '/admin/areas', permission: 'adminPanel.view', icon: LocationIcon },
     { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionMarkIcon },
