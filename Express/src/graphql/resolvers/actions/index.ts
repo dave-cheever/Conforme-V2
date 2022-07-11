@@ -29,6 +29,7 @@ export const actionsTypeDefs = `
     answer: Answer
     metatags: Metatags
     assignee: User
+    assignor: User
   }
 
   input ActionUsersInput {

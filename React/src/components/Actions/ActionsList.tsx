@@ -71,7 +71,17 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'assignee.displayName'}
           sortOrder={sortType === 'assignee.displayName' ? sortOrder : undefined}
-          w="20%"
+          w="10%"
+        />
+        <AdminTableHeaderElement
+          label="Assigned by"
+          onClick={() => {
+            setSortType('assignor.displayName');
+            setSortOrder(sortOrder === 'asc' && sortType === 'assignor.displayName' ? 'desc' : 'asc');
+          }}
+          showSortingIcon={sortType === 'assignor.displayName'}
+          sortOrder={sortType === 'assignor.displayName' ? sortOrder : undefined}
+          w="10%"
         />
         <AdminTableHeaderElement
           label="Site"

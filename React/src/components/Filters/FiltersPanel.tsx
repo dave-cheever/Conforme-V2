@@ -52,10 +52,10 @@ const FiltersPanel = () => {
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
         h="70px"
         justify="center"
+        mt="auto"
         position={['sticky', 'relative']}
         py={2}
         w="full"
-        mt="auto"
       >
         <Button
           _hover={{ opacity: 0.9 }}
@@ -89,8 +89,8 @@ export default FiltersPanel;
 export const filtersPanelStyles = {
   filterPanel: {
     bg: 'white',
-    doneButtonBg: "#462AC4",
-    doneButtonColor: "#ffffff",
+    doneButtonBg: '#462AC4',
+    doneButtonColor: '#ffffff',
     resetButtonBg: '#F0F2F5',
     resetButtonColor: '#818197',
     checkboxLabelColor: '#818197',

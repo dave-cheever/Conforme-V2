@@ -18,5 +18,6 @@ export interface IAction extends IBase {
 
   // Additional fields - can be added in the API
   assignee?: IUser;
+  assignor?: IUser;
   answer?: IAnswer; // can be injected if scope type is 'answer'
 }

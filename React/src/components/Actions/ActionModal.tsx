@@ -19,6 +19,7 @@ import {
   Tooltip,
   useToast,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, uniqBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
@@ -257,6 +258,36 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                   </GridItem>
                 </Grid>
                 <TextInputMultiline control={control} disabled={!isUserPermittedToModify} label="Description" name="description" />
+                <Grid columnGap={4} templateColumns="repeat(2, 1fr)">
+                  <GridItem>
+                    <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                      Date added
+                    </Text>
+                    <Text fontSize="13px">{format(new Date(action?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
+                  </GridItem>
+                  {action?.assignor && (
+                    <GridItem>
+                      <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                        Assigned by
+                      </Text>
+                      <Flex align="center" direction="row" mt={1}>
+                        <Avatar name={action?.assignor?.displayName} size="xs" src={action?.assignor?.imgUrl} />
+                        <Text
+                          fontSize="13px"
+                          lineHeight="17px"
+                          opacity="1"
+                          overflow="hidden"
+                          pl={3}
+                          textOverflow="ellipsis"
+                          w="full"
+                          whiteSpace="nowrap"
+                        >
+                          {action?.assignor?.displayName}
+                        </Text>
+                      </Flex>
+                    </GridItem>
+                  )}
+                </Grid>
                 <Stack>
                   {isUserPermittedToModify && (
                     <>

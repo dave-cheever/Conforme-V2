@@ -1,7 +1,7 @@
 import { addMonths, endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Actions, Users } from 'app-models';
+import { Actions, AuditLogs, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join, priorities } from 'app-utils';
 
 const actions = async (_, { actionQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
@@ -315,6 +315,32 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
               ...action,
               assignee: await Users.customFindByIdWithDetails({
                 userId: action?.assigneeId,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for action with ID ${action._id}: ${e}`);
+            return action;
+          }
+        }),
+      );
+    }
+
+    if (shouldJoin(['assignor'])) {
+      actions = await Promise.all(
+        actions.map(async (action) => {
+          try {
+            const latestAssociatedAuditLog = await AuditLogs.aggregate([
+              {
+                $match: { organizationId: organization._id, 'element._id': action._id, 'values.assigneeId.new': { $ne: null } },
+              },
+            ]);
+            const assignorId = latestAssociatedAuditLog[0]?.metatags.addedBy;
+
+            return {
+              ...action,
+              assignor: await Users.customFindByIdWithDetails({
+                userId: assignorId ?? action.metatags.addedBy,
                 organization,
               }),
             };

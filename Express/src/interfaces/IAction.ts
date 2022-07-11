@@ -1,4 +1,4 @@
-import { IAnswer, IBase, IDocument, IScope, TActionStatus } from 'app-interfaces';
+import { IAnswer, IBase, IDocument, IScope, IUser, TActionStatus } from 'app-interfaces';
 
 export interface IAction extends IBase {
   title: string;
@@ -12,5 +12,7 @@ export interface IAction extends IBase {
   scope: IScope;
 
   // Additional fields - can be added in the API
+  assignee?: IUser;
+  assignor?: IUser;
   answer?: IAnswer; // can be injected if scope type is 'answer'
 }

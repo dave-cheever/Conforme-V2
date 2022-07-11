@@ -89,7 +89,12 @@ const GET_ACTIONS = gql`
         displayName
         imgUrl
       }
+      assignor {
+        displayName
+        imgUrl
+      }
       metatags {
+        addedAt
         updatedAt
       }
     }
@@ -120,6 +125,7 @@ const Actions = () => {
   const { sortedData: sortedActions, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredActions);
   const sortBy = [
     { label: 'Assignee', key: 'assignee.displayName' },
+    { label: 'Assigned by', key: 'assignor.displayName' },
     { label: 'Due date', key: 'dueDate' },
     { label: 'Completed date', key: 'completedDate' },
     { label: 'Site', key: 'answer.audit.site.name' },
@@ -220,6 +226,7 @@ const Actions = () => {
     { label: 'Title', key: 'title' },
     { label: 'Due Date', key: 'dueDate' },
     { label: 'Assignee', key: 'assignee.displayName' },
+    { label: 'Assigned by', key: 'assignor.displayName' },
     { label: 'Site', key: 'answer.audit.site.name' },
     { label: 'Area', key: 'answer.audit.area.name' },
     { label: 'Status', key: 'status' },

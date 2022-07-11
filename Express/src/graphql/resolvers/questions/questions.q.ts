@@ -1,6 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Questions, Users } from 'app-models';
+import { AuditLogs, Questions, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
 const questions = async (_, { questionQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
@@ -135,7 +135,6 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
 
     pipeline.push({
       $project: {
-        'answer.actions.metatags': shouldJoin(['answer', 'actions']) ? 1 : 0,
         ...getProjectFields(info.fieldNodes, 'questions'),
       },
     });
@@ -148,11 +147,47 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
         ...question,
         answer: question.answer._id
           ? {
-            ...question.answer,
-            actions: question.answer.actions.filter((action) => !action.metatags.removedAt),
-          }
+              ...question.answer,
+              actions: question.answer.actions.filter((action) => !action.metatags.removedAt),
+            }
           : undefined,
       }));
+    }
+
+    if (shouldJoin(['answer', 'actions', 'assignor'])) {
+      questions = await Promise.all(
+        questions.map(async (question) => ({
+          ...question,
+          answer: question.answer._id
+            ? {
+                ...question.answer,
+                actions: await Promise.all(
+                  question.answer.actions.map(async (action) => {
+                    try {
+                      const latestAssociatedAuditLog = await AuditLogs.aggregate([
+                        {
+                          $match: { organizationId: organization._id, 'element._id': action._id, 'values.assigneeId.new': { $ne: null } },
+                        },
+                      ]);
+                      const assignorId = latestAssociatedAuditLog[0]?.metatags.addedBy;
+
+                      return {
+                        ...action,
+                        assignor: await Users.customFindByIdWithDetails({
+                          userId: assignorId ?? action.metatags.addedBy,
+                          organization,
+                        }),
+                      };
+                    } catch (e) {
+                      console.log(`Error occured for action with ID ${action._id}: ${e}`);
+                      return action;
+                    }
+                  }),
+                ),
+              }
+            : undefined,
+        })),
+      );
     }
 
     return questions;

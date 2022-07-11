@@ -8,13 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
 import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
-import {
-  genMetatags,
-  getAuditValueForDate,
-  getAuditValueForString,
-  getAuditValueForUser,
-  removeDatabaseFields,
-} from 'app-utils';
+import { genMetatags, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, removeDatabaseFields } from 'app-utils';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -336,7 +330,16 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
   // If there is no action path, do not send the notification
   if (actionPath) {
     const assignee = await Users.customFindByIdWithDetails({ userId: action.assigneeId, organization });
-    const assignor = await Users.customFindByIdWithDetails({ userId: action.metatags.updatedBy ?? action.metatags.addedBy, organization });
+
+    const latestAssociatedAuditLog = await AuditLogs.aggregate([
+      {
+        $match: { organizationId: organization._id, 'element._id': action._id, 'values.assigneeId.new': { $ne: null } },
+      },
+    ]);
+    const assignorId = latestAssociatedAuditLog[0]?.metatags.addedBy;
+
+    const assignor = await Users.customFindByIdWithDetails({ userId: assignorId ?? action.metatags.addedBy, organization });
+
     await Notifications.customCreate(
       {
         emailType: ACTION_ASSIGNED,

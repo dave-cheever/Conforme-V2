@@ -105,6 +105,14 @@ const GET_AUDIT_DATA = gql`
           priority
           description
           assigneeId
+          assignor {
+            displayName
+            imgUrl
+          }
+          metatags {
+            addedAt
+            removedAt
+          }
         }
       }
       questionsCategoryId
@@ -142,6 +150,14 @@ const GET_AUDIT_DATA = gql`
           priority
           description
           assigneeId
+          assignor {
+            displayName
+            imgUrl
+          }
+          metatags {
+            addedAt
+            removedAt
+          }
         }
       }
       questionsCategoryId

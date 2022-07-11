@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format, isBefore } from 'date-fns';
 import { capitalize } from 'lodash';
 
@@ -53,28 +53,28 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
             </Flex>
           </Flex>
         </Flex>
-        <Box w="20%">
+        <Box w="10%">
           <Skeleton isLoaded={!!action} rounded="full">
             {action.assignee ? (
-              <Flex align="center" direction="row">
-                <Avatar name={action.assignee?.displayName} size="xs" src={action.assignee?.imgUrl} />
-                <Text
-                  color="actionsList.fontColor"
-                  fontSize="13px"
-                  lineHeight="17px"
-                  opacity="1"
-                  overflow="hidden"
-                  pl={3}
-                  textOverflow="ellipsis"
-                  w="full"
-                  whiteSpace="nowrap"
-                >
-                  {action.assignee?.displayName}
-                </Text>
-              </Flex>
+              <Tooltip label={action.assignee?.displayName}>
+                <Avatar name={action.assignee?.displayName} size="sm" src={action.assignee?.imgUrl} />
+              </Tooltip>
             ) : (
               <Flex fontSize="13px" fontStyle="italic">
                 Unassigned
+              </Flex>
+            )}
+          </Skeleton>
+        </Box>
+        <Box w="10%">
+          <Skeleton isLoaded={!!action} rounded="full">
+            {action.assignor ? (
+              <Tooltip label={action.assignor?.displayName}>
+                <Avatar name={action.assignor?.displayName} size="sm" src={action.assignor?.imgUrl} />
+              </Tooltip>
+            ) : (
+              <Flex fontSize="13px" fontStyle="italic">
+                -
               </Flex>
             )}
           </Skeleton>
