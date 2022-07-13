@@ -11,7 +11,7 @@ import { actionsFilterDates, auditsFilterDates, trackerFilterDates } from '../..
 import useNavigate from '../../hooks/useNavigate';
 import { MinusIcon } from '../../icons';
 
-const DateFilter = () => {
+const DateFilter = ({ filterName }: { filterName: string }) => {
   const { filtersValues, setFilters } = useFiltersContext();
   const { module } = useAppContext();
   const location = useLocation();
@@ -33,7 +33,7 @@ const DateFilter = () => {
         return filtersValues.dueDate;
       case 'audits':
       default:
-        return filtersValues.createdDate;
+        return filtersValues[filterName];
     }
   }, [location.pathname]);
 
@@ -43,7 +43,7 @@ const DateFilter = () => {
         return 'dueDate';
       case 'audits':
       default:
-        return 'createdDate';
+        return filterName;
     }
   }, [location.pathname]);
 
@@ -55,7 +55,7 @@ const DateFilter = () => {
 
   const onChange = (e, key) => {
     if (e.target.checked) setFilters({ [module?.type === 'tracker' ? 'dueDate' : auditsOnChangeKey]: [key] });
-    else setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: [] });
+    else setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: [] });
   };
 
   return (
@@ -96,7 +96,7 @@ const DateFilter = () => {
       {filterValue === 'exactDate' && (
         <DatePicker
           inline
-          onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: ['exactDate', date] })}
+          onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date] })}
           selected={startDate ? new Date(startDate) : new Date()}
         />
       )}
@@ -107,7 +107,7 @@ const DateFilter = () => {
           inline
           onChange={(dates) => {
             const [start, end] = dates;
-            setFilters({ [module?.type === 'tracker' ? 'dueDate' : 'createdDate']: ['dateRange', start, end] });
+            setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['dateRange', start, end] });
           }}
           selected={startDate}
           selectsRange

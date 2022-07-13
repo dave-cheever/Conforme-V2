@@ -34,6 +34,10 @@ export const initialAuditFilters: IAuditFilters = {
     name: 'Created date',
     value: [],
   },
+  dueDate: {
+    name: 'Due date',
+    value: [],
+  },
 };
 
 export const initialActionFilters: IActionFilters = {

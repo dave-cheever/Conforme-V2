@@ -54,6 +54,7 @@ export const auditsTypeDefs = `
     sitesIds: [ID]
     usersIds: AuditUsersInput
     createdDate: [String]
+    dueDate: [String]
   }
 
   input AuditCreateInput {

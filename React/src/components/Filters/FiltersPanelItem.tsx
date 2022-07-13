@@ -36,8 +36,9 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
         return <ComplianceItemFilter />;
 
       case 'dueDate':
+        return <DateFilter filterName="dueDate" />;
       case 'createdDate':
-        return <DateFilter />;
+        return <DateFilter filterName="createdDate" />;
 
       case 'locationsIds':
       case 'sitesIds':

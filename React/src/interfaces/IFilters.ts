@@ -55,6 +55,7 @@ export interface IAuditFilters {
   walkType?: IFilterString;
   usersIds?: IAuditUserFilter;
   createdDate?: IFilterString;
+  dueDate?: IFilterString;
 }
 export interface IActionFilters {
   sitesIds?: IFilter;

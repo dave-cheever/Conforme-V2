@@ -154,21 +154,24 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       });
     }
 
-    // Filter by created date
-    if (auditQueryInput?.createdDate) {
-      const [filter, startDate, endDate] = auditQueryInput?.createdDate;
+    // Filter by created date or due date
+    // Based on query parameter
+    // Audits attribute selected conditionally to filter
+    if (auditQueryInput?.createdDate || auditQueryInput?.dueDate) {
+      const [filter, startDate, endDate] = auditQueryInput?.createdDate || auditQueryInput?.dueDate;
+      const filterByCreatedDate = !!auditQueryInput.createdDate;
       let $match;
       switch (filter) {
         case 'thisWeek':
           $match = {
             $and: [
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
                 },
               },
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
                 },
               },
@@ -179,12 +182,12 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           $match = {
             $and: [
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $gte: startOfMonth(new Date()),
                 },
               },
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $lte: endOfMonth(new Date()),
                 },
               },
@@ -195,12 +198,12 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           $match = {
             $and: [
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $gte: startOfYear(new Date()),
                 },
               },
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $lte: endOfYear(new Date()),
                 },
               },
@@ -211,12 +214,12 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           $match = {
             $and: [
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $gte: startOfMonth(addMonths(new Date(), 1)),
                 },
               },
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $lte: endOfMonth(addMonths(new Date(), 1)),
                 },
               },
@@ -227,12 +230,12 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           $match = {
             $and: [
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $gte: startOfDay(new Date(startDate)),
                 },
               },
               {
-                'metatags.addedAt': {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $lte: endOfDay(new Date(startDate)),
                 },
               },
@@ -244,12 +247,12 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
             $match = {
               $and: [
                 {
-                  'metatags.addedAt': {
+                  [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                     $gte: startOfDay(new Date(startDate)),
                   },
                 },
                 {
-                  'metatags.addedAt': {
+                  [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                     $lte: endOfDay(new Date(endDate)),
                   },
                 },
