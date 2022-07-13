@@ -65,7 +65,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
             w="20%"
           />
           <AdminTableHeaderElement
-            label="Expires on"
+            label="Due for renewal"
             onClick={() => {
               setSortType('nextRenewalDate');
               setSortOrder(sortOrder === 'asc' && sortType === 'nextRenewalDate' ? 'desc' : 'asc');
