@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,6 +45,11 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   });
   const { isValid } = formState;
   const values = watch();
+
+  const { append: appendAttachment, remove: removeAttachment } = useFieldArray({
+    control,
+    name: 'attachments',
+  });
 
   useEffect(() => {
     reset({
@@ -216,26 +221,11 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           Attachments
         </Text>
         {!isDisabled && (
-          <DocumentUpload
-            callback={async (uploaded) => {
-              setValue('attachments', [...values.attachments, ...uploaded]);
-            }}
-            elementId={answer?._id || `temp-${question._id}`}
-          />
+          <DocumentUpload callback={async (uploaded) => appendAttachment(uploaded)} elementId={answer?._id || `temp-${question._id}`} />
         )}
         {values.attachments?.map((attachment, i) => (
           <Flex flexDir="column" key={i} mb={2}>
-            <DocumentUploaded
-              callback={async () => {
-                setValue(
-                  'attachments',
-                  values.attachments.filter(({ id }) => id !== attachment.id),
-                );
-              }}
-              document={attachment}
-              downloadable
-              removable={!isDisabled}
-            />
+            <DocumentUploaded callback={async () => removeAttachment(i)} document={attachment} downloadable removable={!isDisabled} />
           </Flex>
         ))}
         {values.attachments?.length === 0 && isDisabled && <Text fontSize="sm">No uploaded attachments</Text>}

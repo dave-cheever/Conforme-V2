@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import Dropzone, { FileRejection } from 'react-dropzone';
 
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
@@ -32,6 +32,7 @@ const DocumentUpload = ({
   acceptedFileTypes?: string[];
 }) => {
   const toast = useToast();
+  const uploadControllerRef = useRef<{ [key: string]: AbortController }>({});
   const [rejected, setRejected] = useState<boolean>(false);
   const [uploading, setUploading] = useState<string[]>([]);
 
@@ -40,25 +41,32 @@ const DocumentUpload = ({
     else {
       const acceptedFilesNames = acceptedFiles.map((file) => file.name);
       setUploading((uploading) => [...uploading, ...acceptedFilesNames]);
-      try {
-        const documentsData = new FormData();
-        documentsData.append('elementId', elementId);
-        if (documentName) documentsData.append('documentName', documentName);
-        acceptedFiles.forEach((file) => documentsData.append('document', file));
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/files/document`, documentsData);
-        if (callback) {
-          if (doNotAwaitCallback) callback(res.data);
-          else await callback(res.data);
+      acceptedFiles.forEach(async (file) => {
+        uploadControllerRef.current[file.name] = new AbortController();
+        try {
+          const documentsData = new FormData();
+          documentsData.append('elementId', elementId);
+          if (documentName) documentsData.append('documentName', documentName);
+          documentsData.append('document', file);
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}/files/document`, documentsData, {
+            signal: uploadControllerRef.current[file.name].signal,
+          });
+          if (callback) {
+            if (doNotAwaitCallback) callback(res.data);
+            else await callback(res.data);
+          }
+        } catch (error: any) {
+          if (error?.message !== 'canceled') {
+            toast({
+              ...toastFailed,
+              title: 'Failed',
+              description: 'Failed to upload document',
+            });
+          }
+        } finally {
+          setUploading((uploading) => uploading.filter((name) => name !== file.name));
         }
-      } catch (error) {
-        toast({
-          ...toastFailed,
-          title: 'Failed',
-          description: 'Failed to upload document',
-        });
-      } finally {
-        setUploading((uploading) => uploading.filter((name) => !acceptedFilesNames.includes(name)));
-      }
+      });
     }
   };
 
@@ -67,7 +75,13 @@ const DocumentUpload = ({
       {uploading.length > 0 ? (
         uploading.map((name) => (
           <Flex key={name} mb={3}>
-            <DocumentUploading documentName={name} />
+            <DocumentUploading
+              cancelUpload={() => {
+                uploadControllerRef.current[name].abort();
+                delete uploadControllerRef.current[name];
+              }}
+              documentName={name}
+            />
           </Flex>
         ))
       ) : (

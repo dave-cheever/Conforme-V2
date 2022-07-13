@@ -107,7 +107,8 @@
         "ignoreDeclarationSort": true
       }
     ],
-    "eol-last": "error"
+    "eol-last": "error",
+    "no-await-in-loop": "off"
   },
   "settings": {
     "react": {
