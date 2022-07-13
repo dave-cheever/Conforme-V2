@@ -42,7 +42,6 @@ const WalkItemsList = ({
   editAnswer: (answer: IAnswer) => void;
 }) => {
   const { data } = useQuery(GET_AUDITS);
-
   return (
     <Box h="full" ml="10px" overflow="none" p={[0, 1]} w="full">
       <Box bg="walkItemsList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">

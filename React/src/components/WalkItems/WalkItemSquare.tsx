@@ -1,5 +1,7 @@
 import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon } from '../../icons';
@@ -16,15 +18,13 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       boxShadow="sm"
       flexShrink={0}
       h="290px"
-      p="20px 25px 20px 25px"
-      spacing={4}
+      p="20px 25px"
+      spacing={3}
       w={['full', 'full', '350px']}
     >
-      <Flex align="center" justify="space-between">
-        <Box color="walkItemSquare.audit" fontSize="ssm" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          <Flex>{answer?.audit?.auditType?.name}</Flex>
-        </Box>
-      </Flex>
+      <Box color="walkItemSquare.section.title" fontSize="ssm" isTruncated lineHeight="20px" w="full">
+        {answer?.question?.questionsCategory?.name ? pluralize(answer.question.questionsCategory.name, 1) : '-'}
+      </Box>
       <Flex w="full">
         <Skeleton isLoaded={!!answer} rounded="full">
           <Tooltip label={answer?.addedBy?.displayName}>
@@ -71,6 +71,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Tooltip>
         </Box>
       </Flex>
+      <Flex align="center" flexDirection="column" grow={1} justify="space-between" />
       <Flex align="center" justify="space-between" w="full">
         <Box
           fontSize="ssm"
@@ -81,7 +82,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           whiteSpace="nowrap"
         >
           <Text color="walkItemSquare.section.title" fontSize="ssm">
-            Linked to
+            Related {pluralize(t('audit'), 1)}
           </Text>
           <Stack
             _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
