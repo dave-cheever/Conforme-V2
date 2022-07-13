@@ -171,7 +171,7 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
             <Stack spacing={6}>
               <Stack spacing={4}>
                 <Text fontSize="smm" fontWeight="semibold">
-                  {capitalize(t('audit'))}
+                  Related {t('audit')}
                 </Text>
                 <HStack
                   bg="walkItemModal.question.bg"
