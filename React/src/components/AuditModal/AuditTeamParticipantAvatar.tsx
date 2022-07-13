@@ -10,16 +10,17 @@ type AuditTeamParticipantAvatarProps = {
   audit?: IAudit;
   participant: IUser;
   setParticipantsModalOpen: any;
+  disabled?: boolean;
 };
 
-const AuditTeamParticipantAvatar = ({ audit, participant, setParticipantsModalOpen }: AuditTeamParticipantAvatarProps) => {
+const AuditTeamParticipantAvatar = ({ audit, participant, setParticipantsModalOpen, disabled }: AuditTeamParticipantAvatarProps) => {
   const [showDelete, setShowDelete] = useState(false);
   return (
     <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
       <Avatar
-        cursor={audit?.status === 'upcoming' ? 'pointer' : 'default'}
+        cursor={!disabled && audit?.status === 'upcoming' ? 'pointer' : 'default'}
         name={participant.displayName}
-        onMouseOver={() => setShowDelete(true)}
+        onMouseOver={() => !disabled && setShowDelete(true)}
         rounded="full"
         size="lg"
         src={participant.imgUrl}
@@ -30,7 +31,7 @@ const AuditTeamParticipantAvatar = ({ audit, participant, setParticipantsModalOp
           cursor="pointer"
           justifyContent="center"
           onClick={async () => {
-            if (audit?.status === 'upcoming' || !audit) setParticipantsModalOpen(true);
+            if (!disabled && (audit?.status === 'upcoming' || !audit)) setParticipantsModalOpen(true);
             setShowDelete(false);
           }}
           pos="absolute"

@@ -118,6 +118,7 @@ const AuditParticipants = () => {
                     <GridItem key={participant._id}>
                       <AuditTeamParticipantAvatar
                         audit={audit}
+                        disabled={!isUserPermittedToModify}
                         participant={participant}
                         setParticipantsModalOpen={setParticipantsModalOpen}
                       />
