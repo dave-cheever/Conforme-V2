@@ -108,7 +108,7 @@ export const auditsListStyles = {
     bg: 'white',
     completed: '#62C240',
     missed: '#FC5960',
-    upcoming: '#818197',
+    upcoming: '#FFA012',
     fontColor: '#282F36',
     buildingIcon: '#2B3236',
     crossIcon: '#FC5960',

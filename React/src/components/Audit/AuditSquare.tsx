@@ -100,7 +100,8 @@ export const auditSquareStyles = {
   auditSquare: {
     completed: '#62c240',
     missed: '#FC5960',
-    upcoming: '#282F36',
+    upcoming: '#FFA012',
+
     statusFontColor: '#FFFFFF',
     imageBg: '#ffffff',
     rightIcon: '#9A9EA1',
