@@ -46,8 +46,8 @@ const AuditHeader = () => {
           });
         }}
       />
-      <Flex bg="auditHeader.bg" direction="column" mb="15px" minH="100px" pl={6} w="full" zIndex={1}>
-        <Stack align="center" direction="row" h="40px" mb="15px" spacing={4} w="full">
+      <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
+        <Stack align={['flex-start', 'center']} direction={['column', 'row']} h={['auto', '40px']} mb="15px" spacing={4} w="full">
           <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold">
             {area?.name ?? 'Virtual'}
           </Heading>
@@ -57,8 +57,8 @@ const AuditHeader = () => {
             </Badge>
           )}
         </Stack>
-        <Flex pl={['10px', '0px']} pr={['35px', '25px']}>
-          <Stack direction="row" spacing={6}>
+        <Flex pr="25px">
+          <Stack direction={['column', 'row']} spacing={[3, 6]}>
             <Flex direction="column" justify="center">
               <Text fontSize="11px" opacity={0.5}>
                 Item ID
@@ -91,8 +91,11 @@ const AuditHeader = () => {
               </Text>
             </Flex>
           </Stack>
-          <Spacer display={['none', 'flex']} />
-          {/* Hidden for now according to feature 44736 */}
+          <Spacer />
+          {/**
+           * Hidden for now according to feature 44736
+           * TODO: Show "Share" button
+           */}
           {/* <AuditHeaderButton
             icon={
               <ShareIcon
@@ -110,38 +113,42 @@ const AuditHeader = () => {
             <AuditHeaderButton bgColor="#DC0043" fontColor="white" icon={null} name="Submit" onClick={handleSubmitModalOpen} />
           )}
         </Flex>
-        <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px" mt={4}>
-          <Menu>
-            {({ isOpen }) => (
-              <>
-                <MenuButton
-                  as={Button}
-                  bg={isOpen ? 'auditHeader.optionsMenuBgOpen' : 'auditHeader.optionsMenuBg'}
-                  borderRadius="10px"
-                  color="auditHeader.optionsMenuButtonColor"
-                  colorScheme="auditHeader.optionsMenuColorScheme"
-                  fontFamily="Helvetica"
-                  fontSize="smm"
-                  fontWeight="bold"
-                  isActive={isOpen}
-                  lineHeight="18px"
-                  rightIcon={<ArrowDownIcon />}
-                  textAlign="left"
-                  w="full"
-                >
-                  Options
-                </MenuButton>
+        {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
+          <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px" mt={4}>
+            <Menu>
+              {({ isOpen }) => (
+                <>
+                  <MenuButton
+                    as={Button}
+                    bg={isOpen ? 'auditHeader.optionsMenuBgOpen' : 'auditHeader.optionsMenuBg'}
+                    borderRadius="10px"
+                    color="auditHeader.optionsMenuButtonColor"
+                    colorScheme="auditHeader.optionsMenuColorScheme"
+                    fontFamily="Helvetica"
+                    fontSize="smm"
+                    fontWeight="bold"
+                    isActive={isOpen}
+                    lineHeight="18px"
+                    rightIcon={<ArrowDownIcon />}
+                    textAlign="left"
+                    w="full"
+                  >
+                    Options
+                  </MenuButton>
 
-                <MenuList
-                  borderColor="auditHeader.optionsMenuBorderColor"
-                  borderRadius="10px"
-                  boxShadow="0px 0px 80px"
-                  color="auditHeader.optionsMenuBoxShadow"
-                  minW={['calc(100vw - 50px)', '325px']}
-                  w="100%"
-                >
-                  {/* Hidden for now according to feature 44736 */}
-                  {/* <AuditHeaderMenuItem
+                  <MenuList
+                    borderColor="auditHeader.optionsMenuBorderColor"
+                    borderRadius="10px"
+                    boxShadow="0px 0px 80px"
+                    color="auditHeader.optionsMenuBoxShadow"
+                    minW={['calc(100vw - 50px)', '325px']}
+                    w="100%"
+                  >
+                    {/**
+                     * Hidden for now according to feature 44736
+                     * TODO: Show "Share" button
+                     */}
+                    {/* <AuditHeaderMenuItem
                     icon={
                       <ShareIcon
                         _groupHover={{
@@ -154,14 +161,15 @@ const AuditHeader = () => {
                     onClick={() => {}}
                     title="Share"
                   /> */}
-                  <MenuItem color="auditHeadeMenuItem.optionsMenuColor" onClick={() => {}} w="100%">
-                    <Box p="2">Save</Box>
-                  </MenuItem>
-                </MenuList>
-              </>
-            )}
-          </Menu>
-        </Flex>
+                    <MenuItem color="auditHeadeMenuItem.optionsMenuColor" onClick={handleSubmitModalOpen} w="100%">
+                      <Box p="2">Submit</Box>
+                    </MenuItem>
+                  </MenuList>
+                </>
+              )}
+            </Menu>
+          </Flex>
+        )}
       </Flex>
     </>
   );

@@ -35,7 +35,7 @@ const ActionForm = ({ handleSave }) => {
       <Text fontSize="smm" fontWeight="semibold">
         Action details
       </Text>
-      <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
+      <Grid columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
         <GridItem>
           <TextInput
             control={control}

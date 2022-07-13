@@ -217,7 +217,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         </Stack>
       )}
       <Stack w="360px">
-        <Text fontSize="11px" fontWeight="700" mb={2}>
+        <Text fontSize="ssm" fontWeight="bold" mb={2}>
           Attachments
         </Text>
         {!isDisabled && (
@@ -232,9 +232,10 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Stack>
 
       <Stack spacing={4}>
-        <Text fontSize="smm" fontWeight="semibold">
+        <Text fontSize="ssm" fontWeight="bold">
           Actions
         </Text>
+        {values.actions?.length === 0 && isDisabled && <Text fontSize="sm">No actions</Text>}
         {selectedAction ? (
           <AuditActionForm
             handleSave={async (action) => {

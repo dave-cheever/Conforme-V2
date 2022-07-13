@@ -47,9 +47,8 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
               flexDirection="column"
               h="full"
               maxH={['none', 'calc(100vh - 210px)']}
-              minH={['calc(100vh - 266px)', 'calc(100vh - 210px)']}
+              minH={['none', 'calc(100vh - 210px)']}
               pb="25px"
-              pt={['40px', '0px']}
               w="full"
             >
               <Component />
