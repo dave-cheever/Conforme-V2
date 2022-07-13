@@ -27,7 +27,6 @@ import Assets from '../pages/assets';
 import Audit from '../pages/audit';
 import AuditHistory from '../pages/audit/history';
 import AuditParticipants from '../pages/audit/participants';
-import Audits from '../pages/audits';
 import ComplianceItemAuditLog from '../pages/compliance-item/audit-log';
 import History from '../pages/compliance-item/history';
 import ComplianceItemResponse from '../pages/compliance-item/index';
@@ -77,10 +76,10 @@ const openRoutes: Array<IRoute> = [
 // Routes visible for signed in, that accepted the Terms and Conditions
 const protectedRoutes: Array<IRoute> = [
   {
-    path: '/audits',
-    key: 'audits',
+    path: '/dashboard',
+    key: 'dashboard',
     exact: true,
-    component: Audits,
+    component: Dashboard,
     layout: FilterLayout,
   },
   {
@@ -110,13 +109,6 @@ const protectedRoutes: Array<IRoute> = [
     exact: true,
     component: AuditHistory,
     layout: AuditLayout,
-  },
-  {
-    path: '/dashboard',
-    key: 'dashboard',
-    exact: true,
-    component: Dashboard,
-    layout: FilterLayout,
   },
   {
     path: '/compliance-item/:id',

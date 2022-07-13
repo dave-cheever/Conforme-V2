@@ -18,7 +18,6 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const [menuOpen, setMenuOpen] = useState(true);
-
   const { showFiltersPanel, responsesStatusesCounts } = useFiltersContext();
 
   return (

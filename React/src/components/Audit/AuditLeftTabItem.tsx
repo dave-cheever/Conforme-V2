@@ -5,64 +5,31 @@ import { Flex, Icon } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
 
-const AuditLeftTabItem = ({
-  label,
-  icon,
-  url,
-  isDesktop = true,
-  isMobile = false,
-}) => {
+const AuditLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = false }) => {
   const history = useHistory();
   const { isPathActive, navigateTo } = useNavigate();
   const { id }: { id: string } = useParams();
-
-  const active = useMemo(
-    () => isPathActive(`/audits/${id}${url}`, { exact: true }),
-    [id, url, history],
-  );
+  const active = useMemo(() => isPathActive(`/audits/${id}${url}`, { exact: true }), [id, url, history]);
 
   const redirectPage = () => {
     navigateTo(`/audits/${id}${url}${history.location.search}`);
   };
 
   return (
-    <Flex
-      align="center"
-      cursor="pointer"
-      mb={[0, 3]}
-      mx={[3, 0]}
-      onClick={redirectPage}
-      w={active ? 'full' : 'fit-content'}
-    >
+    <Flex align="center" cursor="pointer" mb={[0, 3]} mx={[3, 0]} onClick={redirectPage} w={active ? 'full' : 'fit-content'}>
       <Flex
         align="center"
-        bg={
-          active ? 'auditLeftTabItem.activeIconBg' : 'auditLeftTabItem.iconBg'
-        }
+        bg={active ? 'auditLeftTabItem.activeIconBg' : 'auditLeftTabItem.iconBg'}
         borderRadius="8px"
         h="30px"
         justify="center"
         w="30px"
       >
-        <Icon
-          as={icon}
-          color={
-            active
-              ? 'auditLeftTabItem.activeIconColor'
-              : 'auditLeftTabItem.iconColor'
-          }
-        />
+        <Icon as={icon} color={active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'} />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
-          color={
-            active
-              ? [
-                  'auditLeftTabItem.textColor',
-                  'auditLeftTabItem.activeTextColor',
-                ]
-              : 'auditLeftTabItem.textColor'
-          }
+          color={active ? ['auditLeftTabItem.textColor', 'auditLeftTabItem.activeTextColor'] : 'auditLeftTabItem.textColor'}
           flexGrow={1}
           fontSize={['11px', '14px']}
           ml={3}

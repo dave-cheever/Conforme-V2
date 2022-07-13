@@ -59,7 +59,7 @@ const useConfig = () => {
 
   const auditNavigationTabs = [
     {
-      label: capitalize(pluralize(t('audit'))),
+      label: capitalize(pluralize(t('question'))),
       url: '/',
       icon: ProgressIcon,
     },

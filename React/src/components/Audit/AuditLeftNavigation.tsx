@@ -36,7 +36,7 @@ const AuditLeftNavigation = () => {
           fontSize="14px"
           h="30px"
           mb="30px"
-          onClick={() => navigateTo('/audits')}
+          onClick={() => navigateTo('/')}
         >
           <ChevronRight mr={2} transform="Rotate(180deg)" />
           Back
