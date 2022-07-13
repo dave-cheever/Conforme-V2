@@ -175,7 +175,7 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
                 </Text>
                 <HStack
                   bg="walkItemModal.question.bg"
-                  boxShadow="0px 0px 30px 0px #31323340"
+                  boxShadow="0px 0px 10px 0px #31323340"
                   flexGrow={1}
                   justify="space-between"
                   px={6}
