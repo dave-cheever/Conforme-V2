@@ -226,7 +226,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
                     />
                   </GridItem>
                   <GridItem>
-                    <PeoplePicker control={control} disabled={!isUserPermittedToModify} label="Assign to" name="assigneeId" />
+                    <PeoplePicker control={control} disabled={!isUserPermittedToModify} label="Assigned to" name="assigneeId" />
                   </GridItem>
                   <GridItem>
                     <Datepicker control={control} disabled={!isUserPermittedToModify} label="Due date" name="dueDate" />
