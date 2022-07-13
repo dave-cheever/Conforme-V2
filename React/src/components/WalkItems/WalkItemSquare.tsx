@@ -17,7 +17,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       flexShrink={0}
       h="290px"
       p="20px 25px 20px 25px"
-      spacing={6}
+      spacing={4}
       w={['full', 'full', '350px']}
     >
       <Flex align="center" justify="space-between">
@@ -35,8 +35,8 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           {answer?.question?.question}
         </Text>
       </Flex>
-      <Flex w="full">
-        <Box overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+      <Flex w="full" height="40px">
+        <Box overflow="hidden" lineHeight="20px" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>
@@ -51,7 +51,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Text>
         </Box>
       </Flex>
-      <Flex w="full">
+      <Flex w="full" height="40px">
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Site</Text>
           <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
@@ -66,7 +66,14 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
         </Box>
       </Flex>
       <Flex align="center" justify="space-between" w="full">
-        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+        <Box
+          fontSize="ssm"
+          lineHeight="20px"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          w={['max(calc(100% - 100px),100px)']}
+          whiteSpace="nowrap"
+        >
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Linked to
           </Text>
@@ -84,6 +91,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Stack>
         </Box>
         <Button
+          alignSelf="flex-end"
           _hover={{
             bg: 'walkItemSquare.button.default.bg',
           }}
