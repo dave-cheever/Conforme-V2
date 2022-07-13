@@ -41,28 +41,34 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             Status
           </Text>
           <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-            {answer?.status}
+            {answer?.status ?? '-'}
           </Text>
         </Box>
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Date</Text>
-          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-            {format(new Date(answer?.metatags?.addedAt!), 'LLL/y')}
-          </Text>
+          <Tooltip label={format(new Date(answer?.metatags?.addedAt!), 'LLL/y') ?? '-'}>
+            <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
+              {format(new Date(answer?.metatags?.addedAt!), 'LLL/y') ?? '-'}
+            </Text>
+          </Tooltip>
         </Box>
       </Flex>
       <Flex w="full" height="40px">
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Site</Text>
-          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-            {answer?.audit?.site?.name ?? 'Virtual'}
-          </Text>
+          <Tooltip label={answer?.audit?.site?.name ?? '-'}>
+            <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated textTransform="capitalize">
+              {answer?.audit?.site?.name ?? '-'}
+            </Text>
+          </Tooltip>
         </Box>
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Area</Text>
-          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-            {answer?.audit?.area?.name ?? 'Virtual'}
-          </Text>
+          <Tooltip label={answer?.audit?.area?.name ?? '-'}>
+            <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated textTransform="capitalize">
+              {answer?.audit?.area?.name ?? '-'}
+            </Text>
+          </Tooltip>
         </Box>
       </Flex>
       <Flex align="center" justify="space-between" w="full">
@@ -85,7 +91,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             spacing={2}
           >
             <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated maxWidth="250px">
-              {answer?.audit?.area?.name}
+              {answer?.audit?.area?.name ?? '-'}
             </Text>
             <OpenExternalIcon fill="transparent" stroke="black" />
           </Stack>

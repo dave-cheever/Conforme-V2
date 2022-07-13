@@ -70,6 +70,10 @@ const GET_ANSWERS = gql`
       }
       audit {
         _id
+        site {
+          _id
+          name
+        }
         area {
           name
         }
