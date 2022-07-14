@@ -6,7 +6,7 @@ import { Avatar, Box, Button, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/r
 import format from 'date-fns/format';
 
 import useNavigate from '../../hooks/useNavigate';
-import useResponseUtils, { responseStatuses } from '../../hooks/useResponseUtils';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { LocationIcon, UploadedTick } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
@@ -23,7 +23,7 @@ const GET_USERS_BY_ID = gql`
 
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const { navigateTo } = useNavigate();
-  const { getStatus, getRenewalStatus } = useResponseUtils();
+  const { responseStatuses, getStatus, getRenewalStatus } = useResponseUtils();
   const responseStatus = useMemo(() => getStatus(response), [getStatus, response]);
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {

@@ -1,19 +1,7 @@
 import { createContext, useState } from 'react';
 
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Spacer,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 
 import AccidentInvestigationPanel from '../components/AccidentInvestigationPanel';
 import AuditPanel from '../components/AuditPanel';
@@ -40,10 +28,7 @@ const Home = () => {
       setFilterType(data);
       return;
     }
-    setFilterType((prevFilters) => [
-      ...prevFilters.filter((item) => item !== 'allTypes'),
-      type,
-    ]);
+    setFilterType((prevFilters) => [...prevFilters.filter((item) => item !== 'allTypes'), type]);
   };
 
   const HomeContextTemplate = {
@@ -51,22 +36,11 @@ const Home = () => {
     filterHandler,
   };
 
-  const {
-    isOpen: isAuditModalOpen,
-    onOpen: openAuditModal,
-    onClose: closeAuditModal,
-  } = useDisclosure();
+  const { onOpen: openAuditModal } = useDisclosure();
 
   return (
     <HomeContext.Provider value={HomeContextTemplate}>
-      <Flex
-        alignContent={['center', 'flex-start']}
-        direction="row"
-        justify={['center', 'flex-start']}
-        p={8}
-        w="full"
-        wrap="wrap"
-      >
+      <Flex alignContent={['center', 'flex-start']} direction="row" justify={['center', 'flex-start']} p={8} w="full" wrap="wrap">
         <Box fontSize="18px" h="full" w="full">
           <Text fontSize="24px" fontWeight="700">
             Your work

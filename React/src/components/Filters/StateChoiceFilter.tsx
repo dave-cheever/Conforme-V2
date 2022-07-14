@@ -6,12 +6,13 @@ import { CheckboxGroup, Stack } from '@chakra-ui/react';
 import { actionStatuses, walkItemStatuses } from '../../bootstrap/config';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
-import { auditWalkTypes, complianceItemStatuses } from '../../hooks/useFiltersUtils';
+import useFiltersUtils, { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 import FilterCheckBox from './FilterCheckBox';
 
 const StateChoiceFilter = ({ name }: { name: string }) => {
   const { filtersValues, setFilters } = useFiltersContext();
+  const { complianceItemStatuses } = useFiltersUtils();
   const location = useLocation();
   const { getPath } = useNavigate();
 

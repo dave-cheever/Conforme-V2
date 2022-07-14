@@ -4,6 +4,7 @@ import Dropzone, { FileRejection } from 'react-dropzone';
 import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { t } from 'i18next';
 
 import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -101,7 +102,9 @@ const EvidenceExpected = ({ evidence }) => {
               await removeEvidence();
               refetch();
             }}
-            deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name}? It will reset the status for the last iteration to non-compliant.`}
+            deleteModalMessage={`Are you sure you wish to delete ${
+              evidence.uploaded.name
+            }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
             document={evidence.uploaded}
             downloadable={isPermitted({
               user,

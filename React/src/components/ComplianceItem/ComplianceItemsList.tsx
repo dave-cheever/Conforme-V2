@@ -75,7 +75,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
             w="12%"
           />
           <AdminTableHeaderElement
-            label="Compliant"
+            label={capitalize(t('compliant'))}
             onClick={() => {
               setSortType('compliant');
               setSortOrder(sortOrder === 'asc' && sortType === 'compliant' ? 'desc' : 'asc');

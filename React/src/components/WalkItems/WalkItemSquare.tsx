@@ -35,8 +35,8 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           {answer?.question?.question}
         </Text>
       </Flex>
-      <Flex w="full" height="40px">
-        <Box overflow="hidden" lineHeight="20px" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+      <Flex height="40px" w="full">
+        <Box lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>
@@ -53,7 +53,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Tooltip>
         </Box>
       </Flex>
-      <Flex w="full" height="40px">
+      <Flex height="40px" w="full">
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Site</Text>
           <Tooltip label={answer?.audit?.site?.name ?? '-'}>
@@ -98,10 +98,10 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Stack>
         </Box>
         <Button
-          alignSelf="flex-end"
           _hover={{
             bg: 'walkItemSquare.button.default.bg',
           }}
+          alignSelf="flex-end"
           bg="walkItemSquare.button.default.bg"
           color="walkItemSquare.button.default.color"
           fontSize="ssm"

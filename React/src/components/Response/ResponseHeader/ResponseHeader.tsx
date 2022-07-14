@@ -17,6 +17,8 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import format from 'date-fns/format';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { toastSuccess } from '../../../bootstrap/config';
 import { useAppContext } from '../../../contexts/AppProvider';
@@ -45,8 +47,9 @@ const ReasponseHeader = () => {
       toast({
         ...toastSuccess,
         title: 'Response completed',
-        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is compliant until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
-          } `,
+        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${
+          response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
+        } `,
       });
       return setStatus('compliant');
     }
@@ -120,7 +123,10 @@ const ReasponseHeader = () => {
         </Stack>
         <Flex mb="15px">
           <Flex alignItems="center" maxW={['100vw', '390px']} pl={['10px', '0px']} pr={['35px', '0px']} w="full">
-            <ResponseHeaderStatus heading="Compliant" status={response && getStatus(response) === 'compliant' ? 'Yes' : 'No'} />
+            <ResponseHeaderStatus
+              heading={capitalize(t('compliant'))}
+              status={response && getStatus(response) === 'compliant' ? 'Yes' : 'No'}
+            />
             <Spacer />
             {currentEvidenceItems?.length > 0 && (
               <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />

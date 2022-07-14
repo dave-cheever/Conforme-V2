@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+
 import { useAppContext } from '../contexts/AppProvider';
 import IFilter from '../interfaces/IFilter';
 import { IActionFilters, IAuditFilters, IWalkItemFilters } from '../interfaces/IFilters';
@@ -97,17 +100,6 @@ export const auditWalkTypes = {
   physical: 'Physical',
 };
 
-export const complianceItemStatuses = {
-  compliant: 'Compliant',
-  nonCompliant: 'Non-compliant',
-  notStarted: 'Not started',
-  inProgress: 'In progress',
-  completed: 'Completed',
-  noDueDate: 'No due date',
-  comingUp: 'Coming Up',
-  missed: 'Missed',
-};
-
 export const auditsFilterDates = {
   thisWeek: 'This week',
   thisMonth: 'This month',
@@ -153,6 +145,18 @@ const useFiltersUtils = () => {
   const { initialFilters } = useConfig();
   const location = useLocation();
 
+  // Constants needs to be inside of useFiltersUtils in order to have working translations
+  const complianceItemStatuses = {
+    compliant: capitalize(t('compliant')),
+    nonCompliant: capitalize(t('non-compliant')),
+    notStarted: 'Not started',
+    inProgress: 'In progress',
+    completed: 'Completed',
+    noDueDate: 'No due date',
+    comingUp: 'Coming Up',
+    missed: 'Missed',
+  };
+
   const cleanAuditFilters = useMemo(() => {
     switch (location.pathname.split('/')[2]) {
       case 'actions':
@@ -196,6 +200,7 @@ const useFiltersUtils = () => {
   };
 
   return {
+    complianceItemStatuses,
     getFilters,
   };
 };

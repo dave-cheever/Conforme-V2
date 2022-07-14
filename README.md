@@ -308,11 +308,15 @@ Possible translations for safetywalk module:
 - audit
 - auditor
 - question
+- area
+- addedAt
 
 Possible translations for compliance item module:
 
 - complianceItem
 - businessUnit
+- compliant
+- non-compliant
 
 ### Theme
 To change a theme you need to update `theme` object in organization config in the database. Use styling structure that was implemented in app, and put it inside of `colors` property.

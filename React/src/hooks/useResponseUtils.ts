@@ -1,30 +1,12 @@
 import { differenceInDays, startOfDay } from 'date-fns';
-import { isInteger } from 'lodash';
+import { t } from 'i18next';
+import { capitalize, isInteger } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { IQuestionChoice } from '../interfaces/IQuestionChoice';
 import { IResponse } from '../interfaces/IResponse';
-// import { useAppContext } from '../contexts/AppProvider';
 import { ITrackerQuestion } from '../interfaces/ITrackerQuestion';
 import { TQuestionValue } from '../interfaces/TQuestionValue';
-
-export const responseStatuses = {
-  completed: 'Completed',
-  notStarted: 'Not started',
-  inProgress: 'In progress',
-  comingUp: 'Coming up',
-  overdue: 'Overdue',
-  noDueDate: 'No due date',
-  all: 'All',
-  compliant: 'Compliant',
-  nonCompliant: 'Non-compliant',
-};
-
-export const responseStatusesGroup = {
-  nonCompliant: 'Non-compliant',
-  comingUp: 'Coming up',
-  compliant: 'Compliant',
-};
 
 export const complianceItemFrequencies = [
   'Daily',
@@ -45,6 +27,24 @@ const useResponseUtils = () => {
     (el) => el.name === 'comingUpTriggers',
   );
 
+  const responseStatuses = {
+    completed: 'Completed',
+    notStarted: 'Not started',
+    inProgress: 'In progress',
+    comingUp: 'Coming up',
+    overdue: 'Overdue',
+    noDueDate: 'No due date',
+    all: 'All',
+    compliant: capitalize(t('compliant')),
+    nonCompliant: capitalize(t('non-compliant')),
+  };
+
+  const responseStatusesGroup = {
+    nonCompliant: capitalize(t('non-compliant')),
+    comingUp: 'Coming up',
+    compliant: capitalize(t('compliant')),
+  };
+
   const getRenewalStatus = (response: IResponse) => {
     if (!response) return;
 
@@ -55,7 +55,7 @@ const useResponseUtils = () => {
       response.complianceItem.frequency &&
       daysToDueDate !== null &&
       daysToDueDate <
-        comingUpTriggers?.value?.[response.complianceItem.frequency] &&
+      comingUpTriggers?.value?.[response.complianceItem.frequency] &&
       daysToDueDate >= 0
     ) {
       // If there is less then or equal comingUpTriggers value and at least 0 days to due date
@@ -168,6 +168,8 @@ const useResponseUtils = () => {
   };
 
   return {
+    responseStatuses,
+    responseStatusesGroup,
     areRequiredQuestionsAnswered,
     getRenewalStatus,
     getRenewalStatusText,

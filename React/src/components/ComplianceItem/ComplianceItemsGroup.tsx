@@ -2,43 +2,28 @@ import { useEffect, useState } from 'react';
 
 import { Flex, Stack } from '@chakra-ui/react';
 
-import useResponseUtils, {
-  responseStatusesGroup,
-} from '../../hooks/useResponseUtils';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { IResponse } from '../../interfaces/IResponse';
 import ComplianceItemSquare from './ComplianceItemSquare';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   const [filteredResults, setFilteredResults] = useState<any>({});
-  const { getStatus, getRenewalStatus } = useResponseUtils();
+  const { responseStatusesGroup, getStatus, getRenewalStatus } = useResponseUtils();
 
   useEffect(() => {
     const filteredResponses: any = {};
     filteredResponses.compliant = responses.filter(
-      (response) =>
-        getStatus(response) === 'compliant' &&
-        getRenewalStatus(response) !== 'comingUp',
+      (response) => getStatus(response) === 'compliant' && getRenewalStatus(response) !== 'comingUp',
     );
     filteredResponses.comingUp = responses.filter(
-      (response) =>
-        getStatus(response) === 'compliant' &&
-        getRenewalStatus(response) === 'comingUp',
+      (response) => getStatus(response) === 'compliant' && getRenewalStatus(response) === 'comingUp',
     );
-    filteredResponses.nonCompliant = responses.filter(
-      (response) => getStatus(response) === 'nonCompliant',
-    );
+    filteredResponses.nonCompliant = responses.filter((response) => getStatus(response) === 'nonCompliant');
     setFilteredResults(filteredResponses);
   }, [responses]);
 
   const renderGroup = (group: string) => (
-    <Flex
-      direction="column"
-      key={group}
-      minW="calc(347px + 1rem)"
-      pl={8}
-      pr={3}
-      pt={2}
-    >
+    <Flex direction="column" key={group} minW="calc(347px + 1rem)" pl={8} pr={3} pt={2}>
       <Flex
         align="center"
         bg={`complianceGroup.${group}`}
@@ -61,11 +46,7 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
 
             if (b.nextRenewalDate === null) return -1;
 
-            return a.nextRenewalDate && b.nextRenewalDate
-              ? a.nextRenewalDate
-                  .toString()
-                  .localeCompare(b.nextRenewalDate.toString())
-              : 0;
+            return a.nextRenewalDate && b.nextRenewalDate ? a.nextRenewalDate.toString().localeCompare(b.nextRenewalDate.toString()) : 0;
           })
           ?.map((response: IResponse) => (
             <ComplianceItemSquare key={response._id} response={response} />

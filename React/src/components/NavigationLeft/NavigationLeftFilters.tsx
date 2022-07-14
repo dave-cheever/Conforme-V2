@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import { responseStatuses } from '../../hooks/useResponseUtils';
+import useResponseUtils from '../../hooks/useResponseUtils';
 
 const NavigationLeftFilters = ({
   filter,
@@ -13,11 +13,9 @@ const NavigationLeftFilters = ({
   menuOpen?: boolean;
   setFiltersOpen?: (value: boolean) => void;
 }) => {
+  const { responseStatuses } = useResponseUtils();
   const { filtersValues, setFilters } = useFiltersContext();
-  const itemStatusFilterValue = useMemo(
-    () => filtersValues.itemStatus?.value,
-    [filtersValues],
-  ) as string[];
+  const itemStatusFilterValue = useMemo(() => filtersValues.itemStatus?.value, [filtersValues]) as string[];
 
   const updateFilters = (name: any) => {
     let newValue: any = [];
@@ -33,14 +31,7 @@ const NavigationLeftFilters = ({
     <Flex direction="column" key={filter[0]}>
       {filter[0] === 'comingUp' && (
         <Flex py={2}>
-          <Flex
-            bg="navigationLeftFilters.seperator"
-            h="1px"
-            ml="25px"
-            opacity="0.3"
-            rounded="lg"
-            w="30px"
-          />
+          <Flex bg="navigationLeftFilters.seperator" h="1px" ml="25px" opacity="0.3" rounded="lg" w="30px" />
         </Flex>
       )}
       <Flex
@@ -70,13 +61,7 @@ const NavigationLeftFilters = ({
         w={['170px', '175px']}
       >
         <Flex align="center">
-          <Box
-            bg={`navigationLeftFilters.${filter[0]}`}
-            h="8px"
-            mr={8}
-            rounded="full"
-            w="8px"
-          />
+          <Box bg={`navigationLeftFilters.${filter[0]}`} h="8px" mr={8} rounded="full" w="8px" />
           {responseStatuses[filter[0]]}
         </Flex>
         <Flex
