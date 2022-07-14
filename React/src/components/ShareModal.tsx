@@ -33,13 +33,17 @@ const ShareModal = () => {
   const [mails, setMails] = useState<string[]>([]);
   const [mail, setMail] = useState<string>('');
 
-  const URL = `${process.env.REACT_APP_CLIENT_URL}/compliance-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`;
+  const URL = `${process.env.REACT_APP_CLIENT_URL}/${module?.path}/compliance-item/${response?._id}${
+    snapshot ? `?snapshot=${snapshot}` : ''
+  }`;
 
   const email = useMemo(
     () =>
       `mailto:${[...mails, mail].join(';')}?subject=${response?.complianceItem.name} - ${module?.name} - ${
         organizationConfig?.name
-      }&body=Please click on this link to access the '${response?.complianceItem.name}' in ${module?.name}:%0A%0A${URL}%0A%0ACielo Costa`,
+      }&body=Please click on this link to access the '${response?.complianceItem.name}' in ${module?.name}:%0A%0A${URL}%0A%0A${
+        organizationConfig?.name
+      }`,
     [response, mail, mails, module, organizationConfig],
   );
 
