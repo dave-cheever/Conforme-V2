@@ -3,7 +3,7 @@ import reactStringReplace from 'react-string-replace';
 
 import { gql, useLazyQuery } from '@apollo/client';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
 import differenceInDays from 'date-fns/differenceInDays';
 import format from 'date-fns/format';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
@@ -14,6 +14,7 @@ import useDevice from '../../hooks/useDevice';
 import { IComment } from '../../interfaces/IComment';
 import Can from '../can';
 import ChatMention from './ChatMention';
+import ResponseChatConfirmDeleteModal from './ResponseChatConfirmDeleteModal';
 
 interface IResponseChat {
   comment: IComment;
@@ -36,6 +37,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const device = useDevice();
   const { user } = useAppContext();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dateFormat = () => {
     if (!metatags?.addedAt) return '';
@@ -74,77 +76,81 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   );
 
   return (
-    <Flex flexDirection={isChatOwner ? 'row' : 'row-reverse'} mb={3} w="full">
-      <Box ml={isChatOwner ? 0 : 3} mr={isChatOwner ? 3 : 0}>
-        {loading ? (
-          <Skeleton h="24px" minW="24px" rounded="full" />
-        ) : (
-          <Avatar
-            loading="lazy"
-            name={chatAuthor?.displayName}
-            p="2px"
-            rounded="full"
-            size="xs"
-            src={chatAuthor?.imgUrl}
-          />
-        )}
-      </Box>
-      <Box
-        bg={
-          isChatOwner
-            ? 'responseChatItem.sentBg'
-            : device === 'mobile' || device === 'tablet'
-            ? 'responseChatItem.receivedBgTM'
-            : 'responseChatItem.receivedBg'
-        }
-        borderRadius="10px"
-        color={
-          isChatOwner
-            ? 'responseChatItem.sentColor'
-            : 'responseChatItem.receivedColor'
-        }
-        onMouseEnter={() => setShowDeleteBtn(true)}
-        onMouseLeave={() => setShowDeleteBtn(false)}
-        px="12px"
-        py="8px"
-        w="full"
-      >
-        <Flex h={6} justify="space-between">
-          <Text
-            color="responseChatItem.dateColor"
-            fontSize="ssm"
-            fontWeight="semi_medium"
-            mb="10px"
-          >
-            {dateFormat()}
-          </Text>
-          <Can
-            action="comments.delete"
-            data={{ comment }}
-            yes={() => (
-              <Button
-                colorScheme="red"
-                display={showDeleteBtn ? 'block' : 'none'}
-                mb={2}
-                mr="-4px"
-                onClick={() => onAction(_id)}
-                rightIcon={<DeleteIcon />}
-                size="xs"
-              >
-                Delete
-              </Button>
-            )}
-          />
-        </Flex>
-        {reactStringReplace(
-          text,
-          /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g,
-          (match, i) => (
-            <ChatMention key={i} tag={match} />
-          ),
-        )}
-      </Box>
-    </Flex>
+    <>
+      <ResponseChatConfirmDeleteModal isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
+      <Flex flexDirection={isChatOwner ? 'row' : 'row-reverse'} mb={3} w="full">
+        <Box ml={isChatOwner ? 0 : 3} mr={isChatOwner ? 3 : 0}>
+          {loading ? (
+            <Skeleton h="24px" minW="24px" rounded="full" />
+          ) : (
+            <Avatar
+              loading="lazy"
+              name={chatAuthor?.displayName}
+              p="2px"
+              rounded="full"
+              size="xs"
+              src={chatAuthor?.imgUrl}
+            />
+          )}
+        </Box>
+        <Box
+          bg={
+            isChatOwner
+              ? 'responseChatItem.sentBg'
+              : device === 'mobile' || device === 'tablet'
+                ? 'responseChatItem.receivedBgTM'
+                : 'responseChatItem.receivedBg'
+          }
+          borderRadius="10px"
+          color={
+            isChatOwner
+              ? 'responseChatItem.sentColor'
+              : 'responseChatItem.receivedColor'
+          }
+          onMouseEnter={() => setShowDeleteBtn(true)}
+          onMouseLeave={() => setShowDeleteBtn(false)}
+          px="12px"
+          py="8px"
+          w="full"
+        >
+          <Flex h={6} justify="space-between">
+            <Text
+              color="responseChatItem.dateColor"
+              fontSize="ssm"
+              fontWeight="semi_medium"
+              mb="10px"
+            >
+              {dateFormat()}
+            </Text>
+            <Can
+              action="comments.delete"
+              data={{ comment }}
+              yes={() => (
+                <Button
+                  colorScheme="red"
+                  display={showDeleteBtn ? 'block' : 'none'}
+                  mb={2}
+                  mr="-4px"
+                  onClick={() => onOpen()}
+                  rightIcon={<DeleteIcon />}
+                  size="xs"
+                >
+                  Delete
+                </Button>
+              )}
+            />
+          </Flex>
+          {reactStringReplace(
+            text,
+            /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g,
+            (match, i) => (
+              <ChatMention key={i} tag={match} />
+            ),
+          )}
+        </Box>
+      </Flex>
+    </>
+
   );
 };
 

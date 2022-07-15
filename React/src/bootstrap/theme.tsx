@@ -81,6 +81,7 @@ import { historicalListItemStyles } from '../components/Response/HistoricalListI
 import { messageInputStyles } from '../components/Response/MessageInput';
 import { responseRenewalModalStyles } from '../components/Response/RenewalModal';
 import { responseChatStyles } from '../components/Response/ResponseChat';
+import { responseChatConfirmDeleteModalStyles } from '../components/Response/ResponseChatConfirmDeleteModal';
 import { responseChatItemStyles } from '../components/Response/ResponseChatItem';
 import { responseHeaderStyles } from '../components/Response/ResponseHeader/ResponseHeader';
 import { responseHeaderMenuItemStyles } from '../components/Response/ResponseHeader/ResponseHeaderMenuItem';
@@ -254,6 +255,7 @@ const getTheme = (organizationTheme?: any) => {
         ...questionMultiChoiceFormStyles,
         ...questionSimpleFormStyles,
         ...regulatoryBodiesStyles,
+        ...responseChatConfirmDeleteModalStyles,
         ...responseChatItemStyles,
         ...responseChatStyles,
         ...responseLeftNavigationStyles,
