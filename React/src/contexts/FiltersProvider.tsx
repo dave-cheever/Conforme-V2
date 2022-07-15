@@ -66,6 +66,7 @@ const FiltersProvider = ({ children }) => {
   const { getFilters } = useFiltersUtils();
   const [filtersValues, setFiltersValues] = useState<IFilters>(getFilters());
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
+  const [defaultFilters, setDefaultFilters] = useState<object>({});
   const [responseFiltersValue, setResponseFiltersValue] = useState<TDeepPartial<IResponseFilters>>({});
   const [auditFiltersValue, setAuditFiltersValue] = useState<TDeepPartial<IAuditFilters>>({});
   const [actionFiltersValue, setActionFiltersValue] = useState<TDeepPartial<IActionFilters>>({});
@@ -91,7 +92,9 @@ const FiltersProvider = ({ children }) => {
   const cleanFilters = () => {
     setFiltersValues(
       getFilters({
+        defaultFilters,
         usedFilters,
+        isCleanFilters: true,
       }),
     );
   };
@@ -100,7 +103,7 @@ const FiltersProvider = ({ children }) => {
     setFilters();
 
     return () => cleanFilters();
-  }, [usedFilters]);
+  }, [usedFilters, defaultFilters]);
 
   const value = useMemo(
     () => ({
@@ -124,6 +127,7 @@ const FiltersProvider = ({ children }) => {
       setActionFiltersValue,
       walkItemFiltersValue,
       setWalkItemFiltersValue,
+      setDefaultFilters,
       numberOfSelectedFilters,
       complianceItems: data?.complianceItems,
       categories: data?.categories,

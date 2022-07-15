@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { t } from 'i18next';
-import { capitalize } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
 import IFilter from '../interfaces/IFilter';
@@ -178,9 +178,13 @@ const useFiltersUtils = () => {
   const getFilters = ({
     usedFilters = [],
     newFilters = {},
+    defaultFilters = {},
+    isCleanFilters = false,
   }: {
     usedFilters?: string[];
     newFilters?: object;
+    defaultFilters?: object;
+    isCleanFilters?: boolean;
   } = {}) => {
     const filters = {};
     for (const filterName of usedFilters) {
@@ -190,7 +194,13 @@ const useFiltersUtils = () => {
       if (!filter) continue;
 
       // Check if value was set
-      filter.value = newFilters[filterName] ? newFilters[filterName] : filterName === 'usersIds' ? {} : [];
+      if (newFilters[filterName] !== undefined) filter.value = newFilters[filterName];
+
+      // Clear all values
+      if (isCleanFilters) filter.value = filterName === 'usersIds' ? {} as string : [] as string[];
+
+      // Check if default value exists and set filters to defaultFilters value
+      if (isCleanFilters && !isEmpty(defaultFilters) && defaultFilters[filterName] !== undefined) filter.value = defaultFilters[filterName];
 
       // Set new filter
       filters[filterName] = filter;

@@ -64,7 +64,7 @@ const GET_RESPONSES = gql`
 `;
 
 const ComplianceItems = () => {
-  const { user } = useAppContext();
+  const { user, module } = useAppContext();
   const {
     filtersValues,
     setUsedFilters,
@@ -73,6 +73,7 @@ const ComplianceItems = () => {
     setShowFiltersPanel,
     responseFiltersValue,
     setResponseFiltersValue,
+    setDefaultFilters,
     usedFilters,
   } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
@@ -108,6 +109,38 @@ const ComplianceItems = () => {
       }, 100);
     }
   }, [filtersValues, usedFilters, setResponseFiltersValue, responseFiltersValue, setFilters]);
+
+  // Set default filters
+  useEffect(() => {
+    if (!isEmpty(module?.defaultFilters?.responses)) {
+      /**
+       * Convert filters from
+       *
+       * {
+       *  filterName: ["filterValue"]
+       * }
+       *
+       * to
+       *
+       * {
+       *  filterName: {
+       *    value: ["filterValue"]
+       *  }
+       * }
+       */
+      const defaultFilters = Object.entries(module!.defaultFilters.responses!).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: {
+            value,
+          },
+        }),
+        {},
+      );
+      setDefaultFilters(Object.entries(module!.defaultFilters.responses!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}))
+      setResponseFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
+    }
+  }, []);
 
   useEffect(() => {
     const responsesStatusesCounts = {

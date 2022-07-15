@@ -40,6 +40,8 @@ export interface IFiltersContext {
   walkItemFiltersValue: TDeepPartial<IWalkItemFilters>;
   setWalkItemFiltersValue: Dispatch<SetStateAction<TDeepPartial<IWalkItemFilters>>>;
 
+  setDefaultFilters: Dispatch<SetStateAction<object>>;
+
   numberOfSelectedFilters: number;
 
   complianceItems: Partial<IComplianceItem>[];

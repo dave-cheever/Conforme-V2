@@ -66,7 +66,7 @@ const GET_AUDITS = gql`
 const Audits = () => {
   const { t } = useTranslation();
   const { user } = useAppContext();
-  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, auditFiltersValue, setAuditFiltersValue, usedFilters } =
+  const { filtersValues, setUsedFilters, setDefaultFilters, setFilters, setShowFiltersPanel, auditFiltersValue, setAuditFiltersValue, usedFilters } =
     useFiltersContext();
   const device = useDevice();
   const { module } = useAppContext();
@@ -131,6 +131,7 @@ const Audits = () => {
         }),
         {},
       );
+      setDefaultFilters(Object.entries(module!.defaultFilters.audits!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}))
       setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
     }
   }, []);
