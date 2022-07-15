@@ -201,7 +201,11 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
                     <Text color="walkItemModal.auditType" fontSize="ssm">
                       {walkItem?.audit?.auditType?.name}
                     </Text>
+                    <Text color={`walkItemModal.status.${walkItem?.audit?.status}`} fontSize="smm" fontWeight="semibold">
+                      {`${capitalize(walkItem?.audit?.status)}`}
+                    </Text>
                   </Stack>
+
                   <HStack spacing={2}>
                     {(walkItem?.attachments || []).slice(0, 2).map((attachment) => (
                       <DocumentThumbnail document={attachment} key={attachment.id} />
@@ -383,6 +387,11 @@ export default WalkItemModal;
 
 export const walkItemModalStyles = {
   walkItemModal: {
+    status: {
+      completed: '#62c240',
+      missed: '#FC5960',
+      upcoming: '#FFA012',
+    },
     bg: '#ffffff',
     closeIcon: '#282F36',
     question: {
