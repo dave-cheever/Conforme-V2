@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { compareAsc } from 'date-fns';
+import { compareAsc, parseISO } from 'date-fns';
 import { get } from 'lodash';
 
 const useSort = (data: any[], initialSortType = 'name') => {
@@ -12,10 +12,9 @@ const useSort = (data: any[], initialSortType = 'name') => {
     () => {
       const sort = (a, b) => {
         if (get(a, sortType) === null) return 1;
-
         if (get(b, sortType) === null) return -1;
 
-        if (get(a, sortType) instanceof Date) return compareAsc(new Date(get(b, sortType)), new Date(get(b, sortType)));
+        if (!Number.isNaN(parseISO(a[sortType]).valueOf())) return compareAsc(parseISO(get(b, sortType)), parseISO(get(a, sortType)));
 
         if (typeof get(a, sortType) === 'number') return get(a, sortType) - get(b, sortType);
 

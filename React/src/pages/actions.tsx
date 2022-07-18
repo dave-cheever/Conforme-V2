@@ -124,10 +124,12 @@ const Actions = () => {
   });
   const { sortedData: sortedActions, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredActions);
   const sortBy = [
-    { label: 'Assignee', key: 'assignee.displayName' },
-    { label: 'Assigned by', key: 'assignor.displayName' },
+    { label: 'Title', key: 'title' },
     { label: 'Due date', key: 'dueDate' },
     { label: 'Completed date', key: 'completedDate' },
+    { label: 'Status', key: 'status' },
+    { label: 'Assignee', key: 'assignee.displayName' },
+    { label: 'Assigned by', key: 'assignor.displayName' },
     { label: 'Site', key: 'answer.audit.site.name' },
     { label: 'Area', key: 'answer.audit.area.name' },
   ];

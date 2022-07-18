@@ -84,11 +84,11 @@ const AuditsList = ({
         <AdminTableHeaderElement
           label="Date submitted"
           onClick={() => {
-            setSortType('dateSubmitted');
-            setSortOrder(sortOrder === 'asc' && sortType === 'dateSubmitted' ? 'desc' : 'asc');
+            setSortType('completedDate');
+            setSortOrder(sortOrder === 'asc' && sortType === 'completedDate' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'dateSubmitted'}
-          sortOrder={sortType === 'dateSubmitted' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'completedDate'}
+          sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
           w="10%"
         />
       </AdminTableHeader>

@@ -66,8 +66,16 @@ const GET_AUDITS = gql`
 const Audits = () => {
   const { t } = useTranslation();
   const { user } = useAppContext();
-  const { filtersValues, setUsedFilters, setDefaultFilters, setFilters, setShowFiltersPanel, auditFiltersValue, setAuditFiltersValue, usedFilters } =
-    useFiltersContext();
+  const {
+    filtersValues,
+    setUsedFilters,
+    setDefaultFilters,
+    setFilters,
+    setShowFiltersPanel,
+    auditFiltersValue,
+    setAuditFiltersValue,
+    usedFilters,
+  } = useFiltersContext();
   const device = useDevice();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -76,11 +84,13 @@ const Audits = () => {
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
   const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'walkType');
   const sortBy = [
-    { label: 'Walk type', key: 'walkType' },
-    { label: 'Auditor', key: 'auditor.displayName' },
     { label: 'Due date', key: 'dueDate' },
+    { label: 'Site', key: 'site.name' },
     { label: 'Area', key: 'area.name' },
     { label: 'Status', key: 'status' },
+    { label: 'Walk type', key: 'walkType' },
+    { label: 'Auditor', key: 'auditor.displayName' },
+    { label: 'Date submitted', key: 'completedDate' },
   ];
 
   useEffect(() => {
@@ -131,7 +141,7 @@ const Audits = () => {
         }),
         {},
       );
-      setDefaultFilters(Object.entries(module!.defaultFilters.audits!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}))
+      setDefaultFilters(Object.entries(module!.defaultFilters.audits!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}));
       setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
     }
   }, []);

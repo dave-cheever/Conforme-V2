@@ -137,6 +137,7 @@ const WalkItems = () => {
   const sortBy = [
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },
+    { label: 'Status', key: 'status' },
     { label: capitalize(t('area')), key: 'audit.area.name' },
     { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },
