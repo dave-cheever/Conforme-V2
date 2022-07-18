@@ -171,7 +171,7 @@ const TeamModal = () => {
             ) : userSearchResults.length > 0 ? (
               <VStack alignItems="flex-start" h="full" mb="20px" overflow="auto" spacing="10px">
                 {userSearchResults.map((user) => (
-                  <Flex align="center" key={user._id}>
+                  <Flex align="center" cursor="pointer" key={user._id} onClick={() => handleSelectParticipant(user)}>
                     {/* added this instead of checkbox, because of console error on checkbox */}
                     <Flex
                       align="center"
@@ -179,10 +179,8 @@ const TeamModal = () => {
                       borderColor="#81819750"
                       borderRadius="full"
                       borderWidth="1px"
-                      cursor="pointer"
                       h="20px"
                       justify="center"
-                      onClick={() => handleSelectParticipant(user)}
                       pt="1"
                       w="20px"
                     >
