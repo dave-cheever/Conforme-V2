@@ -48,10 +48,10 @@ const SortButton = ({
                 <Spacer />
                 <HStack>
                   <Box
-                    align="center"
+                    // align="center"
                     bg={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.menuItemFocus' : undefined}
                     h="30px"
-                    justify="center"
+                    // justify="center"
                     onClick={() => {
                       setSortType(sortItem.key);
                       setSortOrder('asc');

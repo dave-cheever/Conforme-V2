@@ -2,8 +2,7 @@ import { Avatar, Box, Flex, HStack, IconButton, Skeleton, Text, useDisclosure } 
 import { format } from 'date-fns';
 import { capitalize } from 'lodash';
 
-import useNavigate from '../../hooks/useNavigate';
-import { RedirectIcon, Trashcan } from '../../icons';
+import { Trashcan } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 import { IAudit } from '../../interfaces/IAudit';
 import WalkItemDeleteModal from './WalkItemDeleteModal';
@@ -19,7 +18,6 @@ const WalkItemsListItem = ({
   refetchAnswers: () => void;
   editAnswer: (answer: IAnswer) => void;
 }) => {
-  const { navigateTo } = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -36,7 +34,7 @@ const WalkItemsListItem = ({
         w="full"
       >
         <Flex align="center" h={['full', '73px']} position="relative" w="full">
-          <Flex flexDir="column" w="20%">
+          <Flex flexDir="column" w="15%">
             <Flex
               align="flex-start"
               color="walkItemsList.fontColor"
@@ -68,7 +66,7 @@ const WalkItemsListItem = ({
               {answer?.question?.question ?? 'No description'}
             </Flex>
           </Flex>
-          <Flex flexDir="column" w="10%">
+          <Flex flexDir="column" w="5%">
             <Flex
               align="flex-start"
               color={`walkItemsList.${answer?.status}`}
@@ -96,7 +94,7 @@ const WalkItemsListItem = ({
               pt="3px"
               textOverflow="ellipsis"
             >
-              {audit?.area?.name ?? 'Virtual'}
+              {audit?.area?.name ?? '-'}
             </Flex>
           </Flex>
           <Flex flexDir="column" w="15%">
@@ -112,10 +110,26 @@ const WalkItemsListItem = ({
               pt="3px"
               textOverflow="ellipsis"
             >
+              {audit?.site?.name ?? '-'}
+            </Flex>
+          </Flex>
+          <Flex flexDir="column" w="5%">
+            <Flex
+              align="flex-start"
+              color="walkItemsList.fontColor"
+              fontSize="smm"
+              fontWeight="400"
+              h="50%"
+              lineHeight="18px"
+              noOfLines={1}
+              opacity="1"
+              pt="3px"
+              textOverflow="ellipsis"
+            >
               {answer?.actions?.length}
             </Flex>
           </Flex>
-          <Box w="20%">
+          <Box w="15%">
             <Skeleton isLoaded={!!answer} rounded="full">
               {answer.addedBy ? (
                 <Flex align="center" direction="row">
@@ -150,16 +164,9 @@ const WalkItemsListItem = ({
               )}
             </Flex>
           </Flex>
-          <Flex w="10%">
+          <Flex justify="flex-end" w="5%">
             <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
               <HStack>
-                <IconButton
-                  _hover={{ opacity: 0.7 }}
-                  aria-label="Audit"
-                  bg="none"
-                  icon={<RedirectIcon stroke="walkItemsList.iconColor" />}
-                  onClick={() => navigateTo(`/audits/${audit._id}?questionId=${answer?.questionId}`)}
-                />
                 <IconButton
                   _hover={{ opacity: 0.7 }}
                   aria-label="Delete"

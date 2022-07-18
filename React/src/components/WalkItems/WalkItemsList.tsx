@@ -54,7 +54,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'question.questionsCategory.name'}
             sortOrder={sortType === 'question.questionsCategory.name' ? sortOrder : undefined}
-            w="20%"
+            w="15%"
           />
           <AdminTableHeaderElement
             label="Description"
@@ -74,7 +74,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'status'}
             sortOrder={sortType === 'status' ? sortOrder : undefined}
-            w="10%"
+            w="5%"
           />
           <AdminTableHeaderElement
             label={capitalize(t('area'))}
@@ -86,6 +86,7 @@ const WalkItemsList = ({
             sortOrder={sortType === 'audit.area.name' ? sortOrder : undefined}
             w="15%"
           />
+          <AdminTableHeaderElement label={capitalize(t('site'))} w="15%" />
           <AdminTableHeaderElement
             label="# of actions"
             onClick={() => {
@@ -94,7 +95,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'actions.length'}
             sortOrder={sortType === 'actions.length' ? sortOrder : undefined}
-            w="15%"
+            w="5%"
           />
           <AdminTableHeaderElement
             label="Added by"
@@ -104,7 +105,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'addedBy.displayName'}
             sortOrder={sortType === 'addedBy.displayName' ? sortOrder : undefined}
-            w="20%"
+            w="15%"
           />
           <AdminTableHeaderElement
             label="Date added"
@@ -114,7 +115,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'metatags.addedAt'}
             sortOrder={sortType === 'metatags.addedAt' ? sortOrder : undefined}
-            w="20%"
+            w="15%"
           />
         </AdminTableHeader>
         <Flex flexDir="column" h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']} overflowY="auto" w="full">

@@ -49,9 +49,9 @@ const ActionListItem = ({
         </Stack>
         {!disabled && (
           <HStack spacing={2}>
-            <EditIcon cursor="pointer" disabled={disabled} onClick={() => setSelectedAction(action)} stroke="actionListElement.icon" />
+            <EditIcon cursor="pointer"  onClick={() => setSelectedAction(action)} stroke="actionListElement.icon" />
             <Spacer />
-            <Trashcan cursor="pointer" disabled={disabled} onClick={onDelete} stroke="actionListElement.icon" />
+            <Trashcan cursor="pointer"  onClick={onDelete} stroke="actionListElement.icon" />
           </HStack>
         )}
       </HStack>
