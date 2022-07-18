@@ -54,7 +54,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'question.questionsCategory.name'}
             sortOrder={sortType === 'question.questionsCategory.name' ? sortOrder : undefined}
-            w="15%"
+            w="10%"
           />
           <AdminTableHeaderElement
             label="Description"
@@ -74,8 +74,9 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'status'}
             sortOrder={sortType === 'status' ? sortOrder : undefined}
-            w="5%"
+            w="6%"
           />
+          <AdminTableHeaderElement label={capitalize(t('site'))} w="19%" />
           <AdminTableHeaderElement
             label={capitalize(t('area'))}
             onClick={() => {
@@ -84,9 +85,8 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'audit.area.name'}
             sortOrder={sortType === 'audit.area.name' ? sortOrder : undefined}
-            w="15%"
+            w="19%"
           />
-          <AdminTableHeaderElement label={capitalize(t('site'))} w="15%" />
           <AdminTableHeaderElement
             label="# of actions"
             onClick={() => {
@@ -105,7 +105,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'addedBy.displayName'}
             sortOrder={sortType === 'addedBy.displayName' ? sortOrder : undefined}
-            w="15%"
+            w="12%"
           />
           <AdminTableHeaderElement
             label="Date added"
@@ -115,7 +115,7 @@ const WalkItemsList = ({
             }}
             showSortingIcon={sortType === 'metatags.addedAt'}
             sortOrder={sortType === 'metatags.addedAt' ? sortOrder : undefined}
-            w="15%"
+            w="8%"
           />
         </AdminTableHeader>
         <Flex flexDir="column" h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']} overflowY="auto" w="full">

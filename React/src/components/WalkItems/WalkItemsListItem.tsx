@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, HStack, IconButton, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
+import { Avatar, Box, Flex, IconButton, Skeleton, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize } from 'lodash';
 
@@ -34,39 +34,44 @@ const WalkItemsListItem = ({
         w="full"
       >
         <Flex align="center" h={['full', '73px']} position="relative" w="full">
-          <Flex flexDir="column" w="15%">
-            <Flex
-              align="flex-start"
-              color="walkItemsList.fontColor"
-              fontSize="smm"
-              fontWeight="400"
-              h="50%"
-              lineHeight="18px"
-              noOfLines={1}
-              opacity="1"
-              pt="3px"
-              textOverflow="ellipsis"
-            >
-              {answer?.question?.questionsCategory?.name}
+          <Tooltip label={answer?.question?.questionsCategory?.name}>
+            <Flex flexDir="column" w="10%">
+              <Flex
+                align="flex-start"
+                color="walkItemsList.fontColor"
+                fontSize="smm"
+                fontWeight="400"
+                h="50%"
+                lineHeight="18px"
+                noOfLines={1}
+                opacity="1"
+                pt="3px"
+                textOverflow="ellipsis"
+              >
+                {answer?.question?.questionsCategory?.name}
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex flexDir="column" w="15%">
-            <Flex
-              align="flex-start"
-              color="walkItemsList.fontColor"
-              fontSize="smm"
-              fontWeight="400"
-              h="50%"
-              lineHeight="18px"
-              noOfLines={1}
-              opacity="1"
-              pt="3px"
-              textOverflow="ellipsis"
-            >
-              {answer?.question?.question ?? 'No description'}
+          </Tooltip>
+          <Tooltip label={answer?.question?.question}>
+            <Flex flexDir="column" w="15%">
+              <Flex
+                align="flex-start"
+                color="walkItemsList.fontColor"
+                fontSize="smm"
+                fontWeight="400"
+                h="50%"
+                lineHeight="18px"
+                noOfLines={1}
+                opacity="1"
+                pt="3px"
+                textOverflow="ellipsis"
+              >
+                {answer?.question?.question ?? 'No description'}
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex flexDir="column" w="5%">
+          </Tooltip>
+
+          <Flex flexDir="column" w="6%">
             <Flex
               align="flex-start"
               color={`walkItemsList.${answer?.status}`}
@@ -81,38 +86,41 @@ const WalkItemsListItem = ({
               {answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
             </Flex>
           </Flex>
-          <Flex flexDir="column" w="15%">
-            <Flex
-              align="flex-start"
-              color="walkItemsList.fontColor"
-              fontSize="smm"
-              fontWeight="400"
-              h="50%"
-              lineHeight="18px"
-              noOfLines={1}
-              opacity="1"
-              pt="3px"
-              textOverflow="ellipsis"
-            >
-              {audit?.area?.name ?? '-'}
+          <Tooltip label={answer?.audit?.site?.name}>
+            <Flex flexDir="column" w="19%">
+              <Flex
+                align="flex-start"
+                color="walkItemsList.fontColor"
+                fontSize="smm"
+                h="50%"
+                lineHeight="18px"
+                noOfLines={1}
+                opacity="1"
+                pt="3px"
+                textOverflow="ellipsis"
+              >
+                {audit?.site?.name ?? '-'}
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex flexDir="column" w="15%">
-            <Flex
-              align="flex-start"
-              color="walkItemsList.fontColor"
-              fontSize="smm"
-              fontWeight="400"
-              h="50%"
-              lineHeight="18px"
-              noOfLines={1}
-              opacity="1"
-              pt="3px"
-              textOverflow="ellipsis"
-            >
-              {audit?.site?.name ?? '-'}
+          </Tooltip>
+          <Tooltip label={audit?.area?.name}>
+            <Flex flexDir="column" w="19%">
+              <Flex
+                align="flex-start"
+                color="walkItemsList.fontColor"
+                fontSize="smm"
+                fontWeight="400"
+                h="50%"
+                lineHeight="18px"
+                noOfLines={1}
+                opacity="1"
+                pt="3px"
+                textOverflow="ellipsis"
+              >
+                {audit?.area?.name ?? '-'}
+              </Flex>
             </Flex>
-          </Flex>
+          </Tooltip>
           <Flex flexDir="column" w="5%">
             <Flex
               align="flex-start"
@@ -129,53 +137,55 @@ const WalkItemsListItem = ({
               {answer?.actions?.length}
             </Flex>
           </Flex>
-          <Box w="15%">
-            <Skeleton isLoaded={!!answer} rounded="full">
-              {answer.addedBy ? (
-                <Flex align="center" direction="row">
-                  <Avatar name={answer.addedBy?.displayName} size="xs" src={answer.addedBy?.imgUrl} />
-                  <Text
-                    color="walkItemsList.fontColor"
-                    fontSize="13px"
-                    lineHeight="17px"
-                    opacity="1"
-                    overflow="hidden"
-                    pl={3}
-                    textOverflow="ellipsis"
-                    w="full"
-                    whiteSpace="nowrap"
-                  >
-                    {answer.addedBy?.displayName}
-                  </Text>
-                </Flex>
-              ) : (
-                <Flex fontSize="13px" fontStyle="italic">
-                  Unassigned
-                </Flex>
-              )}
-            </Skeleton>
-          </Box>
-          <Flex w="10%">
-            <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
-              {answer?.metatags?.addedAt ? (
-                format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
-              ) : (
-                <Flex fontStyle="italic">No added date</Flex>
-              )}
+          <Tooltip label={answer.addedBy?.displayName}>
+            <Box w="12%">
+              <Skeleton isLoaded={!!answer} rounded="full">
+                {answer.addedBy ? (
+                  <Flex align="center" direction="row">
+                    <Avatar name={answer.addedBy?.displayName} size="xs" src={answer.addedBy?.imgUrl} />
+                    <Text
+                      color="walkItemsList.fontColor"
+                      fontSize="13px"
+                      lineHeight="17px"
+                      opacity="1"
+                      overflow="hidden"
+                      pl={3}
+                      textOverflow="ellipsis"
+                      w="full"
+                      whiteSpace="nowrap"
+                    >
+                      {answer.addedBy?.displayName}
+                    </Text>
+                  </Flex>
+                ) : (
+                  <Flex fontSize="13px" fontStyle="italic">
+                    Unassigned
+                  </Flex>
+                )}
+              </Skeleton>
+            </Box>
+          </Tooltip>
+          <Tooltip label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
+            <Flex w="8%">
+              <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
+                {answer?.metatags?.addedAt ? (
+                  format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
+                ) : (
+                  <Flex fontStyle="italic">No added date</Flex>
+                )}
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex justify="flex-end" w="5%">
-            <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
-              <HStack>
-                <IconButton
-                  _hover={{ opacity: 0.7 }}
-                  aria-label="Delete"
-                  bg="none"
-                  icon={<Trashcan stroke="walkItemsList.iconColor" />}
-                  onClick={() => onOpen()}
-                />
-              </HStack>
-            </Flex>
+          </Tooltip>
+          <Flex justify="flex-end" w="6%">
+            <IconButton
+              _hover={{ opacity: 0.7 }}
+              aria-label="Delete"
+              bg="none"
+              icon={<Trashcan stroke="walkItemsList.iconColor" />}
+              minWidth="none"
+              onClick={() => onOpen()}
+              p={1}
+            />
           </Flex>
         </Flex>
       </Box>

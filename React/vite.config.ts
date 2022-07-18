@@ -4,7 +4,7 @@ import envCompatible from 'vite-plugin-env-compatible';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+const viteConfig = {
   // This changes the out put dir from dist to build
   // comment this out if that isn't relevant for your project
   build: {
@@ -20,9 +20,11 @@ export default defineConfig({
     }),
     envCompatible({
       prefix: 'REACT_APP',
-    })
+    }),
   ],
   server: {
-    port: 3001,
-  }
-})
+    port: process.env.PORT ? Number(process.env.PORT) : 3000,
+  },
+};
+
+export default defineConfig(viteConfig);
