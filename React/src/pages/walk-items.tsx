@@ -133,7 +133,13 @@ const WalkItems = () => {
   );
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
-  const { sortedData: sortedAnswers, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAnswers);
+  const {
+    sortedData: sortedAnswers,
+    sortOrder,
+    sortType,
+    setSortType,
+    setSortOrder,
+  } = useSort(filteredAnswers, 'metatags.addedAt', 'desc');
   const sortBy = [
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },

@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { compareAsc, parseISO } from 'date-fns';
 import { get } from 'lodash';
 
-const useSort = (data: any[], initialSortType = 'name') => {
+const useSort = (data: any[], initialSortType = 'name', initialSortOrder: 'asc' | 'desc' = 'asc') => {
   const [sortType, setSortType] = useState(initialSortType);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(initialSortOrder);
   const [sortedData, setSortedData] = useState<any>([]);
 
   useEffect(
