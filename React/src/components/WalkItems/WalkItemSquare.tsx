@@ -16,8 +16,10 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       bg="white"
       borderRadius="20px"
       boxShadow="sm"
+      cursor="pointer"
       flexShrink={0}
       h="290px"
+      onClick={() => editAnswer(answer)}
       p="20px 25px"
       spacing={3}
       w={['full', 'full', '350px']}

@@ -16,8 +16,10 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
       bg="white"
       borderRadius="20px"
       boxShadow="sm"
+      cursor="pointer"
       flexShrink={0}
       h="290px"
+      onClick={() => editAction(action)}
       p="20px 25px 20px 25px"
       spacing={6}
       w={['full', 'full', '350px']}
