@@ -102,8 +102,16 @@ const GET_ACTIONS = gql`
 `;
 
 const Actions = () => {
-  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, actionFiltersValue, setActionFiltersValue, usedFilters } =
-    useFiltersContext();
+  const {
+    filtersValues,
+    setUsedFilters,
+    setFilters,
+    cleanFilters,
+    setShowFiltersPanel,
+    actionFiltersValue,
+    setActionFiltersValue,
+    usedFilters,
+  } = useFiltersContext();
   const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -143,6 +151,7 @@ const Actions = () => {
   }, []);
 
   useEffect(() => {
+    cleanFilters();
     setFilters({
       [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
         tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],

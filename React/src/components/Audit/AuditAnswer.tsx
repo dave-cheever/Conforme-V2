@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
+import { endOfDay } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -133,7 +134,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
               variables: {
                 action: {
                   title: action.title,
-                  dueDate: action.dueDate,
+                  dueDate: action.dueDate ? endOfDay(action.dueDate) : null,
                   status: 'open',
                   priority: action.priority,
                   description: action.description,
@@ -247,7 +248,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                     variables: {
                       action: {
                         title: action.title,
-                        dueDate: action.dueDate,
+                        dueDate: action.dueDate ? endOfDay(action.dueDate) : null,
                         status: 'open',
                         priority: action.priority,
                         description: action.description,
@@ -273,7 +274,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                     action: {
                       _id: action._id,
                       title: action.title,
-                      dueDate: action.dueDate,
+                      dueDate: action.dueDate ? endOfDay(action.dueDate) : null,
                       priority: action.priority,
                       description: action.description,
                       assigneeId: action.assigneeId,

@@ -19,7 +19,7 @@ import {
   Tooltip,
   useToast,
 } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { endOfDay, format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, uniqBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
@@ -91,7 +91,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
           action: {
             _id: action._id,
             title: values.title,
-            dueDate: values.dueDate,
+            dueDate: values.dueDate ? endOfDay(values.dueDate) : null,
             status: values?.status,
             priority: values.priority,
             description: values.description,
