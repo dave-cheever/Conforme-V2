@@ -346,36 +346,41 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
                 )}
               </Stack>
             </Stack>
+
             <Spacer />
             <Flex justify="space-between" w="full">
-              <Button
-                bg="walkItemModal.buttons.secondary.bg"
-                color="walkItemModal.buttons.secondary.color"
-                fontSize="smm"
-                fontWeight="700"
-                h="40px"
-                ml={3}
-                onClick={handleSecondaryButtonClick}
-                rounded="10px"
-                w="fit-content"
-              >
-                Delete
-              </Button>
-              <Button
-                bg="walkItemModal.buttons.primary.bg"
-                color="walkItemModal.buttons.primary.color"
-                disabled={!isValid}
-                fontSize="smm"
-                fontWeight="700"
-                h="40px"
-                ml={3}
-                onClick={handlePrimaryButtonClick}
-                rightIcon={<Icon as={TickIcon} size={24} stroke="walkItemModal.buttons.primary.icon" />}
-                rounded="10px"
-                w="fit-content"
-              >
-                Update
-              </Button>
+              {walkItem?.audit?.status !== 'completed' && (
+                <Button
+                  bg="walkItemModal.buttons.secondary.bg"
+                  color="walkItemModal.buttons.secondary.color"
+                  fontSize="smm"
+                  fontWeight="700"
+                  h="40px"
+                  ml={3}
+                  onClick={handleSecondaryButtonClick}
+                  rounded="10px"
+                  w="fit-content"
+                >
+                  Delete
+                </Button>
+              )}
+              {isUserPermittedToModifyStatus && (
+                <Button
+                  bg="walkItemModal.buttons.primary.bg"
+                  color="walkItemModal.buttons.primary.color"
+                  disabled={!isValid}
+                  fontSize="smm"
+                  fontWeight="700"
+                  h="40px"
+                  ml={3}
+                  onClick={handlePrimaryButtonClick}
+                  rightIcon={<Icon as={TickIcon} size={24} stroke="walkItemModal.buttons.primary.icon" />}
+                  rounded="10px"
+                  w="fit-content"
+                >
+                  Update
+                </Button>
+              )}
             </Flex>
           </Stack>
         </ModalBody>
