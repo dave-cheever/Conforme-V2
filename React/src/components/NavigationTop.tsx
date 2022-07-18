@@ -5,6 +5,7 @@ import { Box, Flex, IconButton, Stack, Text, useDisclosure } from '@chakra-ui/re
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import NavigationTopProvider, { useNavigationTopContext } from '../contexts/NavigationTopProvider';
+import { useResponseContext } from '../contexts/ResponseProvider';
 import useConfig from '../hooks/useConfig';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
@@ -24,7 +25,10 @@ const NavigationTop = () => {
   const { showFiltersPanel } = useFiltersContext();
   const { isSearchBarOpen, setIsSearchBarOpen } = useNavigationTopContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isComplianceItemPage = isPathActive('/compliance-item/');
+
+  // Check if TopNavgation is rendered inside ResponseLayout
+  const { response } = useResponseContext();
+  const isComplianceItemPage = isPathActive(`/compliance-item/${response?._id}`);
 
   return (
     <Flex

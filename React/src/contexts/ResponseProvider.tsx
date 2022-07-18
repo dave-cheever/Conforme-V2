@@ -85,9 +85,9 @@ const GET_RESPONSE_SNAPSHOTS = gql`
   query HistoricalResponses($HistoricalResponsesQuery: AuditLogsQuery) {
     auditLog(auditLogsQuery: $HistoricalResponsesQuery) {
       _id
-      auditLogs{
-          _id
-          records {
+      auditLogs {
+        _id
+        records {
           action
           coll
           element {

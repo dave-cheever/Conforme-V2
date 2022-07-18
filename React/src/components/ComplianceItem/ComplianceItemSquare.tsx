@@ -2,12 +2,12 @@ import { useMemo } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
 import useNavigate from '../../hooks/useNavigate';
 import useResponseUtils from '../../hooks/useResponseUtils';
-import { LocationIcon, UploadedTick } from '../../icons';
+import { LocationIcon, QuestionIcon, UploadedTick } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
 
@@ -23,7 +23,7 @@ const GET_USERS_BY_ID = gql`
 
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const { navigateTo } = useNavigate();
-  const { responseStatuses, getStatus, getRenewalStatus } = useResponseUtils();
+  const { responseStatuses, getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const responseStatus = useMemo(() => getStatus(response), [getStatus, response]);
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
@@ -67,17 +67,20 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
             {response.complianceItem?.category?.name ? response.complianceItem?.category?.name : <Flex fontStyle="italic">Unassigned</Flex>}
           </Box>
         </Flex>
-        <Flex align="center">
-          {response.evidence?.some(({ uploaded }) => !uploaded) ? (
-            <Tooltip hasArrow label="Evidence required" placement="top">
-              <UploadedTick color="complianceSquare.crossIcon" />
-            </Tooltip>
-          ) : (
-            <Tooltip hasArrow label="Evidence uploaded" placement="top">
-              <UploadedTick color="complianceSquare.tickIcon" ml={2} />
+        <Stack direction="row" spacing={1}>
+          {response.evidence?.length > 0 && (
+            <Flex align="center">
+              <Tooltip hasArrow label={`Evidence ${isEvidenceUploaded(response) ? 'uploaded' : 'required'}`} placement="top">
+                <UploadedTick color={`complianceSquare.${isEvidenceUploaded(response) ? 'tickIcon' : 'crossIcon'}`} />
+              </Tooltip>
+            </Flex>
+          )}
+          {response.questions?.filter(({ required }) => required).length > 0 && (
+            <Tooltip hasArrow label={`Required questions ${areRequiredQuestionsAnswered(response) ? '' : 'not '}answered`} placement="top">
+              <QuestionIcon color={`complianceSquare.${areRequiredQuestionsAnswered(response) ? 'tickIcon' : 'crossIcon'}`} />
             </Tooltip>
           )}
-        </Flex>
+        </Stack>
       </Flex>
       <Flex align="center" h="52px" mt={2} position="relative" w="full">
         <Skeleton isLoaded={!responsibleLoading} rounded="full">
@@ -166,7 +169,7 @@ export const complianceItemsSquareStyles = {
     statusFontColor: '#FFFFFF',
     imageBg: '#ffffff',
     rightIcon: '#9A9EA1',
-    crossIcon: '#F0F0F0',
+    crossIcon: '#ddd',
     tickIcon: '#41BA17',
     fontColor: '#818197',
     regulatoryFontColor: '#818197',

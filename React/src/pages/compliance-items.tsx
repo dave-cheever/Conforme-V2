@@ -37,6 +37,13 @@ const GET_RESPONSES = gql`
         }
         outdated
       }
+      questions {
+        type
+        value
+        required
+        requiredAnswer
+        outdated
+      }
       complianceItem {
         name
         frequency

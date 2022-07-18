@@ -4,7 +4,6 @@ import { Box } from '@chakra-ui/react';
 
 import useResponseUtils from '../../hooks/useResponseUtils';
 
-
 const ResponseStatusBox = ({ status }) => {
   const { responseStatuses } = useResponseUtils();
   return (
@@ -21,7 +20,7 @@ const ResponseStatusBox = ({ status }) => {
     >
       {responseStatuses[status]}
     </Box>
-  )
-}
+  );
+};
 
 export default ResponseStatusBox;
