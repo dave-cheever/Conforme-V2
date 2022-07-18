@@ -111,6 +111,12 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
           },
         },
       );
+
+      pipeline.push({
+        $match: {
+          'answer.metatags.removedAt': { $eq: null },
+        },
+      });
     }
 
     if (shouldJoin(['questionsCategory'])) {
