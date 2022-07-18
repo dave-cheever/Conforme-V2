@@ -19,6 +19,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import { useAdminContext } from '../../contexts/AdminProvider';
