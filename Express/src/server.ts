@@ -1,14 +1,13 @@
 import { ApolloServer } from 'apollo-server-express';
 import session from 'cookie-session';
 import cors from 'cors';
-import { CronJob } from 'cron';
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import logger from 'morgan';
 import passport from 'passport';
 
 import { ISession, IUser } from 'app-interfaces';
-import { calculateAudits, CORSConfig, getProtocol } from 'app-utils';
+import { CORSConfig, getProtocol } from 'app-utils';
 
 import { context, resolvers, typeDefs } from './graphql';
 import initPassport from './passport-config';
@@ -17,7 +16,7 @@ import baseRouter from './routes';
 // Overwrite global interface
 declare global {
   namespace Express {
-    interface User extends IUser {}
+    interface User extends IUser { }
     interface Request {
       session: ISession;
     }
@@ -34,11 +33,6 @@ const getApp = async () => {
     context,
   });
   await server.start();
-
-  const calculateAuditsCRON = new CronJob('0 0 0 * * *', () => {
-    calculateAudits();
-  });
-  calculateAuditsCRON.start();
 
   initPassport(passport);
   app.disable('x-powered-by');
