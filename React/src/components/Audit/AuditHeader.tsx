@@ -56,6 +56,11 @@ const AuditHeader = () => {
               Completed
             </Badge>
           )}
+          {audit.status === 'missed' && (
+            <Badge colorScheme="red" h="fit-content" variant="outline">
+              Missed
+            </Badge>
+          )}
         </Stack>
         <Flex pr="25px">
           <Stack direction={['column', 'row']} spacing={[3, 6]}>
