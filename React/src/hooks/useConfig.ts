@@ -18,18 +18,19 @@ const useConfig = () => {
     },
     {
       type: 'menuItem',
-      label: 'Actions',
-      url: '/actions',
-      icon: CalendarIcon,
-      permission: 'actions.view',
-    },
-    {
-      type: 'menuItem',
       label: pluralize(t('question')),
       url: '/walk-items',
       icon: ListIcon,
       permission: 'questions.view',
     },
+    {
+      type: 'menuItem',
+      label: 'Actions',
+      url: '/actions',
+      icon: CalendarIcon,
+      permission: 'actions.view',
+    },
+
     // Hidden for now
     // {
     //   type: 'menuItem',
