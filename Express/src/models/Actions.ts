@@ -318,14 +318,9 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
   const action = await this.findById(actionId).lean();
   if (!action || !action.assigneeId) return;
 
-  const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
   let actionPath = '';
-
-  // If action was created in an answer, in an audit,
-  if (action.scope?._id && action.scope?.type === 'answer') {
-    const answer = await Answers.customFindOne({ _id: action.scope._id, 'scope.type': 'audit' }, organization._id);
-    if (module && answer) actionPath = `${organization.domain}/${module.path}/audits/${answer.scope._id}`;
-  }
+  const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
+  if (module) actionPath = `${organization.domain}/${module.path}/actions?id=${action._id}`;
 
   // If there is no action path, do not send the notification
   if (actionPath) {
@@ -362,8 +357,10 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
   const action = await this.findById(actionId).lean();
   if (!action || action.status !== 'closed') return;
 
-  const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
   let actionPath = '';
+  const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
+  if (module) actionPath = `${organization.domain}/${module.path}/actions?id=${action._id}`;
+
   const recipients: string[] = [];
 
   if (action.assigneeId) {
@@ -403,7 +400,6 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
       },
     ]);
     const answer = answers[0];
-    if (module && answer) actionPath = `${organization.domain}/${module.path}/audits/${answer.scope._id}`;
 
     const auditor = await Users.customFindByIdWithDetails({
       userId: answer?.audit.auditorId,

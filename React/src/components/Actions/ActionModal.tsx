@@ -51,7 +51,7 @@ const DELETE_ACTION = gql`
   }
 `;
 
-const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => void }) => {
+const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeModal: () => void; refetch: () => void }) => {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
@@ -148,7 +148,7 @@ const ActionModal = ({ action, refetch }: { action?: IAction; refetch: () => voi
               {action?.title}
             </Flex>
             <Flex alignItems="center">
-              <Close cursor="pointer" h="15px" onClick={() => setAdminModalState('closed')} stroke="actionModal.closeIcon" w="15px" />
+              <Close cursor="pointer" h="15px" onClick={closeModal} stroke="actionModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>

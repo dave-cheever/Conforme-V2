@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import {
@@ -102,6 +103,9 @@ const GET_ACTIONS = gql`
 `;
 
 const Actions = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const history = useHistory();
   const {
     filtersValues,
     setUsedFilters,
@@ -115,6 +119,16 @@ const Actions = () => {
   const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
+  const closeModal = () => {
+    // If id is in URL params, clean it
+    if (queryParams.has('id')) {
+      queryParams.delete('id');
+      history.replace({
+        search: queryParams.toString(),
+      });
+    }
+    setAdminModalState('closed');
+  };
   const tabs = ['open', 'closed', 'overdue'];
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [filteredActions, setFilteredActions] = useState<IAction[]>([]);
@@ -199,20 +213,24 @@ const Actions = () => {
     }
   }, [filtersValues]);
 
-  useEffect(() => {
-    if (data && data?.actions && !error) {
-      const items = [...data?.actions];
-
-      setFilteredActions(items);
-    }
-  }, [data?.actions, user]);
-
   const [selectedAction, setSelectedAction] = useState<IAction>();
-
   const handleOpenModal = (action: IAction) => {
     setSelectedAction(action);
     setAdminModalState('edit');
   };
+
+  useEffect(() => {
+    if (data && data?.actions && !error) {
+      const items = [...data?.actions];
+      setFilteredActions(items);
+
+      // Open modal with action from the URL params
+      if (queryParams.has('id')) {
+        const action = items.find(({ _id }) => _id === queryParams.get('id'));
+        if (action) handleOpenModal(action);
+      }
+    }
+  }, [data?.actions, user]);
 
   const initialViewMode = useMemo(() => {
     const savedView = localStorage.getItem('viewMode');
@@ -259,12 +277,12 @@ const Actions = () => {
     <>
       <Modal
         isOpen={adminModalState !== 'closed'}
-        onClose={() => setAdminModalState('closed')}
+        onClose={closeModal}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
         variant="adminModal"
       >
         <ModalOverlay />
-        <ActionModal action={selectedAction} refetch={refetch} />
+        <ActionModal action={selectedAction} closeModal={closeModal} refetch={refetch} />
       </Modal>
       <Header breadcrumbs={['Actions']} mobileBreadcrumbs={['Actions']}>
         {device !== 'mobile' && (
