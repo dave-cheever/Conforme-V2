@@ -133,6 +133,12 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
             )}
           </Flex>
           <Flex direction="column" maxH="258px" mt="20px">
+            <VStack _empty={{ marginBottom: 0 }} mb={2} spacing={2}>
+              {selection === 'auditor' && selectedAuditor && auditTeamUser(selectedAuditor as IUser)}
+              {selection === 'participants' &&
+                selectedParticipants?.length > 0 &&
+                selectedParticipants.map((participant) => auditTeamUser(participant as IUser))}
+            </VStack>
             {loading ? (
               <Flex align="center" fontStyle="italic" h="50px" px={3} w="full">
                 <Box mr={3} w="40px">
@@ -141,11 +147,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
                 Searching...
               </Flex>
             ) : data?.searchUsers.length > 0 ? (
-              <VStack alignItems="flex-start" h="full" mb="20px" overflow="auto" spacing="10px">
-                {selection === 'auditor' && selectedAuditor && auditTeamUser(selectedAuditor as IUser)}
-                {selection === 'participants' &&
-                  selectedParticipants?.length > 0 &&
-                  selectedParticipants.map((participant) => auditTeamUser(participant as IUser))}
+              <VStack mb="20px" overflow="auto" spacing={2}>
                 {data?.searchUsers
                   .filter((user) =>
                     selection === 'participants'
