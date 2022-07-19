@@ -47,6 +47,7 @@ export const answersTypeDefs = `
     status: [String]
     usersIds: AnswerUsersInput
     scope: ScopeInput
+    createdDate: [String]
   }
 
   input AnswerCreateInput {

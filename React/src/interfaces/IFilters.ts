@@ -71,6 +71,7 @@ export interface IWalkItemFilters {
   status?: IFilterString;
   questionsCategoriesIds?: IFilter;
   usersIds?: IWalkItemUserFilter;
+  createdDate?: IFilterString;
 }
 
 export default interface IFilters {

@@ -151,7 +151,7 @@ const WalkItems = () => {
   ];
 
   useEffect(() => {
-    setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds', 'sitesIds', 'status']);
+    setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds', 'sitesIds', 'status', 'createdDate']);
     return () => {
       setShowFiltersPanel(false);
       setAdminModalState('closed');

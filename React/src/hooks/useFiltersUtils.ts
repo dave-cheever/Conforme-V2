@@ -81,7 +81,6 @@ export const initialWalkItemFilters: IWalkItemFilters = {
   sitesIds: {
     name: 'Site',
     value: [],
-    hideFromPanel: true,
   },
   areasIds: {
     name: 'Area',
@@ -92,6 +91,10 @@ export const initialWalkItemFilters: IWalkItemFilters = {
     value: {
       addedByIds: [],
     },
+  },
+  createdDate: {
+    name: 'Date added',
+    value: [],
   },
 };
 
@@ -197,7 +200,7 @@ const useFiltersUtils = () => {
       if (newFilters[filterName] !== undefined) filter.value = newFilters[filterName];
 
       // Clear all values
-      if (isCleanFilters) filter.value = filterName === 'usersIds' ? {} as string : [] as string[];
+      if (isCleanFilters) filter.value = filterName === 'usersIds' ? ({} as string) : ([] as string[]);
 
       // Check if default value exists and set filters to defaultFilters value
       if (isCleanFilters && !isEmpty(defaultFilters) && defaultFilters[filterName] !== undefined) filter.value = defaultFilters[filterName];

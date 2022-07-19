@@ -1,4 +1,15 @@
-import { compareDesc } from 'date-fns';
+import {
+  addMonths,
+  compareDesc,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Answers, Users } from 'app-models';
@@ -33,6 +44,115 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
           },
         },
       });
+    }
+
+    if (answerQuery?.createdDate) {
+      const [filter, startDate, endDate] = answerQuery?.createdDate;
+      let $match;
+      switch (filter) {
+        case 'thisWeek':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisMonth':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfMonth(new Date()),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfMonth(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisYear':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfYear(new Date()),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfYear(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'nextMonth':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'exactDate':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfDay(new Date(startDate)),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfDay(new Date(startDate)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'dateRange':
+          if (startDate && endDate) {
+            $match = {
+              $and: [
+                {
+                  'metatags.addedAt': {
+                    $gte: startOfDay(new Date(startDate)),
+                  },
+                },
+                {
+                  'metatags.addedAt': {
+                    $lte: endOfDay(new Date(endDate)),
+                  },
+                },
+              ],
+            };
+          }
+          break;
+        default:
+          break;
+      }
+
+      if ($match) pipeline.push({ $match });
     }
 
     if (shouldJoin(['question']) || answerQuery?.questionsCategoriesIds?.length > 0) {

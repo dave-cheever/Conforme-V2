@@ -31,6 +31,8 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
     switch (getPath()) {
       case 'actions':
         return filtersValues.dueDate;
+      case 'walk-items':
+        return filtersValues.createdDate;
       case 'audits':
       default:
         return filtersValues[filterName];
@@ -41,6 +43,8 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
     switch (getPath()) {
       case 'actions':
         return 'dueDate';
+      case 'walk-items':
+        return 'createdDate';
       case 'audits':
       default:
         return filterName;
