@@ -59,6 +59,7 @@ const GET_ANSWERS = gql`
           name
         }
         area {
+          _id
           name
         }
         status
@@ -128,6 +129,7 @@ const WalkItems = () => {
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },
     { label: 'Status', key: 'status' },
+    { label: capitalize(t('site')), key: 'audit.site.name' },
     { label: capitalize(t('area')), key: 'audit.area.name' },
     { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },

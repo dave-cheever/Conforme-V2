@@ -14,6 +14,9 @@ const GET_AUDITS = gql`
       _id
       walkType
       areaId
+      site {
+        name
+      }
       area {
         name
       }
@@ -76,7 +79,16 @@ const WalkItemsList = ({
             sortOrder={sortType === 'status' ? sortOrder : undefined}
             w="6%"
           />
-          <AdminTableHeaderElement label={capitalize(t('site'))} w="19%" />
+          <AdminTableHeaderElement
+            label={capitalize(t('site'))}
+            onClick={() => {
+              setSortType('audit.site.name');
+              setSortOrder(sortOrder === 'asc' && sortType === 'audit.site.name' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'audit.site.name'}
+            sortOrder={sortType === 'audit.site.name' ? sortOrder : undefined}
+            w="19%"
+          />
           <AdminTableHeaderElement
             label={capitalize(t('area'))}
             onClick={() => {
