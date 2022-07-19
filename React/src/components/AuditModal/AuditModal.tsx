@@ -28,7 +28,7 @@ import useAuditModal from '../../hooks/useAuditModal';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, TickIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
-import { Datepicker, Dropdown } from '../Forms';
+import { Dropdown } from '../Forms';
 import AuditTeamModal from './AuditTeamModal';
 import AuditTeamParticipantAvatar from './AuditTeamParticipantAvatar';
 
@@ -154,19 +154,7 @@ const AuditModal = ({ refetch }) => {
                       variant="secondaryVariant"
                     />
                   </GridItem>
-                  {audit.walkType === 'physical' && (
-                    <>
-                      <GridItem w="100%">
-                        <Datepicker
-                          control={control}
-                          disabled
-                          label="Start date (today)"
-                          name="metatags.addedAt"
-                          variant="secondaryVariant"
-                        />
-                      </GridItem>
-                    </>
-                  )}
+                  
                   <GridItem w="100%">
                     <Dropdown
                       control={control}
