@@ -47,7 +47,8 @@ const FiltersPanel = () => {
       </Flex>
       <Flex
         align="center"
-        bg="transparent"
+        bg="filterPanel.bg"
+        borderBottomStartRadius={['0px', '20px']}
         bottom="0px"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
         h="70px"
