@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button, Flex, useOutsideClick } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
@@ -9,6 +9,14 @@ import FiltersPanelItem from './FiltersPanelItem';
 const FiltersPanel = () => {
   const device = useDevice();
   const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
+  const panelRef = useRef(null);
+
+  useOutsideClick({
+    ref: panelRef,
+    handler: () => {
+      setShowFiltersPanel(false);
+    },
+  });
 
   useEffect(() => {
     if (showFiltersPanel && device === 'mobile') document.body.style.overflow = 'hidden';
@@ -29,6 +37,7 @@ const FiltersPanel = () => {
       flexShrink={0}
       h="100vh"
       position={['relative', 'absolute']}
+      ref={panelRef}
       right="0"
       w={['full', '320px']}
       zIndex="10"

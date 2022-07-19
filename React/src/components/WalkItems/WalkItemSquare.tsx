@@ -1,7 +1,5 @@
 import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { t } from 'i18next';
-import pluralize from 'pluralize';
 
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon } from '../../icons';
@@ -20,13 +18,15 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       flexShrink={0}
       h="290px"
       onClick={() => editAnswer(answer)}
-      p="20px 25px"
-      spacing={3}
+      p="20px 25px 20px 25px"
+      spacing={6}
       w={['full', 'full', '350px']}
     >
-      <Box color="walkItemSquare.section.title" fontSize="ssm" isTruncated lineHeight="20px" w="full">
-        {answer?.question?.questionsCategory?.name ? pluralize(answer.question.questionsCategory.name, 1) : '-'}
-      </Box>
+      <Flex align="center" justify="space-between">
+        <Box color="walkItemSquare.audit" fontSize="ssm" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          <Flex>{answer?.audit?.auditType?.name}</Flex>
+        </Box>
+      </Flex>
       <Flex w="full">
         <Skeleton isLoaded={!!answer} rounded="full">
           <Tooltip label={answer?.addedBy?.displayName}>
@@ -37,8 +37,8 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           {answer?.question?.question}
         </Text>
       </Flex>
-      <Flex height="40px" w="full">
-        <Box lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+      <Flex w="full">
+        <Box overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title" fontSize="ssm">
             Status
           </Text>
@@ -55,7 +55,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Tooltip>
         </Box>
       </Flex>
-      <Flex height="40px" w="full">
+      <Flex w="full">
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Site</Text>
           <Tooltip label={answer?.audit?.site?.name ?? '-'}>
@@ -67,24 +67,16 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">Area</Text>
           <Tooltip label={answer?.audit?.area?.name ?? '-'}>
-            <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated textTransform="capitalize">
+            <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
               {answer?.audit?.area?.name ?? '-'}
             </Text>
           </Tooltip>
         </Box>
       </Flex>
-      <Flex align="center" flexDirection="column" grow={1} justify="space-between" />
       <Flex align="center" justify="space-between" w="full">
-        <Box
-          fontSize="ssm"
-          lineHeight="20px"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          w={['max(calc(100% - 100px),100px)']}
-          whiteSpace="nowrap"
-        >
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title" fontSize="ssm">
-            Related {pluralize(t('audit'), 1)}
+            Linked to
           </Text>
           <Stack
             _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
