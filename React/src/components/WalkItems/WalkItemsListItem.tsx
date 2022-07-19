@@ -4,20 +4,18 @@ import { capitalize } from 'lodash';
 
 import { Trashcan } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
-import { IAudit } from '../../interfaces/IAudit';
 import WalkItemDeleteModal from './WalkItemDeleteModal';
 
 const WalkItemsListItem = ({
   answer,
-  audit,
   refetchAnswers,
   editAnswer,
 }: {
   answer: IAnswer;
-  audit: IAudit;
   refetchAnswers: () => void;
   editAnswer: (answer: IAnswer) => void;
 }) => {
+  const { audit } = answer;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

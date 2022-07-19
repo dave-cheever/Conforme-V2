@@ -54,10 +54,12 @@ const GET_ANSWERS = gql`
       }
       audit {
         _id
+        walkType
         site {
           _id
           name
         }
+        areaId
         area {
           _id
           name
@@ -65,6 +67,9 @@ const GET_ANSWERS = gql`
         status
         auditorId
         participantsIds
+        metatags {
+          addedAt
+        }
       }
       status
       options
