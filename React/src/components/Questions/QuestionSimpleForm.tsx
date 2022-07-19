@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Icon, Text, useRadioGroup } from '@chakra-ui/react';
-import { isEmpty } from 'lodash';
+import { t } from 'i18next';
+import { capitalize, isEmpty } from 'lodash';
 
 import { SwitchOptions } from '../../bootstrap/config';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -45,11 +46,7 @@ const QuestionSimpleForm = ({
     },
   });
 
-  const [questionName, required, notApplicable] = watch([
-    'name',
-    'required',
-    'notApplicable',
-  ]);
+  const [questionName, required, notApplicable] = watch(['name', 'required', 'notApplicable']);
   const [selectedRadio, setSelectedRadio] = useState<string>('');
 
   const questionAlreadyExist =
@@ -118,7 +115,7 @@ const QuestionSimpleForm = ({
       </Flex>
       <TextInput
         control={control}
-        label="Question title"
+        label={`${capitalize(t('question'))} title`}
         name="name"
         placeholder="e.g. where is the tv?"
         validations={{
@@ -126,19 +123,8 @@ const QuestionSimpleForm = ({
         }}
         variant="secondaryVariant"
       />
-      <Textarea
-        control={control}
-        label="Description"
-        name="description"
-        variant="secondaryVariant"
-      />
-      <Checkbox
-        control={control}
-        disabled={notApplicable}
-        label="Answer is required"
-        name="required"
-        variant="secondaryVariant"
-      />
+      <Textarea control={control} label="Description" name="description" variant="secondaryVariant" />
+      <Checkbox control={control} disabled={notApplicable} label="Answer is required" name="required" variant="secondaryVariant" />
       {questionType === 'switch' && (
         <>
           <HStack {...group} alignItems="flex-start" spacing="20px">
@@ -152,12 +138,7 @@ const QuestionSimpleForm = ({
               );
             })}
           </HStack>
-          <Checkbox
-            control={control}
-            label="NA answer permitted"
-            name="notApplicable"
-            variant="secondaryVariant"
-          />
+          <Checkbox control={control} label="NA answer permitted" name="notApplicable" variant="secondaryVariant" />
         </>
       )}
       <Flex justifyContent="space-between" mt="15px">
@@ -180,11 +161,7 @@ const QuestionSimpleForm = ({
         <Button
           bg="questionsSimple.form.button.primary.bg"
           color="questionsSimple.form.button.primary.font"
-          disabled={
-            questionAlreadyExist ||
-            Object.keys(errors).length > 0 ||
-            !questionName
-          }
+          disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
           h="27px"
@@ -194,13 +171,7 @@ const QuestionSimpleForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={
-            <Icon
-              as={OpenMenuArrow}
-              stroke="complianceItemModal.tabs.bottomButton.icon"
-              transform="rotate(270deg)"
-            />
-          }
+          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question

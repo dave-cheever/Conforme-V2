@@ -105,7 +105,7 @@ const ComplianceItemModalProvider = ({ children }) => {
       Component: AdditionalDetailsForm,
     },
     {
-      name: 'Questions',
+      name: capitalize(pluralize(t('question'))),
       fields: {
         questions: [],
       },

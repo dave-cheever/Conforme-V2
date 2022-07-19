@@ -4,6 +4,7 @@ import { Box, Flex, Grid, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
@@ -82,7 +83,7 @@ const Summary = () => {
 
       {complianceItem.questions?.length !== 0 && (
         <Box w="full">
-          <SectionHeader label="Questions" />
+          <SectionHeader label={capitalize(pluralize(t('question')))} />
           <Stack mt="15px" spacing={2} w="full">
             {complianceItem.questions?.map((item) => (
               <QuestionListElement bgColor="summaryModal.tileBg" key={item.name} question={item} />
@@ -94,7 +95,7 @@ const Summary = () => {
       {complianceItem.evidenceItems?.length === 0 &&
         complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 && (
           <Text color="summaryModal.error">
-            You must add at least one evidence item OR one mandatory question in order to have a valid {t('complianceItem')}.
+            You must add at least one evidence item OR one mandatory {t('question')} in order to have a valid {t('complianceItem')}.
           </Text>
         )}
     </Stack>

@@ -1,38 +1,21 @@
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, Stack } from '@chakra-ui/react';
 
-import { responseTabItems } from '../../bootstrap/config';
-import Attachments from '../../components/Response/Attachments';
-import Details from '../../components/Response/Details';
 import RenewalModal from '../../components/Response/RenewalModal';
-import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import ResponseTabItem from '../../components/Response/ResponseTabItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import useResponseUtils from '../../hooks/useResponseUtils';
 
 const ComplianceItemResponse = () => {
   const { response, activeTab, setActiveTab: updateActiveTab, isQuestionFormDirty, setIsQuestionFormDirty } = useResponseContext();
-  // const { getStatus } = useResponseUtils();
+  const { getResponseTabItems } = useResponseUtils();
+  const responseTabItems = getResponseTabItems(response);
+  const activeTabItem = responseTabItems[activeTab];
   // const [run, setRun] = useState(false);
   // const device = useDevice();
 
   // useEffect(() => {
   //   if (getStatus(response) === 'compliant' && !snapshot) setRun(false); // TODO: needs to be updated, fix dimensions and trigger
   // }, [response]);
-
-  const renderSection = () => {
-    switch (activeTab) {
-      case 0:
-        return <Details />;
-
-      case 1:
-        return <Attachments />;
-
-      case 2:
-        return <ResponseQuestions />;
-
-      default:
-        break;
-    }
-  };
 
   const setActiveTab = (activeTab: number) => {
     if (isQuestionFormDirty) {
@@ -72,57 +55,52 @@ const ComplianceItemResponse = () => {
           p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
           w="full"
         >
-          <Flex align="center" justify="space-between" mb={['0', '8']}>
-            <Flex justify={['center', 'flex-start']} w="full">
-              {responseTabItems
-                .filter(
-                  ({ index }) =>
-                    !(!response?.complianceItem?.allowAttachments && response?.complianceItem?.evidenceItems.length === 0 && index === 1),
-                )
-                .map(({ index, label, icon }) => (
-                  <ResponseTabItem
-                    active={activeTab === index}
-                    icon={icon}
-                    index={index}
-                    key={label}
-                    label={label}
-                    setActiveTab={setActiveTab}
-                  />
-                ))}
-            </Flex>
-            {activeTab > 0 && (
-              <Button
-                borderRadius="10px"
-                color="complianceItemResponse.nextButtonColor"
-                display={['none', 'block']}
-                flexShrink={0}
-                fontSize="11px"
-                fontWeight="bold"
-                h="28px"
-                mr={activeTab === 2 ? '132px' : '12px'}
-                onClick={() => setActiveTab(activeTab - 1)}
-                w="120px"
-              >
-                Previous step
-              </Button>
-            )}
-            {activeTab < 2 && (
-              <Button
-                borderRadius="10px"
-                color="complianceItemResponse.nextButtonColor"
-                display={['none', 'block']}
-                flexShrink={0}
-                fontSize="11px"
-                fontWeight="bold"
-                h="28px"
-                onClick={() => setActiveTab(activeTab + 1)}
-                w="120px"
-              >
-                Next step
-              </Button>
-            )}
+          <Flex align="center" justify="space-between" mb={[4, 8]}>
+            <Stack direction="row" justify={['center', 'flex-start']} spacing={2} w="full">
+              {responseTabItems.map(({ index, label, icon }) => (
+                <ResponseTabItem
+                  active={activeTab === index}
+                  icon={icon}
+                  index={index}
+                  key={label}
+                  label={label}
+                  setActiveTab={setActiveTab}
+                />
+              ))}
+            </Stack>
+            <Stack direction="row" display={['none', 'flex']} spacing={2}>
+              {activeTab > 0 && (
+                <Button
+                  borderRadius="10px"
+                  color="complianceItemResponse.nextButtonColor"
+                  flexShrink={0}
+                  fontSize="11px"
+                  fontWeight="bold"
+                  h="28px"
+                  onClick={() => setActiveTab(activeTab - 1)}
+                  w="120px"
+                >
+                  Previous step
+                </Button>
+              )}
+              {activeTab < responseTabItems.length - 1 && (
+                <Button
+                  borderRadius="10px"
+                  color="complianceItemResponse.nextButtonColor"
+                  display={['none', 'block']}
+                  flexShrink={0}
+                  fontSize="11px"
+                  fontWeight="bold"
+                  h="28px"
+                  onClick={() => setActiveTab(activeTab + 1)}
+                  w="120px"
+                >
+                  Next step
+                </Button>
+              )}
+            </Stack>
           </Flex>
-          {renderSection()}
+          <activeTabItem.component />
         </Flex>
       </Flex>
     </>

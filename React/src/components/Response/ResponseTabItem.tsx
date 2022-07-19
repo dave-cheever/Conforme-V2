@@ -17,7 +17,6 @@ const ResponseTabItem = ({ setActiveTab, index, active, label, icon }) => {
       cursor="pointer"
       flexDirection="column"
       h="62px"
-      mr="3"
       onClick={onClick}
       p="8px 13px 6px 13px"
     >

@@ -1,8 +1,13 @@
 import { differenceInDays, startOfDay } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isInteger } from 'lodash';
+import pluralize from 'pluralize';
 
+import Attachments from '../components/Response/Attachments';
+import Details from '../components/Response/Details';
+import ResponseQuestions from '../components/Response/ResponseQuestions';
 import { useAppContext } from '../contexts/AppProvider';
+import { AttachmentIcon, DetailIcon, QuestionIcon } from '../icons';
 import { IQuestionChoice } from '../interfaces/IQuestionChoice';
 import { IResponse } from '../interfaces/IResponse';
 import { ITrackerQuestion } from '../interfaces/ITrackerQuestion';
@@ -43,6 +48,32 @@ const useResponseUtils = () => {
     nonCompliant: capitalize(t('non-compliant')),
     comingUp: 'Coming up',
     compliant: capitalize(t('compliant')),
+  };
+
+  const getResponseTabItems = (response: IResponse) => {
+    const items = [{
+      index: 0,
+      label: 'Details',
+      icon: DetailIcon,
+      component: Details,
+    }];
+    if (response?.complianceItem?.allowAttachments || response?.complianceItem?.evidenceItems?.length > 0) {
+      items.push({
+        index: items.length,
+        label: 'Attachments',
+        icon: AttachmentIcon,
+        component: Attachments,
+      });
+    }
+    if (response.questions?.filter(({ outdated }) => !outdated).length > 0) {
+      items.push({
+        index: items.length,
+        label: capitalize(pluralize(t('question'))),
+        icon: QuestionIcon,
+        component: ResponseQuestions,
+      });
+    }
+    return items;
   };
 
   const getRenewalStatus = (response: IResponse) => {
@@ -170,6 +201,7 @@ const useResponseUtils = () => {
   return {
     responseStatuses,
     responseStatusesGroup,
+    getResponseTabItems,
     areRequiredQuestionsAnswered,
     getRenewalStatus,
     getRenewalStatusText,

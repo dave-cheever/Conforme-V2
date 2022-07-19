@@ -1,6 +1,6 @@
 import { RepeatClockIcon } from '@chakra-ui/icons';
 
-import { AttachmentIcon, AuditIcon, DetailIcon, ProgressIcon, QuestionIcon, TeamsIcon } from '../icons';
+import { AuditIcon, ProgressIcon, TeamsIcon } from '../icons';
 
 export const toastSuccess: any = {
   title: 'Success',
@@ -78,24 +78,6 @@ export const userMenus = [
     label: 'Settings',
     url: '/admin/settings',
     permission: 'adminPanel.view',
-  },
-];
-
-export const responseTabItems = [
-  {
-    index: 0,
-    label: 'Details',
-    icon: DetailIcon,
-  },
-  {
-    index: 1,
-    label: 'Attachments',
-    icon: AttachmentIcon,
-  },
-  {
-    index: 2,
-    label: 'Questions',
-    icon: QuestionIcon,
   },
 ];
 

@@ -317,6 +317,8 @@ Possible translations for compliance item module:
 - businessUnit
 - compliant
 - non-compliant
+- question
+- answer
 
 ### Theme
 To change a theme you need to update `theme` object in organization config in the database. Use styling structure that was implemented in app, and put it inside of `colors` property.

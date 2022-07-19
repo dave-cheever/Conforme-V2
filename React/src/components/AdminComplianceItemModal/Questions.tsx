@@ -1,16 +1,9 @@
 import { useState } from 'react';
 
 import { AddIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Button,
-  Icon,
-  Stack,
-  Text,
-  useRadioGroup,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Icon, Stack, Text, useRadioGroup, VStack } from '@chakra-ui/react';
 import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import { questionTypes } from '../../bootstrap/config';
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -31,8 +24,7 @@ const QuestionsForm = () => {
   const [selectedRadio, setSelectedRadio] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editQuestionIndex, setEditQuestionIndex] = useState<number>();
-  const [editQuestion, setEditQuestion] =
-    useState<ITrackerQuestion<TQuestionValue>>();
+  const [editQuestion, setEditQuestion] = useState<ITrackerQuestion<TQuestionValue>>();
 
   const addOrUpdateQuestion = (question: ITrackerQuestion<TQuestionValue>) => {
     if (isEdit) {
@@ -60,13 +52,10 @@ const QuestionsForm = () => {
 
   return (
     <Stack pb={isDragging ? 'calc(65px + .5rem)' : 0} spacing={4} w="full">
-      <SectionHeader label="Add questions" />
-      <Text
-        color="adminComplianceItemModal.section.questions.description"
-        fontSize="11px"
-        opacity="0.7"
-      >
-        If you need to add any additional questions regarding this {t('complianceItem')}, you can use this section to create them.
+      <SectionHeader label={`Add ${pluralize(t('question'))}`} />
+      <Text color="adminComplianceItemModal.section.questions.description" fontSize="11px" opacity="0.7">
+        If you need to add any additional {pluralize(t('question'))} regarding this {t('complianceItem')}, you can use this section to
+        create them.
       </Text>
       {!showQuestionForm && (
         <Button
@@ -89,17 +78,11 @@ const QuestionsForm = () => {
           py={2}
           w="120px"
         >
-          Add question
+          Add {t('question')}
         </Button>
       )}
       {isQuestionListOpen && (
-        <Box
-          bg="questionsModal.questionsList.bg"
-          p="20px 25px"
-          rounded="20px"
-          textAlign="center"
-          w="225px"
-        >
+        <Box bg="questionsModal.questionsList.bg" p="20px 25px" rounded="20px" textAlign="center" w="225px">
           <VStack {...group} alignItems="flex-start" mb="20px" spacing="20px">
             {questionTypes.map(({ value, label }) => {
               const radio = getRadioProps({ value });
@@ -129,13 +112,7 @@ const QuestionsForm = () => {
               setShowQuestionForm(true);
               setSelectedRadio('');
             }}
-            rightIcon={
-              <Icon
-                as={OpenMenuArrow}
-                stroke="questionsModal.button.icon"
-                transform="rotate(270deg)"
-              />
-            }
+            rightIcon={<Icon as={OpenMenuArrow} stroke="questionsModal.button.icon" transform="rotate(270deg)" />}
             w="154px"
           >
             Continue

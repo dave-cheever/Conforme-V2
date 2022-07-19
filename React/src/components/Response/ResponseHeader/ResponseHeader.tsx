@@ -19,6 +19,7 @@ import {
 import format from 'date-fns/format';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { toastSuccess } from '../../../bootstrap/config';
 import { useAppContext } from '../../../contexts/AppProvider';
@@ -26,6 +27,7 @@ import { ResponseContext, useResponseContext } from '../../../contexts/ResponseP
 import useNavigate from '../../../hooks/useNavigate';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 import { ArrowDownIcon, CheckIcon, ShareIcon } from '../../../icons';
+import past from '../../../utils/tense';
 import { isPermitted } from '../../can';
 import FollowButton from '../../Team/FollowButton';
 import ResponseHeaderButton from './ResponseHeaderButton';
@@ -122,17 +124,26 @@ const ReasponseHeader = () => {
           )}
         </Stack>
         <Flex mb="15px">
-          <Flex alignItems="center" maxW={['100vw', '390px']} pl={['10px', '0px']} pr={['35px', '0px']} w="full">
+          <Flex alignItems="center" pl={['10px', '0px']} pr={['35px', '0px']} w={['full', 'auto']}>
             <ResponseHeaderStatus
               heading={capitalize(t('compliant'))}
               status={response && getStatus(response) === 'compliant' ? 'Yes' : 'No'}
             />
-            <Spacer />
             {currentEvidenceItems?.length > 0 && (
-              <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />
+              <>
+                <Spacer />
+                <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />
+              </>
             )}
-            <Spacer />
-            <ResponseHeaderStatus heading="Questions answered" status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'} />
+            {response.questions?.filter(({ outdated }) => !outdated).length > 0 && (
+              <>
+                <Spacer />
+                <ResponseHeaderStatus
+                  heading={`${capitalize(pluralize(t('question')))} ${past(t('answer'))}`}
+                  status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'}
+                />
+              </>
+            )}
           </Flex>
           <Spacer display={['none', 'flex']} />
           <Flex color="white" display={['none', 'flex']} h="40px" justify="flex-end" mr="27px">

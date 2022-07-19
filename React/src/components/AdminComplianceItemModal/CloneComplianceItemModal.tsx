@@ -1,16 +1,6 @@
 import React, { useContext } from 'react';
 
-import {
-  Box,
-  Button,
-  Flex,
-  ListItem,
-  ModalCloseButton,
-  ModalContent,
-  Spacer,
-  Text,
-  UnorderedList,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, ListItem, ModalCloseButton, ModalContent, Spacer, Text, UnorderedList } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -23,31 +13,13 @@ const CloneComplianceItemModal = ({ refetch }) => {
   const { cloneComplianceItem, closeModal } = useComplianceItemModal(refetch);
 
   return (
-    <ModalContent
-      bg="cloneComplianceItemModal.bg"
-      borderRadius="20px"
-      m="auto"
-      p="20px  25px"
-      position="relative"
-      w="325px"
-    >
+    <ModalContent bg="cloneComplianceItemModal.bg" borderRadius="20px" m="auto" p="20px  25px" position="relative" w="325px">
       <Flex flexDirection="column" h="100%" justifyContent="left">
-        <Box
-          color="cloneComplianceItemModal.heading"
-          fontSize="smm"
-          fontWeight="bold"
-          mb="15px"
-          textAlign="left"
-        >
+        <Box color="cloneComplianceItemModal.heading" fontSize="smm" fontWeight="bold" mb="15px" textAlign="left">
           Clone item?
           <ModalCloseButton mt="5px" onClick={closeModal} />
         </Box>
-        <Box
-          color="cloneComplianceItemModal.subHeading"
-          fontSize="smm"
-          textAlign="left"
-          whiteSpace="pre"
-        >
+        <Box color="cloneComplianceItemModal.subHeading" fontSize="smm" textAlign="left" whiteSpace="pre">
           <Text>Create a clone of {complianceItem.name}</Text>
           <Text>The following fields will be copied to the new item:</Text>
           <UnorderedList pl={3}>
@@ -59,7 +31,7 @@ const CloneComplianceItemModal = ({ refetch }) => {
             <ListItem>Frequency</ListItem>
             <ListItem>{pluralize(capitalize(t('businessUnit')))}</ListItem>
             <ListItem>Evidence</ListItem>
-            <ListItem>Questions</ListItem>
+            <ListItem>{pluralize(capitalize(t('question')))}</ListItem>
           </UnorderedList>
         </Box>
         <Flex mt="34px">

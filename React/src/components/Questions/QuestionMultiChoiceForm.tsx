@@ -3,7 +3,8 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Box, Button, Flex, Icon, Input, Text } from '@chakra-ui/react';
-import { isEmpty } from 'lodash';
+import { t } from 'i18next';
+import { capitalize, isEmpty } from 'lodash';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { Move, OpenMenuArrow, PlusIcon, Trashcan } from '../../icons';
@@ -65,17 +66,13 @@ const QuestionMultiChoiceForm = ({
         required: editableValue.required,
         value: editableValue.value,
       });
-      const choicesLabel =
-        editableValue.value &&
-        editableValue.value.map((choice) => choice.label);
+      const choicesLabel = editableValue.value && editableValue.value.map((choice) => choice.label);
       if (choicesLabel) setInputValue(choicesLabel);
     }
   }, [JSON.stringify(editableValue)]);
 
   useMemo(() => {
-    const isEmpty = inputValue
-      .map((choice) => choice === '')
-      .some((value) => value === true);
+    const isEmpty = inputValue.map((choice) => choice === '').some((value) => value === true);
     setChoicesIsEmpty(isEmpty);
   }, [inputValue]);
 
@@ -111,8 +108,7 @@ const QuestionMultiChoiceForm = ({
     const value = getValues('value');
     if (!value) return;
 
-    if (value.some((value) => value.isCorrect === true))
-      setValue('required', true);
+    if (value.some((value) => value.isCorrect === true)) setValue('required', true);
     else setValue('required', false);
 
     value.forEach((choice) => {
@@ -166,88 +162,46 @@ const QuestionMultiChoiceForm = ({
         </Text>
         <TextInput
           control={control}
-          label="Question title"
+          label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
           validations={{
             notEmpty: true,
           }}
         />
-        <TextInput
-          control={control}
-          label="Question description"
-          name="description"
-        />
-        <Text
-          color="questionMultiChoiceForm.text.color"
-          fontSize="ssm"
-          my="20px"
-        >
-          Add as many options as you need and mark the correct answers. Mark the
-          correct answers by clicking on the checkbox.
+        <TextInput control={control} label="Description" name="description" />
+        <Text color="questionMultiChoiceForm.text.color" fontSize="ssm" my="20px">
+          Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
         </Text>
         <Box pr="10px" w="calc(100% + 10px)">
-          <DragDropContext
-            onDragEnd={moveOptions}
-            onDragStart={() => setIsDragging(true)}
-          >
+          <DragDropContext onDragEnd={moveOptions} onDragStart={() => setIsDragging(true)}>
             <Droppable droppableId="multiChoiceQuestionDroppable">
               {(provided) => (
-                <Box
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  width="full"
-                >
+                <Box ref={provided.innerRef} {...provided.droppableProps} width="full">
                   {fields.map((object, index) => (
-                    <Draggable
-                      draggableId={object.id}
-                      index={index}
-                      key={object.id}
-                    >
+                    <Draggable draggableId={object.id} index={index} key={object.id}>
                       {(provided) => (
                         <Box>
-                          <Flex
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            align="center"
-                          >
+                          <Flex ref={provided.innerRef} {...provided.draggableProps} align="center">
                             <Box {...provided.dragHandleProps}>
-                              <Move
-                                ml="2px"
-                                mr="14px"
-                                mt="-4px"
-                                stroke="questionMultiChoiceForm.icon.moveIcon"
-                                w="10px"
-                              />
+                              <Move ml="2px" mr="14px" mt="-4px" stroke="questionMultiChoiceForm.icon.moveIcon" w="10px" />
                             </Box>
                             <Flex w="full">
-                              <Checkbox
-                                control={control}
-                                name={`value.${index}.isCorrect`}
-                                variant="secondaryVariant"
-                              />
+                              <Checkbox control={control} name={`value.${index}.isCorrect`} variant="secondaryVariant" />
                               <Input
                                 name={object.id}
                                 onChange={(e) => {
                                   handleInputChange(e, index);
-                                  setTimeout(
-                                    () => onSubmitInput(index, e.target.value),
-                                    1200,
-                                  );
+                                  setTimeout(() => onSubmitInput(index, e.target.value), 1200);
                                 }}
-                                onKeyDown={(e) =>
-                                  e.key === 'Enter' &&
-                                  onSubmitInput(index, object.label)
-                                }
+                                onKeyDown={(e) => e.key === 'Enter' && onSubmitInput(index, object.label)}
                                 placeholder="Option name"
                                 px="2px"
                                 value={inputValue[index]}
                               />
                             </Flex>
                             <Trashcan
-                              cursor={
-                                fields.length === 1 ? 'no-drop' : 'pointer'
-                              }
+                              cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
                               mr={index + 1 === fields.length ? '12px' : '28px'}
                               onClick={() => removeChoice(index)}
                               stroke="questionMultiChoiceForm.icon.iconBin"
@@ -261,10 +215,7 @@ const QuestionMultiChoiceForm = ({
                                     label: '',
                                     isCorrect: false,
                                   });
-                                  setInputValue((prevValue) => [
-                                    ...prevValue,
-                                    '',
-                                  ]);
+                                  setInputValue((prevValue) => [...prevValue, '']);
                                 }}
                                 stroke="questionMultiChoiceForm.icon.plusIcon"
                               />
@@ -300,12 +251,7 @@ const QuestionMultiChoiceForm = ({
         <Button
           bg="questionMultiChoiceForm.button.primary.bg"
           color="questionMultiChoiceForm.button.primary.font"
-          disabled={
-            questionAlreadyExist ||
-            choicesIsEmpty ||
-            Object.keys(errors).length > 0 ||
-            !questionName
-          }
+          disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
           h="27px"
@@ -316,13 +262,7 @@ const QuestionMultiChoiceForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={
-            <Icon
-              as={OpenMenuArrow}
-              stroke="complianceItemModal.tabs.bottomButton.icon"
-              transform="rotate(270deg)"
-            />
-          }
+          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question
