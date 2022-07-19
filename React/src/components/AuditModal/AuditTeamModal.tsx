@@ -176,7 +176,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
             onClick={onClose}
             w="68px"
           >
-            Select
+            Close
           </Button>
         </ModalFooter>
       </ModalContent>
