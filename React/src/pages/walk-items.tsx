@@ -1,31 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  Button,
-  Flex,
-  Grid,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalOverlay,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, Modal, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
+import ChangeViewButton from '../components/ChangeViewButton';
 import Header from '../components/Header';
-import Icon from '../components/Icon';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import WalkItemModal from '../components/WalkItems/WalkItemModal';
@@ -36,8 +19,9 @@ import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
-import { ChevronRight, ExportIcon, GridIcon, ListIcon } from '../icons';
+import { ExportIcon } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
+import { TViewMode } from '../interfaces/TViewMode';
 
 const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
@@ -149,6 +133,7 @@ const WalkItems = () => {
     { label: 'Added by', key: 'addedBy.displayName' },
     { label: 'Date added', key: 'metatags.addedAt' },
   ];
+  const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
     setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds', 'sitesIds', 'status', 'createdDate']);
@@ -222,24 +207,6 @@ const WalkItems = () => {
     setAdminModalState('edit');
   };
 
-  const initialViewMode = useMemo(() => {
-    const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'grid' || savedView === 'list')) return savedView;
-
-    return 'list';
-  }, [user]);
-
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>(initialViewMode);
-
-  useEffect(() => {
-    if (device === 'mobile') setViewMode('grid');
-  }, [device]);
-
-  const changeViewMode = useCallback((_viewMode: 'grid' | 'list') => {
-    setViewMode(_viewMode);
-    localStorage.setItem('viewMode', _viewMode);
-  }, []);
-
   const csvHeaders = [
     { label: '_id', key: '_id' },
     { label: 'Type', key: 'question.questionsCategory.name' },
@@ -274,51 +241,7 @@ const WalkItems = () => {
       <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         {device !== 'mobile' && (
           <>
-            <Menu autoSelect={false}>
-              {
-                // @ts-ignore: Issue inside ChakraUI
-                // eslint-disable-next-line react/jsx-no-undef
-                <MenuButton
-                  _active={{}}
-                  _hover={{}}
-                  as={Button}
-                  bg="walkItems.header.menuButtonBg"
-                  fontSize="14px"
-                  fontWeight="700"
-                  h="40px"
-                  ml={['15px', '0']}
-                  rightIcon={<ChevronRight color="walkItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
-                  rounded="10px"
-                >
-                  <Stack direction="row" spacing={2}>
-                    <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
-                    <Text fontSize="smm" fontWeight="semi_medium">
-                      Change view
-                    </Text>
-                  </Stack>
-                </MenuButton>
-              }
-              <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
-                <MenuItem
-                  _focus={{ color: 'actions.header.menuItemFocus' }}
-                  color={viewMode === 'grid' ? 'walkItems.header.menuItemFontSelected' : 'walkItems.header.menuItemFont'}
-                  fontSize="14px"
-                  onClick={() => changeViewMode('grid')}
-                >
-                  <GridIcon mr={3} stroke="currentColor" />
-                  Card
-                </MenuItem>
-                <MenuItem
-                  _focus={{ color: 'walkItems.header.menuItemFocus' }}
-                  color={viewMode === 'list' ? 'walkItems.header.menuItemFontSelected' : 'walkItems.header.menuItemFont'}
-                  fontSize="14px"
-                  onClick={() => changeViewMode('list')}
-                >
-                  <ListIcon mr={3} stroke="currentColor" />
-                  List
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
             <CSVLink data={csvData} filename="walk-items.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{

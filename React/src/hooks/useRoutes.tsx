@@ -5,7 +5,6 @@ import { useAppContext } from '../contexts/AppProvider';
 import IRoute from '../interfaces/IRoute';
 import AuditLayout from '../layouts/AuditLayout';
 import DefaultLayout from '../layouts/DefaultLayout';
-import FilterLayout from '../layouts/FilterLayout';
 import PureLayout from '../layouts/PureLayout';
 import ResponseLayout from '../layouts/ResponseLayout';
 import Accidents from '../pages/accidents';
@@ -80,14 +79,14 @@ const protectedRoutes: Array<IRoute> = [
     key: 'dashboard',
     exact: true,
     component: Dashboard,
-    layout: FilterLayout,
+    layout: DefaultLayout,
   },
   {
     path: '/walk-items',
     key: 'walk-items',
     exact: true,
     component: WalkItems,
-    layout: FilterLayout,
+    layout: DefaultLayout,
   },
   {
     path: '/audits/:id',
@@ -144,7 +143,7 @@ const protectedRoutes: Array<IRoute> = [
   //   key: 'insights',
   //   exact: true,
   //   component: Insights,
-  //   layout: FilterLayout,
+  //   layout: DefaultLayout,
   // },
   {
     path: '/licenses',
@@ -165,14 +164,14 @@ const protectedRoutes: Array<IRoute> = [
     key: 'actions',
     exact: true,
     component: Actions,
-    layout: FilterLayout,
+    layout: DefaultLayout,
   },
   {
     path: '/actions/:actionId',
     key: 'action',
     exact: true,
     component: Actions,
-    layout: FilterLayout,
+    layout: DefaultLayout,
   },
   {
     path: '/accidents',
@@ -207,7 +206,7 @@ const protectedRoutes: Array<IRoute> = [
     key: 'compliance-items-admin',
     exact: true,
     component: ComplianceItemsAdmin,
-    layout: FilterLayout,
+    layout: DefaultLayout,
     permission: 'adminPanel',
   },
   {

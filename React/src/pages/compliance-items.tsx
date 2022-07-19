@@ -1,22 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from '@chakra-ui/react';
+import { Flex, Grid, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
-import { isEmpty } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
+import ChangeViewButton from '../components/ChangeViewButton';
 import ComplianceItemsGroup from '../components/ComplianceItem/ComplianceItemsGroup';
 import ComplianceItemsList from '../components/ComplianceItem/ComplianceItemsList';
 import ComplianceItemSquare from '../components/ComplianceItem/ComplianceItemSquare';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import SortButton from '../components/SortButton';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useResponseUtils from '../hooks/useResponseUtils';
-import { ChevronRight, GridIcon, GroupIcon, ListIcon } from '../icons';
+import useSort from '../hooks/useSort';
 import { IResponse } from '../interfaces/IResponse';
+import { TViewMode } from '../interfaces/TViewMode';
 
 const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
@@ -71,7 +74,7 @@ const GET_RESPONSES = gql`
 `;
 
 const ComplianceItems = () => {
-  const { user, module } = useAppContext();
+  const { module } = useAppContext();
   const {
     filtersValues,
     setUsedFilters,
@@ -85,6 +88,16 @@ const ComplianceItems = () => {
   } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const { getRenewalStatus, getStatus } = useResponseUtils();
+  const { sortedData: sortedResponses, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredResponses, 'nextRenewalDate');
+  const sortBy = [
+    { label: 'Item name', key: 'complianceItem.name' },
+    { label: 'Due for renewal', key: 'nextRenewalDate' },
+    { label: 'Compliant', key: 'status' },
+    { label: 'Regulatory body', key: 'complianceItem.regulatoryBody.name' },
+    { label: 'Responsible', key: 'responsible.displayName' },
+    { label: capitalize(t('businessUnit')), key: 'businessUnit.name' },
+  ];
+  const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   const { data, loading, error, refetch } = useQuery(GET_RESPONSES);
   const device = useDevice();
@@ -144,7 +157,7 @@ const ComplianceItems = () => {
         }),
         {},
       );
-      setDefaultFilters(Object.entries(module!.defaultFilters.responses!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}))
+      setDefaultFilters(Object.entries(module!.defaultFilters.responses!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}));
       setResponseFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
     }
   }, []);
@@ -165,31 +178,6 @@ const ComplianceItems = () => {
     });
     setResponsesStatusesCounts(responsesStatusesCounts);
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const initialViewMode = useMemo(() => {
-    const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'Grid' || savedView === 'List' || savedView === 'Group')) return savedView;
-
-    if (user?.role === 'admin') return 'List';
-
-    return 'Grid';
-  }, [user]);
-
-  const [viewMode, setViewMode] = useState<'Grid' | 'List' | 'Group'>(initialViewMode);
-
-  // use Memo not working for hook, used this for mobile
-  useEffect(() => {
-    if (device === 'mobile') setViewMode('Grid');
-  }, [device]);
-
-  const viewIcon = useMemo(
-    () => ({
-      Grid: <GridIcon boxSize="18px" stroke="currentColor" />,
-      List: <ListIcon boxSize="18px" stroke="currentColor" />,
-      Group: <GroupIcon boxSize="18px" stroke="currentColor" />,
-    }),
-    [],
-  );
 
   // Filter responses (server side)
   useEffect(() => {
@@ -246,103 +234,37 @@ const ComplianceItems = () => {
     }
   }, [data?.responses, filtersValues.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const changeViewMode = useCallback((_viewMode: 'Grid' | 'List' | 'Group') => {
-    setViewMode(_viewMode);
-    localStorage.setItem('viewMode', _viewMode);
-  }, []);
-
   return (
     <>
       <Header breadcrumbs={[pluralize(t('complianceItem'))]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]}>
         {device !== 'mobile' && (
-          <Menu autoSelect={false}>
-            {
-              // @ts-ignore: Issue inside ChakraUI
-              <MenuButton
-                _active={{}}
-                _hover={{}}
-                as={Button}
-                bg="complianceItems.header.menuButtonBg"
-                fontSize="14px"
-                fontWeight="700"
-                h="40px"
-                ml={['15px', '0']}
-                rightIcon={<ChevronRight color="complianceItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
-                rounded="10px"
-              >
-                <Stack direction="row" spacing={2}>
-                  {viewIcon[viewMode]}
-                  <Text fontSize="smm" fontWeight="semi_medium">
-                    Change view
-                  </Text>
-                </Stack>
-              </MenuButton>
-            }
-            <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
-              <MenuItem
-                _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-                color={viewMode === 'Grid' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
-                fontSize="14px"
-                onClick={() => changeViewMode('Grid')}
-              >
-                <GridIcon mr={3} stroke="currentColor" />
-                Card
-              </MenuItem>
-              <MenuItem
-                _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-                color={viewMode === 'List' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
-                fontSize="14px"
-                onClick={() => changeViewMode('List')}
-              >
-                <ListIcon mr={3} stroke="currentColor" />
-                List
-              </MenuItem>
-              <MenuItem
-                _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-                color={viewMode === 'Group' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
-                fontSize="14px"
-                onClick={() => changeViewMode('Group')}
-              >
-                <GroupIcon mr={3} stroke="currentColor" />
-                Group
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          <>
+            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
+            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
+          </>
         )}
       </Header>
       <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
-        {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>
         ) : loading ? (
-          <Loader center={true} />
+          <Loader center />
         ) : (
           <>
-            {viewMode === 'Grid' && (
+            {viewMode === 'grid' && (
               <Grid
-                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
                 display={['grid', 'grid', 'flex']}
                 flexWrap="wrap"
-                h="fit-content"
                 gap={6}
-                w="full"
+                h="fit-content"
                 pb={[0, 8]}
-                px={[4, 8]}
                 pt="3"
+                px={[4, 8]}
+                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
+                w="full"
               >
-                {filteredResponses.length > 0 ? (
-                  [...filteredResponses]
-                    ?.sort((a, b) => {
-                      if (a['nextRenewalDate'] === null) {
-                        return 1;
-                      } else if (b['nextRenewalDate'] === null) {
-                        return -1;
-                      }
-                      return a['nextRenewalDate'] && b['nextRenewalDate']
-                        ? a['nextRenewalDate'].toString().localeCompare(b.nextRenewalDate.toString())
-                        : 0;
-                    })
-                    ?.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
+                {sortedResponses.length > 0 ? (
+                  sortedResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
                     No {pluralize(t('complianceItem'))} found
@@ -350,11 +272,18 @@ const ComplianceItems = () => {
                 )}
               </Grid>
             )}
-            {viewMode === 'List' && <ComplianceItemsList responses={filteredResponses} />}
-            {viewMode === 'Group' && <ComplianceItemsGroup responses={filteredResponses} />}
+            {viewMode === 'list' && (
+              <ComplianceItemsList
+                responses={sortedResponses}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType}
+              />
+            )}
+            {viewMode === 'group' && <ComplianceItemsGroup responses={sortedResponses} />}
           </>
         )}
-        {/* eslint-enable */}
       </Flex>
     </>
   );

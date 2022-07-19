@@ -140,6 +140,7 @@ const getTheme = (organizationTheme?: any) => {
     shadows: {
       ...theme.shadows,
       outline: 'none',
+      simple: '0px 0px 10px 0px #31323340',
     },
     fonts: {
       ...theme.fonts,

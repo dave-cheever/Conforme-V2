@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Modal, ModalOverlay, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -12,8 +12,8 @@ import AuditsGroup from '../components/Audit/AuditsGroup';
 import AuditsList from '../components/Audit/AuditsList';
 import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
+import ChangeViewButton from '../components/ChangeViewButton';
 import Header from '../components/Header';
-import Icon from '../components/Icon';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import { useAdminContext } from '../contexts/AdminProvider';
@@ -23,8 +23,9 @@ import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
-import { ChevronRight, ExportIcon, GridIcon, GroupIcon, ListIcon } from '../icons';
+import { ExportIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
+import { TViewMode } from '../interfaces/TViewMode';
 
 const GET_AUDITS = gql`
   query ($auditQueryInput: AuditQueryInput) {
@@ -65,12 +66,11 @@ const GET_AUDITS = gql`
 
 const Audits = () => {
   const { t } = useTranslation();
-  const { user } = useAppContext();
   const {
     filtersValues,
     setUsedFilters,
-    setDefaultFilters,
     setFilters,
+    setDefaultFilters,
     setShowFiltersPanel,
     auditFiltersValue,
     setAuditFiltersValue,
@@ -92,6 +92,7 @@ const Audits = () => {
     { label: 'Auditor', key: 'auditor.displayName' },
     { label: 'Date submitted', key: 'completedDate' },
   ];
+  const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
     setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds', 'createdDate', 'dueDate']);
@@ -174,29 +175,11 @@ const Audits = () => {
     if (data && data?.audits && !error) setFilteredAudits(data?.audits);
   }, [data?.audits]);
 
-  const initialViewMode = useMemo(() => {
-    const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'grid' || savedView === 'list' || savedView === 'group')) return savedView;
-
-    return 'list';
-  }, [user]);
-
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'group'>(initialViewMode);
-
-  useEffect(() => {
-    if (device === 'mobile') setViewMode('grid');
-  }, [device]);
-
   const onCloseModal = async () => {
     await trigger();
     reset();
     setAdminModalState('closed');
   };
-
-  const changeViewMode = useCallback((_viewMode: 'grid' | 'list' | 'group') => {
-    setViewMode(_viewMode);
-    localStorage.setItem('viewMode', _viewMode);
-  }, []);
 
   const csvHeaders = [
     { label: '_id', key: '_id' },
@@ -234,59 +217,7 @@ const Audits = () => {
       <Header breadcrumbs={[pluralize(t('audit'))]} mobileBreadcrumbs={[pluralize(t('audit'))]}>
         {device !== 'mobile' && (
           <>
-            <Menu autoSelect={false}>
-              {
-                // @ts-ignore: Issue inside ChakraUI
-                <MenuButton
-                  _active={{}}
-                  _hover={{}}
-                  as={Button}
-                  bg="auditsItems.header.menuButtonBg"
-                  fontSize="14px"
-                  fontWeight="700"
-                  h="40px"
-                  ml={['15px', '0']}
-                  rightIcon={<ChevronRight color="auditsItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
-                  rounded="10px"
-                >
-                  <Stack direction="row" spacing={2}>
-                    <Icon boxSize="18px" icon={viewMode} stroke="currentColor" />
-                    <Text fontSize="smm" fontWeight="semi_medium">
-                      Change view
-                    </Text>
-                  </Stack>
-                </MenuButton>
-              }
-              <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
-                <MenuItem
-                  _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                  color={viewMode === 'grid' ? 'auditsItems.header.menuItemFontSelected' : 'auditsItems.header.menuItemFont'}
-                  fontSize="14px"
-                  onClick={() => changeViewMode('grid')}
-                >
-                  <GridIcon mr={3} stroke="currentColor" />
-                  Card
-                </MenuItem>
-                <MenuItem
-                  _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                  color={viewMode === 'list' ? 'auditsItems.header.menuItemFontSelected' : 'auditsItems.header.menuItemFont'}
-                  fontSize="14px"
-                  onClick={() => changeViewMode('list')}
-                >
-                  <ListIcon mr={3} stroke="currentColor" />
-                  List
-                </MenuItem>
-                <MenuItem
-                  _focus={{ color: 'auditsItems.header.menuItemFocus' }}
-                  color={viewMode === 'group' ? 'auditsItems.header.menuItemFontSelected' : 'auditsItems.header.menuItemFont'}
-                  fontSize="14px"
-                  onClick={() => changeViewMode('group')}
-                >
-                  <GroupIcon mr={3} stroke="currentColor" />
-                  Group
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
             <CSVLink data={csvData} filename="audits.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{

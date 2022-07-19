@@ -4,20 +4,17 @@ import { Box, Button, Flex, useOutsideClick } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
+import { CrossIcon } from '../../icons';
 import FiltersPanelItem from './FiltersPanelItem';
 
 const FiltersPanel = () => {
   const device = useDevice();
   const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
   const panelRef = useRef(null);
-
   useOutsideClick({
     ref: panelRef,
-    handler: () => {
-      setShowFiltersPanel(false);
-    },
+    handler: () => setShowFiltersPanel(false),
   });
-
   useEffect(() => {
     if (showFiltersPanel && device === 'mobile') document.body.style.overflow = 'hidden';
 
@@ -46,6 +43,7 @@ const FiltersPanel = () => {
         <Box color="brand.darkGrey" fontSize="16px" fontWeight="700">
           Filter items by
         </Box>
+        <CrossIcon cursor="pointer" onClick={() => setShowFiltersPanel(false)} stroke="filterPanel.closeIconColor" />
       </Flex>
       <Flex flexDir="column" minH="calc(100vh - 180px)" overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
@@ -99,6 +97,7 @@ export default FiltersPanel;
 export const filtersPanelStyles = {
   filterPanel: {
     bg: 'white',
+    closeIconColor: '#000',
     doneButtonBg: '#462AC4',
     doneButtonColor: '#ffffff',
     resetButtonBg: '#F0F2F5',

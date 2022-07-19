@@ -37,7 +37,7 @@ const SortButton = ({
               </Text>
             </Flex>
           </MenuButton>
-          <MenuList border="none" rounded="lg" w="100px" zIndex={2}>
+          <MenuList border="none" boxShadow="simple" rounded="lg" w="100px" zIndex={2}>
             {sortBy.map((sortItem) => (
               <Flex key={sortItem.key} px={3} py={2}>
                 <Box>
@@ -48,10 +48,10 @@ const SortButton = ({
                 <Spacer />
                 <HStack>
                   <Box
-                    // align="center"
+                    align="center"
                     bg={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.menuItemFocus' : undefined}
                     h="30px"
-                    // justify="center"
+                    justify="center"
                     onClick={() => {
                       setSortType(sortItem.key);
                       setSortOrder('asc');
