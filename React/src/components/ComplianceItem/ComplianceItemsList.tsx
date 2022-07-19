@@ -42,7 +42,7 @@ const ComplianceListItems = ({ responses }: { responses: IResponse[] }) => {
 
       return a[sortType] ? a[sortType].localeCompare(b[sortType]) : 0;
     };
-    if (sortOrder) setSortedData([...sortedData].sort((a, b) => sort(a, b)));
+    if (sortOrder === 'asc') setSortedData([...sortedData].sort((a, b) => sort(a, b)));
     else setSortedData([...sortedData].sort((a, b) => sort(b, a)));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
