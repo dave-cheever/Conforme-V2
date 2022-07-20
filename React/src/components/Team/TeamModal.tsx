@@ -182,11 +182,11 @@ const TeamModal = () => {
                       h="20px"
                       justify="center"
                       pt="1"
-                      w="20px"
+                      w="22px"
                     >
                       <TickIcon h="10px" stroke="white" w="10px" />
                     </Flex>
-                    <Flex direction="column" ml="2">
+                    <Flex direction="column" ml="2" w="full">
                       <Text color="black" fontSize="smm" fontWeight="semibold">
                         {user.displayName} - {user.jobTitle || 'No job title'}
                       </Text>
