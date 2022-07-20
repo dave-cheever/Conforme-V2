@@ -61,6 +61,7 @@ const AuditLog = () => {
   const [auditLogs, setAuditLogs] = useState<IAuditLog[]>([]);
   const [totalAuditLogs, setTotalAuditLogs] = useState<Number>(0);
   const [countAuditLogs, setCountAuditLogs] = useState<number>(0);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   useEffect(() => {
     refetch({
@@ -86,6 +87,7 @@ const AuditLog = () => {
                 currentLog.records.push(record);
               }
             });
+            setIsLoadingMore(false)
           } else {
             newAcc.push({
               _id: curr._id,
@@ -100,6 +102,7 @@ const AuditLog = () => {
                 }
               }),
             });
+            setIsLoadingMore(false)
           }
           return newAcc;
         }, currentLogs),
@@ -113,7 +116,7 @@ const AuditLog = () => {
       <Header breadcrumbs={['Admin', 'Audit log']} />
       <Box h="calc(100vh - 150px)" overflow="auto" p="30px" pt="0px">
         <Flex bg="white" borderRadius="20px" flexDir="column" h="fit-content" pt="3" px="6">
-          <AuditLogComponent auditLogs={auditLogs} loading={loading} />
+          <AuditLogComponent auditLogs={auditLogs} isLoadingMore={isLoadingMore} loading={loading} />
           {!loading && (
             totalAuditLogs === countAuditLogs
               ?
@@ -121,7 +124,14 @@ const AuditLog = () => {
                 No more logs
               </Text>
               :
-              <Text color="auditLog.loadMore" cursor="pointer" mb={4} onClick={() => setSkip((prev) => prev + 5)}>
+              <Text
+                color="auditLog.loadMore"
+                cursor="pointer"
+                mb={4}
+                onClick={() => {
+                  setSkip((prev) => prev + 5);
+                  setIsLoadingMore(true)
+                }}>
                 Load more audit logs
               </Text>
           )}

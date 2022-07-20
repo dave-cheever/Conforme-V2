@@ -79,6 +79,7 @@ const AuditLog = () => {
   const [auditLogs, setAuditLogs] = useState<IAuditLog[]>([]);
   const [totalAuditLogs, setTotalAuditLogs] = useState<Number>(0);
   const [countAuditLogs, setCountAuditLogs] = useState<number>(0);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   useEffect(() => {
     refetch({
@@ -107,8 +108,10 @@ const AuditLog = () => {
               ) {
                 setCountAuditLogs(prevValue => prevValue + 1)
                 currentLog.records.push(record);
+
               }
             });
+            setIsLoadingMore(false)
           } else {
             newAcc.push({
               _id: curr._id,
@@ -123,12 +126,15 @@ const AuditLog = () => {
                 }
               }),
             });
+            setIsLoadingMore(false)
           }
           return newAcc;
         }, currentLogs),
       );
       setTotalAuditLogs(data.auditLog.totalAuditLogs > 0 ? data.auditLog.totalAuditLogs : 0)
+      return
     }
+    setCountAuditLogs(0)
   }, [data]);
 
   useEffect(() => {
@@ -178,7 +184,7 @@ const AuditLog = () => {
           />
         ))}
       </Flex>
-      <AuditLogComponent auditLogs={auditLogs} loading={loading} />
+      <AuditLogComponent auditLogs={auditLogs} isLoadingMore={isLoadingMore} loading={loading} />
       {!loading && (
         totalAuditLogs === countAuditLogs
           ?
@@ -190,7 +196,10 @@ const AuditLog = () => {
             color="auditLog.loadMore"
             cursor="pointer"
             mb={4}
-            onClick={() => setSkip((prev) => prev + 5)}
+            onClick={() => {
+              setSkip((prev) => prev + 5)
+              setIsLoadingMore(true)
+            }}
           >
             Load more audit logs
           </Text>

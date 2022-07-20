@@ -131,6 +131,7 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
         ...(userId && { 'metatags.addedBy': userId }),
         ...(moduleId && { 'moduleId': moduleId }),
         ...(actions?.length > 0 && { $or: actions.map(action => ({ action })) }),
+        ...(fields?.length > 0 && { $or: fields.map((field: string) => ({ [`values.${field}`]: { $exists: true } })) }),
         ...(dateLimit && {
           $match: {
             'metatags.addedAt': {

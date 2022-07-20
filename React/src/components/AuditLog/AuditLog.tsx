@@ -7,9 +7,10 @@ import AuditLogDay from './AuditLogDay';
 interface IProps {
   auditLogs: IAuditLog[] | [];
   loading: boolean;
+  isLoadingMore: boolean
 }
 
-const AuditLog = ({ auditLogs, loading }: IProps) => {
+const AuditLog = ({ auditLogs, loading, isLoadingMore }: IProps) => {
   if (loading) {
     return (
       <Flex h="calc(100vh - 150px)" w="full">
@@ -19,18 +20,22 @@ const AuditLog = ({ auditLogs, loading }: IProps) => {
   }
 
   return (
-    <Flex
-      bg="auditLog.bg"
-      flexDirection="column"
-      position="relative"
-      pt="20px"
-      rounded="md"
-      w="100%"
-    >
-      {auditLogs.map((auditLog) => (
-        <AuditLogDay auditLog={auditLog} key={auditLog._id} />
-      ))}
-    </Flex>
+    <>
+      <Flex
+        bg="auditLog.bg"
+        flexDirection="column"
+        position="relative"
+        pt="20px"
+        rounded="md"
+        w="100%"
+      >
+        {auditLogs.map((auditLog, index) => (
+          <AuditLogDay auditLog={auditLog} key={index} />
+        ))}
+      </Flex>
+      {isLoadingMore && <Loader center size='md' />}
+    </>
+
   );
 };
 
