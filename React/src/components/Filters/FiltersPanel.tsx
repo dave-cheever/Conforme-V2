@@ -48,7 +48,6 @@ const FiltersPanel = () => {
       <Flex flexDir="column" minH="calc(100vh - 180px)" overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel) return <FiltersPanelItem filter={value} key={name} name={name} />;
-
           return null;
         })}
       </Flex>

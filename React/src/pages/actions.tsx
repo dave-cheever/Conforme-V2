@@ -3,10 +3,11 @@ import { CSVLink } from 'react-csv';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Modal, ModalOverlay, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 
+import { actionStatuses } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionsList from '../components/Actions/ActionsList';
 import ActionSquare from '../components/Actions/ActionSquare';
@@ -115,8 +116,6 @@ const Actions = () => {
     }
     setAdminModalState('closed');
   };
-  const tabs = ['open', 'closed', 'overdue'];
-  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [filteredActions, setFilteredActions] = useState<IAction[]>([]);
   const { data, loading, error, refetch } = useQuery(GET_ACTIONS, {
     variables: {
@@ -124,8 +123,6 @@ const Actions = () => {
         scope: {
           type: 'answer',
         },
-        [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
-          tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],
       },
     },
     fetchPolicy: 'no-cache',
@@ -151,14 +148,6 @@ const Actions = () => {
       setUsedFilters([]);
     };
   }, []);
-
-  useEffect(() => {
-    cleanFilters();
-    setFilters({
-      [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
-        tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],
-    });
-  }, [selectedTabIndex]);
 
   useEffect(() => {
     if (actionFiltersValue && !isEmpty(actionFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
@@ -191,8 +180,6 @@ const Actions = () => {
       refetch({
         actionQueryInput: {
           ...parsedFilters,
-          [tabs[selectedTabIndex] === 'overdue' ? 'dueDate' : 'status']:
-            tabs[selectedTabIndex] === 'overdue' ? ['overdue'] : tabs[selectedTabIndex],
           scope: {
             type: 'answer',
           },
@@ -200,6 +187,27 @@ const Actions = () => {
       });
     }
   }, [filtersValues]);
+
+  useEffect(() => {
+    if (data && data?.actions && !error) {
+      const items = [...data?.actions];
+
+      setFilteredActions(items);
+    }
+  }, [data?.actions, user]);
+
+  const setQuickFilter = (filterName: string, filterValue) => {
+    cleanFilters();
+    setFilters({ [filterName]: filterValue });
+  };
+
+  const isQuickFilterActive = (filterName: string) => {
+    if (filtersValues?.status?.value) {
+      if (filtersValues.status.value.length > 1) return false;
+      if (filtersValues.status.value.find((status) => status === filterName)) return true;
+    }
+    return false;
+  };
 
   const [selectedAction, setSelectedAction] = useState<IAction>();
   const handleOpenModal = (action: IAction) => {
@@ -281,28 +289,30 @@ const Actions = () => {
           </>
         )}
       </Header>
-      <Tabs defaultIndex={selectedTabIndex} mt={1} onChange={(index) => setSelectedTabIndex(index)} variant="unstyled" w="full">
-        <TabList pb={[0, 5]} px={[4, 8]}>
-          {tabs.map((tab) => (
-            <Tab
-              _selected={{
-                bg: 'actions.quickFilter.active.bg',
-                color: 'actions.quickFilter.active.color',
-              }}
-              bg="actions.quickFilter.default.bg"
-              borderRadius="10px"
-              color="actions.quickFilter.default.color"
-              fontSize="smm"
-              fontWeight="bold"
-              h="32px"
-              key={tab}
-              mr={2}
-            >
-              {capitalize(tab)}
-            </Tab>
-          ))}
-        </TabList>
-      </Tabs>
+      <HStack px={[4, 8]} spacing={2}>
+        {Object.keys(actionStatuses).map((status) => (
+          <Button
+            _active={{
+              bg: 'actions.quickFilter.active.bg',
+              color: 'actions.quickFilter.active.color',
+            }}
+            _hover={{
+              bg: 'none',
+            }}
+            bg="actions.quickFilter.default.bg"
+            borderRadius="10px"
+            color="actions.quickFilter.default.color"
+            fontSize="smm"
+            fontWeight="bold"
+            h="32px"
+            isActive={isQuickFilterActive(status)}
+            key={status}
+            onClick={() => setQuickFilter('status', [status])}
+          >
+            {capitalize(status)}
+          </Button>
+        ))}
+      </HStack>
       <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
         {error ? (
           <Text>{error.message}</Text>

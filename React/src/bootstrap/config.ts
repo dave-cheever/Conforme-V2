@@ -21,6 +21,7 @@ export const toastFailed: any = {
 export const actionStatuses = {
   open: 'Open',
   closed: 'Closed',
+  overdue: 'Overdue',
 };
 
 export const walkItemStatuses = {

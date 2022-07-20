@@ -28,20 +28,7 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
     }
   }, [location.pathname]);
 
-  const value = useMemo(() => {
-    switch (name) {
-      case 'itemStatus':
-        return filtersValues.itemStatus?.value;
-      case 'status':
-        return filtersValues.status?.value;
-      case 'priority':
-        return filtersValues.priority?.value;
-      case 'walkType':
-        return filtersValues.walkType?.value;
-      default:
-        break;
-    }
-  }, [filtersValues, location.pathname]) as string[];
+  const value = useMemo(() => filtersValues[name]?.value, [filtersValues, location.pathname]) as string[];
 
   const renderChoices = () => {
     switch (name) {

@@ -98,6 +98,7 @@ const Audits = () => {
     setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds', 'createdDate', 'dueDate']);
 
     return () => {
+      setDefaultFilters({});
       setShowFiltersPanel(false);
       setUsedFilters([]);
     };

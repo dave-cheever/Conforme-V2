@@ -42,10 +42,23 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (actionQueryInput?.status?.length === 1) {
+    if (actionQueryInput?.status?.length > 0) {
+      const statusQueries = actionQueryInput.status.map(status => {
+        if (status === 'overdue') {
+          return {
+            status: 'open',
+            dueDate: {
+              $lt: new Date(),
+            },
+          };
+        }
+        return {
+          status,
+        };
+      });
       pipeline.push({
         $match: {
-          status: { $in: actionQueryInput.status },
+          $or: statusQueries,
         },
       });
     }
@@ -71,14 +84,6 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       const [filter, startDate, endDate] = actionQueryInput?.dueDate;
       let $match;
       switch (filter) {
-        case 'overdue':
-          $match = {
-            status: 'open',
-            dueDate: {
-              $lt: new Date(),
-            },
-          };
-          break;
         case 'thisWeek':
           $match = {
             $and: [
