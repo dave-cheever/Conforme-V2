@@ -3,10 +3,12 @@ import React, { useEffect, useMemo } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Flex, Grid, Stack } from '@chakra-ui/react';
 
+import { isPermitted } from '../../components/can';
 import Loader from '../../components/Loader';
 import AvatarUser from '../../components/Team/AvatarUser';
 import TeamHeader from '../../components/Team/TeamHeader';
 import TeamModal from '../../components/Team/TeamModal';
+import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import TeamProvider, { useTeamContext } from '../../contexts/TeamProvider';
 import { IUser } from '../../interfaces/IUser';
@@ -50,6 +52,7 @@ const GET_USERS_BY_ID = gql`
 `;
 
 const Team = () => {
+  const { user } = useAppContext();
   const { response, snapshot } = useResponseContext();
   const { data, filterType, searchQuery, onOpen, refetchUsers, setFilterType, setSelectedParticipants, setUserSearchResults } =
     useTeamContext();
@@ -97,6 +100,9 @@ const Team = () => {
     racfData?.responseAccountable && racfData?.responseAccountable?.length !== 0 && racfData?.responseAccountable[0];
   const responsible: IUser =
     racfData?.responseResponsible && racfData?.responseResponsible?.length !== 0 && racfData?.responseResponsible[0];
+
+  const isPermittedToManageContributors = isPermitted({ user, action: 'responses.manageContributor', data: { response } });
+  const isPermittedToManageFollowers = isPermitted({ user, action: 'responses.manageMultipleFollowers', data: { response } });
 
   if (loading) {
     return (
@@ -150,8 +156,8 @@ const Team = () => {
           )}
         </Flex>
       </Flex>
-      <Flex>
-        <Flex flexDir="column">
+      {(racfData?.contributors?.length! > 0 || isPermittedToManageContributors) && (
+        <Stack>
           <TeamHeader
             action="responses.manageContributor"
             header="Contributors"
@@ -166,10 +172,10 @@ const Team = () => {
                 <AvatarUser action="responses.manageContributor" key={contributor._id} permission="contributor" user={contributor} />
               ))}
           </Grid>
-        </Flex>
-      </Flex>
-      <Flex>
-        <Flex flexDir="column">
+        </Stack>
+      )}
+      {(racfData?.followers?.length! > 0 || isPermittedToManageFollowers) && (
+        <Stack>
           <TeamHeader
             action="responses.manageMultipleFollowers"
             header="Followers"
@@ -183,8 +189,8 @@ const Team = () => {
                 <AvatarUser action="responses.manageMultipleFollowers" key={follower._id} permission="follower" user={follower} />
               ))}
           </Grid>
-        </Flex>
-      </Flex>
+        </Stack>
+      )}
     </Stack>
   );
 };

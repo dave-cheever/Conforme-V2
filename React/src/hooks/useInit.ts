@@ -50,7 +50,7 @@ const ORGANIZATION = gql`
       bgImageTabletUrl
       theme
       modules {
-        _id
+        # _id
         type
         defaultFilters
         name
