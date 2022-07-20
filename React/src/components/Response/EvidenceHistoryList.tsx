@@ -25,7 +25,7 @@ const EvidenceHistoryList = () => {
               document={evidence.uploaded}
               downloadable={isPermitted({
                 user,
-                action: 'responses.edit',
+                action: 'responses.view',
                 data: response,
               })}
               removable={
