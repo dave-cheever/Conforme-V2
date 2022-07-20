@@ -50,13 +50,16 @@ const SAVE_ANSWER = gql`
     }
   }
 `;
-const DELETE_ANSWER = gql`
-  mutation ($_id: ID!) {
-    deleteAnswer(_id: $_id)
-  }
-`;
 
-const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () => void }) => {
+const WalkItemModal = ({
+  walkItem,
+  refetch,
+  handleDeleteQuestionModalOpen,
+}: {
+  walkItem?: IAnswer;
+  refetch: () => void;
+  handleDeleteQuestionModalOpen: () => void;
+}) => {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
@@ -79,7 +82,6 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
 
   const [saveQuestion] = useMutation(SAVE_QUESTION);
   const [saveAnswer] = useMutation(SAVE_ANSWER);
-  const [deleteAnswer] = useMutation(DELETE_ANSWER);
 
   const { control, formState, watch, reset, setValue } = useForm({
     mode: 'all',
@@ -122,26 +124,6 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
       await saveAnswer({ variables: { answer: answerData } });
       refetch();
       toast({ ...toastSuccess, description: 'Walk item saved' });
-    } catch (e: any) {
-      toast({
-        ...toastFailed,
-        description: e.message,
-      });
-    } finally {
-      setAdminModalState('closed');
-    }
-  };
-
-  const handleSecondaryButtonClick = async () => {
-    if (!walkItem) return;
-    try {
-      await deleteAnswer({
-        variables: {
-          _id: walkItem._id,
-        },
-      });
-      refetch();
-      toast({ ...toastSuccess, description: 'Walk item deleted' });
     } catch (e: any) {
       toast({
         ...toastFailed,
@@ -357,7 +339,7 @@ const WalkItemModal = ({ walkItem, refetch }: { walkItem?: IAnswer; refetch: () 
                   fontWeight="700"
                   h="40px"
                   ml={3}
-                  onClick={handleSecondaryButtonClick}
+                  onClick={handleDeleteQuestionModalOpen}
                   rounded="10px"
                   w="fit-content"
                 >

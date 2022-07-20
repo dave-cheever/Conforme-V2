@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Modal, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Modal, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -11,6 +11,7 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
+import WalkItemDeleteModal from '../components/WalkItems/WalkItemDeleteModal';
 import WalkItemModal from '../components/WalkItems/WalkItemModal';
 import WalkItemsList from '../components/WalkItems/WalkItemsList';
 import WalkItemSquare from '../components/WalkItems/WalkItemSquare';
@@ -108,6 +109,11 @@ const GET_ANSWERS = gql`
 `;
 
 const WalkItems = () => {
+  const {
+    isOpen: isDeleteQuestionModalOpen,
+    onOpen: handleDeleteQuestionModalOpen,
+    onClose: handleDeleteQuestionModalClose,
+  } = useDisclosure();
   const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, walkItemFiltersValue, setWalkItemFiltersValue, usedFilters } =
     useFiltersContext();
   const { user } = useAppContext();
@@ -236,14 +242,19 @@ const WalkItems = () => {
 
   return (
     <>
+      <WalkItemDeleteModal
+        answer={selectedWalkItem ?? ({} as IAnswer)}
+        isOpen={isDeleteQuestionModalOpen}
+        onClose={handleDeleteQuestionModalClose}
+        refetchAnswers={refetch}
+      />
       <Modal
         isOpen={adminModalState !== 'closed'}
         onClose={() => setAdminModalState('closed')}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
         variant="adminModal"
       >
-        <ModalOverlay />
-        <WalkItemModal refetch={refetch} walkItem={selectedWalkItem} />
+        <WalkItemModal handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen} refetch={refetch} walkItem={selectedWalkItem} />
       </Modal>
       <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         {device !== 'mobile' && (

@@ -1,7 +1,22 @@
 import { gql, useMutation } from '@apollo/client';
-import { Button, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Stack, Text } from '@chakra-ui/react';
+import {
+  Button,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import { t } from 'i18next';
 
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import { useAdminContext } from '../../contexts/AdminProvider';
 import { IAnswer } from '../../interfaces/IAnswer';
 
 const DELETE_ANSWER = gql`
@@ -22,9 +37,32 @@ const WalkItemDeleteModal = ({
   refetchAnswers: () => void;
 }) => {
   const [deleteAnswer] = useMutation(DELETE_ANSWER);
+  const toast = useToast();
+  const { setAdminModalState } = useAdminContext();
 
+  const handleSecondaryButtonClick = async () => {
+    if (!answer) return;
+    try {
+      await deleteAnswer({
+        variables: {
+          _id: answer._id,
+        },
+      });
+      refetchAnswers();
+      toast({ ...toastSuccess, description: 'Walk item deleted' });
+    } catch (e: any) {
+      toast({
+        ...toastFailed,
+        description: e.message,
+      });
+    } finally {
+      onClose();
+      setAdminModalState('closed');
+    }
+  };
   return (
     <Modal isCentered isOpen={isOpen} onClose={onClose} size="sm">
+      <ModalOverlay />
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
@@ -43,19 +81,7 @@ const WalkItemDeleteModal = ({
             <Button _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              _hover={{ opacity: 0.7 }}
-              colorScheme="purpleHeart"
-              onClick={async () => {
-                await deleteAnswer({
-                  variables: {
-                    _id: answer._id,
-                  },
-                });
-                refetchAnswers();
-                onClose();
-              }}
-            >
+            <Button _hover={{ opacity: 0.7 }} colorScheme="purpleHeart" onClick={handleSecondaryButtonClick}>
               Delete
             </Button>
           </HStack>
