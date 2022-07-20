@@ -61,6 +61,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
           'switch',
           'datepicker',
           'multipleChoice',
+          'url',
         ],
       },
       name: String,
