@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { Box, Flex, Icon, Input, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { Asterisk } from '../../icons';
@@ -12,7 +12,7 @@ interface ITextInput extends IField {
   placeholder?: string;
   variant?: string;
   initialValue?: string;
-  isUrl?: boolean
+  isUrl?: boolean;
   styles?: {
     textInput?: {
       font?: string;
@@ -41,7 +41,7 @@ const definedValidations: TDefinedValidations = {
     if (!value.match(regexEmail)) return 'Invalid Email';
   },
   isUrl: (label, validationValue, value) => {
-    const regex = new RegExp("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+    const regex = new RegExp('(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)');
     if (!value.match(regex)) return 'Invalid URL';
   },
 };
@@ -98,51 +98,56 @@ const TextInput = ({
                 </Box>
               </Flex>
             )}
-            {isUrl &&
-              <Text
-                color={error ? 'textInput.labelFont.error' : 'textInput.labelFont.normal'}
-                cursor={error ? 'auto' : 'pointer'}
-                fontSize="ssm"
-                fontWeight="bold"
-                mb={1}
-                onClick={() => {
-                  if (!error) window.open(value)
+            <InputGroup>
+              <Input
+                _active={{
+                  bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
                 }}
-              >
-                {value}
-              </Text>}
-            <Input
-              _active={{
-                bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
-              }}
-              _disabled={{
-                bg: 'textInput.disabled.bg',
-                color: 'textInput.disabled.font',
-                borderColor: 'textInput.disabled.border',
-                cursor: 'not-allowed',
-              }}
-              _focus={{
-                borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
-              }}
-              _hover={{ cursor: 'auto' }}
-              _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
-              autoComplete="off"
-              bg="textInput.bg"
-              borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
-              borderRadius="8px"
-              borderWidth="1px"
-              color="textInput.font"
-              cursor="pointer"
-              defaultValue={value}
-              fontSize="smm"
-              h="40px"
-              isDisabled={disabled}
-              maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
-              name={name}
-              onBlur={onBlur}
-              onChange={onChange}
-              placeholder={placeholder}
-            />
+                _disabled={{
+                  bg: 'textInput.disabled.bg',
+                  color: 'textInput.disabled.font',
+                  borderColor: 'textInput.disabled.border',
+                  cursor: 'not-allowed',
+                }}
+                _focus={{
+                  borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
+                }}
+                _hover={{ cursor: 'auto' }}
+                _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
+                autoComplete="off"
+                bg="textInput.bg"
+                borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
+                borderRadius="8px"
+                borderWidth="1px"
+                color="textInput.font"
+                cursor="pointer"
+                defaultValue={value}
+                fontSize="smm"
+                h="40px"
+                isDisabled={disabled}
+                maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
+                name={name}
+                onBlur={onBlur}
+                onChange={onChange}
+                placeholder={placeholder}
+              />
+              {isUrl && (
+                <InputRightElement width="5.6rem">
+                  <Button
+                    bg="textInput.openLinkButtonBg"
+                    color="textInput.openLinkButtonColor"
+                    fontSize="smm"
+                    h="1.75rem"
+                    onClick={() => {
+                      if (!error) window.open(value);
+                    }}
+                    w="80px"
+                  >
+                    Open link
+                  </Button>
+                </InputRightElement>
+              )}
+            </InputGroup>
             {error && (
               <Box color="textInput.error" fontSize={14} ml={1}>
                 {error.message}
@@ -175,6 +180,8 @@ export const textInputStyles = {
         error: '#E53E3E',
       },
     },
+    openLinkButtonBg: '#462AC4',
+    openLinkButtonColor: '#ffffff',
     activeBg: '#EEEEEE',
     disabled: {
       font: '#2B3236',

@@ -66,7 +66,8 @@ const Field = ({ control, ...field }) => {
         isUrl
         validations={{
           isUrl: true,
-        }} />;
+        }}
+      />;
     }
     case 'dropdown': {
       return <Dropdown key={name} {...props} />;
