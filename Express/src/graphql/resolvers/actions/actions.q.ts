@@ -50,6 +50,14 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
+    if (actionQueryInput?.priority?.length > 0) {
+      pipeline.push({
+        $match: {
+          priority: { $in: actionQueryInput.priority },
+        },
+      });
+    }
+
     if (actionQueryInput?.usersIds?.assigneesIds?.length > 0) {
       pipeline.push({
         $match: {
@@ -351,7 +359,6 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
         }),
       );
     }
-
     return actions.sort((a, b) => priorities[a.priority] - priorities[b.priority]);
   } catch (err: any) {
     console.error(err);

@@ -48,6 +48,10 @@ export const initialActionFilters: IActionFilters = {
     name: 'Status',
     value: [],
   },
+  priority: {
+    name: 'Priority',
+    value: [],
+  },
   sitesIds: {
     name: 'Site',
     value: [],
@@ -141,6 +145,12 @@ export const actions = {
   add: 'Added',
   update: 'Updated',
   delete: 'Deleted',
+};
+
+export const actionPriorities = {
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
 };
 
 const useFiltersUtils = () => {

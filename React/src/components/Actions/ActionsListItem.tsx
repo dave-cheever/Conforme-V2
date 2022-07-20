@@ -20,7 +20,7 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
       w="full"
     >
       <Flex align="center" h={['full', '73px']} position="relative" w="full">
-        <Flex flexDir="column" w="25%">
+        <Flex flexDir="column" w="17%">
           <Flex
             align="flex-start"
             color="actionsList.fontColor"
@@ -34,6 +34,22 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
             textOverflow="ellipsis"
           >
             {action.title}
+          </Flex>
+        </Flex>
+        <Flex flexDir="column" w="8%">
+          <Flex
+            align="flex-start"
+            color="actionsList.fontColor"
+            fontSize="smm"
+            fontWeight="400"
+            h="50%"
+            lineHeight="18px"
+            noOfLines={1}
+            opacity="1"
+            pt="3px"
+            textOverflow="ellipsis"
+          >
+            {capitalize(action.priority)}
           </Flex>
         </Flex>
         <Flex w="10%">

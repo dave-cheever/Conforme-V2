@@ -61,6 +61,7 @@ export interface IActionFilters {
   sitesIds?: IFilter;
   areasIds?: IFilter;
   status?: IFilterString;
+  priority?: IFilterString;
   usersIds?: IActionUserFilter;
   dueDate?: IFilterString;
 }
@@ -90,6 +91,7 @@ export default interface IFilters {
   sitesIds?: IFilter;
   areasIds?: IFilter;
   status?: IFilterString;
+  priority?: IFilterString;
   walkType?: IFilterString;
   createdDate?: IFilterString;
 }

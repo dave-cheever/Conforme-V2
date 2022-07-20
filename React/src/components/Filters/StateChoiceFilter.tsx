@@ -6,7 +6,7 @@ import { CheckboxGroup, Stack } from '@chakra-ui/react';
 import { actionStatuses, walkItemStatuses } from '../../bootstrap/config';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
-import useFiltersUtils, { auditWalkTypes } from '../../hooks/useFiltersUtils';
+import useFiltersUtils, { actionPriorities, auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 import FilterCheckBox from './FilterCheckBox';
 
@@ -34,6 +34,8 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
         return filtersValues.itemStatus?.value;
       case 'status':
         return filtersValues.status?.value;
+      case 'priority':
+        return filtersValues.priority?.value;
       case 'walkType':
         return filtersValues.walkType?.value;
       default:
@@ -47,6 +49,8 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
         return Object.entries(complianceItemStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       case 'status':
         return Object.entries(usedStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
+      case 'priority':
+        return Object.entries(actionPriorities).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       case 'walkType':
         return Object.entries(auditWalkTypes).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       default:

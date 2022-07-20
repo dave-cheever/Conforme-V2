@@ -31,7 +31,17 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'title'}
           sortOrder={sortType === 'title' ? sortOrder : undefined}
-          w="25%"
+          w="17%"
+        />
+        <AdminTableHeaderElement
+          label="Priority"
+          onClick={() => {
+            setSortType('priority');
+            setSortOrder(sortOrder === 'asc' && sortType === 'priority' ? 'desc' : 'asc');
+          }}
+          showSortingIcon={sortType === 'priority'}
+          sortOrder={sortType === 'priority' ? sortOrder : undefined}
+          w="8%"
         />
         <AdminTableHeaderElement
           label="Due date"

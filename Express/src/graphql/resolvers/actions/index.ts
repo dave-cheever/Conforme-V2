@@ -40,6 +40,7 @@ export const actionsTypeDefs = `
     _id: ID
     scope: ScopeInput
     status: [String]
+    priority: [String]
     areasIds: [ID]
     sitesIds: [ID]
     usersIds: ActionUsersInput

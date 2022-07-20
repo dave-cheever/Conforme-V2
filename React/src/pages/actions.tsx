@@ -133,6 +133,7 @@ const Actions = () => {
   const { sortedData: sortedActions, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredActions);
   const sortBy = [
     { label: 'Title', key: 'title' },
+    { label: 'Priority', key: 'priority' },
     { label: 'Due date', key: 'dueDate' },
     { label: 'Completed date', key: 'completedDate' },
     { label: 'Status', key: 'status' },
@@ -144,7 +145,7 @@ const Actions = () => {
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
-    setUsedFilters(['status', 'sitesIds', 'areasIds', 'usersIds', 'dueDate']);
+    setUsedFilters(['status', 'priority', 'sitesIds', 'areasIds', 'usersIds', 'dueDate']);
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);
