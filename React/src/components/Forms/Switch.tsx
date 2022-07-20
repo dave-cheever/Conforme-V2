@@ -45,15 +45,15 @@ const Switch = ({
         laterality === 'left' && value === 'yes'
           ? 'switch.activebtn.bg'
           : laterality === 'right' && value === 'no'
-          ? 'switch.activebtn.bg'
-          : 'switch.btn.bg'
+            ? 'switch.activebtn.bg'
+            : 'switch.btn.bg'
       }
       color={
         laterality === 'left' && value === 'yes'
           ? 'switch.activebtn.color'
           : laterality === 'right' && value === 'no'
-          ? 'switch.activebtn.color'
-          : 'switch.btn.color'
+            ? 'switch.activebtn.color'
+            : 'switch.btn.color'
       }
       disabled={requiredAnswer === 'na' || disabled}
       fontSize="smm"
@@ -155,6 +155,7 @@ const Switch = ({
                         ? 'switch.activebtn.color'
                         : 'switch.btn.color'
                     }
+                    disabled={disabled}
                     fontSize="smm"
                     fontWeight="bold"
                     name={name}
