@@ -56,7 +56,7 @@ const search = async (
           },
           user._id,
           organization._id,
-          moduleId
+          moduleId,
         );
       }),
     );

@@ -13,6 +13,7 @@ const AuditLogDay = ({ auditLog }: { auditLog: IAuditLog }) => {
     const dayAgo = moment(day);
 
     switch (today.diff(dayAgo, 'days').toString()) {
+      case '-1':
       case '0':
         value = 'Today';
         break;
@@ -43,10 +44,7 @@ const AuditLogDay = ({ auditLog }: { auditLog: IAuditLog }) => {
       </Flex>
       <Flex flexDir="column" mt="2" w="full">
         {auditLog.records.map((audit) => (
-          <AuditLogRecord
-            audit={audit}
-            key={audit.metatags?.addedAt?.toString()}
-          />
+          <AuditLogRecord audit={audit} key={audit.metatags?.addedAt?.toString()} />
         ))}
       </Flex>
     </Flex>

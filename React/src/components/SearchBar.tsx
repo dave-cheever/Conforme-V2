@@ -74,6 +74,7 @@ const SearchBar = () => {
       },
     },
     fetchPolicy: 'network-only',
+    skip: !isSearchBarOpen,
   });
 
   useOutsideClick({

@@ -139,7 +139,7 @@ const TextInput = ({
                     fontSize="smm"
                     h="1.75rem"
                     onClick={() => {
-                      if (!error) window.open(value);
+                      if (!error) window.open(value.includes('http://') ? value : `http://${value}`);
                     }}
                     w="80px"
                   >

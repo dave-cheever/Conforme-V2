@@ -203,7 +203,7 @@ const ReasponseHeader = () => {
                   textAlign="left"
                   w="full"
                 >
-                  {isOpen ? 'Options' : 'Options'}
+                  'Options'
                 </MenuButton>
 
                 <MenuList
@@ -230,6 +230,7 @@ const ReasponseHeader = () => {
                   />
                   <MenuDivider border="1px" borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" />
                   <ResponseHeaderMenuItem
+                    disabled={!enableRenewalButton}
                     icon={
                       <CheckIcon
                         _groupHover={{

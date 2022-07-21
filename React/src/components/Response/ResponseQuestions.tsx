@@ -6,7 +6,7 @@ import { gql, useMutation } from '@apollo/client';
 import { Box, Button, Flex, Grid, Stack, Text, useToast } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 
-import { toastFailed } from '../../bootstrap/config';
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import usePrompt from '../../hooks/usePrompt';
@@ -31,7 +31,7 @@ const ResponseQuestions = () => {
   const toast = useToast();
   const [update] = useMutation(UPDATE_QUESTIONS);
   const { user } = useAppContext();
-  const { response, snapshot, refetch, setIsQuestionFormDirty } = useResponseContext();
+  const { response, snapshot, refetch, setIsQuestionFormDirty, isQuestionFormDirty } = useResponseContext();
   const isUserPermitted = useMemo(() => isPermitted({ user, action: 'responses.edit', data: { response } }), [user, response]);
   const questions = (response?.questions || []).filter(({ outdated }) => !outdated);
 
@@ -66,6 +66,10 @@ const ResponseQuestions = () => {
           },
         });
         setIsQuestionFormDirty(false);
+        toast({
+          ...toastSuccess,
+          description: 'Questions saved',
+        });
         refetch();
       } catch (e: any) {
         toast({
@@ -76,7 +80,7 @@ const ResponseQuestions = () => {
     }
   };
 
-  usePrompt(isDirty, 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?');
+  usePrompt(isQuestionFormDirty, 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?');
 
   useEffect(() => {
     setIsQuestionFormDirty(isDirty);
@@ -88,7 +92,7 @@ const ResponseQuestions = () => {
     <>
       <Prompt
         message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
-        when={isDirty}
+        when={isQuestionFormDirty}
       />
       <Stack h="full" minH={['80vh', 0]} mt={2} overflow={['visible', 'auto']} w="full">
         <Grid gap={4} templateColumns="1fr" w={['full', '80%', '50%']}>
