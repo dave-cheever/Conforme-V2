@@ -36,8 +36,8 @@ const AuditModal = ({ refetch }) => {
   const toast = useToast();
   const { navigateTo } = useNavigate();
   const { user } = useAppContext();
-  const { audit, control, defaultValues, setValue, auditTypes, locations, businessUnits, reset } = useAuditModalContext();
-  const { selectedAuditor, selectedParticipants, setSelectedAuditor, setSelectedParticipants } = useAuditTeamContext();
+  const { audit, control, setValue, auditTypes, locations, businessUnits, reset } = useAuditModalContext();
+  const { selectedAuditor, selectedParticipants } = useAuditTeamContext();
   const { saveAudit, closeModal } = useAuditModal(refetch);
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const [auditorModalOpen, setAuditorModalOpen] = useState(false);
@@ -71,8 +71,6 @@ const AuditModal = ({ refetch }) => {
         isOpen={auditorModalOpen}
         multiple={false}
         onCancel={() => {
-          setValue('auditorId', defaultValues.auditorId);
-          setSelectedAuditor(user as IUser);
           setAuditorModalOpen(false);
         }}
         onClose={() => {
@@ -85,8 +83,6 @@ const AuditModal = ({ refetch }) => {
         isOpen={participantsModalOpen}
         multiple
         onCancel={() => {
-          setValue('participantsIds', defaultValues.participantsIds);
-          setSelectedParticipants([]);
           setParticipantsModalOpen(false);
         }}
         onClose={() => {
