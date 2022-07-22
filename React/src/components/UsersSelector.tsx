@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Checkbox, Stack, Text } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 
-import { MinusIcon } from '../icons';
 import { IUser } from '../interfaces/IUser';
 import UsersSelectorList from './UsersSelectorList';
 
@@ -18,11 +17,6 @@ interface IUsersSelector {
 
 const UsersSelector = ({ users, searchText, selected, selectedRole, note, disabled, handleChange }: IUsersSelector) => {
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
-  const areAllSelected = useMemo(
-    () => filteredUsers?.every(({ _id }) => selected?.includes(_id)),
-
-    [filteredUsers, selected, selectedRole],
-  );
 
   useEffect(() => {
     let filteredUsers: IUser[] = [];
@@ -32,22 +26,22 @@ const UsersSelector = ({ users, searchText, selected, selectedRole, note, disabl
     setFilteredUsers(filteredUsers);
   }, [users, disabled, selected, searchText]);
 
-  const toggleAll = useCallback(
-    (event) => {
-      const currentViewIds = filteredUsers.map(({ _id }) => _id);
-      if (event.target.checked) {
-        // Add all filtered users to selection
-        const value = Array.from(new Set([...selected, ...currentViewIds]));
-        handleChange({ target: { userRole: selectedRole, value } });
-      } else {
-        // Remove all filtered users from selection
-        const value = selected.filter((_id) => !currentViewIds.includes(_id));
-        handleChange({ target: { userRole: selectedRole, value } });
-      }
-    },
+  // const toggleAll = useCallback(
+  //   (event) => {
+  //     const currentViewIds = filteredUsers.map(({ _id }) => _id);
+  //     if (event.target.checked) {
+  //       // Add all filtered users to selection
+  //       const value = Array.from(new Set([...selected, ...currentViewIds]));
+  //       handleChange({ target: { userRole: selectedRole, value } });
+  //     } else {
+  //       // Remove all filtered users from selection
+  //       const value = selected.filter((_id) => !currentViewIds.includes(_id));
+  //       handleChange({ target: { userRole: selectedRole, value } });
+  //     }
+  //   },
 
-    [filteredUsers, selected],
-  );
+  //   [filteredUsers, selected],
+  // );
 
   if (disabled) {
     return (
@@ -69,38 +63,6 @@ const UsersSelector = ({ users, searchText, selected, selectedRole, note, disabl
             <Text color="usersSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3">
               {note}
             </Text>
-          )}
-          {filteredUsers?.length > 0 && (
-            <Checkbox
-              borderColor="usersSelector.checkbox.border"
-              colorScheme="usersSelector.checkbox"
-              css={{
-                '.chakra-checkbox__control': {
-                  borderRadius: '50%',
-                  width: '20px',
-                  height: '20px',
-                  background: 'white',
-                  borderWidth: '1px',
-                  borderColor: '#81819750',
-                  '&[data-checked]': {
-                    background: '#462AC4',
-                    borderColor: '#462AC4',
-                    '&[data-hover]': {
-                      background: '#462AC4',
-                      borderColor: '#462AC4',
-                    },
-                  },
-                },
-              }}
-              icon={<MinusIcon />}
-              isChecked={areAllSelected}
-              onChange={toggleAll}
-              py="20px"
-            >
-              <Text color="filterPanel.checkboxLabelColor" fontSize="14px">
-                Select all users
-              </Text>
-            </Checkbox>
           )}
           {selected?.length > 0 && (
             <UsersSelectorList

@@ -1,16 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  Box,
-  Checkbox,
-  Input,
-  InputGroup,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
-import { MinusIcon, SearchIcon } from '../icons';
+import { SearchIcon } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
 import LocationsSelectorList from './LocationsSelectorList';
 
@@ -22,71 +15,23 @@ interface ILocationsSelector {
   handleChange: (any) => void;
 }
 
-const LocationsSelector = ({
-  locations,
-  selected,
-  note,
-  disabled,
-  handleChange,
-}: ILocationsSelector) => {
+const LocationsSelector = ({ locations, selected, note, disabled, handleChange }: ILocationsSelector) => {
   const { module } = useAppContext();
   const [filteredLocations, setFilteredLocations] = useState<ILocation[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const areAllSelected = useMemo(
-    () => filteredLocations?.every(({ _id }) => selected?.includes(_id)),
-    [filteredLocations, selected],
-  );
 
   useEffect(() => {
     let filteredLocations: ILocation[] = [];
-    if (disabled) {
-      filteredLocations = locations?.filter(({ _id }) =>
-        selected.includes(_id),
-      );
-    } else {
-      filteredLocations = locations?.filter(({ name }) =>
-        name.toLowerCase().includes(searchText.toLowerCase()),
-      );
-    }
+    if (disabled) filteredLocations = locations?.filter(({ _id }) => selected.includes(_id));
+    else filteredLocations = locations?.filter(({ name }) => name.toLowerCase().includes(searchText.toLowerCase()));
+
     setFilteredLocations(filteredLocations);
   }, [locations, selectedType, searchText, disabled, selected]);
 
-  const toggleAll = useCallback(
-    (event) => {
-      const currentViewIds = filteredLocations.map(({ _id }) => _id);
-      if (event.target.checked) {
-        // Add all filtered locations to selection
-        const value = Array.from(new Set([...selected, ...currentViewIds]));
-        handleChange({
-          target: {
-            name: module?.type === 'tracker' ? 'locationsIds' : 'sitesIds',
-            value,
-          },
-        });
-      } else {
-        // Remove all filtered locations from selection
-        const value = selected?.filter((_id) => !currentViewIds.includes(_id));
-        handleChange({
-          target: {
-            name: module?.type === 'tracker' ? 'locationsIds' : 'sitesIds',
-            value,
-          },
-        });
-      }
-    },
-
-    [filteredLocations, selected],
-  );
-
   if (disabled) {
     return (
-      <LocationsSelectorList
-        disabled={disabled}
-        filteredLocations={filteredLocations}
-        handleChange={handleChange}
-        selected={selected}
-      />
+      <LocationsSelectorList disabled={disabled} filteredLocations={filteredLocations} handleChange={handleChange} selected={selected} />
     );
   }
 
@@ -104,66 +49,17 @@ const LocationsSelector = ({
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={10}
-                placeholder={
-                  module?.type === 'tracker'
-                    ? 'Search locations'
-                    : 'Search sites'
-                }
+                placeholder={module?.type === 'tracker' ? 'Search locations' : 'Search sites'}
                 value={searchText}
                 w="full"
               />
-              <SearchIcon
-                bottom="13px"
-                h="15px"
-                left="14px"
-                position="absolute"
-                stroke="locationsSelector.search.icon"
-                w="15x"
-              />
+              <SearchIcon bottom="13px" h="15px" left="14px" position="absolute" stroke="locationsSelector.search.icon" w="15x" />
             </InputGroup>
           </Box>
           {note && (
-            <Text
-              color="locationsSelector.note"
-              fontSize="12px"
-              fontStyle="italic"
-              opacity="0.3"
-              pl="12px"
-            >
+            <Text color="locationsSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3" pl="12px">
               {note}
             </Text>
-          )}
-          {filteredLocations?.length > 0 && (
-            <Checkbox
-              borderColor="locationsSelector.checkbox.border"
-              colorScheme="locationsSelector.checkbox"
-              css={{
-                '.chakra-checkbox__control': {
-                  borderRadius: '50%',
-                  width: '20px',
-                  height: '20px',
-                  background: 'white',
-                  borderWidth: '1px',
-                  borderColor: '#81819750',
-                  '&[data-checked]': {
-                    background: '#462AC4',
-                    borderColor: '#462AC4',
-                    '&[data-hover]': {
-                      background: '#462AC4',
-                      borderColor: '#462AC4',
-                    },
-                  },
-                },
-              }}
-              icon={<MinusIcon />}
-              isChecked={areAllSelected}
-              onChange={toggleAll}
-              py="20px"
-            >
-              <Text color="filterPanel.checkboxLabelColor" fontSize="14px">
-                Select all
-              </Text>
-            </Checkbox>
           )}
           <LocationsSelectorList
             disabled={disabled}
