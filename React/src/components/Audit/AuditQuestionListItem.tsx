@@ -18,7 +18,9 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
   return (
     <HStack bgColor="auditItem.listItem.bg" h="90px" key={question._id} p={4} rounded="10px">
       <Stack flexGrow={1} spacing={2}>
-        <Text fontSize="smm">{question.question}</Text>
+        <Text fontSize="smm" noOfLines={1}>
+          {question.question}
+        </Text>
         <HStack>
           {question.questionsCategory?.useStatus && (
             <Text color="auditItem.listItem.action.color" fontSize="ssm">

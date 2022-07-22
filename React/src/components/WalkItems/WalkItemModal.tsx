@@ -141,7 +141,7 @@ const WalkItemModal = ({
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar mr={3} name={walkItem?.addedBy?.displayName} rounded="full" size="xs" src={walkItem?.addedBy?.imgUrl} />
-              {walkItem?.question?.question}
+              <Text noOfLines={1}>{walkItem?.question?.question}</Text>
             </Flex>
             <Flex alignItems="center">
               <Close cursor="pointer" h="15px" onClick={() => setAdminModalState('closed')} stroke="walkItemModal.closeIcon" w="15px" />
