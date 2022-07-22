@@ -109,6 +109,7 @@ const Datepicker = ({
                   placeholderText={placeholder}
                   ref={datePickerRef}
                   selected={value ? new Date(value) : null}
+                  showPopperArrow={false}
                   showYearDropdown
                 />
               )}
@@ -118,10 +119,7 @@ const Datepicker = ({
                 mr="10px"
                 mt="-2px"
                 onClick={() => {
-                  if (!disabled) {
-                    // @ts-ignore
-                    datePickerRef.current.setOpen(true);
-                  }
+                  if (!disabled) (datePickerRef.current as any).setOpen(true);
                 }}
                 stroke="datepicker.font"
                 w="14px"
