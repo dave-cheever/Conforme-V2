@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Box, Flex, IconButton, Image, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, IconButton, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { BlankPage, DownloadIcon, Trashcan } from '../../icons';
@@ -66,18 +66,33 @@ const DocumentUploaded = ({
         w="full"
       >
         <Flex align="center" justify="space-between" w="full">
-          <Box bg="documentUploaded.thumbnailBg" borderRadius="10px" flexShrink={0} fontSize="12px" h="55px" ml="5px" mr={2} w="55px">
+          <Flex
+            align="center"
+            bg="documentUploaded.thumbnailBg"
+            borderRadius="10px"
+            flexShrink={0}
+            fontSize="12px"
+            h="55px"
+            justify="center"
+            ml="5px"
+            mr={2}
+            w="55px"
+          >
             <Image
+              aspectRatio="1 / 1"
+              borderRadius="10px"
               fallback={
                 <Flex align="center" h="full">
                   <BlankPage h="30px" w="55px" />
                 </Flex>
               }
-              maxHeight="55px"
-              maxWidth="55px"
+              h="auto"
+              maxH="55px"
+              maxW="55px"
               src={documentDetails?.thumbnail}
+              w="auto"
             />
-          </Box>
+          </Flex>
           <Flex direction="column" fontSize="12px" grow={1} mr={2} overflow="hidden" textOverflow="ellipsis">
             <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
               {document?.name}
