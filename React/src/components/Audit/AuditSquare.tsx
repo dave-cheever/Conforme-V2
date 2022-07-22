@@ -38,16 +38,14 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           </Tooltip>
         </Skeleton>
         <Text color="auditSquare.nameFontColor" fontSize="16px" fontWeight="700" lineHeight="20px" ml={3} noOfLines={2} w="full">
-          {audit?.walkType === 'physical' ? audit?.area?.name : 'Virtual walk'}
+          {audit?.area?.name}
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">
-        {audit?.walkType === 'physical' && (
-          <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
-            <Text color="auditSquare.titleFontColor">Site</Text>
-            <Text>{audit?.site?.name}</Text>
-          </Box>
-        )}
+        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+          <Text color="auditSquare.titleFontColor">Site</Text>
+          <Text>{audit?.site?.name}</Text>
+        </Box>
         <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
           <Text color="auditSquare.titleFontColor">Type</Text>
           <Text textTransform="capitalize">{audit?.walkType}</Text>
