@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -35,6 +36,7 @@ const GET_QUESTIONS = gql`
     questionsCategories {
       _id
       name
+      maxQuestionsNumber
     }
   }
 `;
@@ -145,9 +147,25 @@ const Questions = () => {
   };
 
   const handleAddQuestion = async () => {
+    const question = getValues();
+    const { maxQuestionsNumber: selectedCategoryMaxQuestions, name: selectedCategoryName } = questionsCategories?.find(
+      (cat) => cat._id === question.questionsCategoryId,
+    );
+    const questionsNumberForSelectedCategory = questions.filter(
+      (_question) => _question.questionsCategoryId === question.questionsCategoryId,
+    ).length;
+    if (selectedCategoryMaxQuestions - questionsNumberForSelectedCategory <= 0) {
+      toast({
+        ...toastFailed,
+        description: `Cannot add more than  ${selectedCategoryMaxQuestions} ${selectedCategoryName} ${pluralize(
+          'question',
+          selectedCategoryMaxQuestions,
+        )}`,
+      });
+      return;
+    }
     try {
       if (Object.keys(errors).length === 0) {
-        const question = getValues();
         await createFunction({ variables: { question } });
         refetch();
         toast({ ...toastSuccess, description: 'Question added' });
