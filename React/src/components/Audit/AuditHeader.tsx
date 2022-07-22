@@ -29,11 +29,9 @@ import AuditSubmitModal from './AuditSubmitModal';
 const AuditHeader = () => {
   const toast = useToast();
   const { user } = useAppContext();
-  const { audit, auditor, site, area } = useAuditContext();
+  const { audit, auditor, questions, site, area } = useAuditContext();
   const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
-
   if (!audit) return null;
-
   return (
     <>
       <AuditSubmitModal
@@ -115,7 +113,14 @@ const AuditHeader = () => {
             onClick={() => {}}
           /> */}
           {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
-            <AuditHeaderButton bgColor="#DC0043" fontColor="white" icon={null} name="Submit" onClick={handleSubmitModalOpen} />
+            <AuditHeaderButton
+              bgColor="#DC0043"
+              disabled={!questions || Object.keys(questions).length === 0}
+              fontColor="white"
+              icon={null}
+              name="Submit"
+              onClick={handleSubmitModalOpen}
+            />
           )}
         </Flex>
         {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
