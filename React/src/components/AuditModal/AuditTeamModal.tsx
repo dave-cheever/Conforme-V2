@@ -18,6 +18,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { debounce } from 'lodash';
+import pluralize from 'pluralize';
 
 import { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 import { TickIcon } from '../../icons';
@@ -128,7 +129,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
           <Flex>
             {multiple && (
               <Text color="auditTeamModal.radioButtonFont" fontSize="smm" fontWeight="semi_medium" ml="2" mt={2}>
-                {selectedParticipants.length} users selected
+                {`${selectedParticipants.length} ${pluralize('user', selectedParticipants.length)}`} selected
               </Text>
             )}
           </Flex>

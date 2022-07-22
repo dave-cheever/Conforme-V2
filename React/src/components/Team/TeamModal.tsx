@@ -20,6 +20,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { debounce } from 'lodash';
+import pluralize from 'pluralize';
 
 import { toastFailed } from '../../bootstrap/config';
 import { useResponseContext } from '../../contexts/ResponseProvider';
@@ -127,8 +128,8 @@ const TeamModal = () => {
             {isReplaceAccountable
               ? 'Replace'
               : !isReplaceAccountable && filterType === 'accountableId'
-                ? 'Select'
-                : `Add ${responsePermissionByFilterType(filterType)}s`}
+              ? 'Select'
+              : `Add ${responsePermissionByFilterType(filterType)}s`}
           </Text>
           <ModalCloseButton />
         </ModalHeader>
@@ -147,7 +148,7 @@ const TeamModal = () => {
               onChange={({ target: { value } }) => {
                 onQueryChanged(value);
               }}
-              placeholder='Name'
+              placeholder="Name"
               rounded="10px"
               value={searchText}
               zIndex={2}
@@ -156,7 +157,7 @@ const TeamModal = () => {
           <Flex>
             {(filterType === 'contributorsIds' || filterType === 'followersIds') && (
               <Text color="teamPage.radioButtonFont" fontSize="smm" fontWeight="semi_medium" ml="2" mt={2}>
-                {selectedParticipants.length} users selected
+                {`${selectedParticipants.length} ${pluralize('user', selectedParticipants.length)}`} selected
               </Text>
             )}
           </Flex>
