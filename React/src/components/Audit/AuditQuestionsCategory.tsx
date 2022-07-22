@@ -18,13 +18,9 @@ const AuditQuestionsCategory = ({
   return (
     <Stack key={questionsCategory._id} spacing={4} w="full">
       <Text fontWeight="semibold">{questionsCategory.name}</Text>
-      <Stack>
+      <Stack spacing={2}>
         {categoryQuestions.map((question) => (
-          <AuditQuestionListItem
-            handleDelete={handleDelete}
-            key={question._id}
-            question={question}
-          />
+          <AuditQuestionListItem handleDelete={handleDelete} key={question._id} question={question} />
         ))}
       </Stack>
     </Stack>
