@@ -1,6 +1,7 @@
 import { FunctionComponent, useMemo } from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
+import { capitalize } from 'lodash';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
@@ -39,9 +40,8 @@ const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBread
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
         mr={1}
         pl={[0, 2]}
-        textTransform="capitalize"
       >
-        {breadcrumb}
+        {capitalize(breadcrumb)}
       </Text>
     </Flex>
   );
