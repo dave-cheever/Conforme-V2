@@ -43,7 +43,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     }
 
     if (actionQueryInput?.status?.length > 0) {
-      const statusQueries = actionQueryInput.status.map(status => {
+      const statusQueries = actionQueryInput.status.map((status) => {
         if (status === 'overdue') {
           return {
             status: 'open',
@@ -364,6 +364,26 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
         }),
       );
     }
+
+    if (shouldJoin(['creator'])) {
+      actions = await Promise.all(
+        actions.map(async (action) => {
+          try {
+            return {
+              ...action,
+              creator: await Users.customFindByIdWithDetails({
+                userId: action.metatags.addedBy,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for action with ID ${action._id}: ${e}`);
+            return action;
+          }
+        }),
+      );
+    }
+
     return actions.sort((a, b) => priorities[a.priority] - priorities[b.priority]);
   } catch (err: any) {
     console.error(err);

@@ -30,6 +30,7 @@ export const actionsTypeDefs = `
     metatags: Metatags
     assignee: User
     assignor: User
+    creator : User
   }
 
   input ActionUsersInput {

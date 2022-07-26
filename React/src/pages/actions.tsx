@@ -77,11 +77,12 @@ const GET_ACTIONS = gql`
         displayName
         imgUrl
       }
-      assignor {
+      creator {
         displayName
         imgUrl
       }
       metatags {
+        addedBy
         addedAt
         updatedAt
       }
@@ -127,6 +128,7 @@ const Actions = () => {
     },
     fetchPolicy: 'no-cache',
   });
+
   const { sortedData: sortedActions, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredActions);
   const sortBy = [
     { label: 'Title', key: 'title' },
@@ -135,7 +137,7 @@ const Actions = () => {
     { label: 'Completed date', key: 'completedDate' },
     { label: 'Status', key: 'status' },
     { label: 'Assignee', key: 'assignee.displayName' },
-    { label: 'Assigned by', key: 'assignor.displayName' },
+    { label: 'Created by', key: 'creator.displayName' },
     { label: 'Site', key: 'answer.audit.site.name' },
     { label: 'Area', key: 'answer.audit.area.name' },
   ];
@@ -233,7 +235,7 @@ const Actions = () => {
     { label: 'Title', key: 'title' },
     { label: 'Due Date', key: 'dueDate' },
     { label: 'Assignee', key: 'assignee.displayName' },
-    { label: 'Assigned by', key: 'assignor.displayName' },
+    { label: 'Created by', key: 'creator.displayName' },
     { label: 'Site', key: 'answer.audit.site.name' },
     { label: 'Area', key: 'answer.audit.area.name' },
     { label: 'Status', key: 'status' },

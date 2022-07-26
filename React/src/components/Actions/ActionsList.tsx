@@ -84,13 +84,13 @@ const ActionsList = ({
           w="10%"
         />
         <AdminTableHeaderElement
-          label="Assigned by"
+          label="Created by"
           onClick={() => {
-            setSortType('assignor.displayName');
-            setSortOrder(sortOrder === 'asc' && sortType === 'assignor.displayName' ? 'desc' : 'asc');
+            setSortType('creator.displayName');
+            setSortOrder(sortOrder === 'asc' && sortType === 'creator.displayName' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'assignor.displayName'}
-          sortOrder={sortType === 'assignor.displayName' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'creator.displayName'}
+          sortOrder={sortType === 'creator.displayName' ? sortOrder : undefined}
           w="10%"
         />
         <AdminTableHeaderElement

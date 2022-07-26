@@ -84,9 +84,9 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
         </Box>
         <Box w="10%">
           <Skeleton isLoaded={!!action} rounded="full">
-            {action.assignor ? (
-              <Tooltip label={action.assignor?.displayName}>
-                <Avatar name={action.assignor?.displayName} size="sm" src={action.assignor?.imgUrl} />
+            {action.creator ? (
+              <Tooltip label={action.creator?.displayName}>
+                <Avatar name={action.creator?.displayName} size="sm" src={action.creator?.imgUrl} />
               </Tooltip>
             ) : (
               <Flex fontSize="13px" fontStyle="italic">
