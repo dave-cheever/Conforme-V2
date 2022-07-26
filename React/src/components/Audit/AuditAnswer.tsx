@@ -24,6 +24,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   const { user, module } = useAppContext();
   const {
     audit,
+    handleActionChangesModalOpen,
     questionsCategories,
     createQuestion,
     saveQuestion,
@@ -34,6 +35,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
     deleteAction,
     selectedAction,
     setSelectedAction,
+    setActionChangesModalOnContinue,
     refetch,
   } = useAuditContext();
   const questionsCategory = questionsCategories.find(({ _id }) => _id === question.questionsCategoryId);
@@ -359,7 +361,14 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
             fontSize="smm"
             fontWeight="semibold"
             h="40px"
-            onClick={saveData}
+            onClick={
+              selectedAction
+                ? () => {
+                    setActionChangesModalOnContinue(() => saveData);
+                    handleActionChangesModalOpen();
+                  }
+                : saveData
+            }
             rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
             rounded="10px"
           >

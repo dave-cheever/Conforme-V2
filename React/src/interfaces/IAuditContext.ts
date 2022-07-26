@@ -1,17 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import {
-  ApolloCache,
-  DefaultContext,
-  FetchResult,
-  MutationFunctionOptions,
-  OperationVariables,
-} from '@apollo/client';
+import { ApolloCache, DefaultContext, FetchResult, MutationFunctionOptions, OperationVariables } from '@apollo/client';
 
-import {
-  IQuestionsByCategories,
-  TQuestionWithAnswer,
-} from '../contexts/AuditProvider';
+import { IQuestionsByCategories, TQuestionWithAnswer } from '../contexts/AuditProvider';
 import { IAction } from './IAction';
 import { IAudit } from './IAudit';
 import { IAuditType } from './IAuditType';
@@ -22,12 +13,7 @@ import { IUser } from './IUser';
 import { TDeepPartial } from './TDeepPartial';
 
 type gqlFunction = (
-  options?: MutationFunctionOptions<
-    any,
-    OperationVariables,
-    DefaultContext,
-    ApolloCache<any>
-  >,
+  options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>,
 ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
 
 export interface IAuditContext {
@@ -43,12 +29,17 @@ export interface IAuditContext {
   loading: boolean;
 
   selectedQuestion?: TDeepPartial<TQuestionWithAnswer>;
-  setSelectedQuestion: Dispatch<
-    SetStateAction<TDeepPartial<TQuestionWithAnswer> | undefined>
-  >;
+  setSelectedQuestion: Dispatch<SetStateAction<TDeepPartial<TQuestionWithAnswer> | undefined>>;
 
   selectedAction?: Partial<IAction>;
   setSelectedAction: Dispatch<SetStateAction<Partial<IAction> | undefined>>;
+
+  isActionChangesModalOpen: boolean;
+  handleActionChangesModalOpen: () => void;
+  handleActionChangesModalClose: () => void;
+
+  actionChangesModalOnContinue: Function | undefined;
+  setActionChangesModalOnContinue: Dispatch<SetStateAction<Function | undefined>>;
 
   createQuestion: gqlFunction;
   saveQuestion: gqlFunction;
@@ -61,20 +52,10 @@ export interface IAuditContext {
   deleteAction: gqlFunction;
 
   updateAudit: (
-    options?: MutationFunctionOptions<
-      any,
-      OperationVariables,
-      DefaultContext,
-      ApolloCache<any>
-    >,
+    options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>,
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
   submitAudit: (
-    options?: MutationFunctionOptions<
-      any,
-      OperationVariables,
-      DefaultContext,
-      ApolloCache<any>
-    >,
+    options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>,
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
 
   refetch: () => void;

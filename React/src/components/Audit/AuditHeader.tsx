@@ -29,9 +29,34 @@ import AuditSubmitModal from './AuditSubmitModal';
 const AuditHeader = () => {
   const toast = useToast();
   const { user } = useAppContext();
-  const { audit, auditor, questions, site, area } = useAuditContext();
+  const {
+    audit,
+    auditor,
+    site,
+    area,
+    selectedAction,
+    questions,
+    submitAudit,
+    refetch,
+    handleActionChangesModalOpen,
+    setActionChangesModalOnContinue,
+  } = useAuditContext();
   const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
   if (!audit) return null;
+
+  const onSubmitAudit = async () => {
+    await submitAudit({
+      variables: {
+        auditId: audit._id,
+      },
+    });
+    refetch();
+    toast({
+      ...toastSuccess,
+      description: `${capitalize(t('audit'))} completed`,
+    });
+  };
+
   return (
     <>
       <AuditSubmitModal
@@ -112,6 +137,8 @@ const AuditHeader = () => {
             name="Share"
             onClick={() => {}}
           /> */}
+
+          {/* heere */}
           {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
             <AuditHeaderButton
               bgColor="#DC0043"
@@ -119,7 +146,14 @@ const AuditHeader = () => {
               fontColor="white"
               icon={null}
               name="Submit"
-              onClick={handleSubmitModalOpen}
+              onClick={
+                selectedAction
+                  ? () => {
+                      setActionChangesModalOnContinue(() => onSubmitAudit);
+                      handleActionChangesModalOpen();
+                    }
+                  : handleSubmitModalOpen
+              }
             />
           )}
         </Flex>

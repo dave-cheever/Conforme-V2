@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useToast } from '@chakra-ui/react';
+import { useDisclosure, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
@@ -277,6 +277,13 @@ const AuditProvider = ({ children }) => {
 
   const [selectedQuestion, setSelectedQuestion] = useState<TDeepPartial<TQuestionWithAnswer>>();
   const [selectedAction, setSelectedAction] = useState<Partial<IAction>>();
+  const [actionChangesModalOnContinue, setActionChangesModalOnContinue] = useState<Function>();
+
+  const {
+    isOpen: isActionChangesModalOpen,
+    onClose: handleActionChangesModalClose,
+    onOpen: handleActionChangesModalOpen,
+  } = useDisclosure();
 
   const {
     data,
@@ -366,6 +373,11 @@ const AuditProvider = ({ children }) => {
       customQuestionsCategories,
       questions,
       loading,
+      isActionChangesModalOpen,
+      handleActionChangesModalClose,
+      handleActionChangesModalOpen,
+      actionChangesModalOnContinue,
+      setActionChangesModalOnContinue,
       selectedQuestion,
       setSelectedQuestion,
       selectedAction,
@@ -383,7 +395,20 @@ const AuditProvider = ({ children }) => {
       submitAudit,
       refetch,
     }),
-    [audit, auditType, auditor, participants, site, area, questions, loading, selectedQuestion, selectedAction],
+    [
+      audit,
+      auditType,
+      auditor,
+      participants,
+      site,
+      area,
+      questions,
+      loading,
+      selectedQuestion,
+      selectedAction,
+      isActionChangesModalOpen,
+      actionChangesModalOnContinue,
+    ],
   );
 
   return <AuditContext.Provider value={value}>{children}</AuditContext.Provider>;
