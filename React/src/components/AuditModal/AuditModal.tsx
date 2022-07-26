@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { gql, useLazyQuery } from '@apollo/client';
 import { AddIcon } from '@chakra-ui/icons';
 import {
+  Alert,
   Avatar,
   Button,
   Flex,
@@ -17,7 +19,9 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import { t } from 'i18next';
+import { isEmpty } from 'lodash';
 
 import { toastFailed } from '../../bootstrap/config';
 import { AdminContext } from '../../contexts/AdminProvider';
@@ -32,10 +36,25 @@ import { Dropdown } from '../Forms';
 import AuditTeamModal from './AuditTeamModal';
 import AuditTeamParticipantAvatar from './AuditTeamParticipantAvatar';
 
+const GET_DUPLICATE_AUDITS = gql`
+  query getDuplicateAudits($auditQueryInput: AuditQueryInput) {
+    audits(auditQueryInput: $auditQueryInput) {
+      _id
+      auditType {
+        name
+      }
+      area {
+        name
+      }
+    }
+  }
+`;
+
 const AuditModal = ({ refetch }) => {
   const toast = useToast();
-  const { navigateTo } = useNavigate();
+  const { navigateTo, openInNewTab } = useNavigate();
   const { user } = useAppContext();
+  const [getDuplicateAudits, { data }] = useLazyQuery(GET_DUPLICATE_AUDITS, { fetchPolicy: 'network-only' });
   const { audit, control, setValue, auditTypes, locations, businessUnits, reset } = useAuditModalContext();
   const { selectedAuditor, selectedParticipants } = useAuditTeamContext();
   const { saveAudit, closeModal } = useAuditModal(refetch);
@@ -47,6 +66,23 @@ const AuditModal = ({ refetch }) => {
     if (adminModalState !== 'closed' && auditTypes.length === 1) setValue('auditTypeId', auditTypes[0]._id);
     return () => reset({ ...audit });
   }, [adminModalState, JSON.stringify(auditTypes)]);
+
+  useEffect(() => {
+    const { areaId, walkType, auditTypeId } = audit;
+
+    if (!isEmpty(auditTypeId) && walkType === 'physical' && !isEmpty(areaId)) {
+      getDuplicateAudits({
+        variables: {
+          auditQueryInput: {
+            areasIds: [areaId],
+            walkType: [walkType],
+            auditTypesIds: [auditTypeId],
+            status: ['upcoming'],
+          },
+        },
+      });
+    }
+  }, [JSON.stringify(audit)]);
 
   const handlePrimaryButtonClick = async () => {
     if (!audit.auditTypeId) {
@@ -150,7 +186,7 @@ const AuditModal = ({ refetch }) => {
                       variant="secondaryVariant"
                     />
                   </GridItem>
-                  
+
                   <GridItem w="100%">
                     <Dropdown
                       control={control}
@@ -234,7 +270,25 @@ const AuditModal = ({ refetch }) => {
               </Grid>
             </Stack>
             <Spacer />
-            <Flex justifyContent="flex-end" w="full">
+            <Flex align="center" justifyContent="flex-end" w="full">
+              {data?.audits?.length > 0 && (
+                <Alert status="warning">
+                  <Text as="h3">
+                    {data?.audits?.[0].auditType.name} for {data?.audits?.[0].area.name} for {format(new Date(), 'MMMM Y')} already{' '}
+                    <Text
+                      _hover={{
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                      }}
+                      as="span"
+                      color="auditModal.existentAuditLink.color"
+                      onClick={() => openInNewTab(`/audits/${data?.audits?.[0]?._id}`)}
+                    >
+                      exists
+                    </Text>
+                  </Text>
+                </Alert>
+              )}
               <Button
                 bg="auditModal.tabs.bottomButton.bg"
                 color="auditModal.tabs.bottomButton.color"
@@ -268,6 +322,9 @@ export const auditModalStyles = {
     addParticipant: {
       bg: '#1E1836',
       color: '#FFFFFF',
+    },
+    existentAuditLink: {
+      color: '#dc0043',
     },
     saveButton: {
       bg: '#F0F2F5',
