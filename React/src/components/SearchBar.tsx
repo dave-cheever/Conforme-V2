@@ -151,7 +151,7 @@ const SearchBar = () => {
             setIsSearchBarOpen(true);
             onOpen();
           }}
-          placeholder="Search"
+          placeholder={module?.type === 'tracker' ? 'Search' : 'Search for area'}
           rounded="20px"
           value={searchText}
         />
