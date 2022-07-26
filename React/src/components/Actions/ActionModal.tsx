@@ -152,7 +152,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody h="calc(100% - 175px)" overflow="auto" px={['0', '2']}>
+        <ModalBody h="calc(100% - 175px)" overflow="visible" px={['0', '2']}>
           <Stack h="full" spacing={4}>
             <Stack spacing={6}>
               <Stack spacing={4}>
@@ -161,7 +161,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                 </Text>
                 <HStack
                   bg="actionModal.question.bg"
-                  boxShadow="0px 0px 30px 0px #31323340"
+                  boxShadow="simple"
                   flexGrow={1}
                   justify="space-between"
                   px={6}
