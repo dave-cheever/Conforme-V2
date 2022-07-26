@@ -3,7 +3,20 @@ import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
-import { Admin, BlankPage, CalendarIcon, CategoryIcon, Home, ListIcon, LocationIcon, ProgressIcon, QuestionMarkIcon, RegulatoryBodyIcon, SiteIcon, TeamsIcon } from '../icons';
+import {
+  Admin,
+  BlankPage,
+  CalendarIcon,
+  CategoryIcon,
+  Home,
+  ListIcon,
+  LocationIcon,
+  ProgressIcon,
+  QuestionMarkIcon,
+  RegulatoryBodyIcon,
+  SiteIcon,
+  TeamsIcon,
+} from '../icons';
 import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
 
@@ -11,14 +24,14 @@ const useConfig = () => {
   const auditsMenuItems: INavItem[] = [
     {
       type: 'menuItem',
-      label: pluralize(t('audit')),
+      label: capitalize(pluralize(t('audit'))),
       url: '/dashboard',
       icon: Home,
       permission: 'home.view',
     },
     {
       type: 'menuItem',
-      label: pluralize(t('question')),
+      label: capitalize(pluralize(t('question'))),
       url: '/walk-items',
       icon: ListIcon,
       permission: 'questions.view',
@@ -168,7 +181,7 @@ const useConfig = () => {
     { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionMarkIcon },
     { label: 'Questions categories', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
     { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
-  ]
+  ];
 
   const trackerAddItems = [
     { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items', icon: BlankPage },
@@ -176,7 +189,7 @@ const useConfig = () => {
     { label: 'Categories', url: '/admin/categories', icon: CategoryIcon },
     { label: 'Locations', url: '/admin/locations', icon: LocationIcon },
     { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units', icon: TeamsIcon },
-  ]
+  ];
 
   return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems, trackerAddItems, auditAddItems };
 };
