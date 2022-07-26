@@ -9,12 +9,17 @@ import {
   ModalHeader,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
+import { toastSuccess } from '../../bootstrap/config';
 import { useAuditContext } from '../../contexts/AuditProvider';
 
 const AuditSubmitModal = ({ isOpen, onClose }) => {
   const { audit, submitAudit, refetch } = useAuditContext();
+  const toast = useToast();
 
   if (!audit) return null;
 
@@ -58,6 +63,10 @@ const AuditSubmitModal = ({ isOpen, onClose }) => {
                 });
                 refetch();
                 onClose();
+                toast({
+                  ...toastSuccess,
+                  description: `${capitalize(t('audit'))} completed`,
+                });
               }}
             >
               Submit

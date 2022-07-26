@@ -13,12 +13,8 @@ import {
   Stack,
   Text,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
-import { t } from 'i18next';
-import { capitalize } from 'lodash';
 
-import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import { ArrowDownIcon } from '../../icons';
@@ -27,7 +23,6 @@ import AuditHeaderButton from './AuditHeaderButton';
 import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
-  const toast = useToast();
   const { user } = useAppContext();
   const {
     audit,
@@ -63,10 +58,6 @@ const AuditHeader = () => {
         isOpen={isSubmitModalOpen}
         onClose={() => {
           handleSubmitModalClose();
-          toast({
-            ...toastSuccess,
-            description: `${capitalize(t('audit'))} completed`,
-          });
         }}
       />
       <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
