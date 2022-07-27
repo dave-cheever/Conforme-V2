@@ -219,7 +219,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           ))}
         </Stack>
       )}
-      <Stack w="360px">
+      <Stack>
         <Text fontSize="ssm" fontWeight="bold" mb={2}>
           Attachments
         </Text>
