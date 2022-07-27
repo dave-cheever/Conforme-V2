@@ -136,6 +136,7 @@ const TextInput = ({
                   <Button
                     bg="textInput.openLinkButtonBg"
                     color="textInput.openLinkButtonColor"
+                    disabled={!value || error !== undefined}
                     fontSize="smm"
                     h="1.75rem"
                     onClick={() => {
