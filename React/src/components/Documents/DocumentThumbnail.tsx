@@ -23,9 +23,19 @@ const DocumentThumbnail = ({ document }: { document: IDocument | undefined }) =>
 
   return (
     <>
-      <Flex align="center" borderRadius="10px" flexShrink={0} fontSize="12px" h="55px" justify="center" ml="5px" mr={2} w="55px">
+      <Flex
+        align="center"
+        borderColor="documentUploaded.border"
+        borderRadius="3px"
+        borderWidth={1}
+        flexShrink={0}
+        fontSize="12px"
+        h="55px"
+        justify="center"
+        overflow="hidden"
+        w="55px"
+      >
         <Image
-          borderRadius="10px"
           fallback={
             <Flex align="center" h="full">
               <BlankPage h="30px" w="55px" />

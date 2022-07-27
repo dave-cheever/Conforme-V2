@@ -1,5 +1,5 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { HStack, Spacer, Stack, Text } from '@chakra-ui/react';
+import { Flex, HStack, Spacer, Stack, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
@@ -33,10 +33,27 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
           </Text>
         </HStack>
       </Stack>
-      <HStack>
-        {question.answer?.attachments?.map((attachment) => (
+      <HStack spacing={2}>
+        {(question.answer?.attachments || []).slice(0, 2).map((attachment) => (
           <DocumentThumbnail document={attachment} key={attachment.id} />
         ))}
+        {(question.answer?.attachments || []).length > 2 &&
+          ((question.answer?.attachments || []).length === 3 ? (
+            <DocumentThumbnail document={question.answer!.attachments![2]} key={question.answer!.attachments![2].id} />
+          ) : (
+            <Flex
+              align="center"
+              border="1px solid"
+              borderColor="documentUploaded.border"
+              cursor="default"
+              h="55px"
+              justify="center"
+              rounded="3px"
+              w="55px"
+            >
+              +{(question.answer?.attachments || []).length - 2}
+            </Flex>
+          ))}
       </HStack>
       {audit.status === 'upcoming' && isUserPermittedToModify && (
         <Stack>

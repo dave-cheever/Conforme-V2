@@ -69,18 +69,18 @@ const DocumentUploaded = ({
           <Flex
             align="center"
             bg="documentUploaded.thumbnailBg"
-            borderRadius="10px"
+            borderColor="documentUploaded.border"
+            borderRadius="3px"
+            borderWidth="1px"
             flexShrink={0}
             fontSize="12px"
             h="55px"
             justify="center"
-            ml="5px"
-            mr={2}
+            overflow="hidden"
             w="55px"
           >
             <Image
               aspectRatio="1 / 1"
-              borderRadius="10px"
               fallback={
                 <Flex align="center" h="full">
                   <BlankPage h="30px" w="55px" />
@@ -93,7 +93,7 @@ const DocumentUploaded = ({
               w="auto"
             />
           </Flex>
-          <Flex direction="column" fontSize="12px" grow={1} mr={2} overflow="hidden" textOverflow="ellipsis">
+          <Flex direction="column" fontSize="12px" grow={1} mx={2} overflow="hidden" textOverflow="ellipsis">
             <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
               {document?.name}
             </Text>
@@ -143,5 +143,6 @@ export const documentUploadedStyles = {
     thumbnailBg: '#FFFFFF',
     downloadIcon: '#282F36',
     binIcon: 'black',
+    border: '#BBBBBB',
   },
 };
