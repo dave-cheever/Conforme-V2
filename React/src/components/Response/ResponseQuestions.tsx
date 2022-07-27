@@ -10,7 +10,7 @@ import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import usePrompt from '../../hooks/usePrompt';
-import { ChevronRight, MessageSquareIcon } from '../../icons';
+import { Asterisk, ChevronRight, MessageSquareIcon } from '../../icons';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 import { isPermitted } from '../can';
 import Field from '../Forms/Field';
@@ -43,10 +43,10 @@ const ResponseQuestions = () => {
     mode: 'all',
     defaultValues: questions?.reduce(
       (acc, { name, value }) =>
-        ({
-          ...acc,
-          [name]: value,
-        } as { [name: string]: TQuestionValue }),
+      ({
+        ...acc,
+        [name]: value,
+      } as { [name: string]: TQuestionValue }),
       {} as { [name: string]: TQuestionValue },
     ),
   });
@@ -95,6 +95,22 @@ const ResponseQuestions = () => {
         when={isQuestionFormDirty}
       />
       <Stack h="full" minH={['80vh', 0]} mt={2} overflow={['visible', 'auto']} w="full">
+        {questions.length > 0 &&
+          <Flex>
+            <Asterisk
+              fill="questionListElement.iconAsterisk"
+              h="9px"
+              stroke="questionListElement.iconAsterisk"
+              w="9px"
+            />
+            &nbsp;
+            <Text
+              fontSize='sm'
+              fontWeight="semi_medium"
+            >Required</Text>
+            <br />
+          </Flex>
+        }
         <Grid gap={4} templateColumns="1fr" w={['full', '80%', '50%']}>
           {questions.length === 0 && (
             <Text color="responseQuestions.NoQuestion.color" fontSize="smm">

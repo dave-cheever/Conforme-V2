@@ -13,8 +13,12 @@ import {
   Stack,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
+import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import { ArrowDownIcon } from '../../icons';
@@ -24,6 +28,7 @@ import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
   const { user } = useAppContext();
+  const toast = useToast();
   const {
     audit,
     auditor,
@@ -140,9 +145,9 @@ const AuditHeader = () => {
               onClick={
                 selectedAction
                   ? () => {
-                      setActionChangesModalOnContinue(() => onSubmitAudit);
-                      handleActionChangesModalOpen();
-                    }
+                    setActionChangesModalOnContinue(() => onSubmitAudit);
+                    handleActionChangesModalOpen();
+                  }
                   : handleSubmitModalOpen
               }
             />
