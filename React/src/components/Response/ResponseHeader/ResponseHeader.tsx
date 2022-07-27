@@ -49,9 +49,8 @@ const ReasponseHeader = () => {
       toast({
         ...toastSuccess,
         title: 'Response completed',
-        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${
-          response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
-        } `,
+        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
+          } `,
       });
       return setStatus('compliant');
     }
@@ -86,7 +85,15 @@ const ReasponseHeader = () => {
     <>
       <Flex bg="reasponseHeader.bg" direction="column" mb="15px" minH="100px" pl={6} w="full" zIndex={1}>
         <Stack alignItems="center" direction="row" h="40px" mb="15px" spacing={4} w="full">
-          <Heading alignItems={['flex-start', 'center']} color="reasponseHeader.heading" fontSize="xxl" fontWeight="bold">
+          <Heading
+            alignItems={['flex-start', 'center']}
+            color="reasponseHeader.heading"
+            fontSize="xxl"
+            fontWeight="bold"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            w='80%'
+            whiteSpace="nowrap">
             {response?.complianceItem?.name}
           </Heading>
           {getRenewalStatus(response) === 'comingUp' ? (
