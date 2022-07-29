@@ -20,19 +20,10 @@ const EmailTemplate = ({
   };
 
   return (
-    <Flex
-      flexDirection="column"
-      minW={['80px', '155px', 'full']}
-      onClick={onClick}
-      w="full"
-    >
+    <Flex flexDirection="column" minW={['80px', '155px', 'full']} onClick={onClick} w="full">
       <Flex
         _hover={{ borderColor: 'emailTemplate.hoverBorderColor' }}
-        borderColor={
-          active
-            ? 'emailTemplate.activeBorderColor'
-            : 'emailTemplate.borderColor'
-        }
+        borderColor={active ? 'emailTemplate.activeBorderColor' : 'emailTemplate.borderColor'}
         borderRadius="10px"
         borderWidth="2px"
       >

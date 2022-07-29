@@ -13,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   SkeletonCircle,
+  Stack,
   Text,
   useDisclosure,
   useToast,
@@ -63,8 +64,7 @@ const defaultValues = {
 const ResponseChat = () => {
   const toast = useToast();
   const device = useDevice();
-  const { response, handleCloseMessage, users, participantsLoading } =
-    useResponseContext();
+  const { response, handleCloseMessage, users, participantsLoading } = useResponseContext();
   const { data, loading, refetch } = useQuery(GET_COMMENTS, {
     variables: { _id: response?._id },
     skip: !response,
@@ -126,8 +126,7 @@ const ResponseChat = () => {
       toast({
         ...toastFailed,
         title: 'Comment not added',
-        description:
-          'There was an issue while adding a comment. Try again later.',
+        description: 'There was an issue while adding a comment. Try again later.',
       });
     }
   };
@@ -140,8 +139,7 @@ const ResponseChat = () => {
       toast({
         ...toastFailed,
         title: 'Comment not deleted',
-        description:
-          'There was an issue while deleting a comment. Try again later.',
+        description: 'There was an issue while deleting a comment. Try again later.',
       });
     }
   };
@@ -153,12 +151,7 @@ const ResponseChat = () => {
 
     if (response.accountableId === userId) return 'Accountable';
 
-    if (
-      response.contributorsIds &&
-      response.contributorsIds?.length > 0 &&
-      response.contributorsIds.includes(userId)
-    )
-      return 'Contributor';
+    if (response.contributorsIds && response.contributorsIds?.length > 0 && response.contributorsIds.includes(userId)) return 'Contributor';
 
     return 'Follower';
   };
@@ -173,13 +166,7 @@ const ResponseChat = () => {
           <ModalBody pr={2}>
             <Flex flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
               {users?.map((user) => (
-                <Flex
-                  align="center"
-                  justify="space-between"
-                  key={user._id}
-                  px="1"
-                  py="2"
-                >
+                <Flex align="center" justify="space-between" key={user._id} px="1" py="2">
                   <Flex align="center">
                     <Avatar
                       h="32px"
@@ -201,20 +188,9 @@ const ResponseChat = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Box
-        h="full"
-        pl="25px"
-        pr={['25px', '25px', '0px']}
-        w={['calc(100vw - 30px)', '300px', '330px']}
-      >
+      <Stack h="full" pl="25px" pr={['25px', '25px', '0px']} spacing={2} w={['calc(100vw - 30px)', '300px', '330px']}>
         <Flex alignItems="center" flexDirection="column">
-          <Text
-            color="responseChat.text"
-            fontSize="11px"
-            fontWeight="400"
-            lineHeight="16px"
-            my="10px"
-          >
+          <Text color="responseChat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">
             Chat
           </Text>
           {participantsLoading ? (
@@ -257,17 +233,7 @@ const ResponseChat = () => {
             </Flex>
           )}
         </Flex>
-        <Flex
-          flexDirection="column"
-          h={[
-            'calc(100vh - 390px)',
-            'calc(100vh - 340px)',
-            'calc(100vh - 280px)',
-          ]}
-          overflow="hidden"
-          pr="10px"
-          w="calc(100% + 10px)"
-        >
+        <Flex align="space-between" flexDirection="column" grow={1} overflow="hidden" pr="10px" w="calc(100% + 10px)">
           <Flex
             flexDirection="column"
             h="full"
@@ -287,11 +253,7 @@ const ResponseChat = () => {
           >
             {loading && <Loader center size="md" />}
             {comments.map((comment) => (
-              <ResponseChatSent
-                comment={comment}
-                key={comment._id}
-                onAction={deleteComment}
-              />
+              <ResponseChatSent comment={comment} key={comment._id} onAction={deleteComment} />
             ))}
           </Flex>
           <Can
@@ -311,7 +273,7 @@ const ResponseChat = () => {
             )}
           />
         </Flex>
-      </Box>
+      </Stack>
     </>
   );
 };

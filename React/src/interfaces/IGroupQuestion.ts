@@ -16,8 +16,7 @@ export const groupQuestionsByCategory: IGroupQuestion[] = [
   {
     id: '1237812236',
     name: 'Electrical hazards',
-    description:
-      'Is there any risk of persons receiving an electrical shock from?',
+    description: 'Is there any risk of persons receiving an electrical shock from?',
     totalQuestion: 8,
     questionAnswered: 3,
   },
@@ -40,8 +39,7 @@ export const groupQuestionsByKLOE: IGroupQuestion[] = [
   {
     id: '1237812232',
     name: 'Electrical hazards By KLOE',
-    description:
-      'Is there any risk of persons receiving an electrical shock from?',
+    description: 'Is there any risk of persons receiving an electrical shock from?',
     totalQuestion: 4,
     questionAnswered: 4,
   },
@@ -55,8 +53,7 @@ export const groupQuestionsByKLOE: IGroupQuestion[] = [
   {
     id: '1237812234',
     name: 'Electrical hazards By KLOE',
-    description:
-      'Is there any risk of persons receiving an electrical shock from?',
+    description: 'Is there any risk of persons receiving an electrical shock from?',
     totalQuestion: 4,
     questionAnswered: 4,
   },

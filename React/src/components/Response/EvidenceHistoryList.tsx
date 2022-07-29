@@ -10,14 +10,13 @@ const EvidenceHistoryList = () => {
   const { response, snapshot } = useResponseContext();
   return (
     <Flex direction="column" maxW="342px">
-      {response?.evidence?.filter(({ outdated }) => outdated).length > 0 && (
+      {response?.evidence.length > 0 && (
         <Flex fontSize="11px" fontWeight="bold" my={3}>
           Evidence history
         </Flex>
       )}
 
       {response.evidence
-        ?.filter(({ outdated }) => outdated)
         .filter(({ uploaded }) => uploaded?.id)
         .map((evidence, i) => (
           <Flex flexDir="column" key={i} mb={3}>
@@ -30,7 +29,6 @@ const EvidenceHistoryList = () => {
               })}
               removable={
                 !snapshot &&
-                !evidence.outdated &&
                 isPermitted({
                   user,
                   action: 'responses.edit',

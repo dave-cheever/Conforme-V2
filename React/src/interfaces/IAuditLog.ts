@@ -16,7 +16,7 @@ export interface IAuditFieldValue {
 export interface IAuditValue {
   old?: IAuditFieldValue;
   new?: IAuditFieldValue;
-};
+}
 
 export interface IAuditValues {
   [field: string]: IAuditValue;

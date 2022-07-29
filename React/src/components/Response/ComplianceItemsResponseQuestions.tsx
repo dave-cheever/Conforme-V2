@@ -1,15 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  Box,
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Flex,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Checkbox, CheckboxGroup, Flex, Stack, Text } from '@chakra-ui/react';
 
 import Datepicker from '../Forms/Datepicker';
 import TextInput from '../Forms/TextInput';
@@ -62,12 +54,7 @@ const ComplianceItemsResponseQuestions = () => {
           </Box>
 
           <Box w="30%">
-            <Datepicker
-              control={control}
-              label="Date Completed"
-              name="dueDate"
-              placeholder="dd / mm / yyyy"
-            />
+            <Datepicker control={control} label="Date Completed" name="dueDate" placeholder="dd / mm / yyyy" />
           </Box>
         </Stack>
       </Flex>
@@ -102,12 +89,7 @@ const ComplianceItemsResponseQuestions = () => {
             </Flex>
           </Box>
           <Box w="30%">
-            <Datepicker
-              control={control}
-              label="Date Completed"
-              name="dueDate"
-              placeholder="dd / mm / yyyy"
-            />
+            <Datepicker control={control} label="Date Completed" name="dueDate" placeholder="dd / mm / yyyy" />
           </Box>
         </Stack>
       </Flex>

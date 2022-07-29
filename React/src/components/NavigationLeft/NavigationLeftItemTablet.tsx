@@ -51,8 +51,8 @@ const NavigationLeftItemTablet = ({
                   ? 'navigationLeftItemTablet.selectedLabelBg'
                   : 'navigationLeftItemTablet.unselectedLabelBg'
                 : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItemTablet.selectedLabelBg'
-                  : 'navigationLeftItemTablet.unselectedLabelBg'
+                ? 'navigationLeftItemTablet.selectedLabelBg'
+                : 'navigationLeftItemTablet.unselectedLabelBg'
             }
             h="30px"
             justifyContent="center"
@@ -82,8 +82,8 @@ const NavigationLeftItemTablet = ({
                     ? 'navigationLeftItemTablet.selectedIconStroke'
                     : 'navigationLeftItemTablet.unselectedIconStroke'
                   : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItemTablet.selectedIconStroke'
-                    : 'navigationLeftItemTablet.unselectedIconStroke'
+                  ? 'navigationLeftItemTablet.selectedIconStroke'
+                  : 'navigationLeftItemTablet.unselectedIconStroke'
               }
               w="15px"
             />

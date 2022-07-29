@@ -51,17 +51,9 @@ const GENERATE_EMAIL_TEMPLATE = gql`
   }
 `;
 
-const EmailTemplates = ({
-  selectedTemplate,
-  setSelectedTemplate,
-  isOpen,
-  onClose,
-  updateImage,
-  setUpdateImage,
-}) => {
+const EmailTemplates = ({ selectedTemplate, setSelectedTemplate, isOpen, onClose, updateImage, setUpdateImage }) => {
   const { data: emailTemplates, loading } = useQuery(GET_EMAIL_TEMPLATES);
-  const [updateSetting, { loading: saveLoading }] =
-    useMutation(UPDATE_SETTINGS);
+  const [updateSetting, { loading: saveLoading }] = useMutation(UPDATE_SETTINGS);
   const [generateThumbnail] = useMutation(GENERATE_EMAIL_TEMPLATE);
   const [html, setHtml] = useState<string>();
 
@@ -102,11 +94,7 @@ const EmailTemplates = ({
       <Grid
         gap={7}
         h={['fit-content', 'fit-content', 'full']}
-        templateColumns={[
-          'repeat(1, 1fr)',
-          selectedTemplate ? 'repeat(1, 1fr)' : 'repeat(3, 1fr)',
-          'repeat(3, 1fr)',
-        ]}
+        templateColumns={['repeat(1, 1fr)', selectedTemplate ? 'repeat(1, 1fr)' : 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
         w={['full', 'full', '550px']}
       >
         {emailTemplates?.settings?.map((template) => (
@@ -121,26 +109,11 @@ const EmailTemplates = ({
       </Grid>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent
-          borderRadius="0px"
-          h="100vh"
-          margin="0px"
-          maxW="700px"
-          position="fixed"
-          right="0px"
-          top="0px"
-          w="full"
-        >
-          <ModalHeader fontSize="20px">
-            Edit "{selectedTemplate?.label}” template
-          </ModalHeader>
+        <ModalContent borderRadius="0px" h="100vh" margin="0px" maxW="700px" position="fixed" right="0px" top="0px" w="full">
+          <ModalHeader fontSize="20px">Edit "{selectedTemplate?.label}” template</ModalHeader>
           <ModalCloseButton />
           <ModalBody bg="emailTemplates.bg" p="0px">
-            <EmailEditor
-              options={selectedTemplate?.options}
-              setHtml={setHtml}
-              value={selectedTemplate?.value}
-            />
+            <EmailEditor options={selectedTemplate?.options} setHtml={setHtml} value={selectedTemplate?.value} />
           </ModalBody>
 
           <ModalFooter mr="auto">

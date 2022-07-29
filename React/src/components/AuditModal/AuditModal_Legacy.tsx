@@ -16,14 +16,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import {
-  AreaInfoIcon,
-  AssetsIcon,
-  AuditIcon,
-  LocationIcon,
-  QuestionsIcon,
-  RightArrowIcon,
-} from '../../icons';
+import { AreaInfoIcon, AssetsIcon, AuditIcon, LocationIcon, QuestionsIcon, RightArrowIcon } from '../../icons';
 import { IAuditModal } from '../../interfaces/IAuditModal';
 import { IAuditor } from '../../interfaces/IAuditor';
 import CircularProgress from '../CircularProgress';
@@ -65,9 +58,7 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
   }, []);
 
   useEffect(() => {
-    const updatedAuditorsAfterSearch = dummyAuditors.filter(
-      (val) => !selectedAuditors.includes(val),
-    );
+    const updatedAuditorsAfterSearch = dummyAuditors.filter((val) => !selectedAuditors.includes(val));
     setAuditors(updatedAuditorsAfterSearch);
   }, [selectedAuditors]);
 
@@ -75,37 +66,25 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
     searchedName.toLowerCase();
     setAuditorSearchText(searchedName);
     if (searchedName.length > 0) {
-      const temp = dummyAuditors.filter(({ name }: IAuditor) =>
-        name.toLowerCase().includes(searchedName),
-      );
+      const temp = dummyAuditors.filter(({ name }: IAuditor) => name.toLowerCase().includes(searchedName));
       setAuditors(temp);
     }
   };
 
   const updateSelectedAuditors = (auditor: IAuditor, action: string) => {
     if (action === 'add') {
-      const currentAuditors = auditors.filter(
-        (currAuditor: IAuditor) => currAuditor.name !== auditor.name,
-      );
+      const currentAuditors = auditors.filter((currAuditor: IAuditor) => currAuditor.name !== auditor.name);
       setAuditors(currentAuditors);
       setSelectedAuditors([...selectedAuditors, auditor]);
     } else if (action === 'remove') {
-      const currentSelectedAuditors = selectedAuditors.filter(
-        (currAuditor: IAuditor) => currAuditor.name !== auditor.name,
-      );
+      const currentSelectedAuditors = selectedAuditors.filter((currAuditor: IAuditor) => currAuditor.name !== auditor.name);
       setSelectedAuditors(currentSelectedAuditors);
       setAuditors([...auditors, auditor]);
     }
   };
 
-  const participantsActive = useMemo(
-    () => activePage === 'Participants',
-    [activePage],
-  );
-  const questionsActive = useMemo(
-    () => activePage === 'Questions',
-    [activePage],
-  );
+  const participantsActive = useMemo(() => activePage === 'Participants', [activePage]);
+  const questionsActive = useMemo(() => activePage === 'Questions', [activePage]);
   const reviewActive = useMemo(() => activePage === 'Review', [activePage]);
 
   return (
@@ -124,97 +103,40 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
     >
       <Modal isOpen={isOpen} onClose={onClose} variant="conformeModal">
         <ModalOverlay />
-        <ModalContent
-          borderRadius="20px"
-          boxShadow="-10px 4px 30px 0px #00000026"
-          h="calc(100vh - 30px)"
-          m="15px 15px"
-          maxW="800px"
-        >
+        <ModalContent borderRadius="20px" boxShadow="-10px 4px 30px 0px #00000026" h="calc(100vh - 30px)" m="15px 15px" maxW="800px">
           <ModalHeader m="0px 5px 5px 5px">
             <Box>
               <Breadcrumb
-                separator={
-                  <RightArrowIcon
-                    boxSize={3}
-                    transform="translate(0px, -2px)"
-                    transformOrigin="center"
-                  />
-                }
+                separator={<RightArrowIcon boxSize={3} transform="translate(0px, -2px)" transformOrigin="center" />}
                 spacing="8px"
               >
                 <BreadcrumbItem>
-                  <Text
-                    color="auditModal.title.text"
-                    fontSize="lg"
-                    fontWeight="700"
-                  >
+                  <Text color="auditModal.title.text" fontSize="lg" fontWeight="700">
                     Audit
                   </Text>
                 </BreadcrumbItem>
                 <BreadcrumbItem>
-                  <Text
-                    color="auditModal.title.text"
-                    fontSize="lg"
-                    fontWeight="700"
-                    m="0px 2px"
-                  >
+                  <Text color="auditModal.title.text" fontSize="lg" fontWeight="700" m="0px 2px">
                     Office Hazard Assessment
                   </Text>
                 </BreadcrumbItem>
               </Breadcrumb>
             </Box>
             <Box alignItems="center" display="flex" justifyContent="start">
-              <Box
-                alignItems="center"
-                display="flex"
-                height="40px"
-                justifyContent="start"
-                w="180px"
-              >
-                <Avatar
-                  bg="auditModal.avatar.bg"
-                  mr="10px"
-                  name="Emma Head"
-                  size="xs"
-                  src="https://bit.ly/broken-link"
-                />
-                <Text
-                  color="auditModal.avatar.text"
-                  fontSize="md"
-                  fontWeight="400"
-                >
+              <Box alignItems="center" display="flex" height="40px" justifyContent="start" w="180px">
+                <Avatar bg="auditModal.avatar.bg" mr="10px" name="Emma Head" size="xs" src="https://bit.ly/broken-link" />
+                <Text color="auditModal.avatar.text" fontSize="md" fontWeight="400">
                   Emma Head
                 </Text>
               </Box>
-              <Box
-                alignItems="center"
-                display="flex"
-                height="40px"
-                justifyContent="start"
-                w="230px"
-              >
+              <Box alignItems="center" display="flex" height="40px" justifyContent="start" w="230px">
                 <LocationIcon boxSize={6} mr="8px" />
-                <Text
-                  color="auditModal.location.text"
-                  fontSize="md"
-                  fontWeight="400"
-                >
+                <Text color="auditModal.location.text" fontSize="md" fontWeight="400">
                   The Meriden Hospital
                 </Text>
               </Box>
-              <Box
-                alignItems="center"
-                display="flex"
-                height="40px"
-                justifyContent="start"
-                w="180px"
-              >
-                <AreaInfoIcon
-                  boxSize={6}
-                  transform="translate(0px, -2px)"
-                  transformOrigin="center"
-                />
+              <Box alignItems="center" display="flex" height="40px" justifyContent="start" w="180px">
+                <AreaInfoIcon boxSize={6} transform="translate(0px, -2px)" transformOrigin="center" />
                 <SelectedArea />
               </Box>
             </Box>
@@ -224,17 +146,9 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
             <Box display="flex" justifyContent="start" maxH="full">
               <Box w="200px">
                 <AuditModalMenuItem icon={<AuditIcon />} label="Participants" />
-                <AuditModalMenuItem
-                  icon={<QuestionsIcon />}
-                  label="Questions"
-                />
+                <AuditModalMenuItem icon={<QuestionsIcon />} label="Questions" />
                 <AuditModalMenuItem icon={<AssetsIcon />} label="Review" />
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  justifyContent="center"
-                  mt="50px"
-                >
+                <Box alignItems="center" display="flex" justifyContent="center" mt="50px">
                   <CircularProgress value={11} />
                 </Box>
               </Box>
@@ -246,12 +160,7 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button
-              _hover={{ bg: 'auditModal.button.hoverBg' }}
-              bg="auditModal.button.bg"
-              m="5px 0px"
-              w="116px"
-            >
+            <Button _hover={{ bg: 'auditModal.button.hoverBg' }} bg="auditModal.button.bg" m="5px 0px" w="116px">
               <Text color="white" fontSize="md" fontWeight="400">
                 Start
               </Text>

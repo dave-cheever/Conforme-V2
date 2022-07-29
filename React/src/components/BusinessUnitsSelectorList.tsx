@@ -11,11 +11,7 @@ interface IBusinessUnitsSelectorList {
   handleChange: (any) => void;
 }
 
-const BusinessUnitsSelectorList = ({
-  filteredBusinessUnits,
-  selected,
-  handleChange,
-}: IBusinessUnitsSelectorList) => {
+const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, handleChange }: IBusinessUnitsSelectorList) => {
   const { module } = useAppContext();
 
   return (

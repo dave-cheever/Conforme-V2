@@ -31,7 +31,7 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
         </Flex>
         {device === 'mobile' && <NavigationBottomMobile />}
       </Flex>
-      {usedFilters.length > 0 && <FiltersPanel />}
+      {usedFilters?.length > 0 && <FiltersPanel />}
     </Flex>
   );
 };

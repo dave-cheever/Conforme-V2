@@ -13,10 +13,7 @@ export interface IComplianceItemModalContext {
   errors: { [fieldName: string]: object };
   setValue: UseFormSetValue<Partial<IComplianceItem>>;
   trigger: UseFormTrigger<IComplianceItem>;
-  reset: (
-    complianceItem?: Partial<IComplianceItem>,
-    setSection?: number
-  ) => void;
+  reset: (complianceItem?: Partial<IComplianceItem>, setSection?: number) => void;
 
   complianceItem: Partial<IComplianceItem>;
   refetch: () => void;
@@ -30,9 +27,7 @@ export interface IComplianceItemModalContext {
   locations: Partial<ILocation>[];
 
   savingDialogDetails: IComplianceItemModalDialogDetails;
-  setSavingDialogDetails: Dispatch<
-    SetStateAction<IComplianceItemModalDialogDetails>
-  >;
+  setSavingDialogDetails: Dispatch<SetStateAction<IComplianceItemModalDialogDetails>>;
 
   complianceItemModalSections: IComplianceItemModalSection[];
   selectedSection: IComplianceItemModalSection;

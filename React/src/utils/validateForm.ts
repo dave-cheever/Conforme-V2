@@ -20,8 +20,7 @@ const validateForm = (values: FormikValues, fields: IFormField[]) => {
         case 'notEmpty':
           if (isArray(values[name])) {
             values[name].forEach((value) => {
-              if (!value.removed && (value === undefined || value === ''))
-                errors[name] = `Please complete "${label}"`;
+              if (!value.removed && (value === undefined || value === '')) errors[name] = `Please complete "${label}"`;
             });
           } else if (!values[name]) errors[name] = `Please complete "${label}"`;
 
@@ -31,20 +30,14 @@ const validateForm = (values: FormikValues, fields: IFormField[]) => {
           if (isArray(values[name])) {
             // If value is an array (like in a Table)
             values[name].forEach((value) => {
-              if (
-                !value.removed &&
-                !new RegExp(/^-?\d+\.?\d*$/).test(value[name])
-              )
+              if (!value.removed && !new RegExp(/^-?\d+\.?\d*$/).test(value[name]))
                 errors[name] = `Please only use numbers in a decimal format`;
             });
           } else if (isObject(values[name]) && !isArray(values[name])) {
             // If value is an object (like in a DataGrid)
             Object.keys(values[name]).forEach((key) => {
               const dataValue = values[name][key];
-              if (
-                !dataValue.removed &&
-                !new RegExp(/^-?\d+\.?\d*$/).test(dataValue.value)
-              )
+              if (!dataValue.removed && !new RegExp(/^-?\d+\.?\d*$/).test(dataValue.value))
                 errors[name] = `Please only use numbers in a decimal format`;
             });
           } else if (!new RegExp(/^-?\d+\.?\d*$/).test(values[name])) {
@@ -56,25 +49,18 @@ const validateForm = (values: FormikValues, fields: IFormField[]) => {
         case 'minElements':
           if (values[name].length > 0) {
             values[name].forEach((value) => {
-              if (!value || value.length === 0) {
-                errors[
-                  name
-                ] = `At least ${validationValue} element(s) required`;
-              }
+              if (!value || value.length === 0) errors[name] = `At least ${validationValue} element(s) required`;
             });
-          } else
-            errors[name] = `At least ${validationValue} element(s) required`;
+          } else errors[name] = `At least ${validationValue} element(s) required`;
 
           break;
 
         case 'regex':
           if (isArray(values[name])) {
             values[name].forEach((value) => {
-              if (!value.removed && !validationValue.test(value[name]))
-                errors[name] = `Wrong format: "${value[name]}"`;
+              if (!value.removed && !validationValue.test(value[name])) errors[name] = `Wrong format: "${value[name]}"`;
             });
-          } else if (!validationValue.test(values[name]))
-            errors[name] = `Wrong format: "${values[name]}"`;
+          } else if (!validationValue.test(values[name])) errors[name] = `Wrong format: "${values[name]}"`;
 
           break;
         default:

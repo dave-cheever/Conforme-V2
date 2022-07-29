@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { getTime } from 'date-fns';
 import { t } from 'i18next';
@@ -48,11 +46,11 @@ const Team = () => {
       </Flex>
       <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
         {snapshots.map((response) => (
-          <HistoricalListItem key={getTime(new Date(response.lastRenewalDate!))} response={response} />
+          <HistoricalListItem key={getTime(new Date(response.lastCompletionDate!))} response={response} />
         ))}
         {snapshots.length === 0 && (
           <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-            No historical {pluralize(t('complianceItem'))} responses found
+            No historical {pluralize(t('tracker item'))} responses found
           </Flex>
         )}
       </Flex>

@@ -8,7 +8,7 @@ import {
   Responses,
 } from 'app-models';
 import { GraphService } from 'app-services';
-import { getStatus, isPermitted } from 'app-utils';
+import { isPermitted } from 'app-utils';
 
 const renewResponse = async (_, { _id }, { authorize, organization }) => {
   try {
@@ -99,12 +99,10 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
 
     const newEvidence = [
       ...response.evidence
-        .filter(({ outdated }) => !outdated)
         .map(({ name }) => ({ name })),
     ];
     const newQuestions = [
       ...response.questions
-        .filter(({ outdated }) => !outdated)
         .map(({ type, name, description, required, value, requiredAnswer }) => {
           if (type === 'multipleChoice') {
             return {
@@ -118,31 +116,17 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
               })),
             };
           }
-          return { type, name, description, required, requiredAnswer,  value: null };
+          return { type, name, description, required, requiredAnswer, value: null };
         }),
     ];
-    const nextStatus = getStatus(complianceItem.frequency || '');
 
     const updatedResponse = await Responses.customUpdateOne(
       { _id },
       {
-        lastRenewalDate: new Date(),
         attachments: response.attachments,
-        status: nextStatus,
-        evidence: [
-          ...response.evidence.map((evidence) => ({
-            ...evidence,
-            outdated: true,
-          })),
-          ...newEvidence,
-        ],
-        questions: [
-          ...response.questions.map((question) => ({
-            ...question,
-            outdated: true,
-          })),
-          ...newQuestions,
-        ],
+        status: 'draft',
+        evidence: newEvidence,
+        questions: newQuestions,
       },
       user._id,
       organization._id,

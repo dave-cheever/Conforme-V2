@@ -12,20 +12,8 @@ const DetailIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M5.96295 5.96313H6.99999V10.1113"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5.96295 10.1111H8.03703"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M5.96295 5.96313H6.99999V10.1113" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5.96295 10.1111H8.03703" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M6.99998 3.37256C6.9487 3.37256 6.89858 3.38776 6.85594 3.41625C6.81331 3.44474 6.78008 3.48523 6.76046 3.5326C6.74083 3.57998 6.7357 3.63211 6.7457 3.6824C6.75571 3.73269 6.7804 3.77888 6.81666 3.81514C6.85292 3.8514 6.89911 3.87609 6.9494 3.8861C6.99969 3.8961 7.05182 3.89097 7.0992 3.87134C7.14657 3.85172 7.18706 3.81849 7.21555 3.77585C7.24403 3.73322 7.25924 3.68309 7.25924 3.63182C7.25924 3.56306 7.23193 3.49711 7.18331 3.44849C7.13468 3.39987 7.06874 3.37256 6.99998 3.37256Z"
         fill="none"

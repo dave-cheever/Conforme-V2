@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  QuestionDateIcon,
-  QuestionTextIcon,
-  QuestionToggleIcon,
-} from '../../icons';
+import { QuestionDateIcon, QuestionTextIcon, QuestionToggleIcon } from '../../icons';
 
 const QuestionIcon = ({ type, ...props }) => {
   switch (type) {

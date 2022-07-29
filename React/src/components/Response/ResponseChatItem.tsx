@@ -32,8 +32,7 @@ const GET_USERS_BY_ID = gql`
 
 const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   const { metatags, authorId, _id, text } = comment;
-  const [getParticipantDetailById, { data, loading }] =
-    useLazyQuery(GET_USERS_BY_ID);
+  const [getParticipantDetailById, { data, loading }] = useLazyQuery(GET_USERS_BY_ID);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const device = useDevice();
   const { user } = useAppContext();
@@ -42,8 +41,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   const dateFormat = () => {
     if (!metatags?.addedAt) return '';
 
-    if (isToday(new Date(metatags?.addedAt)))
-      return format(new Date(metatags?.addedAt), 'h:mm a');
+    if (isToday(new Date(metatags?.addedAt))) return format(new Date(metatags?.addedAt), 'h:mm a');
 
     const days = differenceInDays(new Date(metatags?.addedAt), new Date());
 
@@ -70,10 +68,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
     }
   }, [authorId]);
 
-  const isChatOwner = useMemo(
-    () => user?._id === chatAuthor?._id,
-    [user, chatAuthor],
-  );
+  const isChatOwner = useMemo(() => user?._id === chatAuthor?._id, [user, chatAuthor]);
 
   return (
     <>
@@ -83,14 +78,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
           {loading ? (
             <Skeleton h="24px" minW="24px" rounded="full" />
           ) : (
-            <Avatar
-              loading="lazy"
-              name={chatAuthor?.displayName}
-              p="2px"
-              rounded="full"
-              size="xs"
-              src={chatAuthor?.imgUrl}
-            />
+            <Avatar loading="lazy" name={chatAuthor?.displayName} p="2px" rounded="full" size="xs" src={chatAuthor?.imgUrl} />
           )}
         </Box>
         <Box
@@ -98,15 +86,11 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
             isChatOwner
               ? 'responseChatItem.sentBg'
               : device === 'mobile' || device === 'tablet'
-                ? 'responseChatItem.receivedBgTM'
-                : 'responseChatItem.receivedBg'
+              ? 'responseChatItem.receivedBgTM'
+              : 'responseChatItem.receivedBg'
           }
           borderRadius="10px"
-          color={
-            isChatOwner
-              ? 'responseChatItem.sentColor'
-              : 'responseChatItem.receivedColor'
-          }
+          color={isChatOwner ? 'responseChatItem.sentColor' : 'responseChatItem.receivedColor'}
           onMouseEnter={() => setShowDeleteBtn(true)}
           onMouseLeave={() => setShowDeleteBtn(false)}
           px="12px"
@@ -114,12 +98,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
           w="full"
         >
           <Flex h={6} justify="space-between">
-            <Text
-              color="responseChatItem.dateColor"
-              fontSize="ssm"
-              fontWeight="semi_medium"
-              mb="10px"
-            >
+            <Text color="responseChatItem.dateColor" fontSize="ssm" fontWeight="semi_medium" mb="10px">
               {dateFormat()}
             </Text>
             <Can
@@ -140,17 +119,12 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
               )}
             />
           </Flex>
-          {reactStringReplace(
-            text,
-            /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g,
-            (match, i) => (
-              <ChatMention key={i} tag={match} />
-            ),
-          )}
+          {reactStringReplace(text, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+            <ChatMention key={i} tag={match} />
+          ))}
         </Box>
       </Flex>
     </>
-
   );
 };
 

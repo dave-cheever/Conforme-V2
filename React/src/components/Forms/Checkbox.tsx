@@ -1,11 +1,6 @@
 import { Controller } from 'react-hook-form';
 
-import {
-  Box,
-  Checkbox as ChakraCheckbox,
-  Icon,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Box, Checkbox as ChakraCheckbox, Icon, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { IField } from '../../interfaces/IField';
@@ -19,14 +14,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Checkbox = ({
-  control,
-  name,
-  label,
-  tooltip = '',
-  validations = {},
-  disabled = false,
-}: ICheckbox) => {
+const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabled = false }: ICheckbox) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller

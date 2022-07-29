@@ -29,7 +29,7 @@ const CloneComplianceItemModal = ({ refetch }) => {
             <ListItem>Regulatory Body</ListItem>
             <ListItem>Expires on</ListItem>
             <ListItem>Frequency</ListItem>
-            <ListItem>{pluralize(capitalize(t('businessUnit')))}</ListItem>
+            <ListItem>{pluralize(capitalize(t('business unit')))}</ListItem>
             <ListItem>Evidence</ListItem>
             <ListItem>{pluralize(capitalize(t('question')))}</ListItem>
           </UnorderedList>

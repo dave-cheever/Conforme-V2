@@ -18,13 +18,7 @@ const InvestigationIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.3"
       />
-      <path
-        d="M9.6626 9.66309L11.3998 11.4003"
-        fill="None"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.3"
-      />
+      <path d="M9.6626 9.66309L11.3998 11.4003" fill="None" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.3" />
     </g>
   ),
 });

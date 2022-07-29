@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { SearchIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Checkbox,
-  CheckboxGroup,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Checkbox, CheckboxGroup, Flex, Input, InputGroup, InputLeftElement, Text, VStack } from '@chakra-ui/react';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
 import { CheckIcon, MinusIcon } from '../../icons';
@@ -19,12 +9,9 @@ import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import SectionHeader from './SectionHeader';
 
 const LocationsForm = () => {
-  const { locations, complianceItem, setValue, trigger } =
-    useComplianceItemModalContext();
+  const { locations, complianceItem, setValue, trigger } = useComplianceItemModalContext();
   const [searchText, setSearchText] = useState<string>('');
-  const [filteredLocations, setFilteredLocations] = useState<IBusinessUnit[]>(
-    [],
-  );
+  const [filteredLocations, setFilteredLocations] = useState<IBusinessUnit[]>([]);
   const [checkedLocationIds, setCheckedLocationIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,9 +19,7 @@ const LocationsForm = () => {
   }, [locations]);
 
   useEffect(() => {
-    const filtered: any = locations.filter((location) =>
-      location.name?.toLowerCase().includes(searchText.toLowerCase()),
-    );
+    const filtered: any = locations.filter((location) => location.name?.toLowerCase().includes(searchText.toLowerCase()));
     setFilteredLocations(filtered);
   }, [locations, searchText]);
 
@@ -46,8 +31,7 @@ const LocationsForm = () => {
 
   const handleAllCheckBoxSelectedLocations = () => {
     let localCheckedLocationsIds: string[] = [];
-    if (checkedLocationIds.length !== locations.length)
-      localCheckedLocationsIds = locations.map((location) => location._id!);
+    if (checkedLocationIds.length !== locations.length) localCheckedLocationsIds = locations.map((location) => location._id!);
 
     setCheckedLocationIds(localCheckedLocationsIds);
     setValue('locationsIds', localCheckedLocationsIds);
@@ -58,12 +42,7 @@ const LocationsForm = () => {
     <Box w="full">
       <Flex direction="column">
         <SectionHeader label="Select location" />
-        <Flex
-          flexDir={['column', 'row']}
-          justifyContent="space-between"
-          mb="30px"
-          w={['full', "calc(100% - 80px)"]}
-        >
+        <Flex flexDir={['column', 'row']} justifyContent="space-between" mb="30px" w={['full', 'calc(100% - 80px)']}>
           <Flex flexDir="column" pt="3" w="full">
             <Text
               color="locationsFormModal.filterTextColor"
@@ -75,12 +54,7 @@ const LocationsForm = () => {
             >
               Search location by name
             </Text>
-            <InputGroup
-              border="1px solid"
-              borderColor="locationsFormModal.inputBorderColor"
-              h="42px"
-              rounded="10px"
-            >
+            <InputGroup border="1px solid" borderColor="locationsFormModal.inputBorderColor" h="42px" rounded="10px">
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="locationsFormModal.searchIcon" />
               </InputLeftElement>
@@ -120,19 +94,10 @@ const LocationsForm = () => {
                 marginLeft: '10px',
                 fontWeight: 400,
                 fontSize: '14px',
-                color:
-                  checkedLocationIds.length === locations.length
-                    ? '#282F36'
-                    : '#818197',
+                color: checkedLocationIds.length === locations.length ? '#282F36' : '#818197',
               },
             }}
-            icon={
-              checkedLocationIds.length === locations.length ? (
-                <CheckIcon stroke="white" strokeWidth="1.5" />
-              ) : (
-                <MinusIcon />
-              )
-            }
+            icon={checkedLocationIds.length === locations.length ? <CheckIcon stroke="white" strokeWidth="1.5" /> : <MinusIcon />}
             isChecked={checkedLocationIds.length > 0}
             key="all"
             onChange={() => handleAllCheckBoxSelectedLocations()}
@@ -141,11 +106,7 @@ const LocationsForm = () => {
             Select all
           </Checkbox>
         </Flex>
-        <CheckboxGroup
-          colorScheme="green"
-          onChange={(e: any) => handleCheckBoxGroupChange(e)}
-          value={checkedLocationIds || []}
-        >
+        <CheckboxGroup colorScheme="green" onChange={(e: any) => handleCheckBoxGroupChange(e)} value={checkedLocationIds || []}>
           <VStack alignItems="flex-start">
             {filteredLocations.map((location, index) => (
               <Checkbox
@@ -168,9 +129,7 @@ const LocationsForm = () => {
                     marginLeft: '10px',
                     fontWeight: 400,
                     fontSize: '14px',
-                    color: checkedLocationIds?.includes(location._id!)
-                      ? '#282F36'
-                      : '#818197',
+                    color: checkedLocationIds?.includes(location._id!) ? '#282F36' : '#818197',
                   },
                 }}
                 icon={<CheckIcon stroke="white" strokeWidth="1.5" />}

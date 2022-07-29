@@ -1,6 +1,6 @@
-import { AuditLogs } from 'app-models';
 import { v4 as uuidv4 } from 'uuid';
 
+import { AuditLogs } from 'app-models';
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
@@ -137,14 +137,14 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
             'metatags.addedAt': {
               $lte: new Date(dateLimit),
             },
-          }
+          },
         }),
-      }).count()
+      }).count(),
     ]);
     return {
       _id: uuidv4(),
       totalAuditLogs,
-      auditLogs
+      auditLogs,
     };
   } catch (err: any) {
     throw new Error(err);

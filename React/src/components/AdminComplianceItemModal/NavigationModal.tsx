@@ -5,15 +5,8 @@ import { ErrorSign } from '../../icons';
 import { generateTabColors } from '../../utils/helpers';
 
 const NavigationModal = () => {
-  const {
-    complianceItem,
-    complianceItemModalSections,
-    errors,
-    selectedSectionIndex,
-    visitedTab,
-    selectSection,
-    trigger,
-  } = useComplianceItemModalContext();
+  const { complianceItem, complianceItemModalSections, errors, selectedSectionIndex, visitedTab, selectSection, trigger } =
+    useComplianceItemModalContext();
 
   return (
     <Flex flexDir="column" w="185px">
@@ -24,34 +17,14 @@ const NavigationModal = () => {
           key={el.name}
           mb="15px"
           onClick={() => {
-            trigger(
-              Object.keys(
-                complianceItemModalSections[selectedSectionIndex].fields || [],
-              ) as any,
-            );
+            trigger(Object.keys(complianceItemModalSections[selectedSectionIndex].fields || []) as any);
             selectSection(i);
           }}
         >
           <Flex
             alignItems="center"
-            bg={
-              generateTabColors(
-                i,
-                errors,
-                complianceItem,
-                visitedTab,
-                selectedSectionIndex,
-              ).bg
-            }
-            color={
-              generateTabColors(
-                i,
-                errors,
-                complianceItem,
-                visitedTab,
-                selectedSectionIndex,
-              ).color
-            }
+            bg={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg}
+            color={generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).color}
             flexShrink={0}
             fontSize="11px"
             fontWeight="bold"
@@ -61,23 +34,13 @@ const NavigationModal = () => {
             rounded="10px"
             w="37px"
           >
-            {generateTabColors(
-              i,
-              errors,
-              complianceItem,
-              visitedTab,
-              selectedSectionIndex,
-            ).bg === 'navigationModal.section.error.bg' ? (
+            {generateTabColors(i, errors, complianceItem, visitedTab, selectedSectionIndex).bg === 'navigationModal.section.error.bg' ? (
               <ErrorSign h="14px" stroke="white" w="16px" />
             ) : (
               i + 1
             )}
           </Flex>
-          <Text
-            color="navigationModal.section.label"
-            fontSize="smm"
-            fontWeight={i === selectedSectionIndex ? 'bold' : 'semi_medium'}
-          >
+          <Text color="navigationModal.section.label" fontSize="smm" fontWeight={i === selectedSectionIndex ? 'bold' : 'semi_medium'}>
             {el.name}
           </Text>
         </Flex>

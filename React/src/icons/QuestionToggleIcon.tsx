@@ -20,12 +20,7 @@ const QuestionToggleIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M28.0605 11.566L24.6452 14.9813L23.0928 13.4289"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M28.0605 11.566L24.6452 14.9813L23.0928 13.4289" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   ),
 });

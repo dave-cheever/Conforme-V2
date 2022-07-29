@@ -22,6 +22,7 @@ export interface IComplianceItem extends IBase {
   organizationId: string;
   dueDate?: Date;
   dueDateCalculation: 'fromDueDate' | 'fromCompletionDate';
+  dueDateEditable?: boolean;
   questions?: ITrackerQuestion<TQuestionValue>[];
 
   category?: IBaseWithName;

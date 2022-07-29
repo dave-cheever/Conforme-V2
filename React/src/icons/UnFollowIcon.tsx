@@ -3,11 +3,7 @@ import { createIcon } from '@chakra-ui/icons';
 const UnFollowIcon = createIcon({
   path: (
     <>
-      <path
-        d="M1.86514 13.0633L13.3243 2.0625"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M1.86514 13.0633L13.3243 2.0625" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M5.66653 11.8717C6.25995 12.0569 6.87835 12.1497 7.5 12.1467C10.0057 12.1895 12.5481 10.4294 14.1127 8.69981C14.2815 8.51418 14.375 8.27231 14.375 8.02142C14.375 7.77054 14.2815 7.52867 14.1127 7.34304C13.547 6.71775 12.9182 6.15249 12.2365 5.65625"
         strokeLinecap="round"

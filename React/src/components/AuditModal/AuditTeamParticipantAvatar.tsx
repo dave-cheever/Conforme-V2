@@ -43,7 +43,7 @@ const AuditTeamParticipantAvatar = ({ audit, participant, setParticipantsModalOp
         <></>
       )}
       <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-        {participant.firstName || participant.lastName ? `${participant.firstName} ${participant.lastName}` : participant.displayName}
+        {participant.displayName}
       </Text>
     </Flex>
   );

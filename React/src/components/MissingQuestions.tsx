@@ -14,7 +14,7 @@ const MissingQuestions = ({ questionsLeft }: { questionsLeft: number }) => (
     <PopoverContent bg="brand.secondary" color="brand.lightGrey" fontSize="14px" mb="5px" ml="10px" w="260px">
       <PopoverArrow bg="brand.secondary" />
       <PopoverBody color="brand.primaryFont">
-        This {t('complianceItem')} has {questionsLeft} mandatory questions without response
+        This {t('tracker item')} has {questionsLeft} mandatory questions without response
       </PopoverBody>
     </PopoverContent>
   </Popover>

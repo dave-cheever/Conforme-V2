@@ -46,6 +46,7 @@ In order to authenticate with your local development site and also to be able to
   - Press 'Grant admin consent for ...' and then 'Yes'
 - Do the same for 'User.Read.All'
 - Do the same for 'Files.ReadWrite.All'
+- Do the same for 'Mail.Send'
 - Grant required authentication data
   - Click on 'Authentication'
   - Under 'Implicit grant' select 'ID tokens'

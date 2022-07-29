@@ -20,13 +20,7 @@ const Licenses = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M18.3333 1H9"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M18.3333 1H9" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
       <path
         d="M15.6667 3.66663V17C15.6667 18.0608 15.2452 19.0782 14.4951 19.8284C13.7449 20.5785 12.7275 21 11.6667 21H1C2.06087 21 3.07828 20.5785 3.82843 19.8284C4.57857 19.0782 5 18.0608 5 17V11.6666"
         fill="none"
@@ -34,34 +28,10 @@ const Licenses = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M7.66675 15.6666H13.0001"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M7.66675 13H13.0001"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M10.3333 10.3334H12.9999"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M10.3333 7.66663H12.9999"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M7.66675 15.6666H13.0001" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M7.66675 13H13.0001" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M10.3333 10.3334H12.9999" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M10.3333 7.66663H12.9999" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

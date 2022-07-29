@@ -24,6 +24,7 @@ const Field = ({ control, ...field }) => {
     label,
     tooltip,
     disabled,
+    readMode,
     options,
     validations,
     headings,
@@ -41,6 +42,7 @@ const Field = ({ control, ...field }) => {
     name,
     label,
     disabled,
+    readMode,
     options,
     validations,
     headings,
@@ -60,14 +62,16 @@ const Field = ({ control, ...field }) => {
       return <TextInput key={name} {...props} />;
     }
     case 'url': {
-      return <TextInput
-        key={name}
-        {...props}
-        isUrl
-        validations={{
-          isUrl: true,
-        }}
-      />;
+      return (
+        <TextInput
+          key={name}
+          {...props}
+          isUrl
+          validations={{
+            isUrl: true,
+          }}
+        />
+      );
     }
     case 'dropdown': {
       return <Dropdown key={name} {...props} />;

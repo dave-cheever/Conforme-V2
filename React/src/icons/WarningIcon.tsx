@@ -9,16 +9,8 @@ const WarningIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M9.33325 5.31885V8.47734"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9.33325 11.6357H9.34273"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M9.33325 5.31885V8.47734" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.33325 11.6357H9.34273" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   ),
 });

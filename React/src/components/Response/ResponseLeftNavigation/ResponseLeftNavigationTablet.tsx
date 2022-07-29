@@ -32,19 +32,8 @@ const ResponseLeftNavigationTablet = () => {
       w="80px"
     >
       <Flex flexDirection="column">
-        <Box
-          alignItems="center"
-          cursor="pointer"
-          display="flex"
-          h="80px"
-          justifyContent="center"
-          onClick={() => navigateTo('/')}
-        >
-          <Text
-            color="navigationLeft.organizationNameFontColor"
-            fontSize="16px"
-            fontWeight="bold"
-          >
+        <Box alignItems="center" cursor="pointer" display="flex" h="80px" justifyContent="center" onClick={() => navigateTo('/')}>
+          <Text color="navigationLeft.organizationNameFontColor" fontSize="16px" fontWeight="bold">
             {getInitials(module?.name)}
           </Text>
         </Box>
@@ -62,13 +51,7 @@ const ResponseLeftNavigationTablet = () => {
         </Flex>
         <Flex flexDirection="column" mb={2}>
           {navigationTabs.map(({ label, icon, url }) => (
-            <ResponseLeftTabItem
-              icon={icon}
-              isDesktop={false}
-              key={url}
-              label={label}
-              url={url}
-            />
+            <ResponseLeftTabItem icon={icon} isDesktop={false} key={url} label={label} url={url} />
           ))}
         </Flex>
         <ResponseDetail response={response} />

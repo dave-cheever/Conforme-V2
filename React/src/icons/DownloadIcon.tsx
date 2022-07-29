@@ -5,13 +5,7 @@ const DownloadIcon = createIcon({
   displayName: 'Download Icon',
   path: (
     <g>
-      <path
-        d="M7 0.583252V6.93881"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M7 0.583252V6.93881" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M4.6167 4.55542L7.00003 6.93875L9.38337 4.55542"
         fill="none"

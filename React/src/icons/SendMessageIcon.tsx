@@ -11,13 +11,7 @@ const SendMessageIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M14.9634 1.02881L7.5918 8.40044"
-        fill="none"
-        stroke="#282F36"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M14.9634 1.02881L7.5918 8.40044" fill="none" stroke="#282F36" strokeLinecap="round" strokeLinejoin="round" />
     </>
   ),
 });

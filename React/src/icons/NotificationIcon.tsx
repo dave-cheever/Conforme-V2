@@ -10,13 +10,7 @@ const NotificationIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M8 2.25V0.5625"
-        fill="none"
-        stroke="#282F36"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M8 2.25V0.5625" fill="none" stroke="#282F36" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M8 2.25C9.49184 2.25 10.9226 2.84263 11.9775 3.89752C13.0324 4.95242 13.625 6.38316 13.625 7.875C13.625 13.1595 14.75 14.0625 14.75 14.0625H1.25C1.25 14.0625 2.375 12.6255 2.375 7.875C2.375 6.38316 2.96763 4.95242 4.02252 3.89752C5.07742 2.84263 6.50816 2.25 8 2.25V2.25Z"
         fill="none"

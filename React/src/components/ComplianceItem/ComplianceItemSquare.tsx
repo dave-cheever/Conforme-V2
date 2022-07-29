@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { gql, useQuery } from '@apollo/client';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
@@ -23,8 +21,7 @@ const GET_USERS_BY_ID = gql`
 
 const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
   const { navigateTo } = useNavigate();
-  const { responseStatuses, getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
-  const responseStatus = useMemo(() => getStatus(response), [getStatus, response]);
+  const { responseStatuses, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
       userQueryInput: {
@@ -49,12 +46,7 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
     >
       <Flex align="center" justify="space-between">
         <Flex align="center">
-          <Flex
-            bgColor={getRenewalStatus(response) === 'comingUp' ? 'complianceSquare.comingUp' : `complianceSquare.${responseStatus}`}
-            h="12px"
-            rounded="full"
-            w="12px"
-          />
+          <Flex bgColor={`complianceSquare.${response.calculatedStatus}`} h="12px" rounded="full" w="12px" />
           <Box
             color="complianceSquare.fontColor"
             fontSize="11px"
@@ -121,38 +113,34 @@ const ComplianceItemSquare = ({ response }: { response: IResponse }) => {
         <Box color="complianceSquare.regulatoryFontColor" fontSize="11px" ml={3} w="50%">
           <Box>Next renewal on</Box>
           <Box color="complianceSquare.nameFontColor" fontSize="13px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {response?.nextRenewalDate ? (
-              format(new Date(response?.nextRenewalDate), 'd MMM yyyy')
-            ) : (
-              <Flex fontStyle="italic">No due date</Flex>
-            )}
+            {response?.dueDate ? format(new Date(response?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
           </Box>
         </Box>
       </Flex>
       <Flex align="center" justify="space-between" pt="50px" w="full">
         <Button
           _hover={{
-            bg: responseStatus === 'nonCompliant' ? 'complianceSquare.nonCompliant' : 'complianceSquare.buttonBg',
+            bg: response.calculatedStatus === 'nonCompliant' ? 'complianceSquare.nonCompliant' : 'complianceSquare.buttonBg',
           }}
-          bg={responseStatus === 'nonCompliant' ? 'complianceSquare.nonCompliant' : 'complianceSquare.buttonBg'}
-          color={responseStatus === 'nonCompliant' ? 'white' : 'complianceSquare.fontColor'}
+          bg={response.calculatedStatus === 'nonCompliant' ? 'complianceSquare.nonCompliant' : 'complianceSquare.buttonBg'}
+          color={response.calculatedStatus === 'nonCompliant' ? 'white' : 'complianceSquare.fontColor'}
           fontSize="11px"
           h="28px"
           onClick={() => navigateTo(`/compliance-item/${response._id}`)}
-          rightIcon={<ChevronRightIcon boxSize="20px" color={responseStatus === 'nonCompliant' ? 'white' : 'complianceSquare.fontColor'} />}
+          rightIcon={
+            <ChevronRightIcon
+              boxSize="20px"
+              color={response.calculatedStatus === 'nonCompliant' ? 'white' : 'complianceSquare.fontColor'}
+            />
+          }
           w="85px"
         >
           Details
         </Button>
         <Flex align="center" color="complianceSquare.nameFontColor" flexDirection="column" justify="center" mr={1}>
           <Box fontSize="11px" fontWeight="700">
-            {responseStatus && responseStatuses[responseStatus]}
+            {response.calculatedStatus && responseStatuses[response.calculatedStatus]}
           </Box>
-          {getRenewalStatus(response) === 'comingUp' && (
-            <Box fontSize="11px" fontWeight="700">
-              Coming up
-            </Box>
-          )}
         </Flex>
       </Flex>
     </Box>

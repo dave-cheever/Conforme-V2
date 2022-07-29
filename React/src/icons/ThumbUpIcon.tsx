@@ -10,12 +10,7 @@ const ThumbUpIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M8.18211 15.3643H1V36.9106H8.18211V15.3643Z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M8.18211 15.3643H1V36.9106H8.18211V15.3643Z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

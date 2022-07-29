@@ -19,8 +19,7 @@ const definedValidations: TDefinedValidations = {
     if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue)
-      return `${label} can be maximum ${validationValue} characters length`;
+    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
 };
 
@@ -49,19 +48,9 @@ const TextConfirmInput = ({
         return (
           <Box id={name} w="full">
             {label && (
-              <Flex
-                align="center"
-                justify="space-between"
-                mb="none"
-                pb={2}
-                pt={2}
-              >
+              <Flex align="center" justify="space-between" mb="none" pb={2} pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'textConfirmInput.labelFont.error'
-                      : 'textConfirmInput.labelFont.normal'
-                  }
+                  color={error ? 'textConfirmInput.labelFont.error' : 'textConfirmInput.labelFont.normal'}
                   fontSize="ssm"
                   fontWeight="bold"
                   left="none"
@@ -90,9 +79,7 @@ const TextConfirmInput = ({
             <Flex>
               <Input
                 _active={{
-                  bg: disabled
-                    ? 'textConfirmInput.disabled.bg'
-                    : 'textConfirmInput.activeBg',
+                  bg: disabled ? 'textConfirmInput.disabled.bg' : 'textConfirmInput.activeBg',
                 }}
                 _disabled={{
                   bg: 'textConfirmInput.disabled.bg',
@@ -101,18 +88,12 @@ const TextConfirmInput = ({
                   cursor: 'not-allowed',
                 }}
                 _focus={{
-                  borderColor: error
-                    ? 'textConfirmInput.border.focus.error'
-                    : 'textConfirmInput.border.focus.normal',
+                  borderColor: error ? 'textConfirmInput.border.focus.error' : 'textConfirmInput.border.focus.normal',
                 }}
                 _hover={{ cursor: 'auto' }}
                 _placeholder={{ color: 'textConfirmInput.placeholder' }}
                 bg="textConfirmInput.bg"
-                borderColor={
-                  error
-                    ? 'textConfirmInput.border.error'
-                    : 'textConfirmInput.border.normal'
-                }
+                borderColor={error ? 'textConfirmInput.border.error' : 'textConfirmInput.border.normal'}
                 borderRadius={showButtons ? '8px 0 0 8px' : '8px'}
                 borderWidth={showButtons ? '1px 0 1px 1px' : '1px'}
                 color="textConfirmInput.font"
@@ -120,11 +101,7 @@ const TextConfirmInput = ({
                 defaultValue={tempValue}
                 h="40px"
                 isDisabled={disabled}
-                maxLength={
-                  validations && validations.forceMaxLength
-                    ? (validations.maxLength as number)
-                    : undefined
-                }
+                maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
                 name={name}
                 onBlur={onBlur}
                 onChange={(event) => setTempValue(event.target.value)}

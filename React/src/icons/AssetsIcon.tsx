@@ -24,13 +24,7 @@ const AssetsIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M12.408 9.58048L18.1342 3.99292"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M12.408 9.58048L18.1342 3.99292" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
       <path
         d="M18 15.6667C18.0884 15.6667 18.1732 15.7019 18.2357 15.7644C18.2982 15.8269 18.3333 15.9117 18.3333 16.0001"
         fill="none"

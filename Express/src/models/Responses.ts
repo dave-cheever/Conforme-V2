@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   IAuditValues,
   IOrganization,
-  IQuestionChoice,
   IResponse,
   IResponseModel,
 } from 'app-interfaces';
@@ -29,8 +28,6 @@ import {
   getAuditValueForString,
   getAuditValueForUser,
   getAuditValueForUsersArray,
-  getNextRenewalDate,
-  getPrevRenewalDate,
   getProtocol,
   isPermitted,
   join,
@@ -45,11 +42,8 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
   responsibleId: String,
   contributorsIds: [String],
   followersIds: [String],
-  firstCompletionDate: Date,
   lastCompletionDate: Date,
-  lastRenewalDate: Date,
-  nextRenewalDate: Date,
-  organizationId: String,
+  dueDate: Date,
   status: String,
   published: Boolean,
   evidence: [
@@ -95,6 +89,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       notApplicable: Boolean,
     },
   ],
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -123,8 +118,8 @@ const getAuditRecordValues = async ({
     const newValue = newValues[field];
 
     switch (field) {
-      case 'nextRenewalDate':
-      case 'lastRenewalDate':
+      case 'dueDate':
+      case 'lastCompletionDate':
         value = getAuditValueForDate(oldValue, newValue);
         break;
 
@@ -429,7 +424,7 @@ responseSchema.statics.customSearch = async function (
 
   join({
     pipeline,
-    collection: 'complianceItems',
+    collection: 'trackerItems',
     from: 'complianceItemId',
     to: 'complianceItem',
   });
@@ -519,7 +514,6 @@ responseSchema.statics.customUpdateOne = async function (
     },
   };
   const updatedResult = await this.updateOne(selector, updatedResponse);
-  await this.customRecalculateResponse(response._id);
 
   // Add users assigned to the response to database if doesn't exist
   const usersIds = [
@@ -567,74 +561,6 @@ responseSchema.statics.customUpdateOne = async function (
   return updatedResponse;
 };
 
-responseSchema.statics.customRecalculateResponse = async function (
-  responseId: string,
-): Promise<void> {
-  const response: IResponse = await this.findById(responseId).lean();
-  const complianceItem = await ComplianceItems.customFindById(
-    response.complianceItemId,
-    response.organizationId,
-  );
-
-  const areRequiredQuestionsAnswered = response.questions
-    .filter(({ required, outdated }) => required && !outdated)
-    .every(({ value, type, requiredAnswer }) => {
-      if (type === 'multipleChoice') {
-        return (value as IQuestionChoice[]).some(
-          (choice) => choice.isCorrect === true,
-        );
-      }
-      if (type === 'switch' && requiredAnswer) {
-        return (
-          (value === 'yes' && requiredAnswer === 'yes') ||
-          (value === 'no' && requiredAnswer === 'no')
-        );
-      }
-      return value || (typeof value === 'boolean' && value === false);
-    });
-  const isEvidenceUploaded = response.evidence
-    .filter(({ outdated }) => !outdated)
-    .every(({ uploaded }) => uploaded?.id);
-  const isResponseCompleted =
-    areRequiredQuestionsAnswered && isEvidenceUploaded;
-
-  // any change triggers inProgress status from notStarted
-  let newStatus;
-  if (response.status === 'notStarted') newStatus = 'inProgress';
-
-  if (response.status === 'completed' && !isResponseCompleted)
-    newStatus = 'inProgress';
-
-  if (response.status !== 'completed' && isResponseCompleted)
-    newStatus = 'completed';
-
-  let { nextRenewalDate } = response;
-
-  // Calculate prev and next due date base on Tracker Item configuration
-  const sourceDate = complianceItem.dueDateCalculation === 'fromDueDate' && response.nextRenewalDate ? response.nextRenewalDate : new Date();
-
-  // If status was changed from completed to inprogress, set previous date as due date
-  if (response.status === 'completed' && newStatus === 'inProgress') nextRenewalDate = getPrevRenewalDate(sourceDate, complianceItem.frequency);
-
-  // If status was changed to completed, or remains completed, set next date as due date
-  else if (
-    (response.status === 'completed' && newStatus) ||
-    newStatus === 'completed'
-  ) nextRenewalDate = getNextRenewalDate(sourceDate, complianceItem.frequency);
-
-  response.nextRenewalDate = nextRenewalDate;
-
-  if (newStatus) {
-    response.status = newStatus;
-    if (newStatus === 'completed') response.lastCompletionDate = new Date();
-
-    if (!response.firstCompletionDate)
-      response.firstCompletionDate = new Date();
-  }
-
-  await this.updateOne({ _id: responseId }, response);
-};
-
 responseSchema.statics.customAssigneeNotification = async function (responseId: string, participantsIds: string[], assignedRole: string, organization: IOrganization): Promise<void> {
   const response = await this.findById(responseId).lean();
   if (!response) return;
@@ -671,7 +597,8 @@ responseSchema.statics.customAssigneeNotification = async function (responseId: 
 };
 
 const responseModel = model<IResponse, IResponseModel>(
-  'Response',
+  'TrackerResponse',
   responseSchema,
+  'trackerResponses',
 );
 export default responseModel;

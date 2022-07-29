@@ -12,13 +12,7 @@ const ComingUpIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.2"
       />
-      <path
-        d="M11.875 8.12512V11.8751L14.375 13.1251"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
+      <path d="M11.875 8.12512V11.8751L14.375 13.1251" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
     </g>
   ),
 });

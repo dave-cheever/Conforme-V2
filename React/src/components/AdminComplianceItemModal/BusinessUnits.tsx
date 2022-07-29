@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { SearchIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Checkbox,
-  CheckboxGroup,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Checkbox, CheckboxGroup, Flex, Input, InputGroup, InputLeftElement, Text, VStack } from '@chakra-ui/react';
 import { t } from 'i18next';
 
 import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
@@ -20,8 +10,7 @@ import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import SectionHeader from './SectionHeader';
 
 const BusinessUnitsForm = () => {
-  const { businessUnits, complianceItem, setValue, trigger } =
-    useComplianceItemModalContext();
+  const { businessUnits, complianceItem, setValue, trigger } = useComplianceItemModalContext();
   const [searchText, setSearchText] = useState<string>('');
   const [filteredBU, setFilteredBU] = useState<IBusinessUnit[]>([]);
   const [checkedBUIds, setCheckedBUIds] = useState<string[]>([]);
@@ -37,16 +26,13 @@ const BusinessUnitsForm = () => {
   };
 
   useEffect(() => {
-    const filtered: any = businessUnits.filter((businessUnit) =>
-      businessUnit.name?.toLowerCase().includes(searchText.toLowerCase()),
-    );
+    const filtered: any = businessUnits.filter((businessUnit) => businessUnit.name?.toLowerCase().includes(searchText.toLowerCase()));
     setFilteredBU(filtered);
   }, [businessUnits, searchText]);
 
   const handleAllCheckBoxSelectedBU = () => {
     let localCheckedBUIds: string[] = [];
-    if (checkedBUIds.length !== businessUnits.length)
-      localCheckedBUIds = businessUnits.map((BU) => BU._id!);
+    if (checkedBUIds.length !== businessUnits.length) localCheckedBUIds = businessUnits.map((BU) => BU._id!);
 
     setCheckedBUIds(localCheckedBUIds);
     setValue('businessUnitsIds', localCheckedBUIds);
@@ -56,14 +42,9 @@ const BusinessUnitsForm = () => {
   return (
     <Box w="full">
       <Flex direction="column">
-        <SectionHeader label={`Select ${t('businessUnit')}(s)`} />
+        <SectionHeader label={`Select ${t('business unit')}(s)`} />
 
-        <Flex
-          flexDir={['column', 'row']}
-          justifyContent="space-between"
-          mb="30px"
-          w={['full', "calc(100% - 80px)"]}
-        >
+        <Flex flexDir={['column', 'row']} justifyContent="space-between" mb="30px" w={['full', 'calc(100% - 80px)']}>
           <Flex flexDir="column" pt="3" w="full">
             <Flex align="center" justify="space-between">
               <Text
@@ -76,24 +57,14 @@ const BusinessUnitsForm = () => {
                 mb="5px"
                 zIndex={1}
               >
-                Search by {t('businessUnit')} name
+                Search by {t('business unit')} name
               </Text>
             </Flex>
-            <InputGroup
-              border="1px solid"
-              borderColor="rgba(129, 129, 151, 0.4)"
-              h="42px"
-              rounded="10px"
-            >
+            <InputGroup border="1px solid" borderColor="rgba(129, 129, 151, 0.4)" h="42px" rounded="10px">
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="businessUnitsModal.searchIcon" />
               </InputLeftElement>
-              <Input
-                fontSize="14px"
-                onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Search"
-                rounded="10px"
-              />
+              <Input fontSize="14px" onChange={(e) => setSearchText(e.target.value)} placeholder="Search" rounded="10px" />
             </InputGroup>
           </Flex>
         </Flex>
@@ -123,19 +94,10 @@ const BusinessUnitsForm = () => {
                 marginLeft: '10px',
                 fontWeight: 400,
                 fontSize: '14px',
-                color:
-                  checkedBUIds.length === businessUnits.length
-                    ? '#282F36'
-                    : '#818197',
+                color: checkedBUIds.length === businessUnits.length ? '#282F36' : '#818197',
               },
             }}
-            icon={
-              checkedBUIds.length === businessUnits.length ? (
-                <CheckIcon stroke="white" strokeWidth="1.5" />
-              ) : (
-                <MinusIcon />
-              )
-            }
+            icon={checkedBUIds.length === businessUnits.length ? <CheckIcon stroke="white" strokeWidth="1.5" /> : <MinusIcon />}
             isChecked={checkedBUIds.length > 0}
             key="all"
             onChange={() => handleAllCheckBoxSelectedBU()}
@@ -145,11 +107,7 @@ const BusinessUnitsForm = () => {
           </Checkbox>
         </Flex>
 
-        <CheckboxGroup
-          colorScheme="green"
-          onChange={(e: any) => handleChange(e)}
-          value={complianceItem.businessUnitsIds || []}
-        >
+        <CheckboxGroup colorScheme="green" onChange={(e: any) => handleChange(e)} value={complianceItem.businessUnitsIds || []}>
           <VStack alignItems="flex-start">
             {filteredBU.map((businessUnit) => (
               <Checkbox
@@ -171,11 +129,7 @@ const BusinessUnitsForm = () => {
                     marginLeft: '10px',
                     fontWeight: 400,
                     fontSize: '14px',
-                    color: complianceItem?.businessUnitsIds?.includes(
-                      businessUnit._id,
-                    )
-                      ? '#282F36'
-                      : '#818197',
+                    color: complianceItem?.businessUnitsIds?.includes(businessUnit._id) ? '#282F36' : '#818197',
                   },
                 }}
                 icon={<CheckIcon stroke="white" strokeWidth="1.5" />}

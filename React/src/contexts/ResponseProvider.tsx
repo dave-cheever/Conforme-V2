@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useDisclosure, useToast } from '@chakra-ui/react';
 import { isEqual } from 'date-fns';
 
@@ -13,14 +14,14 @@ import { IUser } from '../interfaces/IUser';
 
 export const ResponseContext = createContext({} as IResponseContext);
 
-const GET_RESPONSES = gql`
+const GET_RESPONSE = gql`
   query Responses($responsesQuery: ResponsesQuery) {
     responses(responsesQuery: $responsesQuery) {
       _id
-      firstCompletionDate
       lastCompletionDate
-      nextRenewalDate
+      dueDate
       status
+      calculatedStatus
       accountableId
       responsibleId
       contributorsIds
@@ -36,7 +37,6 @@ const GET_RESPONSES = gql`
           thumbnail
           path
         }
-        outdated
       }
       attachments {
         id
@@ -51,7 +51,6 @@ const GET_RESPONSES = gql`
         description
         value
         required
-        outdated
         requiredAnswer
         notApplicable
       }
@@ -119,6 +118,18 @@ const GET_PARTICIPANTS = gql`
   }
 `;
 
+const UPDATE_QUESTIONS = gql`
+  mutation ($updateResponseQuestionsModify: UpdateResponseQuestionsModify!) {
+    updateResponseQuestions(updateResponseQuestionsModify: $updateResponseQuestionsModify)
+  }
+`;
+
+const SUBMIT_RESPONSE = gql`
+  mutation ($_id: ID!) {
+    submitResponse(_id: $_id)
+  }
+`;
+
 // Note: The display and id, is used for mentioned mapping
 
 export const useResponseContext = () => {
@@ -128,12 +139,14 @@ export const useResponseContext = () => {
 };
 
 const ResponseProvider = ({ children }) => {
+  const toast = useToast();
   const { id }: { id: string } = useParams();
   const history = useHistory();
   const { navigateTo } = useNavigate();
   const query = new URLSearchParams(history.location.search);
+
   const snapshot = query.get('snapshot');
-  const { data, loading, refetch } = useQuery(GET_RESPONSES, {
+  const { data, loading, refetch } = useQuery(GET_RESPONSE, {
     variables: { responsesQuery: { _id: id } },
   });
   const { data: snapshotsData, loading: snapshotsLoading } = useQuery(GET_RESPONSE_SNAPSHOTS, {
@@ -145,7 +158,9 @@ const ResponseProvider = ({ children }) => {
     },
     fetchPolicy: 'network-only',
   });
-  const toast = useToast();
+  const [updateQuestions] = useMutation(UPDATE_QUESTIONS);
+  const [submitResponse] = useMutation(SUBMIT_RESPONSE);
+
   const [activeTab, setActiveTab] = useState(0);
   const [isQuestionFormDirty, setIsQuestionFormDirty] = useState(false);
   const [getParticipants, { data: participantsData, loading: participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
@@ -154,6 +169,8 @@ const ResponseProvider = ({ children }) => {
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
   const { isOpen: isDueDateOpen, onOpen: handleDueDateOpen, onClose: handleDueDateClose } = useDisclosure();
   const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
+
+  const questionsForm = useForm({ mode: 'all' });
 
   const snapshots: IResponse[] =
     snapshotsData?.auditLog?.auditLogs?.reduce((acc, curr) => {
@@ -166,7 +183,7 @@ const ResponseProvider = ({ children }) => {
   let response: IResponse = data?.responses[0];
   if (snapshot) {
     const responseSnapshot = snapshots.find(
-      ({ lastRenewalDate }) => lastRenewalDate && isEqual(new Date(lastRenewalDate), new Date(parseInt(snapshot, 10))),
+      ({ lastCompletionDate }) => lastCompletionDate && isEqual(new Date(lastCompletionDate), new Date(parseInt(snapshot, 10))),
     );
     if (responseSnapshot) response = responseSnapshot;
   }
@@ -202,7 +219,12 @@ const ResponseProvider = ({ children }) => {
         },
       });
     }
-  }, [response]);
+  }, [JSON.stringify(response)]);
+
+  // Set active tab to new review if it wasn't yet submitted
+  useEffect(() => {
+    if (snapshotsData?.auditLog?.auditLogs?.length === 0 && response?.status === 'draft') setActiveTab(1);
+  }, [JSON.stringify(response), JSON.stringify(snapshotsData)]);
 
   const value = useMemo(
     () => ({
@@ -235,6 +257,9 @@ const ResponseProvider = ({ children }) => {
       snapshot,
       snapshots,
       snapshotsLoading,
+      questionsForm,
+      updateQuestions,
+      submitResponse,
     }),
 
     [

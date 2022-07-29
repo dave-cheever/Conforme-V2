@@ -71,7 +71,7 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={8}
-                placeholder={module?.type === 'tracker' ? `Search ${pluralize(t('businessUnit'))}` : 'Search areas'}
+                placeholder={module?.type === 'tracker' ? `Search ${pluralize(t('business unit'))}` : 'Search areas'}
                 value={searchText}
                 w="full"
               />

@@ -39,7 +39,7 @@ const ComplianceItemModal = ({ refetch }) => {
     // If no evidence or no questions
     if (
       (complianceItem.evidenceItems || []).length === 0 &&
-      (complianceItem.questions || []).filter(({ required, outdated }) => required && !outdated)?.length === 0
+      (complianceItem.questions || []).filter(({ required }) => required)?.length === 0
     )
       return true;
 
@@ -54,7 +54,7 @@ const ComplianceItemModal = ({ refetch }) => {
         const savingDialogDetails = {
           isOpen: true,
           title: `Unpublish ${complianceItem.name}`,
-          description: `Are you sure you wish to unpublish this ${t('complianceItem')}? It will hide all existing responses.`,
+          description: `Are you sure you wish to unpublish this ${t('tracker item')}? It will hide all existing responses.`,
           state: undefined,
           showButtons: true,
           action: () =>
@@ -78,8 +78,8 @@ const ComplianceItemModal = ({ refetch }) => {
         isOpen: true,
         title: `Publish ${complianceItem.name}`,
         description: `Are you sure you wish to publish this ${t(
-          'complianceItem',
-        )}? It will become available for completion by all relevant ${pluralize(t('businessUnit'))}.`,
+          'tracker item',
+        )}? It will become available for completion by all relevant ${pluralize(t('business unit'))}.`,
         state: undefined,
         showButtons: true,
         action: () =>
@@ -98,7 +98,7 @@ const ComplianceItemModal = ({ refetch }) => {
       isOpen: true,
       title: `Save ${complianceItem.name}`,
       description: undefined,
-      state: `Saving ${t('complianceItem')}`,
+      state: `Saving ${t('tracker item')}`,
       showButtons: false,
     };
     trigger();
@@ -115,9 +115,9 @@ const ComplianceItemModal = ({ refetch }) => {
 
     if (complianceItem.published) return 'Unpublish';
 
-    if (complianceItem.hasOwnProperty('_id')) return `Publish ${t('complianceItem')}`;
+    if (complianceItem.hasOwnProperty('_id')) return `Publish ${t('tracker item')}`;
 
-    return `Add ${t('complianceItem')}`;
+    return `Add ${t('tracker item')}`;
   }, [complianceItem, selectedSection]);
 
   return (
@@ -127,7 +127,7 @@ const ComplianceItemModal = ({ refetch }) => {
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar mr={3} name={user?.displayName} rounded="full" size="xs" src={user?.imgUrl} />
-              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} {t('complianceItem')}
+              {complianceItem.hasOwnProperty('_id') ? 'View' : 'Add'} {t('tracker item')}
             </Flex>
             <Flex alignItems="center">
               <Button

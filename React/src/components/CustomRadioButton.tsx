@@ -8,12 +8,7 @@ const CustomRadioButton = ({ children, ...props }) => {
   const checkbox = getCheckboxProps();
 
   return (
-    <Flex
-      alignItems="center"
-      as="label"
-      color="customRadioButton.textColor"
-      cursor="pointer"
-    >
+    <Flex alignItems="center" as="label" color="customRadioButton.textColor" cursor="pointer">
       <input {...input} />
       <Flex
         {...checkbox}

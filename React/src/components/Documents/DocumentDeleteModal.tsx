@@ -1,14 +1,4 @@
-import {
-  Button,
-  Flex,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react';
+import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 
 const DocumentDeleteModal = ({
   message,
@@ -40,11 +30,7 @@ const DocumentDeleteModal = ({
           >
             Delete
           </Button>
-          <Button
-            _hover={{ opacity: 0.7 }}
-            colorScheme="red"
-            onClick={() => handleClose()}
-          >
+          <Button _hover={{ opacity: 0.7 }} colorScheme="red" onClick={() => handleClose()}>
             Cancel
           </Button>
         </Flex>

@@ -8,6 +8,7 @@ export interface IField {
   tooltip?: string;
   validations?: TValidations;
   disabled?: boolean;
+  readMode?: boolean;
   required?: boolean;
   requiredAnswer?: string;
   notApplicable?: boolean;

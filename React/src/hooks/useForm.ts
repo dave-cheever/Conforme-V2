@@ -11,8 +11,7 @@ const useForm = (formConfig: IForm, initialValues: Object = {}) => {
 
     // If initial values for field is undefined, set it depending on field type
     formConfig.fields.forEach(({ name, type }) => {
-      formikInitialValues[name] =
-        initialValues[name] || getFieldEmptyValue(type);
+      formikInitialValues[name] = initialValues[name] || getFieldEmptyValue(type);
     });
     return formikInitialValues;
   };

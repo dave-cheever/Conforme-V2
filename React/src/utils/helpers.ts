@@ -49,13 +49,7 @@ export const responsePermissionByFilterType = (filterType) => {
   }
 };
 
-export const generateTabColors = (
-  i,
-  errors,
-  complianceItem,
-  visitedTab,
-  selectedSectionIndex,
-): { bg: string; color: string } => {
+export const generateTabColors = (i, errors, complianceItem, visitedTab, selectedSectionIndex): { bg: string; color: string } => {
   switch (i) {
     case 0:
       if (Object.keys(errors).length !== 0) {
@@ -83,11 +77,8 @@ export const generateTabColors = (
       break;
     case 3:
       if (
-        (complianceItem.evidenceItems?.length === 0 ||
-          complianceItem.evidenceItems?.some((evidence) => evidence === '')) &&
-        (complianceItem.questions?.filter(
-          ({ required, outdated }) => required && !outdated,
-        )?.length === 0 ||
+        (complianceItem.evidenceItems?.length === 0 || complianceItem.evidenceItems?.some((evidence) => evidence === '')) &&
+        (complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 ||
           complianceItem.evidenceItems?.some((evidence) => evidence === '')) &&
         visitedTab > i
       ) {
@@ -100,9 +91,7 @@ export const generateTabColors = (
     case 4:
       if (
         complianceItem.evidenceItems?.length === 0 &&
-        complianceItem.questions?.filter(
-          ({ required, outdated }) => required && !outdated,
-        )?.length === 0 &&
+        complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 &&
         visitedTab >= i
       ) {
         return {
@@ -220,10 +209,11 @@ export const getPathByCollectionName = (collection: string) => {
       path = 'compliance-item';
       break;
 
-    default: break;
+    default:
+      break;
   }
   return path;
-}
+};
 
 export const getLabelByField = (field: string) => {
   let fieldName = '';

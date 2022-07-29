@@ -23,13 +23,7 @@ const ChatMention = ({ tag }) => {
   if (!userId) return <Text>{displayTag}</Text>;
 
   return (
-    <Tooltip
-      bg="chatMention.tooltip.bg"
-      color="chatMention.tooltip.color"
-      hasArrow
-      label={userName}
-      placement="top"
-    >
+    <Tooltip bg="chatMention.tooltip.bg" color="chatMention.tooltip.color" hasArrow label={userName} placement="top">
       <Text color="chatMention.mentionColor" cursor="pointer" display="inline">
         {displayTag}
       </Text>

@@ -124,7 +124,7 @@ const ResponseLeftNavigation = () => {
               </CopyToClipboard>
             </Flex>
           </Box>
-          <ResponseLeftItem heading={capitalize(t('businessUnit'))} value={response?.businessUnit?.name || '-'} />
+          <ResponseLeftItem heading={capitalize(t('business unit'))} value={response?.businessUnit?.name || '-'} />
           <Box h="50px" mt={2}>
             <Box fontSize="11px" opacity={0.5}>
               Accountable

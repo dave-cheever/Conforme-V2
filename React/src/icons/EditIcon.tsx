@@ -11,12 +11,7 @@ const EditIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M11.3789 1.67627L13.3234 3.62074"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M11.3789 1.67627L13.3234 3.62074" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M11.6245 8.87524V13.4584C11.6245 13.7015 11.5279 13.9346 11.356 14.1065C11.1841 14.2784 10.951 14.375 10.7079 14.375H1.54163C1.29852 14.375 1.06537 14.2784 0.893473 14.1065C0.721573 13.9346 0.625 13.7015 0.625 13.4584V4.29211C0.625 4.04901 0.721573 3.81586 0.893473 3.64396C1.06537 3.47206 1.29852 3.37549 1.54163 3.37549H6.12475"
         fill="none"

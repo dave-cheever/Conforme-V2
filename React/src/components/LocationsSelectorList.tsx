@@ -11,11 +11,7 @@ interface ILocationsSelectorList {
   handleChange: (any) => void;
 }
 
-const LocationsSelectorList = ({
-  filteredLocations,
-  selected,
-  handleChange,
-}: ILocationsSelectorList) => {
+const LocationsSelectorList = ({ filteredLocations, selected, handleChange }: ILocationsSelectorList) => {
   const { module } = useAppContext();
 
   return (

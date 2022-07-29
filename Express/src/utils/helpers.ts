@@ -178,52 +178,6 @@ export const getUserName = (fullName: string) => {
   };
 };
 
-export const getStatus = (frequency: String) => {
-  let status = '';
-  switch (frequency) {
-    case 'Daily':
-      status = 'notStarted';
-      break;
-
-    case 'Weekly':
-      status = 'notStarted';
-      break;
-
-    case 'Monthly':
-      status = 'notStarted';
-      break;
-
-    case 'Quarterly':
-      status = 'notStarted';
-      break;
-
-    case '6 Months':
-      status = 'notStarted';
-      break;
-
-    case 'Annual':
-      status = 'notStarted';
-      break;
-
-    case '2 years':
-      status = 'notStarted';
-      break;
-
-    case '5 years':
-      status = 'notStarted';
-      break;
-
-    case 'Ad-hoc':
-      status = 'completed';
-      break;
-
-    default:
-      status = '';
-      break;
-  }
-  return status;
-};
-
 export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: string) => ({
   [`${action}By`]: userId,
   [`${action}At`]: new Date(),

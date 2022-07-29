@@ -1,12 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-const ResponseLeftItem = ({
-  heading,
-  value,
-}: {
-  heading: string;
-  value: string;
-}) => (
+const ResponseLeftItem = ({ heading, value }: { heading: string; value: string }) => (
   <Flex align="flex-start" flexDir="column" h="50px" mt={2}>
     <Box fontSize="11px" opacity={0.5}>
       {heading}

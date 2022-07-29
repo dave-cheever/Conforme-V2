@@ -20,14 +20,7 @@ const InvestigationWhiteIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.2"
       />
-      <path
-        d="M9.32959 8.60278L10.9088 10.182"
-        fill="none"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
+      <path d="M9.32959 8.60278L10.9088 10.182" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
     </g>
   ),
 });

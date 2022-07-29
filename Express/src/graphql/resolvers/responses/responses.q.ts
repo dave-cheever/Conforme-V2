@@ -1,9 +1,11 @@
 import {
+  addDays,
   addMonths,
   differenceInCalendarDays,
   endOfDay,
   endOfMonth,
   endOfWeek,
+  isAfter,
   isSameDay,
   startOfDay,
   startOfMonth,
@@ -12,7 +14,7 @@ import {
 import { response } from 'express';
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Responses, Users } from 'app-models';
+import { Responses, Settings, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
 const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
@@ -74,7 +76,7 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       switch (filter) {
         case 'noDueDate':
           $match = {
-            nextRenewalDate: {
+            dueDate: {
               $eq: null,
             },
           };
@@ -83,12 +85,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
           $match = {
             $and: [
               {
-                nextRenewalDate: {
+                dueDate: {
                   $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
                 },
               },
               {
-                nextRenewalDate: {
+                dueDate: {
                   $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
                 },
               },
@@ -99,12 +101,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
           $match = {
             $and: [
               {
-                nextRenewalDate: {
+                dueDate: {
                   $gte: startOfMonth(new Date()),
                 },
               },
               {
-                nextRenewalDate: {
+                dueDate: {
                   $lte: endOfMonth(new Date()),
                 },
               },
@@ -115,12 +117,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
           $match = {
             $and: [
               {
-                nextRenewalDate: {
+                dueDate: {
                   $gte: startOfMonth(addMonths(new Date(), 1)),
                 },
               },
               {
-                nextRenewalDate: {
+                dueDate: {
                   $lte: endOfMonth(addMonths(new Date(), 1)),
                 },
               },
@@ -131,12 +133,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
           $match = {
             $and: [
               {
-                nextRenewalDate: {
+                dueDate: {
                   $gte: startOfDay(new Date(startDate)),
                 },
               },
               {
-                nextRenewalDate: {
+                dueDate: {
                   $lte: endOfDay(new Date(startDate)),
                 },
               },
@@ -148,12 +150,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
             $match = {
               $and: [
                 {
-                  nextRenewalDate: {
+                  dueDate: {
                     $gte: startOfDay(new Date(startDate)),
                   },
                 },
                 {
-                  nextRenewalDate: {
+                  dueDate: {
                     $lte: endOfDay(new Date(endDate)),
                   },
                 },
@@ -182,11 +184,12 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       responsesQuery?.includeNotPublished ||
       responsesQuery?.categoriesIds ||
       responsesQuery?.regulatoryBodiesIds ||
-      shouldJoin(['complianceItem'])
+      shouldJoin(['complianceItem']) ||
+      shouldJoin(['calculatedStatus'])
     ) {
       join({
         pipeline,
-        collection: 'complianceItems',
+        collection: 'trackerItems',
         from: 'complianceItemId',
         to: 'complianceItem',
       });
@@ -303,12 +306,33 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
 
     if (shouldJoin(['daysToDueDate'])) {
       for (const response of responses) {
-        if (!response.nextRenewalDate) continue;
+        if (!response.dueDate) continue;
 
-        const start = new Date(response.nextRenewalDate);
+        const start = new Date(response.dueDate);
         const end = new Date();
         if (isSameDay(start, end)) response.daysToDueDate = 0;
         else response.daysToDueDate = differenceInCalendarDays(start, end);
+      }
+    }
+
+    if (shouldJoin(['calculatedStatus'])) {
+      const comingUpTriggersSetting = await Settings.customFindByName(
+        'comingUpTriggers',
+        organization._id,
+      );
+      const triggers = comingUpTriggersSetting?.[0]?.value;
+      for (const response of responses) {
+        const daysToComingUp = triggers[response.complianceItem.frequency]
+        const isOverdue = response.dueDate ? isAfter(new Date(), new Date(response.dueDate)) : false;
+        const isComingUp = response.dueDate ? isAfter(addDays(new Date(), daysToComingUp), new Date(response.dueDate)) : false;
+        if (
+          (
+            response.status === 'submitted' ||
+            (response.status === 'draft' && response.lastCompletionDate)
+          ) &&
+          !isOverdue
+        ) response.calculatedStatus = isComingUp ? 'comingUp' : 'compliant';
+        else response.calculatedStatus = 'nonCompliant';
       }
     }
 

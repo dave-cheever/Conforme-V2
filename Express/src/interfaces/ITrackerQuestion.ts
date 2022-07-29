@@ -8,5 +8,4 @@ export interface ITrackerQuestion<ValueType> {
   required?: boolean;
   notApplicable?: Boolean;
   requiredAnswer?: String;
-  outdated?: boolean;
 }

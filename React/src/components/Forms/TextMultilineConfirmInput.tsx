@@ -18,8 +18,7 @@ const definedValidations: TDefinedValidations = {
     if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue)
-      return `${label} can be maximum ${validationValue} characters length`;
+    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
 };
 
@@ -48,19 +47,9 @@ const TextMultilineConfirmInput = ({
         return (
           <Box id={name} w="full">
             {label && (
-              <Flex
-                align="center"
-                justify="space-between"
-                mb="none"
-                pb={2}
-                pt={2}
-              >
+              <Flex align="center" justify="space-between" mb="none" pb={2} pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'textMultilineConfirmInput.labelFont.error'
-                      : 'textMultilineConfirmInput.labelFont.normal'
-                  }
+                  color={error ? 'textMultilineConfirmInput.labelFont.error' : 'textMultilineConfirmInput.labelFont.normal'}
                   fontSize="ssm"
                   fontWeight="bold"
                   left="none"
@@ -89,9 +78,7 @@ const TextMultilineConfirmInput = ({
             <Flex>
               <Textarea
                 _active={{
-                  bg: disabled
-                    ? 'textMultilineConfirmInput.disabled.bg'
-                    : 'textMultilineConfirmInput.activeBg',
+                  bg: disabled ? 'textMultilineConfirmInput.disabled.bg' : 'textMultilineConfirmInput.activeBg',
                 }}
                 _disabled={{
                   bg: 'textMultilineConfirmInput.disabled.bg',
@@ -100,20 +87,14 @@ const TextMultilineConfirmInput = ({
                   cursor: 'not-allowed',
                 }}
                 _focus={{
-                  borderColor: error
-                    ? 'textMultilineConfirmInput.border.focus.error'
-                    : 'textMultilineConfirmInput.border.focus.normal',
+                  borderColor: error ? 'textMultilineConfirmInput.border.focus.error' : 'textMultilineConfirmInput.border.focus.normal',
                 }}
                 _hover={{ cursor: 'auto' }}
                 _placeholder={{
                   color: 'textMultilineConfirmInput.placeholder',
                 }}
                 bg="textMultilineConfirmInput.bg"
-                borderColor={
-                  error
-                    ? 'textMultilineConfirmInput.border.error'
-                    : 'textMultilineConfirmInput.border.normal'
-                }
+                borderColor={error ? 'textMultilineConfirmInput.border.error' : 'textMultilineConfirmInput.border.normal'}
                 borderRadius={showButtons ? '8px 0 0 8px' : '8px'}
                 borderWidth={showButtons ? '1px 0 1px 1px' : '1px'}
                 color="textMultilineConfirmInput.font"
@@ -121,11 +102,7 @@ const TextMultilineConfirmInput = ({
                 defaultValue={tempValue}
                 h="40px"
                 isDisabled={disabled}
-                maxLength={
-                  validations && validations.forceMaxLength
-                    ? (validations.maxLength as number)
-                    : undefined
-                }
+                maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
                 name={name}
                 onBlur={onBlur}
                 onChange={(event) => setTempValue(event.target.value)}

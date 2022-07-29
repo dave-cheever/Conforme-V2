@@ -16,7 +16,6 @@ import SortButton from '../components/SortButton';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
-import useResponseUtils from '../hooks/useResponseUtils';
 import useSort from '../hooks/useSort';
 import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
@@ -25,8 +24,10 @@ const GET_RESPONSES = gql`
   query Responses($responsesQuery: ResponsesQuery) {
     responses(responsesQuery: $responsesQuery) {
       _id
-      nextRenewalDate
+      dueDate
+      lastCompletionDate
       status
+      calculatedStatus
       responsibleId
       daysToDueDate
       evidence {
@@ -38,14 +39,12 @@ const GET_RESPONSES = gql`
           thumbnail
           path
         }
-        outdated
       }
       questions {
         type
         value
         required
         requiredAnswer
-        outdated
       }
       complianceItem {
         name
@@ -87,15 +86,14 @@ const ComplianceItems = () => {
     usedFilters,
   } = useFiltersContext();
   const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
-  const { getRenewalStatus, getStatus } = useResponseUtils();
-  const { sortedData: sortedResponses, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredResponses, 'nextRenewalDate');
+  const { sortedData: sortedResponses, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredResponses, 'dueDate');
   const sortBy = [
     { label: 'Item name', key: 'complianceItem.name' },
-    { label: 'Due for renewal', key: 'nextRenewalDate' },
+    { label: 'Due for renewal', key: 'dueDate' },
     { label: 'Compliant', key: 'status' },
     { label: 'Regulatory body', key: 'complianceItem.regulatoryBody.name' },
     { label: 'Responsible', key: 'responsible.displayName' },
-    { label: capitalize(t('businessUnit')), key: 'businessUnit.name' },
+    { label: capitalize(t('business unit')), key: 'businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
@@ -169,12 +167,9 @@ const ComplianceItems = () => {
       comingUp: 0,
     };
     data?.responses.forEach((response) => {
-      const status = getStatus(response);
-      if (status === 'compliant') responsesStatusesCounts.compliant += 1;
+      if (response.calculatedStatus === 'compliant' || response.calculatedStatus === 'comingUp') responsesStatusesCounts.compliant += 1;
       else responsesStatusesCounts.nonCompliant += 1;
-
-      const renewalStatus = getRenewalStatus(response);
-      if (renewalStatus === 'comingUp') responsesStatusesCounts.comingUp += 1;
+      if (response.calculatedStatus === 'comingUp') responsesStatusesCounts.comingUp += 1;
     });
     setResponsesStatusesCounts(responsesStatusesCounts);
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -223,20 +218,20 @@ const ComplianceItems = () => {
         const statusFilteredResults: IResponse[] = [];
         for (const filter of filtersValues?.itemStatus?.value!) {
           if (['notStarted', 'inProgress', 'completed', 'comingUp', 'missed'].includes(filter))
-            statusFilteredResults.push(...items.filter((response) => getRenewalStatus(response) === filter));
+            statusFilteredResults.push(...items.filter((response) => response.calculatedStatus === filter));
           else if (['compliant', 'nonCompliant'].includes(filter))
-            statusFilteredResults.push(...items.filter((response) => getStatus(response) === filter));
+            statusFilteredResults.push(...items.filter((response) => response.calculatedStatus === filter));
           else if (filter === 'noDueDate') statusFilteredResults.push(...items.filter((response) => response.daysToDueDate === null));
         }
         items = Array.from(new Set(statusFilteredResults.flat()));
       }
       setFilteredResponses(items);
     }
-  }, [data?.responses, filtersValues.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data?.responses, filtersValues?.itemStatus?.value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-      <Header breadcrumbs={[pluralize(t('complianceItem'))]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]}>
+      <Header breadcrumbs={[pluralize(t('tracker item'))]} mobileBreadcrumbs={[pluralize(t('tracker item'))]}>
         {device !== 'mobile' && (
           <>
             <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
@@ -267,7 +262,7 @@ const ComplianceItems = () => {
                   sortedResponses.map((response) => <ComplianceItemSquare key={response._id} response={response} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
-                    No {pluralize(t('complianceItem'))} found
+                    No {pluralize(t('tracker item'))} found
                   </Flex>
                 )}
               </Grid>

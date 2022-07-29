@@ -1,7 +1,7 @@
 import { createIcon } from '@chakra-ui/icons';
 
 const SiteIcon = createIcon({
-  viewBox: "0 0 400 399.999",
+  viewBox: '0 0 400 399.999',
   path: (
     <g>
       <path

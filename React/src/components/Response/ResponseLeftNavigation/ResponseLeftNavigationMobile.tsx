@@ -47,14 +47,7 @@ const ResponseLeftNavigationMobile = () => {
         <Flex justify="space-between" w="full">
           <Flex w="full">
             {navigationTabs.map(({ label, icon, url }) => (
-              <ResponseLeftTabItem
-                icon={icon}
-                isDesktop={false}
-                isMobile
-                key={url}
-                label={label}
-                url={url}
-              />
+              <ResponseLeftTabItem icon={icon} isDesktop={false} isMobile key={url} label={label} url={url} />
             ))}
           </Flex>
           <ResponseDetail response={response} />

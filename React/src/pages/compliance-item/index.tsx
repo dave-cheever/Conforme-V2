@@ -1,23 +1,46 @@
-import { Button, Flex, Stack } from '@chakra-ui/react';
+import { useRef } from 'react';
+import DatePicker from 'react-datepicker';
 
+import { gql, useMutation } from '@apollo/client';
+import { ArrowDownIcon } from '@chakra-ui/icons';
+import { Button, Flex, Stack, Text, VStack } from '@chakra-ui/react';
+import { format } from 'date-fns';
+
+import Can from '../../components/can';
+import Attachments from '../../components/Response/Attachments';
+import DescriptionText from '../../components/Response/DescriptionText';
+import EditButton from '../../components/Response/EditButton';
 import RenewalModal from '../../components/Response/RenewalModal';
-import ResponseTabItem from '../../components/Response/ResponseTabItem';
+import ResponseQuestions from '../../components/Response/ResponseQuestions';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import useResponseUtils from '../../hooks/useResponseUtils';
+import { Asterisk } from '../../icons';
+
+const UPDATE_RESPONSE = gql`
+  mutation ($updateResponseModify: UpdateResponseModify!) {
+    updateResponse(updateResponseModify: $updateResponseModify) {
+      dueDate
+    }
+  }
+`;
 
 const ComplianceItemResponse = () => {
-  const { response, activeTab, setActiveTab: updateActiveTab, isQuestionFormDirty, setIsQuestionFormDirty } = useResponseContext();
-  const { getResponseTabItems } = useResponseUtils();
-  const responseTabItems = getResponseTabItems(response);
-  const activeTabItem = responseTabItems[activeTab];
-  // const [run, setRun] = useState(false);
-  // const device = useDevice();
+  const {
+    response,
+    snapshot,
+    snapshots,
+    refetch,
+    activeTab,
+    setActiveTab: updateActiveTab,
+    handleRenewalOpen,
+    isQuestionFormDirty,
+    setIsQuestionFormDirty,
+  } = useResponseContext();
+  const [updateResponse] = useMutation(UPDATE_RESPONSE);
+  const dueDatePickerRef = useRef<DatePicker>();
+  const inProgress = response.status === 'draft';
+  const neverReviewed = snapshots?.length === 0;
 
-  // useEffect(() => {
-  //   if (getStatus(response) === 'compliant' && !snapshot) setRun(false); // TODO: needs to be updated, fix dimensions and trigger
-  // }, [response]);
-
-  const setActiveTab = (activeTab: number) => {
+  const setActiveTab = (index: number) => {
     if (isQuestionFormDirty) {
       // eslint-disable-next-line no-alert
       const confirm = window.confirm(
@@ -26,7 +49,7 @@ const ComplianceItemResponse = () => {
       if (!confirm) return;
       setIsQuestionFormDirty(false);
     }
-    updateActiveTab(activeTab);
+    updateActiveTab(index);
   };
 
   // TODO: Fix confetti
@@ -42,67 +65,119 @@ const ComplianceItemResponse = () => {
   //   return window.innerWidth - 80;
   // }, [device, window]);
 
+  const updateResponseDate = async (date) => {
+    await updateResponse({
+      variables: {
+        updateResponseModify: {
+          _id: response._id,
+          dueDate: date,
+        },
+      },
+    });
+    dueDatePickerRef.current.setOpen(false);
+    refetch();
+  };
+
   return (
     <>
       <RenewalModal />
       {/* <Confetti height={confettiHeight} recycle={false} run={run} width={confettiWidth} /> */}
-      <Flex direction="column" h="full" w="full">
-        <Flex
-          bg="complianceItemResponse.bg"
-          borderRadius="20px"
-          flexDir="column"
-          h={['fit-content', 'full']}
-          p={['15px 20px 20px 20px', '25px 30px 25px 30px']}
-          w="full"
-        >
-          <Flex align="center" justify="space-between" mb={[4, 8]}>
-            <Stack direction="row" justify={['center', 'flex-start']} spacing={2} w="full">
-              {responseTabItems.map(({ index, label, icon }) => (
-                <ResponseTabItem
-                  active={activeTab === index}
-                  icon={icon}
-                  index={index}
-                  key={label}
-                  label={label}
-                  setActiveTab={setActiveTab}
-                />
-              ))}
-            </Stack>
-            <Stack direction="row" display={['none', 'flex']} spacing={2}>
-              {activeTab > 0 && (
-                <Button
-                  borderRadius="10px"
-                  color="complianceItemResponse.nextButtonColor"
-                  flexShrink={0}
-                  fontSize="11px"
-                  fontWeight="bold"
-                  h="28px"
-                  onClick={() => setActiveTab(activeTab - 1)}
-                  w="120px"
-                >
-                  Previous step
-                </Button>
-              )}
-              {activeTab < responseTabItems.length - 1 && (
-                <Button
-                  borderRadius="10px"
-                  color="complianceItemResponse.nextButtonColor"
-                  display={['none', 'block']}
-                  flexShrink={0}
-                  fontSize="11px"
-                  fontWeight="bold"
-                  h="28px"
-                  onClick={() => setActiveTab(activeTab + 1)}
-                  w="120px"
-                >
-                  Next step
-                </Button>
-              )}
-            </Stack>
+      <VStack bg="complianceItemResponse.bg" borderRadius="20px" h={['fit-content', 'full']} p={[4, 6]} spacing={8} w="full">
+        {response?.complianceItem?.description && (
+          <VStack align="flex-start" w="full">
+            <Text color="responseRenewalDetails.labelColor" fontSize="14px">
+              Description
+            </Text>
+            <DescriptionText />
+          </VStack>
+        )}
+        <Stack align="center" direction={['column', 'row']} spacing={4} w="full">
+          <Flex cursor={neverReviewed ? 'default' : 'pointer'} justify="space-between" w={['full', '30%']}>
+            <Flex
+              align={['center', 'flex-start']}
+              bg="responseRenewalDetails.bg"
+              border={activeTab === 0 ? '1px solid #ccc' : 'null'}
+              borderRadius="10px"
+              boxShadow={activeTab === 0 ? 'simple' : 'null'}
+              flexDir="column"
+              onClick={() => !neverReviewed && setActiveTab(0)}
+              p="10px 20px"
+              w="full"
+            >
+              <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+                {snapshot ? 'Review date' : 'Last reviewed'}
+              </Text>
+              <Text color="responseRenewalDetails.textColor" fontSize="14px">
+                {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'Never reviewed before'}
+              </Text>
+            </Flex>
           </Flex>
-          <activeTabItem.component />
-        </Flex>
-      </Flex>
+          {!snapshot && <ArrowDownIcon color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />}
+          {!snapshot && (
+            <Flex
+              align="center"
+              bg="responseRenewalDetails.bg"
+              border={activeTab === 1 ? '1px solid #ccc' : 'null'}
+              borderRadius="10px"
+              boxShadow={activeTab === 1 ? 'simple' : 'null'}
+              cursor="pointer"
+              onClick={() => {
+                if (!inProgress) handleRenewalOpen();
+                else setActiveTab(1);
+              }}
+              p="10px 20px"
+              position="relative"
+              w={['full', '30%']}
+            >
+              <Flex align={['center', 'flex-start']} flexDir="column" w="full">
+                <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+                  Perform new review by
+                </Text>
+                <Flex>
+                  <Text color="responseRenewalDetails.textColor" fontSize="14px">
+                    {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
+                  </Text>
+                </Flex>
+              </Flex>
+            </Flex>
+          )}
+          {!snapshot && (
+            <Can
+              action="responses.edit"
+              data={{ response }}
+              yes={() => (
+                <Flex align="center">
+                  <DatePicker
+                    customInput={<EditButton />}
+                    dateFormatCalendar="MMMM"
+                    disabledKeyboardNavigation
+                    dropdownMode="select"
+                    onChange={(date) => updateResponseDate(date)}
+                    ref={dueDatePickerRef}
+                    selected={response?.dueDate ? new Date(response?.dueDate) : new Date()}
+                    showYearDropdown
+                  >
+                    <Button colorScheme="purpleHeart" onClick={() => updateResponseDate(null)} size="sm" w="full">
+                      No due date
+                    </Button>
+                  </DatePicker>
+                </Flex>
+              )}
+            />
+          )}
+        </Stack>
+        {(response?.complianceItem?.allowAttachments || response?.complianceItem?.evidenceItems?.length > 0) && <Attachments />}
+        <ResponseQuestions disabled={activeTab === 0} key={activeTab} />
+        {(response.questions.filter(({ required }) => required).length > 0 || response.evidence.length > 0) && activeTab === 1 && (
+          <Flex w="full">
+            <Asterisk fill="questionListElement.iconAsterisk" h="9px" stroke="questionListElement.iconAsterisk" w="9px" />
+            &nbsp;
+            <Text fontSize="sm" fontWeight="semi_medium">
+              Required
+            </Text>
+          </Flex>
+        )}
+      </VStack>
     </>
   );
 };

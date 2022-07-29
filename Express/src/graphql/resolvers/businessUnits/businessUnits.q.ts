@@ -30,7 +30,7 @@ const businessUnits = async (
               ];
               join({
                 pipeline,
-                collection: 'complianceItems',
+                collection: 'trackerItems',
                 from: 'complianceItemId',
                 to: 'complianceItem',
               });

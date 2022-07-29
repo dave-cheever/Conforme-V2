@@ -133,7 +133,7 @@ const BusinessUnits = () => {
         const values = getValues();
         await createFunction({ variables: { values } });
         refetch();
-        toast({ ...toastSuccess, description: `${capitalize(t('businessUnit'))} added` });
+        toast({ ...toastSuccess, description: `${capitalize(t('business unit'))} added` });
       } else {
         toast({
           ...toastFailed,
@@ -153,7 +153,7 @@ const BusinessUnits = () => {
         const values = getValues();
         await updateFunction({ variables: { values } });
         refetch();
-        toast({ ...toastSuccess, description: `${capitalize(t('businessUnit'))} updated` });
+        toast({ ...toastSuccess, description: `${capitalize(t('business unit'))} updated` });
       } else {
         toast({
           ...toastFailed,
@@ -172,7 +172,7 @@ const BusinessUnits = () => {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
       refetch();
-      toast({ ...toastSuccess, description: `${capitalize(t('businessUnit'))} deleted` });
+      toast({ ...toastSuccess, description: `${capitalize(t('business unit'))} deleted` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
@@ -248,7 +248,7 @@ const BusinessUnits = () => {
   return (
     <>
       <AdminModal
-        collection={t('businessUnit')}
+        collection={t('business unit')}
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
@@ -269,14 +269,14 @@ const BusinessUnits = () => {
         </Stack>
       </AdminModal>
       <Header
-        breadcrumbs={['Admin', pluralize(capitalize(t('businessUnit')))]}
-        mobileBreadcrumbs={[pluralize(capitalize(t('businessUnit')))]}
+        breadcrumbs={['Admin', pluralize(capitalize(t('business unit')))]}
+        mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
       />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
-              label={`${capitalize(t('businessUnit'))} name`}
+              label={`${capitalize(t('business unit'))} name`}
               onClick={() => {
                 setSortType('name');
                 setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
@@ -316,7 +316,7 @@ const BusinessUnits = () => {
               businessUnits?.map(renderBusinessUnitRow)
             ) : (
               <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                No {pluralize(t('businessUnit'))} found
+                No {pluralize(t('business unit'))} found
               </Flex>
             )}
           </Flex>

@@ -1,11 +1,13 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext } from 'react';
 
-import { SmallCloseIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import { WarningTwoIcon } from '@chakra-ui/icons';
 import {
   Badge,
   Button,
   Flex,
   Heading,
+  HStack,
+  Link,
   Menu,
   MenuButton,
   MenuDivider,
@@ -13,251 +15,273 @@ import {
   Spacer,
   Stack,
   Text,
-  Tooltip,
   useToast,
 } from '@chakra-ui/react';
 import format from 'date-fns/format';
 import { t } from 'i18next';
-import { capitalize } from 'lodash';
+import { capitalize, isEqual } from 'lodash';
 import pluralize from 'pluralize';
 
-import { toastSuccess } from '../../../bootstrap/config';
-import { useAppContext } from '../../../contexts/AppProvider';
+import { toastFailed, toastSuccess } from '../../../bootstrap/config';
 import { ResponseContext, useResponseContext } from '../../../contexts/ResponseProvider';
 import useNavigate from '../../../hooks/useNavigate';
 import useResponseUtils from '../../../hooks/useResponseUtils';
-import { ArrowDownIcon, CheckIcon, ShareIcon } from '../../../icons';
+import { ArrowDownIcon, ShareIcon } from '../../../icons';
 import past from '../../../utils/tense';
-import { isPermitted } from '../../can';
-import FollowButton from '../../Team/FollowButton';
 import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import ResponseHeaderStatus from './ResponseHeaderStatus';
 
 const ReasponseHeader = () => {
-  const { response, snapshot, handleRenewalOpen, setActiveTab } = useResponseContext();
+  const {
+    response,
+    snapshot,
+    submitResponse,
+    setActiveTab,
+    questionsForm,
+    updateQuestions,
+    setIsQuestionFormDirty,
+    refetch,
+    handleRenewalOpen,
+  } = useResponseContext();
   const { navigateTo } = useNavigate();
   const toast = useToast();
-  const { getStatus, getRenewalStatus, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
-  const { user } = useAppContext();
-  const currentEvidenceItems = response?.evidence?.filter(({ outdated }) => !outdated);
+  const { isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { handleShareOpen } = useContext(ResponseContext);
-  const [status, setStatus] = useState<'compliant' | 'nonCompliant' | ''>('');
 
-  useEffect(() => {
-    if (status === 'nonCompliant' && getStatus(response) === 'compliant' && !snapshot) {
+  const { watch } = questionsForm;
+  const answers = watch();
+  const updateResponseQuestions = async () => {
+    const wasQuestionUpdated = response.questions.find(({ name, value }) => !isEqual(value, answers[name]));
+    if (wasQuestionUpdated) {
+      try {
+        await updateQuestions({
+          variables: {
+            updateResponseQuestionsModify: {
+              _id: response?._id,
+              answers,
+            },
+          },
+        });
+        toast({
+          ...toastSuccess,
+          description: 'Answers saved',
+        });
+        setIsQuestionFormDirty(false);
+        refetch();
+      } catch (e: any) {
+        toast({
+          ...toastFailed,
+          description: e.message,
+        });
+      }
+    }
+  };
+
+  const submitReview = async () => {
+    const submitted = await submitResponse({
+      variables: {
+        _id: response._id,
+      },
+    });
+    if (submitted) {
       toast({
         ...toastSuccess,
+        duration: 10000,
         title: 'Response completed',
-        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'N/A'
-          } `,
-      });
-      return setStatus('compliant');
-    }
-    setStatus(getStatus(response) || '');
-  }, [response]);
-
-  const enableRenewalButton = useMemo(() => {
-    if (!response) return false;
-
-    if (getRenewalStatus(response) === 'comingUp') {
-      return isPermitted({
-        user,
-        data: { response },
-        action: 'responses.edit',
+        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${
+          response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'N/A'
+        } `,
       });
     }
-
-    if (getRenewalStatus(response) === 'overdue' && response.status === 'completed') {
-      return isPermitted({
-        user,
-        data: { response },
-        action: 'responses.edit',
-      });
-    }
-
-    return false;
-  }, [response, user]);
+    refetch();
+    setActiveTab(0);
+  };
 
   if (!response) return null;
-
   return (
-    <>
-      <Flex bg="reasponseHeader.bg" direction="column" mb="15px" minH="100px" pl={6} w="full" zIndex={1}>
-        <Stack alignItems="center" direction="row" h="40px" mb="15px" spacing={4} w="full">
-          <Heading
-            alignItems={['flex-start', 'center']}
-            color="reasponseHeader.heading"
-            fontSize="xxl"
-            fontWeight="bold"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            w='80%'
-            whiteSpace="nowrap">
-            {response?.complianceItem?.name}
-          </Heading>
-          {getRenewalStatus(response) === 'comingUp' ? (
+    <Flex bg="reasponseHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
+      <Stack alignItems="center" direction={['column', 'row']} mb="15px" minH="40px" pr={6} spacing={2} w="full">
+        <Heading alignItems={['flex-start', 'center']} color="reasponseHeader.heading" fontSize="xxl" fontWeight="bold" noOfLines={1}>
+          {response?.complianceItem?.name}
+        </Heading>
+        <HStack>
+          {response.status === 'draft' && (
             <Badge
-              bg="reasponseHeader.badgeBg"
-              borderRadius="10px"
-              color="reasponseHeader.badge"
-              colorScheme="reasponseHeader.badgeColorScheme"
+              bg="reasponseHeader.badge.draft.bg"
+              borderRadius="6px"
+              color="reasponseHeader.badge.draft.color"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
-              ml="13"
-              padding="6px 15px"
+              px={2}
+              py={1}
+              textTransform="capitalize"
+            >
+              Draft
+            </Badge>
+          )}
+          {response.calculatedStatus === 'comingUp' && (
+            <Badge
+              bg="reasponseHeader.badge.comingUp.bg"
+              borderRadius="6px"
+              color="reasponseHeader.badge.comingUp.color"
+              fontSize="11px"
+              fontWeight="bold"
+              lineHeight="16px"
+              px={2}
+              py={1}
               textTransform="capitalize"
             >
               Coming up
             </Badge>
-          ) : (
-            ''
           )}
-          {snapshot && (
-            <Stack align="center" color="reasponseHeader.snapshot.color" direction="row" spacing={1}>
-              <WarningTwoIcon />
-              <Text>You are seeing snapshot from {format(parseInt(snapshot, 10), 'd LLLL yyyy, HH:mm')}</Text>
-              <Tooltip label="Close snapshot preview">
-                <SmallCloseIcon
-                  cursor="pointer"
-                  onClick={() => {
-                    setActiveTab(0);
-                    navigateTo(`/compliance-item/${response._id}`);
-                  }}
-                />
-              </Tooltip>
-            </Stack>
+          {response.calculatedStatus === 'nonCompliant' && (
+            <Badge
+              bg="reasponseHeader.badge.nonCompliant.bg"
+              borderRadius="6px"
+              color="reasponseHeader.badge.nonCompliant.color"
+              fontSize="11px"
+              fontWeight="bold"
+              lineHeight="16px"
+              px={2}
+              py={1}
+              textTransform="capitalize"
+            >
+              {capitalize(t('non-compliant'))}
+            </Badge>
           )}
-        </Stack>
-        <Flex mb="15px">
-          <Flex alignItems="center" pl={['10px', '0px']} pr={['35px', '0px']} w={['full', 'auto']}>
-            <ResponseHeaderStatus
-              heading={capitalize(t('compliant'))}
-              status={response && getStatus(response) === 'compliant' ? 'Yes' : 'No'}
-            />
-            {currentEvidenceItems?.length > 0 && (
-              <>
-                <Spacer />
-                <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />
-              </>
-            )}
-            {response.questions?.filter(({ outdated }) => !outdated).length > 0 && (
-              <>
-                <Spacer />
-                <ResponseHeaderStatus
-                  heading={`${capitalize(pluralize(t('question')))} ${past(t('answer'))}`}
-                  status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'}
-                />
-              </>
-            )}
-          </Flex>
-          <Spacer display={['none', 'flex']} />
-          <Flex color="white" display={['none', 'flex']} h="40px" justify="flex-end" mr="27px">
-            <FollowButton />
-            <ResponseHeaderButton
-              icon={
-                <ShareIcon
-                  _groupHover={{
-                    stroke: 'reasponseHeader.buttonLightColorHover',
-                  }}
-                  fontSize="15px"
-                  stroke="reasponseHeader.buttonLightColor"
-                />
-              }
-              name="Share"
-              onClick={handleShareOpen}
-            />
-            {response?.complianceItem?.frequency !== 'Ad-hoc' && (
-              <Button
-                _hover={{
-                  bg: 'reasponseHeader.buttonDarkBgHover',
-                  color: 'reasponseHeader.buttonDarkColorHover',
+        </HStack>
+      </Stack>
+      <Stack direction={['column', 'row']} mb="15px" pr={6} spacing={4}>
+        <HStack alignItems="center" pl={['10px', '0px']} pr={['35px', '0px']} spacing={4} w={['full', 'auto']}>
+          <ResponseHeaderStatus heading={capitalize(t('compliant'))} status={response.calculatedStatus !== 'nonCompliant' ? 'Yes' : 'No'} />
+          {response.evidence?.length > 0 && (
+            <>
+              <Spacer />
+              <ResponseHeaderStatus heading="Evidence provided" status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />
+            </>
+          )}
+          {response.questions?.length > 0 && (
+            <>
+              <Spacer />
+              <ResponseHeaderStatus
+                heading={`${capitalize(pluralize(t('question')))} ${past(t('answer'))}`}
+                status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'}
+              />
+            </>
+          )}
+        </HStack>
+        {snapshot && (
+          <Stack align="center" color="reasponseHeader.snapshot.color" direction={['column', 'row']} spacing={1}>
+            <WarningTwoIcon />
+            <Text>You are seeing historical data.</Text>
+            <Text
+              as={Link}
+              onClick={() => {
+                setActiveTab(0);
+                navigateTo(`/compliance-item/${response._id}`);
+              }}
+            >
+              Click here to return.
+            </Text>
+          </Stack>
+        )}
+        <Spacer display={['none', 'flex']} />
+        <Flex color="white" display={['none', 'flex']} h="40px" justify="flex-end" mr={6}>
+          {/* <FollowButton /> */}
+          {response.status === 'submitted' && !snapshot && (
+            <ResponseHeaderButton name="Start review" onClick={handleRenewalOpen} primary={response.calculatedStatus === 'comingUp'} />
+          )}
+          {response.status === 'draft' && !snapshot && (
+            <>
+              <ResponseHeaderButton name="Save" onClick={updateResponseQuestions} />
+              <ResponseHeaderButton
+                disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)}
+                name="Submit review"
+                onClick={submitReview}
+              />
+            </>
+          )}
+          <ResponseHeaderButton
+            icon={
+              <ShareIcon
+                _groupHover={{
+                  stroke: 'reasponseHeader.buttonLightColorHover',
                 }}
-                bg={enableRenewalButton ? 'reasponseHeader.buttonDarkBg' : 'reasponseHeader.buttonDarkBg'}
+                fontSize="15px"
+                stroke="reasponseHeader.buttonLightColor"
+              />
+            }
+            name="Share"
+            onClick={handleShareOpen}
+          />
+        </Flex>
+      </Stack>
+
+      <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px">
+        <Menu>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                as={Button}
+                bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
                 borderRadius="10px"
-                color={enableRenewalButton ? 'reasponseHeader.buttonDarkColor' : 'reasponseHeader.buttonDarkColor'}
-                display={['none', 'flex']}
+                color="reasponseHeader.optionsMenuButtonColor"
+                colorScheme="reasponseHeader.optionsMenuColorScheme"
+                fontFamily="Helvetica"
                 fontSize="smm"
                 fontWeight="bold"
-                isDisabled={!enableRenewalButton}
-                ml="15px"
-                onClick={handleRenewalOpen}
-                w="88px"
+                isActive={isOpen}
+                lineHeight="18px"
+                rightIcon={<ArrowDownIcon />}
+                textAlign="left"
+                w="full"
               >
-                Renew
-              </Button>
-            )}
-          </Flex>
-        </Flex>
+                'Options'
+              </MenuButton>
 
-        <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px">
-          <Menu>
-            {({ isOpen }) => (
-              <>
-                <MenuButton
-                  as={Button}
-                  bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
-                  borderRadius="10px"
-                  color="reasponseHeader.optionsMenuButtonColor"
-                  colorScheme="reasponseHeader.optionsMenuColorScheme"
-                  fontFamily="Helvetica"
-                  fontSize="smm"
-                  fontWeight="bold"
-                  isActive={isOpen}
-                  lineHeight="18px"
-                  rightIcon={<ArrowDownIcon />}
-                  textAlign="left"
-                  w="full"
-                >
-                  'Options'
-                </MenuButton>
-
-                <MenuList
-                  borderColor="reasponseHeader.optionsMenuBorderColor"
-                  borderRadius="10px"
-                  boxShadow="0px 0px 80px"
-                  color="reasponseHeader.optionsMenuBoxShadow"
-                  minW={['calc(100vw - 50px)', '325px']}
-                  w="100%"
-                >
-                  <FollowButton isMobile />
-                  <ResponseHeaderMenuItem
-                    icon={
-                      <ShareIcon
-                        _groupHover={{
-                          stroke: 'reasponseHeader.buttonLightColorHover',
-                        }}
-                        fontSize="15px"
-                        stroke="reasponseHeader.buttonLightColor"
-                      />
-                    }
-                    onClick={handleShareOpen}
-                    title="Share"
-                  />
-                  <MenuDivider border="1px" borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" />
-                  <ResponseHeaderMenuItem
-                    disabled={!enableRenewalButton}
-                    icon={
-                      <CheckIcon
-                        _groupHover={{
-                          stroke: 'reasponseHeader.buttonLightColorHover',
-                        }}
-                        fill="transparent"
-                        fontSize="15px"
-                        stroke="reasponseHeader.buttonLightColor"
-                      />
-                    }
-                    onClick={handleRenewalOpen}
-                    title="Renew"
-                  />
-                </MenuList>
-              </>
-            )}
-          </Menu>
-        </Flex>
+              <MenuList
+                borderColor="reasponseHeader.optionsMenuBorderColor"
+                borderRadius="10px"
+                boxShadow="0px 0px 80px"
+                color="reasponseHeader.optionsMenuBoxShadow"
+                minW={['calc(100vw - 50px)', '325px']}
+                w="100%"
+                zIndex="10"
+              >
+                {/* <FollowButton isMobile /> */}
+                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton name="Start review" onClick={handleRenewalOpen} />}
+                {response.status === 'draft' && !snapshot && (
+                  <>
+                    <ResponseHeaderMenuItem name="Save" onClick={updateResponseQuestions} />
+                    <ResponseHeaderMenuItem
+                      disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)}
+                      name="Submit review"
+                      onClick={submitReview}
+                    />
+                  </>
+                )}
+                <ResponseHeaderMenuItem
+                  icon={
+                    <ShareIcon
+                      _groupHover={{
+                        stroke: 'reasponseHeader.buttonLightColorHover',
+                      }}
+                      fontSize="15px"
+                      stroke="reasponseHeader.buttonLightColor"
+                    />
+                  }
+                  name="Share"
+                  onClick={handleShareOpen}
+                />
+                <MenuDivider border="1px" borderColor="reasponseHeader.optionsMenuDivider" ml="20px" mr="20px" />
+              </MenuList>
+            </>
+          )}
+        </Menu>
       </Flex>
-    </>
+    </Flex>
   );
 };
 
@@ -267,8 +291,20 @@ export const responseHeaderStyles = {
   reasponseHeader: {
     bg: '#E5E5E5',
     heading: '#282F36',
-    badge: '#FF9A00',
-    badgeBg: 'rgba(255, 154, 0, 0.1)',
+    badge: {
+      draft: {
+        color: '#555',
+        bg: 'rgba(85, 85, 85, 0.1)',
+      },
+      comingUp: {
+        color: '#FF9A00',
+        bg: 'rgba(255, 154, 0, 0.1)',
+      },
+      nonCompliant: {
+        color: '#FC5960',
+        bg: 'rgba(99, 35, 38, 0.1)',
+      },
+    },
     badgeColorScheme: 'orange',
     buttonDarkBg: '#818197',
     buttonDarkColor: '#FFFFFF',

@@ -6,11 +6,7 @@ export const NavigationTopContext = createContext({} as INavigationTopContext);
 
 export const useNavigationTopContext = () => {
   const context = useContext(NavigationTopContext);
-  if (!context) {
-    throw new Error(
-      'useNavigationTopContext must be used within the NavigationTopProvider',
-    );
-  }
+  if (!context) throw new Error('useNavigationTopContext must be used within the NavigationTopProvider');
   return context;
 };
 
@@ -29,11 +25,7 @@ const NavigationTopProvider = ({ children }) => {
     [isSearchBarOpen, searchText],
   );
 
-  return (
-    <NavigationTopContext.Provider value={value}>
-      {children}
-    </NavigationTopContext.Provider>
-  );
+  return <NavigationTopContext.Provider value={value}>{children}</NavigationTopContext.Provider>;
 };
 
 export default NavigationTopProvider;

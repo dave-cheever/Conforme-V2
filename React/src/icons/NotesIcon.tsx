@@ -10,30 +10,10 @@ const NotesIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M8.86816 1V8.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M16.0684 1V8.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M23.2681 1V8.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M30.4683 1V8.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M8.86816 1V8.2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M16.0684 1V8.2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M23.2681 1V8.2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M30.4683 1V8.2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

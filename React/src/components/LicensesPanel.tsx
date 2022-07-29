@@ -2,49 +2,22 @@ import React from 'react';
 
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 
-import {
-  FileRightIcon,
-  LicensesWhiteIcon,
-  MessageIcon,
-  RedDotIcon,
-} from '../icons';
+import { FileRightIcon, LicensesWhiteIcon, MessageIcon, RedDotIcon } from '../icons';
 
 const LicensesPanel = () => (
-  <Box
-    borderRadius="lg"
-    boxShadow="0px 4px 10px rgba(0, 0, 0, 0.05)"
-    h="312px"
-    overflow="hidden"
-    w="270px"
-  >
+  <Box borderRadius="lg" boxShadow="0px 4px 10px rgba(0, 0, 0, 0.05)" h="312px" overflow="hidden" w="270px">
     <Flex alignItems="center" bg="licensesPanel.header" h="37px" px="4">
       <Icon as={LicensesWhiteIcon} color="black" h="16px" />
-      <Text
-        color="licensesPanel.headerText"
-        fontSize="14px"
-        fontWeight="400"
-        pl="2"
-      >
+      <Text color="licensesPanel.headerText" fontSize="14px" fontWeight="400" pl="2">
         Licenses
       </Text>
     </Flex>
     <Box bg="licensesPanel.bg" h="100%" pt="3" w="100%">
       <Flex align="center">
-        <Box
-          bg="licensesPanel.ribbon"
-          display={['none', 'block']}
-          h="50px"
-          roundedRight="4px"
-          w="5px"
-        >
+        <Box bg="licensesPanel.ribbon" display={['none', 'block']} h="50px" roundedRight="4px" w="5px">
           &nbsp;
         </Box>
-        <Text
-          color="licensesPanel.text"
-          fontSize="14px"
-          fontWeight="700"
-          ml="4"
-        >
+        <Text color="licensesPanel.text" fontSize="14px" fontWeight="700" ml="4">
           Alcohol Premises License
         </Text>
       </Flex>

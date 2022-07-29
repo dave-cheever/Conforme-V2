@@ -24,25 +24,10 @@ interface IAlertDialog {
   onClose?: any;
 }
 
-const AlertDialog = ({
-  isOpen,
-  title,
-  description,
-  state,
-  showButtons,
-  handleYes,
-  handleNo,
-  onClose,
-}: IAlertDialog) => {
+const AlertDialog = ({ isOpen, title, description, state, showButtons, handleYes, handleNo, onClose }: IAlertDialog) => {
   const cancelRef: any = React.useRef();
   return (
-    <AlertDialogChakra
-      isCentered
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      motionPreset="slideInBottom"
-      onClose={onClose}
-    >
+    <AlertDialogChakra isCentered isOpen={isOpen} leastDestructiveRef={cancelRef} motionPreset="slideInBottom" onClose={onClose}>
       <AlertDialogOverlay />
       <AlertDialogContent>
         <AlertDialogHeader>{title}</AlertDialogHeader>

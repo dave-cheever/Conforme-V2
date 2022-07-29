@@ -36,11 +36,11 @@ const ComplianceListItems = ({
         <AdminTableHeaderElement
           label="Due for renewal"
           onClick={() => {
-            setSortType('nextRenewalDate');
-            setSortOrder(sortOrder === 'asc' && sortType === 'nextRenewalDate' ? 'desc' : 'asc');
+            setSortType('dueDate');
+            setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'nextRenewalDate'}
-          sortOrder={sortType === 'nextRenewalDate' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'dueDate'}
+          sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
           w="12%"
         />
         <AdminTableHeaderElement
@@ -74,7 +74,7 @@ const ComplianceListItems = ({
           w="20%"
         />
         <AdminTableHeaderElement
-          label={capitalize(t('businessUnit'))}
+          label={capitalize(t('business unit'))}
           onClick={() => {
             setSortType('businessUnit.name');
             setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit.name' ? 'desc' : 'asc');

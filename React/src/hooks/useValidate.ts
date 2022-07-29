@@ -1,11 +1,6 @@
 import { TDefinedValidations, TValidations } from '../interfaces/TValidations';
 
-const useValidate = (
-  label: string,
-  validations: TValidations,
-  definedValidations: TDefinedValidations,
-  initialValue?: string,
-) => {
+const useValidate = (label: string, validations: TValidations, definedValidations: TDefinedValidations, initialValue?: string) => {
   const validationsTypes = Object.keys(validations);
   if (validationsTypes.length === 0) return undefined;
 
@@ -26,15 +21,12 @@ const useValidate = (
     const definedValidation = definedValidations[validationType];
     if (!definedValidation) {
       // eslint-disable-next-line no-console
-      console.warn(
-        `There is no defined validation of type ${validationType} for ${label} field`,
-      );
+      console.warn(`There is no defined validation of type ${validationType} for ${label} field`);
       return acc;
     }
 
     // Get validation function defined for field
-    const validationFunction = (value) =>
-      definedValidation(label, validationValue, value, initialValue);
+    const validationFunction = (value) => definedValidation(label, validationValue, value, initialValue);
     return {
       ...acc,
       [validationType]: validationFunction,

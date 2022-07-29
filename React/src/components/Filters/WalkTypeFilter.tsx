@@ -7,10 +7,7 @@ import StatusSelector from '../StatusSelector';
 
 const WalkTypeFilter = () => {
   const { filtersValues, setFilters, auditStatuses } = useFiltersContext();
-  const value = useMemo(
-    () => filtersValues.status?.value,
-    [filtersValues],
-  ) as string[];
+  const value = useMemo(() => filtersValues.status?.value, [filtersValues]) as string[];
 
   const handleChange = ({ target: { value } }) => {
     setFilters({ status: value });
@@ -18,11 +15,7 @@ const WalkTypeFilter = () => {
 
   return (
     <Box w="full">
-      <StatusSelector
-        handleChange={handleChange}
-        selected={value}
-        status={auditStatuses}
-      />
+      <StatusSelector handleChange={handleChange} selected={value} status={auditStatuses} />
     </Box>
   );
 };

@@ -4,12 +4,7 @@ import { Flex, Text } from '@chakra-ui/react';
 
 const SummaryItem = ({ children, label }) => (
   <Flex flexDir="column">
-    <Text
-      color="summaryItemModal.label"
-      fontSize="11px"
-      fontWeight="bold"
-      mb="5px"
-    >
+    <Text color="summaryItemModal.label" fontSize="11px" fontWeight="bold" mb="5px">
       {label}
     </Text>
     <Text color="summaryItemModal.value" fontSize="smm">

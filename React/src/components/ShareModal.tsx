@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import {
+  Box,
   Button,
   Flex,
   Input,
@@ -112,9 +113,11 @@ const ShareModal = () => {
                 Email
               </Tab>
             </TabList>
-
+            <Box fontSize="sm" mt={4}>
+              You need to add people as a participant (e.g. Follower) to enable the user to see it.
+            </Box>
             <TabPanels>
-              <TabPanel mt="20px" p="0">
+              <TabPanel mt={3} p={0}>
                 <Flex flexDir="column">
                   <CopyToClipboard
                     onCopy={() =>
@@ -161,7 +164,7 @@ const ShareModal = () => {
                   </Button>
                 </Flex>
               </TabPanel>
-              <TabPanel mt="20px" p="0">
+              <TabPanel mt={3} p={0}>
                 <Flex flexDir="column">
                   {mails.map((m, index) => (
                     <InputGroup cursor="pointer" key={index} my="1">

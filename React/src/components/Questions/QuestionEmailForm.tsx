@@ -32,10 +32,7 @@ const QuestionEmailForm = ({
     },
   });
   const questionName = watch('name');
-  const questionAlreadyExist =
-    (complianceItem.questions || []).findIndex(
-      ({ name }) => name === questionName,
-    ) > -1;
+  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
   return (
     <>
       <Flex alignItems="center" mb="20px">
@@ -54,12 +51,7 @@ const QuestionEmailForm = ({
         }}
         variant="secondaryVariant"
       />
-      <Checkbox
-        control={control}
-        label="Answer is required"
-        name="required"
-        variant="secondaryVariant"
-      />
+      <Checkbox control={control} label="Answer is required" name="required" variant="secondaryVariant" />
       <Flex justifyContent="space-between" mt="15px">
         <Button
           bg="questionEmailForm.button.secondary.bg"
@@ -81,11 +73,7 @@ const QuestionEmailForm = ({
         <Button
           bg="questionEmailForm.button.primary.bg"
           color="questionEmailForm.button.primary.font"
-          disabled={
-            questionAlreadyExist ||
-            Object.keys(errors).length > 0 ||
-            !questionName
-          }
+          disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
           h="27px"
@@ -95,13 +83,7 @@ const QuestionEmailForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={
-            <Icon
-              as={OpenMenuArrow}
-              stroke="complianceItemModal.tabs.bottomButton.icon"
-              transform="rotate(270deg)"
-            />
-          }
+          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question

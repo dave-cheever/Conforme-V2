@@ -23,8 +23,7 @@ const definedValidations: TDefinedValidations = {
     if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue)
-      return `${label} can be maximum ${validationValue} characters length`;
+    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
 };
 
@@ -50,21 +49,9 @@ const TextInputMultiline = ({
         return (
           <Box id={name} mt="none" w="full">
             {label && (
-              <Flex
-                align="center"
-                justify="space-between"
-                mb="none"
-                pb={1}
-                pt={2}
-              >
+              <Flex align="center" justify="space-between" mb="none" pb={1} pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'textInput.labelFont.error'
-                      : styles
-                      ? styles?.textInput?.font
-                      : 'textInput.labelFont.normal'
-                  }
+                  color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
                   fontSize="11px"
                   fontWeight="bold"
                   left="none"
@@ -101,16 +88,12 @@ const TextInputMultiline = ({
                 cursor: 'not-allowed',
               }}
               _focus={{
-                borderColor: error
-                  ? 'textInput.border.focus.error'
-                  : 'textInput.border.focus.normal',
+                borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
               }}
               _hover={{ cursor: 'auto' }}
               _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
               bg="textInput.bg"
-              borderColor={
-                error ? 'textInput.border.error' : 'textInput.border.normal'
-              }
+              borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
               borderRadius="8px"
               borderWidth="1px"
               color="textInput.font"
@@ -119,11 +102,7 @@ const TextInputMultiline = ({
               fontSize="smm"
               h="100px"
               isDisabled={disabled}
-              maxLength={
-                validations && validations.forceMaxLength
-                  ? (validations.maxLength as number)
-                  : undefined
-              }
+              maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
               name={name}
               onBlur={onBlur}
               onChange={onChange}

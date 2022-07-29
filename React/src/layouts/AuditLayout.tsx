@@ -8,12 +8,9 @@ import Loader from '../components/Loader';
 import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
 import AuditProvider, { useAuditContext } from '../contexts/AuditProvider';
-// import useDevice from '../hooks/useDevice';
 
 const AuditLayout = ({ component: Component }: { component: any }) => {
   const { loading, audit } = useAuditContext();
-  // const device = useDevice();
-  // const isTabletAndMobile = device === 'tablet' || device === 'mobile';
 
   if (loading && !audit) {
     return (

@@ -62,7 +62,7 @@ const GeneralForm = () => {
               control={control}
               label="Item name"
               name="name"
-              placeholder={`${capitalize(t('complianceItem'))} name`}
+              placeholder={`${capitalize(t('tracker item'))} name`}
               validations={{
                 notEmpty: true,
               }}
@@ -72,7 +72,7 @@ const GeneralForm = () => {
               control={control}
               label="Description"
               name="description"
-              placeholder={`Describe the ${t('complianceItem')}`}
+              placeholder={`Describe the ${t('tracker item')}`}
               variant="secondaryVariant"
             />
           </Stack>
@@ -117,7 +117,7 @@ const GeneralForm = () => {
               control={control}
               label="Expires on (optional)"
               name="dueDate"
-              placeholder={`Define when the ${t('complianceItem')} is due`}
+              placeholder={`Define when the ${t('tracker item')} is due`}
               variant="secondaryVariant"
             />
             <Dropdown
@@ -187,6 +187,28 @@ const GeneralForm = () => {
                 </Box>
               )}
             </Stack>
+            <Flex align="center" pt={4}>
+              <Switch
+                colorScheme="toogle.color"
+                css={{
+                  '.chakra-switch__thumb': {
+                    '&[data-checked]': {
+                      background: '#462AC4',
+                    },
+                  },
+                }}
+                isChecked={!!complianceItem.dueDateEditable}
+                onChange={() => setValue('dueDateEditable', !complianceItem.dueDateEditable)}
+              />
+              <Flex
+                color={complianceItem.dueDateEditable ? 'toogle.enableColor' : 'toogle.disableColor'}
+                fontSize="14px"
+                fontWeight="400"
+                ml={3}
+              >
+                Allow updating due date in responses
+              </Flex>
+            </Flex>
           </Stack>
         </Box>
       </Stack>

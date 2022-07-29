@@ -23,7 +23,7 @@ const regulatoryBodies = async (
         const pipeline: any[] = [];
         join({
           pipeline,
-          collection: 'complianceItems',
+          collection: 'trackerItems',
           from: 'complianceItemId',
           to: 'complianceItem',
         });
@@ -38,9 +38,9 @@ const regulatoryBodies = async (
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) 
+        if (responses && responses.length > 0)
           regulatoryBody.complianceItemsResponsesCount = responses[0].count;
-        
+
       }
     }
 

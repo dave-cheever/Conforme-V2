@@ -22,32 +22,13 @@ const ResponseHeaderStatus = ({ heading, status }) => {
   };
 
   return (
-    <VStack
-      align="left"
-      alignItems={['start', 'start']}
-      direction="column"
-      pr={['0', '30']}
-      spacing="3px"
-      w={['max-content', 'max-content']}
-    >
-      <Flex
-        color="responseHeaderStatus.heading"
-        fontSize="ssm"
-        fontStyle="normal"
-        fontWeight="semi_medium"
-        lineHeight="16px"
-      >
+    <VStack align="left" alignItems={['start', 'start']} direction="column" spacing={2} w={['max-content', 'max-content']}>
+      <Flex color="responseHeaderStatus.heading" fontSize="ssm" fontStyle="normal" fontWeight="semi_medium" lineHeight="16px">
         {heading}
       </Flex>
       <Stack align="center" direction="row" pr="10px" spacing={2}>
         {renderIcon()}
-        <Text
-          color={color}
-          fontSize="smm"
-          fontStyle="normal"
-          fontWeight="bold"
-          lineHeight="20px"
-        >
+        <Text color={color} fontSize="smm" fontStyle="normal" fontWeight="bold" lineHeight="20px">
           {status}
         </Text>
       </Stack>

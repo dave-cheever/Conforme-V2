@@ -28,7 +28,7 @@ const AdditionalDetailsForm = () => {
 
   return (
     <Stack spacing={4} w="full">
-      <SectionHeader label={`Please define the expected evidence and action for this ${t('complianceItem')}.`} />
+      <SectionHeader label={`Please define the expected evidence and action for this ${t('tracker item')}.`} />
       <Stack overflow="auto" pb={3} spacing={2} w="full">
         <Box bg="additionalDetails.evidence.bg" borderRadius="4px" w="full">
           {complianceItem.evidenceItems?.map((item, index) => (

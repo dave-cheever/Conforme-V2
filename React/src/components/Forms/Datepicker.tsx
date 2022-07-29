@@ -36,6 +36,7 @@ const Datepicker = ({
   required,
   validations = {},
   disabled = false,
+  readMode = false,
   styles,
 }: IDatepicker) => {
   const datePickerRef = useRef();
@@ -79,12 +80,20 @@ const Datepicker = ({
                 borderColor: error ? 'datepicker.border.focus.error' : 'datepicker.border.focus.normal',
               }}
               align="center"
-              bg={disabled ? 'datepicker.disabled.bg' : 'datepicker.bg'}
-              borderColor={disabled ? 'datepicker.disabled.border' : error ? 'datepicker.border.error' : 'datepicker.border.normal'}
+              bg={readMode ? 'transparent' : disabled ? 'datepicker.disabled.bg' : 'datepicker.bg'}
+              borderColor={
+                readMode
+                  ? 'transparent'
+                  : disabled
+                  ? 'datepicker.disabled.border'
+                  : error
+                  ? 'datepicker.border.error'
+                  : 'datepicker.border.normal'
+              }
               borderRadius="8px"
               borderWidth="1px"
-              color="datepicker.font"
-              cursor={disabled ? 'not-allowed' : 'pointer'}
+              color={readMode ? 'datepicker.readMode.font' : 'datepicker.font'}
+              cursor={readMode ? 'default' : disabled ? 'not-allowed' : 'pointer'}
               h="42px"
               justify="space-between"
               mb="-5px"
@@ -92,8 +101,8 @@ const Datepicker = ({
               overflow="hidden"
               pt="none"
             >
-              {disabled ? (
-                <Text fontSize="smm" pl={4}>
+              {disabled || readMode ? (
+                <Text fontSize="smm" pl={readMode ? 0 : 4}>
                   {value ? format(new Date(value), 'd MMM yyyy') : ''}
                 </Text>
               ) : (
@@ -113,17 +122,19 @@ const Datepicker = ({
                   showYearDropdown
                 />
               )}
-              <CalendarIcon
-                h="16px"
-                ml="5px"
-                mr="10px"
-                mt="-2px"
-                onClick={() => {
-                  if (!disabled) (datePickerRef.current as any).setOpen(true);
-                }}
-                stroke="datepicker.font"
-                w="14px"
-              />
+              {!readMode && (
+                <CalendarIcon
+                  h="16px"
+                  ml="5px"
+                  mr="10px"
+                  mt="-2px"
+                  onClick={() => {
+                    if (!disabled) (datePickerRef.current as any).setOpen(true);
+                  }}
+                  stroke="datepicker.font"
+                  w="14px"
+                />
+              )}
             </Flex>
             {error && (
               <Box color="datepicker.error" fontSize="smm" ml={1} mt={1}>
@@ -156,8 +167,10 @@ export const datepickerStyles = {
       },
     },
     activeBg: '#EEEEEE',
+    readMode: {
+      font: '#000000',
+    },
     disabled: {
-      font: '#2B3236',
       border: '#EEEEEE',
       bg: '#f7f7f7',
     },

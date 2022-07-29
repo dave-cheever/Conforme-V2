@@ -20,40 +20,25 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Switch = ({
-  control,
-  name,
-  label,
-  required,
-  requiredAnswer,
-  notApplicable,
-  disabled,
-  validations = {},
-}: ISwitch) => {
+const Switch = ({ control, name, label, required, requiredAnswer, notApplicable, disabled, validations = {} }: ISwitch) => {
   const validate = useValidate(label || name, validations, definedValidations);
 
-  const RenderButton = ({
-    laterality,
-    value,
-    onchange,
-    name,
-    requiredAnswer,
-  }) => (
+  const RenderButton = ({ laterality, value, onchange, name, requiredAnswer }) => (
     <Button
-      _hover={{ bg: 'switch.activebtn.bg', color: 'switch.activebtn.color' }}
+      _hover={disabled ? {} : { bg: 'switch.activebtn.bg', color: 'switch.activebtn.color' }}
       bg={
         laterality === 'left' && value === 'yes'
           ? 'switch.activebtn.bg'
           : laterality === 'right' && value === 'no'
-            ? 'switch.activebtn.bg'
-            : 'switch.btn.bg'
+          ? 'switch.activebtn.bg'
+          : 'switch.btn.bg'
       }
       color={
         laterality === 'left' && value === 'yes'
           ? 'switch.activebtn.color'
           : laterality === 'right' && value === 'no'
-            ? 'switch.activebtn.color'
-            : 'switch.btn.color'
+          ? 'switch.activebtn.color'
+          : 'switch.btn.color'
       }
       disabled={requiredAnswer === 'na' || disabled}
       fontSize="smm"
@@ -61,11 +46,7 @@ const Switch = ({
       name={name}
       onClick={() => {
         if (disabled) return;
-        if (
-          (laterality === 'left' && value === 'yes') ||
-          (laterality === 'right' && value === 'no')
-        )
-          onchange('');
+        if ((laterality === 'left' && value === 'yes') || (laterality === 'right' && value === 'no')) onchange('');
         else onchange(laterality === 'left' ? 'yes' : 'no');
       }}
       p="10px 20px"
@@ -82,32 +63,16 @@ const Switch = ({
         const { error } = fieldState;
         return (
           <Box>
-            <Text
-              color="switch.form.labelColor"
-              fontSize="ssm"
-              fontWeight="bold"
-              pb="10px"
-              pt="8px"
-            >
+            <Text color="switch.form.labelColor" fontSize="ssm" fontWeight="bold" pb="10px" pt="8px">
               {label}
               {requiredAnswer === 'yes' && value === 'no' && (
-                <Box
-                  as="span"
-                  color="switch.form.labelColor"
-                  fontSize="xs"
-                  fontWeight="medium"
-                >
+                <Box as="span" color="switch.form.labelColor" fontSize="xs" fontWeight="medium">
                   {' '}
                   ( The required answer is Yes )
                 </Box>
               )}
               {requiredAnswer === 'no' && value === 'yes' && (
-                <Box
-                  as="span"
-                  color="switch.form.labelColor"
-                  fontSize="xs"
-                  fontWeight="medium"
-                >
+                <Box as="span" color="switch.form.labelColor" fontSize="xs" fontWeight="medium">
                   {' '}
                   ( The required answer is No )
                 </Box>
@@ -124,21 +89,9 @@ const Switch = ({
               )}
             </Text>
             <Flex>
-              <RenderButton
-                laterality="left"
-                name={name}
-                onchange={onChange}
-                requiredAnswer={requiredAnswer}
-                value={value}
-              />
+              <RenderButton laterality="left" name={name} onchange={onChange} requiredAnswer={requiredAnswer} value={value} />
               &nbsp;&nbsp;
-              <RenderButton
-                laterality="right"
-                name={name}
-                onchange={onChange}
-                requiredAnswer={requiredAnswer}
-                value={value}
-              />
+              <RenderButton laterality="right" name={name} onchange={onChange} requiredAnswer={requiredAnswer} value={value} />
               {notApplicable && (
                 <>
                   &nbsp;&nbsp;
@@ -147,14 +100,8 @@ const Switch = ({
                       bg: 'switch.activebtn.bg',
                       color: 'switch.activebtn.color',
                     }}
-                    bg={
-                      value === 'na' ? 'switch.activebtn.bg' : 'switch.btn.bg'
-                    }
-                    color={
-                      value === 'na'
-                        ? 'switch.activebtn.color'
-                        : 'switch.btn.color'
-                    }
+                    bg={value === 'na' ? 'switch.activebtn.bg' : 'switch.btn.bg'}
+                    color={value === 'na' ? 'switch.activebtn.color' : 'switch.btn.color'}
                     disabled={disabled}
                     fontSize="smm"
                     fontWeight="bold"

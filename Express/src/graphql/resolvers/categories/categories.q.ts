@@ -20,7 +20,7 @@ const categories = async (
         const pipeline: any[] = [];
         join({
           pipeline,
-          collection: 'complianceItems',
+          collection: 'trackerItems',
           from: 'complianceItemId',
           to: 'complianceItem',
         });
@@ -35,9 +35,9 @@ const categories = async (
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) 
+        if (responses && responses.length > 0)
           category.complianceItemsResponsesCount = responses[0].count;
-        
+
       }
     }
 

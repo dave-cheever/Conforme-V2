@@ -12,19 +12,10 @@ const useNavigate = () => {
 
     // Remove module path from current path
     // and slash if present as last character
-    const currentPath = history.location.pathname.replace(
-      new RegExp('/([a-zA-Z0-9-]*)'),
-      '',
-    ).replace(
-      new RegExp('(/$)'),
-      '',
-    );
+    const currentPath = history.location.pathname.replace(new RegExp('/([a-zA-Z0-9-]*)'), '').replace(new RegExp('(/$)'), '');
 
     // Remove slash if present as last character
-    const clearPath = path.replace(
-      new RegExp('(/$)'),
-      '',
-    );
+    const clearPath = path.replace(new RegExp('(/$)'), '');
 
     if (exact) return currentPath === clearPath;
     return currentPath.includes(clearPath);

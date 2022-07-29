@@ -20,13 +20,7 @@ const Accidents = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M12.8281 11.8289L14.9996 14.0003"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M12.8281 11.8289L14.9996 14.0003" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

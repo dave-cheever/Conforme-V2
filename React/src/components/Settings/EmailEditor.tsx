@@ -35,11 +35,7 @@ const EmailEditor = ({ setHtml, value, options }) => {
       <Box className="sun-editor" id="custom_toolbar" />
       <Stack bgColor="white" direction="row" p={2} spacing={2}>
         {options.map((option: string) => (
-          <Button
-            key={option}
-            onClick={() => insertTag(`%${option}%`)}
-            size="sm"
-          >
+          <Button key={option} onClick={() => insertTag(`%${option}%`)} size="sm">
             {option}
           </Button>
         ))}

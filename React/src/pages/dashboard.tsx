@@ -4,8 +4,7 @@ import ComplianceItems from './compliance-items';
 
 const Dashboard = () => {
   const { module } = useAppContext();
-  if (module?.type === 'audits')
-    return <Audits />;
+  if (module?.type === 'audits') return <Audits />;
 
   return <ComplianceItems />;
 };

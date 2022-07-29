@@ -27,20 +27,8 @@ const ProgressIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M4.00452 7.25208H5.58133"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.4187 7.25208H9.99551"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M4.00452 7.25208H5.58133" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.4187 7.25208H9.99551" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   ),
 });

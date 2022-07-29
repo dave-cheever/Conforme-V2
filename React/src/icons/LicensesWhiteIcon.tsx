@@ -20,14 +20,7 @@ const LicensesWhiteIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.2"
       />
-      <path
-        d="M13.3333 0.727295H6.54541"
-        fill="none"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
+      <path d="M13.3333 0.727295H6.54541" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
       <path
         d="M11.3937 2.66675V12.3637C11.3937 13.1353 11.0872 13.8752 10.5417 14.4208C9.9961 14.9663 9.25616 15.2728 8.48463 15.2728H0.727051C1.49859 15.2728 2.23853 14.9663 2.78409 14.4208C3.32965 13.8752 3.63614 13.1353 3.63614 12.3637V8.48493"
         fill="none"
@@ -36,38 +29,10 @@ const LicensesWhiteIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.2"
       />
-      <path
-        d="M5.57568 11.394H9.45447"
-        fill="none"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
-      <path
-        d="M5.57568 9.45459H9.45447"
-        fill="none"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
-      <path
-        d="M7.51514 7.51514H9.45453"
-        fill="none"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
-      <path
-        d="M7.51514 5.57568H9.45453"
-        fill="none"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
+      <path d="M5.57568 11.394H9.45447" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
+      <path d="M5.57568 9.45459H9.45447" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
+      <path d="M7.51514 7.51514H9.45453" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
+      <path d="M7.51514 5.57568H9.45453" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
     </g>
   ),
 });

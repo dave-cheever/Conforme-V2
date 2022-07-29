@@ -5,13 +5,7 @@ const CircleChecked = createIcon({
   path: (
     <g>
       <circle cx="10.5" cy="10.5" fill="currentColor" r="10" />
-      <path
-        d="M14 8L8.5 13.6L6 11.0545"
-        fill="currentColor"
-        stroke="white"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M14 8L8.5 13.6L6 11.0545" fill="currentColor" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   ),
 });

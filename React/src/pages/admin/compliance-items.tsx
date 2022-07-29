@@ -145,7 +145,6 @@ const ComplianceItemsAdmin = () => {
           description: question.description,
           value: question.value,
           required: question.required,
-          outdated: question.outdated,
           requiredAnswer: question.requiredAnswer,
           notApplicable: question.notApplicable,
         })),
@@ -173,12 +172,12 @@ const ComplianceItemsAdmin = () => {
           <ComplianceItemModal refetch={refetch} />
         )}
       </Modal>
-      <Header breadcrumbs={['Admin', pluralize(t('complianceItem'))]} mobileBreadcrumbs={[pluralize(t('complianceItem'))]} />
+      <Header breadcrumbs={['Admin', pluralize(t('tracker item'))]} mobileBreadcrumbs={[pluralize(t('tracker item'))]} />
       <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
         <Box h={['calc(100% - 45px)', 'calc(100% - 35px)']} w="100%">
           <AdminTableHeader>
             <AdminTableHeaderElement
-              label={capitalize(t('complianceItem'))}
+              label={capitalize(t('tracker item'))}
               onClick={() => {
                 setSortType('name');
                 setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
@@ -249,7 +248,7 @@ const ComplianceItemsAdmin = () => {
                         <Text isTruncated>{complianceItem.name}</Text>
                       ) : (
                         <Text color="adminComplianceItems.element.unnamed" fontStyle="italic">
-                          Unnamed {t('complianceItem')}
+                          Unnamed {t('tracker item')}
                         </Text>
                       )}
                     </Box>

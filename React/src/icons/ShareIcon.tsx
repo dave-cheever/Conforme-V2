@@ -9,18 +9,8 @@ const ShareIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M5.61987 1.04688V7.46354"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3.32812 3.33854L5.61979 1.04688L7.91146 3.33854"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M5.61987 1.04688V7.46354" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3.32812 3.33854L5.61979 1.04688L7.91146 3.33854" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </>
   ),
   viewBox: '0 0 12 16',

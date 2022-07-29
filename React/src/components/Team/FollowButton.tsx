@@ -30,8 +30,7 @@ const FollowButton = ({ isMobile = false }) => {
   const { user } = useAppContext();
   const toast = useToast();
   const [addParticipant, { loading }] = useMutation(ADD_PARTICIPANT);
-  const [removeParticipant, { loading: unFollowLoading }] =
-    useMutation(REMOVE_PARTICIPANT);
+  const [removeParticipant, { loading: unFollowLoading }] = useMutation(REMOVE_PARTICIPANT);
 
   const isFollower = useMemo(() => {
     if (!user?._id) return false;

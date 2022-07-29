@@ -3,14 +3,7 @@ import { createIcon } from '@chakra-ui/icons';
 const QuestionMarkIcon = createIcon({
   path: (
     <g>
-      <circle
-        cx="11.25"
-        cy="10.5"
-        fill="none"
-        r="9.75"
-        stroke="#fff"
-        strokeWidth="1.5"
-      />
+      <circle cx="11.25" cy="10.5" fill="none" r="9.75" stroke="#fff" strokeWidth="1.5" />
       <mask fill="#fff" id="a">
         <path
           clipRule="evenodd"

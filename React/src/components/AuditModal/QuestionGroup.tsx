@@ -17,21 +17,9 @@ const QuestionGroup = ({
   isExpanded,
   setExpandedItem,
 }: QuestionGroupProps) => (
-  <Box
-    cursor="pointer"
-    maxH="400px"
-    onClick={() => setExpandedItem(() => (isExpanded ? '' : id))}
-    w="full"
-  >
+  <Box cursor="pointer" maxH="400px" onClick={() => setExpandedItem(() => (isExpanded ? '' : id))} w="full">
     <Collapse endingHeight="270px" in={isExpanded} startingHeight="90px">
-      <Box
-        bg="white"
-        borderRadius="10px"
-        boxShadow="-1px 1px 9px 1px rgba(0 0 0  0.5)"
-        h="full"
-        p="20px"
-        w="full"
-      >
+      <Box bg="white" borderRadius="10px" boxShadow="-1px 1px 9px 1px rgba(0 0 0  0.5)" h="full" p="20px" w="full">
         <Flex justify="space-between">
           <Flex
             align="center"
@@ -64,13 +52,7 @@ const QuestionGroup = ({
             {questionAnswered} / {totalQuestion} Completed
           </Text>
         </Flex>
-        <Text
-          color="auditModal.menu.text"
-          fontSize="sm"
-          fontWeight={400}
-          mt={3}
-          pl={10}
-        >
+        <Text color="auditModal.menu.text" fontSize="sm" fontWeight={400} mt={3} pl={10}>
           {description}
         </Text>
         <br />

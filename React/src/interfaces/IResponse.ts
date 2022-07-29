@@ -17,18 +17,16 @@ export interface IDocument {
 export interface IEvidence {
   name: string;
   uploaded?: IDocument;
-  outdated?: boolean;
 }
 
 export interface IResponse extends IBase {
   // Base fields - saved for response in database
   complianceItemId: string;
   businessUnitId: string;
-  firstCompletionDate: Date | null;
   lastCompletionDate: Date | null;
-  lastRenewalDate: Date | null;
-  nextRenewalDate: Date | null;
-  status: string;
+  dueDate: Date | null;
+  status: 'draft' | 'submitted';
+  calculatedStatus: 'compliant' | 'nonCompliant' | 'comingUp';
   evidence: IEvidence[];
   attachments: IDocument[];
   questions: ITrackerQuestion<TQuestionValue>[];

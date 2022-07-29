@@ -1,10 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const usePrompt = (
-  when: boolean,
-  message: string,
-) => {
+const usePrompt = (when: boolean, message: string) => {
   const history = useHistory();
 
   const self = useRef<any | null>();

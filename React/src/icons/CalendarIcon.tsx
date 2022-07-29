@@ -12,24 +12,9 @@ const CalendarIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M11.4004 1V4.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M5 1V4.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M1 7.39999H15.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M11.4004 1V4.2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M5 1V4.2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M1 7.39999H15.4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

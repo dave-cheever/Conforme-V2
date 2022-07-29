@@ -57,11 +57,9 @@ class Form {
 
     let lableOftheSelectedItem: IFormFieldOption | undefined;
 
-    if (field.type === 'dropdown') {
-      lableOftheSelectedItem = field.options?.find(
-        (option) => option.value === valueId,
-      );
-    }
+    if (field.type === 'dropdown')
+      lableOftheSelectedItem = field.options?.find((option) => option.value === valueId);
+
     return lableOftheSelectedItem ? lableOftheSelectedItem.label : '';
   }
 
@@ -96,12 +94,7 @@ class Form {
   }
 
   touchAll() {
-    this.formik.setTouched(
-      this.getFields().reduce(
-        (acc, field) => ({ ...acc, [field.name]: true }),
-        {},
-      ),
-    );
+    this.formik.setTouched(this.getFields().reduce((acc, field) => ({ ...acc, [field.name]: true }), {}));
   }
 
   // Formik methods
@@ -115,12 +108,7 @@ class Form {
   }
 
   notTouchAll() {
-    this.formik.setTouched(
-      this.getFields().reduce(
-        (acc, field) => ({ ...acc, [field.name]: false }),
-        {},
-      ),
-    );
+    this.formik.setTouched(this.getFields().reduce((acc, field) => ({ ...acc, [field.name]: false }), {}));
   }
 
   handleChange(event) {

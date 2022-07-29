@@ -1,22 +1,8 @@
 import React from 'react';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Icon,
-  Spacer,
-  Text,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 
-import {
-  AtTheRateIcon,
-  AuditWhiteIcon,
-  HealthKitIcon,
-  MessageIcon,
-  RedDotIcon,
-} from '../icons';
+import { AtTheRateIcon, AuditWhiteIcon, HealthKitIcon, MessageIcon, RedDotIcon } from '../icons';
 import ProgressBar from './ProgressBar';
 
 interface IAuditPanel {
@@ -26,19 +12,9 @@ interface IAuditPanel {
 
 const AuditPanel = ({ isMentioned, open }: IAuditPanel) => (
   <Box borderRadius="lg" h="312px" overflow="hidden" w="270px">
-    <Flex
-      alignItems="center"
-      bg={isMentioned ? 'auditPanel.mentionHeader' : 'auditPanel.header'}
-      h="37px"
-      px="4"
-    >
+    <Flex alignItems="center" bg={isMentioned ? 'auditPanel.mentionHeader' : 'auditPanel.header'} h="37px" px="4">
       <Icon as={AuditWhiteIcon} color="black" h="16px" />
-      <Text
-        color="auditPanel.headerText"
-        fontSize="14px"
-        fontWeight="400"
-        pl="2"
-      >
+      <Text color="auditPanel.headerText" fontSize="14px" fontWeight="400" pl="2">
         Audit
       </Text>
       <Spacer />
@@ -88,17 +64,7 @@ const AuditPanel = ({ isMentioned, open }: IAuditPanel) => (
             Owner
           </Text>
           <Flex alignItems="center">
-            <Avatar
-              bg="black"
-              color="black"
-              h="18px"
-              mr={2}
-              name=""
-              rounded="full"
-              size="sm"
-              src=""
-              w="18px"
-            />
+            <Avatar bg="black" color="black" h="18px" mr={2} name="" rounded="full" size="sm" src="" w="18px" />
             <Text fontSize="14px">You</Text>
           </Flex>
         </Box>
@@ -117,23 +83,13 @@ const AuditPanel = ({ isMentioned, open }: IAuditPanel) => (
       <Flex>
         <Flex align="center" ml="3" pt="4" px="3" w="100%">
           <HealthKitIcon stroke="auditPanel.healthKitIcon" />
-          <Text
-            color="auditPanel.text"
-            fontSize="14px"
-            fontWeight="800"
-            marginX="2"
-          >
+          <Text color="auditPanel.text" fontSize="14px" fontWeight="800" marginX="2">
             0
           </Text>
           <Box position="relative">
             <MessageIcon mt="-4px" />
             {isMentioned ? (
-              <AtTheRateIcon
-                h="13px"
-                left="4px"
-                position="absolute"
-                top="2px"
-              />
+              <AtTheRateIcon h="13px" left="4px" position="absolute" top="2px" />
             ) : (
               <RedDotIcon h="13px" left="4px" position="absolute" top="2px" />
             )}

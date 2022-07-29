@@ -1,13 +1,7 @@
 import { differenceInDays, startOfDay } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isInteger } from 'lodash';
-import pluralize from 'pluralize';
 
-import Attachments from '../components/Response/Attachments';
-import Details from '../components/Response/Details';
-import ResponseQuestions from '../components/Response/ResponseQuestions';
-import { useAppContext } from '../contexts/AppProvider';
-import { AttachmentIcon, DetailIcon, QuestionIcon } from '../icons';
 import { IQuestionChoice } from '../interfaces/IQuestionChoice';
 import { IResponse } from '../interfaces/IResponse';
 import { ITrackerQuestion } from '../interfaces/ITrackerQuestion';
@@ -27,10 +21,6 @@ export const complianceItemFrequencies = [
 ];
 
 const useResponseUtils = () => {
-  const { settings } = useAppContext();
-  const comingUpTriggers = settings.find(
-    (el) => el.name === 'comingUpTriggers',
-  );
 
   const responseStatuses = {
     completed: 'Completed',
@@ -50,66 +40,14 @@ const useResponseUtils = () => {
     compliant: capitalize(t('compliant')),
   };
 
-  const getResponseTabItems = (response: IResponse) => {
-    const items = [{
-      index: 0,
-      label: 'Details',
-      icon: DetailIcon,
-      component: Details,
-    }];
-    if (response?.complianceItem?.allowAttachments || response?.complianceItem?.evidenceItems?.length > 0) {
-      items.push({
-        index: items.length,
-        label: 'Attachments',
-        icon: AttachmentIcon,
-        component: Attachments,
-      });
-    }
-    if (response.questions?.filter(({ outdated }) => !outdated).length > 0) {
-      items.push({
-        index: items.length,
-        label: capitalize(pluralize(t('question'))),
-        icon: QuestionIcon,
-        component: ResponseQuestions,
-      });
-    }
-    return items;
-  };
-
-  const getRenewalStatus = (response: IResponse) => {
-    if (!response) return;
-
-    const { daysToDueDate, status } = response;
-    if (
-      status === 'completed' &&
-      daysToDueDate !== undefined &&
-      response.complianceItem.frequency &&
-      daysToDueDate !== null &&
-      daysToDueDate <
-      comingUpTriggers?.value?.[response.complianceItem.frequency] &&
-      daysToDueDate >= 0
-    ) {
-      // If there is less then or equal comingUpTriggers value and at least 0 days to due date
-      return 'comingUp';
-    }
-    if (daysToDueDate && daysToDueDate < 0) {
-      // If there is less than 0 days to due date
-      return 'overdue';
-    }
-    // If there is more than comingUpTriggers value days to due date
-    // Return one of standard renewal status - "notStarted", "inProgress" or "completed"
-    return status;
-  };
-
   const getRenewalStatusText = (response: IResponse) => {
+    // TODO: fix and use
     if (!response) return;
 
-    const renewalStatus = getRenewalStatus(response);
+    const renewalStatus: string = response.calculatedStatus;
     const { daysToDueDate } = response;
     switch (renewalStatus) {
-      case 'notStarted':
-        return 'Not started';
-      case 'inProgress':
+      case 'draft':
         switch (true) {
           case daysToDueDate && daysToDueDate < -1:
             return `Due ${daysToDueDate && daysToDueDate * -1} days ago`;
@@ -124,18 +62,10 @@ const useResponseUtils = () => {
           default:
             return `Due in ${daysToDueDate} days`;
         }
-      case 'completed': {
+      case 'submitted': {
         const daysToNextRenewal =
-          differenceInDays(
-            startOfDay(new Date()),
-            startOfDay(
-              response.nextRenewalDate
-                ? new Date(response.nextRenewalDate)
-                : new Date(),
-            ),
-          ) * -1;
-        if (isInteger(daysToNextRenewal))
-          return `Next due in ${daysToNextRenewal} days`;
+          differenceInDays(startOfDay(new Date()), startOfDay(response.dueDate ? new Date(response.dueDate) : new Date())) * -1;
+        if (isInteger(daysToNextRenewal)) return `Next due in ${daysToNextRenewal} days`;
 
         return `Completed`;
       }
@@ -154,58 +84,31 @@ const useResponseUtils = () => {
     }
   };
 
-  const getStatus = (response: IResponse) => {
-    if (!response) return;
-
-    if (
-      response.status === 'completed' &&
-      (!response.daysToDueDate || response.daysToDueDate >= 0)
-    ) {
-      // If status is "completed" and (there is no due date or response is not overdue)
-      return 'compliant';
-    }
-    return 'nonCompliant';
-  };
-
   const isEvidenceUploaded = (response: IResponse) => {
     if (!response) return;
 
-    return response?.evidence
-      ?.filter(({ outdated }) => !outdated)
-      .every(({ uploaded }) => uploaded);
+    return response?.evidence?.every(({ uploaded }) => uploaded);
   };
 
   const areRequiredQuestionsAnswered = (response: IResponse) => {
     if (!response) return;
 
     return response?.questions
-      ?.filter(({ outdated, required }) => !outdated && required)
-      .every(
-        ({ value, type, requiredAnswer }: ITrackerQuestion<TQuestionValue>) => {
-          if (type === 'multipleChoice') {
-            return (value as IQuestionChoice[]).some(
-              (choice) => choice.isCorrect === true,
-            );
-          }
-          if (type === 'switch' && requiredAnswer) {
-            return (
-              (value === 'yes' && requiredAnswer === 'yes') ||
-              (value === 'no' && requiredAnswer === 'no')
-            );
-          }
-          return value || (typeof value === 'boolean' && value === false);
-        },
-      );
+      ?.filter(({ required }) => required)
+      .every(({ value, type, requiredAnswer }: ITrackerQuestion<TQuestionValue>) => {
+        if (type === 'multipleChoice')
+          return (value as IQuestionChoice[]).some((choice) => choice.isCorrect === true);
+        if (type === 'switch' && requiredAnswer)
+          return (value === 'yes' && requiredAnswer === 'yes') || (value === 'no' && requiredAnswer === 'no');
+        return value || (typeof value === 'boolean' && value === false);
+      });
   };
 
   return {
     responseStatuses,
     responseStatusesGroup,
-    getResponseTabItems,
-    areRequiredQuestionsAnswered,
-    getRenewalStatus,
     getRenewalStatusText,
-    getStatus,
+    areRequiredQuestionsAnswered,
     isEvidenceUploaded,
   };
 };

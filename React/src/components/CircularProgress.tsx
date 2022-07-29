@@ -1,9 +1,4 @@
-import {
-  Box,
-  CircularProgressLabel,
-  CircularProgress as Progress,
-  Text,
-} from '@chakra-ui/react';
+import { Box, CircularProgressLabel, CircularProgress as Progress, Text } from '@chakra-ui/react';
 
 import { EllipsisIcon } from '../icons';
 import { ICircularProgress } from '../interfaces/ICircularProgress';
@@ -28,11 +23,7 @@ const CircularProgress = ({ value }: ICircularProgress) => (
       value={value}
     >
       <CircularProgressLabel>
-        <Text
-          color="circularProgress.text"
-          fontSize="2xl"
-          fontWeight="900"
-        >{`${value.toString()}%`}</Text>
+        <Text color="circularProgress.text" fontSize="2xl" fontWeight="900">{`${value.toString()}%`}</Text>
         <Text color="circularProgress.text" fontSize="md" fontWeight="700">
           {value === 100 ? 'Completed' : 'In Progress'}
         </Text>

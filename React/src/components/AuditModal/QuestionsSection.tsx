@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Button, ButtonGroup, VStack } from '@chakra-ui/react';
 
-import {
-  groupQuestionsByCategory,
-  groupQuestionsByKLOE,
-  IGroupQuestion,
-} from '../../interfaces/IGroupQuestion';
+import { groupQuestionsByCategory, groupQuestionsByKLOE, IGroupQuestion } from '../../interfaces/IGroupQuestion';
 import QuestionAdditionalInformation from './QuestionAdditionalInformation';
 import QuestionGroup from './QuestionGroup';
 
@@ -45,36 +41,18 @@ const arrowPointerStyle = {
 const QuestionsSection = () => {
   const [questionGroups, setQuestionGroups] = useState<IGroupQuestion[]>([]);
   const [expandedItem, setExpandedItem] = useState<string>('');
-  const [selectedGroup, setSelectedGroup] = useState<'category' | 'kloe'>(
-    'category',
-  );
+  const [selectedGroup, setSelectedGroup] = useState<'category' | 'kloe'>('category');
   useEffect(() => {
-    setQuestionGroups(() =>
-      selectedGroup === 'category'
-        ? groupQuestionsByCategory
-        : groupQuestionsByKLOE,
-    );
+    setQuestionGroups(() => (selectedGroup === 'category' ? groupQuestionsByCategory : groupQuestionsByKLOE));
   }, [selectedGroup]);
   return (
     <Box>
       <ButtonGroup pr={2} spacing={2.5}>
         <Button
-          _after={
-            selectedGroup === 'category'
-              ? arrowPointerActiveStyle
-              : arrowPointerStyle
-          }
+          _after={selectedGroup === 'category' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
-          color={
-            selectedGroup === 'category'
-              ? 'white'
-              : 'auditModal.menu.active.text'
-          }
-          colorScheme={
-            selectedGroup === 'category'
-              ? 'auditModal.questionGroup.activeButton'
-              : 'auditModal.questionGroup.nonActiveButton'
-          }
+          color={selectedGroup === 'category' ? 'white' : 'auditModal.menu.active.text'}
+          colorScheme={selectedGroup === 'category' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('category')}
@@ -83,20 +61,10 @@ const QuestionsSection = () => {
           By Category
         </Button>
         <Button
-          _after={
-            selectedGroup === 'kloe'
-              ? arrowPointerActiveStyle
-              : arrowPointerStyle
-          }
+          _after={selectedGroup === 'kloe' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
-          color={
-            selectedGroup === 'kloe' ? 'white' : 'auditModal.menu.active.text'
-          }
-          colorScheme={
-            selectedGroup === 'kloe'
-              ? 'auditModal.questionGroup.activeButton'
-              : 'auditModal.questionGroup.nonActiveButton'
-          }
+          color={selectedGroup === 'kloe' ? 'white' : 'auditModal.menu.active.text'}
+          colorScheme={selectedGroup === 'kloe' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('kloe')}
@@ -105,21 +73,9 @@ const QuestionsSection = () => {
           By KLOE
         </Button>
       </ButtonGroup>
-      <VStack
-        maxH="calc(100% - 40px)"
-        mt={4}
-        overflow="auto"
-        pr={2}
-        spacing={2}
-        w="full"
-      >
+      <VStack maxH="calc(100% - 40px)" mt={4} overflow="auto" pr={2} spacing={2} w="full">
         {questionGroups.map((item) => (
-          <QuestionGroup
-            isExpanded={item.id === expandedItem}
-            key={item.id}
-            questionGroupItem={item}
-            setExpandedItem={setExpandedItem}
-          />
+          <QuestionGroup isExpanded={item.id === expandedItem} key={item.id} questionGroupItem={item} setExpandedItem={setExpandedItem} />
         ))}
       </VStack>
       <br />

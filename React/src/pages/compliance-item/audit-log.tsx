@@ -16,8 +16,8 @@ const GET_AUDIT_LOGS = gql`
     auditLog(auditLogsQuery: $auditLogsQuery) {
       _id
       totalAuditLogs
-      auditLogs{
-          records {
+      auditLogs {
+        records {
           action
           coll
           element {
@@ -43,21 +43,11 @@ const AuditLog = () => {
   const auditLogLimit = useMemo(() => {
     if (settings.length === 0) return 5;
 
-    if (
-      settings?.filter((settings) => settings.name === 'auditLogLimit')
-        .length === 0
-    )
-      return 5;
+    if (settings?.filter((settings) => settings.name === 'auditLogLimit').length === 0) return 5;
 
-    if (
-      settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
-        ?.value
-    ) {
-      return Number(
-        settings?.filter((settings) => settings.name === 'auditLogLimit')[0]
-          ?.value,
-      );
-    }
+    if (settings?.filter((settings) => settings.name === 'auditLogLimit')[0]?.value)
+      return Number(settings?.filter((settings) => settings.name === 'auditLogLimit')[0]?.value);
+
     return 5;
   }, [settings]);
 
@@ -101,40 +91,35 @@ const AuditLog = () => {
           const currentLog = newAcc.find(({ _id }) => _id === curr._id);
           if (currentLog) {
             curr.records.forEach((record) => {
-              if (
-                !currentLog.records.some(({ metatags: { addedAt } }) =>
-                  isEqual(new Date(record.metatags.addedAt), new Date(addedAt)),
-                )
-              ) {
-                setCountAuditLogs(prevValue => prevValue + 1)
+              if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt)))) {
+                setCountAuditLogs((prevValue) => prevValue + 1);
                 currentLog.records.push(record);
-
               }
             });
-            setIsLoadingMore(false)
+            setIsLoadingMore(false);
           } else {
             newAcc.push({
               _id: curr._id,
               records: curr.records.map((record, index) => {
-                setCountAuditLogs(index + 1)
+                setCountAuditLogs(index + 1);
                 return {
                   action: record.action,
                   coll: record.coll,
                   element: record.element,
                   values: record.values,
                   metatags: record.metatags,
-                }
+                };
               }),
             });
-            setIsLoadingMore(false)
+            setIsLoadingMore(false);
           }
           return newAcc;
         }, currentLogs),
       );
-      setTotalAuditLogs(data.auditLog.totalAuditLogs > 0 ? data.auditLog.totalAuditLogs : 0)
-      return
+      setTotalAuditLogs(data.auditLog.totalAuditLogs > 0 ? data.auditLog.totalAuditLogs : 0);
+      return;
     }
-    setCountAuditLogs(0)
+    setCountAuditLogs(0);
   }, [data]);
 
   useEffect(() => {
@@ -151,12 +136,7 @@ const AuditLog = () => {
         break;
 
       case 2:
-        setFieldsFilter([
-          'responsibleId',
-          'accountableId',
-          'contributorsIds',
-          'followersIds',
-        ]);
+        setFieldsFilter(['responsibleId', 'accountableId', 'contributorsIds', 'followersIds']);
         break;
       default:
         break;
@@ -164,46 +144,31 @@ const AuditLog = () => {
   }, [activeTab]);
 
   return (
-    <Flex
-      bg="white"
-      borderRadius="20px"
-      flexDir="column"
-      h="full"
-      overflow="auto"
-      p="25px 30px"
-      w="full"
-    >
+    <Flex bg="white" borderRadius="20px" flexDir="column" h="full" overflow="auto" p="25px 30px" w="full">
       <Flex mb="3">
         {auditTabs?.map(({ index, label }) => (
-          <TabItem
-            active={index === activeTab}
-            index={index}
-            key={index}
-            label={label}
-            setActiveTab={setActiveTab}
-          />
+          <TabItem active={index === activeTab} index={index} key={index} label={label} setActiveTab={setActiveTab} />
         ))}
       </Flex>
       <AuditLogComponent auditLogs={auditLogs} isLoadingMore={isLoadingMore} loading={loading} />
-      {!loading && (
-        totalAuditLogs === countAuditLogs
-          ?
+      {!loading &&
+        (totalAuditLogs === countAuditLogs ? (
           <Text color="auditLog.noLogs" mb={4}>
             No more logs
           </Text>
-          :
+        ) : (
           <Text
             color="auditLog.loadMore"
             cursor="pointer"
             mb={4}
             onClick={() => {
-              setSkip((prev) => prev + 5)
-              setIsLoadingMore(true)
+              setSkip((prev) => prev + 5);
+              setIsLoadingMore(true);
             }}
           >
             Load more audit logs
           </Text>
-      )}
+        ))}
     </Flex>
   );
 };

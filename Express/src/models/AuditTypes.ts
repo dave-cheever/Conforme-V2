@@ -230,24 +230,6 @@ auditTypesSchema.statics.customDelete = async function (
     },
   };
   const deletedResult = await this.updateOne(selector, updatedAuditType);
-
-  // if (deletedResult?.modifiedCount) {
-  //   const addAuditLog = async () => {
-  //     const oldValues = removeDatabaseFields(auditType);
-  //     const values = await getAuditRecordValues({ oldValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "delete",
-  //       element: {
-  //         _id: auditType._id,
-  //         name: auditType.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
-
   return deletedResult?.modifiedCount;
 };
 

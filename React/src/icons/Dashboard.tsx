@@ -19,24 +19,9 @@ const Dashboard = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M5 7H16"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M5 11H16"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M5 15H11"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M5 7H16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M5 11H16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M5 15H11" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

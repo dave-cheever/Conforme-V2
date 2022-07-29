@@ -8,17 +8,13 @@ import ComplianceItemSquare from './ComplianceItemSquare';
 
 const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
   const [filteredResults, setFilteredResults] = useState<any>({});
-  const { responseStatusesGroup, getStatus, getRenewalStatus } = useResponseUtils();
+  const { responseStatusesGroup } = useResponseUtils();
 
   useEffect(() => {
     const filteredResponses: any = {};
-    filteredResponses.compliant = responses.filter(
-      (response) => getStatus(response) === 'compliant' && getRenewalStatus(response) !== 'comingUp',
-    );
-    filteredResponses.comingUp = responses.filter(
-      (response) => getStatus(response) === 'compliant' && getRenewalStatus(response) === 'comingUp',
-    );
-    filteredResponses.nonCompliant = responses.filter((response) => getStatus(response) === 'nonCompliant');
+    filteredResponses.compliant = responses.filter((response) => response.calculatedStatus === 'compliant');
+    filteredResponses.comingUp = responses.filter((response) => response.calculatedStatus === 'comingUp');
+    filteredResponses.nonCompliant = responses.filter((response) => response.calculatedStatus === 'nonCompliant');
     setFilteredResults(filteredResponses);
   }, [responses]);
 
@@ -42,11 +38,11 @@ const ComplianceGridItems = ({ responses }: { responses: IResponse[] }) => {
       <Stack align="center" direction="column" pb={5} spacing={6} w="full">
         {filteredResults[group]
           ?.sort((a, b) => {
-            if (a.nextRenewalDate === null) return 1;
+            if (a.dueDate === null) return 1;
 
-            if (b.nextRenewalDate === null) return -1;
+            if (b.dueDate === null) return -1;
 
-            return a.nextRenewalDate && b.nextRenewalDate ? a.nextRenewalDate.toString().localeCompare(b.nextRenewalDate.toString()) : 0;
+            return a.dueDate && b.dueDate ? a.dueDate.toString().localeCompare(b.dueDate.toString()) : 0;
           })
           ?.map((response: IResponse) => (
             <ComplianceItemSquare key={response._id} response={response} />

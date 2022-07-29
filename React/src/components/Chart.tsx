@@ -47,24 +47,11 @@ const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
   };
 
   return (
-    <Flex
-      alignItems="center"
-      direction="column"
-      p="0 30px"
-      position="fixed"
-      right="30px"
-    >
+    <Flex alignItems="center" direction="column" p="0 30px" position="fixed" right="30px">
       <Box color="chart.labelFontColor" fontWeight="bold" mb="24px">
         Responses by {label}
       </Box>
-      <Box
-        alignItems="center"
-        bgColor="#DBDBDC"
-        borderRadius="100px"
-        height="173px"
-        justifyContent="center"
-        width="173px"
-      >
+      <Box alignItems="center" bgColor="#DBDBDC" borderRadius="100px" height="173px" justifyContent="center" width="173px">
         <Doughnut data={data} height={300} options={options} />
       </Box>
     </Flex>

@@ -1,17 +1,37 @@
+import { ReactElement } from 'react';
+
 import { Button, IconButton } from '@chakra-ui/react';
 
-const ResponseHeaderButton = ({ icon, name, onClick, loading = false }) => (
+const ResponseHeaderButton = ({
+  icon,
+  name,
+  onClick,
+  loading = false,
+  disabled = false,
+  primary = false,
+}: {
+  icon?: ReactElement<any, any>;
+  name: string;
+  onClick?: () => void;
+  loading?: boolean;
+  disabled?: boolean;
+  primary?: boolean;
+}) => (
   <>
     <Button
-      _hover={{
-        bg: 'reasponseHeader.buttonLightBgHover',
-        color: 'reasponseHeader.buttonLightColorHover',
-        cursor: 'pointer',
-        stroke: 'green',
-      }}
-      bg="reasponseHeader.buttonLightBg"
+      _hover={
+        disabled
+          ? {}
+          : {
+              bg: `reasponseHeader.button${primary ? 'Dark' : 'Light'}BgHover`,
+              color: `reasponseHeader.button${primary ? 'Dark' : 'Light'}ColorHover`,
+              cursor: 'pointer',
+            }
+      }
+      bg={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Bg`}
       borderRadius="10px"
-      color="reasponseHeader.buttonLightColor"
+      color={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Color`}
+      disabled={disabled}
       display={['none', 'none', 'flex']}
       fontSize="14px"
       fontWeight="bold"
@@ -25,14 +45,19 @@ const ResponseHeaderButton = ({ icon, name, onClick, loading = false }) => (
       {name}
     </Button>
     <IconButton
-      _hover={{
-        bg: 'reasponseHeader.buttonLightBgHover',
-        color: 'reasponseHeader.buttonLightColorHover',
-        cursor: 'pointer',
-      }}
+      _hover={
+        disabled
+          ? {}
+          : {
+              bg: `reasponseHeader.button${primary ? 'Dark' : 'Light'}BgHover`,
+              color: `reasponseHeader.button${primary ? 'Dark' : 'Light'}ColorHover`,
+              cursor: 'pointer',
+            }
+      }
       aria-label="Search database"
-      bg="reasponseHeader.buttonLightBg"
+      bg={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Bg`}
       borderRadius="10px"
+      disabled={disabled}
       display={['none', 'flex', 'none']}
       icon={icon}
       ml="15px"

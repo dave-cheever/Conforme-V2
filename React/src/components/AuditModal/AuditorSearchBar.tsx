@@ -1,14 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 
 import { SearchIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Collapse,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Collapse, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
 
 import { IAuditor } from '../../interfaces/IAuditor';
 import AuditModalContext from './AuditModalContext';
@@ -16,10 +9,7 @@ import Auditor from './Auditor';
 
 const AuditorSearchBar = () => {
   const modalContext = useContext(AuditModalContext);
-  const auditors = useMemo(
-    () => modalContext.auditors,
-    [modalContext.auditors],
-  );
+  const auditors = useMemo(() => modalContext.auditors, [modalContext.auditors]);
 
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -37,32 +27,21 @@ const AuditorSearchBar = () => {
         overflow="hidden"
         position="relative"
       >
-        <Text
-          fontSize="sm"
-          fontWeight="700"
-          padding="2px 15px"
-          position="absolute"
-          zIndex="999"
-        >
+        <Text fontSize="sm" fontWeight="700" padding="2px 15px" position="absolute" zIndex="999">
           Auditor name
         </Text>
         <InputGroup>
           <Input
             h="55px"
             onBlur={onBlur}
-            onChange={(e: any) =>
-              modalContext.updateAuditorSearchText(e.target.value)
-            }
+            onChange={(e: any) => modalContext.updateAuditorSearchText(e.target.value)}
             onFocus={onFocus}
             placeholder="Search Here"
             value={modalContext.auditorSearchText}
             variant="auditModalSearchInput"
           />
           <InputRightElement>
-            <SearchIcon
-              transform="translate(0px, 7px)"
-              transformOrigin="center"
-            />
+            <SearchIcon transform="translate(0px, 7px)" transformOrigin="center" />
           </InputRightElement>
         </InputGroup>
       </Box>
@@ -87,20 +66,11 @@ const AuditorSearchBar = () => {
                   modalContext.updateAuditorSearchText('');
                 }}
               >
-                <Auditor
-                  designation={auditor.designation}
-                  imgSrc={auditor.imgSrc}
-                  name={auditor.name}
-                />
+                <Auditor designation={auditor.designation} imgSrc={auditor.imgSrc} name={auditor.name} />
               </Box>
             ))
           ) : (
-            <Box
-              alignItems="center"
-              display="flex"
-              justifyContent="center"
-              p="10px 10px"
-            >
+            <Box alignItems="center" display="flex" justifyContent="center" p="10px 10px">
               <Text>No Auditors In The List</Text>
             </Box>
           )}

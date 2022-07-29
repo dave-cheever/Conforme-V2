@@ -14,7 +14,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
         const pipeline: any[] = [];
         join({
           pipeline,
-          collection: 'complianceItems',
+          collection: 'trackerItems',
           from: 'complianceItemId',
           to: 'complianceItem',
         });

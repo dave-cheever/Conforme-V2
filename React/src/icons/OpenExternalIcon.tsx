@@ -11,18 +11,8 @@ const OpenExternalIcon = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M9 1H13V5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M5.6665 8.33333L12.9998 1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M9 1H13V5" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M5.6665 8.33333L12.9998 1" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
 });

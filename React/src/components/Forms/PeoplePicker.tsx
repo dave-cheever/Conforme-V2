@@ -17,7 +17,7 @@ interface IPeoplePicker extends IField {
   variant?: string;
   help?: string;
   required?: boolean;
-  showAsDropdown?: boolean
+  showAsDropdown?: boolean;
 }
 
 const SEARCH_USERS = gql`
@@ -39,17 +39,21 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const UserData = (
-  { name, user, setShowResults, setSearchText, setSearchedInputValue, onChange }:
-    {
-      name: string,
-      user: IUser,
-      setShowResults: (x: boolean) => void,
-      setSearchText: (x: string) => void,
-      setSearchedInputValue: (x: string) => void,
-      onChange: (x: any) => void,
-    },
-) => (
+const UserData = ({
+  name,
+  user,
+  setShowResults,
+  setSearchText,
+  setSearchedInputValue,
+  onChange,
+}: {
+  name: string;
+  user: IUser;
+  setShowResults: (x: boolean) => void;
+  setSearchText: (x: string) => void;
+  setSearchedInputValue: (x: string) => void;
+  onChange: (x: any) => void;
+}) => (
   <Flex
     _hover={{
       cursor: 'pointer',
@@ -83,7 +87,7 @@ const UserData = (
       </Box>
     </Flex>
   </Flex>
-)
+);
 
 const PeoplePicker = ({
   control,
@@ -192,11 +196,11 @@ const PeoplePicker = ({
                 value={searchedInputValue}
                 zIndex={2}
               />
-              {!showAsDropdown &&
+              {!showAsDropdown && (
                 <InputLeftElement zIndex={50}>
                   <SearchIcon fill="peoplePicker.searchIcon" />
                 </InputLeftElement>
-              }
+              )}
 
               {!disabled && showAsDropdown && (
                 <InputRightElement cursor="pointer" onClick={() => setShowResults(!showResults)}>
@@ -217,27 +221,15 @@ const PeoplePicker = ({
                 zIndex={10}
               >
                 {loading ? (
-                  <Flex align="center" fontStyle="italic" h="50px" justifyContent={showAsDropdown ? 'center' : ''} px={3} w="full" >
+                  <Flex align="center" fontStyle="italic" h="50px" justifyContent={showAsDropdown ? 'center' : ''} px={3} w="full">
                     <Box mr={3} w="40px">
                       <Loader size="md" />
                     </Box>
                     {!showAsDropdown && 'Searching...'}
                   </Flex>
-                ) : users.length > 0 ?
-                  !showAsDropdown ? searchText &&
-                    (
-                      users.map((user) => (
-                        <UserData
-                          key={user._id}
-                          name={name}
-                          onChange={onChange}
-                          setSearchedInputValue={setSearchedInputValue}
-                          setSearchText={setSearchText}
-                          setShowResults={setShowResults}
-                          user={user}
-                        />
-                      ))
-                    ) : (
+                ) : users.length > 0 ? (
+                  !showAsDropdown ? (
+                    searchText &&
                     users.map((user) => (
                       <UserData
                         key={user._id}
@@ -246,19 +238,35 @@ const PeoplePicker = ({
                         setSearchedInputValue={setSearchedInputValue}
                         setSearchText={setSearchText}
                         setShowResults={setShowResults}
-                        user={user} />
+                        user={user}
+                      />
                     ))
                   ) : (
-                    !showAsDropdown ? searchText && <Flex align="center" fontStyle="italic" h="35px" pl={5}>
+                    users.map((user) => (
+                      <UserData
+                        key={user._id}
+                        name={name}
+                        onChange={onChange}
+                        setSearchedInputValue={setSearchedInputValue}
+                        setSearchText={setSearchText}
+                        setShowResults={setShowResults}
+                        user={user}
+                      />
+                    ))
+                  )
+                ) : !showAsDropdown ? (
+                  searchText && (
+                    <Flex align="center" fontStyle="italic" h="35px" pl={5}>
                       No results found
-                    </Flex> :
-                      <Flex align="center" fontStyle="italic" h="35px" pl={5}>
-                        No results found
-                      </Flex>
-                  )}
+                    </Flex>
+                  )
+                ) : (
+                  <Flex align="center" fontStyle="italic" h="35px" pl={5}>
+                    No results found
+                  </Flex>
+                )}
               </Flex>
-            )
-            }
+            )}
             {error && (
               <Box color="peoplePicker.error" fontSize="smm" mt={1} pl={3}>
                 {error.message}
@@ -272,7 +280,7 @@ const PeoplePicker = ({
                 </Box>
               </Flex>
             )}
-          </Box >
+          </Box>
         );
       }}
       rules={{ validate }}

@@ -28,5 +28,5 @@ export default defineConfig(({ mode }) => {
     server: {
       port: env.PORT ? Number(env.PORT) : 3000,
     },
-  }
+  };
 });

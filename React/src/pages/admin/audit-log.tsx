@@ -14,8 +14,8 @@ const GET_AUDIT_LOGS = gql`
     auditLog(auditLogsQuery: $auditLogsQuery) {
       _id
       totalAuditLogs
-      auditLogs{
-          records {
+      auditLogs {
+        records {
           action
           coll
           element {
@@ -83,31 +83,31 @@ const AuditLog = () => {
           if (currentLog) {
             curr.records.forEach((record) => {
               if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt)))) {
-                setCountAuditLogs(prevValue => prevValue + 1)
+                setCountAuditLogs((prevValue) => prevValue + 1);
                 currentLog.records.push(record);
               }
             });
-            setIsLoadingMore(false)
+            setIsLoadingMore(false);
           } else {
             newAcc.push({
               _id: curr._id,
               records: curr.records.map((record, index) => {
-                setCountAuditLogs(index + 1)
+                setCountAuditLogs(index + 1);
                 return {
                   action: record.action,
                   coll: record.coll,
                   element: record.element,
                   values: record.values,
                   metatags: record.metatags,
-                }
+                };
               }),
             });
-            setIsLoadingMore(false)
+            setIsLoadingMore(false);
           }
           return newAcc;
         }, currentLogs),
       );
-      setTotalAuditLogs(data?.auditLog?.totalAuditLogs > 0 ? data?.auditLog?.totalAuditLogs : 0)
+      setTotalAuditLogs(data?.auditLog?.totalAuditLogs > 0 ? data?.auditLog?.totalAuditLogs : 0);
     }
   }, [data]);
 
@@ -117,24 +117,24 @@ const AuditLog = () => {
       <Box h="calc(100vh - 150px)" overflow="auto" p="30px" pt="0px">
         <Flex bg="white" borderRadius="20px" flexDir="column" h="fit-content" pt="3" px="6">
           <AuditLogComponent auditLogs={auditLogs} isLoadingMore={isLoadingMore} loading={loading} />
-          {!loading && (
-            totalAuditLogs === countAuditLogs
-              ?
+          {!loading &&
+            (totalAuditLogs === countAuditLogs ? (
               <Text color="auditLog.noLogs" mb={4}>
                 No more logs
               </Text>
-              :
+            ) : (
               <Text
                 color="auditLog.loadMore"
                 cursor="pointer"
                 mb={4}
                 onClick={() => {
                   setSkip((prev) => prev + 5);
-                  setIsLoadingMore(true)
-                }}>
+                  setIsLoadingMore(true);
+                }}
+              >
                 Load more audit logs
               </Text>
-          )}
+            ))}
         </Flex>
       </Box>
     </>

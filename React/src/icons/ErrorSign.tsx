@@ -10,18 +10,8 @@ const ErrorSign = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M6 3.92041V5.83465"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6 7.74902H6.00574"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M6 3.92041V5.83465" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 7.74902H6.00574" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   ),
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Stack, Tooltip } from '@chakra-ui/react';
 
 import useValidate from '../../hooks/useValidate';
 import { Asterisk } from '../../icons';
@@ -54,6 +54,7 @@ const TextInput = ({
   tooltip = '',
   validations = {},
   disabled = false,
+  readMode = false,
   required,
   styles,
   initialValue,
@@ -65,8 +66,24 @@ const TextInput = ({
       control={control}
       name={name}
       render={({ field, fieldState }) => {
-        const { onChange, onBlur, value } = field;
+        const { value } = field;
         const { error } = fieldState;
+
+        const URLButton = () => (
+          <Button
+            bg="textInput.openLinkButtonBg"
+            color="textInput.openLinkButtonColor"
+            disabled={!value || error !== undefined}
+            fontSize="smm"
+            h="1.75rem"
+            onClick={() => {
+              if (!error) window.open(value.startsWith('http') ? value : `http://${value}`);
+            }}
+            w="80px"
+          >
+            Open link
+          </Button>
+        );
         return (
           <Box id={name} mt="none" w="full">
             {label && (
@@ -80,7 +97,7 @@ const TextInput = ({
                   zIndex={2}
                 >
                   {label}
-                  {required && (
+                  {required && !readMode && (
                     <Asterisk
                       fill="questionListElement.iconAsterisk"
                       h="9px"
@@ -98,57 +115,52 @@ const TextInput = ({
                 </Box>
               </Flex>
             )}
-            <InputGroup>
-              <Input
-                _active={{
-                  bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
-                }}
-                _disabled={{
-                  bg: 'textInput.disabled.bg',
-                  color: 'textInput.disabled.font',
-                  borderColor: 'textInput.disabled.border',
-                  cursor: 'not-allowed',
-                }}
-                _focus={{
-                  borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
-                }}
-                _hover={{ cursor: 'auto' }}
-                _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
-                autoComplete="off"
-                bg="textInput.bg"
-                borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
-                borderRadius="8px"
-                borderWidth="1px"
-                color="textInput.font"
-                cursor="pointer"
-                defaultValue={value}
-                fontSize="smm"
-                h="40px"
-                isDisabled={disabled}
-                maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                placeholder={placeholder}
-              />
-              {isUrl && (
-                <InputRightElement width="5.6rem">
-                  <Button
-                    bg="textInput.openLinkButtonBg"
-                    color="textInput.openLinkButtonColor"
-                    disabled={!value || error !== undefined}
-                    fontSize="smm"
-                    h="1.75rem"
-                    onClick={() => {
-                      if (!error) window.open(value.startsWith('http') ? value : `http://${value}`);
-                    }}
-                    w="80px"
-                  >
-                    Open link
-                  </Button>
-                </InputRightElement>
-              )}
-            </InputGroup>
+            {!readMode && (
+              <InputGroup>
+                <Input
+                  _active={{
+                    bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
+                  }}
+                  _disabled={{
+                    bg: 'textInput.disabled.bg',
+                    color: 'textInput.disabled.font',
+                    borderColor: 'textInput.disabled.border',
+                    cursor: 'not-allowed',
+                  }}
+                  _focus={{
+                    borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
+                  }}
+                  _hover={{ cursor: 'auto' }}
+                  _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
+                  autoComplete="off"
+                  bg="textInput.bg"
+                  borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  color="textInput.font"
+                  cursor="pointer"
+                  fontSize="smm"
+                  h="40px"
+                  isDisabled={disabled}
+                  maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
+                  placeholder={placeholder}
+                  {...field}
+                />
+                {isUrl && (
+                  <InputRightElement width="5.6rem">
+                    <URLButton />
+                  </InputRightElement>
+                )}
+              </InputGroup>
+            )}
+            {readMode && (
+              <Stack spacing={2}>
+                <Flex align="center" fontSize="smm" minH="40px" wordBreak="break-all">
+                  {value}
+                </Flex>
+                {isUrl && <URLButton />}
+              </Stack>
+            )}
             {error && (
               <Box color="textInput.error" fontSize={14} ml={1}>
                 {error.message}
@@ -181,8 +193,8 @@ export const textInputStyles = {
         error: '#E53E3E',
       },
     },
-    openLinkButtonBg: '#462AC4',
-    openLinkButtonColor: '#ffffff',
+    openLinkButtonBg: '#FFFFFF',
+    openLinkButtonColor: '#818197',
     activeBg: '#EEEEEE',
     disabled: {
       font: '#2B3236',

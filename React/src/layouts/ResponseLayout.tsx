@@ -34,16 +34,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
       <ResponseLeftNavigationTablet />
       <Flex direction="column" grow={1} w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
         <NavigationTop />
-        <Flex
-          bg="layout.bg"
-          flexDirection="column"
-          h={['calc(100vh - 134px)', 'calc(100vh - 80px)']}
-          mt={['72px', 0]}
-          overflow="auto"
-          pt={['25px', 0]}
-          top={[0, '80px']}
-          w="full"
-        >
+        <Flex bg="layout.bg" flexDirection="column" flexGrow={1} mt={['72px', 0]} overflow="auto" pt={[6, 0]} top={[0, '80px']} w="full">
           <ShareModal />
           <ReasponseHeader />
           {isTabletAndMobile && (
@@ -68,16 +59,8 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
               zIndex={5}
             />
           )}
-          <Flex h="full" px="25px" w="full">
-            <Flex
-              flexDirection="column"
-              h="full"
-              maxH={['none', 'calc(100vh - 210px)']}
-              minH={['none', 'calc(100vh - 200px)', 'calc(100vh - 210px)']}
-              pb="25px"
-              pt={['40px', '0px']}
-              w="full"
-            >
+          <Flex flexGrow={1} px={6} w="full">
+            <Flex flexDirection="column" h="full" maxH={['none', 'calc(100vh - 210px)']} pb={[20, 6]} w="full">
               <Component />
             </Flex>
             {device === 'desktop' && <ResponseChat />}

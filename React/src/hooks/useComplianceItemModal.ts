@@ -6,10 +6,7 @@ import { t } from 'i18next';
 
 import { toastFailed, toastSuccess } from '../bootstrap/config';
 import { AdminContext } from '../contexts/AdminProvider';
-import {
-  initialDialogDetails,
-  useComplianceItemModalContext,
-} from '../contexts/ComplianceItemModalProvider';
+import { initialDialogDetails, useComplianceItemModalContext } from '../contexts/ComplianceItemModalProvider';
 import { IComplianceItem } from '../interfaces/IComplianceItem';
 
 const CREATE_COMPLIANCE_ITEM = gql`
@@ -39,11 +36,10 @@ const CLONE_COMPLIANCE_ITEM = gql`
   }
 `;
 
-const useComplianceItemModal = (refetch = () => { }) => {
+const useComplianceItemModal = (refetch = () => {}) => {
   const toast = useToast();
   const { setAdminModalState } = useContext(AdminContext);
-  const { reset, setValue, selectedSectionIndex, setSavingDialogDetails } =
-    useComplianceItemModalContext();
+  const { reset, setValue, selectedSectionIndex, setSavingDialogDetails } = useComplianceItemModalContext();
   const [create] = useMutation(CREATE_COMPLIANCE_ITEM);
   const [update] = useMutation(UPDATE_COMPLIANCE_ITEM);
   const [remove] = useMutation(DELETE_COMPLIANCE_ITEM);
@@ -51,13 +47,11 @@ const useComplianceItemModal = (refetch = () => { }) => {
 
   const closeModal = useCallback(() => setAdminModalState('closed'), []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const saveComplianceItem = async (
-    complianceItemInput: Partial<IComplianceItem>,
-  ) => {
+  const saveComplianceItem = async (complianceItemInput: Partial<IComplianceItem>) => {
     try {
       setSavingDialogDetails((details) => ({
         ...details,
-        state: `Saving ${t('complianceItem')}`,
+        state: `Saving ${t('tracker item')}`,
       }));
       const changeState = setTimeout(() => {
         setSavingDialogDetails((details) => ({
@@ -76,16 +70,12 @@ const useComplianceItemModal = (refetch = () => { }) => {
       } else {
         const { data } = await create({ variables: { complianceItemInput } });
         savedComplianceItemId = data.createComplianceItem._id;
-        reset(
-          { ...complianceItemInput, _id: savedComplianceItemId },
-          selectedSectionIndex,
-        );
+        reset({ ...complianceItemInput, _id: savedComplianceItemId }, selectedSectionIndex);
       }
       refetch();
       toast({
         ...toastSuccess,
-        description: `${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'
-          }`,
+        description: `${complianceItemInput.name} ${complianceItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}`,
       });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
@@ -94,9 +84,7 @@ const useComplianceItemModal = (refetch = () => { }) => {
     }
   };
 
-  const deleteComplianceItem = async (
-    complianceItem: Partial<IComplianceItem>,
-  ) => {
+  const deleteComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
     try {
       await remove({ variables: { _id: complianceItem._id } });
       refetch();
@@ -111,13 +99,11 @@ const useComplianceItemModal = (refetch = () => { }) => {
     }
   };
 
-  const cloneComplianceItem = async (
-    complianceItem: Partial<IComplianceItem>,
-  ) => {
+  const cloneComplianceItem = async (complianceItem: Partial<IComplianceItem>) => {
     try {
       setSavingDialogDetails((details) => ({
         ...details,
-        state: `Saving ${t('complianceItem')}`,
+        state: `Saving ${t('tracker item')}`,
       }));
       const changeState = setTimeout(() => {
         setSavingDialogDetails((details) => ({

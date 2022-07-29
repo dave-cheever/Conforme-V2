@@ -12,10 +12,7 @@ const ModuleSwitcher = () => {
   const device = useDevice();
 
   const modulesInNavigation = useMemo(
-    () =>
-      organizationConfig?.modules?.filter(
-        ({ showInNavigation }) => !!showInNavigation,
-      ),
+    () => organizationConfig?.modules?.filter(({ showInNavigation }) => !!showInNavigation),
     [organizationConfig],
   );
 
@@ -24,11 +21,7 @@ const ModuleSwitcher = () => {
     window.location.assign(`/${module.path}`);
   };
 
-  if (
-    device === 'mobile' ||
-    (modulesInNavigation && modulesInNavigation.length < 2)
-  )
-    return null;
+  if (device === 'mobile' || (modulesInNavigation && modulesInNavigation.length < 2)) return null;
 
   return (
     <Stack backgroundColor="moduleSwitcher.background" p="5px" w="50px">
@@ -36,16 +29,8 @@ const ModuleSwitcher = () => {
         <Tooltip hasArrow key={m.path} label={m.name} placement="right">
           <Flex
             align="center"
-            backgroundColor={
-              m.path === module?.path
-                ? 'moduleSwitcher.button.active'
-                : 'moduleSwitcher.button.default'
-            }
-            color={
-              m.path === module?.path
-                ? 'moduleSwitcher.button.text.active'
-                : 'moduleSwitcher.button.text.default'
-            }
+            backgroundColor={m.path === module?.path ? 'moduleSwitcher.button.active' : 'moduleSwitcher.button.default'}
+            color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'moduleSwitcher.button.text.default'}
             cursor={m.path === module?.path ? 'default' : 'pointer'}
             fontSize="md"
             h="40px"

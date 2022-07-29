@@ -14,28 +14,12 @@ const Auditor = ({ name, designation, imgSrc }: IAuditor) => (
     justifyContent="start"
     p="10px 10px"
   >
-    <Avatar
-      bg="auditModal.participants.avatar.bg"
-      h="36px"
-      lineHeight="0px"
-      mr="15px"
-      name={name}
-      src={imgSrc}
-      w="36px"
-    />
+    <Avatar bg="auditModal.participants.avatar.bg" h="36px" lineHeight="0px" mr="15px" name={name} src={imgSrc} w="36px" />
     <Box>
-      <Text
-        color="auditModal.participants.avatar.text.name"
-        fontSize="md"
-        fontWeight="400"
-      >
+      <Text color="auditModal.participants.avatar.text.name" fontSize="md" fontWeight="400">
         {name}
       </Text>
-      <Text
-        color="auditModal.participants.avatar.text.designation"
-        fontSize="sm"
-        fontWeight="400"
-      >
+      <Text color="auditModal.participants.avatar.text.designation" fontSize="sm" fontWeight="400">
         {designation}
       </Text>
     </Box>

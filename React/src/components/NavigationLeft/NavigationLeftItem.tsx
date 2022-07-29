@@ -110,7 +110,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
             }
             return <SubSection key={subSection.label} menuOpen={menuOpen} setMenuOpen={setMenuOpen} subsection={subSection} />;
           })}
-        {isPathActive(url, { exact: true }) && !showFiltersPanel && isTrackerComponent && (
+        {isPathActive(url, { exact: true }) && !showFiltersPanel && isTrackerComponent && responsesStatusesCounts && (
           <>
             {Object.keys(responsesStatusesCounts).length !== 0 && (
               <NavigationLeftFilters

@@ -7,16 +7,10 @@ import { actions } from '../../hooks/useFiltersUtils';
 
 const ActionFilter = () => {
   const { filtersValues, setFilters } = useFiltersContext();
-  const value = useMemo(
-    () => filtersValues.action?.value,
-    [filtersValues],
-  ) as string[];
+  const value = useMemo(() => filtersValues.action?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup
-      onChange={(newValue) => setFilters({ action: newValue })}
-      value={value}
-    >
+    <CheckboxGroup onChange={(newValue) => setFilters({ action: newValue })} value={value}>
       <Stack direction="column" ml="4">
         {Object.entries(actions).map(([key, label]) => (
           <Checkbox

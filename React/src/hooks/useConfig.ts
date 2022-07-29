@@ -92,7 +92,7 @@ const useConfig = () => {
   const trackerMenuItems: INavItem[] = [
     {
       type: 'menuItem',
-      label: pluralize(t('complianceItem')),
+      label: pluralize(t('tracker item')),
       url: '/dashboard',
       icon: Home,
       permission: 'home.view',
@@ -110,11 +110,11 @@ const useConfig = () => {
       icon: Admin,
       permission: 'adminPanel.view',
       subSections: [
-        { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items' },
+        { label: capitalize(pluralize(t('tracker item'))), url: '/admin/compliance-items' },
         { label: 'Regulatory bodies', url: '/admin/regulatory-bodies' },
         { label: 'Categories', url: '/admin/categories' },
         { label: 'Locations', url: '/admin/locations' },
-        { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units' },
+        { label: pluralize(capitalize(t('business unit'))), url: '/admin/business-units' },
         { label: 'Users', url: '/admin/users' },
         { label: 'Audit log', url: '/admin/audit-log' },
         { label: 'Other settings', url: '/admin/settings' },
@@ -124,7 +124,7 @@ const useConfig = () => {
 
   const initialFilters: IFilters = {
     complianceItemsIds: {
-      name: capitalize(t('complianceItem')),
+      name: capitalize(t('tracker item')),
       value: [],
     },
     categoriesIds: {
@@ -132,7 +132,7 @@ const useConfig = () => {
       value: [],
     },
     businessUnitsIds: {
-      name: capitalize(t('businessUnit')),
+      name: capitalize(t('business unit')),
       value: [],
     },
     itemStatus: {
@@ -184,11 +184,11 @@ const useConfig = () => {
   ];
 
   const trackerAddItems = [
-    { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items', icon: BlankPage },
+    { label: capitalize(pluralize(t('tracker item'))), url: '/admin/compliance-items', icon: BlankPage },
     { label: 'Regulatory bodies', url: '/admin/regulatory-bodies', icon: RegulatoryBodyIcon },
     { label: 'Categories', url: '/admin/categories', icon: CategoryIcon },
     { label: 'Locations', url: '/admin/locations', icon: LocationIcon },
-    { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units', icon: TeamsIcon },
+    { label: pluralize(capitalize(t('business unit'))), url: '/admin/business-units', icon: TeamsIcon },
   ];
 
   return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems, trackerAddItems, auditAddItems };

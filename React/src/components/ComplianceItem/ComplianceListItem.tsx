@@ -2,13 +2,11 @@ import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
-import useResponseUtils from '../../hooks/useResponseUtils';
 import { Close, LocationIcon, TickIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 
 const ComplianceListItem = ({ response }: { response: IResponse }) => {
   const { navigateTo } = useNavigate();
-  const { getStatus } = useResponseUtils();
 
   return (
     <Box
@@ -40,15 +38,11 @@ const ComplianceListItem = ({ response }: { response: IResponse }) => {
         </Flex>
         <Flex w="12%">
           <Flex color="complianceList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
-            {response?.nextRenewalDate ? (
-              format(new Date(response?.nextRenewalDate), 'd MMM yyyy')
-            ) : (
-              <Flex fontStyle="italic">No due date</Flex>
-            )}
+            {response?.dueDate ? format(new Date(response?.dueDate), 'd MMM yyyy') : <Flex fontStyle="italic">No due date</Flex>}
           </Flex>
         </Flex>
         <Flex w="10%">
-          {response && getStatus(response) === 'nonCompliant' ? (
+          {response && response.calculatedStatus === 'nonCompliant' ? (
             <Flex align="center">
               <Close mr={2} stroke="complianceList.crossIcon" />
               <Flex color="complianceList.crossIcon" fontSize="14px" fontWeight="700">

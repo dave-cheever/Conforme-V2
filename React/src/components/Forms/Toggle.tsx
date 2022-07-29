@@ -43,26 +43,15 @@ const Toggle = ({
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box
-            id={name}
-            mt={variant !== 'secondaryVariant' ? 2 : 'none'}
-            w="full"
-          >
+          <Box id={name} mt={variant !== 'secondaryVariant' ? 2 : 'none'} w="full">
             {label && (
-              <Flex
-                align="center"
-                justify="space-between"
-                mb={variant !== 'secondaryVariant' ? '-32px' : 'none'}
-                pt={2}
-              >
+              <Flex align="center" justify="space-between" mb={variant !== 'secondaryVariant' ? '-32px' : 'none'} pt={2}>
                 <Box
                   color={error ? 'switch.label.error' : 'switch.label.normal'}
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
                   left={variant !== 'secondaryVariant' ? '19px' : 'none'}
-                  position={
-                    variant !== 'secondaryVariant' ? 'relative' : 'static'
-                  }
+                  position={variant !== 'secondaryVariant' ? 'relative' : 'static'}
                   zIndex={1}
                 >
                   {label}{' '}
@@ -90,12 +79,7 @@ const Toggle = ({
                 onBlur={onBlur}
                 onChange={onChange}
               />
-              <Flex
-                color={value ? 'toogle.enableColor' : 'toogle.disableColor'}
-                fontSize="14px"
-                fontWeight="400"
-                ml={3}
-              >
+              <Flex color={value ? 'toogle.enableColor' : 'toogle.disableColor'} fontSize="14px" fontWeight="400" ml={3}>
                 {value ? trueLabel : falseLabel}
               </Flex>
             </Flex>

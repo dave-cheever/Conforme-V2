@@ -10,9 +10,7 @@ const TabItem = ({ label, setActiveTab, active, index }) => {
   return (
     <Flex
       _hover={{
-        color: active
-          ? 'settingsTabItem.activeColor'
-          : 'settingsTabItem.hoverColor',
+        color: active ? 'settingsTabItem.activeColor' : 'settingsTabItem.hoverColor',
       }}
       align="center"
       bg={active ? 'settingsTabItem.activeBg' : 'settingsTabItem.bg'}

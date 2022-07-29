@@ -38,6 +38,7 @@ export const complianceItemsTypeDefs = `
     regulatoryBody: BaseWithName
     dueDate: Date
     dueDateCalculation: String
+    dueDateEditable: Boolean
     frequency: String
     businessUnitsIds: [ID!]
     locations: [Location]
@@ -67,6 +68,7 @@ export const complianceItemsTypeDefs = `
     regulatoryBodyId: ID
     dueDate: Date
     dueDateCalculation: String
+    dueDateEditable: Boolean
     frequency: String
     businessUnitsIds: [ID!]
     locationsIds: [ID!]
@@ -93,6 +95,7 @@ export const complianceItemsTypeDefs = `
     regulatoryBodyId: ID
     dueDate: Date
     dueDateCalculation: String
+    dueDateEditable: Boolean
     frequency: String
     businessUnitsIds: [ID!]
     locationsIds: [ID!]

@@ -43,11 +43,7 @@ const NumberInput = ({
             {label && (
               <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'numberInput.labelFont.error'
-                      : 'numberInput.labelFont.normal'
-                  }
+                  color={error ? 'numberInput.labelFont.error' : 'numberInput.labelFont.normal'}
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
                   left="none"
@@ -65,9 +61,7 @@ const NumberInput = ({
             )}
             <Input
               _active={{
-                bg: disabled
-                  ? 'numberInput.disabled.bg'
-                  : 'numberInput.activeBg',
+                bg: disabled ? 'numberInput.disabled.bg' : 'numberInput.activeBg',
               }}
               _disabled={{
                 bg: 'numberInput.disabled.bg',
@@ -76,16 +70,12 @@ const NumberInput = ({
                 cursor: 'not-allowed',
               }}
               _focus={{
-                borderColor: error
-                  ? 'numberInput.border.focus.error'
-                  : 'numberInput.border.focus.normal',
+                borderColor: error ? 'numberInput.border.focus.error' : 'numberInput.border.focus.normal',
               }}
               _hover={{ cursor: 'auto' }}
               _placeholder={{ color: 'numberInput.placeholder' }}
               bg="numberInput.bg"
-              borderColor={
-                error ? 'numberInput.border.error' : 'numberInput.border.normal'
-              }
+              borderColor={error ? 'numberInput.border.error' : 'numberInput.border.normal'}
               borderRadius="8px"
               borderWidth="1px"
               color="numberInput.font"
@@ -93,17 +83,11 @@ const NumberInput = ({
               defaultValue={value}
               h="42px"
               isDisabled={disabled}
-              maxLength={
-                validations && validations.forceMaxLength
-                  ? (validations.maxLength as number)
-                  : undefined
-              }
+              maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
               mt="3"
               name={name}
               onBlur={onBlur}
-              onChange={(e) =>
-                onChange({ name, target: { value: Number(e.target.value) } })
-              }
+              onChange={(e) => onChange({ name, target: { value: Number(e.target.value) } })}
               placeholder={variant === 'secondaryVariant' ? '' : placeholder}
               pt="none"
               type="number"

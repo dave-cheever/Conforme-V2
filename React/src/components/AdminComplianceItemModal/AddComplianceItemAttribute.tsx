@@ -2,17 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation } from '@apollo/client';
-import {
-  Box,
-  Button,
-  Flex,
-  Modal,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Modal, ModalCloseButton, ModalContent, ModalOverlay, useDisclosure, useToast } from '@chakra-ui/react';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import TextInput from '../Forms/TextInput';
@@ -22,10 +12,7 @@ interface IAddComplianceItemAttribute {
   refetch: () => void;
   attributeType: 'Category' | 'Regulatory body' | undefined;
   onAction: (action: 'close') => void;
-  newAttributeValue: (arg0: {
-    value: string;
-    type: 'category' | 'regulatoryBody';
-  }) => void;
+  newAttributeValue: (arg0: { value: string; type: 'category' | 'regulatoryBody' }) => void;
 }
 
 const CREATE_CATEGORY = gql`
@@ -46,13 +33,7 @@ const CREATE_REGULATORY_BODY = gql`
   }
 `;
 
-const AddComplianceItemAttribute = ({
-  isOpenModal,
-  onAction,
-  attributeType,
-  newAttributeValue,
-  refetch,
-}: IAddComplianceItemAttribute) => {
+const AddComplianceItemAttribute = ({ isOpenModal, onAction, attributeType, newAttributeValue, refetch }: IAddComplianceItemAttribute) => {
   const { onClose } = useDisclosure();
   const [createCategory] = useMutation(CREATE_CATEGORY);
   const [createRegulatoryBody] = useMutation(CREATE_REGULATORY_BODY);
@@ -83,9 +64,7 @@ const AddComplianceItemAttribute = ({
     [],
   );
 
-  const addAttribute = async (
-    type: 'Category' | 'Regulatory body' | undefined,
-  ) => {
+  const addAttribute = async (type: 'Category' | 'Regulatory body' | undefined) => {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
@@ -131,9 +110,7 @@ const AddComplianceItemAttribute = ({
     }
   };
 
-  const onAddAction = async (
-    type: 'Category' | 'Regulatory body' | undefined,
-  ) => {
+  const onAddAction = async (type: 'Category' | 'Regulatory body' | undefined) => {
     const isFormValid = await trigger();
     if (!isFormValid) {
       return toast({

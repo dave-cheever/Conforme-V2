@@ -13,12 +13,7 @@ interface IQuestionListElement {
   removeQuestion?: () => void;
   editQuestion?: () => void;
 }
-const QuestionListElement = ({
-  question,
-  bgColor,
-  removeQuestion,
-  editQuestion,
-}: IQuestionListElement) => {
+const QuestionListElement = ({ question, bgColor, removeQuestion, editQuestion }: IQuestionListElement) => {
   const ref: any = useRef(null);
   const [isTextOverflown, setIsTextOverflown] = useState(false);
 
@@ -56,44 +51,17 @@ const QuestionListElement = ({
             label={question.name}
             placement="top"
           >
-            <Text
-              color="questionListElement.name"
-              fontSize="smm"
-              fontWeight="bold"
-              noOfLines={4}
-              ref={ref}
-            >
+            <Text color="questionListElement.name" fontSize="smm" fontWeight="bold" noOfLines={4} ref={ref}>
               {question.name}
             </Text>
           </Tooltip>
           {question.required && (
-            <Asterisk
-              fill="questionListElement.iconAsterisk"
-              h="9px"
-              mb="8px"
-              ml="5px"
-              stroke="questionListElement.iconAsterisk"
-              w="9px"
-            />
+            <Asterisk fill="questionListElement.iconAsterisk" h="9px" mb="8px" ml="5px" stroke="questionListElement.iconAsterisk" w="9px" />
           )}
         </Flex>
       </Flex>
-      {editQuestion && (
-        <EditIcon
-          cursor="pointer"
-          onClick={editQuestion}
-          stroke="questionListElement.icon"
-          w="20px"
-        />
-      )}
-      {removeQuestion && (
-        <Trashcan
-          cursor="pointer"
-          onClick={removeQuestion}
-          stroke="questionListElement.icon"
-          w="20px"
-        />
-      )}
+      {editQuestion && <EditIcon cursor="pointer" onClick={editQuestion} stroke="questionListElement.icon" w="20px" />}
+      {removeQuestion && <Trashcan cursor="pointer" onClick={removeQuestion} stroke="questionListElement.icon" w="20px" />}
     </Stack>
   );
 };

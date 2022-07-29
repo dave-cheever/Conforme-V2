@@ -31,7 +31,7 @@ const addDocuments = async (
     };
     if (documentType === 'evidence') {
       const evidence = update.evidence?.find(
-        (evidence) => evidence.name === documentName && !evidence.outdated,
+        (evidence) => evidence.name === documentName,
       );
       if (!evidence) throw new Error("Evidence doesn't exist");
 

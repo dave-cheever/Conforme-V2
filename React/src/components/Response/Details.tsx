@@ -1,59 +1,36 @@
-import React, { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import DatePicker from 'react-datepicker';
 
 import { gql, useMutation } from '@apollo/client';
-import { Button, CircularProgress, Flex, Grid, Text } from '@chakra-ui/react';
-import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
+import { Button, Flex, Grid, Text, VStack } from '@chakra-ui/react';
 import format from 'date-fns/format';
-import isToday from 'date-fns/isToday';
 
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { ArrowDownIcon } from '../../icons';
 import Can from '../can';
 import DescriptionText from './DescriptionText';
 import EditButton from './EditButton';
+import ResponseQuestions from './ResponseQuestions';
 
-const UPDATE_RESPONSE = gql`
+const UPDATE_DUE_DATE = gql`
   mutation ($updateResponseModify: UpdateResponseModify!) {
     updateResponse(updateResponseModify: $updateResponseModify) {
-      nextRenewalDate
+      dueDate
     }
   }
 `;
 
 const Details = () => {
-  const { response, snapshot, refetch } = useResponseContext();
-  const [updateResponse] = useMutation(UPDATE_RESPONSE);
+  const { response, snapshot, refetch, activeTab, setActiveTab, handleRenewalOpen } = useResponseContext();
+  const [updateDueDate] = useMutation(UPDATE_DUE_DATE);
   const startRef = useRef<DatePicker>();
 
-  const progress = useMemo(() => {
-    if (response?.daysToDueDate === undefined) return -1;
-
-    if (response.lastCompletionDate && response.nextRenewalDate) {
-      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.lastCompletionDate));
-
-      if (isToday(new Date(response.nextRenewalDate))) return (1 / totalDays) * 100;
-
-      return (response.daysToDueDate / totalDays) * 100;
-    }
-
-    if (response.metatags?.addedAt && response.nextRenewalDate) {
-      const totalDays = differenceInCalendarDays(new Date(response.nextRenewalDate), new Date(response.metatags.addedAt));
-
-      if (isToday(new Date(response.nextRenewalDate))) return (1 / totalDays) * 100;
-
-      return (response.daysToDueDate / totalDays) * 100;
-    }
-
-    return -1;
-  }, [response]);
-
   const updateResponseDate = async (date) => {
-    await updateResponse({
+    await updateDueDate({
       variables: {
         updateResponseModify: {
           _id: response._id,
-          nextRenewalDate: date,
+          dueDate: date,
         },
       },
     });
@@ -62,75 +39,64 @@ const Details = () => {
   };
 
   if (!response) return null;
-
   return (
-    <Flex flexDir="column" h="full" minH={['30vh', 'none']} overflow={['visible', 'auto']} w="full">
-      <Grid gap={[3, 6]} mb={5} templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}>
-        <Flex align="center" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
+    <VStack align="flex-start" h="full" minH={['30vh', 'none']} overflow="visible" pb="25px" spacing={8} w="full">
+      <VStack align="flex-start">
+        {response?.complianceItem?.description && (
+          <Text color="responseRenewalDetails.labelColor" fontSize="14px">
+            Description
+          </Text>
+        )}
+        <DescriptionText />
+      </VStack>
+      <Grid gap={[3, 6]} mt={4} templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']} w="full">
+        <Flex align="center" cursor="pointer" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
           <Flex
             align={['center', 'flex-start']}
             bg="responseRenewalDetails.bg"
+            border={activeTab === 0 ? '1px solid #ccc' : 'null'}
             borderRadius="10px"
+            boxShadow={activeTab === 0 ? 'simple' : 'null'}
             flexDir="column"
             mb={[1, 0]}
             mr={[0, 5]}
+            onClick={() => setActiveTab(0)}
             p="10px 20px"
             w="full"
           >
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
-              First completed
+              Last reviewed
             </Text>
             <Text color="responseRenewalDetails.textColor" fontSize="14px">
-              {response.firstCompletionDate ? format(new Date(response.firstCompletionDate), 'dd MMMM yyyy') : 'N/A'}
-            </Text>
-          </Flex>
-          <ArrowDownIcon color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />
-        </Flex>
-        <Flex align="center" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
-          <Flex
-            align={['center', 'flex-start']}
-            bg="responseRenewalDetails.bg"
-            borderRadius="10px"
-            flexDir="column"
-            mb={[1, 0]}
-            mr={[0, 5]}
-            p="10px 20px"
-            w="full"
-          >
-            <Text color="responseRenewalDetails.labelColor" fontSize="11px">
-              Last completed
-            </Text>
-            <Text color="responseRenewalDetails.textColor" fontSize="14px">
-              {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'N/A'}
+              {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'Never reviewed before'}
             </Text>
           </Flex>
           <ArrowDownIcon color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />
         </Flex>
         <Flex
           align="center"
-          bg="responseRenewalDetails.nextRenewalBg"
+          bg="responseRenewalDetails.bg"
+          border={activeTab === 1 ? '1px solid #ccc' : 'null'}
           borderRadius="10px"
+          boxShadow={activeTab === 1 ? 'simple' : 'null'}
+          cursor="pointer"
           h="full"
           justify="space-between"
+          onClick={() => {
+            if (response.status === 'submitted') handleRenewalOpen();
+            else setActiveTab(1);
+          }}
           p="10px 20px"
           position="relative"
           w="full"
         >
-          {progress >= 0 && (
-            <CircularProgress
-              color={progress <= 10 ? 'red' : 'responseRenewalDetails.progressColor'}
-              display={['none', 'block']}
-              size="28px"
-              value={progress}
-            />
-          )}
-          <Flex align={['center', 'flex-start']} flexDir="column" ml={progress >= 0 ? 3 : 0} w="full">
+          <Flex align={['center', 'flex-start']} flexDir="column" w="full">
             <Text color="responseRenewalDetails.labelColor" fontSize="11px">
-              Due for renewal
+              Perform new review by
             </Text>
             <Flex>
               <Text color="responseRenewalDetails.textColor" fontSize="14px">
-                {response.nextRenewalDate ? format(new Date(response.nextRenewalDate), 'dd MMMM yyyy') : 'No due date'}
+                {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
               </Text>
               {!snapshot && (
                 <Can
@@ -145,7 +111,7 @@ const Details = () => {
                         dropdownMode="select"
                         onChange={(date) => updateResponseDate(date)}
                         ref={startRef}
-                        selected={response?.nextRenewalDate ? new Date(response?.nextRenewalDate) : new Date()}
+                        selected={response?.dueDate ? new Date(response?.dueDate) : new Date()}
                         showYearDropdown
                       >
                         <Button colorScheme="purpleHeart" onClick={() => updateResponseDate(null)} size="sm" w="full">
@@ -160,13 +126,8 @@ const Details = () => {
           </Flex>
         </Flex>
       </Grid>
-      {response?.complianceItem?.description && (
-        <Text color="responseRenewalDetails.labelColor" fontSize="14px">
-          Description
-        </Text>
-      )}
-      <DescriptionText />
-    </Flex>
+      <ResponseQuestions disabled={activeTab === 0} />
+    </VStack>
   );
 };
 

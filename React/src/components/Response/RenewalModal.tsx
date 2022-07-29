@@ -14,7 +14,7 @@ const RENEW_RESPONSE = gql`
   mutation ($_id: ID!) {
     renewResponse(_id: $_id) {
       _id
-      nextRenewalDate
+      dueDate
     }
   }
 `;
@@ -30,6 +30,11 @@ const RenewalModal = () => {
     if (!isRenewalOpen) setRenewedResponse(undefined);
   }, [isRenewalOpen]);
 
+  const handleViewRenewed = async () => {
+    handleRenewalClose();
+    setActiveTab(1);
+  };
+
   const renew = async () => {
     setLoading(true);
     const renewed = await renewResponse({
@@ -37,14 +42,10 @@ const RenewalModal = () => {
         _id: response._id,
       },
     });
-    await refetch();
+    refetch();
     setRenewedResponse(renewed.data.renewResponse);
     setLoading(false);
-  };
-
-  const handleViewRenewed = async () => {
-    handleRenewalClose();
-    setActiveTab(0);
+    handleViewRenewed();
   };
 
   return (
@@ -58,13 +59,14 @@ const RenewalModal = () => {
             <Loader center />
           ) : !renewedResponse ? (
             <Text>
-              You are about to renew <b>{response?.complianceItem?.name}</b> {t('complianceItem')} for <b>{response?.businessUnit?.name}</b>
-              .&nbsp; That will move existing evidence to history and allow you to fill the response with new data.&nbsp;
+              You are about to start new review of <b>{response?.complianceItem?.name}</b> {t('tracker item')} for{' '}
+              <b>{response?.businessUnit?.name}</b>
+              .&nbsp; That will move existing data to history and allow you to fill the response with new data.&nbsp;
             </Text>
           ) : (
             <Text>
               <b>{response?.complianceItem?.name}</b> for <b>{response?.businessUnit?.name}</b> was renewed.&nbsp; Complete it before{' '}
-              <b>{moment(renewedResponse?.nextRenewalDate).format('D MMM YYYY')}</b>.
+              <b>{moment(renewedResponse?.dueDate).format('D MMM YYYY')}</b>.
             </Text>
           )}
         </ModalBody>
@@ -82,7 +84,7 @@ const RenewalModal = () => {
                   Cancel
                 </Button>
                 <Button bg="renewResponseModal.buttons.primary.bg" color="renewResponseModal.buttons.primary.color" onClick={renew}>
-                  Renew
+                  Start review
                 </Button>
               </>
             ) : (

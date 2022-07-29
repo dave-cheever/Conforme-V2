@@ -6,24 +6,11 @@ import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModa
 import { ArrowRight, ErrorSign } from '../../icons';
 
 const NavigationMobileModal = () => {
-  const {
-    complianceItemModalSections,
-    selectedSectionIndex,
-    selectSection,
-    errors,
-    trigger,
-  } = useComplianceItemModalContext();
+  const { complianceItemModalSections, selectedSectionIndex, selectSection, errors, trigger } = useComplianceItemModalContext();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      mb="30px"
-      mt="8px"
-      onClick={() => setIsOpen(!isOpen)}
-      pos="relative"
-    >
+    <Flex alignItems="center" justifyContent="space-between" mb="30px" mt="8px" onClick={() => setIsOpen(!isOpen)} pos="relative">
       <Flex alignItems="center">
         <Flex
           alignItems="center"
@@ -40,11 +27,7 @@ const NavigationMobileModal = () => {
         >
           {selectedSectionIndex + 1}
         </Flex>
-        <Text
-          color="navigationMobileModal.section.label"
-          fontSize="14px"
-          fontWeight="bold"
-        >
+        <Text color="navigationMobileModal.section.label" fontSize="14px" fontWeight="bold">
           {complianceItemModalSections[selectedSectionIndex].name}
         </Text>
       </Flex>
@@ -63,10 +46,7 @@ const NavigationMobileModal = () => {
             <ErrorSign stroke="navigationMobileModal.icon.error" />
           </Flex>
         )}
-        <ArrowRight
-          stroke="navigationMobileModal.icon.arrow"
-          transform="rotate(90deg)"
-        />
+        <ArrowRight stroke="navigationMobileModal.icon.arrow" transform="rotate(90deg)" />
       </Flex>
       {isOpen && (
         <Flex
@@ -84,19 +64,10 @@ const NavigationMobileModal = () => {
           {complianceItemModalSections.map((section, i) => (
             <Flex
               alignItems="center"
-              bg={
-                i === selectedSectionIndex
-                  ? 'navigationMobileModal.section.selectedBg'
-                  : 'navigationMobileModal.section.unselectedBg'
-              }
+              bg={i === selectedSectionIndex ? 'navigationMobileModal.section.selectedBg' : 'navigationMobileModal.section.unselectedBg'}
               key={i}
               onClick={() => {
-                trigger(
-                  Object.keys(
-                    complianceItemModalSections[selectedSectionIndex].fields ||
-                      [],
-                  ) as any,
-                );
+                trigger(Object.keys(complianceItemModalSections[selectedSectionIndex].fields || []) as any);
                 selectSection(i);
               }}
               p="10px"
@@ -116,11 +87,7 @@ const NavigationMobileModal = () => {
               >
                 {i + 1}
               </Flex>
-              <Text
-                color="navigationMobileModal.section.label"
-                fontSize="ssm"
-                fontWeight="bold"
-              >
+              <Text color="navigationMobileModal.section.label" fontSize="ssm" fontWeight="bold">
                 {section.name}
               </Text>
             </Flex>

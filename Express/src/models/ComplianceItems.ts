@@ -8,7 +8,6 @@ import {
   IAuditValues,
   IComplianceItem,
   IComplianceItemModel,
-  IQuestionChoice,
   IResponse,
 } from 'app-interfaces';
 import {
@@ -45,6 +44,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
       'fromCompletionDate',
     ],
   },
+  dueDateEditable: Boolean,
   frequency: String,
   businessUnitsIds: [String],
   evidenceItems: [String],
@@ -145,6 +145,7 @@ const getAuditRecordValues = async ({
 
       // If updated boolean field, set value as boolean and label as Yes/No
       case 'allowAttachments':
+      case 'dueDateEditable':
       case 'published':
         value = getAuditValueForBoolean(oldValues[field], newValues[field]);
         break;
@@ -369,69 +370,27 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
     }
     const updatedResponse: Pick<
       IResponse,
-      'published' | 'evidence' | 'questions' | 'status' | 'nextRenewalDate'
+      'published' | 'evidence' | 'questions' | 'status' | 'dueDate'
     > = {
       published: isPublished,
-      evidence: [...response.evidence.filter(({ outdated }) => outdated)], // add all past evidence
-      questions: [...response.questions.filter(({ outdated }) => outdated)], // add all past questions
-      status: response.status,
-      nextRenewalDate: response.nextRenewalDate,
+      evidence: [],
+      questions: [],
+      status: 'draft',
+      dueDate: response.dueDate,
     };
 
-    // Get not outdated evidence from response
-    const currentEvidence = response.evidence.filter(
-      ({ outdated }) => !outdated,
-    );
-
-    // Check if evidence was removed from CI
-    for (const evidence of currentEvidence) {
-      if (!complianceItem.evidenceItems.includes(evidence.name)) {
-        // If current evidence not exist in CI evidence items
-        // Set it to outdated
-        updatedResponse.evidence.push({
-          ...evidence,
-          outdated: true,
-        });
-      }
+    // Update evidence
+    // - remove deleted
+    // - keep uploaded
+    // - add new
+    for (const evidenceItem of complianceItem.evidenceItems || []) {
+      const existingEvidence = response.evidence.find(({ name }) => name === evidenceItem);
+      if (existingEvidence) updatedResponse.evidence.push(existingEvidence);
+      else updatedResponse.evidence.push({ name: evidenceItem });
     }
 
-    // Check if evidence was added to CI or re-ordered
-    for (const evidenceName of complianceItem.evidenceItems) {
-      const existingEvidence = currentEvidence.find(
-        ({ name }) => name === evidenceName,
-      );
-      if (existingEvidence) {
-        // If CI evidence exist in response, leave it
-        updatedResponse.evidence.push(existingEvidence);
-      } else {
-        // If CI evidence not exist in response, add it
-        updatedResponse.evidence.push({ name: evidenceName });
-      }
-    }
-
-    // Get not outdated questions from response
-    const currentQuestions = response.questions.filter(
-      ({ outdated }) => !outdated,
-    );
-
-    // Check if question was removed from CI
-    for (const question of currentQuestions) {
-      const existingQuestion = (complianceItem.questions || []).find(
-        ({ name, type }) => name === question.name && type === question.type,
-      );
-      if (!existingQuestion) {
-        // If current question not exist in CI questions
-        // Set it to outdated
-        updatedResponse.questions.push({
-          ...question,
-          outdated: true,
-        });
-      }
-    }
-
-    // Check if question was added to CI or re-ordered
     for (const question of complianceItem.questions || []) {
-      const existingQuestion = currentQuestions.find(
+      const existingQuestion = response.questions.find(
         ({ name, type }) => name === question.name && type === question.type,
       );
       if (existingQuestion) {
@@ -453,34 +412,13 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
       }
     }
 
-    // If questions or evidence has changed, set right status
-    const areRequiredQuestionsAnswered = updatedResponse.questions
-      .filter(({ required, outdated }) => !outdated && required)
-      .every(({ value, type }) => {
-        if (type === 'multipleChoice') {
-          return (value as IQuestionChoice[]).some(
-            (choice) => choice.isCorrect === true,
-          );
-        }
-        return value || (typeof value === 'boolean' && value === false);
-      });
-    const isEvidenceUploaded = updatedResponse.evidence
-      .filter(({ outdated }) => !outdated)
-      .every(({ uploaded }) => uploaded && uploaded.id);
-    if (areRequiredQuestionsAnswered && isEvidenceUploaded)
-      updatedResponse.status = 'completed';
-    else if (response.status !== 'notStarted')
-      updatedResponse.status = 'inProgress';
-
-    // If DueDate was updated in CI, check if should be updated in response
     if (
-      (!response.nextRenewalDate && !prevDueDate) ||
-      (response.nextRenewalDate &&
-        prevDueDate &&
-        isEqual(response.nextRenewalDate, prevDueDate))
+      (!prevDueDate && complianceItem.dueDate) || // there was no due date, and was set
+      (prevDueDate && !complianceItem.dueDate) || // there was due date, and was unset
+      (prevDueDate && complianceItem.dueDate && !isEqual(new Date(prevDueDate), new Date(complianceItem.dueDate))) // There was due date but has changed
     ) {
       // If previous CI date was same as Response date
-      updatedResponse.nextRenewalDate = complianceItem.dueDate!;
+      updatedResponse.dueDate = complianceItem.dueDate || null;
     }
 
     await Responses.customUpdateOne(
@@ -508,11 +446,10 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
         responsibleId: assignee,
         contributorsIds: [],
         followersIds: [],
-        status: 'notStarted',
+        status: 'draft',
         attachments: [],
         lastCompletedDate: null,
-        lastRenewalDate: null,
-        nextRenewalDate: complianceItem.dueDate,
+        dueDate: complianceItem.dueDate,
         evidence: complianceItem.evidenceItems.map((name) => ({ name })),
         questions: complianceItem.questions,
         organizationId,
@@ -530,8 +467,8 @@ complianceItemSchema.statics.customSynchronizeResponses = async function ({
 };
 
 const complianceItemModel = model<IComplianceItem, IComplianceItemModel>(
-  'ComplianceItem',
+  'TrackerItem',
   complianceItemSchema,
-  'complianceItems',
+  'trackerItems',
 );
 export default complianceItemModel;

@@ -145,9 +145,9 @@ const AuditHeader = () => {
               onClick={
                 selectedAction
                   ? () => {
-                    setActionChangesModalOnContinue(() => onSubmitAudit);
-                    handleActionChangesModalOpen();
-                  }
+                      setActionChangesModalOnContinue(() => onSubmitAudit);
+                      handleActionChangesModalOpen();
+                    }
                   : handleSubmitModalOpen
               }
             />

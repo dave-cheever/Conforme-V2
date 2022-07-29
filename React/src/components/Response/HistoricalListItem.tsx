@@ -22,13 +22,7 @@ const GET_USERS_BY_ID = gql`
 const HistoricalListItem = ({ response }: { response: IResponse }) => {
   const { navigateTo } = useNavigate();
   const { snapshot } = useResponseContext();
-  const [
-    getUsers,
-    {
-      data: { usersById: responseUsers = [] } = [],
-      loading: responsibleLoading,
-    },
-  ] = useLazyQuery(GET_USERS_BY_ID);
+  const [getUsers, { data: { usersById: responseUsers = [] } = [], loading: responsibleLoading }] = useLazyQuery(GET_USERS_BY_ID);
 
   useEffect(() => {
     getUsers({
@@ -40,11 +34,8 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
     });
   }, [response]);
 
-  const lastUpdatedBy: IUser = responseUsers.find(
-    ({ _id }) => _id === response.metatags?.updatedBy,
-  );
-  const active =
-    getTime(new Date(response.lastRenewalDate!)).toString() === snapshot;
+  const lastUpdatedBy: IUser = responseUsers.find(({ _id }) => _id === response.metatags?.updatedBy);
+  const active = getTime(new Date(response.lastCompletionDate!)).toString() === snapshot;
 
   return (
     <Box
@@ -52,13 +43,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
       borderBottomColor="historicalListItem.borderColor"
       borderBottomWidth="1px"
       cursor="pointer"
-      onClick={() =>
-        navigateTo(
-          `/compliance-item/${response._id}?snapshot=${getTime(
-            new Date(response.lastRenewalDate!),
-          )}`,
-        )
-      }
+      onClick={() => navigateTo(`/compliance-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
       p="15px 25px"
       py={[1, 0]}
       w="full"
@@ -77,24 +62,14 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
         >
           {response.complianceItem.name}
         </Flex>
-        <Flex
-          color="historicalListItem.fontColor"
-          fontSize="14px"
-          fontWeight={active ? '700' : '400'}
-          opacity="1"
-          w="20%"
-        >
-          {format(new Date(response.lastRenewalDate!), 'd MMM yyyy')}
+        <Flex color="historicalListItem.fontColor" fontSize="14px" fontWeight={active ? '700' : '400'} opacity="1" w="20%">
+          {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
         </Flex>
         <Box pr="20px" w="25%">
           <Skeleton isLoaded={!responsibleLoading} rounded="full">
             {response.responsible ? (
               <Flex align="center" direction="row">
-                <Avatar
-                  name={response.responsible?.displayName}
-                  size="xs"
-                  src={response.responsible?.imgUrl}
-                />
+                <Avatar name={response.responsible?.displayName} size="xs" src={response.responsible?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
                   fontSize="13px"
@@ -121,11 +96,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
           <Skeleton isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
               <Flex align="center" direction="row">
-                <Avatar
-                  name={lastUpdatedBy?.displayName}
-                  size="xs"
-                  src={lastUpdatedBy?.imgUrl}
-                />
+                <Avatar name={lastUpdatedBy?.displayName} size="xs" src={lastUpdatedBy?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
                   fontSize="13px"
@@ -142,11 +113,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
                 </Text>
               </Flex>
             ) : (
-              <Flex
-                fontSize="13px"
-                fontStyle="italic"
-                fontWeight={active ? '700' : '400'}
-              >
+              <Flex fontSize="13px" fontStyle="italic" fontWeight={active ? '700' : '400'}>
                 Unassigned
               </Flex>
             )}

@@ -10,13 +10,7 @@ const SearchIcon = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M12.0308 11.7808L16.7495 16.5001"
-        fill="none"
-        stroke="#282F36"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M12.0308 11.7808L16.7495 16.5001" fill="none" stroke="#282F36" strokeLinecap="round" strokeLinejoin="round" />
     </>
   ),
   viewBox: '0 0 18 18',

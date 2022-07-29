@@ -4,20 +4,8 @@ const HealthKitIcon = createIcon({
   viewBox: '0 0 15 18',
   path: (
     <g>
-      <path
-        d="M7.3335 8.33325L7.3335 12.9999"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M5 10.6667H9.66667"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M7.3335 8.33325L7.3335 12.9999" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M5 10.6667H9.66667" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
       <path
         d="M10.0667 3.66667H12.7333C13.0162 3.66667 13.2875 3.77905 13.4876 3.97909C13.6876 4.17912 13.8 4.45044 13.8 4.73333V15.9333C13.8 16.2162 13.6876 16.4875 13.4876 16.6876C13.2875 16.8876 13.0162 17 12.7333 17H2.06667C1.78377 17 1.51246 16.8876 1.31242 16.6876C1.11238 16.4875 1 16.2162 1 15.9333V4.73333C1 4.45044 1.11238 4.17912 1.31242 3.97909C1.51246 3.77905 1.78377 3.66667 2.06667 3.66667H4.73333C4.73333 2.95942 5.01428 2.28115 5.51438 1.78105C6.01448 1.28095 6.69276 1 7.4 1C8.10724 1 8.78552 1.28095 9.28562 1.78105C9.78572 2.28115 10.0667 2.95942 10.0667 3.66667V3.66667Z"
         fill="none"

@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
+import { gqlFunction } from '../types/gqlFunction';
 import { IResponse } from './IResponse';
 import { IUser } from './IUser';
 
@@ -42,4 +44,8 @@ export interface IResponseContext {
   snapshot: string | null;
   snapshots: IResponse[];
   snapshotsLoading: boolean;
+
+  questionsForm: UseFormReturn;
+  updateQuestions: gqlFunction;
+  submitResponse: gqlFunction;
 }

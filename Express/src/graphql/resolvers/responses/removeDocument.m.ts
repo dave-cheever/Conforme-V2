@@ -23,7 +23,6 @@ const removeDocument = async (
     const update: Partial<IResponse> = {};
     if (documentType === 'evidence') {
       update.evidence = response.evidence
-        .filter(({ outdated }) => !outdated)
         .map((evidence) => {
           if (evidence.uploaded?.id !== documentId) return evidence;
 
@@ -31,9 +30,6 @@ const removeDocument = async (
             name: evidence.name,
           };
         });
-      update.evidence = update.evidence.concat(
-        response.evidence.filter(({ outdated }) => outdated),
-      );
     } else if (documentType === 'attachment') {
       update.attachments = response.attachments.filter(
         (attachment) => attachment.id !== documentId,

@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { ApolloCache, DefaultContext, FetchResult, MutationFunctionOptions, OperationVariables } from '@apollo/client';
 
 import { IQuestionsByCategories, TQuestionWithAnswer } from '../contexts/AuditProvider';
+import { gqlFunction } from '../types/gqlFunction';
 import { IAction } from './IAction';
 import { IAudit } from './IAudit';
 import { IAuditType } from './IAuditType';
@@ -11,10 +12,6 @@ import { ILocation } from './ILocation';
 import { IQuestionsCategory } from './IQuestionsCategory';
 import { IUser } from './IUser';
 import { TDeepPartial } from './TDeepPartial';
-
-type gqlFunction = (
-  options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>,
-) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
 
 export interface IAuditContext {
   audit: IAudit;

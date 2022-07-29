@@ -22,8 +22,7 @@ const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
     usersById(userQueryInput: $userQueryInput) {
       _id
-      firstName
-      lastName
+      displayName
       imgUrl
     }
   }
@@ -74,7 +73,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
         <Avatar borderColor="auditLogRecordStyles.info.border" h="32px" rounded="full" src={auditAddedUser?.imgUrl} w="32px" />
         <Flex flexDir="column" ml="3">
           <Text color="auditLogRecordStyles.userInfo.color" fontSize="11px" opacity="0.5">
-            {auditAddedUser ? `${auditAddedUser?.firstName} ${auditAddedUser?.lastName}` : 'Unknown user'}
+            {auditAddedUser ? `${auditAddedUser?.displayName}` : 'Unknown user'}
           </Text>
           <Text color="auditLogRecordStyles.title.action" fontSize="14px">
             {getFieldNameByAction(audit.action)} {getSingularCollectionName(audit.coll)}{' '}

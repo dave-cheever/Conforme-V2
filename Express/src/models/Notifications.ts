@@ -40,23 +40,6 @@ notificationsSchema.statics.customCreate = async function (
     metatags: genMetatags('added', userId),
   });
 
-  // if (createdQuestion?._doc) {
-  //   const addAuditLog = async () => {
-  //     const newValues = removeDatabaseFields(createdQuestion._doc);
-  //     const values = await getAuditRecordValues({ newValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "add",
-  //       element: {
-  //         _id: createdQuestion._id,
-  //         name: question.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
-
   return createdNotification;
 };
 
@@ -113,25 +96,6 @@ notificationsSchema.statics.customUpdateOne = async function (
       ...genMetatags('updated', userId),
     },
   };
-  // const updatedResult = await this.updateOne(selector, updatedNotification);
-
-  // if (updatedResult?.modifiedCount) {
-  //   const addAuditLog = async () => {
-  //     const oldValues = removeDatabaseFields(notification);
-  //     const newValues = removeDatabaseFields(updatedQuestion);
-  //     const values = await getAuditRecordValues({ oldValues, newValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "update",
-  //       element: {
-  //         _id: notification._id,
-  //         name: notification.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
 
   return updatedNotification;
 };
@@ -152,23 +116,6 @@ notificationsSchema.statics.customDelete = async function (
     },
   };
   const deletedResult = await this.updateOne(selector, updatedNotification);
-
-  // if (deletedResult?.modifiedCount) {
-  //   const addAuditLog = async () => {
-  //     const oldValues = removeDatabaseFields(notification);
-  //     const values = await getAuditRecordValues({ oldValues });
-  //     AuditLogs.customAudit({
-  //       coll: 'questions',
-  //       action: "delete",
-  //       element: {
-  //         _id: notification._id,
-  //         name: notification.question,
-  //       },
-  //       values,
-  //     }, userId, organizationId);
-  //   };
-  //   addAuditLog();
-  // }
 
   return deletedResult?.modifiedCount;
 };

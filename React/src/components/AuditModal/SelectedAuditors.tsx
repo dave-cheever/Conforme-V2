@@ -10,20 +10,13 @@ const SelectedUsers = () => {
   // IAuditor
 
   const modalContext = useContext(AuditModalContext);
-  const selectedAuditors = useMemo(
-    () => modalContext.selectedAuditors,
-    [modalContext.selectedAuditors],
-  );
+  const selectedAuditors = useMemo(() => modalContext.selectedAuditors, [modalContext.selectedAuditors]);
 
   return (
     <SimpleGrid columns={2} mb="20px" spacing={2}>
       {selectedAuditors.map((auditor: IAuditor) => (
         <Box>
-          <SelectedAuditor
-            designation={auditor.designation}
-            imgSrc={auditor.imgSrc}
-            name={auditor.name}
-          />
+          <SelectedAuditor designation={auditor.designation} imgSrc={auditor.imgSrc} name={auditor.name} />
         </Box>
       ))}
     </SimpleGrid>

@@ -19,7 +19,7 @@ const CREATE_AUDIT = gql`
   }
 `;
 
-const useAuditModal = (refetch = () => { }) => {
+const useAuditModal = (refetch = () => {}) => {
   const toast = useToast();
   const { module } = useAppContext();
   const { setAdminModalState } = useContext(AdminContext);

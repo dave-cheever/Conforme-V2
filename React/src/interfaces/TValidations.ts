@@ -5,10 +5,5 @@ export type TValidations = {
 };
 
 export type TDefinedValidations = {
-  [name: string]: (
-    label: string,
-    validationValue: TValidationValue,
-    value: any,
-    prevValue?: any
-  ) => string | undefined;
+  [name: string]: (label: string, validationValue: TValidationValue, value: any, prevValue?: any) => string | undefined;
 };

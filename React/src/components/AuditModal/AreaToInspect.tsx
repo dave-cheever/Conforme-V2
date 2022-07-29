@@ -1,13 +1,6 @@
 import { useContext, useState } from 'react';
 
-import {
-  Box,
-  Collapse,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Collapse, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
 
 import { OpenMenuArrow } from '../../icons';
 import AuditModalContext from './AuditModalContext';
@@ -30,13 +23,7 @@ const AreaToInspect = () => {
         overflow="hidden"
         position="relative"
       >
-        <Text
-          fontSize="sm"
-          fontWeight="700"
-          padding="2px 15px"
-          position="absolute"
-          zIndex="999"
-        >
+        <Text fontSize="sm" fontWeight="700" padding="2px 15px" position="absolute" zIndex="999">
           Select area
         </Text>
         <InputGroup>
@@ -52,10 +39,7 @@ const AreaToInspect = () => {
             variant="auditModalSearchInput"
           />
           <InputRightElement>
-            <OpenMenuArrow
-              transform="translate(0px, 8px)"
-              transformOrigin="center"
-            />
+            <OpenMenuArrow transform="translate(0px, 8px)" transformOrigin="center" />
           </InputRightElement>
         </InputGroup>
       </Box>

@@ -2,17 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useInterval from 'react-useinterval';
 
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useToast } from '@chakra-ui/react';
 import { differenceInSeconds, parseISO } from 'date-fns';
 import addHours from 'date-fns/addHours';
 import { debounce } from 'lodash';
@@ -21,9 +11,7 @@ import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useSession from '../hooks/useSession';
 
-const timeBeforeSessionEnds = Number(
-  process.env.REACT_APP_TIME_BEFORE_SESSION_ENDS || 60,
-);
+const timeBeforeSessionEnds = Number(process.env.REACT_APP_TIME_BEFORE_SESSION_ENDS || 60);
 const events = ['mousemove', 'click', 'keypress'];
 let idleEvent: NodeJS.Timeout;
 let idleLogoutEvent: NodeJS.Timeout;
@@ -43,21 +31,13 @@ const IdleMonitor = () => {
         const { error, data } = await refetch();
         if (error || !data) throw new Error();
 
-        const secondsToExpiration =
-          differenceInSeconds(
-            parseISO(data.session.sessionExpiration),
-            new Date(),
-          ) - 5;
-        return [
-          secondsToExpiration - timeBeforeSessionEnds,
-          secondsToExpiration,
-        ];
+        const secondsToExpiration = differenceInSeconds(parseISO(data.session.sessionExpiration), new Date()) - 5;
+        return [secondsToExpiration - timeBeforeSessionEnds, secondsToExpiration];
       } catch (e) {
         toast({
           ...toastFailed,
           title: 'Signed out',
-          description:
-            'You have been signed out due to inactivity. Please login again.',
+          description: 'You have been signed out due to inactivity. Please login again.',
         });
         setUser(undefined);
         return [];
@@ -116,12 +96,10 @@ const IdleMonitor = () => {
 
   useEffect(() => {
     setTimers();
-    for (const e in events)
-      if (e) window.addEventListener(events[e], setTimers);
+    for (const e in events) if (e) window.addEventListener(events[e], setTimers);
 
     return () => {
-      for (const e in events)
-        if (e) window.removeEventListener(events[e], setTimers);
+      for (const e in events) if (e) window.removeEventListener(events[e], setTimers);
     };
   }, [modalIsOpen]);
 
@@ -134,8 +112,7 @@ const IdleMonitor = () => {
         </ModalHeader>
         <ModalBody>
           <Text>
-            Due to inactivity your session will expire in{' '}
-            {secondsLeft < 1 ? 1 : secondsLeft} second
+            Due to inactivity your session will expire in {secondsLeft < 1 ? 1 : secondsLeft} second
             {secondsLeft > 1 && 's'}.
           </Text>
         </ModalBody>

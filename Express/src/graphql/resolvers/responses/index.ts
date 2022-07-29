@@ -4,6 +4,7 @@ import removeDocument from './removeDocument.m';
 import removeParticipant from './removeParticipant.m';
 import renewResponse from './renewResponse.m';
 import responses from './responses.q';
+import submitResponse from './submitResponse.m';
 import updateResponse from './updateResponse.m';
 import updateResponseQuestions from './updateResponseQuestions.m';
 
@@ -19,6 +20,7 @@ const responsesResolvers = {
     renewResponse,
     updateResponseQuestions,
     updateResponse,
+    submitResponse,
   },
 };
 
@@ -26,7 +28,6 @@ export const responsesTypeDefs = `
   type ResponseEvidence {
     name: String!
     uploaded: Document
-    outdated: Boolean
   }
 
   type ResponseQuestion {
@@ -35,7 +36,6 @@ export const responsesTypeDefs = `
     description: String
     value: Any
     required: Boolean
-    outdated: Boolean
     requiredAnswer: String
     notApplicable: Boolean
   }
@@ -47,11 +47,10 @@ export const responsesTypeDefs = `
     responsibleId: ID
     contributorsIds: [ID]
     followersIds: [ID]
-    firstCompletionDate: Date
     lastCompletionDate: Date
-    lastRenewalDate: Date
-    nextRenewalDate: Date
+    dueDate: Date
     status: String!
+    calculatedStatus: String!
     published: Boolean!
     complianceItemId: ID!
     complianceItem: ComplianceItem
@@ -115,7 +114,7 @@ export const responsesTypeDefs = `
 
   input UpdateResponseModify {
     _id: ID!
-    nextRenewalDate: Date
+    dueDate: Date
   }
 `;
 
@@ -129,6 +128,7 @@ export const responsesMutationDefs = `
   addDocuments(responseDocumentsAddInput: ResponseDocumentsAddInput!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
   renewResponse(_id: ID!): Response!
+  submitResponse(_id: ID!): Boolean!
   updateResponseQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
   updateResponse(updateResponseModify: UpdateResponseModify!): Response!
 `;

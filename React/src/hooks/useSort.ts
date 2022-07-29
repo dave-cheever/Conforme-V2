@@ -8,12 +8,11 @@ const useSort = (data: any[], initialSortType = 'name', initialSortOrder: 'asc' 
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(initialSortOrder);
   const [sortedData, setSortedData] = useState<any>([]);
   const priorities = ['high', 'medium', 'low'];
-  
+
   useEffect(
     () => {
       const sort = (a, b) => {
-        if (sortType === 'priority')
-          return priorities.indexOf(get(a, sortType)) - priorities.indexOf(get(b, sortType));
+        if (sortType === 'priority') return priorities.indexOf(get(a, sortType)) - priorities.indexOf(get(b, sortType));
 
         if (get(a, sortType) === null) return 1;
         if (get(b, sortType) === null) return -1;

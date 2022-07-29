@@ -90,7 +90,7 @@ const ComplianceItemModalProvider = ({ children }) => {
       Component: LocationsForm,
     },
     {
-      name: pluralize(capitalize(t('businessUnit'))),
+      name: pluralize(capitalize(t('business unit'))),
       fields: {
         businessUnitsIds: [],
       },

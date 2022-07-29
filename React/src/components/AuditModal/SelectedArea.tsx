@@ -1,13 +1,6 @@
 import { useContext } from 'react';
 
-import {
-  Button,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 
 import { OpenMenuArrow } from '../../icons';
 import AuditModalContext from './AuditModalContext';
@@ -29,16 +22,10 @@ const SelectedArea = () => {
         </Text>
       </MenuButton>
       <MenuList>
-        <MenuItem
-          minH="48px"
-          onClick={() => modalContext.setSelectedArea('Surgery')}
-        >
+        <MenuItem minH="48px" onClick={() => modalContext.setSelectedArea('Surgery')}>
           Surgery
         </MenuItem>
-        <MenuItem
-          minH="40px"
-          onClick={() => modalContext.setSelectedArea('Clinical')}
-        >
+        <MenuItem minH="40px" onClick={() => modalContext.setSelectedArea('Clinical')}>
           Clinical
         </MenuItem>
       </MenuList>

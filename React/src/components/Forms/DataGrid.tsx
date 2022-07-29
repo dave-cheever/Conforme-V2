@@ -41,15 +41,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const DataGrid = ({
-  name,
-  label,
-  disabled,
-  validations = {},
-  control,
-  tooltip,
-  help,
-}: IDataGrid) => {
+const DataGrid = ({ name, label, disabled, validations = {}, control, tooltip, help }: IDataGrid) => {
   const validate = useValidate(label || name, validations, definedValidations);
 
   return (
@@ -64,9 +56,7 @@ const DataGrid = ({
         const onCellChange = (e, row) => {
           const newValue = {
             ...value,
-            [row[0]]: /^-?\d+$/.test(e.target.value)
-              ? parseInt(e.target.value, 10)
-              : e.target.value,
+            [row[0]]: /^-?\d+$/.test(e.target.value) ? parseInt(e.target.value, 10) : e.target.value,
           };
           onChange({ target: { name, value: newValue } });
         };
@@ -82,11 +72,7 @@ const DataGrid = ({
               <Flex mt="10px">
                 <Input
                   bg="form.textInput.bg"
-                  borderColor={
-                    error
-                      ? 'form.textInput.border.error'
-                      : 'form.textInput.border.normal'
-                  }
+                  borderColor={error ? 'form.textInput.border.error' : 'form.textInput.border.normal'}
                   borderRadius="8px"
                   borderWidth="1px"
                   color="form.textInput.font"
@@ -106,11 +92,7 @@ const DataGrid = ({
             {label && (
               <Flex align="center" justify="space-between" mb="none" pt={2}>
                 <Box
-                  color={
-                    error
-                      ? 'dropdown.labelFont.error'
-                      : 'dropdown.labelFont.normal'
-                  }
+                  color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
                   fontSize="14px"
                   fontWeight="bold"
                   left="none"

@@ -1,17 +1,7 @@
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import {
-  Avatar,
-  Box,
-  Flex,
-  Icon,
-  Modal,
-  ModalBody,
-  ModalContent,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { Avatar, Box, Flex, Icon, Modal, ModalBody, ModalContent, useDisclosure, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
@@ -37,11 +27,7 @@ const ResponseDetail = ({ response }) => {
         <Flex align="center" cursor="pointer">
           <Flex
             align="center"
-            bg={
-              isOpen
-                ? 'responseLeftNavigation.responseDetailActiveColor'
-                : 'responseLeftTabItem.iconBg'
-            }
+            bg={isOpen ? 'responseLeftNavigation.responseDetailActiveColor' : 'responseLeftTabItem.iconBg'}
             borderRadius="8px"
             h="30px"
             justify="center"
@@ -49,12 +35,7 @@ const ResponseDetail = ({ response }) => {
           >
             <Icon as={DetailIcon} color="responseLeftTabItem.iconColor" />
           </Flex>
-          <ArrowRight
-            color="responseLeftTabItem.textColor"
-            display={['none', 'block']}
-            ml={1}
-            mt={1}
-          />
+          <ArrowRight color="responseLeftTabItem.textColor" display={['none', 'block']} ml={1} mt={1} />
         </Flex>
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -87,20 +68,11 @@ const ResponseDetail = ({ response }) => {
                       }
                       text={response?.complianceItem?.reference}
                     >
-                      <Copy
-                        _hover={{ opacity: 0.6, cursor: 'pointer' }}
-                        color="responseLeftNavigation.copy"
-                        h="17px"
-                        mt={1}
-                        w="17px"
-                      />
+                      <Copy _hover={{ opacity: 0.6, cursor: 'pointer' }} color="responseLeftNavigation.copy" h="17px" mt={1} w="17px" />
                     </CopyToClipboard>
                   </Flex>
                 </Box>
-                <ResponseLeftItem
-                  heading={capitalize(t('businessUnit'))}
-                  value={response?.businessUnit?.name || '-'}
-                />
+                <ResponseLeftItem heading={capitalize(t('business unit'))} value={response?.businessUnit?.name || '-'} />
                 <Box h="50px" mt={1}>
                   <Box fontSize="11px" opacity={0.5}>
                     Responsible
@@ -127,18 +99,9 @@ const ResponseDetail = ({ response }) => {
                 </Box>
               </Flex>
               <Flex flexDirection="column" w="50%">
-                <ResponseLeftItem
-                  heading="Category"
-                  value={response.complianceItem?.category?.name || '-'}
-                />
-                <ResponseLeftItem
-                  heading="Regulatory body"
-                  value={response.complianceItem?.regulatoryBody?.name || '-'}
-                />
-                <ResponseLeftItem
-                  heading="Frequency"
-                  value={response.complianceItem?.frequency || '-'}
-                />
+                <ResponseLeftItem heading="Category" value={response.complianceItem?.category?.name || '-'} />
+                <ResponseLeftItem heading="Regulatory body" value={response.complianceItem?.regulatoryBody?.name || '-'} />
+                <ResponseLeftItem heading="Frequency" value={response.complianceItem?.frequency || '-'} />
               </Flex>
             </Flex>
           </ModalBody>

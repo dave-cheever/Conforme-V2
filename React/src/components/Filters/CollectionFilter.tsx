@@ -7,16 +7,10 @@ import { collections } from '../../hooks/useFiltersUtils';
 
 const CollectionFilter = () => {
   const { filtersValues, setFilters } = useFiltersContext();
-  const value = useMemo(
-    () => filtersValues.collections?.value,
-    [filtersValues],
-  ) as string[];
+  const value = useMemo(() => filtersValues.collections?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup
-      onChange={(newValue) => setFilters({ collections: newValue })}
-      value={value}
-    >
+    <CheckboxGroup onChange={(newValue) => setFilters({ collections: newValue })} value={value}>
       <Stack direction="column" ml="4">
         {Object.entries(collections).map(([key, label]) => (
           <Checkbox

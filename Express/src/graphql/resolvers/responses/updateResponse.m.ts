@@ -8,7 +8,7 @@ const updateResponse = async (
 ) => {
   try {
     const user = await authorize();
-    const { _id, nextRenewalDate } = updateResponseModify;
+    const { _id, dueDate } = updateResponseModify;
 
     const response = await Responses.findOne({
       _id,
@@ -22,8 +22,7 @@ const updateResponse = async (
     const updatedResponse = await Responses.customUpdateOne(
       { _id },
       {
-        nextRenewalDate:
-          nextRenewalDate === null ? null : new Date(nextRenewalDate),
+        dueDate: dueDate ? new Date(dueDate) : null,
       },
       user._id,
       organization._id,

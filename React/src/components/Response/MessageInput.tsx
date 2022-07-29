@@ -21,20 +21,11 @@ const definedValidations: TDefinedValidations = {
     if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue)
-      return `${label} can be maximum ${validationValue} characters length`;
+    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
 };
 
-const MessageInput = ({
-  control,
-  name,
-  label,
-  placeholder = '',
-  validations = {},
-  disabled = false,
-  onAction,
-}: IMessageInput) => {
+const MessageInput = ({ control, name, label, placeholder = '', validations = {}, disabled = false, onAction }: IMessageInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   const { users } = useResponseContext();
 
@@ -55,13 +46,7 @@ const MessageInput = ({
         const { onChange, onBlur, value } = field;
 
         return (
-          <Flex
-            align="center"
-            borderRadius="10px"
-            mb="25px"
-            position="relative"
-            w="full"
-          >
+          <Flex align="center" borderRadius="10px" mb="25px" position="relative" w="full">
             <MentionsInput
               allowSpaceInQuery
               allowSuggestionsAboveCursor
@@ -78,13 +63,7 @@ const MessageInput = ({
                 data={users}
                 markup="@@@(__display__)[__id__]"
                 renderSuggestion={(highlightedDisplay) => (
-                  <Flex
-                    color="mentionListItem.color"
-                    fontSize="14px"
-                    pl="13px"
-                    py="10px"
-                    w="full"
-                  >
+                  <Flex color="mentionListItem.color" fontSize="14px" pl="13px" py="10px" w="full">
                     <Avatar name={highlightedDisplay?.displayName} size="xs" />
                     <Text ml={3} noOfLines={1} textOverflow="ellipsis">
                       {highlightedDisplay?.displayName}
@@ -96,10 +75,7 @@ const MessageInput = ({
               />
             </MentionsInput>
             <Flex position="absolute" right="10px">
-              <SendMessageIcon
-                cursor={disabled ? 'not-allowed' : 'pointer'}
-                onClick={onAction}
-              />
+              <SendMessageIcon cursor={disabled ? 'not-allowed' : 'pointer'} onClick={onAction} />
             </Flex>
           </Flex>
         );

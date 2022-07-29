@@ -11,20 +11,8 @@ const CircledCross = createIcon({
         strokeLinejoin="round"
         strokeWidth="1.5"
       />
-      <path
-        d="M7.5 4.5L4.5 7.5"
-        stroke="#F75C63"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M4.5 4.5L7.5 7.5"
-        stroke="#F75C63"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
+      <path d="M7.5 4.5L4.5 7.5" stroke="#F75C63" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+      <path d="M4.5 4.5L7.5 7.5" stroke="#F75C63" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
     </g>
   ),
   viewBox: '0 0 12 12',

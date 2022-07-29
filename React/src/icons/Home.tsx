@@ -10,12 +10,7 @@ const Home = createIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M4.77991 13.2219V6.56152H9.22017V13.2219"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M4.77991 13.2219V6.56152H9.22017V13.2219" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   ),
 });

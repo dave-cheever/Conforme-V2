@@ -238,9 +238,7 @@ const AuditModal = ({ refetch }) => {
                   src={selectedAuditor?.imgUrl}
                 />
                 <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                  {selectedAuditor.firstName || selectedAuditor.lastName
-                    ? `${selectedAuditor.firstName} ${selectedAuditor.lastName}`
-                    : selectedAuditor.displayName}
+                  {selectedAuditor.displayName}
                 </Text>
               </Flex>
               <Text fontSize="smm" fontWeight="semibold">

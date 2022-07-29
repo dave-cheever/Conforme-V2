@@ -21,16 +21,7 @@ const DocumentUploading = ({ documentName }: { documentName: string }) => (
     w="full"
   >
     <Flex align="center">
-      <Box
-        bg="evidence.uploadBg"
-        flexShrink={0}
-        fontSize="12px"
-        h="55px"
-        ml="5px"
-        mr={2}
-        rounded="md"
-        w="55px"
-      >
+      <Box bg="evidence.uploadBg" flexShrink={0} fontSize="12px" h="55px" ml="5px" mr={2} rounded="md" w="55px">
         <Flex align="center" h="full" justify="center">
           <Loader center size="lg" />
         </Flex>
