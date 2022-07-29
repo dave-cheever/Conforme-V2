@@ -64,7 +64,7 @@ const Details = () => {
   if (!response) return null;
 
   return (
-    <Flex flexDir="column" h="full" minH={['50vh', 'none']} overflow={['visible', 'auto']} w="full">
+    <Flex flexDir="column" h="full" minH={['30vh', 'none']} overflow={['visible', 'auto']} w="full">
       <Grid gap={[3, 6]} mb={5} templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}>
         <Flex align="center" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
           <Flex

@@ -62,6 +62,7 @@ const ResponseLeftNavigation = () => {
       direction="column"
       display={['none', 'none', 'flex']}
       fontWeight="400"
+      h='100vh'
       justifyContent="space-between"
       overflow="auto"
       px={6}
@@ -90,78 +91,92 @@ const ResponseLeftNavigation = () => {
             <ResponseLeftTabItem icon={icon} key={url} label={label} url={url} />
           ))}
         </Flex>
-        <Box h="50px">
-          <Box fontSize="11px" opacity={0.5}>
-            Item ID
+        <Box
+          h='calc(100vh - 376px)'
+          mb='5px'
+          overflow='auto'
+          sx={{
+            '&::-webkit-scrollbar': {
+              backgroundColor: 'responseChat.scrollBar.bg',
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: 'responseChat.scrollBar.color',
+            },
+          }}>
+          <Box h="50px">
+            <Box fontSize="11px" opacity={0.5}>
+              Item ID
+            </Box>
+            <Flex align="center" fontSize="14px" minH="28px">
+              <Flex mr={2}>{response?.complianceItem.reference}</Flex>
+              <CopyToClipboard
+                onCopy={() =>
+                  toast({
+                    ...toastSuccess,
+                    title: 'Item ID copied',
+                    description: `${response?.complianceItem.reference} was copied to clipboard`,
+                  })
+                }
+                text={response?.complianceItem.reference}
+              >
+                <Copy _hover={{ opacity: 0.6, cursor: 'pointer' }} color="responseLeftNavigation.copy" h="17px" mt={1} w="17px" />
+              </CopyToClipboard>
+            </Flex>
           </Box>
-          <Flex align="center" fontSize="14px" minH="28px">
-            <Flex mr={2}>{response?.complianceItem.reference}</Flex>
-            <CopyToClipboard
-              onCopy={() =>
-                toast({
-                  ...toastSuccess,
-                  title: 'Item ID copied',
-                  description: `${response?.complianceItem.reference} was copied to clipboard`,
-                })
-              }
-              text={response?.complianceItem.reference}
-            >
-              <Copy _hover={{ opacity: 0.6, cursor: 'pointer' }} color="responseLeftNavigation.copy" h="17px" mt={1} w="17px" />
-            </CopyToClipboard>
-          </Flex>
-        </Box>
-        <ResponseLeftItem heading={capitalize(t('businessUnit'))} value={response?.businessUnit?.name || '-'} />
-        <Box h="50px" mt={2}>
-          <Box fontSize="11px" opacity={0.5}>
-            Accountable
-          </Box>
-          <Flex align="center" fontSize="14px" minH="28px">
-            <Avatar
-              bg="responseLeftNavigation.avatar"
-              color="white"
-              mr={2}
-              name={
-                accountable && accountable.firstName && accountable.lastName
+          <ResponseLeftItem heading={capitalize(t('businessUnit'))} value={response?.businessUnit?.name || '-'} />
+          <Box h="50px" mt={2}>
+            <Box fontSize="11px" opacity={0.5}>
+              Accountable
+            </Box>
+            <Flex align="center" fontSize="14px" minH="28px">
+              <Avatar
+                bg="responseLeftNavigation.avatar"
+                color="white"
+                mr={2}
+                name={
+                  accountable && accountable.firstName && accountable.lastName
+                    ? `${accountable.firstName} ${accountable.lastName}`
+                    : `${accountable?.displayName}`
+                }
+                size="xs"
+                src={accountable && accountable.imgUrl}
+              />
+              <Flex mr={2}>
+                {accountable && accountable.firstName && accountable.lastName
                   ? `${accountable.firstName} ${accountable.lastName}`
-                  : `${accountable?.displayName}`
-              }
-              size="xs"
-              src={accountable && accountable.imgUrl}
-            />
-            <Flex mr={2}>
-              {accountable && accountable.firstName && accountable.lastName
-                ? `${accountable.firstName} ${accountable.lastName}`
-                : `${accountable?.displayName || '-'}`}
+                  : `${accountable?.displayName || '-'}`}
+              </Flex>
             </Flex>
-          </Flex>
-        </Box>
-        <Box h="50px" mt={2}>
-          <Box fontSize="11px" opacity={0.5}>
-            Responsible
           </Box>
-          <Flex align="center" fontSize="14px" minH="28px">
-            <Avatar
-              bg="responseLeftNavigation.avatar"
-              color="white"
-              mr={2}
-              name={
-                responsible && responsible.firstName && responsible.lastName
+          <Box h="50px" mt={2}>
+            <Box fontSize="11px" opacity={0.5}>
+              Responsible
+            </Box>
+            <Flex align="center" fontSize="14px" minH="28px">
+              <Avatar
+                bg="responseLeftNavigation.avatar"
+                color="white"
+                mr={2}
+                name={
+                  responsible && responsible.firstName && responsible.lastName
+                    ? `${responsible.firstName} ${responsible.lastName}`
+                    : `${responsible?.displayName}`
+                }
+                size="xs"
+                src={responsible && responsible.imgUrl}
+              />
+              <Flex mr={2}>
+                {responsible && responsible.firstName && responsible.lastName
                   ? `${responsible.firstName} ${responsible.lastName}`
-                  : `${responsible?.displayName}`
-              }
-              size="xs"
-              src={responsible && responsible.imgUrl}
-            />
-            <Flex mr={2}>
-              {responsible && responsible.firstName && responsible.lastName
-                ? `${responsible.firstName} ${responsible.lastName}`
-                : `${responsible?.displayName || '-'}`}
+                  : `${responsible?.displayName || '-'}`}
+              </Flex>
             </Flex>
-          </Flex>
+          </Box>
+          <ResponseLeftItem heading="Category" value={response?.complianceItem?.category?.name || '-'} />
+          <ResponseLeftItem heading="Regulatory body" value={response?.complianceItem?.regulatoryBody?.name || '-'} />
+          <ResponseLeftItem heading="Frequency" value={response?.complianceItem?.frequency || '-'} />
         </Box>
-        <ResponseLeftItem heading="Category" value={response?.complianceItem?.category?.name || '-'} />
-        <ResponseLeftItem heading="Regulatory body" value={response?.complianceItem?.regulatoryBody?.name || '-'} />
-        <ResponseLeftItem heading="Frequency" value={response?.complianceItem?.frequency || '-'} />
       </Flex>
       <Flex>
         <Icon as={Conforme} h="35px" mb="20px" w="103px" />
