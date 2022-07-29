@@ -20,7 +20,11 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     if (!isPermitted({ user, action: 'actions.viewAll' })) {
       pipeline.push({
         $match: {
-          assigneeId: user._id,
+          $and: [
+            {
+              $or: [{ assigneeId: user?._id }, { 'metatags.addedBy': user?._id }],
+            },
+          ],
         },
       });
     }
