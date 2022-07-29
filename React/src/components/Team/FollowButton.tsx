@@ -121,8 +121,8 @@ const FollowButton = ({ isMobile = false }) => {
         yes={() => (
           <ResponseHeaderMenuItem
             icon={Icon}
+            name={isFollower ? 'Unfollow' : 'Follow'}
             onClick={isFollower ? handleUnFollow : handleFollow}
-            title={isFollower ? 'Unfollow' : 'Follow'}
           />
         )}
       />
