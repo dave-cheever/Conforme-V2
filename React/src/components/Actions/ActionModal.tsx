@@ -274,13 +274,13 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                     </Text>
                     <Text fontSize="13px">{format(new Date(action?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
                   </GridItem>
-                  {action?.assignor && (
+                  {action?.creator && (
                     <GridItem>
                       <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
-                        Assigned by
+                        Created by
                       </Text>
                       <Flex align="center" direction="row" mt={1}>
-                        <Avatar name={action?.assignor?.displayName} size="xs" src={action?.assignor?.imgUrl} />
+                        <Avatar name={action?.creator?.displayName} size="xs" src={action?.creator?.imgUrl} />
                         <Text
                           fontSize="13px"
                           lineHeight="17px"
@@ -291,7 +291,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                           w="full"
                           whiteSpace="nowrap"
                         >
-                          {action?.assignor?.displayName}
+                          {action?.creator?.displayName}
                         </Text>
                       </Flex>
                     </GridItem>
