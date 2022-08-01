@@ -216,9 +216,9 @@ const Audits = () => {
         <AuditModal refetch={refetch} />
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} mobileBreadcrumbs={[pluralize(t('audit'))]}>
+        <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
             <CSVLink data={csvData} filename="audits.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{

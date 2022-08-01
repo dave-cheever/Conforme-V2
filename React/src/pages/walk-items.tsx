@@ -257,9 +257,9 @@ const WalkItems = () => {
         <WalkItemModal handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen} refetch={refetch} walkItem={selectedWalkItem} />
       </Modal>
       <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
+        <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
             <CSVLink data={csvData} filename="walk-items.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{

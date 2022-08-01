@@ -42,6 +42,9 @@ const ChangeViewButton = ({
     }),
     [],
   );
+
+  if (device === 'mobile') return null;
+
   return (
     <Menu autoSelect={false}>
       {

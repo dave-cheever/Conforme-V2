@@ -265,9 +265,9 @@ const Actions = () => {
         <ActionModal action={selectedAction} closeModal={closeModal} refetch={refetch} />
       </Modal>
       <Header breadcrumbs={['Actions']} mobileBreadcrumbs={['Actions']}>
+        <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
             <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank">
               <Button
                 _hover={{
