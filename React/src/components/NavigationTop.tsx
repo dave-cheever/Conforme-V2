@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Box, Flex, IconButton, Stack, Text, useDisclosure } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
+import { useAuditContext } from '../contexts/AuditProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import NavigationTopProvider, { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import { useResponseContext } from '../contexts/ResponseProvider';
@@ -29,6 +30,10 @@ const NavigationTop = () => {
   // Check if TopNavgation is rendered inside ResponseLayout
   const { response } = useResponseContext();
   const isComplianceItemPage = isPathActive(`/compliance-item/${response?._id}`);
+
+  // Check if TopNavgation is rendered in audit page
+  const { audit } = useAuditContext();
+  const isAuditPage = isPathActive(`/audits/${audit?._id}`);
 
   return (
     <Flex
@@ -123,7 +128,7 @@ const NavigationTop = () => {
             )}
           />
         )}
-        {module?.type === 'audits' && (
+        {module?.type === 'audits' && !(device === 'mobile' && isAuditPage) && (
           <Can
             action="audits.add"
             yes={() => (
