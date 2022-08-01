@@ -1,27 +1,10 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Spacer,
-  Stack,
-  Text,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { Avatar, Badge, Box, Flex, Heading, Spacer, Stack, Text, useDisclosure, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
 import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
-import { ArrowDownIcon } from '../../icons';
 import { isPermitted } from '../can';
 import AuditHeaderButton from './AuditHeaderButton';
 import AuditSubmitModal from './AuditSubmitModal';
@@ -153,63 +136,6 @@ const AuditHeader = () => {
             />
           )}
         </Flex>
-        {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
-          <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px" mt={4}>
-            <Menu>
-              {({ isOpen }) => (
-                <>
-                  <MenuButton
-                    as={Button}
-                    bg={isOpen ? 'auditHeader.optionsMenuBgOpen' : 'auditHeader.optionsMenuBg'}
-                    borderRadius="10px"
-                    color="auditHeader.optionsMenuButtonColor"
-                    colorScheme="auditHeader.optionsMenuColorScheme"
-                    fontFamily="Helvetica"
-                    fontSize="smm"
-                    fontWeight="bold"
-                    isActive={isOpen}
-                    lineHeight="18px"
-                    rightIcon={<ArrowDownIcon />}
-                    textAlign="left"
-                    w="full"
-                  >
-                    Options
-                  </MenuButton>
-
-                  <MenuList
-                    borderColor="auditHeader.optionsMenuBorderColor"
-                    borderRadius="10px"
-                    boxShadow="0px 0px 80px"
-                    color="auditHeader.optionsMenuBoxShadow"
-                    minW={['calc(100vw - 50px)', '325px']}
-                    w="100%"
-                  >
-                    {/**
-                     * Hidden for now according to feature 44736
-                     * TODO: Show "Share" button
-                     */}
-                    {/* <AuditHeaderMenuItem
-                    icon={
-                      <ShareIcon
-                        _groupHover={{
-                          stroke: 'auditHeader.buttonLightColorHover',
-                        }}
-                        fontSize="15px"
-                        stroke="auditHeader.buttonLightColor"
-                      />
-                    }
-                    onClick={() => {}}
-                    title="Share"
-                  /> */}
-                    <MenuItem color="auditHeadeMenuItem.optionsMenuColor" onClick={handleSubmitModalOpen} w="100%">
-                      <Box p="2">Submit</Box>
-                    </MenuItem>
-                  </MenuList>
-                </>
-              )}
-            </Menu>
-          </Flex>
-        )}
       </Flex>
     </>
   );
@@ -232,14 +158,6 @@ export const auditHeaderStyles = {
     buttonLightColor: '#818197',
     buttonLightBgHover: '#818197',
     buttonLightColorHover: '#FFFFFF',
-    optionsMenuColorScheme: '#818197',
-    optionsMenuBg: '#818197',
-    optionsMenuBgOpen: '#282F36',
-    optionsMenuButtonColor: '#FFFFFF',
-    optionsMenuBorderColor: '#FFFFFF',
-    optionsMenuDivider: '#F0F0F0',
-    optionsMenuBoxShadow: 'rgba(49, 50, 51, 0.25)',
-    optionsMenuColor: '#818197',
     snapshot: {
       color: '#ff7000',
     },
