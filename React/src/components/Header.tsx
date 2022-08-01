@@ -52,7 +52,7 @@ const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBread
         <Flex display="flex" flexShrink={0} ml="6">
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
-        <Flex justify="flex-end" mr="20px" w="full">
+        <Flex justify="flex-end" mr="15px" w="full">
           {children}
         </Flex>
         {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton />}

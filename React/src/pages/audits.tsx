@@ -238,9 +238,9 @@ const Audits = () => {
                 </Text>
               </Button>
             </CSVLink>
-            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
           </>
         )}
+        <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
       </Header>
       <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
         {error ? (

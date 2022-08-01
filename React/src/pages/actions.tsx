@@ -287,9 +287,9 @@ const Actions = () => {
                 </Text>
               </Button>
             </CSVLink>
-            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
           </>
         )}
+        <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
       </Header>
       <HStack px={[4, 8]} spacing={2}>
         {Object.keys(actionStatuses).map((status) => (
