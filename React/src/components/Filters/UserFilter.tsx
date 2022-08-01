@@ -368,6 +368,7 @@ const UserFilter = () => {
       </Box>
 
       <UsersSelector
+        allowUnassigned={getPath() === 'actions'}
         handleChange={module?.type === 'tracker' ? handleUserChange : handleAuditUserChange}
         searchText={searchText}
         selected={selectedUsers}

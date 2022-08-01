@@ -16,7 +16,10 @@ const updateAction = async (_, { actionInput }, { authorize, organization }) => 
     });
     if (!isPermitted) throw new Error('User is not permitted to update this action.');
 
-    const updatedAction = await Actions.customUpdateOne({ _id: action._id }, actionInput, user._id, organization._id);
+    const updatedAction = await Actions.customUpdateOne({ _id: action._id }, {
+      ...actionInput,
+      assigneeId: actionInput.assigneeId || null,
+    }, user._id, organization._id);
 
     // Assert user
     Actions.customAssertAssignee(action._id);

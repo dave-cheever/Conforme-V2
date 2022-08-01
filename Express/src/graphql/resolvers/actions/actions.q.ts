@@ -78,7 +78,9 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     if (actionQueryInput?.usersIds?.assigneesIds?.length > 0) {
       pipeline.push({
         $match: {
-          assigneeId: { $in: actionQueryInput.usersIds?.assigneesIds },
+          assigneeId: {
+            $in: actionQueryInput.usersIds?.assigneesIds?.map((assigneeId: string) => (assigneeId === 'unassigned' ? null : assigneeId)),
+          },
         },
       });
     }

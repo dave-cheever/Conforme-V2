@@ -6,6 +6,7 @@ import { IUser } from '../interfaces/IUser';
 import UsersSelectorList from './UsersSelectorList';
 
 interface IUsersSelector {
+  allowUnassigned?: boolean;
   users: IUser[];
   searchText: string;
   selected: string[];
@@ -15,33 +16,26 @@ interface IUsersSelector {
   handleChange: (any) => void;
 }
 
-const UsersSelector = ({ users, searchText, selected, selectedRole, note, disabled, handleChange }: IUsersSelector) => {
+const UsersSelector = ({
+  allowUnassigned = false,
+  users,
+  searchText,
+  selected,
+  selectedRole,
+  note,
+  disabled,
+  handleChange,
+}: IUsersSelector) => {
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
 
   useEffect(() => {
+    const _users = allowUnassigned ? [{ _id: 'unassigned', displayName: 'Unassigned' } as IUser, ...users] : [...users];
     let filteredUsers: IUser[] = [];
-    if (disabled) filteredUsers = users?.filter(({ _id }) => selected?.includes(_id));
-    else filteredUsers = users?.filter(({ displayName }) => displayName.toLowerCase().includes(searchText?.toLowerCase()));
+    if (disabled) filteredUsers = _users?.filter(({ _id }) => selected?.includes(_id));
+    else filteredUsers = _users?.filter(({ displayName }) => displayName.toLowerCase().includes(searchText?.toLowerCase()));
 
     setFilteredUsers(filteredUsers);
-  }, [users, disabled, selected, searchText]);
-
-  // const toggleAll = useCallback(
-  //   (event) => {
-  //     const currentViewIds = filteredUsers.map(({ _id }) => _id);
-  //     if (event.target.checked) {
-  //       // Add all filtered users to selection
-  //       const value = Array.from(new Set([...selected, ...currentViewIds]));
-  //       handleChange({ target: { userRole: selectedRole, value } });
-  //     } else {
-  //       // Remove all filtered users from selection
-  //       const value = selected.filter((_id) => !currentViewIds.includes(_id));
-  //       handleChange({ target: { userRole: selectedRole, value } });
-  //     }
-  //   },
-
-  //   [filteredUsers, selected],
-  // );
+  }, [allowUnassigned, users, disabled, selected, searchText]);
 
   if (disabled) {
     return (
