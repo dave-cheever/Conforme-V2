@@ -104,7 +104,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           rightIcon={<ChevronRight boxSize="15px" color="walkItemSquare.button.default.color" />}
           w="85px"
         >
-          Update
+          {answer?.audit?.status === 'upcoming' ? 'Update' : 'View'}
         </Button>
       </Flex>
     </Stack>

@@ -346,7 +346,7 @@ const WalkItemModal = ({
                   Delete
                 </Button>
               )}
-              {isUserPermittedToModifyStatus && (
+              {isUserPermittedToModifyStatus && walkItem?.audit?.status === 'upcoming' && (
                 <Button
                   bg="walkItemModal.buttons.primary.bg"
                   color="walkItemModal.buttons.primary.color"
