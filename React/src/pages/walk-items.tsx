@@ -170,7 +170,7 @@ const WalkItems = () => {
 
   useEffect(() => {
     setFilters({
-      questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : undefined,
+      questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : null,
     });
   }, [selectedPanel]);
 
