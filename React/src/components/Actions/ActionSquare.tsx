@@ -46,7 +46,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
         </Text>
       </Flex>
       <Flex w="full">
-        <Box overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+        <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="actionSquare.section.title" fontSize="ssm">
             Priority
           </Text>
@@ -55,7 +55,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
           </Text>
         </Box>
         {action?.dueDate && (
-          <Box overflow="hidden" textOverflow="ellipsis" w={['auto', '200px']} whiteSpace="nowrap">
+          <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
             <Text color="actionSquare.section.title" fontSize="ssm">
               Due in
             </Text>
