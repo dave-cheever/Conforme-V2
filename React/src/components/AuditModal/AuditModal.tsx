@@ -290,7 +290,7 @@ const AuditModal = ({ refetch }) => {
               <Button
                 bg="auditModal.tabs.bottomButton.bg"
                 color="auditModal.tabs.bottomButton.color"
-                disabled={!audit.walkType || (audit.walkType === 'physical' && (!audit.siteId || !audit.areaId))}
+                disabled={!audit.walkType || !audit.siteId || !audit.areaId}
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
