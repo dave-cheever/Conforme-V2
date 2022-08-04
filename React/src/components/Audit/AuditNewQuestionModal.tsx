@@ -21,7 +21,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
     category.maxQuestionsNumber ? category.maxQuestionsNumber - (questions[category._id] || []).length : 1;
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose} size={device === 'mobile' ? '3xl' : '2xl'}>
+    <Modal isCentered isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size={device === 'mobile' ? '3xl' : '2xl'}>
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">

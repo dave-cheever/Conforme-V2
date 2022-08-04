@@ -8,10 +8,10 @@ import {
   BlankPage,
   CalendarIcon,
   CategoryIcon,
+  EditIcon,
   Home,
   ListIcon,
   LocationIcon,
-  ProgressIcon,
   QuestionMarkIcon,
   RegulatoryBodyIcon,
   SiteIcon,
@@ -75,7 +75,7 @@ const useConfig = () => {
     {
       label: capitalize(pluralize(t('question'))),
       url: '/',
-      icon: ProgressIcon,
+      icon: EditIcon,
     },
     {
       label: 'Participants',
