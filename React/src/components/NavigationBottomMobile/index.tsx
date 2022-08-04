@@ -12,7 +12,7 @@ const NavigationBottomMobile = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   return (
-    <Flex bg="navigationBottomMobile.bg" bottom="0px" h="60px" justify="space-between" p="15px 25px" position="fixed" w="full" zIndex={10}>
+    <Flex bg="navigationBottomMobile.bg" bottom="0px" boxShadow="simple" h="60px" justify="space-between" p="15px 25px" position="fixed" w="full" zIndex={10}>
       {menuItems.map((menuItem: any, i) => (
         <Can
           action={menuItem.permission}

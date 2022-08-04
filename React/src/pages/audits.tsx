@@ -242,7 +242,7 @@ const Audits = () => {
         )}
         <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
       </Header>
-      <Flex h={['calc(100vh - 210px)', 'calc(100vh - 150px)']} overflow="auto">
+      <Flex h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
         {error ? (
           <Text>{error.message}</Text>
         ) : loading ? (

@@ -283,7 +283,7 @@ const WalkItems = () => {
         )}
         <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
       </Header>
-      <Flex h={['calc(100vh - 210px)', '100vh']} overflow="auto">
+      <Flex h={['calc(100vh - 200px)', '100vh']} overflow="auto" pb={4}>
         {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>
