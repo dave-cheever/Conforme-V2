@@ -320,7 +320,6 @@ const WalkItems = () => {
                         h="fit-content"
                         pb={[0, 8]}
                         pt="3"
-                        px={4}
                         templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
                         w="full"
                       >

@@ -42,7 +42,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">
-        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+        <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="auditSquare.titleFontColor">Site</Text>
           <Tooltip label={audit?.site?.name}>
             <Text isTruncated maxWidth="80%">
@@ -50,7 +50,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
             </Text>
           </Tooltip>
         </Box>
-        <Box fontSize="ssm" lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+        <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="auditSquare.titleFontColor">Type</Text>
           <Text textTransform="capitalize">{audit?.walkType}</Text>
         </Box>
