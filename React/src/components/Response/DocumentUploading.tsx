@@ -15,7 +15,7 @@ const DocumentUploading = ({ documentName, cancelUpload }: { documentName: strin
     h="65px"
     justify="space-between"
     key={documentName}
-    maxWidth="400px"
+    maxWidth={['none', 'none', 400]}
     role="group"
     w="full"
   >
@@ -25,8 +25,8 @@ const DocumentUploading = ({ documentName, cancelUpload }: { documentName: strin
           <Loader center size="lg" />
         </Flex>
       </Box>
-      <Flex direction="column" fontSize="12px" mr={2} width="250px">
-        <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
+      <Flex direction="column" fontSize="12px" mr={2} width={[150, 250, 250]}>
+        <Text fontWeight="700" isTruncated textOverflow="ellipsis">
           {documentName}
         </Text>
         <Flex opacity="0.6">Uploading ...</Flex>

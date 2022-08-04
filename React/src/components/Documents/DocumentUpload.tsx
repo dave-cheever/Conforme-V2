@@ -64,7 +64,7 @@ const DocumentUpload = ({
             });
           }
         } finally {
-          setUploading((uploading) => uploading.filter((name) => name !== file.name));
+          // setUploading((uploading) => uploading.filter((name) => name !== file.name));
         }
       });
     }
