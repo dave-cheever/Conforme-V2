@@ -29,12 +29,6 @@ const NavigationBottomItem = ({
   return (
     <Flex
       alignItems="center"
-      css={{
-        ':not(:first-of-type)': {
-          marginLeft: '25px',
-        },
-      }}
-      flexGrow={menuItem.subSections ? (isPathActive(url) ? 1 : 0) : isPathActive(url, { exact: true }) ? 1 : 0}
       onClick={() => {
         if (menuItem.url === '/') {
           setFiltersOpen(!filtersOpen);
