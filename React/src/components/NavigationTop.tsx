@@ -79,7 +79,7 @@ const NavigationTop = () => {
         fontSize="md"
         fontWeight="semi_medium"
         mr={['0', '20px']}
-        pl={2}
+        pl={[0, 2]}
         spacing={4}
         w="full"
       >
@@ -90,7 +90,7 @@ const NavigationTop = () => {
           h="80px"
           onClick={() => navigateTo('/')}
         >
-          <Text color="navigationTop.organizationName" fontSize="md" fontWeight="bold" lineHeight="19px" ml={['26px', 0]} w="full">
+          <Text color="navigationTop.organizationName" fontSize="md" fontWeight="bold" lineHeight="19px" ml={[6, 0]} w="100%">
             {showFiltersPanel ? getInitials(module?.name) : module?.name}
           </Text>
         </Flex>
@@ -172,7 +172,7 @@ const NavigationTop = () => {
           borderRadius="20px"
           display={['block', 'none']}
           icon={<SearchIcon fill="navigationTop.searchBarIcon" h="22px" opacity="1" stroke="brand.outerSpace" w="18px" />}
-          mr="27.5px"
+          mr={1}
           onClick={() => setIsSearchBarOpen(true)}
         />
         {/* <NotificationIcon

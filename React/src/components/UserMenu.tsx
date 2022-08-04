@@ -38,14 +38,14 @@ const UserMenu = () => {
 
   return (
     <Menu isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
-      <MenuButton color="white" display="flex" ml="1" mr={['0', '6']} w="65px">
+      <MenuButton color="white">
         <Avatar
           bg="userMenu.avatar.bg"
           borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
           borderWidth="5px"
           color="userMenu.avatar.color"
           h="41px"
-          mx={3}
+          mr={5}
           name={user?.displayName}
           rounded="full"
           size="sm"
