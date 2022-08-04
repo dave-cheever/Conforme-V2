@@ -138,8 +138,8 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
 
   return (
     <>
-      <ModalContent bg="actionModal.bg" h="auto" m="0" p={['25px', '35px']} position="absolute" rounded="0">
-        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
+      <ModalContent bg="actionModal.bg" h="100vh" m="0" overflow="hidden" p={[4, 6]} rounded="0">
+        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Tooltip label={action?.assignee?.displayName ?? 'No assignee'}>
@@ -152,9 +152,9 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody h="calc(100% - 175px)" overflow="visible" px={['0', '2']}>
-          <Stack h="full" spacing={4}>
-            <Stack spacing={6}>
+        <ModalBody h="calc(100% - 1rem)" p="1rem 0 0 0">
+          <Stack h="100%" justify="space-between" spacing={2}>
+            <Stack flexGrow={1} overflowY="auto" px={2} py={0} spacing={6}>
               <Stack spacing={4}>
                 <Text fontSize="smm" fontWeight="semibold">
                   {capitalize(t('question'))}
@@ -221,7 +221,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                 <Text fontSize="smm" fontWeight="semibold">
                   Action details
                 </Text>
-                <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
+                <Grid columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
                   <GridItem>
                     <TextInput
                       control={control}
@@ -333,8 +333,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                 </Stack>
               </Stack>
             </Stack>
-            <Spacer />
-            <Flex justify="space-between" w="full">
+            <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
               {isPermitted({ user, action: 'actions.delete' }) ? (
                 <Button
                   bg="actionModal.buttons.secondary.bg"

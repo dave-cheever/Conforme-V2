@@ -24,7 +24,7 @@ mongoose
       app.listen(port, () => {
         logger.info(`Express server started on port ${port} and worker ${processId}`);
       });
-    }
+    };
     if (clusterWorkerSize > 1) {
       if (cluster.isPrimary) {
         logger.info('MongoDB connected!');
@@ -41,8 +41,8 @@ mongoose
 
         for (let i = 0; i < clusterWorkerSize; i += 1) cluster.fork();
 
-        cluster.on("exit", (worker) => {
-          logger.info("Worker", worker.id, " has exitted.")
+        cluster.on('exit', (worker) => {
+          logger.info('Worker', worker.id, ' has exitted.');
           cluster.fork();
         });
       } else await startApp(process.pid);

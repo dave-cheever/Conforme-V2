@@ -136,8 +136,8 @@ const WalkItemModal = ({
 
   return (
     <>
-      <ModalContent bg="walkItemModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
-        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
+      <ModalContent bg="actionModal.bg" h="100vh" m="0" overflow="hidden" p={[4, 6]} rounded="0">
+        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar mr={3} name={walkItem?.addedBy?.displayName} rounded="full" size="xs" src={walkItem?.addedBy?.imgUrl} />
@@ -148,9 +148,9 @@ const WalkItemModal = ({
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody h="calc(100% - 175px)" overflow="visible" px={['0', '2']}>
-          <Stack h="full" spacing={4}>
-            <Stack spacing={6}>
+        <ModalBody h="calc(100% - 1rem)" p="1rem 0 0 0">
+          <Stack h="100%" justify="space-between" spacing={2}>
+            <Stack flexGrow={1} overflowY="auto" px={2} py={0} spacing={6}>
               <Stack spacing={4}>
                 <Text fontSize="smm" fontWeight="semibold">
                   Related {t('audit')}
@@ -328,9 +328,7 @@ const WalkItemModal = ({
                 )}
               </Stack>
             </Stack>
-
-            <Spacer />
-            <Flex justify="space-between" w="full">
+            <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
               {walkItem?.audit?.status !== 'completed' && (
                 <Button
                   bg="walkItemModal.buttons.secondary.bg"
@@ -346,6 +344,7 @@ const WalkItemModal = ({
                   Delete
                 </Button>
               )}
+              <Spacer />
               {isUserPermittedToModifyStatus && walkItem?.audit?.status === 'upcoming' && (
                 <Button
                   bg="walkItemModal.buttons.primary.bg"

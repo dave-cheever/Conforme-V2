@@ -92,7 +92,7 @@ const DocumentUpload = ({
           onDrop={(acceptedFiles, rejectedFiles) => upload({ acceptedFiles, rejectedFiles })}
         >
           {({ getRootProps, getInputProps }) => (
-            <Box {...getRootProps()} cursor="pointer" mb={3} minH="65px" w="full">
+            <Box {...getRootProps()} cursor="pointer" h="65px" mb={3} w="full">
               <input {...getInputProps()} />
               <Flex
                 align="center"
