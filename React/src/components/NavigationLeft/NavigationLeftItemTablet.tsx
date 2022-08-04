@@ -143,7 +143,7 @@ export const navigationLeftItemTabletStyles = {
     selectedMenuItem: '#1F1F1F',
     unselectedMenuItem: '#818197',
     selectedLabelBg: '#462AC4',
-    unselectedLabelBg: '#ffffff',
+    unselectedLabelBg: '#DDDDDD',
     selectedIconStroke: '#ffffff',
     unselectedIconStroke: '#818197',
   },

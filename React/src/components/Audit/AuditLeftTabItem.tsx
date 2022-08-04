@@ -45,7 +45,7 @@ export default AuditLeftTabItem;
 
 export const auditLeftTabItemStyles = {
   auditLeftTabItem: {
-    iconBg: '#FFFFFF',
+    iconBg: '#DDDDDD',
     activeIconBg: '#462AC4',
     activeTextColor: '#1F1F1F',
     textColor: '#818197',

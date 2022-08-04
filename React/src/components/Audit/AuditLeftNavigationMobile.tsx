@@ -36,7 +36,9 @@ const AuditLeftNavigationMobile = () => {
           mr={3}
           onClick={() => navigateTo('/audits')}
         >
-          <Home ml={2} stroke="responseLeftNavigation.goBackColor" />
+          <Flex align="center" bg="auditLeftTabItem.iconBg" borderRadius="8px" h="30px" justify="center" w="30px">
+            <Home stroke="responseLeftNavigation.goBackColor" />
+          </Flex>
           <Divider ml={3} orientation="vertical" />
         </Flex>
         <Flex justify="space-between" w="full">
