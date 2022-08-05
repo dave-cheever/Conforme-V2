@@ -1,4 +1,4 @@
-import { RepeatClockIcon } from '@chakra-ui/icons';
+import { QuestionOutlineIcon, RepeatClockIcon } from '@chakra-ui/icons';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -12,7 +12,6 @@ import {
   Home,
   ListIcon,
   LocationIcon,
-  QuestionMarkIcon,
   RegulatoryBodyIcon,
   SiteIcon,
   TeamsIcon,
@@ -176,19 +175,19 @@ const useConfig = () => {
 
   const auditAddItems = [
     { label: 'Safety Walk', url: '/', permission: 'audits.add', icon: ListIcon },
-    { label: 'Sites', url: '/admin/sites', permission: 'adminPanel.view', icon: SiteIcon },
-    { label: 'Areas', url: '/admin/areas', permission: 'adminPanel.view', icon: LocationIcon },
-    { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionMarkIcon },
-    { label: 'Questions categories', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
-    { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
+    { label: 'Site', url: '/admin/sites', permission: 'adminPanel.view', icon: SiteIcon },
+    { label: 'Area', url: '/admin/areas', permission: 'adminPanel.view', icon: LocationIcon },
+    { label: 'Question', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionOutlineIcon },
+    { label: 'Questions category', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
+    { label: 'Audit type', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
   ];
 
   const trackerAddItems = [
-    { label: capitalize(pluralize(t('tracker item'))), url: '/admin/compliance-items', icon: BlankPage },
-    { label: 'Regulatory bodies', url: '/admin/regulatory-bodies', icon: RegulatoryBodyIcon },
-    { label: 'Categories', url: '/admin/categories', icon: CategoryIcon },
-    { label: 'Locations', url: '/admin/locations', icon: LocationIcon },
-    { label: pluralize(capitalize(t('business unit'))), url: '/admin/business-units', icon: TeamsIcon },
+    { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items', icon: BlankPage },
+    { label: 'Regulatory body', url: '/admin/regulatory-bodies', icon: RegulatoryBodyIcon },
+    { label: 'Category', url: '/admin/categories', icon: CategoryIcon },
+    { label: 'Location', url: '/admin/locations', icon: LocationIcon },
+    { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units', icon: TeamsIcon },
   ];
 
   return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems, trackerAddItems, auditAddItems };

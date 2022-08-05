@@ -52,7 +52,7 @@ const QuestionsForm = () => {
 
   return (
     <Stack pb={isDragging ? 'calc(65px + .5rem)' : 0} spacing={4} w="full">
-      <SectionHeader label={`Add ${pluralize(t('question'))}`} />
+      <SectionHeader label={`Add ${t('question')}`} />
       <Text color="adminComplianceItemModal.section.questions.description" fontSize="11px" opacity="0.7">
         If you need to add any additional {pluralize(t('question'))} regarding this {t('tracker item')}, you can use this section to create
         them.

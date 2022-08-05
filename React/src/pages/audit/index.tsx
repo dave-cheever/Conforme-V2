@@ -76,7 +76,7 @@ const Audit = () => {
               ))}
             </Stack>
           ) : (
-            <Box fontSize="18px" fontStyle="italic" h="full" w="full">
+            <Box bg="white" fontSize="18px" fontStyle="italic" h="auto" px={6} py={6} rounded="20px" w="auto">
               <Text>No {pluralize(t('question'))} found</Text>
             </Box>
           )}

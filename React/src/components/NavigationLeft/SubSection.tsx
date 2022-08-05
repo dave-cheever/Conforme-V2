@@ -44,7 +44,7 @@ const SubSection = ({
         />
       )}
 
-      {showIcon && <Icon as={icon as any} h="15px" stroke="subSection.iconStroke" w="15px" />}
+      {showIcon && <Icon as={icon as any} h="16px" stroke="subSection.iconStroke" w="16px" />}
       <Text ml="25px">{label}</Text>
     </Flex>
   );

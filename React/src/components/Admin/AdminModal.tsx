@@ -11,6 +11,7 @@ import {
   Spacer,
   useDisclosure,
 } from '@chakra-ui/react';
+import pluralize from 'pluralize';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { ChevronRight, Close } from '../../icons';
@@ -44,7 +45,7 @@ const AdminModal = ({ isOpenModal, modalType, onAction, collection, children }: 
               <Flex>
                 <Avatar mx={3} name={user?.displayName} rounded="full" size="sm" src={user?.imgUrl} />
                 <Box fontSize="xxl" fontWeight="bold">
-                  {modalType === 'edit' ? `Edit ${collection}` : `Add ${collection}`}
+                  {modalType === 'edit' ? `Edit ${pluralize(collection, 1)}` : `Add ${pluralize(collection, 1)}`}
                 </Box>
               </Flex>
               <Close cursor="pointer" h="15px" onClick={onAction} stroke="adminModal.closeIcon" w="15px" />
