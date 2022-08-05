@@ -97,10 +97,10 @@ const Login = () => {
               onClick={loginWithAzureAD}
               w="204px"
             >
-              Login as {user?.firstName}
+              Login as {user?.firstName || user?.displayName}
             </Button>
             <Flex align="center" color="loginPage.descriptionColor" flexDir="column" fontSize="11px">
-              <Flex>Not {user?.firstName}?</Flex>
+              <Flex>Not {user?.firstName || user?.displayName}?</Flex>
               <Flex _hover={{ color: 'loginPage.hoverColor' }} cursor="pointer" onClick={removeUser}>
                 Login as someone else
               </Flex>

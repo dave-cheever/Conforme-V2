@@ -100,9 +100,7 @@ const AuditParticipants = () => {
                 src={audit.auditor?.imgUrl}
               />
               <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                {audit.auditor?.firstName || audit.auditor?.lastName
-                  ? `${audit.auditor?.firstName} ${audit.auditor?.lastName}`
-                  : audit.auditor?.displayName}
+                {audit.auditor?.displayName}
               </Text>
             </Flex>
           </Stack>

@@ -117,7 +117,7 @@ const AvatarUser = ({
         <Avatar
           cursor="default"
           h={['55px', '64px']}
-          name={firstName || lastName ? `${firstName} ${lastName}` : displayName}
+          name={displayName}
           onMouseOver={() => !snapshot && setShowDelete(true)}
           src={imgUrl}
           w={['55px', '64px']}
@@ -166,7 +166,7 @@ const AvatarUser = ({
           }
         />
         <Text fontSize="11px" fontWeight="semi_medium" mt="10px">
-          {firstName || lastName ? `${firstName} ${lastName}` : displayName}
+          {displayName}
         </Text>
       </Flex>
     </>

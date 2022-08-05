@@ -531,7 +531,7 @@ export const getAuditValueForUser = async ({ oldValue, newValue, organization })
     if (item) {
       value.old = {
         value: oldValue,
-        label: `${item.firstName} ${item.lastName}`,
+        label: item.displayName,
       };
     }
   }
@@ -543,7 +543,7 @@ export const getAuditValueForUser = async ({ oldValue, newValue, organization })
     if (item) {
       value.new = {
         value: newValue,
-        label: `${item.firstName} ${item.lastName}`,
+        label: item.displayName,
       };
     }
   }
@@ -570,7 +570,7 @@ export const getAuditValueForUsersArray = async ({ oldValue, newValue, organizat
         }
         return {
           id,
-          label: `${item.firstName} ${item.lastName}`,
+          label: item.displayName,
         };
       }),
     );
@@ -596,7 +596,7 @@ export const getAuditValueForUsersArray = async ({ oldValue, newValue, organizat
         }
         return {
           id,
-          label: `${item.firstName} ${item.lastName}`,
+          label: item.displayName,
         };
       }),
     );

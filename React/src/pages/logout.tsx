@@ -98,7 +98,7 @@ const Logout = () => {
             Log back in
           </Button>
           <Flex align="center" color="logoutPage.descriptionColor" flexDir="column" fontSize="11px">
-            <Flex>Not {user?.firstName}?</Flex>
+            <Flex>Not {user?.firstName || user?.displayName}?</Flex>
             <Flex _hover={{ bg: 'logoutPage.hoverColor' }} cursor="pointer" onClick={redirectToLogin}>
               Login as someone else
             </Flex>
