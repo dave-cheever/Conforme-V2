@@ -75,8 +75,8 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
       options: [{
         _id: false,
         label: String,
-        value: String
-      }]
+        value: String,
+      }],
     },
   ],
   locationsIds: [String],

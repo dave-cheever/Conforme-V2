@@ -15,6 +15,7 @@ import {
 async function validateUniqueName(this: any, name: string) {
   const categoryCount = await models.Category.find({
     name,
+    organizationId: this.organizationId,
     'metatags.removedAt': { $eq: null },
   }).count();
   return !categoryCount;
@@ -24,7 +25,7 @@ const categorySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,
   name: {
     type: String,
-    validate: [validateUniqueName, 'Category name already exists'],
+    validate: [validateUniqueName, 'Category already exists'],
   },
   organizationId: String,
   metatags: {

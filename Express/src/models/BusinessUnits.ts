@@ -21,6 +21,7 @@ import {
 async function validateUniqueName(this: any, name: string) {
   const buCount = await models.BusinessUnit.find({
     name,
+    organizationId: this.organizationId,
     'metatags.removedAt': { $eq: null },
   }).count();
   return !buCount;
@@ -31,7 +32,7 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   identifier: String,
   name: {
     type: String,
-    validate: [validateUniqueName, 'Business unit name already exists'],
+    validate: [validateUniqueName, 'Business unit already exists'],
   },
   ownerId: String,
   imgUrl: String,

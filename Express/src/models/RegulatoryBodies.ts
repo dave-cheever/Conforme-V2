@@ -25,7 +25,7 @@ const regulatoryBodySchema = new Schema<IBaseWithName, IBaseWithNameModel>({
   _id: String,
   name: {
     type: String,
-    validate: [validateUniqueName, 'Regulatory body name already exists'],
+    validate: [validateUniqueName, 'Regulatory body already exists'],
   },
   organizationId: String,
   metatags: {

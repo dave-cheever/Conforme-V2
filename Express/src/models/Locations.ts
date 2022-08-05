@@ -55,6 +55,7 @@ const getAuditRecordValues = async ({
 async function validateUniqueName(this: any, name: string) {
   const locationsCount = await models.Location.find({
     name,
+    organizationId: this.organizationId,
     'metatags.removedAt': { $eq: null },
   }).count();
   return !locationsCount;
@@ -64,7 +65,7 @@ const locationsSchema = new Schema<ILocation, ILocationModel>({
   _id: String,
   name: {
     type: String,
-    validate: [validateUniqueName, 'Location name already exists'],
+    validate: [validateUniqueName, 'Location already exists'],
   },
   ownerId: String,
   organizationId: String,
