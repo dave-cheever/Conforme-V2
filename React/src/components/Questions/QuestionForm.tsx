@@ -7,6 +7,7 @@ import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
 import QuestionEmailForm from './QuestionEmailForm';
 import QuestionMultiChoiceForm from './QuestionMultiChoiceForm';
 import QuestionSimpleForm from './QuestionSimpleForm';
+import QuestionSingleChoiceForm from './QuestionSingleChoiceForm';
 
 const QuestionForm = ({
   setShowQuestionForm,
@@ -46,6 +47,18 @@ const QuestionForm = ({
       <QuestionMultiChoiceForm
         addOrUpdateQuestion={addOrUpdateQuestion}
         editableValue={value as ITrackerQuestion<IQuestionChoice[]>}
+        editQuestionIndex={editQuestionIndex}
+        questionType={questionType}
+        setEditQuestion={setEditQuestion}
+        setEditQuestionIndex={setEditQuestionIndex}
+        setIsEdit={setIsEdit}
+        setShowQuestionForm={setShowQuestionForm}
+      />
+    )}
+    {questionType === 'singleChoice' && (
+      <QuestionSingleChoiceForm
+        addOrUpdateQuestion={addOrUpdateQuestion}
+        editableValue={value as ITrackerQuestion<string>}
         editQuestionIndex={editQuestionIndex}
         questionType={questionType}
         setEditQuestion={setEditQuestion}

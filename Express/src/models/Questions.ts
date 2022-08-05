@@ -17,7 +17,7 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   _id: String,
   type: {
     type: String,
-    enum: ['text', 'textMultiline', 'switch', 'datepicker', 'multipleChoice'],
+    enum: ['text', 'textMultiline', 'switch', 'datepicker', 'multipleChoice', 'singleChoice'],
   },
   question: String,
   description: String,

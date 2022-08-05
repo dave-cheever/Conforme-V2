@@ -25,6 +25,12 @@ const responsesResolvers = {
 };
 
 export const responsesTypeDefs = `
+
+  type Options {
+    label: String!
+    value: String!
+  }
+  
   type ResponseEvidence {
     name: String!
     uploaded: Document
@@ -38,6 +44,7 @@ export const responsesTypeDefs = `
     required: Boolean
     requiredAnswer: String
     notApplicable: Boolean
+    options: [Options]
   }
 
   type Response {

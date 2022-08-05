@@ -1,6 +1,6 @@
 import { differenceInDays, startOfDay } from 'date-fns';
 import { t } from 'i18next';
-import { capitalize, isInteger } from 'lodash';
+import { capitalize, isEmpty, isInteger } from 'lodash';
 
 import { IQuestionChoice } from '../interfaces/IQuestionChoice';
 import { IResponse } from '../interfaces/IResponse';
@@ -96,8 +96,9 @@ const useResponseUtils = () => {
     return response?.questions
       ?.filter(({ required }) => required)
       .every(({ value, type, requiredAnswer }: ITrackerQuestion<TQuestionValue>) => {
-        if (type === 'multipleChoice')
-          return (value as IQuestionChoice[]).some((choice) => choice.isCorrect === true);
+        if (type === 'multipleChoice' && !isEmpty(requiredAnswer))
+          return (value as IQuestionChoice[]).some((choice) => choice.isCorrect === true && requiredAnswer?.includes(choice.label));
+        if (type === 'singleChoice' && !isEmpty(requiredAnswer)) return value === requiredAnswer;
         if (type === 'switch' && requiredAnswer)
           return (value === 'yes' && requiredAnswer === 'yes') || (value === 'no' && requiredAnswer === 'no');
         return value || (typeof value === 'boolean' && value === false);

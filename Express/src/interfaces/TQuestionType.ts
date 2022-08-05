@@ -3,4 +3,5 @@ export type TQuestionType =
   | 'textMultiline'
   | 'switch'
   | 'datepicker'
-  | 'multipleChoice';
+  | 'multipleChoice'
+  | 'singleChoice';

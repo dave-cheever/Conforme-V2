@@ -17,6 +17,12 @@ const complianceItemsResolvers = {
 };
 
 export const complianceItemsTypeDefs = `
+
+  type Options {
+    label: String!
+    value: String!
+  }
+
   type Question {
     type: String!
     name: String!
@@ -24,8 +30,9 @@ export const complianceItemsTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
-    requiredAnswer: String
+    requiredAnswer: Any
     notApplicable: Boolean
+    options: [Options]
   }
   
   type ComplianceItem {
@@ -50,6 +57,11 @@ export const complianceItemsTypeDefs = `
     reference: String
   }
 
+  input OptionsInput {
+    label: String!
+    value: String!
+  }
+
   input QuestionInput {
     type: String!
     name: String!
@@ -57,8 +69,9 @@ export const complianceItemsTypeDefs = `
     value: Any
     required: Boolean
     outdated: Boolean
-    requiredAnswer : String
+    requiredAnswer : Any
     notApplicable: Boolean
+    options: [OptionsInput]
   }
 
   input ComplianceItemInput {

@@ -5,6 +5,7 @@ export interface ITrackerQuestion<ValueType> {
   name: string;
   description?: string;
   value?: ValueType;
+  options?: { label: string, value: string }[];
   required?: boolean;
   requiredAnswer?: string;
   notApplicable?: boolean;

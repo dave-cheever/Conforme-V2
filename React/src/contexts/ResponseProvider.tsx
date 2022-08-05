@@ -53,6 +53,10 @@ const GET_RESPONSE = gql`
         required
         requiredAnswer
         notApplicable
+        options {
+          label
+          value
+        }
       }
       complianceItem {
         _id

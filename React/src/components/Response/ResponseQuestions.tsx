@@ -30,16 +30,17 @@ const ResponseQuestions = ({ disabled = false }) => {
     control,
     formState: { isDirty },
     reset,
+    setValue,
   } = questionsForm;
 
   useEffect(() => {
     reset(
       questions?.reduce(
         (acc, { name, value }) =>
-          ({
-            ...acc,
-            [name]: value || '',
-          } as { [name: string]: TQuestionValue }),
+        ({
+          ...acc,
+          [name]: value || '',
+        } as { [name: string]: TQuestionValue }),
         {} as { [name: string]: TQuestionValue },
       ),
     );
@@ -65,7 +66,7 @@ const ResponseQuestions = ({ disabled = false }) => {
               &nbsp; This item has no questions yet
             </Text>
           )}
-          {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable }, i) => (
+          {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable, options }, i) => (
             <Flex key={name}>
               <Box
                 bg="responseQuestions.sectionNumber.bg"
@@ -90,10 +91,12 @@ const ResponseQuestions = ({ disabled = false }) => {
                 label={name}
                 name={name}
                 notApplicable={notApplicable}
+                options={options}
                 placeholder={description}
                 readMode={disabled}
                 required={!!required}
                 requiredAnswer={requiredAnswer}
+                setValue={setValue}
                 styles={styles}
                 type={type}
               />

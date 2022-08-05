@@ -42,6 +42,10 @@ const GET_COMPLIANCE_ITEMS = gql`
         outdated
         requiredAnswer
         notApplicable
+        options{
+          label
+          value
+        }
       }
       locationsIds
       categoryId
@@ -147,6 +151,7 @@ const ComplianceItemsAdmin = () => {
           required: question.required,
           requiredAnswer: question.requiredAnswer,
           notApplicable: question.notApplicable,
+          options: question.options!.map((option: { label: string, value: string }) => ({ label: option.label, value: option.value })),
         })),
         published: complianceItem.published,
       },
@@ -159,7 +164,7 @@ const ComplianceItemsAdmin = () => {
       <Modal
         isOpen={adminModalState !== 'closed'}
         key={complianceItem._id}
-        onClose={() => {}}
+        onClose={() => { }}
         size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
       >

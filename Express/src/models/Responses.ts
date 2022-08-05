@@ -77,6 +77,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
           'switch',
           'datepicker',
           'multipleChoice',
+          'singleChoice',
           'url',
         ],
       },
@@ -85,8 +86,12 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       value: Schema.Types.Mixed,
       required: Boolean,
       outdated: Boolean,
-      requiredAnswer: String,
+      requiredAnswer: Schema.Types.Mixed,
       notApplicable: Boolean,
+      options: [{
+        label: String,
+        value: String
+      }]
     },
   ],
   organizationId: String,

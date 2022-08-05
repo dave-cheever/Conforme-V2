@@ -74,6 +74,7 @@ import { questionListStyles } from '../components/Questions/QuestionList';
 import { questionListElementStyles } from '../components/Questions/QuestionListElement';
 import { questionMultiChoiceFormStyles } from '../components/Questions/QuestionMultiChoiceForm';
 import { questionSimpleFormStyles } from '../components/Questions/QuestionSimpleForm';
+import { questionSingleChoiceFormStyles } from '../components/Questions/QuestionSingleChoiceForm';
 import { chatMentionStyles } from '../components/Response/ChatMention';
 import { responseRenewalDetailsStyles } from '../components/Response/Details';
 import { evidenceStyles } from '../components/Response/Evidence';
@@ -254,6 +255,7 @@ const getTheme = (organizationTheme?: any) => {
         ...questionListStyles,
         ...questionsModalStyles,
         ...questionMultiChoiceFormStyles,
+        ...questionSingleChoiceFormStyles,
         ...questionSimpleFormStyles,
         ...regulatoryBodiesStyles,
         ...responseChatConfirmDeleteModalStyles,

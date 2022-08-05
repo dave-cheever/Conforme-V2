@@ -28,7 +28,7 @@ const CustomRadioButton = ({ children, ...props }) => {
         h="20px"
         justifyContent="center"
         mr="10px"
-        w="20px"
+        w={props.isSingleChoice ? '22px' : "20px"}
       >
         {input.checked && <CheckIcon h="12px" w="12px" />}
       </Flex>

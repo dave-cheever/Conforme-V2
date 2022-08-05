@@ -1,1 +1,1 @@
-export type TQuestionType = 'text' | 'textMultiline' | 'switch' | 'datepicker' | 'multipleChoice';
+export type TQuestionType = 'text' | 'textMultiline' | 'switch' | 'datepicker' | 'multipleChoice' | 'singleChoice';

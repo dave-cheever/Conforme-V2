@@ -8,6 +8,7 @@ import {
   Dropdown,
   MultipleChoices,
   NumberInput,
+  SingleChoices,
   Switch,
   Textarea,
   TextConfirmInput,
@@ -36,6 +37,7 @@ const Field = ({ control, ...field }) => {
     defaultvalue,
     requiredAnswer,
     notApplicable,
+    setValue,
   } = field;
   const props: IField = {
     control,
@@ -55,6 +57,7 @@ const Field = ({ control, ...field }) => {
     requiredAnswer,
     defaultvalue,
     notApplicable,
+    setValue,
   };
 
   switch (type) {
@@ -90,6 +93,9 @@ const Field = ({ control, ...field }) => {
     }
     case 'multipleChoice': {
       return <MultipleChoices {...props} />;
+    }
+    case 'singleChoice': {
+      return <SingleChoices {...props} />;
     }
     case 'toggle': {
       return <Toggle key={name} {...props} />;

@@ -19,4 +19,5 @@ export interface IField {
   placeholder?: string;
   styles?: object;
   defaultvalue?: any;
+  setValue?: (x: string, y: string) => void;
 }

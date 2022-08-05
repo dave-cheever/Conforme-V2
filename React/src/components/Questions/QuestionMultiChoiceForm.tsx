@@ -48,6 +48,7 @@ const QuestionMultiChoiceForm = ({
   const [choicesIsEmpty, setChoicesIsEmpty] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState<string[]>(['']);
   const questionName = watch('name');
+  const requiredAnswer: string[] = []
   const questionAlreadyExist =
     (complianceItem.questions || []).findIndex(({ name }, index) => {
       if (editQuestionIndex === index && name === questionName) return false;
@@ -60,6 +61,14 @@ const QuestionMultiChoiceForm = ({
   });
   useEffect(() => {
     if (!isEmpty(editableValue)) {
+      if (editableValue.requiredAnswer) {
+        editableValue.value?.forEach(value => {
+          if (editableValue?.requiredAnswer!.includes(value.label)) {
+            // eslint-disable-next-line no-param-reassign
+            value.isCorrect = true
+          }
+        })
+      }
       reset({
         name: editableValue.name,
         description: editableValue.description,
@@ -112,6 +121,7 @@ const QuestionMultiChoiceForm = ({
     else setValue('required', false);
 
     value.forEach((choice) => {
+      if (choice.isCorrect) requiredAnswer.push(choice.label)
       // eslint-disable-next-line no-param-reassign
       choice.isCorrect = false;
     });
@@ -258,7 +268,11 @@ const QuestionMultiChoiceForm = ({
           onClick={() => {
             addRequiredFieldAndUpdateChoiceValue();
             const values = getValues();
-            addOrUpdateQuestion({ type: questionType, ...values });
+            addOrUpdateQuestion({
+              type: questionType,
+              ...(!isEmpty(requiredAnswer) && { requiredAnswer }),
+              ...values,
+            });
             setShowQuestionForm(false);
           }}
           p="17px"

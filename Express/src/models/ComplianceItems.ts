@@ -61,6 +61,7 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
           'switch',
           'datepicker',
           'multipleChoice',
+          'singleChoice',
           'url',
         ],
       },
@@ -68,9 +69,14 @@ const complianceItemSchema = new Schema<IComplianceItem, IComplianceItemModel>({
       description: String,
       value: Schema.Types.Mixed,
       required: Boolean,
-      requiredAnswer: String,
+      requiredAnswer: Schema.Types.Mixed,
       outdated: Boolean,
       notApplicable: Boolean,
+      options: [{
+        _id: false,
+        label: String,
+        value: String
+      }]
     },
   ],
   locationsIds: [String],

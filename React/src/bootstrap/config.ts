@@ -254,13 +254,13 @@ export const questionTypes = [
     label: 'Multiple choices',
   },
   {
+    value: "singleChoice",
+    label: "Single choice",
+  },
+  {
     value: 'url',
     label: 'URL',
   },
-  // {
-  //   value: "singleChoice",
-  //   label: "Single choice"
-  // },
   // {
   //   value: "email",
   //   label: "Email address"
