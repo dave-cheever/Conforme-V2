@@ -12,18 +12,20 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useToast,
 } from '@chakra-ui/react';
 
 import { toastSuccess } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
 import { TickIcon } from '../../icons';
 import Loader from '../Loader';
 import EmailEditor from './EmailEditor';
 import EmailTemplate from './EmailTemplate';
 
 const GET_EMAIL_TEMPLATES = gql`
-  query {
-    settings(type: "emailTemplate") {
+  query ($type: String, $moduleId: ID) {
+    settings(type: $type, moduleId: $moduleId) {
       _id
       name
       value
@@ -52,7 +54,8 @@ const GENERATE_EMAIL_TEMPLATE = gql`
 `;
 
 const EmailTemplates = ({ selectedTemplate, setSelectedTemplate, isOpen, onClose, updateImage, setUpdateImage }) => {
-  const { data: emailTemplates, loading } = useQuery(GET_EMAIL_TEMPLATES);
+  const { module } = useAppContext();
+  const { data: emailTemplates, loading } = useQuery(GET_EMAIL_TEMPLATES, { variables: { type: 'emailTemplate', moduleId: module?._id } });
   const [updateSetting, { loading: saveLoading }] = useMutation(UPDATE_SETTINGS);
   const [generateThumbnail] = useMutation(GENERATE_EMAIL_TEMPLATE);
   const [html, setHtml] = useState<string>();
@@ -97,15 +100,19 @@ const EmailTemplates = ({ selectedTemplate, setSelectedTemplate, isOpen, onClose
         templateColumns={['repeat(1, 1fr)', selectedTemplate ? 'repeat(1, 1fr)' : 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
         w={['full', 'full', '550px']}
       >
-        {emailTemplates?.settings?.map((template) => (
-          <EmailTemplate
-            active={selectedTemplate?._id === template?._id}
-            key={template?._id}
-            setSelectedTemplate={setSelectedTemplate}
-            template={template}
-            updateImage={updateImage}
-          />
-        ))}
+        {emailTemplates?.settings?.length > 0 ? (
+          emailTemplates?.settings?.map((template) => (
+            <EmailTemplate
+              active={selectedTemplate?._id === template?._id}
+              key={template?._id}
+              setSelectedTemplate={setSelectedTemplate}
+              template={template}
+              updateImage={updateImage}
+            />
+          ))
+        ) : (
+          <Text>No email templates</Text>
+        )}
       </Grid>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
