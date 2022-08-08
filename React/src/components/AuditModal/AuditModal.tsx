@@ -294,13 +294,14 @@ const AuditModal = ({ refetch }) => {
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
+                minW="inherit"
                 ml={3}
                 onClick={() => {
                   handlePrimaryButtonClick();
                 }}
                 rightIcon={<Icon as={TickIcon} size={24} stroke="auditModal.tabs.bottomButton.icon" />}
                 rounded="10px"
-                w="fit-content"
+                w="max-content"
               >
                 Start {t('audit')}
               </Button>
