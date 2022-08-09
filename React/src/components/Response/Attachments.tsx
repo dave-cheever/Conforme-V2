@@ -52,7 +52,7 @@ const Attachments = () => {
   };
 
   return (
-    <VStack align={['center', 'flex-start']} overflow={['visible', 'auto']} spacing={4} w="full">
+    <VStack align={['center', 'flex-start']} spacing={4} w="full">
       {response?.complianceItem?.evidenceItems?.length > 0 && (
         <Flex flexDirection="column" h="full" w="full">
           <Text fontSize="sm" fontWeight="medium">

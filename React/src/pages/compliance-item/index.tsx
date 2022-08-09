@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 
 import { gql, useMutation } from '@apollo/client';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import { Button, Flex, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Stack, Text, VStack } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import Can from '../../components/can';
@@ -166,17 +166,30 @@ const ComplianceItemResponse = () => {
             />
           )}
         </Stack>
-        {(response?.complianceItem?.allowAttachments || response?.complianceItem?.evidenceItems?.length > 0) && <Attachments />}
-        <ResponseQuestions disabled={activeTab === 0} key={activeTab} />
-        {(response.questions.filter(({ required }) => required).length > 0 || response.evidence.length > 0) && activeTab === 1 && (
-          <Flex w="full">
-            <Asterisk fill="questionListElement.iconAsterisk" h="9px" stroke="questionListElement.iconAsterisk" w="9px" />
-            &nbsp;
-            <Text fontSize="sm" fontWeight="semi_medium">
-              Required
-            </Text>
-          </Flex>
-        )}
+        <Box
+          overflow={['visible', 'auto']}
+          sx={{
+            '&::-webkit-scrollbar': {
+              backgroundColor: 'responseChat.scrollBar.bg',
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: 'responseChat.scrollBar.color',
+            },
+          }}
+          w='full'>
+          {(response?.complianceItem?.allowAttachments || response?.complianceItem?.evidenceItems?.length > 0) && <Attachments />}
+          <ResponseQuestions disabled={activeTab === 0} key={activeTab} />
+          {(response.questions.filter(({ required }) => required).length > 0 || response.evidence.length > 0) && activeTab === 1 && (
+            <Flex w="full">
+              <Asterisk fill="questionListElement.iconAsterisk" h="9px" stroke="questionListElement.iconAsterisk" w="9px" />
+              &nbsp;
+              <Text fontSize="sm" fontWeight="semi_medium">
+                Required
+              </Text>
+            </Flex>
+          )}
+        </Box>
       </VStack>
     </>
   );

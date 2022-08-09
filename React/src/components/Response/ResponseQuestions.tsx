@@ -58,7 +58,7 @@ const ResponseQuestions = ({ disabled = false }) => {
         message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
         when={isQuestionFormDirty}
       />
-      <Stack minH={['80vh', 0]} mt={2} overflow={['visible', 'auto']} spacing={4} w="full">
+      <Stack minH={['80vh', 0]} mt={2} spacing={4} w="full">
         <Grid gap={4} templateColumns="1fr" w={['full', '80%']}>
           {questions.length === 0 && (
             <Text color="responseQuestions.NoQuestion.color" fontSize="smm">
