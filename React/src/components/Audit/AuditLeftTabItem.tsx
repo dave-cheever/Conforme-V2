@@ -16,7 +16,7 @@ const AuditLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = false
   };
 
   return (
-    <Flex align="center" cursor="pointer" mb={[0, 3]} mx={[3, 0]} onClick={redirectPage} w={active ? 'full' : 'fit-content'}>
+    <Flex align="center" cursor="pointer" mb={[0, 3]} mx={[3, 0]} onClick={redirectPage}>
       <Flex
         align="center"
         bg={active ? 'auditLeftTabItem.activeIconBg' : 'auditLeftTabItem.iconBg'}

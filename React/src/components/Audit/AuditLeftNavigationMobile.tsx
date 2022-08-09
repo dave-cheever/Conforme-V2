@@ -41,8 +41,8 @@ const AuditLeftNavigationMobile = () => {
           </Flex>
           <Divider ml={3} orientation="vertical" />
         </Flex>
-        <Flex justify="space-between" w="full">
-          <Flex w="full">
+        <Flex w="full">
+          <Flex justify="space-between" w="full">
             {auditNavigationTabs.map(({ label, icon, url }) => (
               <AuditLeftTabItem icon={icon} isDesktop={false} isMobile key={url} label={label} url={url} />
             ))}
