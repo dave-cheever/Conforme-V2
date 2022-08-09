@@ -88,13 +88,13 @@ const QuestionSimpleForm = ({
   useEffect(() => {
     if (!isEmpty(editableValue)) {
       reset({
-        name: editableValue.name,
-        description: editableValue.description,
-        required: editableValue.required,
-        requiredAnswer: editableValue.requiredAnswer,
+        name: editableValue.name || '',
+        description: editableValue.description || '',
+        required: editableValue.required || false,
+        requiredAnswer: (editableValue.requiredAnswer as string) || '',
         notApplicable: editableValue.notApplicable,
       });
-      setSelectedRadio(editableValue.requiredAnswer || '');
+      setSelectedRadio((editableValue.requiredAnswer as string) || '');
     }
   }, [JSON.stringify(editableValue)]);
 

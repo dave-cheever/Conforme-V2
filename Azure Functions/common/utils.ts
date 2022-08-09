@@ -8,6 +8,7 @@ import {
   TRACKER_REMINDER,
   TRACKER_WEEKLY_SUMMARY,
   TRACKER_REVIEW_SUBMITTED,
+  MENTION_NOTIFICATION,
 } from './services/notifications';
 
 export const getProtocol = () => {

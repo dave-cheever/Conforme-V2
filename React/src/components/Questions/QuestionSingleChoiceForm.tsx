@@ -66,12 +66,12 @@ const QuestionSingleChoiceForm = ({
   });
 
   const containsDuplicates = (array: string[]): boolean => {
-    const originalArray = array.map(array => array.replace(/\s/g, '').toLowerCase())
+    const originalArray = array.map((array) => array.replace(/\s/g, '').toLowerCase());
     const setArray = Array.from(new Set(originalArray));
 
     if (originalArray.length !== setArray.length) return true;
     return false;
-  }
+  };
 
   useEffect(() => {
     if (editableValue) {
@@ -82,7 +82,7 @@ const QuestionSingleChoiceForm = ({
         value: editableValue.value,
         options: editableValue.options,
       });
-      if (editableValue.requiredAnswer) setSelectedRadio(editableValue.requiredAnswer)
+      if (editableValue.requiredAnswer) setSelectedRadio(editableValue.requiredAnswer as string);
       const choicesLabel = editableValue.options && editableValue.options.map((choice) => choice.label);
       if (choicesLabel) setInputValue(choicesLabel);
     }
@@ -100,7 +100,7 @@ const QuestionSingleChoiceForm = ({
       const options = [...values];
       const option = options[index];
       option.label = value;
-      option.value = camelCase(value)
+      option.value = camelCase(value);
       options.splice(index, 1, option);
     }
   };
@@ -207,7 +207,7 @@ const QuestionSingleChoiceForm = ({
                                     px="2px"
                                     value={inputValue[index]}
                                   />
-                                </ CustomRadioButton>
+                                </CustomRadioButton>
                               </Flex>
                               <Trashcan
                                 cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
@@ -233,7 +233,7 @@ const QuestionSingleChoiceForm = ({
                           </Box>
                         )}
                       </Draggable>
-                    )
+                    );
                   })}
                 </Box>
               )}
@@ -241,7 +241,11 @@ const QuestionSingleChoiceForm = ({
           </DragDropContext>
         </Box>
       </Flex>
-      {optionIsDuplicate && <Text color='questionSingleChoiceForm.text.error' fontSize="sm">Options cannot be duplicated</Text>}
+      {optionIsDuplicate && (
+        <Text color="questionSingleChoiceForm.text.error" fontSize="sm">
+          Options cannot be duplicated
+        </Text>
+      )}
       <Flex justifyContent="space-between" mt="51px">
         <Button
           bg="questionSingleChoiceForm.button.secondary.bg"
@@ -284,7 +288,7 @@ const QuestionSingleChoiceForm = ({
       </Flex>
     </Flex>
   );
-}
+};
 
 export default QuestionSingleChoiceForm;
 
@@ -315,4 +319,3 @@ export const questionSingleChoiceFormStyles = {
     },
   },
 };
-

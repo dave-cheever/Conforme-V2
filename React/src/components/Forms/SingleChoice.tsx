@@ -10,44 +10,26 @@ interface ISingleChoices extends IField {
   placeholder?: string;
 }
 
-const SingleChoices = ({
-  name,
-  label,
-  required,
-  tooltip = '',
-  disabled = false,
-  defaultvalue,
-  options,
-  readMode = false,
-  setValue,
-}: ISingleChoices) => {
-
+const SingleChoices = ({ name, label, required, tooltip = '', defaultvalue, options, readMode = false, setValue }: ISingleChoices) => {
   const [selectedRadio, setSelectedRadio] = useState<string>(defaultvalue);
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name,
     value: selectedRadio,
     onChange: setSelectedRadio,
-  })
+  });
 
-  const group = getRootProps()
+  const group = getRootProps();
 
   useEffect(() => {
-    if (selectedRadio !== '' && setValue) setValue(name, selectedRadio)
-  }, [selectedRadio])
+    if (selectedRadio !== '' && setValue) setValue(name, selectedRadio);
+  }, [selectedRadio]);
 
   return (
     <Box id={name} w="full">
       {label && (
         <Flex align="center" justify="space-between" mb="none" pb={2} pt={2}>
-          <Box
-            color="singleChoices.labelFont.normal"
-            fontSize="ssm"
-            fontWeight="bold"
-            left="none"
-            position="static"
-            zIndex={2}
-          >
+          <Box color="singleChoices.labelFont.normal" fontSize="ssm" fontWeight="bold" left="none" position="static" zIndex={2}>
             {label}
             {required && (
               <Asterisk
@@ -67,18 +49,19 @@ const SingleChoices = ({
           </Box>
         </Flex>
       )}
-      <VStack {...group} align='stretch'>
-        {options && options.map(({ label, value }) => {
-          const radio = getRadioProps({ value })
-          return (
-            <CustomRadioButton key={value} {...radio} isDisabled={readMode} fontSize="smm">
-              {label}
-            </CustomRadioButton>
-          )
-        })}
+      <VStack {...group} align="stretch">
+        {options &&
+          options.map(({ label, value }) => {
+            const radio = getRadioProps({ value });
+            return (
+              <CustomRadioButton key={value} {...radio} fontSize="smm" isDisabled={readMode}>
+                {label}
+              </CustomRadioButton>
+            );
+          })}
       </VStack>
     </Box>
-  )
+  );
 };
 
 export default SingleChoices;
