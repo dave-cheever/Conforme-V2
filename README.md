@@ -636,6 +636,34 @@ Mentioned notification:
 }
 ```
 
+Tracker review submitted:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "trackerReviewSubmittedNotificationEmailTemplate",
+  "label": "Tracker review submitted notification",
+  "value": "<p>%TrackerItemName% has been reviewed, to view click %LinkTo%.</p>",
+  "type": "emailTemplate",
+  "options": [
+    "TrackerItemName",
+    "LinkTo"
+  ],
+  "inputType": "emailTemplate",
+  "description": "",
+  "scope": {
+    moduleId: <module id>
+  },
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": 1649742835206
+    }
+  }
+}
+```
+
 ## Run the app locally
 
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.

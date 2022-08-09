@@ -1,24 +1,26 @@
 import { capitalize } from "lodash";
 
-import { IOrganization } from "../../interfaces/IOrganization";
-import { getProtocol, t } from "../../utils";
-import Organizations from "../collections/Organizations";
-import Settings from "../collections/Settings";
-import getAuditsWeeklyDigestEmailTemplate from "./audits-weekly-digest";
-import getMentionEmail from "./mentionEmail";
-import getReponseDueMail from "./response-due-mail";
-import getResponseWeeklyEmail from "./response-weekly-email";
-import getSkeleton from "./template";
+import { IOrganization } from '../../interfaces/IOrganization';
+import { getProtocol, t } from '../../utils';
+import Organizations from '../collections/Organizations';
+import Settings from '../collections/Settings';
+import getAuditsWeeklyDigestEmailTemplate from './audits-weekly-digest';
+import getTrackerReviewSubmittedEmail from './getTrackerReviewSubmittedEmail';
+import getMentionEmail from './mentionEmail';
+import getReponseDueMail from './response-due-mail';
+import getResponseWeeklyEmail from './response-weekly-email';
+import getSkeleton from './template';
 
-export const ACTION_ASSIGNED = "ACTION_ASSIGNED";
-export const ACTION_COMPLETED = "ACTION_COMPLETED";
-export const ACTION_OVERDUE = "ACTION_OVERDUE";
-export const AUDIT_MISSED = "AUDIT_MISSED";
-export const AUDIT_UPCOMING = "AUDIT_UPCOMING";
-export const AUDITS_WEEKLY_SUMMARY = "AUDITS_WEEKLY_SUMMARY";
-export const MENTION_NOTIFICATION = "MENTION_NOTIFICATION";
-export const TRACKER_REMINDER = "TRACKER_REMINDER";
-export const TRACKER_WEEKLY_SUMMARY = "TRACKER_WEEKLY_SUMMARY";
+export const ACTION_ASSIGNED = 'ACTION_ASSIGNED';
+export const ACTION_COMPLETED = 'ACTION_COMPLETED';
+export const ACTION_OVERDUE = 'ACTION_OVERDUE';
+export const AUDIT_MISSED = 'AUDIT_MISSED';
+export const AUDIT_UPCOMING = 'AUDIT_UPCOMING';
+export const AUDITS_WEEKLY_SUMMARY = 'AUDITS_WEEKLY_SUMMARY';
+export const MENTION_NOTIFICATION = 'MENTION_NOTIFICATION';
+export const TRACKER_REMINDER = 'TRACKER_REMINDER';
+export const TRACKER_REVIEW_SUBMITTED = 'TRACKER_REVIEW_SUBMITTED';
+export const TRACKER_WEEKLY_SUMMARY = 'TRACKER_WEEKLY_SUMMARY';
 
 const getEmailSubject = (
   emailType: string,
@@ -58,6 +60,7 @@ const getEmailTemplate = async ({
   organization,
   organizationId,
   modulePath,
+  translations = {},
 }: {
   emailType: string;
   emailData: any;
@@ -65,6 +68,7 @@ const getEmailTemplate = async ({
   organization?: IOrganization;
   template?: string;
   modulePath: string;
+  translations?: { [word: string]: string };
 }) => {
   let body: string;
   switch (emailType) {
@@ -121,6 +125,9 @@ const getEmailTemplate = async ({
       break;
     case TRACKER_REMINDER:
       body = getReponseDueMail(template, emailData);
+      break;
+    case TRACKER_REVIEW_SUBMITTED:
+      body = getTrackerReviewSubmittedEmail(template, emailData);
       break;
     case TRACKER_WEEKLY_SUMMARY:
       body = getResponseWeeklyEmail(template, emailData);

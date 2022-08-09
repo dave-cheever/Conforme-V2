@@ -8,4 +8,5 @@ export interface IResponseModel extends IBaseModel<IResponse> {
   ) => Promise<IResponse>;
   customRecalculateResponse: (responseId: string) => Promise<void>;
   customAssigneeNotification: (responseId: string, participantsIds: string[], assignedRole: string, organization: IOrganization) => Promise<void>;
+  submitReviewNotification: (response: IResponse, organization: IOrganization) => Promise<void>;
 }

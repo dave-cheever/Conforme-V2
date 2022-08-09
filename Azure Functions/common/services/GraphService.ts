@@ -139,8 +139,8 @@ export class GraphService {
       const sent = await client.post(`users/${from}/sendMail`, options);
       return sent.status === 202;
     } catch (error) {
-      console.log(error.response.data);
-      console.log(`Failed to send '${emailType}' email to '${to.join(", ")}'`);
+      console.log(error);
+      console.log(`Failed to send '${emailType}' email to '${to.join(', ')}'`);
     }
   }
 

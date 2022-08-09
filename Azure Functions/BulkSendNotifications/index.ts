@@ -99,6 +99,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
         }
         return false;
       } catch (notificationError) {
+        context.log(notificationError)
         context.log.error(`Instant notification failed: ${notification._id}`);
       }
     }));

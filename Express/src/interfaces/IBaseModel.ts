@@ -14,7 +14,7 @@ export interface IBaseModel<I> extends Model<I> {
     selector: object,
     updatedDocument: Partial<I>,
     userId: string,
-    organizationId: string
+    organizationId: string,
   ) => Promise<I>;
   customDelete: (
     selector: object,

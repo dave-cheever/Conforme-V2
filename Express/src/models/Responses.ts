@@ -19,7 +19,7 @@ import {
   Organizations,
   Users,
 } from 'app-models';
-import { TRACKER_RESPONSE_ASSIGNED } from 'app-shared';
+import { TRACKER_RESPONSE_ASSIGNED, TRACKER_REVIEW_SUBMITTED } from 'app-shared';
 import {
   genMetatags,
   getAuditValueForBoolean,
@@ -90,8 +90,8 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       notApplicable: Boolean,
       options: [{
         label: String,
-        value: String
-      }]
+        value: String,
+      }],
     },
   ],
   organizationId: String,
@@ -528,24 +528,25 @@ responseSchema.statics.customUpdateOne = async function (
   if (updates.responsibleId) usersIds.push(updates.responsibleId);
   if (updates.accountableId) usersIds.push(updates.accountableId);
   await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
-
+  const organization = await Organizations.customFindById(
+    organizationId,
+    organizationId,
+  );
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const complianceItem = await ComplianceItems.customFindById(
         response.complianceItemId,
         organizationId,
       );
+
       const oldValues = removeDatabaseFields(response);
       const newValues = removeDatabaseFields(updatedResponse);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
         organization,
       });
+
       AuditLogs.customAudit(
         {
           coll: 'responses',
@@ -563,8 +564,50 @@ responseSchema.statics.customUpdateOne = async function (
     addAuditLog();
   }
 
+  if (response.status === 'draft' && updatedResponse.status === 'submitted') this.submitReviewNotification(updatedResponse, organization);
+
   return updatedResponse;
 };
+
+responseSchema.statics.submitReviewNotification = async function (response: IResponse, organization: IOrganization) {
+  let participants: string[] = []
+
+  const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organization._id);
+  if (!complianceItem) return;
+
+  if (response) {
+    // handle the empty responsible and accountable cases
+    if (response.accountableId !== '') participants.push(response.accountableId);
+
+    if (response.responsibleId !== '') participants.push(response.responsibleId);
+
+    participants = participants.concat(response.followersIds || []);
+    participants = participants.concat(response.contributorsIds || []);
+  }
+
+  const module = organization.modules.find(({ type }) => type === 'tracker');
+  if (module) {
+    const assignor = await Users.customFindByIdWithDetails({ userId: response.metatags.updatedBy ?? response.metatags.addedBy, organization });
+    await Promise.all(uniq(participants).map(async userId => {
+      const assignee = await Users.customFindByIdWithDetails({ userId, organization });
+      await Notifications.customCreate(
+        {
+          emailType: TRACKER_REVIEW_SUBMITTED,
+          emailData: {
+            subject: `${complianceItem.name} review has been submitted`,
+            template: "trackerReviewSubmittedNotificationEmailTemplate",
+            trackerItemName: complianceItem.name,
+            trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/compliance-item/${response._id}">here</a>`,
+          },
+          status: 'pending',
+          to: [assignee?.email],
+        },
+        assignor._id,
+        organization._id,
+      );
+    }));
+  }
+}
 
 responseSchema.statics.customAssigneeNotification = async function (responseId: string, participantsIds: string[], assignedRole: string, organization: IOrganization): Promise<void> {
   const response = await this.findById(responseId).lean();
