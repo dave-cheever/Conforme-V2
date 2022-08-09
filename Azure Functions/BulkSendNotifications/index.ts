@@ -18,7 +18,9 @@ import sendOverdueActions from './sendOverdueActions';
 import sendResponseWeeklyEmail from './sendResponseWeeklyEmail';
 import sendResponseDueEmail from './sendResponseDueEmail';
 import Notifications from '../common/services/collections/Notifications';
+import Settings from "../common/services/collections/Settings";
 import { GraphService } from '../common/services/GraphService';
+import { getTemplateDetails } from '../common/utils';
 
 const timerTrigger: AzureFunction = async function (context: Context): Promise<void> {
   const now = new Date();
@@ -77,6 +79,8 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
     const notifications = await Notifications.find({ status: "pending" }).lean();
     const notificationsSent = await Promise.all(notifications.map(async notification => {
       try {
+        const { templateSettingName } = getTemplateDetails(notification.emailType);
+        const template = await Settings.customFindOneByName(templateSettingName, notification.organizationId);
         const organizationConfigService = new ConfigService();
         const organizationConfig = await organizationConfigService.getConfig(notification.organizationId);
         const graphService = new GraphService(organizationConfig);
@@ -86,6 +90,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           emailData: notification.emailData,
           to: notification.to,
           organization: organizationConfigService.getOrganization(),
+          ...(template && { template: template.value }),
         });
         if (emailSent) {
           await Notifications.updateOne({ _id: notification._id }, { status: "sent" });

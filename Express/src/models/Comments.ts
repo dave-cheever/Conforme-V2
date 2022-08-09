@@ -3,14 +3,15 @@ import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IComment, ICommentModel } from 'app-interfaces';
-import { AuditLogs, ComplianceItems, Responses } from 'app-models';
+import { IComment, ICommentModel, IOrganization } from 'app-interfaces';
+import { AuditLogs, ComplianceItems, Notifications, Responses, Users } from 'app-models';
 import {
   genMetatags,
   getAuditRecordValues,
   getForeignElement,
   removeDatabaseFields,
 } from 'app-utils';
+import { MENTION_NOTIFICATION } from 'app-shared';
 
 const commentSchema = new Schema<IComment, ICommentModel>({
   _id: String,
@@ -91,9 +92,9 @@ commentSchema.statics.customFindById = async function (
     _id,
     'metatags.removedAt': { $eq: null },
   }).lean();
-  if (!comment) 
+  if (!comment)
     throw new Error('Comment not found');
-  
+
   return comment;
 };
 
@@ -115,7 +116,7 @@ commentSchema.statics.customDelete = async function (
   organizationId: string,
 ): Promise<number> {
   const comment = await this.customFindOne(selector, organizationId);
-  if (!comment) 
+  if (!comment)
     throw new GraphQLError("Comment doesn't exist");
 
   const updatedComment = {
@@ -158,6 +159,24 @@ commentSchema.statics.customDelete = async function (
   }
 
   return deletedResult?.modifiedCount;
+};
+
+commentSchema.statics.sendMentionedEmail = async function (userId: string, organization: IOrganization, comment: IComment): Promise<void> {
+  const user = await Users.findById(userId).lean();
+  await Notifications.customCreate(
+    {
+      emailType: MENTION_NOTIFICATION,
+      emailData: {
+        message: comment.text,
+        mentionedUser: user?.displayName || '',
+        template: 'MentionedNotificationEmailTemplate',
+      },
+      to: [user?.email!],
+      status: 'pending'
+    },
+    comment.metatags.updatedBy || comment.metatags.addedBy,
+    organization._id,
+  );
 };
 
 const commentModel = model<IComment, ICommentModel>('Comment', commentSchema);

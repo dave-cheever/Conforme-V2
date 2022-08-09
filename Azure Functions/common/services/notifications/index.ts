@@ -95,7 +95,7 @@ const getEmailTemplate = async ({
       body = getAuditsWeeklyDigestEmailTemplate(template, emailData);
       break;
     case MENTION_NOTIFICATION:
-      body = getMentionEmail(emailData);
+      body = getMentionEmail(template, emailData);
       break;
     case TRACKER_REMINDER:
       body = getReponseDueMail(template, emailData);

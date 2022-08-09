@@ -31,11 +31,8 @@ const createComment = async (
     const mentionedUserIds = mentionParser(newComment.text);
 
     if (mentionedUserIds?.length > 0) {
-      // EmailService.sendMentionedEmail({
-      //   userIds: mentionedUserIds,
-      //   organization,
-      //   message: newComment.text,
-      // });
+      await Promise.all(mentionedUserIds.map(async mentionedUserId =>
+        await Comments.sendMentionedEmail(mentionedUserId, organization, createdCommment)));
     }
 
     return createdCommment;

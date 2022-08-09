@@ -95,13 +95,15 @@ export class GraphService {
     emailType,
     emailData,
     to,
-    organization
+    organization,
+    template
   }: {
     from: string;
     emailType: string;
     emailData: any;
     to: string[];
     organization: IOrganization;
+    template?: any;
   }) {
     try {
       const client = await this.getClient();
@@ -120,7 +122,8 @@ export class GraphService {
             content: await getEmailTemplate({
               emailType,
               emailData,
-              organization
+              organization,
+              template
             })
           },
           toRecipients

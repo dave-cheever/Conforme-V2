@@ -1,7 +1,7 @@
 import { differenceInCalendarDays, isSameDay } from 'date-fns';
 
 import { IResponse } from "./interfaces/IResponse";
-import { AUDITS_WEEKLY_SUMMARY, AUDIT_MISSED, TRACKER_REMINDER, TRACKER_WEEKLY_SUMMARY } from './services/notifications';
+import { AUDITS_WEEKLY_SUMMARY, AUDIT_MISSED, MENTION_NOTIFICATION, TRACKER_REMINDER, TRACKER_WEEKLY_SUMMARY } from './services/notifications';
 
 export const getProtocol = () => {
   return process.env.ENV?.toLowerCase() === "dev" ? "http://" : "https://";
@@ -42,6 +42,15 @@ export const getTemplateDetails = (
         templateSettingName: "responseWeeklyEmailTemplate",
         emailSettingName: "responseWeeklyEmailAddress",
       };
+    case MENTION_NOTIFICATION:
+      return {
+        templateSettingName: "mentionedNotificationEmailTemplate",
+      }
+    default:
+      ({
+        templateSettingName: "",
+        emailSettingName: ""
+      })
   }
 };
 

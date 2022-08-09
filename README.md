@@ -611,6 +611,31 @@ HSE notification:
 }
 ```
 
+Mentioned notification:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "mentionedNotificationEmailTemplate",
+  "label": "Mentioned Notification",
+  "value": "<p style=\"text-align: center;\"><span style=\"font-size: 24px;\">Welcome to Conforme</span></p><br><p style=\"text-align: center;\">&#xA0;</p><br><p>Dear %MentionedUser% </p>,<br><p>Message is: %Message% </p><br><p>Thank you for choosing Conforme</p><br/>",
+  "type": "emailTemplate",
+  "options": [
+    "Message",
+    "MentionedUser"
+  ],
+  "inputType": "emailTemplate",
+  "description": "",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": 1653632933511
+    }
+  }
+}
+```
+
 ## Run the app locally
 
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.
