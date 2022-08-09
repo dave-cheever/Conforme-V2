@@ -345,23 +345,25 @@ const WalkItemModal = ({
                 </Button>
               )}
               <Spacer />
-              {isUserPermittedToModifyStatus && walkItem?.audit?.status === 'upcoming' && (
-                <Button
-                  bg="walkItemModal.buttons.primary.bg"
-                  color="walkItemModal.buttons.primary.color"
-                  disabled={!isValid}
-                  fontSize="smm"
-                  fontWeight="700"
-                  h="40px"
-                  ml={3}
-                  onClick={handlePrimaryButtonClick}
-                  rightIcon={<Icon as={TickIcon} size={24} stroke="walkItemModal.buttons.primary.icon" />}
-                  rounded="10px"
-                  w="fit-content"
-                >
-                  Update
-                </Button>
-              )}
+              {isUserPermittedToModifyStatus &&
+                (walkItem?.audit?.status.toString() === 'upcoming' ||
+                  (walkItem?.audit?.status.toString() !== 'upcoming' && walkItem?.question?.questionsCategory?.useStatus)) && (
+                  <Button
+                    bg="walkItemModal.buttons.primary.bg"
+                    color="walkItemModal.buttons.primary.color"
+                    disabled={!isValid}
+                    fontSize="smm"
+                    fontWeight="700"
+                    h="40px"
+                    ml={3}
+                    onClick={handlePrimaryButtonClick}
+                    rightIcon={<Icon as={TickIcon} size={24} stroke="walkItemModal.buttons.primary.icon" />}
+                    rounded="10px"
+                    w="fit-content"
+                  >
+                    Update
+                  </Button>
+                )}
             </Flex>
           </Stack>
         </ModalBody>
