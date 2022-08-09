@@ -62,6 +62,7 @@ const Login = () => {
   };
 
   const removeUser = () => {
+    window.open(`https://login.microsoftonline.com/common/oauth2/v2.0/logout`, '_blank');
     localStorage.removeItem('logOutUser');
     setRefresh(!refresh);
   };
