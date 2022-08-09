@@ -8,14 +8,14 @@ const CustomRadioButton = ({ children, ...props }) => {
   const checkbox = getCheckboxProps();
 
   return (
-    <Flex alignItems="center" as="label" color="customRadioButton.textColor" cursor="pointer">
+    <Flex alignItems="center" as="label" color="customRadioButton.textColor" cursor={props.isDisabled ? "no-drop" : "pointer"}>
       <input {...input} />
       <Flex
         {...checkbox}
         _checked={{
-          bg: 'customRadioButton.checkedBg',
-          color: 'customRadioButton.checkedIcon',
-          borderColor: 'customRadioButton.checkedBorder',
+          bg: props.isDisabled ? "customRadioButton.disabledBg" : 'customRadioButton.checkedBg',
+          color: props.isDisabled ? "customRadioButton.disabledColor" : 'customRadioButton.checkedIcon',
+          borderColor: props.isDisabled ? "customRadioButton.disabledBorder" : 'customRadioButton.checkedBorder',
         }}
         _focus={{
           boxShadow: 'outline',
@@ -24,7 +24,7 @@ const CustomRadioButton = ({ children, ...props }) => {
         border="1px solid rgba(129, 129, 151, 0.5)"
         borderRadius="50%"
         borderWidth="1px"
-        cursor="pointer"
+        cursor={props.isDisabled ? "no-drop" : "pointer"}
         h="20px"
         justifyContent="center"
         mr="10px"
@@ -45,5 +45,8 @@ export const customRadioButtonStyles = {
     checkedBorder: '#462AC4',
     checkedIcon: 'white',
     textColor: '#818197',
+    disabledBg: '#E2E8F0',
+    disabledBorder: '#E2E8F0',
+    disabledColor: '#718096',
   },
 };

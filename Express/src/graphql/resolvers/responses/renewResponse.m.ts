@@ -103,7 +103,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
     ];
     const newQuestions = [
       ...response.questions
-        .map(({ type, name, description, required, value, requiredAnswer }) => {
+        .map(({ type, name, description, required, value, requiredAnswer, options }) => {
           if (type === 'multipleChoice') {
             return {
               type,
@@ -114,9 +114,10 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
                 ...choice,
                 isCorrect: false,
               })),
+              requiredAnswer
             };
           }
-          return { type, name, description, required, requiredAnswer, value: null };
+          return { type, name, description, required, requiredAnswer, value: null, ...(options && { options }) };
         }),
     ];
 

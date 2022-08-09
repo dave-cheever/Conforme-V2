@@ -1,3 +1,4 @@
+
 import { TQuestionType } from './TQuestionType';
 
 export interface ITrackerQuestion<ValueType> {
@@ -7,6 +8,6 @@ export interface ITrackerQuestion<ValueType> {
   value?: ValueType;
   options?: { label: string, value: string }[];
   required?: boolean;
-  requiredAnswer?: string;
+  requiredAnswer?: string | string[];
   notApplicable?: boolean;
 }

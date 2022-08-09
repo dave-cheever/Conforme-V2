@@ -18,6 +18,7 @@ const SingleChoices = ({
   disabled = false,
   defaultvalue,
   options,
+  readMode = false,
   setValue,
 }: ISingleChoices) => {
 
@@ -70,7 +71,7 @@ const SingleChoices = ({
         {options && options.map(({ label, value }) => {
           const radio = getRadioProps({ value })
           return (
-            <CustomRadioButton key={value} {...radio} disabled={disabled} fontSize="smm">
+            <CustomRadioButton key={value} {...radio} isDisabled={readMode} fontSize="smm">
               {label}
             </CustomRadioButton>
           )

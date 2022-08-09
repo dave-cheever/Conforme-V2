@@ -7,6 +7,6 @@ export interface ITrackerQuestion<ValueType> {
   value?: ValueType;
   required?: boolean;
   notApplicable?: Boolean;
-  requiredAnswer?: String;
+  requiredAnswer?: string | string[];
   outdated?: boolean;
 }

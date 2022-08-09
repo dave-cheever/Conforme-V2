@@ -42,7 +42,7 @@ export const responsesTypeDefs = `
     description: String
     value: Any
     required: Boolean
-    requiredAnswer: String
+    requiredAnswer: Any
     notApplicable: Boolean
     options: [Options]
   }
