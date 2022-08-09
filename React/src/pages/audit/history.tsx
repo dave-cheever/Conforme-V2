@@ -10,6 +10,7 @@ import { countBy } from 'lodash';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import { useAuditContext } from '../../contexts/AuditProvider';
+import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { IAudit } from '../../interfaces/IAudit';
 
@@ -35,6 +36,7 @@ const GET_HISTORICAL_AUDITS = gql`
 const AuditHistory = () => {
   const { navigateTo } = useNavigate();
   const { audit, questionsCategories } = useAuditContext();
+  const device = useDevice();
 
   const { data, loading, error } = useQuery(GET_HISTORICAL_AUDITS, {
     variables: {
@@ -81,7 +83,7 @@ const AuditHistory = () => {
         <Stack spacing={4}>
           {Object.entries(days).length > 0 ? (
             Object.entries(days).map(([day, audits]) => (
-              <HStack align="flex-start" key={day} spacing={4}>
+              <Stack align="flex-start" direction={['column', 'row']} key={day} spacing={4}>
                 <Box
                   bg="auditHistory.date.bg"
                   color="auditHistory.date.color"
@@ -102,6 +104,7 @@ const AuditHistory = () => {
                       }}
                       bg="auditHistory.listItem.bg.default"
                       key={audit._id}
+                      onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => {}}
                       p={4}
                       role="group"
                       rounded="10px"
@@ -138,29 +141,31 @@ const AuditHistory = () => {
                           ))}
                         </HStack>
                       </Stack>
-                      <Flex
-                        _groupHover={{
-                          display: 'flex',
-                        }}
-                        align="center"
-                        display="none"
-                      >
-                        <Button
-                          bg="auditHistory.listItem.button.bg"
-                          color="auditHistory.listItem.button.color"
-                          fontSize="ssm"
-                          fontWeight="bold"
-                          h="28px"
-                          onClick={() => navigateTo(`/audits/${audit._id}`)}
-                          rounded="10px"
+                      {device !== 'mobile' && (
+                        <Flex
+                          _groupHover={{
+                            display: 'flex',
+                          }}
+                          align="center"
+                          display="none"
                         >
-                          Load walk
-                        </Button>
-                      </Flex>
+                          <Button
+                            bg="auditHistory.listItem.button.bg"
+                            color="auditHistory.listItem.button.color"
+                            fontSize="ssm"
+                            fontWeight="bold"
+                            h="28px"
+                            onClick={() => navigateTo(`/audits/${audit._id}`)}
+                            rounded="10px"
+                          >
+                            Load walk
+                          </Button>
+                        </Flex>
+                      )}
                     </HStack>
                   ))}
                 </Stack>
-              </HStack>
+              </Stack>
             ))
           ) : (
             <Flex fontSize="18px" fontStyle="italic" h="full" w="full">

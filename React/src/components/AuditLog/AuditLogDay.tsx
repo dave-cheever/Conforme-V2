@@ -29,7 +29,7 @@ const AuditLogDay = ({ auditLog }: { auditLog: IAuditLog }) => {
   if (auditLog.records.length === 0) return null;
 
   return (
-    <Flex mb="20px">
+    <Flex direction={['column', 'row']} mb="20px">
       <Flex
         bg="auditLogDayStyles.dateBg"
         borderRadius="8px"
