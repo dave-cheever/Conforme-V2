@@ -39,9 +39,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       </Flex>
       <Flex w="full">
         <Box fontSize={['smm', 'ssm']} overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title" fontSize="ssm">
-            Status
-          </Text>
+          <Text color="walkItemSquare.section.title">Status</Text>
           <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
             {answer?.status ?? '-'}
           </Text>

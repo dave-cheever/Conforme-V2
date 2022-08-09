@@ -47,7 +47,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
       </Flex>
       <Flex w="full">
         <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="actionSquare.section.title" fontSize="ssm">
+          <Text color="actionSquare.section.title" fontSize={['smm', 'ssm']}>
             Priority
           </Text>
           <Text color="actionSquare.section.text" fontSize="ssm" textTransform="capitalize">
@@ -56,7 +56,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
         </Box>
         {action?.dueDate && (
           <Box overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-            <Text color="actionSquare.section.title" fontSize="ssm">
+            <Text color="actionSquare.section.title" fontSize={['smm', 'ssm']}>
               Due in
             </Text>
             <Text color="actionSquare.section.text" fontSize="ssm">
@@ -66,7 +66,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
         )}
       </Flex>
       <Box w="full">
-        <Text color="actionSquare.section.title" fontSize="ssm">
+        <Text color="actionSquare.section.title" fontSize={['smm', 'ssm']}>
           Linked to
         </Text>
         <Stack
