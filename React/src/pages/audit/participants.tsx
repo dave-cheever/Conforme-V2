@@ -39,11 +39,6 @@ const AuditParticipants = () => {
     refetch();
   };
 
-  const handleAuditorSelectionCancel = () => {
-    setAuditorModalOpen(false);
-    setSelectedAuditor(audit.auditor ?? {});
-  };
-
   const handleParticipantsSelect = async () => {
     setParticipantsModalOpen(false);
     await updateAudit({
@@ -58,24 +53,19 @@ const AuditParticipants = () => {
     refetch();
   };
 
-  const handleParticipantsSelectionCancel = () => {
-    setParticipantsModalOpen(false);
-    setSelectedParticipants(audit.participants ?? []);
-  };
-
   return (
     <>
       <AuditTeamModal
         isOpen={auditorModalOpen}
         multiple={false}
-        onCancel={handleAuditorSelectionCancel}
+        onCancel={handleAuditorSelect}
         onClose={handleAuditorSelect}
         selection="auditor"
       />
       <AuditTeamModal
         isOpen={participantsModalOpen}
         multiple
-        onCancel={handleParticipantsSelectionCancel}
+        onCancel={handleParticipantsSelect}
         onClose={handleParticipantsSelect}
         selection="participants"
       />
