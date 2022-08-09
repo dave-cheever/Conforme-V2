@@ -34,6 +34,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": "warn",
     "prefer-destructuring": "warn",
+    "import/no-named-default": "off",
     "import/no-cycle": "off",
     "import-helpers/order-imports": [
       "warn",

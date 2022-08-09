@@ -7,5 +7,6 @@
 export type IAuditOption = {
   type: 'notification';
   name: string;
+  setting: string;
   value: string;
 };

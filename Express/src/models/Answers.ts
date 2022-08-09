@@ -134,29 +134,34 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
     const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
     const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && answer.options![value]);
 
-    const emailAddress = await Settings.customFindOneByName('auditsWeeklyDigestEmailAddress', organization._id);
-    if (emailAddress) {
-      for (const notification of notifications) {
-        await Notifications.customCreate(
-          {
-            emailType: notification.value,
-            emailData: {
-              subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
-              template: 'HSENotificationEmailTemplate',
-              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
-                }" target="_blank">here</a>`,
-            },
-            status: 'pending',
-            to: emailAddress.value,
-            scope : {
-              moduleId : module?._id,
-            },
-          },
-          userId,
-          organizationId,
-        );
-      }
-    }
+    await Promise.all(
+      questionsCategory.options.map(async (option) => {
+        const emailAddress = await Settings.customFindOneByName(option.setting, organization._id);
+        if (emailAddress) {
+          for (const notification of notifications) {
+            await Notifications.customCreate(
+              {
+                emailType: notification.value,
+                emailData: {
+                  subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
+                  template: 'HSENotificationEmailTemplate',
+                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${
+                    question._id
+                  }" target="_blank">here</a>`,
+                },
+                status: 'pending',
+                to: emailAddress.value,
+                scope: {
+                  moduleId: module?._id,
+                },
+              },
+              userId,
+              organizationId,
+            );
+          }
+        }
+      }),
+    );
   };
   sendNotifications();
 
@@ -243,30 +248,34 @@ answersSchema.statics.customUpdateOne = async function (
       ({ type, value }) => type === 'notification' && !answer.options![value] && updatedAnswer.options![value],
     );
 
-    const emailAddress = await Settings.customFindOneByName('auditsWeeklyDigestEmailAddress', organization._id);
-    if (emailAddress) {
-      for (const notification of notifications) {
-        await Notifications.customCreate(
-          {
-            emailType: notification.value,
-            emailData: {
-              subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
-              template: 'HSENotificationEmailTemplate',
-              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${
-                question._id
-              }" target="_blank">here</a>`,
-            },
-            status: 'pending',
-            to: emailAddress.value,
-            scope: {
-              moduleId: module?._id,
-            },
-          },
-          userId,
-          organizationId,
-        );
-      }
-    }
+    await Promise.all(
+      questionsCategory.options.map(async (option) => {
+        const emailAddress = await Settings.customFindOneByName(option.setting, organization._id);
+        if (emailAddress) {
+          for (const notification of notifications) {
+            await Notifications.customCreate(
+              {
+                emailType: notification.value,
+                emailData: {
+                  subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
+                  template: 'HSENotificationEmailTemplate',
+                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${
+                    question._id
+                  }" target="_blank">here</a>`,
+                },
+                status: 'pending',
+                to: emailAddress.value,
+                scope: {
+                  moduleId: module?._id,
+                },
+              },
+              userId,
+              organizationId,
+            );
+          }
+        }
+      }),
+    );
   };
   sendNotifications();
 
@@ -332,11 +341,7 @@ answersSchema.statics.customDelete = async function (selector: object = {}, user
   return deletedResult?.modifiedCount;
 };
 
-answersSchema.statics.customDeleteMany = async function (
-  selector: object = {},
-  userId: string,
-  organizationId: string,
-): Promise<number> {
+answersSchema.statics.customDeleteMany = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
   const answers = await this.customFind(selector, organizationId);
   if (answers.length === 0) return 0;
 

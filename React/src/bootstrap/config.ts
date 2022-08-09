@@ -254,8 +254,8 @@ export const questionTypes = [
     label: 'Multiple choices',
   },
   {
-    value: "singleChoice",
-    label: "Single choice",
+    value: 'singleChoice',
+    label: 'Single choice',
   },
   {
     value: 'url',
@@ -300,3 +300,18 @@ export const priorities = [
     label: 'High',
   },
 ];
+
+export const availableOptions = {
+  INFORM_HSE: {
+    type: 'notification',
+    name: 'Inform Health Safety Environment',
+    setting: 'hseEmailAddress',
+    value: 'INFORM_HSE',
+  },
+  INFORM_ESTATES: {
+    type: 'notification',
+    name: 'Inform Estates',
+    setting: 'estatesEmailAddress',
+    value: 'INFORM_ESTATES',
+  },
+};

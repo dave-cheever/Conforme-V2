@@ -699,6 +699,56 @@ Action assigned:
 }
 ```
 
+HSE email:
+
+```
+{
+  "_id": <random generated UUID>,
+  "name": "hseEmailAddress",
+  "label": "Email adress for receving the weekly digest",
+  "value": [
+    "hazemkrimi@m1ks.onmicrosoft.com"
+  ],
+  "type": "defaultSettings",
+  "description": "Use this setting to select who should recieve email digest regarding audits.",
+  "metatags": {
+    "updatedBy": "102448b6-111e-478b-8531-fac4c5885a7e",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655302386827"
+      }
+    }
+  },
+  "organizationId": <organization's id>,
+  "inputType": "table"
+}
+```
+
+Estates email:
+
+```
+{
+  "_id": <random generated UUID>,
+  "name": "estatesEmailAddress",
+  "label": "Email adress for receving the weekly digest",
+  "value": [
+    "hazemkrimi@m1ks.onmicrosoft.com"
+  ],
+  "type": "defaultSettings",
+  "description": "Use this setting to select who should recieve email digest regarding audits.",
+  "metatags": {
+    "updatedBy": "102448b6-111e-478b-8531-fac4c5885a7e",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1655302386827"
+      }
+    }
+  },
+  "organizationId": <organization's id>,
+  "inputType": "table"
+}
+```
+
 ## Run the app locally
 
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.

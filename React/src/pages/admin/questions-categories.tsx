@@ -2,13 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, CheckboxGroup, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+// import { omit } from 'lodash';
 
-import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
-import { Dropdown } from '../../components/Forms';
+import { default as Checkbox } from '../../components/Filters/FilterCheckBox';
 import NumberInput from '../../components/Forms/NumberInput';
 import TextInput from '../../components/Forms/TextInput';
 import Toggle from '../../components/Forms/Toggle';
@@ -61,7 +62,7 @@ const DELETE_QUESTION_CATEGORY = gql`
   }
 `;
 
-const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } = {
+const defaultValues: Partial<IQuestionsCategory> = {
   _id: undefined,
   name: '',
   withAnswers: false,
@@ -69,7 +70,6 @@ const defaultValues: Partial<IQuestionsCategory> & { selectedOption: string } = 
   maxQuestionsNumber: 5,
   showInInsights: false,
   icon: '',
-  selectedOption: '',
   scope: {
     module: 'audits',
   },
@@ -110,6 +110,7 @@ const QuestionsCategories = () => {
   const {
     control,
     formState: { errors },
+    setValue,
     watch,
     trigger,
     reset,
@@ -125,6 +126,10 @@ const QuestionsCategories = () => {
     if (adminModalState === 'closed') reset(defaultValues);
   }, [reset, adminModalState]);
 
+  const onChangeOption = (values) => {
+    setValue('options', [...values.map((value) => availableOptions[value])]);
+  };
+
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openQuestionsCategoryModal = (action: 'edit' | 'delete', questionsCategory: IQuestionsCategory) => {
     setAdminModalState(action);
@@ -138,7 +143,7 @@ const QuestionsCategories = () => {
       useStatus: questionsCategory?.useStatus,
       showInInsights: questionsCategory?.showInInsights,
       icon: questionsCategory?.icon,
-      selectedOption: (questionsCategory?.options || [])[0]?.name || '',
+      options: questionsCategory?.options,
       scope: questionsCategory?.scope,
     });
   };
@@ -156,15 +161,7 @@ const QuestionsCategories = () => {
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
               showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
-              options: questionsCategory?.selectedOption // TODO: Implement dynamic options
-                ? [
-                    {
-                      type: 'notification',
-                      name: 'Inform HSE or Estates',
-                      value: 'INFORM_HSE',
-                    },
-                  ]
-                : [],
+              options: questionsCategory?.options,
               scope: questionsCategory?.scope,
             },
           },
@@ -199,15 +196,7 @@ const QuestionsCategories = () => {
               useStatus: questionsCategory?.useStatus,
               showInInsights: questionsCategory?.showInInsights,
               icon: questionsCategory?.icon,
-              options: questionsCategory?.selectedOption
-                ? [
-                    {
-                      type: 'notification',
-                      name: 'Inform HSE or Estates',
-                      value: 'INFORM_HSE',
-                    },
-                  ]
-                : [],
+              options: questionsCategory?.options,
             },
           },
         });
@@ -357,20 +346,11 @@ const QuestionsCategories = () => {
             <Text fontSize="11px" fontWeight="bold">
               Options
             </Text>
-            <Dropdown
-              control={control}
-              name="selectedOption"
-              options={[
-                {
-                  label: 'Please select additional option',
-                  value: '',
-                },
-                {
-                  label: 'Inform HSE or Estates',
-                  value: 'INFORM_HSE',
-                },
-              ]}
-            />
+            <CheckboxGroup defaultValue={questionsCategory.options?.map((option) => option.value)} onChange={onChangeOption}>
+              {Object.values(availableOptions).map((option) => (
+                <Checkbox key={option.value} label={option.name} value={option.value} />
+              ))}
+            </CheckboxGroup>
           </Stack>
         </Stack>
       </AdminModal>
