@@ -136,7 +136,7 @@ const WalkItemModal = ({
 
   return (
     <>
-      <ModalContent bg="actionModal.bg" h="100vh" m="0" overflow="hidden" p={[4, 6]} rounded="0">
+      <ModalContent bg="actionModal.bg" h={['auto', '100vh']} m="0" overflow="hidden" p={[4, 6]} rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
