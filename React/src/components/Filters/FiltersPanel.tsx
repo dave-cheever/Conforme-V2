@@ -56,6 +56,7 @@ const FiltersPanel = () => {
         basis={['60px', '70px']}
         bg="filterPanel.bg"
         borderBottomStartRadius={['0px', '20px']}
+        bottom={0}
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
         justify="center"
         position={['sticky', 'relative']}
