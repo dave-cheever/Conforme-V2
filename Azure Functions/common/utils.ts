@@ -1,19 +1,23 @@
 import { differenceInCalendarDays, isSameDay } from 'date-fns';
 
-import { IResponse } from "./interfaces/IResponse";
-import { AUDITS_WEEKLY_SUMMARY, AUDIT_MISSED, MENTION_NOTIFICATION, TRACKER_REMINDER, TRACKER_WEEKLY_SUMMARY, TRACKER_REVIEW_SUBMITTED } from './services/notifications';
+import { IResponse } from './interfaces/IResponse';
+import {
+  ACTION_ASSIGNED,
+  AUDITS_WEEKLY_SUMMARY,
+  AUDIT_MISSED,
+  TRACKER_REMINDER,
+  TRACKER_WEEKLY_SUMMARY,
+  TRACKER_REVIEW_SUBMITTED,
+} from './services/notifications';
 
 export const getProtocol = () => {
-  return process.env.ENV?.toLowerCase() === "dev" ? "http://" : "https://";
+  return process.env.ENV?.toLowerCase() === 'dev' ? 'http://' : 'https://';
 };
 
-export const genMetatags = (
-  action: "added" | "updated" | "removed",
-  userId: string
-) => {
+export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: string) => {
   return {
     [`${action}By`]: userId,
-    [`${action}At`]: new Date(),
+    [`${action}At`]: new Date()
   };
 };
 
@@ -27,20 +31,25 @@ export const getTemplateDetails = (
     case AUDITS_WEEKLY_SUMMARY:
     case AUDIT_MISSED:
       return {
-        templateSettingName: "auditsWeeklyDigestEmailTemplate",
-        emailSettingName: "auditsWeeklyDigestEmailAddress",
+        templateSettingName: 'auditsWeeklyDigestEmailTemplate',
+        emailSettingName: 'auditsWeeklyDigestEmailAddress'
       };
 
     case TRACKER_REMINDER:
       return {
-        templateSettingName: "responseRemainderEmailTemplate",
-        emailSettingName: "responseDueEmailDays",
+        templateSettingName: 'responseRemainderEmailTemplate',
+        emailSettingName: 'responseDueEmailDays'
       };
 
     case TRACKER_WEEKLY_SUMMARY:
       return {
-        templateSettingName: "responseWeeklyEmailTemplate",
-        emailSettingName: "responseWeeklyEmailAddress",
+        templateSettingName: 'responseWeeklyEmailTemplate',
+        emailSettingName: 'responseWeeklyEmailAddress'
+      };
+    case ACTION_ASSIGNED:
+      return {
+        templateSettingName: 'actionAssignedEmailTemplate',
+        emailSettingName: 'actionAssigned'
       };
     case MENTION_NOTIFICATION:
       return {
@@ -69,12 +78,12 @@ export const getDaysToDueDate = (response: IResponse) => {
 };
 
 /**
- * 
+ *
  * This function is used to do one-time translation with passed translations object
- * 
+ *
  * @param word Word to be translated
  * @param translations Module configuration object with translations
  */
-export const t = (word: string, translations: { [word: string]: string; }) => {
+export const t = (word: string, translations: { [word: string]: string }) => {
   return translations[word] || word;
 };

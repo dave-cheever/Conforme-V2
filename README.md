@@ -322,6 +322,7 @@ Possible translations for compliance item module:
 - answer
 
 ### Theme
+
 To change a theme you need to update `theme` object in organization config in the database. Use styling structure that was implemented in app, and put it inside of `colors` property.
 Example theme that changes plus button color and delete icon color in audit questions list:
 
@@ -660,6 +661,40 @@ Tracker review submitted:
     "updatedAt": {
       "$date": 1649742835206
     }
+  }
+}
+```
+
+Action assigned:
+
+```
+{
+  "_id": <random generated UUID>,
+  "name": "actionAssignedEmailTemplate",
+  "label": "Action assigned",
+  "value": "<p>You have been assigned to action '%ActionTitle% for %WalkItemCategory% named %WalkItemName% (%ActionDueDate%)' by %AssignedBy%, to view click %LinkTo%.</p>",
+  "type": "emailTemplate",
+  "options": [
+    "ActionTitle",
+    "WalkItemCategory",
+    "WalkItemName",
+    "ActionDueDate",
+    "AssignedBy",
+    "LinkTo"
+  ],
+  "description": "",
+  "organizationId": <organization's id>,
+  "inputType": "emailTemplate",
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649318086034"
+      }
+    }
+  },
+  "scope": {
+    "moduleId": <module id>
   }
 }
 ```

@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
 import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
-import { genMetatags, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, removeDatabaseFields } from 'app-utils';
+import { genMetatags, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, join, removeDatabaseFields } from 'app-utils';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -344,9 +344,30 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
         $match: { organizationId: organization._id, 'element._id': action._id, 'values.assigneeId.new': { $ne: null } },
       },
     ]);
-    const assignorId = latestAssociatedAuditLog[0]?.metatags.addedBy;
 
+    const assignorId = latestAssociatedAuditLog[0]?.metatags.addedBy;
     const assignor = await Users.customFindByIdWithDetails({ userId: assignorId ?? action.metatags.addedBy, organization });
+    const associatedWalkItemPipeline: any[] = [
+      {
+        $match: { _id: action.scope._id },
+      },
+    ];
+
+    join({
+      pipeline: associatedWalkItemPipeline,
+      collection: 'questions',
+      from: 'questionId',
+      to: 'question',
+    });
+
+    join({
+      pipeline: associatedWalkItemPipeline,
+      collection: 'questionsCategories',
+      from: 'question.questionsCategoryId',
+      to: 'question.questionsCategory',
+    });
+
+    const associatedWalkItem = (await Answers.aggregate(associatedWalkItemPipeline))?.[0];
 
     await Notifications.customCreate(
       {
@@ -356,6 +377,8 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
           actionPath,
           actionDueDate: action.dueDate ? `Due ${format(new Date(action.dueDate), 'd LLLL Y')}` : 'No due date',
           assignedBy: assignor.displayName,
+          walkItemName: associatedWalkItem?.question.question,
+          walkItemCategory: associatedWalkItem?.question?.questionsCategory.name,
         },
         status: 'pending',
         to: [assignee?.email],

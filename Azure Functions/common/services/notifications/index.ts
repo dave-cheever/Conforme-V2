@@ -4,6 +4,7 @@ import { IOrganization } from '../../interfaces/IOrganization';
 import { getProtocol, t } from '../../utils';
 import Organizations from '../collections/Organizations';
 import Settings from '../collections/Settings';
+import getActionAssignedEmailTemplate from './action-assigned';
 import getAuditsWeeklyDigestEmailTemplate from './audits-weekly-digest';
 import getTrackerReviewSubmittedEmail from './getTrackerReviewSubmittedEmail';
 import getMentionEmail from './mentionEmail';
@@ -43,7 +44,7 @@ const getEmailSubject = (
     case MENTION_NOTIFICATION:
       return "You have been mentioned in chat";
     case TRACKER_REMINDER:
-      return `${capitalize(t("complianceItem", translations))} Reminder: ${
+      return `${capitalize(t('complianceItem', translations))} Reminder: ${
         emailData.complianceName
       }`;
     case TRACKER_WEEKLY_SUMMARY:
@@ -73,13 +74,7 @@ const getEmailTemplate = async ({
   let body: string;
   switch (emailType) {
     case ACTION_ASSIGNED:
-      body = `<p>
-        You have been assigned to action "${emailData.actionTitle} (${
-        emailData.actionDueDate
-      })" by ${emailData.assignedBy}, to view click <a href="${getProtocol()}${
-        emailData.actionPath
-      }">here</a>.
-        </p>`;
+      body = getActionAssignedEmailTemplate(template, emailData);
       break;
     case ACTION_COMPLETED:
       body = `<p>
@@ -92,27 +87,21 @@ const getEmailTemplate = async ({
       break;
     case ACTION_OVERDUE:
       body = `<p>
-        Action "${
-          emailData.actionTitle
-        }" is overdue, to view click <a href="${getProtocol()}${
+        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${
         emailData.actionPath
       }">here</a>.
       </p>`;
       break;
     case AUDIT_MISSED:
       body = `<p>
-        Audit has been missed for ${
-          emailData.areaName
-        }, to view click <a href="${getProtocol()}${
+        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${
         emailData.auditPath
       }">here</a>.
       </p>`;
       break;
     case AUDIT_UPCOMING:
       body = `<p>
-        You have upcoming audit for ${
-          emailData.areaName
-        }, to view click <a href="${getProtocol()}${
+        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${
         emailData.auditPath
       }">here</a>.
       </p>`;
