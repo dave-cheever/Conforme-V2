@@ -78,7 +78,8 @@ const sendComingUpAudits = async (config: IConfig) => {
               areaName: audit.area?.name,
               auditPath: `${organization.domain}/${module?.path}/audits/${audit._id}`,
             },
-            organization
+            modulePath: module.path,
+            organization,
           });
 
           const auditor = await Users.customFindByIdWithDetails({

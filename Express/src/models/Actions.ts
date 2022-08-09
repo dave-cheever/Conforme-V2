@@ -346,6 +346,9 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
         },
         status: 'pending',
         to: [assignee?.email],
+        scope : {
+          moduleId : module?._id,
+        },
       },
       action.metatags.updatedBy || action.metatags.addedBy,
       organization._id,
@@ -419,6 +422,9 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
         },
         status: 'pending',
         to: recipients,
+        scope : {
+          moduleId : module?._id,
+        },
       },
       action.metatags.updatedBy || action.metatags.addedBy,
       organization._id,

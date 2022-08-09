@@ -90,6 +90,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           emailData: notification.emailData,
           to: notification.to,
           organization: organizationConfigService.getOrganization(),
+          module: organizationConfigService?.getOrganization()?.modules?.find(module => module._id === notification.scope.moduleId),
           ...(template && { template: template.value }),
         });
         if (emailSent) {

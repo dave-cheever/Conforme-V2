@@ -40,7 +40,12 @@ const httpTrigger: AzureFunction = async function (
           emailType: notification.emailType,
           emailData: notification.emailData,
           to: notification.to,
-          organization: configService.getOrganization()
+          organization: configService.getOrganization(),
+          module: configService
+            ?.getOrganization()
+            ?.modules?.find(
+              (module) => module._id === notification.scope.moduleId
+            ),
         });
         context.res = {
           body: 'Notification sent.'

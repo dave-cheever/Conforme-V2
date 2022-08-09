@@ -168,6 +168,9 @@ answersSchema.statics.customCreate = async function (
             },
             status: 'pending',
             to: emailAddress.value,
+            scope : {
+              moduleId : module?._id,
+            },
           },
           userId,
           organizationId,
@@ -278,10 +281,15 @@ answersSchema.statics.customUpdateOne = async function (
             emailData: {
               subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
               template: 'HSENotificationEmailTemplate',
-              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id}" target="_blank">here</a>`,
+              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${
+                question._id
+              }" target="_blank">here</a>`,
             },
             status: 'pending',
             to: emailAddress.value,
+            scope: {
+              moduleId: module?._id,
+            },
           },
           userId,
           organizationId,

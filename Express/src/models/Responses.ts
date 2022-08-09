@@ -593,6 +593,9 @@ responseSchema.statics.customAssigneeNotification = async function (responseId: 
           },
           status: 'pending',
           to: [assignee?.email],
+          scope: {
+            moduleId: module._id,
+          },
         },
         assignor._id,
         organization._id,

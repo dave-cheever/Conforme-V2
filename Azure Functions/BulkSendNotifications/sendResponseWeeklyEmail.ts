@@ -95,6 +95,7 @@ const sendResponseWeeklyEmail = async (emailType: string, config) => {
         responses,
       },
       template: template.value,
+      modulePath: module.path,
       organization,
     });
 

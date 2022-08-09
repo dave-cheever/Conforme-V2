@@ -69,6 +69,7 @@ const sendDigest = async (
         emailData: {
           numberOfAudits: audits.length,
         },
+        modulePath : module.path,
         template: template.value,
         organization
       });

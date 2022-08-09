@@ -1,7 +1,11 @@
 import { IOrganization } from "../../interfaces/IOrganization";
 import { getProtocol } from "../../utils";
 
-const getSkeleton = (body: string, organization: IOrganization) => `
+const getSkeleton = (
+  body: string,
+  organization: IOrganization,
+  modulePath: string
+) => `
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
         <title>
         </title>
@@ -347,8 +351,8 @@ const getSkeleton = (body: string, organization: IOrganization) => `
                 
       <div style="font-family: Arial, Helvetica, sans-serif;font-size:11px;line-height:1.5;text-align:center;color:#000000;margin-top:20px;">
         <p style="font-size: 11px;"><span style="color: #73787b;"><a href="${getProtocol()}${organization.domain
-  }/termsandconditions" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Terms of Use</span></a>&#xA0; &#xA0; &#xA0; <a href="${getProtocol()}${organization.domain
-  }/help" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Help Centre</span></span></a></p>
+  }/${modulePath}/terms-and-conditions" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Terms of Use</span></a>&#xA0; &#xA0; &#xA0; <a href="${getProtocol()}${organization.domain
+  }/${modulePath}/help" rel="noreferrer noopener"><span style="text-decoration: underline; color: #73787b;">Help Centre</span></span></a></p>
       </div>
     
               </td>

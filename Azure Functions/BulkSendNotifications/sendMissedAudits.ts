@@ -88,6 +88,7 @@ const sendMissedAudits = async (config: IConfig) => {
             areaName: audit.area?.name,
             auditPath: `${organization.domain}/${module?.path}/audits/${audit._id}`,
           },
+          modulePath : module.path,
           organization
         });
 

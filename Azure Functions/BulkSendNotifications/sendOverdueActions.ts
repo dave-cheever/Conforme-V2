@@ -115,6 +115,7 @@ const sendOverdueActions = async (config: IConfig) => {
               actionTitle: action.title,
               actionPath
             },
+            modulePath : module.path,
             organization
           });
           const graphService = new GraphService(config);

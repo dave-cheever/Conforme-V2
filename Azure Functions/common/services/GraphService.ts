@@ -1,11 +1,12 @@
-import { graph } from '@pnp/graph-commonjs';
-import { AdalFetchClient } from '@pnp/nodejs-commonjs';
-import axios from 'axios';
+import { graph } from "@pnp/graph-commonjs";
+import { AdalFetchClient } from "@pnp/nodejs-commonjs";
+import axios from "axios";
 
-import IConfig from '../interfaces/IConfig';
-import { IOrganization } from '../interfaces/IOrganization';
-import Organizations from './collections/Organizations';
-import { getEmailSubject, getEmailTemplate } from './notifications';
+import IConfig from "../interfaces/IConfig";
+import { IModule } from "../interfaces/IModule";
+import { IOrganization } from "../interfaces/IOrganization";
+import Organizations from "./collections/Organizations";
+import { getEmailSubject, getEmailTemplate } from "./notifications";
 
 export class GraphService {
   private _config: IConfig;
@@ -15,15 +16,15 @@ export class GraphService {
     this._config = config;
 
     this._adalClient = new AdalFetchClient(
-      config.GraphTenantId || '',
-      config.GraphAppId || '',
-      config.GraphSecret || ''
+      config.GraphTenantId || "",
+      config.GraphAppId || "",
+      config.GraphSecret || ""
     );
 
     graph.setup({
       graph: {
-        fetchClientFactory: () => this._adalClient
-      }
+        fetchClientFactory: () => this._adalClient,
+      },
     });
   }
 
@@ -33,30 +34,31 @@ export class GraphService {
       baseURL: this._config.GraphUrl,
       headers: {
         Authorization: `${token.tokenType} ${token.accessToken}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     return client;
   }
 
   private static async graphSetup(organizationId: string) {
-    if (!organizationId) throw new Error('No organization id');
+    if (!organizationId) throw new Error("No organization id");
 
     const organization = await Organizations.customFindById(organizationId);
-    if (!organizationId) throw new Error('Wrong organization config');
+    if (!organizationId) throw new Error("Wrong organization config");
 
     const { clientId, tenantId, secret } = organization;
     graph.setup({
       graph: {
-        fetchClientFactory: () => new AdalFetchClient(tenantId || '', clientId || '', secret || '')
-      }
+        fetchClientFactory: () =>
+          new AdalFetchClient(tenantId || "", clientId || "", secret || ""),
+      },
     });
   }
 
   // userId can be AAD ID or email
   public static async getUserData({
     userId,
-    organization
+    organization,
   }: {
     userId: string;
     organization: IOrganization;
@@ -65,7 +67,7 @@ export class GraphService {
     const userData = await graph.users.getById(userId)();
     // const userGroups = await graph.users.getById(userId).memberOf();
     return {
-      ...userData
+      ...userData,
       // groups: userGroups.map(({ id, displayName }) => ({ id, displayName })) // TODO: fix me
     };
   }
@@ -73,18 +75,20 @@ export class GraphService {
   public static async checkMemberGroups({
     userId,
     groups,
-    organization
+    organization,
   }: {
     userId: string;
     groups: { [name: string]: string };
     organization: IOrganization;
   }) {
     await this.graphSetup(organization._id);
-    const res = await graph.users.getById(userId).checkMemberGroups(Object.values(groups));
+    const res = await graph.users
+      .getById(userId)
+      .checkMemberGroups(Object.values(groups));
     return Object.keys(groups).reduce(
       (acc, curr) => ({
         ...acc,
-        [curr]: res.includes(groups[curr])
+        [curr]: res.includes(groups[curr]),
       }),
       {}
     );
@@ -96,44 +100,47 @@ export class GraphService {
     emailData,
     to,
     organization,
-    template
+    module,
+    template,
   }: {
     from: string;
     emailType: string;
     emailData: any;
     to: string[];
     organization: IOrganization;
+    module: IModule;
     template?: any;
   }) {
     try {
       const client = await this.getClient();
 
-      const toRecipients = to.map(address => ({
+      const toRecipients = to.map((address) => ({
         emailAddress: {
-          address
-        }
+          address,
+        },
       }));
 
       const options = {
         message: {
           subject: getEmailSubject(emailType, emailData),
           body: {
-            contentType: 'HTML',
+            contentType: "HTML",
             content: await getEmailTemplate({
               emailType,
               emailData,
+              modulePath: module.path,
+              template,
               organization,
-              template
-            })
+            }),
           },
-          toRecipients
-        }
+          toRecipients,
+        },
       };
       const sent = await client.post(`users/${from}/sendMail`, options);
       return sent.status === 202;
     } catch (error) {
       console.log(error.response.data);
-      console.log(`Failed to send '${emailType}' email to '${to.join(', ')}'`);
+      console.log(`Failed to send '${emailType}' email to '${to.join(", ")}'`);
     }
   }
 
@@ -141,7 +148,7 @@ export class GraphService {
     from,
     to,
     subject,
-    body
+    body,
   }: {
     from: string;
     to: string[];
@@ -151,27 +158,27 @@ export class GraphService {
     try {
       const client = await this.getClient();
 
-      const toRecipients = to.map(address => ({
+      const toRecipients = to.map((address) => ({
         emailAddress: {
-          address
-        }
+          address,
+        },
       }));
 
       const options = {
         message: {
           subject,
           body: {
-            contentType: 'HTML',
-            content: body
+            contentType: "HTML",
+            content: body,
           },
-          toRecipients
-        }
+          toRecipients,
+        },
       };
       const sent = await client.post(`users/${from}/sendMail`, options);
       return sent.status === 202;
     } catch (error) {
       console.log(error);
-      console.log(`Failed to send email to '${to.join(', ')}'`);
+      console.log(`Failed to send email to '${to.join(", ")}'`);
     }
   }
 }

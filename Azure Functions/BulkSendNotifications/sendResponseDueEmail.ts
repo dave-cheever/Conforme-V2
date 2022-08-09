@@ -137,6 +137,7 @@ const sendResponseDueEmail = async (emailType: string, config) => {
             _id,
           },
           template: template.value,
+          modulePath: module.path,
           organization,
         });
 
