@@ -244,7 +244,7 @@ const Users = () => {
       px="25px"
       w="full"
     >
-      <Flex w={['80%', '16%']}>
+      <Flex w={['60%', '16%']}>
         <Avatar
           borderColor="brand.active"
           mr={3}
@@ -287,10 +287,12 @@ const Users = () => {
           </Flex>
         </>
       )}
-      <Flex h="100%" w="20%">
-        {renderCounts(user)}
-      </Flex>
-      <Flex align="center" ml="20px" w="calc(16% - 20px)">
+      {device !== 'mobile' && (
+        <Flex h="100%" w="20%">
+          {renderCounts(user)}
+        </Flex>
+      )}
+      <Flex align="center" ml="20px" w={['40%', 'calc(16% - 20px)']}>
         {user?.lastLogin
           ? upperFirst(
               formatDistanceToNow(new Date(user?.lastLogin), {
@@ -316,7 +318,7 @@ const Users = () => {
               }}
               showSortingIcon={sortType === 'displayName'}
               sortOrder={sortType === 'displayName' ? sortOrder : undefined}
-              w={['80%', '16%']}
+              w={['60%', '16%']}
             />
             {device !== 'mobile' && (
               <>
@@ -352,7 +354,7 @@ const Users = () => {
                 />
               </>
             )}
-            <Flex w="20%">{renderCountHeaders()}</Flex>
+            {device !== 'mobile' && <Flex w="20%">{renderCountHeaders()}</Flex>}
             <AdminTableHeaderElement
               label="Last login"
               ml="20px"
@@ -362,7 +364,7 @@ const Users = () => {
               }}
               showSortingIcon={sortType === 'lastLogin'}
               sortOrder={sortType === 'lastLogin' ? sortOrder : undefined}
-              w="calc(16% - 20px)"
+              w={['40%', 'calc(16% - 20px)']}
             />
           </AdminTableHeader>
           <Flex bg="white" borderBottomRadius="10px" flexDir="column" h="full" overflow="auto" w="full">
