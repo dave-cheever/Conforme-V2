@@ -30,22 +30,22 @@ const FiltersPanel = () => {
       bg="filterPanel.bg"
       borderBottomStartRadius={['0px', '20px']}
       boxShadow="md"
-      flexDir="column"
-      flexShrink={0}
+      direction="column"
       h="100vh"
       position={['relative', 'absolute']}
       ref={panelRef}
       right="0"
+      shrink={0}
       w={['full', '320px']}
       zIndex="10"
     >
-      <Flex align="center" h="65px" justify="space-between" px="4">
+      <Flex align="center" basis={['55px', '65px']} justify="space-between" px="4" shrink={0}>
         <Box color="brand.darkGrey" fontSize="16px" fontWeight="700">
           Filter items by
         </Box>
         <CrossIcon cursor="pointer" onClick={() => setShowFiltersPanel(false)} stroke="filterPanel.closeIconColor" />
       </Flex>
-      <Flex flexDir="column" minH="calc(100vh - 180px)" overflowY="auto" px="4">
+      <Flex direction="column" grow={1} overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel) return <FiltersPanelItem filter={value} key={name} name={name} />;
           return null;
@@ -53,15 +53,13 @@ const FiltersPanel = () => {
       </Flex>
       <Flex
         align="center"
+        basis={['60px', '70px']}
         bg="filterPanel.bg"
         borderBottomStartRadius={['0px', '20px']}
-        bottom="0px"
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
-        h="70px"
         justify="center"
-        mt="auto"
         position={['sticky', 'relative']}
-        py={2}
+        shrink={0}
         w="full"
       >
         <Button
