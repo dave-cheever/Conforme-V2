@@ -54,6 +54,9 @@ export interface IAuditContext {
   submitAudit: (
     options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>,
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+  deleteAudit: (
+    options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>,
+  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
 
   refetch: () => void;
 }

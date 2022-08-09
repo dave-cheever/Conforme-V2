@@ -5,13 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IAuditValue, IAuditValues, IQuestion, IQuestionModel, TQuestionValue } from 'app-interfaces';
 import { AuditLogs, QuestionsCategories } from 'app-models';
-import {
-  genMetatags,
-  getAuditValueForBoolean,
-  getAuditValueForLookup,
-  getAuditValueForString,
-  removeDatabaseFields,
-} from 'app-utils';
+import { genMetatags, getAuditValueForBoolean, getAuditValueForLookup, getAuditValueForString, removeDatabaseFields } from 'app-utils';
 
 const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   _id: String,
@@ -49,10 +43,7 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -81,8 +72,7 @@ const getAuditRecordValues = async ({
         break;
 
       default:
-        if (typeof oldValue === 'string' || typeof newValue === 'string')
-          value = getAuditValueForString(oldValue, newValue);
+        if (typeof oldValue === 'string' || typeof newValue === 'string') value = getAuditValueForString(oldValue, newValue);
     }
     return {
       ...acc,
@@ -112,15 +102,19 @@ questionsSchema.statics.customCreate = async function (
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdQuestion._doc);
       const values = await getAuditRecordValues({ newValues });
-      AuditLogs.customAudit({
-        coll: 'questions',
-        action: "add",
-        element: {
-          _id: createdQuestion._doc._id,
-          name: question.question,
+      AuditLogs.customAudit(
+        {
+          coll: 'questions',
+          action: 'add',
+          element: {
+            _id: createdQuestion._doc._id,
+            name: question.question,
+          },
+          values,
         },
-        values,
-      }, userId, organizationId);
+        userId,
+        organizationId,
+      );
     };
     addAuditLog();
   }
@@ -128,10 +122,7 @@ questionsSchema.statics.customCreate = async function (
   return createdQuestion;
 };
 
-questionsSchema.statics.customFind = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IQuestion<TQuestionValue>[]> {
+questionsSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IQuestion<TQuestionValue>[]> {
   const questions = await this.find({
     ...selector,
     organizationId,
@@ -152,9 +143,7 @@ questionsSchema.statics.customFindOne = async function (
   return question;
 };
 
-questionsSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IQuestion<TQuestionValue>> {
+questionsSchema.statics.customFindById = async function (_id: string): Promise<IQuestion<TQuestionValue>> {
   const question = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
@@ -208,11 +197,7 @@ questionsSchema.statics.customUpdateOne = async function (
   return updatedQuestion;
 };
 
-questionsSchema.statics.customDelete = async function (
-  selector: object = {},
-  userId: string,
-  organizationId: string,
-): Promise<number> {
+questionsSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
   const question = await this.customFindOne(selector, organizationId);
   if (!question) throw new GraphQLError("Question doesn't exist");
 
@@ -249,8 +234,18 @@ questionsSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
-const questionModel = model<IQuestion<TQuestionValue>, IQuestionModel>(
-  'Question',
-  questionsSchema,
-);
+questionsSchema.statics.customDeleteMany = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<void> {
+  const questions = await this.customFind(selector, organizationId);
+  await Promise.all(
+    questions?.map(async (question) => {
+      await this.customDelete({ _id: question._id }, userId, organizationId);
+    }),
+  );
+};
+
+const questionModel = model<IQuestion<TQuestionValue>, IQuestionModel>('Question', questionsSchema);
 export default questionModel;

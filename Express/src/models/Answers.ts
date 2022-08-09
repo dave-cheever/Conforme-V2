@@ -10,6 +10,8 @@ import { AuditLogs, Notifications, Organizations, Questions, QuestionsCategories
 import { GraphService } from 'app-services';
 import { genMetatags, getAuditValueForString, getProtocol, removeDatabaseFields } from 'app-utils';
 
+import actionsModel from './Actions';
+
 const answersSchema = new Schema<IAnswer, IAnswerModel>({
   _id: String,
   questionId: String,
@@ -53,10 +55,7 @@ const answersSchema = new Schema<IAnswer, IAnswerModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -71,29 +70,22 @@ const getAuditRecordValues = async ({
     switch (field) {
       // If updated 'attachments' field, set value as evidence name and file name and label as file details
       case 'attachments': {
-        const getAttachmentsPathsArray = (arr) =>
-          arr.map(({ uploaded }) => uploaded?.path);
-        const removedAttachments = difference(
-          getAttachmentsPathsArray(oldValue || []),
-          getAttachmentsPathsArray(newValue || []),
-        ).filter(Boolean);
+        const getAttachmentsPathsArray = (arr) => arr.map(({ uploaded }) => uploaded?.path);
+        const removedAttachments = difference(getAttachmentsPathsArray(oldValue || []), getAttachmentsPathsArray(newValue || [])).filter(
+          Boolean,
+        );
         if (removedAttachments.length > 0) {
-          const document = oldValue.find(
-            ({ uploaded }) => uploaded.path === removedAttachments[0],
-          );
+          const document = oldValue.find(({ uploaded }) => uploaded.path === removedAttachments[0]);
           value.old = {
             value: document.uploaded,
             label: `${document.name} - ${document.uploaded.name}`,
           };
         }
-        const addedAttachments = difference(
-          getAttachmentsPathsArray(newValue || []),
-          getAttachmentsPathsArray(oldValue || []),
-        ).filter(Boolean);
+        const addedAttachments = difference(getAttachmentsPathsArray(newValue || []), getAttachmentsPathsArray(oldValue || [])).filter(
+          Boolean,
+        );
         if (addedAttachments.length > 0) {
-          const document = newValue.find(
-            ({ uploaded }) => uploaded.path === addedAttachments[0],
-          );
+          const document = newValue.find(({ uploaded }) => uploaded.path === addedAttachments[0]);
           value.new = {
             value: document.uploaded,
             label: `${document.name} - ${document.uploaded.name}`,
@@ -103,8 +95,7 @@ const getAuditRecordValues = async ({
       }
 
       default:
-        if (typeof oldValue === 'string' || typeof newValue === 'string')
-          value = getAuditValueForString(oldValue, newValue);
+        if (typeof oldValue === 'string' || typeof newValue === 'string') value = getAuditValueForString(oldValue, newValue);
     }
     return {
       ...acc,
@@ -116,11 +107,7 @@ const getAuditRecordValues = async ({
   return auditRecordValues;
 };
 
-answersSchema.statics.customCreate = async function (
-  answer: IAnswer,
-  userId: string,
-  organizationId: string,
-): Promise<IAnswer> {
+answersSchema.statics.customCreate = async function (answer: IAnswer, userId: string, organizationId: string): Promise<IAnswer> {
   const createdAnswer = await this.create({
     ...answer,
     _id: uuidv4(),
@@ -129,20 +116,12 @@ answersSchema.statics.customCreate = async function (
     metatags: genMetatags('added', userId),
   });
 
-  const organization = await Organizations.customFindById(
-    organizationId,
-    organizationId,
-  );
+  const organization = await Organizations.customFindById(organizationId, organizationId);
 
   // Move attachments to right SP folder
   if (answer.attachments && answer.attachments.length) {
     answer.attachments?.forEach((attachment) => {
-      GraphService.moveDocument(
-        attachment.id,
-        createdAnswer._id,
-        attachment.name,
-        organization,
-      );
+      GraphService.moveDocument(attachment.id, createdAnswer._id, attachment.name, organization);
     });
   }
 
@@ -155,7 +134,7 @@ answersSchema.statics.customCreate = async function (
     const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
     const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && answer.options![value]);
 
-    const emailAddress = await Settings.customFindOneByName("auditsWeeklyDigestEmailAddress", organization._id);
+    const emailAddress = await Settings.customFindOneByName('auditsWeeklyDigestEmailAddress', organization._id);
     if (emailAddress) {
       for (const notification of notifications) {
         await Notifications.customCreate(
@@ -164,7 +143,8 @@ answersSchema.statics.customCreate = async function (
             emailData: {
               subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
               template: 'HSENotificationEmailTemplate',
-              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id}" target="_blank">here</a>`,
+              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                }" target="_blank">here</a>`,
             },
             status: 'pending',
             to: emailAddress.value,
@@ -204,10 +184,7 @@ answersSchema.statics.customCreate = async function (
   return createdAnswer;
 };
 
-answersSchema.statics.customFind = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IAnswer[]> {
+answersSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IAnswer[]> {
   const answers = await this.find({
     ...selector,
     organizationId,
@@ -216,10 +193,7 @@ answersSchema.statics.customFind = async function (
   return answers;
 };
 
-answersSchema.statics.customFindOne = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IAnswer | null> {
+answersSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IAnswer | null> {
   const answer = await this.findOne({
     ...selector,
     organizationId,
@@ -228,9 +202,7 @@ answersSchema.statics.customFindOne = async function (
   return answer;
 };
 
-answersSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IAnswer> {
+answersSchema.statics.customFindById = async function (_id: string): Promise<IAnswer> {
   const answer = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
@@ -261,18 +233,17 @@ answersSchema.statics.customUpdateOne = async function (
 
   // Set notifications if configured
   const sendNotifications = async () => {
-    const organization = await Organizations.customFindById(
-      organizationId,
-      organizationId,
-    );
+    const organization = await Organizations.customFindById(organizationId, organizationId);
     const question = await Questions.customFindById(answer.questionId, organizationId);
     if (!answer.options || !question.questionsCategoryId) return;
     const module = organization.modules.find(({ _id }) => _id === answer.scope?.moduleId);
 
     const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
-    const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && !answer.options![value] && updatedAnswer.options![value]);
+    const notifications = (questionsCategory.options || []).filter(
+      ({ type, value }) => type === 'notification' && !answer.options![value] && updatedAnswer.options![value],
+    );
 
-    const emailAddress = await Settings.customFindOneByName("auditsWeeklyDigestEmailAddress", organization._id);
+    const emailAddress = await Settings.customFindOneByName('auditsWeeklyDigestEmailAddress', organization._id);
     if (emailAddress) {
       for (const notification of notifications) {
         await Notifications.customCreate(
@@ -324,11 +295,7 @@ answersSchema.statics.customUpdateOne = async function (
   return updatedAnswer;
 };
 
-answersSchema.statics.customDelete = async function (
-  selector: object = {},
-  userId: string,
-  organizationId: string,
-): Promise<number> {
+answersSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
   const answer = await this.customFindOne(selector, organizationId);
   if (!answer) throw new GraphQLError("Answer doesn't exist");
 
@@ -365,10 +332,26 @@ answersSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
-const answersModel = model<IAnswer, IAnswerModel>(
-  'Answer',
-  answersSchema,
-  'answers',
-);
+answersSchema.statics.customDeleteMany = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<number> {
+  const answers = await this.customFind(selector, organizationId);
+  if (answers.length === 0) return 0;
+
+  return (
+    await Promise.all(
+      answers?.map((answer) =>
+        Promise.all([
+          actionsModel.customDeleteMany({ 'scope._id': answer._id }, userId, organizationId),
+          this.customDelete({ _id: answer._id }, userId, organizationId),
+        ]),
+      ),
+    )
+  )?.reduce((acc, curr) => acc + curr[0], 0);
+};
+
+const answersModel = model<IAnswer, IAnswerModel>('Answer', answersSchema, 'answers');
 
 export default answersModel;

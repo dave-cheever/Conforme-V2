@@ -16,10 +16,12 @@ import { capitalize } from 'lodash';
 
 import { toastSuccess } from '../../bootstrap/config';
 import { useAuditContext } from '../../contexts/AuditProvider';
+import useNavigate from '../../hooks/useNavigate';
 
-const AuditSubmitModal = ({ isOpen, onClose }) => {
-  const { audit, submitAudit, refetch } = useAuditContext();
+const AuditDeleteModal = ({ isOpen, onClose }) => {
+  const { audit, deleteAudit, refetch } = useAuditContext();
   const toast = useToast();
+  const { navigateTo } = useNavigate();
 
   if (!audit) return null;
 
@@ -28,22 +30,17 @@ const AuditSubmitModal = ({ isOpen, onClose }) => {
       <ModalContent>
         <ModalHeader>
           <Text fontSize="smm" fontWeight="semibold">
-            Submit {t('audit')}
+            Delete {t('audit')}
           </Text>
           <ModalCloseButton />
         </ModalHeader>
         <ModalBody mb="40px">
           <Stack>
             <Text>
-              Are you sure you want to submit the{' '}
-              {audit.walkType === 'virtual' ? (
-                `virtual ${t('audit')}`
-              ) : (
-                <Text as="span">
-                  {t('audit')} in <strong>{audit.area?.name}</strong>
-                </Text>
-              )}{' '}
-              as completed?
+              Are you sure you want to delete the{' '}
+              <Text as="span">
+                {t('audit')} in <strong>{audit.area?.name}</strong>?
+              </Text>
             </Text>
           </Stack>
         </ModalBody>
@@ -56,20 +53,23 @@ const AuditSubmitModal = ({ isOpen, onClose }) => {
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
               onClick={async () => {
-                await submitAudit({
+                await deleteAudit({
                   variables: {
-                    auditId: audit._id,
+                    _id: audit._id,
                   },
                 });
-                refetch();
                 onClose();
+
+                navigateTo('/audits');
+
+                refetch();
                 toast({
                   ...toastSuccess,
-                  description: `${capitalize(t('audit'))} completed`,
+                  description: `${capitalize(t('audit'))} deleted`,
                 });
               }}
             >
-              Submit
+              Delete
             </Button>
           </HStack>
         </ModalFooter>
@@ -93,4 +93,4 @@ export const auditNewQuestionModalStyles = {
   },
 };
 
-export default AuditSubmitModal;
+export default AuditDeleteModal;

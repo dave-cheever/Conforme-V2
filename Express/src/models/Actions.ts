@@ -274,6 +274,19 @@ actionsSchema.statics.customDelete = async function (selector: object = {}, user
   return deletedResult?.modifiedCount;
 };
 
+actionsSchema.statics.customDeleteMany = async function (
+  selector: object = {},
+  userId: string,
+  organizationId: string,
+): Promise<number> {
+  const actions = await this.customFind(selector, organizationId);
+  if (actions.length === 0) return 0;
+
+  return (await Promise.all(actions?.map((action) => this.customDelete({ _id: action._id }, userId, organizationId))))?.reduce(
+    (acc, curr) => acc + curr,
+  );
+};
+
 actionsSchema.statics.customAssertAssignee = async function (actionId: string): Promise<void> {
   const action = await this.findById(actionId).lean();
   if (!action || !action.assigneeId) return;

@@ -18,6 +18,9 @@ import {
   removeDatabaseFields,
 } from 'app-utils';
 
+import answersModel from './Answers';
+import questionModel from './Questions';
+
 const auditsSchema = new Schema<IAudit, IAuditModel>({
   _id: String,
   auditTypeId: String,
@@ -59,11 +62,7 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-  organization,
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -130,8 +129,7 @@ const getAuditRecordValues = async ({
         break;
 
       default:
-        if (typeof oldValue === 'string' || typeof newValue === 'string')
-          value = getAuditValueForString(oldValue, newValue);
+        if (typeof oldValue === 'string' || typeof newValue === 'string') value = getAuditValueForString(oldValue, newValue);
     }
     return {
       ...acc,
@@ -155,11 +153,8 @@ auditsSchema.statics.customGenerateReference = async function (): Promise<string
 
 auditsSchema.statics.customCreate = async function (audit: IAudit, userId: string, organizationId: string): Promise<IAudit> {
   // Add auditor and participants to the database if doesn't exist
-  const usersIds = [
-    audit.auditorId,
-    ...(audit.participantsIds || []),
-  ];
-  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+  const usersIds = [audit.auditorId, ...(audit.participantsIds || [])];
+  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
 
   const createdAudit = await this.create({
     ...audit,
@@ -171,10 +166,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
   if (createdAudit?._doc) {
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdAudit._doc);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId, organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -299,7 +291,7 @@ auditsSchema.statics.customUpdateOne = async function (
   // Add auditor and participants to the database if doesn't exist
   const usersIds = updates.participantsIds || [];
   if (updates.auditorId) usersIds.push(updates.auditorId);
-  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
 
   const updatedAudit = {
     ...audit,
@@ -318,18 +310,12 @@ auditsSchema.statics.customUpdateOne = async function (
         name: 'Virtual',
       };
       if (audit.areaId) {
-        const area = await BusinessUnits.customFindById(
-          audit.areaId,
-          organizationId,
-        );
+        const area = await BusinessUnits.customFindById(audit.areaId, organizationId);
         element.name = area.name;
       }
       const oldValues = removeDatabaseFields(audit);
       const newValues = removeDatabaseFields(updatedAudit);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId, organizationId);
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
@@ -364,6 +350,41 @@ auditsSchema.statics.customDelete = async function (selector: object = {}, userI
     },
   };
   const deletedResult = await this.updateOne(selector, updatedAudit);
+
+  if (deletedResult?.modifiedCount) {
+    await Promise.all([
+      answersModel.customDeleteMany({ 'scope._id': audit._id }, userId, organizationId),
+      questionModel.customDeleteMany({ 'scope._id': audit._id }, userId, organizationId),
+    ]);
+
+    const addAuditLog = async () => {
+      const element = {
+        _id: audit._id,
+        name: 'Virtual',
+      };
+      if (audit.areaId) {
+        const area = await BusinessUnits.customFindById(audit.areaId, organizationId);
+        element.name = area.name;
+      }
+      const oldValues = removeDatabaseFields(updatedAudit);
+      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const values = await getAuditRecordValues({
+        oldValues,
+        organization,
+      });
+      AuditLogs.customAudit(
+        {
+          coll: 'audits',
+          action: 'delete',
+          element,
+          values,
+        },
+        userId,
+        organizationId,
+      );
+    };
+    addAuditLog();
+  }
 
   return deletedResult?.modifiedCount;
 };

@@ -182,6 +182,11 @@ const SUBMIT_AUDIT = gql`
     submitAudit(auditId: $auditId)
   }
 `;
+const DELETE_AUDIT = gql`
+  mutation DeleteAudit($_id: String!) {
+    deleteAudit(_id: $_id)
+  }
+`;
 const ADD_QUESTION = gql`
   mutation AddQuestion($question: QuestionCreateInput!) {
     createQuestion(question: $question) {
@@ -262,6 +267,7 @@ const AuditProvider = ({ children }) => {
 
   const [updateAudit] = useMutation(UPDATE_AUDIT);
   const [submitAudit] = useMutation(SUBMIT_AUDIT);
+  const [deleteAudit] = useMutation(DELETE_AUDIT);
 
   const [createQuestion] = useMutation(ADD_QUESTION);
   const [saveQuestion] = useMutation(SAVE_QUESTION);
@@ -393,6 +399,7 @@ const AuditProvider = ({ children }) => {
       deleteAction,
       updateAudit,
       submitAudit,
+      deleteAudit,
       refetch,
     }),
     [

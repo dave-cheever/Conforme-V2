@@ -1,11 +1,13 @@
-import { Avatar, Badge, Box, Flex, Heading, Spacer, Stack, Text, useDisclosure, useToast } from '@chakra-ui/react';
+import { Avatar, Badge, Box, Flex, Heading, Spacer, Stack, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
 import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
+import useNavigate from '../../hooks/useNavigate';
 import { isPermitted } from '../can';
+import AuditDeletModal from './AuditDeleteModal';
 import AuditHeaderButton from './AuditHeaderButton';
 import AuditSubmitModal from './AuditSubmitModal';
 
@@ -19,12 +21,16 @@ const AuditHeader = () => {
     area,
     selectedAction,
     questions,
+    deleteAudit,
     submitAudit,
     refetch,
     handleActionChangesModalOpen,
     setActionChangesModalOnContinue,
   } = useAuditContext();
   const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
+  const { isOpen: isDeleteModalOpen, onOpen: handleDeleteModalOpen, onClose: handleDeleteModalClose } = useDisclosure();
+  const { navigateTo } = useNavigate();
+
   if (!audit) return null;
 
   const onSubmitAudit = async () => {
@@ -40,12 +46,32 @@ const AuditHeader = () => {
     });
   };
 
+  const onDeleteAudit = async () => {
+    await deleteAudit({
+      variables: {
+        _id: audit._id,
+      },
+    });
+    navigateTo('/audits');
+    refetch();
+    toast({
+      ...toastSuccess,
+      description: `${capitalize(t('audit'))} deleted`,
+    });
+  };
+
   return (
     <>
       <AuditSubmitModal
         isOpen={isSubmitModalOpen}
         onClose={() => {
           handleSubmitModalClose();
+        }}
+      />
+      <AuditDeletModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          handleDeleteModalClose();
         }}
       />
       <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
@@ -82,11 +108,15 @@ const AuditHeader = () => {
               </Box>
             </Stack>
             {audit?.walkType === 'physical' && (
-              <Flex direction="column" justify="center">
+              <Flex direction="column" justify="center" maxWidth="40%">
                 <Text fontSize="11px" opacity={0.5}>
                   Site
                 </Text>
-                <Text fontSize="smm">{site?.name}</Text>
+                <Tooltip label={site?.name}>
+                  <Text fontSize="smm" noOfLines={2}>
+                    {site?.name}
+                  </Text>
+                </Tooltip>
               </Flex>
             )}
             <Flex direction="column" justify="center">
@@ -118,6 +148,21 @@ const AuditHeader = () => {
           /> */}
 
           {/* heere */}
+          <AuditHeaderButton
+            bgColor="transparent"
+            disabled={!isPermitted({ user, action: 'audits.delete', data: { audit } })}
+            fontColor="#DC0043"
+            icon={null}
+            name="Delete"
+            onClick={
+              selectedAction
+                ? () => {
+                    setActionChangesModalOnContinue(() => onDeleteAudit);
+                    handleActionChangesModalOpen();
+                  }
+                : handleDeleteModalOpen
+            }
+          />
           {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
             <AuditHeaderButton
               bgColor="#DC0043"

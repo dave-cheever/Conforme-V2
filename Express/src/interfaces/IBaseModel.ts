@@ -21,4 +21,9 @@ export interface IBaseModel<I> extends Model<I> {
     userId: string,
     organizationId: string
   ) => Promise<number>;
+
+  /**
+   * This function deletes multiple elements
+   */
+  customDeleteMany: (selector: object, userId: string, organizationId: string) => Promise<number>;
 }
