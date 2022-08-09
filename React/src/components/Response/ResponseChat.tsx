@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 
 import { toastFailed } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import useDevice from '../../hooks/useDevice';
 import { IComment } from '../../interfaces/IComment';
@@ -64,6 +65,7 @@ const defaultValues = {
 const ResponseChat = () => {
   const toast = useToast();
   const device = useDevice();
+  const { module } = useAppContext();
   const { response, handleCloseMessage, users, participantsLoading } = useResponseContext();
   const { data, loading, refetch } = useQuery(GET_COMMENTS, {
     variables: { _id: response?._id },
@@ -117,6 +119,9 @@ const ResponseChat = () => {
         const values = {
           ...text,
           responseId: response?._id,
+          scope: {
+            moduleId: module?._id,
+          },
         };
         await createFunction({ variables: { values } });
         reset(defaultValues);

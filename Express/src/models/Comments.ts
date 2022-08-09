@@ -5,19 +5,30 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IComment, ICommentModel, IOrganization } from 'app-interfaces';
 import { AuditLogs, ComplianceItems, Notifications, Responses, Users } from 'app-models';
+import { MENTION_NOTIFICATION } from 'app-shared';
 import {
   genMetatags,
   getAuditRecordValues,
   getForeignElement,
   removeDatabaseFields,
 } from 'app-utils';
-import { MENTION_NOTIFICATION } from 'app-shared';
 
 const commentSchema = new Schema<IComment, ICommentModel>({
   _id: String,
   responseId: String,
   text: String,
   authorId: String,
+  scope: {
+    module: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    moduleId: String,
+    type: {
+      type: String,
+    },
+    _id: String,
+  },
   metatags: {
     addedAt: Date,
     addedBy: String,
@@ -163,6 +174,7 @@ commentSchema.statics.customDelete = async function (
 
 commentSchema.statics.sendMentionedEmail = async function (userId: string, organization: IOrganization, comment: IComment): Promise<void> {
   const user = await Users.findById(userId).lean();
+  const module = organization.modules.find(({ _id }) => _id === comment.scope?.moduleId);
   await Notifications.customCreate(
     {
       emailType: MENTION_NOTIFICATION,
@@ -172,7 +184,10 @@ commentSchema.statics.sendMentionedEmail = async function (userId: string, organ
         template: 'MentionedNotificationEmailTemplate',
       },
       to: [user?.email!],
-      status: 'pending'
+      status: 'pending',
+      scope: {
+        moduleId: module?._id,
+      },
     },
     comment.metatags.updatedBy || comment.metatags.addedBy,
     organization._id,

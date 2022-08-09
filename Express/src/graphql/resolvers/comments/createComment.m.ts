@@ -30,10 +30,8 @@ const createComment = async (
     // handle mentioning on chat
     const mentionedUserIds = mentionParser(newComment.text);
 
-    if (mentionedUserIds?.length > 0) {
-      await Promise.all(mentionedUserIds.map(async mentionedUserId =>
-        await Comments.sendMentionedEmail(mentionedUserId, organization, createdCommment)));
-    }
+    if (mentionedUserIds?.length > 0)
+      await Promise.all(mentionedUserIds.map(mentionedUserId => Comments.sendMentionedEmail(mentionedUserId, organization, createdCommment)));
 
     return createdCommment;
   } catch (err: any) {

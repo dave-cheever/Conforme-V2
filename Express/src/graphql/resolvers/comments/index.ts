@@ -24,6 +24,7 @@ export const commnentsTypeDefs = `
   input CommentInput {
     responseId: ID!
     text: String!
+    scope: ScopeInput!
   }
 `;
 

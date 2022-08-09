@@ -601,6 +601,9 @@ responseSchema.statics.submitReviewNotification = async function (response: IRes
           },
           status: 'pending',
           to: [assignee?.email],
+          scope: {
+            moduleId: module?._id,
+          },
         },
         assignor._id,
         organization._id,
