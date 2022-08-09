@@ -14,6 +14,7 @@ const GET_FORM_DATA = gql`
     auditTypes {
       _id
       name
+      recurring
     }
     questionsCategories {
       _id

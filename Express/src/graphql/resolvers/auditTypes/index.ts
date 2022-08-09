@@ -32,6 +32,7 @@ export const auditTypesTypeDefs = `
     frequency: String!
     startingDate: Date!
     view: String!
+    recurring: Boolean!
     sections: [AuditSection!]!
     questionsCategories: [QuestionsCategory!]!
     options: [AuditOption!]
@@ -57,6 +58,7 @@ export const auditTypesTypeDefs = `
     name: String!
     frequency: String!
     startingDate: Date!
+    recurring: Boolean!
     sections: [AuditSectionInput!]!
     options: [AuditOptionInput!]
     view: String!
@@ -67,6 +69,7 @@ export const auditTypesTypeDefs = `
     name: String!
     frequency: String!
     startingDate: Date!
+    recurring: Boolean!
     sections: [AuditSectionInput!]!
     options: [AuditOptionInput!]
     view: String!

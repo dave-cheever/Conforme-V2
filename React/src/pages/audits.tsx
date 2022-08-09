@@ -37,6 +37,7 @@ const GET_AUDITS = gql`
       status
       auditorId
       numberOfActions
+      recurring
       auditType {
         _id
         name

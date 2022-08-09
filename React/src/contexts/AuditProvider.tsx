@@ -25,6 +25,7 @@ const GET_AUDIT = gql`
       status
       auditorId
       participantsIds
+      recurring
       auditType {
         _id
         name

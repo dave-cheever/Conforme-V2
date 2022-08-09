@@ -18,6 +18,7 @@ export interface IAudit extends IBase {
   areaId?: string;
   auditorId: string;
   participantsIds: string[];
+  recurring: boolean;
   scope: IScope;
 
   // Additional fields

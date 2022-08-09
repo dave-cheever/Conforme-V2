@@ -26,6 +26,7 @@ const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
     ],
   },
   startingDate: Date,
+  recurring: Boolean,
   sections: [
     {
       type: {

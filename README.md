@@ -32,7 +32,7 @@ In order to authenticate with your local development site and also to be able to
 - Click on 'New registration'
 - Enter app name (i.e. 'conforme')
 - Select the option 'Accounts in this organizational directory only (Single tenant)'
-- Enter 'http://<API_URL>/auth/aad/callback' in redirect URL
+- Enter 'https://<API_URL>/auth/aad/callback' in redirect URL
 - Click on Register
 - Copy the Application (client) ID and add to your organization as `<AAD app id>`
 - Copy the Directory (tenant) ID and add to your organization as `<tenant id>`
@@ -219,21 +219,26 @@ Conforme uses a CosmosDB service running in Azure.
 - Go to the **Review + create** tab
 - Read it carefully and make sure everything is correct, then click on the **Create** button
 
+Now lets create a collection.
+
+- Open **Data Explorer**
+- Select **New database** from the top menu
+- Enter database name (same as account name)
+- Make sure that **Provision throughput** option is checked
+- Select **Autoscale**
+- Set **Database Max RU/s** to 4000
+- Press **OK** at the bottom
+
 After the first app run all the collections will be created in the database.
 
 ### Collections indexes
 
 You need to add some indexes to the database to allow collections to be sorted by these indexes. When you run the app, collections should be created.
-To add an index, open the database in Data Explorer, select the collection and get to 'Settings', then switch to 'Indexing Policy' tab. Under 'Current index(es)' in new row paste the field name in 'Definition' column and select 'Single Field' in 'Type' column. Press 'Save' button at the top bar.
-Add the following indexes:
-
-In complianceItems collection:
-
-- metatags.addedAt
-
-In auditLogs collection:
-
-- metatags.addedAt
+To add an index, open the database in Data Explorer, select the collection and get to 'Settings', then switch to 'Indexing Policy' tab. Under 'Current index(es)' in new row paste '$** in 'Definition' column and select 'Wildcard' in 'Type' column. Press 'Save' button at the top bar.
+Add the wildcard index in the following collections:
+- auditLogs
+- audits
+- trackerItems
 
 ### Your organization
 
@@ -245,6 +250,8 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
   "name": <organization's name>,
   "domain": <domain>,
   "logoUrl": <logo url>,
+  "bgImageUrl": <bg image url>,
+  "bgImageTabletUrl": <tablet bg image url>,
   "theme": {
     "colors": {
       "brand": {

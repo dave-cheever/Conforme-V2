@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, Flex, HStack, Select, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -26,6 +28,7 @@ const GET_AUDIT_TYPES = gql`
       frequency
       startingDate
       view
+      recurring
       sections {
         type
         _id
@@ -57,13 +60,14 @@ const DELETE_AUDIT_TYPE = gql`
   }
 `;
 
-const defaultValues: Partial<IAuditType> = {
+const defaultValues: Partial<Omit<IAuditType, 'recurring'> & { recurring: string }> = {
   _id: undefined,
   name: '',
   frequency: undefined,
   startingDate: new Date(),
   sections: [],
   view: 'categorized',
+  recurring: 'yes',
 };
 
 const AuditTypes = () => {
@@ -136,6 +140,7 @@ const AuditTypes = () => {
       startingDate: auditType.startingDate,
       sections: auditType.sections,
       view: auditType.view,
+      recurring: auditType.recurring ? 'yes' : 'no',
     });
   };
 
@@ -143,7 +148,7 @@ const AuditTypes = () => {
     try {
       if (Object.keys(errors).length === 0) {
         const auditType = getValues();
-        await createFunction({ variables: { auditType } });
+        await createFunction({ variables: { auditType: { ...auditType, recurring: auditType.recurring === 'yes' } } });
         refetch();
         toast({ ...toastSuccess, description: 'Audit type added' });
       } else {
@@ -172,6 +177,7 @@ const AuditTypes = () => {
               frequency: auditType.frequency,
               sections: auditType.sections,
               view: auditType.view,
+              recurring: auditType.recurring === 'yes',
             },
           },
         });
@@ -298,7 +304,20 @@ const AuditTypes = () => {
               { value: 'categorized', label: 'Categorized' },
               { value: 'singlePage', label: 'Single page' },
             ]}
-            placeholder="View"
+            required
+            validations={{
+              notEmpty: true,
+            }}
+            variant="secondaryVariant"
+          />
+          <Dropdown
+            control={control}
+            label={`Should ${pluralize(t('audit'))} be recurring by default?`}
+            name="recurring"
+            options={[
+              { value: 'yes', label: 'Yes' },
+              { value: 'no', label: 'No' },
+            ]}
             required
             validations={{
               notEmpty: true,

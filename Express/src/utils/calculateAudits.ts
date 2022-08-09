@@ -37,29 +37,32 @@ const calculateAudits = async () => {
         const upcomingAudits = audits
           // Get upcoming and completed audits
           .filter(({ status }) => status !== 'missed')
-          // Sort by submission date to get the latest
-          .sort(({ completedDate: a }, { completedDate: b }) => new Date(b!).getTime() - new Date(a!).getTime())
+          // Sort by due date to get the latest
+          .sort(({ dueDate: a }, { dueDate: b }) => new Date(b!).getTime() - new Date(a!).getTime())
           // Get the first one per area
           .reduce((acc, item) => {
             if (!acc.some((audit) => audit.areaId === item.areaId)) acc.push(item);
             return acc;
           }, [] as IAudit[]);
         for (const audit of upcomingAudits) {
-          await Audits.customCreate(
-            {
-              auditTypeId: auditType._id,
-              reference: await Audits.customGenerateReference(),
-              status: 'upcoming',
-              dueDate: getNextRenewalDate(audit.dueDate, auditType.frequency),
-              walkType: 'physical',
-              siteId: audit.siteId,
-              areaId: audit.areaId,
-              auditorId: audit.auditorId,
-              participantsIds: [],
-            },
-            audit.metatags.addedBy,
-            organization._id,
-          );
+          if (audit.recurring) {
+            await Audits.customCreate(
+              {
+                auditTypeId: auditType._id,
+                reference: await Audits.customGenerateReference(),
+                status: 'upcoming',
+                dueDate: getNextRenewalDate(audit.dueDate, auditType.frequency),
+                walkType: 'physical',
+                siteId: audit.siteId,
+                areaId: audit.areaId,
+                auditorId: audit.auditorId,
+                participantsIds: [],
+                recurring: auditType.recurring,
+              },
+              audit.metatags.addedBy,
+              organization._id,
+            );
+          }
         }
       }),
     );

@@ -9,6 +9,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { isPermitted } from '../can';
 import AuditDeletModal from './AuditDeleteModal';
 import AuditHeaderButton from './AuditHeaderButton';
+import AuditRecurringModal from './AuditRecurringModal';
 import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
@@ -28,6 +29,7 @@ const AuditHeader = () => {
     setActionChangesModalOnContinue,
   } = useAuditContext();
   const { isOpen: isSubmitModalOpen, onOpen: handleSubmitModalOpen, onClose: handleSubmitModalClose } = useDisclosure();
+  const { isOpen: isRecurringModalOpen, onOpen: handleRecurringModalOpen, onClose: handleRecurringModalClose } = useDisclosure();
   const { isOpen: isDeleteModalOpen, onOpen: handleDeleteModalOpen, onClose: handleDeleteModalClose } = useDisclosure();
   const { navigateTo } = useNavigate();
 
@@ -72,6 +74,12 @@ const AuditHeader = () => {
         isOpen={isDeleteModalOpen}
         onClose={() => {
           handleDeleteModalClose();
+        }}
+      />
+      <AuditRecurringModal
+        isOpen={isRecurringModalOpen}
+        onClose={() => {
+          handleRecurringModalClose();
         }}
       />
       <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
@@ -161,6 +169,20 @@ const AuditHeader = () => {
                     handleActionChangesModalOpen();
                   }
                 : handleDeleteModalOpen
+            }
+          />
+          <AuditHeaderButton
+            bgColor="transparent"
+            fontColor="#DC0043"
+            icon={null}
+            name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
+            onClick={
+              selectedAction
+                ? () => {
+                    setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+                    handleActionChangesModalOpen();
+                  }
+                : handleRecurringModalOpen
             }
           />
           {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (

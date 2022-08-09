@@ -85,7 +85,8 @@ const AuditModal = ({ refetch }) => {
   }, [JSON.stringify(audit)]);
 
   const handlePrimaryButtonClick = async () => {
-    if (!audit.auditTypeId) {
+    const auditType = auditTypes.find(({ _id }) => _id === audit.auditTypeId);
+    if (!auditType) {
       return toast({
         ...toastFailed,
         description: 'You need to create an audit type',
@@ -93,7 +94,7 @@ const AuditModal = ({ refetch }) => {
     }
 
     const { metatags, ...auditValues } = audit;
-    const auditId = await saveAudit(auditValues);
+    const auditId = await saveAudit({ ...auditValues, recurring: auditType.recurring });
 
     if (auditId) {
       setAdminModalState('closed');

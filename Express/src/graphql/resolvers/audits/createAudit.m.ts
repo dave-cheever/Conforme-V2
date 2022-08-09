@@ -1,5 +1,6 @@
 import { isAfter, subDays } from 'date-fns';
 
+import { IAudit } from 'app-interfaces';
 import { Audits, AuditTypes } from 'app-models';
 import { getNextRenewalDate, isPermitted } from 'app-utils';
 
@@ -18,7 +19,7 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
     while (isAfter(new Date(), dueDate));
 
     const reference = await Audits.customGenerateReference();
-    const newAudit = {
+    const newAudit: IAudit = {
       ...audit,
       reference,
       status: 'upcoming',
@@ -26,7 +27,6 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
     };
 
     const createdAudit = await Audits.customCreate(newAudit, user._id, organization._id);
-
     return createdAudit;
   } catch (err: any) {
     throw new Error(err);

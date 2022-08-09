@@ -37,6 +37,7 @@ export const auditsTypeDefs = `
     metatags: Metatags
     questions: [Question]
     numberOfActions: Int
+    recurring: Boolean!
     scope: Scope!
   }
 
@@ -64,6 +65,7 @@ export const auditsTypeDefs = `
     areaId: ID
     auditorId: ID!
     participantsIds: [ID]
+    recurring: Boolean!
     scope: ScopeInput!
   }
   
@@ -72,6 +74,7 @@ export const auditsTypeDefs = `
     auditTypeId: String
     auditorId: ID
     participantsIds: [ID]
+    recurring: Boolean
   }
 `;
 

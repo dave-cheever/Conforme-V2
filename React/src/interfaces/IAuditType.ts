@@ -7,8 +7,9 @@ import { TFrequency } from './TFrequency';
 export interface IAuditType extends IBase {
   name: string;
   frequency: TFrequency;
-  startingDate: Date;
   view: 'categorized' | 'singlePage';
+  startingDate: Date;
+  recurring: boolean;
   sections: IAuditSection[];
   options?: IAuditOption[];
 

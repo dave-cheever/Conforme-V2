@@ -5,6 +5,7 @@ export interface IAuditType extends IBase {
   frequency: TFrequency;
   startingDate: Date;
   view: 'categorized' | 'singlePage';
+  recurring: boolean;
   sections: IAuditSection[];
 
   // Additional fields

@@ -63,11 +63,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "git-init": "git config core.hooksPath .githooks",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-v": "vite",
+    "start-v": "npm run git-init && vite",
     "build-v": "tsc && vite build",
     "serve": "vite preview",
     "lint:check": "eslint src/ --ext .js,.jsx,.ts,.tsx",
@@ -110,6 +111,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "vite-plugin-eslint": "^1.7.0"
   }
 }

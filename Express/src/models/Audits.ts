@@ -39,6 +39,7 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
   areaId: String,
   auditorId: String,
   participantsIds: [String],
+  recurring: Boolean,
   scope: {
     module: {
       type: String,
