@@ -1,3 +1,5 @@
+import { sentenceCase } from 'sentence-case';
+
 export const getFieldEmptyValue = (fieldType: string) => {
   switch (fieldType) {
     case 'textConfirm': {
@@ -218,12 +220,6 @@ export const getPathByCollectionName = (collection: string) => {
 export const getLabelByField = (field: string) => {
   let fieldName = '';
   switch (field) {
-    case 'name':
-      fieldName = 'Name';
-      break;
-    case 'description':
-      fieldName = 'Description';
-      break;
     case 'categoryId':
       fieldName = 'Category';
       break;
@@ -242,50 +238,17 @@ export const getLabelByField = (field: string) => {
     case 'followersIds':
       fieldName = 'Follower';
       break;
-    case 'frequency':
-      fieldName = 'Frequency';
-      break;
     case 'businessUnitsIds':
       fieldName = 'Business units';
-      break;
-    case 'evidenceItems':
-      fieldName = 'Evidence items';
-      break;
-    case 'retentionPeriod':
-      fieldName = 'Retention period';
-      break;
-    case 'published':
-      fieldName = 'Published';
-      break;
-    case 'status':
-      fieldName = 'Status';
-      break;
-    case 'comments':
-      fieldName = 'Comments';
-      break;
-    case 'reference':
-      fieldName = 'Reference';
       break;
     case 'delegateIds':
       fieldName = 'Delegates';
       break;
-    case 'evidence':
-      fieldName = 'Evidence';
-      break;
     case 'ed':
       fieldName = 'Executive director';
       break;
-    case 'value':
-      fieldName = 'Value';
-      break;
     case 'lastCompletionDate':
       fieldName = 'Date of Last Completion';
-      break;
-    case 'lastRenewalDate':
-      fieldName = 'Date of Last Renewal';
-      break;
-    case 'nextRenewalDate':
-      fieldName = 'Date of Next Renewal';
       break;
     case 'auditorId':
       fieldName = 'Auditor';
@@ -296,62 +259,17 @@ export const getLabelByField = (field: string) => {
     case 'auditTypeId':
       fieldName = 'Audit type';
       break;
-    case 'dueDate':
-      fieldName = 'Due date';
-      break;
-    case 'walkType':
-      fieldName = 'Walk type';
-      break;
     case 'siteId':
       fieldName = 'Site';
       break;
     case 'areaId':
       fieldName = 'Area';
       break;
-    case 'startingDate':
-      fieldName = 'Starting date';
-      break;
-    case 'sections':
-      fieldName = 'Sections';
-      break;
-    case 'type':
-      fieldName = 'Type';
-      break;
-    case 'question':
-      fieldName = 'Question';
-      break;
     case 'questionsCategoryId':
       fieldName = 'Questions category';
       break;
-    case 'positiveValue':
-      fieldName = 'Positive value';
-      break;
-    case 'negativeValue':
-      fieldName = 'Negative value';
-      break;
-    case 'withAnswers':
-      fieldName = 'With answers';
-      break;
-    case 'allowCustomQuestions':
-      fieldName = 'Allow custom questions';
-      break;
-    case 'maxQuestionsNumber':
-      fieldName = 'Max questions number';
-      break;
-    case 'icon':
-      fieldName = 'Icon';
-      break;
-    case 'options':
-      fieldName = 'Options';
-      break;
-    case 'showInInsights':
-      fieldName = 'Show in insights';
-      break;
-    case 'notBlockedAfterCompletion':
-      fieldName = 'Not blocked after completion';
-      break;
     default:
-      fieldName = field;
+      fieldName = sentenceCase(field);
       break;
   }
 

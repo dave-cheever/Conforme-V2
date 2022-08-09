@@ -132,7 +132,7 @@ const AuditLog = () => {
         break;
 
       case 1:
-        setFieldsFilter(['lastRenewalDate']);
+        setFieldsFilter(['lastCompletionDate']);
         break;
 
       case 2:

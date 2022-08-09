@@ -72,7 +72,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
                     regulatoryBody,
                   },
                   businessUnit,
-                  lastRenewalDate: new Date(),
+                  lastCompletionDate: new Date(),
                   responsible: users.find(
                     ({ _id }) => _id === response.responsibleId,
                   ),
