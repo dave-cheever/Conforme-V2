@@ -1,14 +1,13 @@
 import { format } from 'date-fns';
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
-import { difference } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
 import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
-import { genMetatags, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, join, removeDatabaseFields } from 'app-utils';
+import { genMetatags, getAuditValueForAttachments, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, join, removeDatabaseFields } from 'app-utils';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -86,27 +85,7 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
 
       // If updated 'attachments' field, set value as attachments name and file name and label as file details
       case 'attachments': {
-        const getAttachmentsPathsArray = (arr) => arr.map(({ uploaded }) => uploaded?.path);
-        const removedAttachments = difference(getAttachmentsPathsArray(oldValue || []), getAttachmentsPathsArray(newValue || [])).filter(
-          Boolean,
-        );
-        if (removedAttachments.length > 0) {
-          const document = oldValue.find(({ uploaded }) => uploaded.path === removedAttachments[0]);
-          value.old = {
-            value: document.uploaded,
-            label: `${document.name} - ${document.uploaded.name}`,
-          };
-        }
-        const addedAttachments = difference(getAttachmentsPathsArray(newValue || []), getAttachmentsPathsArray(oldValue || [])).filter(
-          Boolean,
-        );
-        if (addedAttachments.length > 0) {
-          const document = newValue.find(({ uploaded }) => uploaded.path === addedAttachments[0]);
-          value.new = {
-            value: document.uploaded,
-            label: `${document.name} - ${document.uploaded.name}`,
-          };
-        }
+        value = getAuditValueForAttachments({ oldValue, newValue });
         break;
       }
 
@@ -382,8 +361,8 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
         },
         status: 'pending',
         to: [assignee?.email],
-        scope : {
-          moduleId : module?._id,
+        scope: {
+          moduleId: module?._id,
         },
       },
       action.metatags.updatedBy || action.metatags.addedBy,
@@ -458,8 +437,8 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
         },
         status: 'pending',
         to: recipients,
-        scope : {
-          moduleId : module?._id,
+        scope: {
+          moduleId: module?._id,
         },
       },
       action.metatags.updatedBy || action.metatags.addedBy,

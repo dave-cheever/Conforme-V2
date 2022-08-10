@@ -45,7 +45,7 @@ In order to authenticate with your local development site and also to be able to
   - Press 'Add permissions'
   - Press 'Grant admin consent for ...' and then 'Yes'
 - Do the same for 'User.Read.All'
-- Do the same for 'Files.ReadWrite.All'
+- Do the same for 'Sites.ReadWrite.All'
 - Do the same for 'Mail.Send'
 - Grant required authentication data
   - Click on 'Authentication'
@@ -99,25 +99,6 @@ Then go to `<sharepoint site url>`/Shared%20Documents/
 - Click libary settings
 - Take the library id value from the url params eg List=%7B`<library id>`%7D
 - Add `<library id>` to your organization
-
-### AD app permissions
-
-You must grant SharePoint permissions to the Azure AD app to allow it to upload documents to the SharePoint library.
-
-- Open app registration page (`<sharepoint site url>`/\_layouts/15/appinv.aspx)
-- In 'App Id' paste your `<AAD app id>`
-- Press 'Lookup' button
-- Type 'localhost' in 'App Domain'
-- Paste the following to 'Permission Request XML':
-
-```
-<AppPermissionRequests>
-  <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl"/>
-</AppPermissionRequests>
-```
-
-- Press 'Create'
-- Press 'Trust It'
 
 ## Emails service
 

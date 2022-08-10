@@ -22,6 +22,7 @@ import {
 import { TRACKER_RESPONSE_ASSIGNED, TRACKER_REVIEW_SUBMITTED } from 'app-shared';
 import {
   genMetatags,
+  getAuditValueForAttachments,
   getAuditValueForBoolean,
   getAuditValueForDate,
   getAuditValueForLookup,
@@ -203,34 +204,7 @@ const getAuditRecordValues = async ({
 
       // If updated 'attachments' field, set value as attachments name and file name and label as file details
       case 'attachments': {
-        const getAttachmentsPathsArray = (arr) =>
-          arr.map(({ uploaded }) => uploaded?.path);
-        const removedAttachments = difference(
-          getAttachmentsPathsArray(oldValue || []),
-          getAttachmentsPathsArray(newValue || []),
-        ).filter(Boolean);
-        if (removedAttachments.length > 0) {
-          const document = oldValue.find(
-            ({ uploaded }) => uploaded.path === removedAttachments[0],
-          );
-          value.old = {
-            value: document.uploaded,
-            label: `${document.name} - ${document.uploaded.name}`,
-          };
-        }
-        const addedAttachments = difference(
-          getAttachmentsPathsArray(newValue || []),
-          getAttachmentsPathsArray(oldValue || []),
-        ).filter(Boolean);
-        if (addedAttachments.length > 0) {
-          const document = newValue.find(
-            ({ uploaded }) => uploaded.path === addedAttachments[0],
-          );
-          value.new = {
-            value: document.uploaded,
-            label: `${document.name} - ${document.uploaded.name}`,
-          };
-        }
+        value = getAuditValueForAttachments({ oldValue, newValue });
         break;
       }
 

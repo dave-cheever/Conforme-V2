@@ -610,6 +610,40 @@ export const getAuditValueForUsersArray = async ({ oldValue, newValue, organizat
   return value;
 };
 
+export const getAuditValueForAttachments = ({ oldValue, newValue }): IAuditValues => {
+  const value: any = {};
+  const getAttachmentsIds = (arr) => arr.map(({ id }) => id);
+  const removedAttachments = difference(getAttachmentsIds(oldValue || []), getAttachmentsIds(newValue || [])).filter(
+    Boolean,
+  );
+  if (removedAttachments.length > 0) {
+    const attachmentsNames: string[] = [];
+    for (const attachment of removedAttachments) {
+      const document = oldValue.find(({ id }) => id === attachment);
+      if (document.name) attachmentsNames.push(document.name);
+    }
+    value.old = {
+      value: removedAttachments,
+      label: attachmentsNames.join(', '),
+    };
+  }
+  const addedAttachments = difference(getAttachmentsIds(newValue || []), getAttachmentsIds(oldValue || [])).filter(
+    Boolean,
+  );
+  if (addedAttachments.length > 0) {
+    const attachmentsNames: string[] = [];
+    for (const attachment of addedAttachments) {
+      const document = newValue.find(({ id }) => id === attachment);
+      if (document.name) attachmentsNames.push(document.name);
+    }
+    value.new = {
+      value: addedAttachments,
+      label: attachmentsNames.join(', '),
+    };
+  }
+  return value;
+};
+
 export const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);

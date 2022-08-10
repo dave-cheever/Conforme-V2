@@ -1,6 +1,5 @@
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
-import { difference } from 'lodash';
 import { model, Schema } from 'mongoose';
 import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IAnswer, IAnswerModel, IAuditValue, IAuditValues } from 'app-interfaces';
 import { AuditLogs, Notifications, Organizations, Questions, QuestionsCategories, Settings } from 'app-models';
 import { GraphService } from 'app-services';
-import { genMetatags, getAuditValueForString, getProtocol, removeDatabaseFields } from 'app-utils';
+import { genMetatags, getAuditValueForAttachments, getAuditValueForString, getProtocol, removeDatabaseFields } from 'app-utils';
 
 import actionsModel from './Actions';
 
@@ -70,27 +69,7 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise
     switch (field) {
       // If updated 'attachments' field, set value as evidence name and file name and label as file details
       case 'attachments': {
-        const getAttachmentsPathsArray = (arr) => arr.map(({ uploaded }) => uploaded?.path);
-        const removedAttachments = difference(getAttachmentsPathsArray(oldValue || []), getAttachmentsPathsArray(newValue || [])).filter(
-          Boolean,
-        );
-        if (removedAttachments.length > 0) {
-          const document = oldValue.find(({ uploaded }) => uploaded.path === removedAttachments[0]);
-          value.old = {
-            value: document.uploaded,
-            label: `${document.name} - ${document.uploaded.name}`,
-          };
-        }
-        const addedAttachments = difference(getAttachmentsPathsArray(newValue || []), getAttachmentsPathsArray(oldValue || [])).filter(
-          Boolean,
-        );
-        if (addedAttachments.length > 0) {
-          const document = newValue.find(({ uploaded }) => uploaded.path === addedAttachments[0]);
-          value.new = {
-            value: document.uploaded,
-            label: `${document.name} - ${document.uploaded.name}`,
-          };
-        }
+        value = getAuditValueForAttachments({ oldValue, newValue });
         break;
       }
 
@@ -145,9 +124,8 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
                 emailData: {
                   subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
                   template: 'HSENotificationEmailTemplate',
-                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${
-                    question._id
-                  }" target="_blank">here</a>`,
+                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                    }" target="_blank">here</a>`,
                 },
                 status: 'pending',
                 to: emailAddress.value,
@@ -259,9 +237,8 @@ answersSchema.statics.customUpdateOne = async function (
                 emailData: {
                   subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
                   template: 'HSENotificationEmailTemplate',
-                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${
-                    question._id
-                  }" target="_blank">here</a>`,
+                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                    }" target="_blank">here</a>`,
                 },
                 status: 'pending',
                 to: emailAddress.value,
