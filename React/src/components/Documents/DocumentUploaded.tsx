@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Flex, IconButton, Image, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { BlankPage, DownloadIcon, Trashcan } from '../../icons';
@@ -59,77 +59,49 @@ const DocumentUploaded = ({
         borderRadius="10px"
         color="brand.darkGrey"
         fontWeight="400"
-        h="65px"
         justify="space-between"
         key={document?.id}
+        p={2}
         role="group"
         w="full"
       >
-        <Flex align="center" justify="space-between" w="full">
-          <Flex
-            align="center"
-            bg="documentUploaded.thumbnailBg"
-            borderColor="documentUploaded.border"
-            borderRadius="3px"
-            borderWidth="1px"
-            flexShrink={0}
-            fontSize="12px"
-            h="55px"
-            justify="center"
-            overflow="hidden"
-            w="55px"
-          >
-            <Image
-              aspectRatio="1 / 1"
-              fallback={
-                <Flex align="center" h="full">
-                  <BlankPage h="30px" w="55px" />
-                </Flex>
-              }
-              h="auto"
-              maxH="55px"
-              maxW="55px"
-              src={documentDetails?.thumbnail}
-              w="auto"
-            />
-          </Flex>
-          <Flex direction="column" fontSize="12px" grow={1} mx={2} overflow="hidden" textOverflow="ellipsis">
-            <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
-              {document?.name}
-            </Text>
-            <Flex opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
-          </Flex>
-          <Flex>
-            {downloadable && (
-              <IconButton
-                _hover={{ bg: '' }}
-                aria-label="delete evidence"
-                bg=""
-                display="inline-block"
-                icon={<DownloadIcon stroke="documentUploaded.downloadIcon" />}
-                ml={2}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(documentDetails?.path);
-                }}
-              />
-            )}
-            {removable && (
-              <IconButton
-                _hover={{ bg: '' }}
-                aria-label="delete evidence"
-                bg=""
-                display="inline-block"
-                icon={<Trashcan stroke="documentUploaded.binIcon" />}
-                mr={2}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openDeleteModal();
-                }}
-              />
-            )}
-          </Flex>
+        <Flex
+          align="center"
+          bg="documentUploaded.thumbnailBg"
+          borderColor="documentUploaded.border"
+          borderRadius="3px"
+          borderWidth="1px"
+          flexShrink={0}
+          fontSize="12px"
+          h="55px"
+          justify="center"
+          overflow="hidden"
+          w="55px"
+        >
+          <Image
+            aspectRatio="1 / 1"
+            fallback={
+              <Flex align="center" h="full">
+                <BlankPage h="30px" w="55px" />
+              </Flex>
+            }
+            h="auto"
+            maxH="55px"
+            maxW="55px"
+            src={documentDetails?.thumbnail}
+            w="auto"
+          />
         </Flex>
+        <Flex direction="column" fontSize="12px" grow={1} mx={2} overflow="hidden" textOverflow="ellipsis">
+          <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
+            {document?.name}
+          </Text>
+          <Flex opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
+        </Flex>
+        <HStack mr={[1, 3]} spacing={4}>
+          {downloadable && <DownloadIcon cursor='pointer' onClick={() => window.open(documentDetails?.path)} stroke="documentUploaded.downloadIcon" />}
+          {removable && <Trashcan cursor='pointer' onClick={openDeleteModal} stroke="documentUploaded.binIcon" />}
+        </HStack>
       </Flex>
     </>
   );

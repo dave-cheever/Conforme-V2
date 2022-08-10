@@ -16,7 +16,6 @@ const DocumentUploading = ({ documentName }: { documentName: string }) => (
     h="65px"
     justify="space-between"
     key={documentName}
-    maxWidth="400px"
     role="group"
     w="full"
   >
@@ -26,7 +25,7 @@ const DocumentUploading = ({ documentName }: { documentName: string }) => (
           <Loader center size="lg" />
         </Flex>
       </Box>
-      <Flex direction="column" fontSize="12px" mr={2} width="250px">
+      <Flex direction="column" fontSize="12px" mr={2}>
         <Text fontWeight="700" noOfLines={1} textOverflow="ellipsis">
           {documentName}
         </Text>
