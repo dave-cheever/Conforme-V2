@@ -15,6 +15,7 @@ import {
   ModalFooter,
   ModalHeader,
   Text,
+  Tooltip,
   VStack,
 } from '@chakra-ui/react';
 import { debounce } from 'lodash';
@@ -84,17 +85,22 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
         justify="center"
         onClick={() => handleSelectUser(user)}
         pt="1"
+        shrink={0}
         w="20px"
       >
         <TickIcon h="10px" stroke="white" w="10px" />
       </Flex>
       <Flex direction="column" ml="2">
-        <Text color="black" fontSize="smm" fontWeight="semibold">
-          {user.displayName} - {user.jobTitle || 'No job title'}
-        </Text>
-        <Box fontSize="sm" overflow="hidden" position="relative" textOverflow="ellipsis" top="-4px" w="290px">
-          {user.email}
-        </Box>
+        <Tooltip label={`${user.displayName} - ${user.jobTitle || 'No job title'}`}>
+          <Text color="black" fontSize="smm" fontWeight="semibold" noOfLines={1} textOverflow="ellipsis">
+            {user.displayName} - {user.jobTitle || 'No job title'}
+          </Text>
+        </Tooltip>
+        <Tooltip label={user.email}>
+          <Box fontSize="sm" noOfLines={1} overflow="hidden" position="relative" top="-4px" w="290px">
+            {user.email}
+          </Box>
+        </Tooltip>
       </Flex>
     </Flex>
   );
@@ -134,7 +140,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
             )}
           </Flex>
           <Flex direction="column" maxH="258px" mt="20px">
-            <VStack _empty={{ marginBottom: 0 }} mb={2} spacing={2}>
+            <VStack _empty={{ marginBottom: 0 }} align="start" mb={2} spacing={2} w="full">
               {selection === 'auditor' && selectedAuditor && auditTeamUser(selectedAuditor as IUser)}
               {selection === 'participants' &&
                 selectedParticipants?.length > 0 &&
@@ -148,7 +154,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
                 Searching...
               </Flex>
             ) : data?.searchUsers.length > 0 ? (
-              <VStack mb="20px" overflow="auto" spacing={2}>
+              <VStack align="start" mb="20px" overflow="auto" spacing={2} w="full">
                 {data?.searchUsers
                   .filter((user) =>
                     selection === 'participants'
