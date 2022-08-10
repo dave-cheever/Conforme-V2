@@ -291,8 +291,8 @@ const WalkItems = () => {
           <Loader center={true} />
         ) : (
           <>
-            <Tabs defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
-              <TabList px={[4, 8]}>
+            <Tabs gap defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
+              <TabList px={[4, 8]} flexWrap={['wrap', 'initial']}>
                 {panels?.map((panel) => (
                   <Tab
                     key={panel._id}
@@ -304,6 +304,9 @@ const WalkItems = () => {
                     fontSize="smm"
                     fontWeight="bold"
                     mr={[1, 2]}
+                    ml={[1, 0]}
+                    my={[1, 0]}
+                    w={['calc(50% - .5rem)', 'auto', 'auto']}
                   >
                     {panel.name}
                   </Tab>
