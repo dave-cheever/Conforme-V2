@@ -1,4 +1,20 @@
-import { Avatar, Badge, Box, Flex, Heading, Spacer, Stack, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuList,
+  Spacer,
+  Stack,
+  Text,
+  Tooltip,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
@@ -6,6 +22,7 @@ import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import useNavigate from '../../hooks/useNavigate';
+import { ArrowDownIcon } from '../../icons';
 import { isPermitted } from '../can';
 import AuditDeletModal from './AuditDeleteModal';
 import AuditHeaderButton from './AuditHeaderButton';
@@ -60,6 +77,64 @@ const AuditHeader = () => {
       ...toastSuccess,
       description: `${capitalize(t('audit'))} deleted`,
     });
+  };
+
+  const DeleteButton = () => (
+    <AuditHeaderButton
+      bgColor="transparent"
+      disabled={!isPermitted({ user, action: 'audits.delete', data: { audit } })}
+      fontColor="#DC0043"
+      icon={null}
+      name="Delete"
+      onClick={
+        selectedAction
+          ? () => {
+              setActionChangesModalOnContinue(() => onDeleteAudit);
+              handleActionChangesModalOpen();
+            }
+          : handleDeleteModalOpen
+      }
+    />
+  );
+
+  const RecurringButton = () => (
+    <AuditHeaderButton
+      bgColor="transparent"
+      fontColor="#DC0043"
+      icon={null}
+      name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
+      onClick={
+        selectedAction
+          ? () => {
+              setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+              handleActionChangesModalOpen();
+            }
+          : handleRecurringModalOpen
+      }
+    />
+  );
+
+  const SubmitButton = () => {
+    if (audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } })) {
+      return (
+        <AuditHeaderButton
+          bgColor="#DC0043"
+          disabled={!questions || Object.keys(questions).length === 0}
+          fontColor="white"
+          icon={null}
+          name="Submit"
+          onClick={
+            selectedAction
+              ? () => {
+                  setActionChangesModalOnContinue(() => onSubmitAudit);
+                  handleActionChangesModalOpen();
+                }
+              : handleSubmitModalOpen
+          }
+        />
+      );
+    }
+    return null;
   };
 
   return (
@@ -154,54 +229,50 @@ const AuditHeader = () => {
             name="Share"
             onClick={() => {}}
           /> */}
+          <Stack display={['none', 'flex']} spacing={[3, 6]}>
+            <DeleteButton />
+            <RecurringButton />
+            <SubmitButton />
+          </Stack>
+        </Flex>
 
-          {/* heere */}
-          <AuditHeaderButton
-            bgColor="transparent"
-            disabled={!isPermitted({ user, action: 'audits.delete', data: { audit } })}
-            fontColor="#DC0043"
-            icon={null}
-            name="Delete"
-            onClick={
-              selectedAction
-                ? () => {
-                    setActionChangesModalOnContinue(() => onDeleteAudit);
-                    handleActionChangesModalOpen();
-                  }
-                : handleDeleteModalOpen
-            }
-          />
-          <AuditHeaderButton
-            bgColor="transparent"
-            fontColor="#DC0043"
-            icon={null}
-            name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
-            onClick={
-              selectedAction
-                ? () => {
-                    setActionChangesModalOnContinue(() => handleRecurringModalOpen);
-                    handleActionChangesModalOpen();
-                  }
-                : handleRecurringModalOpen
-            }
-          />
-          {audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } }) && (
-            <AuditHeaderButton
-              bgColor="#DC0043"
-              disabled={!questions || Object.keys(questions).length === 0}
-              fontColor="white"
-              icon={null}
-              name="Submit"
-              onClick={
-                selectedAction
-                  ? () => {
-                      setActionChangesModalOnContinue(() => onSubmitAudit);
-                      handleActionChangesModalOpen();
-                    }
-                  : handleSubmitModalOpen
-              }
-            />
-          )}
+        <Flex alignItems="center" display={['flex', 'none']} h="40px" mr="25px" mt={4}>
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  as={Button}
+                  bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
+                  borderRadius="10px"
+                  color="reasponseHeader.optionsMenuButtonColor"
+                  colorScheme="reasponseHeader.optionsMenuColorScheme"
+                  fontFamily="Helvetica"
+                  fontSize="smm"
+                  fontWeight="bold"
+                  isActive={isOpen}
+                  lineHeight="18px"
+                  rightIcon={<ArrowDownIcon />}
+                  textAlign="left"
+                  w="full"
+                >
+                  'Options'
+                </MenuButton>
+                <MenuList
+                  borderColor="reasponseHeader.optionsMenuBorderColor"
+                  borderRadius="10px"
+                  boxShadow="0px 0px 80px"
+                  color="reasponseHeader.optionsMenuBoxShadow"
+                  minW={['calc(100vw - 50px)', '325px']}
+                  w="100%"
+                  zIndex="10"
+                >
+                  <DeleteButton />
+                  <RecurringButton />
+                  <SubmitButton />
+                </MenuList>
+              </>
+            )}
+          </Menu>
         </Flex>
       </Flex>
     </>

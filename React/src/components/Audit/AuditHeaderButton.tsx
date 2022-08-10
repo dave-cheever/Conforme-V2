@@ -34,6 +34,7 @@ const AuditHeaderButton = ({
       onClick={() => !disabled && onClick()}
       px={4}
       role="group"
+      w={['calc(100% - 1rem - 15px)', 'auto']}
     >
       {name}
     </Button>
