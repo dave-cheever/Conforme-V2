@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
-import { Box, Flex, Icon, Text, useOutsideClick } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
@@ -25,14 +25,6 @@ const NavigationBottomItem = ({
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const { responsesStatusesCounts } = useFiltersContext();
-  const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-  useOutsideClick({
-    ref,
-    handler: () => {
-      setSubsectionOpen(false);
-    },
-  });
 
   return (
     <Flex
@@ -93,9 +85,9 @@ const NavigationBottomItem = ({
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          left="0"
           pos="absolute"
           py="15px"
+          right="0"
           rounded="10px"
           w="220px"
           zIndex="5"
@@ -116,10 +108,10 @@ const NavigationBottomItem = ({
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          left={menuItem.subSections ? (isPathActive(url) ? '0' : '-200px') : isPathActive(url, { exact: true }) ? '0' : '-200px'}
+          left={menuItem.subSections ? (isPathActive(url) ? '' : '-200px') : isPathActive(url, { exact: true }) ? '' : '-200px'}
           pos="absolute"
           py="15px"
-          ref={ref}
+          right={menuItem.subSections ? (isPathActive(url) ? '0' : '') : isPathActive(url, { exact: true }) ? '0' : ''}
           rounded="10px"
           w="235px"
           zIndex="5"
