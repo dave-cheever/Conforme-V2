@@ -58,6 +58,7 @@ const calculateAudits = async () => {
                 auditorId: audit.auditorId,
                 participantsIds: [],
                 recurring: auditType.recurring,
+                scope: audit.scope,
               },
               audit.metatags.addedBy,
               organization._id,
