@@ -255,7 +255,7 @@ const AuditHeader = () => {
                   textAlign="left"
                   w="full"
                 >
-                  'Options'
+                  Options
                 </MenuButton>
                 <MenuList
                   borderColor="reasponseHeader.optionsMenuBorderColor"
