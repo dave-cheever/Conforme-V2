@@ -229,7 +229,7 @@ const AuditHeader = () => {
             name="Share"
             onClick={() => {}}
           /> */}
-          <Stack display={['none', 'flex']} spacing={[3, 6]}>
+          <Stack direction="row" display={['none', 'flex']} spacing={[3, 6]}>
             <DeleteButton />
             <RecurringButton />
             <SubmitButton />
