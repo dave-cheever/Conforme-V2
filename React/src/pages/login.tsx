@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
 
@@ -8,24 +7,12 @@ import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import { ArrowRight } from '../icons';
 
-type StateProps = {
-  redirectUrl: string;
-};
-
 const Login = () => {
   const toast = useToast();
   const params = window.location.search.split('&');
   const { organizationConfig } = useAppContext();
   const device = useDevice();
   const [refresh, setRefresh] = useState(false);
-  const { state } = useLocation<StateProps>();
-
-  useEffect(() => {
-    if (state && state.redirectUrl !== '/' && state.redirectUrl) {
-      localStorage.setItem('redirectUrl', state.redirectUrl);
-      state.redirectUrl = '/';
-    }
-  }, [state]);
 
   const user = useMemo(() => {
     const logOutUser = localStorage.getItem('logOutUser');

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
@@ -6,6 +7,12 @@ const useNavigate = () => {
   const history = useHistory();
   const location = useLocation();
   const { module } = useAppContext();
+
+  // Save last URL to local storage so it can be opened after login
+  useEffect(() => {
+    if (!['/', '/login', '/logout'].includes(location.pathname))
+      localStorage.setItem('lastPath', `${location.pathname}${location.search}`)
+  }, [location.pathname]);
 
   const isPathActive = (path: string, options: { exact?: boolean } = {}) => {
     const { exact } = options;
@@ -23,6 +30,11 @@ const useNavigate = () => {
 
   const getPath = () => location.pathname.split('/')[2];
 
+  /**
+   * This function can be used to navigate to a path inside a module
+   * @param path path inside module
+   * @param state additional state to pass
+   */
   const navigateTo = (path: string, state?: any) => {
     history.push(`/${module?.path}${path}`, state);
   };
@@ -32,6 +44,7 @@ const useNavigate = () => {
   };
 
   return {
+    history,
     getPath,
     isPathActive,
     navigateTo,

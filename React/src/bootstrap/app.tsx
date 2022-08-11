@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
@@ -11,6 +11,7 @@ import ConfigProvider from '../contexts/ConfigProvider';
 import FiltersProvider from '../contexts/FiltersProvider';
 import useAuth from '../hooks/useAuth';
 import useInit from '../hooks/useInit';
+import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
 import getTheme from './theme';
 
@@ -19,15 +20,12 @@ function App() {
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
-  const history = useHistory();
+  const { history } = useNavigate();
 
+  // Redirect to last path
   useEffect(() => {
-    const redirectUrl = localStorage.getItem('redirectUrl');
-
-    if (redirectUrl) {
-      localStorage.removeItem('redirectUrl');
-      history.push(redirectUrl);
-    }
+    const redirectPath = localStorage.getItem('lastPath');
+    if (redirectPath) history.push(redirectPath);
   }, []);
 
   if (user === undefined || loadingSettings || loadingUser) {
