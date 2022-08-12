@@ -159,7 +159,7 @@ const AuditHeader = () => {
       />
       <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
         <Stack align={['flex-start', 'center']} direction={['column', 'row']} h={['auto', '40px']} mb="15px" spacing={4} w="full">
-          <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold" wordBreak="break-all">
+          <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold">
             {area?.name ?? 'Virtual'}
           </Heading>
           {audit.status === 'completed' && (
