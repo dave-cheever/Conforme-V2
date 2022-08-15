@@ -6,8 +6,8 @@ import pluralize from 'pluralize';
 import {
   Admin,
   BlankPage,
-  CalendarIcon,
   CategoryIcon,
+  CheckIcon,
   EditIcon,
   Home,
   ListIcon,
@@ -39,7 +39,7 @@ const useConfig = () => {
       type: 'menuItem',
       label: 'Actions',
       url: '/actions',
-      icon: CalendarIcon,
+      icon: CheckIcon,
       permission: 'actions.view',
     },
 
