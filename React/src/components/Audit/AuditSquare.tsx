@@ -1,5 +1,4 @@
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
@@ -63,21 +62,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           </Box>
         </Box>
       </Flex>
-      <Flex align="center" justify="space-between" pt="50px" w="full">
-        <Button
-          _hover={{
-            bg: 'auditSquare.buttonBg',
-          }}
-          bg="auditSquare.buttonBg"
-          color="auditSquare.fontColor"
-          fontSize="ssm"
-          h="28px"
-          onClick={() => navigateTo(`/audits/${audit._id}/`)}
-          rightIcon={<ChevronRightIcon boxSize="20px" color="auditSquare.fontColor" />}
-          w="85px"
-        >
-          More
-        </Button>
+      <Flex align="center" justify="end" pt="50px" w="full">
         <Flex align="center" color={`auditSquare.${audit?.status}`} flexDirection="column" justify="center" mr={1}>
           <Flex fontSize="11px" fontWeight="700">
             {audit?.status === 'missed' && <WarningIcon fill="transparent" h="16px" mr={2} stroke="auditSquare.missed" w="16px" />}
