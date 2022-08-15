@@ -188,6 +188,9 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
             };
           }
           break;
+        case 'overdue':
+          $match = { dueDate: { $lt: new Date() } };
+          break;
         default:
           break;
       }
