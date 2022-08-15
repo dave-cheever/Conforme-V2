@@ -89,9 +89,9 @@ const AuditHeader = () => {
       onClick={
         selectedAction
           ? () => {
-              setActionChangesModalOnContinue(() => onDeleteAudit);
-              handleActionChangesModalOpen();
-            }
+            setActionChangesModalOnContinue(() => onDeleteAudit);
+            handleActionChangesModalOpen();
+          }
           : handleDeleteModalOpen
       }
     />
@@ -106,9 +106,9 @@ const AuditHeader = () => {
       onClick={
         selectedAction
           ? () => {
-              setActionChangesModalOnContinue(() => handleRecurringModalOpen);
-              handleActionChangesModalOpen();
-            }
+            setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+            handleActionChangesModalOpen();
+          }
           : handleRecurringModalOpen
       }
     />
@@ -126,9 +126,9 @@ const AuditHeader = () => {
           onClick={
             selectedAction
               ? () => {
-                  setActionChangesModalOnContinue(() => onSubmitAudit);
-                  handleActionChangesModalOpen();
-                }
+                setActionChangesModalOnContinue(() => onSubmitAudit);
+                handleActionChangesModalOpen();
+              }
               : handleSubmitModalOpen
           }
         />
@@ -231,7 +231,7 @@ const AuditHeader = () => {
           /> */}
           <Stack direction="row" display={['none', 'flex']} spacing={[3, 6]}>
             <DeleteButton />
-            <RecurringButton />
+            {audit?.walkType === 'physical' && <RecurringButton />}
             <SubmitButton />
           </Stack>
         </Flex>
@@ -267,7 +267,7 @@ const AuditHeader = () => {
                   zIndex="10"
                 >
                   <DeleteButton />
-                  <RecurringButton />
+                  {audit?.walkType === 'physical' && <RecurringButton />}
                   <SubmitButton />
                 </MenuList>
               </>
