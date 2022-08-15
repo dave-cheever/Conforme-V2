@@ -94,7 +94,6 @@ const TextInput = ({
                   fontWeight="bold"
                   left="none"
                   position="static"
-                  zIndex={2}
                 >
                   {label}
                   {required && !readMode && (

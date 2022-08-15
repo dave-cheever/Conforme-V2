@@ -193,7 +193,7 @@ const ResponseChat = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Stack h="full" pl="25px" pr={['25px', '25px', '0px']} spacing={2} w={['calc(100vw - 30px)', '300px', '330px']}>
+      <Stack h="full" pl="25px" pr={['25px', '25px', '0px']} spacing={2} w={['calc(100vw - 36px)', '300px', '330px']}>
         <Flex alignItems="center" flexDirection="column">
           <Text color="responseChat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">
             Chat
@@ -241,7 +241,7 @@ const ResponseChat = () => {
         <Flex align="space-between" flexDirection="column" grow={1} overflow="hidden" pr="10px" w="calc(100% + 10px)">
           <Flex
             flexDirection="column"
-            h="full"
+            h={["calc(100vh - 460px)", "calc(100vh - 406px )", "calc(100vh - 365px)"]}
             overflow="auto"
             pr="10px"
             ref={divRef}
