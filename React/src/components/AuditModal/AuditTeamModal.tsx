@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { SearchIcon } from '@chakra-ui/icons';
 import {
@@ -22,6 +22,7 @@ import { debounce } from 'lodash';
 import pluralize from 'pluralize';
 
 import { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
+import useDevice from '../../hooks/useDevice';
 import { TickIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 import Loader from '../Loader';
@@ -38,6 +39,11 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
   const { loading, data, searchQuery, setSearchQuery, selectedAuditor, setSelectedAuditor, selectedParticipants, setSelectedParticipants } =
     useAuditTeamContext();
   const [searchText, setSearchText] = useState<string>('');
+
+  const device = useDevice();
+
+  const size = useMemo<string>(() => (device === 'mobile' ? 'full' : 'sm'), [device]);
+  const centered = useMemo<boolean>(() => device !== 'mobile', [device]);
 
   const handleClose = () => {
     setSearchText('');
@@ -106,8 +112,8 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
   );
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={handleClose}>
-      <ModalContent>
+    <Modal isCentered={centered} isOpen={isOpen} onClose={handleClose} scrollBehavior="inside" size={size}>
+      <ModalContent m={0}>
         <ModalHeader>
           <Text>{multiple ? 'Select Participants' : 'Select Auditor'}</Text>
           <ModalCloseButton />
@@ -139,7 +145,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
               </Text>
             )}
           </Flex>
-          <Flex direction="column" maxH="258px" mt="20px">
+          <Flex direction="column" maxH={['full', '258px']} mt="20px">
             <VStack _empty={{ marginBottom: 0 }} align="start" mb={2} spacing={2} w="full">
               {selection === 'auditor' && selectedAuditor && auditTeamUser(selectedAuditor as IUser)}
               {selection === 'participants' &&
@@ -180,7 +186,7 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
             fontSize="smm"
             fontWeight="bold"
             h="38px"
-            mb="6px"
+            mb={['44px', '6px']}
             mr="1px"
             onClick={onClose}
             w="68px"
