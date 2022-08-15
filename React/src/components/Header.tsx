@@ -49,7 +49,7 @@ const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBread
   return (
     <Flex align="center" h={['60px', '70px']} position="relative">
       <Flex justify="space-between" w="full">
-        <Flex display="flex" flexShrink={0} ml="6">
+        <Flex display="flex" flexShrink={0} ml="5">
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
         <Flex justify="flex-end" mr="15px" w="full">
