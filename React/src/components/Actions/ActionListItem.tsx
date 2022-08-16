@@ -43,7 +43,7 @@ const ActionListItem = ({
             {action?.assigneeId && <Text>{assigneeDetails?.displayName}</Text>}
             {action.dueDate && <Text>{format(new Date(action.dueDate), 'd LLLL Y')}</Text>}
           </HStack>
-          <Text color="actionListElement.color" fontSize="smm">
+          <Text color="actionListElement.color" fontSize="smm" wordBreak="break-all">
             {action.title}
           </Text>
         </Stack>
