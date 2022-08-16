@@ -92,6 +92,10 @@ const GET_ANSWERS = gql`
           removedAt
         }
       }
+      creator {
+        displayName
+        imgUrl
+      }
       metatags {
         addedAt
         addedBy

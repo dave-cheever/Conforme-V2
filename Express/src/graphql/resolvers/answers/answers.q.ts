@@ -316,6 +316,25 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       );
     }
 
+    if (shouldJoin(['creator'])) {
+      answers = await Promise.all(
+        answers.map(async (answer) => {
+          try {
+            return {
+              ...answer,
+              creator: await Users.customFindByIdWithDetails({
+                userId: answer.metatags.addedBy,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for action with ID ${answer._id}: ${e}`);
+            return answer;
+          }
+        }),
+      );
+    }
+
     if (answerQuery?.usersIds?.addedByIds?.length > 0)
       answers = answers.filter((answer) => answerQuery.usersIds.addedByIds.includes(answer.addedBy._id));
 

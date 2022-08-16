@@ -18,6 +18,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
@@ -136,7 +137,7 @@ const WalkItemModal = ({
 
   return (
     <>
-      <ModalContent bg="actionModal.bg" h={['auto', '100vh']} m="0" overflow="hidden" p={[4, 6]} mb={[4, 4, 0]} rounded="0">
+      <ModalContent bg="actionModal.bg" h={['auto', '100vh']} m="0" mb={[4, 4, 0]} overflow="hidden" p={[4, 6]} rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
@@ -208,6 +209,48 @@ const WalkItemModal = ({
                 <Text fontSize="smm" fontWeight="semibold">
                   Walk item details
                 </Text>
+                <Grid columnGap={4} rowGap={4} templateColumns="repeat(2, 1fr)">
+                  <GridItem>
+                    <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                      Type
+                    </Text>
+                    <Text fontSize="13px">{walkItem?.question?.questionsCategory?.name}</Text>
+                  </GridItem>
+                  <GridItem>
+                    <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                      Date added
+                    </Text>
+                    <Text fontSize="13px">{format(new Date(walkItem?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
+                  </GridItem>
+                  {walkItem?.creator && (
+                    <GridItem>
+                      <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                        Created by
+                      </Text>
+                      <Flex align="center" direction="row" mt={1}>
+                        <Avatar name={walkItem?.creator?.displayName} size="xs" src={walkItem?.creator?.imgUrl} />
+                        <Text
+                          fontSize="13px"
+                          lineHeight="17px"
+                          opacity="1"
+                          overflow="hidden"
+                          pl={3}
+                          textOverflow="ellipsis"
+                          w="full"
+                          whiteSpace="nowrap"
+                        >
+                          {walkItem?.creator?.displayName}
+                        </Text>
+                      </Flex>
+                    </GridItem>
+                  )}
+                  <GridItem>
+                    <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                      Unique ID
+                    </Text>
+                    <Text fontSize="13px">{walkItem?._id}</Text>
+                  </GridItem>
+                </Grid>
                 <Grid columnGap={4} rowGap={2} templateColumns="repeat(1, 1fr)">
                   {questionsCategory?.withAnswers ? (
                     <>
@@ -316,6 +359,7 @@ const WalkItemModal = ({
                   ))}
                   {values.attachments?.length === 0 && !isUserPermittedToModify && <Text fontSize="sm">No uploaded attachments</Text>}
                 </Stack>
+
                 {Array.isArray(walkItem?.actions) && walkItem!.actions!.length > 0 && (
                   <Stack spacing={4}>
                     <Text fontSize="smm" fontWeight="semibold">

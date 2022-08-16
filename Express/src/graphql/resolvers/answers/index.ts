@@ -31,6 +31,7 @@ export const answersTypeDefs = `
     audit: Audit!
     metatags: Metatags
     addedBy: User!
+    creator : User!
     actions: [Action]
   }
 

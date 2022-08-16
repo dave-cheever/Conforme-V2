@@ -1,13 +1,4 @@
-import {
-  IAction,
-  IAudit,
-  IBase,
-  IDocument,
-  IQuestion,
-  IScope,
-  TAnswerStatus,
-  TQuestionValue,
-} from 'app-interfaces';
+import { IAction, IAudit, IBase, IDocument, IQuestion, IScope, IUser, TAnswerStatus, TQuestionValue } from 'app-interfaces';
 
 export interface IAnswer extends IBase {
   questionId: string;
@@ -23,4 +14,5 @@ export interface IAnswer extends IBase {
   audit?: IAudit;
   question?: IQuestion<any>;
   actions?: IAction[];
+  creator?: IUser;
 }

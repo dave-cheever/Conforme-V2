@@ -23,4 +23,5 @@ export interface IAnswer extends IBase {
   audit?: IAudit;
   question?: IQuestion<any>;
   actions?: IAction[];
+  creator?: IUser;
 }
