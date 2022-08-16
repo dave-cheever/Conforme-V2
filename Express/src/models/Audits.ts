@@ -194,6 +194,7 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   const pipeline: any[] = [
     {
       $match: {
+        'metatags.removedAt': { $eq: null },
         organizationId,
       },
     },
