@@ -43,26 +43,23 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
         </HStack>
       </Stack>
       <HStack spacing={2}>
-        {(question.answer?.attachments || []).slice(0, 2).map((attachment) => (
-          <DocumentThumbnail document={attachment} key={attachment.id} />
-        ))}
-        {(question.answer?.attachments || []).length > 2 &&
-          ((question.answer?.attachments || []).length === 3 ? (
-            <DocumentThumbnail document={question.answer!.attachments![2]} key={question.answer!.attachments![2].id} />
-          ) : (
-            <Flex
-              align="center"
-              border="1px solid"
-              borderColor="documentUploaded.border"
-              cursor="default"
-              h="55px"
-              justify="center"
-              rounded="3px"
-              w="55px"
-            >
-              +{(question.answer?.attachments || []).length - 2}
-            </Flex>
-          ))}
+        {(question.answer?.attachments || []).length >= 1 && (
+          <DocumentThumbnail document={question.answer!.attachments![1]} key={question.answer!.attachments![1]?.id} />
+        )}
+        {(question.answer?.attachments || []).length - 1 > 1 && (
+          <Flex
+            align="center"
+            border="1px solid"
+            borderColor="documentUploaded.border"
+            cursor="default"
+            h="55px"
+            justify="center"
+            rounded="3px"
+            w="55px"
+          >
+            +{(question.answer?.attachments || []).length - 1}
+          </Flex>
+        )}
       </HStack>
       {audit.status === 'upcoming' && isUserPermittedToModify && (
         <Stack>
