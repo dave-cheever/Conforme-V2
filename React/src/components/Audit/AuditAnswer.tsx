@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
@@ -42,6 +42,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   const isCustomQuestion = !!question.scope?._id; // If there is no scope _id, it means that the question is a custom one
   const { answer } = question;
   const isUserPermittedToModify = isPermitted({ user, action: 'audits.edit', data: { audit } });
+  const [uploading, setUploading] = useState(false);
 
   const { control, formState, watch, reset, setValue } = useForm({
     mode: 'all',
@@ -224,7 +225,11 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           Attachments
         </Text>
         {!isDisabled && (
-          <DocumentUpload callback={async (uploaded) => appendAttachment(uploaded)} elementId={answer?._id || `temp-${question._id}`} />
+          <DocumentUpload
+            callback={async (uploaded) => appendAttachment(uploaded)}
+            elementId={answer?._id || `temp-${question._id}`}
+            setUploadStatus={setUploading}
+          />
         )}
         {values.attachments?.map((attachment, i) => (
           <Flex flexDir="column" key={i} mb={2}>
@@ -357,7 +362,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           <Button
             bgColor="auditAnswer.buttons.save.bg"
             color="auditAnswer.buttons.save.color"
-            disabled={!isValid}
+            disabled={!isValid || uploading}
             fontSize="smm"
             fontWeight="semibold"
             h="40px"

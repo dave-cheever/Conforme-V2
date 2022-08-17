@@ -14,6 +14,7 @@ const DocumentUpload = ({
   elementId,
   documentName,
   callback,
+  setUploadStatus,
   disabled = false,
   doNotAwaitCallback,
   acceptedFileTypes = defaultFileTypes,
@@ -28,6 +29,7 @@ const DocumentUpload = ({
       addedAt: Date;
     }[],
   ) => Promise<void>;
+  setUploadStatus?: (uploading: boolean) => void;
   doNotAwaitCallback?: boolean;
   acceptedFileTypes?: string[];
 }) => {
@@ -41,6 +43,7 @@ const DocumentUpload = ({
     else {
       const acceptedFilesNames = acceptedFiles.map((file) => file.name);
       setUploading((uploading) => [...uploading, ...acceptedFilesNames]);
+      if (setUploadStatus) setUploadStatus(true);
       acceptedFiles.forEach(async (file) => {
         uploadControllerRef.current[file.name] = new AbortController();
         try {
@@ -65,6 +68,7 @@ const DocumentUpload = ({
           }
         } finally {
           setUploading((uploading) => uploading.filter((name) => name !== file.name));
+          if (setUploadStatus) setUploadStatus(false);
         }
       });
     }
