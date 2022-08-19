@@ -82,16 +82,15 @@ const AuditHeader = () => {
   const DeleteButton = () => (
     <AuditHeaderButton
       bgColor="transparent"
-      disabled={!isPermitted({ user, action: 'audits.delete', data: { audit } })}
       fontColor="#DC0043"
       icon={null}
       name="Delete"
       onClick={
         selectedAction
           ? () => {
-            setActionChangesModalOnContinue(() => onDeleteAudit);
-            handleActionChangesModalOpen();
-          }
+              setActionChangesModalOnContinue(() => onDeleteAudit);
+              handleActionChangesModalOpen();
+            }
           : handleDeleteModalOpen
       }
     />
@@ -106,9 +105,9 @@ const AuditHeader = () => {
       onClick={
         selectedAction
           ? () => {
-            setActionChangesModalOnContinue(() => handleRecurringModalOpen);
-            handleActionChangesModalOpen();
-          }
+              setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+              handleActionChangesModalOpen();
+            }
           : handleRecurringModalOpen
       }
     />
@@ -126,9 +125,9 @@ const AuditHeader = () => {
           onClick={
             selectedAction
               ? () => {
-                setActionChangesModalOnContinue(() => onSubmitAudit);
-                handleActionChangesModalOpen();
-              }
+                  setActionChangesModalOnContinue(() => onSubmitAudit);
+                  handleActionChangesModalOpen();
+                }
               : handleSubmitModalOpen
           }
         />
@@ -230,8 +229,12 @@ const AuditHeader = () => {
             onClick={() => {}}
           /> */}
           <Stack direction="row" display={['none', 'flex']} spacing={[3, 6]}>
-            <DeleteButton />
-            {audit?.walkType === 'physical' && <RecurringButton />}
+            {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
+              <>
+                <DeleteButton />
+                {audit?.walkType === 'physical' && <RecurringButton />}
+              </>
+            )}
             <SubmitButton />
           </Stack>
         </Flex>
