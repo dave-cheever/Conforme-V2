@@ -15,14 +15,14 @@ const commnetsResolvers = {
 export const commnentsTypeDefs = `
   type Comment {
     _id: ID!
-    responseId: String!
+    componentId: ID!
     text: String!
     metatags: Metatags
     authorId: ID!
   }
 
   input CommentInput {
-    responseId: ID!
+    componentId: ID!
     text: String!
     scope: ScopeInput!
   }

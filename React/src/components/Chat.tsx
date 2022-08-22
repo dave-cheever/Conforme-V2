@@ -19,21 +19,23 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
-import { toastFailed } from '../../bootstrap/config';
-import { useAppContext } from '../../contexts/AppProvider';
-import { useResponseContext } from '../../contexts/ResponseProvider';
-import useDevice from '../../hooks/useDevice';
-import { IComment } from '../../interfaces/IComment';
-import Can from '../can';
-import Loader from '../Loader';
-import MessageInput from './MessageInput';
-import ResponseChatSent from './ResponseChatItem';
+import { toastFailed } from '../bootstrap/config';
+import { useAppContext } from '../contexts/AppProvider';
+import { useAuditContext } from '../contexts/AuditProvider';
+import { useChatContext } from '../contexts/ChatProvider';
+import { useResponseContext } from '../contexts/ResponseProvider';
+import useDevice from '../hooks/useDevice';
+import { IComment } from '../interfaces/IComment';
+import Can from './can';
+import ChatSent from './ChatItem';
+import Loader from './Loader';
+import MessageInput from './Response/MessageInput';
 
 const GET_COMMENTS = gql`
   query ($_id: String!) {
     comments(_id: $_id) {
       _id
-      responseId
+      componentId
       text
       authorId
       metatags {
@@ -47,7 +49,7 @@ const CREATE_COMMENT = gql`
   mutation ($values: CommentInput!) {
     createComment(commentInput: $values) {
       _id
-      responseId
+      componentId
       text
     }
   }
@@ -62,15 +64,19 @@ const defaultValues = {
   text: '',
 };
 
-const ResponseChat = () => {
+const Chat = ({ component }: { component: 'audit' | 'response' }) => {
   const toast = useToast();
   const device = useDevice();
   const { module } = useAppContext();
-  const { response, handleCloseMessage, users, participantsLoading } = useResponseContext();
+  const { audit } = useAuditContext()
+  const { response } = useResponseContext()
+  const { handleCloseMessage, chatParticipants, participantsLoading } = useChatContext();
+
   const { data, loading, refetch } = useQuery(GET_COMMENTS, {
-    variables: { _id: response?._id },
-    skip: !response,
+    variables: { _id: component === 'audit' ? audit._id : response?._id },
+    skip: component === 'audit' ? !audit : !response,
   });
+
   const [createFunction] = useMutation(CREATE_COMMENT);
   const [deleteFunction] = useMutation(DELETE_COMMENT);
   const [comments, setComments] = useState<IComment[]>([]);
@@ -85,7 +91,6 @@ const ResponseChat = () => {
     () => () => {
       if (device === 'tablet' || device === 'mobile') handleCloseMessage();
     },
-
     [],
   );
 
@@ -118,9 +123,10 @@ const ResponseChat = () => {
         const text = getValues();
         const values = {
           ...text,
-          responseId: response?._id,
+          componentId: component === 'audit' ? audit?._id : response?._id,
           scope: {
             moduleId: module?._id,
+            type: module?.type,
           },
         };
         await createFunction({ variables: { values } });
@@ -170,12 +176,12 @@ const ResponseChat = () => {
           <ModalCloseButton />
           <ModalBody pr={2}>
             <Flex flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
-              {users?.map((user) => (
+              {chatParticipants?.map((user) => (
                 <Flex align="center" justify="space-between" key={user._id} px="1" py="2">
                   <Flex align="center">
                     <Avatar
                       h="32px"
-                      mr={users.length > 1 ? '10px' : ''}
+                      mr={chatParticipants.length > 1 ? '10px' : ''}
                       name={user?.displayName}
                       p="2px"
                       rounded="full"
@@ -195,18 +201,18 @@ const ResponseChat = () => {
       </Modal>
       <Stack h="full" pl="25px" pr={['25px', '25px', '0px']} spacing={2} w={['calc(100vw - 36px)', '300px', '330px']}>
         <Flex alignItems="center" flexDirection="column">
-          <Text color="responseChat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">
+          <Text color="chat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">
             Chat
           </Text>
           {participantsLoading ? (
             <SkeletonCircle mb={2} size="32px" />
           ) : (
             <Flex justify="center" mb={2} w="full">
-              {users.slice(0, 3).map((user, i) => (
+              {chatParticipants.slice(0, 3).map((user, i) => (
                 <Avatar
                   h="32px"
                   key={i}
-                  mr={users.length > 1 ? '10px' : ''}
+                  mr={chatParticipants.length > 1 ? '10px' : ''}
                   name={user?.displayName}
                   p="2px"
                   rounded="full"
@@ -214,11 +220,11 @@ const ResponseChat = () => {
                   w="32px"
                 />
               ))}
-              {users.length > 3 && (
+              {chatParticipants.length > 3 && (
                 <Flex
                   align="center"
-                  bg="responseChat.image.bg"
-                  color="responseChat.image.color"
+                  bg="chat.image.bg"
+                  color="chat.image.color"
                   cursor="pointer"
                   fontSize="11px"
                   fontWeight="bold"
@@ -227,10 +233,10 @@ const ResponseChat = () => {
                   rounded="full"
                   w="32px"
                 >
-                  +{users.length - 3}
+                  +{chatParticipants.length - 3}
                 </Flex>
               )}
-              {users.length === 0 && (
+              {chatParticipants.length === 0 && (
                 <Flex fontSize="13px" fontStyle="italic" mb="4">
                   No participants
                 </Flex>
@@ -241,29 +247,32 @@ const ResponseChat = () => {
         <Flex align="space-between" flexDirection="column" grow={1} overflow="hidden" pr="10px" w="calc(100% + 10px)">
           <Flex
             flexDirection="column"
-            h={["calc(100vh - 460px)", "calc(100vh - 406px )", "calc(100vh - 365px)"]}
+            h={[
+              "calc(100vh - 460px)",
+              "calc(100vh - 406px )",
+              `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 360px)'}`]}
             overflow="auto"
             pr="10px"
             ref={divRef}
             sx={{
               '&::-webkit-scrollbar': {
-                backgroundColor: 'responseChat.scrollBar.bg',
+                backgroundColor: 'chat.scrollBar.bg',
                 width: '4px',
               },
               '&::-webkit-scrollbar-thumb': {
-                backgroundColor: 'responseChat.scrollBar.color',
+                backgroundColor: 'chat.scrollBar.color',
               },
             }}
             w="calc(100% + 10px)"
           >
             {loading && <Loader center size="md" />}
             {comments.map((comment) => (
-              <ResponseChatSent comment={comment} key={comment._id} onAction={deleteComment} />
+              <ChatSent comment={comment} key={comment._id} onAction={deleteComment} />
             ))}
           </Flex>
           <Can
-            action="comments.add"
-            data={{ response }}
+            action={component === 'audit' ? 'auditComments.add' : "comments.add"}
+            data={{ ...(component === 'audit' ? { audit } : { response }) }}
             no={() => <Box h="20px" />}
             yes={() => (
               <MessageInput
@@ -283,10 +292,10 @@ const ResponseChat = () => {
   );
 };
 
-export default ResponseChat;
+export default Chat;
 
-export const responseChatStyles = {
-  responseChat: {
+export const chatStyles = {
+  chat: {
     text: '#282F3680',
     scrollBar: {
       bg: '#E5E5E5',

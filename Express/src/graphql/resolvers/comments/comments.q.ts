@@ -13,7 +13,7 @@ const comments = async (_, { _id }, __, info: GraphQLResolveInfo) => {
     if (_id) {
       pipeline.push({
         $match: {
-          responseId: _id,
+          componentId: _id,
           'metatags.removedAt': { $eq: null },
         },
       });

@@ -1,21 +1,23 @@
 import { Flex, IconButton } from '@chakra-ui/react';
 
+import Chat from '../components/Chat';
+import ChatMobileAndTablet from '../components/ChatMobileAndTablet';
 import Loader from '../components/Loader';
 import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
-import ResponseChat from '../components/Response/ResponseChat';
-import ResponseChatMobileAndTablet from '../components/Response/ResponseChatMobileAndTablet';
 import ReasponseHeader from '../components/Response/ResponseHeader/ResponseHeader';
 import ResponseLeftNavigation from '../components/Response/ResponseLeftNavigation';
 import ResponseLeftNavigationMobile from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationMobile';
 import ResponseLeftNavigationTablet from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationTablet';
 import ShareModal from '../components/ShareModal';
+import ChatProvider, { useChatContext } from '../contexts/ChatProvider';
 import ResponseProvider, { useResponseContext } from '../contexts/ResponseProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
 
 const ResponseLayout = ({ component: Component }: { component: any }) => {
-  const { loading, response, isOpenMessage, handleOpenMessage, handleCloseMessage } = useResponseContext();
+  const { loading, response } = useResponseContext();
+  const { isOpenMessage, handleCloseMessage, handleOpenMessage } = useChatContext();
   const device = useDevice();
   const isTabletAndMobile = device === 'tablet' || device === 'mobile';
 
@@ -63,9 +65,9 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
             <Flex flexDirection="column" h="full" maxH={['none', 'calc(100vh - 210px)']} pb={[20, 6]} w="full">
               <Component />
             </Flex>
-            {device === 'desktop' && <ResponseChat />}
+            {device === 'desktop' && <Chat component='response' />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile && <ResponseChatMobileAndTablet />}
+          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component='response' />}
         </Flex>
         <ResponseLeftNavigationMobile />
       </Flex>
@@ -81,7 +83,9 @@ export const responseLayoutStyles = {
 
 const ResponseLayoutWithContext = (props) => (
   <ResponseProvider {...props}>
-    <ResponseLayout {...props} />
+    <ChatProvider component='response'>
+      <ResponseLayout {...props} />
+    </ChatProvider>
   </ResponseProvider>
 );
 

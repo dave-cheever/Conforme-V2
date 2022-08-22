@@ -172,7 +172,6 @@ const ResponseProvider = ({ children }) => {
   const { isOpen: isConfirmationOpen, onOpen: handleConfirmationOpen, onClose: handleConfirmationClose } = useDisclosure();
   const { isOpen: isRenewalOpen, onOpen: handleRenewalOpen, onClose: handleRenewalClose } = useDisclosure();
   const { isOpen: isDueDateOpen, onOpen: handleDueDateOpen, onClose: handleDueDateClose } = useDisclosure();
-  const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
 
   const questionsForm = useForm({ mode: 'all' });
 
@@ -252,9 +251,6 @@ const ResponseProvider = ({ children }) => {
       isDueDateOpen,
       handleDueDateOpen,
       handleDueDateClose,
-      isOpenMessage,
-      handleOpenMessage,
-      handleCloseMessage,
       getUpdatedDisplayName,
       getParticipantDetailById,
       participantsLoading,
@@ -276,7 +272,6 @@ const ResponseProvider = ({ children }) => {
       isQuestionFormDirty,
       isRenewalOpen,
       isDueDateOpen,
-      isOpenMessage,
       participantsLoading,
       snapshot,
       snapshots,

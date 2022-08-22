@@ -3,8 +3,8 @@ import { GraphQLError } from 'graphql';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IComment, ICommentModel, IOrganization } from 'app-interfaces';
-import { AuditLogs, ComplianceItems, Notifications, Responses, Users } from 'app-models';
+import { IAudit, IComment, ICommentModel, IComplianceItem, IOrganization, IResponse } from 'app-interfaces';
+import { AuditLogs, Audits, ComplianceItems, Notifications, Responses, Users } from 'app-models';
 import { MENTION_NOTIFICATION } from 'app-shared';
 import {
   genMetatags,
@@ -15,7 +15,7 @@ import {
 
 const commentSchema = new Schema<IComment, ICommentModel>({
   _id: String,
-  responseId: String,
+  componentId: String,
   text: String,
   authorId: String,
   scope: {
@@ -55,16 +55,15 @@ commentSchema.statics.customCreate = async function (
 
   if (createdComment?._doc) {
     const addAuditLog = async () => {
-      const response = await Responses.customFindById(
-        comment.responseId,
-        organizationId,
-      );
-      const complianceItem = await ComplianceItems.customFindById(
-        response.complianceItemId,
-        organizationId,
-      );
+      let componentData: IResponse | IAudit = {} as IResponse | IAudit;
+      let complianceItem: IComplianceItem = {} as IComplianceItem
+
+      if (comment.scope.type === 'tracker') componentData = await Responses.customFindById(comment.componentId, organizationId);
+      if (comment.scope.type === 'audits') componentData = await Audits.customFindById(comment.componentId, organizationId);
+      if (comment.scope.type === 'tracker') complianceItem = await ComplianceItems.customFindById(componentData["complianceItemId"], organizationId);
+
       const element = getForeignElement(
-        { _id: response._id, name: complianceItem.name },
+        { _id: componentData._id, name: comment.scope.type === 'tracker' ? complianceItem.name : componentData['reference'] },
         createdComment._doc._id,
       );
       const newValues = removeDatabaseFields(createdComment._doc);
@@ -82,7 +81,6 @@ commentSchema.statics.customCreate = async function (
     };
     addAuditLog();
   }
-
   return createdComment;
 };
 
@@ -141,18 +139,18 @@ commentSchema.statics.customDelete = async function (
 
   if (deletedResult?.modifiedCount) {
     const addAuditLog = async () => {
-      const response = await Responses.customFindById(
-        comment.responseId,
-        organizationId,
-      );
-      const complianceItem = await ComplianceItems.customFindById(
-        response.complianceItemId,
-        organizationId,
-      );
+      let componentData: IResponse | IAudit = {} as IResponse | IAudit;
+      let complianceItem: IComplianceItem = {} as IComplianceItem
+
+      if (comment.scope.type === 'tracker') componentData = await Responses.customFindById(comment.componentId, organizationId);
+      if (comment.scope.type === 'audits') componentData = await Audits.customFindById(comment.componentId, organizationId);
+      if (comment.scope.type === 'tracker' && componentData["complianceItemId"]) complianceItem =
+        await ComplianceItems.customFindById(componentData["complianceItemId"], organizationId);
+
       const element = getForeignElement(
-        { _id: response._id, name: complianceItem.name },
-        comment._id,
+        { _id: componentData._id, name: comment.scope.type === 'tracker' ? complianceItem.name : componentData['reference'] }, comment._id,
       );
+
       const oldValues = removeDatabaseFields(comment);
       const values = await getAuditRecordValues({ oldValues });
       AuditLogs.customAudit(
@@ -168,7 +166,6 @@ commentSchema.statics.customDelete = async function (
     };
     addAuditLog();
   }
-
   return deletedResult?.modifiedCount;
 };
 

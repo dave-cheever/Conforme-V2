@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Text, Tooltip } from '@chakra-ui/react';
 
-import { useResponseContext } from '../../contexts/ResponseProvider';
+import { useResponseContext } from '../contexts/ResponseProvider';
 
 const ChatMention = ({ tag }) => {
   const { getUpdatedDisplayName } = useResponseContext();
@@ -17,7 +17,7 @@ const ChatMention = ({ tag }) => {
       setUserId(userId);
       const userName = getUpdatedDisplayName(userId);
       setUserName(userName);
-    } catch (e) {}
+    } catch (e) { }
   }, [getUpdatedDisplayName, tag]);
 
   if (!userId) return <Text>{displayTag}</Text>;

@@ -15,7 +15,7 @@ import {
   getPathByCollectionName,
   getSingularCollectionName,
 } from '../../utils/helpers';
-import ChatMention from '../Response/ChatMention';
+import ChatMention from '../ChatMention';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -85,13 +85,13 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
             )}
             {audit.action === 'delete' && audit.coll === 'comments' && (
               <Text as="span" fontWeight="light" pl={2}>
-                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+                {reactStringReplace(audit.values.text?.old?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
                   <ChatMention key={i} tag={match} />
                 ))}
               </Text>
             )}
             {!isResponseAudit && module?.type === 'tracker' && ' for '}
-            <Text as="span" color="#462AC4" cursor="pointer" fontWeight="bold" onClick={goToItem}>
+            <Text as="span" color="#462AC4" cursor="pointer" fontWeight="bold" onClick={goToItem} pl={2}>
               {!isResponseAudit && audit.element.name}{' '}
             </Text>
           </Text>

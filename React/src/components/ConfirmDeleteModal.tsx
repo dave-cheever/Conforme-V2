@@ -16,7 +16,7 @@ import {
 
 import ChatMention from './ChatMention';
 
-interface IResponseChatConfirmDeleteModal {
+interface IChatConfirmDeleteModal {
   isOpen: boolean;
   messageId: string;
   message: string;
@@ -24,7 +24,7 @@ interface IResponseChatConfirmDeleteModal {
   onAction: (id: string) => void;
 }
 
-const ResponseChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, onAction }: IResponseChatConfirmDeleteModal) => (
+const ChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, onAction }: IChatConfirmDeleteModal) => (
   <Modal isCentered isOpen={isOpen} onClose={onClose} size="md">
     <ModalOverlay />
     <ModalContent>
@@ -51,8 +51,8 @@ const ResponseChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, o
           </Button>
           <Button
             _hover={{ opacity: 0.7 }}
-            bg="responseChatConfirmDeleteModal.deleteButtonBg"
-            color="responseChatConfirmDeleteModal.deleteButtonColor"
+            bg="chatConfirmDeleteModal.deleteButtonBg"
+            color="chatConfirmDeleteModal.deleteButtonColor"
             onClick={async () => {
               onAction(messageId);
               onClose();
@@ -66,8 +66,8 @@ const ResponseChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, o
   </Modal>
 );
 
-export const responseChatConfirmDeleteModalStyles = {
-  responseChatConfirmDeleteModal: {
+export const chatConfirmDeleteModalStyles = {
+  chatConfirmDeleteModal: {
     tile: {
       bg: {
         default: '#F4F3F5',
@@ -83,4 +83,4 @@ export const responseChatConfirmDeleteModalStyles = {
   },
 };
 
-export default ResponseChatConfirmDeleteModal;
+export default ChatConfirmDeleteModal;

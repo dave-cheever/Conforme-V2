@@ -1,4 +1,5 @@
-import { Comments, Responses } from 'app-models';
+import { IAudit, IResponse } from 'app-interfaces';
+import { Comments, Responses, Audits } from 'app-models';
 import { isPermitted, mentionParser } from 'app-utils';
 
 const createComment = async (
@@ -8,13 +9,17 @@ const createComment = async (
 ) => {
   try {
     const user = await authorize();
+    let componentData: IResponse | IAudit = {} as IResponse | IAudit;
 
-    const response = await Responses.customFindById(
-      commentInput.responseId,
-      organization._id,
-    );
+    if (commentInput.scope.type === 'tracker') componentData = await Responses.customFindById(commentInput.componentId, organization._id);
+    if (commentInput.scope.type === 'audits') componentData = await Audits.customFindById(commentInput.componentId, organization._id);
 
-    if (!isPermitted({ user, action: 'comments.add', data: { response } }))
+    if (!isPermitted({
+      user, action: commentInput.scope.type === 'tracker' ? 'comments.add' : 'auditComments.add',
+      data: {
+        ...(commentInput.scope.type === 'tracker' ? { response: componentData } : { audit: componentData })
+      }
+    }))
       throw new Error('User is not permitted');
 
     const newComment = {

@@ -9,14 +9,14 @@ import format from 'date-fns/format';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import isToday from 'date-fns/isToday';
 
-import { useAppContext } from '../../contexts/AppProvider';
-import useDevice from '../../hooks/useDevice';
-import { IComment } from '../../interfaces/IComment';
-import Can from '../can';
+import { useAppContext } from '../contexts/AppProvider';
+import useDevice from '../hooks/useDevice';
+import { IComment } from '../interfaces/IComment';
+import Can from './can';
 import ChatMention from './ChatMention';
-import ResponseChatConfirmDeleteModal from './ResponseChatConfirmDeleteModal';
+import ChatConfirmDeleteModal from './ConfirmDeleteModal';
 
-interface IResponseChat {
+interface IChatItem {
   comment: IComment;
   onAction: (id: string) => void;
 }
@@ -30,7 +30,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
+const ChatItem = ({ onAction, comment }: IChatItem) => {
   const { metatags, authorId, _id, text } = comment;
   const [getParticipantDetailById, { data, loading }] = useLazyQuery(GET_USERS_BY_ID);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
@@ -72,7 +72,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
 
   return (
     <>
-      <ResponseChatConfirmDeleteModal isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
+      <ChatConfirmDeleteModal isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
       <Flex flexDirection={isChatOwner ? 'row' : 'row-reverse'} mb={3} w="full">
         <Box ml={isChatOwner ? 0 : 3} mr={isChatOwner ? 3 : 0}>
           {loading ? (
@@ -84,13 +84,13 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
         <Box
           bg={
             isChatOwner
-              ? 'responseChatItem.sentBg'
+              ? 'chatItem.sentBg'
               : device === 'mobile' || device === 'tablet'
-              ? 'responseChatItem.receivedBgTM'
-              : 'responseChatItem.receivedBg'
+                ? 'chatItem.receivedBgTM'
+                : 'chatItem.receivedBg'
           }
           borderRadius="10px"
-          color={isChatOwner ? 'responseChatItem.sentColor' : 'responseChatItem.receivedColor'}
+          color={isChatOwner ? 'chatItem.sentColor' : 'chatItem.receivedColor'}
           onMouseEnter={() => setShowDeleteBtn(true)}
           onMouseLeave={() => setShowDeleteBtn(false)}
           px="12px"
@@ -98,7 +98,7 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
           w="full"
         >
           <Flex h={6} justify="space-between">
-            <Text color="responseChatItem.dateColor" fontSize="ssm" fontWeight="semi_medium" mb="10px">
+            <Text color="chatItem.dateColor" fontSize="ssm" fontWeight="semi_medium" mb="10px">
               {dateFormat()}
             </Text>
             <Can
@@ -128,10 +128,10 @@ const ResponseChatItem = ({ onAction, comment }: IResponseChat) => {
   );
 };
 
-export default ResponseChatItem;
+export default ChatItem;
 
-export const responseChatItemStyles = {
-  responseChatItem: {
+export const chatItemStyles = {
+  chatItem: {
     sentBg: '#1E1E38',
     receivedBg: '#FFFFFF',
     receivedBgTM: '#F0F0F0',

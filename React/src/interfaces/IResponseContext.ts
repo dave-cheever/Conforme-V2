@@ -36,10 +36,6 @@ export interface IResponseContext {
   handleDueDateOpen: () => void;
   handleDueDateClose: () => void;
 
-  isOpenMessage: boolean;
-  handleOpenMessage: () => void;
-  handleCloseMessage: () => void;
-
   participantsLoading: boolean;
   snapshot: string | null;
   snapshots: IResponse[];

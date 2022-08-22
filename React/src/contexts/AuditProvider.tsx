@@ -285,6 +285,7 @@ const AuditProvider = ({ children }) => {
   const [selectedQuestion, setSelectedQuestion] = useState<TDeepPartial<TQuestionWithAnswer>>();
   const [selectedAction, setSelectedAction] = useState<Partial<IAction>>();
   const [actionChangesModalOnContinue, setActionChangesModalOnContinue] = useState<Function>();
+  const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
 
   const {
     isOpen: isActionChangesModalOpen,
@@ -381,6 +382,9 @@ const AuditProvider = ({ children }) => {
       questions,
       loading,
       isActionChangesModalOpen,
+      isOpenMessage,
+      handleOpenMessage,
+      handleCloseMessage,
       handleActionChangesModalClose,
       handleActionChangesModalOpen,
       actionChangesModalOnContinue,
@@ -416,6 +420,7 @@ const AuditProvider = ({ children }) => {
       selectedAction,
       isActionChangesModalOpen,
       actionChangesModalOnContinue,
+      isOpenMessage,
     ],
   );
 

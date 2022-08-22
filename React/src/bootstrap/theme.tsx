@@ -38,9 +38,13 @@ import { auditModalStyles } from '../components/AuditModal/AuditModal';
 import { auditTeamModalStyles } from '../components/AuditModal/AuditTeamModal';
 import { barChartStyles } from '../components/BarChart';
 import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector';
+import { chatStyles } from '../components/Chat';
+import { chatItemStyles } from '../components/ChatItem';
+import { chatMentionStyles } from '../components/ChatMention';
 import { complianceGroupItemsStyles } from '../components/ComplianceItem/ComplianceItemsGroup';
 import { complianceListItemsStyles } from '../components/ComplianceItem/ComplianceItemsList';
 import { complianceItemsSquareStyles } from '../components/ComplianceItem/ComplianceItemSquare';
+import { chatConfirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
 import { customRadioButtonStyles } from '../components/CustomRadioButton';
 import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
 import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
@@ -75,15 +79,11 @@ import { questionListElementStyles } from '../components/Questions/QuestionListE
 import { questionMultiChoiceFormStyles } from '../components/Questions/QuestionMultiChoiceForm';
 import { questionSimpleFormStyles } from '../components/Questions/QuestionSimpleForm';
 import { questionSingleChoiceFormStyles } from '../components/Questions/QuestionSingleChoiceForm';
-import { chatMentionStyles } from '../components/Response/ChatMention';
 import { responseRenewalDetailsStyles } from '../components/Response/Details';
 import { evidenceStyles } from '../components/Response/Evidence';
 import { historicalListItemStyles } from '../components/Response/HistoricalListItem';
 import { messageInputStyles } from '../components/Response/MessageInput';
 import { responseRenewalModalStyles } from '../components/Response/RenewalModal';
-import { responseChatStyles } from '../components/Response/ResponseChat';
-import { responseChatConfirmDeleteModalStyles } from '../components/Response/ResponseChatConfirmDeleteModal';
-import { responseChatItemStyles } from '../components/Response/ResponseChatItem';
 import { responseHeaderStyles } from '../components/Response/ResponseHeader/ResponseHeader';
 import { responseHeaderMenuItemStyles } from '../components/Response/ResponseHeader/ResponseHeaderMenuItem';
 import { responseHeaderStatusStyles } from '../components/Response/ResponseHeader/ResponseHeaderStatus';
@@ -207,6 +207,9 @@ const getTheme = (organizationTheme?: any) => {
         ...businessUnitsSelectorStyles,
         ...businessUnitsStyles,
         ...categoriesStyles,
+        ...chatConfirmDeleteModalStyles,
+        ...chatItemStyles,
+        ...chatStyles,
         ...chatMentionStyles,
         ...cloneComplianceItemModalStyles,
         ...complianceGroupItemsStyles,
@@ -258,9 +261,6 @@ const getTheme = (organizationTheme?: any) => {
         ...questionSingleChoiceFormStyles,
         ...questionSimpleFormStyles,
         ...regulatoryBodiesStyles,
-        ...responseChatConfirmDeleteModalStyles,
-        ...responseChatItemStyles,
-        ...responseChatStyles,
         ...responseLeftNavigationStyles,
         ...responseHeaderMenuItemStyles,
         ...responseHeaderStyles,

@@ -4,7 +4,7 @@ import { Mention, MentionsInput } from 'react-mentions';
 
 import { Avatar, Flex, Text } from '@chakra-ui/react';
 
-import { useResponseContext } from '../../contexts/ResponseProvider';
+import { useChatContext } from '../../contexts/ChatProvider';
 import useValidate from '../../hooks/useValidate';
 import { SendMessageIcon } from '../../icons';
 import { IField } from '../../interfaces/IField';
@@ -27,8 +27,7 @@ const definedValidations: TDefinedValidations = {
 
 const MessageInput = ({ control, name, label, placeholder = '', validations = {}, disabled = false, onAction }: IMessageInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
-  const { users } = useResponseContext();
-
+  const { chatParticipants } = useChatContext();
   const onKeyDown = (e) => {
     if (e.shiftKey && e.key === 'Enter') {
       // This should change the line
@@ -60,7 +59,7 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
             >
               <Mention
                 className="mentions__mention"
-                data={users}
+                data={chatParticipants}
                 markup="@@@(__display__)[__id__]"
                 renderSuggestion={(highlightedDisplay) => (
                   <Flex color="mentionListItem.color" fontSize="14px" pl="13px" py="10px" w="full">

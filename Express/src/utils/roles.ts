@@ -52,6 +52,7 @@ const roles = {
       'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
       'responses.manageContributor': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
+      'auditComments.add': ifHasAuditAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
       'responses.manageMultipleFollowers': ifRAHasAccess,
       'actions.add': ifHasActionAccess,
@@ -87,6 +88,7 @@ const roles = {
       'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
       'responses.manageContributor': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
+      'auditComments.add': ifHasAuditAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
       'responses.manageMultipleFollowers': ifRAHasAccess,
       'actions.add': ifHasActionAccess,
@@ -124,6 +126,7 @@ const roles = {
       'regulatoryBodies',
       'settings',
       'users',
+      'auditComments.add'
     ],
     restricted: {
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
