@@ -17,6 +17,7 @@ import {
   ifHasActionAccess,
   ifHasAnswerAccess,
   ifHasAuditAccess,
+  ifHasAuditChangeRecurringAccess,
   ifHasAuditDeleteAccess,
   ifHasQuestionAccess,
   ifHasQuestionEditAccess,
@@ -63,6 +64,7 @@ const roles = {
       'answers.delete': ifHasAnswerAccess,
       'audits.edit': ifHasAuditAccess,
       'audits.delete': ifHasAuditDeleteAccess,
+      'audits.changeRecurring': ifHasAuditChangeRecurringAccess,
       'questions.add': ifHasQuestionAccess,
       'questions.edit': ifHasQuestionEditAccess,
       'questions.delete': ifHasQuestionEditAccess,
@@ -98,6 +100,7 @@ const roles = {
       'answers.delete': ifHasAnswerAccess,
       'audits.edit': ifHasAuditAccess,
       'audits.delete': ifHasAuditDeleteAccess,
+      'audits.changeRecurring': ifHasAuditChangeRecurringAccess,
       'questions.add': ifHasQuestionAccess,
       'questions.edit': ifHasQuestionEditAccess,
       'questions.delete': ifHasQuestionEditAccess,
@@ -126,7 +129,7 @@ const roles = {
       'regulatoryBodies',
       'settings',
       'users',
-      'auditComments.add'
+      'auditComments.add',
     ],
     restricted: {
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,

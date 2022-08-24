@@ -19,6 +19,7 @@ const ifRAHasAccess = ({ user, response }) => user && (response?.accountableId =
 
 const ifHasAuditAccess = ({ user, audit }) => user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id));
 const ifHasAuditDeleteAccess = ({ user }) => user && user?.role && user?.role === 'admin';
+const ifHasAuditChangeRecurringAccess = ({ user }) => user && user?.role && user?.role === 'admin';
 
 const ifHasActionAccess = ({ user, action, answer, audit }) => {
   // If an action is created from an audit
@@ -68,6 +69,7 @@ export {
   ifRACFHasAccess,
   ifHasAuditAccess,
   ifHasAuditDeleteAccess,
+  ifHasAuditChangeRecurringAccess,
   ifHasActionAccess,
   ifHasAnswerAccess,
   ifHasQuestionAccess,

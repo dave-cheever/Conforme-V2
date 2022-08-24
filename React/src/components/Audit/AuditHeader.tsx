@@ -79,39 +79,41 @@ const AuditHeader = () => {
     });
   };
 
-  const DeleteButton = () => (
-    <AuditHeaderButton
-      bgColor="transparent"
-      fontColor="#DC0043"
-      icon={null}
-      name="Delete"
-      onClick={
-        selectedAction
-          ? () => {
-              setActionChangesModalOnContinue(() => onDeleteAudit);
-              handleActionChangesModalOpen();
-            }
-          : handleDeleteModalOpen
-      }
-    />
-  );
+  const DeleteButton = () =>
+    isPermitted({ user, action: 'audits.delete' }) ? (
+      <AuditHeaderButton
+        bgColor="transparent"
+        fontColor="#DC0043"
+        icon={null}
+        name="Delete"
+        onClick={
+          selectedAction
+            ? () => {
+                setActionChangesModalOnContinue(() => onDeleteAudit);
+                handleActionChangesModalOpen();
+              }
+            : handleDeleteModalOpen
+        }
+      />
+    ) : null;
 
-  const RecurringButton = () => (
-    <AuditHeaderButton
-      bgColor="transparent"
-      fontColor="#DC0043"
-      icon={null}
-      name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
-      onClick={
-        selectedAction
-          ? () => {
-              setActionChangesModalOnContinue(() => handleRecurringModalOpen);
-              handleActionChangesModalOpen();
-            }
-          : handleRecurringModalOpen
-      }
-    />
-  );
+  const RecurringButton = () =>
+    audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
+      <AuditHeaderButton
+        bgColor="transparent"
+        fontColor="#DC0043"
+        icon={null}
+        name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
+        onClick={
+          selectedAction
+            ? () => {
+                setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+                handleActionChangesModalOpen();
+              }
+            : handleRecurringModalOpen
+        }
+      />
+    ) : null;
 
   const SubmitButton = () => {
     if (audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } })) {
@@ -229,12 +231,8 @@ const AuditHeader = () => {
             onClick={() => {}}
           /> */}
           <Stack direction="row" display={['none', 'flex']} spacing={[3, 6]}>
-            {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
-              <>
-                <DeleteButton />
-                {audit?.walkType === 'physical' && <RecurringButton />}
-              </>
-            )}
+            <DeleteButton />
+            <RecurringButton />
             <SubmitButton />
           </Stack>
         </Flex>
@@ -270,7 +268,7 @@ const AuditHeader = () => {
                   zIndex="10"
                 >
                   <DeleteButton />
-                  {audit?.walkType === 'physical' && <RecurringButton />}
+                  <RecurringButton />
                   <SubmitButton />
                 </MenuList>
               </>
