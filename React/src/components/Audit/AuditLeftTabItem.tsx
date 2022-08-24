@@ -19,7 +19,7 @@ const AuditLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = false
     <Flex align="center" cursor="pointer" mb={[0, 3]} mx={[3, 0]} onClick={redirectPage}>
       <Flex
         align="center"
-        bg={active ? 'navigationLeftItemTablet.selectedLabelBg' : 'auditLeftTabItem.iconBg'}
+        bg={active ? 'auditLeftTabItem.selectedLabelBg' : 'auditLeftTabItem.iconBg'}
         borderRadius="8px"
         h="30px"
         justify="center"
@@ -51,5 +51,6 @@ export const auditLeftTabItemStyles = {
     textColor: '#818197',
     activeIconColor: 'white',
     iconColor: '#818197',
+    selectedLabelBg: '#1e1836',
   },
 };
