@@ -13,7 +13,7 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
   const device = useDevice();
 
   return (
-    <Flex minH="100vh">
+    <Flex minH={['auto', '100vh']}>
       <ModuleSwitcher />
       <NavigationLeft />
       <Flex direction="column" flexBasis="auto" flexGrow={1} position="relative">
