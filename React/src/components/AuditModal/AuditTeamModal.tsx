@@ -42,8 +42,8 @@ const AuditTeamModal = ({ isOpen, multiple, selection, onCancel, onClose }: Audi
 
   const device = useDevice();
 
-  const size = useMemo<string>(() => (device === 'mobile' ? 'full' : 'sm'), [device]);
-  const centered = useMemo<boolean>(() => device !== 'mobile', [device]);
+  const size = device === 'mobile' ? 'full' : 'sm';
+  const centered = device !== 'mobile';
 
   const handleClose = () => {
     setSearchText('');
