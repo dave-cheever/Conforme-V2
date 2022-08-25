@@ -51,7 +51,7 @@ export const responsePermissionByFilterType = (filterType) => {
   }
 };
 
-export const generateTabColors = (i, errors, complianceItem, visitedTab, selectedSectionIndex): { bg: string; color: string } => {
+export const generateTabColors = (i, errors, trackerItem, visitedTab, selectedSectionIndex): { bg: string; color: string } => {
   switch (i) {
     case 0:
       if (Object.keys(errors).length !== 0) {
@@ -62,7 +62,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       }
       break;
     case 1:
-      if (complianceItem?.locationsIds?.length === 0 && visitedTab > i) {
+      if (trackerItem?.locationsIds?.length === 0 && visitedTab > i) {
         return {
           bg: 'navigationModal.section.error.bg',
           color: 'navigationModal.section.error.color',
@@ -70,7 +70,7 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       }
       break;
     case 2:
-      if (complianceItem?.businessUnitsIds?.length === 0 && visitedTab > i) {
+      if (trackerItem?.businessUnitsIds?.length === 0 && visitedTab > i) {
         return {
           bg: 'navigationModal.section.error.bg',
           color: 'navigationModal.section.error.color',
@@ -79,9 +79,9 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       break;
     case 3:
       if (
-        (complianceItem.evidenceItems?.length === 0 || complianceItem.evidenceItems?.some((evidence) => evidence === '')) &&
-        (complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 ||
-          complianceItem.evidenceItems?.some((evidence) => evidence === '')) &&
+        (trackerItem.evidenceItems?.length === 0 || trackerItem.evidenceItems?.some((evidence) => evidence === '')) &&
+        (trackerItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 ||
+          trackerItem.evidenceItems?.some((evidence) => evidence === '')) &&
         visitedTab > i
       ) {
         return {
@@ -92,8 +92,8 @@ export const generateTabColors = (i, errors, complianceItem, visitedTab, selecte
       break;
     case 4:
       if (
-        complianceItem.evidenceItems?.length === 0 &&
-        complianceItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 &&
+        trackerItem.evidenceItems?.length === 0 &&
+        trackerItem.questions?.filter(({ required, outdated }) => required && !outdated)?.length === 0 &&
         visitedTab >= i
       ) {
         return {
@@ -167,8 +167,8 @@ export const getSingularCollectionName = (collection: string) => {
     case 'categories':
       fieldCollection = 'category';
       break;
-    case 'complianceItems':
-      fieldCollection = 'compliance item';
+    case 'trackerItems':
+      fieldCollection = 'tracker item';
       break;
     case 'comments':
       fieldCollection = 'comment';
@@ -207,8 +207,8 @@ export const getPathByCollectionName = (collection: string) => {
     case 'actions':
       path = 'actions';
       break;
-    case 'complianceItems':
-      path = 'compliance-item';
+    case 'trackerItems':
+      path = 'tracker-item';
       break;
 
     default:

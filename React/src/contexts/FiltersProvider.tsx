@@ -13,8 +13,8 @@ import { TWalkItemStatus } from '../interfaces/TWalkItemStatus';
 export const FiltersContext = createContext({} as IFiltersContext);
 
 const GET_FILTERS_DATA = gql`
-  query ($complianceItemsQueryInput: ComplianceItemsQueryInput) {
-    complianceItems(complianceItemsQueryInput: $complianceItemsQueryInput) {
+  query ($trackerItemsQueryInput: TrackerItemsQueryInput) {
+    trackerItems(trackerItemsQueryInput: $trackerItemsQueryInput) {
       _id
       name
       published
@@ -58,7 +58,7 @@ export const useFiltersContext = () => {
 const FiltersProvider = ({ children }) => {
   const { data } = useQuery(GET_FILTERS_DATA, {
     variables: {
-      complianceItemsQueryInput: {
+      trackerItemsQueryInput: {
         published: true,
       },
     },
@@ -129,7 +129,7 @@ const FiltersProvider = ({ children }) => {
       setWalkItemFiltersValue,
       setDefaultFilters,
       numberOfSelectedFilters,
-      complianceItems: data?.complianceItems,
+      trackerItems: data?.trackerItems,
       categories: data?.categories,
       locations: data?.locations,
       regulatoryBodies: data?.regulatoryBodies,

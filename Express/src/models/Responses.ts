@@ -14,9 +14,9 @@ import {
 import {
   AuditLogs,
   BusinessUnits,
-  ComplianceItems,
   Notifications,
   Organizations,
+  TrackerItems,
   Users,
 } from 'app-models';
 import { TRACKER_RESPONSE_ASSIGNED, TRACKER_REVIEW_SUBMITTED } from 'app-shared';
@@ -37,7 +37,7 @@ import {
 
 const responseSchema = new Schema<IResponse, IResponseModel>({
   _id: String,
-  complianceItemId: String,
+  trackerItemId: String,
   businessUnitId: String,
   accountableId: String,
   responsibleId: String,
@@ -129,10 +129,10 @@ const getAuditRecordValues = async ({
         value = getAuditValueForDate(oldValue, newValue);
         break;
 
-      // If updated 'complianceItemId' field, get compliance item from database and set value as id and label as name
-      case 'complianceItemId':
+      // If updated 'trackerItemId' field, get tracker item from database and set value as id and label as name
+      case 'trackerItemId':
         value = await getAuditValueForLookup({
-          collection: ComplianceItems,
+          collection: TrackerItems,
           labelField: 'name',
           oldValue,
           newValue,
@@ -341,7 +341,7 @@ responseSchema.statics.customCreate = async function (
           action: 'add',
           element: {
             _id: createdResponse._id,
-            name: values.complianceItemId.new?.label || response._id,
+            name: values.trackerItemId.new?.label || response._id,
           },
           values,
         },
@@ -404,14 +404,14 @@ responseSchema.statics.customSearch = async function (
   join({
     pipeline,
     collection: 'trackerItems',
-    from: 'complianceItemId',
-    to: 'complianceItem',
+    from: 'trackerItemId',
+    to: 'trackerItem',
   });
 
-  // Filter by search text (in compliance item)
+  // Filter by search text (in tracker item)
   pipeline.push({
     $match: {
-      'complianceItem.name': new RegExp(searchText, 'i'),
+      'trackerItem.name': new RegExp(searchText, 'i'),
     },
   });
 
@@ -430,9 +430,9 @@ responseSchema.statics.customSearch = async function (
   pipeline.push({
     $project: {
       _id: 1,
-      primaryText: '$complianceItem.name',
+      primaryText: '$trackerItem.name',
       secondaryText: '$businessUnit.name',
-      type: 'compliance-item',
+      type: 'tracker-item',
     },
   });
 
@@ -508,8 +508,8 @@ responseSchema.statics.customUpdateOne = async function (
   );
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
-      const complianceItem = await ComplianceItems.customFindById(
-        response.complianceItemId,
+      const trackerItem = await TrackerItems.customFindById(
+        response.trackerItemId,
         organizationId,
       );
 
@@ -527,7 +527,7 @@ responseSchema.statics.customUpdateOne = async function (
           action: 'update',
           element: {
             _id: response._id,
-            name: complianceItem.name,
+            name: trackerItem.name,
           },
           values,
         },
@@ -546,8 +546,8 @@ responseSchema.statics.customUpdateOne = async function (
 responseSchema.statics.submitReviewNotification = async function (response: IResponse, organization: IOrganization) {
   let participants: string[] = []
 
-  const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organization._id);
-  if (!complianceItem) return;
+  const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
+  if (!trackerItem) return;
 
   if (response) {
     // handle the empty responsible and accountable cases
@@ -568,10 +568,10 @@ responseSchema.statics.submitReviewNotification = async function (response: IRes
         {
           emailType: TRACKER_REVIEW_SUBMITTED,
           emailData: {
-            subject: `${complianceItem.name} review has been submitted`,
+            subject: `${trackerItem.name} review has been submitted`,
             template: "trackerReviewSubmittedNotificationEmailTemplate",
-            trackerItemName: complianceItem.name,
-            trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/compliance-item/${response._id}">here</a>`,
+            trackerItemName: trackerItem.name,
+            trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${response._id}">here</a>`,
           },
           status: 'pending',
           to: [assignee?.email],
@@ -590,8 +590,8 @@ responseSchema.statics.customAssigneeNotification = async function (responseId: 
   const response = await this.findById(responseId).lean();
   if (!response) return;
 
-  const complianceItem = await ComplianceItems.customFindById(response.complianceItemId, organization._id);
-  if (!complianceItem) return;
+  const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
+  if (!trackerItem) return;
 
   // TODO: For now take the first tracker module.
   // Need to add module scope to tracker objects in order to fix it.
@@ -604,10 +604,10 @@ responseSchema.statics.customAssigneeNotification = async function (responseId: 
         {
           emailType: TRACKER_RESPONSE_ASSIGNED,
           emailData: {
-            subject: `You have been assigned to ${complianceItem.name}`,
+            subject: `You have been assigned to ${trackerItem.name}`,
             template: 'trackerResponseAssigneeTemplate',
-            ItemName: complianceItem.name,
-            LinkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/compliance-item/${responseId}">here</a>`,
+            ItemName: trackerItem.name,
+            LinkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
             AssignedRole: assignedRole,
             AssignedBy: assignor.displayName,
           },

@@ -22,7 +22,7 @@ const GET_CATEGORIES = gql`
     categories {
       _id
       name
-      complianceItemsResponsesCount
+      trackerItemsResponsesCount
     }
   }
 `;
@@ -222,11 +222,11 @@ const Categories = () => {
               <AdminTableHeaderElement
                 label="Responses count"
                 onClick={() => {
-                  setSortType('complianceItemsResponsesCount');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
                 }}
-                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-                sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
                 tooltip="Only published items"
                 w={['20%', '50%']}
               />
@@ -255,9 +255,9 @@ const Categories = () => {
               <Box w="100%">
                 {categories && (
                   <BarChart
-                    data={categories.map(({ _id, complianceItemsResponsesCount }) => ({
+                    data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
                       _id,
-                      count: complianceItemsResponsesCount,
+                      count: trackerItemsResponsesCount,
                     }))}
                     label="Categories"
                   />

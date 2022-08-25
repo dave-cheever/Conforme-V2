@@ -10,5 +10,5 @@ export interface ILocation extends IBase {
 
   // Additional fields - can be added when getting from database
   owner?: IUser;
-  complianceItemsResponsesCount?: number;
+  trackerItemsResponsesCount?: number;
 }

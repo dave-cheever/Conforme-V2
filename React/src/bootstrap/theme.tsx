@@ -8,18 +8,18 @@ import { actionSquareStyles } from '../components/Actions/ActionSquare';
 import { adminModalStyles } from '../components/Admin/AdminModal';
 import { adminTableHeaderStyles } from '../components/Admin/AdminTableHeader';
 import { adminTableHeaderElementStyles } from '../components/Admin/AdminTableHeaderElement';
-import { addComplianceItemAttributeStyles } from '../components/AdminComplianceItemModal/AddComplianceItemAttribute';
-import { additionalDetailsStyles } from '../components/AdminComplianceItemModal/AdditionalDetails';
-import { businessUnitsModalStyles } from '../components/AdminComplianceItemModal/BusinessUnits';
-import { cloneComplianceItemModalStyles } from '../components/AdminComplianceItemModal/CloneComplianceItemModal';
-import { complianceItemModalStyles } from '../components/AdminComplianceItemModal/ComplianceItemModal';
-import { deleteComplianceItemModalStyles } from '../components/AdminComplianceItemModal/DeleteComplianceItemModal';
-import { locationsFormModalStyles } from '../components/AdminComplianceItemModal/Locations';
-import { navigationMobileModalStyles } from '../components/AdminComplianceItemModal/NavigationMobileModal';
-import { navigationModalStyles } from '../components/AdminComplianceItemModal/NavigationModal';
-import { questionsModalStyles } from '../components/AdminComplianceItemModal/Questions';
-import { summaryModalStyles } from '../components/AdminComplianceItemModal/Summary';
-import { summaryItemModalStyles } from '../components/AdminComplianceItemModal/SummaryItem';
+import { additionalDetailsStyles } from '../components/AdminTrackerItemModal/AdditionalDetails';
+import { addTrackerItemAttributeStyles } from '../components/AdminTrackerItemModal/AddTrackerItemAttribute';
+import { businessUnitsModalStyles } from '../components/AdminTrackerItemModal/BusinessUnits';
+import { cloneTrackerItemModalStyles } from '../components/AdminTrackerItemModal/CloneTrackerItemModal';
+import { deleteTrackerItemModalStyles } from '../components/AdminTrackerItemModal/DeleteTrackerItemModal';
+import { locationsFormModalStyles } from '../components/AdminTrackerItemModal/Locations';
+import { navigationMobileModalStyles } from '../components/AdminTrackerItemModal/NavigationMobileModal';
+import { navigationModalStyles } from '../components/AdminTrackerItemModal/NavigationModal';
+import { questionsModalStyles } from '../components/AdminTrackerItemModal/Questions';
+import { summaryModalStyles } from '../components/AdminTrackerItemModal/Summary';
+import { summaryItemModalStyles } from '../components/AdminTrackerItemModal/SummaryItem';
+import { trackerItemModalStyles } from '../components/AdminTrackerItemModal/TrackerItemModal';
 import { alertDialogStyles } from '../components/AlertDialog';
 import { auditActionFormStyles } from '../components/Audit/AuditActionForm';
 import { auditAnswerStyles } from '../components/Audit/AuditAnswer';
@@ -41,9 +41,6 @@ import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector
 import { chatStyles } from '../components/Chat';
 import { chatItemStyles } from '../components/ChatItem';
 import { chatMentionStyles } from '../components/ChatMention';
-import { complianceGroupItemsStyles } from '../components/ComplianceItem/ComplianceItemsGroup';
-import { complianceListItemsStyles } from '../components/ComplianceItem/ComplianceItemsList';
-import { complianceItemsSquareStyles } from '../components/ComplianceItem/ComplianceItemSquare';
 import { chatConfirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
 import { customRadioButtonStyles } from '../components/CustomRadioButton';
 import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
@@ -98,6 +95,9 @@ import { shareModalStyles } from '../components/ShareModal';
 import { sortButtonStyles } from '../components/SortButton';
 import { statusSelectorStyles } from '../components/StatusSelector';
 import { avatarUserStyles } from '../components/Team/AvatarUser';
+import { trackerGroupItemsStyles } from '../components/TrackerItem/TrackerItemsGroup';
+import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsList';
+import { trackerItemsSquareStyles } from '../components/TrackerItem/TrackerItemSquare';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { walkItemModalStyles } from '../components/WalkItems/WalkItemModal';
@@ -108,24 +108,24 @@ import { actionsStyles } from '../pages/actions';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
 import { businessUnitsStyles } from '../pages/admin/business-units';
 import { categoriesStyles } from '../pages/admin/categories';
-import { complianceItemsAdminWithContextStyles } from '../pages/admin/compliance-items';
 import { locationsStyles } from '../pages/admin/locations';
 import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
+import { trackerItemsAdminWithContextStyles } from '../pages/admin/tracker-items';
 import { userItemStyles } from '../pages/admin/users';
 import { auditItemStyles } from '../pages/audit';
 import { auditHistoryStyles } from '../pages/audit/history';
 import { auditParticipantsStyles } from '../pages/audit/participants';
 import { auditsStyles } from '../pages/audits';
-import { historyPageStyles } from '../pages/compliance-item/history';
-import { complianceItemResponseStyles } from '../pages/compliance-item/index';
-import { teamPageStyles } from '../pages/compliance-item/team';
-import { complianceItemStyles } from '../pages/compliance-items';
 import { insightsStyles } from '../pages/insights';
 import { actionsInsightsStyles } from '../pages/insights/actions';
 import { answersInsightsStyles } from '../pages/insights/answers';
 import { auditsInsightsStyles } from '../pages/insights/audits';
 import { loginPageStyles } from '../pages/login';
 import { logoutPageStyles } from '../pages/logout';
+import { historyPageStyles } from '../pages/tracker-item/history';
+import { trackerItemResponseStyles } from '../pages/tracker-item/index';
+import { teamPageStyles } from '../pages/tracker-item/team';
+import { trackerItemStyles } from '../pages/tracker-items';
 import { walkItemsStyles } from '../pages/walk-items';
 
 // http://chir.ag/projects/name-that-color - Get color names
@@ -177,7 +177,7 @@ const getTheme = (organizationTheme?: any) => {
         ...actionsStyles,
         ...adminModalStyles,
         ...additionalDetailsStyles,
-        ...addComplianceItemAttributeStyles,
+        ...addTrackerItemAttributeStyles,
         ...adminModalStyles,
         ...adminTableHeaderElementStyles,
         ...adminTableHeaderStyles,
@@ -211,17 +211,17 @@ const getTheme = (organizationTheme?: any) => {
         ...chatItemStyles,
         ...chatStyles,
         ...chatMentionStyles,
-        ...cloneComplianceItemModalStyles,
-        ...complianceGroupItemsStyles,
-        ...complianceItemModalStyles,
-        ...complianceItemsAdminWithContextStyles,
-        ...complianceItemResponseStyles,
-        ...complianceItemStyles,
-        ...complianceItemsSquareStyles,
-        ...complianceListItemsStyles,
+        ...cloneTrackerItemModalStyles,
+        ...trackerGroupItemsStyles,
+        ...trackerItemModalStyles,
+        ...trackerItemsAdminWithContextStyles,
+        ...trackerItemResponseStyles,
+        ...trackerItemStyles,
+        ...trackerItemsSquareStyles,
+        ...trackerListItemsStyles,
         ...customRadioButtonStyles,
         ...datepickerStyles,
-        ...deleteComplianceItemModalStyles,
+        ...deleteTrackerItemModalStyles,
         ...documentUploadedStyles,
         ...dropdownStyles,
         ...emailTemplateStyles,
@@ -388,7 +388,7 @@ const getTheme = (organizationTheme?: any) => {
           font: '#272727',
           eye: '#A2171E',
         },
-        adminComplianceItems: {
+        adminTrackerItems: {
           headers: '#9A9EA1',
           element: {
             bg: '#FFFFFF',
@@ -432,7 +432,7 @@ const getTheme = (organizationTheme?: any) => {
           manyBg: '#FFFFFF',
           elementBg: '#FFFFFF',
         },
-        adminComplianceItemModal: {
+        adminTrackerItemModal: {
           bg: '#F2F2F2',
           primaryButton: {
             bg: '#A2171E',

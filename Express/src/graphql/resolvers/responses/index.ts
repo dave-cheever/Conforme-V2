@@ -59,8 +59,8 @@ export const responsesTypeDefs = `
     status: String!
     calculatedStatus: String!
     published: Boolean!
-    complianceItemId: ID!
-    complianceItem: ComplianceItem
+    trackerItemId: ID!
+    trackerItem: TrackerItem
     businessUnit: BusinessUnit
     evidence: [ResponseEvidence]
     attachments: [Document]
@@ -79,7 +79,7 @@ export const responsesTypeDefs = `
 
   input ResponsesQuery {
     _id: ID
-    complianceItemsIds: [ID]
+    trackerItemsIds: [ID]
     regulatoryBodiesIds: [ID]
     categoriesIds: [ID]
     businessUnitsIds: [ID]
@@ -135,7 +135,7 @@ export const responsesMutationDefs = `
   addDocuments(responseDocumentsAddInput: ResponseDocumentsAddInput!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
   renewResponse(_id: ID!): Response!
-  submitResponse(_id: ID!): Boolean!
+  submitResponse(_id: ID!): Date!
   updateResponseQuestions(updateResponseQuestionsModify: UpdateResponseQuestionsModify!): Boolean!
   updateResponse(updateResponseModify: UpdateResponseModify!): Response!
 `;

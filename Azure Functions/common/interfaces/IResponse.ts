@@ -1,7 +1,7 @@
 import { IBase } from "./IBase";
 import { IBusinessUnit } from "./IBusinessUnit";
 import { IComment } from "./IComment";
-import { IComplianceItem } from "./IComplianceItem";
+import { ITrackerItem } from "./ITrackerItem";
 import { IDocument } from "./IDocument";
 import { ITrackerQuestion } from "./ITrackerQuesion";
 import { IUser } from "./IUser";
@@ -15,13 +15,11 @@ export interface IEvidence {
 
 export interface IResponse extends IBase {
   // Base fields - saved for response in database
-  complianceItemId: string;
+  trackerItemId: string;
   businessUnitId: string;
-  firstCompletionDate: Date | null;
   lastCompletionDate: Date | null;
-  lastRenewalDate: Date | null;
-  nextRenewalDate: Date | null;
-  status: string;
+  dueDate: Date | null;
+  status: 'draft' | 'submitted';
   evidence: IEvidence[];
   attachments: IDocument[];
   questions: ITrackerQuestion<TQuestionValue>[];
@@ -30,16 +28,16 @@ export interface IResponse extends IBase {
   contributorsIds?: string[];
   followersIds?: string[];
   published: boolean;
-  organizationId: string;
 
   // Comments - injected to response when getting from database
   // Taken from Comments collection
   comments: IComment[];
 
-  // Compliance items fields - injected to response when getting from database
-  complianceItem: IComplianceItem;
+  // Tracker items fields - injected to response when getting from database
+  trackerItem: ITrackerItem;
 
-  // Additional fields - can be added when getting from database
+  // Additional fields - added when getting from database
+  calculatedStatus: 'compliant' | 'nonCompliant' | 'comingUp';
   daysToDueDate?: number;
   businessUnit?: IBusinessUnit;
   responsible?: IUser;

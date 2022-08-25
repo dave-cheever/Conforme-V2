@@ -32,7 +32,7 @@ const GET_BUSINESS_UNITS = gql`
         displayName
       }
       imgUrl
-      complianceItemsResponsesCount
+      trackerItemsResponsesCount
     }
   }
 `;
@@ -227,7 +227,7 @@ const BusinessUnits = () => {
         </>
       )}
       <Flex align="center" w={['20%', 'calc(70% / 2)']}>
-        <Text>{businessUnit.complianceItemsResponsesCount || 0}</Text>
+        <Text>{businessUnit.trackerItemsResponsesCount || 0}</Text>
         <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"
@@ -300,11 +300,11 @@ const BusinessUnits = () => {
             <AdminTableHeaderElement
               label="Responses count"
               onClick={() => {
-                setSortType('complianceItemsResponsesCount');
-                setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
+                setSortType('trackerItemsResponsesCount');
+                setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
               }}
-              showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-              sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
+              showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+              sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
               tooltip="Only published items"
               w={['20%', 'calc(70% / 2)']}
             />

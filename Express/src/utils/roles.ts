@@ -39,7 +39,7 @@ const defaultPermissions = [
   'regulatoryBodies.view',
   'settings.view',
   'businessUnits.view',
-  'complianceItems.view',
+  'trackerItems.view',
   'audits.add',
 ];
 
@@ -119,7 +119,7 @@ const roles = {
       'businessUnits',
       'categories',
       'comments.add',
-      'complianceItems',
+      'trackerItems',
       'insights',
       'items',
       'locations',

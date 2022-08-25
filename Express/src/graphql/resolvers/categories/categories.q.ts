@@ -15,19 +15,19 @@ const categories = async (
   try {
     const categories = await Categories.customFind({}, organization._id);
 
-    if (shouldJoin('complianceItemsResponsesCount')) {
+    if (shouldJoin('trackerItemsResponsesCount')) {
       for (const category of categories) {
         const pipeline: any[] = [];
         join({
           pipeline,
           collection: 'trackerItems',
-          from: 'complianceItemId',
-          to: 'complianceItem',
+          from: 'trackerItemId',
+          to: 'trackerItem',
         });
         pipeline.push({
           $match: {
-            'complianceItem.categoryId': category._id,
-            'complianceItem.metatags.removedAt': { $eq: null },
+            'trackerItem.categoryId': category._id,
+            'trackerItem.metatags.removedAt': { $eq: null },
             published: true,
           },
         });
@@ -36,7 +36,7 @@ const categories = async (
         });
         const responses = await Responses.aggregate(pipeline);
         if (responses && responses.length > 0)
-          category.complianceItemsResponsesCount = responses[0].count;
+          category.trackerItemsResponsesCount = responses[0].count;
 
       }
     }

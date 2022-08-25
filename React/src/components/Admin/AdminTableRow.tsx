@@ -35,7 +35,7 @@ const AdminTableRow = ({
         {element.name}
       </Flex>
       <Flex alignItems="center" justifyContent={['flex-end', 'flex-start']} mt={['5px', '0']} pr={['21px', '0']} w={['20%', '50%']}>
-        {element.complianceItemsResponsesCount || '0'}
+        {element.trackerItemsResponsesCount || '0'}
         <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"

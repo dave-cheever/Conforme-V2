@@ -3,7 +3,7 @@ export type TCollection =
   | 'businessUnits'
   | 'categories'
   | 'comments'
-  | 'complianceItems'
+  | 'trackerItems'
   | 'locations'
   | 'organizations'
   | 'questions'

@@ -10,10 +10,10 @@ const ResponseLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = fa
   const { navigateTo, isPathActive } = useNavigate();
   const { id }: { id: string } = useParams();
 
-  const active = isPathActive(`/compliance-item/${id}${url}`, { exact: true });
+  const active = isPathActive(`/tracker-item/${id}${url}`, { exact: true });
 
   const redirectPage = () => {
-    navigateTo(`/compliance-item/${id}${url}${history.location.search}`);
+    navigateTo(`/tracker-item/${id}${url}${history.location.search}`);
   };
 
   return (

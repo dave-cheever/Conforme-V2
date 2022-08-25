@@ -1,12 +1,12 @@
 import { useAppContext } from '../contexts/AppProvider';
 import Audits from './audits';
-import ComplianceItems from './compliance-items';
+import TrackerItems from './tracker-items';
 
 const Dashboard = () => {
   const { module } = useAppContext();
   if (module?.type === 'audits') return <Audits />;
 
-  return <ComplianceItems />;
+  return <TrackerItems />;
 };
 
 export default Dashboard;

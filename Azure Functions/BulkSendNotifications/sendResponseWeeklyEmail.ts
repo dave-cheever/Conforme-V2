@@ -49,15 +49,15 @@ const sendResponseWeeklyEmail = async (emailType: string, config) => {
       },
       {
         $lookup: {
-          from: "complianceItems",
-          localField: "complianceItemId",
+          from: "trackerItems",
+          localField: "trackerItemId",
           foreignField: "_id",
-          as: "complianceItem",
+          as: "trackerItem",
         },
       },
       {
         $unwind: {
-          path: "$complianceItem",
+          path: "$trackerItem",
           preserveNullAndEmptyArrays: true,
         },
       },

@@ -18,10 +18,10 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
   return (
     <Flex
       align="center"
-      bg="adminComplianceItems.element.bg"
+      bg="adminTrackerItems.element.bg"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
-      color="adminComplianceItems.element.font"
+      color="adminTrackerItems.element.font"
       cursor="pointer"
       flexShrink={0}
       fontSize="smm"
@@ -60,7 +60,7 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
       )}
       <Spacer display={['block', 'none']} />
       <Flex alignItems="center" w={['97px', 'full']}>
-        {module?.type === 'tracker' ? location.complianceItemsResponsesCount || '0' : location.totalAuditsCount || 0}
+        {module?.type === 'tracker' ? location.trackerItemsResponsesCount || '0' : location.totalAuditsCount || 0}
         <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"

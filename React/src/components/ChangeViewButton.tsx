@@ -53,12 +53,12 @@ const ChangeViewButton = ({
           _active={{}}
           _hover={{}}
           as={Button}
-          bg="complianceItems.header.menuButtonBg"
+          bg="trackerItems.header.menuButtonBg"
           fontSize="14px"
           fontWeight="700"
           h="40px"
           ml={['15px', '0']}
-          rightIcon={<ChevronRight color="complianceItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
+          rightIcon={<ChevronRight color="trackerItems.header.rightIcon" h="12px" mt="3px" transform="rotate(90deg)" w="12px" />}
           rounded="10px"
         >
           <Stack direction="row" spacing={2}>
@@ -72,8 +72,8 @@ const ChangeViewButton = ({
       <MenuList border="none" boxShadow="simple" rounded="lg" w="100px" zIndex={2}>
         {views.includes('grid') && (
           <MenuItem
-            _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-            color={viewMode === 'grid' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
+            _focus={{ color: 'trackerItems.header.menuItemFocus' }}
+            color={viewMode === 'grid' ? 'trackerItems.header.menuItemFontSelected' : 'trackerItems.header.menuItemFont'}
             fontSize="14px"
             onClick={() => changeViewMode('grid')}
           >
@@ -83,8 +83,8 @@ const ChangeViewButton = ({
         )}
         {views.includes('list') && (
           <MenuItem
-            _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-            color={viewMode === 'list' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
+            _focus={{ color: 'trackerItems.header.menuItemFocus' }}
+            color={viewMode === 'list' ? 'trackerItems.header.menuItemFontSelected' : 'trackerItems.header.menuItemFont'}
             fontSize="14px"
             onClick={() => changeViewMode('list')}
           >
@@ -94,8 +94,8 @@ const ChangeViewButton = ({
         )}
         {views.includes('group') && (
           <MenuItem
-            _focus={{ color: 'complianceItems.header.menuItemFocus' }}
-            color={viewMode === 'group' ? 'complianceItems.header.menuItemFontSelected' : 'complianceItems.header.menuItemFont'}
+            _focus={{ color: 'trackerItems.header.menuItemFocus' }}
+            color={viewMode === 'group' ? 'trackerItems.header.menuItemFontSelected' : 'trackerItems.header.menuItemFont'}
             fontSize="14px"
             onClick={() => changeViewMode('group')}
           >

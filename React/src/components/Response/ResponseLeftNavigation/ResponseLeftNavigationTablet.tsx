@@ -44,7 +44,7 @@ const ResponseLeftNavigationTablet = () => {
           fontSize="14px"
           h="30px"
           mb="20px"
-          onClick={() => navigateTo('/compliance-items')}
+          onClick={() => navigateTo('/tracker-items')}
           w="full"
         >
           <ChevronRight ml={2} transform="Rotate(180deg)" />

@@ -59,13 +59,13 @@ const RenewalModal = () => {
             <Loader center />
           ) : !renewedResponse ? (
             <Text>
-              You are about to start new review of <b>{response?.complianceItem?.name}</b> {t('tracker item')} for{' '}
+              You are about to start new review of <b>{response?.trackerItem?.name}</b> {t('tracker item')} for{' '}
               <b>{response?.businessUnit?.name}</b>
               .&nbsp; That will move existing data to history and allow you to fill the response with new data.&nbsp;
             </Text>
           ) : (
             <Text>
-              <b>{response?.complianceItem?.name}</b> for <b>{response?.businessUnit?.name}</b> was renewed.&nbsp; Complete it before{' '}
+              <b>{response?.trackerItem?.name}</b> for <b>{response?.businessUnit?.name}</b> was renewed.&nbsp; Complete it before{' '}
               <b>{moment(renewedResponse?.dueDate).format('D MMM YYYY')}</b>.
             </Text>
           )}

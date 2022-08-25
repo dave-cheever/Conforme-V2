@@ -6,7 +6,7 @@ import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 
 import { SwitchOptions } from '../../bootstrap/config';
-import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import { OpenMenuArrow } from '../../icons';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
 import { questionHeader } from '../../utils/helpers';
@@ -25,7 +25,7 @@ const QuestionSimpleForm = ({
   setEditQuestionIndex,
   setEditQuestion,
 }: IQuestionFormBase<string>) => {
-  const { complianceItem } = useComplianceItemModalContext();
+  const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
     formState: { errors },
@@ -50,7 +50,7 @@ const QuestionSimpleForm = ({
   const [selectedRadio, setSelectedRadio] = useState<string>('');
 
   const questionAlreadyExist =
-    (complianceItem.questions || []).findIndex(({ name }, index) => {
+    (trackerItem.questions || []).findIndex(({ name }, index) => {
       if (editQuestionIndex === index && name === questionName) return false;
       return name === questionName;
     }) > -1;
@@ -171,7 +171,7 @@ const QuestionSimpleForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
+          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question

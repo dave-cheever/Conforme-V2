@@ -7,11 +7,11 @@ import { ArrowDownIcon, ArrowUpIcon, ResetIcon } from '../../icons';
 import IFilter from '../../interfaces/IFilter';
 import BusinessUnitFilter from './BusinessUnitFilter';
 import CategoryFilter from './CategoryFilter';
-import ComplianceItemFilter from './ComplianceItemFilter';
 import DateFilter from './DateFilter';
 import LocationFilter from './LocationFilter';
 import RegulatoryBodyFilter from './RegulatoryBodyFilter';
 import StateChoiceFilter from './StateChoiceFilter';
+import TrackerItemFilter from './TrackerItemFilter';
 import UserFilter from './UserFilter';
 
 const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) => {
@@ -32,8 +32,8 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
       case 'categoriesIds':
         return <CategoryFilter />;
 
-      case 'complianceItemsIds':
-        return <ComplianceItemFilter />;
+      case 'trackerItemsIds':
+        return <TrackerItemFilter />;
 
       case 'dueDate':
         return <DateFilter filterName="dueDate" />;

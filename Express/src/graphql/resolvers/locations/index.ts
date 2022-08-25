@@ -21,7 +21,7 @@ export const locationsTypeDefs = `
     ownerId: String!
     organizationId: String
     notes: String!
-    complianceItemsResponsesCount: Int
+    trackerItemsResponsesCount: Int
     totalAuditsCount: Int
     completedAuditsCount: Int
     upcomingAuditsCount: Int

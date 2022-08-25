@@ -15,7 +15,7 @@ const businessUnits = async (
   try {
     let businessUnits = await BusinessUnits.customFind(businessUnitQueryInput, organization._id);
 
-    if (shouldJoin('complianceItemsResponsesCount')) {
+    if (shouldJoin('trackerItemsResponsesCount')) {
       businessUnits = await Promise.all(
         businessUnits.map(
           (businessUnit) =>
@@ -31,12 +31,12 @@ const businessUnits = async (
               join({
                 pipeline,
                 collection: 'trackerItems',
-                from: 'complianceItemId',
-                to: 'complianceItem',
+                from: 'trackerItemId',
+                to: 'trackerItem',
               });
               pipeline.push({
                 $match: {
-                  'complianceItem.metatags.removedAt': { $eq: null },
+                  'trackerItem.metatags.removedAt': { $eq: null },
                   published: true,
                 },
               });
@@ -46,7 +46,7 @@ const businessUnits = async (
               const responses = await Responses.aggregate(pipeline);
               if (responses && responses.length > 0)
                 // eslint-disable-next-line no-param-reassign
-                businessUnit.complianceItemsResponsesCount = responses[0].count;
+                businessUnit.trackerItemsResponsesCount = responses[0].count;
 
               // eslint-disable-next-line no-promise-executor-return
               return res(businessUnit);

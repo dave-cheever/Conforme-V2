@@ -12,7 +12,7 @@ import FilterCheckBox from './FilterCheckBox';
 
 const StateChoiceFilter = ({ name }: { name: string }) => {
   const { filtersValues, setFilters } = useFiltersContext();
-  const { complianceItemStatuses } = useFiltersUtils();
+  const { trackerItemStatuses } = useFiltersUtils();
   const location = useLocation();
   const { getPath } = useNavigate();
 
@@ -33,7 +33,7 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
   const renderChoices = () => {
     switch (name) {
       case 'itemStatus':
-        return Object.entries(complianceItemStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
+        return Object.entries(trackerItemStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       case 'status':
         return Object.entries(usedStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
       case 'priority':

@@ -18,8 +18,6 @@ import { IBusinessUnit } from './IBusinessUnit';
 import { IBusinessUnitModel } from './IBusinessUnitModel';
 import { IComment } from './IComment';
 import { ICommentModel } from './ICommentModel';
-import { IComplianceItem } from './IComplianceItem';
-import { IComplianceItemModel } from './IComplianceItemModel';
 import { IDocument } from './IDocument';
 import { ILocation } from './ILocation';
 import { ILocationModel } from './ILocationModel';
@@ -39,6 +37,8 @@ import { IScope } from './IScope';
 import { ISession } from './ISession';
 import { ISetting } from './ISetting';
 import { ISettingModel } from './ISettingModel';
+import { ITrackerItem } from './ITrackerItem';
+import { ITrackerItemModel } from './ITrackerItemModel';
 import { ITrackerQuestion } from './ITrackerQuestion';
 import { IGraphUser, IUser } from './IUser';
 import { IUserModel } from './IUserModel';
@@ -73,8 +73,6 @@ export {
   IBaseWithNameModel,
   IBusinessUnit,
   IBusinessUnitModel,
-  IComplianceItem,
-  IComplianceItemModel,
   IComment,
   ICommentModel,
   IDocument,
@@ -97,6 +95,8 @@ export {
   ISession,
   ISetting,
   ISettingModel,
+  ITrackerItem,
+  ITrackerItemModel,
   ITrackerQuestion,
   IUser,
   IUserModel,

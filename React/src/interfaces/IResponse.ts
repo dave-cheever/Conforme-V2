@@ -1,7 +1,7 @@
 import { IBase } from './IBase';
 import { IBusinessUnit } from './IBusinessUnit';
 import { IComment } from './IComment';
-import { IComplianceItem } from './IComplianceItem';
+import { ITrackerItem } from './ITrackerItem';
 import { ITrackerQuestion } from './ITrackerQuestion';
 import { IUser } from './IUser';
 import { TQuestionValue } from './TQuestionValue';
@@ -21,7 +21,7 @@ export interface IEvidence {
 
 export interface IResponse extends IBase {
   // Base fields - saved for response in database
-  complianceItemId: string;
+  trackerItemId: string;
   businessUnitId: string;
   lastCompletionDate: Date | null;
   dueDate: Date | null;
@@ -40,8 +40,8 @@ export interface IResponse extends IBase {
   // Taken from Comments collection
   comments: IComment[];
 
-  // Compliance items fields - injected to response when getting from database
-  complianceItem: IComplianceItem;
+  // Tracker items fields - injected to response when getting from database
+  trackerItem: ITrackerItem;
 
   // Additional fields - can be added when getting from database
   daysToDueDate?: number;

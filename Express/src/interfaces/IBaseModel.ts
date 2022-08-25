@@ -1,5 +1,4 @@
 import { Model } from 'mongoose';
-import { IComment } from './IComment';
 
 export interface IBaseModel<I> extends Model<I> {
   customCreate: (

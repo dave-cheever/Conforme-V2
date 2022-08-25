@@ -42,7 +42,7 @@ const Details = () => {
   return (
     <VStack align="flex-start" h="full" minH={['30vh', 'none']} overflow="visible" pb="25px" spacing={8} w="full">
       <VStack align="flex-start">
-        {response?.complianceItem?.description && (
+        {response?.trackerItem?.description && (
           <Text color="responseRenewalDetails.labelColor" fontSize="14px">
             Description
           </Text>

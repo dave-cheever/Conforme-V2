@@ -133,7 +133,7 @@ export const trackerFilterDates = {
 };
 
 export const collections = {
-  'compliance-items': 'Compliance items',
+  'tracker-items': 'Tracker items',
   responses: 'Responses',
   'regulatory-bodies': 'Regulatory bodies',
   categories: 'Categories',
@@ -159,7 +159,7 @@ const useFiltersUtils = () => {
   const location = useLocation();
 
   // Constants needs to be inside of useFiltersUtils in order to have working translations
-  const complianceItemStatuses = {
+  const trackerItemStatuses = {
     compliant: capitalize(t('compliant')),
     nonCompliant: capitalize(t('non-compliant')),
     notStarted: 'Not started',
@@ -223,7 +223,7 @@ const useFiltersUtils = () => {
   };
 
   return {
-    complianceItemStatuses,
+    trackerItemStatuses,
     getFilters,
   };
 };

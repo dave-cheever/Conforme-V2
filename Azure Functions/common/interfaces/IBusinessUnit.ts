@@ -9,7 +9,7 @@ export interface IBusinessUnit extends IBase {
   organizationId: string;
 
   // Additional fields - can be added when getting from database
-  complianceItemsResponsesCount?: number;
+  trackerItemsResponsesCount?: number;
   totalAuditsCount?: number;
   owner?: IUser;
 }

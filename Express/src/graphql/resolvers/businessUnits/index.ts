@@ -22,7 +22,7 @@ export const businessUnitsTypeDefs = `
     imgUrl: String
     ownerId: String
     owner: User
-    complianceItemsResponsesCount: Int
+    trackerItemsResponsesCount: Int
     totalAuditsCount: Int
     completedAuditsCount: Int
     upcomingAuditsCount: Int

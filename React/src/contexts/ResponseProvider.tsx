@@ -58,7 +58,7 @@ const GET_RESPONSE = gql`
           value
         }
       }
-      complianceItem {
+      trackerItem {
         _id
         name
         reference

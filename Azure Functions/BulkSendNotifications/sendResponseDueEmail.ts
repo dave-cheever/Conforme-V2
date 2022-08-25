@@ -47,15 +47,15 @@ const sendResponseDueEmail = async (emailType: string, config) => {
       },
       {
         $lookup: {
-          from: "complianceItems",
-          localField: "complianceItemId",
+          from: "trackerItems",
+          localField: "trackerItemId",
           foreignField: "_id",
-          as: "complianceItem",
+          as: "trackerItem",
         },
       },
       {
         $unwind: {
-          path: "$complianceItem",
+          path: "$trackerItem",
           preserveNullAndEmptyArrays: true,
         },
       },
@@ -113,25 +113,25 @@ const sendResponseDueEmail = async (emailType: string, config) => {
       const {
         _id,
         daysToDueDate,
-        complianceItem,
+        trackerItem,
         accountable,
         responsible,
-        nextRenewalDate,
+        dueDate,
       } = response;
 
       const recipients = [...[accountable], ...[responsible]];
 
       const subject = getEmailSubject(emailType, {
-        complianceName: complianceItem.name,
+        trackerName: trackerItem.name,
       });
 
       for (const recipient of recipients) {
         const body = await getEmailTemplate({
           emailType,
           emailData: {
-            complianceName: complianceItem.name,
+            trackerName: trackerItem.name,
             clientUrl: organization.domain,
-            dueDate: nextRenewalDate,
+            dueDate: dueDate,
             daysToDueDate,
             firstName: recipient.firstName || recipient.displayName,
             _id,

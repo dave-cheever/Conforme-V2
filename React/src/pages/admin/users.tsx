@@ -82,7 +82,7 @@ const Users = () => {
     if (isPermitted({ user, action: 'adminPanel' })) {
       pages.push({
         name: 'Admin Page',
-        url: module?.type === 'tracker' ? '/admin/compliance-items' : '/audits',
+        url: module?.type === 'tracker' ? '/admin/tracker-items' : '/audits',
       });
     }
     return pages;

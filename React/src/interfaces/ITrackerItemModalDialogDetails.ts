@@ -1,0 +1,8 @@
+export interface ITrackerItemModalDialogDetails {
+  isOpen: boolean;
+  title?: string;
+  description?: string;
+  state?: string;
+  showButtons: boolean;
+  action?: () => void;
+}

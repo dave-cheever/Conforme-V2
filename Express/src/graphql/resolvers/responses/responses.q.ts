@@ -51,11 +51,11 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       });
     }
 
-    // Filter by compliance item id
-    if (responsesQuery?.complianceItemsIds) {
+    // Filter by tracker item id
+    if (responsesQuery?.trackerItemsIds) {
       pipeline.push({
         $match: {
-          complianceItemId: { $in: responsesQuery.complianceItemsIds },
+          trackerItemId: { $in: responsesQuery.trackerItemsIds },
         },
       });
     }
@@ -178,42 +178,42 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       });
     }
 
-    // Join compliance item
+    // Join tracker item
     if (
-      // Need to get Compliance Item if there are any dependant filters
+      // Need to get Tracker Item if there are any dependant filters
       responsesQuery?.includeNotPublished ||
       responsesQuery?.categoriesIds ||
       responsesQuery?.regulatoryBodiesIds ||
-      shouldJoin(['complianceItem']) ||
+      shouldJoin(['trackerItem']) ||
       shouldJoin(['calculatedStatus'])
     ) {
       join({
         pipeline,
         collection: 'trackerItems',
-        from: 'complianceItemId',
-        to: 'complianceItem',
+        from: 'trackerItemId',
+        to: 'trackerItem',
       });
     }
 
-    // Filter by category id (in compliance item)
+    // Filter by category id (in tracker item)
     if (responsesQuery?.categoriesIds) {
       pipeline.push({
         $match: {
-          'complianceItem.categoryId': { $in: responsesQuery.categoriesIds },
+          'trackerItem.categoryId': { $in: responsesQuery.categoriesIds },
         },
       });
     }
 
-    // Filter by location id (in compliance item)
+    // Filter by location id (in tracker item)
     if (responsesQuery?.locationsIds) {
       pipeline.push({
         $match: {
-          'complianceItem.locationsIds': { $in: responsesQuery.locationsIds },
+          'trackerItem.locationsIds': { $in: responsesQuery.locationsIds },
         },
       });
     }
 
-    // Filter by user id (in compliance item)
+    // Filter by user id (in tracker item)
     if (responsesQuery?.usersIds) {
       const conds: any = [];
       if (responsesQuery?.usersIds.responsibleIds?.length > 0) {
@@ -243,11 +243,11 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       });
     }
 
-    // Filter by regulatory body id (in compliance item)
+    // Filter by regulatory body id (in tracker item)
     if (responsesQuery?.regulatoryBodiesIds) {
       pipeline.push({
         $match: {
-          'complianceItem.regulatoryBodyId': {
+          'trackerItem.regulatoryBodyId': {
             $in: responsesQuery.regulatoryBodiesIds,
           },
         },
@@ -255,22 +255,22 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
     }
 
     // Join category
-    if (shouldJoin(['complianceItem', 'category'])) {
+    if (shouldJoin(['trackerItem', 'category'])) {
       join({
         pipeline,
         collection: 'categories',
-        from: 'complianceItem.categoryId',
-        to: 'complianceItem.category',
+        from: 'trackerItem.categoryId',
+        to: 'trackerItem.category',
       });
     }
 
     // Join regulatory body
-    if (shouldJoin(['complianceItem', 'regulatoryBody'])) {
+    if (shouldJoin(['trackerItem', 'regulatoryBody'])) {
       join({
         pipeline,
         collection: 'regulatoryBodies',
-        from: 'complianceItem.regulatoryBodyId',
-        to: 'complianceItem.regulatoryBody',
+        from: 'trackerItem.regulatoryBodyId',
+        to: 'trackerItem.regulatoryBody',
       });
     }
 
@@ -322,7 +322,7 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       );
       const triggers = comingUpTriggersSetting?.[0]?.value;
       for (const response of responses) {
-        const daysToComingUp = triggers[response.complianceItem.frequency]
+        const daysToComingUp = triggers[response.trackerItem.frequency]
         const isOverdue = response.dueDate ? isAfter(new Date(), new Date(response.dueDate)) : false;
         const isComingUp = response.dueDate ? isAfter(addDays(new Date(), daysToComingUp), new Date(response.dueDate)) : false;
         if (

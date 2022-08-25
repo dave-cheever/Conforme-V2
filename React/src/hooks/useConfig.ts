@@ -109,7 +109,7 @@ const useConfig = () => {
       icon: Admin,
       permission: 'adminPanel.view',
       subSections: [
-        { label: capitalize(pluralize(t('tracker item'))), url: '/admin/compliance-items' },
+        { label: capitalize(pluralize(t('tracker item'))), url: '/admin/tracker-items' },
         { label: 'Regulatory bodies', url: '/admin/regulatory-bodies' },
         { label: 'Categories', url: '/admin/categories' },
         { label: 'Locations', url: '/admin/locations' },
@@ -122,7 +122,7 @@ const useConfig = () => {
   ];
 
   const initialFilters: IFilters = {
-    complianceItemsIds: {
+    trackerItemsIds: {
       name: capitalize(t('tracker item')),
       value: [],
     },
@@ -183,11 +183,11 @@ const useConfig = () => {
   ];
 
   const trackerAddItems = [
-    { label: capitalize(pluralize(t('complianceItem'))), url: '/admin/compliance-items', icon: BlankPage },
+    { label: capitalize(t('tracker item')), url: '/admin/tracker-items', icon: BlankPage },
     { label: 'Regulatory body', url: '/admin/regulatory-bodies', icon: RegulatoryBodyIcon },
     { label: 'Category', url: '/admin/categories', icon: CategoryIcon },
     { label: 'Location', url: '/admin/locations', icon: LocationIcon },
-    { label: pluralize(capitalize(t('businessUnit'))), url: '/admin/business-units', icon: TeamsIcon },
+    { label: capitalize(t('business unit')), url: '/admin/business-units', icon: TeamsIcon },
   ];
 
   return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems, trackerAddItems, auditAddItems };

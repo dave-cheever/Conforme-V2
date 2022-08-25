@@ -26,16 +26,16 @@ const GET_PARTICIPANTS = gql`
 
 export const useChatContext = () => {
   const context = useContext(ChatContext);
-  if (!context) throw new Error('useComplianceItemModalContext must be used within the ComplianceItemModalProvider');
+  if (!context) throw new Error('useChatContext must be used within the ChatProvider');
 
   return context;
 };
 
-const ChatProvider = ({ children, component }: { children: React.ReactNode, component: 'audit' | 'response' }) => {
+const ChatProvider = ({ children, component }: { children: React.ReactNode; component: 'audit' | 'response' }) => {
   const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
   const [getParticipants, { data: participantsData, loading: participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
-  const { audit } = useAuditContext()
-  const { response } = useResponseContext()
+  const { audit } = useAuditContext();
+  const { response } = useResponseContext();
 
   useEffect(() => {
     let participants: string[] = [];
@@ -76,4 +76,4 @@ const ChatProvider = ({ children, component }: { children: React.ReactNode, comp
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
 
-export default ChatProvider
+export default ChatProvider;

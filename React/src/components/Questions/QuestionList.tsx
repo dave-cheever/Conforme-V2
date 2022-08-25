@@ -6,19 +6,19 @@ import { Box, Flex, Stack } from '@chakra-ui/react';
 import { Move } from '../../icons';
 import QuestionListElement from './QuestionListElement';
 
-const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange, handleEdit }) => {
+const QuestionList = ({ setIsDragging, trackerItem, disabled, handleChange, handleEdit }) => {
   const moveQuestion = (result) => {
     setIsDragging(false);
     if (!result.source || !result.destination) return;
 
-    const questions = [...complianceItem.questions];
+    const questions = [...trackerItem.questions];
     const [removed] = questions.splice(result.source.index, 1);
     questions.splice(result.destination.index, 0, removed);
     handleChange(questions);
   };
 
   const removeQuestion = (index: number) => {
-    const questions = [...complianceItem.questions];
+    const questions = [...trackerItem.questions];
     questions.splice(index, 1);
     handleChange(questions);
   };
@@ -29,7 +29,7 @@ const QuestionList = ({ setIsDragging, complianceItem, disabled, handleChange, h
         <Droppable droppableId="questionsDroppable">
           {(provided) => (
             <Box ref={provided.innerRef} {...provided.droppableProps} width="full">
-              {complianceItem.questions?.map((item, index) => (
+              {trackerItem.questions?.map((item, index) => (
                 <Draggable draggableId={item.name} index={index} key={item.name}>
                   {(provided) => (
                     <Box m={2}>

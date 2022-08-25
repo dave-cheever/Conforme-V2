@@ -35,11 +35,6 @@ import {
   commentsQueryDefs,
   commnentsTypeDefs,
 } from './resolvers/comments';
-import {
-  complianceItemsMutationDefs,
-  complianceItemsQueryDefs,
-  complianceItemsTypeDefs,
-} from './resolvers/complianceItems';
 import { graphQueryDefs, graphTypeDefs } from './resolvers/graph';
 import { insightsQueryDefs, insightsTypeDefs } from './resolvers/insights';
 import {
@@ -77,6 +72,11 @@ import {
   settingsTypeDefs,
 } from './resolvers/settings';
 import {
+  trackerItemsMutationDefs,
+  trackerItemsQueryDefs,
+  trackerItemsTypeDefs,
+} from './resolvers/trackerItems';
+import {
   usersMutationsDefs,
   usersQueryDefs,
   usersTypeDefs,
@@ -99,7 +99,7 @@ const typeDefs = gql`
   type BaseWithName {
     _id: ID!
     name: String!
-    complianceItemsResponsesCount: Int
+    trackerItemsResponsesCount: Int
   }
 
   type Document {
@@ -142,7 +142,6 @@ const typeDefs = gql`
   ${auditTypesTypeDefs}
   ${businessUnitsTypeDefs}
   ${commnentsTypeDefs}
-  ${complianceItemsTypeDefs}
   ${graphTypeDefs}
   ${insightsTypeDefs}
   ${locationsTypeDefs}
@@ -152,6 +151,7 @@ const typeDefs = gql`
   ${responsesTypeDefs}
   ${searchTypeDefs}
   ${settingsTypeDefs}
+  ${trackerItemsTypeDefs}
   ${usersTypeDefs}
 
   type Query {
@@ -163,7 +163,6 @@ const typeDefs = gql`
     ${businessUnitsQueryDefs}
     ${categoriesQueryDefs}
     ${commentsQueryDefs}
-    ${complianceItemsQueryDefs}
     ${graphQueryDefs}
     ${insightsQueryDefs}
     ${locationsQueryDefs}
@@ -174,6 +173,7 @@ const typeDefs = gql`
     ${responsesQueryDefs}
     ${searchQueryDefs}
     ${settingsQueryDefs}
+    ${trackerItemsQueryDefs}
     ${usersQueryDefs}
   }
   type Mutation {
@@ -184,13 +184,13 @@ const typeDefs = gql`
     ${businessUnitsMutationDefs}
     ${categoriesMutationDefs}
     ${commentsMutationDefs}
-    ${complianceItemsMutationDefs}
     ${locationsMutationDefs}
     ${questionsCategoriesMutationDefs}
     ${questionsMutationDefs}
     ${regulatoryBodiesMutationDefs}
     ${responsesMutationDefs}
     ${settingsMutationDefs}
+    ${trackerItemsMutationDefs}
     ${usersMutationsDefs}
   }
 `;

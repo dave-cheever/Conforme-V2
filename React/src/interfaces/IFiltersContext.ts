@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { IBaseWithName } from './IBaseWithName';
 import { IBusinessUnit } from './IBusinessUnit';
-import { IComplianceItem } from './IComplianceItem';
 import IFilters, { IActionFilters, IAuditFilters, IResponseFilters, IWalkItemFilters } from './IFilters';
 import { ILocation } from './ILocation';
 import { IQuestionsCategory } from './IQuestionsCategory';
+import { ITrackerItem } from './ITrackerItem';
 import { IUser } from './IUser';
 import { TAuditStatus } from './TAuditStatus';
 import TAuditWalkType from './TAuditWalkType';
@@ -44,7 +44,7 @@ export interface IFiltersContext {
 
   numberOfSelectedFilters: number;
 
-  complianceItems: Partial<IComplianceItem>[];
+  trackerItems: Partial<ITrackerItem>[];
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];
   businessUnits: Partial<IBusinessUnit>[];

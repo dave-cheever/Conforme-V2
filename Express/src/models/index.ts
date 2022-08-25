@@ -6,7 +6,6 @@ import AuditTypes from './AuditTypes';
 import BusinessUnits from './BusinessUnits';
 import Categories from './Categories';
 import Comments from './Comments';
-import ComplianceItems from './ComplianceItems';
 import Locations from './Locations';
 import Notifications from './Notifications';
 import Organizations from './Organizations';
@@ -15,6 +14,7 @@ import QuestionsCategories from './QuestionsCategories';
 import RegulatoryBodies from './RegulatoryBodies';
 import Responses from './Responses';
 import Settings from './Settings';
+import TrackerItems from './TrackerItems';
 import Users from './Users';
 
 export {
@@ -26,7 +26,6 @@ export {
   BusinessUnits,
   Categories,
   Comments,
-  ComplianceItems,
   Locations,
   Notifications,
   Organizations,
@@ -35,5 +34,6 @@ export {
   RegulatoryBodies,
   Responses,
   Settings,
+  TrackerItems,
   Users,
 };

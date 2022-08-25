@@ -3,9 +3,9 @@ import {
   AuditLogs,
   BusinessUnits,
   Categories,
-  ComplianceItems,
   RegulatoryBodies,
   Responses,
+  TrackerItems,
 } from 'app-models';
 import { GraphService } from 'app-services';
 import { isPermitted } from 'app-utils';
@@ -21,12 +21,12 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
     if (!isPermitted({ user, action: 'responses.edit', data: { response } }))
       throw new Error('User is not permitted');
 
-    const complianceItem = await ComplianceItems.customFindById(
-      response.complianceItemId,
+    const trackerItem = await TrackerItems.customFindById(
+      response.trackerItemId,
       organization._id,
     );
-    if (!complianceItem)
-      throw new Error("Compliance item assigned to response doesn't exist");
+    if (!trackerItem)
+      throw new Error("Tracker item assigned to response doesn't exist");
 
     const createSnapshot = async () => {
       // Create a snapshot of response with all the details
@@ -36,11 +36,11 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
         organization._id,
       );
       const category = await Categories.customFindById(
-        complianceItem.categoryId,
+        trackerItem.categoryId,
         organization._id,
       );
       const regulatoryBody = await RegulatoryBodies.customFindById(
-        complianceItem.regulatoryBodyId,
+        trackerItem.regulatoryBodyId,
         organization._id,
       );
       const usersIds = [
@@ -59,15 +59,15 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
           action: 'snapshot',
           element: {
             _id: response._id,
-            name: complianceItem.name,
+            name: trackerItem.name,
           },
           values: {
             response: {
               old: {
                 value: {
                   ...response,
-                  complianceItem: {
-                    ...complianceItem,
+                  trackerItem: {
+                    ...trackerItem,
                     category,
                     regulatoryBody,
                   },
@@ -86,7 +86,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
                     response.followersIds?.includes(_id),
                   ),
                 },
-                label: complianceItem.name,
+                label: trackerItem.name,
               },
             },
           },
@@ -114,7 +114,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
                 ...choice,
                 isCorrect: false,
               })),
-              requiredAnswer
+              requiredAnswer,
             };
           }
           return { type, name, description, required, requiredAnswer, value: null, ...(options && { options }) };

@@ -62,7 +62,7 @@ const ResponseLeftNavigation = () => {
       direction="column"
       display={['none', 'none', 'flex']}
       fontWeight="400"
-      h='100vh'
+      h="100vh"
       justifyContent="space-between"
       overflow="auto"
       px={6}
@@ -81,7 +81,7 @@ const ResponseLeftNavigation = () => {
           fontSize="14px"
           h="30px"
           mb="30px"
-          onClick={() => navigateTo('/compliance-items')}
+          onClick={() => navigateTo('/tracker-items')}
         >
           <ChevronRight mr={2} transform="Rotate(180deg)" />
           Go Back
@@ -92,9 +92,9 @@ const ResponseLeftNavigation = () => {
           ))}
         </Flex>
         <Box
-          h='calc(100vh - 376px)'
-          mb='5px'
-          overflow='auto'
+          h="calc(100vh - 376px)"
+          mb="5px"
+          overflow="auto"
           sx={{
             '&::-webkit-scrollbar': {
               backgroundColor: 'responseChat.scrollBar.bg',
@@ -103,22 +103,23 @@ const ResponseLeftNavigation = () => {
             '&::-webkit-scrollbar-thumb': {
               backgroundColor: 'responseChat.scrollBar.color',
             },
-          }}>
+          }}
+        >
           <Box h="50px">
             <Box fontSize="11px" opacity={0.5}>
               Item ID
             </Box>
             <Flex align="center" fontSize="14px" minH="28px">
-              <Flex mr={2}>{response?.complianceItem.reference}</Flex>
+              <Flex mr={2}>{response?.trackerItem.reference}</Flex>
               <CopyToClipboard
                 onCopy={() =>
                   toast({
                     ...toastSuccess,
                     title: 'Item ID copied',
-                    description: `${response?.complianceItem.reference} was copied to clipboard`,
+                    description: `${response?.trackerItem.reference} was copied to clipboard`,
                   })
                 }
-                text={response?.complianceItem.reference}
+                text={response?.trackerItem.reference}
               >
                 <Copy _hover={{ opacity: 0.6, cursor: 'pointer' }} color="responseLeftNavigation.copy" h="17px" mt={1} w="17px" />
               </CopyToClipboard>
@@ -173,9 +174,9 @@ const ResponseLeftNavigation = () => {
               </Flex>
             </Flex>
           </Box>
-          <ResponseLeftItem heading="Category" value={response?.complianceItem?.category?.name || '-'} />
-          <ResponseLeftItem heading="Regulatory body" value={response?.complianceItem?.regulatoryBody?.name || '-'} />
-          <ResponseLeftItem heading="Frequency" value={response?.complianceItem?.frequency || '-'} />
+          <ResponseLeftItem heading="Category" value={response?.trackerItem?.category?.name || '-'} />
+          <ResponseLeftItem heading="Regulatory body" value={response?.trackerItem?.regulatoryBody?.name || '-'} />
+          <ResponseLeftItem heading="Frequency" value={response?.trackerItem?.frequency || '-'} />
         </Box>
       </Flex>
       <Flex>

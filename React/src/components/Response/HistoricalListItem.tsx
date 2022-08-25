@@ -43,7 +43,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
       borderBottomColor="historicalListItem.borderColor"
       borderBottomWidth="1px"
       cursor="pointer"
-      onClick={() => navigateTo(`/compliance-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
+      onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
       p="15px 25px"
       py={[1, 0]}
       w="full"
@@ -60,7 +60,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
           textOverflow="ellipsis"
           w="30%"
         >
-          {response.complianceItem.name}
+          {response.trackerItem.name}
         </Flex>
         <Flex color="historicalListItem.fontColor" fontSize="14px" fontWeight={active ? '700' : '400'} opacity="1" w="20%">
           {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}

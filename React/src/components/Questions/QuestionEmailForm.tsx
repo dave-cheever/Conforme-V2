@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 
 import { Button, Flex, Icon, Text } from '@chakra-ui/react';
 
-import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import { OpenMenuArrow } from '../../icons';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
 import { questionHeader } from '../../utils/helpers';
@@ -17,7 +17,7 @@ const QuestionEmailForm = ({
   setEditQuestionIndex,
   setEditQuestion,
 }: IQuestionFormBase<string>) => {
-  const { complianceItem } = useComplianceItemModalContext();
+  const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
     formState: { errors },
@@ -32,7 +32,7 @@ const QuestionEmailForm = ({
     },
   });
   const questionName = watch('name');
-  const questionAlreadyExist = (complianceItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
+  const questionAlreadyExist = (trackerItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
   return (
     <>
       <Flex alignItems="center" mb="20px">
@@ -83,7 +83,7 @@ const QuestionEmailForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
+          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question

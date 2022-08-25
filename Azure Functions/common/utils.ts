@@ -69,9 +69,9 @@ export const getTemplateDetails = (
 
 // get daysToDueDate for response
 export const getDaysToDueDate = (response: IResponse) => {
-  if (!response.nextRenewalDate) return null;
+  if (!response.dueDate) return null;
 
-  const start = new Date(response.nextRenewalDate);
+  const start = new Date(response.dueDate);
   const end = new Date();
   if (isSameDay(start, end)) return 0;
 

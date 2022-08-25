@@ -9,19 +9,19 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
   try {
     let locations = await Locations.customFind(locationQueryInput, organization._id);
 
-    if (shouldJoin('complianceItemsResponsesCount')) {
+    if (shouldJoin('trackerItemsResponsesCount')) {
       for (const location of locations) {
         const pipeline: any[] = [];
         join({
           pipeline,
           collection: 'trackerItems',
-          from: 'complianceItemId',
-          to: 'complianceItem',
+          from: 'trackerItemId',
+          to: 'trackerItem',
         });
         pipeline.push({
           $match: {
-            'complianceItem.locationsIds': { $in: [location._id] },
-            'complianceItem.metatags.removedAt': { $eq: null },
+            'trackerItem.locationsIds': { $in: [location._id] },
+            'trackerItem.metatags.removedAt': { $eq: null },
             published: true,
           },
         });
@@ -29,7 +29,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
           $count: 'count',
         });
         const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0) location.complianceItemsResponsesCount = responses[0].count;
+        if (responses && responses.length > 0) location.trackerItemsResponsesCount = responses[0].count;
       }
     }
 

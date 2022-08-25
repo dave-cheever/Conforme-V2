@@ -7,7 +7,6 @@ import auditTypesResolvers from './auditTypes';
 import businessUnitsResolvers from './businessUnits';
 import categoriesResolvers from './categories';
 import commentsResolvers from './comments';
-import complianceItemsResolvers from './complianceItems';
 import graphResolvers from './graph';
 import insightsResolvers from './insights';
 import locationsResolvers from './locations';
@@ -18,6 +17,7 @@ import regulatoryBodiesResolvers from './regulatoryBodies';
 import responsesResolvers from './responses';
 import searchResolvers from './search';
 import settingsResolvers from './settings';
+import trackerItemsResolvers from './trackerItems';
 import usersResolvers from './users';
 
 export default {
@@ -32,7 +32,6 @@ export default {
     ...businessUnitsResolvers.Query,
     ...categoriesResolvers.Query,
     ...commentsResolvers.Query,
-    ...complianceItemsResolvers.Query,
     ...graphResolvers.Query,
     ...insightsResolvers.Query,
     ...locationsResolvers.Query,
@@ -43,6 +42,7 @@ export default {
     ...responsesResolvers.Query,
     ...searchResolvers.Query,
     ...settingsResolvers.Query,
+    ...trackerItemsResolvers.Query,
     ...usersResolvers.Query,
   },
   Mutation: {
@@ -53,13 +53,13 @@ export default {
     ...businessUnitsResolvers.Mutation,
     ...categoriesResolvers.Mutation,
     ...commentsResolvers.Mutation,
-    ...complianceItemsResolvers.Mutation,
     ...locationsResolvers.Mutation,
     ...questionsCategoriesResolvers.Mutation,
     ...questionsResolvers.Mutation,
     ...regulatoryBodiesResolvers.Mutation,
     ...responsesResolvers.Mutation,
     ...settingsResolvers.Mutation,
+    ...trackerItemsResolvers.Mutation,
     ...usersResolvers.Mutation,
   },
 };

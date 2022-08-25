@@ -29,7 +29,7 @@ const NavigationTop = () => {
 
   // Check if TopNavgation is rendered inside ResponseLayout
   const { response } = useResponseContext();
-  const isComplianceItemPage = isPathActive(`/compliance-item/${response?._id}`);
+  const isTrackerItemPage = isPathActive(`/tracker-item/${response?._id}`);
 
   // Check if TopNavgation is rendered in audit page
   const { audit } = useAuditContext();
@@ -94,7 +94,7 @@ const NavigationTop = () => {
             {showFiltersPanel ? getInitials(module?.name) : module?.name}
           </Text>
         </Flex>
-        {!isComplianceItemPage && module?.type === 'tracker' && (
+        {!isTrackerItemPage && module?.type === 'tracker' && (
           <Can
             action="adminPanel"
             yes={() => (

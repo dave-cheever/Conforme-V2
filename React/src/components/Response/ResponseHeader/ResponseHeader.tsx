@@ -84,14 +84,15 @@ const ReasponseHeader = () => {
         _id: response._id,
       },
     });
-    if (submitted) {
+    if (submitted?.data?.submitResponse) {
       toast({
         ...toastSuccess,
         duration: 10000,
         title: 'Response completed',
-        description: `${response.complianceItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${
-          response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'N/A'
-        } `,
+        description: `${response.trackerItem.name} for ${response.businessUnit?.name} is ${t('compliant')} until ${format(
+          new Date(submitted.data.submitResponse),
+          'dd MMMM yyyy',
+        )} `,
       });
     }
     refetch();
@@ -103,7 +104,7 @@ const ReasponseHeader = () => {
     <Flex bg="reasponseHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
       <Stack alignItems="center" direction={['column', 'row']} mb="15px" minH="40px" pr={6} spacing={2} w="full">
         <Heading alignItems={['flex-start', 'center']} color="reasponseHeader.heading" fontSize="xxl" fontWeight="bold" noOfLines={1}>
-          {response?.complianceItem?.name}
+          {response?.trackerItem?.name}
         </Heading>
         <HStack>
           {response.status === 'draft' && (
@@ -180,7 +181,7 @@ const ReasponseHeader = () => {
               as={Link}
               onClick={() => {
                 setActiveTab(0);
-                navigateTo(`/compliance-item/${response._id}`);
+                navigateTo(`/tracker-item/${response._id}`);
               }}
             >
               Click here to return.

@@ -44,11 +44,9 @@ const getEmailSubject = (
     case MENTION_NOTIFICATION:
       return "You have been mentioned in chat";
     case TRACKER_REMINDER:
-      return `${capitalize(t('complianceItem', translations))} Reminder: ${
-        emailData.complianceName
-      }`;
+      return `${capitalize(t('tracker item', translations))} Reminder: ${emailData.trackerName}`;
     case TRACKER_WEEKLY_SUMMARY:
-      return `${capitalize(t("complianceItem", translations))} Weekly Overview`;
+      return `${capitalize(t("tracker item", translations))} Weekly Overview`;
     default:
       return emailData.subject;
   }
@@ -78,32 +76,27 @@ const getEmailTemplate = async ({
       break;
     case ACTION_COMPLETED:
       body = `<p>
-        Action "${
-          emailData.actionTitle
-        }" has been completed, to view click <a href = "${getProtocol()}${
-        emailData.actionPath
-      }">here</a>.
+        Action "${emailData.actionTitle
+        }" has been completed, to view click <a href = "${getProtocol()}${emailData.actionPath
+        }">here</a>.
       </p>`;
       break;
     case ACTION_OVERDUE:
       body = `<p>
-        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${
-        emailData.actionPath
-      }">here</a>.
+        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${emailData.actionPath
+        }">here</a>.
       </p>`;
       break;
     case AUDIT_MISSED:
       body = `<p>
-        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${
-        emailData.auditPath
-      }">here</a>.
+        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath
+        }">here</a>.
       </p>`;
       break;
     case AUDIT_UPCOMING:
       body = `<p>
-        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${
-        emailData.auditPath
-      }">here</a>.
+        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath
+        }">here</a>.
       </p>`;
       break;
     case AUDITS_WEEKLY_SUMMARY:

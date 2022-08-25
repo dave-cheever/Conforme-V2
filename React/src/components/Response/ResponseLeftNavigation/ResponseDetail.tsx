@@ -57,16 +57,16 @@ const ResponseDetail = ({ response }) => {
                     Item ID
                   </Box>
                   <Flex align="center" fontSize="14px" minH="28px">
-                    <Flex mr={2}>{response?.complianceItem?.reference}</Flex>
+                    <Flex mr={2}>{response?.trackerItem?.reference}</Flex>
                     <CopyToClipboard
                       onCopy={() =>
                         toast({
                           ...toastSuccess,
                           title: 'Item ID copied',
-                          description: `${response?.complianceItem?.reference} was copied to clipboard`,
+                          description: `${response?.trackerItem?.reference} was copied to clipboard`,
                         })
                       }
-                      text={response?.complianceItem?.reference}
+                      text={response?.trackerItem?.reference}
                     >
                       <Copy _hover={{ opacity: 0.6, cursor: 'pointer' }} color="responseLeftNavigation.copy" h="17px" mt={1} w="17px" />
                     </CopyToClipboard>
@@ -99,9 +99,9 @@ const ResponseDetail = ({ response }) => {
                 </Box>
               </Flex>
               <Flex flexDirection="column" w="50%">
-                <ResponseLeftItem heading="Category" value={response.complianceItem?.category?.name || '-'} />
-                <ResponseLeftItem heading="Regulatory body" value={response.complianceItem?.regulatoryBody?.name || '-'} />
-                <ResponseLeftItem heading="Frequency" value={response.complianceItem?.frequency || '-'} />
+                <ResponseLeftItem heading="Category" value={response.trackerItem?.category?.name || '-'} />
+                <ResponseLeftItem heading="Regulatory body" value={response.trackerItem?.regulatoryBody?.name || '-'} />
+                <ResponseLeftItem heading="Frequency" value={response.trackerItem?.frequency || '-'} />
               </Flex>
             </Flex>
           </ModalBody>

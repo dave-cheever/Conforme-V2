@@ -22,7 +22,7 @@ const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBread
     isPathActive('/actions') ||
     isPathActive('/walk-items') ||
     isPathActive('/dashboard') ||
-    isPathActive('/compliance-items');
+    isPathActive('/tracker-items');
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => {

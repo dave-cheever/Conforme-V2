@@ -53,7 +53,7 @@ const Attachments = () => {
 
   return (
     <VStack align={['center', 'flex-start']} spacing={4} w="full">
-      {response?.complianceItem?.evidenceItems?.length > 0 && (
+      {response?.trackerItem?.evidenceItems?.length > 0 && (
         <Flex flexDirection="column" h="full" w="full">
           <Text fontSize="sm" fontWeight="medium">
             Evidence expected
@@ -68,7 +68,7 @@ const Attachments = () => {
           </Stack>
         </Flex>
       )}
-      {response.complianceItem?.allowAttachments && (
+      {response.trackerItem?.allowAttachments && (
         <Stack justify={['center', 'flex-start']} w="full">
           <Stack maxW="380px">
             <Text fontSize="11px" fontWeight="700" mb={2}>

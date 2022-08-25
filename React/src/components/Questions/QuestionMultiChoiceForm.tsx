@@ -6,7 +6,7 @@ import { Box, Button, Flex, Icon, Input, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 
-import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import { Move, OpenMenuArrow, PlusIcon, Trashcan } from '../../icons';
 import { IQuestionChoice } from '../../interfaces/IQuestionChoice';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
@@ -32,7 +32,7 @@ const QuestionMultiChoiceForm = ({
   setEditQuestionIndex,
   setEditQuestion,
 }: IQuestionFormBase<IQuestionChoice[]>) => {
-  const { complianceItem } = useComplianceItemModalContext();
+  const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
     formState: { errors },
@@ -48,9 +48,9 @@ const QuestionMultiChoiceForm = ({
   const [choicesIsEmpty, setChoicesIsEmpty] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState<string[]>(['']);
   const questionName = watch('name');
-  const requiredAnswer: string[] = []
+  const requiredAnswer: string[] = [];
   const questionAlreadyExist =
-    (complianceItem.questions || []).findIndex(({ name }, index) => {
+    (trackerItem.questions || []).findIndex(({ name }, index) => {
       if (editQuestionIndex === index && name === questionName) return false;
       return name === questionName;
     }) > -1;
@@ -62,12 +62,12 @@ const QuestionMultiChoiceForm = ({
   useEffect(() => {
     if (!isEmpty(editableValue)) {
       if (editableValue.requiredAnswer) {
-        editableValue.value?.forEach(value => {
+        editableValue.value?.forEach((value) => {
           if (editableValue?.requiredAnswer!.includes(value.label)) {
             // eslint-disable-next-line no-param-reassign
-            value.isCorrect = true
+            value.isCorrect = true;
           }
-        })
+        });
       }
       reset({
         name: editableValue.name,
@@ -121,7 +121,7 @@ const QuestionMultiChoiceForm = ({
     else setValue('required', false);
 
     value.forEach((choice) => {
-      if (choice.isCorrect) requiredAnswer.push(choice.label)
+      if (choice.isCorrect) requiredAnswer.push(choice.label);
       // eslint-disable-next-line no-param-reassign
       choice.isCorrect = false;
     });
@@ -276,7 +276,7 @@ const QuestionMultiChoiceForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
+          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question

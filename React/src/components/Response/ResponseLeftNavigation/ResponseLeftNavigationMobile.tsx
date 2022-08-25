@@ -39,7 +39,7 @@ const ResponseLeftNavigationMobile = () => {
           fontSize="14px"
           h="30px"
           mr={3}
-          onClick={() => navigateTo('/compliance-items')}
+          onClick={() => navigateTo('/tracker-items')}
         >
           <Home ml={2} stroke="responseLeftNavigation.goBackColor" />
           <Divider ml={3} orientation="vertical" />

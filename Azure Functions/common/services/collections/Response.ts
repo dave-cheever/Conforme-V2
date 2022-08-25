@@ -4,17 +4,14 @@ import { IResponseModel } from "../../interfaces/IResponseModel";
 
 const responseSchema = new Schema<IResponse, IResponseModel>({
   _id: String,
-  complianceItemId: String,
+  trackerItemId: String,
   businessUnitId: String,
   accountableId: String,
   responsibleId: String,
   contributorsIds: [String],
   followersIds: [String],
-  firstCompletionDate: Date,
   lastCompletionDate: Date,
-  lastRenewalDate: Date,
-  nextRenewalDate: Date,
-  organizationId: String,
+  dueDate: Date,
   status: String,
   published: Boolean,
   evidence: [
@@ -43,12 +40,13 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       type: {
         type: String,
         enum: [
-          "text",
-          "textMultiline",
-          "switch",
-          "datepicker",
-          "multipleChoice",
-          'singleChoice'
+          'text',
+          'textMultiline',
+          'switch',
+          'datepicker',
+          'multipleChoice',
+          'singleChoice',
+          'url',
         ],
       },
       name: String,
@@ -58,8 +56,13 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       outdated: Boolean,
       requiredAnswer: Schema.Types.Mixed,
       notApplicable: Boolean,
+      options: [{
+        label: String,
+        value: String,
+      }],
     },
   ],
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,

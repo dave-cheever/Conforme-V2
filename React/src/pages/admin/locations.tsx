@@ -30,7 +30,7 @@ const GET_LOCATIONS = gql`
         displayName
         imgUrl
       }
-      complianceItemsResponsesCount
+      trackerItemsResponsesCount
     }
   }
 `;
@@ -273,11 +273,11 @@ const Locations = () => {
               <AdminTableHeaderElement
                 label="Responses count"
                 onClick={() => {
-                  setSortType('complianceItemsResponsesCount');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
                 }}
-                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-                sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
                 tooltip="Only published items"
                 w={['max-content', '50%']}
               />

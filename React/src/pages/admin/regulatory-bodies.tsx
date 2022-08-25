@@ -22,7 +22,7 @@ const GET_REGULATORY_BODIES = gql`
     regulatoryBodies {
       _id
       name
-      complianceItemsResponsesCount
+      trackerItemsResponsesCount
     }
   }
 `;
@@ -228,11 +228,11 @@ const RegulatoryBodies = () => {
               <AdminTableHeaderElement
                 label="Responses count (only published items)"
                 onClick={() => {
-                  setSortType('complianceItemsResponsesCount');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'complianceItemsResponsesCount' ? 'desc' : 'asc');
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
                 }}
-                showSortingIcon={sortType === 'complianceItemsResponsesCount'}
-                sortOrder={sortType === 'complianceItemsResponsesCount' ? sortOrder : undefined}
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
                 w={['20%', '50%']}
               />
             </AdminTableHeader>
@@ -260,9 +260,9 @@ const RegulatoryBodies = () => {
               <Flex flexDir="column" h="full" w="100%">
                 {regulatoryBodies && (
                   <BarChart
-                    data={regulatoryBodies.map(({ _id, complianceItemsResponsesCount }) => ({
+                    data={regulatoryBodies.map(({ _id, trackerItemsResponsesCount }) => ({
                       _id,
-                      count: complianceItemsResponsesCount,
+                      count: trackerItemsResponsesCount,
                     }))}
                     label="Regulatory bodies"
                   />

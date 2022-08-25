@@ -264,7 +264,7 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
     "path": <module path>,
     "showInNavigation": <true/false>,
     "translations": {
-      "complianceItem": "document"
+      "tracker item": "document"
     }
   }],
   "allowedTenantsIds": [
@@ -292,7 +292,7 @@ Please fill the model with the following data: `<organization's id>`, `<organiza
 
 In order to change a translation in a module, just add a new property to the module configuration.
 
-Possible translations for safetywalk module:
+Possible translations for Audits module:
 
 - audit
 - auditor
@@ -300,10 +300,10 @@ Possible translations for safetywalk module:
 - area
 - addedAt
 
-Possible translations for compliance item module:
+Possible translations for Tracker module:
 
-- complianceItem
-- businessUnit
+- tracker item
+- business unit
 - compliant
 - non-compliant
 - question
@@ -364,7 +364,7 @@ Response due email days:
   ],
   "type" : "defaultSettings",
   "inputType" : "table",
-  "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning compliance item responses.",
+  "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning tracker responses.",
   "scope": {
     moduleId: <module id>
   },
@@ -411,7 +411,7 @@ Overview email:
   "organizationId": <organization's id>,
   "name" : "responseWeeklyEmailTemplate",
   "label" : "Weekly Summary",
-  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance Item Overview</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 12px;\">Responses</span></p><p><span style=\"font-size: 12px;\">%ResponseTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-size: 16px;\">Gloratio</span></p>",
+  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Tracker Item Overview</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 12px;\">Responses</span></p><p><span style=\"font-size: 12px;\">%ResponseTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-size: 16px;\">Gloratio</span></p>",
   "type" : "emailTemplate",
   "options" : [
       "ResponseTable"
@@ -455,11 +455,11 @@ Due email:
   "organizationId": <organization's id>,
   "name" : "responseRemainderEmailTemplate",
   "label" : "Response reminders",
-  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Compliance </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that compliance item %ComplianceItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Tracker </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that tracker item %TrackerItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
   "type" : "emailTemplate",
   "options" : [
       "FirstName",
-      "ComplianceItemName",
+      "TrackerItemName",
       "DueText",
       "Link"
   ],

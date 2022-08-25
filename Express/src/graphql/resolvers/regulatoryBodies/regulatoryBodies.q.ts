@@ -18,19 +18,19 @@ const regulatoryBodies = async (
       organization._id,
     );
 
-    if (shouldJoin('complianceItemsResponsesCount')) {
+    if (shouldJoin('trackerItemsResponsesCount')) {
       for (const regulatoryBody of regulatoryBodies) {
         const pipeline: any[] = [];
         join({
           pipeline,
           collection: 'trackerItems',
-          from: 'complianceItemId',
-          to: 'complianceItem',
+          from: 'trackerItemId',
+          to: 'trackerItem',
         });
         pipeline.push({
           $match: {
-            'complianceItem.regulatoryBodyId': regulatoryBody._id,
-            'complianceItem.metatags.removedAt': { $eq: null },
+            'trackerItem.regulatoryBodyId': regulatoryBody._id,
+            'trackerItem.metatags.removedAt': { $eq: null },
             published: true,
           },
         });
@@ -39,7 +39,7 @@ const regulatoryBodies = async (
         });
         const responses = await Responses.aggregate(pipeline);
         if (responses && responses.length > 0)
-          regulatoryBody.complianceItemsResponsesCount = responses[0].count;
+          regulatoryBody.trackerItemsResponsesCount = responses[0].count;
 
       }
     }

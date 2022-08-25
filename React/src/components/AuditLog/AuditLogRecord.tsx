@@ -39,7 +39,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
 
   const auditAddedUser: IUser = usersById && usersById?.length !== 0 && usersById[0];
 
-  const isResponseAudit = isPathActive('/compliance-item');
+  const isResponseAudit = isPathActive('/tracker-item');
 
   const displayUpdateDetails = (element, i, oldValue, newValue) =>
     (oldValue || newValue) && (

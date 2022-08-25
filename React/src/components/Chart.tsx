@@ -13,9 +13,9 @@ const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
   useEffect(() => {
     const names: string[] = [];
     const numbers: number[] = [];
-    items.forEach(({ name, complianceItemsResponsesCount }: IBaseWithName) => {
+    items.forEach(({ name, trackerItemsResponsesCount }: IBaseWithName) => {
       names.push(name);
-      numbers.push(complianceItemsResponsesCount || 0);
+      numbers.push(trackerItemsResponsesCount || 0);
     });
     setChartData(numbers);
     setChartLabels(names);

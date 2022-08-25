@@ -1,7 +1,7 @@
 import { IQuestionChoice } from 'app-interfaces';
 import {
-  ComplianceItems,
   Responses,
+  TrackerItems,
 } from 'app-models';
 import { getNextRenewalDate, isPermitted } from 'app-utils';
 
@@ -16,12 +16,11 @@ const submitResponse = async (_, { _id }, { authorize, organization }) => {
     if (!isPermitted({ user, action: 'responses.edit', data: { response } }))
       throw new Error('User is not permitted');
 
-    const complianceItem = await ComplianceItems.customFindById(
-      response.complianceItemId,
+    const trackerItem = await TrackerItems.customFindById(
+      response.trackerItemId,
       organization._id,
     );
-    if (!complianceItem)
-      throw new Error("Compliance item assigned to response doesn't exist");
+    if (!trackerItem) throw new Error("Tracker item assigned to response doesn't exist");
 
     // If questions or evidence has changed, set right status
     const areRequiredQuestionsAnswered = response.questions
@@ -39,10 +38,8 @@ const submitResponse = async (_, { _id }, { authorize, organization }) => {
     if (!areRequiredQuestionsAnswered || !isEvidenceUploaded) return false;
 
     let dueDate: Date | null = null;
-    if (response.dueDate) {
-      if (complianceItem.dueDateCalculation === 'fromDueDate') dueDate = getNextRenewalDate(response.dueDate, complianceItem.frequency);
-      else dueDate = getNextRenewalDate(new Date(), complianceItem.frequency);
-    }
+    if (response.dueDate && trackerItem.dueDateCalculation === 'fromDueDate') dueDate = getNextRenewalDate(response.dueDate, trackerItem.frequency);
+    else dueDate = getNextRenewalDate(new Date(), trackerItem.frequency);
 
     await Responses.customUpdateOne(
       { _id },
@@ -54,7 +51,7 @@ const submitResponse = async (_, { _id }, { authorize, organization }) => {
       user._id,
       organization._id,
     );
-    return true;
+    return dueDate;
   } catch (error: any) {
     throw new Error(error);
   }

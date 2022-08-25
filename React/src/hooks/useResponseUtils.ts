@@ -7,7 +7,7 @@ import { IResponse } from '../interfaces/IResponse';
 import { ITrackerQuestion } from '../interfaces/ITrackerQuestion';
 import { TQuestionValue } from '../interfaces/TQuestionValue';
 
-export const complianceItemFrequencies = [
+export const trackerItemFrequencies = [
   'Daily',
   'Weekly',
   'Monthly',

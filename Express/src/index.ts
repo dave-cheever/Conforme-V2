@@ -48,4 +48,4 @@ mongoose
       } else await startApp(process.pid);
     } else await startApp(process.pid);
   })
-  .catch((e) => logger.error(e));
+  .catch((e) => console.log(e));

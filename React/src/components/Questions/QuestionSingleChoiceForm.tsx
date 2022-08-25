@@ -6,7 +6,7 @@ import { Box, Button, Flex, Icon, Input, Text, useRadioGroup } from '@chakra-ui/
 import { t } from 'i18next';
 import { camelCase, capitalize, isEmpty } from 'lodash';
 
-import { useComplianceItemModalContext } from '../../contexts/ComplianceItemModalProvider';
+import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import { Move, OpenMenuArrow, PlusIcon, Trashcan } from '../../icons';
 import { IQuestionFormBase } from '../../interfaces/IQuestionFormBase';
 import { ITrackerQuestion } from '../../interfaces/ITrackerQuestion';
@@ -32,7 +32,7 @@ const QuestionSingleChoiceForm = ({
   setEditQuestionIndex,
   setEditQuestion,
 }: IQuestionFormBase<String>) => {
-  const { complianceItem } = useComplianceItemModalContext();
+  const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
     formState: { errors },
@@ -50,7 +50,7 @@ const QuestionSingleChoiceForm = ({
   const [selectedRadio, setSelectedRadio] = useState<string>('');
   const questionName = watch('name');
   const questionAlreadyExist =
-    (complianceItem.questions || []).findIndex(({ name }, index) => {
+    (trackerItem.questions || []).findIndex(({ name }, index) => {
       if (editQuestionIndex === index && name === questionName) return false;
       return name === questionName;
     }) > -1;
@@ -280,7 +280,7 @@ const QuestionSingleChoiceForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="complianceItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
+          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}
         >
           Save question

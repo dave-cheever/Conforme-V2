@@ -14,22 +14,18 @@ import AuditLog from '../pages/admin/audit-log';
 import AuditTypes from '../pages/admin/audit-types';
 import BusinessUnits from '../pages/admin/business-units';
 import Categories from '../pages/admin/categories';
-import ComplianceItemsAdmin from '../pages/admin/compliance-items';
 import Locations from '../pages/admin/locations';
 import Questions from '../pages/admin/questions';
 import QuestionsCategories from '../pages/admin/questions-categories';
 import RegulatoryBodies from '../pages/admin/regulatory-bodies';
 import Settings from '../pages/admin/settings';
 import Sites from '../pages/admin/sites';
+import TrackerItemsAdmin from '../pages/admin/tracker-items';
 import Users from '../pages/admin/users';
 import Assets from '../pages/assets';
 import Audit from '../pages/audit';
 import AuditHistory from '../pages/audit/history';
 import AuditParticipants from '../pages/audit/participants';
-import ComplianceItemAuditLog from '../pages/compliance-item/audit-log';
-import History from '../pages/compliance-item/history';
-import ComplianceItemResponse from '../pages/compliance-item/index';
-import Team from '../pages/compliance-item/team';
 import Dashboard from '../pages/dashboard';
 import Help from '../pages/help';
 import Licenses from '../pages/licenses';
@@ -38,6 +34,10 @@ import Logout from '../pages/logout';
 import Mentions from '../pages/mentions';
 import PrivacyPolicy from '../pages/privacy-policy';
 import Terms from '../pages/terms';
+import TrackerItemAuditLog from '../pages/tracker-item/audit-log';
+import History from '../pages/tracker-item/history';
+import TrackerItemResponse from '../pages/tracker-item/index';
+import Team from '../pages/tracker-item/team';
 import WalkItems from '../pages/walk-items';
 
 // Routes visible for not signed in
@@ -110,29 +110,29 @@ const protectedRoutes: Array<IRoute> = [
     layout: AuditLayout,
   },
   {
-    path: '/compliance-item/:id',
-    key: 'complianceItem',
+    path: '/tracker-item/:id',
+    key: 'trackerItem',
     exact: true,
-    component: ComplianceItemResponse,
+    component: TrackerItemResponse,
     layout: ResponseLayout,
   },
   {
-    path: '/compliance-item/:id/change-log',
-    key: 'complianceItem-audit',
+    path: '/tracker-item/:id/change-log',
+    key: 'trackerItem-audit',
     exact: true,
-    component: ComplianceItemAuditLog,
+    component: TrackerItemAuditLog,
     layout: ResponseLayout,
   },
   {
-    path: '/compliance-item/:id/participants',
-    key: 'complianceItem-team',
+    path: '/tracker-item/:id/participants',
+    key: 'trackerItem-team',
     exact: true,
     component: Team,
     layout: ResponseLayout,
   },
   {
-    path: '/compliance-item/:id/history',
-    key: 'complianceItem-history',
+    path: '/tracker-item/:id/history',
+    key: 'trackerItem-history',
     exact: true,
     component: History,
     layout: ResponseLayout,
@@ -202,10 +202,10 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
-    path: '/admin/compliance-items',
-    key: 'compliance-items-admin',
+    path: '/admin/tracker-items',
+    key: 'tracker-items-admin',
     exact: true,
-    component: ComplianceItemsAdmin,
+    component: TrackerItemsAdmin,
     layout: DefaultLayout,
     permission: 'adminPanel',
   },

@@ -16,12 +16,12 @@ const getResponseWeeklyEmail = (
       </tr>
       ${responses.length > 0 ? `
         ${responses.map((response) => (
-      `<tr>
-            <td style="border: 1px solid #dddddd;text-align: left;padding: 8px;">${response.complianceItem.name}</td>
-            <td style="border: 1px solid #dddddd;text-align: left;padding: 8px;">${response.nextRenewalDate ? format(response.nextRenewalDate, "dd/MM/yyyy") : ''}</td>
+    `<tr>
+            <td style="border: 1px solid #dddddd;text-align: left;padding: 8px;">${response.trackerItem.name}</td>
+            <td style="border: 1px solid #dddddd;text-align: left;padding: 8px;">${response.dueDate ? format(response.dueDate, "dd/MM/yyyy") : ''}</td>
             <td style="border: 1px solid #dddddd;text-align: left;padding: 8px;">${response.responsible.firstName} ${response.responsible.lastName}</td>
           </tr>`
-    )).join('')}` : `<tr><td style="border: 1px solid #dddddd;text-align: center;padding: 8px;" colspan="3">No Data available.</td></tr>`}
+  )).join('')}` : `<tr><td style="border: 1px solid #dddddd;text-align: center;padding: 8px;" colspan="3">No Data available.</td></tr>`}
     </table>
   `;
 

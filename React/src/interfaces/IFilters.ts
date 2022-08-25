@@ -76,7 +76,7 @@ export interface IWalkItemFilters {
 }
 
 export default interface IFilters {
-  complianceItemsIds?: IFilter;
+  trackerItemsIds?: IFilter;
   categoriesIds?: IFilter;
   businessUnitsIds?: IFilter;
   itemStatus?: IFilterString;
