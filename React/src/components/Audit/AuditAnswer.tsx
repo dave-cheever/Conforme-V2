@@ -168,7 +168,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
     !!(audit.status === 'completed' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true)) || !isUserPermittedToModify;
 
   return (
-    <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" h="full" p={4} rounded="10px" spacing={4}>
+    <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" h={['full', 'auto']} p={4} rounded="10px" spacing={4}>
       <Text fontSize="md" fontWeight="semibold">
         {questionsCategory.name}
       </Text>
