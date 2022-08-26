@@ -124,19 +124,21 @@ const getUsers = async ({
 }) => {
   try {
     await graphSetup(organization._id);
-    let res = await graph.users
-      .filter(
-        searchText
-          ? `
-      startsWith(givenName,'${searchText}') or
-      startsWith(surname,'${searchText}') or
-      startsWith(displayName,'${searchText}') or
-      startsWith(userPrincipalName,'${searchText}') or
-      startsWith(mail,'${searchText}')
-    `
-          : '',
-      )
-      .get();
+    let filterQuery = '';
+    if (searchText) {
+      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(searchText))
+        filterQuery = `id eq '${searchText}'`;
+      else {
+        filterQuery = `
+          startsWith(givenName,'${searchText}') or
+          startsWith(surname,'${searchText}') or
+          startsWith(displayName,'${searchText}') or
+          startsWith(userPrincipalName,'${searchText}') or
+          startsWith(mail,'${searchText}')
+        `;
+      }
+    }
+    let res = await graph.users.filter(filterQuery).get();
 
     if (filterByJobTitle && filterByJobTitle.length > 0) res = res.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
 

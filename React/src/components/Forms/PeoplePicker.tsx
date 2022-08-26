@@ -43,14 +43,12 @@ const UserData = ({
   name,
   user,
   setShowResults,
-  setSearchText,
   setSearchedInputValue,
   onChange,
 }: {
   name: string;
   user: IUser;
   setShowResults: (x: boolean) => void;
-  setSearchText: (x: string) => void;
   setSearchedInputValue: (x: string) => void;
   onChange: (x: any) => void;
 }) => (
@@ -68,7 +66,6 @@ const UserData = ({
     mt="10px"
     onClick={() => {
       setShowResults(false);
-      setSearchText('');
       setSearchedInputValue(user.displayName);
       onChange({ target: { name, value: user._id } });
     }}
@@ -128,11 +125,17 @@ const PeoplePicker = ({
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-          if (value) {
+          if (value && !searchText) {
+            // User is selected but is not in text input - set default value
+            setSearchText(value);
+          } else {
             const user = users.find((user) => user._id === value);
-            if (user) setSearchedInputValue(user.displayName);
+            if (user) {
+              setSearchedInputValue(user.displayName);
+              setSearchText(user.displayName);
+            }
           }
-        }, [value, users]);
+        }, [value, JSON.stringify(users.map(({ _id }) => _id))]);
 
         return (
           <Box id={name} mt="none" position="relative" w="full">
@@ -236,7 +239,6 @@ const PeoplePicker = ({
                         name={name}
                         onChange={onChange}
                         setSearchedInputValue={setSearchedInputValue}
-                        setSearchText={setSearchText}
                         setShowResults={setShowResults}
                         user={user}
                       />
@@ -248,7 +250,6 @@ const PeoplePicker = ({
                         name={name}
                         onChange={onChange}
                         setSearchedInputValue={setSearchedInputValue}
-                        setSearchText={setSearchText}
                         setShowResults={setShowResults}
                         user={user}
                       />
