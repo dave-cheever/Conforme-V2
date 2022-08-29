@@ -39,8 +39,7 @@
   margin-bottom: 20px !important;
 }
 
-.dueDate
-  .react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range),
+.dueDate .react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range),
 .react-datepicker__month-text--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range),
 .react-datepicker__quarter-text--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range),
 .react-datepicker__year-text--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range) {
@@ -158,10 +157,24 @@
   background: #ffffff;
   border: 1px solid rgba(129, 129, 151, 0.4);
   border-radius: 10px;
+  max-height: 42px;
 }
 
 .mentions--multiLine .mentions__control {
   font-size: 14px;
+}
+
+.mentions--multiLine .mentions__input {
+  border: 1px solid transparent;
+  padding: 7px 10px;
+  padding-right: 25px;
+  outline: 0;
+  max-height: 100px;
+  overflow: auto !important
+}
+
+.mentions__input::-webkit-scrollbar {
+  width: 5px;
 }
 
 .mentions--multiLine .mentions__highlighter {
@@ -171,14 +184,6 @@
   outline: 0;
   max-height: 100px;
   overflow: hidden;
-}
-.mentions--multiLine .mentions__input {
-  border: 1px solid transparent;
-  padding: 7px 10px;
-  padding-right: 25px;
-  outline: 0;
-  max-height: 100px;
-  overflow: auto;
 }
 
 .mentions__input:disabled {

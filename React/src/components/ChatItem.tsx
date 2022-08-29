@@ -96,6 +96,7 @@ const ChatItem = ({ onAction, comment }: IChatItem) => {
           px="12px"
           py="8px"
           w="full"
+          wordBreak='break-word'
         >
           <Flex h={6} justify="space-between">
             <Text color="chatItem.dateColor" fontSize="ssm" fontWeight="semi_medium" mb="10px">

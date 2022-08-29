@@ -199,7 +199,7 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Stack h="full" pl="25px" pr={['25px', '25px', '0px']} spacing={2} w={['calc(100vw - 36px)', '300px', '330px']}>
+      <Stack h="full" maxW={['calc(100vw - 36px)', '300px']} minW={['calc(100vw - 36px)', '300px']} pl="25px" pr={['25px', '25px', '0px']} spacing={2} >
         <Flex alignItems="center" flexDirection="column">
           <Text color="chat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">
             Chat
