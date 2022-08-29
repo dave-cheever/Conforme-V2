@@ -110,7 +110,8 @@ responseSchema.statics.customFindById = async function (
 };
 
 const responseModel = model<IResponse, IResponseModel>(
-  "Response",
-  responseSchema
+  'TrackerResponse',
+  responseSchema,
+  'trackerResponses',
 );
 export default responseModel;
