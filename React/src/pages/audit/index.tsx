@@ -70,13 +70,17 @@ const Audit = () => {
       {!(selectedQuestion && !isDeleteQuestionModalOpen && Object.entries(questions).length > 0) && (
         <>
           {selectedQuestion || Object.entries(questions).length > 0 ? (
-            <Stack pb="25px" spacing={4}>
+            <Stack
+              overflow='auto'
+              pb="25px"
+              spacing={4}
+              w='calc(100% + 10px)' >
               {questionsCategories.map((category) => (
                 <AuditQuestionsCategory handleDelete={handleDeleteQuestionModalOpen} key={category._id} questionsCategory={category} />
               ))}
             </Stack>
           ) : (
-            <Box bg="white" fontSize="18px" fontStyle="italic" h="auto" px={6} py={6} rounded="20px" w="auto">
+            <Box bg="white" fontSize="18px" fontStyle="italic" h="auto" px={6} py={6} rounded="20px" w="full">
               <Text>No {pluralize(t('question'))} found</Text>
             </Box>
           )}

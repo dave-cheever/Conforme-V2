@@ -1,7 +1,7 @@
 /* Custom styles for external libraries */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
   height: 8px;
   background-color: #f5f5f5;
 }
@@ -172,6 +172,7 @@
   max-height: 100px;
   overflow: auto !important
 }
+
 
 .mentions__input::-webkit-scrollbar {
   width: 5px;

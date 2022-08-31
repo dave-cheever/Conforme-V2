@@ -16,7 +16,7 @@ const AuditQuestionsCategory = ({
   if (!categoryQuestions) return null;
 
   return (
-    <Stack key={questionsCategory._id} spacing={4} w="full">
+    <Stack key={questionsCategory._id} pr='10px' spacing={4} w="full" >
       <Text fontWeight="semibold">{questionsCategory.name}</Text>
       <Stack spacing={2}>
         {categoryQuestions.map((question) => (
