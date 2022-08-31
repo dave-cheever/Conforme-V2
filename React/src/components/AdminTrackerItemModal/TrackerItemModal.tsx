@@ -119,7 +119,7 @@ const TrackerItemModal = ({ refetch }) => {
 
   return (
     <>
-      <ModalContent bg="trackerItemModal.bg" h="100%" m="0" p={['25px', '35px']} position="absolute" rounded="0">
+      <ModalContent bg="trackerItemModal.bg" h="auto" m="0" maxH="auto" p={['25px', '35px']} position="absolute" rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>

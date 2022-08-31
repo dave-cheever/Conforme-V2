@@ -167,6 +167,7 @@ const TrackerItemsAdmin = () => {
         isOpen={adminModalState !== 'closed'}
         key={trackerItem._id}
         onClose={() => {}}
+        scrollBehavior="inside"
         size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
       >

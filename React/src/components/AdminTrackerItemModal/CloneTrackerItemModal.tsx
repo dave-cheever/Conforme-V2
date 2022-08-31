@@ -13,7 +13,7 @@ const CloneTrackerItemModal = ({ refetch }) => {
   const { cloneTrackerItem, closeModal } = useTrackerItemModal(refetch);
 
   return (
-    <ModalContent bg="cloneTrackerItemModal.bg" borderRadius="20px" m="auto" p="20px  25px" position="relative" w="325px">
+    <ModalContent bg="cloneTrackerItemModal.bg" borderRadius="20px" m="auto" maxH="auto" p="20px  25px" position="relative" w="325px">
       <Flex flexDirection="column" h="100%" justifyContent="left">
         <Box color="cloneTrackerItemModal.heading" fontSize="smm" fontWeight="bold" mb="15px" textAlign="left">
           Clone item?

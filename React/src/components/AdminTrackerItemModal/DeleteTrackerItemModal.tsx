@@ -11,7 +11,7 @@ const DeleteTrackerItemModal = ({ refetch }) => {
   const { deleteTrackerItem, closeModal } = useTrackerItemModal(refetch);
 
   return (
-    <ModalContent bg="deleteTrackerItemModal.bg" borderRadius="20px" m="auto" p="20px  25px" position="relative" w="330px">
+    <ModalContent bg="deleteTrackerItemModal.bg" borderRadius="20px" m="auto" maxH="auto" p="20px  25px" position="relative" w="330px">
       <Flex flexDirection="column" h="100%" justifyContent="left">
         <Flex color="deleteTrackerItemModal.heading" fontSize="xxl" fontWeight="bold" justifyContent="space-between" mb="15px" w="full">
           Delete item?
