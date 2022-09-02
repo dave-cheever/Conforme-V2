@@ -21,6 +21,8 @@ const SingleChoices = ({ name, label, required, tooltip = '', defaultvalue, opti
 
   const group = getRootProps();
 
+  useEffect(() => setSelectedRadio(defaultvalue || ''), [defaultvalue])
+
   useEffect(() => {
     if (selectedRadio !== '' && setValue) setValue(name, selectedRadio);
   }, [selectedRadio]);

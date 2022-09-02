@@ -25,12 +25,13 @@ const submitResponse = async (_, { _id }, { authorize, organization }) => {
     // If questions or evidence has changed, set right status
     const areRequiredQuestionsAnswered = response.questions
       .filter(({ required }) => required)
-      .every(({ value, type }) => {
+      .every(({ value, type, requiredAnswer }) => {
         if (type === 'multipleChoice') {
-          return (value as IQuestionChoice[]).some(
-            (choice) => choice.isCorrect === true,
-          );
+          return (value as IQuestionChoice[]).some(({ label, isCorrect }) => {
+            return requiredAnswer?.includes(label) && isCorrect
+          })
         }
+        if (type === 'singleChoice') return value === requiredAnswer;
         return value || (typeof value === 'boolean' && value === false);
       });
     const isEvidenceUploaded = response.evidence

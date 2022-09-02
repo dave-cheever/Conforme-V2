@@ -102,9 +102,8 @@ const EvidenceExpected = ({ evidence }) => {
               await removeEvidence();
               refetch();
             }}
-            deleteModalMessage={`Are you sure you wish to delete ${
-              evidence.uploaded.name
-            }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
+            deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name
+              }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
             document={evidence.uploaded}
             downloadable={isPermitted({
               user,

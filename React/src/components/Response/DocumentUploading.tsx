@@ -19,7 +19,7 @@ const DocumentUploading = ({ documentName, cancelUpload }: { documentName: strin
     role="group"
     w="full"
   >
-    <Flex align="center">
+    <Flex align="center" w='80%'>
       <Box bg="evidence.uploadBg" flexShrink={0} fontSize="12px" h="55px" ml="5px" mr={2} rounded="md" w="55px">
         <Flex align="center" h="full" justify="center">
           <Loader center size="lg" />
