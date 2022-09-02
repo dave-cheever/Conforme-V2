@@ -66,6 +66,7 @@ const GET_RESPONSE = gql`
         evidenceItems
         frequency
         allowAttachments
+        dueDateEditable
         category {
           name
         }

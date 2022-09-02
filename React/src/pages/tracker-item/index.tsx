@@ -129,42 +129,43 @@ const TrackerItemResponse = () => {
               position="relative"
               w={['full', '30%']}
             >
-              <Flex align={['center', 'flex-start']} flexDir="column" w="full">
-                <Text color="responseRenewalDetails.labelColor" fontSize="11px">
-                  Perform new review by
-                </Text>
-                <Flex>
+              <Flex align='center' flexDir={['column', 'row']} justifyContent='space-between' w="full">
+                <VStack align={['center', 'flex-start']} spacing={0} w='full'>
+                  <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+                    Perform new review by
+                  </Text>
                   <Text color="responseRenewalDetails.textColor" fontSize="14px">
                     {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
                   </Text>
-                </Flex>
+                </VStack>
+                {!snapshot && response?.trackerItem?.dueDateEditable && (
+                  <Can
+                    action="responses.edit"
+                    data={{ response }}
+                    yes={() => (
+                      <Flex >
+                        <DatePicker
+                          customInput={<EditButton />}
+                          dateFormatCalendar="MMMM"
+                          disabledKeyboardNavigation
+                          dropdownMode="select"
+                          onChange={(date) => updateResponseDate(date)}
+                          ref={dueDatePickerRef}
+                          selected={response?.dueDate ? new Date(response?.dueDate) : new Date()}
+                          showYearDropdown
+                        >
+                          <Button colorScheme="purpleHeart" onClick={() => updateResponseDate(null)} size="sm" w="full">
+                            No due date
+                          </Button>
+                        </DatePicker>
+                      </Flex>
+                    )}
+                  />
+                )}
               </Flex>
             </Flex>
           )}
-          {!snapshot && response?.trackerItem?.dueDateEditable && (
-            <Can
-              action="responses.edit"
-              data={{ response }}
-              yes={() => (
-                <Flex align="center">
-                  <DatePicker
-                    customInput={<EditButton />}
-                    dateFormatCalendar="MMMM"
-                    disabledKeyboardNavigation
-                    dropdownMode="select"
-                    onChange={(date) => updateResponseDate(date)}
-                    ref={dueDatePickerRef}
-                    selected={response?.dueDate ? new Date(response?.dueDate) : new Date()}
-                    showYearDropdown
-                  >
-                    <Button colorScheme="purpleHeart" onClick={() => updateResponseDate(null)} size="sm" w="full">
-                      No due date
-                    </Button>
-                  </DatePicker>
-                </Flex>
-              )}
-            />
-          )}
+
         </Stack>
         <Box
           overflow={['visible', 'auto']}
@@ -182,7 +183,7 @@ const TrackerItemResponse = () => {
           {(response?.trackerItem?.allowAttachments || response?.trackerItem?.evidenceItems?.length > 0) && <Attachments />}
           <ResponseQuestions disabled={activeTab === 0} key={activeTab} />
           {(response.questions.filter(({ required }) => required).length > 0 || response.evidence.length > 0) && activeTab === 1 && (
-            <Flex w="full">
+            <Flex mt='3' w="full" >
               <Asterisk fill="questionListElement.iconAsterisk" h="9px" stroke="questionListElement.iconAsterisk" w="9px" />
               &nbsp;
               <Text fontSize="sm" fontWeight="semi_medium">

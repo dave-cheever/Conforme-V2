@@ -7,7 +7,17 @@ interface Props {
 }
 
 const EditButton = forwardRef(({ onClick }: Props, ref: React.ForwardedRef<SVGSVGElement>) => (
-  <EditIcon color="responseRenewalDetails.editButtonColor" cursor="pointer" mb="2" ml="3" onClick={onClick} ref={ref} />
+  <EditIcon
+    color="responseRenewalDetails.editButtonColor"
+    cursor="pointer"
+    mx="1"
+    onClick={(e) => {
+      e.stopPropagation()
+      if (onClick) onClick()
+    }}
+    ref={ref}
+
+  />
 ));
 
 export default EditButton;
