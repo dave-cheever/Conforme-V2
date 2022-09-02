@@ -74,7 +74,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
           <Text color="auditLogRecordStyles.userInfo.color" fontSize="11px" opacity="0.5">
             {auditAddedUser ? `${auditAddedUser?.displayName}` : 'Unknown user'}
           </Text>
-          <Text color="auditLogRecordStyles.title.action" fontSize="14px">
+          <Text color="auditLogRecordStyles.title.action" fontSize="14px" noOfLines={1}>
             {getFieldNameByAction(audit.action)} {getSingularCollectionName(audit.coll)}{' '}
             {audit.action === 'add' && audit.coll === 'comments' && (
               <Text as="span" fontWeight="light" pl={2}>
