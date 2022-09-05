@@ -20,6 +20,7 @@ const GET_SETTINGS_DATA = gql`
       inputType
       placeholder
       help
+      options
     }
     notificationSettings: settings(type: "notificationSettings", moduleId: $moduleId) {
       _id

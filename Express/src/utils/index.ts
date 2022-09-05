@@ -1,5 +1,6 @@
 import calculateAudits from './calculateAudits';
 import { priorities } from './constants';
+import deleteOutdatedData from './deleteOutdatedData';
 import { emailPreview } from './email';
 import {
   CORSConfig,
@@ -46,6 +47,7 @@ export {
   checkAnswerPermission,
   checkQuestionPermission,
   CORSConfig,
+  deleteOutdatedData,
   emailPreview,
   getProtocol,
   getClientUrl,

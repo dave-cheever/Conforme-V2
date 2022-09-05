@@ -12,7 +12,7 @@ export interface ISettingsContext {
   trigger: UseFormTrigger<ISetting>;
 
   loading: boolean;
-  defaultSettings: Partial<ISetting>[];
+  defaultSettings: (Partial<ISetting> & Required<Pick<ISetting, 'name'>>)[];
   notificationSettings: Partial<ISetting>[];
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];

@@ -5,7 +5,7 @@ import cluster from 'node:cluster';
 import { cpus } from 'node:os';
 
 import { logger } from 'app-shared';
-import { calculateAudits } from 'app-utils';
+import { calculateAudits, deleteOutdatedData } from 'app-utils';
 
 import getApp from './server';
 
@@ -35,6 +35,10 @@ mongoose
             calculateAudits();
           });
           calculateAuditsCRON.start();
+          const deleteOutdatedDataCRON = new CronJob('0 0 1 * * *', () => {
+            deleteOutdatedData();
+          });
+          deleteOutdatedDataCRON.start();
         } catch (e) {
           logger.error('CRON jobs failed');
         }

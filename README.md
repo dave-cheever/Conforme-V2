@@ -337,7 +337,7 @@ Audit log limit:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "auditLogLimit",
   "label": "Count of elements on the audit log",
@@ -352,7 +352,7 @@ Response due email days:
 
 ```
 {
-  "id" : <random generated UUID>,
+  "_id" : <random generated UUID>,
   "organizationId": <organization's id>,
   "name" : "responseDueEmailDays",
   "label" : "Days from due date email reminders are sent",
@@ -377,7 +377,7 @@ Response assiged notification:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "trackerResponseAssigneeTemplate",
   "label": "Tracker response assigned notification",
@@ -407,7 +407,7 @@ Overview email:
 ```
 
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name" : "responseWeeklyEmailTemplate",
   "label" : "Weekly Summary",
@@ -430,7 +430,7 @@ Overview email address:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "overviewEmailAddress",
   "label": "Email address for receiving the weekly emails",
@@ -451,7 +451,7 @@ Due email:
 ```
 
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name" : "responseRemainderEmailTemplate",
   "label" : "Response reminders",
@@ -476,7 +476,7 @@ Maximum delegates:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "maxDelegates",
   "label": "Maximum number of Delegates",
@@ -494,7 +494,7 @@ Email address receiving weekly digest:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "auditsWeeklyDigestEmailAddress",
   "label": "Email address for receiving the weekly digest",
@@ -522,7 +522,7 @@ Weekly digest email template:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "auditsWeeklyDigestEmailTemplate",
   "label": "Weekly digest",
@@ -549,7 +549,7 @@ Audits status reminders triggers:
 
 ```
 {
-  "id": <random generated UUID>,
+  "_id": <random generated UUID>,
   "organizationId": <organization's id>,
   "name": "auditsStatusReminderTriggers",
   "label": "The days of month when to send upcoming and missed audit notifications",
@@ -568,6 +568,32 @@ Audits status reminders triggers:
       }
     }
   },
+}
+```
+
+Retention period policy:
+
+```
+{
+  "_id": <random generated UUID>,
+  "name": "retentionPeriod",
+  "label": "Retention period",
+  "value": "Never",
+  "type": "defaultSettings",
+  "placeholder": "Select",
+  "description": "Use this setting to select retention period for the data in Conforme system.",
+  "organizationId": <organization's id>,
+  "inputType": "dropdown",
+  "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Never"],
+  "metatags": {
+    "adddedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "addedAt": {
+      "$date": "2022-09-01T20:18:42.292Z"
+    }
+  },
+  "scope": {
+    "moduleId": <module id>
+  }
 }
 ```
 
