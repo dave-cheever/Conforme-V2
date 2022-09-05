@@ -58,23 +58,23 @@ const WalkItemsList = ({
           w="6%"
         />
         <AdminTableHeaderElement
-          label={capitalize(t('site'))}
+          label={capitalize(t('location'))}
           onClick={() => {
-            setSortType('audit.site.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'audit.site.name' ? 'desc' : 'asc');
+            setSortType('audit.location.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'audit.location.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'audit.site.name'}
-          sortOrder={sortType === 'audit.site.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'audit.location.name'}
+          sortOrder={sortType === 'audit.location.name' ? sortOrder : undefined}
           w="19%"
         />
         <AdminTableHeaderElement
-          label={capitalize(t('area'))}
+          label={capitalize(t('business unit'))}
           onClick={() => {
-            setSortType('audit.area.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'audit.area.name' ? 'desc' : 'asc');
+            setSortType('audit.businessUnit.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'audit.businessUnit.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'audit.area.name'}
-          sortOrder={sortType === 'audit.area.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'audit.businessUnit.name'}
+          sortOrder={sortType === 'audit.businessUnit.name' ? sortOrder : undefined}
           w="19%"
         />
         <AdminTableHeaderElement

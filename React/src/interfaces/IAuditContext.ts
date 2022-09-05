@@ -18,8 +18,8 @@ export interface IAuditContext {
   auditType: IAuditType;
   auditor: IUser;
   participants: IUser[];
-  site: ILocation;
-  area?: IBusinessUnit;
+  location: ILocation;
+  businessUnit?: IBusinessUnit;
   questionsCategories: IQuestionsCategory[];
   customQuestionsCategories: IQuestionsCategory[];
   questions: IQuestionsByCategories;

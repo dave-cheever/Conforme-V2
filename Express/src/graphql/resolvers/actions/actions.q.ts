@@ -219,18 +219,18 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     // For "user" role filter actions
     if (!isPermitted({ user, action: 'actions.viewAll' })) {
       // If user doesn't have permissions to get all actions
-      // need to check if he is an area or site owner
+      // need to check if he is an businessUnit or location owner
       join({
         pipeline,
         collection: 'locations',
-        from: 'answer.audit.siteId',
-        to: 'answer.audit.site',
+        from: 'answer.audit.locationId',
+        to: 'answer.audit.location',
       });
       join({
         pipeline,
         collection: 'businessUnits',
-        from: 'answer.audit.areaId',
-        to: 'answer.audit.area',
+        from: 'answer.audit.businessUnitId',
+        to: 'answer.audit.businessUnit',
       });
 
       /**
@@ -254,10 +254,10 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
               'answer.audit.participantsIds': _id,
             },
             {
-              'answer.audit.site.ownerId': _id,
+              'answer.audit.location.ownerId': _id,
             },
             {
-              'answer.audit.area.ownerId': _id,
+              'answer.audit.businessUnit.ownerId': _id,
             },
             {
               assigneeId: _id,
@@ -282,21 +282,21 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (shouldJoin(['answer', 'audit', 'site'])) {
+    if (shouldJoin(['answer', 'audit', 'location'])) {
       join({
         pipeline,
         collection: 'locations',
-        from: 'answer.audit.siteId',
-        to: 'answer.audit.site',
+        from: 'answer.audit.locationId',
+        to: 'answer.audit.location',
       });
     }
 
-    if (shouldJoin(['answer', 'audit', 'area'])) {
+    if (shouldJoin(['answer', 'audit', 'businessUnit'])) {
       join({
         pipeline,
         collection: 'businessUnits',
-        from: 'answer.audit.areaId',
-        to: 'answer.audit.area',
+        from: 'answer.audit.businessUnitId',
+        to: 'answer.audit.businessUnit',
       });
     }
 
@@ -309,18 +309,18 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
-    if (actionQueryInput?.sitesIds?.length > 0) {
+    if (actionQueryInput?.locationsIds?.length > 0) {
       pipeline.push({
         $match: {
-          'answer.audit.siteId': { $in: actionQueryInput.sitesIds },
+          'answer.audit.locationId': { $in: actionQueryInput.locationsIds },
         },
       });
     }
 
-    if (actionQueryInput?.areasIds?.length > 0) {
+    if (actionQueryInput?.businessUnitsIds?.length > 0) {
       pipeline.push({
         $match: {
-          'answer.audit.areaId': { $in: actionQueryInput.areasIds },
+          'answer.audit.businessUnitId': { $in: actionQueryInput.businessUnitsIds },
         },
       });
     }

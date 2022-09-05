@@ -1,8 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Spacer, Stack, useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
+import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -14,7 +17,8 @@ import TextInputMultiline from '../../components/Forms/TextInputMultiline';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import LocationListItem from '../../components/LocationListItem';
-import { AdminContext } from '../../contexts/AdminProvider';
+import { useAdminContext } from '../../contexts/AdminProvider';
+import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { ILocation } from '../../interfaces/ILocation';
 
@@ -31,6 +35,7 @@ const GET_LOCATIONS = gql`
         imgUrl
       }
       trackerItemsResponsesCount
+      totalAuditsCount
     }
   }
 `;
@@ -63,7 +68,8 @@ const defaultValues: Partial<ILocation> = {
 
 const Locations = () => {
   const toast = useToast();
-  const { adminModalState, setAdminModalState } = useContext(AdminContext);
+  const { module } = useAppContext();
+  const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_LOCATIONS);
   const [createFunction] = useMutation(CREATE_LOCATION);
   const [updateFunction] = useMutation(UPDATE_LOCATION);
@@ -131,7 +137,7 @@ const Locations = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await createFunction({ variables: { values } });
-        toast({ ...toastSuccess, description: 'Location added' });
+        toast({ ...toastSuccess, description: `${capitalize(t('location'))} added` });
         refetch();
       } else {
         toast({
@@ -151,7 +157,7 @@ const Locations = () => {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
         await updateFunction({ variables: { values } });
-        toast({ ...toastSuccess, description: 'Location updated' });
+        toast({ ...toastSuccess, description: `${capitalize(t('location'))} updated` });
         refetch();
       } else {
         toast({
@@ -170,7 +176,7 @@ const Locations = () => {
     try {
       const { _id } = getValues();
       await deleteFunction({ variables: { _id } });
-      toast({ ...toastSuccess, description: 'Location deleted' });
+      toast({ ...toastSuccess, description: `${capitalize(t('location'))} deleted` });
       refetch();
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
@@ -236,7 +242,7 @@ const Locations = () => {
           <Box h={['calc(100% - 170px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100%)']}>
             <AdminTableHeader>
               <AdminTableHeaderElement
-                label="Location name"
+                label={`${capitalize(t('location'))} name`}
                 onClick={() => {
                   setSortType('name');
                   setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
@@ -270,17 +276,30 @@ const Locations = () => {
                 </>
               )}
               <Spacer display={['block', 'none']} />
-              <AdminTableHeaderElement
-                label="Responses count"
-                onClick={() => {
-                  setSortType('trackerItemsResponsesCount');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                tooltip="Only published items"
-                w={['max-content', '50%']}
-              />
+              {module?.type === 'tracker' ? (
+                <AdminTableHeaderElement
+                  label="Responses count"
+                  onClick={() => {
+                    setSortType('trackerItemsResponsesCount');
+                    setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                  sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
+                  tooltip="Only published items"
+                  w={['max-content', '50%']}
+                />
+              ) : (
+                <AdminTableHeaderElement
+                  label={`${capitalize(pluralize(t('audit')))} count`}
+                  onClick={() => {
+                    setSortType('totalAuditsCount');
+                    setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'totalAuditsCount'}
+                  sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
+                  w={['max-content', '50%']}
+                />
+              )}
             </AdminTableHeader>
 
             {loading ? (
@@ -293,7 +312,7 @@ const Locations = () => {
                   locations?.map((location, i) => <LocationListItem key={i} location={location} openLocationModal={openLocationModal} />)
                 ) : (
                   <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                    No locations found
+                    No {pluralize(t('location'))} found
                   </Flex>
                 )}
               </Stack>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { Box, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
+import pluralize from 'pluralize';
 
-import { useAppContext } from '../contexts/AppProvider';
 import { SearchIcon } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
 import LocationsSelectorList from './LocationsSelectorList';
@@ -16,7 +17,6 @@ interface ILocationsSelector {
 }
 
 const LocationsSelector = ({ locations, selected, note, disabled, handleChange }: ILocationsSelector) => {
-  const { module } = useAppContext();
   const [filteredLocations, setFilteredLocations] = useState<ILocation[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
@@ -49,7 +49,7 @@ const LocationsSelector = ({ locations, selected, note, disabled, handleChange }
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={10}
-                placeholder={module?.type === 'tracker' ? 'Search locations' : 'Search sites'}
+                placeholder={`Search ${pluralize(t('site'))}`}
                 value={searchText}
                 w="full"
               />

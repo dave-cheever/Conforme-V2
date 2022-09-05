@@ -5,8 +5,8 @@ import { IAuditor } from '../../interfaces/IAuditor';
 export interface AuditModalContextType {
   activePage: string;
   setActivePage: (value: string) => void;
-  selectedArea: string;
-  setSelectedArea: (value: string) => void;
+  selectedBusinessUnit: string;
+  setSelectedBusinessUnit: (value: string) => void;
   auditorSearchText: string;
   updateAuditorSearchText: (value: string) => void;
   auditors: IAuditor[];
@@ -17,8 +17,8 @@ export interface AuditModalContextType {
 export const initialState: AuditModalContextType = {
   activePage: '',
   setActivePage: () => undefined,
-  selectedArea: '',
-  setSelectedArea: () => undefined,
+  selectedBusinessUnit: '',
+  setSelectedBusinessUnit: () => undefined,
   auditorSearchText: '',
   updateAuditorSearchText: () => undefined,
   auditors: [],

@@ -18,12 +18,12 @@ export const initialAuditFilters: IAuditFilters = {
     name: 'Status',
     value: [],
   },
-  sitesIds: {
-    name: 'Site',
+  locationsIds: {
+    name: capitalize(t('location')),
     value: [],
   },
-  areasIds: {
-    name: 'Area',
+  businessUnitsIds: {
+    name: capitalize(t('business unit')),
     value: [],
   },
   usersIds: {
@@ -52,12 +52,12 @@ export const initialActionFilters: IActionFilters = {
     name: 'Priority',
     value: [],
   },
-  sitesIds: {
-    name: 'Site',
+  locationsIds: {
+    name: capitalize(t('location')),
     value: [],
   },
-  areasIds: {
-    name: 'Area',
+  businessUnitsIds: {
+    name: capitalize(t('business unit')),
     value: [],
   },
   usersIds: {
@@ -82,12 +82,12 @@ export const initialWalkItemFilters: IWalkItemFilters = {
     value: [],
     hideFromPanel: true,
   },
-  sitesIds: {
-    name: 'Site',
+  locationsIds: {
+    name: capitalize(t('location')),
     value: [],
   },
-  areasIds: {
-    name: 'Area',
+  businessUnitsIds: {
+    name: capitalize(t('business unit')),
     value: [],
   },
   usersIds: {

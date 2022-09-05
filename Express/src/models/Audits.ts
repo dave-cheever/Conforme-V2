@@ -35,8 +35,8 @@ const auditsSchema = new Schema<IAudit, IAuditModel>({
     type: String,
     enum: ['physical', 'virtual'],
   },
-  siteId: String,
-  areaId: String,
+  locationId: String,
+  businessUnitId: String,
   auditorId: String,
   participantsIds: [String],
   recurring: Boolean,
@@ -109,8 +109,8 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
         });
         break;
 
-      // If updated 'siteId' field, get location from database and set value as id and label as name
-      case 'siteId':
+      // If updated 'locationId' field, get location from database and set value as id and label as name
+      case 'locationId':
         value = await getAuditValueForLookup({
           collection: Locations,
           labelField: 'name',
@@ -119,8 +119,8 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
         });
         break;
 
-      // If updated 'areaId' field, get business unit from database and set value as id and label as name
-      case 'areaId':
+      // If updated 'businessUnitId' field, get business unit from database and set value as id and label as name
+      case 'businessUnitId':
         value = await getAuditValueForLookup({
           collection: BusinessUnits,
           labelField: 'name',
@@ -175,7 +175,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
           action: 'add',
           element: {
             _id: createdAudit._doc._id,
-            name: values.areaId.new?.label || 'Virtual',
+            name: values.businessUnitId.new?.label || 'Virtual',
           },
           values,
         },
@@ -217,22 +217,22 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   join({
     pipeline,
     collection: 'businessUnits',
-    from: 'areaId',
-    to: 'area',
+    from: 'businessUnitId',
+    to: 'businessUnit',
   });
 
-  // Filter by search text (in area)
+  // Filter by search text (in businessUnit)
   pipeline.push({
     $match: {
-      'area.name': new RegExp(searchText, 'i'),
+      'businessUnit.name': new RegExp(searchText, 'i'),
     },
   });
 
   join({
     pipeline,
     collection: 'locations',
-    from: 'siteId',
-    to: 'site',
+    from: 'locationId',
+    to: 'location',
   });
 
   pipeline.push({
@@ -242,8 +242,8 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   pipeline.push({
     $project: {
       _id: 1,
-      primaryText: '$area.name',
-      secondaryText: '$site.name',
+      primaryText: '$businessUnit.name',
+      secondaryText: '$location.name',
       type: 'audits',
     },
   });
@@ -311,9 +311,9 @@ auditsSchema.statics.customUpdateOne = async function (
         _id: audit._id,
         name: 'Virtual',
       };
-      if (audit.areaId) {
-        const area = await BusinessUnits.customFindById(audit.areaId, organizationId);
-        element.name = area.name;
+      if (audit.businessUnitId) {
+        const businessUnit = await BusinessUnits.customFindById(audit.businessUnitId, organizationId);
+        element.name = businessUnit.name;
       }
       const oldValues = removeDatabaseFields(audit);
       const newValues = removeDatabaseFields(updatedAudit);
@@ -364,9 +364,9 @@ auditsSchema.statics.customDelete = async function (selector: object = {}, userI
         _id: audit._id,
         name: 'Virtual',
       };
-      if (audit.areaId) {
-        const area = await BusinessUnits.customFindById(audit.areaId, organizationId);
-        element.name = area.name;
+      if (audit.businessUnitId) {
+        const businessUnit = await BusinessUnits.customFindById(audit.businessUnitId, organizationId);
+        element.name = businessUnit.name;
       }
       const oldValues = removeDatabaseFields(updatedAudit);
       const organization = await Organizations.customFindById(organizationId, organizationId);

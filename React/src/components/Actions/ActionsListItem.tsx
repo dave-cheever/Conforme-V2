@@ -109,7 +109,7 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
               w="full"
               whiteSpace="nowrap"
             >
-              {action.answer?.audit?.site?.name ?? 'Virtual'}
+              {action.answer?.audit?.location?.name ?? 'Virtual'}
             </Text>
           </Flex>
         </Box>
@@ -127,7 +127,7 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
               w="full"
               whiteSpace="nowrap"
             >
-              {action.answer?.audit?.area?.name ?? 'Virtual'}
+              {action.answer?.audit?.businessUnit?.name ?? 'Virtual'}
             </Text>
           </Flex>
         </Box>

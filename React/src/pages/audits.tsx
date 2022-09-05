@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { isEmpty } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
 import AuditsGroup from '../components/Audit/AuditsGroup';
@@ -44,11 +44,11 @@ const GET_AUDITS = gql`
         startingDate
         frequency
       }
-      site {
+      location {
         _id
         name
       }
-      area {
+      businessUnit {
         _id
         name
       }
@@ -86,8 +86,8 @@ const Audits = () => {
   const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'dueDate', 'desc');
   const sortBy = [
     { label: 'Due date', key: 'dueDate' },
-    { label: 'Site', key: 'site.name' },
-    { label: 'Area', key: 'area.name' },
+    { label: capitalize(t('location')), key: 'location.name' },
+    { label: capitalize(t('business unit')), key: 'businessUnit.name' },
     { label: 'Status', key: 'status' },
     { label: 'Walk type', key: 'walkType' },
     { label: 'Auditor', key: 'auditor.displayName' },
@@ -96,7 +96,7 @@ const Audits = () => {
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
-    setUsedFilters(['walkType', 'status', 'sitesIds', 'areasIds', 'usersIds', 'createdDate', 'dueDate']);
+    setUsedFilters(['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate']);
 
     return () => {
       setDefaultFilters({});
@@ -188,8 +188,8 @@ const Audits = () => {
     { label: 'Audit type', key: 'auditType.name' },
     { label: 'Walk type', key: 'walkType' },
     { label: 'Status', key: 'status' },
-    { label: 'Area', key: 'area.name' },
-    { label: 'Site', key: 'site.name' },
+    { label: capitalize(t('business unit')), key: 'businessUnit.name' },
+    { label: capitalize(t('location')), key: 'location.name' },
     { label: 'Auditor', key: 'auditor.displayName' },
     { label: 'Participants', key: 'participants' },
   ];

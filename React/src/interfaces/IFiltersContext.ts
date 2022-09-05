@@ -53,7 +53,7 @@ export interface IFiltersContext {
   auditStatuses: TAuditStatus[];
   walkItemStatuses: TWalkItemStatus[];
   auditWalkTypes: TAuditWalkType[];
-  sites: Partial<ILocation>[];
-  areas: Partial<IBusinessUnit>[];
+  locations: Partial<ILocation>[];
+  businessUnits: Partial<IBusinessUnit>[];
   questionsCategories: Partial<IQuestionsCategory>[];
 }

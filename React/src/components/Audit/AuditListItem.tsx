@@ -39,7 +39,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             w="full"
             whiteSpace="nowrap"
           >
-            {audit.site?.name ?? 'Virtual'}
+            {audit.location?.name ?? 'Virtual'}
           </Text>
         </Stack>
         <Stack direction="row" pr={2} spacing={1} w="20%">
@@ -54,7 +54,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             w="full"
             whiteSpace="nowrap"
           >
-            {audit.area?.name ?? 'Virtual'}
+            {audit.businessUnit?.name ?? 'Virtual'}
           </Text>
         </Stack>
         <Flex w="10%">

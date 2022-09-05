@@ -1,5 +1,7 @@
 import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon } from '../../icons';
@@ -55,18 +57,18 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       </Flex>
       <Flex w="full">
         <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title">Site</Text>
-          <Tooltip label={answer?.audit?.site?.name ?? '-'}>
+          <Text color="walkItemSquare.section.title">{capitalize(t('location'))}</Text>
+          <Tooltip label={answer?.audit?.location?.name ?? '-'}>
             <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated textTransform="capitalize">
-              {answer?.audit?.site?.name ?? '-'}
+              {answer?.audit?.location?.name ?? '-'}
             </Text>
           </Tooltip>
         </Box>
         <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title">Area</Text>
-          <Tooltip label={answer?.audit?.area?.name ?? '-'}>
+          <Text color="walkItemSquare.section.title">{capitalize(t('business unit'))}</Text>
+          <Tooltip label={answer?.audit?.businessUnit?.name ?? '-'}>
             <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-              {answer?.audit?.area?.name ?? '-'}
+              {answer?.audit?.businessUnit?.name ?? '-'}
             </Text>
           </Tooltip>
         </Box>
@@ -84,7 +86,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             spacing={2}
           >
             <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated maxWidth="250px">
-              {answer?.audit?.area?.name ?? '-'}
+              {answer?.audit?.businessUnit?.name ?? '-'}
             </Text>
             <OpenExternalIcon fill="transparent" stroke="black" />
           </Stack>

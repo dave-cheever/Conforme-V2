@@ -58,8 +58,8 @@ const useConfig = () => {
       icon: Admin,
       permission: 'adminPanel.view',
       subSections: [
-        { label: 'Sites', url: '/admin/sites' },
-        { label: 'Areas', url: '/admin/areas' },
+        { label: capitalize(pluralize(t('location'))), url: '/admin/locations' },
+        { label: capitalize(pluralize(t('business unit'))), url: '/admin/business-units' },
         { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions' },
         { label: 'Questions categories', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories' },
         { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes' },
@@ -168,15 +168,15 @@ const useConfig = () => {
       },
     },
     locationsIds: {
-      name: 'Location',
+      name: capitalize(t('location')),
       value: [],
     },
   };
 
   const auditAddItems = [
     { label: 'Safety Walk', url: '/', permission: 'audits.add', icon: ListIcon },
-    { label: 'Site', url: '/admin/sites', permission: 'adminPanel.view', icon: SiteIcon },
-    { label: 'Area', url: '/admin/areas', permission: 'adminPanel.view', icon: LocationIcon },
+    { label: capitalize(t('location')), url: '/admin/locations', permission: 'adminPanel.view', icon: SiteIcon },
+    { label: capitalize(t('business unit')), url: '/admin/business-units', permission: 'adminPanel.view', icon: LocationIcon },
     { label: 'Question', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionOutlineIcon },
     { label: 'Questions category', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
     { label: 'Audit type', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },

@@ -35,8 +35,8 @@ const AuditHeader = () => {
   const {
     audit,
     auditor,
-    site,
-    area,
+    location,
+    businessUnit,
     selectedAction,
     questions,
     deleteAudit,
@@ -161,7 +161,7 @@ const AuditHeader = () => {
       <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
         <Stack align={['flex-start', 'center']} direction={['column', 'row']} h={['auto', '40px']} mb="15px" spacing={4} w="full">
           <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold">
-            {area?.name ?? 'Virtual'}
+            {businessUnit?.name ?? 'Virtual'}
           </Heading>
           {audit.status === 'completed' && (
             <Badge colorScheme="green" h="fit-content" variant="outline">
@@ -194,11 +194,11 @@ const AuditHeader = () => {
             {audit?.walkType === 'physical' && (
               <Flex direction="column" justify="center" wordBreak="break-all">
                 <Text fontSize="11px" opacity={0.5}>
-                  Site
+                  {capitalize(t('location'))}
                 </Text>
-                <Tooltip label={site?.name}>
+                <Tooltip label={location?.name}>
                   <Text fontSize="smm" noOfLines={2}>
-                    {site?.name}
+                    {location?.name}
                   </Text>
                 </Tooltip>
               </Flex>

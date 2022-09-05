@@ -26,10 +26,10 @@ export const auditsTypeDefs = `
     dueDate: Date!
     completedDate: Date
     auditType: AuditType!
-    siteId: ID
-    site: Location
-    areaId: ID
-    area: BusinessUnit
+    locationId: ID
+    location: Location
+    businessUnitId: ID
+    businessUnit: BusinessUnit
     auditorId: ID!
     auditor: User!
     participantsIds: [ID]
@@ -51,8 +51,8 @@ export const auditsTypeDefs = `
     status: [String]
     auditTypesIds: [ID]
     walkType: [String]
-    areasIds: [ID]
-    sitesIds: [ID]
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
     usersIds: AuditUsersInput
     createdDate: [String]
     dueDate: [String]
@@ -61,8 +61,8 @@ export const auditsTypeDefs = `
   input AuditCreateInput {
     auditTypeId: String!
     walkType: String!
-    siteId: ID
-    areaId: ID
+    locationId: ID
+    businessUnitId: ID
     auditorId: ID!
     participantsIds: [ID]
     recurring: Boolean!

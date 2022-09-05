@@ -9,7 +9,6 @@ import PureLayout from '../layouts/PureLayout';
 import ResponseLayout from '../layouts/ResponseLayout';
 import Accidents from '../pages/accidents';
 import Actions from '../pages/actions';
-import Areas from '../pages/admin/areas';
 import AuditLog from '../pages/admin/audit-log';
 import AuditTypes from '../pages/admin/audit-types';
 import BusinessUnits from '../pages/admin/business-units';
@@ -19,7 +18,6 @@ import Questions from '../pages/admin/questions';
 import QuestionsCategories from '../pages/admin/questions-categories';
 import RegulatoryBodies from '../pages/admin/regulatory-bodies';
 import Settings from '../pages/admin/settings';
-import Sites from '../pages/admin/sites';
 import TrackerItemsAdmin from '../pages/admin/tracker-items';
 import Users from '../pages/admin/users';
 import Assets from '../pages/assets';
@@ -234,26 +232,10 @@ const protectedRoutes: Array<IRoute> = [
     permission: 'adminPanel',
   },
   {
-    path: '/admin/sites',
-    key: 'sites',
-    exact: true,
-    component: Sites,
-    layout: DefaultLayout,
-    permission: 'adminPanel',
-  },
-  {
     path: '/admin/business-units',
     key: 'business-units',
     exact: true,
     component: BusinessUnits,
-    layout: DefaultLayout,
-    permission: 'adminPanel',
-  },
-  {
-    path: '/admin/areas',
-    key: 'areas',
-    exact: true,
-    component: Areas,
     layout: DefaultLayout,
     permission: 'adminPanel',
   },

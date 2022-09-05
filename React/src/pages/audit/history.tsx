@@ -42,7 +42,7 @@ const AuditHistory = () => {
     variables: {
       auditQueryInput: {
         auditTypesIds: [audit?.auditTypeId],
-        areasIds: [audit?.area?._id],
+        businessUnitsIds: [audit?.businessUnit?._id],
       },
     },
   });

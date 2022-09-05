@@ -60,7 +60,7 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
       )}
       <Spacer display={['block', 'none']} />
       <Flex alignItems="center" w={['97px', 'full']}>
-        {module?.type === 'tracker' ? location.trackerItemsResponsesCount || '0' : location.totalAuditsCount || 0}
+        {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}
         <Tooltip fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"
@@ -68,7 +68,7 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
             ml="13px"
             onClick={() => {
               if (module?.type === 'tracker') setResponseFiltersValue({ locationsIds: { value: [location._id] } });
-              else setAuditFiltersValue({ sitesIds: { value: [location._id] } });
+              else setAuditFiltersValue({ locationsIds: { value: [location._id] } });
               navigateTo('/');
             }}
             stroke="locations.tooltipStroke"

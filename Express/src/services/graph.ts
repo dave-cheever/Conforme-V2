@@ -251,10 +251,10 @@ const uploadDocuments = async (
     logger.error('Graph error: Wrong SharePoint site configuration');
     return [];
   }
-  const spSiteId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
+  const splocationId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
 
   const client = await getClient(organization._id);
-  const site = await client.get(spSiteId);
+  const site = await client.get(splocationId);
   const { id } = site.data;
   if (!id) {
     logger.error('Graph error: Wrong SharePoint site configuration');
@@ -313,10 +313,10 @@ const uploadDocuments = async (
         };
 
         const result = await upload();
-        const siteId = await getItemId(result);
+        const locationId = await getItemId(result);
         return {
           name: incrementFileName(document.originalname, documentExistantTimes),
-          id: siteId,
+          id: locationId,
           addedAt: new Date(),
         };
       } catch (e: any) {
@@ -337,11 +337,11 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
   const spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || '';
   const spStart = spUrlStart[0].replace('https://', '').replace('.com', '.com:');
   const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g) || organization.spSiteUrl?.match(/teams\/.*/g);
-  const spSiteId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
+  const splocationId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
 
-  const site = await client.get(spSiteId);
-  const { id: siteId } = site.data;
-  if (!siteId) {
+  const site = await client.get(splocationId);
+  const { id: locationId } = site.data;
+  if (!locationId) {
     logger.error('Graph error: Wrong SharePoint site configuration');
     return false;
   }
@@ -351,7 +351,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
     const fileDetails = await client.get(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
 
     // Create folder
-    const folderRes = await client.post(`sites/${siteId}/drive/items/root/children`, {
+    const folderRes = await client.post(`sites/${locationId}/drive/items/root/children`, {
       name: newPath,
       folder: {},
       '@microsoft.graph.conflictBehavior': 'replace',
@@ -360,7 +360,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
     // Move file to new folder
     await client.patch(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`, {
       parentReference: {
-        path: `sites/${siteId}/drive/items/root:/${newPath}`,
+        path: `sites/${locationId}/drive/items/root:/${newPath}`,
         id: folderRes.data.id,
       },
       name: newName,
@@ -368,11 +368,11 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
 
     try {
       // Get old folder details
-      const tempFolderDetails = await client.get(`sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`);
+      const tempFolderDetails = await client.get(`sites/${locationId}/drive/items/${fileDetails.data.parentReference.id}`);
 
       // Delete old folder if empty
       if (tempFolderDetails.data.folder.childCount === 0)
-        await client.delete(`sites/${siteId}/drive/items/${fileDetails.data.parentReference.id}`);
+        await client.delete(`sites/${locationId}/drive/items/${fileDetails.data.parentReference.id}`);
     } catch (deleteErr: any) { } // do not do anything if folder was already removed
 
     return true;

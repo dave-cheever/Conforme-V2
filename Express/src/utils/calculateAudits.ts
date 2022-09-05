@@ -39,9 +39,9 @@ const calculateAudits = async () => {
           .filter(({ status }) => status !== 'missed')
           // Sort by due date to get the latest
           .sort(({ dueDate: a }, { dueDate: b }) => new Date(b!).getTime() - new Date(a!).getTime())
-          // Get the first one per area
+          // Get the first one per businessUnit
           .reduce((acc, item) => {
-            if (!acc.some((audit) => audit.areaId === item.areaId)) acc.push(item);
+            if (!acc.some((audit) => audit.businessUnitId === item.businessUnitId)) acc.push(item);
             return acc;
           }, [] as IAudit[]);
         for (const audit of upcomingAudits) {
@@ -53,8 +53,8 @@ const calculateAudits = async () => {
                 status: 'upcoming',
                 dueDate: getNextRenewalDate(audit.dueDate, auditType.frequency),
                 walkType: 'physical',
-                siteId: audit.siteId,
-                areaId: audit.areaId,
+                locationId: audit.locationId,
+                businessUnitId: audit.businessUnitId,
                 auditorId: audit.auditorId,
                 participantsIds: [],
                 recurring: auditType.recurring,

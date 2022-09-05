@@ -34,11 +34,11 @@ const GET_AUDIT = gql`
           _id
         }
       }
-      site {
+      location {
         _id
         name
       }
-      area {
+      businessUnit {
         _id
         name
       }
@@ -304,8 +304,8 @@ const AuditProvider = ({ children }) => {
 
   const audit = data?.audits[0];
   const auditType = audit?.auditType;
-  const site = audit?.site;
-  const area = audit?.area;
+  const location = audit?.location;
+  const businessUnit = audit?.businessUnit;
   const auditor = audit?.auditor;
   const participants = audit?.participants;
 
@@ -375,8 +375,8 @@ const AuditProvider = ({ children }) => {
       auditType,
       auditor,
       participants,
-      site,
-      area,
+      location,
+      businessUnit,
       questionsCategories,
       customQuestionsCategories,
       questions,
@@ -412,8 +412,8 @@ const AuditProvider = ({ children }) => {
       auditType,
       auditor,
       participants,
-      site,
-      area,
+      location,
+      businessUnit,
       questions,
       loading,
       selectedQuestion,

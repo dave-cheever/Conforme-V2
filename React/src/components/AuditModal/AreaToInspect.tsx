@@ -1,6 +1,8 @@
 import { useContext, useState } from 'react';
 
 import { Box, Collapse, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { OpenMenuArrow } from '../../icons';
 import AuditModalContext from './AuditModalContext';
@@ -24,7 +26,7 @@ const AreaToInspect = () => {
         position="relative"
       >
         <Text fontSize="sm" fontWeight="700" padding="2px 15px" position="absolute" zIndex="999">
-          Select area
+          Select {capitalize(t('business unit'))}
         </Text>
         <InputGroup>
           <Input

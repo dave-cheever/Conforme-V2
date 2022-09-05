@@ -111,18 +111,18 @@ const AuditsInsights = () => {
     [data],
   );
   const {
-    sortedData: sites,
-    sortOrder: sitesSortOrder,
-    sortType: sitesSortType,
-    setSortOrder: setSitesSortOrder,
-    setSortType: setSitesSortType,
+    sortedData: locations,
+    sortOrder: locationsSortOrder,
+    sortType: locationsSortType,
+    setSortOrder: setLocationsSortOrder,
+    setSortType: setLocationsSortType,
   } = useSort(data?.locations ?? []);
   const {
-    sortedData: areas,
-    sortOrder: areasSortOrder,
-    sortType: areasSortType,
-    setSortOrder: setAreasSortOrder,
-    setSortType: setAreasSortType,
+    sortedData: businessUnits,
+    sortOrder: businessUnitsSortOrder,
+    sortType: businessUnitsSortType,
+    setSortOrder: setBusinessUnitsSortOrder,
+    setSortType: setBusinessUnitsSortType,
   } = useSort(data?.businessUnits ?? []);
   const {
     sortedData: users,
@@ -159,7 +159,7 @@ const AuditsInsights = () => {
           itemStyle: {
             color: auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color as string,
           },
-          areaStyle: {
+          businessUnitStyle: {
             color: new graphic.LinearGradient(1, 0, 1, 1, [
               {
                 offset: 0,
@@ -256,122 +256,130 @@ const AuditsInsights = () => {
           <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
               <Box bg="auditsInsights.list.bg" borderRadius="20px" pb={7} w="full">
-                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per site`}>
+                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per location`}>
                   <AdminTableHeaderElement
-                    label="Site"
+                    label={capitalize(t('location'))}
                     onClick={() => {
-                      setSitesSortType('name');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'name' ? 'desc' : 'asc');
+                      setLocationsSortType('name');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'name' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'name'}
-                    sortOrder={sitesSortType === 'name' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'name'}
+                    sortOrder={locationsSortType === 'name' ? locationsSortOrder : undefined}
                     w="60%"
                   />
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
-                      setSitesSortType('totalAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                      setLocationsSortType('totalAuditsCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'totalAuditsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'totalAuditsCount'}
-                    sortOrder={sitesSortType === 'totalAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'totalAuditsCount'}
+                    sortOrder={locationsSortType === 'totalAuditsCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
-                      setSitesSortType('completedAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'completedAuditsCount' ? 'desc' : 'asc');
+                      setLocationsSortType('completedAuditsCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'completedAuditsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'completedAuditsCount'}
-                    sortOrder={sitesSortType === 'completedAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'completedAuditsCount'}
+                    sortOrder={locationsSortType === 'completedAuditsCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="U"
                     onClick={() => {
-                      setSitesSortType('upcomingAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
+                      setLocationsSortType('upcomingAuditsCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'upcomingAuditsCount'}
-                    sortOrder={sitesSortType === 'upcomingAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'upcomingAuditsCount'}
+                    sortOrder={locationsSortType === 'upcomingAuditsCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
-                      setSitesSortType('missedAuditsCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'missedAuditsCount' ? 'desc' : 'asc');
+                      setLocationsSortType('missedAuditsCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'missedAuditsCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'missedAuditsCount'}
-                    sortOrder={sitesSortType === 'missedAuditsCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'missedAuditsCount'}
+                    sortOrder={locationsSortType === 'missedAuditsCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
-                  {sites?.map((site) => (
-                    <InsightListItem item={site} key={site._id} navigation="/admin/sites" />
+                  {locations?.map((location) => (
+                    <InsightListItem item={location} key={location._id} navigation="/admin/locations" />
                   ))}
                 </Flex>
               </Box>
             </GridItem>
             <GridItem h="100%" w="100%">
               <Box bg="auditsInsights.list.bg" borderRadius="20px" pb={7} w="full">
-                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per area`}>
+                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per businessUnit`}>
                   <AdminTableHeaderElement
-                    label="Area"
+                    label={capitalize(t('business unit'))}
                     onClick={() => {
-                      setAreasSortType('name');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'name' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('name');
+                      setBusinessUnitsSortOrder(businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'name' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'name'}
-                    sortOrder={areasSortType === 'name' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'name'}
+                    sortOrder={businessUnitsSortType === 'name' ? businessUnitsSortOrder : undefined}
                     w="60%"
                   />
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
-                      setAreasSortType('totalAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('totalAuditsCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'totalAuditsCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'totalAuditsCount'}
-                    sortOrder={areasSortType === 'totalAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'totalAuditsCount'}
+                    sortOrder={businessUnitsSortType === 'totalAuditsCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
-                      setAreasSortType('completedAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'completedAuditsCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('completedAuditsCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'completedAuditsCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'completedAuditsCount'}
-                    sortOrder={areasSortType === 'completedAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'completedAuditsCount'}
+                    sortOrder={businessUnitsSortType === 'completedAuditsCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="U"
                     onClick={() => {
-                      setAreasSortType('upcomingAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('upcomingAuditsCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'upcomingAuditsCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'upcomingAuditsCount'}
-                    sortOrder={areasSortType === 'upcomingAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'upcomingAuditsCount'}
+                    sortOrder={businessUnitsSortType === 'upcomingAuditsCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="M"
                     onClick={() => {
-                      setAreasSortType('missedAuditsCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'missedAuditsCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('missedAuditsCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'missedAuditsCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'missedAuditsCount'}
-                    sortOrder={areasSortType === 'missedAuditsCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'missedAuditsCount'}
+                    sortOrder={businessUnitsSortType === 'missedAuditsCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
-                  {areas?.map((area) => (
-                    <InsightListItem item={area} itemType="businessUnit" key={area._id} navigation="/admin/areas" />
+                  {businessUnits?.map((businessUnit) => (
+                    <InsightListItem item={businessUnit} itemType="businessUnit" key={businessUnit._id} navigation="/admin/businessUnits" />
                   ))}
                 </Flex>
               </Box>

@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { t } from 'i18next';
-import { isEmpty } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 
 import { toastFailed } from '../../bootstrap/config';
 import { AdminContext } from '../../contexts/AdminProvider';
@@ -43,7 +43,7 @@ const GET_DUPLICATE_AUDITS = gql`
       auditType {
         name
       }
-      area {
+      businessUnit {
         name
       }
     }
@@ -68,13 +68,13 @@ const AuditModal = ({ refetch }) => {
   }, [adminModalState, JSON.stringify(auditTypes)]);
 
   useEffect(() => {
-    const { areaId, walkType, auditTypeId } = audit;
+    const { businessUnitId, walkType, auditTypeId } = audit;
 
-    if (!isEmpty(auditTypeId) && walkType === 'physical' && !isEmpty(areaId)) {
+    if (!isEmpty(auditTypeId) && walkType === 'physical' && !isEmpty(businessUnitId)) {
       getDuplicateAudits({
         variables: {
           auditQueryInput: {
-            areasIds: [areaId],
+            businessUnitsIds: [businessUnitId],
             walkType: [walkType],
             auditTypesIds: [auditTypeId],
             status: ['upcoming'],
@@ -191,13 +191,13 @@ const AuditModal = ({ refetch }) => {
                   <GridItem w="100%">
                     <Dropdown
                       control={control}
-                      label="Site"
-                      name="siteId"
+                      label={capitalize(t('location'))}
+                      name="locationId"
                       options={(locations ?? []).map((location) => ({
                         value: location._id,
                         label: location.name,
                       }))}
-                      placeholder="Select site"
+                      placeholder="Select location"
                       required
                       stroke="dropdown.icon"
                       validations={{
@@ -209,13 +209,13 @@ const AuditModal = ({ refetch }) => {
                   <GridItem w="100%">
                     <Dropdown
                       control={control}
-                      label="Area"
-                      name="areaId"
+                      label={capitalize(t('business unit'))}
+                      name="businessUnitId"
                       options={(businessUnits ?? []).map((businessUnit) => ({
                         value: businessUnit._id,
                         label: businessUnit.name,
                       }))}
-                      placeholder="Select Area"
+                      placeholder={`Select ${capitalize(t('business unit'))}`}
                       required
                       stroke="dropdown.icon"
                       validations={{
@@ -272,7 +272,7 @@ const AuditModal = ({ refetch }) => {
               {data?.audits?.length > 0 && (
                 <Alert status="warning">
                   <Text as="h3">
-                    {data?.audits?.[0].auditType.name} for {data?.audits?.[0].area.name} for {format(new Date(), 'MMMM Y')} already{' '}
+                    {data?.audits?.[0].auditType.name} for {data?.audits?.[0].businessUnit.name} for {format(new Date(), 'MMMM Y')} already{' '}
                     <Text
                       _hover={{
                         textDecoration: 'underline',
@@ -291,7 +291,7 @@ const AuditModal = ({ refetch }) => {
               <Button
                 bg="auditModal.tabs.bottomButton.bg"
                 color="auditModal.tabs.bottomButton.color"
-                disabled={!audit.walkType || !audit.siteId || !audit.areaId}
+                disabled={!audit.walkType || !audit.locationId || !audit.businessUnitId}
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"

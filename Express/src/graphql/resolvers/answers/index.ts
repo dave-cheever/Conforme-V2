@@ -43,8 +43,8 @@ export const answersTypeDefs = `
     _id: ID
     questionsIds: [ID]
     questionsCategoriesIds: [ID]
-    areasIds: [ID]
-    sitesIds: [ID]
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
     status: [String]
     usersIds: AnswerUsersInput
     scope: ScopeInput

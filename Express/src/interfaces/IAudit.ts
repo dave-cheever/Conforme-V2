@@ -7,8 +7,8 @@ export interface IAudit extends IBase {
   dueDate: Date; // Calculated base on auditType frequency, start date and status
   completedDate?: Date;
   walkType: 'physical' | 'virtual';
-  siteId?: string;
-  areaId?: string;
+  locationId?: string;
+  businessUnitId?: string;
   auditorId: string;
   participantsIds: string[];
   recurring: boolean;
@@ -16,8 +16,8 @@ export interface IAudit extends IBase {
 
   // Additional fields
   auditType?: IAuditType;
-  site?: ILocation;
-  area?: IBusinessUnit;
+  location?: ILocation;
+  businessUnit?: IBusinessUnit;
   auditor?: IUser;
   participants?: IUser[];
   questions?: IQuestion<any>[];

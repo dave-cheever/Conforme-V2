@@ -1,4 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { IAction } from '../../interfaces/IAction';
 import AdminTableHeader from '../Admin/AdminTableHeader';
@@ -94,23 +96,23 @@ const ActionsList = ({
           w="10%"
         />
         <AdminTableHeaderElement
-          label="Site"
+          label={capitalize(t('location'))}
           onClick={() => {
-            setSortType('answer.audit.site.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.site.name' ? 'desc' : 'asc');
+            setSortType('answer.audit.location.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.location.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'answer.audit.site.name'}
-          sortOrder={sortType === 'answer.audit.site.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'answer.audit.location.name'}
+          sortOrder={sortType === 'answer.audit.location.name' ? sortOrder : undefined}
           w="12.5%"
         />
         <AdminTableHeaderElement
-          label="Area"
+          label={capitalize(t('business unit'))}
           onClick={() => {
-            setSortType('answer.audit.area.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.area.name' ? 'desc' : 'asc');
+            setSortType('answer.audit.businessUnit.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.businessUnit.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'answer.audit.area.name'}
-          sortOrder={sortType === 'answer.audit.area.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'answer.audit.businessUnit.name'}
+          sortOrder={sortType === 'answer.audit.businessUnit.name' ? sortOrder : undefined}
           w="12.5%"
         />
       </AdminTableHeader>

@@ -29,21 +29,21 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       },
     ];
 
-    if (shouldJoin(['site']) || !isPermitted({ user, action: 'audits.viewAll' })) {
+    if (shouldJoin(['location']) || !isPermitted({ user, action: 'audits.viewAll' })) {
       join({
         pipeline,
         collection: 'locations',
-        from: 'siteId',
-        to: 'site',
+        from: 'locationId',
+        to: 'location',
       });
     }
 
-    if (shouldJoin(['area']) || !isPermitted({ user, action: 'audits.viewAll' })) {
+    if (shouldJoin(['businessUnit']) || !isPermitted({ user, action: 'audits.viewAll' })) {
       join({
         pipeline,
         collection: 'businessUnits',
-        from: 'areaId',
-        to: 'area',
+        from: 'businessUnitId',
+        to: 'businessUnit',
       });
     }
 
@@ -70,10 +70,10 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
               participantsIds: _id,
             },
             {
-              'site.ownerId': _id,
+              'location.ownerId': _id,
             },
             {
-              'area.ownerId': _id,
+              'businessUnit.ownerId': _id,
             },
           ],
         );
@@ -110,18 +110,18 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       });
     }
 
-    if (auditQueryInput?.sitesIds?.length > 0) {
+    if (auditQueryInput?.locationsIds?.length > 0) {
       pipeline.push({
         $match: {
-          siteId: { $in: auditQueryInput.sitesIds },
+          locationId: { $in: auditQueryInput.locationsIds },
         },
       });
     }
 
-    if (auditQueryInput?.areasIds?.length > 0) {
+    if (auditQueryInput?.businessUnitsIds?.length > 0) {
       pipeline.push({
         $match: {
-          areaId: { $in: auditQueryInput.areasIds },
+          businessUnitId: { $in: auditQueryInput.businessUnitsIds },
         },
       });
     }

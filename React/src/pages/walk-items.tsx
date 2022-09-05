@@ -56,12 +56,12 @@ const GET_ANSWERS = gql`
       audit {
         _id
         walkType
-        site {
+        location {
           _id
           name
         }
-        areaId
-        area {
+        businessUnitId
+        businessUnit {
           _id
           name
         }
@@ -144,8 +144,8 @@ const WalkItems = () => {
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },
     { label: 'Status', key: 'status' },
-    { label: capitalize(t('site')), key: 'audit.site.name' },
-    { label: capitalize(t('area')), key: 'audit.area.name' },
+    { label: capitalize(t('location')), key: 'audit.location.name' },
+    { label: capitalize(t('businessUnit')), key: 'audit.businessUnit.name' },
     { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },
     { label: 'Date added', key: 'metatags.addedAt' },
@@ -153,7 +153,7 @@ const WalkItems = () => {
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
-    setUsedFilters(['questionsCategoriesIds', 'areasIds', 'usersIds', 'sitesIds', 'status', 'createdDate']);
+    setUsedFilters(['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate']);
     return () => {
       setShowFiltersPanel(false);
       setAdminModalState('closed');
@@ -228,7 +228,7 @@ const WalkItems = () => {
     { label: '_id', key: '_id' },
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },
-    { label: 'Area', key: 'area' },
+    { label: capitalize(t('business unit')), key: 'businessUnit' },
     { label: 'Number of actions', key: 'numberOfActions' },
     { label: 'Status', key: 'status' },
     { label: 'Added by', key: 'addedBy.displayName' },
@@ -239,7 +239,7 @@ const WalkItems = () => {
       (data?.answers ?? []).map(({ typename, metatags, ...answer }) => ({
         ...answer,
         numberOfActions: answer?.actions?.length,
-        area: answer?.audit?.area?.name || 'Virtual',
+        businessUnit: answer?.audit?.businessUnit?.name || 'Virtual',
       })),
     [JSON.stringify(filteredAnswers)],
   );

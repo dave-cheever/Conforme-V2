@@ -40,7 +40,7 @@ const AuditSubmitModal = ({ isOpen, onClose }) => {
                 `virtual ${t('audit')}`
               ) : (
                 <Text as="span">
-                  {t('audit')} in <strong>{audit.area?.name}</strong>
+                  {t('audit')} in <strong>{audit.businessUnit?.name}</strong>
                 </Text>
               )}{' '}
               as completed?

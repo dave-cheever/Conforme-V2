@@ -26,7 +26,6 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
   const renderPanel = () => {
     switch (name) {
       case 'businessUnitsIds':
-      case 'areasIds':
         return <BusinessUnitFilter />;
 
       case 'categoriesIds':
@@ -41,7 +40,6 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
         return <DateFilter filterName="createdDate" />;
 
       case 'locationsIds':
-      case 'sitesIds':
         return <LocationFilter />;
 
       case 'regulatoryBodiesIds':

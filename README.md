@@ -297,7 +297,8 @@ Possible translations for Audits module:
 - audit
 - auditor
 - question
-- area
+- location
+- business unit
 - addedAt
 
 Possible translations for Tracker module:

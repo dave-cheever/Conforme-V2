@@ -84,7 +84,7 @@ const WalkItemsListItem = ({
               {answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
             </Flex>
           </Flex>
-          <Tooltip label={answer?.audit?.site?.name}>
+          <Tooltip label={answer?.audit?.location?.name}>
             <Flex flexDir="column" w="19%">
               <Flex
                 align="flex-start"
@@ -97,11 +97,11 @@ const WalkItemsListItem = ({
                 pt="3px"
                 textOverflow="ellipsis"
               >
-                {audit?.site?.name ?? '-'}
+                {audit?.location?.name ?? '-'}
               </Flex>
             </Flex>
           </Tooltip>
-          <Tooltip label={audit?.area?.name}>
+          <Tooltip label={audit?.businessUnit?.name}>
             <Flex flexDir="column" w="19%">
               <Flex
                 align="flex-start"
@@ -115,7 +115,7 @@ const WalkItemsListItem = ({
                 pt="3px"
                 textOverflow="ellipsis"
               >
-                {audit?.area?.name ?? '-'}
+                {audit?.businessUnit?.name ?? '-'}
               </Flex>
             </Flex>
           </Tooltip>

@@ -62,7 +62,7 @@ const businessUnits = async (
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                areaId: businessUnit._id,
+                businessUnitId: businessUnit._id,
                 organizationId: organization._id,
               },
             },
@@ -79,7 +79,7 @@ const businessUnits = async (
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                areaId: businessUnit._id,
+                businessUnitId: businessUnit._id,
                 status: 'completed',
                 organizationId: organization._id,
               },
@@ -97,7 +97,7 @@ const businessUnits = async (
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                areaId: businessUnit._id,
+                businessUnitId: businessUnit._id,
                 status: 'upcoming',
                 organizationId: organization._id,
               },
@@ -115,7 +115,7 @@ const businessUnits = async (
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                areaId: businessUnit._id,
+                businessUnitId: businessUnit._id,
                 status: 'missed',
                 organizationId: organization._id,
               },
@@ -153,7 +153,7 @@ const businessUnits = async (
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': businessUnit._id,
+            'answer.audit.locationId': businessUnit._id,
           },
         });
 
@@ -190,7 +190,7 @@ const businessUnits = async (
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': businessUnit._id,
+            'answer.audit.locationId': businessUnit._id,
             done: true,
           },
         });
@@ -228,7 +228,7 @@ const businessUnits = async (
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': businessUnit._id,
+            'answer.audit.locationId': businessUnit._id,
           },
         });
 
@@ -264,7 +264,7 @@ const businessUnits = async (
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': businessUnit._id,
+            'answer.audit.locationId': businessUnit._id,
           },
         });
 

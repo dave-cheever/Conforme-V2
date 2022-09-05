@@ -27,7 +27,7 @@ const InsightListItem = ({
   const handleClickForAudits = (status?: string) => {
     navigateTo('/');
     setAuditFiltersValue({
-      [itemType === 'location' ? 'sitesIds' : 'areasIds']: {
+      [itemType === 'location' ? 'locationsIds' : 'businessUnitsIds']: {
         value: [item._id],
       },
       status: {
@@ -39,7 +39,7 @@ const InsightListItem = ({
   const handleClickForAnswers = (status?: string) => {
     navigateTo('/walk-items');
     setWalkItemFiltersValue({
-      [itemType === 'location' ? 'sitesIds' : 'areasIds']: {
+      [itemType === 'location' ? 'locationsIds' : 'businessUnitsIds']: {
         value: [item._id],
       },
       status: {
@@ -54,7 +54,7 @@ const InsightListItem = ({
   const handleClickForActions = (status?: string) => {
     navigateTo('/actions');
     setActionFiltersValue({
-      [itemType === 'location' ? 'sitesIds' : 'areasIds']: {
+      [itemType === 'location' ? 'locationsIds' : 'businessUnitsIds']: {
         value: [item._id],
       },
       status: {

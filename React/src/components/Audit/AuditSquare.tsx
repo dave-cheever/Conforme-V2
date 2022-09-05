@@ -1,5 +1,7 @@
 import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
@@ -37,15 +39,15 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           </Tooltip>
         </Skeleton>
         <Text color="auditSquare.nameFontColor" fontSize="16px" fontWeight="700" lineHeight="20px" ml={3} noOfLines={2} w="full">
-          {audit?.area?.name}
+          {audit?.businessUnit?.name}
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">
         <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="auditSquare.titleFontColor">Site</Text>
-          <Tooltip label={audit?.site?.name}>
+          <Text color="auditSquare.titleFontColor">{capitalize(t('location'))}</Text>
+          <Tooltip label={audit?.location?.name}>
             <Text isTruncated maxWidth="80%">
-              {audit?.site?.name}
+              {audit?.location?.name}
             </Text>
           </Tooltip>
         </Box>

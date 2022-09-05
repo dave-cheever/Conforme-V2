@@ -206,18 +206,18 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
     // For "user" role filter answers
     if (!isPermitted({ user, action: 'answers.viewAll' })) {
       // If user doesn't have permissions to get all answers
-      // need to check if he is an area or site owner
+      // need to check if he is an businessUnit or location owner
       join({
         pipeline,
         collection: 'locations',
-        from: 'audit.siteId',
-        to: 'audit.site',
+        from: 'audit.locationId',
+        to: 'audit.location',
       });
       join({
         pipeline,
         collection: 'businessUnits',
-        from: 'audit.areaId',
-        to: 'audit.area',
+        from: 'audit.businessUnitId',
+        to: 'audit.businessUnit',
       });
 
       /**
@@ -241,10 +241,10 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
               'audit.participantsIds': _id,
             },
             {
-              'audit.site.ownerId': _id,
+              'audit.location.ownerId': _id,
             },
             {
-              'audit.area.ownerId': _id,
+              'audit.businessUnit.ownerId': _id,
             },
           ],
         );
@@ -257,36 +257,36 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
-    if (shouldJoin(['audit', 'site'])) {
+    if (shouldJoin(['audit', 'location'])) {
       join({
         pipeline,
         collection: 'locations',
-        from: 'audit.siteId',
-        to: 'audit.site',
+        from: 'audit.locationId',
+        to: 'audit.location',
       });
     }
 
-    if (shouldJoin(['audit', 'area'])) {
+    if (shouldJoin(['audit', 'businessUnit'])) {
       join({
         pipeline,
         collection: 'businessUnits',
-        from: 'audit.areaId',
-        to: 'audit.area',
+        from: 'audit.businessUnitId',
+        to: 'audit.businessUnit',
       });
     }
 
-    if (answerQuery?.sitesIds?.length > 0) {
+    if (answerQuery?.locationsIds?.length > 0) {
       pipeline.push({
         $match: {
-          'audit.siteId': { $in: answerQuery.sitesIds },
+          'audit.locationId': { $in: answerQuery.locationsIds },
         },
       });
     }
 
-    if (answerQuery?.areasIds?.length > 0) {
+    if (answerQuery?.businessUnitsIds?.length > 0) {
       pipeline.push({
         $match: {
-          'audit.areaId': { $in: answerQuery.areasIds },
+          'audit.businessUnitId': { $in: answerQuery.businessUnitsIds },
         },
       });
     }

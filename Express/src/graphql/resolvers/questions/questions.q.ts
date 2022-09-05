@@ -37,7 +37,7 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
     // For "user" role filter answers
     if (!isPermitted({ user, action: 'questions.viewAll' })) {
       // If user doesn't have permissions to get all questions
-      // need to check if he is an area or site owner
+      // need to check if he is an businessUnit or location owner
       join({
         pipeline,
         collection: 'audits',
@@ -47,14 +47,14 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
       join({
         pipeline,
         collection: 'locations',
-        from: 'audit.siteId',
-        to: 'audit.site',
+        from: 'audit.locationId',
+        to: 'audit.location',
       });
       join({
         pipeline,
         collection: 'businessUnits',
-        from: 'audit.areaId',
-        to: 'audit.area',
+        from: 'audit.businessUnitId',
+        to: 'audit.businessUnit',
       });
 
       /**
@@ -78,10 +78,10 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
               'audit.participantsIds': _id,
             },
             {
-              'audit.site.ownerId': _id,
+              'audit.location.ownerId': _id,
             },
             {
-              'audit.area.ownerId': _id,
+              'audit.businessUnit.ownerId': _id,
             },
           ],
         );

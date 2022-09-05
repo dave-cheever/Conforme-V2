@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Grid, GridItem, Heading, Spacer, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
@@ -70,18 +72,18 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
     },
   });
   const {
-    sortedData: sites,
-    sortOrder: sitesSortOrder,
-    sortType: sitesSortType,
-    setSortOrder: setSitesSortOrder,
-    setSortType: setSitesSortType,
+    sortedData: locations,
+    sortOrder: locationsSortOrder,
+    sortType: locationsSortType,
+    setSortOrder: setLocationsSortOrder,
+    setSortType: setLocationsSortType,
   } = useSort(data?.locations ?? []);
   const {
-    sortedData: areas,
-    sortOrder: areasSortOrder,
-    sortType: areasSortType,
-    setSortOrder: setAreasSortOrder,
-    setSortType: setAreasSortType,
+    sortedData: businessUnits,
+    sortOrder: businessUnitsSortOrder,
+    sortType: businessUnitsSortType,
+    setSortOrder: setBusinessUnitsSortOrder,
+    setSortType: setBusinessUnitsSortType,
   } = useSort(data?.businessUnits ?? []);
 
   const echartsOption = useMemo(
@@ -111,7 +113,7 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
           itemStyle: {
             color: '#1E1836',
           },
-          areaStyle: {
+          businessUnitStyle: {
             color: new graphic.LinearGradient(1, 0, 1, 1, [
               {
                 offset: 0,
@@ -185,64 +187,64 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
           <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
             <GridItem h="100%" w="100%">
               <Box bg="answersInsights.list.bg" borderRadius="20px" pb={7} w="full">
-                <AdminTableHeader title={`${answerType} per site`}>
+                <AdminTableHeader title={`${answerType} per location`}>
                   <AdminTableHeaderElement
-                    label="Site"
+                    label={capitalize(t('location'))}
                     onClick={() => {
-                      setSitesSortType('name');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'name' ? 'desc' : 'asc');
+                      setLocationsSortType('name');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'name' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'name'}
-                    sortOrder={sitesSortType === 'name' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'name'}
+                    sortOrder={locationsSortType === 'name' ? locationsSortOrder : undefined}
                     w="60%"
                   />
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
-                      setSitesSortType('totalAnswersCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'totalAnswersCount' ? 'desc' : 'asc');
+                      setLocationsSortType('totalAnswersCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'totalAnswersCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'totalAnswersCount'}
-                    sortOrder={sitesSortType === 'totalAnswersCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'totalAnswersCount'}
+                    sortOrder={locationsSortType === 'totalAnswersCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="O"
                     onClick={() => {
-                      setSitesSortType('openAnswersCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'openAnswersCount' ? 'desc' : 'asc');
+                      setLocationsSortType('openAnswersCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'openAnswersCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'openAnswersCount'}
-                    sortOrder={sitesSortType === 'openAnswersCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'openAnswersCount'}
+                    sortOrder={locationsSortType === 'openAnswersCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="R"
                     onClick={() => {
-                      setSitesSortType('resolvedAnswersCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'resolvedAnswersCount' ? 'desc' : 'asc');
+                      setLocationsSortType('resolvedAnswersCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'resolvedAnswersCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'resolvedAnswersCount'}
-                    sortOrder={sitesSortType === 'resolvedAnswersCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'resolvedAnswersCount'}
+                    sortOrder={locationsSortType === 'resolvedAnswersCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
-                      setSitesSortType('closedAnswersCount');
-                      setSitesSortOrder(sitesSortOrder === 'asc' && sitesSortType === 'closedAnswersCount' ? 'desc' : 'asc');
+                      setLocationsSortType('closedAnswersCount');
+                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'closedAnswersCount' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={sitesSortType === 'closedAnswersCount'}
-                    sortOrder={sitesSortType === 'closedAnswersCount' ? sitesSortOrder : undefined}
+                    showSortingIcon={locationsSortType === 'closedAnswersCount'}
+                    sortOrder={locationsSortType === 'closedAnswersCount' ? locationsSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
-                  {sites?.map((site) => (
+                  {locations?.map((location) => (
                     <InsightListItem
-                      item={site}
-                      key={site._id}
-                      navigation="/admin/sites"
+                      item={location}
+                      key={location._id}
+                      navigation="/admin/locations"
                       questionsCategoriesId={questionsCategoriesId}
                       type="answers"
                     />
@@ -252,61 +254,69 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
             </GridItem>
             <GridItem h="100%" w="100%">
               <Box bg="answersInsights.list.bg" borderRadius="20px" pb={7} w="full">
-                <AdminTableHeader title={`${answerType} per area`}>
+                <AdminTableHeader title={`${answerType} per businessUnit`}>
                   <AdminTableHeaderElement
-                    label="Area"
+                    label={capitalize(t('business unit'))}
                     onClick={() => {
-                      setAreasSortType('name');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'name' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('name');
+                      setBusinessUnitsSortOrder(businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'name' ? 'desc' : 'asc');
                     }}
-                    showSortingIcon={areasSortType === 'name'}
-                    sortOrder={areasSortType === 'name' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'name'}
+                    sortOrder={businessUnitsSortType === 'name' ? businessUnitsSortOrder : undefined}
                     w="60%"
                   />
                   <AdminTableHeaderElement
                     label="T"
                     onClick={() => {
-                      setAreasSortType('totalAnswersCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'totalAnswersCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('totalAnswersCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'totalAnswersCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'totalAnswersCount'}
-                    sortOrder={areasSortType === 'totalAnswersCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'totalAnswersCount'}
+                    sortOrder={businessUnitsSortType === 'totalAnswersCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="O"
                     onClick={() => {
-                      setAreasSortType('openAnswersCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'openAnswersCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('openAnswersCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'openAnswersCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'openAnswersCount'}
-                    sortOrder={areasSortType === 'openAnswersCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'openAnswersCount'}
+                    sortOrder={businessUnitsSortType === 'openAnswersCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="R"
                     onClick={() => {
-                      setAreasSortType('resolvedAnswersCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'resolvedAnswersCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('resolvedAnswersCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'resolvedAnswersCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'resolvedAnswersCount'}
-                    sortOrder={areasSortType === 'resolvedAnswersCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'resolvedAnswersCount'}
+                    sortOrder={businessUnitsSortType === 'resolvedAnswersCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                   <AdminTableHeaderElement
                     label="C"
                     onClick={() => {
-                      setAreasSortType('closedAnswersCount');
-                      setAreasSortOrder(areasSortOrder === 'asc' && areasSortType === 'closedAnswersCount' ? 'desc' : 'asc');
+                      setBusinessUnitsSortType('closedAnswersCount');
+                      setBusinessUnitsSortOrder(
+                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'closedAnswersCount' ? 'desc' : 'asc',
+                      );
                     }}
-                    showSortingIcon={areasSortType === 'closedAnswersCount'}
-                    sortOrder={areasSortType === 'closedAnswersCount' ? areasSortOrder : undefined}
+                    showSortingIcon={businessUnitsSortType === 'closedAnswersCount'}
+                    sortOrder={businessUnitsSortType === 'closedAnswersCount' ? businessUnitsSortOrder : undefined}
                     w="10%"
                   />
                 </AdminTableHeader>
                 <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
-                  {areas?.map((area) => (
-                    <InsightListItem item={area} key={area._id} navigation="/admin/areas" type="answers" />
+                  {businessUnits?.map((businessUnit) => (
+                    <InsightListItem item={businessUnit} key={businessUnit._id} navigation="/admin/businessUnits" type="answers" />
                   ))}
                 </Flex>
               </Box>

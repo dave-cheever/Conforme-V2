@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -15,7 +15,8 @@ import PeoplePicker from '../../components/Forms/PeoplePicker';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
-import { AdminContext } from '../../contexts/AdminProvider';
+import { useAdminContext } from '../../contexts/AdminProvider';
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
@@ -33,6 +34,7 @@ const GET_BUSINESS_UNITS = gql`
       }
       imgUrl
       trackerItemsResponsesCount
+      totalAuditsCount
     }
   }
 `;
@@ -64,7 +66,8 @@ const defaultValues: Partial<IBusinessUnit> = {
 
 const BusinessUnits = () => {
   const toast = useToast();
-  const { adminModalState, setAdminModalState } = useContext(AdminContext);
+  const { module } = useAppContext();
+  const { adminModalState, setAdminModalState } = useAdminContext();
   const { setResponseFiltersValue } = useFiltersContext();
   const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS);
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
@@ -297,17 +300,30 @@ const BusinessUnits = () => {
                 w="calc(70% / 2)"
               />
             )}
-            <AdminTableHeaderElement
-              label="Responses count"
-              onClick={() => {
-                setSortType('trackerItemsResponsesCount');
-                setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-              sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-              tooltip="Only published items"
-              w={['20%', 'calc(70% / 2)']}
-            />
+            {module?.type === 'tracker' ? (
+              <AdminTableHeaderElement
+                label="Responses count"
+                onClick={() => {
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
+                tooltip="Only published items"
+                w={['20%', 'calc(70% / 2)']}
+              />
+            ) : (
+              <AdminTableHeaderElement
+                label={`${capitalize(pluralize(t('audit')))} count`}
+                onClick={() => {
+                  setSortType('totalAuditsCount');
+                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'totalAuditsCount'}
+                sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
+                w={['20%', 'calc(70% / 2)']}
+              />
+            )}
           </AdminTableHeader>
           <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">
             {loading ? (

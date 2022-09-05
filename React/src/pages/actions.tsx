@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 
 import { actionStatuses } from '../bootstrap/config';
@@ -56,10 +57,10 @@ const GET_ACTIONS = gql`
           auditType {
             name
           }
-          area {
+          businessUnit {
             name
           }
-          site {
+          location {
             name
           }
           auditorId
@@ -138,13 +139,13 @@ const Actions = () => {
     { label: 'Status', key: 'status' },
     { label: 'Assignee', key: 'assignee.displayName' },
     { label: 'Created by', key: 'creator.displayName' },
-    { label: 'Site', key: 'answer.audit.site.name' },
-    { label: 'Area', key: 'answer.audit.area.name' },
+    { label: capitalize(t('location')), key: 'answer.audit.location.name' },
+    { label: capitalize(t('business unit')), key: 'answer.audit.businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
-    setUsedFilters(['status', 'priority', 'sitesIds', 'areasIds', 'usersIds', 'dueDate']);
+    setUsedFilters(['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate']);
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);
@@ -236,8 +237,8 @@ const Actions = () => {
     { label: 'Due Date', key: 'dueDate' },
     { label: 'Assignee', key: 'assignee.displayName' },
     { label: 'Created by', key: 'creator.displayName' },
-    { label: 'Site', key: 'answer.audit.site.name' },
-    { label: 'Area', key: 'answer.audit.area.name' },
+    { label: capitalize(t('location')), key: 'answer.audit.location.name' },
+    { label: capitalize(t('business unit')), key: 'answer.audit.businessUnit.name' },
     { label: 'Status', key: 'status' },
     { label: 'Completed Date', key: 'completedDate' },
   ];

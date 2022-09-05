@@ -138,8 +138,6 @@ const FiltersProvider = ({ children }) => {
       auditStatuses: ['upcoming', 'completed', 'missed'] as TAuditStatus[],
       walkItemStatuses: ['open', 'closed'] as TWalkItemStatus[],
       auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],
-      sites: data?.locations,
-      areas: data?.businessUnits,
       questionsCategories: data?.questionsCategories,
     }),
 

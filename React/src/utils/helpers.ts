@@ -1,3 +1,5 @@
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 import { sentenceCase } from 'sentence-case';
 
 export const getFieldEmptyValue = (fieldType: string) => {
@@ -226,7 +228,7 @@ export const getLabelByField = (field: string) => {
     case 'regulatoryBodyId':
       fieldName = 'Regulatory body';
       break;
-    case 'functionalAreaId':
+    case 'functionalbusinessUnitId':
       fieldName = 'Functional area';
       break;
     case 'contributorsIds':
@@ -259,11 +261,11 @@ export const getLabelByField = (field: string) => {
     case 'auditTypeId':
       fieldName = 'Audit type';
       break;
-    case 'siteId':
-      fieldName = 'Site';
+    case 'locationId':
+      fieldName = capitalize(t('location'));
       break;
-    case 'areaId':
-      fieldName = 'Area';
+    case 'businessUnitId':
+      fieldName = capitalize(t('business unit'));
       break;
     case 'questionsCategoryId':
       fieldName = 'Questions category';

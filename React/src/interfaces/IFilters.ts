@@ -49,8 +49,8 @@ export interface IResponseFilters {
 }
 
 export interface IAuditFilters {
-  sitesIds?: IFilter;
-  areasIds?: IFilter;
+  locationsIds?: IFilter;
+  businessUnitsIds?: IFilter;
   status?: IFilterString;
   walkType?: IFilterString;
   usersIds?: IAuditUserFilter;
@@ -58,8 +58,8 @@ export interface IAuditFilters {
   dueDate?: IFilterString;
 }
 export interface IActionFilters {
-  sitesIds?: IFilter;
-  areasIds?: IFilter;
+  locationsIds?: IFilter;
+  businessUnitsIds?: IFilter;
   status?: IFilterString;
   priority?: IFilterString;
   usersIds?: IActionUserFilter;
@@ -67,8 +67,8 @@ export interface IActionFilters {
 }
 
 export interface IWalkItemFilters {
-  sitesIds?: IFilter;
-  areasIds?: IFilter;
+  locationsIds?: IFilter;
+  businessUnitsIds?: IFilter;
   status?: IFilterString;
   questionsCategoriesIds?: IFilter;
   usersIds?: IWalkItemUserFilter;
@@ -88,8 +88,6 @@ export default interface IFilters {
   action?: IFilter;
   usersIds?: IUserFilter | IAuditUserFilter | IActionUserFilter | IWalkItemUserFilter;
   locationsIds?: IFilter;
-  sitesIds?: IFilter;
-  areasIds?: IFilter;
   status?: IFilterString;
   priority?: IFilterString;
   walkType?: IFilterString;

@@ -4,7 +4,6 @@ import { Box, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import pluralize from 'pluralize';
 
-import { useAppContext } from '../contexts/AppProvider';
 import { Magnifier } from '../icons';
 import { IBusinessUnit } from '../interfaces/IBusinessUnit';
 import BusinessUnitsSelectorList from './BusinessUnitsSelectorList';
@@ -18,7 +17,6 @@ interface IBusinessUnitsSelector {
 }
 
 const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handleChange }: IBusinessUnitsSelector) => {
-  const { module } = useAppContext();
   const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<IBusinessUnit[]>([]);
 
   const [selectedType] = useState<string>('');
@@ -71,7 +69,7 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={8}
-                placeholder={module?.type === 'tracker' ? `Search ${pluralize(t('business unit'))}` : 'Search areas'}
+                placeholder={`Search ${pluralize(t('business unit'))}`}
                 value={searchText}
                 w="full"
               />

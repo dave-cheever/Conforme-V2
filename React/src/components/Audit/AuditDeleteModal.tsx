@@ -39,7 +39,7 @@ const AuditDeleteModal = ({ isOpen, onClose }) => {
             <Text>
               Are you sure you want to delete the{' '}
               <Text as="span">
-                {t('audit')} in <strong>{audit.area?.name}</strong>?
+                {t('audit')} in <strong>{audit.businessUnit?.name}</strong>?
               </Text>
             </Text>
           </Stack>

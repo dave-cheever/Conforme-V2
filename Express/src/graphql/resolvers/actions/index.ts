@@ -42,8 +42,8 @@ export const actionsTypeDefs = `
     scope: ScopeInput
     status: [String]
     priority: [String]
-    areasIds: [ID]
-    sitesIds: [ID]
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
     usersIds: ActionUsersInput
     dueDate: [String]
   }

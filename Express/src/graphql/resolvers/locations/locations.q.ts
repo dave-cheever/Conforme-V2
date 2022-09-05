@@ -40,7 +40,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                siteId: location._id,
+                locationId: location._id,
                 organizationId: organization._id,
               },
             },
@@ -57,7 +57,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                siteId: location._id,
+                locationId: location._id,
                 status: 'completed',
                 organizationId: organization._id,
               },
@@ -75,7 +75,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                siteId: location._id,
+                locationId: location._id,
                 status: 'upcoming',
                 organizationId: organization._id,
               },
@@ -93,7 +93,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                siteId: location._id,
+                locationId: location._id,
                 status: 'missed',
                 organizationId: organization._id,
               },
@@ -131,7 +131,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': location._id,
+            'answer.audit.locationId': location._id,
           },
         });
 
@@ -168,7 +168,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': location._id,
+            'answer.audit.locationId': location._id,
             done: true,
           },
         });
@@ -206,7 +206,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': location._id,
+            'answer.audit.locationId': location._id,
           },
         });
 
@@ -242,7 +242,7 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
 
         pipeline.push({
           $match: {
-            'answer.audit.siteId': location._id,
+            'answer.audit.locationId': location._id,
           },
         });
 
