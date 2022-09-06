@@ -80,7 +80,7 @@ const AuditHeader = () => {
   };
 
   const DeleteButton = () =>
-    isPermitted({ user, action: 'audits.delete' }) ? (
+    isPermitted({ user, action: 'audits.admin' }) ? (
       <AuditHeaderButton
         bgColor="transparent"
         fontColor="#DC0043"
@@ -98,7 +98,7 @@ const AuditHeader = () => {
     ) : null;
 
   const RecurringButton = () =>
-    audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
+    audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.admin' }) ? (
       <AuditHeaderButton
         bgColor="transparent"
         fontColor="#DC0043"

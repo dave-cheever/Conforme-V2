@@ -56,7 +56,7 @@ const AuditParticipants = () => {
   return (
     <>
       <AuditTeamModal
-        isOpen={auditorModalOpen}
+        isOpen={auditorModalOpen && isPermitted({ user, action: 'audits.admin' })}
         multiple={false}
         onCancel={handleAuditorSelect}
         onClose={handleAuditorSelect}
