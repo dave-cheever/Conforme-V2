@@ -49,7 +49,7 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
   const [auditorSearchText, setAuditorSearchText] = useState('');
   const [auditors, setAuditors] = useState<IAuditor[]>([]);
   const [selectedAuditors, setSelectedAuditors] = useState<IAuditor[]>([]);
-  const [selectedArea, setSelectedArea] = useState('Surgery');
+  const [selectedBusinessUnit, setSelectedBusinessUnit] = useState('Surgery');
   const [activePage, setActivePage] = useState('Participants');
 
   useEffect(() => {
@@ -92,8 +92,8 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
       value={{
         activePage,
         setActivePage,
-        selectedArea,
-        setSelectedArea,
+        selectedBusinessUnit,
+        setSelectedBusinessUnit,
         auditors,
         selectedAuditors,
         updateSelectedAuditors,

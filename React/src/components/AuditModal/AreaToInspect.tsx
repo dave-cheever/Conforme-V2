@@ -37,7 +37,7 @@ const AreaToInspect = () => {
             onFocus={onFocus}
             placeholder="Search Here"
             readOnly
-            value={modalContext.selectedArea}
+            value={modalContext.selectedBusinessUnit}
             variant="auditModalSearchInput"
           />
           <InputRightElement>
@@ -68,7 +68,7 @@ const AreaToInspect = () => {
               alignItems="center"
               display="flex"
               justifyContent="start"
-              onClick={() => modalContext.setSelectedArea('Surgery')}
+              onClick={() => modalContext.setSelectedBusinessUnit('Surgery')}
               p="10px 10px"
             >
               <Text color="grey" fontSize="md" fontWeight="400">
@@ -84,7 +84,7 @@ const AreaToInspect = () => {
               alignItems="center"
               display="flex"
               justifyContent="start"
-              onClick={() => modalContext.setSelectedArea('Clinical')}
+              onClick={() => modalContext.setSelectedBusinessUnit('Clinical')}
               p="10px 10px"
             >
               <Text color="grey" fontSize="md" fontWeight="400">
