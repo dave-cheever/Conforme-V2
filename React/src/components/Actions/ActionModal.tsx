@@ -27,6 +27,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { priorities, toastFailed, toastSuccess } from '../../bootstrap/config';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
+import { useShareContext } from '../../contexts/ShareProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, OpenExternalIcon, TickIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
@@ -37,6 +38,7 @@ import DocumentUploaded from '../Documents/DocumentUploaded';
 import { Datepicker, Dropdown, TextInput } from '../Forms';
 import PeoplePicker from '../Forms/PeoplePicker';
 import TextInputMultiline from '../Forms/TextInputMultiline';
+import ShareButton from '../ShareButton';
 
 const SAVE_ACTION = gql`
   mutation SaveAction($action: ActionModifyInput!) {
@@ -55,6 +57,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
+  const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
   const { setAdminModalState } = useAdminContext();
   const isUserPermittedToModify = isPermitted({
     user,
@@ -148,6 +151,14 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
               {action?.title}
             </Flex>
             <Flex alignItems="center">
+              <ShareButton
+                ariaLabel="action-share-button"
+                onClick={() => {
+                  setShareItemUrl(`actions?id=${action?._id}`);
+                  setShareItemName(action?.title);
+                  handleShareOpen();
+                }}
+              />
               <Close cursor="pointer" h="15px" onClick={closeModal} stroke="actionModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
@@ -272,7 +283,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                     <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
                       Date added
                     </Text>
-                    <Text fontSize="13px">{format(new Date(action?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
+                    <Text fontSize="13px">{format(new Date(action?.metatags?.addedAt! || null), 'dd MMM yyyy')}</Text>
                   </GridItem>
                   {action?.creator && (
                     <GridItem>

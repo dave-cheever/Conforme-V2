@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import {
   Badge,
@@ -23,7 +21,8 @@ import { capitalize, isEqual } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../../bootstrap/config';
-import { ResponseContext, useResponseContext } from '../../../contexts/ResponseProvider';
+import { useResponseContext } from '../../../contexts/ResponseProvider';
+import { useShareContext } from '../../../contexts/ShareProvider';
 import useNavigate from '../../../hooks/useNavigate';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 import { ArrowDownIcon, ShareIcon } from '../../../icons';
@@ -47,7 +46,7 @@ const ReasponseHeader = () => {
   const { navigateTo } = useNavigate();
   const toast = useToast();
   const { isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
-  const { handleShareOpen } = useContext(ResponseContext);
+  const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
 
   const { watch } = questionsForm;
   const answers = watch();
@@ -215,7 +214,11 @@ const ReasponseHeader = () => {
               />
             }
             name="Share"
-            onClick={handleShareOpen}
+            onClick={() => {
+              setShareItemUrl(`compliance-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`);
+              setShareItemName(response?.complianceItem?.name);
+              handleShareOpen();
+            }}
           />
         </Flex>
       </Stack>

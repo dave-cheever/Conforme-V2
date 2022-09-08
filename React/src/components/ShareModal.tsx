@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import {
@@ -24,26 +24,24 @@ import {
 
 import { toastFailed, toastSuccess } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
-import { ResponseContext } from '../contexts/ResponseProvider';
+import { useShareContext } from '../contexts/ShareProvider';
 import { AddIcon, Copy, CrossIcon } from '../icons';
 
 const ShareModal = () => {
   const toast = useToast();
+  const { isShareOpen, handleShareClose, shareItemUrl, shareItemName } = useShareContext();
   const { organizationConfig, module, user } = useAppContext();
-  const { response, snapshot, isShareOpen, handleShareClose } = useContext(ResponseContext);
   const [mails, setMails] = useState<string[]>([]);
   const [mail, setMail] = useState<string>('');
 
-  const URL = `${process.env.REACT_APP_CLIENT_URL}/${module?.path}/tracker-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`;
+  const URL = useMemo(() => `${process.env.REACT_APP_CLIENT_URL}/${module?.path}/${shareItemUrl}`, [shareItemUrl]);
 
   const email = useMemo(
     () =>
-      `mailto:${[...mails, mail].join(';')}?subject=${user?.displayName} is sharing ${response?.trackerItem.name} - ${module?.name} - ${
+      `mailto:${[...mails, mail].join(';')}?subject=${user?.displayName} is sharing ${shareItemName} - ${module?.name} - ${
         organizationConfig?.name
-      }&body=Please click on this link to access the '${response?.trackerItem.name}' in ${module?.name}:%0A%0A${URL}%0A%0A${
-        organizationConfig?.name
-      }`,
-    [response, mail, mails, module, organizationConfig],
+      }&body=Please click on this link to access the '${shareItemName}' in ${module?.name}:%0A%0A${URL}%0A%0A${organizationConfig?.name}`,
+    [shareItemName, mail, mails, module, organizationConfig],
   );
 
   const updateMails = () => {
@@ -112,7 +110,7 @@ const ShareModal = () => {
               </Tab>
             </TabList>
             <Box fontSize="sm" mt={4}>
-              You need to add people as a participant (e.g. Follower) to enable the user to see it.
+              You need to add people as a participant to enable the user to see it.
             </Box>
             <TabPanels>
               <TabPanel mt={3} p={0}>

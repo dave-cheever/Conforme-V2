@@ -9,8 +9,10 @@ import ChatMobileAndTablet from '../components/ChatMobileAndTablet';
 import Loader from '../components/Loader';
 import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
+import ShareModal from '../components/ShareModal';
 import AuditProvider, { useAuditContext } from '../contexts/AuditProvider';
 import ChatProvider, { useChatContext } from '../contexts/ChatProvider';
+import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
 
@@ -45,7 +47,7 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
           top={[0, '80px']}
           w="full"
         >
-          {/* <ShareModal /> */}
+          <ShareModal />
           <AuditHeader />
           {isTabletAndMobile && (
             <IconButton
@@ -73,9 +75,9 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
             <Flex flexDirection="column" h="full" maxH={['none', 'calc(100vh - 190px)']} pb="25px" w="full">
               <Component />
             </Flex>
-            {device === 'desktop' && <Chat component='audit' />}
+            {device === 'desktop' && <Chat component="audit" />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component='audit' />}
+          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component="audit" />}
         </Flex>
         <AuditLeftNavigationMobile />
       </Flex>
@@ -85,9 +87,11 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
 
 const AuditWithContext = (props) => (
   <AuditProvider {...props}>
-    <ChatProvider component='audit'>
-      <AuditLayout {...props} />
-    </ChatProvider>
+    <ShareProvider>
+      <ChatProvider component="audit">
+        <AuditLayout {...props} />
+      </ChatProvider>
+    </ShareProvider>
   </AuditProvider>
 );
 

@@ -12,6 +12,7 @@ import ResponseLeftNavigationTablet from '../components/Response/ResponseLeftNav
 import ShareModal from '../components/ShareModal';
 import ChatProvider, { useChatContext } from '../contexts/ChatProvider';
 import ResponseProvider, { useResponseContext } from '../contexts/ResponseProvider';
+import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
 
@@ -65,9 +66,9 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
             <Flex flexDirection="column" h="full" maxH={['none', 'calc(100vh - 210px)']} pb={[20, 6]} w="full">
               <Component />
             </Flex>
-            {device === 'desktop' && <Chat component='response' />}
+            {device === 'desktop' && <Chat component="response" />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component='response' />}
+          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component="response" />}
         </Flex>
         <ResponseLeftNavigationMobile />
       </Flex>
@@ -83,9 +84,11 @@ export const responseLayoutStyles = {
 
 const ResponseLayoutWithContext = (props) => (
   <ResponseProvider {...props}>
-    <ChatProvider component='response'>
-      <ResponseLayout {...props} />
-    </ChatProvider>
+    <ShareProvider>
+      <ChatProvider component="response">
+        <ResponseLayout {...props} />
+      </ChatProvider>
+    </ShareProvider>
   </ResponseProvider>
 );
 

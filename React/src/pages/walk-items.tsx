@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Modal, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from '@chakra-ui/react';
@@ -151,6 +152,20 @@ const WalkItems = () => {
     { label: 'Date added', key: 'metatags.addedAt' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const history = useHistory();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const closeModal = () => {
+    // If id is in URL params, clean it
+    if (queryParams.has('id')) {
+      queryParams.delete('id');
+      history.replace({
+        search: queryParams.toString(),
+      });
+    }
+    setAdminModalState('closed');
+  };
 
   useEffect(() => {
     setUsedFilters(['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate']);
@@ -209,20 +224,23 @@ const WalkItems = () => {
     }
   }, [filtersValues]);
 
+  const [selectedWalkItem, setSelectedWalkItem] = useState<IAnswer>();
+  const handleOpenModal = (answer: IAnswer) => {
+    setSelectedWalkItem(answer);
+    setAdminModalState('edit');
+  };
+
   useEffect(() => {
     if (data && data?.answers && !error) {
       const items = [...data?.answers];
 
       setFilteredAnswers(items);
+      if (queryParams.has('id')) {
+        const walkItem = items.find(({ _id }) => _id === queryParams.get('id'));
+        handleOpenModal(walkItem);
+      }
     }
   }, [data?.answers, user]);
-
-  const [selectedWalkItem, setSelectedWalkItem] = useState<IAnswer>();
-
-  const handleOpenModal = (answer: IAnswer) => {
-    setSelectedWalkItem(answer);
-    setAdminModalState('edit');
-  };
 
   const csvHeaders = [
     { label: '_id', key: '_id' },
@@ -254,11 +272,16 @@ const WalkItems = () => {
       />
       <Modal
         isOpen={adminModalState !== 'closed'}
-        onClose={() => setAdminModalState('closed')}
+        onClose={closeModal}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
         variant="adminModal"
       >
-        <WalkItemModal handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen} refetch={refetch} walkItem={selectedWalkItem} />
+        <WalkItemModal
+          closeModal={closeModal}
+          handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
+          refetch={refetch}
+          walkItem={selectedWalkItem}
+        />
       </Modal>
       <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />

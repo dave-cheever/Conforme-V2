@@ -87,6 +87,13 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
+    path: '/walk-items/:id',
+    key: 'walk-item',
+    exact: true,
+    component: WalkItems,
+    layout: DefaultLayout,
+  },
+  {
     path: '/audits/:id',
     key: 'audit',
     exact: true,

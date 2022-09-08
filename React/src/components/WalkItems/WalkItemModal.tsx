@@ -23,8 +23,8 @@ import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
-import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
+import { useShareContext } from '../../contexts/ShareProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, OpenExternalIcon, TickIcon } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
@@ -36,6 +36,7 @@ import DocumentUpload from '../Documents/DocumentUpload';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 import { Dropdown, TextInput, Toggle } from '../Forms';
 import TextInputMultiline from '../Forms/TextInputMultiline';
+import ShareButton from '../ShareButton';
 
 const SAVE_QUESTION = gql`
   mutation SaveQuestion($question: QuestionModifyInput!) {
@@ -56,15 +57,17 @@ const WalkItemModal = ({
   walkItem,
   refetch,
   handleDeleteQuestionModalOpen,
+  closeModal,
 }: {
   walkItem?: IAnswer;
   refetch: () => void;
   handleDeleteQuestionModalOpen: () => void;
+  closeModal: () => void;
 }) => {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
-  const { setAdminModalState } = useAdminContext();
+  const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
   const { question } = walkItem as IAnswer;
   const { questionsCategory } = question as IQuestion<any>;
   const isCustomQuestion = !!question?.scope?._id;
@@ -131,21 +134,29 @@ const WalkItemModal = ({
         description: e.message,
       });
     } finally {
-      setAdminModalState('closed');
+      closeModal();
     }
   };
 
   return (
     <>
       <ModalContent bg="actionModal.bg" h={['auto', '100vh']} m="0" mb={[4, 0, 0]} overflow="hidden" p={[4, 6]} rounded="0">
-        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
+        <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" justifyContent="space-between" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar mr={3} name={walkItem?.addedBy?.displayName} rounded="full" size="xs" src={walkItem?.addedBy?.imgUrl} />
               <Text noOfLines={1}>{walkItem?.question?.question}</Text>
             </Flex>
             <Flex alignItems="center">
-              <Close cursor="pointer" h="15px" onClick={() => setAdminModalState('closed')} stroke="walkItemModal.closeIcon" w="15px" />
+              <ShareButton
+                ariaLabel="walk-item-share-button"
+                onClick={() => {
+                  setShareItemUrl(`walk-items?id=${walkItem?._id}`);
+                  setShareItemName(walkItem?.question?.description);
+                  handleShareOpen();
+                }}
+              />
+              <Close cursor="pointer" h="15px" onClick={closeModal} stroke="walkItemModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>
@@ -420,6 +431,14 @@ export default WalkItemModal;
 
 export const walkItemModalStyles = {
   walkItemModal: {
+    shareButton: {
+      bg: '#FFFFFF',
+      hoverBg: '#818197',
+      icon: {
+        stroke: '#818197',
+        hoverStroke: '#FFFFFF',
+      },
+    },
     status: {
       completed: '#62c240',
       missed: '#FC5960',

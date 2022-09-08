@@ -21,9 +21,11 @@ import { capitalize } from 'lodash';
 import { toastSuccess } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditContext } from '../../contexts/AuditProvider';
+import { useShareContext } from '../../contexts/ShareProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowDownIcon } from '../../icons';
 import { isPermitted } from '../can';
+import ShareButton from '../ShareButton';
 import AuditDeletModal from './AuditDeleteModal';
 import AuditHeaderButton from './AuditHeaderButton';
 import AuditRecurringModal from './AuditRecurringModal';
@@ -31,6 +33,7 @@ import AuditSubmitModal from './AuditSubmitModal';
 
 const AuditHeader = () => {
   const { user } = useAppContext();
+  const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
   const toast = useToast();
   const {
     audit,
@@ -138,6 +141,19 @@ const AuditHeader = () => {
     return null;
   };
 
+  const AuditShareButton = () => (
+    <ShareButton
+      ariaLabel="audit-share-button"
+      ml="24px"
+      mr="0"
+      onClick={() => {
+        setShareItemUrl(`audits/${audit?._id}`);
+        setShareItemName(audit?.area?.name);
+        handleShareOpen();
+      }}
+    />
+  );
+
   return (
     <>
       <AuditSubmitModal
@@ -213,26 +229,14 @@ const AuditHeader = () => {
             </Flex>
           </Stack>
           <Spacer />
-          {/**
-           * Hidden for now according to feature 44736
-           * TODO: Show "Share" button
-           */}
-          {/* <AuditHeaderButton
-            icon={
-              <ShareIcon
-                _groupHover={{
-                  stroke: 'auditHeader.buttonLightColorHover',
-                }}
-                fontSize="15px"
-                stroke="auditHeader.buttonLightColor"
-              />
-            }
-            name="Share"
-            onClick={() => {}}
-          /> */}
           <Stack direction="row" display={['none', 'flex']} spacing={[3, 6]}>
-            <DeleteButton />
-            <RecurringButton />
+            <AuditShareButton />
+            {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
+              <>
+                <DeleteButton />
+                {audit?.walkType === 'physical' && <RecurringButton />}
+              </>
+            )}
             <SubmitButton />
           </Stack>
         </Flex>
@@ -267,6 +271,7 @@ const AuditHeader = () => {
                   w="100%"
                   zIndex="10"
                 >
+                  <AuditShareButton />
                   <DeleteButton />
                   <RecurringButton />
                   <SubmitButton />
