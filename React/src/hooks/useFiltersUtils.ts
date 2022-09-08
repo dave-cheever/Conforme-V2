@@ -9,99 +9,6 @@ import IFilter from '../interfaces/IFilter';
 import { IActionFilters, IAuditFilters, IWalkItemFilters } from '../interfaces/IFilters';
 import useConfig from './useConfig';
 
-export const initialAuditFilters: IAuditFilters = {
-  walkType: {
-    name: 'Walk type',
-    value: [],
-  },
-  status: {
-    name: 'Status',
-    value: [],
-  },
-  locationsIds: {
-    name: capitalize(t('location')),
-    value: [],
-  },
-  businessUnitsIds: {
-    name: capitalize(t('business unit')),
-    value: [],
-  },
-  usersIds: {
-    name: 'User',
-    value: {
-      auditorsIds: [],
-      participantsIds: [],
-    },
-  },
-  createdDate: {
-    name: 'Created date',
-    value: [],
-  },
-  dueDate: {
-    name: 'Due date',
-    value: [],
-  },
-};
-
-export const initialActionFilters: IActionFilters = {
-  status: {
-    name: 'Status',
-    value: [],
-  },
-  priority: {
-    name: 'Priority',
-    value: [],
-  },
-  locationsIds: {
-    name: capitalize(t('location')),
-    value: [],
-  },
-  businessUnitsIds: {
-    name: capitalize(t('business unit')),
-    value: [],
-  },
-  usersIds: {
-    name: 'User',
-    value: {
-      assigneesIds: [],
-    },
-  },
-  dueDate: {
-    name: 'Due date',
-    value: [],
-  },
-};
-
-export const initialWalkItemFilters: IWalkItemFilters = {
-  status: {
-    name: 'Status',
-    value: [],
-  },
-  questionsCategoriesIds: {
-    name: 'Type',
-    value: [],
-    hideFromPanel: true,
-  },
-  locationsIds: {
-    name: capitalize(t('location')),
-    value: [],
-  },
-  businessUnitsIds: {
-    name: capitalize(t('business unit')),
-    value: [],
-  },
-  usersIds: {
-    name: 'User',
-    value: {
-      addedByIds: [],
-    },
-  },
-  createdDate: {
-    name: 'Date added',
-    value: [],
-  },
-};
-
 export const auditWalkTypes = {
   virtual: 'Virtual',
   physical: 'Physical',
@@ -168,6 +75,96 @@ const useFiltersUtils = () => {
     noDueDate: 'No due date',
     comingUp: 'Coming Up',
     missed: 'Missed',
+  };
+  const initialAuditFilters: IAuditFilters = {
+    walkType: {
+      name: 'Walk type',
+      value: [],
+    },
+    status: {
+      name: 'Status',
+      value: [],
+    },
+    locationsIds: {
+      name: capitalize(t('location')),
+      value: [],
+    },
+    businessUnitsIds: {
+      name: capitalize(t('business unit')),
+      value: [],
+    },
+    usersIds: {
+      name: 'User',
+      value: {
+        auditorsIds: [],
+        participantsIds: [],
+      },
+    },
+    createdDate: {
+      name: 'Created date',
+      value: [],
+    },
+    dueDate: {
+      name: 'Due date',
+      value: [],
+    },
+  };
+  const initialActionFilters: IActionFilters = {
+    status: {
+      name: 'Status',
+      value: [],
+    },
+    priority: {
+      name: 'Priority',
+      value: [],
+    },
+    locationsIds: {
+      name: capitalize(t('location')),
+      value: [],
+    },
+    businessUnitsIds: {
+      name: capitalize(t('business unit')),
+      value: [],
+    },
+    usersIds: {
+      name: 'User',
+      value: {
+        assigneesIds: [],
+      },
+    },
+    dueDate: {
+      name: 'Due date',
+      value: [],
+    },
+  };
+  const initialWalkItemFilters: IWalkItemFilters = {
+    status: {
+      name: 'Status',
+      value: [],
+    },
+    questionsCategoriesIds: {
+      name: 'Type',
+      value: [],
+      hideFromPanel: true,
+    },
+    locationsIds: {
+      name: capitalize(t('location')),
+      value: [],
+    },
+    businessUnitsIds: {
+      name: capitalize(t('business unit')),
+      value: [],
+    },
+    usersIds: {
+      name: 'User',
+      value: {
+        addedByIds: [],
+      },
+    },
+    createdDate: {
+      name: 'Date added',
+      value: [],
+    },
   };
 
   const cleanAuditFilters = useMemo(() => {
