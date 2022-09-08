@@ -1,6 +1,7 @@
-import calculateAudits from './calculateAudits';
 import { priorities } from './constants';
-import deleteOutdatedData from './deleteOutdatedData';
+import setCRONJobs from './cron';
+import calculateAudits from './cron/calculateAudits';
+import deleteOutdatedData from './cron/deleteOutdatedData';
 import { emailPreview } from './email';
 import {
   CORSConfig,
@@ -82,4 +83,5 @@ export {
   getNextRenewalDate,
   getPrevRenewalDate,
   priorities,
+  setCRONJobs,
 };

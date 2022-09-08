@@ -1,13 +1,12 @@
 import './loadEnv'; // Must be the first import
-import { CronJob } from 'cron';
 import mongoose from 'mongoose';
 import cluster from 'node:cluster';
 import { cpus } from 'node:os';
 
 import { logger } from 'app-shared';
-import { calculateAudits, deleteOutdatedData } from 'app-utils';
 
 import getApp from './server';
+import setCRONJobs from './utils/cron';
 
 const ENV_VERSION = '1';
 if (ENV_VERSION !== process.env.VERSION)
@@ -29,20 +28,7 @@ mongoose
       if (cluster.isPrimary) {
         logger.info('MongoDB connected!');
 
-        // Daily CRON jobs
-        try {
-          const calculateAuditsCRON = new CronJob('0 0 0 * * *', () => {
-            calculateAudits();
-          });
-          calculateAuditsCRON.start();
-          const deleteOutdatedDataCRON = new CronJob('0 0 1 * * *', () => {
-            deleteOutdatedData();
-          });
-          deleteOutdatedDataCRON.start();
-        } catch (e) {
-          logger.error('CRON jobs failed');
-        }
-
+        setCRONJobs();
         for (let i = 0; i < clusterWorkerSize; i += 1) cluster.fork();
 
         cluster.on('exit', (worker) => {
@@ -50,6 +36,9 @@ mongoose
           cluster.fork();
         });
       } else await startApp(process.pid);
-    } else await startApp(process.pid);
+    } else {
+      setCRONJobs();
+      await startApp(process.pid);
+    };
   })
   .catch((e) => console.log(e));
