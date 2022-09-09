@@ -17,10 +17,10 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       bg="white"
       borderRadius="20px"
       boxShadow="sm"
-      cursor="pointer"
+      cursor={!audit?.metatags?.removedBy ? "pointer" : "default"}
       flexShrink={0}
       h="290px"
-      onClick={() => navigateTo(`/audits/${audit?._id}`)}
+      onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
       p="20px 25px 20px 25px"
       w={['full', 'full', '350px']}
     >

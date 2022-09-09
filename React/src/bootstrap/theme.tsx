@@ -45,6 +45,7 @@ import { customRadioButtonStyles } from '../components/CustomRadioButton';
 import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
 import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
 import { filtersPanelItemStyles } from '../components/Filters/FiltersPanelItem';
+import { showArchivedFilterStyles } from '../components/Filters/ShowArchivedFilter';
 import { datepickerStyles } from '../components/Forms/Datepicker';
 import { dropdownStyles } from '../components/Forms/Dropdown';
 import { multipleChoicesStyles } from '../components/Forms/MultipleChoices';
@@ -278,6 +279,7 @@ const getTheme = (organizationTheme?: any) => {
         ...responseTabItemStyles,
         ...responseQuestionsStyles,
         ...shareModalStyles,
+        ...showArchivedFilterStyles,
         ...settingsTabItemStyles,
         ...shareModalStyles,
         ...sortButtonStyles,

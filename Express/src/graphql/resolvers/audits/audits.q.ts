@@ -23,7 +23,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     const pipeline: any[] = [
       {
         $match: {
-          'metatags.removedAt': { $eq: null },
+          'metatags.removedAt': auditQueryInput?.showArchived ? { $exists: true } : { $eq: null },
           organizationId: organization._id,
         },
       },

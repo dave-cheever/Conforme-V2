@@ -108,6 +108,11 @@ const useFiltersUtils = () => {
       name: 'Due date',
       value: [],
     },
+    showArchived: {
+      name: 'Show archived',
+      value: false,
+      permission: 'audits.viewDeleted',
+    },
   };
   const initialActionFilters: IActionFilters = {
     status: {
@@ -207,7 +212,7 @@ const useFiltersUtils = () => {
       if (newFilters[filterName] !== undefined) filter.value = newFilters[filterName];
 
       // Clear all values
-      if (isCleanFilters) filter.value = filterName === 'usersIds' ? ({} as string) : ([] as string[]);
+      if (isCleanFilters) filter.value = filterName === 'usersIds' ? ({} as string) : filterName === 'showArchived' ? false : ([] as string[]);
 
       // Check if default value exists and set filters to defaultFilters value
       if (isCleanFilters && !isEmpty(defaultFilters) && defaultFilters[filterName] !== undefined) filter.value = defaultFilters[filterName];

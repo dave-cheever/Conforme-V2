@@ -2,13 +2,16 @@ import { useEffect, useRef } from 'react';
 
 import { Box, Button, Flex, useOutsideClick } from '@chakra-ui/react';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import { CrossIcon } from '../../icons';
+import { isPermitted } from '../can';
 import FiltersPanelItem from './FiltersPanelItem';
 
 const FiltersPanel = () => {
   const device = useDevice();
+  const { user } = useAppContext();
   const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
   const panelRef = useRef(null);
   useOutsideClick({
@@ -47,7 +50,8 @@ const FiltersPanel = () => {
       </Flex>
       <Flex direction="column" grow={1} overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
-          if (usedFilters.includes(name) && !value?.hideFromPanel) return <FiltersPanelItem filter={value} key={name} name={name} />;
+          if (usedFilters.includes(name) && !value?.hideFromPanel && isPermitted({ user, action: value?.permission }))
+            return <FiltersPanelItem filter={value} key={name} name={name} />;
           return null;
         })}
       </Flex>
@@ -100,7 +104,6 @@ export const filtersPanelStyles = {
     doneButtonColor: '#ffffff',
     resetButtonBg: '#F0F2F5',
     resetButtonColor: '#818197',
-    checkboxLabelColor: '#818197',
     searchBoxBordercolor: '#81819750',
   },
 };

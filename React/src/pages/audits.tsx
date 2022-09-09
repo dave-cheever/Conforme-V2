@@ -59,6 +59,7 @@ const GET_AUDITS = gql`
       participantsIds
       metatags {
         addedAt
+        removedBy
       }
     }
   }
@@ -95,7 +96,7 @@ const Audits = () => {
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
 
   useEffect(() => {
-    setUsedFilters(['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate']);
+    setUsedFilters(['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived']);
 
     return () => {
       setDefaultFilters({});

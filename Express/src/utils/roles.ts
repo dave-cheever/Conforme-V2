@@ -123,6 +123,7 @@ const roles = {
       'settings',
       'users',
       'auditComments.add',
+      'audits.viewDeleted'
     ],
     restricted: {
       'audits.edit': ({ audit }) => audit.status !== 'completed',

@@ -56,6 +56,7 @@ export const auditsTypeDefs = `
     usersIds: AuditUsersInput
     createdDate: [String]
     dueDate: [String]
+    showArchived: Boolean
   }
 
   input AuditCreateInput {

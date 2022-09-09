@@ -9,14 +9,13 @@ import { IAudit } from '../../interfaces/IAudit';
 
 const AuditListItem = ({ audit }: { audit: IAudit }) => {
   const { navigateTo } = useNavigate();
-
   return (
     <Box
       bg="white"
       borderBottomColor="auditsList.headerBorderColor"
       borderBottomWidth="1px"
-      cursor="pointer"
-      onClick={() => navigateTo(`/audits/${audit._id}`)}
+      cursor={!audit?.metatags?.removedBy ? "pointer" : "default"}
+      onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
       p="15px 25px"
       py={[1, 0]}
       w="full"

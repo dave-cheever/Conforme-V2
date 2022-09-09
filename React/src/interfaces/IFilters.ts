@@ -40,6 +40,13 @@ export interface IWalkItemUserFilter {
   value: IWalkItemUserFilterObject | null;
 }
 
+export interface IFilterBoolean {
+  name: string;
+  value: boolean;
+  hideFromPanel?: boolean;
+  permission?: string;
+}
+
 export interface IResponseFilters {
   locationsIds?: IFilter;
   categoriesIds?: IFilter;
@@ -56,6 +63,7 @@ export interface IAuditFilters {
   usersIds?: IAuditUserFilter;
   createdDate?: IFilterString;
   dueDate?: IFilterString;
+  showArchived?: IFilterBoolean;
 }
 export interface IActionFilters {
   locationsIds?: IFilter;
@@ -92,4 +100,5 @@ export default interface IFilters {
   priority?: IFilterString;
   walkType?: IFilterString;
   createdDate?: IFilterString;
+  showArchived?: IFilterBoolean
 }
