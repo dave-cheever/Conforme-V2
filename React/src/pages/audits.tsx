@@ -19,7 +19,6 @@ import SortButton from '../components/SortButton';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, { useAuditModalContext } from '../contexts/AuditModalProvider';
-import AuditTeamProvider from '../contexts/AuditTeamProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
@@ -289,11 +288,9 @@ const Audits = () => {
 };
 
 const AuditsWithContext = () => (
-  <AuditTeamProvider>
-    <AuditModalProvider>
-      <Audits />
-    </AuditModalProvider>
-  </AuditTeamProvider>
+  <AuditModalProvider>
+    <Audits />
+  </AuditModalProvider>
 );
 
 export default AuditsWithContext;

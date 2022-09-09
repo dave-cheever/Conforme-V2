@@ -18,7 +18,7 @@ export const questionsCategoriesTypeDefs = `
   type QuestionsCategoryOption {
     type: String!
     name: String!
-    setting: String!
+    setting: String
     value: String
   }
 
@@ -47,7 +47,7 @@ export const questionsCategoriesTypeDefs = `
   input QuestionsCategoryOptionInput {
     type: String!
     name: String!
-    setting: String!
+    setting: String
     value: String
   }
 

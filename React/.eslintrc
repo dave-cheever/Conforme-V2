@@ -109,7 +109,8 @@
       }
     ],
     "eol-last": "error",
-    "no-await-in-loop": "off"
+    "no-await-in-loop": "off",
+    "no-lonely-if": "off"
   },
   "settings": {
     "react": {

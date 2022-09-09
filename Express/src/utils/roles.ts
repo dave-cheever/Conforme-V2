@@ -49,11 +49,11 @@ const roles = {
       'responses.view': ifRACHasAccess,
       'responses.edit': ifRACHasAccess,
       'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
-      'responses.manageContributor': ifRAHasAccess,
+      'responses.manageContributors': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
       'auditComments.add': ifHasAuditAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
-      'responses.manageMultipleFollowers': ifRAHasAccess,
+      'responses.manageFollowers': ifRAHasAccess,
       'actions.add': ifHasActionAccess,
       'actions.edit': ifHasActionAccess,
       'actions.delete': ifHasActionAccess,
@@ -84,11 +84,11 @@ const roles = {
     restricted: {
       'responses.edit': ifRACHasAccess,
       'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
-      'responses.manageContributor': ifRAHasAccess,
+      'responses.manageContributors': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
       'auditComments.add': ifHasAuditAccess,
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
-      'responses.manageMultipleFollowers': ifRAHasAccess,
+      'responses.manageFollowers': ifRAHasAccess,
       'actions.add': ifHasActionAccess,
       'actions.edit': ifHasActionAccess,
       'answers.add': ifHasAnswerAccess,
@@ -105,11 +105,9 @@ const roles = {
     normal: [
       ...defaultPermissions,
       'actions',
-      // 'adminPanel.view', // permission to see admin items in menu
       'answers',
       'auditLogs',
       'audits',
-      'audits.admin',
       'auditTypes',
       'businessUnits',
       'categories',
@@ -127,6 +125,7 @@ const roles = {
       'auditComments.add',
     ],
     restricted: {
+      'audits.edit': ({ audit }) => audit.status !== 'completed',
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
       adminPanel: ({ permission, revokedPermissions }) => {
         if (revokedPermissions?.includes(permission)) return false;

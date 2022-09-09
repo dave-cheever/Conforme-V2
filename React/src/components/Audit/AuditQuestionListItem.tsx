@@ -16,7 +16,6 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
   const numberOfActions = (question?.answer?.actions || []).length;
   const isUserPermittedToModify = isPermitted({ user, action: 'audits.edit', data: { audit } });
   const device = useDevice();
-
   return (
     <HStack
       bgColor="auditItem.listItem.bg"
@@ -44,7 +43,7 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
       </Stack>
       <HStack spacing={2}>
         {(question.answer?.attachments || []).length >= 1 && (
-          <DocumentThumbnail document={question.answer!.attachments![1]} key={question.answer!.attachments![1]?.id} />
+          <DocumentThumbnail document={question.answer!.attachments![0]} key={question.answer!.attachments![0]?.id} />
         )}
         {(question.answer?.attachments || []).length - 1 > 1 && (
           <Flex

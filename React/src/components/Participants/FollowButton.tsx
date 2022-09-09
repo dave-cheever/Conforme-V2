@@ -25,6 +25,9 @@ const REMOVE_PARTICIPANT = gql`
   }
 `;
 
+// TODO: FixMe
+// Follow button was hidden and methods used above were removed. Use updateResponse instead.
+
 const FollowButton = ({ isMobile = false }) => {
   const { response, refetch } = useResponseContext();
   const { user } = useAppContext();

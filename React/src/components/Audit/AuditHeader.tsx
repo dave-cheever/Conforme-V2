@@ -83,7 +83,7 @@ const AuditHeader = () => {
   };
 
   const DeleteButton = () =>
-    isPermitted({ user, action: 'audits.admin' }) ? (
+    isPermitted({ user, action: 'audits.delete' }) ? (
       <AuditHeaderButton
         bgColor="transparent"
         fontColor="#DC0043"
@@ -101,7 +101,7 @@ const AuditHeader = () => {
     ) : null;
 
   const RecurringButton = () =>
-    audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.admin' }) ? (
+    audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
       <AuditHeaderButton
         bgColor="transparent"
         fontColor="#DC0043"
@@ -148,7 +148,7 @@ const AuditHeader = () => {
       mr="0"
       onClick={() => {
         setShareItemUrl(`audits/${audit?._id}`);
-        setShareItemName(audit?.area?.name);
+        setShareItemName(audit?.businessUnit?.name);
         handleShareOpen();
       }}
     />

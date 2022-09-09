@@ -1,7 +1,5 @@
 import addDocuments from './addDocuments.m';
-import addParticipant from './addParticipant.m';
 import removeDocument from './removeDocument.m';
-import removeParticipant from './removeParticipant.m';
 import renewResponse from './renewResponse.m';
 import responses from './responses.q';
 import submitResponse from './submitResponse.m';
@@ -13,8 +11,6 @@ const responsesResolvers = {
     responses,
   },
   Mutation: {
-    addParticipant,
-    removeParticipant,
     addDocuments,
     removeDocument,
     renewResponse,
@@ -89,18 +85,6 @@ export const responsesTypeDefs = `
     includeNotPublished: Boolean
   }
 
-  input ResponseParticipantModify {
-    _id: ID!
-    participantIds: [ID]
-    permission: String!
-  }
-
-  input ResponseParticipantRemove {
-    _id: ID!
-    participantId: ID
-    permission: String!
-  }
-
   input ResponseDocumentsAddInput {
     _id: ID!
     documentType: String!
@@ -122,6 +106,10 @@ export const responsesTypeDefs = `
   input UpdateResponseModify {
     _id: ID!
     dueDate: Date
+    accountableId: ID
+    responsibleId: ID
+    contributorsIds: [ID]
+    followersIds: [ID]
   }
 `;
 
@@ -130,8 +118,6 @@ export const responsesQueryDefs = `
 `;
 
 export const responsesMutationDefs = `
-  addParticipant(responseParticipantModify: ResponseParticipantModify!): Response!
-  removeParticipant(responseParticipantRemove: ResponseParticipantRemove!): Boolean!
   addDocuments(responseDocumentsAddInput: ResponseDocumentsAddInput!): Boolean!
   removeDocument(responseDocumentRemoveInput: ResponseDocumentRemoveInput!): Boolean!
   renewResponse(_id: ID!): Response!

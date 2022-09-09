@@ -129,6 +129,14 @@ const UPDATE_QUESTIONS = gql`
   }
 `;
 
+const UPDATE_RESPONSE = gql`
+  mutation ($updateResponseModify: UpdateResponseModify!) {
+    updateResponse(updateResponseModify: $updateResponseModify) {
+      _id
+    }
+  }
+`;
+
 const SUBMIT_RESPONSE = gql`
   mutation ($_id: ID!) {
     submitResponse(_id: $_id)
@@ -164,6 +172,7 @@ const ResponseProvider = ({ children }) => {
     fetchPolicy: 'network-only',
   });
   const [updateQuestions] = useMutation(UPDATE_QUESTIONS);
+  const [updateResponse] = useMutation(UPDATE_RESPONSE);
   const [submitResponse] = useMutation(SUBMIT_RESPONSE);
 
   const [activeTab, setActiveTab] = useState(0);
@@ -260,6 +269,7 @@ const ResponseProvider = ({ children }) => {
       snapshotsLoading,
       questionsForm,
       updateQuestions,
+      updateResponse,
       submitResponse,
     }),
 

@@ -6,14 +6,13 @@ import pluralize from 'pluralize';
 import Loader from '../../components/Loader';
 import HistoricalListItem from '../../components/Response/HistoricalListItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import TeamProvider from '../../contexts/TeamProvider';
 
 const Team = () => {
   const { snapshotsLoading, snapshots } = useResponseContext();
 
   if (snapshotsLoading) {
     return (
-      <Flex bg="teamPage.bg" h="full" rounded="20px" w="full">
+      <Flex bg="historyPage.bg" h="full" rounded="20px" w="full">
         <Loader center />
       </Flex>
     );
@@ -58,12 +57,6 @@ const Team = () => {
   );
 };
 
-const TeamWithContext = (props) => (
-  <TeamProvider {...props}>
-    <Team {...props} />
-  </TeamProvider>
-);
-
 export const historyPageStyles = {
   historyPage: {
     bg: '#FFFFFF',
@@ -72,4 +65,4 @@ export const historyPageStyles = {
   },
 };
 
-export default TeamWithContext;
+export default Team;

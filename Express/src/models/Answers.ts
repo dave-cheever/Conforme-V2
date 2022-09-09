@@ -114,7 +114,7 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
     const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && answer.options![value]);
 
     await Promise.all(
-      questionsCategory.options.map(async (option) => {
+      questionsCategory.options?.map(async (option) => {
         const emailAddress = await Settings.customFindOneByName(option.setting, organization._id);
         if (emailAddress) {
           for (const notification of notifications) {

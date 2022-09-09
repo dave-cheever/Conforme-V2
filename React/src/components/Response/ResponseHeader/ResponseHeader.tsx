@@ -216,7 +216,7 @@ const ReasponseHeader = () => {
             name="Share"
             onClick={() => {
               setShareItemUrl(`compliance-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`);
-              setShareItemName(response?.complianceItem?.name);
+              setShareItemName(response?.trackerItem?.name);
               handleShareOpen();
             }}
           />

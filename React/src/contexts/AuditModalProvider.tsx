@@ -1,10 +1,11 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
 
 import { IAudit } from '../interfaces/IAudit';
 import { IAuditModalContext } from '../interfaces/IAuditModalContext';
+import { IUser } from '../interfaces/IUser';
 import { useAppContext } from './AppProvider';
 
 export const AuditModalContext = createContext({} as IAuditModalContext);
@@ -50,6 +51,9 @@ const AuditModalProvider = ({ children }) => {
   const businessUnits = data?.businessUnits || [];
   const users = data?.users || [];
 
+  const [selectedAuditor, setSelectedAuditor] = useState<IUser>(user!);
+  const [selectedParticipants, setSelectedParticipants] = useState<IUser[]>([]);
+
   const defaultValues: Partial<IAudit> = {
     auditorId: user?._id,
     participantsIds: [],
@@ -92,8 +96,12 @@ const AuditModalProvider = ({ children }) => {
       locations,
       businessUnits,
       users,
+      selectedAuditor,
+      setSelectedAuditor,
+      selectedParticipants,
+      setSelectedParticipants,
     }),
-    [control, errors, audit, data?.auditTypes, data],
+    [control, errors, audit, data?.auditTypes, data, selectedAuditor, selectedParticipants],
   ) as IAuditModalContext;
 
   return <AuditModalContext.Provider value={value}>{children}</AuditModalContext.Provider>;

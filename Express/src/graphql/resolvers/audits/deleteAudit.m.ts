@@ -8,7 +8,7 @@ const deleteAudit = async (_, { _id }, { authorize, organization }) => {
     const audit = await Audits.customFindById(_id, organization._id);
     if (!audit) throw new Error("Audit doesn't exist");
 
-    if (!isPermitted({ user, action: 'audits.admin', data: { audit } })) throw new Error('User is not permitted to delete this audit.');
+    if (!isPermitted({ user, action: 'audits.delete', data: { audit } })) throw new Error('User is not permitted to delete this audit.');
 
     const deletedResult = await Audits.customDelete({ _id }, user._id, organization._id);
     return deletedResult;

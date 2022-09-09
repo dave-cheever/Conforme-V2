@@ -34,6 +34,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
       options {
         type
         name
+        setting
         value
       }
       scope {
@@ -143,7 +144,7 @@ const QuestionsCategories = () => {
       useStatus: questionsCategory?.useStatus,
       showInInsights: questionsCategory?.showInInsights,
       icon: questionsCategory?.icon,
-      options: questionsCategory?.options,
+      options: (questionsCategory?.options || []).map(({ name, setting, type, value }) => ({ name, setting, type, value })),
       scope: questionsCategory?.scope,
     });
   };

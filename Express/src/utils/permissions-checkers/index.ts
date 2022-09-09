@@ -17,7 +17,7 @@ const ifRACFHasAccess = ({ user, response }) =>
 
 const ifRAHasAccess = ({ user, response }) => user && (response?.accountableId === user._id || response?.responsibleId === user._id);
 
-const ifHasAuditAccess = ({ user, audit }) => user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id));
+const ifHasAuditAccess = ({ user, audit }) => user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id)) && audit.status !== 'completed';
 
 const ifHasActionAccess = ({ user, action, answer, audit }) => {
   // If an action is created from an audit

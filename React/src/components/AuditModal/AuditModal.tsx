@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { gql, useLazyQuery } from '@apollo/client';
-import { AddIcon } from '@chakra-ui/icons';
 import {
   Alert,
   Avatar,
@@ -10,7 +9,6 @@ import {
   Grid,
   GridItem,
   Icon,
-  IconButton,
   ModalBody,
   ModalContent,
   ModalHeader,
@@ -27,14 +25,13 @@ import { toastFailed } from '../../bootstrap/config';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useAuditModalContext } from '../../contexts/AuditModalProvider';
-import { useAuditTeamContext } from '../../contexts/AuditTeamProvider';
 import useAuditModal from '../../hooks/useAuditModal';
 import useNavigate from '../../hooks/useNavigate';
 import { Close, TickIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 import { Dropdown } from '../Forms';
-import AuditTeamModal from './AuditTeamModal';
-import AuditTeamParticipantAvatar from './AuditTeamParticipantAvatar';
+import MultipleParticipantsSelector from '../Participants/MultipleParticipantsSelector';
+import SingleParticipantSelector from '../Participants/SingleParticipantSelector';
 
 const GET_DUPLICATE_AUDITS = gql`
   query getDuplicateAudits($auditQueryInput: AuditQueryInput) {
@@ -55,17 +52,39 @@ const AuditModal = ({ refetch }) => {
   const { navigateTo, openInNewTab } = useNavigate();
   const { user } = useAppContext();
   const [getDuplicateAudits, { data }] = useLazyQuery(GET_DUPLICATE_AUDITS, { fetchPolicy: 'network-only' });
-  const { audit, control, setValue, auditTypes, locations, businessUnits, reset } = useAuditModalContext();
-  const { selectedAuditor, selectedParticipants } = useAuditTeamContext();
+  const {
+    audit,
+    control,
+    setValue,
+    auditTypes,
+    locations,
+    businessUnits,
+    reset,
+    selectedAuditor,
+    setSelectedAuditor,
+    selectedParticipants,
+    setSelectedParticipants,
+  } = useAuditModalContext();
   const { saveAudit, closeModal } = useAuditModal(refetch);
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
-  const [auditorModalOpen, setAuditorModalOpen] = useState(false);
-  const [participantsModalOpen, setParticipantsModalOpen] = useState(false);
 
   useEffect(() => {
     if (adminModalState !== 'closed' && auditTypes.length === 1) setValue('auditTypeId', auditTypes[0]._id);
     return () => reset({ ...audit });
   }, [adminModalState, JSON.stringify(auditTypes)]);
+
+  const selectAuditor = (user: IUser) => {
+    setValue('auditorId', user._id);
+    setSelectedAuditor(user);
+  };
+
+  const selectParticipants = (users: IUser[]) => {
+    setValue(
+      'participantsIds',
+      users.map((user) => user._id),
+    );
+    setSelectedParticipants(users);
+  };
 
   useEffect(() => {
     const { businessUnitId, walkType, auditTypeId } = audit;
@@ -104,34 +123,7 @@ const AuditModal = ({ refetch }) => {
 
   return (
     <>
-      <AuditTeamModal
-        isOpen={auditorModalOpen}
-        multiple={false}
-        onCancel={() => {
-          setAuditorModalOpen(false);
-        }}
-        onClose={() => {
-          setValue('auditorId', selectedAuditor._id);
-          setAuditorModalOpen(false);
-        }}
-        selection="auditor"
-      />
-      <AuditTeamModal
-        isOpen={participantsModalOpen}
-        multiple
-        onCancel={() => {
-          setParticipantsModalOpen(false);
-        }}
-        onClose={() => {
-          setValue(
-            'participantsIds',
-            selectedParticipants.map((participant) => (participant as IUser)?._id),
-          );
-          setParticipantsModalOpen(false);
-        }}
-        selection="participants"
-      />
-      <ModalContent bg="actionModal.bg" h={['auto', '100vh']} m="0" overflow="hidden" p={[4, 6]} rounded="0">
+      <ModalContent bg="auditModal.bg" h={['auto', '100vh']} m="0" overflow="hidden" p={[4, 6]} rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
@@ -150,8 +142,8 @@ const AuditModal = ({ refetch }) => {
                 <Text fontSize="smm" fontWeight="semibold">
                   Details
                 </Text>
-                <Grid columnGap={4} rowGap={2} templateColumns="repeat(2, 1fr)">
-                  {auditTypes?.length > 1 && !audit?.auditTypeId && (
+                <Grid columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
+                  {auditTypes?.length > 1 && (
                     <GridItem w="100%">
                       <Dropdown
                         control={control}
@@ -226,47 +218,18 @@ const AuditModal = ({ refetch }) => {
                   </GridItem>
                 </Grid>
               </Flex>
-              <Text fontSize="smm" fontWeight="semibold">
-                Audited by
-              </Text>
-              <Flex align="center" direction="column" fontSize={['14px', '24px']} position="relative" textAlign="center" w="64px">
-                <Avatar
-                  cursor="pointer"
-                  name={selectedAuditor?.displayName}
-                  onClick={() => setAuditorModalOpen(true)}
-                  rounded="full"
-                  size="lg"
-                  src={selectedAuditor?.imgUrl}
-                />
-                <Text fontSize="ssm" fontWeight="semi_medium" mt="10px">
-                  {selectedAuditor.displayName}
-                </Text>
-              </Flex>
-              <Text fontSize="smm" fontWeight="semibold">
-                Participants
-              </Text>
-              <Grid fontSize={['14px', '24px']} gap={6} templateColumns="repeat(auto-fill, 64px)">
-                {selectedParticipants?.map((participant) => {
-                  if (!participant) return null;
-                  return (
-                    <GridItem key={participant._id}>
-                      <AuditTeamParticipantAvatar participant={participant} setParticipantsModalOpen={setParticipantsModalOpen} />
-                    </GridItem>
-                  );
-                })}
-                <GridItem>
-                  <IconButton
-                    aria-label="Add participant"
-                    bg="auditModal.addParticipant.bg"
-                    color="auditModal.addParticipant.color"
-                    h="64px"
-                    icon={<AddIcon />}
-                    isRound
-                    onClick={() => setParticipantsModalOpen(true)}
-                    w="64px"
-                  />
-                </GridItem>
-              </Grid>
+              <SingleParticipantSelector
+                isUserAllowedToChange
+                label="Audited by"
+                onChange={selectAuditor}
+                selectedParticipant={selectedAuditor}
+              />
+              <MultipleParticipantsSelector
+                isUserAllowedToChange
+                label="Participants"
+                onChange={selectParticipants}
+                selectedParticipants={selectedParticipants}
+              />
             </Stack>
             <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
               {data?.audits?.length > 0 && (

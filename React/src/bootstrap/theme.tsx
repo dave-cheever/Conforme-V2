@@ -35,7 +35,6 @@ import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
 import { auditLogRecordStyles } from '../components/AuditLog/AuditLogRecord';
 import { auditModalStyles } from '../components/AuditModal/AuditModal';
-import { auditTeamModalStyles } from '../components/AuditModal/AuditTeamModal';
 import { barChartStyles } from '../components/BarChart';
 import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector';
 import { chatStyles } from '../components/Chat';
@@ -69,6 +68,11 @@ import { navigationLeftItemStyles } from '../components/NavigationLeft/Navigatio
 import { navigationLeftItemTabletStyles } from '../components/NavigationLeft/NavigationLeftItemTablet';
 import { subSectionStyles } from '../components/NavigationLeft/SubSection';
 import { navigationTopStyles } from '../components/NavigationTop';
+import { participantAvatarStyles } from '../components/Participants/ParticipantAvatar';
+import { participantListItemStyles } from '../components/Participants/ParticipantListItem';
+import { participantsAddButtonStyles } from '../components/Participants/ParticipantsAddButton';
+import { participantsDeleteModalStyles } from '../components/Participants/ParticipantsDeleteModal';
+import { participantsModalStyles } from '../components/Participants/ParticipantsModal';
 import { questionEmailFormStyles } from '../components/Questions/QuestionEmailForm';
 import { questionFormStyles } from '../components/Questions/QuestionForm';
 import { questionListStyles } from '../components/Questions/QuestionList';
@@ -94,7 +98,6 @@ import { settingsTabItemStyles } from '../components/Settings/TabItem';
 import { shareModalStyles } from '../components/ShareModal';
 import { sortButtonStyles } from '../components/SortButton';
 import { statusSelectorStyles } from '../components/StatusSelector';
-import { avatarUserStyles } from '../components/Team/AvatarUser';
 import { trackerGroupItemsStyles } from '../components/TrackerItem/TrackerItemsGroup';
 import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsList';
 import { trackerItemsSquareStyles } from '../components/TrackerItem/TrackerItemSquare';
@@ -197,11 +200,10 @@ const getTheme = (organizationTheme?: any) => {
         ...auditNewQuestionModalStyles,
         ...auditParticipantsStyles,
         ...auditSquareStyles,
-        ...auditTeamModalStyles,
         ...auditTypesAdminStyles,
         ...auditsGroupStyles,
         ...auditsListStyles,
-        ...avatarUserStyles,
+        ...participantAvatarStyles,
         ...barChartStyles,
         ...businessUnitsModalStyles,
         ...businessUnitsSelectorStyles,
@@ -252,6 +254,10 @@ const getTheme = (organizationTheme?: any) => {
         ...navigationTopStyles,
         ...numberInputStyles,
         ...peoplePickerStyles,
+        ...participantListItemStyles,
+        ...participantsAddButtonStyles,
+        ...participantsDeleteModalStyles,
+        ...participantsModalStyles,
         ...questionEmailFormStyles,
         ...questionFormStyles,
         ...questionListElementStyles,
@@ -643,10 +649,9 @@ const getTheme = (organizationTheme?: any) => {
           },
           teamModal: {
             dialog: {
-              minWidth: ['calc(100% - 50px)', '380px'],
-              maxWidth: ['calc(100% - 50px)', '380px'],
-              minH: '196px',
-              maxH: '500px',
+              width: ['calc(100% - 20px)', '480px'],
+              minH: '200px',
+              maxH: ['100vh', '700px'],
               boxShadow: '0px 0px 80px rgba(49, 50, 51, 0.25)',
               rounded: '20px',
             },

@@ -1,6 +1,16 @@
 import { Flex, Spinner } from '@chakra-ui/react';
 
-const Loader = ({ loaderColor, size, center }: { loaderColor?: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; center?: boolean }) => {
+const Loader = ({
+  loaderColor,
+  size,
+  center,
+  w,
+}: {
+  loaderColor?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  center?: boolean;
+  w?: number | string;
+}) => {
   const getThickness = () => {
     let thickness = '4px';
     switch (size) {
@@ -18,7 +28,7 @@ const Loader = ({ loaderColor, size, center }: { loaderColor?: string; size?: 'x
     return thickness;
   };
   return (
-    <Flex align={center ? 'center' : 'flex-start'} h="full" justify="center" w="full">
+    <Flex align={center ? 'center' : 'flex-start'} h="full" justify="center" w={w || 'full'}>
       <Spinner color={loaderColor || 'loader.color'} emptyColor="gray.200" size={size || 'xl'} speed="0.65s" thickness={getThickness()} />
     </Flex>
   );

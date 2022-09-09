@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Flex, Grid, Stack } from '@chakra-ui/react';
+import { Flex, HStack, Stack } from '@chakra-ui/react';
 
 import { isPermitted } from '../../components/can';
 import Loader from '../../components/Loader';
-import AvatarUser from '../../components/Team/AvatarUser';
-import TeamHeader from '../../components/Team/TeamHeader';
-import TeamModal from '../../components/Team/TeamModal';
+import MultipleParticipantsSelector from '../../components/Participants/MultipleParticipantsSelector';
+import SingleParticipantSelector from '../../components/Participants/SingleParticipantSelector';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import TeamProvider, { useTeamContext } from '../../contexts/TeamProvider';
 import { IUser } from '../../interfaces/IUser';
 
 const GET_USERS_BY_ID = gql`
@@ -20,14 +18,14 @@ const GET_USERS_BY_ID = gql`
     $userContibuterQuery: UserQueryInput
     $userFollowersQuery: UserQueryInput
   ) {
-    responseAccountable: usersById(userQueryInput: $userAccountableQuery) {
+    accountable: usersById(userQueryInput: $userAccountableQuery) {
       _id
       firstName
       lastName
       displayName
       imgUrl
     }
-    responseResponsible: usersById(userQueryInput: $userResponsibleQuery) {
+    responsible: usersById(userQueryInput: $userResponsibleQuery) {
       _id
       firstName
       lastName
@@ -53,11 +51,8 @@ const GET_USERS_BY_ID = gql`
 
 const Team = () => {
   const { user } = useAppContext();
-  const { response, snapshot } = useResponseContext();
-  const { data, filterType, searchQuery, onOpen, refetchUsers, setFilterType, setSelectedParticipants, setUserSearchResults } =
-    useTeamContext();
-
-  const maxDelegates = 5;
+  const { response, snapshot, refetch, updateResponse } = useResponseContext();
+  const maxParticipants = 20;
 
   const { data: racf, loading } = useQuery(GET_USERS_BY_ID, {
     variables: {
@@ -72,37 +67,36 @@ const Team = () => {
   const racfData = useMemo(() => {
     if (snapshot) {
       return {
-        responseAccountable: response?.accountable && [response.accountable],
-        responseResponsible: response?.responsible && [response.responsible],
+        accountable: response?.accountable && [response.accountable],
+        responsible: response?.responsible && [response.responsible],
         contributors: response?.contributors,
         followers: response?.followers,
       };
     }
     return racf;
-  }, [racf, response, snapshot]);
+  }, [JSON.stringify(racf), JSON.stringify(response), snapshot]);
 
-  useEffect(() => {
-    refetchUsers();
-    if (filterType === 'responsible' || filterType === 'accountable') setSelectedParticipants([]);
+  const accountable: IUser = racfData?.accountable && racfData?.accountable[0];
+  const responsible: IUser = racfData?.responsible && racfData?.responsible[0];
+  const contributors: IUser[] = racfData?.contributors || [];
+  const followers: IUser[] = racfData?.followers || [];
 
-    if (data?.searchUsers && searchQuery) {
-      const filteredUsers = data.searchUsers.filter(({ _id }) => response && !response[filterType].includes(_id));
+  const isPermittedToManageAccountable = isPermitted({ user, action: 'responses.manageAccountable', data: { response } });
+  const isPermittedToManageResponsible = isPermitted({ user, action: 'responses.manageResponsible', data: { response } });
+  const isPermittedToManageContributors = isPermitted({ user, action: 'responses.manageContributors', data: { response } });
+  const isPermittedToManageFollowers = isPermitted({ user, action: 'responses.manageFollowers', data: { response } });
 
-      setUserSearchResults(filteredUsers);
-    } else setUserSearchResults([]);
-  }, [searchQuery, data]);
-
-  useEffect(() => {
-    setSelectedParticipants([]);
-  }, [filterType]);
-
-  const accountable: IUser =
-    racfData?.responseAccountable && racfData?.responseAccountable?.length !== 0 && racfData?.responseAccountable[0];
-  const responsible: IUser =
-    racfData?.responseResponsible && racfData?.responseResponsible?.length !== 0 && racfData?.responseResponsible[0];
-
-  const isPermittedToManageContributors = isPermitted({ user, action: 'responses.manageContributor', data: { response } });
-  const isPermittedToManageFollowers = isPermitted({ user, action: 'responses.manageMultipleFollowers', data: { response } });
+  const selectParticipants = async (participantsModify) => {
+    await updateResponse({
+      variables: {
+        updateResponseModify: {
+          _id: response?._id,
+          ...participantsModify,
+        },
+      },
+    });
+    refetch();
+  };
 
   if (loading) {
     return (
@@ -120,106 +114,50 @@ const Team = () => {
       fontWeight="bold"
       h={['fit-content', 'full']}
       overflow={['visible', 'auto']}
-      p="25px 30px"
+      px={6}
+      py={4}
       rounded="20px"
       spacing="40px"
       w="full"
     >
-      <TeamModal />
-      <Flex>
-        <Flex flexDir="column">
-          <TeamHeader
-            action="responses"
-            header="Accountable"
-            isButtonVisible={!response?.accountableId}
-            onOpen={onOpen}
-            setFilterType={() => setFilterType('accountableId')}
+      <Stack spacing={12} w="full">
+        <HStack justify="flex-start" spacing={12}>
+          <SingleParticipantSelector
+            isUserAllowedToChange={isPermittedToManageAccountable}
+            label="Accountable"
+            onChange={(participant) => selectParticipants({ accountableId: participant._id })}
+            selectedParticipant={accountable}
           />
-          {racfData?.responseAccountable && racfData?.responseAccountable?.length !== 0 && (
-            <Flex>
-              <AvatarUser action="responses" isReplaceable permission="accountable" user={accountable} />
-            </Flex>
-          )}
-        </Flex>
-        <Flex flexDir="column" ml="26px">
-          <TeamHeader
-            action="responses.manageResponsible"
-            header="Responsible"
-            isButtonVisible={!response?.responsibleId}
-            onOpen={onOpen}
-            setFilterType={() => setFilterType('responsibleId')}
+          <SingleParticipantSelector
+            isUserAllowedToChange={isPermittedToManageResponsible}
+            label="Responsible"
+            onChange={(participant) => selectParticipants({ responsibleId: participant._id })}
+            selectedParticipant={responsible}
           />
-          {racfData?.responseResponsible && racfData?.responseResponsible?.length !== 0 && (
-            <Flex>
-              <AvatarUser action="responses.manageResponsible" isReplaceable permission="responsible" user={responsible} />
-            </Flex>
-          )}
-        </Flex>
-      </Flex>
-      {(racfData?.contributors?.length! > 0 || isPermittedToManageContributors) && (
-        <Stack>
-          <TeamHeader
-            action="responses.manageContributor"
-            header="Contributors"
-            isButtonVisible={response?.contributorsIds?.length! < maxDelegates}
-            onOpen={onOpen}
-            setFilterType={() => setFilterType('contributorsIds')}
-          />
-          <Grid gap={[0, 6]} templateColumns={['repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(6, 1fr)']} w="full">
-            {[...(racfData?.contributors || [])]
-              .sort((a, b) => a.displayName.localeCompare(b.displayName))
-              .map((contributor) => (
-                <AvatarUser action="responses.manageContributor" key={contributor._id} permission="contributor" user={contributor} />
-              ))}
-          </Grid>
-        </Stack>
-      )}
-      {(racfData?.followers?.length! > 0 || isPermittedToManageFollowers) && (
-        <Stack>
-          <TeamHeader
-            action="responses.manageMultipleFollowers"
-            header="Followers"
-            onOpen={onOpen}
-            setFilterType={() => setFilterType('followersIds')}
-          />
-          <Grid gap={[0, 6]} templateColumns={['repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(6, 1fr)']} w="full">
-            {[...(racfData?.followers || [])]
-              .sort((a, b) => a.displayName.localeCompare(b.displayName))
-              .map((follower) => (
-                <AvatarUser action="responses.manageMultipleFollowers" key={follower._id} permission="follower" user={follower} />
-              ))}
-          </Grid>
-        </Stack>
-      )}
+        </HStack>
+        <MultipleParticipantsSelector
+          isUserAllowedToChange={isPermittedToManageContributors}
+          label="Contributors"
+          maxParticipants={maxParticipants}
+          onChange={(participants) => selectParticipants({ contributorsIds: participants.map(({ _id }) => _id) })}
+          selectedParticipants={contributors}
+        />
+        <MultipleParticipantsSelector
+          isUserAllowedToChange={isPermittedToManageFollowers}
+          label="Followers"
+          maxParticipants={maxParticipants}
+          onChange={(participants) => selectParticipants({ followersIds: participants.map(({ _id }) => _id) })}
+          selectedParticipants={followers}
+        />
+      </Stack>
     </Stack>
   );
 };
 
-const TeamWithContext = (props) => (
-  <TeamProvider {...props}>
-    <Team {...props} />
-  </TeamProvider>
-);
-
-export default TeamWithContext;
+export default Team;
 
 export const teamPageStyles = {
   teamPage: {
     bg: '#FFFFFF',
-    modal: {
-      searchIcon: '#434B4F',
-      inputBorder: '#cdcdd5',
-    },
-    radioButtonFont: '#818197',
-    button: {
-      add: {
-        bg: '#462AC4',
-        color: '#FFFFFF',
-      },
-      addDelegates: {
-        bg: '#818197',
-        color: '#FFFFFF',
-      },
-    },
   },
 };

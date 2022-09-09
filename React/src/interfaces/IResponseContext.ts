@@ -43,5 +43,6 @@ export interface IResponseContext {
 
   questionsForm: UseFormReturn;
   updateQuestions: gqlFunction;
+  updateResponse: gqlFunction;
   submitResponse: gqlFunction;
 }

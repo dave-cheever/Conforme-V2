@@ -22,4 +22,8 @@ export interface IAuditModalContext {
   businessUnits: Partial<IBusinessUnit>[];
   locations: Partial<ILocation>[];
   users: Partial<IUser>[];
+  selectedAuditor: IUser;
+  setSelectedAuditor: (user: IUser) => void;
+  selectedParticipants: IUser[];
+  setSelectedParticipants: (users: IUser[]) => void;
 }
