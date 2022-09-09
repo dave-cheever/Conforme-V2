@@ -24,8 +24,9 @@ function App() {
 
   // Redirect to last path
   useEffect(() => {
-    const redirectPath = localStorage.getItem('lastPath');
+    const redirectPath = localStorage.getItem('redirectUrl');
     if (redirectPath) history.push(redirectPath);
+    localStorage.removeItem('redirectUrl');
   }, []);
 
   if (user === undefined || loadingSettings || loadingUser) {

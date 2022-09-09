@@ -10,9 +10,8 @@ const useNavigate = () => {
 
   // Save last URL to local storage so it can be opened after login
   useEffect(() => {
-    if (!['/', '/login', '/logout'].includes(location.pathname))
-      localStorage.setItem('lastPath', `${location.pathname}${location.search}`)
-  }, [location.pathname]);
+    if (location.state?.redirectUrl) localStorage.setItem('redirectUrl', location.state.redirectUrl);
+  }, [JSON.stringify(location.state)]);
 
   const isPathActive = (path: string, options: { exact?: boolean } = {}) => {
     const { exact } = options;

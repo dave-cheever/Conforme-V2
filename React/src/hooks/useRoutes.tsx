@@ -62,7 +62,7 @@ const openRoutes: Array<IRoute> = [
         key="not-allowed"
         to={{
           pathname: '/login',
-          state: { redirectUrl: window.location.pathname },
+          state: { redirectUrl: `${window.location.pathname}${window.location.search}` },
         }}
       />
     ),
@@ -305,21 +305,11 @@ const protectedRoutes: Array<IRoute> = [
 
 const useRoutes = () => {
   const { user, module } = useAppContext();
-
-  let routes: IRoute[] = [];
-  if (!user) routes = openRoutes;
-  else {
-    routes = [
-      ...protectedRoutes.map((route) => ({
-        ...route,
-        path: `/:modulePath${route.path}`,
-      })),
-    ];
-  }
-
+  if (!user) return openRoutes;
   return [
-    ...routes.map((route) => ({
+    ...protectedRoutes.map((route) => ({
       ...route,
+      path: `/:modulePath${route.path}`,
       component: () => (
         <Can
           action={route.permission}

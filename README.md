@@ -345,36 +345,19 @@ Audit log limit:
   "value": "5",
   "type": "configValue",
   "description": "Use this setting to default to a specific count of the elements loaded in audit log",
+  "scope": {
+    "moduleId": <module id>
+  },
   "metatags": {}
 }
 ```
 
-Response due email days:
+#### Tracker specific settings
 
-```
-{
-  "_id" : <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name" : "responseDueEmailDays",
-  "label" : "Days from due date email reminders are sent",
-  "value" : [
-      90,
-      30,
-      7,
-      -1
-  ],
-  "type" : "defaultSettings",
-  "inputType" : "table",
-  "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning tracker responses.",
-  "scope": {
-    moduleId: <module id>
-  },
-  "metatags": {},
-}
+##### Email templates
 
-```
 
-Response assiged notification:
+Response assiged:
 
 ```
 {
@@ -403,7 +386,7 @@ Response assiged notification:
 }
 ```
 
-Overview email:
+Weekly summary:
 
 ```
 
@@ -420,7 +403,88 @@ Overview email:
   "description" : "",
   "inputType" : "emailTemplate",
   "scope": {
-    moduleId: <module id>
+    "moduleId": <module id>
+  },
+  "metatags": {},
+}
+
+```
+
+Response reminder:
+
+```
+
+{
+  "_id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name" : "responseRemainderEmailTemplate",
+  "label" : "Response reminders",
+  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Tracker </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that tracker item %TrackerItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+  "type" : "emailTemplate",
+  "options" : [
+      "FirstName",
+      "TrackerItemName",
+      "DueText",
+      "Link"
+  ],
+  "description" : "",
+  "inputType" : "emailTemplate",
+  "scope": {
+    "moduleId": <module id>
+  },
+  "metatags": {}
+}
+```
+
+Tracker review submitted:
+
+```
+{
+  "id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "trackerReviewSubmittedNotificationEmailTemplate",
+  "label": "Tracker review submitted notification",
+  "value": "<p>%TrackerItemName% has been reviewed, to view click %LinkTo%.</p>",
+  "type": "emailTemplate",
+  "options": [
+    "TrackerItemName",
+    "LinkTo"
+  ],
+  "inputType": "emailTemplate",
+  "description": "",
+  "scope": {
+    "moduleId": <module id>
+  },
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": 1649742835206
+    }
+  }
+}
+```
+
+##### Other settings
+
+Response due email days:
+
+```
+{
+  "_id" : <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name" : "responseDueEmailDays",
+  "label" : "Days from due date email reminders are sent",
+  "value" : [
+      90,
+      30,
+      7,
+      -1
+  ],
+  "type" : "defaultSettings",
+  "inputType" : "table",
+  "description" : "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning tracker responses.",
+  "scope": {
+    "moduleId": <module id>
   },
   "metatags": {},
 }
@@ -441,35 +505,9 @@ Overview email address:
   "type": "configValue",
   "description": "Use this setting to select when owners/delegates should recieve email reminders regarding weekly responses.",
   "scope": {
-    moduleId: <module id>
+    "moduleId": <module id>
   },
   "metatags": {},
-}
-```
-
-Due email:
-
-```
-
-{
-  "_id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name" : "responseRemainderEmailTemplate",
-  "label" : "Response reminders",
-  "value" : "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Tracker </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that tracker item %TrackerItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
-  "type" : "emailTemplate",
-  "options" : [
-      "FirstName",
-      "TrackerItemName",
-      "DueText",
-      "Link"
-  ],
-  "description" : "",
-  "inputType" : "emailTemplate",
-  "scope": {
-    moduleId: <module id>
-  },
-  "metatags": {}
 }
 ```
 
@@ -485,41 +523,17 @@ Maximum delegates:
   "type": "configValue",
   "description": "Use this setting to default to a specific maximum number of Delegates",
   "scope": {
-    moduleId: <module id>
+    "moduleId": <module id>
   },
   "metatags": {},
 }
 ```
 
-Email address receiving weekly digest:
+#### Audits specific settings
 
-```
-{
-  "_id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "auditsWeeklyDigestEmailAddress",
-  "label": "Email address for receiving the weekly digest",
-  "value": [
-    "admin@ccbmidev.onmicrosoft.com"
-  ],
-  "type": "defaultSettings",
-  "description": "Use this setting to select who should recieve email digest regarding audits.",
-  "inputType": "table",
-  "scope": {
-    moduleId: <module id>
-  },
-  "metatags": {
-    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
-    "updatedAt": {
-      "$date": {
-        "$numberLong": "1649318496996"
-      }
-    }
-  }
-}
-```
+##### Email templates
 
-Weekly digest email template:
+Weekly digest:
 
 ```
 {
@@ -533,7 +547,7 @@ Weekly digest email template:
   "description": "",
   "inputType": "emailTemplate",
   "scope": {
-    moduleId: <module id>
+    "moduleId": <module id>
   },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
@@ -542,58 +556,6 @@ Weekly digest email template:
         "$numberLong": "1649318086034"
       }
     }
-  }
-}
-```
-
-Audits status reminders triggers:
-
-```
-{
-  "_id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "auditsStatusReminderTriggers",
-  "label": "The days of month when to send upcoming and missed audit notifications",
-  "value": [1],
-  "type": "defaultSettings",
-  "inputType": "text",
-  "description": "Use this setting to select day of month when to send coming up and missed audit notifications",
-  "scope": {
-    moduleId: <module id>
-  },
-  "metatags": {
-    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
-    "updatedAt": {
-      "$date": {
-        "$numberLong": "1649742835206"
-      }
-    }
-  },
-}
-```
-
-Retention period policy:
-
-```
-{
-  "_id": <random generated UUID>,
-  "name": "retentionPeriod",
-  "label": "Retention period",
-  "value": "Never",
-  "type": "defaultSettings",
-  "placeholder": "Select",
-  "description": "Use this setting to select retention period for the data in Conforme system.",
-  "organizationId": <organization's id>,
-  "inputType": "dropdown",
-  "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Never"],
-  "metatags": {
-    "adddedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
-    "addedAt": {
-      "$date": "2022-09-01T20:18:42.292Z"
-    }
-  },
-  "scope": {
-    "moduleId": <module id>
   }
 }
 ```
@@ -614,7 +576,7 @@ HSE notification:
   "inputType": "emailTemplate",
   "description": "",
   "scope": {
-    moduleId: <module id>
+    "moduleId": <module id>
   },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
@@ -643,38 +605,13 @@ Mentioned notification:
   ],
   "inputType": "emailTemplate",
   "description": "",
-  "metatags": {
-    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
-    "updatedAt": {
-      "$date": 1653632933511
-    }
-  }
-}
-```
-
-Tracker review submitted:
-
-```
-{
-  "id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "trackerReviewSubmittedNotificationEmailTemplate",
-  "label": "Tracker review submitted notification",
-  "value": "<p>%TrackerItemName% has been reviewed, to view click %LinkTo%.</p>",
-  "type": "emailTemplate",
-  "options": [
-    "TrackerItemName",
-    "LinkTo"
-  ],
-  "inputType": "emailTemplate",
-  "description": "",
   "scope": {
-    moduleId: <module id>
+    "moduleId": <module id>
   },
   "metatags": {
     "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
     "updatedAt": {
-      "$date": 1649742835206
+      "$date": 1653632933511
     }
   }
 }
@@ -714,7 +651,89 @@ Action assigned:
 }
 ```
 
-HSE email:
+##### Other settings
+
+Email address receiving weekly digest:
+
+```
+{
+  "_id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditsWeeklyDigestEmailAddress",
+  "label": "Email address for receiving the weekly digest",
+  "value": [
+    "admin@ccbmidev.onmicrosoft.com"
+  ],
+  "type": "defaultSettings",
+  "description": "Use this setting to select who should recieve email digest regarding audits.",
+  "inputType": "table",
+  "scope": {
+    "moduleId": <module id>
+  },
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649318496996"
+      }
+    }
+  }
+}
+```
+
+Audits status reminders triggers:
+
+```
+{
+  "_id": <random generated UUID>,
+  "organizationId": <organization's id>,
+  "name": "auditsStatusReminderTriggers",
+  "label": "The days of month when to send upcoming and missed audit notifications",
+  "value": [1],
+  "type": "defaultSettings",
+  "inputType": "text",
+  "description": "Use this setting to select day of month when to send coming up and missed audit notifications",
+  "scope": {
+    "moduleId": <module id>
+  },
+  "metatags": {
+    "updatedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1649742835206"
+      }
+    }
+  },
+}
+```
+
+Retention period policy:
+
+```
+{
+  "_id": <random generated UUID>,
+  "name": "retentionPeriod",
+  "label": "Retention period",
+  "value": "Never",
+  "type": "defaultSettings",
+  "placeholder": "Select",
+  "description": "Use this setting to select retention period for the data in Conforme system.",
+  "organizationId": <organization's id>,
+  "inputType": "dropdown",
+  "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Never"],
+  "metatags": {
+    "adddedBy": "a2472486-00dc-4f5a-85f1-91c28757030a",
+    "addedAt": {
+      "$date": "2022-09-01T20:18:42.292Z"
+    }
+  },
+  "scope": {
+    "moduleId": <module id>
+  }
+}
+```
+
+HSE email address:
 
 ```
 {
@@ -739,7 +758,7 @@ HSE email:
 }
 ```
 
-Estates email:
+Estates email address:
 
 ```
 {
