@@ -1,7 +1,26 @@
-import { DangerIcon, GridIcon, GroupIcon, ListIcon, NotesIcon, ThumbUpIcon } from '../icons';
+import {
+  DangerIcon,
+  GridIcon,
+  GroupIcon,
+  ListIcon,
+  NotesIcon,
+  SafeBehaviour,
+  SafeCondition,
+  ThumbUpIcon,
+  UnsafeAct,
+  UnsafeCondition,
+} from '../icons';
 
 const Icon = ({ icon, ...props }) => {
   switch (icon) {
+    case 'safeBehaviour':
+      return <SafeBehaviour {...props} />;
+    case 'safeCondition':
+      return <SafeCondition {...props} />;
+    case 'unsafeAct':
+      return <UnsafeAct {...props} />;
+    case 'unsafeCondition':
+      return <UnsafeCondition {...props} />;
     case 'danger':
       return <DangerIcon {...props} />;
     case 'thumbUp':
