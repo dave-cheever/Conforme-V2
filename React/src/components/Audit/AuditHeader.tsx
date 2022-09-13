@@ -144,8 +144,8 @@ const AuditHeader = () => {
   const AuditShareButton = () => (
     <ShareButton
       ariaLabel="audit-share-button"
-      ml="24px"
-      mr="0"
+      ml={['auto', '24px']}
+      mr="auto"
       onClick={() => {
         setShareItemUrl(`audits/${audit?._id}`);
         setShareItemName(audit?.businessUnit?.name);
