@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, CheckboxGroup, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 // import { omit } from 'lodash';
+import { t } from 'i18next';
 
 import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -30,6 +31,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
       notBlockedAfterCompletion
       useStatus
       showInInsights
+      countInAuditCard
       icon
       options {
         type
@@ -70,6 +72,7 @@ const defaultValues: Partial<IQuestionsCategory> = {
   allowCustomQuestions: false,
   maxQuestionsNumber: 5,
   showInInsights: false,
+  countInAuditCard: false,
   icon: '',
   scope: {
     module: 'audits',
@@ -143,6 +146,7 @@ const QuestionsCategories = () => {
       notBlockedAfterCompletion: questionsCategory?.notBlockedAfterCompletion,
       useStatus: questionsCategory?.useStatus,
       showInInsights: questionsCategory?.showInInsights,
+      countInAuditCard: questionsCategory?.countInAuditCard,
       icon: questionsCategory?.icon,
       options: (questionsCategory?.options || []).map(({ name, setting, type, value }) => ({ name, setting, type, value })),
       scope: questionsCategory?.scope,
@@ -161,6 +165,7 @@ const QuestionsCategories = () => {
               allowCustomQuestions: questionsCategory?.allowCustomQuestions,
               maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
               showInInsights: questionsCategory?.showInInsights,
+              countInAuditCard: questionsCategory?.countInAuditCard,
               icon: questionsCategory?.icon,
               options: questionsCategory?.options,
               scope: questionsCategory?.scope,
@@ -196,6 +201,7 @@ const QuestionsCategories = () => {
               notBlockedAfterCompletion: questionsCategory?.notBlockedAfterCompletion,
               useStatus: questionsCategory?.useStatus,
               showInInsights: questionsCategory?.showInInsights,
+              countInAuditCard: questionsCategory?.countInAuditCard,
               icon: questionsCategory?.icon,
               options: questionsCategory?.options,
             },
@@ -331,6 +337,14 @@ const QuestionsCategories = () => {
             name="showInInsights"
             placeholder="Show in insights"
             tooltip="If enabled, answers related to this questions category will be shown in insights"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            label="Count in audit card"
+            name="countInAuditCard"
+            placeholder="Count in audit card"
+            tooltip={`If enabled, total of questions related to this question category will be displayed in ${t('audit')} card`}
             variant="secondaryVariant"
           />
           <TextInput

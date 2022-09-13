@@ -42,6 +42,10 @@ const GET_AUDITS = gql`
         name
         startingDate
         frequency
+        sections {
+          type
+          _id
+        }
       }
       location {
         _id

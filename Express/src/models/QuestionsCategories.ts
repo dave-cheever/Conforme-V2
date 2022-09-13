@@ -23,6 +23,7 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
   notBlockedAfterCompletion: Boolean,
   useStatus: Boolean,
   showInInsights: Boolean,
+  countInAuditCard: Boolean,
   icon: String,
   options: [
     {
@@ -75,6 +76,7 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise
       case 'allowCustomQuestions':
       case 'notBlockedAfterCompletion':
       case 'showInInsights':
+      case 'countInAuditCard':
         value = getAuditValueForBoolean(oldValue, newValue);
         break;
 

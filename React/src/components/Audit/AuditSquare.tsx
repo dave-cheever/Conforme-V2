@@ -1,15 +1,28 @@
-import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { gql, useQuery } from '@apollo/client';
+import { Avatar, Box, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { ActionsIcon, WarningIcon } from '../../icons';
+import { CheckIcon, MenuIcon, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
+
+const GET_AUDIT_ANSWERS_COUNT = gql`
+  query ($auditId: ID!) {
+    auditAnswersCount(auditId: $auditId)
+  }
+`;
 
 const AuditSquare = ({ audit }: { audit: IAudit }) => {
   const { navigateTo } = useNavigate();
+
+  const { data, loading, error } = useQuery(GET_AUDIT_ANSWERS_COUNT, {
+    variables: {
+      auditId: audit._id,
+    },
+  });
 
   return (
     <Box
@@ -31,6 +44,14 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
             <Flex>{audit?.auditType?.name}</Flex>
           </Box>
         </Flex>
+        {!loading && !error && data && (
+          <Flex fontSize="11px" fontWeight="700">
+            <MenuIcon fill="transparent" h="16px" ml={4} stroke="#D2D1D7" w="16px" />
+            <Text as="span" color="auditSquare.nameFontColor" ml={1}>
+              {data?.auditAnswersCount}
+            </Text>
+          </Flex>
+        )}
       </Flex>
       <Flex align="center" h="52px" ml={2} mt={2} position="relative" w="full">
         <Skeleton isLoaded={!!audit} rounded="full">
@@ -64,21 +85,22 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           </Box>
         </Box>
       </Flex>
-      <Flex align="center" justify="end" pt="50px" w="full">
+      <Flex align="center" justify="space-between" pl={2} pt="50px" w="full">
         <Flex align="center" color={`auditSquare.${audit?.status}`} flexDirection="column" justify="center" mr={1}>
           <Flex fontSize="11px" fontWeight="700">
             {audit?.status === 'missed' && <WarningIcon fill="transparent" h="16px" mr={2} stroke="auditSquare.missed" w="16px" />}
             <Text as="span">{auditStatuses[audit?.status]}</Text>
-            {audit?.status === 'completed' && (
-              <>
-                <Divider color="lightgray" h="auto" mx="15px" orientation="vertical" />
-                <ActionsIcon fill="transparent" h="16px" stroke="#D2D1D7" w="16px" />
-                <Text as="span" color="auditSquare.nameFontColor" ml={2}>
-                  {audit?.numberOfActions}
-                </Text>
-              </>
-            )}
           </Flex>
+        </Flex>
+        <Flex fontSize="11px" fontWeight="700">
+          {audit?.status === 'completed' && (
+            <>
+              <CheckIcon fill="transparent" h="16px" stroke="#D2D1D7" w="16px" />
+              <Text as="span" color="auditSquare.nameFontColor" ml={2}>
+                {audit?.numberOfActions}
+              </Text>
+            </>
+          )}
         </Flex>
       </Flex>
     </Box>

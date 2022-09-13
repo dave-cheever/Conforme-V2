@@ -31,6 +31,7 @@ export const questionsCategoriesTypeDefs = `
     notBlockedAfterCompletion: Boolean
     useStatus: Boolean
     showInInsights: Boolean
+    countInAuditCard: Boolean
     icon: String!
     options: [QuestionsCategoryOption!]
     scope: Scope!
@@ -41,6 +42,7 @@ export const questionsCategoriesTypeDefs = `
     _id: ID
     _ids: [ID]
     showInInsights: Boolean
+    countInAuditCard: Boolean
     scope: ScopeInput
   }
 
@@ -59,6 +61,7 @@ export const questionsCategoriesTypeDefs = `
     notBlockedAfterCompletion: Boolean
     useStatus: Boolean
     showInInsights: Boolean
+    countInAuditCard: Boolean
     icon: String!
     options: [QuestionsCategoryOptionInput!]
     scope: ScopeInput!
@@ -73,6 +76,7 @@ export const questionsCategoriesTypeDefs = `
     notBlockedAfterCompletion: Boolean
     useStatus: Boolean
     showInInsights: Boolean
+    countInAuditCard: Boolean
     icon: String!
     options: [QuestionsCategoryOptionInput!]
   }

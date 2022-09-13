@@ -63,6 +63,7 @@ import ListIcon from './ListIcon';
 import LocationIcon from './LocationIcon';
 import Magnifier from './Magnifier';
 import Mentions from './Mentions';
+import MenuIcon from './MenuIcon';
 import MessageIcon from './MessageIcon';
 import MessageSquareIcon from './MessageSquareIcon';
 import MinusIcon from './MinusIcon';
@@ -169,6 +170,7 @@ export {
   LocationIcon,
   Magnifier,
   Mentions,
+  MenuIcon,
   MessageIcon,
   MessageSquareIcon,
   MinusIcon,
