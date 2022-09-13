@@ -72,7 +72,13 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
             />
           )}
           <Flex flexGrow={1} px="25px" w="full">
-            <Flex flexDirection="column" h="full" maxH={['none', 'calc(100vh - 190px)']} pb="25px" w="full">
+            <Flex
+              flexDirection="column"
+              h="full"
+              maxH={['none', 'calc(100vh - 190px)']}
+              pb="25px"
+              w={['full', 'full', 'calc(100% - 300px)']}
+            >
               <Component />
             </Flex>
             {device === 'desktop' && <Chat component="audit" />}

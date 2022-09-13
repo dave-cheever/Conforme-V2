@@ -68,8 +68,8 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
   const toast = useToast();
   const device = useDevice();
   const { module } = useAppContext();
-  const { audit } = useAuditContext()
-  const { response } = useResponseContext()
+  const { audit } = useAuditContext();
+  const { response } = useResponseContext();
   const { handleCloseMessage, chatParticipants, participantsLoading } = useChatContext();
 
   const { data, loading, refetch } = useQuery(GET_COMMENTS, {
@@ -199,7 +199,19 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Stack h="full" maxW={['calc(100vw - 36px)', '300px']} minW={['calc(100vw - 36px)', '300px']} pl="25px" pr={['25px', '25px', '0px']} spacing={2} >
+      <Stack
+        bg={['chat.bg', 'chat.bg', 'transparent']}
+        borderRadius="20px"
+        boxShadow={['lg', 'lg', 'none']}
+        h="auto"
+        maxW={['calc(100vw - 36px)', '300px']}
+        minW={['calc(100vw - 36px)', '300px']}
+        pl="25px"
+        position="fixed"
+        pr={['25px', '25px', '0px']}
+        right="25px"
+        spacing={2}
+      >
         <Flex alignItems="center" flexDirection="column">
           <Text color="chat.text" fontSize="11px" fontWeight="400" lineHeight="16px" my="10px">
             Chat
@@ -247,10 +259,7 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
         <Flex align="space-between" flexDirection="column" grow={1} overflow="hidden" pr="10px" w="calc(100% + 10px)">
           <Flex
             flexDirection="column"
-            h={[
-              "calc(100vh - 460px)",
-              "calc(100vh - 406px )",
-              `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 360px)'}`]}
+            h={['calc(100vh - 460px)', 'calc(100vh - 406px )', `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 360px)'}`]}
             overflow="auto"
             pr="10px"
             ref={divRef}
@@ -271,7 +280,7 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
             ))}
           </Flex>
           <Can
-            action={component === 'audit' ? 'auditComments.add' : "comments.add"}
+            action={component === 'audit' ? 'auditComments.add' : 'comments.add'}
             data={{ ...(component === 'audit' ? { audit } : { response }) }}
             no={() => <Box h="20px" />}
             yes={() => (
@@ -296,6 +305,7 @@ export default Chat;
 
 export const chatStyles = {
   chat: {
+    bg: '#ffffff',
     text: '#282F3680',
     scrollBar: {
       bg: '#E5E5E5',

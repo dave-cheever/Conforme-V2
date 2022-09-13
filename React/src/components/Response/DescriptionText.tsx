@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 import { useResponseContext } from '../../contexts/ResponseProvider';
 
@@ -7,8 +7,8 @@ const DescriptionText = () => {
 
   if (!response?.trackerItem?.description) return null;
   return (
-    <Box color="trackerItemResponse.textColor" fontSize="14px" lineHeight="20px" mt="5" whiteSpace="break-spaces">
-      {response.trackerItem.description}
+    <Box color="trackerItemResponse.textColor" fontSize="14px" lineHeight="20px" mt="5" w="full" whiteSpace="break-spaces">
+      <Text isTruncated>{response.trackerItem.description}</Text>
     </Box>
   );
 };

@@ -70,11 +70,7 @@ const Audit = () => {
       {!(selectedQuestion && !isDeleteQuestionModalOpen && Object.entries(questions).length > 0) && (
         <>
           {selectedQuestion || Object.entries(questions).length > 0 ? (
-            <Stack
-              overflow='auto'
-              pb="25px"
-              spacing={4}
-              w='calc(100% + 10px)' >
+            <Stack overflow="auto" pb="25px" spacing={4} w="calc(100% + 10px)">
               {questionsCategories.map((category) => (
                 <AuditQuestionsCategory handleDelete={handleDeleteQuestionModalOpen} key={category._id} questionsCategory={category} />
               ))}
