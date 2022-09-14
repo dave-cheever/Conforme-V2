@@ -9,25 +9,20 @@ const searchResolvers = {
 export const searchTypeDefs = `
   type SearchResult {
     _id: ID!
-    primaryText: String!
-    secondaryText: String
-    type: String!
-  }
-
-  type SearchQueryResult {
-    audits: [SearchResult!]!
-    responses: [SearchResult!]!
+    title: String!
+    user: User!
+    scope: Scope!
   }
 
   input SearchQuery {
     searchText: String!
+    scopes: [ScopeInput!]!
     moduleId: ID!
-    includeNotPublished: Boolean
   }
 `;
 
 export const searchQueryDefs = `
-  search(searchQuery: SearchQuery): SearchQueryResult!
+  search(searchQuery: SearchQuery): [SearchResult]!
 `;
 
 export default searchResolvers;

@@ -7,7 +7,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
 import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
 import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
-import { genMetatags, getAuditValueForAttachments, getAuditValueForDate, getAuditValueForString, getAuditValueForUser, join, removeDatabaseFields } from 'app-utils';
+import {
+  genMetatags,
+  getAuditValueForAttachments,
+  getAuditValueForDate,
+  getAuditValueForString,
+  getAuditValueForUser,
+  isPermitted,
+  join,
+  removeDatabaseFields,
+} from 'app-utils';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -138,6 +147,74 @@ actionsSchema.statics.customCreate = async function (action: IAction, userId: st
   return createdAction;
 };
 
+actionsSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IAction[]> {
+  const { searchText } = searchQuery;
+  const pipeline: any[] = [
+    {
+      $match: {
+        'metatags.removedAt': { $eq: null },
+        organizationId,
+      },
+    },
+  ];
+
+  if (
+    !isPermitted({
+      user,
+      action: 'actions.viewAll',
+    })
+  ) {
+    pipeline.push({
+      $match: {
+        $or: [{ assigneeId: user._id }, { 'metatags.addedBy': user?._id }],
+      },
+    });
+  }
+
+  // Filter by search text
+  pipeline.push({
+    $match: {
+      title: new RegExp(searchText, 'i'),
+    },
+  });
+
+  pipeline.push({
+    $limit: 5,
+  });
+
+  pipeline.push({
+    $project: {
+      _id: 1,
+      assigneeId: 1,
+      title: '$title',
+      type: 'actions',
+    },
+  });
+
+  let data = await this.aggregate(pipeline);
+  const organization = await Organizations.customFindById(organizationId, organizationId);
+
+  data = await Promise.all(
+    data.map(async (action) => {
+      if (!action.assigneeId) return action;
+      try {
+        return {
+          ...action,
+          user: await Users.customFindByIdWithDetails({
+            userId: action?.assigneeId,
+            organization,
+          }),
+        };
+      } catch (e) {
+        console.log(`Error occured for action with ID ${action._id}: ${e}`);
+        return action;
+      }
+    }),
+  );
+
+  return data;
+};
+
 actionsSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IAction[]> {
   const answers = await this.find({
     ...selector,
@@ -253,11 +330,7 @@ actionsSchema.statics.customDelete = async function (selector: object = {}, user
   return deletedResult?.modifiedCount;
 };
 
-actionsSchema.statics.customDeleteMany = async function (
-  selector: object = {},
-  userId: string,
-  organizationId: string,
-): Promise<number> {
+actionsSchema.statics.customDeleteMany = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
   const actions = await this.customFind(selector, organizationId);
   if (actions.length === 0) return 0;
 

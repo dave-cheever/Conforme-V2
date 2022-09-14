@@ -1,67 +1,60 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { flatten, uniq } from 'lodash';
 
-import { AuditLogs, Audits, Responses } from 'app-models';
-import { doesPathExist } from 'app-utils';
+import { ISearchResult } from 'app-interfaces';
+import { Actions, Answers, AuditLogs, Audits, Responses } from 'app-models';
 
-const search = async (
-  _,
-  { searchQuery },
-  { authorize, organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (elements: string[]) =>
-    doesPathExist(info.fieldNodes, ['search', ...elements]);
+const search = async (_, { searchQuery }, { authorize, organization }) => {
   try {
     const user = await authorize();
-    const { searchText, moduleId } = searchQuery;
-    const data: any = {
-      audits: [],
-      responses: [],
-    };
+    const { searchText, scopes, moduleId } = searchQuery;
+    const data: object[] = await Promise.all(scopes.map(async ({ type, _id }) => {
+      let searchResults: ISearchResult[];
+      switch (type) {
+        case 'audits': {
+          searchResults = await Audits.customSearch({ searchText }, user, organization._id);
+          break;
+        }
+        case 'responses': {
+          searchResults = await Responses.customSearch({ searchText }, user, organization._id);
+          break;
+        }
+        case 'actions': {
+          searchResults = await Actions.customSearch({ searchText }, user, organization._id);
+          break;
+        }
+        case 'answers': {
+          searchResults = await Answers.customSearch({ searchText, questionsCategoryId: _id }, user, organization._id);
+          break;
+        }
+        default:
+          searchResults = [];
+      }
+      return searchResults.map(searchResult => ({ ...searchResult, scope: { type, _id } }));
+    }));
 
-    if (shouldJoin(['audits'])) {
-      data.audits = await Audits.customSearch(
-        searchQuery,
-        user,
-        organization._id,
-      );
-    }
-
-    if (shouldJoin(['responses'])) {
-      data.responses = await Responses.customSearch(
-        searchQuery,
-        user,
-        organization._id,
-      );
-    }
-
-    await Promise.all(
-      info.fieldNodes.map(async (fieldNode) => {
-        AuditLogs.customAudit(
-          {
-            coll: fieldNode.name.value,
-            action: 'search',
-            element: {
-              _id: 'null',
-              name: 'search',
-            },
-            values: {
-              searchText: {
-                new: {
-                  value: searchText,
-                  label: searchText,
-                },
-              },
+    await AuditLogs.customAudit(
+      {
+        coll: uniq(scopes.map(({ type }) => type)).join('-'),
+        action: 'search',
+        element: {
+          _id: 'null',
+          name: 'search',
+        },
+        values: {
+          searchText: {
+            new: {
+              value: searchText,
+              label: searchText,
             },
           },
-          user._id,
-          organization._id,
-          moduleId,
-        );
-      }),
+        },
+      },
+      user._id,
+      organization._id,
+      moduleId,
     );
 
-    return data;
+    return flatten(data);
   } catch (err: any) {
     throw new Error(err);
   }

@@ -110,7 +110,7 @@
     ],
     "eol-last": "error",
     "no-await-in-loop": "off",
-    "no-lonely-if": "off"
+    "eqeqeq": "off"
   },
   "settings": {
     "react": {

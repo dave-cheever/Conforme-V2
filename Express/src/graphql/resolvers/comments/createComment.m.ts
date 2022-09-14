@@ -1,5 +1,5 @@
 import { IAudit, IResponse } from 'app-interfaces';
-import { Comments, Responses, Audits } from 'app-models';
+import { Audits, Comments, Responses } from 'app-models';
 import { isPermitted, mentionParser } from 'app-utils';
 
 const createComment = async (
@@ -17,8 +17,8 @@ const createComment = async (
     if (!isPermitted({
       user, action: commentInput.scope.type === 'tracker' ? 'comments.add' : 'auditComments.add',
       data: {
-        ...(commentInput.scope.type === 'tracker' ? { response: componentData } : { audit: componentData })
-      }
+        ...(commentInput.scope.type === 'tracker' ? { response: componentData } : { audit: componentData }),
+      },
     }))
       throw new Error('User is not permitted');
 

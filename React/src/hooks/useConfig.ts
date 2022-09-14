@@ -18,8 +18,33 @@ import {
 } from '../icons';
 import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
+import { ISearchCategory } from '../interfaces/ISearchCategory';
 
 const useConfig = () => {
+  const auditSearchItems: ISearchCategory[] = [
+    {
+      type: 'audits',
+      label: capitalize(pluralize(t('audit'))),
+      icon: Home,
+      url: '/audits',
+    },
+    {
+      type: 'actions',
+      label: 'Actions',
+      icon: CheckIcon,
+      url: '/actions',
+    },
+  ];
+
+  const trackerSearchItems: ISearchCategory[] = [
+    {
+      type: 'responses',
+      label: pluralize(t('tracker item')),
+      icon: Home,
+      url: '/tracker/tracker-item',
+    },
+  ];
+
   const auditsMenuItems: INavItem[] = [
     {
       type: 'menuItem',
@@ -190,7 +215,16 @@ const useConfig = () => {
     { label: capitalize(t('business unit')), url: '/admin/business-units', icon: TeamsIcon },
   ];
 
-  return { auditsMenuItems, auditNavigationTabs, initialFilters, trackerMenuItems, trackerAddItems, auditAddItems };
+  return {
+    auditsMenuItems,
+    auditSearchItems,
+    trackerSearchItems,
+    auditNavigationTabs,
+    initialFilters,
+    trackerMenuItems,
+    trackerAddItems,
+    auditAddItems,
+  };
 };
 
 export default useConfig;

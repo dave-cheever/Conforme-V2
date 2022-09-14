@@ -5,20 +5,8 @@ import { difference, uniq } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  IAuditValues,
-  IOrganization,
-  IResponse,
-  IResponseModel,
-} from 'app-interfaces';
-import {
-  AuditLogs,
-  BusinessUnits,
-  Notifications,
-  Organizations,
-  TrackerItems,
-  Users,
-} from 'app-models';
+import { IAuditValues, IOrganization, IResponse, IResponseModel } from 'app-interfaces';
+import { AuditLogs, BusinessUnits, Notifications, Organizations, TrackerItems, Users } from 'app-models';
 import { TRACKER_RESPONSE_ASSIGNED, TRACKER_REVIEW_SUBMITTED } from 'app-shared';
 import {
   genMetatags,
@@ -72,15 +60,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       _id: false,
       type: {
         type: String,
-        enum: [
-          'text',
-          'textMultiline',
-          'switch',
-          'datepicker',
-          'multipleChoice',
-          'singleChoice',
-          'url',
-        ],
+        enum: ['text', 'textMultiline', 'switch', 'datepicker', 'multipleChoice', 'singleChoice', 'url'],
       },
       name: String,
       description: String,
@@ -89,10 +69,12 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
       outdated: Boolean,
       requiredAnswer: Schema.Types.Mixed,
       notApplicable: Boolean,
-      options: [{
-        label: String,
-        value: String,
-      }],
+      options: [
+        {
+          label: String,
+          value: String,
+        },
+      ],
     },
   ],
   organizationId: String,
@@ -107,11 +89,7 @@ const responseSchema = new Schema<IResponse, IResponseModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-  organization,
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -171,29 +149,18 @@ const getAuditRecordValues = async ({
 
       // If updated 'evidence' field, set value as evidence name and file name and label as file details
       case 'evidence': {
-        const getUploadedPathsArray = (arr) =>
-          arr.map(({ uploaded }) => uploaded?.id);
-        const removedEvidence = difference(
-          getUploadedPathsArray(oldValue || []),
-          getUploadedPathsArray(newValue || []),
-        ).filter(Boolean);
+        const getUploadedPathsArray = (arr) => arr.map(({ uploaded }) => uploaded?.id);
+        const removedEvidence = difference(getUploadedPathsArray(oldValue || []), getUploadedPathsArray(newValue || [])).filter(Boolean);
         if (removedEvidence.length > 0) {
-          const document = oldValue.find(
-            ({ uploaded }) => uploaded?.id === removedEvidence[0],
-          );
+          const document = oldValue.find(({ uploaded }) => uploaded?.id === removedEvidence[0]);
           value.old = {
             value: document.uploaded,
             label: `${document.name} - ${document.uploaded.name}`,
           };
         }
-        const addedEvidence = difference(
-          getUploadedPathsArray(newValue || []),
-          getUploadedPathsArray(oldValue || []),
-        ).filter(Boolean);
+        const addedEvidence = difference(getUploadedPathsArray(newValue || []), getUploadedPathsArray(oldValue || [])).filter(Boolean);
         if (addedEvidence.length > 0) {
-          const document = newValue.find(
-            ({ uploaded }) => uploaded?.id === addedEvidence[0],
-          );
+          const document = newValue.find(({ uploaded }) => uploaded?.id === addedEvidence[0]);
           value.new = {
             value: document.uploaded,
             label: `${document.name} - ${document.uploaded.name}`,
@@ -217,15 +184,11 @@ const getAuditRecordValues = async ({
       case 'questions': {
         const getAnswersArray = (arr) =>
           arr.map(({ value }, index) => {
-            if (Array.isArray(value))
-              return `${index}-${JSON.stringify(value)}`;
+            if (Array.isArray(value)) return `${index}-${JSON.stringify(value)}`;
 
             return `${index}-${value}`;
           });
-        const updatedQuestion = difference(
-          getAnswersArray(oldValue || []),
-          getAnswersArray(newValue || []),
-        ) as string[];
+        const updatedQuestion = difference(getAnswersArray(oldValue || []), getAnswersArray(newValue || [])) as string[];
         if (updatedQuestion.length === 1) {
           const [questionIndex] = updatedQuestion[0].split('-');
           const questionOld = (oldValue || [])[questionIndex];
@@ -235,31 +198,18 @@ const getAuditRecordValues = async ({
           switch (questionOld.type) {
             case 'textConfirm':
             case 'textMultilineConfirm':
-              value = getAuditValueForString(
-                questionOld.value,
-                questionNew.value,
-              );
+              value = getAuditValueForString(questionOld.value, questionNew.value);
               break;
             case 'switch':
-              value = getAuditValueForBoolean(
-                questionOld.value,
-                questionNew.value,
-              );
+              value = getAuditValueForBoolean(questionOld.value, questionNew.value);
               break;
             case 'datepicker': {
-              value = getAuditValueForDate(
-                questionOld.value,
-                questionNew.value,
-              );
+              value = getAuditValueForDate(questionOld.value, questionNew.value);
               break;
             }
             case 'multipleChoice': {
-              const oldChoices = questionOld.value.map(
-                (option, index) => `${index}-${option.isCorrect}`,
-              );
-              const newChoices = questionNew.value.map(
-                (option, index) => `${index}-${option.isCorrect}`,
-              );
+              const oldChoices = questionOld.value.map((option, index) => `${index}-${option.isCorrect}`);
+              const newChoices = questionNew.value.map((option, index) => `${index}-${option.isCorrect}`);
               const [updatedChoice]: string[] = difference(oldChoices, newChoices);
               const [choiceIndex, choiceValue] = updatedChoice?.split('-');
 
@@ -289,8 +239,7 @@ const getAuditRecordValues = async ({
       }
 
       default:
-        if (typeof oldValue === 'string' && typeof newValue === 'string')
-          value = getAuditValueForString(oldValue, newValue);
+        if (typeof oldValue === 'string' && typeof newValue === 'string') value = getAuditValueForString(oldValue, newValue);
     }
     if (!value || Object.keys(value).length === 0) return acc;
 
@@ -306,19 +255,10 @@ const getAuditRecordValues = async ({
 
 // Creating custom methods for every collection to manipulate th DB because we want to do some checks
 
-responseSchema.statics.customCreate = async function (
-  response: IResponse,
-  userId: string,
-  organizationId: string,
-): Promise<IResponse> {
+responseSchema.statics.customCreate = async function (response: IResponse, userId: string, organizationId: string): Promise<IResponse> {
   // Add users assigned to the response to database if doesn't exist
-  const usersIds = [
-    response.responsibleId,
-    response.accountableId,
-    ...(response.contributorsIds || []),
-    ...(response.followersIds || []),
-  ];
-  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+  const usersIds = [response.responsibleId, response.accountableId, ...(response.contributorsIds || []), ...(response.followersIds || [])];
+  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
 
   const createdResponse = await this.create({
     ...response,
@@ -330,10 +270,7 @@ responseSchema.statics.customCreate = async function (
   if (createdResponse?._doc) {
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdResponse._doc);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId, organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -355,11 +292,7 @@ responseSchema.statics.customCreate = async function (
   return createdResponse;
 };
 
-responseSchema.statics.customSearch = async function (
-  searchQuery,
-  user,
-  organizationId,
-): Promise<IResponse[]> {
+responseSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IResponse[]> {
   const { searchText } = searchQuery;
   const pipeline: any[] = [
     {
@@ -388,12 +321,7 @@ responseSchema.statics.customSearch = async function (
     });
   }
 
-  if (
-    !(
-      searchQuery?.includeNotPublished &&
-      isPermitted({ user, action: 'responses.viewAll' })
-    )
-  ) {
+  if (!(searchQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
     pipeline.push({
       $match: {
         published: true,
@@ -423,6 +351,13 @@ responseSchema.statics.customSearch = async function (
     to: 'businessUnit',
   });
 
+  join({
+    pipeline,
+    collection: 'users',
+    from: 'accountableId',
+    to: 'user',
+  });
+
   pipeline.push({
     $limit: 5,
   });
@@ -430,8 +365,8 @@ responseSchema.statics.customSearch = async function (
   pipeline.push({
     $project: {
       _id: 1,
-      primaryText: '$trackerItem.name',
-      secondaryText: '$businessUnit.name',
+      title: '$trackerItem.name',
+      user: '$user',
       type: 'tracker-item',
     },
   });
@@ -441,9 +376,7 @@ responseSchema.statics.customSearch = async function (
   return data;
 };
 
-responseSchema.statics.customFind = async function (
-  selector: any = {},
-): Promise<IResponse[]> {
+responseSchema.statics.customFind = async function (selector: any = {}): Promise<IResponse[]> {
   const responses = await this.find({
     ...selector,
     'metatags.removedAt': { $eq: null },
@@ -451,10 +384,7 @@ responseSchema.statics.customFind = async function (
   return responses;
 };
 
-responseSchema.statics.customFindOne = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IResponse | null> {
+responseSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IResponse | null> {
   const response = await this.findOne({
     ...selector,
     organizationId,
@@ -463,9 +393,7 @@ responseSchema.statics.customFindOne = async function (
   return response;
 };
 
-responseSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IResponse> {
+responseSchema.statics.customFindById = async function (_id: string): Promise<IResponse> {
   const response = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
@@ -495,23 +423,14 @@ responseSchema.statics.customUpdateOne = async function (
   const updatedResult = await this.updateOne(selector, updatedResponse);
 
   // Add users assigned to the response to database if doesn't exist
-  const usersIds = [
-    ...(updates.contributorsIds || []),
-    ...(updates.followersIds || []),
-  ];
+  const usersIds = [...(updates.contributorsIds || []), ...(updates.followersIds || [])];
   if (updates.responsibleId) usersIds.push(updates.responsibleId);
   if (updates.accountableId) usersIds.push(updates.accountableId);
-  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
-  const organization = await Organizations.customFindById(
-    organizationId,
-    organizationId,
-  );
+  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
+  const organization = await Organizations.customFindById(organizationId, organizationId);
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
-      const trackerItem = await TrackerItems.customFindById(
-        response.trackerItemId,
-        organizationId,
-      );
+      const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organizationId);
 
       const oldValues = removeDatabaseFields(response);
       const newValues = removeDatabaseFields(updatedResponse);
@@ -544,7 +463,7 @@ responseSchema.statics.customUpdateOne = async function (
 };
 
 responseSchema.statics.submitReviewNotification = async function (response: IResponse, organization: IOrganization) {
-  let participants: string[] = []
+  let participants: string[] = [];
 
   const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
   if (!trackerItem) return;
@@ -561,32 +480,42 @@ responseSchema.statics.submitReviewNotification = async function (response: IRes
 
   const module = organization.modules.find(({ type }) => type === 'tracker');
   if (module) {
-    const assignor = await Users.customFindByIdWithDetails({ userId: response.metatags.updatedBy ?? response.metatags.addedBy, organization });
-    await Promise.all(uniq(participants).map(async userId => {
-      const assignee = await Users.customFindByIdWithDetails({ userId, organization });
-      await Notifications.customCreate(
-        {
-          emailType: TRACKER_REVIEW_SUBMITTED,
-          emailData: {
-            subject: `${trackerItem.name} review has been submitted`,
-            template: "trackerReviewSubmittedNotificationEmailTemplate",
-            trackerItemName: trackerItem.name,
-            trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${response._id}">here</a>`,
+    const assignor = await Users.customFindByIdWithDetails({
+      userId: response.metatags.updatedBy ?? response.metatags.addedBy,
+      organization,
+    });
+    await Promise.all(
+      uniq(participants).map(async (userId) => {
+        const assignee = await Users.customFindByIdWithDetails({ userId, organization });
+        await Notifications.customCreate(
+          {
+            emailType: TRACKER_REVIEW_SUBMITTED,
+            emailData: {
+              subject: `${trackerItem.name} review has been submitted`,
+              template: 'trackerReviewSubmittedNotificationEmailTemplate',
+              trackerItemName: trackerItem.name,
+              trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${response._id}">here</a>`,
+            },
+            status: 'pending',
+            to: [assignee?.email],
+            scope: {
+              moduleId: module?._id,
+            },
           },
-          status: 'pending',
-          to: [assignee?.email],
-          scope: {
-            moduleId: module?._id,
-          },
-        },
-        assignor._id,
-        organization._id,
-      );
-    }));
+          assignor._id,
+          organization._id,
+        );
+      }),
+    );
   }
-}
+};
 
-responseSchema.statics.customAssigneeNotification = async function (responseId: string, participantsIds: string[], assignedRole: string, organization: IOrganization): Promise<void> {
+responseSchema.statics.customAssigneeNotification = async function (
+  responseId: string,
+  participantsIds: string[],
+  assignedRole: string,
+  organization: IOrganization,
+): Promise<void> {
   const response = await this.findById(responseId).lean();
   if (!response) return;
 
@@ -597,36 +526,37 @@ responseSchema.statics.customAssigneeNotification = async function (responseId: 
   // Need to add module scope to tracker objects in order to fix it.
   const module = organization.modules.find(({ type }) => type === 'tracker');
   if (module) {
-    const assignor = await Users.customFindByIdWithDetails({ userId: response.metatags.updatedBy ?? response.metatags.addedBy, organization });
-    await Promise.all(participantsIds.map(async userId => {
-      const assignee = await Users.customFindByIdWithDetails({ userId, organization });
-      await Notifications.customCreate(
-        {
-          emailType: TRACKER_RESPONSE_ASSIGNED,
-          emailData: {
-            subject: `You have been assigned to ${trackerItem.name}`,
-            template: 'trackerResponseAssigneeTemplate',
-            ItemName: trackerItem.name,
-            LinkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
-            AssignedRole: assignedRole,
-            AssignedBy: assignor.displayName,
+    const assignor = await Users.customFindByIdWithDetails({
+      userId: response.metatags.updatedBy ?? response.metatags.addedBy,
+      organization,
+    });
+    await Promise.all(
+      participantsIds.map(async (userId) => {
+        const assignee = await Users.customFindByIdWithDetails({ userId, organization });
+        await Notifications.customCreate(
+          {
+            emailType: TRACKER_RESPONSE_ASSIGNED,
+            emailData: {
+              subject: `You have been assigned to ${trackerItem.name}`,
+              template: 'trackerResponseAssigneeTemplate',
+              ItemName: trackerItem.name,
+              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
+              AssignedRole: assignedRole,
+              AssignedBy: assignor.displayName,
+            },
+            status: 'pending',
+            to: [assignee?.email],
+            scope: {
+              moduleId: module._id,
+            },
           },
-          status: 'pending',
-          to: [assignee?.email],
-          scope: {
-            moduleId: module._id,
-          },
-        },
-        assignor._id,
-        organization._id,
-      );
-    }));
+          assignor._id,
+          organization._id,
+        );
+      }),
+    );
   }
 };
 
-const responseModel = model<IResponse, IResponseModel>(
-  'TrackerResponse',
-  responseSchema,
-  'trackerResponses',
-);
+const responseModel = model<IResponse, IResponseModel>('TrackerResponse', responseSchema, 'trackerResponses');
 export default responseModel;

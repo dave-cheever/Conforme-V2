@@ -1,58 +1,57 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Divider,
   Flex,
+  HStack,
+  Icon,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Stack,
   Text,
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
 import { t } from 'i18next';
-import { capitalize, debounce, isEmpty } from 'lodash';
+import { capitalize, debounce } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
+import useConfig from '../hooks/useConfig';
 import useNavigate from '../hooks/useNavigate';
-import { CrossIcon } from '../icons';
+import { ChevronRight, CrossIcon, MenuIcon } from '../icons';
+import { IScope } from '../interfaces/IScope';
+import { ISearchCategory } from '../interfaces/ISearchCategory';
+import { ISearchResult } from '../interfaces/ISearchResult';
+import { IUser } from '../interfaces/IUser';
+import QuestionsCategoryIcon from './Icon';
 import Loader from './Loader';
+import UserAvatar from './UserAvatar';
 
-const GET_SEARCH_RESULTS = gql`
-  query SearchResults($searchQuery: SearchQuery) {
-    search(searchQuery: $searchQuery) {
-      audits {
-        _id
-        primaryText
-        secondaryText
-        type
-      }
-      responses {
-        _id
-        primaryText
-        secondaryText
-        type
-      }
+const GET_QUESTIONS_CATEGORIES = gql`
+  query {
+    questionsCategories {
+      _id
+      name
+      icon
     }
   }
 `;
 
-const GET_SEARCH_HISTORY = gql`
-  query SearchHistory($SearchHistoryQuery: AuditLogsQuery) {
-    auditLog(auditLogsQuery: $SearchHistoryQuery) {
+const GET_SEARCH_RESULTS = gql`
+  query SearchResults($searchQuery: SearchQuery) {
+    search(searchQuery: $searchQuery) {
       _id
-      auditLogs {
+      title
+      user {
         _id
-        records {
-          action
-          values
-        }
+      }
+      scope {
+        type
+        _id
       }
     }
   }
@@ -60,23 +59,32 @@ const GET_SEARCH_HISTORY = gql`
 
 const SearchBar = () => {
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const { module, user } = useAppContext();
+  const { module } = useAppContext();
   const { navigateTo } = useNavigate();
   const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const { data: historyData, refetch } = useQuery(GET_SEARCH_HISTORY, {
-    variables: {
-      SearchHistoryQuery: {
-        actions: ['search'],
-        userId: user?._id,
-        moduleId: module?._id,
-        limit: 3,
-      },
-    },
-    fetchPolicy: 'network-only',
-    skip: !isSearchBarOpen,
-  });
+  const { auditSearchItems, trackerSearchItems } = useConfig();
+  const { data: questionsCategoriesData } = useQuery(GET_QUESTIONS_CATEGORIES, { skip: module?.type !== 'audits' });
+  const searchCategories = useMemo(() => {
+    let items: ISearchCategory[] = [];
+    if (module?.type === 'audits' && questionsCategoriesData) {
+      items = [
+        { type: 'all', label: 'All categories', icon: MenuIcon, searchIn: 'all' },
+        ...(questionsCategoriesData?.questionsCategories ?? []).map((questionsCategory) => ({
+          _id: questionsCategory._id,
+          label: questionsCategory.name,
+          icon: (props) => <QuestionsCategoryIcon icon={questionsCategory.icon} key={questionsCategory._id} {...props} />,
+          type: 'answers',
+          url: '/answers',
+        })),
+        ...auditSearchItems,
+      ];
+    }
+    if (module?.type === 'tracker') items = [...trackerSearchItems];
+    return items;
+  }, [module, questionsCategoriesData]);
+  const [selectedSearchCategory, setSelectedSearchCategory] = useState<ISearchCategory>(searchCategories[0]);
 
   useOutsideClick({
     ref,
@@ -86,31 +94,49 @@ const SearchBar = () => {
     },
   });
 
-  const recentlySearchPhrases =
-    historyData?.auditLog?.auditLogs?.reduce((acc, curr) => {
-      const searchPhrases = curr.records.filter(({ action }) => action === 'search').map((record) => record.values?.searchText?.new?.value);
-      return [...acc, ...searchPhrases];
-    }, []) || [];
+  const getScopes = () => {
+    const scopes: IScope[] = [];
+    if (selectedSearchCategory.type === 'all') {
+      const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
+      searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
+    } else {
+      scopes.push({
+        type: selectedSearchCategory.type,
+        _id: selectedSearchCategory._id,
+      });
+    }
+    return scopes;
+  };
 
-  const [getSearchResults, { loading, data }] = useLazyQuery(GET_SEARCH_RESULTS);
-  const search = useCallback(
-    debounce((searchText) => {
-      if (searchText) {
-        getSearchResults({
-          variables: {
-            searchQuery: {
-              searchText,
-              moduleId: module?._id,
-            },
+  const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
+  const [searchResults, setSearchResults] = useState<ISearchResult[]>();
+  const search = async (searchText) => {
+    if (searchText) {
+      const results = await getSearchResults({
+        variables: {
+          searchQuery: {
+            searchText,
+            moduleId: module?._id,
+            scopes: getScopes(),
           },
-        });
-        refetch();
-      }
-    }, 750),
-    [],
-  );
+        },
+      });
+      setSearchResults(results.data.search);
+    }
+  };
 
-  useEffect(() => search(searchText), [search, searchText]);
+  // Debounce to delay search after changing search phrase
+  const debounceSearch = useMemo(() => debounce(search, 750), [JSON.stringify(selectedSearchCategory)]);
+
+  // Effect to trigger search immediately after search category change
+  useEffect(() => {
+    search(searchText);
+  }, [JSON.stringify(selectedSearchCategory)]);
+
+  const handleSearchResultClick = (result: any) => {
+    const searchItemURL = searchCategories.find((item) => item.type === result.type)?.url;
+    navigateTo(`${searchItemURL}/${result._id}`);
+  };
 
   return (
     <Flex direction="column" position="relative" ref={ref}>
@@ -138,6 +164,7 @@ const SearchBar = () => {
             onClick={() => {
               setIsSearchBarOpen(false);
               setSearchText('');
+              setSearchResults([]);
             }}
             stroke="navigationTop.searchCrossIconStroke"
             w="13.5px"
@@ -147,76 +174,142 @@ const SearchBar = () => {
           bg="navigationTop.inputBg"
           fontSize="smm"
           fontWeight="semi_medium"
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+            debounceSearch(e.target.value);
+          }}
           onFocus={() => {
             setIsSearchBarOpen(true);
             onOpen();
           }}
-          placeholder={module?.type === 'tracker' ? 'Search' : `Search for ${capitalize(t('business unit'))}`}
-          rounded="20px"
+          placeholder={module?.type === 'tracker' ? 'Search' : `Search for ${t('business unit')}`}
+          rounded="10px"
           value={searchText}
         />
       </InputGroup>
       {isOpen && (
-        <Box
-          display={isSearchBarOpen && (recentlySearchPhrases?.length > 0 || data?.search || loading) ? 'block' : 'none'}
-          position="absolute"
-          pt={[6, 12]}
-          w="full"
-          zIndex={0}
-        >
-          <Stack bg="white" boxShadow="0px 3px 10px rgba(0, 0, 0, .1)" fontSize="smm" p={4} rounded="20px">
-            {loading ? (
-              <Loader size="sm" />
-            ) : (
-              data &&
-              ((module?.type === 'tracker' ? data.search.responses : data.search.audits).length > 0 ? (
-                <Stack>
-                  {(module?.type === 'tracker' ? data?.search?.responses : data?.search?.audits)?.map((searchResult) => (
-                    <Stack
-                      _hover={{
-                        textDecoration: 'underline',
-                      }}
-                      cursor="pointer"
-                      direction="row"
-                      key={searchResult._id}
-                      onClick={() => navigateTo(`/${searchResult.type}/${searchResult._id}`)}
+        <Box display={isSearchBarOpen ? 'block' : 'none'} position="absolute" pt={[6, 12]} w="full" zIndex={0}>
+          <Flex bg="white" boxShadow="0px 3px 10px rgba(0, 0, 0, .1)" direction="row" fontSize="smm" rounded="10px">
+            {/* eslint-disable-next-line react/jsx-sort-props */}
+            <Box bg="searchBar.categoriesBg" borderRadius="10px" borderBottomRightRadius="none" borderTopRightRadius="none" px={3} pb={2}>
+              {searchCategories.map((searchCategory) => (
+                <Box
+                  _hover={{
+                    cursor: 'pointer',
+                  }}
+                  alignItems="center"
+                  display="flex"
+                  fontSize={['sm', 'md']}
+                  fontWeight="normal"
+                  h="42px"
+                  key={`${searchCategory.type}-${searchCategory._id}`}
+                  mt={2}
+                  onClick={() => setSelectedSearchCategory(searchCategory)}
+                  pos="relative"
+                  w={['100px', '200px']}
+                >
+                  <Flex align="center" h="100%">
+                    <Flex
+                      alignItems="center"
+                      bg={
+                        `${selectedSearchCategory.type}-${selectedSearchCategory._id}` === `${searchCategory.type}-${searchCategory._id}`
+                          ? 'navigationLeftItem.selectedLabelBg'
+                          : 'navigationLeftItem.unselectedLabelBg'
+                      }
+                      h="30px"
+                      justifyContent="center"
+                      rounded="8px"
+                      w="30px"
                     >
-                      <Text>{searchResult.primaryText}</Text>
-                      <Text>•</Text>
-                      <Text color="gray">{searchResult.secondaryText}</Text>
-                    </Stack>
-                  ))}
-                </Stack>
-              ) : (
-                <Text>No results found</Text>
-              ))
-            )}
-            {data && !isEmpty(recentlySearchPhrases) && <Divider color="lightgray" />}
-            {!isEmpty(recentlySearchPhrases) && (
-              <Stack>
-                <Text color="gray" fontStyle="italic">
-                  Recently searched:
-                </Text>
-                {recentlySearchPhrases.map((phrase, i) => (
-                  <Box
-                    _hover={{
-                      textDecoration: 'underline',
-                    }}
-                    cursor="pointer"
-                    key={i}
-                    onClick={() => setSearchText(phrase)}
-                  >
-                    {phrase}
+                      <Icon
+                        as={searchCategory.icon}
+                        fill="transparent"
+                        h="15px"
+                        stroke={
+                          `${selectedSearchCategory.type}-${selectedSearchCategory._id}` === `${searchCategory.type}-${searchCategory._id}`
+                            ? 'navigationLeftItem.selectedIconStroke'
+                            : 'navigationLeftItem.unselectedIconStroke'
+                        }
+                        w="15px"
+                      />
+                    </Flex>
+                  </Flex>
+                  <Box color="navigationLeftItem.unselectedMenuItem" fontWeight="400" ml="5">
+                    {capitalize(searchCategory.label)}
                   </Box>
-                ))}
-              </Stack>
-            )}
-          </Stack>
+                </Box>
+              ))}
+            </Box>
+            <Box h="auto" w="full">
+              {loading ? (
+                <Flex align="center" h="100px" justify="center" w="full">
+                  <Loader center size="sm" />
+                </Flex>
+              ) : (
+                <Flex direction="column">
+                  {searchResults ? (
+                    <>
+                      {searchResults.length > 0 ? (
+                        <>
+                          {(searchResults ?? []).map((result) => (
+                            <HStack
+                              _hover={{
+                                background: 'searchBar.results.bgColor.hover',
+                              }}
+                              align="center"
+                              cursor="pointer"
+                              key={result._id}
+                              onClick={() => handleSearchResultClick(result)}
+                              p={3}
+                              spacing={3}
+                            >
+                              <Box>
+                                <UserAvatar size="sm" userId={(result.user as IUser)._id} />
+                              </Box>
+                              <Flex direction="column" grow={1}>
+                                {selectedSearchCategory.type === 'all' && (
+                                  <Text fontSize="xs">
+                                    {searchCategories.find(({ type, _id }) => type === result.scope.type && _id == result.scope._id)?.label}
+                                  </Text>
+                                )}
+                                <Text fontSize="smm" fontWeight="bold" noOfLines={1}>
+                                  {result.title}
+                                </Text>
+                              </Flex>
+                              <ChevronRight cursor="pointer" />
+                            </HStack>
+                          ))}
+                        </>
+                      ) : (
+                        <Flex align="center" justify="center" mt={4}>
+                          <Text>No results found</Text>
+                        </Flex>
+                      )}
+                    </>
+                  ) : (
+                    <Flex align="center" justify="center" mt={4}>
+                      <Text>Enter search phrase in the box above</Text>
+                    </Flex>
+                  )}
+                </Flex>
+              )}
+            </Box>
+          </Flex>
         </Box>
       )}
     </Flex>
   );
+};
+
+export const searchBarStyles = {
+  searchBar: {
+    categoriesBg: '#F0F0F080',
+    results: {
+      bgColor: {
+        hover: '#eee',
+      },
+    },
+  },
 };
 
 export default SearchBar;

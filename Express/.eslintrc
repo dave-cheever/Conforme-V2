@@ -83,6 +83,7 @@
         "ignoreDeclarationSort": true
       }
     ],
-    "eol-last": "error"
+    "eol-last": "error",
+    "eqeqeq": "off"
   }
 }

@@ -5,9 +5,17 @@ import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAnswer, IAnswerModel, IAuditValue, IAuditValues } from 'app-interfaces';
-import { AuditLogs, Notifications, Organizations, Questions, QuestionsCategories, Settings } from 'app-models';
+import { AuditLogs, Notifications, Organizations, Questions, QuestionsCategories, Settings, Users } from 'app-models';
 import { GraphService } from 'app-services';
-import { genMetatags, getAuditValueForAttachments, getAuditValueForString, getProtocol, removeDatabaseFields } from 'app-utils';
+import {
+  genMetatags,
+  getAuditValueForAttachments,
+  getAuditValueForString,
+  getProtocol,
+  isPermitted,
+  join,
+  removeDatabaseFields,
+} from 'app-utils';
 
 import actionsModel from './Actions';
 
@@ -165,6 +173,82 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
   }
 
   return createdAnswer;
+};
+
+answersSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IAnswer[]> {
+  const { searchText, questionsCategoryId } = searchQuery;
+  const pipeline: any[] = [
+    {
+      $match: {
+        'metatags.removedAt': { $eq: null },
+        organizationId,
+      },
+    },
+  ];
+
+  if (
+    !isPermitted({
+      user,
+      action: 'answers.viewAll',
+    })
+  ) {
+    pipeline.push({
+      $match: {
+        $or: [{ 'metatags.addedBy': user._id }],
+      },
+    });
+  }
+
+  join({
+    pipeline,
+    collection: 'questions',
+    from: 'questionId',
+    to: 'question',
+  });
+
+  // Filter by search text
+  pipeline.push({
+    $match: {
+      'question.questionsCategoryId': questionsCategoryId,
+      'question.question': new RegExp(searchText, 'i'),
+    },
+  });
+
+  pipeline.push({
+    $limit: 5,
+  });
+
+  pipeline.push({
+    $project: {
+      _id: 1,
+      'metatags.addedBy': 1,
+      title: '$question.question',
+      type: 'answers',
+    },
+  });
+
+  let data = await this.aggregate(pipeline);
+  const organization = await Organizations.customFindById(organizationId, organizationId);
+
+  data = await Promise.all(
+    data.map(async (answer) => {
+      if (!answer.metatags.addedBy) return answer;
+      try {
+        return {
+          ...answer,
+          user: await Users.customFindByIdWithDetails({
+            userId: answer?.metatags.addedBy,
+            organization,
+          }),
+        };
+      } catch (e) {
+        console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
+        return answer;
+      }
+    }),
+  );
+
+  return data;
 };
 
 answersSchema.statics.customFind = async function (selector: any = {}, organizationId: string): Promise<IAnswer[]> {

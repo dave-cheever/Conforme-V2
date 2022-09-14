@@ -1,10 +1,6 @@
-import { IAudit, IBaseModel, IUser } from 'app-interfaces';
+import { IAudit, IBaseModel, ISearchResult, IUser } from 'app-interfaces';
 
 export interface IAuditModel extends IBaseModel<IAudit> {
-  customSearch: (
-    searchQuery: string,
-    user: IUser,
-    organizationId: string,
-  ) => Promise<IAudit>;
+  customSearch: (searchQuery: { searchText: string; }, user: IUser, organizationId: string) => Promise<ISearchResult[]>;
   customGenerateReference: () => Promise<string>;
 }

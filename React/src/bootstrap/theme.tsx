@@ -93,6 +93,7 @@ import { responseLeftNavigationStyles } from '../components/Response/ResponseLef
 import { responseLeftTabItemStyles } from '../components/Response/ResponseLeftTabItem';
 import { responseQuestionsStyles } from '../components/Response/ResponseQuestions';
 import { responseTabItemStyles } from '../components/Response/ResponseTabItem';
+import { searchBarStyles } from '../components/SearchBar';
 import { emailTemplateStyles } from '../components/Settings/EmailTemplate';
 import { emailTemplatesStyles } from '../components/Settings/EmailTemplates';
 import { settingsTabItemStyles } from '../components/Settings/TabItem';
@@ -278,9 +279,10 @@ const getTheme = (organizationTheme?: any) => {
         ...responseRenewalModalStyles,
         ...responseTabItemStyles,
         ...responseQuestionsStyles,
+        ...searchBarStyles,
+        ...settingsTabItemStyles,
         ...shareModalStyles,
         ...showArchivedFilterStyles,
-        ...settingsTabItemStyles,
         ...shareModalStyles,
         ...sortButtonStyles,
         ...statusSelectorStyles,

@@ -34,6 +34,7 @@ import { IQuestionsCategoryModel } from './IQuestionsCategoryModel';
 import { IResponse } from './IResponse';
 import { IResponseModel } from './IResponseModel';
 import { IScope } from './IScope';
+import { ISearchResult } from './ISearchResult';
 import { ISession } from './ISession';
 import { ISetting } from './ISetting';
 import { ISettingModel } from './ISettingModel';
@@ -92,6 +93,7 @@ export {
   IResponse,
   IResponseModel,
   IScope,
+  ISearchResult,
   ISession,
   ISetting,
   ISettingModel,

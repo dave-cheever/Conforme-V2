@@ -242,13 +242,32 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   pipeline.push({
     $project: {
       _id: 1,
-      primaryText: '$businessUnit.name',
-      secondaryText: '$location.name',
+      auditorId: 1,
+      title: '$businessUnit.name',
       type: 'audits',
     },
   });
 
-  const data = await this.aggregate(pipeline);
+  let data = await this.aggregate(pipeline);
+  const organization = await Organizations.customFindById(organizationId, organizationId);
+
+  data = await Promise.all(
+    data.map(async (audit) => {
+      if (!audit.auditorId) return audit;
+      try {
+        return {
+          ...audit,
+          user: await Users.customFindByIdWithDetails({
+            userId: audit?.auditorId,
+            organization,
+          }),
+        };
+      } catch (e) {
+        console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
+        return audit;
+      }
+    }),
+  );
 
   return data;
 };
