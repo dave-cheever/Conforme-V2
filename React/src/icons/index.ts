@@ -91,11 +91,13 @@ import RightArrowIcon from './RightArrowIcon';
 import SafeBehaviour from './SafeBehaviour';
 import SafeCondition from './SafeCondition';
 import Save from './Save';
+import SaveIcon from './SaveIcon';
 import SearchIcon from './SearchIcon';
 import SendMessageIcon from './SendMessageIcon';
 import Share from './Share';
 import ShareIcon from './ShareIcon';
 import SiteIcon from './SiteIcon';
+import SubmitIcon from './SubmitIcon';
 import TeamsIcon from './TeamsIcon';
 import ThumbUpIcon from './ThumbUpIcon';
 import TickIcon from './TickIcon';
@@ -202,11 +204,13 @@ export {
   SafeBehaviour,
   SafeCondition,
   Save,
+  SaveIcon,
   SearchIcon,
   SendMessageIcon,
   Share,
   ShareIcon,
   SiteIcon,
+  SubmitIcon,
   TeamsIcon,
   ThumbUpIcon,
   TickIcon,

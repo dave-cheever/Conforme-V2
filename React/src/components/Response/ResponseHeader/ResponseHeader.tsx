@@ -25,7 +25,7 @@ import { useResponseContext } from '../../../contexts/ResponseProvider';
 import { useShareContext } from '../../../contexts/ShareProvider';
 import useNavigate from '../../../hooks/useNavigate';
 import useResponseUtils from '../../../hooks/useResponseUtils';
-import { ArrowDownIcon, ShareIcon } from '../../../icons';
+import { ArrowDownIcon, SaveIcon, ShareIcon, SubmitIcon } from '../../../icons';
 import past from '../../../utils/tense';
 import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
@@ -195,9 +195,34 @@ const ReasponseHeader = () => {
           )}
           {response.status === 'draft' && !snapshot && (
             <>
-              <ResponseHeaderButton name="Save" onClick={updateResponseQuestions} />
+              <ResponseHeaderButton
+                icon={
+                  <SaveIcon
+                    _groupHover={{
+                      stroke: 'reasponseHeader.buttonLightColorHover',
+                    }}
+                    fontSize="15px"
+                    stroke="reasponseHeader.buttonLightColor"
+                  />
+                }
+                name="Save"
+                onClick={updateResponseQuestions}
+              />
               <ResponseHeaderButton
                 disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)}
+                icon={
+                  <SubmitIcon
+                    _groupHover={
+                      !areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)
+                        ? {}
+                        : {
+                            stroke: 'reasponseHeader.buttonLightColorHover',
+                          }
+                    }
+                    fontSize="15px"
+                    stroke="reasponseHeader.buttonLightColor"
+                  />
+                }
                 name="Submit review"
                 onClick={submitReview}
               />

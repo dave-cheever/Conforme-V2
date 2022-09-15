@@ -52,6 +52,7 @@ const ResponseHeaderButton = ({
               bg: `reasponseHeader.button${primary ? 'Dark' : 'Light'}BgHover`,
               color: `reasponseHeader.button${primary ? 'Dark' : 'Light'}ColorHover`,
               cursor: 'pointer',
+              stroke: 'white',
             }
       }
       aria-label="Search database"
@@ -62,6 +63,7 @@ const ResponseHeaderButton = ({
       icon={icon}
       ml="15px"
       onClick={onClick}
+      role="group"
     />
   </>
 );
