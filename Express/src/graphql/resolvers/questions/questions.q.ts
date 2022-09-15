@@ -1,5 +1,4 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { PipelineStage } from 'mongoose';
 
 import { AuditLogs, Questions, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
@@ -9,7 +8,7 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
 
   try {
     const user = await authorize();
-    const pipeline: PipelineStage[] = [
+    const pipeline: object[] = [
       {
         $match: {
           'metatags.removedAt': { $eq: null },

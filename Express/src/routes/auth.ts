@@ -39,10 +39,9 @@ const authRouter = (passport) => {
   });
 
   router.get('/logout', isSignedIn, (req, res) => {
-    req.logout(() => {
-      if (req.session) req.session.passport = {};
-      res.redirect(`${getProtocol()}${req.session.organization.domain}/logout`);
-    });
+    req.logout();
+    if (req.session) req.session.passport = {};
+    res.redirect(`${getProtocol()}${req.session.organization.domain}/logout`);
   });
 
   return router;

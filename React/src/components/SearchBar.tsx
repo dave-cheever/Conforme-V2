@@ -212,7 +212,7 @@ const SearchBar = () => {
                     <Flex
                       alignItems="center"
                       bg={
-                        `${selectedSearchCategory.type}-${selectedSearchCategory._id}` === `${searchCategory.type}-${searchCategory._id}`
+                        `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
                           ? 'navigationLeftItem.selectedLabelBg'
                           : 'navigationLeftItem.unselectedLabelBg'
                       }
@@ -226,7 +226,8 @@ const SearchBar = () => {
                         fill="transparent"
                         h="15px"
                         stroke={
-                          `${selectedSearchCategory.type}-${selectedSearchCategory._id}` === `${searchCategory.type}-${searchCategory._id}`
+                          `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` ===
+                          `${searchCategory.type}-${searchCategory._id}`
                             ? 'navigationLeftItem.selectedIconStroke'
                             : 'navigationLeftItem.unselectedIconStroke'
                         }
