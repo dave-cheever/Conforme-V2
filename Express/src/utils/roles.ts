@@ -107,7 +107,10 @@ const roles = {
       'actions',
       'answers',
       'auditLogs',
-      'audits',
+      'audits.changeRecurring',
+      'audits.delete',
+      'audits.viewAll',
+      'audits.viewDeleted',
       'auditTypes',
       'businessUnits',
       'categories',
@@ -123,9 +126,9 @@ const roles = {
       'settings',
       'users',
       'auditComments.add',
-      'audits.viewDeleted'
     ],
     restricted: {
+      'audits.changeAuditor': ({ audit }) => audit.status !== 'completed',
       'audits.edit': ({ audit }) => audit.status !== 'completed',
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
       adminPanel: ({ permission, revokedPermissions }) => {
