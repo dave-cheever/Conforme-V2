@@ -55,7 +55,7 @@ const AuditParticipants = () => {
             Participants
           </Text>
         </Flex>
-        <Stack bg="auditParticipants.bg" borderRadius="20px" h="full" px={6} py={4} rounded="20px" spacing={12} w="full">
+        <Stack bg="auditParticipants.bg" borderRadius="20px" h="auto" px={6} py={4} rounded="20px" spacing={12} w="full">
           <SingleParticipantSelector
             isUserAllowedToChange={isPermitted({ user, action: 'audits.changeAuditor', data: { audit } })}
             label="Audited by"
