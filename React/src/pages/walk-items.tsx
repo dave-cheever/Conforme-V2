@@ -146,7 +146,7 @@ const WalkItems = () => {
     { label: 'Description', key: 'question.question' },
     { label: 'Status', key: 'status' },
     { label: capitalize(t('location')), key: 'audit.location.name' },
-    { label: capitalize(t('businessUnit')), key: 'audit.businessUnit.name' },
+    { label: capitalize(t('business unit')), key: 'audit.businessUnit.name' },
     { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },
     { label: 'Date added', key: 'metatags.addedAt' },
