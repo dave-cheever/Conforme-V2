@@ -69,7 +69,9 @@ const SearchBar = () => {
   const searchCategories = useMemo(() => {
     let items: ISearchCategory[] = [];
     if (module?.type === 'audits' && questionsCategoriesData) {
+      const [audits, ...rest] = auditSearchItems;
       items = [
+        audits,
         { type: 'all', label: 'All categories', icon: MenuIcon, searchIn: 'all' },
         ...(questionsCategoriesData?.questionsCategories ?? []).map((questionsCategory) => ({
           _id: questionsCategory._id,
@@ -78,7 +80,7 @@ const SearchBar = () => {
           type: 'answers',
           url: '/answers',
         })),
-        ...auditSearchItems,
+        ...rest,
       ];
     }
     if (module?.type === 'tracker') items = [...trackerSearchItems];
