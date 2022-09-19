@@ -152,7 +152,7 @@ const WalkItemModal = ({
                 ariaLabel="walk-item-share-button"
                 onClick={() => {
                   setShareItemUrl(`walk-items?id=${walkItem?._id}`);
-                  setShareItemName(walkItem?.question?.description);
+                  setShareItemName(walkItem?.question?.question);
                   handleShareOpen();
                 }}
               />
