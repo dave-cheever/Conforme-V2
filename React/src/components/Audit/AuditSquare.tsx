@@ -22,6 +22,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
     variables: {
       auditId: audit._id,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   return (
@@ -30,7 +31,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       bg="white"
       borderRadius="20px"
       boxShadow="sm"
-      cursor={!audit?.metatags?.removedBy ? "pointer" : "default"}
+      cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
       flexShrink={0}
       h="290px"
       onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
