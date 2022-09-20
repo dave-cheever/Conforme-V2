@@ -83,6 +83,7 @@ const sendResponseDueEmail = async (emailType: string, config) => {
       response.accountable = {
         _id: response.accountableId,
         displayName: accountableDetails.displayName,
+        firstName: accountableDetails.givenName,
         email: accountableDetails.mail,
         metatags: {
           addedBy: "",
@@ -133,7 +134,7 @@ const sendResponseDueEmail = async (emailType: string, config) => {
             clientUrl: organization.domain,
             dueDate: dueDate,
             daysToDueDate,
-            firstName: recipient.firstName || recipient.displayName,
+            firstName: recipient.firstName || recipient.displayName.split(' ')[0],
             _id,
           },
           template: template.value,
