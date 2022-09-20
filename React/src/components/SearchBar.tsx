@@ -15,7 +15,6 @@ import {
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
-import { t } from 'i18next';
 import { capitalize, debounce } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
@@ -184,7 +183,7 @@ const SearchBar = () => {
             setIsSearchBarOpen(true);
             onOpen();
           }}
-          placeholder={module?.type === 'tracker' ? 'Search' : `Search for ${t('business unit')}`}
+          placeholder="Search"
           rounded="10px"
           value={searchText}
         />
