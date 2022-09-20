@@ -13,7 +13,7 @@ import {
 
 const Icon = ({ icon, ...props }) => {
   switch (icon) {
-    case 'safeBehaviours':
+    case 'safeBehaviour':
       return <SafeBehaviour {...props} />;
     case 'safeCondition':
       return <SafeCondition {...props} />;

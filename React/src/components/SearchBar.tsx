@@ -15,7 +15,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
-import { capitalize, debounce } from 'lodash';
+import { debounce } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
@@ -65,13 +65,15 @@ const SearchBar = () => {
 
   const { auditSearchItems, trackerSearchItems } = useConfig();
   const { data: questionsCategoriesData } = useQuery(GET_QUESTIONS_CATEGORIES, { skip: module?.type !== 'audits' });
+
+  const [selectedSearchCategory, setSelectedSearchCategory] = useState<ISearchCategory>();
   const searchCategories = useMemo(() => {
     let items: ISearchCategory[] = [];
     if (module?.type === 'audits' && questionsCategoriesData) {
-      const [audits, ...rest] = auditSearchItems;
+      const [audits, actions] = auditSearchItems;
       items = [
-        audits,
         { type: 'all', label: 'All categories', icon: MenuIcon, searchIn: 'all' },
+        audits,
         ...(questionsCategoriesData?.questionsCategories ?? []).map((questionsCategory) => ({
           _id: questionsCategory._id,
           label: questionsCategory.name,
@@ -79,13 +81,13 @@ const SearchBar = () => {
           type: 'answers',
           url: '/answers',
         })),
-        ...rest,
+        actions,
       ];
     }
     if (module?.type === 'tracker') items = [...trackerSearchItems];
+    if (!selectedSearchCategory && items.length > 0) setSelectedSearchCategory(items[0]);
     return items;
   }, [module, questionsCategoriesData]);
-  const [selectedSearchCategory, setSelectedSearchCategory] = useState<ISearchCategory>(searchCategories[0]);
 
   useOutsideClick({
     ref,
@@ -97,13 +99,13 @@ const SearchBar = () => {
 
   const getScopes = () => {
     const scopes: IScope[] = [];
-    if (selectedSearchCategory.type === 'all') {
+    if (selectedSearchCategory?.type === 'all') {
       const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
       searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
     } else {
       scopes.push({
-        type: selectedSearchCategory.type,
-        _id: selectedSearchCategory._id,
+        type: selectedSearchCategory?.type,
+        _id: selectedSearchCategory?._id,
       });
     }
     return scopes;
@@ -237,7 +239,7 @@ const SearchBar = () => {
                     </Flex>
                   </Flex>
                   <Box color="navigationLeftItem.unselectedMenuItem" fontWeight="400" ml="5">
-                    {capitalize(searchCategory.label)}
+                    {searchCategory.label}
                   </Box>
                 </Box>
               ))}
@@ -266,10 +268,10 @@ const SearchBar = () => {
                               spacing={3}
                             >
                               <Box>
-                                <UserAvatar size="sm" userId={(result.user as IUser)._id} />
+                                <UserAvatar size="sm" userId={(result.user as IUser)?._id} />
                               </Box>
                               <Flex direction="column" grow={1}>
-                                {selectedSearchCategory.type === 'all' && (
+                                {selectedSearchCategory?.type === 'all' && (
                                   <Text fontSize="xs">
                                     {searchCategories.find(({ type, _id }) => type === result.scope.type && _id == result.scope._id)?.label}
                                   </Text>

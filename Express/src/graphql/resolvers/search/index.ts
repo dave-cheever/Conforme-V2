@@ -10,7 +10,7 @@ export const searchTypeDefs = `
   type SearchResult {
     _id: ID!
     title: String!
-    user: User!
+    user: User
     scope: Scope!
   }
 
