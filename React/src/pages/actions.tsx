@@ -143,9 +143,10 @@ const Actions = () => {
     { label: capitalize(t('business unit')), key: 'answer.audit.businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
 
   useEffect(() => {
-    setUsedFilters(['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate']);
+    setUsedFilters(allowedFilters);
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);
@@ -162,7 +163,7 @@ const Actions = () => {
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
     const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
-      if (!filter || !filter[1]) return { ...acc };
+      if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
       const [key, value] = filter;
 

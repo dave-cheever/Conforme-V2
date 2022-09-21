@@ -155,6 +155,10 @@ const WalkItems = () => {
   const history = useHistory();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const allowedFilters = useMemo(
+    () => ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
+    [],
+  );
 
   const closeModal = () => {
     // If id is in URL params, clean it
@@ -168,13 +172,12 @@ const WalkItems = () => {
   };
 
   useEffect(() => {
-    setUsedFilters(['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate']);
+    setUsedFilters(allowedFilters);
     return () => {
       setShowFiltersPanel(false);
       setAdminModalState('closed');
     };
   }, []);
-
   // Set pre-defined filters
   useEffect(() => {
     if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
@@ -196,7 +199,7 @@ const WalkItems = () => {
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
     const parsedFilters: any = Object.entries(filtersValues).reduce((acc, filter) => {
-      if (!filter || !filter[1]) return { ...acc };
+      if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
       const [key, value] = filter;
 

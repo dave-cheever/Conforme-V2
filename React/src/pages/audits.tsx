@@ -98,9 +98,13 @@ const Audits = () => {
     { label: 'Date submitted', key: 'completedDate' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const allowedFilters = useMemo(
+    () => ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived'],
+    [],
+  );
 
   useEffect(() => {
-    setUsedFilters(['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived']);
+    setUsedFilters(allowedFilters);
 
     return () => {
       setDefaultFilters({});
@@ -156,7 +160,7 @@ const Audits = () => {
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
     const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
-      if (!filter || !filter[1]) return { ...acc };
+      if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
       const [key, value] = filter;
 
