@@ -15,21 +15,13 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
   const device = useDevice();
   return (
     <ShareProvider>
-      <Flex minH={['auto', '100vh']}>
+      <Flex minH="100vh">
         <ModuleSwitcher />
         <NavigationLeft />
         <Flex direction="column" flexBasis="auto" flexGrow={1} position="relative">
           <NavigationTop />
           <ShareModal />
-          <Flex
-            bg="layout.bg"
-            flexDirection="column"
-            h={['calc(100vh - 140px)', 'calc(100vh - 80px)']}
-            overflow="auto"
-            position="absolute"
-            top="80px"
-            w="full"
-          >
+          <Flex bg="layout.bg" flexDirection="column" h="calc(100vh - 80px)" position="absolute" top="80px" w="full">
             <Component />
           </Flex>
           {device === 'mobile' && <NavigationBottomMobile />}

@@ -48,7 +48,12 @@ const Settings = () => {
   return (
     <Box h="full" w="full">
       <Header breadcrumbs={['Admin', 'Other settings']} mobileBreadcrumbs={['Other settings']} />
-      <Flex flexDirection="row" px="25px" w={['full', 'calc(100vw - 80px)', 'calc(100vw - 240px)']}>
+      <Flex
+        flexDirection="row"
+        h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+        px="25px"
+        w={['full', 'calc(100vw - 80px)', 'calc(100vw - 240px)']}
+      >
         <Flex
           bg="white"
           borderRadius="20px"

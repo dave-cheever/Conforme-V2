@@ -320,7 +320,7 @@ const WalkItems = () => {
           sortType={sortType}
         />
       </Header>
-      <Flex h={['calc(100vh - 200px)', '100vh']} overflow="clip" pb={4}>
+      <Flex h={['calc(100vh - 80px)', 'calc(100vh - 150px)']} overflow="auto">
         {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>
@@ -349,7 +349,7 @@ const WalkItems = () => {
                   </Tab>
                 ))}
               </TabList>
-              <TabPanels pb="4">
+              <TabPanels>
                 {panels?.map((panel) => (
                   <TabPanel key={panel._id} p={[4, viewMode === 'list' ? 6 : 2]} ml={[0, '10px']}>
                     {viewMode === 'grid' && (
@@ -358,7 +358,7 @@ const WalkItems = () => {
                         flexWrap="wrap"
                         gap={[4, 4, 6]}
                         h="fit-content"
-                        pb={[0, 8]}
+                        pb={[14, 8]}
                         pt="3"
                         px={[0, 4]}
                         templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}

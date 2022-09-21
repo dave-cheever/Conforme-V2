@@ -182,7 +182,7 @@ const TrackerItemsAdmin = () => {
       </Modal>
       <Header breadcrumbs={['Admin', pluralize(t('tracker item'))]} mobileBreadcrumbs={[pluralize(t('tracker item'))]} />
       <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box h={['calc(100% - 45px)', 'calc(100% - 35px)']} w="100%">
+        <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="100%">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label={capitalize(t('tracker item'))}

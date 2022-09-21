@@ -4,12 +4,12 @@ const Loader = ({
   loaderColor,
   size,
   center,
-  w,
+  ...props
 }: {
   loaderColor?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   center?: boolean;
-  w?: number | string;
+  [x: string]: any;
 }) => {
   const getThickness = () => {
     let thickness = '4px';
@@ -28,7 +28,7 @@ const Loader = ({
     return thickness;
   };
   return (
-    <Flex align={center ? 'center' : 'flex-start'} h="full" justify="center" w={w || 'full'}>
+    <Flex align={center ? 'center' : 'flex-start'} h="full" justify="center" w="full" {...props}>
       <Spinner color={loaderColor || 'loader.color'} emptyColor="gray.200" size={size || 'xl'} speed="0.65s" thickness={getThickness()} />
     </Flex>
   );

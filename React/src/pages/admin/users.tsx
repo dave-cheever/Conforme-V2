@@ -308,7 +308,7 @@ const Users = () => {
     <>
       <Header breadcrumbs={['Admin', 'Users']} mobileBreadcrumbs={['Users']} />
       <Flex h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box h={['calc(100% - 80px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+        <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader>
             <AdminTableHeaderElement
               label="Name"

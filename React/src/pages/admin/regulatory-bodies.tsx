@@ -213,7 +213,7 @@ const RegulatoryBodies = () => {
       <Header breadcrumbs={['Admin', 'Regulatory bodies']} mobileBreadcrumbs={['Regulatory bodies']} />
       <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex h="full" px={['25px', 0]}>
-          <Box h={['calc(100% - 90px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100% - 250px)']}>
+          <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100% - 250px)']}>
             <AdminTableHeader>
               <AdminTableHeaderElement
                 label="Regulatory body"

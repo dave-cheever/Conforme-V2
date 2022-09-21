@@ -317,7 +317,7 @@ const Actions = () => {
           </Button>
         ))}
       </HStack>
-      <Flex h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
+      <Flex h={['calc(100vh - 80px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
         {error ? (
           <Text>{error.message}</Text>
         ) : loading ? (
@@ -330,7 +330,7 @@ const Actions = () => {
                 flexWrap="wrap"
                 gap={[4, 4, 6]}
                 h="fit-content"
-                pb={[0, 8]}
+                pb={[14, 8]}
                 pt="3"
                 px={[4, 8]}
                 templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
