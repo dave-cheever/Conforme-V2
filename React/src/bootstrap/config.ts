@@ -10,6 +10,14 @@ export const toastSuccess: any = {
   position: 'top',
 };
 
+export const toastWarning: any = {
+  title: 'Warning',
+  status: 'warning',
+  duration: 5000,
+  isClosable: true,
+  position: 'top',
+};
+
 export const toastFailed: any = {
   title: 'Failed',
   status: 'error',

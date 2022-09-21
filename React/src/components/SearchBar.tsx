@@ -14,9 +14,11 @@ import {
   Text,
   useDisclosure,
   useOutsideClick,
+  useToast,
 } from '@chakra-ui/react';
 import { debounce } from 'lodash';
 
+import { toastWarning } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import useConfig from '../hooks/useConfig';
@@ -62,6 +64,7 @@ const SearchBar = () => {
   const { navigateTo } = useNavigate();
   const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const toast = useToast();
 
   const { auditSearchItems, trackerSearchItems } = useConfig();
   const { data: questionsCategoriesData } = useQuery(GET_QUESTIONS_CATEGORIES, { skip: module?.type !== 'audits' });
@@ -113,7 +116,7 @@ const SearchBar = () => {
 
   const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
   const [searchResults, setSearchResults] = useState<ISearchResult[]>();
-  const search = async (searchText) => {
+  const search = async (searchText: string) => {
     if (searchText) {
       const results = await getSearchResults({
         variables: {
@@ -135,10 +138,36 @@ const SearchBar = () => {
   useEffect(() => {
     search(searchText);
   }, [JSON.stringify(selectedSearchCategory)]);
-
   const handleSearchResultClick = (result: any) => {
-    const searchItemURL = searchCategories.find((item) => item.type === result.type)?.url;
-    navigateTo(`${searchItemURL}/${result._id}`);
+    const category = searchCategories.find((category) => category.type === result.scope.type && category._id == result.scope._id);
+    if (!category) return;
+
+    let url = '';
+    switch (module?.type) {
+      case 'audits': {
+        switch (category.type) {
+          case 'actions':
+            url = `actions?id=${result._id}`;
+            break;
+          case 'answers':
+            url = `walk-items?id=${result._id}`;
+            break;
+          default:
+            url = `audits/${result._id}`;
+        }
+        break;
+      }
+      case 'tracker': {
+        url = `tracker-item/${result._id}`;
+        break;
+      }
+      default:
+        toast({
+          ...toastWarning,
+          title: 'Search for this data type was not yet implemented',
+        });
+    }
+    if (url) navigateTo(`/${url}`);
   };
 
   return (
@@ -230,7 +259,7 @@ const SearchBar = () => {
                         h="15px"
                         stroke={
                           `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` ===
-                          `${searchCategory.type}-${searchCategory._id}`
+                            `${searchCategory.type}-${searchCategory._id}`
                             ? 'navigationLeftItem.selectedIconStroke'
                             : 'navigationLeftItem.unselectedIconStroke'
                         }
