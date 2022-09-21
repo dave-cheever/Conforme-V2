@@ -7,7 +7,7 @@ import {
   getEmailSubject,
   getEmailTemplate,
 } from "../common/services/notifications";
-import { getDaysToDueDate, getTemplateDetails } from "../common/utils";
+import { getDaysToDueDate, getProtocol, getTemplateDetails } from "../common/utils";
 
 const sendResponseDueEmail = async (emailType: string, config) => {
   const organizations = await Organizations.aggregate([
@@ -126,12 +126,16 @@ const sendResponseDueEmail = async (emailType: string, config) => {
         trackerName: trackerItem.name,
       });
 
+      // TODO: For now take the first tracker module.
+      // Need to add module scope to tracker objects in order to fix it.
+      const module = organization.modules.find(({ type }) => type === 'tracker');
+
       for (const recipient of recipients) {
         const body = await getEmailTemplate({
           emailType,
           emailData: {
             trackerName: trackerItem.name,
-            clientUrl: organization.domain,
+            trackerResponseLink: `${getProtocol()}${organization.domain}/${module.path}/tracker-item/${_id}`,
             dueDate: dueDate,
             daysToDueDate,
             firstName: recipient.firstName || recipient.displayName.split(' ')[0],

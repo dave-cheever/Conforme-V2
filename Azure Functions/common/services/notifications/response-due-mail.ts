@@ -1,19 +1,11 @@
 const getReponseDueMail = (
   template,
-  { daysToDueDate, firstName, _id, trackerName, clientUrl }
+  { daysToDueDate, firstName, _id, trackerName, trackerResponseLink }
 ) => {
   template = template.split("%FirstName%").join(firstName);
   template = template.split("%TrackerItemName%").join(trackerName);
-  template = template
-    .split("#%Link%")
-    .join(
-      `<a href=${clientUrl}/tracker/tracker-item/${_id} target="_blank">here</a>`
-    );
-  template = template
-    .split("%Link%")
-    .join(
-      `<a href=${clientUrl}/tracker/tracker-item/${_id} target="_blank">here</a>`
-    );
+  template = template.split("#%Link%").join(`<a href="${trackerResponseLink}" target="_blank">here</a>`);
+  template = template.split("%Link%").join(`<a href="${trackerResponseLink}" target="_blank">here</a>`);
 
   const dueText =
     daysToDueDate >= 0
