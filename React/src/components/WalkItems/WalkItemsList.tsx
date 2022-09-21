@@ -24,8 +24,8 @@ const WalkItemsList = ({
   refetchAnswers: () => void;
   editAnswer: (answer: IAnswer) => void;
 }) => (
-  <Box h="full" ml="10px" overflow="none" p={[0, 1]} w="full">
-    <Box bg="walkItemsList.bg" borderRadius="20px" h="fit-content" w="full">
+  <Box h="full" mb={[0, 7]} overflow="none" pb={[0, 7]} w="full">
+    <Box bg="walkItemsList.bg" borderRadius="20px" h="full" w="full">
       <AdminTableHeader>
         <AdminTableHeaderElement
           label="Type"
@@ -108,7 +108,7 @@ const WalkItemsList = ({
           w="8%"
         />
       </AdminTableHeader>
-      <Flex flexDir="column" h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']} overflowY="auto" w="full">
+      <Flex flexDir="column" h={['full', 'calc(100vh - 295px)', 'calc(100vh - 285px)']} overflowY="auto" w="full">
         {answers?.map((answer) => (
           <WalkItemsListItem answer={answer} editAnswer={editAnswer} key={answer._id} refetchAnswers={refetchAnswers} />
         ))}

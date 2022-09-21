@@ -8,14 +8,16 @@ const SortButton = ({
   sortType,
   setSortType,
   setSortOrder,
+  ml,
 }: {
   sortBy: { label: string; key: string }[];
   sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
+  ml?: number | string | {};
 }) => (
-  <Box ml="15px">
+  <Box ml={ml ?? '15px'}>
     <Menu autoSelect={false}>
       {({ onClose }) => (
         <>

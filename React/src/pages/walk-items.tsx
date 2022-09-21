@@ -311,9 +311,16 @@ const WalkItems = () => {
             </CSVLink>
           </>
         )}
-        <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
+        <SortButton
+          ml={[0, '15px']}
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          sortType={sortType}
+        />
       </Header>
-      <Flex h={['calc(100vh - 200px)', '100vh']} overflow="auto" pb={4}>
+      <Flex h={['calc(100vh - 200px)', '100vh']} overflow="clip" pb={4}>
         {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>
@@ -321,7 +328,7 @@ const WalkItems = () => {
           <Loader center={true} />
         ) : (
           <>
-            <Tabs gap defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
+            <Tabs defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
               <TabList px={[4, 8]} flexWrap={['wrap', 'initial']}>
                 {panels?.map((panel) => (
                   <Tab
@@ -342,9 +349,9 @@ const WalkItems = () => {
                   </Tab>
                 ))}
               </TabList>
-              <TabPanels>
+              <TabPanels pb="4">
                 {panels?.map((panel) => (
-                  <TabPanel key={panel._id}>
+                  <TabPanel key={panel._id} p={[4, viewMode === 'list' ? 6 : 2]} ml={[0, '10px']}>
                     {viewMode === 'grid' && (
                       <Grid
                         display={['grid', 'grid', 'flex']}
@@ -353,7 +360,7 @@ const WalkItems = () => {
                         h="fit-content"
                         pb={[0, 8]}
                         pt="3"
-                        px={[1, 4]}
+                        px={[0, 4]}
                         templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
                         w="full"
                       >

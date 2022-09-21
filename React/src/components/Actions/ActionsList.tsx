@@ -116,7 +116,7 @@ const ActionsList = ({
           w="12.5%"
         />
       </AdminTableHeader>
-      <Flex flexDir="column" h={['full', 'calc(100vh - 340px)', 'calc(100vh - 325px)']} overflowY="auto" w="full">
+      <Flex flexDir="column" h={['full', 'calc(100vh - 310px)', 'calc(100vh - 300px)']} overflowY="auto" w="full">
         {actions?.map((action) => (
           <ActionsListItem action={action} editAction={editAction} key={action._id} />
         ))}
