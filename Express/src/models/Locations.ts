@@ -99,10 +99,7 @@ locationsSchema.statics.customCreate = async function (
     const addAuditLog = async () => {
       const element = getBasicElement(createdLocation._doc);
       const newValues = removeDatabaseFields(createdLocation._doc);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -202,10 +199,7 @@ locationsSchema.statics.customUpdateOne = async function (
       const element = getBasicElement(updatedLocation);
       const oldValues = removeDatabaseFields(location);
       const newValues = removeDatabaseFields(updatedLocation);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
@@ -249,10 +243,7 @@ locationsSchema.statics.customDelete = async function (
     const addAuditLog = async () => {
       const element = getBasicElement(location);
       const oldValues = removeDatabaseFields(location);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({ oldValues, organization });
       AuditLogs.customAudit(
         {
@@ -270,6 +261,15 @@ locationsSchema.statics.customDelete = async function (
 
   return deletedResult?.modifiedCount;
 };
+
+locationsSchema.statics.customFindOneOrCreateOne = async function (selector: { [x: string]: string }, organizationId: string, userId: string) {
+  const location = await this.findOne({ name: selector.name, organizationId, 'metatags.removedAt': { $eq: null } }).lean();
+  if (!location) {
+    const newLoaction = await this.customCreate(selector, userId, organizationId);
+    return { ...newLoaction._doc, created: true }
+  }
+  return location
+}
 
 const locationModel = model<ILocation, ILocationModel>(
   'Location',

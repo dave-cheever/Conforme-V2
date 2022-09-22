@@ -167,7 +167,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
   if (createdAudit?._doc) {
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdAudit._doc);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -249,7 +249,7 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   });
 
   let data = await this.aggregate(pipeline);
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  const organization = await Organizations.customFindById(organizationId);
 
   data = await Promise.all(
     data.map(async (audit) => {
@@ -336,7 +336,7 @@ auditsSchema.statics.customUpdateOne = async function (
       }
       const oldValues = removeDatabaseFields(audit);
       const newValues = removeDatabaseFields(updatedAudit);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
@@ -388,7 +388,7 @@ auditsSchema.statics.customDelete = async function (selector: object = {}, userI
         element.name = businessUnit.name;
       }
       const oldValues = removeDatabaseFields(updatedAudit);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({
         oldValues,
         organization,

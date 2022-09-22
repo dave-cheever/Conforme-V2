@@ -351,7 +351,7 @@ trackerItemSchema.statics.customSynchronizeResponses = async function ({
   organizationId: string;
   prevDueDate?: Date;
 }) {
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  const organization = await Organizations.customFindById(organizationId);
   const responses = await Responses.customFind(
     { trackerItemId: trackerItem._id },
     organizationId,

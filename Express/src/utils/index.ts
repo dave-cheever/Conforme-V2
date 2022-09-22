@@ -6,6 +6,7 @@ import { emailPreview } from './email';
 import {
   CORSConfig,
   doesPathExist,
+  enumerate,
   genMetatags,
   getActionStatus,
   getAuditRecordValues,
@@ -21,6 +22,7 @@ import {
   getBasicElement,
   getClientUrl,
   getDomain,
+  getFilteredJSONDataForMigration,
   getForeignElement,
   getNextRenewalDate,
   getPrevRenewalDate,
@@ -62,6 +64,7 @@ export {
   getUserName,
   getBasicElement,
   getForeignElement,
+  getFilteredJSONDataForMigration,
   removeDatabaseFields,
   getAuditValueForAttachments,
   getAuditValueForString,
@@ -84,4 +87,5 @@ export {
   getPrevRenewalDate,
   priorities,
   setCRONJobs,
+  enumerate,
 };

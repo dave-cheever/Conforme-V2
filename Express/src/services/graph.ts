@@ -15,7 +15,7 @@ const inMemoryStrategy = multer({ storage: inMemoryStorage });
 const graphSetup = async (organizationId: string) => {
   if (!organizationId) throw new Error('No organization id');
 
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  const organization = await Organizations.customFindById(organizationId);
   if (!organizationId) throw new Error('Wrong organization config');
 
   const { clientId, tenantId, secret } = organization;
@@ -30,7 +30,7 @@ const graphSetup = async (organizationId: string) => {
 const getClient = async (organizationId: string) => {
   if (!organizationId) throw new Error('No organization id');
 
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  const organization = await Organizations.customFindById(organizationId);
   if (!organizationId) throw new Error('Wrong organization config');
 
   const { clientId, tenantId, secret } = organization;

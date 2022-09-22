@@ -191,6 +191,15 @@ regulatoryBodySchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
+regulatoryBodySchema.statics.customFindOneOrCreateOne = async function (selector: { [x: string]: string }, organizationId: string, userId: string) {
+  const regulatoryBody = await this.findOne({ ...selector, organizationId, 'metatags.removedAt': { $eq: null } }).lean();
+  if (!regulatoryBody) {
+    const newRegulatroyBody = await this.customCreate(selector, userId, organizationId);
+    return { ...newRegulatroyBody._doc, created: true }
+  }
+  return regulatoryBody
+}
+
 const regulatoryBodyModel = model<IBaseWithName, IBaseWithNameModel>(
   'RegulatoryBody',
   regulatoryBodySchema,

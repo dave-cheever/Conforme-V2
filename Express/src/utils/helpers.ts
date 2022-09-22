@@ -148,6 +148,14 @@ export const isRoutePermitted = (req, res, next, action, data?) => {
   next();
 };
 
+export const isMigrationRoutePermitted = (req, res, next) => {
+  const { body } = req;
+  const { organizationId, API_KEY } = body
+  if (API_KEY !== process.env.API_KEY) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'API key is invalid' })
+  if (!organizationId) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Organization id is not provided' })
+  return next();
+}
+
 export const redirectAfterLogin = async (req, res, errorMessage, organization) => {
   let redirectUrl;
   const { user } = req;
@@ -664,3 +672,19 @@ export const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): 
 
   return auditRecordValues;
 };
+
+// Filtered JSON data for migration scripts
+export const getFilteredJSONDataForMigration = (JSONData: object[]) => JSONData.map(data => Object.keys(data)
+  .reduce((acc, key) => ({
+    ...acc, [key.replace(/[\n\r]/g, '')]: typeof data[key] === 'string' ? data[key].replace(/[\n\r]/g, '') :
+      data[key],
+  }), {}))
+
+export function* enumerate(iterable: any[]) {
+  let i = 0;
+
+  for (const x of iterable) {
+    yield [i, x];
+    i += 1;
+  }
+}

@@ -103,7 +103,7 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
     metatags: genMetatags('added', userId),
   });
 
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  const organization = await Organizations.customFindById(organizationId);
 
   // Move attachments to right SP folder
   if (answer.attachments && answer.attachments.length) {
@@ -228,7 +228,7 @@ answersSchema.statics.customSearch = async function (searchQuery, user, organiza
   });
 
   let data = await this.aggregate(pipeline);
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  const organization = await Organizations.customFindById(organizationId);
 
   data = await Promise.all(
     data.map(async (answer) => {
@@ -300,7 +300,7 @@ answersSchema.statics.customUpdateOne = async function (
 
   // Set notifications if configured
   const sendNotifications = async () => {
-    const organization = await Organizations.customFindById(organizationId, organizationId);
+    const organization = await Organizations.customFindById(organizationId);
     const question = await Questions.customFindById(answer.questionId, organizationId);
     if (!answer.options || !question.questionsCategoryId) return;
     const module = organization.modules.find(({ _id }) => _id === answer.scope?.moduleId);

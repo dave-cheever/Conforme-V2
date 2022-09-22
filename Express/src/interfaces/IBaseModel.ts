@@ -25,4 +25,8 @@ export interface IBaseModel<I> extends Model<I> {
    * This function deletes multiple elements
    */
   customDeleteMany: (selector: object, userId: string, organizationId: string) => Promise<number>;
+  /*
+  * This functions create element if doesnot find one
+  */
+  customFindOneOrCreateOne: (selector: { [x: string]: string }, organizationId: string, userId: string) => Promise<I & { created?: boolean }>
 }

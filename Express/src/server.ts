@@ -38,8 +38,8 @@ const getApp = async () => {
   app.disable('x-powered-by');
   app.use(cors(CORSConfig));
   app.use(logger('dev'));
-  app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(
     session({
       name: process.env.SESS_NAME || 'sessionName',

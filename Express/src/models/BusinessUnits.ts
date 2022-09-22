@@ -102,15 +102,11 @@ businessUnitSchema.statics.customCreate = async function (
     organizationId,
     metatags: genMetatags('added', userId),
   });
-
   if (createdBusinessUnit?._doc) {
     const addAuditLog = async () => {
       const element = getBasicElement(createdBusinessUnit._doc);
       const newValues = removeDatabaseFields(createdBusinessUnit._doc);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -192,10 +188,7 @@ businessUnitSchema.statics.customUpdateOne = async function (
       const element = getBasicElement(updatedBusinessUnit);
       const oldValues = removeDatabaseFields(businessUnit);
       const newValues = removeDatabaseFields(updatedBusinessUnit);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
@@ -239,10 +232,7 @@ businessUnitSchema.statics.customDelete = async function (
     const addAuditLog = async () => {
       const element = getBasicElement(businessUnit);
       const oldValues = removeDatabaseFields(businessUnit);
-      const organization = await Organizations.customFindById(
-        organizationId,
-        organizationId,
-      );
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({ oldValues, organization });
       AuditLogs.customAudit(
         {
@@ -261,6 +251,14 @@ businessUnitSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
+businessUnitSchema.statics.customFindOneOrCreateOne = async function (selector: { [x: string]: string }, organizationId: string, userId: string) {
+  const businessUnit = await this.findOne({ name: selector.name, organizationId, 'metatags.removedAt': { $eq: null } }).lean();
+  if (!businessUnit) {
+    const newBusinessUnit = await this.customCreate(selector, userId, organizationId);
+    return { ...newBusinessUnit._doc, created: true }
+  }
+  return businessUnit
+}
 const businessModel = model<IBusinessUnit, IBusinessUnitModel>(
   'BusinessUnit',
   businessUnitSchema,

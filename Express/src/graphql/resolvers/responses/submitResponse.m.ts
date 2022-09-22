@@ -26,9 +26,7 @@ const submitResponse = async (_, { _id }, { authorize, organization }) => {
     const areRequiredQuestionsAnswered = response.questions
       .filter(({ required }) => required)
       .every(({ value, type, requiredAnswer }) => {
-        if (type === 'multipleChoice')
-          return (value as IQuestionChoice[]).some(({ label, isCorrect }) => requiredAnswer?.includes(label) && isCorrect)
-
+        if (type === 'multipleChoice') (value as IQuestionChoice[]).some(({ label, isCorrect }) => requiredAnswer?.includes(label) && isCorrect)
         if (type === 'singleChoice') return value === requiredAnswer;
         return value || (typeof value === 'boolean' && value === false);
       });

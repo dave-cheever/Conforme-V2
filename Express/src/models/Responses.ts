@@ -270,7 +270,7 @@ responseSchema.statics.customCreate = async function (response: IResponse, userI
   if (createdResponse?._doc) {
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdResponse._doc);
-      const organization = await Organizations.customFindById(organizationId, organizationId);
+      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -426,8 +426,8 @@ responseSchema.statics.customUpdateOne = async function (
   const usersIds = [...(updates.contributorsIds || []), ...(updates.followersIds || [])];
   if (updates.responsibleId) usersIds.push(updates.responsibleId);
   if (updates.accountableId) usersIds.push(updates.accountableId);
-  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
-  const organization = await Organizations.customFindById(organizationId, organizationId);
+  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+  const organization = await Organizations.customFindById(organizationId);
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
       const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organizationId);

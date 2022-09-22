@@ -16,7 +16,8 @@
     "app-utils": "./utils",
     "app-models": "./models",
     "app-services": "./services",
-    "app-shared": "./shared"
+    "app-shared": "./shared",
+    "app-migrations": "./migrations"
   },
   "keywords": [],
   "author": "",
@@ -45,7 +46,8 @@
     "passport-azure-ad": "^4.3.0",
     "pluralize": "^8.0.0",
     "winston": "^3.3.3",
-    "wkhtmltoimage": "^0.1.5"
+    "wkhtmltoimage": "^0.1.5",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/cron": "^2.0.0",

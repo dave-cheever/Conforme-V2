@@ -4,4 +4,5 @@ export type TQuestionType =
   | 'switch'
   | 'datepicker'
   | 'multipleChoice'
-  | 'singleChoice';
+  | 'singleChoice'
+  | 'url';

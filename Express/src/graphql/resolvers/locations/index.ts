@@ -20,7 +20,7 @@ export const locationsTypeDefs = `
     name: String!
     ownerId: String!
     organizationId: String
-    notes: String!
+    notes: String
     trackerItemsResponsesCount: Int
     totalAuditsCount: Int
     completedAuditsCount: Int
@@ -41,14 +41,14 @@ export const locationsTypeDefs = `
   input LocationInput {
     name: String!
     ownerId: String!
-    notes: String!
+    notes: String
   }
 
   input LocationModifyInput {
     _id: ID!
     name: String!
     ownerId: String! 
-    notes: String!
+    notes: String
   }
 
   input LocationQueryInput {

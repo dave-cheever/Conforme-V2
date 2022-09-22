@@ -6,7 +6,7 @@ module.exports = (env) => ({
   target: 'node',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'index.js'
+    filename: 'index.js',
   },
   resolve: {
     alias: {
@@ -16,19 +16,20 @@ module.exports = (env) => ({
       'app-utils': path.resolve(__dirname, 'src/utils/index.ts'),
       'app-services': path.resolve(__dirname, 'src/services/index.ts'),
       'app-models': path.resolve(__dirname, 'src/models/index.ts'),
-      'app-shared': path.resolve(__dirname, 'src/shared/index.ts')
+      'app-shared': path.resolve(__dirname, 'src/shared/index.ts'),
+      'app-migrations': path.resolve(__dirname, 'src/migrations/index.ts'),
     },
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        use: ['ts-loader']
-      }
-    ]
+        use: ['ts-loader'],
+      },
+    ],
   },
   optimization: {
-    minimize: false
-  }
+    minimize: false,
+  },
 });

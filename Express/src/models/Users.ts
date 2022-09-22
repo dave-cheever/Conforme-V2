@@ -137,7 +137,7 @@ userSchema.statics.customAssertUser = async function ({
   organizationId: string;
 }): Promise<void> {
   try {
-    const organization = await Organizations.customFindById(organizationId, organizationId);
+    const organization = await Organizations.customFindById(organizationId);
     const user = await Users.findById(userId).lean();
     if (user) {
       if (!user.organizationsIds?.includes(organization._id))

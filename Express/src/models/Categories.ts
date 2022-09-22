@@ -191,6 +191,15 @@ categorySchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
+categorySchema.statics.customFindOneOrCreateOne = async function (selector: { [x: string]: string }, organizationId: string, userId: string) {
+  const category = await this.findOne({ ...selector, organizationId, 'metatags.removedAt': { $eq: null } }).lean();
+  if (!category) {
+    const newCategory = await this.customCreate(selector, userId, organizationId);
+    return { ...newCategory._doc, created: true }
+  }
+  return category
+}
+
 const categoryModel = model<IBaseWithName, IBaseWithNameModel>(
   'Category',
   categorySchema,
