@@ -10,6 +10,7 @@ export const searchTypeDefs = `
   type SearchResult {
     _id: ID!
     title: String!
+    type: String!
     user: User
     scope: Scope!
   }

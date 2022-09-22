@@ -47,6 +47,7 @@ const GET_SEARCH_RESULTS = gql`
     search(searchQuery: $searchQuery) {
       _id
       title
+      type
       user {
         _id
       }
@@ -139,7 +140,7 @@ const SearchBar = () => {
     search(searchText);
   }, [JSON.stringify(selectedSearchCategory)]);
   const handleSearchResultClick = (result: any) => {
-    const category = searchCategories.find((category) => category.type === result.scope.type && category._id == result.scope._id);
+    const category = searchCategories.find((category) => category.type === result.type && category._id == result.scope._id);
     if (!category) return;
 
     let url = '';
@@ -302,7 +303,7 @@ const SearchBar = () => {
                               <Flex direction="column" grow={1}>
                                 {selectedSearchCategory?.type === 'all' && (
                                   <Text fontSize="xs">
-                                    {searchCategories.find(({ type, _id }) => type === result.scope.type && _id == result.scope._id)?.label}
+                                    {searchCategories.find(({ type, _id }) => type === result.type && _id == result.scope._id)?.label}
                                   </Text>
                                 )}
                                 <Text fontSize="smm" fontWeight="bold" noOfLines={1}>
