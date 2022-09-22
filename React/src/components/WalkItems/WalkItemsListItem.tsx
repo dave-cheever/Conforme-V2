@@ -43,6 +43,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
+                pr={2}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -61,6 +62,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
+                pr={2}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -78,6 +80,7 @@ const WalkItemsListItem = ({
               lineHeight="18px"
               noOfLines={1}
               opacity="1"
+              pr={2}
               pt="3px"
               textOverflow="ellipsis"
             >
@@ -94,6 +97,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
+                pr={2}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -129,6 +133,7 @@ const WalkItemsListItem = ({
               lineHeight="18px"
               noOfLines={1}
               opacity="1"
+              pr={2}
               pt="3px"
               textOverflow="ellipsis"
             >
@@ -137,7 +142,7 @@ const WalkItemsListItem = ({
           </Flex>
           <Tooltip label={answer.addedBy?.displayName}>
             <Box w="12%">
-              <Skeleton isLoaded={!!answer} rounded="full">
+              <Skeleton isLoaded={!!answer} pr={2} rounded="full">
                 {answer.addedBy ? (
                   <Flex align="center" direction="row">
                     <Avatar name={answer.addedBy?.displayName} size="xs" src={answer.addedBy?.imgUrl} />

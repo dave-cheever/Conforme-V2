@@ -23,7 +23,7 @@ const ActionsList = ({
   editAction: (action: IAction) => void;
 }) => (
   <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
-    <Box bg="actionsList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
+    <Box bg="actionsList.bg" borderRadius="20px" h="fit-content" minH="full" pb={7} w="full">
       <AdminTableHeader>
         <AdminTableHeaderElement
           label="Title"
@@ -116,7 +116,7 @@ const ActionsList = ({
           w="12.5%"
         />
       </AdminTableHeader>
-      <Flex flexDir="column" h={['full', 'calc(100vh - 310px)', 'calc(100vh - 300px)']} overflowY="auto" w="full">
+      <Flex flexDir="column" h='calc(100vh - 310px)' overflowY="auto" w="full">
         {actions?.map((action) => (
           <ActionsListItem action={action} editAction={editAction} key={action._id} />
         ))}

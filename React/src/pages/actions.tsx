@@ -317,7 +317,7 @@ const Actions = () => {
           </Button>
         ))}
       </HStack>
-      <Flex h={['calc(100vh - 80px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
+      <Flex h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
         {error ? (
           <Text>{error.message}</Text>
         ) : loading ? (

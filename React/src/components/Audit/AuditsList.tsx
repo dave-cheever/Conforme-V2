@@ -21,7 +21,7 @@ const AuditsList = ({
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
   <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
-    <Box bg="auditsList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
+    <Box bg="auditsList.bg" borderRadius="20px" h="fit-content" minH="full" pb={7} w="full">
       <AdminTableHeader>
         <AdminTableHeaderElement
           label="Due date"
@@ -81,7 +81,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'auditor.displayName'}
           sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
-          w="20%"
+          w="18%"
         />
         <AdminTableHeaderElement
           label="Date submitted"
@@ -91,10 +91,10 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'completedDate'}
           sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
-          w="10%"
+          w="12%"
         />
       </AdminTableHeader>
-      <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
+      <Flex flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">
         {audits?.map((audit) => (
           <AuditListItem audit={audit} key={audit._id} />
         ))}

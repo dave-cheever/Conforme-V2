@@ -1,4 +1,8 @@
 /* Custom styles for external libraries */
+body {
+  overflow: hidden;
+}
+
 
 ::-webkit-scrollbar {
   width: 4px;

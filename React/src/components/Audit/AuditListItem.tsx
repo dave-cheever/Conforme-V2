@@ -22,7 +22,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
     >
       <Flex align="center" h={['full', '73px']} position="relative" w="full">
         <Flex w="10%">
-          <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
+          <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1" pr={2}>
             {audit?.dueDate ? format(new Date(audit?.dueDate), 'MMM-yy') : <Flex fontStyle="italic">No due date</Flex>}
           </Flex>
         </Flex>
@@ -58,7 +58,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
         </Stack>
         <Flex w="10%">
           <Flex align="center">
-            <Flex color={`auditsList.${audit?.status}`} fontSize="14px" fontWeight="700">
+            <Flex color={`auditsList.${audit?.status}`} fontSize="14px" fontWeight="700" pr={2}>
               {auditStatuses[audit?.status]}
             </Flex>
           </Flex>
@@ -73,13 +73,16 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             lineHeight="18px"
             noOfLines={1}
             opacity="1"
+            overflow="hidden"
+            pr={2}
             pt="3px"
             textOverflow="ellipsis"
+            whiteSpace="nowrap"
           >
             {auditWalkTypes[audit.walkType]}
           </Flex>
         </Flex>
-        <Box pr={2} w="20%">
+        <Box pr={2} w="18%">
           <Skeleton isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
               <Flex align="center" direction="row">
@@ -105,7 +108,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             )}
           </Skeleton>
         </Box>
-        <Flex w="10%">
+        <Flex w="12%">
           <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
             {audit?.status === 'completed' && audit?.completedDate ? (
               format(new Date(audit?.completedDate), 'MMM-yy')

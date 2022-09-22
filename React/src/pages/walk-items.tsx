@@ -320,7 +320,7 @@ const WalkItems = () => {
           sortType={sortType}
         />
       </Header>
-      <Flex h={['calc(100vh - 80px)', 'calc(100vh - 150px)']} overflow="auto">
+      <Flex h={['calc(100vh - 80px)', 'full']} overflow="auto">
         {/* eslint-disable */}
         {error ? (
           <Text>{error.message}</Text>

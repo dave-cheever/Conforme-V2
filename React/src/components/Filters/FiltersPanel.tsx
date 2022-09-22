@@ -1,16 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 import { Box, Button, Flex, useOutsideClick } from '@chakra-ui/react';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import useDevice from '../../hooks/useDevice';
 import { CrossIcon } from '../../icons';
 import { isPermitted } from '../can';
 import FiltersPanelItem from './FiltersPanelItem';
 
 const FiltersPanel = () => {
-  const device = useDevice();
   const { user } = useAppContext();
   const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
   const panelRef = useRef(null);
@@ -18,13 +16,6 @@ const FiltersPanel = () => {
     ref: panelRef,
     handler: () => setShowFiltersPanel(false),
   });
-  useEffect(() => {
-    if (showFiltersPanel && device === 'mobile') document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [device, showFiltersPanel]);
 
   if (!showFiltersPanel) return null;
 
