@@ -1,0 +1,129 @@
+[
+  {
+    "_id": "<random generated UUID>",
+    "name": "trackerResponseAssigneeTemplate",
+    "label": "Tracker response assigned notification",
+    "value": "<p>You have been assigned to %ItemName% as %AssignedRole% by %AssignedBy%.</p><p>To open it, click %LinkTo%.</p>",
+    "type": "emailTemplate",
+    "options": ["ItemName", "AssignedRole", "AssignedBy", "LinkTo"],
+    "inputType": "emailTemplate",
+    "description": "",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "responseWeeklyEmailTemplate",
+    "label": "Weekly summary",
+    "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Tracker Item Overview</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 12px;\">Responses</span></p><p><span style=\"font-size: 12px;\">%ResponseTable%</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-size: 16px;\">Gloratio</span></p>",
+    "type": "emailTemplate",
+    "options": ["ResponseTable"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "responseRemainderEmailTemplate",
+    "label": "Response reminder notification",
+    "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Tracker </strong></span><span style=\"font-size: 24px;\"><span style=\"font-family: Arial;\"><strong>Item </strong></span></span><span style=\"font-family: Arial; font-size: 24px;\"><strong>Reminder</strong></span></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Dear %FirstName%,</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">This is a reminder that tracker item %TrackerItemName% %DueText%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">You can view it %Link%.</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span></p><p><span style=\"font-family: Arial; font-size: 16px;\"><br></span></p><p><span style=\"font-family: Arial; font-size: 16px;\">Circle Health Group​</span><br></p>",
+    "type": "emailTemplate",
+    "options": ["FirstName", "TrackerItemName", "DueText", "Link"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "trackerReviewSubmittedNotificationEmailTemplate",
+    "label": "Tracker review submitted notification",
+    "value": "<p>%TrackerItemName% has been reviewed, to view click %LinkTo%.</p>",
+    "type": "emailTemplate",
+    "options": ["TrackerItemName", "LinkTo"],
+    "inputType": "emailTemplate",
+    "description": "",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "responseDueEmailDays",
+    "label": "Days from due date email reminders are sent",
+    "value": [90, 30, 7, -1],
+    "type": "defaultSettings",
+    "inputType": "table",
+    "description": "Use this setting to select when owners/delegates should recieve email reminders regarding outstadning tracker responses.",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "responseWeeklyEmailAddress",
+    "label": "Email address for receiving the weekly digest",
+    "value": [],
+    "type": "defaultSettings",
+    "description": "Use this setting to select who should receive weekly responses summary email.",
+    "inputType": "table",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditLogLimit",
+    "label": "Count of elements on the audit log",
+    "value": 10,
+    "type": "defaultSettings",
+    "inputType": "number",
+    "help": "Audit log limit",
+    "description": "Use this setting to default to a specific count of the elements loaded in audit log",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "comingUpTriggers",
+    "label": "The number of days before a responses due date that its status changes to \"Coming up\"",
+    "value": {
+      "Daily": 2,
+      "Weekly": 30,
+      "Monthly": 30,
+      "Quarterly": 30,
+      "6 months": 40,
+      "Annual": 60,
+      "2 years": 60,
+      "3 years": 90,
+      "5 years": 1
+    },
+    "type": "defaultSettings",
+    "inputType": "dataGrid",
+    "description": "Use this setting to select when the response should become \"Coming up\" for different renewal frequencies",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  }
+]

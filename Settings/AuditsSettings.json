@@ -1,21 +1,21 @@
 [
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "auditLogLimit",
     "label": "Count of elements on the audit log",
     "value": "5",
     "type": "configValue",
     "description": "Use this setting to default to a specific count of the elements loaded in audit log",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId": <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "actionAssignedEmailTemplate",
-    "label": "Action assigned",
+    "label": "Action assigned notification",
     "value": "<p>You have been assigned to action '%ActionTitle% for %WalkItemCategory% named %WalkItemName% (%ActionDueDate%)' by %AssignedBy%, to view click %LinkTo%.</p>",
     "type": "emailTemplate",
     "options": [
@@ -28,14 +28,14 @@
     ],
     "description": "",
     "inputType": "emailTemplate",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId": <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
-  }
+  },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "auditsWeeklyDigestEmailTemplate",
     "label": "Weekly digest",
     "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Weekly audits digest</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 18px;\">Number of audits last week: %NumberOfAudits%</span><br></p><p><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Conforme Team</span>&nbsp;<br></p>",
@@ -43,87 +43,72 @@
     "options": ["NumberOfAudits"],
     "description": "",
     "inputType": "emailTemplate",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId": <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "HSENotificationEmailTemplate",
-    "label": "HSE Notification",
+    "label": "HSE notification",
     "value": "",
     "type": "emailTemplate",
     "options": ["LinkTo"],
     "inputType": "emailTemplate",
     "description": "",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId": <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "mentionedNotificationEmailTemplate",
-    "label": "Mentioned Notification",
+    "label": "Mentioned notification",
     "value": "<p style=\"text-align: center;\"><span style=\"font-size: 24px;\">Welcome to Conforme</span></p><br><p style=\"text-align: center;\">&#xA0;</p><br><p>Dear %MentionedUser% </p>,<br><p>Message is: %Message% </p><br><p>Thank you for choosing Conforme</p><br/>",
     "type": "emailTemplate",
     "options": ["Message", "MentionedUser"],
     "inputType": "emailTemplate",
     "description": "",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId":  <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
-    "name": "trackerReviewSubmittedNotificationEmailTemplate",
-    "label": "Tracker review submitted notification",
-    "value": "<p>%TrackerItemName% has been reviewed, to view click %LinkTo%.</p>",
-    "type": "emailTemplate",
-    "options": ["TrackerItemName", "LinkTo"],
-    "inputType": "emailTemplate",
-    "description": "",
-    "organizationId": <organization's id>,
-    "scope": {
-      "moduleId":  <module id>
-    },
-    "metatags": {}
-  },
-  {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "auditsWeeklyDigestEmailAddress",
     "label": "Email address for receiving the weekly digest",
-    "value": ["admin@ccbmidev.onmicrosoft.com"],
+    "value": [],
     "type": "defaultSettings",
     "description": "Use this setting to select who should recieve email digest regarding audits.",
     "inputType": "table",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId":  <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "auditsStatusReminderTriggers",
     "label": "The days of month when to send upcoming and missed audit notifications",
     "value": [1],
     "type": "defaultSettings",
     "inputType": "text",
     "description": "Use this setting to select day of month when to send coming up and missed audit notifications",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId":  <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "retentionPeriod",
     "label": "Retention period",
     "value": "Never",
@@ -132,38 +117,38 @@
     "description": "Use this setting to select retention period for the data in Conforme system.",
     "inputType": "dropdown",
     "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Never"],
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId":  <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "hseEmailAddress",
-    "label": "Email adress for receving the weekly digest",
-    "value": ["hazemkrimi@m1ks.onmicrosoft.com"],
+    "label": "Email address for HSE notification",
+    "value": [],
     "type": "defaultSettings",
     "description": "Use this setting to select who should recieve email digest regarding audits.",
     "inputType": "table",
-    "organizationId": <organization's id>,
     "scope": {
-      "moduleId":  <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   },
   {
-    "_id": <random generated UUID>,
+    "_id": "<random generated UUID>",
     "name": "estatesEmailAddress",
-    "label": "Email adress for receving the weekly digest",
-    "value": ["hazemkrimi@m1ks.onmicrosoft.com"],
+    "label": "Email address for estates notification",
+    "value": [],
     "type": "defaultSettings",
     "description": "Use this setting to select who should recieve email digest regarding audits.",
-    "inputType": "table"
-    "organizationId": <organization's id>,
+    "inputType": "table",
     "scope": {
-      "moduleId":  <module id>
+      "moduleId": "<module id>"
     },
+    "organizationId": "<organization's id>",
     "metatags": {}
   }
 ]
