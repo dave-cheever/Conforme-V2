@@ -115,6 +115,8 @@ const PeoplePicker = ({
     refetch();
   }, [refetch, searchText]);
 
+  const [pickerActive, setPickerActive] = useState(false);
+
   return (
     <Controller
       control={control}
@@ -138,7 +140,18 @@ const PeoplePicker = ({
         }, [value, JSON.stringify(users.map(({ _id }) => _id))]);
 
         return (
-          <Box id={name} mt="none" position="relative" w="full">
+          <Box
+            bg={pickerActive ? '#ffffff' : 'none'}
+            h={pickerActive ? '100vh' : 'auto'}
+            id={name}
+            inset={0}
+            mt="none"
+            onClick={() => setPickerActive((prv) => !prv)}
+            p={pickerActive ? 4 : 0}
+            position={pickerActive ? 'absolute' : 'relative'}
+            w="full"
+            zIndex={pickerActive ? '999' : 'auto'}
+          >
             {label && (
               <Flex align="center" justify="space-between" mb="none" pb={1} pt={2}>
                 <Box
