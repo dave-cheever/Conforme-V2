@@ -1,10 +1,10 @@
 import { Request, Response, Router } from 'express';
 import StatusCodes from 'http-status-codes';
-import { isMigrationRoutePermitted } from 'src/utils/helpers';
 
 import { createBREGlobalDocuments, createBREGroupDocuments } from "app-migrations";
 import { Organizations } from 'app-models';
 import { GraphService } from 'app-services';
+import { isMigrationRoutePermitted } from 'app-utils';
 
 /*
 * This script is used only to BRE project for Document control module
