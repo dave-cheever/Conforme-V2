@@ -14,7 +14,7 @@ const search = async (_, { searchQuery }, { authorize, organization }) => {
           searchResults = await Audits.customSearch({ searchText }, user, organization._id);
           break;
         }
-        case 'responses': {
+        case 'tracker-item-response': {
           searchResults = await Responses.customSearch({ searchText }, user, organization._id);
           break;
         }

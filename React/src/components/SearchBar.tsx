@@ -139,6 +139,7 @@ const SearchBar = () => {
   useEffect(() => {
     search(searchText);
   }, [JSON.stringify(selectedSearchCategory)]);
+
   const handleSearchResultClick = (result: any) => {
     const category = searchCategories.find((category) => category.type === result.type && category._id == result.scope._id);
     if (!category) return;

@@ -367,7 +367,7 @@ responseSchema.statics.customSearch = async function (searchQuery, user, organiz
       _id: 1,
       title: '$trackerItem.name',
       user: '$user',
-      type: 'tracker-item',
+      type: 'tracker-item-response',
     },
   });
 

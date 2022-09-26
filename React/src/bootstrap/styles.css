@@ -161,7 +161,7 @@ body {
   background: #ffffff;
   border: 1px solid rgba(129, 129, 151, 0.4);
   border-radius: 10px;
-  max-height: 42px;
+  max-height: 44px;
 }
 
 .mentions--multiLine .mentions__control {
@@ -173,7 +173,7 @@ body {
   padding: 7px 10px;
   padding-right: 25px;
   outline: 0;
-  max-height: 100px;
+  max-height: 42px;
   overflow: auto !important
 }
 
@@ -187,8 +187,8 @@ body {
   padding: 7px 10px;
   padding-right: 25px;
   outline: 0;
-  max-height: 100px;
-  overflow: hidden;
+  max-height: 42px;
+  overflow: auto !important;
 }
 
 .mentions__input:disabled {

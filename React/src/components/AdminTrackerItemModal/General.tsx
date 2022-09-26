@@ -141,7 +141,7 @@ const GeneralForm = () => {
               <Box color="dropdown.labelFont.normal" fontSize="ssm">
                 Due date will be calculated base on:
               </Box>
-              <Stack direction="row" spacing={4}>
+              <Stack direction="row" position="relative" spacing={4}>
                 <Flex
                   color={
                     trackerItem.dueDateCalculation !== 'fromDueDate'
@@ -184,7 +184,7 @@ const GeneralForm = () => {
                 </Box>
               )}
             </Stack>
-            <Flex align="center" pt={4}>
+            <Flex align="center" position="relative" pt={4}>
               <Switch
                 colorScheme="toogle.color"
                 css={{

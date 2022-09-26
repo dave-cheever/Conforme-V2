@@ -34,6 +34,7 @@ const GET_TRACKER_ITEMS = gql`
       dueDateEditable
       published
       evidenceItems
+      allowAttachments
       questions {
         type
         name
@@ -145,6 +146,7 @@ const TrackerItemsAdmin = () => {
         businessUnitsIds: trackerItem.businessUnitsIds,
         locationsIds: trackerItem.locationsIds,
         evidenceItems: trackerItem.evidenceItems,
+        allowAttachments: trackerItem.allowAttachments,
         questions: (trackerItem.questions || []).map((question) => ({
           type: question.type,
           name: question.name,
@@ -166,7 +168,7 @@ const TrackerItemsAdmin = () => {
       <Modal
         isOpen={adminModalState !== 'closed'}
         key={trackerItem._id}
-        onClose={() => {}}
+        onClose={() => { }}
         scrollBehavior="inside"
         size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}

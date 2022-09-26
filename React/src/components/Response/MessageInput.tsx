@@ -34,7 +34,12 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
       return;
     }
 
-    if (e.key === 'Enter') onAction();
+    if (e.key === 'Enter') {
+      // prevent default behaviour 
+      e.preventDefault()
+
+      onAction();
+    }
   };
 
   return (

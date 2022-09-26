@@ -38,8 +38,8 @@ const useConfig = () => {
 
   const trackerSearchItems: ISearchCategory[] = [
     {
-      type: 'responses',
-      label: pluralize(t('tracker item')),
+      type: 'tracker-item-response',
+      label: capitalize(pluralize(t('tracker item'))),
       icon: Home,
       url: '/tracker/tracker-item',
     },
