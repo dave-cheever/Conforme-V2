@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
 import { InfoOutlineIcon, SearchIcon } from '@chakra-ui/icons';
 import { Box, Flex, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
 
+import useDevice from '../../hooks/useDevice';
 import useValidate from '../../hooks/useValidate';
 import { Asterisk, ChevronRight } from '../../icons';
 import { IField } from '../../interfaces/IField';
@@ -101,10 +102,14 @@ const PeoplePicker = ({
   const [searchText, setSearchText] = useState('');
   const [searchedInputValue, setSearchedInputValue] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
+  const [pickerActive, setPickerActive] = useState(false);
   const { data, loading, refetch } = useQuery(SEARCH_USERS, {
     variables: { searchQuery: { searchText } },
   });
   const validate = useValidate(label || name, validations, definedValidations);
+  const device = useDevice();
+
+  const togglePickerActive = useCallback(() => device === 'mobile' && setPickerActive((prv) => !prv), [device]);
 
   useEffect(() => {
     if (data) setUsers([...data.searchUsers]);
@@ -114,8 +119,6 @@ const PeoplePicker = ({
   useEffect(() => {
     refetch();
   }, [refetch, searchText]);
-
-  const [pickerActive, setPickerActive] = useState(false);
 
   return (
     <Controller
@@ -146,7 +149,7 @@ const PeoplePicker = ({
             id={name}
             inset={0}
             mt="none"
-            onClick={() => setPickerActive((prv) => !prv)}
+            onClick={togglePickerActive}
             p={pickerActive ? 4 : 0}
             position={pickerActive ? 'absolute' : 'relative'}
             w="full"
