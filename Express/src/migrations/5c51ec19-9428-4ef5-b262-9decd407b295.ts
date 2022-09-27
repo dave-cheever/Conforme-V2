@@ -3,7 +3,7 @@ import { Response } from 'express';
 import fs from "fs/promises";
 import StatusCodes from 'http-status-codes';
 import { isEmpty } from "lodash";
-import XLSX from "xlsx";
+import * as XLSX from 'xlsx';
 
 import { IOrganization, IUser } from "app-interfaces";
 import { BusinessUnits, Categories, Locations, RegulatoryBodies, TrackerItems } from "app-models";
@@ -100,11 +100,9 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
     //  This method return the list of sheet name in the excel file
     const sheet_name_list = workbook.SheetNames;
     for (const sheet of [sheet_name_list[3]]) {
-      console.log('sheet', sheet);
       await log(`\n\nParsing sheet: ${sheet}`);
       //  this function parsed data row by row 
       const arrayData: string[][] = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { header: 1 });
-      // console.log('arrayData', arrayData);
       try {
         //  this will get row number for particular header row
         const rowIndex = arrayData.findIndex(document => document.includes('Document Number') || document.includes('Title/Description'));
