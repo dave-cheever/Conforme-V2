@@ -17,14 +17,14 @@ const totals = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   if (shouldJoin(['locations'])) {
     totals.locations = await Locations.count({
       'metatags.removedAt': null,
-      organizationsIds: organization._id,
+      organizationId: organization._id,
     });
   }
 
   if (shouldJoin(['businessUnits'])) {
     totals.businessUnits = await BusinessUnits.count({
       'metatags.removedAt': null,
-      organizationsIds: organization._id,
+      organizationId: organization._id,
     });
   }
 

@@ -122,13 +122,6 @@ const useConfig = () => {
     },
     {
       type: 'menuItem',
-      label: 'Insights',
-      url: '/insights',
-      icon: Insights,
-      permission: 'insights.view',
-    },
-    {
-      type: 'menuItem',
       label: 'Admin',
       url: '/admin',
       icon: Admin,

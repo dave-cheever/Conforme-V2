@@ -99,7 +99,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
 
     //  This method return the list of sheet name in the excel file
     const sheet_name_list = workbook.SheetNames;
-    for (const sheet of [sheet_name_list[3]]) {
+    for (const sheet of sheet_name_list) {
       await log(`\n\nParsing sheet: ${sheet}`);
       //  this function parsed data row by row 
       const arrayData: string[][] = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { header: 1 });

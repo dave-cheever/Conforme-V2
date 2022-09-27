@@ -81,6 +81,9 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
         limit: 5,
         offset: 0,
       },
+      locationsAnswersCountInput: {
+        questionsCategoriesId,
+      },
     },
   });
   const [locations, setLocations] = useState<ILocation[]>([]);
@@ -91,6 +94,9 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
       businessUnitsPagination: {
         limit: 5,
         offset: 0,
+      },
+      businessUnitsAnswersCountInput: {
+        questionsCategoriesId,
       },
     },
   });
@@ -105,6 +111,9 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
       usersPagination: {
         limit: 5,
         offset: 0,
+      },
+      usersAnswersCountInput: {
+        questionsCategoriesId,
       },
     },
   });

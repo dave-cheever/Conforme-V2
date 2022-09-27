@@ -256,8 +256,8 @@ const locations = async (
       }
     }
 
-    if (shouldJoin('totalAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
-      for (const location of locations) {
+    if (locationsAnswersCountInput?.questionsCategoriesId) {
+      const getAnswersCount = async (locationId: string, selector: object = {}) => {
         const pipeline: any[] = [
           {
             $match: {
@@ -273,110 +273,40 @@ const locations = async (
           from: 'questionId',
           to: 'question',
         });
-
         pipeline.push({
           $match: {
             'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
+            ...selector,
           },
         });
-
-        pipeline.push({ $count: '_id' });
-
-        location.totalAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
-      }
-    }
-
-    if (shouldJoin('openAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
-      for (const location of locations) {
-        const pipeline: any[] = [
-          {
-            $match: {
-              'metatags.removedAt': { $eq: null },
-              organizationId: organization._id,
-            },
-          },
-        ];
 
         join({
           pipeline,
-          collection: 'questions',
-          from: 'questionId',
-          to: 'question',
+          collection: 'audits',
+          from: 'scope._id',
+          to: 'audit',
         });
-
         pipeline.push({
           $match: {
-            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
-            status: 'open',
+            'audit.locationId': locationId,
           },
         });
 
         pipeline.push({ $count: '_id' });
-
-        location.openAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+        const res = await Answers.aggregate(pipeline);
+        return res?.[0]?._id ?? 0;
       }
-    }
+      if (shouldJoin('totalAnswersCount'))
+        for (const location of locations) location.totalAnswersCount = await getAnswersCount(location._id);
 
-    if (shouldJoin('resolvedAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
-      for (const location of locations) {
-        const pipeline: any[] = [
-          {
-            $match: {
-              'metatags.removedAt': { $eq: null },
-              organizationId: organization._id,
-            },
-          },
-        ];
+      if (shouldJoin('openAnswersCount'))
+        for (const location of locations) location.openAnswersCount = await getAnswersCount(location._id, { status: 'open' });
 
-        join({
-          pipeline,
-          collection: 'questions',
-          from: 'questionId',
-          to: 'question',
-        });
+      if (shouldJoin('resolvedAnswersCount'))
+        for (const location of locations) location.resolvedAnswersCount = await getAnswersCount(location._id, { status: 'resolved' });
 
-        pipeline.push({
-          $match: {
-            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
-            status: 'resolved',
-          },
-        });
-
-        pipeline.push({ $count: '_id' });
-
-        location.resolvedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
-      }
-    }
-
-    if (shouldJoin('closedAnswersCount') && locationsAnswersCountInput?.questionsCategoriesId) {
-      for (const location of locations) {
-        const pipeline: any[] = [
-          {
-            $match: {
-              'metatags.removedAt': { $eq: null },
-              organizationId: organization._id,
-            },
-          },
-        ];
-
-        join({
-          pipeline,
-          collection: 'questions',
-          from: 'questionId',
-          to: 'question',
-        });
-
-        pipeline.push({
-          $match: {
-            'question.questionsCategoryId': locationsAnswersCountInput.questionsCategoriesId,
-            status: 'closed',
-          },
-        });
-
-        pipeline.push({ $count: '_id' });
-
-        location.closedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
-      }
+      if (shouldJoin('closedAnswersCount'))
+        for (const location of locations) location.closedAnswersCount = await getAnswersCount(location._id, { status: 'closed' });
     }
 
     if (shouldJoin('owner')) {

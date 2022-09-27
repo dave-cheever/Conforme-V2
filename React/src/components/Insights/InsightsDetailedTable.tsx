@@ -28,12 +28,10 @@ const InsightsDetailedTable = ({
   loadMoreBusinessUnits?: LazyQueryExecFunction<any, any>;
   loadMoreUsers?: LazyQueryExecFunction<any, any>;
 }) => {
-  const { sortedData, sortOrder, sortType, setSortOrder, setSortType } = useSort(data ?? []);
-  const itemUrlPerModel = {
-    users: '/admin/users',
-    locations: '/admin/locations',
-    businessUnits: '/admin/businessUnits',
-  };
+  const { sortedData, sortOrder, sortType, setSortOrder, setSortType } = useSort(
+    data ?? [],
+    insightsModel === 'users' ? 'displayName' : 'name',
+  );
   const tableFieldsPerType = {
     audits: [
       { label: 'Total', color: '#1E1836', field: 'totalAuditsCount' },
@@ -116,7 +114,7 @@ const InsightsDetailedTable = ({
     <Box>
       <InsightsDetailedTableHeader>
         <InsightsDetailedTableHeaderElement
-          label={insightsModel === 'users' ? 'Full name' : 'name'}
+          label="Name"
           onClick={() => {
             setSortType(insightsModel === 'users' ? 'displayName' : 'name');
             setSortOrder(sortOrder === 'asc' && sortType === (insightsModel === 'users' ? 'displayName' : 'name') ? 'desc' : 'asc');
@@ -142,14 +140,7 @@ const InsightsDetailedTable = ({
       </InsightsDetailedTableHeader>
       <Flex align="center" flexDir="column" mb={5} minH="350px" overflowY="auto" w="full">
         {sortedData?.map((item, index) => (
-          <InsightListItem
-            insightsModel={insightsModel}
-            insightsType={insightsType}
-            item={item}
-            key={item._id}
-            light={index % 2 === 0}
-            navigation={itemUrlPerModel[insightsModel]}
-          />
+          <InsightListItem insightsModel={insightsModel} insightsType={insightsType} item={item} key={item._id} light={index % 2 === 0} />
         ))}
       </Flex>
       {totals > sortedData.length && (

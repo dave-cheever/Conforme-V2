@@ -13,11 +13,13 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
     // Lookup info for users in parallel using promise.all
     users = await Promise.all(
       users.map(async (user) => {
-        if (shouldJoin(['responsibleCount'])) {
+
+        // Inject RACF count
+        const getRACFCount = async (selector: object) => {
           const responses = await Responses.aggregate([
             {
               $match: {
-                responsibleId: user._id,
+                ...selector,
                 published: true,
                 organizationId: organization._id,
               },
@@ -26,229 +28,91 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
               $count: 'count',
             },
           ]);
-          // eslint-disable-next-line no-param-reassign
-          user.responsibleCount = responses[0].count;
+          return responses[0].count;
         }
-
-        if (shouldJoin(['accountableCount'])) {
-          const responses = await Responses.aggregate([
-            {
-              $match: {
-                accountableId: user._id,
-                published: true,
-                organizationId: organization._id,
-              },
-            },
-            {
-              $count: 'count',
-            },
-          ]);
+        if (shouldJoin(['responsibleCount']))
           // eslint-disable-next-line no-param-reassign
-          user.accountableCount = responses[0].count;
-        }
+          user.responsibleCount = await getRACFCount({ responsibleId: user._id });
 
-        if (shouldJoin(['contributorCount'])) {
-          const responses = await Responses.aggregate([
-            {
-              $match: {
-                contributorsIds: user._id,
-                published: true,
-                organizationId: organization._id,
-              },
-            },
-            {
-              $count: 'count',
-            },
-          ]);
+        if (shouldJoin(['accountableCount']))
           // eslint-disable-next-line no-param-reassign
-          user.contributorCount = responses[0].count;
-        }
+          user.accountableCount = await getRACFCount({ accountableId: user._id });
 
-        if (shouldJoin(['followerCount'])) {
-          const responses = await Responses.aggregate([
-            {
-              $match: {
-                followersIds: user._id,
-                published: true,
-                organizationId: organization._id,
-              },
-            },
-            {
-              $count: 'count',
-            },
-          ]);
+        if (shouldJoin(['contributorCount']))
           // eslint-disable-next-line no-param-reassign
-          user.followerCount = responses[0].count;
-        }
+          user.contributorCount = await getRACFCount({ contributorsIds: user._id });
 
-        if (shouldJoin(['totalAuditsCount'])) {
+        if (shouldJoin(['followerCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.followerCount = await getRACFCount({ followersIds: user._id });
+
+        // Inject audits count
+        const getAuditsCount = async (selector: object = {}) => {
           const audits = await Audits.aggregate([
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
                 auditorId: user._id,
                 organizationId: organization._id,
+                ...selector,
               },
             },
             {
               $count: 'count',
             },
           ]);
-          // eslint-disable-next-line no-param-reassign
-          user.totalAuditsCount = audits[0].count;
+          return audits[0].count;
         }
+        if (shouldJoin(['totalAuditsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.totalAuditsCount = await getAuditsCount();
 
-        if (shouldJoin(['completedAuditsCount'])) {
-          const audits = await Audits.aggregate([
+        if (shouldJoin(['completedAuditsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.completedAuditsCount = await getAuditsCount({ status: 'completed' });
+
+        if (shouldJoin(['upcomingAuditsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.upcomingAuditsCount = await getAuditsCount({ status: 'upcoming' });
+
+        if (shouldJoin(['missedAuditsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.missedAuditsCount = await getAuditsCount({ status: 'missed' });
+
+        // Inject actions count
+        const getActionsCount = async (selector: object = {}) => {
+          const pipeline: any[] = [
             {
               $match: {
+                assigneeId: user._id,
                 'metatags.removedAt': { $eq: null },
-                auditorId: user._id,
-                status: 'completed',
                 organizationId: organization._id,
+                ...selector,
               },
             },
-            {
-              $count: 'count',
-            },
-          ]);
+          ];
+          return Actions.aggregate(pipeline);
+        }
+
+        if (shouldJoin(['totalActionsCount']))
           // eslint-disable-next-line no-param-reassign
-          user.completedAuditsCount = audits[0].count;
-        }
+          user.totalActionsCount = (await getActionsCount())?.length ?? 0;
 
-        if (shouldJoin(['upcomingAuditsCount'])) {
-          for (const user of users) {
-            user.upcomingAuditsCount = (
-              await Audits.aggregate([
-                {
-                  $match: {
-                    'metatags.removedAt': { $eq: null },
-                    auditorId: user._id,
-                    status: 'upcoming',
-                    organizationId: organization._id,
-                  },
-                },
-                { $count: 'count' },
-              ])
-            )[0].count;
-          }
-        }
+        if (shouldJoin(['completedActionsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.completedActionsCount = (await getActionsCount({ done: true }))?.length ?? 0;
 
-        if (shouldJoin(['missedAuditsCount'])) {
-          for (const user of users) {
-            user.missedAuditsCount = (
-              await Audits.aggregate([
-                {
-                  $match: {
-                    'metatags.removedAt': { $eq: null },
-                    auditorId: user._id,
-                    status: 'missed',
-                    organizationId: organization._id,
-                  },
-                },
-                { $count: 'count' },
-              ])
-            )[0].count;
-          }
-        }
+        if (shouldJoin(['inProgressActionsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.inProgressActionsCount = (await getActionsCount())?.filter((action) => getActionStatus(action) === 'inProgress')?.length ?? 0;
 
-        if (shouldJoin(['totalActionsCount'])) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
+        if (shouldJoin(['overdueActionsCount']))
+          // eslint-disable-next-line no-param-reassign
+          user.overdueActionsCount = (await getActionsCount())?.filter((action) => getActionStatus(action) === 'overdue')?.length ?? 0;
 
-            pipeline.push({
-              $match: {
-                assigneeId: user._id,
-              },
-            });
-
-            pipeline.push({ $count: '_id' });
-
-            user.totalActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
-          }
-        }
-
-        if (shouldJoin(['totalActionsCount'])) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
-
-            pipeline.push({
-              $match: {
-                assigneeId: user._id,
-                done: true,
-              },
-            });
-
-            pipeline.push({ $count: '_id' });
-
-            user.totalActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
-          }
-        }
-
-        if (shouldJoin(['inProgressActionsCount'])) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
-
-            pipeline.push({
-              $match: {
-                assigneeId: user._id,
-              },
-            });
-
-            pipeline.push({ $count: '_id' });
-
-            user.totalActionsCount =
-              (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'inProgress')?.length ?? 0;
-          }
-        }
-
-        if (shouldJoin(['overdueActionsCount'])) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
-
-            pipeline.push({
-              $match: {
-                assigneeId: user._id,
-              },
-            });
-
-            pipeline.push({ $count: '_id' });
-
-            user.totalActionsCount =
-              (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'overdue')?.length ?? 0;
-          }
-        }
-
-        if (shouldJoin(['totalAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
-          for (const user of users) {
+        // Inject answers count
+        if (usersAnswersCountInput?.questionsCategoriesId) {
+          const getAnswersCount = async (selector: object = {}) => {
             const pipeline: any[] = [
               {
                 $match: {
@@ -264,114 +128,34 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
               from: 'questionId',
               to: 'question',
             });
-
             pipeline.push({
               $match: {
                 'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
                 'metatags.addedBy': user._id,
+                ...selector,
               },
             });
 
             pipeline.push({ $count: '_id' });
-
-            user.totalAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+            const res = await Answers.aggregate(pipeline);
+            return res?.[0]?._id ?? 0;
           }
-        }
 
-        if (shouldJoin(['openAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
+          if (shouldJoin(['totalAnswersCount']))
+            // eslint-disable-next-line no-param-reassign
+            user.totalAnswersCount = await getAnswersCount();
 
-            join({
-              pipeline,
-              collection: 'questions',
-              from: 'questionId',
-              to: 'question',
-            });
+          if (shouldJoin(['openAnswersCount']))
+            // eslint-disable-next-line no-param-reassign
+            user.openAnswersCount = await getAnswersCount({ status: 'open' });
 
-            pipeline.push({
-              $match: {
-                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
-                'metatags.addedBy': user._id,
-                status: 'open',
-              },
-            });
+          if (shouldJoin(['resolvedAnswersCount']))
+            // eslint-disable-next-line no-param-reassign
+            user.resolvedAnswersCount = await getAnswersCount({ status: 'resolved' });
 
-            pipeline.push({ $count: '_id' });
-
-            user.openAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
-          }
-        }
-
-        if (shouldJoin(['resolvedAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
-
-            join({
-              pipeline,
-              collection: 'questions',
-              from: 'questionId',
-              to: 'question',
-            });
-
-            pipeline.push({
-              $match: {
-                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
-                'metatags.addedBy': user._id,
-                status: 'resolved',
-              },
-            });
-
-            pipeline.push({ $count: '_id' });
-
-            user.resolvedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
-          }
-        }
-
-        if (shouldJoin(['closedAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
-          for (const user of users) {
-            const pipeline: any[] = [
-              {
-                $match: {
-                  'metatags.removedAt': { $eq: null },
-                  organizationId: organization._id,
-                },
-              },
-            ];
-
-            join({
-              pipeline,
-              collection: 'questions',
-              from: 'questionId',
-              to: 'question',
-            });
-
-            pipeline.push({
-              $match: {
-                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
-                'metatags.addedBy': user._id,
-                status: 'closed',
-              },
-            });
-
-            pipeline.push({ $count: '_id' });
-
-            user.closedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
-          }
+          if (shouldJoin(['closedAnswersCount']))
+            // eslint-disable-next-line no-param-reassign
+            user.closedAnswersCount = await getAnswersCount({ status: 'closed' });
         }
 
         return user;

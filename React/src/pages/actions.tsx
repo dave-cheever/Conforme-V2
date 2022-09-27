@@ -153,10 +153,15 @@ const Actions = () => {
     };
   }, []);
 
+  // Set pre-defined filters
   useEffect(() => {
     if (actionFiltersValue && !isEmpty(actionFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
-      setFilters(actionFiltersValue);
-      setActionFiltersValue({});
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(actionFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setActionFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
     }
   }, [filtersValues, usedFilters, setActionFiltersValue, actionFiltersValue, setFilters]);
 
@@ -165,6 +170,7 @@ const Actions = () => {
     const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
       if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
+      // console.log('filter', filter);
       const [key, value] = filter;
 
       if (
@@ -176,9 +182,10 @@ const Actions = () => {
 
       return {
         ...acc,
-        [key]: value?.value,
+        [key]: value.value,
       };
     }, {});
+    // console.log('parsedFilters', parsedFilters);
 
     if (parsedFilters) {
       refetch({
@@ -206,7 +213,7 @@ const Actions = () => {
   };
 
   const isQuickFilterActive = (filterName: string) => {
-    if (filtersValues?.status?.value) {
+    if (filtersValues?.status?.value && Array.isArray(filtersValues?.status?.value)) {
       if (filtersValues.status.value.length > 1) return false;
       if (filtersValues.status.value.find((status) => status === filterName)) return true;
     }

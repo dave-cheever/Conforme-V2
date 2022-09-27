@@ -13,14 +13,12 @@ import InsightCount from './InsightCount';
 const InsightListItem = ({
   item,
   light = true,
-  navigation,
   questionsCategoriesId,
   insightsType = 'audits',
   insightsModel = 'users',
 }: {
   item: ILocation | IBusinessUnit | IUser;
   light?: boolean;
-  navigation: string;
   questionsCategoriesId?: string;
   insightsType?: 'audits' | 'actions' | 'answers';
   insightsModel?: 'users' | 'businessUnits' | 'locations';
@@ -30,10 +28,19 @@ const InsightListItem = ({
 
   const handleClickForAudits = (status?: string) => {
     navigateTo('/');
+    const filter: { value: string[] | { auditorsIds: string[] } } = {
+      value: [item._id],
+    };
+
+    // Nest user filter
+    if (insightsModel === 'users') {
+      filter.value = {
+        auditorsIds: [item._id],
+      };
+    }
+
     setAuditFiltersValue({
-      [`${insightsModel}Ids`]: {
-        value: [item._id],
-      },
+      [`${insightsModel}Ids`]: filter,
       status: {
         value: status ? [status] : [],
       },
@@ -42,10 +49,19 @@ const InsightListItem = ({
 
   const handleClickForAnswers = (status?: string) => {
     navigateTo('/walk-items');
+    const filter: { value: string[] | { addedByIds: string[] } } = {
+      value: [item._id],
+    };
+
+    // Nest user filter
+    if (insightsModel === 'users') {
+      filter.value = {
+        addedByIds: [item._id],
+      };
+    }
+
     setWalkItemFiltersValue({
-      [`${insightsModel}Ids`]: {
-        value: [item._id],
-      },
+      [`${insightsModel}Ids`]: filter,
       status: {
         value: status ? [status] : [],
       },
@@ -57,10 +73,19 @@ const InsightListItem = ({
 
   const handleClickForActions = (status?: string) => {
     navigateTo('/actions');
+    const filter: { value: string[] | { assigneesIds: string[] } } = {
+      value: [item._id],
+    };
+
+    // Nest user filter
+    if (insightsModel === 'users') {
+      filter.value = {
+        assigneesIds: [item._id],
+      };
+    }
+
     setActionFiltersValue({
-      [`${insightsModel}Ids`]: {
-        value: [item._id],
-      },
+      [`${insightsModel}Ids`]: filter,
       status: {
         value: status ? [status] : [],
       },
@@ -73,9 +98,9 @@ const InsightListItem = ({
         return (
           <>
             <InsightCount count={item.totalActionsCount} onClick={() => handleClickForActions()} />
-            <InsightCount count={item.completedActionsCount} onClick={() => handleClickForActions('completed')} />
-            <InsightCount count={item.inProgressActionsCount} onClick={() => handleClickForActions('upcoming')} />
-            <InsightCount count={item.overdueActionsCount} onClick={() => handleClickForActions('missed')} />
+            <InsightCount count={item.completedActionsCount} onClick={() => handleClickForActions('closed')} />
+            <InsightCount count={item.inProgressActionsCount} onClick={() => handleClickForActions('open')} />
+            <InsightCount count={item.overdueActionsCount} onClick={() => handleClickForActions('overdue')} />
           </>
         );
       case 'answers':
@@ -109,7 +134,18 @@ const InsightListItem = ({
           fontWeight="400"
           lineHeight="18px"
           noOfLines={1}
-          onClick={() => navigateTo(navigation)}
+          onClick={() => {
+            switch (insightsType) {
+              case 'actions':
+                handleClickForActions();
+                break;
+              case 'answers':
+                handleClickForAnswers();
+                break;
+              default:
+                handleClickForAudits();
+            }
+          }}
           textOverflow="ellipsis"
         >
           {insightsModel === 'users' ? (

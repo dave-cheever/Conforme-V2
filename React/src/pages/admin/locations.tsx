@@ -236,7 +236,7 @@ const Locations = () => {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Locations']} />
+      <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} />
       <Box h="calc(100vh - 160px)" p={['0', '0 25px 30px 30px']}>
         <Flex h="full" px={['25px', 0]}>
           <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100%)']}>
