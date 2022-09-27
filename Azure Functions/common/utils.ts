@@ -60,10 +60,11 @@ export const getTemplateDetails = (
       return {
         templateSettingName: "trackerReviewSubmittedNotificationEmailTemplate",
       };
-    default: ({
-      templateSettingName: "",
-      emailSettingName: "",
-    })
+    default:
+      return {
+        templateSettingName: "",
+        emailSettingName: "",
+      };
   }
 };
 

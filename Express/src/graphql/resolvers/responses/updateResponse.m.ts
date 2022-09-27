@@ -70,6 +70,12 @@ const updateResponse = async (
       organization._id,
     );
 
+    // Send notifications to assignees
+    if (accountableId) await Responses.customAssigneeNotification(response._id, [accountableId], 'accountable', organization);
+    if (responsibleId) await Responses.customAssigneeNotification(response._id, [responsibleId], 'responsible', organization);
+    if (contributorsIds) await Responses.customAssigneeNotification(response._id, contributorsIds, 'contributor', organization);
+    if (followersIds) await Responses.customAssigneeNotification(response._id, followersIds, 'follower', organization);
+
     return updatedResponse;
   } catch (error: any) {
     throw new Error(error);
