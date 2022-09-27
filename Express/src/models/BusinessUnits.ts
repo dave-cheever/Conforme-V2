@@ -3,19 +3,9 @@ import { GraphQLError } from 'graphql';
 import { model, models, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  IAuditValues,
-  IBusinessUnit,
-  IBusinessUnitModel,
-} from 'app-interfaces';
+import { IAuditValues, IBusinessUnit, IBusinessUnitModel } from 'app-interfaces';
 import { AuditLogs, Organizations, Users } from 'app-models';
-import {
-  genMetatags,
-  getAuditValueForString,
-  getAuditValueForUser,
-  getBasicElement,
-  removeDatabaseFields,
-} from 'app-utils';
+import { genMetatags, getAuditValueForString, getAuditValueForUser, getBasicElement, removeDatabaseFields } from 'app-utils';
 
 // custom validation for unique name
 async function validateUniqueName(this: any, name: string) {
@@ -48,11 +38,7 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
 });
 
 // This method is used to prepare values object for audit log
-const getAuditRecordValues = async ({
-  oldValues = {},
-  newValues = {},
-  organization,
-}): Promise<IAuditValues> => {
+const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organization }): Promise<IAuditValues> => {
   // It takes all the differencies between old and new object
   const differencies = diff(oldValues, newValues);
   const fields = Object.keys(differencies);
@@ -93,8 +79,7 @@ businessUnitSchema.statics.customCreate = async function (
   organizationId: string,
 ): Promise<IBusinessUnit> {
   // Add owner to the database if doesn't exist
-  if (businessUnit.ownerId)
-    await Users.customAssertUser({ userId: businessUnit.ownerId, organizationId });
+  if (businessUnit.ownerId) await Users.customAssertUser({ userId: businessUnit.ownerId, organizationId });
 
   const createdBusinessUnit = await this.create({
     ...businessUnit,
@@ -127,19 +112,24 @@ businessUnitSchema.statics.customCreate = async function (
 businessUnitSchema.statics.customFind = async function (
   selector: any = {},
   organizationId,
+  pagination: { limit?: number; offset?: number } = {},
 ): Promise<IBusinessUnit[]> {
-  const businessUnits = await this.find({
+  let businessUnitsRequested = this.find({
     ...selector,
     organizationId,
     'metatags.removedAt': { $eq: null },
-  }).lean();
+  });
+
+  if (pagination?.offset) businessUnitsRequested = businessUnitsRequested.skip(pagination.offset);
+
+  if (pagination?.limit) businessUnitsRequested = businessUnitsRequested.limit(pagination.limit);
+
+  const businessUnits = await businessUnitsRequested.lean();
+
   return businessUnits;
 };
 
-businessUnitSchema.statics.customFindOne = async function (
-  selector: any = {},
-  organizationId: string,
-): Promise<IBusinessUnit | null> {
+businessUnitSchema.statics.customFindOne = async function (selector: any = {}, organizationId: string): Promise<IBusinessUnit | null> {
   const businessUnit = await this.findOne({
     ...selector,
     organizationId,
@@ -148,9 +138,7 @@ businessUnitSchema.statics.customFindOne = async function (
   return businessUnit;
 };
 
-businessUnitSchema.statics.customFindById = async function (
-  _id: string,
-): Promise<IBusinessUnit> {
+businessUnitSchema.statics.customFindById = async function (_id: string): Promise<IBusinessUnit> {
   const businessUnit = await this.findOne({
     _id,
     'metatags.removedAt': { $eq: null },
@@ -180,8 +168,7 @@ businessUnitSchema.statics.customUpdateOne = async function (
   const updatedResult = await this.updateOne(selector, updatedBusinessUnit);
 
   // Add owner to the database if doesn't exist
-  if (updatedBusinessUnit.ownerId)
-    await Users.customAssertUser({ userId: updatedBusinessUnit.ownerId, organizationId });
+  if (updatedBusinessUnit.ownerId) await Users.customAssertUser({ userId: updatedBusinessUnit.ownerId, organizationId });
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
@@ -211,11 +198,7 @@ businessUnitSchema.statics.customUpdateOne = async function (
   return updatedBusinessUnit;
 };
 
-businessUnitSchema.statics.customDelete = async function (
-  selector: object = {},
-  userId: string,
-  organizationId: string,
-): Promise<number> {
+businessUnitSchema.statics.customDelete = async function (selector: object = {}, userId: string, organizationId: string): Promise<number> {
   const businessUnit = await this.customFindOne(selector, organizationId);
   if (!businessUnit) throw new GraphQLError("Business Unit doesn't exist");
 
@@ -251,17 +234,17 @@ businessUnitSchema.statics.customDelete = async function (
   return deletedResult?.modifiedCount;
 };
 
-businessUnitSchema.statics.customFindOneOrCreateOne = async function (selector: { [x: string]: string }, organizationId: string, userId: string) {
+businessUnitSchema.statics.customFindOneOrCreateOne = async function (
+  selector: { [x: string]: string },
+  organizationId: string,
+  userId: string,
+) {
   const businessUnit = await this.findOne({ name: selector.name, organizationId, 'metatags.removedAt': { $eq: null } }).lean();
   if (!businessUnit) {
     const newBusinessUnit = await this.customCreate(selector, userId, organizationId);
-    return { ...newBusinessUnit._doc, created: true }
+    return { ...newBusinessUnit._doc, created: true };
   }
-  return businessUnit
-}
-const businessModel = model<IBusinessUnit, IBusinessUnitModel>(
-  'BusinessUnit',
-  businessUnitSchema,
-  'businessUnits',
-);
+  return businessUnit;
+};
+const businessModel = model<IBusinessUnit, IBusinessUnitModel>('BusinessUnit', businessUnitSchema, 'businessUnits');
 export default businessModel;

@@ -19,10 +19,21 @@ export interface IUser extends IBase {
   accountableCount?: number;
   contributorCount?: number;
   followerCount?: number;
+
   completedAuditsCount?: number;
   upcomingAuditsCount?: number;
   missedAuditsCount?: number;
   totalAuditsCount?: number;
+
+  totalActionsCount?: number;
+  completedActionsCount?: number;
+  inProgressActionsCount?: number;
+  overdueActionsCount?: number;
+
+  openAnswersCount?: number;
+  resolvedAnswersCount?: number;
+  closedAnswersCount?: number;
+  totalAnswersCount?: number;
 }
 
 export interface IGraphUser {

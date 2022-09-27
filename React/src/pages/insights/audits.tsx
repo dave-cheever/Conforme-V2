@@ -1,22 +1,19 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
-import { Box, Flex, Grid, GridItem, Spacer, Text } from '@chakra-ui/react';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
 import { t } from 'i18next';
-import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { auditsInsightsTypes } from '../../bootstrap/config';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
-import AuditsUsersInsights from '../../components/Insights/AuditsUsersInsights';
-import InsightListItem from '../../components/Insights/InsightListItem';
 import InsightsCard from '../../components/Insights/InsightsCard';
 import InsightsChart from '../../components/Insights/InsightsChart';
+import InsightsDetailedStats from '../../components/Insights/InsightsDetailedStats';
 import Loader from '../../components/Loader';
-import UserAvatar from '../../components/UserAvatar';
-import useSort from '../../hooks/useSort';
+import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
+import { ILocation } from '../../interfaces/ILocation';
+import { IUser } from '../../interfaces/IUser';
 
 const GET_AUDITS_INSIGHTS = gql`
   query {
@@ -41,16 +38,13 @@ const GET_AUDITS_INSIGHTS = gql`
         dates
         counts
       }
-      topAuditors {
-        user {
-          _id
-          displayName
-          imgUrl
-        }
-        audits
-      }
     }
-    locations {
+  }
+`;
+
+const GET_LOCATIONS_AUDITS_INSIGHTS = gql`
+  query ($locationsPagination: LocationsPaginationInput) {
+    locations(locationsPagination: $locationsPagination) {
       _id
       name
       totalAuditsCount
@@ -58,7 +52,12 @@ const GET_AUDITS_INSIGHTS = gql`
       upcomingAuditsCount
       missedAuditsCount
     }
-    businessUnits {
+  }
+`;
+
+const GET_BUSINESS_UNITS_AUDITS_INSIGHTS = gql`
+  query ($businessUnitsPagination: BusinessUnitsPaginationInput) {
+    businessUnits(businessUnitsPagination: $businessUnitsPagination) {
       _id
       name
       totalAuditsCount
@@ -66,7 +65,12 @@ const GET_AUDITS_INSIGHTS = gql`
       upcomingAuditsCount
       missedAuditsCount
     }
-    users {
+  }
+`;
+
+const GET_USERS_AUDITS_INSIGHTS = gql`
+  query ($usersPagination: UsersPaginationInput) {
+    users(usersPagination: $usersPagination) {
       _id
       displayName
       imgUrl
@@ -80,6 +84,43 @@ const GET_AUDITS_INSIGHTS = gql`
 
 const AuditsInsights = () => {
   const { data, loading, error } = useQuery(GET_AUDITS_INSIGHTS);
+
+  const [getLocationsData, { data: locationsData }] = useLazyQuery(GET_LOCATIONS_AUDITS_INSIGHTS, {
+    variables: {
+      locationsPagination: {
+        limit: 5,
+        offset: 0,
+      },
+    },
+  });
+  const [locations, setLocations] = useState<ILocation[]>([]);
+  useEffect(() => setLocations((locations) => [...locations, ...(locationsData?.locations || [])]), [JSON.stringify(locationsData)]);
+
+  const [getBusinessUnitsData, { data: businessUnitsData }] = useLazyQuery(GET_BUSINESS_UNITS_AUDITS_INSIGHTS, {
+    variables: {
+      businessUnitsPagination: {
+        limit: 5,
+        offset: 0,
+      },
+    },
+  });
+  const [businessUnits, setBusinessUnits] = useState<IBusinessUnit[]>([]);
+  useEffect(
+    () => setBusinessUnits((businessUnits) => [...businessUnits, ...(businessUnitsData?.businessUnits || [])]),
+    [JSON.stringify(businessUnitsData)],
+  );
+
+  const [getUsersData, { data: usersData }] = useLazyQuery(GET_USERS_AUDITS_INSIGHTS, {
+    variables: {
+      usersPagination: {
+        limit: 5,
+        offset: 0,
+      },
+    },
+  });
+  const [users, setUsers] = useState<IUser[]>([]);
+  useEffect(() => setUsers((users) => [...users, ...(usersData?.users || [])]), [JSON.stringify(usersData)]);
+
   const [selectedAuditsStatsCount, setSelectedAuditsStatsCount] = useState('total');
   const auditsStatsCounts = useMemo(
     () => [
@@ -110,27 +151,12 @@ const AuditsInsights = () => {
     ],
     [data],
   );
-  const {
-    sortedData: locations,
-    sortOrder: locationsSortOrder,
-    sortType: locationsSortType,
-    setSortOrder: setLocationsSortOrder,
-    setSortType: setLocationsSortType,
-  } = useSort(data?.locations ?? []);
-  const {
-    sortedData: businessUnits,
-    sortOrder: businessUnitsSortOrder,
-    sortType: businessUnitsSortType,
-    setSortOrder: setBusinessUnitsSortOrder,
-    setSortType: setBusinessUnitsSortType,
-  } = useSort(data?.businessUnits ?? []);
-  const {
-    sortedData: users,
-    sortOrder: usersSortOrder,
-    sortType: usersSortType,
-    setSortOrder: setUsersSortOrder,
-    setSortType: setUsersSortType,
-  } = useSort(data?.users ?? [], 'totalAuditsCount');
+
+  useEffect(() => {
+    getLocationsData();
+    getBusinessUnitsData();
+    getUsersData();
+  }, []);
 
   const echartsOption = useMemo(
     () => ({
@@ -217,174 +243,15 @@ const AuditsInsights = () => {
             </Text>
           </Text>
           <InsightsChart option={echartsOption} />
-          <Text fontSize="xxl" fontWeight="bold" my={['15px', '25px']}>
-            Top {pluralize(t('auditor'))}
-          </Text>
-          <Grid gap="20px" templateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}>
-            {data?.auditsInsights?.topAuditors?.map((auditor) => (
-              <GridItem key={auditor.user._id} w="100%">
-                <Box bg="auditsInsights.auditors.bg" rounded="20px">
-                  <Flex align="center" px="20px" py="15px">
-                    <Flex align="center">
-                      <UserAvatar size="xs" userId={auditor.user._id} />
-                      <Text
-                        ml="10px"
-                        overflowX="hidden"
-                        textOverflow="ellipsis"
-                        title={auditor.user.displayName}
-                        w={['100px', '100px', 'full']}
-                        whiteSpace="nowrap"
-                      >
-                        {auditor.user.displayName}
-                      </Text>
-                    </Flex>
-                    <Spacer />
-                    <Text fontWeight="bold">{auditor.audits}</Text>
-                  </Flex>
-                </Box>
-              </GridItem>
-            ))}
-          </Grid>
-          <AuditsUsersInsights
-            auditsStatsCounts={auditsStatsCounts}
-            setSortOrder={setUsersSortOrder}
-            setSortType={setUsersSortType}
-            sortOrder={usersSortOrder}
-            sortType={usersSortType}
+          <InsightsDetailedStats
+            businessUnits={businessUnits}
+            insightsType="audits"
+            loadMoreBusinessUnits={getBusinessUnitsData}
+            loadMoreLocations={getLocationsData}
+            loadMoreUsers={getUsersData}
+            locations={locations}
             users={users}
           />
-          <Grid alignItems="stretch" gap="20px" my={['15px', '25px']} templateColumns={['1fr', 'repeat(2, 1fr)']}>
-            <GridItem h="100%" w="100%">
-              <Box bg="auditsInsights.list.bg" borderRadius="20px" pb={7} w="full">
-                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per location`}>
-                  <AdminTableHeaderElement
-                    label={capitalize(t('location'))}
-                    onClick={() => {
-                      setLocationsSortType('name');
-                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'name' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={locationsSortType === 'name'}
-                    sortOrder={locationsSortType === 'name' ? locationsSortOrder : undefined}
-                    w="60%"
-                  />
-                  <AdminTableHeaderElement
-                    label="T"
-                    onClick={() => {
-                      setLocationsSortType('totalAuditsCount');
-                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'totalAuditsCount' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={locationsSortType === 'totalAuditsCount'}
-                    sortOrder={locationsSortType === 'totalAuditsCount' ? locationsSortOrder : undefined}
-                    w="10%"
-                  />
-                  <AdminTableHeaderElement
-                    label="C"
-                    onClick={() => {
-                      setLocationsSortType('completedAuditsCount');
-                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'completedAuditsCount' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={locationsSortType === 'completedAuditsCount'}
-                    sortOrder={locationsSortType === 'completedAuditsCount' ? locationsSortOrder : undefined}
-                    w="10%"
-                  />
-                  <AdminTableHeaderElement
-                    label="U"
-                    onClick={() => {
-                      setLocationsSortType('upcomingAuditsCount');
-                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={locationsSortType === 'upcomingAuditsCount'}
-                    sortOrder={locationsSortType === 'upcomingAuditsCount' ? locationsSortOrder : undefined}
-                    w="10%"
-                  />
-                  <AdminTableHeaderElement
-                    label="M"
-                    onClick={() => {
-                      setLocationsSortType('missedAuditsCount');
-                      setLocationsSortOrder(locationsSortOrder === 'asc' && locationsSortType === 'missedAuditsCount' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={locationsSortType === 'missedAuditsCount'}
-                    sortOrder={locationsSortType === 'missedAuditsCount' ? locationsSortOrder : undefined}
-                    w="10%"
-                  />
-                </AdminTableHeader>
-                <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
-                  {locations?.map((location) => (
-                    <InsightListItem item={location} key={location._id} navigation="/admin/locations" />
-                  ))}
-                </Flex>
-              </Box>
-            </GridItem>
-            <GridItem h="100%" w="100%">
-              <Box bg="auditsInsights.list.bg" borderRadius="20px" pb={7} w="full">
-                <AdminTableHeader title={`${capitalize(pluralize(t('audit')))} per businessUnit`}>
-                  <AdminTableHeaderElement
-                    label={capitalize(t('business unit'))}
-                    onClick={() => {
-                      setBusinessUnitsSortType('name');
-                      setBusinessUnitsSortOrder(businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'name' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={businessUnitsSortType === 'name'}
-                    sortOrder={businessUnitsSortType === 'name' ? businessUnitsSortOrder : undefined}
-                    w="60%"
-                  />
-                  <AdminTableHeaderElement
-                    label="T"
-                    onClick={() => {
-                      setBusinessUnitsSortType('totalAuditsCount');
-                      setBusinessUnitsSortOrder(
-                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'totalAuditsCount' ? 'desc' : 'asc',
-                      );
-                    }}
-                    showSortingIcon={businessUnitsSortType === 'totalAuditsCount'}
-                    sortOrder={businessUnitsSortType === 'totalAuditsCount' ? businessUnitsSortOrder : undefined}
-                    w="10%"
-                  />
-                  <AdminTableHeaderElement
-                    label="C"
-                    onClick={() => {
-                      setBusinessUnitsSortType('completedAuditsCount');
-                      setBusinessUnitsSortOrder(
-                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'completedAuditsCount' ? 'desc' : 'asc',
-                      );
-                    }}
-                    showSortingIcon={businessUnitsSortType === 'completedAuditsCount'}
-                    sortOrder={businessUnitsSortType === 'completedAuditsCount' ? businessUnitsSortOrder : undefined}
-                    w="10%"
-                  />
-                  <AdminTableHeaderElement
-                    label="U"
-                    onClick={() => {
-                      setBusinessUnitsSortType('upcomingAuditsCount');
-                      setBusinessUnitsSortOrder(
-                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'upcomingAuditsCount' ? 'desc' : 'asc',
-                      );
-                    }}
-                    showSortingIcon={businessUnitsSortType === 'upcomingAuditsCount'}
-                    sortOrder={businessUnitsSortType === 'upcomingAuditsCount' ? businessUnitsSortOrder : undefined}
-                    w="10%"
-                  />
-                  <AdminTableHeaderElement
-                    label="M"
-                    onClick={() => {
-                      setBusinessUnitsSortType('missedAuditsCount');
-                      setBusinessUnitsSortOrder(
-                        businessUnitsSortOrder === 'asc' && businessUnitsSortType === 'missedAuditsCount' ? 'desc' : 'asc',
-                      );
-                    }}
-                    showSortingIcon={businessUnitsSortType === 'missedAuditsCount'}
-                    sortOrder={businessUnitsSortType === 'missedAuditsCount' ? businessUnitsSortOrder : undefined}
-                    w="10%"
-                  />
-                </AdminTableHeader>
-                <Flex flexDir="column" maxH="300px" overflowY="auto" w="full">
-                  {businessUnits?.map((businessUnit) => (
-                    <InsightListItem item={businessUnit} itemType="businessUnit" key={businessUnit._id} navigation="/admin/businessUnits" />
-                  ))}
-                </Flex>
-              </Box>
-            </GridItem>
-          </Grid>
         </>
       )}
     </Box>

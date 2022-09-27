@@ -54,6 +54,11 @@ export const locationsTypeDefs = `
   input LocationQueryInput {
     _id: ID!
   }
+
+  input LocationsPaginationInput {
+    limit: Int
+    offset: Int
+  }
   
   input LocationsAnswersCountInput {
     questionsCategoriesId: ID!
@@ -61,7 +66,7 @@ export const locationsTypeDefs = `
 `;
 
 export const locationsQueryDefs = `
-  locations(locationQueryInput: LocationQueryInput, locationsAnswersCountInput: LocationsAnswersCountInput): [Location!]!
+  locations(locationQueryInput: LocationQueryInput, locationsAnswersCountInput: LocationsAnswersCountInput, locationsPagination: LocationsPaginationInput): [Location!]!
 `;
 
 export const locationsMutationDefs = `

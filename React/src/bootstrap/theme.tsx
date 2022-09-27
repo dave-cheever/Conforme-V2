@@ -60,6 +60,7 @@ import { toggleStyles } from '../components/Forms/Toggle';
 import { headerStyles } from '../components/Header';
 import { auditsUsersInsightsStyles } from '../components/Insights/AuditsUsersInsights';
 import { insightsCardStyles } from '../components/Insights/InsightsCard';
+import { insightsDetailedTableStyles } from '../components/Insights/InsightsDetailedTable';
 import { locationsSelectorStyles } from '../components/LocationsSelector';
 import { moduleSwitcherStyles } from '../components/ModuleSwitcher';
 import { navigationBottomMobileStyles } from '../components/NavigationBottomMobile';
@@ -236,8 +237,9 @@ const getTheme = (organizationTheme?: any) => {
         ...headerStyles,
         ...historicalListItemStyles,
         ...historyPageStyles,
-        ...insightsStyles,
         ...insightsCardStyles,
+        ...insightsDetailedTableStyles,
+        ...insightsStyles,
         ...loginPageStyles,
         ...locationsStyles,
         ...locationsFormModalStyles,

@@ -1,12 +1,14 @@
 import actionsInsights from './actionsInsights.q';
 import answersInsights from './answersInsights.q';
 import auditsInsights from './auditsInsights.q';
+import totals from './totals.q';
 
 const insightsResolvers = {
   Query: {
     auditsInsights,
     actionsInsights,
     answersInsights,
+    totals,
   },
 };
 
@@ -67,12 +69,19 @@ export const insightsTypeDefs = `
     totalAnswersChart: Chart
     mostAddedBy: [TopAnswerCreator!]!
   }
+
+  type Totals {
+    users: Int
+    locations: Int
+    businessUnits: Int
+  }
 `;
 
 export const insightsQueryDefs = `
   auditsInsights: AuditsInsights!
   actionsInsights: ActionsInsights!
   answersInsights(answersInsightsQuery: AnswersInsightsQuery!): AnswersInsights!
+  totals: Totals!
 `;
 
 export default insightsResolvers;

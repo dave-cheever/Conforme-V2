@@ -10,6 +10,7 @@ import {
   CheckIcon,
   EditIcon,
   Home,
+  Insights,
   ListIcon,
   LocationIcon,
   RegulatoryBodyIcon,
@@ -67,15 +68,13 @@ const useConfig = () => {
       icon: CheckIcon,
       permission: 'actions.view',
     },
-
-    // Hidden for now
-    // {
-    //   type: 'menuItem',
-    //   label: 'Insights',
-    //   url: '/insights',
-    //   icon: Insights,
-    //   permission: 'insights.view',
-    // },
+    {
+      type: 'menuItem',
+      label: 'Insights',
+      url: '/insights',
+      icon: Insights,
+      permission: 'insights.view',
+    },
     {
       type: 'menuItem',
       label: 'Admin',
@@ -122,12 +121,13 @@ const useConfig = () => {
       permission: 'home.view',
     },
     {
-      //   type: "menuItem",
-      //   label: "Insights",
-      //   url: "/insights",
-      //   icon: Insights,
-      //   permission: "insights.view"
-      // }, {
+      type: 'menuItem',
+      label: 'Insights',
+      url: '/insights',
+      icon: Insights,
+      permission: 'insights.view',
+    },
+    {
       type: 'menuItem',
       label: 'Admin',
       url: '/admin',

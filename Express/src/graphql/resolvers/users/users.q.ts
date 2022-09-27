@@ -1,14 +1,14 @@
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Audits, Responses, Users } from 'app-models';
-import { doesPathExist } from 'app-utils';
+import { Actions, Answers, Audits, Responses, Users } from 'app-models';
+import { doesPathExist, getActionStatus, join } from 'app-utils';
 
-const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
+const users = async (_, { usersAnswersCountInput, usersPagination }, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['users', ...elements]);
 
   try {
     // Lookup all users in organisation
-    let users = await Users.customFindWithDetails({ selector: {}, organization });
+    let users = await Users.customFindWithDetails({ selector: {}, pagination: usersPagination, organization });
 
     // Lookup info for users in parallel using promise.all
     users = await Promise.all(
@@ -149,6 +149,228 @@ const users = async (_, __, { organization }, info: GraphQLResolveInfo) => {
                 { $count: 'count' },
               ])
             )[0].count;
+          }
+        }
+
+        if (shouldJoin(['totalActionsCount'])) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            pipeline.push({
+              $match: {
+                assigneeId: user._id,
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.totalActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
+          }
+        }
+
+        if (shouldJoin(['totalActionsCount'])) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            pipeline.push({
+              $match: {
+                assigneeId: user._id,
+                done: true,
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.totalActionsCount = (await Actions.aggregate(pipeline))?.[0]?._id ?? 0;
+          }
+        }
+
+        if (shouldJoin(['inProgressActionsCount'])) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            pipeline.push({
+              $match: {
+                assigneeId: user._id,
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.totalActionsCount =
+              (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'inProgress')?.length ?? 0;
+          }
+        }
+
+        if (shouldJoin(['overdueActionsCount'])) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            pipeline.push({
+              $match: {
+                assigneeId: user._id,
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.totalActionsCount =
+              (await Actions.aggregate(pipeline))?.filter((action) => getActionStatus(action) === 'overdue')?.length ?? 0;
+          }
+        }
+
+        if (shouldJoin(['totalAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            join({
+              pipeline,
+              collection: 'questions',
+              from: 'questionId',
+              to: 'question',
+            });
+
+            pipeline.push({
+              $match: {
+                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
+                'metatags.addedBy': user._id,
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.totalAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+          }
+        }
+
+        if (shouldJoin(['openAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            join({
+              pipeline,
+              collection: 'questions',
+              from: 'questionId',
+              to: 'question',
+            });
+
+            pipeline.push({
+              $match: {
+                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
+                'metatags.addedBy': user._id,
+                status: 'open',
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.openAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+          }
+        }
+
+        if (shouldJoin(['resolvedAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            join({
+              pipeline,
+              collection: 'questions',
+              from: 'questionId',
+              to: 'question',
+            });
+
+            pipeline.push({
+              $match: {
+                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
+                'metatags.addedBy': user._id,
+                status: 'resolved',
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.resolvedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
+          }
+        }
+
+        if (shouldJoin(['closedAnswersCount']) && usersAnswersCountInput?.questionsCategoriesId) {
+          for (const user of users) {
+            const pipeline: any[] = [
+              {
+                $match: {
+                  'metatags.removedAt': { $eq: null },
+                  organizationId: organization._id,
+                },
+              },
+            ];
+
+            join({
+              pipeline,
+              collection: 'questions',
+              from: 'questionId',
+              to: 'question',
+            });
+
+            pipeline.push({
+              $match: {
+                'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
+                'metatags.addedBy': user._id,
+                status: 'closed',
+              },
+            });
+
+            pipeline.push({ $count: '_id' });
+
+            user.closedAnswersCount = (await Answers.aggregate(pipeline))?.[0]?._id ?? 0;
           }
         }
 

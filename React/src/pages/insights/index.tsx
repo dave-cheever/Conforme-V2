@@ -68,7 +68,7 @@ const Insights = () => {
       ) : loading ? (
         <Loader center />
       ) : (
-        <Flex direction="column" pt="3" px={[4, 8]}>
+        <Flex direction="column" overflow="auto" pt="3" px={[4, 8]}>
           {device === 'tablet' && (
             <Flex mb={[2, 4]}>
               <Spacer />

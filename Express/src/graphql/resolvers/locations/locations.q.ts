@@ -3,11 +3,16 @@ import { GraphQLResolveInfo } from 'graphql';
 import { Actions, Answers, Audits, Locations, Responses, Users } from 'app-models';
 import { doesPathExist, getActionStatus, join } from 'app-utils';
 
-const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInput }, { organization }, info: GraphQLResolveInfo) => {
+const locations = async (
+  _,
+  { locationQueryInput = {}, locationsAnswersCountInput, locationsPagination },
+  { organization },
+  info: GraphQLResolveInfo,
+) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
 
   try {
-    let locations = await Locations.customFind(locationQueryInput, organization._id);
+    let locations = await Locations.customFind(locationQueryInput, organization._id, locationsPagination);
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       for (const location of locations) {
@@ -376,23 +381,21 @@ const locations = async (_, { locationQueryInput = {}, locationsAnswersCountInpu
 
     if (shouldJoin('owner')) {
       locations = await Promise.all(
-        locations.map(
-          async (location) => {
-            try {
-              if (!location.ownerId) return location;
-              return {
-                ...location,
-                owner: await Users.customFindByIdWithDetails({
-                  userId: location.ownerId,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.log(`Error occured for business unit with ID ${location._id}: ${e}`);
-              return location;
-            }
-          },
-        ),
+        locations.map(async (location) => {
+          try {
+            if (!location.ownerId) return location;
+            return {
+              ...location,
+              owner: await Users.customFindByIdWithDetails({
+                userId: location.ownerId,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for business unit with ID ${location._id}: ${e}`);
+            return location;
+          }
+        }),
       );
     }
 

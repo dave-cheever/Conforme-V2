@@ -54,13 +54,18 @@ export const businessUnitsTypeDefs = `
     _id: ID!
   }
 
+  input BusinessUnitsPaginationInput {
+    limit: Int
+    offset: Int
+  }
+
   input BusinessUnitsAnswersCountInput {
     questionsCategoriesId: ID!
   }
 `;
 
 export const businessUnitsQueryDefs = `
-  businessUnits(businessUnitQueryInput: BusinessUnitQueryInput, businessUnitsAnswersCountInput: BusinessUnitsAnswersCountInput): [BusinessUnit!]!
+  businessUnits(businessUnitQueryInput: BusinessUnitQueryInput, businessUnitsAnswersCountInput: BusinessUnitsAnswersCountInput, businessUnitsPagination: BusinessUnitsPaginationInput): [BusinessUnit!]!
 `;
 
 export const businessUnitsMutationDefs = `

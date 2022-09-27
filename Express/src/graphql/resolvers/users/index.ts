@@ -40,6 +40,14 @@ export const usersTypeDefs = `
     upcomingAuditsCount: Int
     missedAuditsCount: Int
     totalAuditsCount: Int
+    totalActionsCount: Int
+    completedActionsCount: Int
+    inProgressActionsCount: Int
+    overdueActionsCount: Int
+    totalAnswersCount: Int
+    openAnswersCount: Int
+    resolvedAnswersCount: Int
+    closedAnswersCount: Int
   }
   
   type Session {
@@ -55,6 +63,15 @@ export const usersTypeDefs = `
     usersIds: [String!]!
   }
 
+  input UsersAnswersCountInput {
+    questionsCategoriesId: ID!
+  }
+
+  input UsersPaginationInput {
+    limit: Int
+    offset: Int
+  }
+
   input UpdateUserModifyInput {
     _id: ID!
     defaultPage: String
@@ -63,7 +80,7 @@ export const usersTypeDefs = `
 
 export const usersQueryDefs = `
   session: Session!
-  users: [User!]!
+  users(usersAnswersCountInput: UsersAnswersCountInput, usersPagination: UsersPaginationInput): [User!]!
   searchUsers(searchQuery: SearchUserQuery): [User!]!
   usersById(userQueryInput: UserQueryInput): [User!]!
 `;

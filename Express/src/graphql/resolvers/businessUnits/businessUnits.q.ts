@@ -6,14 +6,14 @@ import { doesPathExist, getActionStatus, join } from 'app-utils';
 
 const businessUnits = async (
   _,
-  { businessUnitQueryInput = {}, businessUnitsAnswersCountInput },
+  { businessUnitQueryInput = {}, businessUnitsAnswersCountInput, businessUnitsPagination },
   { organization },
   info: GraphQLResolveInfo,
 ) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['businessUnits', element]);
 
   try {
-    let businessUnits = await BusinessUnits.customFind(businessUnitQueryInput, organization._id);
+    let businessUnits = await BusinessUnits.customFind(businessUnitQueryInput, organization._id, businessUnitsPagination);
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       businessUnits = await Promise.all(
@@ -398,23 +398,21 @@ const businessUnits = async (
 
     if (shouldJoin('owner')) {
       businessUnits = await Promise.all(
-        businessUnits.map(
-          async (businessUnit) => {
-            try {
-              if (!businessUnit.ownerId) return businessUnit;
-              return {
-                ...businessUnit,
-                owner: await Users.customFindByIdWithDetails({
-                  userId: businessUnit.ownerId,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.log(`Error occured for business unit with ID ${businessUnit._id}: ${e}`);
-              return businessUnit;
-            }
-          },
-        ),
+        businessUnits.map(async (businessUnit) => {
+          try {
+            if (!businessUnit.ownerId) return businessUnit;
+            return {
+              ...businessUnit,
+              owner: await Users.customFindByIdWithDetails({
+                userId: businessUnit.ownerId,
+                organization,
+              }),
+            };
+          } catch (e) {
+            console.log(`Error occured for business unit with ID ${businessUnit._id}: ${e}`);
+            return businessUnit;
+          }
+        }),
       );
     }
 

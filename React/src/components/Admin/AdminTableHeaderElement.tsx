@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Flex, Text, Tooltip } from '@chakra-ui/react';
 
 import { ArrowDownIcon, ArrowUpIcon } from '../../icons';

@@ -26,6 +26,7 @@ import AuditHistory from '../pages/audit/history';
 import AuditParticipants from '../pages/audit/participants';
 import Dashboard from '../pages/dashboard';
 import Help from '../pages/help';
+import Insights from '../pages/insights';
 import Licenses from '../pages/licenses';
 import Login from '../pages/login';
 import Logout from '../pages/logout';
@@ -142,14 +143,13 @@ const protectedRoutes: Array<IRoute> = [
     component: History,
     layout: ResponseLayout,
   },
-  // Hidden for now
-  // {
-  //   path: '/insights',
-  //   key: 'insights',
-  //   exact: true,
-  //   component: Insights,
-  //   layout: DefaultLayout,
-  // },
+  {
+    path: '/insights',
+    key: 'insights',
+    exact: true,
+    component: Insights,
+    layout: DefaultLayout,
+  },
   {
     path: '/licenses',
     key: 'licences',

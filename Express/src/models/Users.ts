@@ -57,19 +57,27 @@ userSchema.statics.customAdd = async function (user: IUser, organizationId: stri
 // This method includes user details from MS Graph
 userSchema.statics.customFindWithDetails = async function ({
   selector = {},
+  pagination = {},
   organization,
   awaitForResponse = false,
 }: {
   selector: any;
+  pagination?: { limit?: number; offset?: number };
   organization: IOrganization;
   awaitForResponse: boolean;
 }): Promise<IUser[]> {
   if (!organization) return [];
-  let users = await this.find({
+  let usersRequested = this.find({
     ...selector,
     organizationsIds: { $in: [organization._id] as any }, // There is TS issue inside mongoose library with $in type
     'metatags.removedAt': { $eq: null },
-  }).lean();
+  });
+
+  if (pagination?.offset) usersRequested = usersRequested.skip(pagination.offset);
+
+  if (pagination?.limit) usersRequested = usersRequested.limit(pagination.limit);
+
+  let users = await usersRequested.lean();
 
   // Refresh user data if it wasn't refreshed in the last 5 minutes
   const syncedUsersPromises = users.map(async (user) => {
