@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { gql, useMutation } from '@apollo/client';
 import {
@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { endOfDay, format } from 'date-fns';
 import { t } from 'i18next';
-import { capitalize, uniqBy } from 'lodash';
+import { capitalize } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { priorities, toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -68,11 +68,16 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
   const [saveAction] = useMutation(SAVE_ACTION);
   const [deleteAction] = useMutation(DELETE_ACTION);
 
-  const { control, formState, watch, reset, setValue } = useForm({
+  const { control, formState, watch, reset } = useForm({
     mode: 'all',
   });
   const { isValid } = formState;
   const values = watch();
+
+  const { append: appendAttachment, remove: removeAttachment } = useFieldArray({
+    control,
+    name: 'attachments',
+  });
 
   useEffect(() => {
     reset({
@@ -315,29 +320,14 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                         Add photos or files
                       </Text>
                       <DocumentUpload
-                        callback={async (uploaded) => {
-                          setValue(
-                            'attachments',
-                            uniqBy([...values.attachments, ...uploaded], (attachment) => attachment.id),
-                          );
-                        }}
+                        callback={async (uploaded) => appendAttachment(uploaded)}
                         elementId={action ? action._id : `temp-${uuidv4()}`}
                       />
                     </>
                   )}
                   {values.attachments?.map((attachment, i) => (
                     <Flex flexDir="column" key={i} mb={2}>
-                      <DocumentUploaded
-                        callback={async () => {
-                          setValue(
-                            'attachments',
-                            values.attachments.filter(({ id }) => id !== attachment.id),
-                          );
-                        }}
-                        document={attachment}
-                        downloadable
-                        removable
-                      />
+                      <DocumentUploaded callback={async () => removeAttachment(i)} document={attachment} downloadable removable />
                     </Flex>
                   ))}
                   {values.attachments?.length === 0 && !isUserPermittedToModify && <Text fontSize="sm">No uploaded attachments</Text>}
