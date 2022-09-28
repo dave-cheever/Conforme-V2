@@ -325,13 +325,13 @@ const WalkItemModal = ({
                   <GridItem>
                     {questionsCategory?.options && (
                       <Stack>
-                        {questionsCategory.options.map(({ name }) => (
+                        {questionsCategory.options.map(({ name, value }) => (
                           <Toggle
                             control={control}
                             disabled={isDisabled}
                             falseLabel={name}
                             key={name}
-                            name={`options[${name}]`}
+                            name={`options[${value}]`}
                             trueLabel={name}
                           />
                         ))}
