@@ -34,6 +34,7 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
       },
       name: String,
       value: String,
+      setting: String,
     },
   ],
   scope: {

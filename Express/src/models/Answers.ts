@@ -1,5 +1,6 @@
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
+import { capitalize } from 'lodash';
 import { model, Schema } from 'mongoose';
 import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
@@ -122,29 +123,27 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
     const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && answer.options![value]);
 
     await Promise.all(
-      questionsCategory.options?.map(async (option) => {
-        const emailAddress = await Settings.customFindOneByName(option.setting, organization._id);
+      notifications.map(async (notification) => {
+        const emailAddress = await Settings.customFindOneByName(notification.setting, organization._id);
         if (emailAddress) {
-          for (const notification of notifications) {
-            await Notifications.customCreate(
-              {
-                emailType: notification.value,
-                emailData: {
-                  subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
-                  template: 'HSENotificationEmailTemplate',
-                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
-                    }" target="_blank">here</a>`,
-                },
-                status: 'pending',
-                to: emailAddress.value,
-                scope: {
-                  moduleId: module?._id,
-                },
+          await Notifications.customCreate(
+            {
+              emailType: notification.value,
+              emailData: {
+                subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
+                template: 'HSENotificationEmailTemplate',
+                LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                  }" target="_blank">here</a>`,
               },
-              userId,
-              organizationId,
-            );
-          }
+              status: 'pending',
+              to: emailAddress.value,
+              scope: {
+                moduleId: module?._id,
+              },
+            },
+            userId,
+            organizationId,
+          );
         }
       }),
     );
@@ -311,29 +310,27 @@ answersSchema.statics.customUpdateOne = async function (
     );
 
     await Promise.all(
-      questionsCategory.options.map(async (option) => {
-        const emailAddress = await Settings.customFindOneByName(option.setting, organization._id);
+      notifications.map(async (notification) => {
+        const emailAddress = await Settings.customFindOneByName(notification.setting, organization._id);
         if (emailAddress) {
-          for (const notification of notifications) {
-            await Notifications.customCreate(
-              {
-                emailType: notification.value,
-                emailData: {
-                  subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
-                  template: 'HSENotificationEmailTemplate',
-                  LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
-                    }" target="_blank">here</a>`,
-                },
-                status: 'pending',
-                to: emailAddress.value,
-                scope: {
-                  moduleId: module?._id,
-                },
+          await Notifications.customCreate(
+            {
+              emailType: notification.value,
+              emailData: {
+                subject: `${capitalize(pluralize(questionsCategory.name, 1))} was updated`,
+                template: 'HSENotificationEmailTemplate',
+                LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                  }" target="_blank">here</a>`,
               },
-              userId,
-              organizationId,
-            );
-          }
+              status: 'pending',
+              to: emailAddress.value,
+              scope: {
+                moduleId: module?._id,
+              },
+            },
+            userId,
+            organizationId,
+          );
         }
       }),
     );
