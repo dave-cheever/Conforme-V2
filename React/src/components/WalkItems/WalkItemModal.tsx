@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { gql, useMutation } from '@apollo/client';
 import {
@@ -87,11 +87,16 @@ const WalkItemModal = ({
   const [saveQuestion] = useMutation(SAVE_QUESTION);
   const [saveAnswer] = useMutation(SAVE_ANSWER);
 
-  const { control, formState, watch, reset, setValue } = useForm({
+  const { control, formState, watch, reset } = useForm({
     mode: 'all',
   });
   const { isValid } = formState;
   const values = watch();
+
+  const { append: appendAttachment, remove: removeAttachment } = useFieldArray({
+    control,
+    name: 'attachments',
+  });
 
   useEffect(() => {
     reset({
@@ -346,9 +351,7 @@ const WalkItemModal = ({
                         Add photos or files
                       </Text>
                       <DocumentUpload
-                        callback={async (uploaded) => {
-                          setValue('attachments', [...values.attachments, ...uploaded]);
-                        }}
+                        callback={async (uploaded) => appendAttachment(uploaded)}
                         elementId={walkItem?._id || `temp-${question?._id}`}
                       />
                     </>
@@ -356,12 +359,7 @@ const WalkItemModal = ({
                   {values.attachments?.map((attachment, i) => (
                     <Flex flexDir="column" key={i} mb={2}>
                       <DocumentUploaded
-                        callback={async () => {
-                          setValue(
-                            'attachments',
-                            values.attachments.filter(({ id }) => id !== attachment.id),
-                          );
-                        }}
+                        callback={async () => removeAttachment(i)}
                         document={attachment}
                         downloadable
                         removable={!isDisabled}
