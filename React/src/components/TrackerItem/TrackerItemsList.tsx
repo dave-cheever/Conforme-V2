@@ -46,21 +46,21 @@ const TrackerListItems = ({
         <AdminTableHeaderElement
           label={capitalize(t('compliant'))}
           onClick={() => {
-            setSortType('status');
-            setSortOrder(sortOrder === 'asc' && sortType === 'status' ? 'desc' : 'asc');
+            setSortType('calculatedStatus');
+            setSortOrder(sortOrder === 'asc' && sortType === 'calculatedStatus' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'status'}
-          sortOrder={sortType === 'status' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'calculatedStatus'}
+          sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
           w="10%"
         />
         <AdminTableHeaderElement
           label="Regulatory body"
           onClick={() => {
-            setSortType('regulatoryBody.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'regulatoryBody.name' ? 'desc' : 'asc');
+            setSortType('trackerItem.regulatoryBody.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'trackerItem.regulatoryBody.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'regulatoryBody.name'}
-          sortOrder={sortType === 'regulatoryBody.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
+          sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
           w="18%"
         />
         <AdminTableHeaderElement

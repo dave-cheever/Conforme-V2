@@ -90,7 +90,7 @@ const TrackerItems = () => {
   const sortBy = [
     { label: 'Item name', key: 'trackerItem.name' },
     { label: 'Due for renewal', key: 'dueDate' },
-    { label: 'Compliant', key: 'status' },
+    { label: capitalize(t('compliant')), key: 'calculatedStatus' },
     { label: 'Regulatory body', key: 'trackerItem.regulatoryBody.name' },
     { label: 'Responsible', key: 'responsible.displayName' },
     { label: capitalize(t('business unit')), key: 'businessUnit.name' },
