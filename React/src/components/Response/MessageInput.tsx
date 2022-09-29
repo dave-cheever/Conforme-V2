@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { Mention, MentionsInput } from 'react-mentions';
 
@@ -28,6 +28,7 @@ const definedValidations: TDefinedValidations = {
 const MessageInput = ({ control, name, label, placeholder = '', validations = {}, disabled = false, onAction }: IMessageInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   const { chatParticipants } = useChatContext();
+  const mentionRef = useRef<HTMLInputElement>(null);
   const onKeyDown = (e) => {
     if (e.shiftKey && e.key === 'Enter') {
       // This should change the line
@@ -35,9 +36,8 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
     }
 
     if (e.key === 'Enter') {
-      // prevent default behaviour 
-      e.preventDefault()
-
+      // prevent default behaviour
+      e.preventDefault();
       onAction();
     }
   };
@@ -54,8 +54,10 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
             <MentionsInput
               allowSpaceInQuery
               allowSuggestionsAboveCursor
+              autoComplete="off"
               className="mentions"
               disabled={disabled}
+              inputRef={mentionRef}
               onBlur={onBlur}
               onChange={onChange}
               onKeyDown={onKeyDown}
@@ -63,9 +65,9 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
               value={value}
             >
               <Mention
+                appendSpaceOnAdd
                 className="mentions__mention"
                 data={chatParticipants}
-                markup="@@@(__display__)[__id__]"
                 renderSuggestion={(highlightedDisplay) => (
                   <Flex color="mentionListItem.color" fontSize="14px" pl="13px" py="10px" w="full">
                     <Avatar name={highlightedDisplay?.displayName} size="xs" />

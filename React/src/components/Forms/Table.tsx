@@ -10,6 +10,7 @@ import { PlusIcon, Trashcan } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { IFormFieldHeadings } from '../../interfaces/IForm';
 import { TDefinedValidations } from '../../interfaces/TValidations';
+import { emailRegExp } from '../../utils/regular-expressions';
 
 interface ITable extends IField {
   placeholder?: string;
@@ -30,8 +31,7 @@ const definedValidations: TDefinedValidations = {
     if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
   isEmail: (label, validationValue, value) => {
-    const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!value.match(regexEmail)) return 'Invalid Email';
+    if (!value.match(emailRegExp)) return 'Invalid Email';
   },
 };
 

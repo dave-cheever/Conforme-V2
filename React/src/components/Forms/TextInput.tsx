@@ -7,6 +7,7 @@ import useValidate from '../../hooks/useValidate';
 import { Asterisk } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
+import { emailRegExp } from '../../utils/regular-expressions';
 
 interface ITextInput extends IField {
   placeholder?: string;
@@ -37,8 +38,7 @@ const definedValidations: TDefinedValidations = {
     if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
   isEmail: (label, validationValue, value) => {
-    const regexEmail = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!value.match(regexEmail)) return 'Invalid Email';
+    if (!value.match(emailRegExp)) return 'Invalid Email';
   },
   isUrl: (label, validationValue, value) => {
     const regex = new RegExp('(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)');

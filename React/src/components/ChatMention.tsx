@@ -11,13 +11,13 @@ const ChatMention = ({ tag }) => {
   const [userName, setUserName] = useState<string>();
 
   useEffect(() => {
-    setDisplayTag(tag.split('@@@(')[1].split(')[')[0]);
+    setDisplayTag(tag.split('@[')[1]?.split('](')[0]);
     try {
-      const userId = tag.split('@@@(')[1].split(')[')[1].slice(0, -1);
+      const userId = tag.split('@[')[1]?.split('](')[1];
       setUserId(userId);
       const userName = getUpdatedDisplayName(userId);
       setUserName(userName);
-    } catch (e) { }
+    } catch (e) {}
   }, [getUpdatedDisplayName, tag]);
 
   if (!userId) return <Text>{displayTag}</Text>;

@@ -12,6 +12,7 @@ import isToday from 'date-fns/isToday';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import { IComment } from '../interfaces/IComment';
+import { chatMentionRegExp } from '../utils/regular-expressions';
 import Can from './can';
 import ChatMention from './ChatMention';
 import ChatConfirmDeleteModal from './ConfirmDeleteModal';
@@ -83,11 +84,7 @@ const ChatItem = ({ onAction, comment }: IChatItem) => {
         </Box>
         <Box
           bg={
-            isChatOwner
-              ? 'chatItem.sentBg'
-              : device === 'mobile' || device === 'tablet'
-                ? 'chatItem.receivedBgTM'
-                : 'chatItem.receivedBg'
+            isChatOwner ? 'chatItem.sentBg' : device === 'mobile' || device === 'tablet' ? 'chatItem.receivedBgTM' : 'chatItem.receivedBg'
           }
           borderRadius="10px"
           color={isChatOwner ? 'chatItem.sentColor' : 'chatItem.receivedColor'}
@@ -96,7 +93,7 @@ const ChatItem = ({ onAction, comment }: IChatItem) => {
           px="12px"
           py="8px"
           w="full"
-          wordBreak='break-word'
+          wordBreak="break-word"
         >
           <Flex h={6} justify="space-between">
             <Text color="chatItem.dateColor" fontSize="ssm" fontWeight="semi_medium" mb="10px">
@@ -120,7 +117,7 @@ const ChatItem = ({ onAction, comment }: IChatItem) => {
               )}
             />
           </Flex>
-          {reactStringReplace(text, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+          {reactStringReplace(text, chatMentionRegExp, (match, i) => (
             <ChatMention key={i} tag={match} />
           ))}
         </Box>
