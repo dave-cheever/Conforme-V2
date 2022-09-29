@@ -43,7 +43,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
-                pr={2}
+                pr={1}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -62,7 +62,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
-                pr={2}
+                pr={1}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -80,7 +80,7 @@ const WalkItemsListItem = ({
               lineHeight="18px"
               noOfLines={1}
               opacity="1"
-              pr={2}
+              pr={1}
               pt="3px"
               textOverflow="ellipsis"
             >
@@ -97,7 +97,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
-                pr={2}
+                pr={1}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -116,6 +116,7 @@ const WalkItemsListItem = ({
                 lineHeight="18px"
                 noOfLines={1}
                 opacity="1"
+                pr={1}
                 pt="3px"
                 textOverflow="ellipsis"
               >
@@ -133,7 +134,7 @@ const WalkItemsListItem = ({
               lineHeight="18px"
               noOfLines={1}
               opacity="1"
-              pr={2}
+              pr={1}
               pt="3px"
               textOverflow="ellipsis"
             >
@@ -142,7 +143,7 @@ const WalkItemsListItem = ({
           </Flex>
           <Tooltip label={answer.addedBy?.displayName}>
             <Box w="12%">
-              <Skeleton isLoaded={!!answer} pr={2} rounded="full">
+              <Skeleton isLoaded={!!answer} pr={1} rounded="full">
                 {answer.addedBy ? (
                   <Flex align="center" direction="row">
                     <Avatar name={answer.addedBy?.displayName} size="xs" src={answer.addedBy?.imgUrl} />
@@ -170,16 +171,16 @@ const WalkItemsListItem = ({
           </Tooltip>
           <Tooltip label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
             <Flex w="8%">
-              <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1">
+              <Flex color="walkItemsList.fontColor" fontSize="smm" fontWeight="400" opacity="1" pr={1}>
                 {answer?.metatags?.addedAt ? (
                   format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
                 ) : (
-                  <Flex fontStyle="italic">No added date</Flex>
+                  <Flex fontStyle="italic" pr={1}>No added date</Flex>
                 )}
               </Flex>
             </Flex>
           </Tooltip>
-          <Flex justify="flex-end" w="6%">
+          <Flex justify="flex-end" pr={1} w="6%">
             <IconButton
               _hover={{ opacity: 0.7 }}
               aria-label="Delete"
