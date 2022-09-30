@@ -114,6 +114,11 @@ const TextInput = ({
                 </Box>
               </Flex>
             )}
+            {isUrl && placeholder && (
+              <Box fontSize="ssm" mb={2}>
+                {placeholder}
+              </Box>
+            )}
             {!readMode && (
               <InputGroup>
                 <Input
@@ -142,7 +147,7 @@ const TextInput = ({
                   h="40px"
                   isDisabled={disabled}
                   maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
-                  placeholder={placeholder}
+                  placeholder={!isUrl ? placeholder : ''}
                   {...field}
                 />
                 {isUrl && (

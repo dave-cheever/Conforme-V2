@@ -24,7 +24,7 @@ const MultipleChoices = ({
       <Flex align="center" justify="space-between" mb="none" pb={2} pt={2}>
         <Box color="multipleChoices.labelFont.normal" fontSize="ssm" fontWeight="bold" left="none" position="static" zIndex={2}>
           {label}
-          {required && (
+          {required && !readMode && (
             <Asterisk fill="questionListElement.iconAsterisk" h="9px" mb="8px" ml="5px" stroke="questionListElement.iconAsterisk" w="9px" />
           )}{' '}
           {tooltip && (

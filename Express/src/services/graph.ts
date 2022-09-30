@@ -138,17 +138,17 @@ const getUsers = async ({
         `;
       }
     }
-    let res = await graph.users.filter(filterQuery).get();
-
+    let res = await graph.users.filter(filterQuery).select('id', 'givenName', 'surname', 'displayName', 'userPrincipalName', 'jobTitle', 'department').get();
     if (filterByJobTitle && filterByJobTitle.length > 0) res = res.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
 
-    return res.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle }) => ({
+    return res.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle, department }) => ({
       _id: id,
       displayName,
       firstName: givenName,
       lastName: surname,
       email: userPrincipalName,
       jobTitle,
+      department,
       imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${id}`,
     }));
   } catch (e: any) {
