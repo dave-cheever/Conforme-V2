@@ -70,6 +70,7 @@ import MinusIcon from './MinusIcon';
 import Move from './Move';
 import NotesIcon from './NotesIcon';
 import NotificationIcon from './NotificationIcon';
+import ObservationEye from './ObservationEye';
 import OpenExternalIcon from './OpenExternalIcon';
 import OpenMenuArrow from './OpenMenuArrow';
 import PlusIcon from './PlusIcon';
@@ -183,6 +184,7 @@ export {
   Move,
   NotesIcon,
   NotificationIcon,
+  ObservationEye,
   OpenExternalIcon,
   OpenMenuArrow,
   PlusIcon,

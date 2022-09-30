@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { CheckIcon, Eye, WarningIcon } from '../../icons';
+import { CheckIcon, ObservationEye, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 const GET_AUDIT_ANSWERS_COUNT = gql`
@@ -47,9 +47,9 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         </Flex>
         {!loading && !error && data && (
           <Tooltip label="Observations">
-            <Flex fontSize="11px" fontWeight="700">
-              <Eye color="auditSquare.eyeIconColor" h="18px" w="18px" />
-              <Text as="span" color="auditSquare.nameFontColor" ml={1}>
+            <Flex align="center" fontSize="11px" fontWeight="700">
+              <ObservationEye fill="none" h="18px" stroke="auditSquare.eyeIconColor" w="18px" />
+              <Text as="span" color="auditSquare.nameFontColor" ml="1.5">
                 {data?.auditAnswersCount}
               </Text>
             </Flex>

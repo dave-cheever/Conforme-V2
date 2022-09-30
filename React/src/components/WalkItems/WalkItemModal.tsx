@@ -154,7 +154,7 @@ const WalkItemModal = ({
             </Flex>
             <Flex alignItems="center">
               <ShareButton
-                ariaLabel="walk-item-share-button"
+                ariaLabel={`${capitalize(t('question'))}-share-button`}
                 onClick={() => {
                   setShareItemUrl(`walk-items?id=${walkItem?._id}`);
                   setShareItemName(walkItem?.question?.question);

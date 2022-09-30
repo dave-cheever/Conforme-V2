@@ -13,6 +13,7 @@ import {
   Insights,
   ListIcon,
   LocationIcon,
+  ObservationEye,
   RegulatoryBodyIcon,
   SiteIcon,
   TeamsIcon,
@@ -58,7 +59,7 @@ const useConfig = () => {
       type: 'menuItem',
       label: capitalize(pluralize(t('question'))),
       url: '/walk-items',
-      icon: ListIcon,
+      icon: ObservationEye,
       permission: 'questions.view',
     },
     {
