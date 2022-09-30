@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { CheckIcon, MenuIcon, WarningIcon } from '../../icons';
+import { CheckIcon, Eye, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 const GET_AUDIT_ANSWERS_COUNT = gql`
@@ -46,12 +46,14 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           </Box>
         </Flex>
         {!loading && !error && data && (
-          <Flex fontSize="11px" fontWeight="700">
-            <MenuIcon fill="transparent" h="16px" ml={4} stroke="#D2D1D7" w="16px" />
-            <Text as="span" color="auditSquare.nameFontColor" ml={1}>
-              {data?.auditAnswersCount}
-            </Text>
-          </Flex>
+          <Tooltip label="Observations">
+            <Flex fontSize="11px" fontWeight="700">
+              <Eye color="auditSquare.eyeIconColor" h="18px" w="18px" />
+              <Text as="span" color="auditSquare.nameFontColor" ml={1}>
+                {data?.auditAnswersCount}
+              </Text>
+            </Flex>
+          </Tooltip>
         )}
       </Flex>
       <Flex align="center" h="52px" ml={2} mt={2} position="relative" w="full">
@@ -127,5 +129,6 @@ export const auditSquareStyles = {
     categoryFontColor: '#818197',
     nameFontColor: '#282F36',
     buttonBg: '#F0F2F5',
+    eyeIconColor: '#D2D1D7',
   },
 };
