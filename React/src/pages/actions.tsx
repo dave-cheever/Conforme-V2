@@ -239,6 +239,12 @@ const Actions = () => {
     }
   }, [data?.actions, user]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setQuickFilter('status', ['open']);
+    }, 101);
+  }, []);
+
   const csvHeaders = [
     { label: '_id', key: '_id' },
     { label: 'Title', key: 'title' },
