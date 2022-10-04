@@ -128,8 +128,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
               if (isEmpty(data) || (!('Title/Description' in data) && !('Owner' in data))) continue
               await log(`\n\n\tParsing row ${rowIndex + index + 2}`);
 
-              // if 'Owner' or 'Title/Description' are not in the sheet it will not insert them as it is required to create one
-              if (!('Owner' in data) || typeof data.Owner !== 'string') throw new Error(`Document does not contain "Owner" header`);
+              // if 'Title/Description' not in the spreadsheet, document won't be created as it is required to create one
               if (!('Title/Description' in data) || typeof data['Title/Description'] !== 'string') throw new Error(`Document does not contain "Title/Description" header`);
 
               await log(`\n\tDocument name: ${data['Title/Description']}`);
@@ -152,15 +151,10 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 await log('found in the tenant');
                 stats.ownerFoundCount += 1;
               }
-              if (isEmpty(owner) && isEmpty(user)) throw new Error(`Default owner ("${defaultOwner}") can not be find in the tenant`);
+              if (isEmpty(owner) && isEmpty(user)) throw new Error(`Default owner ("${defaultOwner}") can not be found in the tenant`);
 
               // Find business unit or create new one if doesn't yet exist
-              let businessUnitName = owner?.department || user?.department;
-              if (!businessUnitName) {
-                if (!('Business/Centre' in data) || typeof data['Business/Centre'] !== 'string')
-                  throw new Error(`Document does not contain "Business/Centre" header and owner doesn't have Department value`);
-                businessUnitName = data['Business/Centre'];
-              }
+              const businessUnitName = owner?.department || user?.department || data['Business/Centre'] || 'No department';
               const businessUnit = await BusinessUnits.customFindOneOrCreateOne(
                 {
                   name: businessUnitName,
@@ -282,7 +276,9 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 lastCompletionDate,
                 dueDate,
                 status: 'submitted',
-              }, owner?._id || user?._id, organization._id)
+                accountableId: owner?._id || user?._id,
+                responsibleId: owner?._id || user?._id,
+              }, owner?._id || user?._id, organization._id);
 
               await log('\n\tResponses synchronized succesfully');
               insertedTrackerItem.push(true);

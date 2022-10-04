@@ -160,7 +160,7 @@ const TextInput = ({
             {readMode && (
               <Stack spacing={2}>
                 <Flex align="center" fontSize="smm" minH="40px" wordBreak="break-all">
-                  {value}
+                  {value || (isUrl && 'No link provided')}
                 </Flex>
                 {isUrl && <URLButton />}
               </Stack>
