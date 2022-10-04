@@ -60,15 +60,28 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
           >
             <Icon
               as={icon}
-              h="15px"
-              stroke={
-                menuItem.subSections
-                  ? isPathActive(url)
+              fill={
+                menuItem.url == '/walk-items'
+                  ? menuItem.subSections
+                    ? isPathActive(url)
+                      ? 'navigationLeftItem.selectedIconStroke'
+                      : 'navigationLeftItem.unselectedIconStroke'
+                    : isPathActive(url, { exact: true })
                     ? 'navigationLeftItem.selectedIconStroke'
                     : 'navigationLeftItem.unselectedIconStroke'
-                  : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
+                  : ''
+              }
+              h="15px"
+              stroke={
+                menuItem.url != '/walk-items'
+                  ? menuItem.subSections
+                    ? isPathActive(url)
+                      ? 'navigationLeftItem.selectedIconStroke'
+                      : 'navigationLeftItem.unselectedIconStroke'
+                    : isPathActive(url, { exact: true })
+                    ? 'navigationLeftItem.selectedIconStroke'
+                    : 'navigationLeftItem.unselectedIconStroke'
+                  : ''
               }
               w="15px"
             />

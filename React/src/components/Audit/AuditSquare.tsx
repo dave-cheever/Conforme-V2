@@ -48,8 +48,8 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
         {!loading && !error && data && (
           <Tooltip label="Observations">
             <Flex align="center" fontSize="11px" fontWeight="700">
-              <ObservationEye fill="none" h="18px" stroke="auditSquare.eyeIconColor" w="18px" />
-              <Text as="span" color="auditSquare.nameFontColor" ml="1.5">
+              <ObservationEye fill="auditSquare.eyeIconColor" h="16px" w="16px" />
+              <Text as="span" color="auditSquare.nameFontColor" ml="2">
                 {data?.auditAnswersCount}
               </Text>
             </Flex>

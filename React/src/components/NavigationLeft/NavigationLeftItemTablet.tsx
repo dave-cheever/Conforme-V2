@@ -75,15 +75,28 @@ const NavigationLeftItemTablet = ({
           >
             <Icon
               as={icon}
+              fill={
+                menuItem.url == '/walk-items'
+                  ? menuItem.subSections
+                    ? isPathActive(url)
+                      ? 'navigationLeftItem.selectedIconStroke'
+                      : 'navigationLeftItem.unselectedIconStroke'
+                    : isPathActive(url, { exact: true })
+                    ? 'navigationLeftItem.selectedIconStroke'
+                    : 'navigationLeftItem.unselectedIconStroke'
+                  : ''
+              }
               h="15px"
               stroke={
-                menuItem.subSections
-                  ? isPathActive(url)
-                    ? 'navigationLeftItemTablet.selectedIconStroke'
-                    : 'navigationLeftItemTablet.unselectedIconStroke'
-                  : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItemTablet.selectedIconStroke'
-                  : 'navigationLeftItemTablet.unselectedIconStroke'
+                menuItem.url != '/walk-items'
+                  ? menuItem.subSections
+                    ? isPathActive(url)
+                      ? 'navigationLeftItem.selectedIconStroke'
+                      : 'navigationLeftItem.unselectedIconStroke'
+                    : isPathActive(url, { exact: true })
+                    ? 'navigationLeftItem.selectedIconStroke'
+                    : 'navigationLeftItem.unselectedIconStroke'
+                  : ''
               }
               w="15px"
             />
