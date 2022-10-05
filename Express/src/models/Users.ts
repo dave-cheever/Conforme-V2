@@ -1,4 +1,4 @@
-import { isBefore, subMinutes } from 'date-fns';
+import { isBefore, subHours } from 'date-fns';
 import { model, Schema } from 'mongoose';
 
 import { IOrganization, IUser, IUserModel } from 'app-interfaces';
@@ -81,7 +81,7 @@ userSchema.statics.customFindWithDetails = async function ({
 
   // Refresh user data if it wasn't refreshed in the last 5 minutes
   const syncedUsersPromises = users.map(async (user) => {
-    if (isBefore(new Date(user.metatags?.updatedAt || 0), subMinutes(new Date(), 5))) {
+    if (isBefore(new Date(user.metatags?.updatedAt || 0), subHours(new Date(), 24))) {
       const userDetails = await GraphService.getUserData({ userId: user._id, organization });
       const managerId = await GraphService.getLineManagerId({ userId: user._id, organization });
 
