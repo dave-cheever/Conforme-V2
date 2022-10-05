@@ -28,7 +28,6 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
         },
       },
     ];
-
     if (shouldJoin(['location']) || !isPermitted({ user, action: 'audits.viewAll' })) {
       join({
         pipeline,
@@ -195,6 +194,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           };
           break;
         case 'thisYear':
+        case 'allMonths':
           $match = {
             $and: [
               {

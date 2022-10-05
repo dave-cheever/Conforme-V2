@@ -123,6 +123,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
           };
           break;
         case 'thisYear':
+        case 'allMonths':
           $match = {
             $and: [
               {

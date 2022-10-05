@@ -18,6 +18,7 @@ export const auditsFilterDates = {
   thisWeek: 'This week',
   thisMonth: 'This month',
   thisYear: 'This year',
+  allMonths: '12 months',
   exactDate: 'Exact date',
   dateRange: 'Date Range',
 };
@@ -27,6 +28,7 @@ export const actionsFilterDates = {
   thisWeek: 'This week',
   thisMonth: 'This month',
   thisYear: 'This year',
+  allMonths: '12 months',
   exactDate: 'Exact date',
   dateRange: 'Date Range',
 };
@@ -220,7 +222,6 @@ const useFiltersUtils = () => {
       // Set new filter
       filters[filterName] = filter;
     }
-
     return filters;
   };
 
