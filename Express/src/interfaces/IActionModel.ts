@@ -21,4 +21,9 @@ export interface IActionModel extends IBaseModel<IAction> {
    * This function sends an email when action is completed
    */
   customCompletedNotification: (actionId: string, organization: IOrganization) => Promise<void>;
+
+  /**
+   * This function changes status of Answer to "close" if all actions related to it are closed
+   */
+  customResolveAnswer: (answerId: string, userId: string, organization: IOrganization) => Promise<void>;
 }

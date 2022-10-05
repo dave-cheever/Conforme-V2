@@ -28,8 +28,11 @@ const updateAction = async (_, { actionInput }, { authorize, organization }) => 
     if (actionInput.assigneeId && actionInput.assigneeId !== action.assigneeId)
       Actions.customAssigneeNotification(action._id, organization);
 
-    // Send notification if action was completed
-    if (updatedAction.status === 'closed') Actions.customCompletedNotification(action._id, organization);
+    // Send notification if action was completed and close walk-item if all actions related to it is closed
+    if (updatedAction.status === 'closed') {
+      Actions.customResolveAnswer(action?.scope?._id || '', user._id, organization);
+      Actions.customCompletedNotification(action._id, organization);
+    }
 
     return updatedAction;
   } catch (err: any) {
