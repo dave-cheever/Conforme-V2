@@ -14,6 +14,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { chatMentionRegExp } from '../utils/regular-expressions';
 import ChatMention from './ChatMention';
 
 interface IChatConfirmDeleteModal {
@@ -38,7 +39,7 @@ const ChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, onAction 
         <Stack>
           <Text>Are you sure you want to delete the following message?</Text>
           <Text fontStyle="italic" fontWeight="bold">
-            {reactStringReplace(message, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+            {reactStringReplace(message, chatMentionRegExp, (match, i) => (
               <ChatMention key={i} tag={match} />
             ))}
           </Text>

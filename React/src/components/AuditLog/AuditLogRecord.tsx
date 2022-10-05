@@ -15,6 +15,7 @@ import {
   getPathByCollectionName,
   getSingularCollectionName,
 } from '../../utils/helpers';
+import { chatMentionRegExp } from '../../utils/regular-expressions';
 import ChatMention from '../ChatMention';
 
 const GET_USERS_BY_ID = gql`
@@ -78,14 +79,14 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
             {getFieldNameByAction(audit.action)} {getSingularCollectionName(audit.coll)}{' '}
             {audit.action === 'add' && audit.coll === 'comments' && (
               <Text as="span" fontWeight="light" pl={2}>
-                {reactStringReplace(audit.values.text?.new?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+                {reactStringReplace(audit.values.text?.new?.value, chatMentionRegExp, (match, i) => (
                   <ChatMention key={i} tag={match} />
                 ))}
               </Text>
             )}
             {audit.action === 'delete' && audit.coll === 'comments' && (
               <Text as="span" fontWeight="light" pl={2}>
-                {reactStringReplace(audit.values.text?.old?.value, /(@@@\([\w+( +\w+)*$]+\)\[[\w-]+\])/g, (match, i) => (
+                {reactStringReplace(audit.values.text?.old?.value, chatMentionRegExp, (match, i) => (
                   <ChatMention key={i} tag={match} />
                 ))}
               </Text>
