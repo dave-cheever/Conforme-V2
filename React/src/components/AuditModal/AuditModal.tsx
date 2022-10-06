@@ -256,7 +256,15 @@ const AuditModal = ({ refetch }) => {
               <Button
                 bg="auditModal.tabs.bottomButton.bg"
                 color="auditModal.tabs.bottomButton.color"
-                disabled={!audit.walkType || !audit.locationId || !audit.businessUnitId}
+                disabled={
+                  !audit.walkType ||
+                  !audit.locationId ||
+                  !!(
+                    audit.auditTypeId &&
+                    auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' &&
+                    !audit.businessUnitId
+                  )
+                }
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
