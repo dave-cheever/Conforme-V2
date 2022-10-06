@@ -30,6 +30,7 @@ const GET_AUDITS = gql`
   query ($auditQueryInput: AuditQueryInput) {
     audits(auditQueryInput: $auditQueryInput) {
       _id
+      reference
       walkType
       dueDate
       completedDate

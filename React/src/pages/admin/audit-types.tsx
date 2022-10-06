@@ -28,6 +28,7 @@ const GET_AUDIT_TYPES = gql`
       frequency
       startingDate
       view
+      businessUnitScope
       recurring
       sections {
         type
@@ -68,6 +69,7 @@ const defaultValues: Partial<Omit<IAuditType, 'recurring'> & { recurring: string
   sections: [],
   view: 'categorized',
   recurring: 'yes',
+  businessUnitScope: undefined,
 };
 
 const AuditTypes = () => {
@@ -141,6 +143,7 @@ const AuditTypes = () => {
       sections: auditType.sections,
       view: auditType.view,
       recurring: auditType.recurring ? 'yes' : 'no',
+      businessUnitScope: auditType.businessUnitScope,
     });
   };
 
@@ -178,6 +181,7 @@ const AuditTypes = () => {
               sections: auditType.sections,
               view: auditType.view,
               recurring: auditType.recurring === 'yes',
+              businessUnitScope: auditType.businessUnitScope,
             },
           },
         });
@@ -308,6 +312,19 @@ const AuditTypes = () => {
             validations={{
               notEmpty: true,
             }}
+            variant="secondaryVariant"
+          />
+          <Dropdown
+            control={control}
+            help='Defines the scope of Business Unit in audit. If "audit" then during audit creation user will have to pick Business Unit. If "answer" then during answer creation user will have to pick Business Unit.'
+            label="Business unit scope"
+            name="businessUnitScope"
+            options={[
+              { value: undefined, label: 'None' },
+              { value: 'audit', label: 'Audit' },
+              { value: 'answer', label: 'Answer' },
+            ]}
+            required
             variant="secondaryVariant"
           />
           <Dropdown

@@ -14,6 +14,7 @@ import { IUser } from './IUser';
 import { TDeepPartial } from './TDeepPartial';
 
 export interface IAuditContext {
+  businessUnits: IBusinessUnit[];
   audit: IAudit;
   auditType: IAuditType;
   auditor: IUser;

@@ -1,4 +1,3 @@
-import { IAuditOption } from './IAuditOption';
 import { IAuditSection } from './IAuditSection';
 import { IBase } from './IBase';
 import { IQuestionsCategory } from './IQuestionsCategory';
@@ -11,7 +10,13 @@ export interface IAuditType extends IBase {
   startingDate: Date;
   recurring: boolean;
   sections: IAuditSection[];
-  options?: IAuditOption[];
+
+  /**
+   * Defines the scope of Business Unit in audit.
+   * If "audit" then during audit creation user will have to pick Business Unit.
+   * If "answer" then during answer creation user will have to pick Business Unit.
+   */
+  businessUnitScope?: 'audit' | 'answer';
 
   // Additional fields
   questionsCategories: IQuestionsCategory[];

@@ -40,6 +40,10 @@ const auditTypesSchema = new Schema<IAuditType, IAuditTypeModel>({
     type: String,
     enum: ['categorized', 'singlePage'],
   },
+  businessUnitScope: {
+    type: String,
+    enum: ['audit', 'answer'],
+  },
   organizationId: String,
   metatags: {
     addedAt: Date,

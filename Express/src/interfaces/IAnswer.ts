@@ -1,7 +1,8 @@
-import { IAction, IAudit, IBase, IDocument, IQuestion, IScope, IUser, TAnswerStatus, TQuestionValue } from 'app-interfaces';
+import { IAction, IAudit, IBase, IBusinessUnit, IDocument, IQuestion, IScope, IUser, TAnswerStatus, TQuestionValue } from 'app-interfaces';
 
 export interface IAnswer extends IBase {
   questionId: string;
+  businessUnitId?: string;
   answer?: TQuestionValue;
   attachments?: IDocument[];
   status?: TAnswerStatus;
@@ -12,6 +13,7 @@ export interface IAnswer extends IBase {
 
   // Additional fields - can be added in the API
   audit?: IAudit;
+  businessUnit?: IBusinessUnit;
   question?: IQuestion<any>;
   actions?: IAction[];
   creator?: IUser;

@@ -16,6 +16,7 @@ const GET_FORM_DATA = gql`
       _id
       name
       recurring
+      businessUnitScope
     }
     questionsCategories {
       _id

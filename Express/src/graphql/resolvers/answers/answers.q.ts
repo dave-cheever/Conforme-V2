@@ -275,6 +275,33 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
+    if (shouldJoin(['audit', 'auditType'])) {
+      join({
+        pipeline,
+        collection: 'auditTypes',
+        from: 'audit.auditTypeId',
+        to: 'audit.auditType',
+      });
+    }
+
+    if (shouldJoin(['audit', 'auditor'])) {
+      join({
+        pipeline,
+        collection: 'users',
+        from: 'audit.auditorId',
+        to: 'audit.auditor',
+      });
+    }
+
+    if (shouldJoin(['businessUnit'])) {
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'businessUnitId',
+        to: 'businessUnit',
+      });
+    }
+
     if (answerQuery?.locationsIds?.length > 0) {
       pipeline.push({
         $match: {
@@ -286,7 +313,10 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
     if (answerQuery?.businessUnitsIds?.length > 0) {
       pipeline.push({
         $match: {
-          'audit.businessUnitId': { $in: answerQuery.businessUnitsIds },
+          $or: [
+            { 'businessUnitId': { $in: answerQuery.businessUnitsIds } },
+            { 'audit.businessUnitId': { $in: answerQuery.businessUnitsIds } },
+          ],
         },
       });
     }

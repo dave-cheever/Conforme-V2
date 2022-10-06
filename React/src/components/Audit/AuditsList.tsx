@@ -41,17 +41,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'location.name'}
           sortOrder={sortType === 'location.name' ? sortOrder : undefined}
-          w="20%"
-        />
-        <AdminTableHeaderElement
-          label={capitalize(t('business unit'))}
-          onClick={() => {
-            setSortType('businessUnit.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit.name' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'businessUnit.name'}
-          sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w="20%"
+          w="30%"
         />
         <AdminTableHeaderElement
           label="Status"
@@ -81,7 +71,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'auditor.displayName'}
           sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
-          w="18%"
+          w="30%"
         />
         <AdminTableHeaderElement
           label="Date submitted"
@@ -91,7 +81,7 @@ const AuditsList = ({
           }}
           showSortingIcon={sortType === 'completedDate'}
           sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
-          w="12%"
+          w="10%"
         />
       </AdminTableHeader>
       <Flex flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">

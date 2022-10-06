@@ -8,6 +8,13 @@ export interface IAuditType extends IBase {
   recurring: boolean;
   sections: IAuditSection[];
 
+  /**
+   * Defines the scope of Business Unit in audit.
+   * If "audit" then during audit creation user will have to pick Business Unit.
+   * If "answer" then during answer creation user will have to pick Business Unit.
+   */
+  businessUnitScope?: 'audit' | 'answer';
+
   // Additional fields
   questionsCategories: IQuestionsCategory[];
 }

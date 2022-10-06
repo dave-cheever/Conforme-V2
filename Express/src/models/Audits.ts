@@ -221,10 +221,22 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     to: 'businessUnit',
   });
 
-  // Filter by search text (in businessUnit)
+  // Join auditor
+  join({
+    pipeline,
+    collection: 'users',
+    from: 'auditorId',
+    to: 'auditor',
+  });
+
+  // Filter by search text (in businessUnit name, auditor and reference)
   pipeline.push({
     $match: {
-      'businessUnit.name': new RegExp(searchText, 'i'),
+      '$or': [
+        { 'businessUnit.name': new RegExp(searchText, 'i') },
+        { 'auditor.displayName': new RegExp(searchText, 'i') },
+        { 'reference': new RegExp(searchText, 'i') },
+      ],
     },
   });
 
@@ -243,7 +255,7 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     $project: {
       _id: 1,
       auditorId: 1,
-      title: '$businessUnit.name',
+      title: { $concat: ['$auditor.displayName', ' - ', '$reference'] },
       type: 'audits',
     },
   });

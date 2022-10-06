@@ -36,6 +36,7 @@ export const auditTypesTypeDefs = `
     sections: [AuditSection!]!
     questionsCategories: [QuestionsCategory!]!
     options: [AuditOption!]
+    businessUnitScope: String
     metatags: Metatags
   }
 
@@ -62,6 +63,7 @@ export const auditTypesTypeDefs = `
     sections: [AuditSectionInput!]!
     options: [AuditOptionInput!]
     view: String!
+    businessUnitScope: String
   }
   
   input AuditTypeModifyInput {
@@ -73,6 +75,7 @@ export const auditTypesTypeDefs = `
     sections: [AuditSectionInput!]!
     options: [AuditOptionInput!]
     view: String!
+    businessUnitScope: String
   }
 `;
 

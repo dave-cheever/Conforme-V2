@@ -105,7 +105,13 @@ const WalkItemsListItem = ({
               </Flex>
             </Flex>
           </Tooltip>
-          <Tooltip label={audit?.businessUnit?.name}>
+          <Tooltip
+            label={
+              answer?.audit?.auditType?.businessUnitScope === 'audit'
+                ? answer?.audit?.businessUnit?.name ?? '-'
+                : answer?.businessUnit?.name ?? '-'
+            }
+          >
             <Flex flexDir="column" w="19%">
               <Flex
                 align="flex-start"
@@ -120,7 +126,9 @@ const WalkItemsListItem = ({
                 pt="3px"
                 textOverflow="ellipsis"
               >
-                {audit?.businessUnit?.name ?? '-'}
+                {answer?.audit?.auditType?.businessUnitScope === 'audit'
+                  ? answer?.audit?.businessUnit?.name ?? '-'
+                  : answer?.businessUnit?.name ?? '-'}
               </Flex>
             </Flex>
           </Tooltip>
@@ -175,7 +183,9 @@ const WalkItemsListItem = ({
                 {answer?.metatags?.addedAt ? (
                   format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
                 ) : (
-                  <Flex fontStyle="italic" pr={1}>No added date</Flex>
+                  <Flex fontStyle="italic" pr={1}>
+                    No added date
+                  </Flex>
                 )}
               </Flex>
             </Flex>

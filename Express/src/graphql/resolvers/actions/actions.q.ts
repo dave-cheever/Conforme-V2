@@ -310,6 +310,15 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       });
     }
 
+    if (shouldJoin(['answer', 'businessUnit'])) {
+      join({
+        pipeline,
+        collection: 'businessUnits',
+        from: 'answer.businessUnitId',
+        to: 'answer.businessUnit',
+      });
+    }
+
     if (actionQueryInput?.locationsIds?.length > 0) {
       pipeline.push({
         $match: {
@@ -321,7 +330,10 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
     if (actionQueryInput?.businessUnitsIds?.length > 0) {
       pipeline.push({
         $match: {
-          'answer.audit.businessUnitId': { $in: actionQueryInput.businessUnitsIds },
+          $or: [
+            { 'answer.audit.businessUnitId': { $in: actionQueryInput.businessUnitsIds } },
+            { 'answer.businessUnitId': { $in: actionQueryInput.businessUnitsIds } },
+          ],
         },
       });
     }

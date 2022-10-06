@@ -33,6 +33,7 @@ const GET_AUDIT = gql`
           type
           _id
         }
+        businessUnitScope
       }
       location {
         _id
@@ -87,6 +88,7 @@ const GET_AUDIT_DATA = gql`
       }
       answer {
         _id
+        businessUnitId
         answer
         status
         attachments {
@@ -132,6 +134,7 @@ const GET_AUDIT_DATA = gql`
       }
       answer {
         _id
+        businessUnitId
         answer
         status
         attachments {
@@ -168,6 +171,10 @@ const GET_AUDIT_DATA = gql`
         type
         _id
       }
+    }
+    businessUnits {
+      _id
+      name
     }
   }
 `;
@@ -354,6 +361,8 @@ const AuditProvider = ({ children }) => {
     return questionsByCategories;
   }, [JSON.stringify(auditData)]);
 
+  const businessUnits = useMemo(() => auditData?.businessUnits, [JSON.stringify(auditData)]);
+
   useEffect(() => {
     if (!loading && error) {
       toast({
@@ -371,6 +380,7 @@ const AuditProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
+      businessUnits,
       audit,
       auditType,
       auditor,
@@ -408,6 +418,7 @@ const AuditProvider = ({ children }) => {
       refetch,
     }),
     [
+      businessUnits,
       audit,
       auditType,
       auditor,

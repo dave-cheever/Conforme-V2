@@ -127,7 +127,9 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
               w="full"
               whiteSpace="nowrap"
             >
-              {action.answer?.audit?.businessUnit?.name ?? 'Virtual'}
+              {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
+                ? action?.answer?.audit?.businessUnit?.name ?? '-'
+                : action?.answer?.businessUnit?.name ?? '-'}
             </Text>
           </Flex>
         </Box>

@@ -9,7 +9,6 @@ import { IAnswer } from '../../interfaces/IAnswer';
 
 const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) => {
   const { openInNewTab } = useNavigate();
-
   return (
     <Stack
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)' }}
@@ -40,17 +39,27 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
         </Text>
       </Flex>
       <Flex w="full">
-        <Box fontSize={['smm', 'ssm']} overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title">Status</Text>
-          <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-            {answer?.status ?? '-'}
-          </Text>
-        </Box>
-        <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title">Date</Text>
-          <Tooltip label={format(new Date(answer?.metatags?.addedAt!), 'LLL/y') ?? '-'}>
+        {answer?.question?.questionsCategory?.useStatus && (
+          <Box fontSize={['smm', 'ssm']} overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+            <Text color="walkItemSquare.section.title">Status</Text>
             <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-              {format(new Date(answer?.metatags?.addedAt!), 'LLL/y') ?? '-'}
+              {answer?.status ?? '-'}
+            </Text>
+          </Box>
+        )}
+        <Box
+          fontSize={['smm', 'ssm']}
+          lineHeight="20px"
+          overflow="hidden"
+          pl={answer?.question?.questionsCategory?.useStatus ? 2 : 0}
+          textOverflow="ellipsis"
+          w="200px"
+          whiteSpace="nowrap"
+        >
+          <Text color="walkItemSquare.section.title">Date</Text>
+          <Tooltip label={format(new Date(answer?.metatags?.addedAt!), 'LLL-y') ?? '-'}>
+            <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
+              {format(new Date(answer?.metatags?.addedAt!), 'LLL-y') ?? '-'}
             </Text>
           </Tooltip>
         </Box>
@@ -66,9 +75,17 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
         </Box>
         <Box fontSize={['smm', 'ssm']} lineHeight="20px" overflow="hidden" pl={2} textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
           <Text color="walkItemSquare.section.title">{capitalize(t('business unit'))}</Text>
-          <Tooltip label={answer?.audit?.businessUnit?.name ?? '-'}>
+          <Tooltip
+            label={
+              answer?.audit?.auditType?.businessUnitScope === 'audit'
+                ? answer?.audit?.businessUnit?.name ?? '-'
+                : answer?.businessUnit?.name ?? '-'
+            }
+          >
             <Text color="walkItemSquare.section.text" fontSize="ssm" textTransform="capitalize">
-              {answer?.audit?.businessUnit?.name ?? '-'}
+              {answer?.audit?.auditType?.businessUnitScope === 'audit'
+                ? answer?.audit?.businessUnit?.name ?? '-'
+                : answer?.businessUnit?.name ?? '-'}
             </Text>
           </Tooltip>
         </Box>
@@ -86,7 +103,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             spacing={2}
           >
             <Text color="walkItemSquare.section.text" fontSize="ssm" isTruncated maxWidth="250px">
-              {answer?.audit?.businessUnit?.name ?? '-'}
+              {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
             </Text>
             <OpenExternalIcon fill="transparent" stroke="black" />
           </Stack>

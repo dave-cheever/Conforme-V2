@@ -63,7 +63,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           </Tooltip>
         </Skeleton>
         <Text color="auditSquare.nameFontColor" fontSize="16px" fontWeight="700" lineHeight="20px" ml={3} noOfLines={2} w="full">
-          {audit?.businessUnit?.name}
+          {`${audit?.auditor?.displayName} - ${audit?.reference}`}
         </Text>
       </Flex>
       <Flex align="center" h="40px" w="full">

@@ -14,7 +14,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
       bg="white"
       borderBottomColor="auditsList.headerBorderColor"
       borderBottomWidth="1px"
-      cursor={!audit?.metatags?.removedBy ? "pointer" : "default"}
+      cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
       onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
       p="15px 25px"
       py={[1, 0]}
@@ -26,7 +26,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             {audit?.dueDate ? format(new Date(audit?.dueDate), 'MMM-yy') : <Flex fontStyle="italic">No due date</Flex>}
           </Flex>
         </Flex>
-        <Stack direction="row" pr={2} spacing={1} w="20%">
+        <Stack direction="row" pr={2} spacing={1} w="30%">
           <LocationIcon boxSize="12px" mt="2px" />
           <Text
             color="auditsList.fontColor"
@@ -39,21 +39,6 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             whiteSpace="nowrap"
           >
             {audit.location?.name ?? 'Virtual'}
-          </Text>
-        </Stack>
-        <Stack direction="row" pr={2} spacing={1} w="20%">
-          <LocationIcon boxSize="12px" mt="2px" />
-          <Text
-            color="auditsList.fontColor"
-            fontSize="13px"
-            lineHeight="17px"
-            opacity="1"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            w="full"
-            whiteSpace="nowrap"
-          >
-            {audit.businessUnit?.name ?? 'Virtual'}
           </Text>
         </Stack>
         <Flex w="10%">
@@ -82,7 +67,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             {auditWalkTypes[audit.walkType]}
           </Flex>
         </Flex>
-        <Box pr={2} w="18%">
+        <Box pr={2} w="30%">
           <Skeleton isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
               <Flex align="center" direction="row">
@@ -108,7 +93,7 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
             )}
           </Skeleton>
         </Box>
-        <Flex w="12%">
+        <Flex w="10%">
           <Flex color="auditsList.fontColor" fontSize="14px" fontWeight="400" opacity="1">
             {audit?.status === 'completed' && audit?.completedDate ? (
               format(new Date(audit?.completedDate), 'MMM-yy')

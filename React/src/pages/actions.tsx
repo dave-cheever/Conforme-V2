@@ -48,6 +48,9 @@ const GET_ACTIONS = gql`
       answer {
         status
         questionId
+        businessUnit {
+          name
+        }
         scope {
           type
         }
@@ -56,6 +59,7 @@ const GET_ACTIONS = gql`
           walkType
           auditType {
             name
+            businessUnitScope
           }
           businessUnit {
             name

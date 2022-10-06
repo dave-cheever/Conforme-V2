@@ -1,6 +1,7 @@
 import { IAction } from './IAction';
 import { IAudit } from './IAudit';
 import { IBase } from './IBase';
+import { IBusinessUnit } from './IBusinessUnit';
 import { IQuestion } from './IQuestion';
 import { IDocument } from './IResponse';
 import { IScope } from './IScope';
@@ -10,6 +11,7 @@ import { TQuestionValue } from './TQuestionValue';
 
 export interface IAnswer extends IBase {
   questionId: string;
+  businessUnitId?: string;
   answer?: TQuestionValue;
   addedBy?: IUser;
   attachments?: IDocument[];
@@ -21,6 +23,7 @@ export interface IAnswer extends IBase {
 
   // Additional fields - can be added in the API
   audit?: IAudit;
+  businessUnit?: IBusinessUnit;
   question?: IQuestion<any>;
   actions?: IAction[];
   creator?: IUser;

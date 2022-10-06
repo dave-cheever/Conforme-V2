@@ -51,12 +51,17 @@ const GET_ANSWERS = gql`
         displayName
         imgUrl
       }
+      businessUnit {
+        _id
+        name
+      }
       scope {
         type
         _id
       }
       audit {
         _id
+        reference
         walkType
         location {
           _id
@@ -67,8 +72,14 @@ const GET_ANSWERS = gql`
           _id
           name
         }
+        auditType {
+          businessUnitScope
+        }
         status
         auditorId
+        auditor {
+          displayName
+        }
         participantsIds
         metatags {
           addedAt

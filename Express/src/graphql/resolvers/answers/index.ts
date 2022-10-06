@@ -23,6 +23,8 @@ export const answersTypeDefs = `
     _id: ID!
     questionId: ID!
     question: Question
+    businessUnitId: String
+    businessUnit: BusinessUnit
     answer: String
     attachments: [Document]
     status: String
@@ -57,6 +59,7 @@ export const answersTypeDefs = `
     status: String
     options: Any
     attachments: [DocumentInput]
+    businessUnitId: String
     scope: ScopeInput!
   }
   
@@ -66,6 +69,7 @@ export const answersTypeDefs = `
     status: String
     options: Any
     attachments: [DocumentInput]
+    businessUnitId: String
   }
 
   input AnswerDocumentsAddInput {

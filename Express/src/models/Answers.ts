@@ -22,6 +22,7 @@ import actionsModel from './Actions';
 
 const answersSchema = new Schema<IAnswer, IAnswerModel>({
   _id: String,
+  businessUnitId: String,
   questionId: String,
   answer: Schema.Types.Mixed,
   attachments: [

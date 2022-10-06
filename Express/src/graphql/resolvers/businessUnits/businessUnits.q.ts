@@ -106,8 +106,16 @@ const businessUnits = async (
 
           pipeline.push({
             $match: {
-              'answer.audit.businessUnitId': businessUnit._id,
-              ...selector,
+              $or: [
+                {
+                  'answer.businessUnitId': businessUnit._id,
+                  ...selector,
+                },
+                {
+                  'answer.audit.businessUnitId': businessUnit._id,
+                  ...selector,
+                },
+              ],
             },
           });
 
@@ -163,7 +171,10 @@ const businessUnits = async (
             });
             pipeline.push({
               $match: {
-                'audit.businessUnitId': businessUnit._id,
+                $or: [
+                  { 'businessUnitId': businessUnit._id },
+                  { 'audit.businessUnitId': businessUnit._id },
+                ],
               },
             });
 

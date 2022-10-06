@@ -198,24 +198,26 @@ const AuditModal = ({ refetch }) => {
                       variant="secondaryVariant"
                     />
                   </GridItem>
-                  <GridItem w="100%">
-                    <Dropdown
-                      control={control}
-                      label={capitalize(t('business unit'))}
-                      name="businessUnitId"
-                      options={(businessUnits ?? []).map((businessUnit) => ({
-                        value: businessUnit._id,
-                        label: businessUnit.name,
-                      }))}
-                      placeholder={`Select ${capitalize(t('business unit'))}`}
-                      required
-                      stroke="dropdown.icon"
-                      validations={{
-                        notEmpty: true,
-                      }}
-                      variant="secondaryVariant"
-                    />
-                  </GridItem>
+                  {audit.auditTypeId && auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' && (
+                    <GridItem w="100%">
+                      <Dropdown
+                        control={control}
+                        label={capitalize(t('business unit'))}
+                        name="businessUnitId"
+                        options={(businessUnits ?? []).map((businessUnit) => ({
+                          value: businessUnit._id,
+                          label: businessUnit.name,
+                        }))}
+                        placeholder={`Select ${capitalize(t('business unit'))}`}
+                        required
+                        stroke="dropdown.icon"
+                        validations={{
+                          notEmpty: true,
+                        }}
+                        variant="secondaryVariant"
+                      />
+                    </GridItem>
+                  )}
                 </Grid>
               </Flex>
               <SingleParticipantSelector

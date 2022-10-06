@@ -3,6 +3,8 @@ import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button, Flex, HStack, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
 import { endOfDay } from 'date-fns';
+import { t } from 'i18next';
+import { capitalize } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -15,7 +17,7 @@ import ActionListItem from '../Actions/ActionListItem';
 import { isPermitted } from '../can';
 import DocumentUpload from '../Documents/DocumentUpload';
 import DocumentUploaded from '../Documents/DocumentUploaded';
-import { TextInput, Toggle } from '../Forms';
+import { Dropdown, TextInput, Toggle } from '../Forms';
 import TextInputMultiline from '../Forms/TextInputMultiline';
 import AuditActionForm from './AuditActionForm';
 
@@ -23,6 +25,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   const toast = useToast();
   const { user, module } = useAppContext();
   const {
+    businessUnits,
     audit,
     handleActionChangesModalOpen,
     questionsCategories,
@@ -57,6 +60,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
 
   useEffect(() => {
     reset({
+      businessUnitId: answer?.businessUnitId,
       question: question.question || '',
       options: answer?.options || {},
       attachments: answer?.attachments || [],
@@ -73,6 +77,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
 
     const answerData = {
       _id: question.answer?._id,
+      businessUnitId: values.businessUnitId,
       options: values.options,
       answer: values.answer,
       attachments: values.attachments.map((attachment) => ({
@@ -172,6 +177,25 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
       <Text fontSize="md" fontWeight="semibold">
         {questionsCategory.name}
       </Text>
+      {audit.auditType?.businessUnitScope === 'answer' && (
+        <Dropdown
+          control={control}
+          disabled={isDisabled}
+          label={capitalize(t('business unit'))}
+          name="businessUnitId"
+          options={(businessUnits ?? []).map((businessUnit) => ({
+            value: businessUnit._id,
+            label: businessUnit.name,
+          }))}
+          placeholder={`Select ${capitalize(t('business unit'))}`}
+          required
+          stroke="dropdown.icon"
+          validations={{
+            notEmpty: true,
+          }}
+          variant="secondaryVariant"
+        />
+      )}
       <Stack>
         {questionsCategory.withAnswers ? (
           <Stack>

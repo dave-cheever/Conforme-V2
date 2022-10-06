@@ -1,10 +1,10 @@
 import {
   Avatar,
   Badge,
-  Box,
   Button,
   Flex,
   Heading,
+  HStack,
   Menu,
   MenuButton,
   MenuList,
@@ -177,7 +177,10 @@ const AuditHeader = () => {
       <Flex bg="auditHeader.bg" direction="column" mb="15px" pl={6} w="full" zIndex={1}>
         <Stack align={['flex-start', 'center']} direction={['column', 'row']} h={['auto', '40px']} mb="15px" spacing={4} w="full">
           <Heading alignItems={['flex-start', 'center']} color="auditHeader.heading" fontSize="xxl" fontWeight="bold">
-            {businessUnit?.name ?? 'Virtual'}
+            <HStack justify="center">
+              <Avatar name={auditor?.displayName} rounded="full" size="xs" src={auditor?.imgUrl} />
+              <Text>{`${audit?.auditor?.displayName} - ${audit?.reference}`}</Text>
+            </HStack>
           </Heading>
           {audit.status === 'completed' && (
             <Badge colorScheme="green" h="fit-content" variant="outline">
@@ -198,15 +201,18 @@ const AuditHeader = () => {
               </Text>
               <Text fontSize="smm">{audit?.reference}</Text>
             </Flex>
-            <Stack align="center" direction="row" spacing={2}>
-              <Avatar name={auditor?.displayName} rounded="full" size="xs" src={auditor?.imgUrl} />
-              <Box>
+            {audit?.businessUnit && (
+              <Flex direction="column" justify="center" wordBreak="break-all">
                 <Text fontSize="11px" opacity={0.5}>
-                  Owner
+                  {capitalize(t('business unit'))}
                 </Text>
-                <Text fontSize="smm">{auditor?.displayName}</Text>
-              </Box>
-            </Stack>
+                <Tooltip label={businessUnit?.name}>
+                  <Text fontSize="smm" noOfLines={2}>
+                    {businessUnit?.name}
+                  </Text>
+                </Tooltip>
+              </Flex>
+            )}
             {audit?.walkType === 'physical' && (
               <Flex direction="column" justify="center" wordBreak="break-all">
                 <Text fontSize="11px" opacity={0.5}>

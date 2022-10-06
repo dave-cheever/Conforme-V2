@@ -77,7 +77,10 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
           spacing={2}
         >
           <Text color="actionSquare.section.text" fontSize="ssm" isTruncated>
-            {action?.answer?.question?.question}, {action?.answer?.audit?.businessUnit?.name}
+            {action?.answer?.question?.question},{' '}
+            {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
+              ? action?.answer?.audit?.businessUnit?.name ?? '-'
+              : action?.answer?.businessUnit?.name ?? '-'}
           </Text>
           <OpenExternalIcon fill="transparent" stroke="black" />
         </Stack>

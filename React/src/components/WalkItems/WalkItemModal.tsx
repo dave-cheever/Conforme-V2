@@ -194,7 +194,7 @@ const WalkItemModal = ({
                       spacing={2}
                     >
                       <Text color="walkItemModal.question.color" fontSize="smm" isTruncated>
-                        {walkItem?.audit?.businessUnit?.name}
+                        {`${walkItem?.audit?.auditor?.displayName} - ${walkItem?.audit?.reference}`}
                       </Text>
                       <OpenExternalIcon fill="transparent" stroke="black" />
                     </Stack>
