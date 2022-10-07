@@ -168,6 +168,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
     const addAuditLog = async () => {
       const newValues = removeDatabaseFields(createdAudit._doc);
       const organization = await Organizations.customFindById(organizationId);
+      const auditor = await Users.customFindByIdWithDetails({ userId: newValues.auditorId, organization });
       const values = await getAuditRecordValues({ newValues, organization });
       AuditLogs.customAudit(
         {
@@ -175,7 +176,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
           action: 'add',
           element: {
             _id: createdAudit._doc._id,
-            name: values.businessUnitId.new?.label || 'Virtual',
+            name: `${auditor?.displayName} - ${values?.reference?.new?.label}`,
           },
           values,
         },
@@ -338,17 +339,10 @@ auditsSchema.statics.customUpdateOne = async function (
 
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
-      const element = {
-        _id: audit._id,
-        name: 'Virtual',
-      };
-      if (audit.businessUnitId) {
-        const businessUnit = await BusinessUnits.customFindById(audit.businessUnitId, organizationId);
-        element.name = businessUnit.name;
-      }
+      const organization = await Organizations.customFindById(organizationId);
+      const auditor = await Users.customFindByIdWithDetails({ userId: audit.auditorId, organization });
       const oldValues = removeDatabaseFields(audit);
       const newValues = removeDatabaseFields(updatedAudit);
-      const organization = await Organizations.customFindById(organizationId);
       const values = await getAuditRecordValues({
         oldValues,
         newValues,
@@ -358,7 +352,10 @@ auditsSchema.statics.customUpdateOne = async function (
         {
           coll: 'audits',
           action: 'update',
-          element,
+          element: {
+            _id: audit._id,
+            name: `${auditor?.displayName} - ${audit.reference}`,
+          },
           values,
         },
         userId,
@@ -391,16 +388,9 @@ auditsSchema.statics.customDelete = async function (selector: object = {}, userI
     ]);
 
     const addAuditLog = async () => {
-      const element = {
-        _id: audit._id,
-        name: 'Virtual',
-      };
-      if (audit.businessUnitId) {
-        const businessUnit = await BusinessUnits.customFindById(audit.businessUnitId, organizationId);
-        element.name = businessUnit.name;
-      }
-      const oldValues = removeDatabaseFields(updatedAudit);
       const organization = await Organizations.customFindById(organizationId);
+      const auditor = await Users.customFindByIdWithDetails({ userId: audit.auditorId, organization });
+      const oldValues = removeDatabaseFields(updatedAudit);
       const values = await getAuditRecordValues({
         oldValues,
         organization,
@@ -409,7 +399,10 @@ auditsSchema.statics.customDelete = async function (selector: object = {}, userI
         {
           coll: 'audits',
           action: 'delete',
-          element,
+          element: {
+            _id: audit._id,
+            name: `${auditor?.displayName} - ${audit.reference}`,
+          },
           values,
         },
         userId,

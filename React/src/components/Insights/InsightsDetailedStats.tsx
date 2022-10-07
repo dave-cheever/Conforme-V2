@@ -6,6 +6,7 @@ import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
+import useDevice from '../../hooks/useDevice';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import { IUser } from '../../interfaces/IUser';
@@ -42,7 +43,12 @@ const InsightsDetailedStats = ({
   loadMoreBusinessUnits: LazyQueryExecFunction<any, any>;
   loadMoreUsers: LazyQueryExecFunction<any, any>;
 }) => {
+  const device = useDevice();
   const { data: totals } = useQuery(GET_TOTALS);
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  if (device === 'mobile') return null;
+
   const tabs = {
     audits: [
       {
@@ -171,8 +177,6 @@ const InsightsDetailedStats = ({
       },
     ],
   };
-
-  const [selectedTab, setSelectedTab] = useState(0);
 
   return (
     <Box bg="auditsInsights.list.bg" borderRadius="20px" p={7} pb={0} w="full">

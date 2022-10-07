@@ -1,4 +1,4 @@
-import { Button, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Stack, Text } from '@chakra-ui/react';
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Stack, Text } from '@chakra-ui/react';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 
@@ -35,7 +35,7 @@ const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <HStack justify="center" spacing={4} w="full">
+          <Stack direction={['column', 'row']} justify="center" spacing={4} w="full">
             <Button _hover={{ opacity: 0.7 }} onClick={onClose}>
               Back to walk item
             </Button>
@@ -64,7 +64,7 @@ const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }
             >
               Continue without saving action
             </Button>
-          </HStack>
+          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>

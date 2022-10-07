@@ -201,18 +201,6 @@ const AuditHeader = () => {
               </Text>
               <Text fontSize="smm">{audit?.reference}</Text>
             </Flex>
-            {audit?.businessUnit && (
-              <Flex direction="column" justify="center" wordBreak="break-all">
-                <Text fontSize="11px" opacity={0.5}>
-                  {capitalize(t('business unit'))}
-                </Text>
-                <Tooltip label={businessUnit?.name}>
-                  <Text fontSize="smm" noOfLines={2}>
-                    {businessUnit?.name}
-                  </Text>
-                </Tooltip>
-              </Flex>
-            )}
             {audit?.walkType === 'physical' && (
               <Flex direction="column" justify="center" wordBreak="break-all">
                 <Text fontSize="11px" opacity={0.5}>
@@ -221,6 +209,18 @@ const AuditHeader = () => {
                 <Tooltip label={location?.name}>
                   <Text fontSize="smm" noOfLines={2}>
                     {location?.name}
+                  </Text>
+                </Tooltip>
+              </Flex>
+            )}
+            {audit?.businessUnit && (
+              <Flex direction="column" justify="center" wordBreak="break-all">
+                <Text fontSize="11px" opacity={0.5}>
+                  {capitalize(t('business unit'))}
+                </Text>
+                <Tooltip label={businessUnit?.name}>
+                  <Text fontSize="smm" noOfLines={2}>
+                    {businessUnit?.name}
                   </Text>
                 </Tooltip>
               </Flex>
