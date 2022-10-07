@@ -135,6 +135,9 @@ const GET_AUDIT_DATA = gql`
       answer {
         _id
         businessUnitId
+        businessUnit {
+          name
+        }
         answer
         status
         attachments {

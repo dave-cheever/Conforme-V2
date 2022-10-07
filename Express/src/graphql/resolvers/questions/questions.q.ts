@@ -117,6 +117,15 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
           'answer.metatags.removedAt': { $eq: null },
         },
       });
+
+      if (shouldJoin(['answer', 'businessUnit'])) {
+        join({
+          pipeline,
+          collection: 'businessUnits',
+          from: 'answer.businessUnitId',
+          to: 'answer.businessUnit',
+        });
+      }
     }
 
     if (shouldJoin(['questionsCategory'])) {

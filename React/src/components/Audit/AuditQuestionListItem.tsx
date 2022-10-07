@@ -6,7 +6,7 @@ import pluralize from 'pluralize';
 import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 import useDevice from '../../hooks/useDevice';
-import { ActionsIcon, Eye, Trashcan } from '../../icons';
+import { ActionsIcon, AreaInfoIcon, Eye, Trashcan } from '../../icons';
 import { isPermitted } from '../can';
 import DocumentThumbnail from '../Documents/DocumentThumbnail';
 
@@ -26,19 +26,29 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
       rounded="10px"
     >
       <Stack flexGrow={1} spacing={2}>
+        {audit?.auditType?.businessUnitScope === 'answer' && (
+          <HStack spacing={1}>
+            <AreaInfoIcon fill="transparent" stroke="auditItem.listItem.action.icon" />
+            <Text color="auditItem.listItem.action.color" fontSize="ssm">
+              {capitalize(question.answer?.businessUnit?.name)}
+            </Text>
+          </HStack>
+        )}
         <Text fontSize="smm" noOfLines={1}>
           {question.question}
         </Text>
-        <HStack>
+        <HStack spacing={6}>
           {question.questionsCategory?.useStatus && (
             <Text color="auditItem.listItem.action.color" fontSize="ssm">
               {capitalize(question.answer?.status)}
             </Text>
           )}
-          <ActionsIcon fill="transparent" stroke="auditItem.listItem.action.icon" />
-          <Text color="auditItem.listItem.action.color" fontSize="ssm">
-            {numberOfActions} {pluralize('Action', numberOfActions)}
-          </Text>
+          <HStack spacing={1}>
+            <ActionsIcon fill="transparent" stroke="auditItem.listItem.action.icon" />
+            <Text color="auditItem.listItem.action.color" fontSize="ssm">
+              {numberOfActions} {pluralize('Action', numberOfActions)}
+            </Text>
+          </HStack>
         </HStack>
       </Stack>
       <HStack spacing={2}>
