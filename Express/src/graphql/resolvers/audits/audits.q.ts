@@ -9,6 +9,7 @@ import {
   startOfMonth,
   startOfWeek,
   startOfYear,
+  subYears,
 } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
@@ -194,7 +195,6 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           };
           break;
         case 'thisYear':
-        case 'allMonths':
           $match = {
             $and: [
               {
@@ -205,6 +205,22 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
               {
                 [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
                   $lte: endOfYear(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'allMonths':
+          $match = {
+            $and: [
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $gte: subYears(new Date(), 1),
+                },
+              },
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $lte: new Date(),
                 },
               },
             ],

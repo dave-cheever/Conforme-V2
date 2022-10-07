@@ -1,4 +1,4 @@
-import { addMonths, endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns';
+import { addMonths, endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear, subYears } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 
 import { Actions, AuditLogs, Users } from 'app-models';
@@ -122,8 +122,23 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
             ],
           };
           break;
-        case 'thisYear':
         case 'allMonths':
+          $match = {
+            $and: [
+              {
+                dueDate: {
+                  $gte: subYears(new Date(), 1),
+                },
+              },
+              {
+                dueDate: {
+                  $lte: new Date(),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisYear':
           $match = {
             $and: [
               {
