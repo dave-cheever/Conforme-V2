@@ -65,6 +65,12 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
           $or: statusQueries,
         },
       });
+    } else {
+      pipeline.push({
+        $match: {
+          status: 'open',
+        },
+      });
     }
 
     if (actionQueryInput?.priority?.length > 0) {

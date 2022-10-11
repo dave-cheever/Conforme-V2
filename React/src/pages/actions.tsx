@@ -99,6 +99,7 @@ const Actions = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const history = useHistory();
+  const [activeTab, setActiveTab] = useState<number>(0);
   const {
     filtersValues,
     setUsedFilters,
@@ -213,13 +214,30 @@ const Actions = () => {
     setFilters({ [filterName]: filterValue });
   };
 
-  const isQuickFilterActive = (filterName: string) => {
-    if (filtersValues?.status?.value && Array.isArray(filtersValues?.status?.value)) {
-      if (filtersValues.status.value.length > 1) return false;
-      if (filtersValues.status.value.find((status) => status === filterName)) return true;
+  useEffect(() => {
+    if (!filtersValues || !filtersValues?.status || !filtersValues?.status?.value) return;
+    if (filtersValues?.status?.value?.length > 1) {
+      setActiveTab(-1);
+      return;
     }
-    return false;
-  };
+    switch (filtersValues?.status?.value?.[0]) {
+      case 'open':
+        setActiveTab(0);
+        break;
+      case 'closed':
+        setActiveTab(1);
+        break;
+      case 'overdue':
+        setActiveTab(2);
+        break;
+
+      default:
+        break;
+    }
+    return () => {
+      setActiveTab(0);
+    };
+  }, [JSON.stringify(filtersValues)]);
 
   const [selectedAction, setSelectedAction] = useState<IAction>();
   const handleOpenModal = (action: IAction) => {
@@ -239,12 +257,6 @@ const Actions = () => {
       }
     }
   }, [data?.actions, user]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setQuickFilter('status', ['open']);
-    }, 101);
-  }, []);
 
   const csvHeaders = [
     { label: '_id', key: '_id' },
@@ -308,7 +320,7 @@ const Actions = () => {
         <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
       </Header>
       <HStack px={[4, 8]} spacing={2}>
-        {Object.keys(actionStatuses).map((status) => (
+        {Object.keys(actionStatuses).map((status, index) => (
           <Button
             _active={{
               bg: 'actions.quickFilter.active.bg',
@@ -323,9 +335,12 @@ const Actions = () => {
             fontSize="smm"
             fontWeight="bold"
             h="32px"
-            isActive={isQuickFilterActive(status)}
+            isActive={index === activeTab}
             key={status}
-            onClick={() => setQuickFilter('status', [status])}
+            onClick={() => {
+              setQuickFilter('status', [status]);
+              setActiveTab(index);
+            }}
           >
             {capitalize(status)}
           </Button>
