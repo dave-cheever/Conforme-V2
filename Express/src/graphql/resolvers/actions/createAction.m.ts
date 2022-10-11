@@ -18,6 +18,9 @@ const createAction = async (_, { action }, { authorize, organization }) => {
     // Assert user
     Actions.customAssertAssignee(createdAction._id);
 
+    // resolve answer status if all actions status related to it are closed
+    Actions.customResolveAnswer(createdAction?.scope?._id || '', user._id, organization);
+
     // Send email to assignee
     if (action.assigneeId) Actions.customAssigneeNotification(createdAction._id, organization);
 

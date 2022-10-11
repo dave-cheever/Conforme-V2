@@ -315,7 +315,7 @@ const WalkItemModal = ({
                     <GridItem>
                       <Dropdown
                         control={control}
-                        disabled={!isUserPermittedToModifyStatus}
+                        disabled={!isUserPermittedToModifyStatus || walkItem?.status === 'closed'}
                         label="Status"
                         name="status"
                         options={[

@@ -523,12 +523,13 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
 actionsSchema.statics.customResolveAnswer = async function (answerId: string, userId: string, organization: IOrganization): Promise<void> {
   try {
     const actions = await this.customFind({ 'scope._id': answerId }, organization._id);
+    const answer = await Answers.customFindById(answerId, organization._id);
+    if (!answer) throw new Error("Answer doesn't exist");
     if (actions.every(({ status }) => status === 'closed')) {
-      const answer = await Answers.customFindById(answerId, organization._id);
-      if (!answer) throw new Error("Answer doesn't exist");
-
       await Answers.customUpdateOne({ _id: answer._id }, { status: "closed" }, userId, organization._id);
+      return;
     }
+    await Answers.customUpdateOne({ _id: answer._id }, { status: "open" }, userId, organization._id);
   } catch (error) {
     console.log(error);
   }
