@@ -92,7 +92,6 @@ const Audits = () => {
   const sortBy = [
     { label: 'Due date', key: 'dueDate' },
     { label: capitalize(t('location')), key: 'location.name' },
-    { label: capitalize(t('business unit')), key: 'businessUnit.name' },
     { label: 'Status', key: 'status' },
     { label: 'Walk type', key: 'walkType' },
     { label: 'Auditor', key: 'auditor.displayName' },
