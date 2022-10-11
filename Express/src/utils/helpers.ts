@@ -1,7 +1,7 @@
 import { addDays, addMonths, addWeeks, addYears, differenceInDays, format, subDays, subMonths, subWeeks, subYears } from 'date-fns';
 import { diff } from 'deep-object-diff';
 import { StatusCodes } from 'http-status-codes';
-import { difference } from 'lodash';
+import { difference, uniq } from 'lodash';
 
 import { IAction, IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import { Users } from 'app-models';
@@ -247,14 +247,9 @@ export const getProjectFields = (nodes: any, methodName: string) => {
 };
 
 export const mentionParser = (markup) => {
-  const array = markup.split('@@@');
-  const mentions: Array<string> = [];
-  for (const arr of array) {
-    const id = arr.substring(arr.lastIndexOf('[') + 1, arr.lastIndexOf(']'));
-    if (id !== '') mentions.push(id);
-  }
-  // make unique by id
-  return [...new Set(mentions)];
+  const mentionRegex = /(@\[[a-zA-Z0-9 .,\-'()[\]{}]*\]\([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\))/g;
+  const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g;
+  return uniq<string>(markup.match(mentionRegex).map(mention => mention.match(uuidRegex)).flat());
 };
 
 export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => {

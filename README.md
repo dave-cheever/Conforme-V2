@@ -334,23 +334,17 @@ Example theme that changes plus button color and delete icon color in audit ques
 
 Every organization also needs its system settings to be configured in the database. In the Settings collection, please add the following data models to create required settings objects for your organization.
 
-Audit log limit:
+#### General settings
 
-```
-{
-  "_id": <random generated UUID>,
-  "organizationId": <organization's id>,
-  "name": "auditLogLimit",
-  "label": "Count of elements on the audit log",
-  "value": "5",
-  "type": "configValue",
-  "description": "Use this setting to default to a specific count of the elements loaded in audit log",
-  "scope": {
-    "moduleId": <module id>
-  },
-  "metatags": {}
-}
-```
+There are 2 setting variables for use in both modules.
+
+Configuration values:
+ - Count of elements on the audit log
+
+Email notification templates:
+ - Mentioned Notification
+
+To import settings to the app open [general settings JSON file](/Settings/GeneralSettings.json), fill with missing data and insert to the database to Settings collection.
 
 #### Tracker specific settings
 

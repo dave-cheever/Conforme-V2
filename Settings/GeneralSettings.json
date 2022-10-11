@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "<random generated UUID>",
+    "name": "mentionedNotificationEmailTemplate",
+    "label": "Mentioned Notification",
+    "value": "<p style=\"text-align: center;\"><span style=\"font-size: 24px;\">Welcome to Conforme</span></p><p><br></p><p style=\"text-align: center;\">&nbsp;</p><p><br></p><p>Dear %MentionedUser%,</p><p><br></p><p>Message is: %Message% </p><p><br></p><p>Thank you for choosing Conforme</p><p><br></p>",
+    "type": "emailTemplate",
+    "options": ["Message", "MentionedUser"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditLogLimit",
+    "label": "Count of elements on the audit log",
+    "value": "5",
+    "type": "configValue",
+    "description": "Use this setting to default to a specific count of the elements loaded in audit log",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  }
+]
