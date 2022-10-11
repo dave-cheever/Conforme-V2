@@ -4,6 +4,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
 import { t } from 'i18next';
+import { isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
 import { auditsInsightsTypes } from '../../bootstrap/config';
@@ -11,13 +12,15 @@ import InsightsCard from '../../components/Insights/InsightsCard';
 import InsightsChart from '../../components/Insights/InsightsChart';
 import InsightsDetailedStats from '../../components/Insights/InsightsDetailedStats';
 import Loader from '../../components/Loader';
+import { useAppContext } from '../../contexts/AppProvider';
+import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import { IUser } from '../../interfaces/IUser';
 
 const GET_AUDITS_INSIGHTS = gql`
-  query {
-    auditsInsights {
+  query ($auditsInsightsQueryInput: AuditsInsightsQueryInput) {
+    auditsInsights(auditsInsightsQueryInput: $auditsInsightsQueryInput) {
       totalAudits
       completedAudits
       upcomingAudits
@@ -83,7 +86,75 @@ const GET_USERS_AUDITS_INSIGHTS = gql`
 `;
 
 const AuditsInsights = () => {
-  const { data, loading, error } = useQuery(GET_AUDITS_INSIGHTS);
+  const { filtersValues, setFilters, setDefaultFilters, auditFiltersValue, setAuditFiltersValue, usedFilters } = useFiltersContext();
+  const { module } = useAppContext();
+  const { data, loading, error, refetch } = useQuery(GET_AUDITS_INSIGHTS);
+
+  useEffect(() => {
+    if (auditFiltersValue && !isEmpty(auditFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(auditFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setAuditFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
+    }
+  }, [filtersValues, usedFilters, setAuditFiltersValue, auditFiltersValue, setFilters]);
+
+  // Set default filters
+  useEffect(() => {
+    if (!isEmpty(module?.defaultFilters?.audits)) {
+      /**
+       * Convert filters from
+       *
+       * {
+       *  filterName: ["filterValue"]
+       * }
+       *
+       * to
+       *
+       * {
+       *  filterName: {
+       *    value: ["filterValue"]
+       *  }
+       * }
+       */
+      const defaultFilters = Object.entries(module!.defaultFilters.audits!).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: {
+            value,
+          },
+        }),
+        {},
+      );
+      setDefaultFilters(Object.entries(module!.defaultFilters.audits!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}));
+      setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1] || !usedFilters.includes(filter[0])) return { ...acc };
+
+      const [key, value] = filter;
+
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' && value.value?.auditorsIds?.length === 0 && value.value?.participantsIds?.length === 0)
+      )
+        return acc;
+
+      return {
+        ...acc,
+        [key]: value?.value,
+      };
+    }, {});
+
+    if (parsedFilters) refetch({ auditsInsightsQueryInput: parsedFilters });
+  }, [filtersValues]);
 
   const [getLocationsData, { data: locationsData }] = useLazyQuery(GET_LOCATIONS_AUDITS_INSIGHTS, {
     variables: {

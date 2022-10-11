@@ -100,5 +100,5 @@ export default interface IFilters {
   priority?: IFilterString;
   walkType?: IFilterString;
   createdDate?: IFilterString;
-  showArchived?: IFilterBoolean
+  showArchived?: IFilterBoolean;
 }

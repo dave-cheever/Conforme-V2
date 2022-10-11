@@ -63,45 +63,45 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
 
   return (
     <>
-      {
-        name === 'showArchived' ? <ShowArchivedFilter /> :
-          <Flex
-            bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
-            borderRadius="10px"
-            flexDir="column"
-            justify="center"
-            key={name}
-            my={2}
-            p="3"
-            w="full"
-          >
-            <Flex align="center" cursor="pointer" justify="space-between" mb={isOpen ? '4' : '0'} w="full">
-              <Text color="filtersPanelItem.fontColor" fontSize="14px" onClick={onToggle} w="full">
-                {filter?.name}
-              </Text>
-              <Flex>
-                {filtersLength > 0 && (
-                  <Box
-                    bg="filtersPanelItem.countBg"
-                    borderRadius="10px"
-                    color="filtersPanelItem.countColor"
-                    fontSize="12px"
-                    fontWeight="400"
-                    mr="3"
-                    px="10px"
-                  >
-                    {filtersLength}
-                  </Box>
-                )}
-                {isOpen && filtersLength > 0 && <ResetIcon mr={3} onClick={resetFilter} />}
-                {isOpen ? <ArrowUpIcon onClick={onToggle} /> : <ArrowDownIcon onClick={onToggle} />}
-              </Flex>
+      {name === 'showArchived' ? (
+        <ShowArchivedFilter />
+      ) : (
+        <Flex
+          bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
+          borderRadius="10px"
+          flexDir="column"
+          justify="center"
+          key={name}
+          my={2}
+          p="3"
+          w="full"
+        >
+          <Flex align="center" cursor="pointer" justify="space-between" mb={isOpen ? '4' : '0'} w="full">
+            <Text color="filtersPanelItem.fontColor" fontSize="14px" onClick={onToggle} w="full">
+              {filter?.name}
+            </Text>
+            <Flex>
+              {filtersLength > 0 && (
+                <Box
+                  bg="filtersPanelItem.countBg"
+                  borderRadius="10px"
+                  color="filtersPanelItem.countColor"
+                  fontSize="12px"
+                  fontWeight="400"
+                  mr="3"
+                  px="10px"
+                >
+                  {filtersLength}
+                </Box>
+              )}
+              {isOpen && filtersLength > 0 && <ResetIcon mr={3} onClick={resetFilter} />}
+              {isOpen ? <ArrowUpIcon onClick={onToggle} /> : <ArrowDownIcon onClick={onToggle} />}
             </Flex>
-            {isOpen && renderPanel()}
           </Flex>
-      }
+          {isOpen && renderPanel()}
+        </Flex>
+      )}
     </>
-
   );
 };
 

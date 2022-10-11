@@ -1,11 +1,22 @@
-import { format } from 'date-fns';
+import {
+  addMonths,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  format,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 import { groupBy, sumBy } from 'lodash';
 
-import { Answers, Users } from 'app-models';
+import { Answers } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
 
-const answersInsights = async (_, { answersInsightsQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
+const answersInsights = async (_, { answersInsightsQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['answersInsights', ...elements]);
 
   try {
@@ -29,9 +40,144 @@ const answersInsights = async (_, { answersInsightsQuery }, { authorize, organiz
 
     pipeline.push({
       $match: {
-        'question.questionsCategoryId': answersInsightsQuery.questionsCategoriesId,
+        'question.questionsCategoryId': answersInsightsQueryInput.questionsCategoriesId,
       },
     });
+
+    if (answersInsightsQueryInput?.status?.length > 0) {
+      pipeline.push({
+        $match: {
+          status: {
+            $in: answersInsightsQueryInput.status,
+          },
+        },
+      });
+    }
+
+    if (answersInsightsQueryInput?.createdDate) {
+      const [filter, startDate, endDate] = answersInsightsQueryInput?.createdDate;
+      let $match;
+      switch (filter) {
+        case 'thisWeek':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisMonth':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfMonth(new Date()),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfMonth(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisYear':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfYear(new Date()),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfYear(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'nextMonth':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'exactDate':
+          $match = {
+            $and: [
+              {
+                'metatags.addedAt': {
+                  $gte: startOfDay(new Date(startDate)),
+                },
+              },
+              {
+                'metatags.addedAt': {
+                  $lte: endOfDay(new Date(startDate)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'dateRange':
+          if (startDate && endDate) {
+            $match = {
+              $and: [
+                {
+                  'metatags.addedAt': {
+                    $gte: startOfDay(new Date(startDate)),
+                  },
+                },
+                {
+                  'metatags.addedAt': {
+                    $lte: endOfDay(new Date(endDate)),
+                  },
+                },
+              ],
+            };
+          }
+          break;
+        default:
+          break;
+      }
+
+      if ($match) pipeline.push({ $match });
+    }
+
+    if (answersInsightsQueryInput?.locationsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          'audit.locationId': { $in: answersInsightsQueryInput.locationsIds },
+        },
+      });
+    }
+
+    if (answersInsightsQueryInput?.businessUnitsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          'audit.businessUnitId': { $in: answersInsightsQueryInput.businessUnitsIds },
+        },
+      });
+    }
 
     const answers = await Answers.aggregate(pipeline);
 
@@ -40,7 +186,6 @@ const answersInsights = async (_, { answersInsightsQuery }, { authorize, organiz
     let resolvedAnswers;
     let openAnswers;
     let totalAnswersChart;
-    let mostAddedBy;
 
     if (shouldJoin(['totalAnswers'])) totalAnswers = answers.length ?? 0;
 
@@ -68,43 +213,12 @@ const answersInsights = async (_, { answersInsightsQuery }, { authorize, organiz
       );
     }
 
-    if (shouldJoin(['mostAddedBy'])) {
-      mostAddedBy = Object.entries(groupBy(answers, 'metatags.addedBy'))
-        .map(([key, value]) => ({
-          _id: key,
-          answers: (value as Array<any>).length,
-        }))
-        .sort((firstAnswerCreator, secondAnswerCreator) => secondAnswerCreator.answers - firstAnswerCreator.answers);
-    }
-
-    if (shouldJoin(['mostAddedBy', 'user'])) {
-      mostAddedBy = await Promise.all(
-        mostAddedBy.map(
-          async (user) => {
-            try {
-              return {
-                ...user,
-                user: await Users.customFindByIdWithDetails({
-                  userId: user?._id,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.error(`Error occured in answers insights for user with ID ${user?._id}: ${e}`);
-              return { user };
-            }
-          },
-        ),
-      );
-    }
-
     return {
       totalAnswers,
       closedAnswers,
       resolvedAnswers,
       openAnswers,
       totalAnswersChart,
-      mostAddedBy,
     };
   } catch (err: any) {
     throw new Error(err);

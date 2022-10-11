@@ -3,19 +3,21 @@ import { useEffect, useMemo, useState } from 'react';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
+import { isEmpty } from 'lodash';
 
 import { actionsInsightsTypes } from '../../bootstrap/config';
 import InsightsCard from '../../components/Insights/InsightsCard';
 import InsightsChart from '../../components/Insights/InsightsChart';
 import InsightsDetailedStats from '../../components/Insights/InsightsDetailedStats';
 import Loader from '../../components/Loader';
+import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import { IUser } from '../../interfaces/IUser';
 
 const GET_ACTIONS_INSIGHTS = gql`
-  query {
-    actionsInsights {
+  query ($actionsInsightsQueryInput: ActionsInsightsQueryInput) {
+    actionsInsights(actionsInsightsQueryInput: $actionsInsightsQueryInput) {
       totalActions
       completedActions
       inProgressActions
@@ -81,7 +83,51 @@ const GET_USERS_ACTIONS_INSIGHTS = gql`
 `;
 
 const ActionsInsights = () => {
-  const { data, loading, error } = useQuery(GET_ACTIONS_INSIGHTS);
+  const { filtersValues, setFilters, actionFiltersValue, setActionFiltersValue, usedFilters } = useFiltersContext();
+  const { data, loading, error, refetch } = useQuery(GET_ACTIONS_INSIGHTS);
+
+  // Set pre-defined filters
+  useEffect(() => {
+    if (actionFiltersValue && !isEmpty(actionFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(actionFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setActionFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
+    }
+  }, [filtersValues, usedFilters, setActionFiltersValue, actionFiltersValue, setFilters]);
+
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1] || !usedFilters.includes(filter[0])) return { ...acc };
+
+      const [key, value] = filter;
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' && value.value?.assigneesIds?.length === 0)
+      )
+        return acc;
+
+      return {
+        ...acc,
+        [key]: value.value,
+      };
+    }, {});
+
+    if (parsedFilters) {
+      refetch({
+        actionsInsightsQueryInput: {
+          ...parsedFilters,
+          scope: {
+            type: 'answer',
+          },
+        },
+      });
+    }
+  }, [filtersValues]);
 
   const [getLocationsData, { data: locationsData }] = useLazyQuery(GET_LOCATIONS_ACTIONS_INSIGHTS, {
     variables: {

@@ -1,20 +1,210 @@
-import { format } from 'date-fns';
+import {
+  addMonths,
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  format,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 import { groupBy, sumBy } from 'lodash';
 
-import { Audits, Users } from 'app-models';
+import { Audits } from 'app-models';
 import { doesPathExist } from 'app-utils';
 
-const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLResolveInfo) => {
+const auditsInsights = async (_, { auditsInsightsQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['auditsInsights', ...elements]);
 
   try {
     await authorize();
 
-    const audits = await Audits.find({
-      'metatags.removedAt': null,
-      organizationId: organization._id,
-    });
+    const pipeline: any[] = [
+      {
+        $match: {
+          'metatags.removedAt': auditsInsightsQueryInput?.showArchived ? { $exists: true } : { $eq: null },
+          organizationId: organization._id,
+        },
+      },
+    ];
+
+    if (auditsInsightsQueryInput?.walkType?.length > 0) {
+      pipeline.push({
+        $match: {
+          walkType: { $in: auditsInsightsQueryInput.walkType },
+        },
+      });
+    }
+
+    if (auditsInsightsQueryInput?.auditTypesIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          auditTypeId: { $in: auditsInsightsQueryInput.auditTypesIds },
+        },
+      });
+    }
+
+    if (auditsInsightsQueryInput?.locationsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          locationId: { $in: auditsInsightsQueryInput.locationsIds },
+        },
+      });
+    }
+
+    if (auditsInsightsQueryInput?.businessUnitsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          businessUnitId: { $in: auditsInsightsQueryInput.businessUnitsIds },
+        },
+      });
+    }
+
+    if (auditsInsightsQueryInput?.usersIds?.auditorsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          auditorId: { $in: auditsInsightsQueryInput.usersIds?.auditorsIds },
+        },
+      });
+    }
+
+    if (auditsInsightsQueryInput?.usersIds?.participantsIds?.length > 0) {
+      pipeline.push({
+        $match: {
+          participantsIds: {
+            $in: auditsInsightsQueryInput.usersIds?.participantsIds,
+          },
+        },
+      });
+    }
+
+    if (auditsInsightsQueryInput?.status?.length > 0) {
+      pipeline.push({
+        $match: {
+          status: {
+            $in: auditsInsightsQueryInput.status,
+          },
+        },
+      });
+    }
+
+    // Filter by created date or due date
+    // Based on query parameter
+    // Audits attribute selected conditionally to filter
+    if (auditsInsightsQueryInput?.createdDate || auditsInsightsQueryInput?.dueDate) {
+      const [filter, startDate, endDate] = auditsInsightsQueryInput?.createdDate || auditsInsightsQueryInput?.dueDate;
+      const filterByCreatedDate = !!auditsInsightsQueryInput.createdDate;
+      let $match;
+      switch (filter) {
+        case 'thisWeek':
+          $match = {
+            $and: [
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisMonth':
+          $match = {
+            $and: [
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $gte: startOfMonth(new Date()),
+                },
+              },
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $lte: endOfMonth(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'thisYear':
+          $match = {
+            $and: [
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $gte: startOfYear(new Date()),
+                },
+              },
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $lte: endOfYear(new Date()),
+                },
+              },
+            ],
+          };
+          break;
+        case 'nextMonth':
+          $match = {
+            $and: [
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $gte: startOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $lte: endOfMonth(addMonths(new Date(), 1)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'exactDate':
+          $match = {
+            $and: [
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $gte: startOfDay(new Date(startDate)),
+                },
+              },
+              {
+                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                  $lte: endOfDay(new Date(startDate)),
+                },
+              },
+            ],
+          };
+          break;
+        case 'dateRange':
+          if (startDate && endDate) {
+            $match = {
+              $and: [
+                {
+                  [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                    $gte: startOfDay(new Date(startDate)),
+                  },
+                },
+                {
+                  [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
+                    $lte: endOfDay(new Date(endDate)),
+                  },
+                },
+              ],
+            };
+          }
+          break;
+        default:
+          break;
+      }
+
+      if ($match) pipeline.push({ $match });
+    }
+
+    const audits = await Audits.aggregate(pipeline);
 
     let totalAudits;
     let completedAudits;
@@ -24,7 +214,6 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
     let completedAuditsChart;
     let upcomingAuditsChart;
     let missedAuditsChart;
-    let topAuditors;
 
     if (shouldJoin(['totalAudits'])) totalAudits = audits.length;
 
@@ -121,36 +310,6 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
       );
     }
 
-    if (shouldJoin(['topAuditors'])) {
-      topAuditors = Object.entries(groupBy(audits, 'auditorId'))
-        .map(([key, value]) => ({
-          _id: key,
-          audits: (value as Array<any>).length,
-        }))
-        .sort((firstAuditor, secondAuditor) => secondAuditor.audits - firstAuditor.audits);
-    }
-
-    if (shouldJoin(['topAuditors', 'user'])) {
-      topAuditors = await Promise.all(
-        topAuditors.map(
-          async (auditor) => {
-            try {
-              return {
-                ...auditor,
-                user: await Users.customFindByIdWithDetails({
-                  userId: auditor?._id,
-                  organization,
-                }),
-              };
-            } catch (e) {
-              console.error(`Error occured in audits insights for user with ID ${auditor?._id}: ${e}`);
-              return { auditor };
-            }
-          },
-        ),
-      );
-    }
-
     return {
       totalAudits,
       completedAudits,
@@ -160,7 +319,6 @@ const auditsInsights = async (_, __, { authorize, organization }, info: GraphQLR
       completedAuditsChart,
       upcomingAuditsChart,
       missedAuditsChart,
-      topAuditors,
     };
   } catch (err: any) {
     throw new Error(err);

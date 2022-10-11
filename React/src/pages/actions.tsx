@@ -174,9 +174,7 @@ const Actions = () => {
     const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
       if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
-      // console.log('filter', filter);
       const [key, value] = filter;
-
       if (
         !value.value ||
         (Array.isArray(value.value) && value.value.length === 0) ||
@@ -189,7 +187,6 @@ const Actions = () => {
         [key]: value.value,
       };
     }, {});
-    // console.log('parsedFilters', parsedFilters);
 
     if (parsedFilters) {
       refetch({

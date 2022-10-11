@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Flex, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import FilterButton from '../../components/FilterButton';
+import QuickFilters from '../../components/Filters/QuickFilters';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -37,44 +38,54 @@ const Insights = () => {
   const { setUsedFilters, setShowFiltersPanel } = useFiltersContext();
   const panels = useMemo(
     () => [
-      { _id: 'audits', name: capitalize(pluralize(t('audit'))), component: <AuditsInsights /> },
+      {
+        _id: 'audits',
+        name: capitalize(pluralize(t('audit'))),
+        component: <AuditsInsights />,
+        usedFilters: ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds'],
+      },
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
         _id: questionsCategory._id,
         name: questionsCategory.name,
         component: <AnswersInsights answerType={questionsCategory.name} questionsCategoriesId={questionsCategory._id} />,
+        usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
-      { _id: 'actions', name: 'Actions', component: <ActionsInsights /> },
+      {
+        _id: 'actions',
+        name: 'Actions',
+        component: <ActionsInsights />,
+        usedFilters: ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'],
+      },
     ],
     [data],
   );
   const [selectedPanel, setSelectedPanel] = useState(0);
 
   useEffect(() => {
-    setUsedFilters(['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds']);
+    setUsedFilters(panels[selectedPanel]?.usedFilters ?? []);
+
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);
     };
-  }, []);
+  }, [selectedPanel]);
 
   return (
-    <>
+    <Flex direction="column" h="full" isolation="isolate" zIndex="1">
       <Header breadcrumbs={['Insights']} mobileBreadcrumbs={['Insights']}>
         {device === 'mobile' && <FilterButton insightsFilter />}
       </Header>
-
+      {device !== 'mobile' && (
+        <Flex h="max-content" pl={['4', '8', '8']} position="relative" zIndex="2">
+          <QuickFilters w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
+        </Flex>
+      )}
       {error ? (
         <Text>{error.message}</Text>
       ) : loading ? (
         <Loader center />
       ) : (
-        <Flex direction="column" overflow="auto" pt="3" px={[4, 8]}>
-          {device === 'tablet' && (
-            <Flex mb={[2, 4]}>
-              <Spacer />
-              <FilterButton insightsFilter />
-            </Flex>
-          )}
+        <Flex direction="column" overflowY="scroll" pt="3" px={[4, 8]}>
           <Tabs defaultIndex={selectedPanel} isLazy onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
             <TabList>
               {panels?.map((panel) => (
@@ -103,7 +114,7 @@ const Insights = () => {
           </Tabs>
         </Flex>
       )}
-    </>
+    </Flex>
   );
 };
 

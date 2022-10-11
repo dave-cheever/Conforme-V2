@@ -3,17 +3,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Box, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
 import { EChartsOption, graphic } from 'echarts';
+import { isEmpty } from 'lodash';
 
 import InsightsChart from '../../components/Insights/InsightsChart';
 import InsightsDetailedStats from '../../components/Insights/InsightsDetailedStats';
 import Loader from '../../components/Loader';
+import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import { IUser } from '../../interfaces/IUser';
 
 const GET_ANSWERS_INSIGHTS = gql`
-  query ($answersInsightsQuery: AnswersInsightsQuery!) {
-    answersInsights(answersInsightsQuery: $answersInsightsQuery) {
+  query ($answersInsightsQueryInput: AnswersInsightsQueryInput!) {
+    answersInsights(answersInsightsQueryInput: $answersInsightsQueryInput) {
       totalAnswers
       closedAnswers
       resolvedAnswers
@@ -67,13 +69,55 @@ const GET_USERS_ANSWERS_INSIGHTS = gql`
 `;
 
 const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
-  const { data, loading, error } = useQuery(GET_ANSWERS_INSIGHTS, {
+  const { filtersValues, setFilters, walkItemFiltersValue, setWalkItemFiltersValue, usedFilters } = useFiltersContext();
+  const { data, loading, error, refetch } = useQuery(GET_ANSWERS_INSIGHTS, {
     variables: {
-      answersInsightsQuery: {
+      answersInsightsQueryInput: {
         questionsCategoriesId,
       },
     },
   });
+
+  useEffect(() => {
+    if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
+      const delayFilters = setTimeout(() => {
+        setFilters(Object.entries(walkItemFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setWalkItemFiltersValue({});
+        clearTimeout(delayFilters);
+      }, 100);
+    }
+  }, [filtersValues, usedFilters, setWalkItemFiltersValue, walkItemFiltersValue, setFilters]);
+
+  useEffect(() => {
+    // Parse filters to format expected by GraphQL Query
+    const parsedFilters: any = Object.entries(filtersValues).reduce((acc, filter) => {
+      if (!filter || !filter[1] || !usedFilters.includes(filter[0])) return { ...acc };
+
+      const [key, value] = filter;
+
+      if (
+        !value.value ||
+        (Array.isArray(value.value) && value.value.length === 0) ||
+        (key === 'usersIds' && value.value?.addedByIds?.length === 0)
+      )
+        return acc;
+
+      return {
+        ...acc,
+        [key]: value?.value,
+      };
+    }, {});
+
+    if (parsedFilters) {
+      refetch({
+        answersInsightsQueryInput: {
+          ...parsedFilters,
+          questionsCategoriesId,
+        },
+      });
+    }
+  }, [filtersValues]);
 
   const [getLocationsData, { data: locationsData }] = useLazyQuery(GET_LOCATIONS_ANSWERS_INSIGHTS, {
     variables: {

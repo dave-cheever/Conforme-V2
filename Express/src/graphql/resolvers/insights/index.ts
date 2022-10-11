@@ -13,28 +13,9 @@ const insightsResolvers = {
 };
 
 export const insightsTypeDefs = `
-  input AnswersInsightsQuery {
-    questionsCategoriesId: ID!
-  }
-
   type Chart {
     dates: [String!]!
     counts: [Int!]!
-  }
-
-  type TopAuditor {
-    user: User!
-    audits: Int!
-  }
-
-  type TopActionCreator {
-    user: User!
-    actions: Int!
-  }
-
-  type TopAnswerCreator {
-    user: User!
-    answers: Int!
   }
 
   type AuditsInsights {
@@ -46,7 +27,6 @@ export const insightsTypeDefs = `
     completedAuditsChart: Chart
     upcomingAuditsChart: Chart
     missedAuditsChart: Chart
-    topAuditors: [TopAuditor!]!
   }
 
   type ActionsInsights {
@@ -58,7 +38,6 @@ export const insightsTypeDefs = `
     completedActionsChart: Chart
     inProgressActionsChart: Chart
     overdueActionsChart: Chart
-    mostAddedBy: [TopActionCreator!]!
   }
 
   type AnswersInsights {
@@ -67,7 +46,6 @@ export const insightsTypeDefs = `
     resolvedAnswers: Int
     closedAnswers: Int
     totalAnswersChart: Chart
-    mostAddedBy: [TopAnswerCreator!]!
   }
 
   type Totals {
@@ -75,12 +53,43 @@ export const insightsTypeDefs = `
     locations: Int
     businessUnits: Int
   }
+
+  input AuditsInsightsQueryInput {
+    status: [String]
+    auditTypesIds: [ID]
+    walkType: [String]
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
+    usersIds: AuditUsersInput
+    createdDate: [String]
+    dueDate: [String]
+  }
+
+  input ActionsInsightsQueryInput {
+    scope: ScopeInput
+    status: [String]
+    priority: [String]
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
+    usersIds: ActionUsersInput
+    dueDate: [String]
+  }
+
+  input AnswersInsightsQueryInput {
+    questionsCategoriesId: ID!
+    businessUnitsIds: [ID]
+    locationsIds: [ID]
+    status: [String]
+    usersIds: AnswerUsersInput
+    scope: ScopeInput
+    createdDate: [String]
+  }
 `;
 
 export const insightsQueryDefs = `
-  auditsInsights: AuditsInsights!
-  actionsInsights: ActionsInsights!
-  answersInsights(answersInsightsQuery: AnswersInsightsQuery!): AnswersInsights!
+  auditsInsights(auditsInsightsQueryInput :AuditsInsightsQueryInput): AuditsInsights!
+  actionsInsights(actionsInsightsQueryInput :ActionsInsightsQueryInput): ActionsInsights!
+  answersInsights(answersInsightsQueryInput: AnswersInsightsQueryInput!): AnswersInsights!
   totals: Totals!
 `;
 
