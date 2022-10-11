@@ -619,6 +619,7 @@ const getTheme = (organizationTheme?: any) => {
               minW: ['100%', '700px'],
             },
             dialogContainer: {
+              height: "-webkit-fill-available",
               justifyContent: 'flex-end',
             },
             overlay: {
@@ -641,6 +642,7 @@ const getTheme = (organizationTheme?: any) => {
               minW: ['100%', '510px'],
             },
             dialogContainer: {
+              height: "-webkit-fill-available",
               justifyContent: 'flex-end',
             },
             overlay: {
