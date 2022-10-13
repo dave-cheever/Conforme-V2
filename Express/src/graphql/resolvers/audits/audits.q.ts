@@ -210,17 +210,17 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
             ],
           };
           break;
-        case 'allMonths':
+        case 'last12Months':
           $match = {
             $and: [
               {
                 [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: subYears(new Date(), 1),
+                  $gte: startOfMonth(addMonths(subYears(new Date(), 1), 1)),
                 },
               },
               {
                 [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: new Date(),
+                  $lte: endOfMonth(new Date()),
                 },
               },
             ],

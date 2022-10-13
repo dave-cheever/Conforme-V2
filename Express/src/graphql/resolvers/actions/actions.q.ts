@@ -128,17 +128,17 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
             ],
           };
           break;
-        case 'allMonths':
+        case 'last12Months':
           $match = {
             $and: [
               {
                 dueDate: {
-                  $gte: subYears(new Date(), 1),
+                  $gte: startOfMonth(addMonths(subYears(new Date(), 1), 1)),
                 },
               },
               {
                 dueDate: {
-                  $lte: new Date(),
+                  $lte: endOfMonth(new Date()),
                 },
               },
             ],
