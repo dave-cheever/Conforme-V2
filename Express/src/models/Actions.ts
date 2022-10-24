@@ -17,6 +17,7 @@ import {
   join,
   removeDatabaseFields,
 } from 'app-utils';
+import { isEmpty } from 'lodash';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,
@@ -525,7 +526,7 @@ actionsSchema.statics.customResolveAnswer = async function (answerId: string, us
     const actions = await this.customFind({ 'scope._id': answerId }, organization._id);
     const answer = await Answers.customFindById(answerId, organization._id);
     if (!answer) throw new Error("Answer doesn't exist");
-    if (actions.every(({ status }) => status === 'closed')) {
+    if (!isEmpty(actions) && actions.every(({ status }) => status === 'closed')) {
       await Answers.customUpdateOne({ _id: answer._id }, { status: "closed" }, userId, organization._id);
       return;
     }
