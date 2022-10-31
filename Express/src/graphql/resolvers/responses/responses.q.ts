@@ -1,12 +1,8 @@
 import {
-  addDays,
   addMonths,
-  differenceInCalendarDays,
   endOfDay,
   endOfMonth,
   endOfWeek,
-  isAfter,
-  isSameDay,
   startOfDay,
   startOfMonth,
   startOfWeek,
@@ -14,12 +10,13 @@ import {
 import { response } from 'express';
 import { GraphQLResolveInfo } from 'graphql';
 
-import { Responses, Settings, Users } from 'app-models';
+import { Responses } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
-const responses = async (_, { responsesQuery }, { authorize, organization }, info: GraphQLResolveInfo) => {
-  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['responses', ...elements]);
+const responses = async (_, { responsesQuery, responsesPagination }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['responses', 'responses', ...elements]);
   try {
+    const { limit = 0, offset = 0, sortBy = 'calculatedStatus', sortDirection = 'asc' } = responsesPagination || {};
     const user = await authorize();
     const pipeline: any[] = [
       {
@@ -184,8 +181,10 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       responsesQuery?.includeNotPublished ||
       responsesQuery?.categoriesIds ||
       responsesQuery?.regulatoryBodiesIds ||
+      responsesQuery?.itemStatus ||
       shouldJoin(['trackerItem']) ||
-      shouldJoin(['calculatedStatus'])
+      shouldJoin(['calculatedStatus']) ||
+      sortBy === 'calculatedStatus'
     ) {
       join({
         pipeline,
@@ -284,59 +283,202 @@ const responses = async (_, { responsesQuery }, { authorize, organization }, inf
       });
     }
 
-    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
+    if (responsesQuery?.itemStatus || shouldJoin(['calculatedStatus']) || sortBy === 'calculatedStatus') {
+      // Move responses to array
+      pipeline.push({
+        $group: {
+          _id: 'comingUpTriggers',
+          responses: {
+            $push: "$$ROOT",
+          },
+        },
+      });
 
-    const responses = await Responses.aggregate(pipeline);
+      // Lookup coming up trigger settings
+      pipeline.push({
+        $lookup: {
+          from: 'settings',
+          localField: '_id',
+          foreignField: 'name',
+          as: 'comingUpTriggers',
+        },
+      });
 
-    // Join responsible
+      // Filter coming up trigger settings by organization ID
+      pipeline.push({
+        $project: {
+          responses: "$responses",
+          comingUpTriggers: {
+            $filter: {
+              input: "$comingUpTriggers",
+              as: "comingUpTrigger",
+              cond: { "$eq": ["$$comingUpTrigger.organizationId", organization._id] },
+            },
+          },
+        },
+      });
+
+      // Unwind coming up trigger setting
+      pipeline.push({
+        $unwind: {
+          path: '$comingUpTriggers',
+          preserveNullAndEmptyArrays: true,
+        },
+      });
+
+      // Project to get only values of coming up trigger setting
+      pipeline.push({
+        $project: {
+          responses: "$responses",
+          comingUpTriggers: {
+            $objectToArray: "$comingUpTriggers.value",
+          },
+        },
+      });
+
+      // Unwind responses
+      pipeline.push({
+        $unwind: {
+          path: '$responses',
+        },
+      });
+
+      // Push coming up trigger values to responses
+      pipeline.push({
+        $addFields: {
+          'responses.comingUpTriggers': '$comingUpTriggers',
+        },
+      });
+
+      // Move response to be root of document again
+      pipeline.push({
+        $replaceRoot: {
+          newRoot: '$responses',
+        },
+      });
+
+      // Take the comming up trigger by tracker item frequency
+      pipeline.push({
+        $addFields: {
+          comingUpTrigger: {
+            $arrayElemAt: [{
+              $filter: {
+                input: "$comingUpTriggers",
+                as: "comingUpTrigger",
+                cond: {
+                  $eq: ["$$comingUpTrigger.k", "$trackerItem.frequency"],
+                },
+              },
+            }, 0],
+          },
+        },
+      });
+
+      // Add isOverdue and isComingUp properties
+      pipeline.push({
+        $addFields: {
+          isOverdue: {
+            $and: [{
+              $gt: ["$dueDate", null], // dueDate is not null
+            }, {
+              $lt: ["$dueDate", new Date()], // dueDate is lesser than today
+            }],
+          },
+          isComingUp: {
+            $and: [{
+              $gt: ["$dueDate", null], // dueDate is not null
+            }, {
+              $lt: ["$dueDate", {
+                $add: [new Date(), { $multiply: ["$comingUpTrigger.v", 24 * 60 * 60 * 1000] }], // dueDate is lesser than today + cumming up trigger for frequency
+              }],
+            }],
+          },
+        },
+      });
+
+      // Add calculatedStatus property
+      pipeline.push({
+        $addFields: {
+          calculatedStatus: {
+            $cond: {
+              if: {
+                $and: [{
+                  $or: [{
+                    $eq: ["$status", "submitted"],
+                  }, {
+                    $and: [{
+                      $eq: ["$status", "draft"],
+                    }, {
+                      $gt: ["$lastCompletionDate", null],
+                    }],
+                  }],
+                }, {
+                  $eq: ["$isOverdue", false],
+                }],
+              },
+              then: {
+                $cond: {
+                  if: {
+                    $eq: ["$isComingUp", true],
+                  },
+                  then: "comingUp",
+                  else: "compliant",
+                },
+              },
+              else: "nonCompliant",
+            },
+          },
+        },
+      });
+    }
+
+    if (responsesQuery?.itemStatus) {
+      pipeline.push({
+        $match: {
+          calculatedStatus: { $in: responsesQuery.itemStatus },
+        },
+      });
+    }
+
     if (shouldJoin(['responsible'])) {
-      await Promise.all(
-        responses.map(async (response) => {
-          try {
-            response.responsible = await Users.customFindByIdWithDetails({
-              userId: response.responsibleId,
-              organization,
-            });
-          } catch (e) {
-            console.log(`Error occured for response with ID ${response._id}: ${e}`);
-          }
-        }),
-      );
+      join({
+        pipeline,
+        collection: 'users',
+        from: 'responsibleId',
+        to: 'responsible',
+      });
     }
 
-    if (shouldJoin(['daysToDueDate'])) {
-      for (const response of responses) {
-        if (!response.dueDate) continue;
+    // Push all responses to array and count total
+    pipeline.push({
+      $facet: {
+        responses: [{
+          $sort: {
+            [sortBy]: sortDirection === 'asc' ? 1 : -1,
+          },
+        }, {
+          $limit: (offset || 0) + (limit || 50),
+        }, {
+          $skip: offset || 0,
+        }],
+        total: [{
+          $count: 'total',
+        }],
+      },
+    });
+    pipeline.push({
+      $unwind: {
+        path: "$total",
+      },
+    });
 
-        const start = new Date(response.dueDate);
-        const end = new Date();
-        if (isSameDay(start, end)) response.daysToDueDate = 0;
-        else response.daysToDueDate = differenceInCalendarDays(start, end);
-      }
-    }
+    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
+    const res = (await Responses.aggregate(pipeline))[0];
 
-    if (shouldJoin(['calculatedStatus'])) {
-      const comingUpTriggersSetting = await Settings.customFindByName(
-        'comingUpTriggers',
-        organization._id,
-      );
-      const triggers = comingUpTriggersSetting?.[0]?.value;
-      for (const response of responses) {
-        const daysToComingUp = triggers[response.trackerItem.frequency]
-        const isOverdue = response.dueDate ? isAfter(new Date(), new Date(response.dueDate)) : false;
-        const isComingUp = response.dueDate ? isAfter(addDays(new Date(), daysToComingUp), new Date(response.dueDate)) : false;
-        if (
-          (
-            response.status === 'submitted' ||
-            (response.status === 'draft' && response.lastCompletionDate)
-          ) &&
-          !isOverdue
-        ) response.calculatedStatus = isComingUp ? 'comingUp' : 'compliant';
-        else response.calculatedStatus = 'nonCompliant';
-      }
-    }
-
-    return responses;
+    return {
+      responses: res?.responses || [],
+      total: res?.total?.total || 0,
+    };
   } catch (err: any) {
     throw new Error(err);
   }

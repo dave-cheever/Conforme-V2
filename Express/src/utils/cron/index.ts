@@ -17,7 +17,7 @@ const setCRONJobs = () => {
   });
   calculateAuditsCRON.start();
   const deleteOutdatedDataCRON = new CronJob('0 0 1 * * *', async () => {
-    logger.info('"Delete outdated" data CRON job started');
+    logger.info('"Delete outdated data" CRON job started');
     try {
       await deleteOutdatedData();
     } catch (e) {
@@ -25,6 +25,15 @@ const setCRONJobs = () => {
     }
   });
   deleteOutdatedDataCRON.start();
+  const syncUsersCRON = new CronJob('0 0 2 * * *', async () => {
+    logger.info('"Sync users" CRON job started');
+    try {
+      await deleteOutdatedData();
+    } catch (e) {
+      logger.error('Error in "Sync users" CRON job: ', e);
+    }
+  });
+  syncUsersCRON.start();
 };
 
 export default setCRONJobs;

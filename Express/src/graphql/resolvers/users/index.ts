@@ -67,11 +67,6 @@ export const usersTypeDefs = `
     questionsCategoriesId: ID!
   }
 
-  input UsersPaginationInput {
-    limit: Int
-    offset: Int
-  }
-
   input UpdateUserModifyInput {
     _id: ID!
     defaultPage: String
@@ -80,7 +75,7 @@ export const usersTypeDefs = `
 
 export const usersQueryDefs = `
   session: Session!
-  users(usersAnswersCountInput: UsersAnswersCountInput, usersPagination: UsersPaginationInput): [User!]!
+  users(usersAnswersCountInput: UsersAnswersCountInput, usersPagination: PaginationInput): [User!]!
   searchUsers(searchQuery: SearchUserQuery): [User!]!
   usersById(userQueryInput: UserQueryInput): [User!]!
 `;

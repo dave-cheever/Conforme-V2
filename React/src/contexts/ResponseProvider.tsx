@@ -17,69 +17,70 @@ export const ResponseContext = createContext({} as IResponseContext);
 const GET_RESPONSE = gql`
   query Responses($responsesQuery: ResponsesQuery) {
     responses(responsesQuery: $responsesQuery) {
-      _id
-      lastCompletionDate
-      dueDate
-      status
-      calculatedStatus
-      accountableId
-      responsibleId
-      contributorsIds
-      followersIds
-      daysToDueDate
-      published
-      evidence {
-        name
-        uploaded {
+      responses {
+        _id
+        lastCompletionDate
+        dueDate
+        status
+        calculatedStatus
+        accountableId
+        responsibleId
+        contributorsIds
+        followersIds
+        published
+        evidence {
+          name
+          uploaded {
+            id
+            name
+            addedAt
+            thumbnail
+            path
+          }
+        }
+        attachments {
           id
           name
           addedAt
           thumbnail
           path
         }
-      }
-      attachments {
-        id
-        name
-        addedAt
-        thumbnail
-        path
-      }
-      questions {
-        type
-        name
-        description
-        value
-        required
-        requiredAnswer
-        notApplicable
-        options {
-          label
+        questions {
+          type
+          name
+          description
           value
+          required
+          requiredAnswer
+          notApplicable
+          options {
+            label
+            value
+          }
         }
-      }
-      trackerItem {
-        _id
-        name
-        reference
-        description
-        evidenceItems
-        frequency
-        allowAttachments
-        dueDateEditable
-        category {
+        trackerItem {
+          _id
           name
+          reference
+          description
+          evidenceItems
+          frequency
+          allowAttachments
+          dueDateEditable
+          category {
+            name
+          }
+          regulatoryBody {
+            name
+          }
         }
-        regulatoryBody {
+        businessUnit {
           name
+          imgUrl
         }
-      }
-      businessUnit {
-        name
-        imgUrl
-      }
-      metatags {
-        addedAt
+        metatags {
+          addedAt
+        }
       }
     }
   }
@@ -193,7 +194,7 @@ const ResponseProvider = ({ children }) => {
       return [...acc, ...responsesRecords];
     }, []) || [];
 
-  let response: IResponse = data?.responses[0];
+  let response: IResponse = data?.responses?.responses[0];
   if (snapshot) {
     const responseSnapshot = snapshots.find(
       ({ lastCompletionDate }) => lastCompletionDate && isEqual(new Date(lastCompletionDate), new Date(parseInt(snapshot, 10))),

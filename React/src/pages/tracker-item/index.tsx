@@ -129,8 +129,8 @@ const TrackerItemResponse = () => {
               position="relative"
               w={['full', '30%']}
             >
-              <Flex align='center' flexDir={['column', 'row']} justifyContent='space-between' w="full">
-                <VStack align={['center', 'flex-start']} spacing={0} w='full'>
+              <Flex align="center" flexDir={['column', 'row']} justifyContent="space-between" w="full">
+                <VStack align={['center', 'flex-start']} spacing={0} w="full">
                   <Text color="responseRenewalDetails.labelColor" fontSize="11px">
                     Perform new review by
                   </Text>
@@ -143,7 +143,7 @@ const TrackerItemResponse = () => {
                     action="responses.edit"
                     data={{ response }}
                     yes={() => (
-                      <Flex >
+                      <Flex onClick={(e) => e.stopPropagation()}>
                         <DatePicker
                           customInput={<EditButton />}
                           dateFormatCalendar="MMMM"
@@ -165,7 +165,6 @@ const TrackerItemResponse = () => {
               </Flex>
             </Flex>
           )}
-
         </Stack>
         <Box
           overflow={['visible', 'auto']}
@@ -183,7 +182,7 @@ const TrackerItemResponse = () => {
           {(response?.trackerItem?.allowAttachments || response?.trackerItem?.evidenceItems?.length > 0) && <Attachments />}
           <ResponseQuestions disabled={activeTab === 0} key={activeTab} />
           {(response.questions.filter(({ required }) => required).length > 0 || response.evidence.length > 0) && activeTab === 1 && (
-            <Flex mt='3' w="full" >
+            <Flex mt="3" w="full">
               <Asterisk fill="questionListElement.iconAsterisk" h="9px" stroke="questionListElement.iconAsterisk" w="9px" />
               &nbsp;
               <Text fontSize="sm" fontWeight="semi_medium">

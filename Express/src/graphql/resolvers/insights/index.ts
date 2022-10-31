@@ -52,6 +52,7 @@ export const insightsTypeDefs = `
     users: Int
     locations: Int
     businessUnits: Int
+    trackerResponses: Int
   }
 
   input AuditsInsightsQueryInput {

@@ -1,6 +1,6 @@
 import { GraphQLResolveInfo } from "graphql";
 
-import { BusinessUnits, Locations, Users } from "app-models";
+import { BusinessUnits, Locations, Responses, Users } from "app-models";
 import { doesPathExist } from "app-utils";
 
 const totals = async (_, __, { organization }, info: GraphQLResolveInfo) => {
@@ -25,6 +25,13 @@ const totals = async (_, __, { organization }, info: GraphQLResolveInfo) => {
     totals.businessUnits = await BusinessUnits.count({
       'metatags.removedAt': null,
       organizationId: organization._id,
+    });
+  }
+
+  if (shouldJoin(['trackerResponses'])) {
+    totals.trackerResponses = await Responses.count({
+      'metatags.removedAt': null,
+      organizationsIds: organization._id,
     });
   }
 

@@ -79,9 +79,9 @@ userSchema.statics.customFindWithDetails = async function ({
 
   let users = await usersRequested.lean();
 
-  // Refresh user data if it wasn't refreshed in the last 5 minutes
+  // Refresh user data if it wasn't refreshed in the last 6 hours
   const syncedUsersPromises = users.map(async (user) => {
-    if (isBefore(new Date(user.metatags?.updatedAt || 0), subHours(new Date(), 24))) {
+    if (isBefore(new Date(user.metatags?.updatedAt || 0), subHours(new Date(), 6))) {
       const userDetails = await GraphService.getUserData({ userId: user._id, organization });
       const managerId = await GraphService.getLineManagerId({ userId: user._id, organization });
 

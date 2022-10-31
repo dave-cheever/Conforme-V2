@@ -70,7 +70,11 @@ const TrackerListItem = ({ response }: { response: IResponse }) => {
         <Box pr={4} w="20%">
           {response.responsible ? (
             <Flex align="center" direction="row">
-              <Avatar name={response.responsible.displayName} size="xs" src={response.responsible.imgUrl} />
+              <Avatar
+                name={response.responsible.displayName}
+                size="xs"
+                src={`${process.env.REACT_APP_API_URL}/files/photo/${response.responsible._id}`}
+              />
               <Text
                 color="trackerList.fontColor"
                 fontSize="13px"

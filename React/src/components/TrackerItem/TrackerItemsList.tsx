@@ -1,3 +1,5 @@
+import InfiniteScroll from 'react-infinite-scroller';
+
 import { Box, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
@@ -5,22 +7,31 @@ import { capitalize } from 'lodash';
 import { IResponse } from '../../interfaces/IResponse';
 import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
+import Loader from '../Loader';
 import TrackerListItem from './TrackerListItem';
 
 const TrackerListItems = ({
   responses,
+  loading,
+  total,
   sortOrder,
   sortType,
+  scrollerRef,
+  loadResponses,
   setSortOrder,
   setSortType,
 }: {
   responses: IResponse[];
+  loading: boolean;
+  total: number;
   sortOrder: 'asc' | 'desc';
   sortType: string;
+  scrollerRef: any; // Using 'any' as there is no exported interface to use
+  loadResponses: (page: number) => Promise<void>;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
-  <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
+  <Box h="full" overflow="none" p={[3, 6]} w="full">
     <Box bg="trackerList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
       <AdminTableHeader>
         <AdminTableHeaderElement
@@ -85,9 +96,18 @@ const TrackerListItems = ({
         />
       </AdminTableHeader>
       <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
-        {responses?.map((response) => (
-          <TrackerListItem key={response._id} response={response} />
-        ))}
+        <InfiniteScroll
+          hasMore={!loading && responses.length < total}
+          initialLoad={false}
+          loadMore={loadResponses}
+          ref={scrollerRef}
+          useWindow={false}
+        >
+          {responses?.map((response) => (
+            <TrackerListItem key={response._id} response={response} />
+          ))}
+          {loading && <Loader center h="60px" key="infinite-loader" />}
+        </InfiniteScroll>
       </Flex>
     </Box>
   </Box>

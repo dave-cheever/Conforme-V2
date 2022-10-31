@@ -70,13 +70,8 @@ const useFiltersUtils = () => {
   // Constants needs to be inside of useFiltersUtils in order to have working translations
   const trackerItemStatuses = {
     compliant: capitalize(t('compliant')),
-    nonCompliant: capitalize(t('non-compliant')),
-    notStarted: 'Not started',
-    inProgress: 'In progress',
-    completed: 'Completed',
-    noDueDate: 'No due date',
     comingUp: 'Coming Up',
-    missed: 'Missed',
+    nonCompliant: capitalize(t('non-compliant')),
   };
   const initialAuditFilters: IAuditFilters = {
     walkType: {

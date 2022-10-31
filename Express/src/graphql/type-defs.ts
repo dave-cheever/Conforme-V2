@@ -135,6 +135,13 @@ const typeDefs = gql`
     _id: String
   }
 
+  input PaginationInput {
+    limit: Int
+    offset: Int
+    sortBy: String
+    sortDirection: String
+  }
+
   ${actionsTypeDefs}
   ${answersTypeDefs}
   ${auditLogsTypeDefs}

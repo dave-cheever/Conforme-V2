@@ -66,6 +66,11 @@ export const responsesTypeDefs = `
     metatags: Metatags
   }
 
+  type ResponsesResults {
+    responses: [Response!]!
+    total: Int!
+  }
+
   input UserRoleIds {
     responsibleIds: [String]
     accountableIds: [String]
@@ -82,6 +87,7 @@ export const responsesTypeDefs = `
     locationsIds: [ID]
     usersIds: UserRoleIds
     dueDate: [String]
+    itemStatus: [String]
     includeNotPublished: Boolean
   }
 
@@ -114,7 +120,7 @@ export const responsesTypeDefs = `
 `;
 
 export const responsesQueryDefs = `
-  responses(responsesQuery: ResponsesQuery): [Response!]!
+  responses(responsesQuery: ResponsesQuery, responsesPagination: PaginationInput): ResponsesResults!
 `;
 
 export const responsesMutationDefs = `

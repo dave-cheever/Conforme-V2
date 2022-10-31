@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import { Flex, Stack } from '@chakra-ui/react';
 
@@ -6,7 +7,19 @@ import useResponseUtils from '../../hooks/useResponseUtils';
 import { IResponse } from '../../interfaces/IResponse';
 import TrackerItemSquare from './TrackerItemSquare';
 
-const TrackerGridItems = ({ responses }: { responses: IResponse[] }) => {
+const TrackerGridItems = ({
+  responses,
+  loading,
+  total,
+  scrollerRef,
+  loadResponses,
+}: {
+  responses: IResponse[];
+  loading: boolean;
+  total: number;
+  scrollerRef: any; // Using 'any' as there is no exported interface to use
+  loadResponses: (page: number) => Promise<void>;
+}) => {
   const [filteredResults, setFilteredResults] = useState<any>({});
   const { responseStatusesGroup } = useResponseUtils();
 
@@ -52,9 +65,17 @@ const TrackerGridItems = ({ responses }: { responses: IResponse[] }) => {
   );
 
   return (
-    <Flex h="full" overflow="auto" pt="3" w="full">
-      {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
-    </Flex>
+    <InfiniteScroll
+      hasMore={!loading && responses.length < total}
+      initialLoad={false}
+      loadMore={loadResponses}
+      ref={scrollerRef}
+      useWindow={false}
+    >
+      <Flex h="full" overflow="auto" pt="3" w="full">
+        {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
+      </Flex>
+    </InfiniteScroll>
   );
 };
 
