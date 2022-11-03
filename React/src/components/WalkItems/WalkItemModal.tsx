@@ -150,14 +150,14 @@ const WalkItemModal = ({
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Avatar mr={3} name={walkItem?.addedBy?.displayName} rounded="full" size="xs" src={walkItem?.addedBy?.imgUrl} />
-              <Text noOfLines={1}>{walkItem?.question?.question}</Text>
+              <Text noOfLines={1}>{question?.question}</Text>
             </Flex>
             <Flex alignItems="center">
               <ShareButton
                 ariaLabel={`${capitalize(t('question'))}-share-button`}
                 onClick={() => {
                   setShareItemUrl(`walk-items?id=${walkItem?._id}`);
-                  setShareItemName(walkItem?.question?.question);
+                  setShareItemName(question?.question);
                   handleShareOpen();
                 }}
               />
