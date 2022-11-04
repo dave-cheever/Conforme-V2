@@ -285,6 +285,9 @@ const Questions = () => {
               value: _id,
             }))}
             placeholder="Questions category"
+            validations={{
+              notEmpty: true,
+            }}
             variant="secondaryVariant"
           />
           <TextInput
