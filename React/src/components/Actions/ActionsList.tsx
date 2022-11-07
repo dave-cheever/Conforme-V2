@@ -108,15 +108,15 @@ const ActionsList = ({
         <AdminTableHeaderElement
           label={capitalize(t('business unit'))}
           onClick={() => {
-            setSortType('answer.audit.businessUnit.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'answer.audit.businessUnit.name' ? 'desc' : 'asc');
+            setSortType('answer.businessUnit.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'answer.businessUnit.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'answer.audit.businessUnit.name'}
-          sortOrder={sortType === 'answer.audit.businessUnit.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'answer.businessUnit.name'}
+          sortOrder={sortType === 'answer.businessUnit.name' ? sortOrder : undefined}
           w="12.5%"
         />
       </AdminTableHeader>
-      <Flex flexDir="column" h='calc(100vh - 310px)' overflowY="auto" w="full">
+      <Flex flexDir="column" h="calc(100vh - 310px)" overflowY="auto" w="full">
         {actions?.map((action) => (
           <ActionsListItem action={action} editAction={editAction} key={action._id} />
         ))}

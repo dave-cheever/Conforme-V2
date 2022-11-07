@@ -145,7 +145,7 @@ const Actions = () => {
     { label: 'Assignee', key: 'assignee.displayName' },
     { label: 'Created by', key: 'creator.displayName' },
     { label: capitalize(t('location')), key: 'answer.audit.location.name' },
-    { label: capitalize(t('business unit')), key: 'answer.audit.businessUnit.name' },
+    { label: capitalize(t('business unit')), key: 'answer.businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
   const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
@@ -265,7 +265,7 @@ const Actions = () => {
     { label: 'Assignee', key: 'assignee.displayName' },
     { label: 'Created by', key: 'creator.displayName' },
     { label: capitalize(t('location')), key: 'answer.audit.location.name' },
-    { label: capitalize(t('business unit')), key: 'answer.audit.businessUnit.name' },
+    { label: capitalize(t('business unit')), key: 'answer.businessUnit.name' },
     { label: 'Status', key: 'status' },
     { label: 'Completed Date', key: 'completedDate' },
   ];
