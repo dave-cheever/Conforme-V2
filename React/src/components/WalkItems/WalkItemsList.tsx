@@ -70,11 +70,11 @@ const WalkItemsList = ({
         <AdminTableHeaderElement
           label={capitalize(t('business unit'))}
           onClick={() => {
-            setSortType('audit.businessUnit.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'audit.businessUnit.name' ? 'desc' : 'asc');
+            setSortType('businessUnit.name');
+            setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit.name' ? 'desc' : 'asc');
           }}
-          showSortingIcon={sortType === 'audit.businessUnit.name'}
-          sortOrder={sortType === 'audit.businessUnit.name' ? sortOrder : undefined}
+          showSortingIcon={sortType === 'businessUnit.name'}
+          sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
           w="19%"
         />
         <AdminTableHeaderElement
