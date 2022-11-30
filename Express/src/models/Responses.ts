@@ -5,7 +5,7 @@ import { difference, uniq } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IAuditValues, IOrganization, IResponse, IResponseModel } from 'app-interfaces';
+import { IAuditValues, IOrganization, IResponse, IResponseModel, ISearchResult } from 'app-interfaces';
 import { AuditLogs, BusinessUnits, Notifications, Organizations, TrackerItems, Users } from 'app-models';
 import { TRACKER_RESPONSE_ASSIGNED, TRACKER_REVIEW_SUBMITTED } from 'app-shared';
 import {
@@ -292,7 +292,7 @@ responseSchema.statics.customCreate = async function (response: IResponse, userI
   return createdResponse;
 };
 
-responseSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IResponse[]> {
+responseSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<ISearchResult[]> {
   const { searchText } = searchQuery;
   const pipeline: any[] = [
     {

@@ -1,7 +1,8 @@
 import { Request, Response, Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
-import { createBREGlobalDocuments, createBREGroupDocuments } from "app-migrations";
+import { IOrganization } from 'app-interfaces';
+import { createBREGlobalDocuments, createBREGroupDocuments, updateDocumentPathInDocuments } from "app-migrations";
 import { Organizations } from 'app-models';
 import { GraphService } from 'app-services';
 import { isMigrationRoutePermitted } from 'app-utils';
@@ -26,14 +27,21 @@ const migrationRouter = () => {
 
       try {
         const organization = await Organizations.customFindById(organizationId);
+        let migrationFunction: (res: Response<any, Record<string, any>>, organization: IOrganization, data: any, files?: Express.Multer.File[] | undefined) => Promise<Response<any, Record<string, any>>>;
         switch (params.id) {
           case '2eab4a0c-ec50-468d-b483-fd2b0a05b279':
-            return await createBREGlobalDocuments(res, organization, data, files as Express.Multer.File[])
+            migrationFunction = createBREGlobalDocuments;
+            break;
           case '5c51ec19-9428-4ef5-b262-9decd407b295':
-            return await createBREGroupDocuments(res, organization, data, files as Express.Multer.File[])
+            migrationFunction = createBREGroupDocuments;
+            break;
+          case '79c3ce81-7120-483a-8982-c5072e39db1b':
+            migrationFunction = updateDocumentPathInDocuments;
+            break;
           default:
             return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid migration id' })
         }
+        return await migrationFunction(res, organization, data, files as Express.Multer.File[])
       } catch (error: any) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
       }

@@ -1,19 +1,6 @@
 [
   {
     "_id": "<random generated UUID>",
-    "name": "auditLogLimit",
-    "label": "Count of elements on the audit log",
-    "value": "5",
-    "type": "configValue",
-    "description": "Use this setting to default to a specific count of the elements loaded in audit log",
-    "scope": {
-      "moduleId": "<module id>"
-    },
-    "organizationId": "<organization's id>",
-    "metatags": {}
-  },
-  {
-    "_id": "<random generated UUID>",
     "name": "actionAssignedEmailTemplate",
     "label": "Action assigned notification",
     "value": "<p>You have been assigned to action '%ActionTitle% for %WalkItemCategory% named %WalkItemName% (%ActionDueDate%)' by %AssignedBy%, to view click %LinkTo%.</p>",
@@ -56,21 +43,6 @@
     "value": "<p>New item needs your attention. You can find it %LinkTo%.<br></p><p>Kind Regards,</p><p>Cielo Costa</p>",
     "type": "emailTemplate",
     "options": ["LinkTo"],
-    "inputType": "emailTemplate",
-    "description": "",
-    "scope": {
-      "moduleId": "<module id>"
-    },
-    "organizationId": "<organization's id>",
-    "metatags": {}
-  },
-  {
-    "_id": "<random generated UUID>",
-    "name": "mentionedNotificationEmailTemplate",
-    "label": "Mentioned notification",
-    "value": "<p style=\"text-align: center;\"><span style=\"font-size: 24px;\">Welcome to Conforme</span></p><br><p style=\"text-align: center;\">&#xA0;</p><br><p>Dear %MentionedUser% </p>,<br><p>Message is: %Message% </p><br><p>Thank you for choosing Conforme</p><br/>",
-    "type": "emailTemplate",
-    "options": ["Message", "MentionedUser"],
     "inputType": "emailTemplate",
     "description": "",
     "scope": {
