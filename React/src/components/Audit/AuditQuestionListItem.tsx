@@ -7,7 +7,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 import useDevice from '../../hooks/useDevice';
 import { ActionsIcon, AreaInfoIcon, Eye, Trashcan } from '../../icons';
-import { isPermitted } from '../can';
+import Can, { isPermitted } from '../can';
 import DocumentThumbnail from '../Documents/DocumentThumbnail';
 
 const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestionWithAnswer; handleDelete: () => void }) => {
@@ -73,14 +73,22 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
       {audit.status === 'upcoming' && isUserPermittedToModify && (
         <Stack>
           <EditIcon cursor="pointer" onClick={() => setSelectedQuestion(question)} stroke="auditItem.listItem.editIcon" />
-          <Spacer />
-          <Trashcan
-            cursor="pointer"
-            onClick={() => {
-              setSelectedQuestion(question);
-              handleDelete();
-            }}
-            stroke="auditItem.listItem.deleteIcon"
+          <Can
+            action="answers.delete"
+            data={{ answer: question?.answer, audit }}
+            yes={() => (
+              <>
+                <Spacer />
+                <Trashcan
+                  cursor="pointer"
+                  onClick={() => {
+                    setSelectedQuestion(question);
+                    handleDelete();
+                  }}
+                  stroke="auditItem.listItem.deleteIcon"
+                />
+              </>
+            )}
           />
         </Stack>
       )}
