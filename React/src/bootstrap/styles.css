@@ -17,6 +17,11 @@
   background-color: #f5f5f5;
 }
 
+/* Chakra modal */
+.chakra-modal__content-container {
+  overflow: unset !important;
+}
+
 /*Due date react-datepicker*/
 
 .dueDate .react-datepicker {

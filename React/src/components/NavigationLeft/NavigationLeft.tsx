@@ -42,7 +42,14 @@ const NavigationLeft = () => {
             {showFiltersPanel || device === 'tablet' ? getInitials(module?.name) : module?.name}
           </Text>
         </Box>
-        <Flex direction="column" h="calc(100% - 80px)" justify="space-between" overflowX="hidden" overflowY="auto" pt={['0px', '10px']}>
+        <Flex
+          direction="column"
+          h="calc(100% - 80px)"
+          justify="space-between"
+          overflowX={device === 'desktop' ? 'hidden' : 'unset'}
+          overflowY={device === 'desktop' ? 'auto' : 'unset'}
+          pt={['0px', '10px']}
+        >
           <Box>
             {menuItems.map((menuItem: any, i) => (
               <Can
@@ -68,7 +75,14 @@ const NavigationLeft = () => {
             ))}
           </Box>
           {device === 'desktop' && (
-            <Icon as={showFiltersPanel ? ConformeSmall : Conforme} h="30px" mb="20px" ml="20px" w={showFiltersPanel ? '27px' : '103px'} />
+            <Icon
+              as={showFiltersPanel ? ConformeSmall : Conforme}
+              h="30px"
+              mb="20px"
+              ml="20px"
+              mt={2}
+              w={showFiltersPanel ? '27px' : '103px'}
+            />
           )}
           {device === 'tablet' && <Icon as={ConformeSmall} h="30px" mb="20px" ml="20px" w="27px" />}
         </Flex>

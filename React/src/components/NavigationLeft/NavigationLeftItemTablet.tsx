@@ -131,13 +131,15 @@ const NavigationLeftItemTablet = ({
           <Box
             bg="white"
             boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+            maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
             ml="80px"
+            overflowY="auto"
             pos="absolute"
             py="15px"
             rounded="10px"
             top="0"
             w="235px"
-            zIndex="5"
+            zIndex="11"
           >
             {menuItem.subSections?.map((subSection) => (
               <SubSection key={subSection.label} menuOpen={menuOpen} setMenuOpen={setMenuOpen} subsection={subSection} />

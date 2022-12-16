@@ -39,7 +39,7 @@ const AdminModal = ({ isOpenModal, modalType, onAction, collection, children }: 
     >
       <ModalOverlay />
       {modalType !== 'delete' && (
-        <ModalContent bg="adminModal.content.bg" h="full" minH={window.innerHeight} position="absolute" rounded="0" top={['-60px']}>
+        <ModalContent bg="adminModal.content.bg" h="full" my="0" position="absolute" rounded="0">
           <ModalHeader pl="18px">
             <Flex alignItems="center" justifyContent="space-between" pt="10px">
               <Flex>
