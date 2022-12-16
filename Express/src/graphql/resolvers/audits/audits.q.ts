@@ -120,8 +120,17 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
 
     if (auditQueryInput?.businessUnitsIds?.length > 0) {
       pipeline.push({
+        $lookup: {
+          from: 'answers',
+          localField: '_id',
+          foreignField: 'scope._id',
+          as: 'answers',
+        },
+      })
+
+      pipeline.push({
         $match: {
-          businessUnitId: { $in: auditQueryInput.businessUnitsIds },
+          $or: [{ businessUnitId: { $in: auditQueryInput.businessUnitsIds } }, { 'answers.businessUnitId': { $in: auditQueryInput.businessUnitsIds } }],
         },
       });
     }
