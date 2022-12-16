@@ -210,12 +210,12 @@ const Locations = () => {
 
   return (
     <>
-      <AdminModal collection="location" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
+      <AdminModal collection={t('location')} isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
         <Flex align="flex-start" direction="column" w={['full', '70%']}>
           <TextInput
             control={control}
             initialValue={currentLocationName.toLowerCase()}
-            label="Location name"
+            label={`${capitalize(t('location'))} name`}
             name="name"
             placeholder="e.g. London"
             validations={{
