@@ -49,7 +49,7 @@ const calculateAudits = async () => {
             await Audits.customCreate(
               {
                 auditTypeId: auditType._id,
-                reference: await Audits.customGenerateReference(),
+                reference: await Audits.customGenerateReference(organization._id, audit.scope.moduleId),
                 status: 'upcoming',
                 dueDate: getNextRenewalDate(audit.dueDate, auditType.frequency),
                 walkType: 'physical',

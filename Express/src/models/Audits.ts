@@ -142,9 +142,12 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
   return auditRecordValues;
 };
 
-auditsSchema.statics.customGenerateReference = async function (): Promise<string> {
+auditsSchema.statics.customGenerateReference = async function (organizationId: string, moduleId: string): Promise<string> {
   let reference = '0000001';
-  const lastAudit = await this.findOne({}).sort({ 'metatags.addedAt': -1 }).lean();
+  let selector: object = { organizationId };
+  if (moduleId) selector = { ...selector, "scope.moduleId": moduleId };
+
+  const lastAudit = await this.findOne(selector).sort({ 'metatags.addedAt': -1 }).lean();
   if (lastAudit && lastAudit.reference) {
     const newReference = parseInt(lastAudit.reference, 10) + 1;
     reference = `000000${newReference}`.slice(-7);

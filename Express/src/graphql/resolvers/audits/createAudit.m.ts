@@ -18,7 +18,7 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
     do dueDate = getNextRenewalDate(dueDate, auditType.frequency);
     while (isAfter(new Date(), dueDate));
 
-    const reference = await Audits.customGenerateReference();
+    const reference = await Audits.customGenerateReference(organization._id, audit.scope.moduleId);
     const newAudit: IAudit = {
       ...audit,
       reference,
