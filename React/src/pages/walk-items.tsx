@@ -43,6 +43,9 @@ const GET_ANSWERS = gql`
             value
           }
         }
+        category {
+          name
+        }
         scope {
           _id
         }

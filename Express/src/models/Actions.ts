@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
+import { isEmpty } from 'lodash';
 import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,7 +18,6 @@ import {
   join,
   removeDatabaseFields,
 } from 'app-utils';
-import { isEmpty } from 'lodash';
 
 const actionsSchema = new Schema<IAction, IActionModel>({
   _id: String,

@@ -88,6 +88,7 @@ const useConfig = () => {
         { label: 'Questions', url: '/admin/questions', permission: 'adminPanel.questions' },
         { label: 'Questions categories', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories' },
         { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes' },
+        { label: 'Categories', url: '/admin/categories', permission: 'adminPanel.categories' },
         { label: 'Users', url: '/admin/users' },
         { label: 'Audit log', url: '/admin/audit-log' },
         { label: 'Other settings', url: '/admin/settings' },
@@ -199,6 +200,7 @@ const useConfig = () => {
     { label: 'Question', url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionOutlineIcon },
     { label: 'Questions category', url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
     { label: 'Audit type', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
+    { label: 'Category', url: '/admin/categories', permission: 'adminPanel.categories', icon: ListIcon },
   ];
 
   const trackerAddItems = [

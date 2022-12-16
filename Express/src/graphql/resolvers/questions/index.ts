@@ -26,6 +26,8 @@ export const questionsTypeDefs = `
     notApplicable: Boolean
     positiveValue: Any
     negativeValue: Any
+    categoryId: ID
+    category: BaseWithName
     scope: Scope!
     answer: Answer
     metatags: Metatags
@@ -46,6 +48,7 @@ export const questionsTypeDefs = `
     notApplicable: Boolean
     positiveValue: Any
     negativeValue: Any
+    categoryId: ID
     scope: ScopeInput!
   }
   
@@ -58,6 +61,7 @@ export const questionsTypeDefs = `
     notApplicable: Boolean
     positiveValue: Any
     negativeValue: Any
+    categoryId: ID
   }
 `;
 

@@ -6,14 +6,16 @@ import { doesPathExist, join } from 'app-utils';
 
 const categories = async (
   _,
-  __,
+  { moduleId },
   { organization },
   info: GraphQLResolveInfo,
 ) => {
   const shouldJoin = (element: string) =>
     doesPathExist(info.fieldNodes, ['categories', element]);
   try {
-    const categories = await Categories.customFind({}, organization._id);
+    const categories = await Categories.customFind({
+      ...(moduleId && { 'scope.moduleId': moduleId }),
+    }, organization._id);
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       for (const category of categories) {

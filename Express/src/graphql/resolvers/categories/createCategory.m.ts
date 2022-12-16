@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { Categories } from 'app-models';
 import { isPermitted } from 'app-utils';
 
-const createCategory = async (_, { name }, { authorize, organization }) => {
+const createCategory = async (_, { name, moduleId }, { authorize, organization }) => {
   try {
     const user = await authorize();
 
@@ -11,7 +11,12 @@ const createCategory = async (_, { name }, { authorize, organization }) => {
       throw new Error('User is not permitted');
 
     const createdCategory = await Categories.customCreate(
-      { name: name.trim() },
+      {
+        name: name.trim(),
+        scope: {
+          moduleId,
+        },
+      },
       user._id,
       organization._id,
     );

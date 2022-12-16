@@ -183,6 +183,15 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
+    if (shouldJoin(['question', 'category'])) {
+      join({
+        pipeline,
+        collection: 'categories',
+        from: 'question.categoryId',
+        to: 'question.category',
+      });
+    }
+
     if (shouldJoin(['actions'])) {
       pipeline.push({
         $lookup: {

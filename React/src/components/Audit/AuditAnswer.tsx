@@ -26,6 +26,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   const { user, module } = useAppContext();
   const {
     businessUnits,
+    categories,
     audit,
     handleActionChangesModalOpen,
     questionsCategories,
@@ -61,6 +62,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
   useEffect(() => {
     reset({
       businessUnitId: answer?.businessUnitId,
+      categoryId: question.categoryId || '',
       question: question.question || '',
       options: answer?.options || {},
       attachments: answer?.attachments || [],
@@ -73,6 +75,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
     const questionData = {
       _id: question._id,
       question: values.question,
+      categoryId: values.categoryId,
     };
 
     const answerData = {
@@ -196,6 +199,19 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           variant="secondaryVariant"
         />
       )}
+      <Dropdown
+        control={control}
+        disabled={isDisabled}
+        label="Category"
+        name="categoryId"
+        options={(categories ?? []).map((category) => ({
+          value: category._id,
+          label: category.name,
+        }))}
+        placeholder="Select category"
+        stroke="dropdown.icon"
+        variant="secondaryVariant"
+      />
       <Stack>
         {questionsCategory.withAnswers ? (
           <Stack>

@@ -4,7 +4,7 @@ import { model, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAuditValue, IAuditValues, IQuestion, IQuestionModel, TQuestionValue } from 'app-interfaces';
-import { AuditLogs, QuestionsCategories } from 'app-models';
+import { AuditLogs, Categories, QuestionsCategories } from 'app-models';
 import { genMetatags, getAuditValueForBoolean, getAuditValueForLookup, getAuditValueForString, removeDatabaseFields } from 'app-utils';
 
 const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
@@ -20,6 +20,7 @@ const questionsSchema = new Schema<IQuestion<TQuestionValue>, IQuestionModel>({
   notApplicable: Boolean,
   positiveValue: Schema.Types.Mixed,
   negativeValue: Schema.Types.Mixed,
+  categoryId: String,
   scope: {
     module: {
       type: String,
@@ -65,6 +66,16 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): Promise
       case 'questionsCategoryId':
         value = await getAuditValueForLookup({
           collection: QuestionsCategories,
+          labelField: 'name',
+          oldValue,
+          newValue,
+        });
+        break;
+
+      // If updated 'categoryId' field, get questions category from database and set value as id and label as name
+      case 'categoryId':
+        value = await getAuditValueForLookup({
+          collection: Categories,
           labelField: 'name',
           oldValue,
           newValue,

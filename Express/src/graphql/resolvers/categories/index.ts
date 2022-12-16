@@ -15,11 +15,11 @@ const categoriesResolvers = {
 };
 
 export const categoriesQueryDefs = `
-  categories: [BaseWithName!]!
+  categories(moduleId: ID): [BaseWithName!]!
 `;
 
 export const categoriesMutationDefs = `
-  createCategory(name: String!): BaseWithName!
+  createCategory(name: String!, moduleId: ID): BaseWithName!
   updateCategory(categoryInput: BaseWithNameModifyInput!): BaseWithName!
   deleteCategory(_id: String!): Boolean!
 `;

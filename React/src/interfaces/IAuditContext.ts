@@ -7,6 +7,7 @@ import { gqlFunction } from '../types/gqlFunction';
 import { IAction } from './IAction';
 import { IAudit } from './IAudit';
 import { IAuditType } from './IAuditType';
+import { IBaseWithName } from './IBaseWithName';
 import { IBusinessUnit } from './IBusinessUnit';
 import { ILocation } from './ILocation';
 import { IQuestionsCategory } from './IQuestionsCategory';
@@ -15,6 +16,7 @@ import { TDeepPartial } from './TDeepPartial';
 
 export interface IAuditContext {
   businessUnits: IBusinessUnit[];
+  categories: IBaseWithName[];
   audit: IAudit;
   auditType: IAuditType;
   auditor: IUser;

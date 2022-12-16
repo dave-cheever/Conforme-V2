@@ -12,6 +12,7 @@ import { IAnswer } from '../interfaces/IAnswer';
 import { IAuditContext } from '../interfaces/IAuditContext';
 import { IQuestion } from '../interfaces/IQuestion';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
+import { useAppContext } from './AppProvider';
 
 export const AuditContext = createContext({} as IAuditContext);
 
@@ -65,6 +66,7 @@ const GET_AUDIT_DATA = gql`
     $questionsCategoryQuery: QuestionsCategoryQuery
     $auditTypeQuestionQuery: QuestionQuery
     $auditCustomQuestionQuery: QuestionQuery
+    $moduleId: ID
   ) {
     questionsCategories(questionsCategoryQuery: $questionsCategoryQuery) {
       _id
@@ -119,6 +121,7 @@ const GET_AUDIT_DATA = gql`
         }
       }
       questionsCategoryId
+      categoryId
       scope {
         module
         moduleId
@@ -168,6 +171,7 @@ const GET_AUDIT_DATA = gql`
         }
       }
       questionsCategoryId
+      categoryId
       scope {
         module
         moduleId
@@ -176,6 +180,10 @@ const GET_AUDIT_DATA = gql`
       }
     }
     businessUnits {
+      _id
+      name
+    }
+    categories(moduleId: $moduleId) {
       _id
       name
     }
@@ -273,6 +281,7 @@ export const useAuditContext = () => {
 
 const AuditProvider = ({ children }) => {
   const toast = useToast();
+  const { module } = useAppContext();
   const { id }: { id: string } = useParams();
   const { navigateTo } = useNavigate();
 
@@ -329,8 +338,9 @@ const AuditProvider = ({ children }) => {
         scope: { module: 'audits' },
       },
       auditCustomQuestionQuery: { scope: { type: 'audit', _id: audit?._id } },
+      moduleId: module?._id,
     },
-    skip: !audit,
+    skip: !module?._id || !audit,
   });
 
   // Save questions categories in the same order as defined in audit type
@@ -365,6 +375,7 @@ const AuditProvider = ({ children }) => {
   }, [JSON.stringify(auditData)]);
 
   const businessUnits = useMemo(() => auditData?.businessUnits, [JSON.stringify(auditData)]);
+  const categories = useMemo(() => auditData?.categories, [JSON.stringify(auditData)]);
 
   useEffect(() => {
     if (!loading && error) {
@@ -384,6 +395,7 @@ const AuditProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       businessUnits,
+      categories,
       audit,
       auditType,
       auditor,

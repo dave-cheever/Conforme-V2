@@ -14,12 +14,13 @@ import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
+import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { IBaseWithName } from '../../interfaces/IBaseWithName';
 
 const GET_CATEGORIES = gql`
-  query {
-    categories {
+  query ($moduleId: ID!) {
+    categories(moduleId: $moduleId) {
       _id
       name
       trackerItemsResponsesCount
@@ -27,8 +28,8 @@ const GET_CATEGORIES = gql`
   }
 `;
 const CREATE_CATEGORY = gql`
-  mutation ($name: String!) {
-    createCategory(name: $name) {
+  mutation ($name: String!, $moduleId: ID!) {
+    createCategory(name: $name, moduleId: $moduleId) {
       _id
       name
     }
@@ -55,8 +56,9 @@ const defaultValues = {
 
 const Categories = () => {
   const toast = useToast();
+  const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
-  const { data, loading, refetch } = useQuery(GET_CATEGORIES);
+  const { data, loading, refetch } = useQuery(GET_CATEGORIES, { variables: { moduleId: module?._id }, skip: !module?._id });
   const [createFunction] = useMutation(CREATE_CATEGORY);
   const [updateFunction] = useMutation(UPDATE_CATEGORY);
   const [deleteFunction] = useMutation(DELETE_CATEGORY);
@@ -115,7 +117,7 @@ const Categories = () => {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
-        await createFunction({ variables: values });
+        await createFunction({ variables: { ...values, moduleId: module?._id } });
         toast({ ...toastSuccess, description: 'Category added' });
         refetch();
       } else {
@@ -207,7 +209,11 @@ const Categories = () => {
       <Header breadcrumbs={['Admin', 'Categories']} mobileBreadcrumbs={['Categories']} />
       <Box h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex h="full" px={['25px', 0]}>
-          <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100% - 250px)']}>
+          <Box
+            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+            mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
+            w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
+          >
             <AdminTableHeader>
               <AdminTableHeaderElement
                 label="Category"
@@ -219,17 +225,19 @@ const Categories = () => {
                 sortOrder={sortType === 'name' ? sortOrder : undefined}
                 w={['80%', '50%']}
               />
-              <AdminTableHeaderElement
-                label="Responses count"
-                onClick={() => {
-                  setSortType('trackerItemsResponsesCount');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                tooltip="Only published items"
-                w={['20%', '50%']}
-              />
+              {module?.type === 'tracker' && (
+                <AdminTableHeaderElement
+                  label="Responses count"
+                  onClick={() => {
+                    setSortType('trackerItemsResponsesCount');
+                    setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                  sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
+                  tooltip="Only published items"
+                  w={['20%', '50%']}
+                />
+              )}
             </AdminTableHeader>
             <Stack bg="white" borderBottomRadius="20px" h={loading ? 'full' : 'fit-content'} minH="full" pb="3" spacing="1px">
               {loading ? (
@@ -250,7 +258,7 @@ const Categories = () => {
               )}
             </Stack>
           </Box>
-          {device === 'desktop' && (
+          {device === 'desktop' && module?.type === 'tracker' && (
             <Flex alignItems="center" flexDirection="column" w={['100%', '220px']}>
               <Box w="100%">
                 {categories && (

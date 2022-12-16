@@ -9,17 +9,18 @@ import { TAuditStatus } from '../interfaces/TAuditStatus';
 import TAuditWalkType from '../interfaces/TAuditWalkType';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
 import { TWalkItemStatus } from '../interfaces/TWalkItemStatus';
+import { useAppContext } from './AppProvider';
 
 export const FiltersContext = createContext({} as IFiltersContext);
 
 const GET_FILTERS_DATA = gql`
-  query ($trackerItemsQueryInput: TrackerItemsQueryInput) {
+  query ($trackerItemsQueryInput: TrackerItemsQueryInput, $moduleId: ID) {
     trackerItems(trackerItemsQueryInput: $trackerItemsQueryInput) {
       _id
       name
       published
     }
-    categories {
+    categories(moduleId: $moduleId) {
       _id
       name
     }
@@ -56,11 +57,13 @@ export const useFiltersContext = () => {
 };
 
 const FiltersProvider = ({ children }) => {
+  const { module } = useAppContext();
   const { data } = useQuery(GET_FILTERS_DATA, {
     variables: {
       trackerItemsQueryInput: {
         published: true,
       },
+      moduleId: module?._id,
     },
   });
   const { getFilters } = useFiltersUtils();

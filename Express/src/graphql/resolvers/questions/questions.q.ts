@@ -137,6 +137,15 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
       });
     }
 
+    if (shouldJoin(['category'])) {
+      join({
+        pipeline,
+        collection: 'categories',
+        from: 'categoryId',
+        to: 'category',
+      });
+    }
+
     if (shouldJoin(['answer', 'actions'])) {
       pipeline.push({
         $lookup: {

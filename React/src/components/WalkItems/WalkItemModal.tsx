@@ -232,6 +232,14 @@ const WalkItemModal = ({
                     </Text>
                     <Text fontSize="13px">{walkItem?.question?.questionsCategory?.name}</Text>
                   </GridItem>
+                  {walkItem?.question?.category && (
+                    <GridItem>
+                      <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                        Category
+                      </Text>
+                      <Text fontSize="13px">{walkItem?.question?.category?.name}</Text>
+                    </GridItem>
+                  )}
                   <GridItem>
                     <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
                       Date added
@@ -383,8 +391,8 @@ const WalkItemModal = ({
             </Stack>
             <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
               {walkItem?.audit?.status !== 'completed' && (
-                <Can 
-                  action='answers.delete'
+                <Can
+                  action="answers.delete"
                   data={{ answer: walkItem, audit: walkItem?.audit }}
                   yes={() => (
                     <Button
