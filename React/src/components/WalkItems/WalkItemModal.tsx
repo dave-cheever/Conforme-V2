@@ -132,7 +132,7 @@ const WalkItemModal = ({
       if (isCustomQuestion) await saveQuestion({ variables: { question: questionData } });
       await saveAnswer({ variables: { answer: answerData } });
       refetch();
-      toast({ ...toastSuccess, description: 'Walk item saved' });
+      toast({ ...toastSuccess, description: `${capitalize(t('question'))} saved` });
     } catch (e: any) {
       toast({
         ...toastFailed,
@@ -223,7 +223,7 @@ const WalkItemModal = ({
               </Stack>
               <Stack spacing={4}>
                 <Text fontSize="smm" fontWeight="semibold">
-                  Walk item details
+                  {capitalize(t('question'))} details
                 </Text>
                 <Grid columnGap={4} rowGap={4} templateColumns="repeat(2, 1fr)">
                   <GridItem>

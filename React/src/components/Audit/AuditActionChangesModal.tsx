@@ -1,4 +1,5 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Stack, Text } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 
@@ -37,7 +38,7 @@ const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }
         <ModalFooter>
           <Stack direction={['column', 'row']} justify="center" spacing={4} w="full">
             <Button _hover={{ opacity: 0.7 }} onClick={onClose}>
-              Back to walk item
+              Back to {t('question')}
             </Button>
             <Button
               _hover={{ opacity: 0.7 }}
