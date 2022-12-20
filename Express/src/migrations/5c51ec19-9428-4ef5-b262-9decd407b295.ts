@@ -37,9 +37,10 @@ const generateTrackerItemTemplate = ({
     name: "Status",
     options: [],
     required: true,
-    requiredAnswer: ["Draft", "Under review", "Current", "Withdrawn"],
+    requiredAnswer: ["Reserved", "Draft", "Under review", "Current", "Withdrawn"],
     type: "multipleChoice",
     value: [
+      { label: "Reserved", isCorrect: selectedStatus === 'reserved' },
       { label: "Draft", isCorrect: selectedStatus === 'draft' },
       { label: "Under review", isCorrect: selectedStatus === 'under review' },
       { label: "Current", isCorrect: selectedStatus === 'current' },
@@ -280,7 +281,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 responsibleId: owner?._id || user?._id,
               }, owner?._id || user?._id, organization._id);
 
-              await log('\n\tResponses synchronized succesfully');
+              await log('\n\tResponse synchronized succesfully');
               insertedTrackerItem.push(true);
             } catch (error: any) {
               insertedTrackerItem.push(false);

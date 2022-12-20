@@ -51,14 +51,17 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
             if (isEmpty(data)) continue;
             await log(`\n\n\tParsing row ${index}`);
 
-            // if 'Document Number' not in the row, document won't be updated as it is required to find it in the database
-            if (!('Document Number' in data) || typeof data['Document Number'] !== 'string') throw new Error(`Row does not contain "Document Number"`);
-
             // if row type is not 'Item', ignore it
             if (!('Item Type' in data) || data['Item Type'] !== 'Item') throw new Error(`Row is not an "Item" type`);
 
+            // if 'Document Number' not in the row, document won't be updated as it is required to find it in the database
+            let searchBy = 'documentNumber';
+            if (!('Document Number' in data) || typeof data['Document Number'] !== 'string') {
+              await log(`\n\tRow does not contain "Document Number", script will search the document by its name`);
+              searchBy = 'name';
+            } else await log(`\n\tDocument number: ${data['Document Number']}`);
+
             await log(`\n\tDocument name: ${data.Name}`);
-            await log(`\n\tDocument number: ${data['Document Number']}`);
             await log(`\n\tDocument path: ${data.Path}`);
 
             const pipeline: any[] = [
@@ -83,7 +86,7 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
               },
               {
                 $match: {
-                  'trackerItem.name': new RegExp(data['Document Number'], 'i'),
+                  'trackerItem.name': searchBy === 'documentNumber' ? new RegExp(data['Document Number'], 'i') : data.Name.replace(/\.[a-zA-Z]{3,4}$/, ''),
                 },
               }, {
                 $limit: 5,
