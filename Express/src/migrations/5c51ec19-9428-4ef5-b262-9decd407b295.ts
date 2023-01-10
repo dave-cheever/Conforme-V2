@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 import * as XLSX from 'xlsx';
 
 import { IOrganization } from "app-interfaces";
-import { BusinessUnits, Categories, Locations, RegulatoryBodies, Responses, TrackerItems } from "app-models";
+import { BusinessUnits, Categories, Locations, RegulatoryBodies, Responses, TrackerItems, Users } from "app-models";
 import { GraphService } from "app-services";
 import { enumerate, getFilteredJSONDataForMigration, getNextRenewalDate } from "app-utils";
 
@@ -149,20 +149,23 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 user = (await GraphService.getUsers({ searchText: defaultOwner, organization }))[0];
                 stats.ownerNotFoundCount += 1;
               } else {
-                await log('found in the tenant');
+                await log(`found in the tenant (${owner.email})`);
                 stats.ownerFoundCount += 1;
               }
               if (isEmpty(owner) && isEmpty(user)) throw new Error(`Default owner ("${defaultOwner}") can not be found in the tenant`);
+              const ownerId = owner?._id || user?._id;
+              const doesOwnerExistInDB = await Users.count({ _id: ownerId });
+              if (!doesOwnerExistInDB) await Users.customAssertUser({ userId: ownerId, organizationId: organization._id });
 
               // Find business unit or create new one if doesn't yet exist
               const businessUnitName = owner?.department || user?.department || data['Business/Centre'] || 'No department';
               const businessUnit = await BusinessUnits.customFindOneOrCreateOne(
                 {
                   name: businessUnitName,
-                  ownerId: owner?._id ? owner._id : '',
+                  ownerId: owner ? ownerId : '',
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               );
               if ('created' in businessUnit) {
                 await log(`\n\tCreated new business unit: ${businessUnit.name}`);
@@ -175,7 +178,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                   name: sheet,
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               );
               if ('created' in category) {
                 await log(`\n\tCreated new category: ${category.name}`);
@@ -188,7 +191,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                   name: 'UKAS',
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               );
               if ('created' in regulatoryBody) {
                 await log(`\n\tCreated new regulatory body: ${regulatoryBody.name}`);
@@ -199,10 +202,10 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
               const location = await Locations.customFindOneOrCreateOne(
                 {
                   name: 'BRE Group Watford',
-                  ownerId: owner?._id || user?._id,
+                  ownerId,
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               )
               if ('created' in location) {
                 await log(`\n\tCreated new location: ${location.name}`);
@@ -239,13 +242,13 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
               await log('\n\tAdding tracker item to the database...');
               const createdTrackerItem = await TrackerItems.customCreate(
                 newTrackerItem,
-                owner?._id || user?._id,
+                ownerId,
                 organization._id,
               );
               await log('\n\tTracker item added succesfully');
               await TrackerItems.customSynchronizeResponses({
                 trackerItem: createdTrackerItem,
-                userId: owner?._id || user?._id,
+                userId: ownerId,
                 organizationId: organization._id,
               });
 
@@ -277,9 +280,9 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 lastCompletionDate,
                 dueDate,
                 status: 'submitted',
-                accountableId: owner?._id || user?._id,
-                responsibleId: owner?._id || user?._id,
-              }, owner?._id || user?._id, organization._id);
+                accountableId: ownerId,
+                responsibleId: ownerId,
+              }, ownerId, organization._id);
 
               await log('\n\tResponse synchronized succesfully');
               insertedTrackerItem.push(true);

@@ -52,15 +52,16 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
             await log(`\n\n\tParsing row ${index}`);
 
             // if row type is not 'Item', ignore it
-            if (!('Item Type' in data) || data['Item Type'] !== 'Item') throw new Error(`Row is not an "Item" type`);
+            if (!('Item Type' in data) || data['Item Type'] !== 'Item') throw new Error('Row is not an "Item" type');
 
             // if 'Document Number' not in the row, document won't be updated as it is required to find it in the database
-            let searchBy = 'documentNumber';
-            if (!('Document Number' in data) || typeof data['Document Number'] !== 'string') {
-              await log(`\n\tRow does not contain "Document Number", script will search the document by its name`);
-              searchBy = 'name';
-            } else await log(`\n\tDocument number: ${data['Document Number']}`);
-
+            let documentNumberExist = false;
+            if (!('Document Number' in data) || typeof data['Document Number'] !== 'string')
+              await log(`\n\tRow does not contain "Document Number", script will search the document only by its name`);
+            else {
+              documentNumberExist = true;
+              await log(`\n\tDocument number: ${data['Document Number']}`);
+            }
             await log(`\n\tDocument name: ${data.Name}`);
             await log(`\n\tDocument path: ${data.Path}`);
 
@@ -84,12 +85,49 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
                   preserveNullAndEmptyArrays: true,
                 },
               },
+              // We need to remove special characters from the document name because it is different in Excel file and the app
+              { // Split name to an array of single characters
+                $addFields: {
+                  'trackerItem.nameArray': {
+                    '$map': {
+                      input: { '$range': [0, { '$strLenCP': '$trackerItem.name' }] },
+                      in: { '$substrCP': ['$trackerItem.name', '$$this', 1] },
+                    },
+                  },
+                },
+              },
+              { // Filter an array
+                $addFields: {
+                  'trackerItem.filteredNameArray': {
+                    '$filter': {
+                      input: '$trackerItem.nameArray',
+                      cond: { '$regexMatch': { input: '$$this', regex: '[0-9a-zA-Z]' } },
+                    },
+                  },
+                },
+              },
+              { // Concat filtered array
+                $addFields: {
+                  'trackerItem.filteredName': {
+                    '$reduce': {
+                      input: '$trackerItem.filteredNameArray',
+                      initialValue: '',
+                      in: { '$concat': ['$$value', '$$this'] },
+                    },
+                  },
+                },
+              },
               {
                 $match: {
-                  'trackerItem.name': searchBy === 'documentNumber' ? new RegExp(data['Document Number'], 'i') : data.Name.replace(/\.[a-zA-Z]{3,4}$/, ''),
+                  $or: [
+                    // Search by document number
+                    { ...(documentNumberExist ? { 'trackerItem.name': new RegExp(data['Document Number'], 'i') } : {}) },
+                    // Search by document name (without file extension and special characters)
+                    { 'trackerItem.filteredName': new RegExp(data.Name.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, ''), 'i') },
+                  ],
                 },
               }, {
-                $limit: 5,
+                $limit: 2,
               },
             ];
             const response = (await Responses.aggregate(pipeline) || [])[0];
