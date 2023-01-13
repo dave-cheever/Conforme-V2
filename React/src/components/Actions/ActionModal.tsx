@@ -170,7 +170,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
         </ModalHeader>
         <ModalBody h="calc(100% - 1rem)" p="1rem 0 0 0">
           <Stack h="100%" justify="space-between" spacing={2}>
-            <Stack flexGrow={1} overflowY="auto" px={2} py={0} spacing={6}>
+            <Stack flexGrow={1} h='calc(100vh - 163px)' overflowY="auto" px={2} py={0} spacing={6}>
               <Stack spacing={4}>
                 <Text fontSize="smm" fontWeight="semibold">
                   {capitalize(t('question'))}
