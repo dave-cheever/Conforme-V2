@@ -103,7 +103,10 @@ const roles = {
     normal: [
       ...defaultPermissions,
       'actions',
-      'answers',
+      'answers.add',
+      'answers.edit',
+      'answers.editStatus',
+      'answers.viewAll',
       'auditLogs',
       'audits.changeRecurring',
       'audits.delete',
@@ -129,6 +132,7 @@ const roles = {
       'audits.changeAuditor': ({ audit }) => audit.status !== 'completed',
       'audits.edit': ({ audit }) => audit.status !== 'completed',
       'comments.delete': ({ user, comment }) => user._id === comment.authorId,
+      'answers.delete': ({ audit }) => audit.status !== 'completed',
       adminPanel: ({ permission, revokedPermissions }) => {
         if (revokedPermissions?.includes(permission)) return false;
         return true;

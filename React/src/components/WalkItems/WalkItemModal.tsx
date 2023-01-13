@@ -390,27 +390,25 @@ const WalkItemModal = ({
               </Stack>
             </Stack>
             <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
-              {walkItem?.audit?.status !== 'completed' && (
-                <Can
-                  action="answers.delete"
-                  data={{ answer: walkItem, audit: walkItem?.audit }}
-                  yes={() => (
-                    <Button
-                      bg="walkItemModal.buttons.secondary.bg"
-                      color="walkItemModal.buttons.secondary.color"
-                      fontSize="smm"
-                      fontWeight="700"
-                      h="40px"
-                      ml={3}
-                      onClick={handleDeleteQuestionModalOpen}
-                      rounded="10px"
-                      w="fit-content"
-                    >
-                      Delete
-                    </Button>
-                  )}
-                />
-              )}
+              <Can
+                action="answers.delete"
+                data={{ answer: walkItem, audit: walkItem?.audit }}
+                yes={() => (
+                  <Button
+                    bg="walkItemModal.buttons.secondary.bg"
+                    color="walkItemModal.buttons.secondary.color"
+                    fontSize="smm"
+                    fontWeight="700"
+                    h="40px"
+                    ml={3}
+                    onClick={handleDeleteQuestionModalOpen}
+                    rounded="10px"
+                    w="fit-content"
+                  >
+                    Delete
+                  </Button>
+                )}
+              />
               <Spacer />
               {isUserPermittedToModifyStatus &&
                 (walkItem?.audit?.status.toString() === 'upcoming' ||

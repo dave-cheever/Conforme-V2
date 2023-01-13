@@ -191,23 +191,23 @@ const WalkItemsListItem = ({
               </Flex>
             </Flex>
           </Tooltip>
-            <Flex justify="flex-end" pr={1} w="6%">
-              <Can 
-                action='answers.delete'
-                data={{ answer, audit: answer?.audit }}
-                yes={() => (
-                  <IconButton
-                    _hover={{ opacity: 0.7 }}
-                    aria-label="Delete"
-                    bg="none"
-                    icon={<Trashcan stroke="walkItemsList.iconColor" />}
-                    minWidth="none"
-                    onClick={() => onOpen()}
-                    p={1}
-                  />
-                )}
-              />
-            </Flex>
+          <Flex justify="flex-end" pr={1} w="6%">
+            <Can
+              action="answers.delete"
+              data={{ answer, audit }}
+              yes={() => (
+                <IconButton
+                  _hover={{ opacity: 0.7 }}
+                  aria-label="Delete"
+                  bg="none"
+                  icon={<Trashcan stroke="walkItemsList.iconColor" />}
+                  minWidth="none"
+                  onClick={() => onOpen()}
+                  p={1}
+                />
+              )}
+            />
+          </Flex>
         </Flex>
       </Box>
     </>
