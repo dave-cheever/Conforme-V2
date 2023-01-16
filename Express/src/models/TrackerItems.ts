@@ -343,12 +343,14 @@ trackerItemSchema.statics.customGenerateReference =
 trackerItemSchema.statics.customSynchronizeResponses = async function ({
   trackerItem,
   userId,
-  organizationId,
   prevDueDate,
+  sendNotification = true,
+  organizationId,
 }: {
   trackerItem: ITrackerItem;
   userId: string;
   organizationId: string;
+  sendNotification?: boolean;
   prevDueDate?: Date;
 }) {
   const organization = await Organizations.customFindById(organizationId);
@@ -468,7 +470,7 @@ trackerItemSchema.statics.customSynchronizeResponses = async function ({
     );
 
     // Send notification to assignee
-    await Responses.customAssigneeNotification(response._id, [assignee], 'accountable', organization);
+    if (sendNotification) await Responses.customAssigneeNotification(response._id, [assignee], 'accountable', organization);
   }
 };
 

@@ -5,12 +5,14 @@ export interface ITrackerItemModel extends IBaseModel<ITrackerItem> {
   customSynchronizeResponses: ({
     trackerItem,
     userId,
-    organizationId,
     prevDueDate,
+    sendNotification,
+    organizationId,
   }: {
     trackerItem: ITrackerItem;
     userId: string;
-    organizationId: string;
     prevDueDate?: Date;
+    sendNotification?: boolean;
+    organizationId: string;
   }) => Promise<void>;
 }

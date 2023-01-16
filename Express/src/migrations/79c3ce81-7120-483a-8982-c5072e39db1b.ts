@@ -33,6 +33,40 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
     await log(`Migration script "79c3ce81-7120-483a-8982-c5072e39db1b" started for ${organization.name} (${organization._id})`);
     await log(`\nParsing file: ${files[0].originalname}`);
 
+    // Get all responses and save in app memory to avoid running aggregation thousand of times
+    const pipeline: any[] = [
+      {
+        $match: {
+          organizationId: organization._id,
+        },
+      },
+      {
+        $lookup: {
+          from: 'trackerItems',
+          localField: 'trackerItemId',
+          foreignField: '_id',
+          as: 'trackerItem',
+        },
+      },
+      {
+        $unwind: {
+          path: '$trackerItem',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: '$_id',
+          questions: 1,
+          trackerItemName: '$trackerItem.name',
+        },
+      },
+    ];
+    const responses = (await Responses.aggregate(pipeline) || []).map(response => ({
+      ...response,
+      formattedTrackerItemName: response.trackerItemName.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase(),
+    }));
+
     // Generate a workbook from buffer upload
     const workbook = XLSX.read(buffer, { type: "buffer", cellDates: true });
 
@@ -65,73 +99,14 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
             await log(`\n\tDocument name: ${data.Name}`);
             await log(`\n\tDocument path: ${data.Path}`);
 
-            const pipeline: any[] = [
-              {
-                $match: {
-                  organizationId: organization._id,
-                },
-              },
-              {
-                $lookup: {
-                  from: 'trackerItems',
-                  localField: 'trackerItemId',
-                  foreignField: '_id',
-                  as: 'trackerItem',
-                },
-              },
-              {
-                $unwind: {
-                  path: '$trackerItem',
-                  preserveNullAndEmptyArrays: true,
-                },
-              },
-              // We need to remove special characters from the document name because it is different in Excel file and the app
-              { // Split name to an array of single characters
-                $addFields: {
-                  'trackerItem.nameArray': {
-                    '$map': {
-                      input: { '$range': [0, { '$strLenCP': '$trackerItem.name' }] },
-                      in: { '$substrCP': ['$trackerItem.name', '$$this', 1] },
-                    },
-                  },
-                },
-              },
-              { // Filter an array
-                $addFields: {
-                  'trackerItem.filteredNameArray': {
-                    '$filter': {
-                      input: '$trackerItem.nameArray',
-                      cond: { '$regexMatch': { input: '$$this', regex: '[0-9a-zA-Z]' } },
-                    },
-                  },
-                },
-              },
-              { // Concat filtered array
-                $addFields: {
-                  'trackerItem.filteredName': {
-                    '$reduce': {
-                      input: '$trackerItem.filteredNameArray',
-                      initialValue: '',
-                      in: { '$concat': ['$$value', '$$this'] },
-                    },
-                  },
-                },
-              },
-              {
-                $match: {
-                  $or: [
-                    // Search by document number
-                    { ...(documentNumberExist ? { 'trackerItem.name': new RegExp(data['Document Number'], 'i') } : {}) },
-                    // Search by document name (without file extension and special characters)
-                    { 'trackerItem.filteredName': new RegExp(data.Name.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, ''), 'i') },
-                  ],
-                },
-              }, {
-                $limit: 2,
-              },
-            ];
-            const response = (await Responses.aggregate(pipeline) || [])[0];
+            const response = responses.find(({ trackerItemName, formattedTrackerItemName }) => {
+              // Search by document number
+              if (documentNumberExist && new RegExp(data['Document Number'], 'i').test(trackerItemName)) return true;
 
+              // Search by document name (without file extension and special characters)
+              const documentName = data.Name.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+              return documentName === formattedTrackerItemName;
+            })
             if (!response) throw new Error(`Document could not be found in the database`);
 
             await Responses.customUpdateOne({ _id: response._id }, {

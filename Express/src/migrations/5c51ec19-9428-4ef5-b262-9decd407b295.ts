@@ -83,8 +83,9 @@ const generateTrackerItemTemplate = ({
 */
 
 const createBREGroupDocuments = async (res: Response, organization: IOrganization, data: any, files?: Express.Multer.File[]) => {
-  const { defaultOwner } = data;
+  const { defaultOwner, sendNotificationsFor } = data;
   if (!defaultOwner) throw new Error('Please pass defaultOwner parameter (full name)');
+  const notificationsReceivers: string[] = (sendNotificationsFor || '').split(';');
 
   if (files && files[0]?.buffer) {
     const buffer = files[0].buffer;
@@ -141,7 +142,8 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 throw new Error(`Document will not be parsed because of its "${data.Status}" status`);
 
               await log(`\n\tOwner "${data.Owner}" `);
-              const owner = (await GraphService.getUsers({ searchText: data.Owner, organization }))[0];
+              let owner;
+              if (data.Owner !== undefined && data.Owner !== 0) owner = (await GraphService.getUsers({ searchText: data.Owner, organization }))[0];
               let user;
               if (isEmpty(owner)) {
                 // if onwer is not provided then default owner will be 'Phil Clare' from the Quality and Compliance team
@@ -250,6 +252,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 trackerItem: createdTrackerItem,
                 userId: ownerId,
                 organizationId: organization._id,
+                sendNotification: false,
               });
 
               // Update response data
@@ -282,7 +285,12 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 status: 'submitted',
                 accountableId: ownerId,
                 responsibleId: ownerId,
-              }, ownerId, organization._id);
+              }, ownerId, organization._id, false/* sendNotification */);
+
+              if (sendNotificationsFor === 'all' || notificationsReceivers.includes(ownerId)) {
+                await log(`\n\tSending notification to user with ID ${ownerId}`);
+                await Responses.customAssigneeNotification(response._id, [ownerId], 'accountable', organization);
+              }
 
               await log('\n\tResponse synchronized succesfully');
               insertedTrackerItem.push(true);

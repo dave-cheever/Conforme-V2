@@ -408,6 +408,7 @@ responseSchema.statics.customUpdateOne = async function (
   updates: Partial<IResponse>,
   userId: string,
   organizationId: string,
+  sendNotification = true,
 ): Promise<IResponse> {
   const response = await this.customFindOne(selector, organizationId);
   if (!response) throw new GraphQLError("Response doesn't exist");
@@ -457,7 +458,8 @@ responseSchema.statics.customUpdateOne = async function (
     addAuditLog();
   }
 
-  if (response.status === 'draft' && updatedResponse.status === 'submitted') this.submitReviewNotification(updatedResponse, organization);
+  if (response.status === 'draft' && updatedResponse.status === 'submitted' && sendNotification)
+    this.submitReviewNotification(updatedResponse, organization);
 
   return updatedResponse;
 };

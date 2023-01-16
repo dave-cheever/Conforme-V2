@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 import * as XLSX from 'xlsx';
 
 import { IOrganization } from "app-interfaces";
-import { BusinessUnits, Categories, Locations, RegulatoryBodies, Responses, TrackerItems } from "app-models";
+import { BusinessUnits, Categories, Locations, RegulatoryBodies, Responses, TrackerItems, Users } from "app-models";
 import { GraphService } from "app-services";
 import { enumerate, getFilteredJSONDataForMigration, getNextRenewalDate } from "app-utils";
 
@@ -83,8 +83,9 @@ const generateTrackerItemTemplate = ({
 */
 
 const createBREGlobalDocuments = async (res: Response, organization: IOrganization, data: any, files?: Express.Multer.File[]) => {
-  const { defaultOwner } = data;
+  const { defaultOwner, sendNotificationsFor } = data;
   if (!defaultOwner) throw new Error('Please pass defaultOwner parameter (full name)');
+  const notificationsReceivers: string[] = (sendNotificationsFor || '').split(';');
 
   if (files && files[0]?.buffer) {
     const buffer = files[0].buffer;
@@ -141,7 +142,8 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                 throw new Error(`Document will not be parsed because of its "${data.Status}" status`);
 
               await log(`\n\tOwner "${data.Owner}" `);
-              const owner = (await GraphService.getUsers({ searchText: data.Owner, organization }))[0];
+              let owner;
+              if (data.Owner !== undefined && data.Owner !== 0) owner = (await GraphService.getUsers({ searchText: data.Owner, organization }))[0];
               let user;
               if (isEmpty(owner)) {
                 // if onwer is not provided then default owner will be 'Phil Clare' from the Quality and Compliance team
@@ -153,6 +155,9 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                 stats.ownerFoundCount += 1;
               }
               if (isEmpty(owner) && isEmpty(user)) throw new Error(`Default owner ("${defaultOwner}") can not be found in the tenant`);
+              const ownerId = owner?._id || user?._id;
+              const doesOwnerExistInDB = await Users.count({ _id: ownerId });
+              if (!doesOwnerExistInDB) await Users.customAssertUser({ userId: ownerId, organizationId: organization._id });
 
               // Find business unit or create new one if doesn't yet exist
               const businessUnitName = owner?.department || user?.department || data['Business Area/Team'] || 'No department';
@@ -162,7 +167,7 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                   ownerId: owner?._id ? owner._id : '',
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               );
               if ('created' in businessUnit) {
                 await log(`\n\tCreated new business unit: ${businessUnit.name}`);
@@ -175,7 +180,7 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                   name: sheet,
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               );
               if ('created' in category) {
                 await log(`\n\tCreated new category: ${category.name}`);
@@ -188,7 +193,7 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                   name: 'UKAS',
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               );
               if ('created' in regulatoryBody) {
                 await log(`\n\tCreated new regulatory body: ${regulatoryBody.name}`);
@@ -199,10 +204,10 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
               const location = await Locations.customFindOneOrCreateOne(
                 {
                   name: 'BRE Group Watford',
-                  ownerId: owner?._id || user?._id,
+                  ownerId,
                 },
                 organization._id,
-                owner?._id || user?._id,
+                ownerId,
               )
               if ('created' in location) {
                 await log(`\n\tCreated new location: ${location.name}`);
@@ -239,14 +244,15 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
               await log('\n\tAdding tracker item to the database...');
               const createdTrackerItem = await TrackerItems.customCreate(
                 newTrackerItem,
-                owner?._id || user?._id,
+                ownerId,
                 organization._id,
               );
               await log('\n\tTracker item added succesfully');
               await TrackerItems.customSynchronizeResponses({
                 trackerItem: createdTrackerItem,
-                userId: owner?._id || user?._id,
+                userId: ownerId,
                 organizationId: organization._id,
+                sendNotification: false,
               });
 
               // Update response data
@@ -277,9 +283,14 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                 lastCompletionDate,
                 dueDate,
                 status: 'submitted',
-                accountableId: owner?._id || user?._id,
-                responsibleId: owner?._id || user?._id,
-              }, owner?._id || user?._id, organization._id);
+                accountableId: ownerId,
+                responsibleId: ownerId,
+              }, ownerId, organization._id, false/* sendNotification */);
+
+              if (sendNotificationsFor === 'all' || notificationsReceivers.includes(ownerId)) {
+                await log(`\n\tSending notification to user with ID ${ownerId}`);
+                await Responses.customAssigneeNotification(response._id, [ownerId], 'accountable', organization);
+              }
 
               await log('\n\tResponse synchronized succesfully');
               insertedTrackerItem.push(true);
