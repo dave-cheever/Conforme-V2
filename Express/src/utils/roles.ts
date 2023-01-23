@@ -79,6 +79,7 @@ const roles = {
       'audits.viewAll',
       'actions.viewAll',
       'questions.viewAll',
+      'answers.viewAll',
     ],
     restricted: {
       'responses.edit': ifRACHasAccess,
