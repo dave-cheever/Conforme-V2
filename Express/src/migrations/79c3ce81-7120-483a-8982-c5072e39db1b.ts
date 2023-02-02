@@ -105,7 +105,7 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
 
               // Search by document name (without file extension and special characters)
               const documentName = data.Name.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-              return documentName === formattedTrackerItemName;
+              return formattedTrackerItemName.includes(documentName);
             })
             if (!response) throw new Error(`Document could not be found in the database`);
 
