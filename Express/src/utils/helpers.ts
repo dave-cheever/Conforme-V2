@@ -150,11 +150,11 @@ export const isRoutePermitted = (req, res, next, action, data?) => {
 
 export const isMigrationRoutePermitted = (req, res, next) => {
   const { body } = req;
-  const { organizationId, API_KEY } = body
-  if (API_KEY !== process.env.API_KEY) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'API key is invalid' })
-  if (!organizationId) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Organization id is not provided' })
+  const { organizationId, API_KEY } = body;
+  if (API_KEY !== process.env.API_KEY) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'API key is invalid' });
+  if (!organizationId) return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Organization id is not provided' });
   return next();
-}
+};
 
 export const redirectAfterLogin = async (req, res, errorMessage, organization) => {
   let redirectUrl;
@@ -249,7 +249,9 @@ export const getProjectFields = (nodes: any, methodName: string) => {
 export const mentionParser = (markup) => {
   const mentionRegex = /(@\[[a-zA-Z0-9 .,\-'()[\]{}]*\]\([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\))/g;
   const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g;
-  return uniq<string>(markup.match(mentionRegex).map(mention => mention.match(uuidRegex)).flat());
+  return uniq<string>(
+    (Array.isArray(markup.match(mentionRegex)) ? markup.match(mentionRegex) : []).map((mention) => mention.match(uuidRegex)).flat(),
+  );
 };
 
 export const getNextRenewalDate = (nextRenewalDate: Date, frequency: string) => {
@@ -616,9 +618,7 @@ export const getAuditValueForUsersArray = async ({ oldValue, newValue, organizat
 export const getAuditValueForAttachments = ({ oldValue, newValue }): IAuditValues => {
   const value: any = {};
   const getAttachmentsIds = (arr) => arr.map(({ id }) => id);
-  const removedAttachments = difference(getAttachmentsIds(oldValue || []), getAttachmentsIds(newValue || [])).filter(
-    Boolean,
-  );
+  const removedAttachments = difference(getAttachmentsIds(oldValue || []), getAttachmentsIds(newValue || [])).filter(Boolean);
   if (removedAttachments.length > 0) {
     const attachmentsNames: string[] = [];
     for (const attachment of removedAttachments) {
@@ -630,9 +630,7 @@ export const getAuditValueForAttachments = ({ oldValue, newValue }): IAuditValue
       label: attachmentsNames.join(', '),
     };
   }
-  const addedAttachments = difference(getAttachmentsIds(newValue || []), getAttachmentsIds(oldValue || [])).filter(
-    Boolean,
-  );
+  const addedAttachments = difference(getAttachmentsIds(newValue || []), getAttachmentsIds(oldValue || [])).filter(Boolean);
   if (addedAttachments.length > 0) {
     const attachmentsNames: string[] = [];
     for (const attachment of addedAttachments) {
@@ -669,11 +667,16 @@ export const getAuditRecordValues = async ({ oldValues = {}, newValues = {} }): 
 };
 
 // Filtered JSON data for migration scripts
-export const getFilteredJSONDataForMigration = (JSONData: object[]) => JSONData.map(data => Object.keys(data)
-  .reduce((acc, key) => ({
-    ...acc, [key.replace(/[\n\r]/g, '')]: typeof data[key] === 'string' ? data[key].replace(/[\n\r]/g, '') :
-      data[key],
-  }), {}))
+export const getFilteredJSONDataForMigration = (JSONData: object[]) =>
+  JSONData.map((data) =>
+    Object.keys(data).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key.replace(/[\n\r]/g, '')]: typeof data[key] === 'string' ? data[key].replace(/[\n\r]/g, '') : data[key],
+      }),
+      {},
+    ),
+  );
 
 export function* enumerate(iterable: any[]) {
   let i = 0;
