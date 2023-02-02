@@ -148,7 +148,7 @@ const AuditHeader = () => {
       mr="auto"
       onClick={() => {
         setShareItemUrl(`audits/${audit?._id}`);
-        setShareItemName(audit?.businessUnit?.name);
+        setShareItemName(businessUnit?.name || location?.name || '');
         handleShareOpen();
       }}
     />
