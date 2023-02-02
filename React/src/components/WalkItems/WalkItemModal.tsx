@@ -68,7 +68,7 @@ const WalkItemModal = ({
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
   const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
-  const { question } = walkItem as IAnswer;
+  const { question, audit } = walkItem as IAnswer;
   const { questionsCategory } = question as IQuestion<any>;
   const isCustomQuestion = !!question?.scope?._id;
   const isUserPermittedToModify = isPermitted({
@@ -80,9 +80,35 @@ const WalkItemModal = ({
     user,
     action: 'answers.editStatus',
   });
-  const isDisabled =
-    !!(walkItem?.audit?.status === 'completed' && (questionsCategory?.notBlockedAfterCompletion ? !!walkItem?._id : true)) ||
-    !isUserPermittedToModify;
+
+  /**
+   *
+   * Few cases needs to be considered to decide if form should be enabled or not
+   * 1. Does user has permissions to edit this answer?
+   *  1.1. Admins can edit all answers
+   *  1.2. Non-admins must be either auditor or participant
+   * 2. Has an answer a "status"?
+   *    There is an option in Questions Category that specifies if status should be used
+   *  2.1. Only admins can change "status" field
+   *  2.2. If set to "Yes" then status dropdown appear on the modal
+   *    2.2.1. If "status" is "Closed" then no one can edit the answer
+   *    2.2.2. If "status" is "Open" then answer can be edited
+   *  2.3. If set to "No" then status dropdown doesn't appear on the modal
+   * 3. Is audit completed?
+   *    There is an option in Questions Category that allows answers to be edited after submission of audit ("Editable after submission" option)
+   *  2.1. If set to "Yes" then answer can be edited as long as its "status" is not "Closed", or forever if there is no "status" field
+   *  2.2. If set to "No" then answer can't be edited (only "status" field can if it is "Open")
+   *
+   */
+  let isFormEnabled = isUserPermittedToModify;
+  if (audit?.status === 'completed') {
+    if (questionsCategory?.notBlockedAfterCompletion) {
+      if (questionsCategory?.useStatus && walkItem?.status === 'closed') isFormEnabled = false;
+      else isFormEnabled = isUserPermittedToModify;
+    } else isFormEnabled = false;
+  }
+
+  const canChangeStatus = questionsCategory?.useStatus && isUserPermittedToModifyStatus && walkItem?.status !== 'closed';
 
   const [saveQuestion] = useMutation(SAVE_QUESTION);
   const [saveAnswer] = useMutation(SAVE_ANSWER);
@@ -282,7 +308,7 @@ const WalkItemModal = ({
                         {isCustomQuestion ? (
                           <TextInput
                             control={control}
-                            disabled={isDisabled}
+                            disabled={!isFormEnabled}
                             label="Question"
                             name="question"
                             required
@@ -297,7 +323,7 @@ const WalkItemModal = ({
                       <GridItem>
                         <TextInputMultiline
                           control={control}
-                          disabled={isDisabled}
+                          disabled={!isFormEnabled}
                           label="Answer"
                           name="answer"
                           required
@@ -310,7 +336,7 @@ const WalkItemModal = ({
                   ) : (
                     <TextInputMultiline
                       control={control}
-                      disabled={isDisabled}
+                      disabled={!isFormEnabled}
                       label="Description"
                       name="question"
                       required
@@ -323,7 +349,7 @@ const WalkItemModal = ({
                     <GridItem>
                       <Dropdown
                         control={control}
-                        disabled={!isUserPermittedToModifyStatus || walkItem?.status === 'closed'}
+                        disabled={!canChangeStatus}
                         label="Status"
                         name="status"
                         options={[
@@ -341,7 +367,7 @@ const WalkItemModal = ({
                         {questionsCategory.options.map(({ name, value }) => (
                           <Toggle
                             control={control}
-                            disabled={isDisabled}
+                            disabled={!isFormEnabled}
                             falseLabel={name}
                             key={name}
                             name={`options[${value}]`}
@@ -353,7 +379,7 @@ const WalkItemModal = ({
                   </GridItem>
                 </Grid>
                 <Stack>
-                  {isUserPermittedToModify && !isDisabled && (
+                  {isUserPermittedToModify && !!isFormEnabled && (
                     <>
                       <Text fontSize="11px" fontWeight="700" mb={2}>
                         Add photos or files
@@ -370,7 +396,7 @@ const WalkItemModal = ({
                         callback={async () => removeAttachment(i)}
                         document={attachment}
                         downloadable
-                        removable={!isDisabled}
+                        removable={!!isFormEnabled}
                       />
                     </Flex>
                   ))}
@@ -410,25 +436,23 @@ const WalkItemModal = ({
                 )}
               />
               <Spacer />
-              {isUserPermittedToModifyStatus &&
-                (walkItem?.audit?.status.toString() === 'upcoming' ||
-                  (walkItem?.audit?.status.toString() !== 'upcoming' && walkItem?.question?.questionsCategory?.useStatus)) && (
-                  <Button
-                    bg="walkItemModal.buttons.primary.bg"
-                    color="walkItemModal.buttons.primary.color"
-                    disabled={!isValid}
-                    fontSize="smm"
-                    fontWeight="700"
-                    h="40px"
-                    ml={3}
-                    onClick={handlePrimaryButtonClick}
-                    rightIcon={<Icon as={TickIcon} size={24} stroke="walkItemModal.buttons.primary.icon" />}
-                    rounded="10px"
-                    w="fit-content"
-                  >
-                    Update
-                  </Button>
-                )}
+              {(isFormEnabled || canChangeStatus) && (
+                <Button
+                  bg="walkItemModal.buttons.primary.bg"
+                  color="walkItemModal.buttons.primary.color"
+                  disabled={!isValid}
+                  fontSize="smm"
+                  fontWeight="700"
+                  h="40px"
+                  ml={3}
+                  onClick={handlePrimaryButtonClick}
+                  rightIcon={<Icon as={TickIcon} size={24} stroke="walkItemModal.buttons.primary.icon" />}
+                  rounded="10px"
+                  w="fit-content"
+                >
+                  Update
+                </Button>
+              )}
             </Flex>
           </Stack>
         </ModalBody>
