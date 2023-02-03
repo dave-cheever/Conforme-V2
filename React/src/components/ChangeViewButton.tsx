@@ -20,8 +20,10 @@ const ChangeViewButton = ({
   const device = useDevice();
   useEffect(() => {
     const savedView = localStorage.getItem('viewMode');
-    if (savedView && (savedView === 'grid' || savedView === 'list' || savedView === 'group')) setViewMode(savedView);
+    if (savedView && (savedView === 'grid' || savedView === 'list' || savedView === 'group') && views.includes(savedView))
+      setViewMode(savedView);
     else if (user?.role === 'admin') setViewMode('list');
+    else setViewMode(viewMode);
   }, [user]);
 
   // use Memo not working for hook, used this for mobile
