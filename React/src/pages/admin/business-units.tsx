@@ -34,6 +34,7 @@ const GET_BUSINESS_UNITS = gql`
       }
       imgUrl
       trackerItemsResponsesCount
+      totalAnswersCount
       totalAuditsCount
     }
   }
@@ -68,7 +69,7 @@ const BusinessUnits = () => {
   const toast = useToast();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
-  const { setResponseFiltersValue } = useFiltersContext();
+  const { setResponseFiltersValue, setWalkItemFiltersValue, setAuditFiltersValue } = useFiltersContext();
   const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS);
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
@@ -229,22 +230,60 @@ const BusinessUnits = () => {
           <Box w="calc(70% / 2)">{businessUnit?.owner?.displayName}</Box>
         </>
       )}
-      <Flex align="center" w={['20%', 'calc(70% / 2)']}>
-        <Text>{businessUnit.trackerItemsResponsesCount || 0}</Text>
-        <Tooltip fontSize="md" label="Show Items">
-          <ArrowCount
-            cursor="pointer"
-            h="10px"
-            ml="13px"
-            onClick={() => {
-              setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-              navigateTo('/');
-            }}
-            stroke="#282F36"
-            w="10px"
-          />
-        </Tooltip>
-      </Flex>
+      {module?.type === 'tracker' && (
+        <Flex align="center" w={['20%', 'calc(70% / 2)']}>
+          <Text>{businessUnit.trackerItemsResponsesCount || 0}</Text>
+          <Tooltip fontSize="md" label="Show Items">
+            <ArrowCount
+              cursor="pointer"
+              h="10px"
+              ml="13px"
+              onClick={() => {
+                setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                navigateTo('/');
+              }}
+              stroke="#282F36"
+              w="10px"
+            />
+          </Tooltip>
+        </Flex>
+      )}
+      {module?.type === 'audits' && (
+        <>
+          <Flex align="center" w={['20%', 'calc(70% / 2)']}>
+            <Text>{businessUnit.totalAnswersCount || 0}</Text>
+            <Tooltip fontSize="md" label="Show Items">
+              <ArrowCount
+                cursor="pointer"
+                h="10px"
+                ml="13px"
+                onClick={() => {
+                  setWalkItemFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                  navigateTo('/walk-items');
+                }}
+                stroke="#282F36"
+                w="10px"
+              />
+            </Tooltip>
+          </Flex>
+          <Flex align="center" w={['20%', 'calc(70% / 2)']}>
+            <Text>{businessUnit.totalAuditsCount || 0}</Text>
+            <Tooltip fontSize="md" label="Show Items">
+              <ArrowCount
+                cursor="pointer"
+                h="10px"
+                ml="13px"
+                onClick={() => {
+                  setAuditFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                  navigateTo('/dashboard');
+                }}
+                stroke="#282F36"
+                w="10px"
+              />
+            </Tooltip>
+          </Flex>
+        </>
+      )}
     </Flex>
   );
 
@@ -313,16 +352,28 @@ const BusinessUnits = () => {
                 w={['20%', 'calc(70% / 2)']}
               />
             ) : (
-              <AdminTableHeaderElement
-                label={`${capitalize(pluralize(t('audit')))} count`}
-                onClick={() => {
-                  setSortType('totalAuditsCount');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'totalAuditsCount'}
-                sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                w={['20%', 'calc(70% / 2)']}
-              />
+              <>
+                <AdminTableHeaderElement
+                  label={`${capitalize(pluralize(t('question')))} count`}
+                  onClick={() => {
+                    setSortType('totalAnswersCount');
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'totalAnswersCount'}
+                  sortOrder={sortType === 'totalAnswersCount' && sortType === 'totalAnswersCount' ? sortOrder : undefined}
+                  w={['20%', 'calc(70% / 2)']}
+                />
+                <AdminTableHeaderElement
+                  label={`${capitalize(pluralize(t('audit')))} count`}
+                  onClick={() => {
+                    setSortType('totalAuditsCount');
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'totalAuditsCount'}
+                  sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
+                  w={['20%', 'calc(70% / 2)']}
+                />
+              </>
             )}
           </AdminTableHeader>
           <Flex bg="white" borderBottomRadius="20px" flexDir="column" fontSize="smm" h="full" overflow="auto" w="full">

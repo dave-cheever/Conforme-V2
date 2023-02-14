@@ -198,6 +198,22 @@ const businessUnits = async (
           if (shouldJoin('closedAnswersCount'))
             // eslint-disable-next-line no-param-reassign
             businessUnit.closedAnswersCount = await getAnswersCount({ status: 'closed' });
+        } else if (shouldJoin('totalAnswersCount')) {
+          const answers = await Answers.aggregate([
+            {
+              $match: {
+                'metatags.removedAt': { $eq: null },
+                businessUnitId: businessUnit._id,
+                organizationId: organization._id,
+              },
+            },
+            {
+              $count: 'count',
+            },
+          ]);
+
+          // eslint-disable-next-line no-param-reassign
+          businessUnit.totalAnswersCount = answers[0].count;
         }
 
         if (shouldJoin('owner')) {

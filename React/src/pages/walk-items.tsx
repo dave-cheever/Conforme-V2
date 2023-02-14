@@ -193,6 +193,7 @@ const WalkItems = () => {
       setAdminModalState('closed');
     };
   }, []);
+
   // Set pre-defined filters
   useEffect(() => {
     if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
