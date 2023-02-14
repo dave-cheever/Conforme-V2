@@ -12,6 +12,7 @@ import {
   Icon,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   Spacer,
   Stack,
@@ -146,14 +147,14 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
 
   return (
     <>
-      <ModalContent bg="actionModal.bg" h="auto" m="0" minH="100vh" overflow="hidden" p={[4, 6]} rounded="0">
+      <ModalContent bg="actionModal.bg" h="100vh" m="0" overflow="hidden" p={[4, 6]} rounded="0">
         <ModalHeader alignItems="center" fontSize="xxl" fontWeight="bold" p="0">
           <Flex justifyContent="space-between">
             <Flex alignItems="center" fontSize={['14px', '24px']}>
               <Tooltip label={action?.assignee?.displayName ?? 'No assignee'}>
                 <Avatar mr={3} name={action?.assignee?.displayName} rounded="full" size="xs" src={action?.assignee?.imgUrl} />
               </Tooltip>
-              {action?.title}
+              <Text wordBreak="break-word">{action?.title}</Text>
             </Flex>
             <Flex alignItems="center">
               <ShareButton
@@ -168,208 +169,208 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody h="calc(100% - 1rem)" p="1rem 0 0 0">
-          <Stack h="100%" justify="space-between" spacing={2}>
-            <Stack flexGrow={1} h='calc(100vh - 163px)' overflowY="auto" px={2} py={0} spacing={6}>
-              <Stack spacing={4}>
-                <Text fontSize="smm" fontWeight="semibold">
-                  {capitalize(t('question'))}
-                </Text>
-                <HStack
-                  bg="actionModal.question.bg"
-                  boxShadow="simple"
-                  flexGrow={1}
-                  justify="space-between"
-                  px={6}
-                  py={4}
-                  rounded="10px"
-                  spacing={2}
-                >
-                  <Stack spacing={1}>
-                    <Stack
-                      _hover={{
-                        textDecoration: 'underline',
-                        cursor: 'pointer',
-                      }}
-                      align="center"
-                      direction="row"
-                      onClick={() =>
-                        openInNewTab(
-                          `/audits/${action?.answer?.audit?._id}?questionId=${action?.answer?.questionId}&questionsCategoryId=${action?.answer?.question?.questionsCategoryId}`,
-                        )
-                      }
-                      spacing={2}
-                    >
-                      <Text color="actionModal.question.color" fontSize="smm" isTruncated>
-                        {action?.answer?.question?.question}
-                      </Text>
-                      <OpenExternalIcon fill="transparent" stroke="black" />
-                    </Stack>
-                    <Text color="actionModal.auditType" fontSize="ssm">
-                      {action?.answer?.audit?.auditType?.name}
+        <ModalBody p="1rem 0 0 0">
+          <Stack flexGrow={1} justify="space-between" overflowY="auto" px={2} py={0} spacing={2}>
+            <Stack spacing={4}>
+              <Text fontSize="smm" fontWeight="semibold">
+                {capitalize(t('question'))}
+              </Text>
+              <HStack
+                bg="actionModal.question.bg"
+                boxShadow="simple"
+                flexGrow={1}
+                justify="space-between"
+                px={6}
+                py={4}
+                rounded="10px"
+                spacing={2}
+              >
+                <Stack spacing={1}>
+                  <Stack
+                    _hover={{
+                      textDecoration: 'underline',
+                      cursor: 'pointer',
+                    }}
+                    align="center"
+                    direction="row"
+                    onClick={() =>
+                      openInNewTab(
+                        `/audits/${action?.answer?.audit?._id}?questionId=${action?.answer?.questionId}&questionsCategoryId=${action?.answer?.question?.questionsCategoryId}`,
+                      )
+                    }
+                    spacing={2}
+                  >
+                    <Text color="actionModal.question.color" fontSize="smm" isTruncated whiteSpace="break-spaces" wordBreak="break-word">
+                      {action?.answer?.question?.question}
                     </Text>
+                    <OpenExternalIcon fill="transparent" stroke="black" />
                   </Stack>
-                  <HStack spacing={2}>
-                    {(action?.answer?.attachments || []).slice(0, 2).map((attachment) => (
-                      <DocumentThumbnail document={attachment} key={attachment.id} />
+                  <Text color="actionModal.auditType" fontSize="ssm">
+                    {action?.answer?.audit?.auditType?.name}
+                  </Text>
+                </Stack>
+                <HStack spacing={2}>
+                  {(action?.answer?.attachments || []).slice(0, 2).map((attachment) => (
+                    <DocumentThumbnail document={attachment} key={attachment.id} />
+                  ))}
+                  {(action?.answer?.attachments || []).length > 2 &&
+                    ((action?.answer?.attachments || []).length === 3 ? (
+                      <DocumentThumbnail document={action!.answer!.attachments![2]} key={action!.answer!.attachments![2].id} />
+                    ) : (
+                      <Flex
+                        align="center"
+                        border="1px solid"
+                        borderColor="documentUploaded.border"
+                        cursor="default"
+                        h="55px"
+                        justify="center"
+                        rounded="3px"
+                        w="55px"
+                      >
+                        +{(action?.answer?.attachments || []).length - 2}
+                      </Flex>
                     ))}
-                    {(action?.answer?.attachments || []).length > 2 &&
-                      ((action?.answer?.attachments || []).length === 3 ? (
-                        <DocumentThumbnail document={action!.answer!.attachments![2]} key={action!.answer!.attachments![2].id} />
-                      ) : (
-                        <Flex
-                          align="center"
-                          border="1px solid"
-                          borderColor="documentUploaded.border"
-                          cursor="default"
-                          h="55px"
-                          justify="center"
-                          rounded="3px"
-                          w="55px"
-                        >
-                          +{(action?.answer?.attachments || []).length - 2}
-                        </Flex>
-                      ))}
-                  </HStack>
                 </HStack>
-              </Stack>
-              <Stack spacing={4}>
-                <Text fontSize="smm" fontWeight="semibold">
-                  Action details
-                </Text>
-                <Grid columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
-                  <GridItem>
-                    <TextInput
-                      control={control}
-                      disabled={!isUserPermittedToModify}
-                      label="Title"
-                      name="title"
-                      required
-                      validations={{
-                        notEmpty: true,
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem>
-                    <PeoplePicker control={control} disabled={!isUserPermittedToModify} label="Assigned to" name="assigneeId" />
-                  </GridItem>
-                  <GridItem>
-                    <Datepicker control={control} disabled={!isUserPermittedToModify} label="Due date" name="dueDate" />
-                  </GridItem>
-                  <GridItem>
-                    <Dropdown
-                      control={control}
-                      disabled={!isUserPermittedToModify}
-                      label="Priority"
-                      name="priority"
-                      options={priorities}
-                      stroke="dropdown.icon"
-                      variant="secondaryVariant"
-                    />
-                  </GridItem>
-                  <GridItem>
-                    <Dropdown
-                      control={control}
-                      disabled={!isUserPermittedToModify}
-                      label="Status"
-                      name="status"
-                      options={[
-                        { label: 'Open', value: 'open' },
-                        { label: 'Closed', value: 'closed' },
-                      ]}
-                      stroke="dropdown.icon"
-                      variant="secondaryVariant"
-                    />
-                  </GridItem>
-                </Grid>
-                <TextInputMultiline control={control} disabled={!isUserPermittedToModify} label="Description" name="description" />
-                <Grid columnGap={4} templateColumns="repeat(2, 1fr)">
+              </HStack>
+            </Stack>
+            <Stack spacing={4}>
+              <Text fontSize="smm" fontWeight="semibold">
+                Action details
+              </Text>
+              <Grid columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
+                <GridItem>
+                  <TextInput
+                    control={control}
+                    disabled={!isUserPermittedToModify}
+                    label="Title"
+                    name="title"
+                    required
+                    validations={{
+                      notEmpty: true,
+                    }}
+                  />
+                </GridItem>
+                <GridItem>
+                  <PeoplePicker control={control} disabled={!isUserPermittedToModify} label="Assigned to" name="assigneeId" />
+                </GridItem>
+                <GridItem>
+                  <Datepicker control={control} disabled={!isUserPermittedToModify} label="Due date" name="dueDate" />
+                </GridItem>
+                <GridItem>
+                  <Dropdown
+                    control={control}
+                    disabled={!isUserPermittedToModify}
+                    label="Priority"
+                    name="priority"
+                    options={priorities}
+                    stroke="dropdown.icon"
+                    variant="secondaryVariant"
+                  />
+                </GridItem>
+                <GridItem>
+                  <Dropdown
+                    control={control}
+                    disabled={!isUserPermittedToModify}
+                    label="Status"
+                    name="status"
+                    options={[
+                      { label: 'Open', value: 'open' },
+                      { label: 'Closed', value: 'closed' },
+                    ]}
+                    stroke="dropdown.icon"
+                    variant="secondaryVariant"
+                  />
+                </GridItem>
+              </Grid>
+              <TextInputMultiline control={control} disabled={!isUserPermittedToModify} label="Description" name="description" />
+              <Grid columnGap={4} templateColumns="repeat(2, 1fr)">
+                <GridItem>
+                  <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
+                    Date added
+                  </Text>
+                  <Text fontSize="13px">{format(new Date(action?.metatags?.addedAt! || null), 'dd MMM yyyy')}</Text>
+                </GridItem>
+                {action?.creator && (
                   <GridItem>
                     <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
-                      Date added
+                      Created by
                     </Text>
-                    <Text fontSize="13px">{format(new Date(action?.metatags?.addedAt! || null), 'dd MMM yyyy')}</Text>
-                  </GridItem>
-                  {action?.creator && (
-                    <GridItem>
-                      <Text color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold">
-                        Created by
+                    <Flex align="center" direction="row" mt={1}>
+                      <Avatar name={action?.creator?.displayName} size="xs" src={action?.creator?.imgUrl} />
+                      <Text
+                        fontSize="13px"
+                        lineHeight="17px"
+                        opacity="1"
+                        overflow="hidden"
+                        pl={3}
+                        textOverflow="ellipsis"
+                        w="full"
+                        whiteSpace="nowrap"
+                      >
+                        {action?.creator?.displayName}
                       </Text>
-                      <Flex align="center" direction="row" mt={1}>
-                        <Avatar name={action?.creator?.displayName} size="xs" src={action?.creator?.imgUrl} />
-                        <Text
-                          fontSize="13px"
-                          lineHeight="17px"
-                          opacity="1"
-                          overflow="hidden"
-                          pl={3}
-                          textOverflow="ellipsis"
-                          w="full"
-                          whiteSpace="nowrap"
-                        >
-                          {action?.creator?.displayName}
-                        </Text>
-                      </Flex>
-                    </GridItem>
-                  )}
-                </Grid>
-                <Stack>
-                  {isUserPermittedToModify && (
-                    <>
-                      <Text fontSize="11px" fontWeight="700" mb={2}>
-                        Add photos or files
-                      </Text>
-                      <DocumentUpload
-                        callback={async (uploaded) => appendAttachment(uploaded)}
-                        elementId={action ? action._id : `temp-${uuidv4()}`}
-                      />
-                    </>
-                  )}
-                  {values.attachments?.map((attachment, i) => (
-                    <Flex flexDir="column" key={i} mb={2}>
-                      <DocumentUploaded callback={async () => removeAttachment(i)} document={attachment} downloadable removable />
                     </Flex>
-                  ))}
-                  {values.attachments?.length === 0 && !isUserPermittedToModify && <Text fontSize="sm">No uploaded attachments</Text>}
-                </Stack>
+                  </GridItem>
+                )}
+              </Grid>
+              <Stack>
+                {isUserPermittedToModify && (
+                  <>
+                    <Text fontSize="11px" fontWeight="700" mb={2}>
+                      Add photos or files
+                    </Text>
+                    <DocumentUpload
+                      callback={async (uploaded) => appendAttachment(uploaded)}
+                      elementId={action ? action._id : `temp-${uuidv4()}`}
+                    />
+                  </>
+                )}
+                {values.attachments?.map((attachment, i) => (
+                  <Flex flexDir="column" key={i} mb={2}>
+                    <DocumentUploaded callback={async () => removeAttachment(i)} document={attachment} downloadable removable />
+                  </Flex>
+                ))}
+                {values.attachments?.length === 0 && !isUserPermittedToModify && <Text fontSize="sm">No uploaded attachments</Text>}
               </Stack>
             </Stack>
-            <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
-              {isPermitted({ user, action: 'actions.delete' }) ? (
-                <Button
-                  bg="actionModal.buttons.secondary.bg"
-                  color="actionModal.buttons.secondary.color"
-                  fontSize="smm"
-                  fontWeight="700"
-                  h="40px"
-                  ml={3}
-                  onClick={handleSecondaryButtonClick}
-                  rounded="10px"
-                  w="fit-content"
-                >
-                  Delete
-                </Button>
-              ) : (
-                <Spacer />
-              )}
+          </Stack>
+        </ModalBody>
+        <ModalFooter>
+          <Flex flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" pt={4} w="full">
+            {isPermitted({ user, action: 'actions.delete' }) ? (
               <Button
-                bg="actionModal.buttons.primary.bg"
-                color="actionModal.buttons.primary.color"
-                disabled={!isValid}
+                bg="actionModal.buttons.secondary.bg"
+                color="actionModal.buttons.secondary.color"
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
                 ml={3}
-                onClick={handlePrimaryButtonClick}
-                rightIcon={<Icon as={TickIcon} size={24} stroke="actionModal.buttons.primary.icon" />}
+                onClick={handleSecondaryButtonClick}
                 rounded="10px"
                 w="fit-content"
               >
-                Update
+                Delete
               </Button>
-            </Flex>
-          </Stack>
-        </ModalBody>
+            ) : (
+              <Spacer />
+            )}
+            <Button
+              bg="actionModal.buttons.primary.bg"
+              color="actionModal.buttons.primary.color"
+              disabled={!isValid}
+              fontSize="smm"
+              fontWeight="700"
+              h="40px"
+              ml={3}
+              onClick={handlePrimaryButtonClick}
+              rightIcon={<Icon as={TickIcon} size={24} stroke="actionModal.buttons.primary.icon" />}
+              rounded="10px"
+              w="fit-content"
+            >
+              Update
+            </Button>
+          </Flex>
+        </ModalFooter>
       </ModalContent>
     </>
   );
