@@ -354,21 +354,23 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
             ) : (
               <Spacer />
             )}
-            <Button
-              bg="actionModal.buttons.primary.bg"
-              color="actionModal.buttons.primary.color"
-              disabled={!isValid}
-              fontSize="smm"
-              fontWeight="700"
-              h="40px"
-              ml={3}
-              onClick={handlePrimaryButtonClick}
-              rightIcon={<Icon as={TickIcon} size={24} stroke="actionModal.buttons.primary.icon" />}
-              rounded="10px"
-              w="fit-content"
-            >
-              Update
-            </Button>
+            {isUserPermittedToModify && (
+              <Button
+                bg="actionModal.buttons.primary.bg"
+                color="actionModal.buttons.primary.color"
+                disabled={!isValid}
+                fontSize="smm"
+                fontWeight="700"
+                h="40px"
+                ml={3}
+                onClick={handlePrimaryButtonClick}
+                rightIcon={<Icon as={TickIcon} size={24} stroke="actionModal.buttons.primary.icon" />}
+                rounded="10px"
+                w="fit-content"
+              >
+                Update
+              </Button>
+            )}
           </Flex>
         </ModalFooter>
       </ModalContent>
