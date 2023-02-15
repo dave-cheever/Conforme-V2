@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, Flex, HStack, Select, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
+import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -316,8 +317,12 @@ const AuditTypes = () => {
           />
           <Dropdown
             control={control}
-            help='Defines the scope of Business Unit in audit. If "audit" then during audit creation user will have to pick Business Unit. If "answer" then during answer creation user will have to pick Business Unit.'
-            label="Business unit scope"
+            help={`Defines the scope of ${capitalize(
+              t('business unit'),
+            )} in audit. If "audit" then during audit creation user will have to pick ${capitalize(
+              t('business unit'),
+            )}. If "answer" then during answer creation user will have to pick ${capitalize(t('business unit'))}.`}
+            label={`${capitalize(t('business unit'))} scope`}
             name="businessUnitScope"
             options={[
               { value: undefined, label: 'None' },
