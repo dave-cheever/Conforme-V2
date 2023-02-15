@@ -1,5 +1,6 @@
 import { Flex, Tooltip } from '@chakra-ui/react';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
@@ -14,6 +15,7 @@ const AdminTableRow = ({
   responseToEdit: 'regulatoryBodiesIds' | 'categoriesIds';
   edit?: () => void;
 }) => {
+  const { module } = useAppContext();
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
   return (
@@ -34,22 +36,24 @@ const AdminTableRow = ({
       <Flex align="center" cursor="pointer" onClick={edit} w={['80%', '50%']}>
         {element.name}
       </Flex>
-      <Flex alignItems="center" justifyContent={['flex-end', 'flex-start']} mt={['5px', '0']} pr={['21px', '0']} w={['20%', '50%']}>
-        {element.trackerItemsResponsesCount || '0'}
-        <Tooltip fontSize="md" label="Show Items">
-          <ArrowCount
-            cursor="pointer"
-            h="10px"
-            ml="13px"
-            onClick={() => {
-              setResponseFiltersValue({ [responseToEdit]: [element._id] });
-              navigateTo('/');
-            }}
-            stroke="#282F36"
-            w="10px"
-          />
-        </Tooltip>
-      </Flex>
+      {module?.type === 'tracker' && (
+        <Flex alignItems="center" justifyContent={['flex-end', 'flex-start']} mt={['5px', '0']} pr={['21px', '0']} w={['20%', '50%']}>
+          {element.trackerItemsResponsesCount || '0'}
+          <Tooltip fontSize="md" label="Show Items">
+            <ArrowCount
+              cursor="pointer"
+              h="10px"
+              ml="13px"
+              onClick={() => {
+                setResponseFiltersValue({ [responseToEdit]: [element._id] });
+                navigateTo('/');
+              }}
+              stroke="#282F36"
+              w="10px"
+            />
+          </Tooltip>
+        </Flex>
+      )}
     </Flex>
   );
 };
