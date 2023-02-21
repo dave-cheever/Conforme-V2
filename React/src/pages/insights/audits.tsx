@@ -46,7 +46,7 @@ const GET_AUDITS_INSIGHTS = gql`
 `;
 
 const GET_LOCATIONS_AUDITS_INSIGHTS = gql`
-  query ($locationsPagination: LocationsPaginationInput) {
+  query ($locationsPagination: PaginationInput) {
     locations(locationsPagination: $locationsPagination) {
       _id
       name
@@ -59,7 +59,7 @@ const GET_LOCATIONS_AUDITS_INSIGHTS = gql`
 `;
 
 const GET_BUSINESS_UNITS_AUDITS_INSIGHTS = gql`
-  query ($businessUnitsPagination: BusinessUnitsPaginationInput) {
+  query ($businessUnitsPagination: PaginationInput) {
     businessUnits(businessUnitsPagination: $businessUnitsPagination) {
       _id
       name
@@ -72,7 +72,7 @@ const GET_BUSINESS_UNITS_AUDITS_INSIGHTS = gql`
 `;
 
 const GET_USERS_AUDITS_INSIGHTS = gql`
-  query ($usersPagination: UsersPaginationInput) {
+  query ($usersPagination: PaginationInput) {
     users(usersPagination: $usersPagination) {
       _id
       displayName
