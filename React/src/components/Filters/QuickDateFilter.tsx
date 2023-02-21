@@ -67,7 +67,7 @@ const QuickDateFilter = ({ filterName, toggleActiveFilters }: { filterName: stri
   };
 
   return (
-    <Flex borderRadius="10px" flexDir="column" justify="center" key={`quick-filter-item-${filterName}`} minW="215px" mr={4} my={2}>
+    <Flex borderRadius="10px" flexDir="column" justify="center" key={`quick-filter-item-${filterName}`} minW="215px" mt={2} my={2}>
       <Flex
         align="center"
         bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}

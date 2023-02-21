@@ -43,9 +43,9 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
 
   return (
     <Stack w="full">
-      <Stack overflow="auto" pb={3} w="full">
-        <Box mt="-12px" w="full">
-          {/* <Dropdown
+      {/* <Stack overflow="auto" pb={3} w="full"> */}
+      {/* <Box mt="-12px" w="full"> */}
+      {/* <Dropdown
             name='type'
             label='Select type'
             value={selectedType}
@@ -57,38 +57,38 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
             onChange={({ target: { value } }) => setSelectedType(value)}
             style={{ width: 'full' }}
           /> */}
-        </Box>
-        <>
-          <Box py="5px">
-            <InputGroup>
-              <Input
-                borderColor="filterPanel.searchBoxBordercolor"
-                borderWidth="1px"
-                color="brand.darkGrey"
-                fontSize="14px"
-                h="40px"
-                onChange={({ target: { value } }) => setSearchText(value)}
-                pl={8}
-                placeholder={`Search ${pluralize(t('business unit'))}`}
-                value={searchText}
-                w="full"
-              />
-              <Magnifier bottom="13px" h="12px" left="14px" position="absolute" w="12x" />
-            </InputGroup>
-          </Box>
-          {note && (
-            <Text color="businessUnitsSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3">
-              {note}
-            </Text>
-          )}
-          <BusinessUnitsSelectorList
-            disabled={disabled}
-            filteredBusinessUnits={filteredBusinessUnits}
-            handleChange={handleChange}
-            selected={selected}
+      {/* </Box> */}
+      {/* <> */}
+      <Box py="5px">
+        <InputGroup>
+          <Input
+            borderColor="filterPanel.searchBoxBordercolor"
+            borderWidth="1px"
+            color="brand.darkGrey"
+            fontSize="14px"
+            h="40px"
+            onChange={({ target: { value } }) => setSearchText(value)}
+            pl={8}
+            placeholder={`Search ${pluralize(t('business unit'))}`}
+            value={searchText}
+            w="full"
           />
-        </>
-      </Stack>
+          <Magnifier bottom="13px" h="12px" left="14px" position="absolute" w="12x" />
+        </InputGroup>
+      </Box>
+      {note && (
+        <Text color="businessUnitsSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3">
+          {note}
+        </Text>
+      )}
+      <BusinessUnitsSelectorList
+        disabled={disabled}
+        filteredBusinessUnits={filteredBusinessUnits}
+        handleChange={handleChange}
+        selected={selected}
+      />
+      {/* </> */}
+      {/* </Stack> */}
     </Stack>
   );
 };

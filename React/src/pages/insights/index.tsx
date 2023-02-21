@@ -71,7 +71,7 @@ const Insights = () => {
   }, [selectedPanel]);
 
   return (
-    <Flex direction="column" h="full" isolation="isolate" zIndex="1">
+    <Flex direction="column" h="full" isolation="isolate" overflowY="hidden" zIndex="1">
       <Header breadcrumbs={['Insights']} mobileBreadcrumbs={['Insights']}>
         {device === 'mobile' && <FilterButton insightsFilter />}
       </Header>

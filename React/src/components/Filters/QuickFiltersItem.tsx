@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Box, Flex, Text, useDisclosure, useOutsideClick } from '@chakra-ui/react';
 
@@ -27,6 +27,11 @@ const QuickFiltersItem = ({ name, filter, toggleActiveFilters }: { name: string;
     () => (Array.isArray(filtersValues?.[name]?.value) ? filtersValues?.[name]?.value?.length : 0),
     [filtersValues, name],
   );
+
+  const [pos, setPos] = useState('0px');
+  useEffect(() => {
+    setPos(`${(ref?.current?.parentElement?.offsetTop || 0) + (ref?.current?.parentElement?.clientHeight || 0)}px`);
+  }, [isOpen]);
 
   const renderPanel = () => {
     switch (name) {
@@ -64,7 +69,7 @@ const QuickFiltersItem = ({ name, filter, toggleActiveFilters }: { name: string;
   return name.toLocaleLowerCase().includes('date') ? (
     <QuickDateFilter filterName={name} toggleActiveFilters={toggleActiveFilters} />
   ) : (
-    <Flex direction="column" key={`quick-filter-item-${name}`}>
+    <Flex direction="column" key={`quick-filter-item-${name}`} mt={2}>
       <Flex
         align="center"
         bg={isOpen ? 'quickFiltersItem.openBg' : 'quickFiltersItem.closeBg'}
@@ -78,6 +83,7 @@ const QuickFiltersItem = ({ name, filter, toggleActiveFilters }: { name: string;
           onToggle();
           if (toggleActiveFilters) toggleActiveFilters();
         }}
+        overflowY="auto"
         p={3}
         w="215px"
       >
@@ -105,12 +111,15 @@ const QuickFiltersItem = ({ name, filter, toggleActiveFilters }: { name: string;
       {isOpen && (
         <Flex
           align="center"
+          alignItems="top"
           bg="quickFiltersItem.openBg"
           borderBottomRadius="10px"
+          maxH="200px"
+          overflowY="auto"
           p={3}
           position="absolute"
           ref={ref}
-          top="44px"
+          top={pos}
           w="215px"
         >
           {isOpen && renderPanel()}

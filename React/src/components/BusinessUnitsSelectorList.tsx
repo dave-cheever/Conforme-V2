@@ -22,7 +22,7 @@ const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, handleChan
     }
     value={selected}
   >
-    <Stack direction="column" w="full">
+    <Stack direction="column" pb={2} w="full">
       {filteredBusinessUnits?.map(({ name, _id }) => (
         <FilterCheckBox key={_id} label={name} value={_id} />
       ))}
