@@ -19,14 +19,7 @@ const QuestionForm = ({
   setEditQuestion,
   editQuestionIndex,
 }) => (
-  <Flex
-    bg="questionForm.bg"
-    boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-    flexDirection="column"
-    maxH="calc(100% - 100px)"
-    p="20px 25px"
-    rounded="10px"
-  >
+  <Flex bg="questionForm.bg" boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)" flexDirection="column" p="20px 25px" rounded="10px">
     {(questionType === 'text' ||
       questionType === 'textMultiline' ||
       questionType === 'switch' ||
