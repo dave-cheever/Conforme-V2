@@ -169,7 +169,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody p="1rem 0 0 0">
+        <ModalBody overflowY="auto" p="1rem 0 0 0">
           <Stack flexGrow={1} justify="space-between" overflowY="auto" px={2} py={0} spacing={2}>
             <Stack spacing={4}>
               <Text fontSize="smm" fontWeight="semibold">
