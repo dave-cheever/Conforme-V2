@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import {
   Badge,
@@ -21,12 +23,14 @@ import { capitalize, isEqual } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../../bootstrap/config';
+import { useAppContext } from '../../../contexts/AppProvider';
 import { useResponseContext } from '../../../contexts/ResponseProvider';
 import { useShareContext } from '../../../contexts/ShareProvider';
 import useNavigate from '../../../hooks/useNavigate';
 import useResponseUtils from '../../../hooks/useResponseUtils';
 import { ArrowDownIcon, SaveIcon, ShareIcon, SubmitIcon } from '../../../icons';
 import past from '../../../utils/tense';
+import { isPermitted } from '../../can';
 import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import ResponseHeaderStatus from './ResponseHeaderStatus';
@@ -47,6 +51,11 @@ const ReasponseHeader = () => {
   const toast = useToast();
   const { isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
+  const { user } = useAppContext();
+  const isUserPermittedToSubmitDocument = useMemo(
+    () => isPermitted({ user, action: 'responses.edit', data: { response } }),
+    [JSON.stringify(user), JSON.stringify(response)],
+  );
 
   const { watch } = questionsForm;
   const answers = watch();
@@ -209,7 +218,7 @@ const ReasponseHeader = () => {
                 onClick={updateResponseQuestions}
               />
               <ResponseHeaderButton
-                disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)}
+                disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response) || !isUserPermittedToSubmitDocument}
                 icon={
                   <SubmitIcon
                     _groupHover={

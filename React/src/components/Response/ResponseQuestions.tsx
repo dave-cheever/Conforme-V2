@@ -20,7 +20,10 @@ const styles = {
 const ResponseQuestions = ({ disabled = false }) => {
   const { user } = useAppContext();
   const { response, snapshot, snapshots, setIsQuestionFormDirty, isQuestionFormDirty, activeTab, questionsForm } = useResponseContext();
-  const isUserPermitted = useMemo(() => isPermitted({ user, action: 'responses.edit', data: { response } }), [user, response]);
+  const isUserPermitted = useMemo(
+    () => isPermitted({ user, action: 'responses.edit', data: { response } }),
+    [JSON.stringify(user), JSON.stringify(response)],
+  );
   const questions = useMemo(() => {
     if (response.status !== 'draft' || activeTab === 1 || snapshot) return response?.questions || [];
     return snapshots[0]?.questions || [];
@@ -37,10 +40,10 @@ const ResponseQuestions = ({ disabled = false }) => {
     reset(
       questions?.reduce(
         (acc, { name, value }) =>
-        ({
-          ...acc,
-          [name]: value || '',
-        } as { [name: string]: TQuestionValue }),
+          ({
+            ...acc,
+            [name]: value || '',
+          } as { [name: string]: TQuestionValue }),
         {} as { [name: string]: TQuestionValue },
       ),
     );
