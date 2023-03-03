@@ -62,7 +62,6 @@ const ResponseLeftNavigation = () => {
       direction="column"
       display={['none', 'none', 'flex']}
       fontWeight="400"
-      h="100vh"
       justifyContent="space-between"
       overflow="auto"
       px={6}
