@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
@@ -117,20 +117,23 @@ const SearchBar = () => {
 
   const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
   const [searchResults, setSearchResults] = useState<ISearchResult[]>();
-  const search = async (searchText: string) => {
-    if (searchText) {
-      const results = await getSearchResults({
-        variables: {
-          searchQuery: {
-            searchText,
-            moduleId: module?._id,
-            scopes: getScopes(),
+  const search = useCallback(
+    async (searchText: string) => {
+      if (searchText) {
+        const results = await getSearchResults({
+          variables: {
+            searchQuery: {
+              searchText,
+              moduleId: module?._id,
+              scopes: getScopes(),
+            },
           },
-        },
-      });
-      setSearchResults(results.data.search);
-    }
-  };
+        });
+        setSearchResults(results.data.search);
+      }
+    },
+    [searchText, getScopes, module?._id],
+  );
 
   // Debounce to delay search after changing search phrase
   const debounceSearch = useMemo(() => debounce(search, 750), [JSON.stringify(selectedSearchCategory)]);
@@ -261,7 +264,7 @@ const SearchBar = () => {
                         h="15px"
                         stroke={
                           `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` ===
-                            `${searchCategory.type}-${searchCategory._id}`
+                          `${searchCategory.type}-${searchCategory._id}`
                             ? 'navigationLeftItem.selectedIconStroke'
                             : 'navigationLeftItem.unselectedIconStroke'
                         }

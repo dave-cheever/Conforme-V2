@@ -1,5 +1,4 @@
 import { diff } from 'deep-object-diff';
-import { response } from 'express';
 import { GraphQLError } from 'graphql';
 import { difference, uniq } from 'lodash';
 import { model, Schema } from 'mongoose';
@@ -294,28 +293,36 @@ responseSchema.statics.customCreate = async function (response: IResponse, userI
 
 responseSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<ISearchResult[]> {
   const { searchText } = searchQuery;
+
   const pipeline: any[] = [
-    {
+    { // Search must be the first step to make use of index and improve performance
       $match: {
+        name: new RegExp(searchText, 'i'),
         organizationId,
+      },
+    }, {
+      $lookup: {
+        from: "trackerResponses",
+        localField: "_id",
+        foreignField: "trackerItemId",
+        as: "trackerResponse",
+      },
+    }, {
+      $unwind: {
+        path: "$trackerResponse",
+        preserveNullAndEmptyArrays: true,
       },
     },
   ];
 
-  if (
-    !isPermitted({
-      user,
-      action: 'responses.viewAll',
-      data: { response },
-    })
-  ) {
+  if (!isPermitted({ user, action: 'responses.viewAll' })) {
     pipeline.push({
       $match: {
         $or: [
-          { accountableId: user._id },
-          { responsibleId: user._id },
-          { contributorsIds: { $in: [user._id] } },
-          { followersIds: { $in: [user._id] } },
+          { 'trackerResponse.accountableId': user._id },
+          { 'trackerResponse.responsibleId': user._id },
+          { 'trackerResponse.contributorsIds': { $in: [user._id] } },
+          { 'trackerResponse.followersIds': { $in: [user._id] } },
         ],
       },
     });
@@ -324,37 +331,15 @@ responseSchema.statics.customSearch = async function (searchQuery, user, organiz
   if (!(searchQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
     pipeline.push({
       $match: {
-        published: true,
+        'trackerResponse.published': true,
       },
     });
   }
 
   join({
     pipeline,
-    collection: 'trackerItems',
-    from: 'trackerItemId',
-    to: 'trackerItem',
-  });
-
-  // Filter by search text (in tracker item)
-  pipeline.push({
-    $match: {
-      'trackerItem.name': new RegExp(searchText, 'i'),
-    },
-  });
-
-  // Join business unit
-  join({
-    pipeline,
-    collection: 'businessUnits',
-    from: 'businessUnitId',
-    to: 'businessUnit',
-  });
-
-  join({
-    pipeline,
     collection: 'users',
-    from: 'accountableId',
+    from: 'trackerResponse.accountableId',
     to: 'user',
   });
 
@@ -364,15 +349,14 @@ responseSchema.statics.customSearch = async function (searchQuery, user, organiz
 
   pipeline.push({
     $project: {
-      _id: 1,
-      title: '$trackerItem.name',
+      _id: '$trackerResponse._id',
+      title: '$name',
       user: '$user',
       type: 'tracker-item-response',
     },
   });
 
-  const data = await this.aggregate(pipeline);
-
+  const data = await TrackerItems.aggregate(pipeline);
   return data;
 };
 
