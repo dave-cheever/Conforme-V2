@@ -2,6 +2,7 @@ import { IResponse } from "../common/interfaces/IResponse";
 import Organizations from "../common/services/collections/Organizations";
 import Response from "../common/services/collections/Response";
 import Settings from "../common/services/collections/Settings";
+import { EmailService } from "../common/services/EmailService";
 import { GraphService } from "../common/services/GraphService";
 import {
   getEmailSubject,
@@ -108,7 +109,7 @@ const sendResponseDueEmail = async (emailType: string, config) => {
       };
     }
 
-    const graphService = new GraphService(config);
+    const emailService = new EmailService(config);
 
     for (const response of filteredResponses) {
       const {
@@ -146,8 +147,7 @@ const sendResponseDueEmail = async (emailType: string, config) => {
           organization,
         });
 
-        await graphService.sendDirectEmail({
-          from: config.EmailSender,
+        await emailService.sendEmail({
           to: [recipient.email],
           subject,
           body,

@@ -2,10 +2,9 @@ import { getDate } from 'date-fns';
 
 import IConfig from '../common/interfaces/IConfig';
 import Audits from '../common/services/collections/Audits';
-import Organizations from '../common/services/collections/Organizations';
 import Settings from '../common/services/collections/Settings';
 import Users from '../common/services/collections/Users';
-import { GraphService } from '../common/services/GraphService';
+import { EmailService } from '../common/services/EmailService';
 import { AUDIT_UPCOMING, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 
 const sendComingUpAudits = async (config: IConfig) => {
@@ -67,7 +66,7 @@ const sendComingUpAudits = async (config: IConfig) => {
       );
       const triggerDaysOfMonth = auditsStatusReminderTriggerSetting?.[0]?.value;
       if (triggerDaysOfMonth?.includes(getDate(new Date()))) {
-        const graphService = new GraphService(config);
+        const emailService = new EmailService(config);
 
         await Promise.all(audits.map(async audit => {
           const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
@@ -87,11 +86,10 @@ const sendComingUpAudits = async (config: IConfig) => {
             organization,
           });
           if (auditor) {
-            await graphService.sendDirectEmail({
-              from: config.EmailSender,
+            await emailService.sendEmail({
               to: [auditor.email],
               subject,
-              body
+              body,
             });
           }
         }));

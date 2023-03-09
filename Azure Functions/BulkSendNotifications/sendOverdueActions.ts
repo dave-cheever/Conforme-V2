@@ -10,6 +10,7 @@ import {
   getEmailTemplate
 } from '../common/services/notifications';
 import IConfig from '../common/interfaces/IConfig';
+import { EmailService } from '../common/services/EmailService';
 
 const sendOverdueActions = async (config: IConfig) => {
   const actionsByOrganization = await Actions.aggregate([
@@ -115,16 +116,14 @@ const sendOverdueActions = async (config: IConfig) => {
               actionTitle: action.title,
               actionPath
             },
-            modulePath : module.path,
+            modulePath: module.path,
             organization
           });
-          const graphService = new GraphService(config);
-
-          await graphService.sendDirectEmail({
-            from: config.EmailSender,
+          const emailService = new EmailService(config);
+          await emailService.sendEmail({
             to: recipients,
             subject,
-            body
+            body,
           });
         })
       );

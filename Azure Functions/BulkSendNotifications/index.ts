@@ -9,6 +9,8 @@ import { StorageService } from '../common/services/StorageService';
 import { endOfWeek, getHours, getMinutes, isAfter, isBefore, isSameDay, isSameWeek, parseISO, set, startOfWeek, sub } from 'date-fns';
 import sendDigest from './sendDigest';
 import {
+  getEmailSubject,
+  getEmailTemplate,
   TRACKER_REMINDER,
   TRACKER_WEEKLY_SUMMARY
 } from '../common/services/notifications';
@@ -19,8 +21,8 @@ import sendResponseWeeklyEmail from './sendResponseWeeklyEmail';
 import sendResponseDueEmail from './sendResponseDueEmail';
 import Notifications from '../common/services/collections/Notifications';
 import Settings from "../common/services/collections/Settings";
-import { GraphService } from '../common/services/GraphService';
 import { getTemplateDetails } from '../common/utils';
+import { EmailService } from '../common/services/EmailService';
 
 const timerTrigger: AzureFunction = async function (context: Context): Promise<void> {
   const now = new Date();
@@ -82,24 +84,34 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
         const { templateSettingName } = getTemplateDetails(notification.emailType);
         const template = await Settings.customFindOneByName(templateSettingName, notification.organizationId);
         const organizationConfigService = new ConfigService();
-        const organizationConfig = await organizationConfigService.getConfig(notification.organizationId);
-        const graphService = new GraphService(organizationConfig);
-        const emailSent = await graphService.sendEmail({
-          from: organizationConfig.EmailSender,
+        await organizationConfigService.getConfig(notification.organizationId);
+        const organization = organizationConfigService?.getOrganization();
+        const module = organization?.modules?.find((module) => module._id === notification.scope.moduleId);
+
+        const subject = getEmailSubject(notification.emailType, notification.emailData);
+        const body = await getEmailTemplate({
           emailType: notification.emailType,
           emailData: notification.emailData,
-          to: notification.to,
-          organization: organizationConfigService.getOrganization(),
-          module: organizationConfigService?.getOrganization()?.modules?.find(module => module._id === notification.scope.moduleId),
-          ...(template && { template: template.value }),
+          modulePath: module?.path,
+          template: template.value,
+          organization,
         });
-        if (emailSent) {
+
+        const emailService = new EmailService(config);
+        const emailResponseStatus = await emailService.sendEmail({
+          to: notification.to,
+          subject,
+          body,
+        });
+
+        if (emailResponseStatus === 202) {
           await Notifications.updateOne({ _id: notification._id }, { status: "sent" });
           return true;
         }
         return false;
       } catch (notificationError) {
-        context.log(notificationError)
+        context.log(notificationError.message);
+        context.log(notificationError.response.body);
         context.log.error(`Instant notification failed: ${notification._id}`);
       }
     }));

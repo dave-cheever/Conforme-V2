@@ -18,6 +18,8 @@ export class ConfigService {
       GraphTokenEndpoint: process.env.TOKEN_ENDPOINT,
       MongoConnectionString: process.env.MONGO_CONNECTION_STRING,
       EmailSender: process.env.EMAIL_SENDER,
+      EmailHandler: process.env.EMAIL_HANDLER,
+      SendGridAPIKey: process.env.SEND_GRID_API_KEY,
       StorageConnectionString: process.env.AzureWebJobsStorage,
       ScheduledStartHour: Number(process.env.SCHEDULED_NOTIFICATIONS_START_HOUR || '7'),
       ScheduledEndHour: Number(process.env.SCHEDULED_NOTIFICATIONS_END_HOUR || '20'),

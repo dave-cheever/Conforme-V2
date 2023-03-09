@@ -8,9 +8,11 @@ export default interface IConfig {
   GraphAppId?: string;
   GraphSecret?: string;
   MongoConnectionString: string;
-  EmailSender: string;
   StorageConnectionString: string;
   ScheduledStartHour: number;
   ScheduledEndHour: number;
   ScheduledFrequency: number;
+  EmailHandler: string; // 'SendGrid' | 'MSGraph';
+  EmailSender: string;
+  SendGridAPIKey: string;
 }

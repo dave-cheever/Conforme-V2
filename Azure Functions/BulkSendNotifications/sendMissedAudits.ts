@@ -6,7 +6,7 @@ import { IOrganization } from '../common/interfaces/IOrganization';
 import Audits from '../common/services/collections/Audits';
 import Settings from '../common/services/collections/Settings';
 import Users from '../common/services/collections/Users';
-import { GraphService } from '../common/services/GraphService';
+import { EmailService } from '../common/services/EmailService';
 import { AUDIT_MISSED, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 import { getTemplateDetails } from '../common/utils';
 
@@ -76,7 +76,7 @@ const sendMissedAudits = async (config: IConfig) => {
 
   await Promise.all(
     auditsByOrganization.map(async ({ audits, organization }) => {
-      const graphService = new GraphService(config);
+      const emailService = new EmailService(config);
       const { emailSettingName } = getTemplateDetails(AUDIT_MISSED);
 
       await Promise.all(audits.map(async audit => {
@@ -88,7 +88,7 @@ const sendMissedAudits = async (config: IConfig) => {
             areaName: audit.area?.name,
             auditPath: `${organization.domain}/${module?.path}/audits/${audit._id}`,
           },
-          modulePath : module.path,
+          modulePath: module.path,
           organization
         });
 
@@ -110,11 +110,10 @@ const sendMissedAudits = async (config: IConfig) => {
           if (lineManager) recipients.push(lineManager.email);
         }
 
-        await graphService.sendDirectEmail({
-          from: config.EmailSender,
+        await emailService.sendEmail({
           to: recipients,
           subject,
-          body
+          body,
         });
       }));
     })

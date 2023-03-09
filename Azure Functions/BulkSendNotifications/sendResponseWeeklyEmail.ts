@@ -2,6 +2,7 @@ import { IResponse } from "../common/interfaces/IResponse";
 import Organizations from "../common/services/collections/Organizations";
 import Response from "../common/services/collections/Response";
 import Settings from "../common/services/collections/Settings";
+import { EmailService } from "../common/services/EmailService";
 import { GraphService } from "../common/services/GraphService";
 import {
   getEmailSubject,
@@ -66,7 +67,7 @@ const sendResponseWeeklyEmail = async (emailType: string, config) => {
     //get all responses by organization id
     const responses: IResponse[] = await Response.aggregate(pipeline);
 
-    const graphService = new GraphService(config);
+    const emailService = new EmailService(config);
 
     for (const response of responses) {
       const responsibleDetails = await GraphService.getUserData({
@@ -99,8 +100,7 @@ const sendResponseWeeklyEmail = async (emailType: string, config) => {
       organization,
     });
 
-    await graphService.sendDirectEmail({
-      from: config.EmailSender,
+    await emailService.sendEmail({
       to: recipients,
       subject,
       body,

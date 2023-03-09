@@ -1,8 +1,7 @@
 import IConfig from '../common/interfaces/IConfig';
 import Audits from '../common/services/collections/Audits';
-import Organizations from '../common/services/collections/Organizations';
 import Settings from '../common/services/collections/Settings';
-import { GraphService } from '../common/services/GraphService';
+import { EmailService } from '../common/services/EmailService';
 import { AUDITS_WEEKLY_SUMMARY, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 import { getTemplateDetails } from '../common/utils';
 
@@ -69,19 +68,18 @@ const sendDigest = async (
         emailData: {
           numberOfAudits: audits.length,
         },
-        modulePath : module.path,
+        modulePath: module.path,
         template: template.value,
         organization
       });
 
       const emailAddress = await Settings.customFindOneByName(emailSettingName, organizationsIds);
 
-      const graphService = new GraphService(config);
-      await graphService.sendDirectEmail({
-        from: config.EmailSender,
-        to: emailAddress.value,
+      const emailService = new EmailService(config);
+      await emailService.sendEmail({
+        to: [emailAddress.value],
         subject,
-        body
+        body,
       });
     } catch (e) {
       console.log(e);

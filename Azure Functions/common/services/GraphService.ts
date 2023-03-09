@@ -3,14 +3,14 @@ import { AdalFetchClient } from "@pnp/nodejs-commonjs";
 import axios from "axios";
 
 import IConfig from "../interfaces/IConfig";
-import { IModule } from "../interfaces/IModule";
+import { IEmail } from "../interfaces/IEmail";
 import { IOrganization } from "../interfaces/IOrganization";
 import Organizations from "./collections/Organizations";
-import { getEmailSubject, getEmailTemplate } from "./notifications";
 
 export class GraphService {
   private _config: IConfig;
   private _adalClient: AdalFetchClient;
+  private _sender: string;
 
   public constructor(config: IConfig) {
     this._config = config;
@@ -20,6 +20,7 @@ export class GraphService {
       config.GraphAppId || "",
       config.GraphSecret || ""
     );
+    this._sender = config.EmailSender;
 
     graph.setup({
       graph: {
@@ -94,27 +95,21 @@ export class GraphService {
     );
   }
 
-  public async sendEmail({
-    from,
-    emailType,
-    emailData,
-    to,
-    organization,
-    module,
-    template,
-  }: {
-    from: string;
-    emailType: string;
-    emailData: any;
-    to: string[];
-    organization: IOrganization;
-    module: IModule;
-    template?: any;
-  }) {
+  public async sendEmail(email: IEmail): Promise<number> {
     try {
       const client = await this.getClient();
 
-      const toRecipients = to.map((address) => ({
+      const toRecipients = email.to.map((address) => ({
+        emailAddress: {
+          address,
+        },
+      }));
+      const ccRecipients = (email.cc || []).map((address) => ({
+        emailAddress: {
+          address,
+        },
+      }));
+      const bccRecipients = (email.bcc || []).map((address) => ({
         emailAddress: {
           address,
         },
@@ -122,63 +117,21 @@ export class GraphService {
 
       const options = {
         message: {
-          subject: getEmailSubject(emailType, emailData),
+          subject: email.subject,
           body: {
             contentType: "HTML",
-            content: await getEmailTemplate({
-              emailType,
-              emailData,
-              modulePath: module.path,
-              template,
-              organization,
-            }),
+            content: email.body,
           },
           toRecipients,
+          ccRecipients,
+          bccRecipients,
         },
       };
-      const sent = await client.post(`users/${from}/sendMail`, options);
-      return sent.status === 202;
+      const sent = await client.post(`users/${this._sender}/sendMail`, options);
+      return sent.status;
     } catch (error) {
       console.log(error);
-      console.log(`Failed to send '${emailType}' email to '${to.join(', ')}'`);
-    }
-  }
-
-  public async sendDirectEmail({
-    from,
-    to,
-    subject,
-    body,
-  }: {
-    from: string;
-    to: string[];
-    subject: string;
-    body: string;
-  }) {
-    try {
-      const client = await this.getClient();
-
-      const toRecipients = to.map((address) => ({
-        emailAddress: {
-          address,
-        },
-      }));
-
-      const options = {
-        message: {
-          subject,
-          body: {
-            contentType: "HTML",
-            content: body,
-          },
-          toRecipients,
-        },
-      };
-      const sent = await client.post(`users/${from}/sendMail`, options);
-      return sent.status === 202;
-    } catch (error) {
-      console.log(error);
-      console.log(`Failed to send email to '${to.join(", ")}'`);
+      console.log(`Failed to send email to '${email.to.join(", ")}'`);
     }
   }
 }
