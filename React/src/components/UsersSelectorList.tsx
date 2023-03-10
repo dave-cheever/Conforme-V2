@@ -14,10 +14,13 @@ interface IUsersSelectorList {
 }
 
 const UsersSelectorList = ({ filteredUsers, selected, selectedRole, handleChange }: IUsersSelectorList) => (
-  <CheckboxGroup onChange={(value) => handleChange({ target: { userRole: selectedRole, value } })} value={selected ?? []}>
-    <Stack direction="column" w="full">
+  <CheckboxGroup
+    data-id="052c105327fe"
+    onChange={(value) => handleChange({ target: { userRole: selectedRole, value } })}
+    value={selected ?? []}>
+    <Stack data-id="397a34bc5fc8" direction="column" w="full">
       {filteredUsers?.map(({ displayName, _id }) => (
-        <FilterCheckBox key={_id} label={displayName} value={_id} />
+        <FilterCheckBox data-id="c4a86789c6fb" key={_id} label={displayName} value={_id} />
       ))}
     </Stack>
   </CheckboxGroup>

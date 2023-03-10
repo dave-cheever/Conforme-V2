@@ -16,28 +16,37 @@ const AuditLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = false
   };
 
   return (
-    <Flex align="center" cursor="pointer" mb={[0, 3]} mx={[3, 0]} onClick={redirectPage}>
+    (<Flex
+      align="center"
+      cursor="pointer"
+      data-id="62cbbf86e136"
+      mb={[0, 3]}
+      mx={[3, 0]}
+      onClick={redirectPage}>
       <Flex
         align="center"
         bg={active ? 'auditLeftTabItem.selectedLabelBg' : 'auditLeftTabItem.iconBg'}
         borderRadius="8px"
+        data-id="ab6cc2193dd7"
         h="30px"
         justify="center"
-        w="30px"
-      >
-        <Icon as={icon} color={active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'} />
+        w="30px">
+        <Icon
+          as={icon}
+          color={active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'}
+          data-id="467136ae8a4c" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
           color={active ? ['auditLeftTabItem.textColor', 'auditLeftTabItem.activeTextColor'] : 'auditLeftTabItem.textColor'}
+          data-id="fb182e49b7c3"
           flexGrow={1}
           fontSize={['11px', '14px']}
-          ml={3}
-        >
+          ml={3}>
           {label}
         </Flex>
       )}
-    </Flex>
+    </Flex>)
   );
 };
 

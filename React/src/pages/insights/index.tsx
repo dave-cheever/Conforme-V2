@@ -41,19 +41,22 @@ const Insights = () => {
       {
         _id: 'audits',
         name: capitalize(pluralize(t('audit'))),
-        component: <AuditsInsights />,
+        component: <AuditsInsights data-id="4e5838fba437" />,
         usedFilters: ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds'],
       },
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
         _id: questionsCategory._id,
         name: questionsCategory.name,
-        component: <AnswersInsights answerType={questionsCategory.name} questionsCategoriesId={questionsCategory._id} />,
+        component: <AnswersInsights
+          answerType={questionsCategory.name}
+          data-id="8a2241ed78a0"
+          questionsCategoriesId={questionsCategory._id} />,
         usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
       {
         _id: 'actions',
         name: 'Actions',
-        component: <ActionsInsights />,
+        component: <ActionsInsights data-id="0f46609e0872" />,
         usedFilters: ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'],
       },
     ],
@@ -71,23 +74,50 @@ const Insights = () => {
   }, [selectedPanel]);
 
   return (
-    <Flex direction="column" h="full" isolation="isolate" overflowY="hidden" zIndex="1">
-      <Header breadcrumbs={['Insights']} mobileBreadcrumbs={['Insights']}>
-        {device === 'mobile' && <FilterButton insightsFilter />}
+    (<Flex
+      data-id="a7494e38d3ea"
+      direction="column"
+      h="full"
+      isolation="isolate"
+      overflowY="hidden"
+      zIndex="1">
+      <Header
+        breadcrumbs={['Insights']}
+        data-id="98049fce081b"
+        mobileBreadcrumbs={['Insights']}>
+        {device === 'mobile' && <FilterButton data-id="c7f77bc3876e" insightsFilter />}
       </Header>
       {device !== 'mobile' && (
-        <Flex h="max-content" pl={['4', '8', '8']} position="relative" zIndex="2">
-          <QuickFilters w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
+        <Flex
+          data-id="85393b4b35a0"
+          h="max-content"
+          pl={['4', '8', '8']}
+          position="relative"
+          zIndex="2">
+          <QuickFilters
+            data-id="44bf97753b08"
+            w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
         </Flex>
       )}
       {error ? (
-        <Text>{error.message}</Text>
+        <Text data-id="764e3fd4c962">{error.message}</Text>
       ) : loading ? (
-        <Loader center />
+        <Loader center data-id="6789c961d87a" />
       ) : (
-        <Flex direction="column" overflowY="scroll" pt="3" px={[4, 8]}>
-          <Tabs defaultIndex={selectedPanel} isLazy onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
-            <TabList>
+        <Flex
+          data-id="4b6a263d2d7d"
+          direction="column"
+          overflowY="scroll"
+          pt="3"
+          px={[4, 8]}>
+          <Tabs
+            data-id="32a08247b0ba"
+            defaultIndex={selectedPanel}
+            isLazy
+            onChange={(index) => setSelectedPanel(index)}
+            variant="unstyled"
+            w="full">
+            <TabList data-id="92b543195c8e">
               {panels?.map((panel) => (
                 <Tab
                   _selected={{
@@ -95,18 +125,18 @@ const Insights = () => {
                     color: 'insights.tabColor',
                   }}
                   borderRadius="10px"
+                  data-id="9e2d9f42096c"
                   fontSize="smm"
                   fontWeight="bold"
                   key={panel._id}
-                  mr={[1, 2]}
-                >
+                  mr={[1, 2]}>
                   {panel.name}
                 </Tab>
               ))}
             </TabList>
-            <TabPanels>
+            <TabPanels data-id="7f4e915b4849">
               {panels?.map((panel) => (
-                <TabPanel key={panel._id} px={0}>
+                <TabPanel data-id="eb61e51d7037" key={panel._id} px={0}>
                   {panel.component}
                 </TabPanel>
               ))}
@@ -114,7 +144,7 @@ const Insights = () => {
           </Tabs>
         </Flex>
       )}
-    </Flex>
+    </Flex>)
   );
 };
 

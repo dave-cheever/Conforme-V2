@@ -59,29 +59,56 @@ const Logout = () => {
   };
 
   return (
-    <Flex bg="logoutPage.bg" flexDir={['column', 'column', 'row']} h="100vh" w="full">
-      <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[2, 2, 1]} w={['full', 'full', '30%']}>
-        <VStack align="center" spacing={5} textAlign="center">
+    (<Flex
+      bg="logoutPage.bg"
+      data-id="8cf5035b1e6f"
+      flexDir={['column', 'column', 'row']}
+      h="100vh"
+      w="full">
+      <Flex
+        align="center"
+        data-id="c185b1154d3f"
+        h="full"
+        justify={['center', 'center', 'flex-end']}
+        order={[2, 2, 1]}
+        w={['full', 'full', '30%']}>
+        <VStack align="center" data-id="0ca724a19757" spacing={5} textAlign="center">
           <Flex
             color="logoutPage.organizationNameColor"
+            data-id="da9607079078"
             fontSize="24px"
             fontWeight="bold"
             lineHeight="41px"
             mb={3}
             noOfLines={2}
             textOverflow="ellipsis"
-            w="240px"
-          >
+            w="240px">
             {organizationConfig?.name}
           </Flex>
-          <Flex bg="white" borderColor="logoutPage.avatarBorderColor" borderWidth="10px" rounded="full">
-            <Avatar borderColor="white" borderWidth="4px" h="75px" name={user?.displayName} src={user?.imgUrl} w="75px" />
+          <Flex
+            bg="white"
+            borderColor="logoutPage.avatarBorderColor"
+            borderWidth="10px"
+            data-id="2d478dbc599c"
+            rounded="full">
+            <Avatar
+              borderColor="white"
+              borderWidth="4px"
+              data-id="a6ccca234009"
+              h="75px"
+              name={user?.displayName}
+              src={user?.imgUrl}
+              w="75px" />
           </Flex>
-          <Flex align="center" flexDir="column">
-            <Flex fontSize="16px" fontWeight="700">
+          <Flex align="center" data-id="b07478a130ed" flexDir="column">
+            <Flex data-id="433c2d92c8c0" fontSize="16px" fontWeight="700">
               You have logged out.
             </Flex>
-            <Flex color="logoutPage.descriptionColor" fontSize="11px" mt="2">
+            <Flex
+              color="logoutPage.descriptionColor"
+              data-id="9f3198f94140"
+              fontSize="11px"
+              mt="2">
               It's a good idea to close all browser windows.
             </Flex>
           </Flex>
@@ -89,32 +116,47 @@ const Logout = () => {
             bg="loginPage.button.bg"
             borderRadius="10px"
             color="loginPage.button.color"
+            data-id="a53e069021d6"
             fontSize="14px"
             h="40px"
             lineHeight="18px"
             onClick={loginWithAzureAD}
-            w="204px"
-          >
+            w="204px">
             Log back in
           </Button>
-          <Flex align="center" color="logoutPage.descriptionColor" flexDir="column" fontSize="11px">
-            <Flex>Not {user?.firstName || user?.displayName}?</Flex>
-            <Flex _hover={{ bg: 'logoutPage.hoverColor' }} cursor="pointer" onClick={redirectToLogin}>
+          <Flex
+            align="center"
+            color="logoutPage.descriptionColor"
+            data-id="b86e8c5b33f9"
+            flexDir="column"
+            fontSize="11px">
+            <Flex data-id="06d861f1e5c2">Not {user?.firstName || user?.displayName}?</Flex>
+            <Flex
+              _hover={{ bg: 'logoutPage.hoverColor' }}
+              cursor="pointer"
+              data-id="a16af33aa8b0"
+              onClick={redirectToLogin}>
               Login as someone else
             </Flex>
           </Flex>
         </VStack>
       </Flex>
-      <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[1, 1, 2]} w={['full', 'full', '70%']}>
-        <Box h={['30vh', '40vh', '95vh']} overflow="hidden">
+      <Flex
+        align="center"
+        data-id="f4c08ddcc3c5"
+        h="full"
+        justify={['center', 'center', 'flex-end']}
+        order={[1, 1, 2]}
+        w={['full', 'full', '70%']}>
+        <Box data-id="ba7c8d775918" h={['30vh', '40vh', '95vh']} overflow="hidden">
           <Image
+            data-id="395cfa90c69f"
             h="full"
             maxW="max-content"
-            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl}
-          />
+            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />
         </Box>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

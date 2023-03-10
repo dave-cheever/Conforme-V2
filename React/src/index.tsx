@@ -17,9 +17,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
+    <ApolloProvider client={client} data-id="8377c6dc8ec1">
+      <BrowserRouter data-id="d92d8185dfdb">
+        <App data-id="6100e14c5fd2" />
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,

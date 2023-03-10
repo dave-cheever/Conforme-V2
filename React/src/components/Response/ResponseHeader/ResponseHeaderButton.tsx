@@ -31,6 +31,7 @@ const ResponseHeaderButton = ({
       bg={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Bg`}
       borderRadius="10px"
       color={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Color`}
+      data-id="c104bdb6d779"
       disabled={disabled}
       display={['none', 'none', 'flex']}
       fontSize="14px"
@@ -40,8 +41,7 @@ const ResponseHeaderButton = ({
       ml="15px"
       onClick={onClick}
       px={4}
-      role="group"
-    >
+      role="group">
       {name}
     </Button>
     <IconButton
@@ -58,13 +58,13 @@ const ResponseHeaderButton = ({
       aria-label="Search database"
       bg={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Bg`}
       borderRadius="10px"
+      data-id="31375f91bd85"
       disabled={disabled}
       display={['none', 'flex', 'none']}
       icon={icon}
       ml="15px"
       onClick={onClick}
-      role="group"
-    />
+      role="group" />
   </>
 );
 

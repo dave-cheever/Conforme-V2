@@ -6,11 +6,11 @@ const InsightsDetailedTableHeader = ({ children }) => (
     borderBottom="1px solid"
     borderColor="adminTableHeader.border"
     color="adminTableHeader.font"
+    data-id="f6b515236a69"
     fontSize="11px"
     fontWeight="semi_medium"
     p="15px 25px"
-    templateColumns="1fr repeat(4, 135px)"
-  >
+    templateColumns="1fr repeat(4, 135px)">
     {children}
   </Grid>
 );

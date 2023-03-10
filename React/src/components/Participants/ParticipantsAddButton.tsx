@@ -7,18 +7,18 @@ const ParticipantsAddButton = (props) => {
   const { openParticipantsModal } = useParticipantsModalContext();
 
   return (
-    <IconButton
+    (<IconButton
       aria-label="Add participant"
       bg="participantsAddButton.bg"
       color="participantsAddButton.color"
+      data-id="80335e69006a"
       h="64px"
-      icon={<AddIcon />}
+      icon={<AddIcon data-id="463875e4cd26" />}
       isRound
       mx="8px"
       onClick={openParticipantsModal}
       w="64px"
-      {...props}
-    />
+      {...props} />)
   );
 };
 

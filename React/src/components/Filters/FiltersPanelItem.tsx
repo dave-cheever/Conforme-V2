@@ -27,30 +27,30 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
   const renderPanel = () => {
     switch (name) {
       case 'businessUnitsIds':
-        return <BusinessUnitFilter />;
+        return <BusinessUnitFilter data-id="72f129a8bbaa" />;
 
       case 'categoriesIds':
-        return <CategoryFilter />;
+        return <CategoryFilter data-id="ad6899b9ad01" />;
 
       case 'trackerItemsIds':
-        return <TrackerItemFilter />;
+        return <TrackerItemFilter data-id="3ed6f304f2a0" />;
 
       case 'dueDate':
-        return <DateFilter filterName="dueDate" />;
+        return <DateFilter data-id="87a84344d5b2" filterName="dueDate" />;
       case 'createdDate':
-        return <DateFilter filterName="createdDate" />;
+        return <DateFilter data-id="0efbd52b4227" filterName="createdDate" />;
 
       case 'locationsIds':
-        return <LocationFilter />;
+        return <LocationFilter data-id="12967ca91228" />;
 
       case 'regulatoryBodiesIds':
-        return <RegulatoryBodyFilter />;
+        return <RegulatoryBodyFilter data-id="d2c13119dad1" />;
 
       case 'usersIds':
-        return <UserFilter />;
+        return <UserFilter data-id="bfdb546cbb74" />;
 
       default:
-        return <StateChoiceFilter name={name} />;
+        return <StateChoiceFilter data-id="37719d801df8" name={name} />;
     }
   };
 
@@ -61,48 +61,57 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
     setFilters({ filters: updatedFiltersValue });
   };
 
-  return (
-    <>
-      {name === 'showArchived' ? (
-        <ShowArchivedFilter />
-      ) : (
+  return (<>
+    {name === 'showArchived' ? (
+      <ShowArchivedFilter data-id="e70badd418f8" />
+    ) : (
+      <Flex
+        bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
+        borderRadius="10px"
+        data-id="4102aa8a02db"
+        flexDir="column"
+        justify="center"
+        key={name}
+        my={2}
+        p="3"
+        w="full">
         <Flex
-          bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
-          borderRadius="10px"
-          flexDir="column"
-          justify="center"
-          key={name}
-          my={2}
-          p="3"
-          w="full"
-        >
-          <Flex align="center" cursor="pointer" justify="space-between" mb={isOpen ? '4' : '0'} w="full">
-            <Text color="filtersPanelItem.fontColor" fontSize="14px" onClick={onToggle} w="full">
-              {filter?.name}
-            </Text>
-            <Flex>
-              {filtersLength > 0 && (
-                <Box
-                  bg="filtersPanelItem.countBg"
-                  borderRadius="10px"
-                  color="filtersPanelItem.countColor"
-                  fontSize="12px"
-                  fontWeight="400"
-                  mr="3"
-                  px="10px"
-                >
-                  {filtersLength}
-                </Box>
-              )}
-              {isOpen && filtersLength > 0 && <ResetIcon mr={3} onClick={resetFilter} />}
-              {isOpen ? <ArrowUpIcon onClick={onToggle} /> : <ArrowDownIcon onClick={onToggle} />}
-            </Flex>
+          align="center"
+          cursor="pointer"
+          data-id="ee2f0c7a37f7"
+          justify="space-between"
+          mb={isOpen ? '4' : '0'}
+          w="full">
+          <Text
+            color="filtersPanelItem.fontColor"
+            data-id="b574cebb7444"
+            fontSize="14px"
+            onClick={onToggle}
+            w="full">
+            {filter?.name}
+          </Text>
+          <Flex data-id="f849a50c3e1f">
+            {filtersLength > 0 && (
+              <Box
+                bg="filtersPanelItem.countBg"
+                borderRadius="10px"
+                color="filtersPanelItem.countColor"
+                data-id="59da7020fe86"
+                fontSize="12px"
+                fontWeight="400"
+                mr="3"
+                px="10px">
+                {filtersLength}
+              </Box>
+            )}
+            {isOpen && filtersLength > 0 && <ResetIcon data-id="e4f38d6f9e78" mr={3} onClick={resetFilter} />}
+            {isOpen ? <ArrowUpIcon data-id="e7139b4ec4a7" onClick={onToggle} /> : <ArrowDownIcon data-id="8276a86130d3" onClick={onToggle} />}
           </Flex>
-          {isOpen && renderPanel()}
         </Flex>
-      )}
-    </>
-  );
+        {isOpen && renderPanel()}
+      </Flex>
+    )}
+  </>);
 };
 
 export default FiltersPanelItem;

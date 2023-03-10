@@ -40,38 +40,70 @@ const Details = () => {
 
   if (!response) return null;
   return (
-    <VStack align="flex-start" h="full" minH={['30vh', 'none']} overflow="visible" pb="25px" spacing={8} w="full">
-      <VStack align="flex-start">
+    (<VStack
+      align="flex-start"
+      data-id="e2b24a25eec6"
+      h="full"
+      minH={['30vh', 'none']}
+      overflow="visible"
+      pb="25px"
+      spacing={8}
+      w="full">
+      <VStack align="flex-start" data-id="42cdfdf8f26f">
         {response?.trackerItem?.description && (
-          <Text color="responseRenewalDetails.labelColor" fontSize="14px">
+          <Text
+            color="responseRenewalDetails.labelColor"
+            data-id="2bb6b39c53bd"
+            fontSize="14px">
             Description
           </Text>
         )}
-        <DescriptionText />
+        <DescriptionText data-id="3223c1354131" />
       </VStack>
-      <Grid gap={[3, 6]} mt={4} templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']} w="full">
-        <Flex align="center" cursor="pointer" flexDir={['column', 'row']} h="full" justify="space-between" w="full">
+      <Grid
+        data-id="d24bb0d386e7"
+        gap={[3, 6]}
+        mt={4}
+        templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}
+        w="full">
+        <Flex
+          align="center"
+          cursor="pointer"
+          data-id="a00af276799d"
+          flexDir={['column', 'row']}
+          h="full"
+          justify="space-between"
+          w="full">
           <Flex
             align={['center', 'flex-start']}
             bg="responseRenewalDetails.bg"
             border={activeTab === 0 ? '1px solid #ccc' : 'null'}
             borderRadius="10px"
             boxShadow={activeTab === 0 ? 'simple' : 'null'}
+            data-id="7075c45927f8"
             flexDir="column"
             mb={[1, 0]}
             mr={[0, 5]}
             onClick={() => setActiveTab(0)}
             p="10px 20px"
-            w="full"
-          >
-            <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+            w="full">
+            <Text
+              color="responseRenewalDetails.labelColor"
+              data-id="f516dc9d396e"
+              fontSize="11px">
               Last reviewed
             </Text>
-            <Text color="responseRenewalDetails.textColor" fontSize="14px">
+            <Text
+              color="responseRenewalDetails.textColor"
+              data-id="36fecdfee1cc"
+              fontSize="14px">
               {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'Never reviewed before'}
             </Text>
           </Flex>
-          <ArrowDownIcon color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />
+          <ArrowDownIcon
+            color="responseRenewalDetails.labelColor"
+            data-id="f8214341ea31"
+            transform={['', 'rotate(270deg)']} />
         </Flex>
         <Flex
           align="center"
@@ -80,6 +112,7 @@ const Details = () => {
           borderRadius="10px"
           boxShadow={activeTab === 1 ? 'simple' : 'null'}
           cursor="pointer"
+          data-id="be8f34a8ade9"
           h="full"
           justify="space-between"
           onClick={() => {
@@ -88,46 +121,60 @@ const Details = () => {
           }}
           p="10px 20px"
           position="relative"
-          w="full"
-        >
-          <Flex align={['center', 'flex-start']} flexDir="column" w="full">
-            <Text color="responseRenewalDetails.labelColor" fontSize="11px">
+          w="full">
+          <Flex
+            align={['center', 'flex-start']}
+            data-id="ff6696185102"
+            flexDir="column"
+            w="full">
+            <Text
+              color="responseRenewalDetails.labelColor"
+              data-id="b9c86b2d96fb"
+              fontSize="11px">
               Perform new review by
             </Text>
-            <Flex>
-              <Text color="responseRenewalDetails.textColor" fontSize="14px">
+            <Flex data-id="72f2ee8cfebf">
+              <Text
+                color="responseRenewalDetails.textColor"
+                data-id="3e1731dacc86"
+                fontSize="14px">
                 {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
               </Text>
               {!snapshot && (
                 <Can
                   action="responses.edit"
                   data={{ response }}
+                  data-id="e83f27a79335"
                   yes={() => (
-                    <Flex align="center">
+                    <Flex align="center" data-id="f8b76251428b">
                       <DatePicker
-                        customInput={<EditButton />}
+                        customInput={<EditButton data-id="533e38d2459a" />}
+                        data-id="89abdf0842a7"
                         dateFormatCalendar="MMMM"
                         disabledKeyboardNavigation
                         dropdownMode="select"
                         onChange={(date) => updateResponseDate(date)}
                         ref={startRef}
                         selected={response?.dueDate ? new Date(response?.dueDate) : new Date()}
-                        showYearDropdown
-                      >
-                        <Button colorScheme="purpleHeart" onClick={() => updateResponseDate(null)} size="sm" w="full">
+                        showYearDropdown>
+                        <Button
+                          colorScheme="purpleHeart"
+                          data-id="fb08198c53c6"
+                          onClick={() => updateResponseDate(null)}
+                          size="sm"
+                          w="full">
                           No due date
                         </Button>
                       </DatePicker>
                     </Flex>
-                  )}
-                />
+                  )} />
               )}
             </Flex>
           </Flex>
         </Flex>
       </Grid>
-      <ResponseQuestions disabled={activeTab === 0} />
-    </VStack>
+      <ResponseQuestions data-id="91f3a1ea351a" disabled={activeTab === 0} />
+    </VStack>)
   );
 };
 

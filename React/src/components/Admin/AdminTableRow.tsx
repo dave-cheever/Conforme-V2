@@ -19,29 +19,41 @@ const AdminTableRow = ({
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
   return (
-    <Flex
+    (<Flex
       align="center"
       bg="adminTableRow.bg"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
       color="adminTableRow.font"
+      data-id="6b6c4b02bd5d"
       flexShrink={0}
       flexWrap={['wrap', 'nowrap']}
       fontSize="smm"
       h="60px"
       key={element._id}
       pl={5}
-      w="full"
-    >
-      <Flex align="center" cursor="pointer" onClick={edit} w={['80%', '50%']}>
+      w="full">
+      <Flex
+        align="center"
+        cursor="pointer"
+        data-id="9fdfe4d5bf9d"
+        onClick={edit}
+        w={['80%', '50%']}>
         {element.name}
       </Flex>
       {module?.type === 'tracker' && (
-        <Flex alignItems="center" justifyContent={['flex-end', 'flex-start']} mt={['5px', '0']} pr={['21px', '0']} w={['20%', '50%']}>
+        <Flex
+          alignItems="center"
+          data-id="6e785fd9bd81"
+          justifyContent={['flex-end', 'flex-start']}
+          mt={['5px', '0']}
+          pr={['21px', '0']}
+          w={['20%', '50%']}>
           {element.trackerItemsResponsesCount || '0'}
-          <Tooltip fontSize="md" label="Show Items">
+          <Tooltip data-id="c9dd84cbb3c8" fontSize="md" label="Show Items">
             <ArrowCount
               cursor="pointer"
+              data-id="c7cb46f24f79"
               h="10px"
               ml="13px"
               onClick={() => {
@@ -49,12 +61,11 @@ const AdminTableRow = ({
                 navigateTo('/');
               }}
               stroke="#282F36"
-              w="10px"
-            />
+              w="10px" />
           </Tooltip>
         </Flex>
       )}
-    </Flex>
+    </Flex>)
   );
 };
 export default AdminTableRow;

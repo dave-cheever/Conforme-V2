@@ -10,8 +10,11 @@ const ActionFilter = () => {
   const value = useMemo(() => filtersValues.action?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup onChange={(newValue) => setFilters({ action: newValue })} value={value}>
-      <Stack direction="column" ml="4">
+    (<CheckboxGroup
+      data-id="3a50dfda45b0"
+      onChange={(newValue) => setFilters({ action: newValue })}
+      value={value}>
+      <Stack data-id="aed902f6725a" direction="column" ml="4">
         {Object.entries(actions).map(([key, label]) => (
           <Checkbox
             css={{
@@ -29,14 +32,14 @@ const ActionFilter = () => {
                 },
               },
             }}
+            data-id="9faa580aa3d6"
             key={key}
-            value={key}
-          >
-            <Text>{label as string}</Text>
+            value={key}>
+            <Text data-id="2c6b1db236c8">{label as string}</Text>
           </Checkbox>
         ))}
       </Stack>
-    </CheckboxGroup>
+    </CheckboxGroup>)
   );
 };
 

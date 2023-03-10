@@ -31,10 +31,19 @@ const TrackerListItems = ({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
-  <Box h="full" overflow="none" p={[3, 6]} w="full">
-    <Box bg="trackerList.bg" borderRadius="20px" h="fit-content" mb={7} minH="full" pb={7} w="full">
-      <AdminTableHeader>
+  <Box data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
+    <Box
+      bg="trackerList.bg"
+      borderRadius="20px"
+      data-id="4619f99c26b4"
+      h="fit-content"
+      mb={7}
+      minH="full"
+      pb={7}
+      w="full">
+      <AdminTableHeader data-id="c9ff3d9f5e18">
         <AdminTableHeaderElement
+          data-id="2c1b1a674169"
           label="Item name"
           onClick={() => {
             setSortType('trackerItem.name');
@@ -42,9 +51,9 @@ const TrackerListItems = ({
           }}
           showSortingIcon={sortType === 'trackerItem.name'}
           sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
-          w="20%"
-        />
+          w="20%" />
         <AdminTableHeaderElement
+          data-id="fa257b7cb259"
           label="Due for renewal"
           onClick={() => {
             setSortType('dueDate');
@@ -52,9 +61,9 @@ const TrackerListItems = ({
           }}
           showSortingIcon={sortType === 'dueDate'}
           sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-          w="12%"
-        />
+          w="12%" />
         <AdminTableHeaderElement
+          data-id="dd6f521e1d31"
           label={capitalize(t('compliant'))}
           onClick={() => {
             setSortType('calculatedStatus');
@@ -62,9 +71,9 @@ const TrackerListItems = ({
           }}
           showSortingIcon={sortType === 'calculatedStatus'}
           sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="b403f441bee2"
           label="Regulatory body"
           onClick={() => {
             setSortType('trackerItem.regulatoryBody.name');
@@ -72,9 +81,9 @@ const TrackerListItems = ({
           }}
           showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
           sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
-          w="18%"
-        />
+          w="18%" />
         <AdminTableHeaderElement
+          data-id="c7ff17c8d353"
           label="Responsible"
           onClick={() => {
             setSortType('responsible.displayName');
@@ -82,9 +91,9 @@ const TrackerListItems = ({
           }}
           showSortingIcon={sortType === 'responsible.displayName'}
           sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
-          w="20%"
-        />
+          w="20%" />
         <AdminTableHeaderElement
+          data-id="3c0328581ec0"
           label={capitalize(t('business unit'))}
           onClick={() => {
             setSortType('businessUnit.name');
@@ -92,21 +101,25 @@ const TrackerListItems = ({
           }}
           showSortingIcon={sortType === 'businessUnit.name'}
           sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w="20%"
-        />
+          w="20%" />
       </AdminTableHeader>
-      <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
+      <Flex
+        data-id="199e6641ce84"
+        flexDir="column"
+        h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
+        overflowY="auto"
+        w="full">
         <InfiniteScroll
+          data-id="bdc800eaf22d"
           hasMore={!loading && responses.length < total}
           initialLoad={false}
           loadMore={loadResponses}
           ref={scrollerRef}
-          useWindow={false}
-        >
+          useWindow={false}>
           {responses?.map((response) => (
-            <TrackerListItem key={response._id} response={response} />
+            <TrackerListItem data-id="024c9586ed68" key={response._id} response={response} />
           ))}
-          {loading && <Loader center h="60px" key="infinite-loader" />}
+          {loading && <Loader center data-id="2965be834216" h="60px" key="infinite-loader" />}
         </InfiniteScroll>
       </Flex>
     </Box>

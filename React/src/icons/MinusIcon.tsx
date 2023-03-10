@@ -5,9 +5,13 @@ import { Icon } from '@chakra-ui/icons';
 const MinusIcon = (props) => {
   const { isIndeterminate, isChecked, ...rest } = props;
   return (
-    <Icon viewBox="0 0 9 1" {...rest}>
-      <path d="M0.5 0.5, L8.5 0.5" fill="transparent" stroke="currentColor" />
-    </Icon>
+    (<Icon data-id="2ea31159324a" viewBox="0 0 9 1" {...rest}>
+      <path
+        d="M0.5 0.5, L8.5 0.5"
+        data-id="24832a64dcad"
+        fill="transparent"
+        stroke="currentColor" />
+    </Icon>)
   );
 };
 

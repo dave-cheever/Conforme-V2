@@ -123,32 +123,32 @@ const AddTrackerItemAttribute = ({ isOpenModal, onAction, attributeType, newAttr
   };
 
   return (
-    <Modal
+    (<Modal
+      data-id="b795f26d09ab"
       isCentered
       isOpen={isOpenModal}
       onClose={onClose}
       onEsc={() => onAction('close')}
       onOverlayClick={() => onAction('close')}
-      size="xs"
-    >
-      <ModalOverlay />
-      <ModalContent borderRadius={['0', '20px']} position="absolute">
-        <Flex flexDirection="column" p="25px">
-          <Flex>
-            <Box fontSize="smm" fontWeight="bold" mb="10px">
+      size="xs">
+      <ModalOverlay data-id="1e2776b35b3e" />
+      <ModalContent borderRadius={['0', '20px']} data-id="de8591484ed9" position="absolute">
+        <Flex data-id="990d0ca9cff2" flexDirection="column" p="25px">
+          <Flex data-id="a86e0d4d3b81">
+            <Box data-id="dd2180c78e96" fontSize="smm" fontWeight="bold" mb="10px">
               {`Add ${attributeType}`}
             </Box>
-            <ModalCloseButton onClick={() => onAction('close')} />
+            <ModalCloseButton data-id="57335a6e6069" onClick={() => onAction('close')} />
           </Flex>
           <TextInput
             control={control}
+            data-id="b84e9c0f1ea1"
             name="name"
             placeholder={`${attributeType} name`}
             validations={{
               notEmpty: true,
-            }}
-          />
-          <Flex justifyContent="end" mt="34px">
+            }} />
+          <Flex data-id="12de6374ffac" justifyContent="end" mt="34px">
             <Button
               _hover={{
                 backgroundColor: 'addTrackerItemAttribute.button.hover',
@@ -156,14 +156,14 @@ const AddTrackerItemAttribute = ({ isOpenModal, onAction, attributeType, newAttr
               bg="addTrackerItemAttribute.button.bg"
               borderRadius="10px"
               color="addTrackerItemAttribute.button.color"
-              onClick={() => onAddAction(attributeType)}
-            >
+              data-id="695eb7ab1bae"
+              onClick={() => onAddAction(attributeType)}>
               Add
             </Button>
           </Flex>
         </Flex>
       </ModalContent>
-    </Modal>
+    </Modal>)
   );
 };
 

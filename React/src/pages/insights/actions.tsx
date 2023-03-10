@@ -248,58 +248,58 @@ const ActionsInsights = () => {
   ) as EChartsOption;
 
   return (
-    <Box pt="3">
+    (<Box data-id="37f7df3c97ef" pt="3">
       {error ? (
-        <Text>{error.message}</Text>
+        <Text data-id="5eceb1031611">{error.message}</Text>
       ) : loading ? (
-        <Box h="100vh">
-          <Loader center />
+        <Box data-id="26be57b99646" h="100vh">
+          <Loader center data-id="2400f8a63d02" />
         </Box>
       ) : (
         <>
           <Flex
+            data-id="62f1c9a8a119"
             sx={{
               '@media (max-width: 768px)': {
                 overflowX: 'scroll',
                 '::-webkit-scrollbar': { display: 'none' },
               },
-            }}
-          >
+            }}>
             {actionsStatsCounts.map((filter) => (
               <InsightsCard
                 count={filter.actions}
+                data-id="547de652a33b"
                 key={filter.status}
                 onSelect={setSelectedActionsStatsCount}
                 selected={selectedActionsStatsCount === filter.status}
                 status={filter.status}
-                type="actions"
-              />
+                type="actions" />
             ))}
           </Flex>
           <Text
             color={actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.color}
+            data-id="01c46fe8e8ea"
             fontSize="xxl"
             fontWeight="bold"
-            my={['15px', '25px']}
-          >
+            my={['15px', '25px']}>
             {actionsInsightsTypes[selectedActionsStatsCount]}{' '}
-            <Text as="span" color="insights.secondaryText">
+            <Text as="span" color="insights.secondaryText" data-id="de2a1ce1df86">
               actions
             </Text>
           </Text>
-          <InsightsChart option={echartsOption} />
+          <InsightsChart data-id="094e35ab9232" option={echartsOption} />
           <InsightsDetailedStats
             businessUnits={businessUnits}
+            data-id="9d1291a95098"
             insightsType="actions"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}
             loadMoreUsers={getUsersData}
             locations={locations}
-            users={users}
-          />
+            users={users} />
         </>
       )}
-    </Box>
+    </Box>)
   );
 };
 

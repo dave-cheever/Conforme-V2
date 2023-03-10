@@ -47,39 +47,47 @@ const AuditParticipants = () => {
     refetch();
   };
 
-  return (
-    <>
-      <Stack h={['fit-content', 'full']} spacing={4} w="full">
-        <Flex justifyContent={['space-between', 'initial']}>
-          <Text fontSize="xxl" fontWeight="semibold">
-            Participants
-          </Text>
-        </Flex>
-        <Stack bg="auditParticipants.bg" borderRadius="20px" h="full" overflow="auto" px={6} py={4} rounded="20px" spacing={12} w="full" >
-          <SingleParticipantSelector
-            isUserAllowedToChange={isPermitted({ user, action: 'audits.changeAuditor', data: { audit } })}
-            label="Audited by"
-            onChange={(participant) => selectAuditor(participant._id)}
-            selectedParticipant={audit.auditor!}
-          />
-          {((audit.participants || []).length > 0 || (audit.status === 'upcoming' && isUserPermittedToModify)) && (
-            <MultipleParticipantsSelector
-              isUserAllowedToChange={isPermitted({ user, action: 'audits.edit', data: { audit } })}
-              label="Participants"
-              maxParticipants={20}
-              onChange={(participants) => selectParticipants(participants.map((user) => user?._id))}
-              selectedParticipants={audit.participants!}
-            />
-          )}
-        </Stack>
+  return (<>
+    <Stack data-id="9df24db2eae2" h={['fit-content', 'full']} spacing={4} w="full">
+      <Flex data-id="e462380d55a2" justifyContent={['space-between', 'initial']}>
+        <Text data-id="12d25ce06e4d" fontSize="xxl" fontWeight="semibold">
+          Participants
+        </Text>
+      </Flex>
+      <Stack
+        bg="auditParticipants.bg"
+        borderRadius="20px"
+        data-id="7db4ae35fbc8"
+        h="full"
+        overflow="auto"
+        px={6}
+        py={4}
+        rounded="20px"
+        spacing={12}
+        w="full">
+        <SingleParticipantSelector
+          data-id="4191c5cefbe1"
+          isUserAllowedToChange={isPermitted({ user, action: 'audits.changeAuditor', data: { audit } })}
+          label="Audited by"
+          onChange={(participant) => selectAuditor(participant._id)}
+          selectedParticipant={audit.auditor!} />
+        {((audit.participants || []).length > 0 || (audit.status === 'upcoming' && isUserPermittedToModify)) && (
+          <MultipleParticipantsSelector
+            data-id="61dce31e8ab0"
+            isUserAllowedToChange={isPermitted({ user, action: 'audits.edit', data: { audit } })}
+            label="Participants"
+            maxParticipants={20}
+            onChange={(participants) => selectParticipants(participants.map((user) => user?._id))}
+            selectedParticipants={audit.participants!} />
+        )}
       </Stack>
-    </>
-  );
+    </Stack>
+  </>);
 };
 
 const AuditsParticipantsWithContext = () => (
-  <ParticipantsModalProvider>
-    <AuditParticipants />
+  <ParticipantsModalProvider data-id="aa1f67143cc0">
+    <AuditParticipants data-id="9acfc0a278e1" />
   </ParticipantsModalProvider>
 );
 

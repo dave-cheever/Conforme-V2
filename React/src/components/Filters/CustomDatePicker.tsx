@@ -10,8 +10,15 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 
 const CustomDatePicker = ({ clickOutsideHandler, ...props }) => (
   <DatePicker
+    data-id="488f0b4e02cc"
     renderCustomHeader={({ date, changeYear, changeMonth }) => (
-      <Flex borderRadius="10px" color="#1E1836" justify="space-around" minW="260px" p="8px 8px 8px 16px">
+      <Flex
+        borderRadius="10px"
+        color="#1E1836"
+        data-id="4c07bdd535b8"
+        justify="space-around"
+        minW="260px"
+        p="8px 8px 8px 16px">
         <Select
           _focus={{
             outline: 'none',
@@ -20,16 +27,16 @@ const CustomDatePicker = ({ clickOutsideHandler, ...props }) => (
           border="none"
           borderRadius="8px"
           cursor="pointer"
+          data-id="1f475c7c1b52"
           fontSize="14px"
           fontWeight="400"
-          icon={<ChevronDownIcon stroke="#787486" />}
+          icon={<ChevronDownIcon data-id="26d4665325ae" stroke="#787486" />}
           justifyContent="center"
           onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
           textAlign="center"
-          value={months[getMonth(date)]}
-        >
+          value={months[getMonth(date)]}>
           {months.map((option) => (
-            <option key={option} value={option}>
+            <option data-id="b386d73f0c5f" key={option} value={option}>
               {option}
             </option>
           ))}
@@ -42,24 +49,23 @@ const CustomDatePicker = ({ clickOutsideHandler, ...props }) => (
           border="none"
           borderRadius="8px"
           cursor="pointer"
+          data-id="01a24aea16df"
           fontSize="14px"
           fontWeight="400"
-          icon={<ChevronDownIcon stroke="#F4F3F5" />}
+          icon={<ChevronDownIcon data-id="9a9a3833756a" stroke="#F4F3F5" />}
           justifyContent="center"
           onChange={({ target: { value } }) => changeYear(value)}
           textAlign="center"
-          value={getYear(date)}
-        >
+          value={getYear(date)}>
           {years.map((option) => (
-            <option key={option} value={option}>
+            <option data-id="2afaa005c4ad" key={option} value={option}>
               {option}
             </option>
           ))}
         </Select>
       </Flex>
     )}
-    {...props}
-  />
+    {...props} />
 );
 
 export default CustomDatePicker;

@@ -86,60 +86,73 @@ const EmailTemplates = ({ selectedTemplate, setSelectedTemplate, isOpen, onClose
 
   if (loading) {
     return (
-      <Flex h="full" w={['full', 'full', '550px']}>
-        <Loader center />
-      </Flex>
+      (<Flex data-id="e2a4553ce50e" h="full" w={['full', 'full', '550px']}>
+        <Loader center data-id="89fb0a151abd" />
+      </Flex>)
     );
   }
 
   return (
-    <Flex w="full">
+    (<Flex data-id="1aaea2a3b492" w="full">
       <Grid
+        data-id="7facfff9d521"
         gap={7}
         h={['fit-content', 'fit-content', 'full']}
         templateColumns={['repeat(1, 1fr)', selectedTemplate ? 'repeat(1, 1fr)' : 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
-        w={['full', 'full', '550px']}
-      >
+        w={['full', 'full', '550px']}>
         {emailTemplates?.settings?.length > 0 ? (
           emailTemplates?.settings?.map((template) => (
             <EmailTemplate
               active={selectedTemplate?._id === template?._id}
+              data-id="a45ab48e4dd2"
               key={template?._id}
               setSelectedTemplate={setSelectedTemplate}
               template={template}
-              updateImage={updateImage}
-            />
+              updateImage={updateImage} />
           ))
         ) : (
-          <Text>No email templates</Text>
+          <Text data-id="904caf7d65cd">No email templates</Text>
         )}
       </Grid>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent borderRadius="0px" h="100vh" margin="0px" maxW="700px" position="fixed" right="0px" top="0px" w="full">
-          <ModalHeader fontSize="20px">Edit "{selectedTemplate?.label}” template</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody bg="emailTemplates.bg" p="0px">
-            <EmailEditor options={selectedTemplate?.options} setHtml={setHtml} value={selectedTemplate?.value} />
+      <Modal data-id="8461da9cb554" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay data-id="a3f0d6985d05" />
+        <ModalContent
+          borderRadius="0px"
+          data-id="592449725651"
+          h="100vh"
+          margin="0px"
+          maxW="700px"
+          position="fixed"
+          right="0px"
+          top="0px"
+          w="full">
+          <ModalHeader data-id="7ab75ada00de" fontSize="20px">Edit "{selectedTemplate?.label}” template</ModalHeader>
+          <ModalCloseButton data-id="1430088ae33f" />
+          <ModalBody bg="emailTemplates.bg" data-id="509dbd5fb8f2" p="0px">
+            <EmailEditor
+              data-id="1465e1cc9bd9"
+              options={selectedTemplate?.options}
+              setHtml={setHtml}
+              value={selectedTemplate?.value} />
           </ModalBody>
 
-          <ModalFooter mr="auto">
+          <ModalFooter data-id="17ebb13e63e3" mr="auto">
             <Button
               borderRadius="10px"
               colorScheme="purpleHeart"
+              data-id="bca651d384d1"
               fontSize="14px"
               h="35px"
               isDisabled={html === selectedTemplate?.value}
               isLoading={saveLoading}
-              leftIcon={<TickIcon mt={1} stroke="white" />}
-              onClick={saveTemplate}
-            >
+              leftIcon={<TickIcon data-id="3a13e3bedcab" mt={1} stroke="white" />}
+              onClick={saveTemplate}>
               Save
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    </Flex>)
   );
 };
 

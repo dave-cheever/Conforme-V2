@@ -150,8 +150,9 @@ const QuestionMultiChoiceForm = ({
   };
 
   return (
-    <Flex flexDir="column" h="full">
+    (<Flex data-id="a20a2d697682" flexDir="column" h="full">
       <Flex
+        data-id="76e1b54bd1c6"
         flexDir="column"
         h="full"
         overflowX="hidden"
@@ -165,40 +166,73 @@ const QuestionMultiChoiceForm = ({
           '&::-webkit-scrollbar-thumb': {
             backgroundColor: 'questionMultiChoiceForm.scrollBar.color',
           },
-        }}
-      >
-        <Text fontSize="smm" fontWeight="bold" mb="20px">
+        }}>
+        <Text data-id="1c97a7e5b829" fontSize="smm" fontWeight="bold" mb="20px">
           {questionHeader(questionType)}
         </Text>
         <TextInput
           control={control}
+          data-id="9b8fdef0ff3f"
           label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
           validations={{
             notEmpty: true,
-          }}
-        />
-        <TextInput control={control} label="Description" name="description" />
-        <Text color="questionMultiChoiceForm.text.color" fontSize="ssm" my="20px">
+          }} />
+        <TextInput
+          control={control}
+          data-id="5f0ef2d4546f"
+          label="Description"
+          name="description" />
+        <Text
+          color="questionMultiChoiceForm.text.color"
+          data-id="2639816eb1f9"
+          fontSize="ssm"
+          my="20px">
           Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
         </Text>
-        <Box pr="10px" w="calc(100% + 10px)">
-          <DragDropContext onDragEnd={moveOptions} onDragStart={() => setIsDragging(true)}>
-            <Droppable droppableId="multiChoiceQuestionDroppable">
+        <Box data-id="20741ade2715" pr="10px" w="calc(100% + 10px)">
+          <DragDropContext
+            data-id="9f224b45504c"
+            onDragEnd={moveOptions}
+            onDragStart={() => setIsDragging(true)}>
+            <Droppable data-id="3228a55c9763" droppableId="multiChoiceQuestionDroppable">
               {(provided) => (
-                <Box ref={provided.innerRef} {...provided.droppableProps} width="full">
+                <Box
+                  data-id="12f0a6da41d1"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  width="full">
                   {fields.map((object, index) => (
-                    <Draggable draggableId={object.id} index={index} key={object.id}>
+                    <Draggable
+                      data-id="1e6221c21669"
+                      draggableId={object.id}
+                      index={index}
+                      key={object.id}>
                       {(provided) => (
-                        <Box>
-                          <Flex ref={provided.innerRef} {...provided.draggableProps} align="center">
-                            <Box {...provided.dragHandleProps}>
-                              <Move ml="2px" mr="14px" mt="-4px" stroke="questionMultiChoiceForm.icon.moveIcon" w="10px" />
+                        <Box data-id="a824686e800a">
+                          <Flex
+                            data-id="03a81e8ffec1"
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            align="center">
+                            <Box data-id="4057888fd07c" {...provided.dragHandleProps}>
+                              <Move
+                                data-id="e5995141736b"
+                                ml="2px"
+                                mr="14px"
+                                mt="-4px"
+                                stroke="questionMultiChoiceForm.icon.moveIcon"
+                                w="10px" />
                             </Box>
-                            <Flex w="full">
-                              <Checkbox control={control} name={`value.${index}.isCorrect`} variant="secondaryVariant" />
+                            <Flex data-id="c3a4853c2113" w="full">
+                              <Checkbox
+                                control={control}
+                                data-id="6330ce0fdee0"
+                                name={`value.${index}.isCorrect`}
+                                variant="secondaryVariant" />
                               <Input
+                                data-id="47b27f11c78e"
                                 name={object.id}
                                 onChange={(e) => {
                                   handleInputChange(e, index);
@@ -207,19 +241,19 @@ const QuestionMultiChoiceForm = ({
                                 onKeyDown={(e) => e.key === 'Enter' && onSubmitInput(index, object.label)}
                                 placeholder="Option name"
                                 px="2px"
-                                value={inputValue[index]}
-                              />
+                                value={inputValue[index]} />
                             </Flex>
                             <Trashcan
                               cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
+                              data-id="c190592d8061"
                               mr={index + 1 === fields.length ? '12px' : '28px'}
                               onClick={() => removeChoice(index)}
                               stroke="questionMultiChoiceForm.icon.iconBin"
-                              w="20px"
-                            />
+                              w="20px" />
                             {index + 1 === fields.length && (
                               <PlusIcon
                                 cursor="pointer"
+                                data-id="afe7e996cf1e"
                                 onClick={() => {
                                   append({
                                     label: '',
@@ -227,8 +261,7 @@ const QuestionMultiChoiceForm = ({
                                   });
                                   setInputValue((prevValue) => [...prevValue, '']);
                                 }}
-                                stroke="questionMultiChoiceForm.icon.plusIcon"
-                              />
+                                stroke="questionMultiChoiceForm.icon.plusIcon" />
                             )}
                           </Flex>
                         </Box>
@@ -241,10 +274,11 @@ const QuestionMultiChoiceForm = ({
           </DragDropContext>
         </Box>
       </Flex>
-      <Flex justifyContent="space-between" mt="51px">
+      <Flex data-id="45790338b217" justifyContent="space-between" mt="51px">
         <Button
           bg="questionMultiChoiceForm.button.secondary.bg"
           color="questionMultiChoiceForm.button.secondary.font"
+          data-id="e6e026a30a17"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -254,13 +288,13 @@ const QuestionMultiChoiceForm = ({
             setEditQuestionIndex(undefined);
             setEditQuestion('');
           }}
-          p="17px"
-        >
+          p="17px">
           Cancel
         </Button>
         <Button
           bg="questionMultiChoiceForm.button.primary.bg"
           color="questionMultiChoiceForm.button.primary.font"
+          data-id="c5b0420ec7dd"
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
@@ -276,13 +310,16 @@ const QuestionMultiChoiceForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
-          title={questionAlreadyExist ? 'This question already exist' : ''}
-        >
+          rightIcon={<Icon
+            as={OpenMenuArrow}
+            data-id="6a0164ddc0b4"
+            stroke="trackerItemModal.tabs.bottomButton.icon"
+            transform="rotate(270deg)" />}
+          title={questionAlreadyExist ? 'This question already exist' : ''}>
           Save question
         </Button>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

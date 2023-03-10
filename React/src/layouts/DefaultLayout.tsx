@@ -14,21 +14,33 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
   const { usedFilters } = useFiltersContext();
   const device = useDevice();
   return (
-    <ShareProvider>
-      <Flex minH="100vh">
-        <ModuleSwitcher />
-        <NavigationLeft />
-        <Flex direction="column" flexBasis="auto" flexGrow={1} position="relative">
-          <NavigationTop />
-          <ShareModal />
-          <Flex bg="layout.bg" flexDirection="column" h="calc(100vh - 80px)" position="absolute" top="80px" w="full">
-            <Component />
+    (<ShareProvider data-id="c26ee54e23a7">
+      <Flex data-id="82e11df66280" minH="100vh">
+        <ModuleSwitcher data-id="e97e8f7ff427" />
+        <NavigationLeft data-id="236b6594671a" />
+        <Flex
+          data-id="0faa875e8f2e"
+          direction="column"
+          flexBasis="auto"
+          flexGrow={1}
+          position="relative">
+          <NavigationTop data-id="b699dce0996d" />
+          <ShareModal data-id="45ffc2ebe27c" />
+          <Flex
+            bg="layout.bg"
+            data-id="e5a4d37afdd0"
+            flexDirection="column"
+            h="calc(100vh - 80px)"
+            position="absolute"
+            top="80px"
+            w="full">
+            <Component data-id="a027466632ef" />
           </Flex>
-          {device === 'mobile' && <NavigationBottomMobile />}
+          {device === 'mobile' && <NavigationBottomMobile data-id="6aac4f54493f" />}
         </Flex>
-        {usedFilters?.length > 0 && <FiltersPanel />}
+        {usedFilters?.length > 0 && <FiltersPanel data-id="ae5bbb725843" />}
       </Flex>
-    </ShareProvider>
+    </ShareProvider>)
   );
 };
 

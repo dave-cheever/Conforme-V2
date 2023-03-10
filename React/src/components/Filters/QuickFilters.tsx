@@ -15,29 +15,29 @@ const QuickFilters = ({ w }: { w: string | number | {} }) => {
   };
 
   return (
-    <Stack w={w}>
+    (<Stack data-id="041a43a10571" w={w}>
       <Flex
         align="baseline"
+        data-id="88e1bb97aefb"
         direction="row"
         overflowX={activeFilters.includes(true) ? 'hidden' : 'auto'}
         overflowY="clip"
-        wrap={['nowrap', 'wrap', 'wrap']}
-      >
+        wrap={['nowrap', 'wrap', 'wrap']}>
         {Object.entries(filtersValues).map(([name, value], index) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel) {
             return (
-              <QuickFiltersItem
+              (<QuickFiltersItem
+                data-id="fcc725bc2ff8"
                 filter={value}
                 key={`quick-filter-${name}`}
                 name={name}
-                toggleActiveFilters={() => toggleActiveFilters(index - 1)}
-              />
+                toggleActiveFilters={() => toggleActiveFilters(index - 1)} />)
             );
           }
           return null;
         })}
       </Flex>
-    </Stack>
+    </Stack>)
   );
 };
 

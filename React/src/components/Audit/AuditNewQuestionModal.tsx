@@ -21,27 +21,34 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
     category.maxQuestionsNumber ? category.maxQuestionsNumber - (questions[category._id] || []).length : 1;
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size={device === 'mobile' ? '3xl' : '2xl'}>
-      <ModalContent>
-        <ModalHeader>
-          <Text fontSize="smm" fontWeight="semibold">
+    (<Modal
+      data-id="f4b2c5e2bd7a"
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior="inside"
+      size={device === 'mobile' ? '3xl' : '2xl'}>
+      <ModalContent data-id="88e225c31d0e">
+        <ModalHeader data-id="0afd6b15e7f0">
+          <Text data-id="b57f323d061a" fontSize="smm" fontWeight="semibold">
             Add items
           </Text>
-          <ModalCloseButton />
+          <ModalCloseButton data-id="a79530776435" />
         </ModalHeader>
-        <ModalBody mb={['none', '40px']}>
-          <Flex justify="space-around" wrap="wrap">
+        <ModalBody data-id="8fac46ee98b0" mb={['none', '40px']}>
+          <Flex data-id="edf6de4adc4a" justify="space-around" wrap="wrap">
             {enabledQuestionsCategories.map((category) => {
               const questionsLeft = countQuestionsLeft(category);
               const isDisabled = !questionsLeft;
               return (
-                <Stack
+                (<Stack
                   _hover={{
                     bg: isDisabled ? 'auditNewQuestionModal.tile.bg.default' : 'auditNewQuestionModal.tile.bg.hover',
                   }}
                   align="center"
                   bgColor="auditNewQuestionModal.tile.bg.default"
                   cursor={isDisabled ? 'default' : 'pointer'}
+                  data-id="4da17d8a32bd"
                   flexShrink={0}
                   h="170px"
                   justify="center"
@@ -63,26 +70,25 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
                   opacity={isDisabled ? 0.5 : 1}
                   rounded="10px"
                   spacing={4}
-                  w="170px"
-                >
+                  w="170px">
                   <Icon
+                    data-id="b9c57f7b04f4"
                     fill="auditNewQuestionModal.tile.icon.fill"
                     h="36px"
                     icon={category.icon}
                     stroke="auditNewQuestionModal.tile.icon.stroke"
-                    w="36px"
-                  />
-                  <Stack align="center" spacing={0}>
-                    <Text fontSize="smm">{category.name}</Text>
-                    {category.maxQuestionsNumber && <Text fontSize="smm">{questionsLeft ? `${questionsLeft} left` : 'Limit reached'}</Text>}
+                    w="36px" />
+                  <Stack align="center" data-id="faf04ab6c2c1" spacing={0}>
+                    <Text data-id="b99839de9181" fontSize="smm">{category.name}</Text>
+                    {category.maxQuestionsNumber && <Text data-id="6e748959c915" fontSize="smm">{questionsLeft ? `${questionsLeft} left` : 'Limit reached'}</Text>}
                   </Stack>
-                </Stack>
+                </Stack>)
               );
             })}
           </Flex>
         </ModalBody>
       </ModalContent>
-    </Modal>
+    </Modal>)
   );
 };
 

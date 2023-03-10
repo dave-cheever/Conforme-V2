@@ -43,51 +43,66 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
   };
 
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="f76f9c68f0f7"
       name={name}
       render={({ field }) => {
         const { onChange, onBlur, value } = field;
 
         return (
-          <Flex align="center" borderRadius="10px" mb="25px" position="relative" w="full">
+          (<Flex
+            align="center"
+            borderRadius="10px"
+            data-id="66fb8f01f63f"
+            mb="25px"
+            position="relative"
+            w="full">
             <MentionsInput
               allowSpaceInQuery
               allowSuggestionsAboveCursor
               autoComplete="off"
               className="mentions"
+              data-id="04d385f60464"
               disabled={disabled}
               inputRef={mentionRef}
               onBlur={onBlur}
               onChange={onChange}
               onKeyDown={onKeyDown}
               placeholder={placeholder}
-              value={value}
-            >
+              value={value}>
               <Mention
                 appendSpaceOnAdd
                 className="mentions__mention"
                 data={chatParticipants}
+                data-id="761d4a65cf89"
                 renderSuggestion={(highlightedDisplay) => (
-                  <Flex color="mentionListItem.color" fontSize="14px" pl="13px" py="10px" w="full">
-                    <Avatar name={highlightedDisplay?.displayName} size="xs" />
-                    <Text ml={3} noOfLines={1} textOverflow="ellipsis">
+                  <Flex
+                    color="mentionListItem.color"
+                    data-id="8be5694219c9"
+                    fontSize="14px"
+                    pl="13px"
+                    py="10px"
+                    w="full">
+                    <Avatar data-id="a68c3369dd6e" name={highlightedDisplay?.displayName} size="xs" />
+                    <Text data-id="e11e566ab0a9" ml={3} noOfLines={1} textOverflow="ellipsis">
                       {highlightedDisplay?.displayName}
                     </Text>
                   </Flex>
                 )}
                 spellCheck={false}
-                trigger="@"
-              />
+                trigger="@" />
             </MentionsInput>
-            <Flex position="absolute" right="10px">
-              <SendMessageIcon cursor={disabled ? 'not-allowed' : 'pointer'} onClick={onAction} />
+            <Flex data-id="78ff3a16d85d" position="absolute" right="10px">
+              <SendMessageIcon
+                cursor={disabled ? 'not-allowed' : 'pointer'}
+                data-id="553c0b35af27"
+                onClick={onAction} />
             </Flex>
-          </Flex>
+          </Flex>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

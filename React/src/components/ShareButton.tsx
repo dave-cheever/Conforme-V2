@@ -30,6 +30,7 @@ const ShareButton = ({
     bg="#FFFFFF"
     borderRadius="10px"
     color="#818197"
+    data-id="916c917183c7"
     disabled={disabled}
     display="flex"
     fontSize="14px"
@@ -37,11 +38,10 @@ const ShareButton = ({
     ml={ml}
     mr={mr}
     onClick={onClick}
-    rightIcon={<ShareIcon fontSize="15px" />}
+    rightIcon={<ShareIcon data-id="a19f2e7036ef" fontSize="15px" />}
     role="group"
     stroke="#818197"
-    w={['calc(100% - 1rem - 15px)', 'auto']}
-  >
+    w={['calc(100% - 1rem - 15px)', 'auto']}>
     Share
   </Button>
 );

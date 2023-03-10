@@ -15,9 +15,13 @@ const LocationFilter = () => {
   };
 
   return (
-    <Box w="full">
-      <LocationsSelector handleChange={handleChange} locations={locations as ILocation[]} selected={value} />
-    </Box>
+    (<Box data-id="4afb6381cabe" w="full">
+      <LocationsSelector
+        data-id="97329fcbd40e"
+        handleChange={handleChange}
+        locations={locations as ILocation[]}
+        selected={value} />
+    </Box>)
   );
 };
 

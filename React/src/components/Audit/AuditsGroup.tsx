@@ -18,11 +18,19 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
   }, [audits]);
 
   const renderGroup = (group: string) => (
-    <Flex direction="column" key={group} minW="calc(347px + 1rem)" pl={8} pr={3} pt={2}>
+    <Flex
+      data-id="6708791be2c7"
+      direction="column"
+      key={group}
+      minW="calc(347px + 1rem)"
+      pl={8}
+      pr={3}
+      pt={2}>
       <Flex
         align="center"
         bg={`auditsGroup.${group}`}
         color="#FFFFFF"
+        data-id="61add5e89243"
         fontWeight="700"
         justify="space-between"
         mb={4}
@@ -30,22 +38,27 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
         pl={5}
         pr={4}
         rounded="full"
-        w="full"
-      >
+        w="full">
         {auditStatuses[group]}
       </Flex>
-      <Stack align="center" direction="column" pb={5} spacing={6} w="full">
+      <Stack
+        align="center"
+        data-id="f3102cc0888b"
+        direction="column"
+        pb={5}
+        spacing={6}
+        w="full">
         {filteredResults[group]?.map((audit: IAudit) => (
-          <AuditSquare audit={audit} key={audit._id} />
+          <AuditSquare audit={audit} data-id="1ceb33212fbf" key={audit._id} />
         ))}
       </Stack>
     </Flex>
   );
 
   return (
-    <Flex h="full" overflow="auto" pt="3" w="full">
+    (<Flex data-id="a7525929df3b" h="full" overflow="auto" pt="3" w="full">
       {Object.keys(auditStatuses).map((status) => renderGroup(status))}
-    </Flex>
+    </Flex>)
   );
 };
 

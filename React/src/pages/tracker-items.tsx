@@ -268,78 +268,99 @@ const TrackerItems = () => {
     if (scrollerRef.current) scrollerRef.current.pageLoaded = 0;
   }, [sortOrder, sortType, JSON.stringify(parsedFilters)]);
 
-  return (
-    <>
-      <Header breadcrumbs={[pluralize(t('tracker item'))]} mobileBreadcrumbs={[pluralize(t('tracker item'))]}>
-        {device !== 'mobile' && (
-          <>
-            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
-            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
-          </>
-        )}
-      </Header>
-      <Flex direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
-        {error ? (
-          <Text>{error.message}</Text>
-        ) : (
-          <>
-            {viewMode === 'grid' && (
-              <InfiniteScroll
-                hasMore={!loading && responses.length < total}
-                initialLoad={false}
-                loadMore={loadResponses}
-                ref={scrollerRef}
-                useWindow={false}
-              >
-                <Grid
-                  display={['grid', 'grid', 'flex']}
-                  flexWrap="wrap"
-                  gap={6}
-                  h="fit-content"
-                  pb={[0, 8]}
-                  pt="3"
-                  px={[4, 8]}
-                  templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
-                  w="full"
-                >
-                  {responses.length > 0
-                    ? responses.map((response) => <TrackerItemSquare key={response._id} response={response} />)
-                    : !loading && (
-                        <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
-                          No {pluralize(t('tracker item'))} found
-                        </Flex>
-                      )}
-                </Grid>
-                {loading && <Loader center h="60px" key="infinite-loader" />}
-              </InfiniteScroll>
-            )}
-            {viewMode === 'list' && (
-              <TrackerItemsList
-                loading={loading}
-                loadResponses={loadResponses}
-                responses={responses}
-                scrollerRef={scrollerRef}
-                setSortOrder={setSortOrder}
-                setSortType={setSortType}
-                sortOrder={sortOrder}
-                sortType={sortType}
-                total={total}
-              />
-            )}
-            {viewMode === 'group' && (
-              <TrackerItemsGroup
-                loading={loading}
-                loadResponses={loadResponses}
-                responses={responses}
-                scrollerRef={scrollerRef}
-                total={total}
-              />
-            )}
-          </>
-        )}
-      </Flex>
-    </>
-  );
+  return (<>
+    <Header
+      breadcrumbs={[pluralize(t('tracker item'))]}
+      data-id="93c49454aa8f"
+      mobileBreadcrumbs={[pluralize(t('tracker item'))]}>
+      {device !== 'mobile' && (
+        <>
+          <ChangeViewButton
+            data-id="71ddbd0a13f3"
+            setViewMode={setViewMode}
+            viewMode={viewMode}
+            views={['grid', 'list', 'group']} />
+          <SortButton
+            data-id="72f816f7350e"
+            setSortOrder={setSortOrder}
+            setSortType={setSortType}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            sortType={sortType} />
+        </>
+      )}
+    </Header>
+    <Flex
+      data-id="7bf7546ba3a8"
+      direction="column"
+      h={['calc(100vh - 200px)', 'calc(100vh - 150px)']}
+      overflow="auto"
+      pb={4}>
+      {error ? (
+        <Text data-id="624d02f86128">{error.message}</Text>
+      ) : (
+        <>
+          {viewMode === 'grid' && (
+            <InfiniteScroll
+              data-id="c573b6b779c3"
+              hasMore={!loading && responses.length < total}
+              initialLoad={false}
+              loadMore={loadResponses}
+              ref={scrollerRef}
+              useWindow={false}>
+              <Grid
+                data-id="06d832594699"
+                display={['grid', 'grid', 'flex']}
+                flexWrap="wrap"
+                gap={6}
+                h="fit-content"
+                pb={[0, 8]}
+                pt="3"
+                px={[4, 8]}
+                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
+                w="full">
+                {responses.length > 0
+                  ? responses.map((response) => <TrackerItemSquare data-id="3c73d7318f93" key={response._id} response={response} />)
+                  : !loading && (
+                      <Flex
+                        data-id="4d543a578ec2"
+                        fontSize="18px"
+                        fontStyle="italic"
+                        h="full"
+                        w="full">
+                        No {pluralize(t('tracker item'))} found
+                      </Flex>
+                    )}
+              </Grid>
+              {loading && <Loader center data-id="331bdbe7d31a" h="60px" key="infinite-loader" />}
+            </InfiniteScroll>
+          )}
+          {viewMode === 'list' && (
+            <TrackerItemsList
+              data-id="2751fbbf7cb7"
+              loading={loading}
+              loadResponses={loadResponses}
+              responses={responses}
+              scrollerRef={scrollerRef}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
+              total={total} />
+          )}
+          {viewMode === 'group' && (
+            <TrackerItemsGroup
+              data-id="7e9a9ff79bc2"
+              loading={loading}
+              loadResponses={loadResponses}
+              responses={responses}
+              scrollerRef={scrollerRef}
+              total={total} />
+          )}
+        </>
+      )}
+    </Flex>
+  </>);
 };
 
 export default TrackerItems;

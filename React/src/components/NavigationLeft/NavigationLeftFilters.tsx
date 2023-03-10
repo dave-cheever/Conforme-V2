@@ -28,10 +28,17 @@ const NavigationLeftFilters = ({
   };
 
   return (
-    <Flex direction="column" key={filter[0]}>
+    (<Flex data-id="3143fecc7acc" direction="column" key={filter[0]}>
       {filter[0] === 'comingUp' && (
-        <Flex py={2}>
-          <Flex bg="navigationLeftFilters.seperator" h="1px" ml="25px" opacity="0.3" rounded="lg" w="30px" />
+        <Flex data-id="883873cdc842" py={2}>
+          <Flex
+            bg="navigationLeftFilters.seperator"
+            data-id="fa271f7b04b8"
+            h="1px"
+            ml="25px"
+            opacity="0.3"
+            rounded="lg"
+            w="30px" />
         </Flex>
       )}
       <Flex
@@ -46,6 +53,7 @@ const NavigationLeftFilters = ({
             : 'navigationLeftFilters.unselectedFontColor'
         }
         cursor="pointer"
+        data-id="d4f80633f5fe"
         fontSize="14px"
         fontWeight="400"
         justify="space-between"
@@ -58,10 +66,15 @@ const NavigationLeftFilters = ({
         }}
         position="relative"
         right={[0, '37px']}
-        w={['170px', '175px']}
-      >
-        <Flex align="center">
-          <Box bg={`navigationLeftFilters.${filter[0]}`} h="8px" mr={8} rounded="full" w="8px" />
+        w={['170px', '175px']}>
+        <Flex align="center" data-id="2315dc824dec">
+          <Box
+            bg={`navigationLeftFilters.${filter[0]}`}
+            data-id="1fd0c0f8c46b"
+            h="8px"
+            mr={8}
+            rounded="full"
+            w="8px" />
           {responseStatuses[filter[0]]}
         </Flex>
         <Flex
@@ -80,6 +93,7 @@ const NavigationLeftFilters = ({
               ? 'navigationLeftFilters.selectedLabelFontColor'
               : 'navigationLeftFilters.unselectedLabelFontColor'
           }
+          data-id="bc11c8b2254e"
           fontSize="11px"
           fontWeight="700"
           h="20px"
@@ -87,12 +101,11 @@ const NavigationLeftFilters = ({
           left="10px"
           position="relative"
           rounded="10px"
-          w="34px"
-        >
+          w="34px">
           {filter[1]}
         </Flex>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

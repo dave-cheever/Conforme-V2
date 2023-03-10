@@ -24,24 +24,49 @@ const QuestionList = ({ setIsDragging, trackerItem, disabled, handleChange, hand
   };
 
   return (
-    <Stack overflowY="auto">
-      <DragDropContext onDragEnd={moveQuestion} onDragStart={() => setIsDragging(true)}>
-        <Droppable droppableId="questionsDroppable">
+    (<Stack data-id="b6dea74f6a5d" overflowY="auto">
+      <DragDropContext
+        data-id="eca688222456"
+        onDragEnd={moveQuestion}
+        onDragStart={() => setIsDragging(true)}>
+        <Droppable data-id="894b813bce11" droppableId="questionsDroppable">
           {(provided) => (
-            <Box ref={provided.innerRef} {...provided.droppableProps} width="full">
+            <Box
+              data-id="fb363a0f1ff9"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              width="full">
               {trackerItem.questions?.map((item, index) => (
-                <Draggable draggableId={item.name} index={index} key={item.name}>
+                <Draggable
+                  data-id="22caa68a613b"
+                  draggableId={item.name}
+                  index={index}
+                  key={item.name}>
                   {(provided) => (
-                    <Box m={2}>
-                      <Flex ref={provided.innerRef} {...provided.draggableProps} align="center" bg="questionList.bg" rounded="10px">
-                        <Box {...provided.dragHandleProps} mr={disabled ? '20px' : '10px'}>
-                          {!disabled && <Move ml="15px" mt="-4px" stroke="questionList.icon" w="10px" />}
+                    <Box data-id="c533d9dd1a4d" m={2}>
+                      <Flex
+                        data-id="59c1c2c2a3fe"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        align="center"
+                        bg="questionList.bg"
+                        rounded="10px">
+                        <Box
+                          data-id="905dd2a693b9"
+                          {...provided.dragHandleProps}
+                          mr={disabled ? '20px' : '10px'}>
+                          {!disabled && <Move
+                            data-id="02dfd3efdd81"
+                            ml="15px"
+                            mt="-4px"
+                            stroke="questionList.icon"
+                            w="10px" />}
                         </Box>
                         <QuestionListElement
+                          data-id="f00f3f2921e7"
                           editQuestion={() => handleEdit(index, item)}
                           question={item}
-                          removeQuestion={disabled ? undefined : () => removeQuestion(index)}
-                        />
+                          removeQuestion={disabled ? undefined : () => removeQuestion(index)} />
                       </Flex>
                     </Box>
                   )}
@@ -51,7 +76,7 @@ const QuestionList = ({ setIsDragging, trackerItem, disabled, handleChange, hand
           )}
         </Droppable>
       </DragDropContext>
-    </Stack>
+    </Stack>)
   );
 };
 

@@ -8,23 +8,27 @@ const ResponseTabItem = ({ setActiveTab, index, active, label, icon }) => {
   };
 
   return (
-    <Flex
+    (<Flex
       _hover={{ bg: 'responseTabItem.activeBg' }}
       align="center"
       bg={active ? 'responseTabItem.activeBg' : 'responseTabItem.bg'}
       borderRadius="10px"
       color={active ? 'responseTabItem.activeColor' : 'responseTabItem.color'}
       cursor="pointer"
+      data-id="e5f9139cd779"
       flexDirection="column"
       h="62px"
       onClick={onClick}
-      p="8px 13px 6px 13px"
-    >
-      <Icon as={icon} boxSize="15px" />
-      <Text fontSize={['11px', '14px']} fontWeight="700" mt={3}>
+      p="8px 13px 6px 13px">
+      <Icon as={icon} boxSize="15px" data-id="64ed9af3c803" />
+      <Text
+        data-id="68e742fd4225"
+        fontSize={['11px', '14px']}
+        fontWeight="700"
+        mt={3}>
         {label}
       </Text>
-    </Flex>
+    </Flex>)
   );
 };
 

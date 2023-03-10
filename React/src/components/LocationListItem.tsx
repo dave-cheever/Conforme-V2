@@ -16,13 +16,14 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
   const { setResponseFiltersValue, setAuditFiltersValue } = useFiltersContext();
 
   return (
-    <Flex
+    (<Flex
       align="center"
       bg="adminTrackerItems.element.bg"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
       color="adminTrackerItems.element.font"
       cursor="pointer"
+      data-id="96adef20cb4f"
       flexShrink={0}
       fontSize="smm"
       fontWeight="semi_medium"
@@ -30,40 +31,43 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
       mt="0px"
       overflow="hidden"
       pl={6}
-      w="calc(100% - 22px)"
-    >
-      <Flex onClick={() => openLocationModal('edit', location)} w={['max-content', 'full']}>
+      w="calc(100% - 22px)">
+      <Flex
+        data-id="8270f05bd9d6"
+        onClick={() => openLocationModal('edit', location)}
+        w={['max-content', 'full']}>
         {location.name}
       </Flex>
       {device !== 'mobile' && device !== 'tablet' && (
         <>
-          <Flex w="full">
-            <Text mr="25px" noOfLines={1}>
+          <Flex data-id="10061454c136" w="full">
+            <Text data-id="d73573f70156" mr="25px" noOfLines={1}>
               {location.notes || '-'}
             </Text>
           </Flex>
-          <Flex w="full">
+          <Flex data-id="5e7285327f5b" w="full">
             <Avatar
               bg="userMenu.avatar.bg"
               color="userMenu.avatar.color"
+              data-id="bc3ca127f3da"
               h="24px"
               mr="10px"
               name={location?.owner?.displayName}
               rounded="full"
               size="sm"
               src={location?.owner?.imgUrl}
-              w="24px"
-            />
+              w="24px" />
             {location?.owner?.displayName}
           </Flex>
         </>
       )}
-      <Spacer display={['block', 'none']} />
-      <Flex alignItems="center" w={['97px', 'full']}>
+      <Spacer data-id="542645157092" display={['block', 'none']} />
+      <Flex alignItems="center" data-id="395feb86882b" w={['97px', 'full']}>
         {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}
-        <Tooltip fontSize="md" label="Show Items">
+        <Tooltip data-id="213dd5445151" fontSize="md" label="Show Items">
           <ArrowCount
             cursor="pointer"
+            data-id="9f9a87f5965a"
             h="10px"
             ml="13px"
             onClick={() => {
@@ -72,11 +76,10 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
               navigateTo('/');
             }}
             stroke="locations.tooltipStroke"
-            w="10px"
-          />
+            w="10px" />
         </Tooltip>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

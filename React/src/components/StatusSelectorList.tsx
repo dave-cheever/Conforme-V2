@@ -11,10 +11,17 @@ interface IStatusSelectorList {
 }
 
 const StatusSelectorList = ({ filteredStatuses, selected, handleChange }: IStatusSelectorList) => (
-  <CheckboxGroup onChange={(value) => handleChange({ target: { name: 'status', value } })} value={selected}>
-    <Stack direction="column" w="full">
+  <CheckboxGroup
+    data-id="983702cfe6d8"
+    onChange={(value) => handleChange({ target: { name: 'status', value } })}
+    value={selected}>
+    <Stack data-id="2c0ec6e2b002" direction="column" w="full">
       {filteredStatuses?.map((value) => (
-        <FilterCheckBox key={value} label={auditStatuses[value]} value={value} />
+        <FilterCheckBox
+          data-id="567d68187943"
+          key={value}
+          label={auditStatuses[value]}
+          value={value} />
       ))}
     </Stack>
   </CheckboxGroup>

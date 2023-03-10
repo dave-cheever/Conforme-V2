@@ -10,14 +10,13 @@ const EditButton = forwardRef(({ onClick }: Props, ref: React.ForwardedRef<SVGSV
   <EditIcon
     color="responseRenewalDetails.editButtonColor"
     cursor="pointer"
+    data-id="721ef9b805a3"
     mx="1"
     onClick={(e) => {
       e.stopPropagation()
       if (onClick) onClick()
     }}
-    ref={ref}
-
-  />
+    ref={ref} />
 ));
 
 export default EditButton;

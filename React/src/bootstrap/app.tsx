@@ -31,35 +31,46 @@ function App() {
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (
-      <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
-        <Flex alignItems="center" h="100vh" justifyContent="center" w="100vw">
-          <Spinner color="brand.primary" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
+      (<ChakraProvider data-id="8bb923075c38" theme={getTheme(organizationConfig?.theme)}>
+        <Flex
+          alignItems="center"
+          data-id="33d5cdd6386a"
+          h="100vh"
+          justifyContent="center"
+          w="100vw">
+          <Spinner
+            color="brand.primary"
+            data-id="db2f2811922f"
+            emptyColor="gray.200"
+            size="xl"
+            speed="0.65s"
+            thickness="4px" />
         </Flex>
-      </ChakraProvider>
+      </ChakraProvider>)
     );
   }
 
   return (
-    <ChakraProvider theme={getTheme(organizationConfig?.theme)}>
-      <CSSReset />
-      {user && <IdleMonitor />}
-      <AdminProvider>
-        <FiltersProvider>
-          <Switch>
+    (<ChakraProvider data-id="ba8f0b72a649" theme={getTheme(organizationConfig?.theme)}>
+      <CSSReset data-id="98971139de59" />
+      {user && <IdleMonitor data-id="70d9b5aff63a" />}
+      <AdminProvider data-id="3936a5fd8325">
+        <FiltersProvider data-id="c63426c7a6be">
+          <Switch data-id="f7c0226baff0">
             {routes.map((props) => (
-              <Route {...props} />
+              <Route data-id="bb5c7c440edc" {...props} />
             ))}
           </Switch>
         </FiltersProvider>
       </AdminProvider>
-    </ChakraProvider>
+    </ChakraProvider>)
   );
 }
 
 const AppWithContext = () => (
-  <AppProvider>
-    <ConfigProvider>
-      <App />
+  <AppProvider data-id="1485cd05cde6">
+    <ConfigProvider data-id="f93a4ac1fd0d">
+      <App data-id="59ebca745f27" />
     </ConfigProvider>
   </AppProvider>
 );

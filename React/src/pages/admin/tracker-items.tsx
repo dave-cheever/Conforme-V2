@@ -163,168 +163,201 @@ const TrackerItemsAdmin = () => {
     );
   };
 
-  return (
-    <>
-      <Modal
-        isOpen={adminModalState !== 'closed'}
-        key={trackerItem._id}
-        onClose={() => { }}
-        scrollBehavior="inside"
-        size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
-        variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
-      >
-        <ModalOverlay />
-        {adminModalState === 'delete' ? (
-          <DeleteTrackerItemModal refetch={refetch} />
-        ) : adminModalState === 'clone' ? (
-          <CloneTrackerItemModal refetch={refetch} />
-        ) : (
-          <TrackerItemModal refetch={refetch} />
-        )}
-      </Modal>
-      <Header breadcrumbs={['Admin', pluralize(t('tracker item'))]} mobileBreadcrumbs={[pluralize(t('tracker item'))]} />
-      <Box h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="100%">
-          <AdminTableHeader>
-            <AdminTableHeaderElement
-              label={capitalize(t('tracker item'))}
-              onClick={() => {
-                setSortType('name');
-                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w={['80%', 'calc(100% / 4)']}
-            />
-            {device !== 'mobile' && (
-              <>
-                <AdminTableHeaderElement
-                  label="Frequency"
-                  onClick={() => {
-                    setSortType('frequency');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'frequency' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'frequency'}
-                  sortOrder={sortType === 'frequency' ? sortOrder : undefined}
-                  w="calc(100% / 4)"
-                />
-                <AdminTableHeaderElement
-                  label="Regulatory body"
-                  onClick={() => {
-                    setSortType('regulatoryBody');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'regulatoryBody' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'regulatoryBody'}
-                  sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
-                  w="calc(100% / 4)"
-                />
-                <Flex w="calc(100% / 4)">
-                  <Spacer />
-                  <Text color="trackerItemsAdminWithContext.labelColor">Actions</Text>
-                </Flex>
-              </>
-            )}
-          </AdminTableHeader>
-          <Stack bg="white" borderBottomRadius="20px" h="100%" overflow="auto">
-            {loading ? (
-              <Loader center />
-            ) : (
-              sortedData.map((trackerItem) => (
+  return (<>
+    <Modal
+      data-id="f0d3a72b6d59"
+      isOpen={adminModalState !== 'closed'}
+      key={trackerItem._id}
+      onClose={() => { }}
+      scrollBehavior="inside"
+      size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
+      variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}>
+      <ModalOverlay data-id="2745e073445d" />
+      {adminModalState === 'delete' ? (
+        <DeleteTrackerItemModal data-id="5e7ec7a2d405" refetch={refetch} />
+      ) : adminModalState === 'clone' ? (
+        <CloneTrackerItemModal data-id="d0ef61d19e94" refetch={refetch} />
+      ) : (
+        <TrackerItemModal data-id="1bab993c353f" refetch={refetch} />
+      )}
+    </Modal>
+    <Header
+      breadcrumbs={['Admin', pluralize(t('tracker item'))]}
+      data-id="23a21c064eaf"
+      mobileBreadcrumbs={[pluralize(t('tracker item'))]} />
+    <Box
+      data-id="994cf98f6802"
+      h={['full', 'calc(100vh - 160px)']}
+      overflow="auto"
+      p="0 25px 30px 30px">
+      <Box
+        data-id="1c71f4a3ff6f"
+        h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+        w="100%">
+        <AdminTableHeader data-id="0253915db4ee">
+          <AdminTableHeaderElement
+            data-id="17600bfc110f"
+            label={capitalize(t('tracker item'))}
+            onClick={() => {
+              setSortType('name');
+              setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'name'}
+            sortOrder={sortType === 'name' ? sortOrder : undefined}
+            w={['80%', 'calc(100% / 4)']} />
+          {device !== 'mobile' && (
+            <>
+              <AdminTableHeaderElement
+                data-id="2234aacf671f"
+                label="Frequency"
+                onClick={() => {
+                  setSortType('frequency');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'frequency' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'frequency'}
+                sortOrder={sortType === 'frequency' ? sortOrder : undefined}
+                w="calc(100% / 4)" />
+              <AdminTableHeaderElement
+                data-id="5a0d0ac062bb"
+                label="Regulatory body"
+                onClick={() => {
+                  setSortType('regulatoryBody');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'regulatoryBody' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'regulatoryBody'}
+                sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
+                w="calc(100% / 4)" />
+              <Flex data-id="a8f7e2c1d5b3" w="calc(100% / 4)">
+                <Spacer data-id="0ae489c6d93e" />
+                <Text color="trackerItemsAdminWithContext.labelColor" data-id="6a8af8364ff2">Actions</Text>
+              </Flex>
+            </>
+          )}
+        </AdminTableHeader>
+        <Stack
+          bg="white"
+          borderBottomRadius="20px"
+          data-id="7fa63e0fa928"
+          h="100%"
+          overflow="auto">
+          {loading ? (
+            <Loader center data-id="44737a8930ae" />
+          ) : (
+            sortedData.map((trackerItem) => (
+              <Flex
+                align="center"
+                bg="adminTrackerItems.element.bg"
+                borderBottom="1px solid"
+                borderColor="adminTableHeader.border"
+                color="adminTrackerItems.element.font"
+                cursor="pointer"
+                data-id="96461dd538df"
+                flexShrink={0}
+                fontSize="14px"
+                h="73px"
+                key={trackerItem._id}
+                mt="0px"
+                px="25px"
+                w="full"
+                zIndex={4}>
                 <Flex
-                  align="center"
-                  bg="adminTrackerItems.element.bg"
-                  borderBottom="1px solid"
-                  borderColor="adminTableHeader.border"
-                  color="adminTrackerItems.element.font"
-                  cursor="pointer"
-                  flexShrink={0}
-                  fontSize="14px"
-                  h="73px"
-                  key={trackerItem._id}
-                  mt="0px"
-                  px="25px"
-                  w="full"
-                  zIndex={4}
-                >
-                  <Flex
-                    flexDirection="column"
-                    fontWeight="semi_medium"
-                    onClick={() => openModal('edit', trackerItem)}
-                    pr={2}
-                    w={['80%', 'calc(100% / 4)']}
-                  >
-                    <Box fontSize="smm">
-                      {trackerItem.name ? (
-                        <Text isTruncated>{trackerItem.name}</Text>
-                      ) : (
-                        <Text color="adminTrackerItems.element.unnamed" fontStyle="italic">
-                          Unnamed {t('tracker item')}
-                        </Text>
-                      )}
-                    </Box>
-                    <Flex alignItems="center">
-                      <Box color="adminTrackerItems.element.category" fontSize="11px" lineHeight="25px">
-                        {trackerItem.category?.name}
-                      </Box>
-                      {!trackerItem.published && (
-                        <Box bg="#818197" borderRadius="7px" color="#FFFFFF" fontSize="11px" ml={trackerItem.category ? 2 : 0} p="3px 9px">
-                          Draft
-                        </Box>
-                      )}
-                    </Flex>
-                  </Flex>
-                  {device !== 'mobile' && (
-                    <>
-                      <Box onClick={() => openModal('edit', trackerItem)} w="calc(100% / 4)">
-                        {trackerItem.frequency}{' '}
-                      </Box>
-                      <Box onClick={() => openModal('edit', trackerItem)} w="calc(100% / 4)">
-                        {trackerItem.regulatoryBody?.name}
-                      </Box>
-                    </>
-                  )}
-                  <Box textAlign="end" w="calc(100% / 4)" zIndex={5}>
-                    <Copy
-                      _hover={{
-                        color: 'trackerItemsAdminWithContext.strokeHover',
-                        opacity: 0.7,
-                        cursor: 'pointer',
-                      }}
-                      fill="transparent"
-                      fontSize="15px"
-                      onClick={() => {
-                        openModal('clone', trackerItem);
-                      }}
-                      stroke="trackerItemsAdminWithContext.stroke"
-                    />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Trashcan
-                      _hover={{
-                        color: 'trackerItemsAdminWithContext.strokeHover',
-                        opacity: 0.7,
-                        cursor: 'pointer',
-                      }}
-                      fill="transparent"
-                      fontSize="15px"
-                      onClick={() => {
-                        openModal('delete', trackerItem);
-                      }}
-                      stroke="trackerItemsAdminWithContext.binStroke"
-                    />
+                  data-id="686b0b610452"
+                  flexDirection="column"
+                  fontWeight="semi_medium"
+                  onClick={() => openModal('edit', trackerItem)}
+                  pr={2}
+                  w={['80%', 'calc(100% / 4)']}>
+                  <Box data-id="eb014d3ce91b" fontSize="smm">
+                    {trackerItem.name ? (
+                      <Text data-id="5b25881b9d07" isTruncated>{trackerItem.name}</Text>
+                    ) : (
+                      <Text
+                        color="adminTrackerItems.element.unnamed"
+                        data-id="cf52a494ddef"
+                        fontStyle="italic">
+                        Unnamed {t('tracker item')}
+                      </Text>
+                    )}
                   </Box>
+                  <Flex alignItems="center" data-id="2843cf36a78d">
+                    <Box
+                      color="adminTrackerItems.element.category"
+                      data-id="00e0982d1771"
+                      fontSize="11px"
+                      lineHeight="25px">
+                      {trackerItem.category?.name}
+                    </Box>
+                    {!trackerItem.published && (
+                      <Box
+                        bg="#818197"
+                        borderRadius="7px"
+                        color="#FFFFFF"
+                        data-id="4f9590acbd31"
+                        fontSize="11px"
+                        ml={trackerItem.category ? 2 : 0}
+                        p="3px 9px">
+                        Draft
+                      </Box>
+                    )}
+                  </Flex>
                 </Flex>
-              ))
-            )}
-          </Stack>
-        </Box>
+                {device !== 'mobile' && (
+                  <>
+                    <Box
+                      data-id="ba5dc06f000b"
+                      onClick={() => openModal('edit', trackerItem)}
+                      w="calc(100% / 4)">
+                      {trackerItem.frequency}{' '}
+                    </Box>
+                    <Box
+                      data-id="76980342e80b"
+                      onClick={() => openModal('edit', trackerItem)}
+                      w="calc(100% / 4)">
+                      {trackerItem.regulatoryBody?.name}
+                    </Box>
+                  </>
+                )}
+                <Box data-id="b27b1fc74638" textAlign="end" w="calc(100% / 4)" zIndex={5}>
+                  <Copy
+                    _hover={{
+                      color: 'trackerItemsAdminWithContext.strokeHover',
+                      opacity: 0.7,
+                      cursor: 'pointer',
+                    }}
+                    data-id="e4be5197a6fd"
+                    fill="transparent"
+                    fontSize="15px"
+                    onClick={() => {
+                      openModal('clone', trackerItem);
+                    }}
+                    stroke="trackerItemsAdminWithContext.stroke" />
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Trashcan
+                    _hover={{
+                      color: 'trackerItemsAdminWithContext.strokeHover',
+                      opacity: 0.7,
+                      cursor: 'pointer',
+                    }}
+                    data-id="e2e34b6cf144"
+                    fill="transparent"
+                    fontSize="15px"
+                    onClick={() => {
+                      openModal('delete', trackerItem);
+                    }}
+                    stroke="trackerItemsAdminWithContext.binStroke" />
+                </Box>
+              </Flex>
+            ))
+          )}
+        </Stack>
       </Box>
-    </>
-  );
+    </Box>
+  </>);
 };
 
 const TrackerItemsAdminWithContext = (props) => (
-  <TrackerItemModalProvider {...props}>
-    <TrackerItemsAdmin />
+  <TrackerItemModalProvider data-id="4cb9ee2d83d9" {...props}>
+    <TrackerItemsAdmin data-id="84e9258ca419" />
   </TrackerItemModalProvider>
 );
 

@@ -15,9 +15,13 @@ const BusinessUnitFilter = () => {
   };
 
   return (
-    <Box w="full">
-      <BusinessUnitsSelector businessUnits={businessUnits as IBusinessUnit[]} handleChange={handleChange} selected={value} />
-    </Box>
+    (<Box data-id="43d1b58a06d7" w="full">
+      <BusinessUnitsSelector
+        businessUnits={businessUnits as IBusinessUnit[]}
+        data-id="2f97a01dbbc9"
+        handleChange={handleChange}
+        selected={value} />
+    </Box>)
   );
 };
 

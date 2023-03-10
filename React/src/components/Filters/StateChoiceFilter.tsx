@@ -33,24 +33,27 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
   const renderChoices = () => {
     switch (name) {
       case 'itemStatus':
-        return Object.entries(trackerItemStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
+        return Object.entries(trackerItemStatuses).map(([key, label]) => <FilterCheckBox data-id="2bc683059c7e" key={key} label={label} value={key} />);
       case 'status':
-        return Object.entries(usedStatuses).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
+        return Object.entries(usedStatuses).map(([key, label]) => <FilterCheckBox data-id="a4c959cf540e" key={key} label={label} value={key} />);
       case 'priority':
-        return Object.entries(actionPriorities).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
+        return Object.entries(actionPriorities).map(([key, label]) => <FilterCheckBox data-id="4b3a06acde34" key={key} label={label} value={key} />);
       case 'walkType':
-        return Object.entries(auditWalkTypes).map(([key, label]) => <FilterCheckBox key={key} label={label} value={key} />);
+        return Object.entries(auditWalkTypes).map(([key, label]) => <FilterCheckBox data-id="12151aa633de" key={key} label={label} value={key} />);
       default:
         break;
     }
   };
 
   return (
-    <CheckboxGroup onChange={(newValue) => setFilters({ [name]: newValue })} value={value}>
-      <Stack direction="column" overflow="auto">
+    (<CheckboxGroup
+      data-id="1db01e7e0cf6"
+      onChange={(newValue) => setFilters({ [name]: newValue })}
+      value={value}>
+      <Stack data-id="4ae498068ead" direction="column" overflow="auto">
         {renderChoices()}
       </Stack>
-    </CheckboxGroup>
+    </CheckboxGroup>)
   );
 };
 

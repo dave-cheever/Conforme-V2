@@ -14,9 +14,13 @@ const StatusFilter = () => {
   };
 
   return (
-    <Box w="full">
-      <StatusSelector handleChange={handleChange} selected={value} status={auditStatuses} />
-    </Box>
+    (<Box data-id="08df37a5e3aa" w="full">
+      <StatusSelector
+        data-id="b743f2be39aa"
+        handleChange={handleChange}
+        selected={value}
+        status={auditStatuses} />
+    </Box>)
   );
 };
 

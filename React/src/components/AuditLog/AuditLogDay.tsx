@@ -29,25 +29,28 @@ const AuditLogDay = ({ auditLog }: { auditLog: IAuditLog }) => {
   if (auditLog.records.length === 0) return null;
 
   return (
-    <Flex direction={['column', 'row']} mb="20px">
+    (<Flex data-id="32e75f6fb74c" direction={['column', 'row']} mb="20px">
       <Flex
         bg="auditLogDayStyles.dateBg"
         borderRadius="8px"
         color="auditLogDayStyles.dateColor"
+        data-id="6ad363594c2b"
         fontSize="14px"
         fontWeight="bold"
         h="fit-content"
         p="6px 13px"
-        w="108px"
-      >
+        w="108px">
         {daysAgo(auditLog._id)}
       </Flex>
-      <Flex flexDir="column" mt="2" w="full">
+      <Flex data-id="c50bfda03776" flexDir="column" mt="2" w="full">
         {auditLog.records.map((audit) => (
-          <AuditLogRecord audit={audit} key={audit.metatags?.addedAt?.toString()} />
+          <AuditLogRecord
+            audit={audit}
+            data-id="a2d0187186d4"
+            key={audit.metatags?.addedAt?.toString()} />
         ))}
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

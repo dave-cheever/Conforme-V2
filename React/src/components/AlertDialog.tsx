@@ -27,19 +27,29 @@ interface IAlertDialog {
 const AlertDialog = ({ isOpen, title, description, state, showButtons, handleYes, handleNo, onClose }: IAlertDialog) => {
   const cancelRef: any = React.useRef();
   return (
-    <AlertDialogChakra isCentered isOpen={isOpen} leastDestructiveRef={cancelRef} motionPreset="slideInBottom" onClose={onClose}>
-      <AlertDialogOverlay />
-      <AlertDialogContent>
-        <AlertDialogHeader>{title}</AlertDialogHeader>
-        <AlertDialogCloseButton />
-        <AlertDialogBody>{description}</AlertDialogBody>
-        <AlertDialogFooter justifyContent="space-between">
-          <Text color="alertDialog.state" fontSize="md">
+    (<AlertDialogChakra
+      data-id="290d401c856e"
+      isCentered
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      motionPreset="slideInBottom"
+      onClose={onClose}>
+      <AlertDialogOverlay data-id="d32c26439944" />
+      <AlertDialogContent data-id="31e4d9cfbe70">
+        <AlertDialogHeader data-id="51e100dbd9de">{title}</AlertDialogHeader>
+        <AlertDialogCloseButton data-id="c18b1b498492" />
+        <AlertDialogBody data-id="9e86353b7676">{description}</AlertDialogBody>
+        <AlertDialogFooter data-id="7150bf80cca1" justifyContent="space-between">
+          <Text color="alertDialog.state" data-id="6533b0817499" fontSize="md">
             {state}
           </Text>
           {showButtons && (
-            <HStack>
-              <Button disabled={!!state} onClick={handleNo} ref={cancelRef}>
+            <HStack data-id="7504d915dc65">
+              <Button
+                data-id="151e439ac343"
+                disabled={!!state}
+                onClick={handleNo}
+                ref={cancelRef}>
                 No
               </Button>
               <Button
@@ -48,17 +58,17 @@ const AlertDialog = ({ isOpen, title, description, state, showButtons, handleYes
                 }}
                 bg="alertDialog.buttons.action.bg"
                 color="alertDialog.buttons.action.color"
+                data-id="ca2311d321dc"
                 isLoading={!!state}
                 ml={3}
-                onClick={handleYes}
-              >
+                onClick={handleYes}>
                 Yes
               </Button>
             </HStack>
           )}
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialogChakra>
+    </AlertDialogChakra>)
   );
 };
 

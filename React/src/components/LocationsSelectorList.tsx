@@ -12,6 +12,7 @@ interface ILocationsSelectorList {
 
 const LocationsSelectorList = ({ filteredLocations, selected, handleChange }: ILocationsSelectorList) => (
   <CheckboxGroup
+    data-id="a7f12bd3c709"
     onChange={(value) =>
       handleChange({
         target: {
@@ -20,11 +21,10 @@ const LocationsSelectorList = ({ filteredLocations, selected, handleChange }: IL
         },
       })
     }
-    value={selected}
-  >
-    <Stack direction="column" w="full">
+    value={selected}>
+    <Stack data-id="21a4ca172a1e" direction="column" w="full">
       {filteredLocations?.map(({ name, _id }) => (
-        <FilterCheckBox key={_id} label={name} value={_id} />
+        <FilterCheckBox data-id="3fa39da31f38" key={_id} label={name} value={_id} />
       ))}
     </Stack>
   </CheckboxGroup>

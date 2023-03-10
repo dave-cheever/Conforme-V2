@@ -29,10 +29,11 @@ const FiltersPanel = () => {
   if (!showFiltersPanel) return null;
 
   return (
-    <Flex
+    (<Flex
       bg="filterPanel.bg"
       borderBottomStartRadius={['0px', '20px']}
       boxShadow="md"
+      data-id="cf42d7a14e56"
       direction="column"
       h="100vh"
       position={['relative', 'absolute']}
@@ -40,18 +41,36 @@ const FiltersPanel = () => {
       right="0"
       shrink={0}
       w={['full', '320px']}
-      zIndex="10"
-    >
-      <Flex align="center" basis={['55px', '65px']} justify="space-between" px="4" shrink={0}>
-        <Box color="brand.darkGrey" fontSize="16px" fontWeight="700">
+      zIndex="10">
+      <Flex
+        align="center"
+        basis={['55px', '65px']}
+        data-id="ebf3246acf1d"
+        justify="space-between"
+        px="4"
+        shrink={0}>
+        <Box
+          color="brand.darkGrey"
+          data-id="6ef3f65ccac1"
+          fontSize="16px"
+          fontWeight="700">
           Filter items by
         </Box>
-        <CrossIcon cursor="pointer" onClick={() => setShowFiltersPanel(false)} stroke="filterPanel.closeIconColor" />
+        <CrossIcon
+          cursor="pointer"
+          data-id="f93b20e02449"
+          onClick={() => setShowFiltersPanel(false)}
+          stroke="filterPanel.closeIconColor" />
       </Flex>
-      <Flex direction="column" grow={1} overflowY="auto" px="4">
+      <Flex
+        data-id="40353e9a107f"
+        direction="column"
+        grow={1}
+        overflowY="auto"
+        px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel && isPermitted({ user, action: value?.permission }))
-            return <FiltersPanelItem filter={value} key={name} name={name} />;
+            return <FiltersPanelItem data-id="bcb76ef0cc01" filter={value} key={name} name={name} />;
           return null;
         })}
       </Flex>
@@ -62,35 +81,35 @@ const FiltersPanel = () => {
         borderBottomStartRadius={['0px', '20px']}
         bottom={0}
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
+        data-id="a0b06609abf2"
         justify="center"
         position={['sticky', 'relative']}
         shrink={0}
-        w="full"
-      >
+        w="full">
         <Button
           _hover={{ opacity: 0.9 }}
           color="filterPanel.resetButtonColor"
+          data-id="934ac542022e"
           fontSize="14px"
           h="35px"
           onClick={cleanFilters}
-          w={['40%', '115px']}
-        >
+          w={['40%', '115px']}>
           Reset all
         </Button>
         <Button
           _hover={{ opacity: 0.9 }}
           bg="filterPanel.doneButtonBg"
           color="filterPanel.doneButtonColor"
+          data-id="60d8c6583d18"
           fontSize="14px"
           h="35px"
           ml="10px"
           onClick={() => setShowFiltersPanel(false)}
-          w={['40%', '115px']}
-        >
+          w={['40%', '115px']}>
           Done
         </Button>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

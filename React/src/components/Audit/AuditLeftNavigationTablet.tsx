@@ -12,9 +12,10 @@ const AuditLeftNavigationTablet = () => {
   const { organizationConfig } = useAppContext();
 
   return (
-    <Flex
+    (<Flex
       bg="auditLeftNavigation.bg"
       color="auditLeftNavigation.color"
+      data-id="33f490301d15"
       direction="column"
       display={['none', 'flex', 'none']}
       flexShrink={0}
@@ -23,11 +24,21 @@ const AuditLeftNavigationTablet = () => {
       justifyContent="space-between"
       overflow="auto"
       px={6}
-      w="80px"
-    >
-      <Flex flexDirection="column">
-        <Box alignItems="center" cursor="pointer" display="flex" h="80px" justifyContent="center" onClick={() => navigateTo('/')}>
-          <Text color="auditLeftNavigation.organizationNameFontColor" fontSize="16px" fontWeight="bold">
+      w="80px">
+      <Flex data-id="b86166dbdaeb" flexDirection="column">
+        <Box
+          alignItems="center"
+          cursor="pointer"
+          data-id="0340e3feaf5e"
+          display="flex"
+          h="80px"
+          justifyContent="center"
+          onClick={() => navigateTo('/')}>
+          <Text
+            color="auditLeftNavigation.organizationNameFontColor"
+            data-id="04d94596cb0d"
+            fontSize="16px"
+            fontWeight="bold">
             {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
@@ -35,24 +46,30 @@ const AuditLeftNavigationTablet = () => {
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="fda1a84462e4"
           fontSize="14px"
           h="30px"
           mb="20px"
           onClick={() => navigateTo('/audits')}
-          w="full"
-        >
-          <ChevronRight ml={2} transform="Rotate(180deg)" />
+          w="full">
+          <ChevronRight data-id="0e9f54b27d0a" ml={2} transform="Rotate(180deg)" />
         </Flex>
-        <Flex flexDirection="column" mb={2}>
+        <Flex data-id="c59903fbc731" flexDirection="column" mb={2}>
           {auditNavigationTabs.map(({ label, icon, url }) => (
-            <AuditLeftTabItem icon={icon} isDesktop={false} key={url} label={label} url={url} />
+            <AuditLeftTabItem
+              data-id="e5155854b3dd"
+              icon={icon}
+              isDesktop={false}
+              key={url}
+              label={label}
+              url={url} />
           ))}
         </Flex>
       </Flex>
-      <Flex display={['none', 'flex']}>
-        <Icon as={ConformeSmall} h="30px" mb="20px" w="27px" />
+      <Flex data-id="2250a5eaa6ef" display={['none', 'flex']}>
+        <Icon as={ConformeSmall} data-id="a768d173a420" h="30px" mb="20px" w="27px" />
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

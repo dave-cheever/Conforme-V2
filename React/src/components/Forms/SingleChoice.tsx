@@ -28,41 +28,59 @@ const SingleChoices = ({ name, label, required, tooltip = '', defaultvalue, opti
   }, [selectedRadio]);
 
   return (
-    <Box id={name} w="full">
+    (<Box data-id="635b684bc6a3" id={name} w="full">
       {label && (
-        <Flex align="center" justify="space-between" mb="none" pb={2} pt={2}>
-          <Box color="singleChoices.labelFont.normal" fontSize="ssm" fontWeight="bold" left="none" position="static" zIndex={2}>
+        <Flex
+          align="center"
+          data-id="cf1cb13db19e"
+          justify="space-between"
+          mb="none"
+          pb={2}
+          pt={2}>
+          <Box
+            color="singleChoices.labelFont.normal"
+            data-id="d2d2a99014eb"
+            fontSize="ssm"
+            fontWeight="bold"
+            left="none"
+            position="static"
+            zIndex={2}>
             {label}
             {required && (
               <Asterisk
+                data-id="9d2718a00cd3"
                 fill="questionListElement.iconAsterisk"
                 h="9px"
                 mb="8px"
                 ml="5px"
                 stroke="questionListElement.iconAsterisk"
-                w="9px"
-              />
+                w="9px" />
             )}{' '}
             {tooltip && (
-              <Tooltip hasArrow label={tooltip} placement="top">
-                <Icon h="14px" mb={1} name="info" />
+              <Tooltip data-id="eaf9f1a632ad" hasArrow label={tooltip} placement="top">
+                <Icon data-id="509d99e9628d" h="14px" mb={1} name="info" />
               </Tooltip>
             )}
           </Box>
         </Flex>
       )}
-      <VStack {...group} align="stretch">
+      <VStack data-id="fa6b61d72e96" {...group} align="stretch">
         {options &&
           options.map(({ label, value }) => {
             const radio = getRadioProps({ value });
             return (
-              <CustomRadioButton key={value} {...radio} fontSize="smm" isDisabled={readMode}>
+              (<CustomRadioButton
+                data-id="57f5ddda9981"
+                key={value}
+                {...radio}
+                fontSize="smm"
+                isDisabled={readMode}>
                 {label}
-              </CustomRadioButton>
+              </CustomRadioButton>)
             );
           })}
       </VStack>
-    </Box>
+    </Box>)
   );
 };
 

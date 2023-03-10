@@ -145,8 +145,9 @@ const QuestionSingleChoiceForm = ({
   };
 
   return (
-    <Flex flexDir="column" h="full">
+    (<Flex data-id="c60cec58890e" flexDir="column" h="full">
       <Flex
+        data-id="7e9e3ec3db89"
         flexDir="column"
         h="full"
         overflowX="hidden"
@@ -160,42 +161,67 @@ const QuestionSingleChoiceForm = ({
           '&::-webkit-scrollbar-thumb': {
             backgroundColor: 'questionSingleChoiceForm.scrollBar.color',
           },
-        }}
-      >
-        <Text fontSize="smm" fontWeight="bold" mb="20px">
+        }}>
+        <Text data-id="2557e73b1059" fontSize="smm" fontWeight="bold" mb="20px">
           {questionHeader(questionType)}
         </Text>
         <TextInput
           control={control}
+          data-id="35ad5e0350ab"
           label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
           validations={{
             notEmpty: true,
-          }}
-        />
-        <TextInput control={control} label="Description" name="description" />
-        <Text color="questionSingleChoiceForm.text.color" fontSize="ssm" my="20px">
+          }} />
+        <TextInput
+          control={control}
+          data-id="d692ab145cd6"
+          label="Description"
+          name="description" />
+        <Text
+          color="questionSingleChoiceForm.text.color"
+          data-id="b3dfa5afa99e"
+          fontSize="ssm"
+          my="20px">
           Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
         </Text>
-        <Box pr="10px" w="calc(100% + 10px)">
-          <DragDropContext onDragEnd={moveOptions} onDragStart={() => setIsDragging(true)}>
-            <Droppable droppableId="multiChoiceQuestionDroppable">
+        <Box data-id="8939e0c0aade" pr="10px" w="calc(100% + 10px)">
+          <DragDropContext
+            data-id="65fb3a027d69"
+            onDragEnd={moveOptions}
+            onDragStart={() => setIsDragging(true)}>
+            <Droppable data-id="f6035cda2965" droppableId="multiChoiceQuestionDroppable">
               {(provided) => (
-                <Box ref={provided.innerRef} {...provided.droppableProps} width="full">
+                <Box
+                  data-id="dc36b9cb76cf"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  width="full">
                   {fields.map(({ id, label, value }, index) => {
                     const radio = getRadioProps({ ...(value ? { value } : { value: JSON.stringify(index) }) });
                     return (
-                      <Draggable draggableId={id} index={index} key={id}>
+                      (<Draggable data-id="be1ac919f283" draggableId={id} index={index} key={id}>
                         {(provided) => (
-                          <Box>
-                            <Flex ref={provided.innerRef} {...provided.draggableProps} align="center">
-                              <Box {...provided.dragHandleProps}>
-                                <Move ml="2px" mr="14px" mt="-4px" stroke="questionSingleChoiceForm.icon.moveIcon" w="10px" />
+                          <Box data-id="a8e81416c76a">
+                            <Flex
+                              data-id="50d9fa2dfc4c"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              align="center">
+                              <Box data-id="3c21ca1a7e1d" {...provided.dragHandleProps}>
+                                <Move
+                                  data-id="74266936e08d"
+                                  ml="2px"
+                                  mr="14px"
+                                  mt="-4px"
+                                  stroke="questionSingleChoiceForm.icon.moveIcon"
+                                  w="10px" />
                               </Box>
-                              <Flex w="full">
-                                <CustomRadioButton {...radio} fontSize="smm" isSingleChoice>
+                              <Flex data-id="7118e6b06dbe" w="full">
+                                <CustomRadioButton data-id="dac7d9ae5053" {...radio} fontSize="smm" isSingleChoice>
                                   <Input
+                                    data-id="222b094b681b"
                                     name={id}
                                     onBlur={() => reset({ ...getValues() })}
                                     onChange={(e) => {
@@ -205,20 +231,20 @@ const QuestionSingleChoiceForm = ({
                                     onKeyDown={(e) => e.key === 'Enter' && onSubmitInput(index, label)}
                                     placeholder="Option name"
                                     px="2px"
-                                    value={inputValue[index]}
-                                  />
+                                    value={inputValue[index]} />
                                 </CustomRadioButton>
                               </Flex>
                               <Trashcan
                                 cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
+                                data-id="13984b7845ee"
                                 mr={index + 1 === fields.length ? '12px' : '28px'}
                                 onClick={() => removeChoice(index)}
                                 stroke="questionSingleChoiceForm.icon.iconBin"
-                                w="20px"
-                              />
+                                w="20px" />
                               {index + 1 === fields.length && (
                                 <PlusIcon
                                   cursor="pointer"
+                                  data-id="5e77feb3506d"
                                   onClick={() => {
                                     append({
                                       label: '',
@@ -226,13 +252,12 @@ const QuestionSingleChoiceForm = ({
                                     });
                                     setInputValue((prevValue) => [...prevValue, '']);
                                   }}
-                                  stroke="questionSingleChoiceForm.icon.plusIcon"
-                                />
+                                  stroke="questionSingleChoiceForm.icon.plusIcon" />
                               )}
                             </Flex>
                           </Box>
                         )}
-                      </Draggable>
+                      </Draggable>)
                     );
                   })}
                 </Box>
@@ -242,14 +267,18 @@ const QuestionSingleChoiceForm = ({
         </Box>
       </Flex>
       {optionIsDuplicate && (
-        <Text color="questionSingleChoiceForm.text.error" fontSize="sm">
+        <Text
+          color="questionSingleChoiceForm.text.error"
+          data-id="ef874554c31f"
+          fontSize="sm">
           Options cannot be duplicated
         </Text>
       )}
-      <Flex justifyContent="space-between" mt="51px">
+      <Flex data-id="590593cb10a6" justifyContent="space-between" mt="51px">
         <Button
           bg="questionSingleChoiceForm.button.secondary.bg"
           color="questionSingleChoiceForm.button.secondary.font"
+          data-id="0703fa9767d4"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -259,13 +288,13 @@ const QuestionSingleChoiceForm = ({
             setEditQuestionIndex(undefined);
             setEditQuestion('');
           }}
-          p="17px"
-        >
+          p="17px">
           Cancel
         </Button>
         <Button
           bg="questionSingleChoiceForm.button.primary.bg"
           color="questionSingleChoiceForm.button.primary.font"
+          data-id="fe65f03bfaae"
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName || optionIsDuplicate}
           fontSize="sm"
           fontWeight="medium"
@@ -280,13 +309,16 @@ const QuestionSingleChoiceForm = ({
             setShowQuestionForm(false);
           }}
           p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
-          title={questionAlreadyExist ? 'This question already exist' : ''}
-        >
+          rightIcon={<Icon
+            as={OpenMenuArrow}
+            data-id="899c84285374"
+            stroke="trackerItemModal.tabs.bottomButton.icon"
+            transform="rotate(270deg)" />}
+          title={questionAlreadyExist ? 'This question already exist' : ''}>
           Save question
         </Button>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

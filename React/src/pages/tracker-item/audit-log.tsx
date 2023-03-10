@@ -144,32 +144,50 @@ const AuditLog = () => {
   }, [activeTab]);
 
   return (
-    <Flex bg="white" borderRadius="20px" flexDir="column" h="full" overflow="auto" p="25px 30px" w="full">
-      <Flex mb="3">
+    (<Flex
+      bg="white"
+      borderRadius="20px"
+      data-id="1695b75757c3"
+      flexDir="column"
+      h="full"
+      overflow="auto"
+      p="25px 30px"
+      w="full">
+      <Flex data-id="19a227057187" mb="3">
         {auditTabs?.map(({ index, label }) => (
-          <TabItem active={index === activeTab} index={index} key={index} label={label} setActiveTab={setActiveTab} />
+          <TabItem
+            active={index === activeTab}
+            data-id="e8606fb8b7d1"
+            index={index}
+            key={index}
+            label={label}
+            setActiveTab={setActiveTab} />
         ))}
       </Flex>
-      <AuditLogComponent auditLogs={auditLogs} isLoadingMore={isLoadingMore} loading={loading} />
+      <AuditLogComponent
+        auditLogs={auditLogs}
+        data-id="2b623ff1c332"
+        isLoadingMore={isLoadingMore}
+        loading={loading} />
       {!loading &&
         (totalAuditLogs === countAuditLogs ? (
-          <Text color="auditLog.noLogs" mb={4}>
+          <Text color="auditLog.noLogs" data-id="a3b166660640" mb={4}>
             No more logs
           </Text>
         ) : (
           <Text
             color="auditLog.loadMore"
             cursor="pointer"
+            data-id="fb8ca990d8ac"
             mb={4}
             onClick={() => {
               setSkip((prev) => prev + 5);
               setIsLoadingMore(true);
-            }}
-          >
+            }}>
             Load more audit logs
           </Text>
         ))}
-    </Flex>
+    </Flex>)
   );
 };
 

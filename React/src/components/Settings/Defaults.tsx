@@ -65,12 +65,17 @@ const Defaults = () => {
   };
 
   return (
-    <Stack h="full" pb={3} spacing={7} w="full">
+    (<Stack data-id="450aeb17305d" h="full" pb={3} spacing={7} w="full">
       {defaultSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value, options }) => (
-        <Flex align={['flex-start', 'center']} flexDirection={['column', 'row']} key={name}>
-          <Flex maxW="280px">
+        <Flex
+          align={['flex-start', 'center']}
+          data-id="0c30563b63fd"
+          flexDirection={['column', 'row']}
+          key={name}>
+          <Flex data-id="5c0c0dfcc378" maxW="280px">
             <Field
               control={control}
+              data-id="35449064f2b9"
               help={help}
               label={label}
               name={name}
@@ -82,31 +87,30 @@ const Defaults = () => {
                 notEmpty: true,
               }}
               value={value}
-              variant={variant}
-            />
+              variant={variant} />
           </Flex>
           {wasFieldChanged(inputType, name, value) && !Object.keys(errors).includes(name) && (
-            <HStack ml={3} mt={7} spacing={3}>
+            <HStack data-id="4d1a3149ea3f" ml={3} mt={7} spacing={3}>
               <IconButton
                 aria-label="Confirm Icon"
                 colorScheme="purpleHeart"
-                icon={<CheckIcon />}
+                data-id="4e72cb68d637"
+                icon={<CheckIcon data-id="2b6d272b511e" />}
                 onClick={() => updateSettings({ _id, name })}
                 size="sm"
-                variant="outline"
-              />
+                variant="outline" />
               <IconButton
                 aria-label="Cross Icon"
                 colorScheme="red"
-                icon={<CloseIcon />}
+                data-id="0a9968ec9bfc"
+                icon={<CloseIcon data-id="321be9ef5936" />}
                 onClick={() => resetValue({ name, value })}
-                size="sm"
-              />
+                size="sm" />
             </HStack>
           )}
         </Flex>
       ))}
-    </Stack>
+    </Stack>)
   );
 };
 

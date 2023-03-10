@@ -81,7 +81,11 @@ const SearchBar = () => {
         ...(questionsCategoriesData?.questionsCategories ?? []).map((questionsCategory) => ({
           _id: questionsCategory._id,
           label: questionsCategory.name,
-          icon: (props) => <QuestionsCategoryIcon icon={questionsCategory.icon} key={questionsCategory._id} {...props} />,
+          icon: (props) => <QuestionsCategoryIcon
+            data-id="34703839adfd"
+            icon={questionsCategory.icon}
+            key={questionsCategory._id}
+            {...props} />,
           type: 'answers',
           url: '/answers',
         })),
@@ -176,18 +180,28 @@ const SearchBar = () => {
   };
 
   return (
-    <Flex direction="column" position="relative" ref={ref}>
+    (<Flex data-id="1bbf0fad73e2" direction="column" position="relative" ref={ref}>
       <InputGroup
+        data-id="a5273cba17ab"
         display="block"
         maxW="100%"
         transition="width .15s"
         w={['calc(100vw - 30px)', isSearchBarOpen ? '550px' : '260px']}
-        zIndex={1}
-      >
-        <InputLeftElement color="navigationTop.inputIconColor" pointerEvents="none">
-          <SearchIcon fill="navigationTop.searchBarIcon" opacity="1" stroke="brand.outerSpace" />
+        zIndex={1}>
+        <InputLeftElement
+          color="navigationTop.inputIconColor"
+          data-id="7ab9dbdb8063"
+          pointerEvents="none">
+          <SearchIcon
+            data-id="c4caee9485a3"
+            fill="navigationTop.searchBarIcon"
+            opacity="1"
+            stroke="brand.outerSpace" />
         </InputLeftElement>
-        <InputRightElement display={isSearchBarOpen ? 'block' : 'none'} h="full">
+        <InputRightElement
+          data-id="5b7d7ed8f862"
+          display={isSearchBarOpen ? 'block' : 'none'}
+          h="full">
           <CrossIcon
             _active={{}}
             _hover={{
@@ -195,6 +209,7 @@ const SearchBar = () => {
               opacity: 0.7,
               cursor: 'pointer',
             }}
+            data-id="02760af478f6"
             h="13.5px"
             ml="15px"
             mt="10px"
@@ -204,11 +219,11 @@ const SearchBar = () => {
               setSearchResults([]);
             }}
             stroke="navigationTop.searchCrossIconStroke"
-            w="13.5px"
-          />
+            w="13.5px" />
         </InputRightElement>
         <Input
           bg="navigationTop.inputBg"
+          data-id="76b7cf59603e"
           fontSize="smm"
           fontWeight="semi_medium"
           onChange={(e) => {
@@ -221,20 +236,39 @@ const SearchBar = () => {
           }}
           placeholder="Search"
           rounded="10px"
-          value={searchText}
-        />
+          value={searchText} />
       </InputGroup>
       {isOpen && (
-        <Box display={isSearchBarOpen ? 'block' : 'none'} position="absolute" pt={[6, 12]} w="full" zIndex={0}>
-          <Flex bg="white" boxShadow="0px 3px 10px rgba(0, 0, 0, .1)" direction="row" fontSize="smm" rounded="10px">
+        <Box
+          data-id="2f0f3c420f1e"
+          display={isSearchBarOpen ? 'block' : 'none'}
+          position="absolute"
+          pt={[6, 12]}
+          w="full"
+          zIndex={0}>
+          <Flex
+            bg="white"
+            boxShadow="0px 3px 10px rgba(0, 0, 0, .1)"
+            data-id="c40ec27aa9ed"
+            direction="row"
+            fontSize="smm"
+            rounded="10px">
             {/* eslint-disable-next-line react/jsx-sort-props */}
-            <Box bg="searchBar.categoriesBg" borderRadius="10px" borderBottomRightRadius="none" borderTopRightRadius="none" px={3} pb={2}>
+            <Box
+              bg="searchBar.categoriesBg"
+              borderBottomRightRadius="none"
+              borderRadius="10px"
+              borderTopRightRadius="none"
+              data-id="625fcc3a70d0"
+              pb={2}
+              px={3}>
               {searchCategories.map((searchCategory) => (
                 <Box
                   _hover={{
                     cursor: 'pointer',
                   }}
                   alignItems="center"
+                  data-id="2ac86a6621dc"
                   display="flex"
                   fontSize={['sm', 'md']}
                   fontWeight="normal"
@@ -243,9 +277,8 @@ const SearchBar = () => {
                   mt={2}
                   onClick={() => setSelectedSearchCategory(searchCategory)}
                   pos="relative"
-                  w={['100px', '200px']}
-                >
-                  <Flex align="center" h="100%">
+                  w={['100px', '200px']}>
+                  <Flex align="center" data-id="b36d7379d190" h="100%">
                     <Flex
                       alignItems="center"
                       bg={
@@ -253,13 +286,14 @@ const SearchBar = () => {
                           ? 'navigationLeftItem.selectedLabelBg'
                           : 'navigationLeftItem.unselectedLabelBg'
                       }
+                      data-id="d99165ca9f16"
                       h="30px"
                       justifyContent="center"
                       rounded="8px"
-                      w="30px"
-                    >
+                      w="30px">
                       <Icon
                         as={searchCategory.icon}
+                        data-id="8c7de759428a"
                         fill="transparent"
                         h="15px"
                         stroke={
@@ -268,23 +302,26 @@ const SearchBar = () => {
                             ? 'navigationLeftItem.selectedIconStroke'
                             : 'navigationLeftItem.unselectedIconStroke'
                         }
-                        w="15px"
-                      />
+                        w="15px" />
                     </Flex>
                   </Flex>
-                  <Box color="navigationLeftItem.unselectedMenuItem" fontWeight="400" ml="5">
+                  <Box
+                    color="navigationLeftItem.unselectedMenuItem"
+                    data-id="7c1179ee898e"
+                    fontWeight="400"
+                    ml="5">
                     {searchCategory.label}
                   </Box>
                 </Box>
               ))}
             </Box>
-            <Box h="auto" w="full">
+            <Box data-id="954f1f8ff73a" h="auto" w="full">
               {loading ? (
-                <Flex align="center" h="100px" justify="center" w="full">
-                  <Loader center size="sm" />
+                <Flex align="center" data-id="5610944d5e84" h="100px" justify="center" w="full">
+                  <Loader center data-id="cd4b7a92c1ed" size="sm" />
                 </Flex>
               ) : (
-                <Flex direction="column">
+                <Flex data-id="72cbceada7fe" direction="column">
                   {searchResults ? (
                     <>
                       {searchResults.length > 0 ? (
@@ -296,37 +333,37 @@ const SearchBar = () => {
                               }}
                               align="center"
                               cursor="pointer"
+                              data-id="9492b2b5c781"
                               key={result._id}
                               onClick={() => handleSearchResultClick(result)}
                               p={3}
-                              spacing={3}
-                            >
-                              <Box>
-                                <UserAvatar size="sm" userId={(result.user as IUser)?._id} />
+                              spacing={3}>
+                              <Box data-id="e66521cfa8ae">
+                                <UserAvatar data-id="bfc86b910eff" size="sm" userId={(result.user as IUser)?._id} />
                               </Box>
-                              <Flex direction="column" grow={1}>
+                              <Flex data-id="7bcb4e9f101c" direction="column" grow={1}>
                                 {selectedSearchCategory?.type === 'all' && (
-                                  <Text fontSize="xs">
+                                  <Text data-id="8a6ae019fac6" fontSize="xs">
                                     {searchCategories.find(({ type, _id }) => type === result.type && _id == result.scope._id)?.label}
                                   </Text>
                                 )}
-                                <Text fontSize="smm" fontWeight="bold" noOfLines={1}>
+                                <Text data-id="5a545e18dda7" fontSize="smm" fontWeight="bold" noOfLines={1}>
                                   {result.title}
                                 </Text>
                               </Flex>
-                              <ChevronRight cursor="pointer" />
+                              <ChevronRight cursor="pointer" data-id="b9c27d5eb4e3" />
                             </HStack>
                           ))}
                         </>
                       ) : (
-                        <Flex align="center" justify="center" mt={4}>
-                          <Text>No results found</Text>
+                        <Flex align="center" data-id="50533d923e29" justify="center" mt={4}>
+                          <Text data-id="44e8f209a4f5">No results found</Text>
                         </Flex>
                       )}
                     </>
                   ) : (
-                    <Flex align="center" justify="center" mt={4}>
-                      <Text>Enter search phrase in the box above</Text>
+                    <Flex align="center" data-id="6479715af01d" justify="center" mt={4}>
+                      <Text data-id="561cea50604d">Enter search phrase in the box above</Text>
                     </Flex>
                   )}
                 </Flex>
@@ -335,7 +372,7 @@ const SearchBar = () => {
           </Flex>
         </Box>
       )}
-    </Flex>
+    </Flex>)
   );
 };
 

@@ -55,59 +55,100 @@ const Login = () => {
   };
 
   return (
-    <Flex bg="loginPage.bg" flexDir={['column', 'column', 'row']} h="100vh" w="full">
+    (<Flex
+      bg="loginPage.bg"
+      data-id="df59d680cdd4"
+      flexDir={['column', 'column', 'row']}
+      h="100vh"
+      w="full">
       {user ? (
-        <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[2, 2, 1]} w={['full', 'full', '30%']}>
-          <VStack align="center" spacing={5} textAlign="center">
+        <Flex
+          align="center"
+          data-id="117076232bef"
+          h="full"
+          justify={['center', 'center', 'flex-end']}
+          order={[2, 2, 1]}
+          w={['full', 'full', '30%']}>
+          <VStack align="center" data-id="481f61719b09" spacing={5} textAlign="center">
             <Flex
               color="loginPage.organizationNameColor"
+              data-id="ff89586c1608"
               fontSize="24px"
               fontWeight="bold"
               lineHeight="41px"
               mb={3}
               noOfLines={2}
               textOverflow="ellipsis"
-              w="240px"
-            >
+              w="240px">
               {organizationConfig?.name}
             </Flex>
-            <Flex bg="white" borderColor="loginPage.avatarBorderColor" borderWidth="10px" rounded="full">
-              <Avatar borderColor="white" borderWidth="4px" h="75px" name={user?.displayName} src={user?.imgUrl} w="75px" />
+            <Flex
+              bg="white"
+              borderColor="loginPage.avatarBorderColor"
+              borderWidth="10px"
+              data-id="47c8964fc15b"
+              rounded="full">
+              <Avatar
+                borderColor="white"
+                borderWidth="4px"
+                data-id="e4c262781a82"
+                h="75px"
+                name={user?.displayName}
+                src={user?.imgUrl}
+                w="75px" />
             </Flex>
             <Button
               _hover={{ bg: 'loginPage.hoverColor' }}
               bg="loginPage.button.bg"
               borderRadius="10px"
               color="loginPage.button.color"
+              data-id="e8ae6d7d49e8"
               fontSize="14px"
               h="40px"
               lineHeight="18px"
               onClick={loginWithAzureAD}
-              w="204px"
-            >
+              w="204px">
               Login as {user?.firstName || user?.displayName}
             </Button>
-            <Flex align="center" color="loginPage.descriptionColor" flexDir="column" fontSize="11px">
-              <Flex>Not {user?.firstName || user?.displayName}?</Flex>
-              <Flex _hover={{ color: 'loginPage.hoverColor' }} cursor="pointer" onClick={removeUser}>
+            <Flex
+              align="center"
+              color="loginPage.descriptionColor"
+              data-id="64562ee43106"
+              flexDir="column"
+              fontSize="11px">
+              <Flex data-id="3b61595ef693">Not {user?.firstName || user?.displayName}?</Flex>
+              <Flex
+                _hover={{ color: 'loginPage.hoverColor' }}
+                cursor="pointer"
+                data-id="0d304f9a8c7c"
+                onClick={removeUser}>
                 Login as someone else
               </Flex>
             </Flex>
           </VStack>
         </Flex>
       ) : (
-        <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[2, 2, 1]} w={['full', 'full', '30%']}>
-          <Flex flexDir="column" textAlign={['center', 'center', 'start']}>
+        <Flex
+          align="center"
+          data-id="78b578da8ba2"
+          h="full"
+          justify={['center', 'center', 'flex-end']}
+          order={[2, 2, 1]}
+          w={['full', 'full', '30%']}>
+          <Flex
+            data-id="d17119994624"
+            flexDir="column"
+            textAlign={['center', 'center', 'start']}>
             <Text
               color="loginPage.organizationNameColor"
+              data-id="595eeea26c04"
               fontSize="36px"
               fontWeight="bold"
               lineHeight="41px"
               mb="50px"
               noOfLines={2}
               textOverflow="ellipsis"
-              w="240px"
-            >
+              w="240px">
               {organizationConfig?.name}
             </Text>
             <Button
@@ -115,28 +156,34 @@ const Login = () => {
               bg="loginPage.button.bg"
               borderRadius="10px"
               color="loginPage.button.color"
+              data-id="6140549ce0f0"
               fontSize="14px"
               h="40px"
               lineHeight="18px"
               onClick={loginWithAzureAD}
-              rightIcon={<ArrowRight mt={1} />}
-              w="240px"
-            >
+              rightIcon={<ArrowRight data-id="6770ef8de428" mt={1} />}
+              w="240px">
               Login with Azure AD
             </Button>
           </Flex>
         </Flex>
       )}
-      <Flex align="center" h="full" justify={['center', 'center', 'flex-end']} order={[1, 1, 2]} w={['full', 'full', '70%']}>
-        <Box h={['30vh', '40vh', '95vh']} overflow="hidden">
+      <Flex
+        align="center"
+        data-id="a589ca93e90a"
+        h="full"
+        justify={['center', 'center', 'flex-end']}
+        order={[1, 1, 2]}
+        w={['full', 'full', '70%']}>
+        <Box data-id="144d4a61df5f" h={['30vh', '40vh', '95vh']} overflow="hidden">
           <Image
+            data-id="01d3aec22abd"
             h="full"
             maxW="max-content"
-            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl}
-          />
+            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />
         </Box>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

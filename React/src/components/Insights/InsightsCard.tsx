@@ -17,23 +17,64 @@ const InsightsCard = ({
   status: string;
   type?: 'audits' | 'actions';
 }) => (
-  <Flex align="center" cursor="pointer" direction="column" mr="20px" onClick={() => onSelect(status)}>
-    <Box bg={`insightsCard.types.${status}`} h="250px" overflow="hidden" position="relative" rounded="20px" w="246px" zIndex="1">
-      <InsightsCardDots h="175px" position="absolute" w="175px" zIndex="2" {...insightsCardsDotsPosition[status]} />
-      <Flex direction="column" position="relative" px="30px" py="25px" textAlign="left" zIndex="3">
-        <Text color="insightsCard.color" fontSize="14px">
+  <Flex
+    align="center"
+    cursor="pointer"
+    data-id="9b1cfd24a456"
+    direction="column"
+    mr="20px"
+    onClick={() => onSelect(status)}>
+    <Box
+      bg={`insightsCard.types.${status}`}
+      data-id="31ab9ad76f9b"
+      h="250px"
+      overflow="hidden"
+      position="relative"
+      rounded="20px"
+      w="246px"
+      zIndex="1">
+      <InsightsCardDots
+        data-id="4d8a488cfc19"
+        h="175px"
+        position="absolute"
+        w="175px"
+        zIndex="2"
+        {...insightsCardsDotsPosition[status]} />
+      <Flex
+        data-id="84ed3154af62"
+        direction="column"
+        position="relative"
+        px="30px"
+        py="25px"
+        textAlign="left"
+        zIndex="3">
+        <Text color="insightsCard.color" data-id="48ac373d00ee" fontSize="14px">
           {type === 'audits' ? auditsInsightsTypes[status] : actionsInsightsTypes[status]}
         </Text>
-        <Heading color="insightsCard.color" fontSize="100px">
+        <Heading color="insightsCard.color" data-id="2da45241f9b7" fontSize="100px">
           {count}
         </Heading>
-        <Spacer />
-        {selected && <Box bg="insightsCard.color" h="7px" mt="22px" rounded="100px" w="100%" />}
+        <Spacer data-id="f9f4c1b9e58c" />
+        {selected && <Box
+          bg="insightsCard.color"
+          data-id="ab2201919037"
+          h="7px"
+          mt="22px"
+          rounded="100px"
+          w="100%" />}
       </Flex>
     </Box>
     {selected && (
-      <Icon fill={`insightsCard.types.${status}`} height="15px" viewBox="0 0 39 15" width="39px" zIndex="2">
-        <path d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z" />
+      <Icon
+        data-id="950a6f98feba"
+        fill={`insightsCard.types.${status}`}
+        height="15px"
+        viewBox="0 0 39 15"
+        width="39px"
+        zIndex="2">
+        <path
+          d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z"
+          data-id="3a50da1f2d80" />
       </Icon>
     )}
   </Flex>

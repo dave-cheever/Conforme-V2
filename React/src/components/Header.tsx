@@ -32,32 +32,43 @@ const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBread
   }, [device, breadcrumbs, mobileBreadcrumbs]);
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
-    <Flex align="center" h="full" key={`bc-${i}`}>
-      {i > 0 && <ArrowRight color="#818197" display="flex" ml={2} mr={1} mt={['0px', '5px']} />}
+    <Flex align="center" data-id="bed31f747997" h="full" key={`bc-${i}`}>
+      {i > 0 && <ArrowRight
+        color="#818197"
+        data-id="1507ccf9eca0"
+        display="flex"
+        ml={2}
+        mr={1}
+        mt={['0px', '5px']} />}
       <Text
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
+        data-id="4e3ce528c3ed"
         display={i === breadCrumbs.length - 1 ? 'flex' : 'flex'}
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
         mr={1}
-        pl={[0, 2]}
-      >
+        pl={[0, 2]}>
         {capitalize(breadcrumb)}
       </Text>
     </Flex>
   );
 
   return (
-    <Flex align="center" h={['60px', '70px']} position="relative" zIndex="2">
-      <Flex justify="space-between" w="full">
-        <Flex display="flex" flexShrink={0} ml="5">
+    (<Flex
+      align="center"
+      data-id="254db3433c08"
+      h={['60px', '70px']}
+      position="relative"
+      zIndex="2">
+      <Flex data-id="29c8a722c6a3" justify="space-between" w="full">
+        <Flex data-id="20c16a3e4d08" display="flex" flexShrink={0} ml="5">
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
-        <Flex justify="flex-end" mr="15px" w="full">
+        <Flex data-id="5fd3aa3efb55" justify="flex-end" mr="15px" w="full">
           {children}
         </Flex>
-        {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton />}
+        {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="b947f2c69a3e" />}
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

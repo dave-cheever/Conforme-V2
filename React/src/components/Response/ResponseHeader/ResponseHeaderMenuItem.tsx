@@ -13,10 +13,15 @@ const ResponseHeaderMenuItem = ({
   onClick?: () => void;
   disabled?: boolean;
 }) => (
-  <MenuItem color="responseHeaderMenuItem.optionsMenuColor" isDisabled={disabled} onClick={onClick} w="100%">
-    <Box p="2">{name}</Box>
-    <Spacer />
-    {icon && <Box p="2">{icon}</Box>}
+  <MenuItem
+    color="responseHeaderMenuItem.optionsMenuColor"
+    data-id="6dfd745985b9"
+    isDisabled={disabled}
+    onClick={onClick}
+    w="100%">
+    <Box data-id="23e57ea83df3" p="2">{name}</Box>
+    <Spacer data-id="fe2b1d66eafc" />
+    {icon && <Box data-id="2b2560aff4b0" p="2">{icon}</Box>}
   </MenuItem>
 );
 

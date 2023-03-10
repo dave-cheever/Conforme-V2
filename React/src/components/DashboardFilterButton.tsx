@@ -15,7 +15,7 @@ const DashboardFilterButton = ({ label, isDisable, buttonType, icon }: IDashboar
   const { filterType, filterHandler } = useContext(HomeContext);
 
   return (
-    <Button
+    (<Button
       _active={{
         color: 'white',
         bg: 'black',
@@ -27,17 +27,17 @@ const DashboardFilterButton = ({ label, isDisable, buttonType, icon }: IDashboar
         stroke: 'dashboardFilters.active',
       }}
       bg="white"
+      data-id="6bcc4ebd8f52"
       fontSize="14px"
       fontWeight="400"
       h="35px"
       isActive={filterType.includes(buttonType)}
       isDisabled={isDisable}
-      leftIcon={icon && <Icon as={icon} w="23px" />}
+      leftIcon={icon && <Icon as={icon} data-id="9851a51e1e6f" w="23px" />}
       onClick={() => filterHandler(buttonType)}
-      stroke="dashboardFilters.inActive"
-    >
+      stroke="dashboardFilters.inActive">
       {label}
-    </Button>
+    </Button>)
   );
 };
 

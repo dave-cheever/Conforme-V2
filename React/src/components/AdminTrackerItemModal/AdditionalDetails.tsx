@@ -27,17 +27,36 @@ const AdditionalDetailsForm = () => {
   };
 
   return (
-    <Stack spacing={4} w="full">
-      <SectionHeader label={`Please define the expected evidence and action for this ${t('tracker item')}.`} />
-      <Stack overflow="auto" pb={3} spacing={2} w="full">
-        <Box bg="additionalDetails.evidence.bg" borderRadius="4px" w="full">
+    (<Stack data-id="cf5f64c597bf" spacing={4} w="full">
+      <SectionHeader
+        data-id="32be22ab1a55"
+        label={`Please define the expected evidence and action for this ${t('tracker item')}.`} />
+      <Stack data-id="1e2cd776bac1" overflow="auto" pb={3} spacing={2} w="full">
+        <Box
+          bg="additionalDetails.evidence.bg"
+          borderRadius="4px"
+          data-id="5036a5ebcbc1"
+          w="full">
           {trackerItem.evidenceItems?.map((item, index) => (
-            <Stack align="center" direction="row" key={`item-${index}`} mb={2} pr={5} spacing={4}>
-              <Box flexGrow={1}>
-                <Box color="additionalDetails.evidence.label" fontSize={11} fontWeight="bold" mb="5px" zIndex={2}>
+            <Stack
+              align="center"
+              data-id="1962b2f95012"
+              direction="row"
+              key={`item-${index}`}
+              mb={2}
+              pr={5}
+              spacing={4}>
+              <Box data-id="582597c01895" flexGrow={1}>
+                <Box
+                  color="additionalDetails.evidence.label"
+                  data-id="5842e36ac128"
+                  fontSize={11}
+                  fontWeight="bold"
+                  mb="5px"
+                  zIndex={2}>
                   Evidence {index + 1}
                 </Box>
-                <Flex alignItems="center">
+                <Flex alignItems="center" data-id="336a62d73c2b">
                   <Input
                     _focus={{
                       color: 'additionalDetails.evidence.input.font.focus',
@@ -46,20 +65,20 @@ const AdditionalDetailsForm = () => {
                     borderColor="additionalDetails.evidence.input.border"
                     borderWidth="1px"
                     color="additionalDetails.evidence.input.font.normal"
+                    data-id="7416d1f6f177"
                     fontSize="smm"
                     h="42px"
                     mb={0}
                     name="evidenceItems"
                     onChange={({ target }) => handleEvidenceItemChange(target.value, index)}
                     placeholder="Type in the evidence title"
-                    value={item}
-                  />
+                    value={item} />
                   <CloseIcon
                     color="additionalDetails.evidence.remove"
                     cursor="pointer"
+                    data-id="58e552665350"
                     ml="25px"
-                    onClick={() => removeEvidenceItem(index)}
-                  />
+                    onClick={() => removeEvidenceItem(index)} />
                 </Flex>
               </Box>
             </Stack>
@@ -68,19 +87,19 @@ const AdditionalDetailsForm = () => {
             <Button
               bgColor="additionalDetails.evidence.add.bg"
               color="additionalDetails.evidence.add.font"
+              data-id="155867487ba0"
               fontSize="11px"
               fontWeight="400"
               h="28px"
-              leftIcon={<AddIcon stroke="additionalDetails.addIcon" />}
+              leftIcon={<AddIcon data-id="15612c700f21" stroke="additionalDetails.addIcon" />}
               mb={4}
               mt={trackerItem.evidenceItems?.length === 0 ? 0 : 3}
               onClick={addEvidenceItem}
-              px={4}
-            >
+              px={4}>
               {trackerItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}
             </Button>
           )}
-          <Flex align="center" mt={3}>
+          <Flex align="center" data-id="62fc17efa182" mt={3}>
             <Switch
               colorScheme="toogle.color"
               css={{
@@ -90,21 +109,21 @@ const AdditionalDetailsForm = () => {
                   },
                 },
               }}
+              data-id="9f2c065b8b7f"
               isChecked={!!trackerItem.allowAttachments}
-              onChange={() => setValue('allowAttachments', !trackerItem.allowAttachments)}
-            />
+              onChange={() => setValue('allowAttachments', !trackerItem.allowAttachments)} />
             <Flex
               color={trackerItem.allowAttachments ? 'toogle.enableColor' : 'toogle.disableColor'}
+              data-id="447d0afba641"
               fontSize="14px"
               fontWeight="400"
-              ml={3}
-            >
+              ml={3}>
               Allow attachments
             </Flex>
           </Flex>
         </Box>
       </Stack>
-    </Stack>
+    </Stack>)
   );
 };
 

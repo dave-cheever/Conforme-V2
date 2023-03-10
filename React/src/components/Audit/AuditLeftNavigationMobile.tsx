@@ -10,12 +10,13 @@ const AuditLeftNavigationMobile = () => {
   const { navigateTo } = useNavigate();
 
   return (
-    <Flex
+    (<Flex
       align="center"
       bg="white"
       bottom="0px"
       boxShadow="0px 0px 80px rgba(49, 50, 51, 0.15)"
       color="auditLeftNavigation.color"
+      data-id="305560fa5087"
       direction="column"
       display={['block', 'none', 'none']}
       fontWeight="400"
@@ -24,32 +25,45 @@ const AuditLeftNavigationMobile = () => {
       p="10px"
       position="fixed"
       w="full"
-      zIndex={12}
-    >
-      <Flex align="center" flexDirection="row" h="full">
+      zIndex={12}>
+      <Flex align="center" data-id="0db0481f2be2" flexDirection="row" h="full">
         <Flex
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="a49182a9c460"
           fontSize="14px"
           h="30px"
           mr={3}
-          onClick={() => navigateTo('/audits')}
-        >
-          <Flex align="center" bg="auditLeftTabItem.iconBg" borderRadius="8px" h="30px" justify="center" w="30px">
-            <Home stroke="responseLeftNavigation.goBackColor" />
+          onClick={() => navigateTo('/audits')}>
+          <Flex
+            align="center"
+            bg="auditLeftTabItem.iconBg"
+            borderRadius="8px"
+            data-id="515b2057aece"
+            h="30px"
+            justify="center"
+            w="30px">
+            <Home data-id="c14888d69334" stroke="responseLeftNavigation.goBackColor" />
           </Flex>
-          <Divider ml={3} orientation="vertical" />
+          <Divider data-id="cf550ea43ce3" ml={3} orientation="vertical" />
         </Flex>
-        <Flex w="full">
-          <Flex justify="space-between" w="full">
+        <Flex data-id="d89b64a620f2" w="full">
+          <Flex data-id="5ea608f3e8bd" justify="space-between" w="full">
             {auditNavigationTabs.map(({ label, icon, url }) => (
-              <AuditLeftTabItem icon={icon} isDesktop={false} isMobile key={url} label={label} url={url} />
+              <AuditLeftTabItem
+                data-id="bec1862365fa"
+                icon={icon}
+                isDesktop={false}
+                isMobile
+                key={url}
+                label={label}
+                url={url} />
             ))}
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </Flex>)
   );
 };
 

@@ -281,114 +281,147 @@ const Actions = () => {
     [JSON.stringify(data?.actions)],
   );
 
-  return (
-    <>
-      <Modal
-        isOpen={adminModalState !== 'closed'}
-        onClose={closeModal}
-        size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
-        variant="adminModal"
-      >
-        <ModalOverlay />
-        <ActionModal action={selectedAction} closeModal={closeModal} refetch={refetch} />
-      </Modal>
-      <Header breadcrumbs={['Actions']} mobileBreadcrumbs={['Actions']}>
-        <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
-        {device !== 'mobile' && (
-          <>
-            <CSVLink data={csvData} filename="actions.csv" headers={csvHeaders} target="_blank">
-              <Button
-                _hover={{
-                  bg: 'reasponseHeader.buttonLightBgHover',
-                  color: 'reasponseHeader.buttonLightColorHover',
-                  cursor: 'pointer',
-                  '&:hover svg path': { stroke: 'white' },
-                }}
-                bg="white"
-                borderRadius="10px"
-                display="none"
-                ml="15px"
-                rightIcon={<ExportIcon height="15px" width="15px" />}
-              >
-                <Text fontSize="smm" fontWeight="bold">
-                  Export
-                </Text>
-              </Button>
-            </CSVLink>
-          </>
-        )}
-        <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
-      </Header>
-      <HStack px={[4, 8]} spacing={2}>
-        {Object.keys(actionStatuses).map((status, index) => (
-          <Button
-            _active={{
-              bg: 'actions.quickFilter.active.bg',
-              color: 'actions.quickFilter.active.color',
-            }}
-            _hover={{
-              bg: 'none',
-            }}
-            bg="actions.quickFilter.default.bg"
-            borderRadius="10px"
-            color="actions.quickFilter.default.color"
-            fontSize="smm"
-            fontWeight="bold"
-            h="32px"
-            isActive={index === activeTab}
-            key={status}
-            onClick={() => {
-              setQuickFilter('status', [status]);
-              setActiveTab(index);
-            }}
-          >
-            {capitalize(status)}
-          </Button>
-        ))}
-      </HStack>
-      <Flex h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
-        {error ? (
-          <Text>{error.message}</Text>
-        ) : loading ? (
-          <Loader center />
-        ) : (
-          <>
-            {viewMode === 'grid' && (
-              <Grid
-                display={['grid', 'grid', 'flex']}
-                flexWrap="wrap"
-                gap={[4, 4, 6]}
-                h="fit-content"
-                pb={[14, 8]}
-                pt="3"
-                px={[4, 8]}
-                templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-                w="full"
-              >
-                {sortedActions.length > 0 ? (
-                  sortedActions?.map((action) => <ActionSquare action={action} editAction={handleOpenModal} key={action._id} />)
-                ) : (
-                  <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
-                    No actions found
-                  </Flex>
-                )}
-              </Grid>
-            )}
-            {viewMode === 'list' && (
-              <ActionsList
-                actions={sortedActions}
-                editAction={handleOpenModal}
-                setSortOrder={setSortOrder}
-                setSortType={setSortType}
-                sortOrder={sortOrder}
-                sortType={sortType}
-              />
-            )}
-          </>
-        )}
-      </Flex>
-    </>
-  );
+  return (<>
+    <Modal
+      data-id="c33d7968cfa5"
+      isOpen={adminModalState !== 'closed'}
+      onClose={closeModal}
+      size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
+      variant="adminModal">
+      <ModalOverlay data-id="b1549d4e1839" />
+      <ActionModal
+        action={selectedAction}
+        closeModal={closeModal}
+        data-id="74634141a96b"
+        refetch={refetch} />
+    </Modal>
+    <Header
+      breadcrumbs={['Actions']}
+      data-id="9805ccc04797"
+      mobileBreadcrumbs={['Actions']}>
+      <ChangeViewButton
+        data-id="ad24b37f6046"
+        setViewMode={setViewMode}
+        viewMode={viewMode}
+        views={['grid', 'list']} />
+      {device !== 'mobile' && (
+        <>
+          <CSVLink
+            data={csvData}
+            data-id="b48e84287463"
+            filename="actions.csv"
+            headers={csvHeaders}
+            target="_blank">
+            <Button
+              _hover={{
+                bg: 'reasponseHeader.buttonLightBgHover',
+                color: 'reasponseHeader.buttonLightColorHover',
+                cursor: 'pointer',
+                '&:hover svg path': { stroke: 'white' },
+              }}
+              bg="white"
+              borderRadius="10px"
+              data-id="d7abc5e71d44"
+              display="none"
+              ml="15px"
+              rightIcon={<ExportIcon data-id="ea0f6b5ff60c" height="15px" width="15px" />}>
+              <Text data-id="e56aeaf3231f" fontSize="smm" fontWeight="bold">
+                Export
+              </Text>
+            </Button>
+          </CSVLink>
+        </>
+      )}
+      <SortButton
+        data-id="19893118c24d"
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        sortType={sortType} />
+    </Header>
+    <HStack data-id="4c7c8ee914c9" px={[4, 8]} spacing={2}>
+      {Object.keys(actionStatuses).map((status, index) => (
+        <Button
+          _active={{
+            bg: 'actions.quickFilter.active.bg',
+            color: 'actions.quickFilter.active.color',
+          }}
+          _hover={{
+            bg: 'none',
+          }}
+          bg="actions.quickFilter.default.bg"
+          borderRadius="10px"
+          color="actions.quickFilter.default.color"
+          data-id="b0058513c4f6"
+          fontSize="smm"
+          fontWeight="bold"
+          h="32px"
+          isActive={index === activeTab}
+          key={status}
+          onClick={() => {
+            setQuickFilter('status', [status]);
+            setActiveTab(index);
+          }}>
+          {capitalize(status)}
+        </Button>
+      ))}
+    </HStack>
+    <Flex
+      data-id="d467252e648c"
+      h={['calc(100vh - 80px)', 'full']}
+      overflow="auto"
+      pb={[4, 0]}>
+      {error ? (
+        <Text data-id="e41bc3ff6368">{error.message}</Text>
+      ) : loading ? (
+        <Loader center data-id="ac708cbffb19" />
+      ) : (
+        <>
+          {viewMode === 'grid' && (
+            <Grid
+              data-id="8bf250808148"
+              display={['grid', 'grid', 'flex']}
+              flexWrap="wrap"
+              gap={[4, 4, 6]}
+              h="fit-content"
+              pb={[14, 8]}
+              pt="3"
+              px={[4, 8]}
+              templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+              w="full">
+              {sortedActions.length > 0 ? (
+                sortedActions?.map((action) => <ActionSquare
+                  action={action}
+                  data-id="12e61a185e1e"
+                  editAction={handleOpenModal}
+                  key={action._id} />)
+              ) : (
+                <Flex
+                  data-id="dad222c8f90c"
+                  fontSize="18px"
+                  fontStyle="italic"
+                  h="full"
+                  w="full">
+                  No actions found
+                </Flex>
+              )}
+            </Grid>
+          )}
+          {viewMode === 'list' && (
+            <ActionsList
+              actions={sortedActions}
+              data-id="0207bec9b9a2"
+              editAction={handleOpenModal}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType} />
+          )}
+        </>
+      )}
+    </Flex>
+  </>);
 };
 
 export default Actions;

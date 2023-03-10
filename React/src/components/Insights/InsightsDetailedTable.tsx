@@ -111,9 +111,10 @@ const InsightsDetailedTable = ({
   };
 
   return (
-    <Box>
-      <InsightsDetailedTableHeader>
+    (<Box data-id="57c0cef5bc1a">
+      <InsightsDetailedTableHeader data-id="f690959a7268">
         <InsightsDetailedTableHeaderElement
+          data-id="d4f0ab5b54aa"
           label="Name"
           onClick={() => {
             setSortType(insightsModel === 'users' ? 'displayName' : 'name');
@@ -121,11 +122,11 @@ const InsightsDetailedTable = ({
           }}
           pl="0"
           showSortingIcon={sortType === (insightsModel === 'users' ? 'displayName' : 'name')}
-          sortOrder={sortType === (insightsModel === 'users' ? 'displayName' : 'name') ? sortOrder : undefined}
-        />
+          sortOrder={sortType === (insightsModel === 'users' ? 'displayName' : 'name') ? sortOrder : undefined} />
         {(tableFieldsPerType[insightsType] ?? []).map((item) => (
           <InsightsDetailedTableHeaderElement
             color={item.color}
+            data-id="d6750f19e804"
             key={item.label}
             label={item.label}
             ml="0.75rem"
@@ -134,23 +135,40 @@ const InsightsDetailedTable = ({
               setSortOrder(sortOrder === 'asc' && sortType === item.field ? 'desc' : 'asc');
             }}
             showSortingIcon={sortType === item.field}
-            sortOrder={sortType === item.field ? sortOrder : undefined}
-          />
+            sortOrder={sortType === item.field ? sortOrder : undefined} />
         ))}
       </InsightsDetailedTableHeader>
-      <Flex align="center" flexDir="column" mb={5} minH="350px" overflowY="auto" w="full">
+      <Flex
+        align="center"
+        data-id="e4506328d799"
+        flexDir="column"
+        mb={5}
+        minH="350px"
+        overflowY="auto"
+        w="full">
         {sortedData?.map((item, index) => (
-          <InsightListItem insightsModel={insightsModel} insightsType={insightsType} item={item} key={item._id} light={index % 2 === 0} />
+          <InsightListItem
+            data-id="70f1c0db7784"
+            insightsModel={insightsModel}
+            insightsType={insightsType}
+            item={item}
+            key={item._id}
+            light={index % 2 === 0} />
         ))}
       </Flex>
       {totals > sortedData.length && (
-        <Flex justify="end" rounded="md">
-          <Button bg="insightsDetailedTable.loadMore" color="white" onClick={loadMore} size="sm">
+        <Flex data-id="7f208cb554f1" justify="end" rounded="md">
+          <Button
+            bg="insightsDetailedTable.loadMore"
+            color="white"
+            data-id="9dc120a627ad"
+            onClick={loadMore}
+            size="sm">
             Load more
           </Button>
         </Flex>
       )}
-    </Box>
+    </Box>)
   );
 };
 

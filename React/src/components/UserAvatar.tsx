@@ -34,7 +34,13 @@ const UserAvatar = ({
     return userDetails;
   }, [JSON.stringify(data)]);
 
-  return <Avatar {...props} name={user?.displayName} src={user?.imgUrl} />;
+  return (
+    <Avatar
+      data-id="210cd7ccf387"
+      {...props}
+      name={user?.displayName}
+      src={user?.imgUrl} />
+  );
 };
 
 export default UserAvatar;

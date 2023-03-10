@@ -28,67 +28,83 @@ const NavigationLeft = () => {
     if (!(isPathActive('/', { exact: true }) || isPathActive('/items'))) cleanFilters();
   }, [history.location.pathname]);
 
-  return (
-    <>
+  return (<>
+    <Box
+      bg="navigationLeft.bg"
+      data-id="47c28dc91b51"
+      display={['none', 'block', 'block']}
+      fontWeight="semibold"
+      h="100vh"
+      w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '240px']}>
       <Box
-        bg="navigationLeft.bg"
-        display={['none', 'block', 'block']}
-        fontWeight="semibold"
-        h="100vh"
-        w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '240px']}
-      >
-        <Box alignItems="center" cursor="pointer" display="flex" h="80px" onClick={() => navigateTo('/')}>
-          <Text color="navigationLeft.organizationNameFontColor" fontSize="16px" fontWeight="bold" ml="24px" w="full">
-            {showFiltersPanel || device === 'tablet' ? getInitials(module?.name) : module?.name}
-          </Text>
-        </Box>
-        <Flex
-          direction="column"
-          h="calc(100% - 80px)"
-          justify="space-between"
-          overflowX={device === 'desktop' ? 'hidden' : 'unset'}
-          overflowY={device === 'desktop' ? 'auto' : 'unset'}
-          pt={['0px', '10px']}
-        >
-          <Box>
-            {menuItems.map((menuItem: any, i) => (
-              <Can
-                action={menuItem.permission}
-                key={`menu${i}`}
-                yes={() => {
-                  if (device === 'desktop') return <NavigationLeftItem menuItem={menuItem} />;
-
-                  if (device === 'tablet') {
-                    return (
-                      <NavigationLeftItemTablet
-                        filtersOpen={filtersOpen}
-                        menuItem={menuItem}
-                        setFiltersOpen={setFiltersOpen}
-                        setSubsectionOpen={setSubsectionOpen}
-                        subsectionOpen={subsectionOpen}
-                      />
-                    );
-                  }
-                  return <></>;
-                }}
-              />
-            ))}
-          </Box>
-          {device === 'desktop' && (
-            <Icon
-              as={showFiltersPanel ? ConformeSmall : Conforme}
-              h="30px"
-              mb="20px"
-              ml="20px"
-              mt={2}
-              w={showFiltersPanel ? '27px' : '103px'}
-            />
-          )}
-          {device === 'tablet' && <Icon as={ConformeSmall} h="30px" mb="20px" ml="20px" w="27px" />}
-        </Flex>
+        alignItems="center"
+        cursor="pointer"
+        data-id="d2ece50108d9"
+        display="flex"
+        h="80px"
+        onClick={() => navigateTo('/')}>
+        <Text
+          color="navigationLeft.organizationNameFontColor"
+          data-id="1517b24beb4a"
+          fontSize="16px"
+          fontWeight="bold"
+          ml="24px"
+          w="full">
+          {showFiltersPanel || device === 'tablet' ? getInitials(module?.name) : module?.name}
+        </Text>
       </Box>
-    </>
-  );
+      <Flex
+        data-id="10cc9b2fcd5f"
+        direction="column"
+        h="calc(100% - 80px)"
+        justify="space-between"
+        overflowX={device === 'desktop' ? 'hidden' : 'unset'}
+        overflowY={device === 'desktop' ? 'auto' : 'unset'}
+        pt={['0px', '10px']}>
+        <Box data-id="f2d5871013ad">
+          {menuItems.map((menuItem: any, i) => (
+            <Can
+              action={menuItem.permission}
+              data-id="29d2a3cc89b6"
+              key={`menu${i}`}
+              yes={() => {
+                if (device === 'desktop') return <NavigationLeftItem data-id="e93f85db199f" menuItem={menuItem} />;
+
+                if (device === 'tablet') {
+                  return (
+                    (<NavigationLeftItemTablet
+                      data-id="9199347cf0aa"
+                      filtersOpen={filtersOpen}
+                      menuItem={menuItem}
+                      setFiltersOpen={setFiltersOpen}
+                      setSubsectionOpen={setSubsectionOpen}
+                      subsectionOpen={subsectionOpen} />)
+                  );
+                }
+                return <></>;
+              }} />
+          ))}
+        </Box>
+        {device === 'desktop' && (
+          <Icon
+            as={showFiltersPanel ? ConformeSmall : Conforme}
+            data-id="5eff0a6971bc"
+            h="30px"
+            mb="20px"
+            ml="20px"
+            mt={2}
+            w={showFiltersPanel ? '27px' : '103px'} />
+        )}
+        {device === 'tablet' && <Icon
+          as={ConformeSmall}
+          data-id="0a66b63f6b9d"
+          h="30px"
+          mb="20px"
+          ml="20px"
+          w="27px" />}
+      </Flex>
+    </Box>
+  </>);
 };
 
 export default NavigationLeft;

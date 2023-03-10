@@ -65,23 +65,21 @@ const ParticipantsSelector = ({
     didMountRef.current = true;
   }, [isParticipantsModalOpen, isParticipantDeleteModalOpen]);
 
-  return (
-    <>
-      <ParticipantsModal />
-      <ParticipantsDeleteModal />
-      {label && (
-        <Text fontSize="smm" fontWeight="semibold">
-          {label}
-        </Text>
-      )}
-      {children}
-    </>
-  );
+  return (<>
+    <ParticipantsModal data-id="b2a61eaebcd8" />
+    <ParticipantsDeleteModal data-id="6a85fce88965" />
+    {label && (
+      <Text data-id="67858ddabdd7" fontSize="smm" fontWeight="semibold">
+        {label}
+      </Text>
+    )}
+    {children}
+  </>);
 };
 
 const ParticipantsSelectorWithContext = (props) => (
-  <ParticipantsModalProvider>
-    <ParticipantsSelector {...props} />
+  <ParticipantsModalProvider data-id="640d7d9ad4c5">
+    <ParticipantsSelector data-id="12c06ae1de55" {...props} />
   </ParticipantsModalProvider>
 );
 

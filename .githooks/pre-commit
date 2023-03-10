@@ -6,6 +6,14 @@ if [[ "$STAGED_REACT_FILES" = "" ]]; then
   exit 0
 fi
 
+# Check for jscodeshift
+which jscodeshift &> /dev/null
+if [[ "$?" == 1 ]]; then
+  echo "Please install jscodeshift "
+  echo "npm i -g jscodeshift"
+  exit 1
+fi
+
 # Check for eslint
 which eslint &> /dev/null
 if [[ "$?" == 1 ]]; then
@@ -39,6 +47,14 @@ if [[ $NUMBER_OF_REACT_ERRORS > 0 ]]; then
   done
   exit 1
 else
+  # Insert random IDs to every DOM element
+  for FILE in $STAGED_REACT_FILES
+  do
+    FILE_PATH="${FILE/React\//}"
+    jscodeshift -t ../React/insert-id.ts $FILE_PATH # Insert data-id attribute
+    eslint $FILE_PATH --fix # Run ESLint to fix attributes ordering
+    git add $FILE_PATH # Commit the change
+  done
   echo "COMMIT SUCCEEDED"
 fi
 

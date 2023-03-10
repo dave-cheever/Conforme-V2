@@ -88,7 +88,7 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
   const reviewActive = useMemo(() => activePage === 'Review', [activePage]);
 
   return (
-    <AuditModalContext.Provider
+    (<AuditModalContext.Provider
       value={{
         activePage,
         setActivePage,
@@ -101,74 +101,160 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
         updateAuditorSearchText,
       }}
     >
-      <Modal isOpen={isOpen} onClose={onClose} variant="conformeModal">
-        <ModalOverlay />
-        <ModalContent borderRadius="20px" boxShadow="-10px 4px 30px 0px #00000026" h="calc(100vh - 30px)" m="15px 15px" maxW="800px">
-          <ModalHeader m="0px 5px 5px 5px">
-            <Box>
+      <Modal
+        data-id="68d28b40ec07"
+        isOpen={isOpen}
+        onClose={onClose}
+        variant="conformeModal">
+        <ModalOverlay data-id="e755f7200e50" />
+        <ModalContent
+          borderRadius="20px"
+          boxShadow="-10px 4px 30px 0px #00000026"
+          data-id="30a311e0e1e0"
+          h="calc(100vh - 30px)"
+          m="15px 15px"
+          maxW="800px">
+          <ModalHeader data-id="44f2c59ebf6f" m="0px 5px 5px 5px">
+            <Box data-id="4dae3d72178c">
               <Breadcrumb
-                separator={<RightArrowIcon boxSize={3} transform="translate(0px, -2px)" transformOrigin="center" />}
-                spacing="8px"
-              >
-                <BreadcrumbItem>
-                  <Text color="auditModal.title.text" fontSize="lg" fontWeight="700">
+                data-id="0557e2967c38"
+                separator={<RightArrowIcon
+                  boxSize={3}
+                  data-id="ce414f513269"
+                  transform="translate(0px, -2px)"
+                  transformOrigin="center" />}
+                spacing="8px">
+                <BreadcrumbItem data-id="d9ab598ae6b3">
+                  <Text
+                    color="auditModal.title.text"
+                    data-id="02b1212eb72a"
+                    fontSize="lg"
+                    fontWeight="700">
                     Audit
                   </Text>
                 </BreadcrumbItem>
-                <BreadcrumbItem>
-                  <Text color="auditModal.title.text" fontSize="lg" fontWeight="700" m="0px 2px">
+                <BreadcrumbItem data-id="52c1c0175a29">
+                  <Text
+                    color="auditModal.title.text"
+                    data-id="dfdb1e9fd7a9"
+                    fontSize="lg"
+                    fontWeight="700"
+                    m="0px 2px">
                     Office Hazard Assessment
                   </Text>
                 </BreadcrumbItem>
               </Breadcrumb>
             </Box>
-            <Box alignItems="center" display="flex" justifyContent="start">
-              <Box alignItems="center" display="flex" height="40px" justifyContent="start" w="180px">
-                <Avatar bg="auditModal.avatar.bg" mr="10px" name="Emma Head" size="xs" src="https://bit.ly/broken-link" />
-                <Text color="auditModal.avatar.text" fontSize="md" fontWeight="400">
+            <Box
+              alignItems="center"
+              data-id="519bab4489f7"
+              display="flex"
+              justifyContent="start">
+              <Box
+                alignItems="center"
+                data-id="98e5c627f678"
+                display="flex"
+                height="40px"
+                justifyContent="start"
+                w="180px">
+                <Avatar
+                  bg="auditModal.avatar.bg"
+                  data-id="8b3dadfd3e6a"
+                  mr="10px"
+                  name="Emma Head"
+                  size="xs"
+                  src="https://bit.ly/broken-link" />
+                <Text
+                  color="auditModal.avatar.text"
+                  data-id="00adee064df7"
+                  fontSize="md"
+                  fontWeight="400">
                   Emma Head
                 </Text>
               </Box>
-              <Box alignItems="center" display="flex" height="40px" justifyContent="start" w="230px">
-                <LocationIcon boxSize={6} mr="8px" />
-                <Text color="auditModal.location.text" fontSize="md" fontWeight="400">
+              <Box
+                alignItems="center"
+                data-id="fe1c8da9aec3"
+                display="flex"
+                height="40px"
+                justifyContent="start"
+                w="230px">
+                <LocationIcon boxSize={6} data-id="5e7e85b78ae1" mr="8px" />
+                <Text
+                  color="auditModal.location.text"
+                  data-id="47cc1d574cfe"
+                  fontSize="md"
+                  fontWeight="400">
                   The Meriden Hospital
                 </Text>
               </Box>
-              <Box alignItems="center" display="flex" height="40px" justifyContent="start" w="180px">
-                <AreaInfoIcon boxSize={6} transform="translate(0px, -2px)" transformOrigin="center" />
-                <SelectedArea />
+              <Box
+                alignItems="center"
+                data-id="57c2b7f1d821"
+                display="flex"
+                height="40px"
+                justifyContent="start"
+                w="180px">
+                <AreaInfoIcon
+                  boxSize={6}
+                  data-id="6f380bfaea56"
+                  transform="translate(0px, -2px)"
+                  transformOrigin="center" />
+                <SelectedArea data-id="13ee112219a1" />
               </Box>
             </Box>
           </ModalHeader>
-          <ModalCloseButton boxSize={10} />
-          <ModalBody maxH="calc(100vh - 204px)" overflow="hidden" p="10px 0px">
-            <Box display="flex" justifyContent="start" maxH="full">
-              <Box w="200px">
-                <AuditModalMenuItem icon={<AuditIcon />} label="Participants" />
-                <AuditModalMenuItem icon={<QuestionsIcon />} label="Questions" />
-                <AuditModalMenuItem icon={<AssetsIcon />} label="Review" />
-                <Box alignItems="center" display="flex" justifyContent="center" mt="50px">
-                  <CircularProgress value={11} />
+          <ModalCloseButton boxSize={10} data-id="14c9a684330b" />
+          <ModalBody
+            data-id="db34a07391b1"
+            maxH="calc(100vh - 204px)"
+            overflow="hidden"
+            p="10px 0px">
+            <Box data-id="0a8c62bba2b4" display="flex" justifyContent="start" maxH="full">
+              <Box data-id="5828f76abe48" w="200px">
+                <AuditModalMenuItem
+                  data-id="89473668596a"
+                  icon={<AuditIcon data-id="bb3e6583313c" />}
+                  label="Participants" />
+                <AuditModalMenuItem
+                  data-id="ecd8372d72bd"
+                  icon={<QuestionsIcon data-id="9ea328347636" />}
+                  label="Questions" />
+                <AuditModalMenuItem
+                  data-id="fa350c3e921b"
+                  icon={<AssetsIcon data-id="011bb26fdcec" />}
+                  label="Review" />
+                <Box
+                  alignItems="center"
+                  data-id="7487651df2a9"
+                  display="flex"
+                  justifyContent="center"
+                  mt="50px">
+                  <CircularProgress data-id="002f957cdfc9" value={11} />
                 </Box>
               </Box>
-              <Box p="5px 30px 5px 10px" w="600px">
-                {participantsActive && <ParticipantsSection />}
-                {questionsActive && <QuestionsSection />}
-                {reviewActive && <ReviewsSection />}
+              <Box data-id="1d99f6b93830" p="5px 30px 5px 10px" w="600px">
+                {participantsActive && <ParticipantsSection data-id="a860cacc59c6" />}
+                {questionsActive && <QuestionsSection data-id="25b16b70600c" />}
+                {reviewActive && <ReviewsSection data-id="eb5886cdaac8" />}
               </Box>
             </Box>
           </ModalBody>
-          <ModalFooter>
-            <Button _hover={{ bg: 'auditModal.button.hoverBg' }} bg="auditModal.button.bg" m="5px 0px" w="116px">
-              <Text color="white" fontSize="md" fontWeight="400">
+          <ModalFooter data-id="41bf9cbca9fc">
+            <Button
+              _hover={{ bg: 'auditModal.button.hoverBg' }}
+              bg="auditModal.button.bg"
+              data-id="acfcfe990a96"
+              m="5px 0px"
+              w="116px">
+              <Text color="white" data-id="b658779ccb4b" fontSize="md" fontWeight="400">
                 Start
               </Text>
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </AuditModalContext.Provider>
+    </AuditModalContext.Provider>)
   );
 };
 

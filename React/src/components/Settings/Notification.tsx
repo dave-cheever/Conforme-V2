@@ -42,12 +42,23 @@ const Notification = () => {
   };
 
   return (
-    <Stack h="full" overflow="auto" pb={3} spacing={7} w="full">
+    (<Stack
+      data-id="34455f2555ce"
+      h="full"
+      overflow="auto"
+      pb={3}
+      spacing={7}
+      w="full">
       {notificationSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value, options }) => (
-        <Flex align={['flex-start', 'center']} flexDirection={['column', 'row']} key={name}>
-          <Flex maxW="280px">
+        <Flex
+          align={['flex-start', 'center']}
+          data-id="add2ea48e7c3"
+          flexDirection={['column', 'row']}
+          key={name}>
+          <Flex data-id="f6354dc0dc42" maxW="280px">
             <Field
               control={control}
+              data-id="0fb5966b0ac6"
               help={help}
               label={label}
               name={name}
@@ -56,31 +67,30 @@ const Notification = () => {
               tooltip={description}
               type={inputType}
               value={value}
-              variant={variant}
-            />
+              variant={variant} />
           </Flex>
           {wasFieldChanged(name, value) && (
-            <HStack ml={3} mt={7} spacing={3}>
+            <HStack data-id="56d020a3f1f7" ml={3} mt={7} spacing={3}>
               <IconButton
                 aria-label="Confirm Icon"
                 colorScheme="purpleHeart"
-                icon={<CheckIcon />}
+                data-id="ebd36acefde5"
+                icon={<CheckIcon data-id="ca6bdd0ef67d" />}
                 onClick={() => updateSettings({ _id, name })}
                 size="sm"
-                variant="outline"
-              />
+                variant="outline" />
               <IconButton
                 aria-label="Cross Icon"
                 colorScheme="red"
-                icon={<CloseIcon />}
+                data-id="a376e0f86025"
+                icon={<CloseIcon data-id="22d1379a157b" />}
                 onClick={() => resetValue({ name, value })}
-                size="sm"
-              />
+                size="sm" />
             </HStack>
           )}
         </Flex>
       ))}
-    </Stack>
+    </Stack>)
   );
 };
 

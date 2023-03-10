@@ -51,9 +51,17 @@ const QuestionsForm = () => {
   const group = getRootProps();
 
   return (
-    <Stack pb={isDragging ? 'calc(65px + .5rem)' : 0} spacing={4} w="full">
-      <SectionHeader label={`Add ${t('question')}`} />
-      <Text color="adminTrackerItemModal.section.questions.description" fontSize="11px" opacity="0.7">
+    (<Stack
+      data-id="aea72f712f32"
+      pb={isDragging ? 'calc(65px + .5rem)' : 0}
+      spacing={4}
+      w="full">
+      <SectionHeader data-id="cbf13ff01e8b" label={`Add ${t('question')}`} />
+      <Text
+        color="adminTrackerItemModal.section.questions.description"
+        data-id="59a366670f71"
+        fontSize="11px"
+        opacity="0.7">
         If you need to add any additional {pluralize(t('question'))} regarding this {t('tracker item')}, you can use this section to create
         them.
       </Text>
@@ -67,29 +75,40 @@ const QuestionsForm = () => {
           }}
           bg="questionsModal.button.bg"
           color="questionsModal.button.color"
+          data-id="72e9db869a7c"
           fontSize="11px"
           fontWeight="400"
           h="28px"
-          leftIcon={<AddIcon stroke="questionsModal.button.icon" />}
+          leftIcon={<AddIcon data-id="ee5bfe093793" stroke="questionsModal.button.icon" />}
           mb={4}
           mt={trackerItem.evidenceItems?.length === 0 ? 0 : 3}
           onClick={() => setIsQuestionListOpen(!isQuestionListOpen)}
           px={4}
           py={2}
-          w="120px"
-        >
+          w="120px">
           Add {t('question')}
         </Button>
       )}
       {isQuestionListOpen && (
-        <Box bg="questionsModal.questionsList.bg" p="20px 25px" rounded="20px" textAlign="center" w="225px">
-          <VStack {...group} alignItems="flex-start" mb="20px" spacing="20px">
+        <Box
+          bg="questionsModal.questionsList.bg"
+          data-id="c65f2be79dd1"
+          p="20px 25px"
+          rounded="20px"
+          textAlign="center"
+          w="225px">
+          <VStack
+            data-id="708301a04356"
+            {...group}
+            alignItems="flex-start"
+            mb="20px"
+            spacing="20px">
             {questionTypes.map(({ value, label }) => {
               const radio = getRadioProps({ value });
               return (
-                <CustomRadioButton key={value} {...radio} fontSize="smm">
+                (<CustomRadioButton data-id="7005311bc238" key={value} {...radio} fontSize="smm">
                   {label}
-                </CustomRadioButton>
+                </CustomRadioButton>)
               );
             })}
           </VStack>
@@ -102,6 +121,7 @@ const QuestionsForm = () => {
             }}
             bg="questionsModal.button.bg"
             color="questionsModal.button.color"
+            data-id="95dddacc078a"
             disabled={selectedRadio === ''}
             fontSize="smm"
             fontWeight="700"
@@ -112,9 +132,12 @@ const QuestionsForm = () => {
               setShowQuestionForm(true);
               setSelectedRadio('');
             }}
-            rightIcon={<Icon as={OpenMenuArrow} stroke="questionsModal.button.icon" transform="rotate(270deg)" />}
-            w="154px"
-          >
+            rightIcon={<Icon
+              as={OpenMenuArrow}
+              data-id="99b06336e3a7"
+              stroke="questionsModal.button.icon"
+              transform="rotate(270deg)" />}
+            w="154px">
             Continue
           </Button>
         </Box>
@@ -122,17 +145,18 @@ const QuestionsForm = () => {
       {showQuestionForm && (
         <QuestionForm
           addOrUpdateQuestion={addOrUpdateQuestion}
+          data-id="e757d2b0733b"
           editQuestionIndex={editQuestionIndex}
           questionType={selectedQuestionType}
           setEditQuestion={setEditQuestion}
           setEditQuestionIndex={setEditQuestionIndex}
           setIsEdit={setIsEdit}
           setShowQuestionForm={setShowQuestionForm}
-          value={editQuestion}
-        />
+          value={editQuestion} />
       )}
       {!showQuestionForm && !isQuestionListOpen && (
         <QuestionList
+          data-id="8244920bd844"
           disabled={false}
           handleChange={(questions) => setValue('questions', questions)}
           handleEdit={(index, item) => {
@@ -144,10 +168,9 @@ const QuestionsForm = () => {
             setSelectedQuestionType(item?.type);
           }}
           setIsDragging={setIsDragging}
-          trackerItem={trackerItem}
-        />
+          trackerItem={trackerItem} />
       )}
-    </Stack>
+    </Stack>)
   );
 };
 

@@ -10,8 +10,11 @@ const CollectionFilter = () => {
   const value = useMemo(() => filtersValues.collections?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup onChange={(newValue) => setFilters({ collections: newValue })} value={value}>
-      <Stack direction="column" ml="4">
+    (<CheckboxGroup
+      data-id="5ef020ccc9f6"
+      onChange={(newValue) => setFilters({ collections: newValue })}
+      value={value}>
+      <Stack data-id="f7ec1cb910aa" direction="column" ml="4">
         {Object.entries(collections).map(([key, label]) => (
           <Checkbox
             css={{
@@ -29,14 +32,14 @@ const CollectionFilter = () => {
                 },
               },
             }}
+            data-id="1d7d0d6ec11e"
             key={key}
-            value={key}
-          >
-            <Text>{label as string}</Text>
+            value={key}>
+            <Text data-id="350f0480527a">{label as string}</Text>
           </Checkbox>
         ))}
       </Stack>
-    </CheckboxGroup>
+    </CheckboxGroup>)
   );
 };
 

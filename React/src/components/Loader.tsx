@@ -28,9 +28,21 @@ const Loader = ({
     return thickness;
   };
   return (
-    <Flex align={center ? 'center' : 'flex-start'} h="full" justify="center" w="full" {...props}>
-      <Spinner color={loaderColor || 'loader.color'} emptyColor="gray.200" size={size || 'xl'} speed="0.65s" thickness={getThickness()} />
-    </Flex>
+    (<Flex
+      align={center ? 'center' : 'flex-start'}
+      data-id="ac8cfe8b7513"
+      h="full"
+      justify="center"
+      w="full"
+      {...props}>
+      <Spinner
+        color={loaderColor || 'loader.color'}
+        data-id="de21a64742a8"
+        emptyColor="gray.200"
+        size={size || 'xl'}
+        speed="0.65s"
+        thickness={getThickness()} />
+    </Flex>)
   );
 };
 

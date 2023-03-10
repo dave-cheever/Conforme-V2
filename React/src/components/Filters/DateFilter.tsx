@@ -63,8 +63,8 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
   };
 
   return (
-    <Box w="full">
-      <Stack direction="column" mb={5}>
+    (<Box data-id="cfe370d3d087" w="full">
+      <Stack data-id="3cbbb633a003" direction="column" mb={5}>
         {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(([key, label]) => (
           <Checkbox
             colorScheme="purpleHeart"
@@ -86,12 +86,15 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
                 },
               },
             }}
-            icon={<MinusIcon />}
+            data-id="ba83bf0a23a2"
+            icon={<MinusIcon data-id="993de56d9a90" />}
             isChecked={value?.includes(key)}
             key={key}
-            onChange={(e) => onChange(e, key)}
-          >
-            <Text color="filterPanel.checkboxLabelColor" fontSize="14px">
+            onChange={(e) => onChange(e, key)}>
+            <Text
+              color="filterPanel.checkboxLabelColor"
+              data-id="468cd07c6a3d"
+              fontSize="14px">
               {label}
             </Text>
           </Checkbox>
@@ -99,14 +102,14 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
       </Stack>
       {filterValue === 'exactDate' && (
         <DatePicker
+          data-id="61275d36431e"
           inline
           onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date] })}
-          selected={startDate ? new Date(startDate) : new Date()}
-        />
+          selected={startDate ? new Date(startDate) : new Date()} />
       )}
-
       {filterValue === 'dateRange' && (
         <DatePicker
+          data-id="9759578d957f"
           endDate={endDate ? new Date(endDate) : null}
           inline
           onChange={(dates) => {
@@ -115,10 +118,9 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
           }}
           selected={startDate}
           selectsRange
-          startDate={startDate ? new Date(startDate) : new Date()}
-        />
+          startDate={startDate ? new Date(startDate) : new Date()} />
       )}
-    </Box>
+    </Box>)
   );
 };
 

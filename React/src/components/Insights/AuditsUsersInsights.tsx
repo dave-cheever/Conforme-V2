@@ -26,27 +26,34 @@ const AuditsUsersInsights = ({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) => (
-  <Box bg="white" my={['15px', '25px']} overflowX="auto" p="15px 25px" rounded="20px">
-    <Box mb="30px">
-      <Text fontSize="smm" fontWeight="bold">
+  <Box
+    bg="white"
+    data-id="dcabdc831794"
+    my={['15px', '25px']}
+    overflowX="auto"
+    p="15px 25px"
+    rounded="20px">
+    <Box data-id="1bf4bcdc8adb" mb="30px">
+      <Text data-id="4c48cc60af62" fontSize="smm" fontWeight="bold">
         {capitalize(pluralize(t('audit')))} per person
       </Text>
     </Box>
-    <Flex ml="140px">
+    <Flex data-id="7f934202f701" ml="140px">
       {users.map((user, index) => (
         <Flex
           align="center"
+          data-id="c1978d7ebadb"
           flexDir="column"
           justify="center"
           key={user._id}
           mb="15px"
           ml={index === 0 ? '10px' : '20px'}
           mr="10px"
-          w="80px"
-        >
-          <UserAvatar userId={user._id} />
+          w="80px">
+          <UserAvatar data-id="31ea0d8374c3" userId={user._id} />
           <Text
             color="auditsUsersInsights.colors.displayName"
+            data-id="f37bf3e862d6"
             fontSize="ssm"
             mt="10px"
             overflowX="hidden"
@@ -54,20 +61,20 @@ const AuditsUsersInsights = ({
             textOverflow="ellipsis"
             title={user.displayName}
             w="80px"
-            whiteSpace="nowrap"
-          >
+            whiteSpace="nowrap">
             {user.displayName}
           </Text>
         </Flex>
       ))}
     </Flex>
-    <Flex>
-      <Flex flexDir="column">
+    <Flex data-id="bd3fed777d8c">
+      <Flex data-id="25c9fe359e24" flexDir="column">
         {auditsStatsCounts.map((count) => (
           <Flex
             align="center"
             bg={count.color}
             cursor="pointer"
+            data-id="54cd8d7d4f88"
             justify="end"
             key={count.status}
             mb="5px"
@@ -78,48 +85,59 @@ const AuditsUsersInsights = ({
             }}
             p="8px"
             rounded="10px"
-            userSelect="none"
-          >
-            <Text color="white" fontSize="smm">
+            userSelect="none">
+            <Text color="white" data-id="826d4099f522" fontSize="smm">
               {auditsInsightsTypes[count.status]}
             </Text>
             {sortOrder !== null && sortOrder === 'desc' ? (
               <ArrowDownIcon
                 color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
+                data-id="13fcb9ec5142"
                 h="12px"
                 ml="10px"
-                w="12px"
-              />
+                w="12px" />
             ) : (
               <ArrowUpIcon
                 color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
+                data-id="ec00b62a4a6a"
                 h="12px"
                 ml="10px"
-                w="12px"
-              />
+                w="12px" />
             )}
           </Flex>
         ))}
       </Flex>
       {users.map((user) => (
-        <Flex flexDir="column" key={user._id} ml="10px">
-          <Box bg="auditsUsersInsights.colors.statCell" mb="5px" p="8px" rounded="10px" w="100px">
-            <Text fontSize="smm" textAlign="center">
+        <Flex data-id="46feef976d49" flexDir="column" key={user._id} ml="10px">
+          <Box
+            bg="auditsUsersInsights.colors.statCell"
+            data-id="937679324df0"
+            mb="5px"
+            p="8px"
+            rounded="10px"
+            w="100px">
+            <Text data-id="9824cdd639fe" fontSize="smm" textAlign="center">
               {user.totalAuditsCount ?? 0}
             </Text>
           </Box>
-          <Box mb="5px" p="8px" rounded="10px" w="100px">
-            <Text fontSize="smm" textAlign="center">
+          <Box data-id="d68ebe30c6c6" mb="5px" p="8px" rounded="10px" w="100px">
+            <Text data-id="4da3dda2285f" fontSize="smm" textAlign="center">
               {user.completedAuditsCount ?? 0}
             </Text>
           </Box>
-          <Box bg="auditsUsersInsights.colors.statCell" mb="5px" p="8px" rounded="10px" w="100px">
-            <Text fontSize="smm" textAlign="center">
+          <Box
+            bg="auditsUsersInsights.colors.statCell"
+            data-id="8be742b0c94f"
+            mb="5px"
+            p="8px"
+            rounded="10px"
+            w="100px">
+            <Text data-id="2e98733892fb" fontSize="smm" textAlign="center">
               {user.upcomingAuditsCount ?? 0}
             </Text>
           </Box>
-          <Box mb="5px" p="8px" rounded="10px" w="100px">
-            <Text fontSize="smm" textAlign="center">
+          <Box data-id="6b2391dff281" mb="5px" p="8px" rounded="10px" w="100px">
+            <Text data-id="fd4ccb8a4b58" fontSize="smm" textAlign="center">
               {user.missedAuditsCount ?? 0}
             </Text>
           </Box>

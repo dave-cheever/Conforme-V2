@@ -111,34 +111,48 @@ const AuditLog = () => {
     }
   }, [data]);
 
-  return (
-    <>
-      <Header breadcrumbs={['Admin', 'Audit log']} />
-      <Box h="calc(100vh - 150px)" overflow="auto" p="30px" pt="0px">
-        <Flex bg="white" borderRadius="20px" flexDir="column" h="fit-content" pt="3" px="6">
-          <AuditLogComponent auditLogs={auditLogs} isLoadingMore={isLoadingMore} loading={loading} />
-          {!loading &&
-            (totalAuditLogs === countAuditLogs ? (
-              <Text color="auditLog.noLogs" mb={4}>
-                No more logs
-              </Text>
-            ) : (
-              <Text
-                color="auditLog.loadMore"
-                cursor="pointer"
-                mb={4}
-                onClick={() => {
-                  setSkip((prev) => prev + 5);
-                  setIsLoadingMore(true);
-                }}
-              >
-                Load more audit logs
-              </Text>
-            ))}
-        </Flex>
-      </Box>
-    </>
-  );
+  return (<>
+    <Header breadcrumbs={['Admin', 'Audit log']} data-id="87fb4abfbc7b" />
+    <Box
+      data-id="949e7c1a34f6"
+      h="calc(100vh - 150px)"
+      overflow="auto"
+      p="30px"
+      pt="0px">
+      <Flex
+        bg="white"
+        borderRadius="20px"
+        data-id="9a47c738995d"
+        flexDir="column"
+        h="fit-content"
+        pt="3"
+        px="6">
+        <AuditLogComponent
+          auditLogs={auditLogs}
+          data-id="5d8d380bfb32"
+          isLoadingMore={isLoadingMore}
+          loading={loading} />
+        {!loading &&
+          (totalAuditLogs === countAuditLogs ? (
+            <Text color="auditLog.noLogs" data-id="cf92fd32fd58" mb={4}>
+              No more logs
+            </Text>
+          ) : (
+            <Text
+              color="auditLog.loadMore"
+              cursor="pointer"
+              data-id="9f20c49862bb"
+              mb={4}
+              onClick={() => {
+                setSkip((prev) => prev + 5);
+                setIsLoadingMore(true);
+              }}>
+              Load more audit logs
+            </Text>
+          ))}
+      </Flex>
+    </Box>
+  </>);
 };
 
 export default AuditLog;

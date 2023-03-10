@@ -46,18 +46,18 @@ const QuestionsSection = () => {
     setQuestionGroups(() => (selectedGroup === 'category' ? groupQuestionsByCategory : groupQuestionsByKLOE));
   }, [selectedGroup]);
   return (
-    <Box>
-      <ButtonGroup pr={2} spacing={2.5}>
+    (<Box data-id="f190619c1740">
+      <ButtonGroup data-id="a93a4648ee25" pr={2} spacing={2.5}>
         <Button
           _after={selectedGroup === 'category' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
           color={selectedGroup === 'category' ? 'white' : 'auditModal.menu.active.text'}
           colorScheme={selectedGroup === 'category' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
+          data-id="c9ec8ca4fbcb"
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('category')}
-          w="130px"
-        >
+          w="130px">
           By Category
         </Button>
         <Button
@@ -65,22 +65,34 @@ const QuestionsSection = () => {
           borderRadius="10px"
           color={selectedGroup === 'kloe' ? 'white' : 'auditModal.menu.active.text'}
           colorScheme={selectedGroup === 'kloe' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
+          data-id="7fbe7fbdfe1d"
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('kloe')}
-          w="130px"
-        >
+          w="130px">
           By KLOE
         </Button>
       </ButtonGroup>
-      <VStack maxH="calc(100% - 40px)" mt={4} overflow="auto" pr={2} spacing={2} w="full">
+      <VStack
+        data-id="14d71f93bd6b"
+        maxH="calc(100% - 40px)"
+        mt={4}
+        overflow="auto"
+        pr={2}
+        spacing={2}
+        w="full">
         {questionGroups.map((item) => (
-          <QuestionGroup isExpanded={item.id === expandedItem} key={item.id} questionGroupItem={item} setExpandedItem={setExpandedItem} />
+          <QuestionGroup
+            data-id="105fa21f7784"
+            isExpanded={item.id === expandedItem}
+            key={item.id}
+            questionGroupItem={item}
+            setExpandedItem={setExpandedItem} />
         ))}
       </VStack>
-      <br />
-      <QuestionAdditionalInformation />
-    </Box>
+      <br data-id="75d30ab98ec8" />
+      <QuestionAdditionalInformation data-id="e773c8e5b72a" />
+    </Box>)
   );
 };
 

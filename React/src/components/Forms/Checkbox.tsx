@@ -17,14 +17,15 @@ const definedValidations: TDefinedValidations = {
 const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabled = false }: ICheckbox) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="53f5da81a8b5"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, value } = field;
         const { error } = fieldState;
         return (
-          <Box id={name} mt="none">
+          (<Box data-id="b2287ccd03d2" id={name} mt="none">
             <ChakraCheckbox
               borderColor="form.checkbox.icon.border"
               colorScheme="form.checkbox.icon"
@@ -36,28 +37,32 @@ const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabl
                   height: '21px',
                 },
               }}
+              data-id="a1e09eb30b29"
               isChecked={value}
               isDisabled={disabled}
               onChange={() => onChange(!value)}
-              py={3}
-            >
+              py={3}>
               {label}{' '}
               {tooltip && (
-                <Tooltip hasArrow label={tooltip} placement="top">
-                  <Icon h="14px" mb={1} name="info" />
+                <Tooltip data-id="d3eb0a56c521" hasArrow label={tooltip} placement="top">
+                  <Icon data-id="10a9cd23e39f" h="14px" mb={1} name="info" />
                 </Tooltip>
               )}
             </ChakraCheckbox>
             {error && (
-              <Box color="form.checkbox.error" fontSize={14} ml={1} mt={1}>
+              <Box
+                color="form.checkbox.error"
+                data-id="887245f805f8"
+                fontSize={14}
+                ml={1}
+                mt={1}>
                 {error.message}
               </Box>
             )}
-          </Box>
+          </Box>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

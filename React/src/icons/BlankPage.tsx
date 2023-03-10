@@ -4,16 +4,23 @@ const BlankPage = createIcon({
   displayName: 'Blank page',
   viewBox: '0 0 18 22',
   path: (
-    <g>
+    <g data-id="53d6bdb962f8">
       <path
         d="M10 1H3a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-7-7z"
+        data-id="d0f655ecfd4d"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-      <path d="M10 1v7h7" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+        strokeWidth="1.5" />
+      <path
+        d="M10 1v7h7"
+        data-id="8b3bdd420038"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5" />
     </g>
   ),
 });

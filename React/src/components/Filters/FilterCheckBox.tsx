@@ -24,10 +24,13 @@ const FilterCheckBox = ({ value, label }) => (
         },
       },
     }}
-    icon={<TickIcon stroke="white" />}
-    value={value}
-  >
-    <Text color="filterPanel.checkboxLabelColor" fontSize="14px">
+    data-id="5be3b325a364"
+    icon={<TickIcon data-id="5060fbc2da93" stroke="white" />}
+    value={value}>
+    <Text
+      color="filterPanel.checkboxLabelColor"
+      data-id="b9e075ac5790"
+      fontSize="14px">
       {label}
     </Text>
   </Checkbox>

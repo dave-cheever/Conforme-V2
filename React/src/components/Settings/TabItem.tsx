@@ -8,7 +8,7 @@ const TabItem = ({ label, setActiveTab, active, index }) => {
   };
 
   return (
-    <Flex
+    (<Flex
       _hover={{
         color: active ? 'settingsTabItem.activeColor' : 'settingsTabItem.hoverColor',
       }}
@@ -17,6 +17,7 @@ const TabItem = ({ label, setActiveTab, active, index }) => {
       borderRadius="10px"
       color={active ? 'settingsTabItem.activeColor' : 'settingsTabItem.color'}
       cursor="pointer"
+      data-id="15397fe6a2d6"
       fontSize={['11px', '14px']}
       fontWeight="700"
       h={['fit-content', '30px']}
@@ -25,10 +26,9 @@ const TabItem = ({ label, setActiveTab, active, index }) => {
       px="10px"
       py={['4px', '0px']}
       textOverflow="ellipsis"
-      whiteSpace="nowrap"
-    >
+      whiteSpace="nowrap">
       {label}
-    </Flex>
+    </Flex>)
   );
 };
 

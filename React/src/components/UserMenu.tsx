@@ -37,44 +37,49 @@ const UserMenu = () => {
   };
 
   return (
-    <Menu isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
-      <MenuButton color="white">
+    (<Menu data-id="e985cdb96443" isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+      <MenuButton color="white" data-id="74d7a3b3cdc8">
         <Avatar
           bg="userMenu.avatar.bg"
           borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
           borderWidth="5px"
           color="userMenu.avatar.color"
+          data-id="8c0b24efa538"
           h="41px"
           mr={5}
           name={user?.displayName}
           rounded="full"
           size="sm"
           src={user?.imgUrl}
-          w="41px"
-        />
+          w="41px" />
       </MenuButton>
       <MenuList
         border="0px"
         borderRadius="10px"
         boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+        data-id="d3cc6dae5991"
         minW="175px"
         p="15px 20px 15px 20px"
-        textAlign="right"
-      >
-        <Text fontWeight="semibold" noOfLines={1} textOverflow="ellipsis" w="full">
+        textAlign="right">
+        <Text
+          data-id="6d4b2e8e6139"
+          fontWeight="semibold"
+          noOfLines={1}
+          textOverflow="ellipsis"
+          w="full">
           {user?.displayName}
         </Text>
         <Text
           borderBottomColor="userMenu.borderColor"
           borderBottomWidth="1px"
           color="userMenu.text"
+          data-id="8897a95d09de"
           fontSize="sm"
           mb="10px"
           noOfLines={1}
           pb="10px"
           textOverflow="ellipsis"
-          w="full"
-        >
+          w="full">
           {user?.jobTitle}
         </Text>
         {userMenus
@@ -84,11 +89,11 @@ const UserMenu = () => {
               _hover={{ color: 'userMenu.hoverColor' }}
               color="userMenu.text"
               cursor="pointer"
+              data-id="a1d75f8fe1c6"
               fontSize="smm"
               key={label}
               my="10px"
-              onClick={() => pageRedirect(url)}
-            >
+              onClick={() => pageRedirect(url)}>
               {label}
             </Text>
           ))}
@@ -99,16 +104,16 @@ const UserMenu = () => {
           borderTopWidth="1px"
           color="userMenu.text"
           cursor="pointer"
+          data-id="665372c08e6c"
           fontSize="smm"
           mt="10px"
           my="10px"
           onClick={() => logout()}
-          pt="10px"
-        >
+          pt="10px">
           Logout
         </Text>
       </MenuList>
-    </Menu>
+    </Menu>)
   );
 };
 

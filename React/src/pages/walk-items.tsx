@@ -281,131 +281,154 @@ const WalkItems = () => {
     [JSON.stringify(filteredAnswers)],
   );
 
-  return (
-    <>
-      <WalkItemDeleteModal
-        answer={selectedWalkItem ?? ({} as IAnswer)}
-        isOpen={isDeleteQuestionModalOpen}
-        onClose={handleDeleteQuestionModalClose}
-        refetchAnswers={refetch}
-      />
-      <Modal
-        isOpen={adminModalState !== 'closed'}
-        onClose={closeModal}
-        size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
-        variant="adminModal"
-      >
-        <WalkItemModal
-          closeModal={closeModal}
-          handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
-          refetch={refetch}
-          walkItem={selectedWalkItem}
-        />
-      </Modal>
-      <Header breadcrumbs={[capitalize(pluralize(t('question')))]} mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
-        <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
-        {device !== 'mobile' && (
-          <>
-            <CSVLink data={csvData} filename="walk-items.csv" headers={csvHeaders} target="_blank">
-              <Button
-                _hover={{
-                  bg: 'reasponseHeader.buttonLightBgHover',
-                  color: 'reasponseHeader.buttonLightColorHover',
-                  cursor: 'pointer',
-                  '&:hover svg path': { stroke: 'white' },
-                }}
-                bg="white"
-                borderRadius="10px"
-                display="none"
-                ml="15px"
-                rightIcon={<ExportIcon height="15px" width="15px" />}
-              >
-                <Text fontSize="smm" fontWeight="bold">
-                  Export
-                </Text>
-              </Button>
-            </CSVLink>
-          </>
-        )}
-        <SortButton
-          ml={[0, '15px']}
-          setSortOrder={setSortOrder}
-          setSortType={setSortType}
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          sortType={sortType}
-        />
-      </Header>
-      <Flex h={['calc(100vh - 80px)', 'full']} overflow="auto">
-        {/* eslint-disable */}
-        {error ? (
-          <Text>{error.message}</Text>
-        ) : loading ? (
-          <Loader center={true} />
-        ) : (
-          <>
-            <Tabs defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
-              <TabList px={[4, 8]} flexWrap={['wrap', 'initial']}>
-                {panels?.map((panel) => (
-                  <Tab
-                    key={panel._id}
-                    _selected={{
-                      bg: 'walkItems.tabBg',
-                      color: 'walkItems.tabColor',
-                    }}
-                    borderRadius="10px"
-                    fontSize="smm"
-                    fontWeight="bold"
-                    mr={[1, 2]}
-                    ml={[1, 0]}
-                    my={[1, 0]}
-                    w={['calc(50% - .5rem)', 'auto', 'auto']}
-                  >
-                    {panel.name}
-                  </Tab>
-                ))}
-              </TabList>
-              <TabPanels>
-                {panels?.map((panel) => (
-                  <TabPanel key={panel._id} p={[4, viewMode === 'list' ? 6 : 2]} ml={[0, '10px']}>
-                    {viewMode === 'grid' && (
-                      <Grid
-                        display={['grid', 'grid', 'flex']}
-                        flexWrap="wrap"
-                        gap={[4, 4, 6]}
-                        h="fit-content"
-                        pb={[14, 8]}
-                        pt="3"
-                        px={[0, 4]}
-                        templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-                        w="full"
-                      >
-                        {sortedAnswers.map((answer) => (
-                          <WalkItemSquare answer={answer} editAnswer={handleOpenModal} key={answer._id} />
-                        ))}
-                      </Grid>
-                    )}
-                    {viewMode === 'list' && (
-                      <WalkItemsList
-                        answers={sortedAnswers}
-                        editAnswer={handleOpenModal}
-                        refetchAnswers={refetch}
-                        setSortOrder={setSortOrder}
-                        setSortType={setSortType}
-                        sortOrder={sortOrder}
-                        sortType={sortType}
-                      />
-                    )}
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </Tabs>
-          </>
-        )}
-        {/* eslint-enable */}
-      </Flex>
-    </>
-  );
+  return (<>
+    <WalkItemDeleteModal
+      answer={selectedWalkItem ?? ({} as IAnswer)}
+      data-id="62498e1d991e"
+      isOpen={isDeleteQuestionModalOpen}
+      onClose={handleDeleteQuestionModalClose}
+      refetchAnswers={refetch} />
+    <Modal
+      data-id="263c374dabd4"
+      isOpen={adminModalState !== 'closed'}
+      onClose={closeModal}
+      size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
+      variant="adminModal">
+      <WalkItemModal
+        closeModal={closeModal}
+        data-id="86d3e719d971"
+        handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
+        refetch={refetch}
+        walkItem={selectedWalkItem} />
+    </Modal>
+    <Header
+      breadcrumbs={[capitalize(pluralize(t('question')))]}
+      data-id="892bbf812d90"
+      mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
+      <ChangeViewButton
+        data-id="1d1aeb4b557f"
+        setViewMode={setViewMode}
+        viewMode={viewMode}
+        views={['grid', 'list']} />
+      {device !== 'mobile' && (
+        <>
+          <CSVLink
+            data={csvData}
+            data-id="5a492d1b03e3"
+            filename="walk-items.csv"
+            headers={csvHeaders}
+            target="_blank">
+            <Button
+              _hover={{
+                bg: 'reasponseHeader.buttonLightBgHover',
+                color: 'reasponseHeader.buttonLightColorHover',
+                cursor: 'pointer',
+                '&:hover svg path': { stroke: 'white' },
+              }}
+              bg="white"
+              borderRadius="10px"
+              data-id="21b90ee35575"
+              display="none"
+              ml="15px"
+              rightIcon={<ExportIcon data-id="3930a1d714c2" height="15px" width="15px" />}>
+              <Text data-id="9a22411e1581" fontSize="smm" fontWeight="bold">
+                Export
+              </Text>
+            </Button>
+          </CSVLink>
+        </>
+      )}
+      <SortButton
+        data-id="85e7ef276126"
+        ml={[0, '15px']}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        sortType={sortType} />
+    </Header>
+    <Flex data-id="a2e9b6d7023d" h={['calc(100vh - 80px)', 'full']} overflow="auto">
+      {/* eslint-disable */}
+      {error ? (
+        <Text data-id="3c62528dcb7a">{error.message}</Text>
+      ) : loading ? (
+        <Loader data-id="e82afaadad08" center={true} />
+      ) : (
+        <>
+          <Tabs
+            data-id="2bfade6d7c16"
+            defaultIndex={selectedPanel}
+            onChange={(index) => setSelectedPanel(index)}
+            variant="unstyled"
+            w="full">
+            <TabList data-id="fbe2e3992cf8" px={[4, 8]} flexWrap={['wrap', 'initial']}>
+              {panels?.map((panel) => (
+                <Tab
+                  data-id="d6b70656e6af"
+                  key={panel._id}
+                  _selected={{
+                    bg: 'walkItems.tabBg',
+                    color: 'walkItems.tabColor',
+                  }}
+                  borderRadius="10px"
+                  fontSize="smm"
+                  fontWeight="bold"
+                  mr={[1, 2]}
+                  ml={[1, 0]}
+                  my={[1, 0]}
+                  w={['calc(50% - .5rem)', 'auto', 'auto']}>
+                  {panel.name}
+                </Tab>
+              ))}
+            </TabList>
+            <TabPanels data-id="c44ada68ad3e">
+              {panels?.map((panel) => (
+                <TabPanel
+                  data-id="e1c9a7367a4c"
+                  key={panel._id}
+                  p={[4, viewMode === 'list' ? 6 : 2]}
+                  ml={[0, '10px']}>
+                  {viewMode === 'grid' && (
+                    <Grid
+                      data-id="268d2a8a7c28"
+                      display={['grid', 'grid', 'flex']}
+                      flexWrap="wrap"
+                      gap={[4, 4, 6]}
+                      h="fit-content"
+                      pb={[14, 8]}
+                      pt="3"
+                      px={[0, 4]}
+                      templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+                      w="full">
+                      {sortedAnswers.map((answer) => (
+                        <WalkItemSquare
+                          data-id="803def365757"
+                          answer={answer}
+                          editAnswer={handleOpenModal}
+                          key={answer._id} />
+                      ))}
+                    </Grid>
+                  )}
+                  {viewMode === 'list' && (
+                    <WalkItemsList
+                      data-id="d10f98c52554"
+                      answers={sortedAnswers}
+                      editAnswer={handleOpenModal}
+                      refetchAnswers={refetch}
+                      setSortOrder={setSortOrder}
+                      setSortType={setSortType}
+                      sortOrder={sortOrder}
+                      sortType={sortType} />
+                  )}
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
+        </>
+      )}
+      {/* eslint-enable */}
+    </Flex>
+  </>);
 };
 
 export default WalkItems;

@@ -3,36 +3,71 @@ import { createIcon } from '@chakra-ui/icons';
 const LicensesWhiteIcon = createIcon({
   viewBox: '0 0 16 16',
   path: (
-    <g>
+    <g data-id="96a78e938c12">
       <path
         d="M11.3936 2.66669C11.3936 3.18105 11.5979 3.67434 11.9616 4.03805C12.3253 4.40175 12.8186 4.60608 13.3329 4.60608C13.8473 4.60608 14.3406 4.40175 14.7043 4.03805C15.068 3.67434 15.2723 3.18105 15.2723 2.66669C15.2723 2.15233 15.068 1.65904 14.7043 1.29533C14.3406 0.931623 13.8473 0.727295 13.3329 0.727295C12.8186 0.727295 12.3253 0.931623 11.9616 1.29533C11.5979 1.65904 11.3936 2.15233 11.3936 2.66669V2.66669Z"
+        data-id="ca16d7a54c23"
         fill="none"
         stroke="white"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
+        strokeWidth="1.2" />
       <path
         d="M3.35428 0.900523C3.38071 0.848477 3.42104 0.804766 3.47079 0.774234C3.52054 0.743701 3.57777 0.727539 3.63614 0.727539C3.69451 0.727539 3.75175 0.743701 3.8015 0.774234C3.85125 0.804766 3.89157 0.848477 3.918 0.900523L4.57352 2.2206C4.59619 2.26589 4.6295 2.30502 4.67059 2.33463C4.71168 2.36424 4.75934 2.38345 4.80948 2.39062L6.27889 2.60266C6.33625 2.6109 6.39019 2.63491 6.43471 2.67201C6.47922 2.7091 6.51256 2.75783 6.53101 2.81276C6.549 2.86748 6.55121 2.92616 6.53737 2.98208C6.52354 3.03799 6.49422 3.08887 6.45279 3.12889L5.38612 4.16323C5.3503 4.19796 5.32346 4.24089 5.30792 4.2883C5.29238 4.33571 5.2886 4.38619 5.29691 4.43539L5.54839 5.89317C5.55816 5.95029 5.55157 6.00902 5.52938 6.06256C5.50719 6.1161 5.4703 6.16226 5.42297 6.19571C5.37529 6.22949 5.3192 6.24942 5.2609 6.2533C5.2026 6.25718 5.14436 6.24485 5.09263 6.21769L3.78289 5.53373C3.73766 5.50984 3.68729 5.49736 3.63614 5.49736C3.58499 5.49736 3.53462 5.50984 3.48939 5.53373L2.1816 6.21769C2.12986 6.24485 2.07163 6.25718 2.01333 6.2533C1.95502 6.24942 1.89893 6.22949 1.85125 6.19571C1.80393 6.16226 1.76704 6.1161 1.74484 6.06256C1.72265 6.00902 1.71606 5.95029 1.72584 5.89317L1.97731 4.43539C1.98562 4.38619 1.98184 4.33571 1.9663 4.2883C1.95076 4.24089 1.92392 4.19796 1.8881 4.16323L0.824021 3.12889C0.78259 3.08887 0.753275 3.03799 0.73944 2.98208C0.725604 2.92616 0.727808 2.86748 0.745799 2.81276C0.764182 2.75779 0.797502 2.70903 0.84203 2.67192C0.886558 2.63481 0.940536 2.61083 0.99792 2.60266L2.46669 2.39062C2.51613 2.38287 2.563 2.36338 2.60338 2.3338C2.64376 2.30422 2.67646 2.26541 2.69877 2.2206L3.35428 0.900523Z"
+        data-id="f5e70319c2b4"
         fill="none"
         stroke="white"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
-      <path d="M13.3333 0.727295H6.54541" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
+        strokeWidth="1.2" />
+      <path
+        d="M13.3333 0.727295H6.54541"
+        data-id="177c5c1e84b1"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2" />
       <path
         d="M11.3937 2.66675V12.3637C11.3937 13.1353 11.0872 13.8752 10.5417 14.4208C9.9961 14.9663 9.25616 15.2728 8.48463 15.2728H0.727051C1.49859 15.2728 2.23853 14.9663 2.78409 14.4208C3.32965 13.8752 3.63614 13.1353 3.63614 12.3637V8.48493"
+        data-id="846c74cf07a8"
         fill="none"
         stroke="white"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.2"
-      />
-      <path d="M5.57568 11.394H9.45447" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
-      <path d="M5.57568 9.45459H9.45447" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
-      <path d="M7.51514 7.51514H9.45453" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
-      <path d="M7.51514 5.57568H9.45453" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
+        strokeWidth="1.2" />
+      <path
+        d="M5.57568 11.394H9.45447"
+        data-id="668a277953a8"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2" />
+      <path
+        d="M5.57568 9.45459H9.45447"
+        data-id="8c439f3032bc"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2" />
+      <path
+        d="M7.51514 7.51514H9.45453"
+        data-id="2259b48a9c45"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2" />
+      <path
+        d="M7.51514 5.57568H9.45453"
+        data-id="75404425108d"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2" />
     </g>
   ),
 });

@@ -20,10 +20,11 @@ const SubSection = ({
   const { url, label, icon } = subsection;
 
   return (
-    <Flex
+    (<Flex
       alignItems="center"
       color={isPathActive(url, { exact: true }) && !showIcon ? 'subSection.selectedFontColor' : 'subSection.unselectedFontColor'}
       cursor="pointer"
+      data-id="f974c37deacd"
       fontSize="14px"
       fontWeight="400"
       key={label}
@@ -33,20 +34,23 @@ const SubSection = ({
         navigateTo(url);
         if (showIcon) setAdminModalState('add');
         if (setMenuOpen) setMenuOpen(!menuOpen);
-      }}
-    >
+      }}>
       {!showIcon && (
         <Box
           bg={isPathActive(url, { exact: true }) && !showIcon ? 'subSection.selectedIndicator' : 'subSection.unselectedIndicator'}
+          data-id="c332219e1c60"
           h="8px"
           rounded="50%"
-          w="8px"
-        />
+          w="8px" />
       )}
-
-      {showIcon && <Icon as={icon as any} h="16px" stroke="subSection.iconStroke" w="16px" />}
-      <Text ml="25px">{label}</Text>
-    </Flex>
+      {showIcon && <Icon
+        as={icon as any}
+        data-id="de7e8b57be59"
+        h="16px"
+        stroke="subSection.iconStroke"
+        w="16px" />}
+      <Text data-id="dc05a0f7a116" ml="25px">{label}</Text>
+    </Flex>)
   );
 };
 

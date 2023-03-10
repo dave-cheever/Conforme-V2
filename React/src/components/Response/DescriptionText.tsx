@@ -7,9 +7,16 @@ const DescriptionText = () => {
 
   if (!response?.trackerItem?.description) return null;
   return (
-    <Box color="trackerItemResponse.textColor" fontSize="14px" lineHeight="20px" mt="5" w="full" whiteSpace="break-spaces">
-      <Text isTruncated>{response.trackerItem.description}</Text>
-    </Box>
+    (<Box
+      color="trackerItemResponse.textColor"
+      data-id="f170f63eff96"
+      fontSize="14px"
+      lineHeight="20px"
+      mt="5"
+      w="full"
+      whiteSpace="break-spaces">
+      <Text data-id="877d4b58403a" isTruncated>{response.trackerItem.description}</Text>
+    </Box>)
   );
 };
 

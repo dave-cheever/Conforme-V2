@@ -24,26 +24,35 @@ const ModuleSwitcher = () => {
   if (device === 'mobile' || (modulesInNavigation && modulesInNavigation.length < 2)) return null;
 
   return (
-    <Stack backgroundColor="moduleSwitcher.background" p="5px" w="50px">
+    (<Stack
+      backgroundColor="moduleSwitcher.background"
+      data-id="fd295d0a3c18"
+      p="5px"
+      w="50px">
       {organizationConfig?.modules?.map((m) => (
-        <Tooltip hasArrow key={m.path} label={m.name} placement="right">
+        <Tooltip
+          data-id="d16c3126ad75"
+          hasArrow
+          key={m.path}
+          label={m.name}
+          placement="right">
           <Flex
             align="center"
             backgroundColor={m.path === module?.path ? 'moduleSwitcher.button.active' : 'moduleSwitcher.button.default'}
             color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'moduleSwitcher.button.text.default'}
             cursor={m.path === module?.path ? 'default' : 'pointer'}
+            data-id="f0e5e1bb2708"
             fontSize="md"
             h="40px"
             justify="center"
             onClick={() => m.path !== module?.path && chooseModule(m)}
             rounded="md"
-            w="40px"
-          >
-            <Text>{getInitials(m.name)}</Text>
+            w="40px">
+            <Text data-id="37c06144bd61">{getInitials(m.name)}</Text>
           </Flex>
         </Tooltip>
       ))}
-    </Stack>
+    </Stack>)
   );
 };
 

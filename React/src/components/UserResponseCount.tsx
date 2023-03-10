@@ -46,19 +46,19 @@ const UserResponseCount = ({ userId, role, responseCount }) => {
   };
 
   return (
-    <Flex
+    (<Flex
       alignItems="center"
       bg="userItem.responseCountBg"
       cursor="pointer"
+      data-id="145b0f7e0833"
       h="calc(100% - 1px)"
       justifyContent="center"
       mr="1px"
       mt="1px"
       onClick={handleClick}
-      w="calc(25% - 1px)"
-    >
+      w="calc(25% - 1px)">
       {responseCount || 0}
-    </Flex>
+    </Flex>)
   );
 };
 

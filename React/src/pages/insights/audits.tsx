@@ -275,57 +275,57 @@ const AuditsInsights = () => {
   ) as EChartsOption;
 
   return (
-    <Box pt="3">
+    (<Box data-id="c52094756aa1" pt="3">
       {error ? (
-        <Text>{error.message}</Text>
+        <Text data-id="175dae4a92a6">{error.message}</Text>
       ) : loading ? (
-        <Box h="100vh">
-          <Loader center />
+        <Box data-id="d6f174d7650d" h="100vh">
+          <Loader center data-id="e218f7079fbb" />
         </Box>
       ) : (
         <>
           <Flex
+            data-id="5bad076b5dcf"
             sx={{
               '@media (max-width: 768px)': {
                 overflowX: 'scroll',
                 '::-webkit-scrollbar': { display: 'none' },
               },
-            }}
-          >
+            }}>
             {auditsStatsCounts.map((filter) => (
               <InsightsCard
                 count={filter.audits}
+                data-id="ddb825078d3e"
                 key={filter.status}
                 onSelect={setSelectedAuditsStatsCount}
                 selected={selectedAuditsStatsCount === filter.status}
-                status={filter.status}
-              />
+                status={filter.status} />
             ))}
           </Flex>
           <Text
             color={auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color}
+            data-id="4f60c5e91690"
             fontSize="xxl"
             fontWeight="bold"
-            my={['15px', '25px']}
-          >
+            my={['15px', '25px']}>
             {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
-            <Text as="span" color="insights.secondaryText">
+            <Text as="span" color="insights.secondaryText" data-id="34b551d959dc">
               {pluralize(t('audit'))}
             </Text>
           </Text>
-          <InsightsChart option={echartsOption} />
+          <InsightsChart data-id="405e91b68eae" option={echartsOption} />
           <InsightsDetailedStats
             businessUnits={businessUnits}
+            data-id="80caaddbff42"
             insightsType="audits"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}
             loadMoreUsers={getUsersData}
             locations={locations}
-            users={users}
-          />
+            users={users} />
         </>
       )}
-    </Box>
+    </Box>)
   );
 };
 

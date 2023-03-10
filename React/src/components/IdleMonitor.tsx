@@ -104,28 +104,28 @@ const IdleMonitor = () => {
   }, [modalIsOpen]);
 
   return (
-    <Modal isOpen={modalIsOpen} onClose={() => {}}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader fontSize="lg" fontWeight="bold">
+    (<Modal data-id="f0b0579fe21d" isOpen={modalIsOpen} onClose={() => {}}>
+      <ModalOverlay data-id="fe54873c4303" />
+      <ModalContent data-id="03d2d7be8a84">
+        <ModalHeader data-id="682364375995" fontSize="lg" fontWeight="bold">
           Session timeout
         </ModalHeader>
-        <ModalBody>
-          <Text>
+        <ModalBody data-id="ab3434d8690b">
+          <Text data-id="fcb4f18ee6ac">
             Due to inactivity your session will expire in {secondsLeft < 1 ? 1 : secondsLeft} second
             {secondsLeft > 1 && 's'}.
           </Text>
         </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="red" ml={3} onClick={logout}>
+        <ModalFooter data-id="7ea1f1eac8e2">
+          <Button colorScheme="red" data-id="dda44b9550c5" ml={3} onClick={logout}>
             Logout
           </Button>
-          <Button ml={3} onClick={() => setModalIsOpen(false)}>
+          <Button data-id="5b4be66a9ae6" ml={3} onClick={() => setModalIsOpen(false)}>
             Extend session
           </Button>
         </ModalFooter>
       </ModalContent>
-    </Modal>
+    </Modal>)
   );
 };
 

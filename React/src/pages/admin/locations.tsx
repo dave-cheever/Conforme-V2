@@ -208,120 +208,163 @@ const Locations = () => {
     }
   };
 
-  return (
-    <>
-      <AdminModal collection={t('location')} isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
-        <Flex align="flex-start" direction="column" w={['full', '70%']}>
-          <TextInput
-            control={control}
-            initialValue={currentLocationName.toLowerCase()}
-            label={`${capitalize(t('location'))} name`}
-            name="name"
-            placeholder="e.g. London"
-            validations={{
-              notEmpty: true,
-              uniqueValue: locations.map(({ name }) => name.toLowerCase()),
-            }}
-          />
-          <TextInputMultiline control={control} label="Notes" name="notes" placeholder="Add your notes here" />
-          <PeoplePicker
-            control={control}
-            label="Owner"
-            name="ownerId"
-            placeholder="Name"
-            showAsDropdown={false}
-            validations={{
-              notEmpty: true,
-            }}
-          />
-        </Flex>
-      </AdminModal>
-      <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} />
-      <Box h="calc(100vh - 160px)" p={['0', '0 25px 30px 30px']}>
-        <Flex h="full" px={['25px', 0]}>
-          <Box h={['calc(100% - 160px)', 'calc(100% - 35px)']} mr={[0, 0, '50px']} w={['full', 'full', 'calc(100%)']}>
-            <AdminTableHeader>
-              <AdminTableHeaderElement
-                label={`${capitalize(t('location'))} name`}
-                onClick={() => {
-                  setSortType('name');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' ? sortOrder : undefined}
-                w={['max-content', '50%']}
-              />
-              {device !== 'mobile' && device !== 'tablet' && (
-                <>
-                  <AdminTableHeaderElement
-                    label="Notes"
-                    onClick={() => {
-                      setSortType('notes');
-                      setSortOrder(sortOrder === 'asc' && sortType === 'notes' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={sortType === 'notes'}
-                    sortOrder={sortType === 'notes' ? sortOrder : undefined}
-                    w={['100%', '50%']}
-                  />
-                  <AdminTableHeaderElement
-                    label="Owner"
-                    onClick={() => {
-                      setSortType('owner');
-                      setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={sortType === 'owner'}
-                    sortOrder={sortType === 'owner' ? sortOrder : undefined}
-                    w={['100%', '50%']}
-                  />
-                </>
-              )}
-              <Spacer display={['block', 'none']} />
-              {module?.type === 'tracker' ? (
+  return (<>
+    <AdminModal
+      collection={t('location')}
+      data-id="8cc9cefb27d9"
+      isOpenModal={adminModalState !== 'closed'}
+      modalType={adminModalState}
+      onAction={handleAction}>
+      <Flex
+        align="flex-start"
+        data-id="23969460d22e"
+        direction="column"
+        w={['full', '70%']}>
+        <TextInput
+          control={control}
+          data-id="1668554bc1a6"
+          initialValue={currentLocationName.toLowerCase()}
+          label={`${capitalize(t('location'))} name`}
+          name="name"
+          placeholder="e.g. London"
+          validations={{
+            notEmpty: true,
+            uniqueValue: locations.map(({ name }) => name.toLowerCase()),
+          }} />
+        <TextInputMultiline
+          control={control}
+          data-id="e273a22cbfed"
+          label="Notes"
+          name="notes"
+          placeholder="Add your notes here" />
+        <PeoplePicker
+          control={control}
+          data-id="910976b16797"
+          label="Owner"
+          name="ownerId"
+          placeholder="Name"
+          showAsDropdown={false}
+          validations={{
+            notEmpty: true,
+          }} />
+      </Flex>
+    </AdminModal>
+    <Header
+      breadcrumbs={['Admin', pluralize(capitalize(t('location')))]}
+      data-id="13ef30011341" />
+    <Box
+      data-id="305629609ebb"
+      h="calc(100vh - 160px)"
+      p={['0', '0 25px 30px 30px']}>
+      <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]}>
+        <Box
+          data-id="a281438af26d"
+          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+          mr={[0, 0, '50px']}
+          w={['full', 'full', 'calc(100%)']}>
+          <AdminTableHeader data-id="e7aa7d3c7407">
+            <AdminTableHeaderElement
+              data-id="159a51bef263"
+              label={`${capitalize(t('location'))} name`}
+              onClick={() => {
+                setSortType('name');
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
+              }}
+              showSortingIcon={sortType === 'name'}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
+              w={['max-content', '50%']} />
+            {device !== 'mobile' && device !== 'tablet' && (
+              <>
                 <AdminTableHeaderElement
-                  label="Responses count"
+                  data-id="43f0c376de5d"
+                  label="Notes"
                   onClick={() => {
-                    setSortType('trackerItemsResponsesCount');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
+                    setSortType('notes');
+                    setSortOrder(sortOrder === 'asc' && sortType === 'notes' ? 'desc' : 'asc');
                   }}
-                  showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                  sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                  tooltip="Only published items"
-                  w={['max-content', '50%']}
-                />
-              ) : (
+                  showSortingIcon={sortType === 'notes'}
+                  sortOrder={sortType === 'notes' ? sortOrder : undefined}
+                  w={['100%', '50%']} />
                 <AdminTableHeaderElement
-                  label={`${capitalize(pluralize(t('audit')))} count`}
+                  data-id="dfebf5306be2"
+                  label="Owner"
                   onClick={() => {
-                    setSortType('totalAuditsCount');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                    setSortType('owner');
+                    setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
                   }}
-                  showSortingIcon={sortType === 'totalAuditsCount'}
-                  sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                  w={['max-content', '50%']}
-                />
-              )}
-            </AdminTableHeader>
-
-            {loading ? (
-              <Box bg="white" borderBottomRadius="10px" h="full" w="full">
-                <Loader center />
-              </Box>
-            ) : (
-              <Stack bg="white" borderBottomRadius="10px" h="full" overflow="auto" spacing="1px">
-                {locations?.length > 0 ? (
-                  locations?.map((location, i) => <LocationListItem key={i} location={location} openLocationModal={openLocationModal} />)
-                ) : (
-                  <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                    No {pluralize(t('location'))} found
-                  </Flex>
-                )}
-              </Stack>
+                  showSortingIcon={sortType === 'owner'}
+                  sortOrder={sortType === 'owner' ? sortOrder : undefined}
+                  w={['100%', '50%']} />
+              </>
             )}
-          </Box>
-        </Flex>
-      </Box>
-    </>
-  );
+            <Spacer data-id="73a8dcc983a8" display={['block', 'none']} />
+            {module?.type === 'tracker' ? (
+              <AdminTableHeaderElement
+                data-id="f0cf4a8cc53d"
+                label="Responses count"
+                onClick={() => {
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
+                tooltip="Only published items"
+                w={['max-content', '50%']} />
+            ) : (
+              <AdminTableHeaderElement
+                data-id="d8d8713b18db"
+                label={`${capitalize(pluralize(t('audit')))} count`}
+                onClick={() => {
+                  setSortType('totalAuditsCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'totalAuditsCount'}
+                sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
+                w={['max-content', '50%']} />
+            )}
+          </AdminTableHeader>
+
+          {loading ? (
+            <Box
+              bg="white"
+              borderBottomRadius="10px"
+              data-id="fbaca2cb7cfc"
+              h="full"
+              w="full">
+              <Loader center data-id="358df5122736" />
+            </Box>
+          ) : (
+            <Stack
+              bg="white"
+              borderBottomRadius="10px"
+              data-id="c078a58c912b"
+              h="full"
+              overflow="auto"
+              spacing="1px">
+              {locations?.length > 0 ? (
+                locations?.map((location, i) => <LocationListItem
+                  data-id="a042845458cc"
+                  key={i}
+                  location={location}
+                  openLocationModal={openLocationModal} />)
+              ) : (
+                <Flex
+                  data-id="e3da38faca1c"
+                  fontSize="18px"
+                  fontStyle="italic"
+                  h="full"
+                  justify="center"
+                  mt={4}
+                  w="full">
+                  No {pluralize(t('location'))} found
+                </Flex>
+              )}
+            </Stack>
+          )}
+        </Box>
+      </Flex>
+    </Box>
+  </>);
 };
 
 export default Locations;

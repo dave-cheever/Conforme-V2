@@ -49,44 +49,50 @@ const Dropdown = ({
 }: IDropdown) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="7db42c8f56b4"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box id={name} mt="none" w="full">
+          (<Box data-id="39a79f4b31af" id={name} mt="none" w="full">
             {label && (
-              <Flex align="center" justify="space-between" mb="none" pt={2}>
+              <Flex
+                align="center"
+                data-id="970bc88b7c00"
+                justify="space-between"
+                mb="none"
+                pt={2}>
                 <Box
                   color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
+                  data-id="0bd2e1eb71d2"
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
                   left="none"
                   position="static"
-                  zIndex={1}
-                >
+                  zIndex={1}>
                   {label}
                   {required && (
                     <Asterisk
+                      data-id="cbc4972a10b1"
                       fill="questionListElement.iconAsterisk"
                       h="9px"
                       mb="8px"
                       ml="5px"
                       stroke="questionListElement.iconAsterisk"
-                      w="9px"
-                    />
+                      w="9px" />
                   )}{' '}
                   {help && (
-                    <Box fontSize="11px" mt={3} opacity={0.5}>
+                    <Box data-id="15f42453556c" fontSize="11px" mt={3} opacity={0.5}>
                       {help}
                     </Box>
                   )}
                 </Box>
               </Flex>
             )}
-            <Flex alignItems={Icon ? 'center' : ''}>
+            <Flex alignItems={Icon ? 'center' : ''} data-id="b3b42aa35f83">
               <Select
                 _active={{
                   bg: disabled ? 'dropdown.disabled.bg' : 'dropdown.activeBg',
@@ -108,43 +114,59 @@ const Dropdown = ({
                 color="dropdown.font"
                 css={{ paddingTop: '0' }}
                 cursor="pointer"
+                data-id="c6727b20d738"
                 fontSize="smm"
                 h="42px"
-                icon={<ChevronRight stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
+                icon={<ChevronRight
+                  data-id="455ad790a86d"
+                  stroke="dropdown.chevronDownIcon"
+                  transform="rotate(90deg)" />}
                 isDisabled={disabled}
                 name={name}
                 onBlur={onBlur}
                 onChange={onChange}
                 placeholder={placeholder}
                 top="5px"
-                value={value || ''}
-              >
+                value={value || ''}>
                 {options.map((option) => (
-                  <option key={`${name}-${option.value}`} value={option.value}>
+                  <option
+                    data-id="f4f169180b1a"
+                    key={`${name}-${option.value}`}
+                    value={option.value}>
                     {option.label}
                   </option>
                 ))}
               </Select>
-              {Icon && onAction && <Icon cursor="pointer" ml="20px" mt="10px" onClick={() => onAction(attributeType)} stroke={stroke} />}
+              {Icon && onAction && <Icon
+                cursor="pointer"
+                data-id="0f46ffa60722"
+                ml="20px"
+                mt="10px"
+                onClick={() => onAction(attributeType)}
+                stroke={stroke} />}
             </Flex>
             {error && (
-              <Box color="dropdown.error" fontSize="smm" ml={1} mt={1}>
+              <Box
+                color="dropdown.error"
+                data-id="b4a17716b922"
+                fontSize="smm"
+                ml={1}
+                mt={1}>
                 {error.message}
               </Box>
             )}
             {tooltip && (
-              <Flex align="center" color="dropdown.tooltip" mt={3}>
-                <InfoOutlineIcon />
-                <Box fontSize="11px" ml={2}>
+              <Flex align="center" color="dropdown.tooltip" data-id="adf007fb53ec" mt={3}>
+                <InfoOutlineIcon data-id="3ab95ab44274" />
+                <Box data-id="474dc3bfedb3" fontSize="11px" ml={2}>
                   {tooltip}
                 </Box>
               </Flex>
             )}
-          </Box>
+          </Box>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

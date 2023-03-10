@@ -95,41 +95,80 @@ const InsightListItem = ({
   const counts = useMemo(() => {
     switch (insightsType) {
       case 'actions':
-        return (
-          <>
-            <InsightCount count={item.totalActionsCount} onClick={() => handleClickForActions()} />
-            <InsightCount count={item.completedActionsCount} onClick={() => handleClickForActions('closed')} />
-            <InsightCount count={item.inProgressActionsCount} onClick={() => handleClickForActions('open')} />
-            <InsightCount count={item.overdueActionsCount} onClick={() => handleClickForActions('overdue')} />
-          </>
-        );
+        return (<>
+          <InsightCount
+            count={item.totalActionsCount}
+            data-id="3578a77b7d3e"
+            onClick={() => handleClickForActions()} />
+          <InsightCount
+            count={item.completedActionsCount}
+            data-id="8cc91979f83b"
+            onClick={() => handleClickForActions('closed')} />
+          <InsightCount
+            count={item.inProgressActionsCount}
+            data-id="e9a64b9f33f2"
+            onClick={() => handleClickForActions('open')} />
+          <InsightCount
+            count={item.overdueActionsCount}
+            data-id="ed64480de41e"
+            onClick={() => handleClickForActions('overdue')} />
+        </>);
       case 'answers':
-        return (
-          <>
-            <InsightCount count={item.totalAnswersCount} onClick={() => handleClickForAnswers()} />
-            <InsightCount count={item.openAnswersCount} onClick={() => handleClickForAnswers('open')} />
-            <InsightCount count={item.resolvedAnswersCount} onClick={() => handleClickForAnswers('resolved')} />
-            <InsightCount count={item.closedAnswersCount} onClick={() => handleClickForAnswers('closed')} />
-          </>
-        );
+        return (<>
+          <InsightCount
+            count={item.totalAnswersCount}
+            data-id="f5cad70b73f1"
+            onClick={() => handleClickForAnswers()} />
+          <InsightCount
+            count={item.openAnswersCount}
+            data-id="e3021dcd6196"
+            onClick={() => handleClickForAnswers('open')} />
+          <InsightCount
+            count={item.resolvedAnswersCount}
+            data-id="7f49acdd73d0"
+            onClick={() => handleClickForAnswers('resolved')} />
+          <InsightCount
+            count={item.closedAnswersCount}
+            data-id="9924f419590c"
+            onClick={() => handleClickForAnswers('closed')} />
+        </>);
       case 'audits':
       default:
-        return (
-          <>
-            <InsightCount count={item.totalAuditsCount} onClick={() => handleClickForAudits()} />
-            <InsightCount count={item.completedAuditsCount} onClick={() => handleClickForAudits('completed')} />
-            <InsightCount count={item.upcomingAuditsCount} onClick={() => handleClickForAudits('upcoming')} />
-            <InsightCount count={item.missedAuditsCount} onClick={() => handleClickForAudits('missed')} />
-          </>
-        );
+        return (<>
+          <InsightCount
+            count={item.totalAuditsCount}
+            data-id="400360a39f0f"
+            onClick={() => handleClickForAudits()} />
+          <InsightCount
+            count={item.completedAuditsCount}
+            data-id="9b759557782b"
+            onClick={() => handleClickForAudits('completed')} />
+          <InsightCount
+            count={item.upcomingAuditsCount}
+            data-id="25acdaecee15"
+            onClick={() => handleClickForAudits('upcoming')} />
+          <InsightCount
+            count={item.missedAuditsCount}
+            data-id="c41ebd517393"
+            onClick={() => handleClickForAudits('missed')} />
+        </>);
     }
   }, [insightsType]);
 
   return (
-    <Flex align="center" bg={light ? 'white' : '#F3F3F5'} cursor="pointer" minH="70px" p="15px 25px" py={1.25} w="full">
-      <Grid templateColumns="1fr repeat(4, 135px)" w="full">
+    (<Flex
+      align="center"
+      bg={light ? 'white' : '#F3F3F5'}
+      cursor="pointer"
+      data-id="f291bdb7a111"
+      minH="70px"
+      p="15px 25px"
+      py={1.25}
+      w="full">
+      <Grid data-id="d856e717d4f5" templateColumns="1fr repeat(4, 135px)" w="full">
         <Flex
           color="auditsInsights.list.fontColor"
+          data-id="e3023b92294b"
           fontSize="14px"
           fontWeight="400"
           lineHeight="18px"
@@ -146,20 +185,19 @@ const InsightListItem = ({
                 handleClickForAudits();
             }
           }}
-          textOverflow="ellipsis"
-        >
+          textOverflow="ellipsis">
           {insightsModel === 'users' ? (
-            <Flex align="center">
-              <UserAvatar size="sm" userId={item?._id} />
-              <Text ml={2}>{(item as IUser)?.displayName}</Text>
+            <Flex align="center" data-id="b00ae33eaf25">
+              <UserAvatar data-id="bb765ecf756c" size="sm" userId={item?._id} />
+              <Text data-id="3e566d1f49fe" ml={2}>{(item as IUser)?.displayName}</Text>
             </Flex>
           ) : (
-            <Text>{(item as IBusinessUnit | ILocation)?.name}</Text>
+            <Text data-id="f94275e0eaa5">{(item as IBusinessUnit | ILocation)?.name}</Text>
           )}
         </Flex>
         {counts}
       </Grid>
-    </Flex>
+    </Flex>)
   );
 };
 

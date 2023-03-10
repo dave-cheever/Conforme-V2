@@ -24,10 +24,16 @@ const WalkItemsList = ({
   refetchAnswers: () => void;
   editAnswer: (answer: IAnswer) => void;
 }) => (
-  <Box h="full" overflow="none" w="full">
-    <Box bg="walkItemsList.bg" borderRadius="20px" h="full" w="full">
-      <AdminTableHeader>
+  <Box data-id="2bbf3cb51d71" h="full" overflow="none" w="full">
+    <Box
+      bg="walkItemsList.bg"
+      borderRadius="20px"
+      data-id="9ed6a0796976"
+      h="full"
+      w="full">
+      <AdminTableHeader data-id="8d072756422b">
         <AdminTableHeaderElement
+          data-id="94ec98491bcc"
           label="Type"
           onClick={() => {
             setSortType('question.questionsCategory.name');
@@ -35,9 +41,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'question.questionsCategory.name'}
           sortOrder={sortType === 'question.questionsCategory.name' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="7a4b568177c5"
           label="Description"
           onClick={() => {
             setSortType('question.question');
@@ -45,9 +51,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'question.question'}
           sortOrder={sortType === 'question.question' ? sortOrder : undefined}
-          w="15%"
-        />
+          w="15%" />
         <AdminTableHeaderElement
+          data-id="6cedd262ce53"
           label="Status"
           onClick={() => {
             setSortType('status');
@@ -55,9 +61,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'status'}
           sortOrder={sortType === 'status' ? sortOrder : undefined}
-          w="6%"
-        />
+          w="6%" />
         <AdminTableHeaderElement
+          data-id="f0e89569202e"
           label={capitalize(t('location'))}
           onClick={() => {
             setSortType('audit.location.name');
@@ -65,9 +71,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'audit.location.name'}
           sortOrder={sortType === 'audit.location.name' ? sortOrder : undefined}
-          w="19%"
-        />
+          w="19%" />
         <AdminTableHeaderElement
+          data-id="ba5ec43859af"
           label={capitalize(t('business unit'))}
           onClick={() => {
             setSortType('businessUnit.name');
@@ -75,9 +81,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'businessUnit.name'}
           sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w="19%"
-        />
+          w="19%" />
         <AdminTableHeaderElement
+          data-id="a55eb24ed040"
           label="# of actions"
           onClick={() => {
             setSortType('actions.length');
@@ -85,9 +91,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'actions.length'}
           sortOrder={sortType === 'actions.length' ? sortOrder : undefined}
-          w="5%"
-        />
+          w="5%" />
         <AdminTableHeaderElement
+          data-id="bc9b5240b005"
           label="Added by"
           onClick={() => {
             setSortType('addedBy.displayName');
@@ -95,9 +101,9 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'addedBy.displayName'}
           sortOrder={sortType === 'addedBy.displayName' ? sortOrder : undefined}
-          w="12%"
-        />
+          w="12%" />
         <AdminTableHeaderElement
+          data-id="ad5ff6c327a4"
           label="Date added"
           onClick={() => {
             setSortType('metatags.addedAt');
@@ -105,12 +111,21 @@ const WalkItemsList = ({
           }}
           showSortingIcon={sortType === 'metatags.addedAt'}
           sortOrder={sortType === 'metatags.addedAt' ? sortOrder : undefined}
-          w="8%"
-        />
+          w="8%" />
       </AdminTableHeader>
-      <Flex flexDir="column" h={['full', 'calc(100vh - 295px)', 'calc(100vh - 293px)']} overflowY="auto" w="full">
+      <Flex
+        data-id="542f9fc2b876"
+        flexDir="column"
+        h={['full', 'calc(100vh - 295px)', 'calc(100vh - 293px)']}
+        overflowY="auto"
+        w="full">
         {answers?.map((answer) => (
-          <WalkItemsListItem answer={answer} editAnswer={editAnswer} key={answer._id} refetchAnswers={refetchAnswers} />
+          <WalkItemsListItem
+            answer={answer}
+            data-id="ecf11473c1b0"
+            editAnswer={editAnswer}
+            key={answer._id}
+            refetchAnswers={refetchAnswers} />
         ))}
       </Flex>
     </Box>

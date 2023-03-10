@@ -40,6 +40,7 @@ const Switch = ({ control, name, label, required, requiredAnswer, notApplicable,
           ? 'switch.activebtn.color'
           : 'switch.btn.color'
       }
+      data-id="9c2ec21293ba"
       disabled={requiredAnswer === 'na' || disabled}
       fontSize="smm"
       fontWeight="bold"
@@ -49,49 +50,77 @@ const Switch = ({ control, name, label, required, requiredAnswer, notApplicable,
         if ((laterality === 'left' && value === 'yes') || (laterality === 'right' && value === 'no')) onchange('');
         else onchange(laterality === 'left' ? 'yes' : 'no');
       }}
-      p="10px 20px"
-    >
+      p="10px 20px">
       {laterality === 'left' ? 'Yes' : 'No'}
     </Button>
   );
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="f0da3c22bcd6"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, value } = field;
         const { error } = fieldState;
         return (
-          <Box>
-            <Text color="switch.form.labelColor" fontSize="ssm" fontWeight="bold" pb="10px" pt="8px">
+          (<Box data-id="b1e6ad610c5e">
+            <Text
+              color="switch.form.labelColor"
+              data-id="c604d0fdcae5"
+              fontSize="ssm"
+              fontWeight="bold"
+              pb="10px"
+              pt="8px">
               {label}
               {requiredAnswer === 'yes' && value === 'no' && (
-                <Box as="span" color="switch.form.labelColor" fontSize="xs" fontWeight="medium">
+                <Box
+                  as="span"
+                  color="switch.form.labelColor"
+                  data-id="7c472a73cb8a"
+                  fontSize="xs"
+                  fontWeight="medium">
                   {' '}
                   ( The required answer is Yes )
                 </Box>
               )}
               {requiredAnswer === 'no' && value === 'yes' && (
-                <Box as="span" color="switch.form.labelColor" fontSize="xs" fontWeight="medium">
+                <Box
+                  as="span"
+                  color="switch.form.labelColor"
+                  data-id="5470f6b4b584"
+                  fontSize="xs"
+                  fontWeight="medium">
                   {' '}
                   ( The required answer is No )
                 </Box>
               )}
               {required && (
                 <Asterisk
+                  data-id="8c639acd19c9"
                   fill="questionListElement.iconAsterisk"
                   h="9px"
                   mb="8px"
                   ml="5px"
                   stroke="questionListElement.iconAsterisk"
-                  w="9px"
-                />
+                  w="9px" />
               )}
             </Text>
-            <Flex>
-              <RenderButton laterality="left" name={name} onchange={onChange} requiredAnswer={requiredAnswer} value={value} />
+            <Flex data-id="5d9cb745744b">
+              <RenderButton
+                data-id="3e6a1e2bf6cb"
+                laterality="left"
+                name={name}
+                onchange={onChange}
+                requiredAnswer={requiredAnswer}
+                value={value} />
               &nbsp;&nbsp;
-              <RenderButton laterality="right" name={name} onchange={onChange} requiredAnswer={requiredAnswer} value={value} />
+              <RenderButton
+                data-id="00117738024f"
+                laterality="right"
+                name={name}
+                onchange={onChange}
+                requiredAnswer={requiredAnswer}
+                value={value} />
               {notApplicable && (
                 <>
                   &nbsp;&nbsp;
@@ -102,6 +131,7 @@ const Switch = ({ control, name, label, required, requiredAnswer, notApplicable,
                     }}
                     bg={value === 'na' ? 'switch.activebtn.bg' : 'switch.btn.bg'}
                     color={value === 'na' ? 'switch.activebtn.color' : 'switch.btn.color'}
+                    data-id="328a1c3707ab"
                     disabled={disabled}
                     fontSize="smm"
                     fontWeight="bold"
@@ -113,23 +143,25 @@ const Switch = ({ control, name, label, required, requiredAnswer, notApplicable,
                       }
                       onChange('na');
                     }}
-                    p="10px 20px"
-                  >
+                    p="10px 20px">
                     NA
                   </Button>
                 </>
               )}
             </Flex>
             {error && (
-              <Box color="switch.form.textInput.error" fontSize={14} ml={1}>
+              <Box
+                color="switch.form.textInput.error"
+                data-id="681237fa20d8"
+                fontSize={14}
+                ml={1}>
                 {error.message}
               </Box>
             )}
-          </Box>
+          </Box>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

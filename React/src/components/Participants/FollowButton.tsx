@@ -98,52 +98,52 @@ const FollowButton = ({ isMobile = false }) => {
   const Icon = useMemo(() => {
     if (isFollower) {
       return (
-        <UnFollowIcon
+        (<UnFollowIcon
           _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+          data-id="c13dfcf64268"
           fill="transparent"
           fontSize="15px"
-          stroke="reasponseHeader.buttonLightColor"
-        />
+          stroke="reasponseHeader.buttonLightColor" />)
       );
     }
 
     return (
-      <FollowIcon
+      (<FollowIcon
         _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+        data-id="035525a6a179"
         fill="transparent"
         fontSize="15px"
-        stroke="reasponseHeader.buttonLightColor"
-      />
+        stroke="reasponseHeader.buttonLightColor" />)
     );
   }, [isFollower]);
 
   if (isMobile) {
     return (
-      <Can
+      (<Can
         action="responses.manageFollower"
+        data-id="6569777318bf"
         yes={() => (
           <ResponseHeaderMenuItem
+            data-id="7d799883554a"
             icon={Icon}
             name={isFollower ? 'Unfollow' : 'Follow'}
-            onClick={isFollower ? handleUnFollow : handleFollow}
-          />
-        )}
-      />
+            onClick={isFollower ? handleUnFollow : handleFollow} />
+        )} />)
     );
   }
 
   return (
-    <Can
+    (<Can
       action="responses.manageFollower"
+      data-id="ccb326bd96ac"
       yes={() => (
         <ResponseHeaderButton
+          data-id="55cc28e133b4"
           icon={Icon}
           loading={loading || unFollowLoading}
           name={isFollower ? 'Unfollow' : 'Follow'}
-          onClick={isFollower ? handleUnFollow : handleFollow}
-        />
-      )}
-    />
+          onClick={isFollower ? handleUnFollow : handleFollow} />
+      )} />)
   );
 };
 

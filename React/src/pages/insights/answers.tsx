@@ -216,25 +216,29 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
   ) as EChartsOption;
 
   return (
-    <Box pt="3">
+    (<Box data-id="cbbc2f6482f5" pt="3">
       {error ? (
-        <Text>{error.message}</Text>
+        <Text data-id="5f7805f82787">{error.message}</Text>
       ) : loading ? (
-        <Box h="100vh">
-          <Loader center />
+        <Box data-id="0fdb941f0c87" h="100vh">
+          <Loader center data-id="96ed58e2afc9" />
         </Box>
       ) : (
         <>
-          <Grid alignItems="center" templateColumns="1fr .25fr">
-            <GridItem w="100%">
-              <InsightsChart option={echartsOption} />
+          <Grid alignItems="center" data-id="d4dab0f8e0a1" templateColumns="1fr .25fr">
+            <GridItem data-id="2e756da47bdc" w="100%">
+              <InsightsChart data-id="8866350f2e3e" option={echartsOption} />
             </GridItem>
-            <GridItem w="100%">
-              <Flex direction="column" textAlign="left">
-                <Text as="span" color="insights.secondaryText" fontWeight="bold">
+            <GridItem data-id="02d7bfdccd8b" w="100%">
+              <Flex data-id="b3cd8c2ec805" direction="column" textAlign="left">
+                <Text
+                  as="span"
+                  color="insights.secondaryText"
+                  data-id="1f0b59b358bd"
+                  fontWeight="bold">
                   Total {answerType.toLowerCase()}
                 </Text>
-                <Heading color="#1E1836" fontSize="100px">
+                <Heading color="#1E1836" data-id="31df75a059bb" fontSize="100px">
                   {data?.answersInsights?.totalAnswers}
                 </Heading>
               </Flex>
@@ -242,6 +246,7 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
           </Grid>
           <InsightsDetailedStats
             businessUnits={businessUnits}
+            data-id="3df330b119a3"
             insightsType="answers"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}
@@ -249,11 +254,10 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
             locations={locations}
             questionsCategoriesId={questionsCategoriesId}
             questionsCategoryName={answerType}
-            users={users}
-          />
+            users={users} />
         </>
       )}
-    </Box>
+    </Box>)
   );
 };
 

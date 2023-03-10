@@ -18,41 +18,52 @@ const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }
   }
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose} size="2xl">
-      <ModalContent>
-        <ModalHeader>
-          <Text fontSize="smm" fontWeight="semibold">
+    (<Modal
+      data-id="23c1c7bf1a9e"
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      size="2xl">
+      <ModalContent data-id="2db2fe2484c1">
+        <ModalHeader data-id="0a7a7025079a">
+          <Text data-id="db5b7fe4f052" fontSize="smm" fontWeight="semibold">
             Action changes
           </Text>
-          <ModalCloseButton />
+          <ModalCloseButton data-id="ac1df75d5223" />
         </ModalHeader>
-        <ModalBody mb="40px">
-          <Stack>
-            <Text>
+        <ModalBody data-id="722047660fb3" mb="40px">
+          <Stack data-id="dc94470b9fe7">
+            <Text data-id="b77127f3ee7a">
               {selectedAction && selectedAction.title
                 ? `Changes to Action '${selectedAction?.title}' will be lost`
                 : 'Unsaved action will be lost'}
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter>
-          <Stack direction={['column', 'row']} justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} onClick={onClose}>
+        <ModalFooter data-id="13319fcfea59">
+          <Stack
+            data-id="69271cf078ae"
+            direction={['column', 'row']}
+            justify="center"
+            spacing={4}
+            w="full">
+            <Button _hover={{ opacity: 0.7 }} data-id="118a66038810" onClick={onClose}>
               Back to {t('question')}
             </Button>
             <Button
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="78102633030f"
               onClick={() => {
                 onSave();
                 onClose();
-              }}
-            >
+              }}>
               Save action
             </Button>
             <Button
               _hover={{ opacity: 0.7 }}
               colorScheme="red"
+              data-id="cbb03d6c9042"
               onClick={
                 onContinue
                   ? () => {
@@ -61,14 +72,13 @@ const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }
                       onClose();
                     }
                   : onClose
-              }
-            >
+              }>
               Continue without saving action
             </Button>
           </Stack>
         </ModalFooter>
       </ModalContent>
-    </Modal>
+    </Modal>)
   );
 };
 

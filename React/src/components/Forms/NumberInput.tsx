@@ -32,27 +32,33 @@ const NumberInput = ({
 }: INumberInput) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="5836afb6b07e"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box id={name} mt="none" w="full">
+          (<Box data-id="2b39932d8a6e" id={name} mt="none" w="full">
             {label && (
-              <Flex align="center" justify="space-between" mb="none" pt={2}>
+              <Flex
+                align="center"
+                data-id="396f99b5d436"
+                justify="space-between"
+                mb="none"
+                pt={2}>
                 <Box
                   color={error ? 'numberInput.labelFont.error' : 'numberInput.labelFont.normal'}
+                  data-id="b737fafc70a6"
                   fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                   fontWeight="bold"
                   left="none"
                   position="static"
-                  zIndex={1}
-                >
+                  zIndex={1}>
                   {label}
                   {help && (
-                    <Box fontSize="11px" mt={3} opacity={0.5}>
+                    <Box data-id="76bcdf98e7f6" fontSize="11px" mt={3} opacity={0.5}>
                       {help}
                     </Box>
                   )}
@@ -80,6 +86,7 @@ const NumberInput = ({
               borderWidth="1px"
               color="numberInput.font"
               cursor="pointer"
+              data-id="8ad266b0bf9c"
               defaultValue={value}
               h="42px"
               isDisabled={disabled}
@@ -90,26 +97,24 @@ const NumberInput = ({
               onChange={(e) => onChange({ name, target: { value: Number(e.target.value) } })}
               placeholder={variant === 'secondaryVariant' ? '' : placeholder}
               pt="none"
-              type="number"
-            />
+              type="number" />
             {error && (
-              <Box color="numberInput.error" fontSize={14} ml={1}>
+              <Box color="numberInput.error" data-id="aa321272b2e6" fontSize={14} ml={1}>
                 {error.message}
               </Box>
             )}
             {tooltip && (
-              <Flex align="center" color="dropdown.tooltip" mt={3}>
-                <InfoOutlineIcon />
-                <Box fontSize="11px" ml={2}>
+              <Flex align="center" color="dropdown.tooltip" data-id="11b2f64cac4a" mt={3}>
+                <InfoOutlineIcon data-id="18307723ae2f" />
+                <Box data-id="76e5eb86829e" fontSize="11px" ml={2}>
                   {tooltip}
                 </Box>
               </Flex>
             )}
-          </Box>
+          </Box>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

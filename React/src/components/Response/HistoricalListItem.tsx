@@ -38,40 +38,56 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
   const active = getTime(new Date(response.lastCompletionDate!)).toString() === snapshot;
 
   return (
-    <Box
+    (<Box
       bg="historicalListItem.bg"
       borderBottomColor="historicalListItem.borderColor"
       borderBottomWidth="1px"
       cursor="pointer"
+      data-id="dc0d24d0d3cb"
       onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
       p="15px 25px"
       py={[1, 0]}
-      w="full"
-    >
-      <Flex align="center" h={['full', '73px']} position="relative" w="full">
+      w="full">
+      <Flex
+        align="center"
+        data-id="44b191ca1e72"
+        h={['full', '73px']}
+        position="relative"
+        w="full">
         <Flex
           align="flex-start"
           color="historicalListItem.fontColor"
+          data-id="ad39f7899649"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           lineHeight="18px"
           noOfLines={1}
           opacity="1"
           textOverflow="ellipsis"
-          w="30%"
-        >
+          w="30%">
           {response.trackerItem.name}
         </Flex>
-        <Flex color="historicalListItem.fontColor" fontSize="14px" fontWeight={active ? '700' : '400'} opacity="1" w="20%">
+        <Flex
+          color="historicalListItem.fontColor"
+          data-id="37098dc0b96e"
+          fontSize="14px"
+          fontWeight={active ? '700' : '400'}
+          opacity="1"
+          w="20%">
           {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
         </Flex>
-        <Box pr="20px" w="25%">
-          <Skeleton isLoaded={!responsibleLoading} rounded="full">
+        <Box data-id="d8638f50969c" pr="20px" w="25%">
+          <Skeleton data-id="2565056795a3" isLoaded={!responsibleLoading} rounded="full">
             {response.responsible ? (
-              <Flex align="center" direction="row">
-                <Avatar name={response.responsible?.displayName} size="xs" src={response.responsible?.imgUrl} />
+              <Flex align="center" data-id="3df599cf5384" direction="row">
+                <Avatar
+                  data-id="eda3bdaca613"
+                  name={response.responsible?.displayName}
+                  size="xs"
+                  src={response.responsible?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
+                  data-id="92345d6caf62"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"
@@ -80,25 +96,29 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
                   pl={3}
                   textOverflow="ellipsis"
                   w="full"
-                  whiteSpace="nowrap"
-                >
+                  whiteSpace="nowrap">
                   {response.responsible?.displayName}
                 </Text>
               </Flex>
             ) : (
-              <Flex fontSize="13px" fontStyle="italic">
+              <Flex data-id="5175245420f7" fontSize="13px" fontStyle="italic">
                 Unassigned
               </Flex>
             )}
           </Skeleton>
         </Box>
-        <Box pr="20px" w="25%">
-          <Skeleton isLoaded={!responsibleLoading} rounded="full">
+        <Box data-id="a9dbecd46ca5" pr="20px" w="25%">
+          <Skeleton data-id="0c8a68752e86" isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
-              <Flex align="center" direction="row">
-                <Avatar name={lastUpdatedBy?.displayName} size="xs" src={lastUpdatedBy?.imgUrl} />
+              <Flex align="center" data-id="c61ec76d4907" direction="row">
+                <Avatar
+                  data-id="439c5e5fbdb3"
+                  name={lastUpdatedBy?.displayName}
+                  size="xs"
+                  src={lastUpdatedBy?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
+                  data-id="16ae5a02b9a0"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"
@@ -107,20 +127,23 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
                   pl={3}
                   textOverflow="ellipsis"
                   w="full"
-                  whiteSpace="nowrap"
-                >
+                  whiteSpace="nowrap">
                   {lastUpdatedBy?.displayName}
                 </Text>
               </Flex>
             ) : (
-              <Flex fontSize="13px" fontStyle="italic" fontWeight={active ? '700' : '400'}>
+              <Flex
+                data-id="8279e830843a"
+                fontSize="13px"
+                fontStyle="italic"
+                fontWeight={active ? '700' : '400'}>
                 Unassigned
               </Flex>
             )}
           </Skeleton>
         </Box>
       </Flex>
-    </Box>
+    </Box>)
   );
 };
 

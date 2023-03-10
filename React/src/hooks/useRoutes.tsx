@@ -60,12 +60,12 @@ const openRoutes: Array<IRoute> = [
     key: 'not-allowed',
     component: () => (
       <Redirect
+        data-id="7b09f5e18669"
         key="not-allowed"
         to={{
           pathname: '/login',
           state: { redirectUrl: `${window.location.pathname}${window.location.search}` },
-        }}
-      />
+        }} />
     ),
     layout: PureLayout,
   },
@@ -313,15 +313,21 @@ const useRoutes = () => {
       component: () => (
         <Can
           action={route.permission}
-          no={() => <Redirect key="not-found" to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />}
-          yes={() => <route.layout component={route.component} key={route.key} />}
-        />
+          data-id="0bd23c229298"
+          no={() => <Redirect
+            data-id="50994d77ea25"
+            key="not-found"
+            to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />}
+          yes={() => <route.layout component={route.component} key={route.key} />} />
       ),
     })),
     {
       path: '*',
       key: 'not-found',
-      component: () => <Redirect key="not-found" to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />,
+      component: () => <Redirect
+        data-id="1ce68823769f"
+        key="not-found"
+        to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />,
       layout: DefaultLayout,
     },
   ];

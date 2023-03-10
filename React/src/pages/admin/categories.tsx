@@ -189,94 +189,122 @@ const Categories = () => {
     }
   };
 
-  return (
-    <>
-      <AdminModal collection="category" isOpenModal={adminModalState !== 'closed'} modalType={adminModalState} onAction={handleAction}>
-        <Flex align="flex-start" direction="column" w="full">
-          <TextInput
-            control={control}
-            initialValue={currentCategoryName.toLowerCase()}
-            label="Name"
-            name="name"
-            placeholder="Category name"
-            validations={{
-              notEmpty: true,
-              uniqueValue: categories.map(({ name }) => name.toLowerCase()),
-            }}
-          />
-        </Flex>
-      </AdminModal>
-      <Header breadcrumbs={['Admin', 'Categories']} mobileBreadcrumbs={['Categories']} />
-      <Box h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
-        <Flex h="full" px={['25px', 0]}>
-          <Box
-            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
-            w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
-          >
-            <AdminTableHeader>
+  return (<>
+    <AdminModal
+      collection="category"
+      data-id="01c5bc371383"
+      isOpenModal={adminModalState !== 'closed'}
+      modalType={adminModalState}
+      onAction={handleAction}>
+      <Flex align="flex-start" data-id="b1f73fb84928" direction="column" w="full">
+        <TextInput
+          control={control}
+          data-id="19ea0a600288"
+          initialValue={currentCategoryName.toLowerCase()}
+          label="Name"
+          name="name"
+          placeholder="Category name"
+          validations={{
+            notEmpty: true,
+            uniqueValue: categories.map(({ name }) => name.toLowerCase()),
+          }} />
+      </Flex>
+    </AdminModal>
+    <Header
+      breadcrumbs={['Admin', 'Categories']}
+      data-id="785ad45decb2"
+      mobileBreadcrumbs={['Categories']} />
+    <Box
+      data-id="f13ecd68fd5e"
+      h="calc(100vh - 160px)"
+      overflow="auto"
+      p={['0', '0 25px 30px 30px']}>
+      <Flex data-id="de7dc4ff2c7a" h="full" px={['25px', 0]}>
+        <Box
+          data-id="68abdc5bbebd"
+          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+          mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
+          w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}>
+          <AdminTableHeader data-id="9a8f6d144d9b">
+            <AdminTableHeaderElement
+              data-id="6388e10281f4"
+              label="Category"
+              onClick={() => {
+                setSortType('name');
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
+              }}
+              showSortingIcon={sortType === 'name'}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
+              w={['80%', '50%']} />
+            {module?.type === 'tracker' && (
               <AdminTableHeaderElement
-                label="Category"
+                data-id="c6c0c6c62853"
+                label="Responses count"
                 onClick={() => {
-                  setSortType('name');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
                 }}
-                showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' ? sortOrder : undefined}
-                w={['80%', '50%']}
-              />
-              {module?.type === 'tracker' && (
-                <AdminTableHeaderElement
-                  label="Responses count"
-                  onClick={() => {
-                    setSortType('trackerItemsResponsesCount');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                  sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                  tooltip="Only published items"
-                  w={['20%', '50%']}
-                />
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
+                tooltip="Only published items"
+                w={['20%', '50%']} />
+            )}
+          </AdminTableHeader>
+          <Stack
+            bg="white"
+            borderBottomRadius="20px"
+            data-id="b4ceb0af7426"
+            h={loading ? 'full' : 'fit-content'}
+            minH="full"
+            pb="3"
+            spacing="1px">
+            {loading ? (
+              <Loader center data-id="3f45d2e8a2a1" />
+            ) : categories?.length > 0 ? (
+              categories?.map((category) => (
+                <AdminTableRow
+                  data-id="01df96183ed7"
+                  edit={() => openCategoryModal('edit', category)}
+                  element={category}
+                  key={category._id}
+                  responseToEdit="categoriesIds" />
+              ))
+            ) : (
+              <Flex
+                data-id="a8a85eead14f"
+                fontSize="18px"
+                fontStyle="italic"
+                h="full"
+                justify="center"
+                mt={4}
+                w="full">
+                No categories found
+              </Flex>
+            )}
+          </Stack>
+        </Box>
+        {device === 'desktop' && module?.type === 'tracker' && (
+          <Flex
+            alignItems="center"
+            data-id="19cfc9321608"
+            flexDirection="column"
+            w={['100%', '220px']}>
+            <Box data-id="a5f894bab33b" w="100%">
+              {categories && (
+                <BarChart
+                  data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
+                    _id,
+                    count: trackerItemsResponsesCount,
+                  }))}
+                  data-id="89aed783124e"
+                  label="Categories" />
               )}
-            </AdminTableHeader>
-            <Stack bg="white" borderBottomRadius="20px" h={loading ? 'full' : 'fit-content'} minH="full" pb="3" spacing="1px">
-              {loading ? (
-                <Loader center />
-              ) : categories?.length > 0 ? (
-                categories?.map((category) => (
-                  <AdminTableRow
-                    edit={() => openCategoryModal('edit', category)}
-                    element={category}
-                    key={category._id}
-                    responseToEdit="categoriesIds"
-                  />
-                ))
-              ) : (
-                <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                  No categories found
-                </Flex>
-              )}
-            </Stack>
-          </Box>
-          {device === 'desktop' && module?.type === 'tracker' && (
-            <Flex alignItems="center" flexDirection="column" w={['100%', '220px']}>
-              <Box w="100%">
-                {categories && (
-                  <BarChart
-                    data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
-                      _id,
-                      count: trackerItemsResponsesCount,
-                    }))}
-                    label="Categories"
-                  />
-                )}
-              </Box>
-            </Flex>
-          )}
-        </Flex>
-      </Box>
-    </>
-  );
+            </Box>
+          </Flex>
+        )}
+      </Flex>
+    </Box>
+  </>);
 };
 
 export default Categories;

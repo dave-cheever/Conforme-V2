@@ -32,17 +32,17 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
 
   if (disabled) {
     return (
-      <BusinessUnitsSelectorList
+      (<BusinessUnitsSelectorList
+        data-id="4d64ac5ef6f3"
         disabled={disabled}
         filteredBusinessUnits={filteredBusinessUnits}
         handleChange={handleChange}
-        selected={selected}
-      />
+        selected={selected} />)
     );
   }
 
   return (
-    <Stack w="full">
+    (<Stack data-id="da7a35110007" w="full">
       {/* <Stack overflow="auto" pb={3} w="full"> */}
       {/* <Box mt="-12px" w="full"> */}
       {/* <Dropdown
@@ -59,37 +59,48 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
           /> */}
       {/* </Box> */}
       {/* <> */}
-      <Box py="5px">
-        <InputGroup>
+      <Box data-id="03949dd6796a" py="5px">
+        <InputGroup data-id="427bbb0a5ce6">
           <Input
             borderColor="filterPanel.searchBoxBordercolor"
             borderWidth="1px"
             color="brand.darkGrey"
+            data-id="8687a26fc46d"
             fontSize="14px"
             h="40px"
             onChange={({ target: { value } }) => setSearchText(value)}
             pl={8}
             placeholder={`Search ${pluralize(t('business unit'))}`}
             value={searchText}
-            w="full"
-          />
-          <Magnifier bottom="13px" h="12px" left="14px" position="absolute" w="12x" />
+            w="full" />
+          <Magnifier
+            bottom="13px"
+            data-id="76d404b13450"
+            h="12px"
+            left="14px"
+            position="absolute"
+            w="12x" />
         </InputGroup>
       </Box>
       {note && (
-        <Text color="businessUnitsSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3">
+        <Text
+          color="businessUnitsSelector.note"
+          data-id="4aac350395f8"
+          fontSize="12px"
+          fontStyle="italic"
+          opacity="0.3">
           {note}
         </Text>
       )}
       <BusinessUnitsSelectorList
+        data-id="26f4dd7fd184"
         disabled={disabled}
         filteredBusinessUnits={filteredBusinessUnits}
         handleChange={handleChange}
-        selected={selected}
-      />
+        selected={selected} />
       {/* </> */}
       {/* </Stack> */}
-    </Stack>
+    </Stack>)
   );
 };
 

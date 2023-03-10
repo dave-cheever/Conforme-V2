@@ -12,6 +12,7 @@ interface IBusinessUnitsSelectorList {
 
 const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, handleChange }: IBusinessUnitsSelectorList) => (
   <CheckboxGroup
+    data-id="d5eced54c75b"
     onChange={(value) =>
       handleChange({
         target: {
@@ -20,11 +21,10 @@ const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, handleChan
         },
       })
     }
-    value={selected}
-  >
-    <Stack direction="column" pb={2} w="full">
+    value={selected}>
+    <Stack data-id="e68c58abfbdf" direction="column" pb={2} w="full">
       {filteredBusinessUnits?.map(({ name, _id }) => (
-        <FilterCheckBox key={_id} label={name} value={_id} />
+        <FilterCheckBox data-id="e139a63d72e4" key={_id} label={name} value={_id} />
       ))}
     </Stack>
   </CheckboxGroup>

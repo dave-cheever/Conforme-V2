@@ -40,38 +40,45 @@ const TextInputMultiline = ({
 }: ITextInputMultiline) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="b9256f524c41"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box id={name} mt="none" w="full">
+          (<Box data-id="c70ddbf2d879" id={name} mt="none" w="full">
             {label && (
-              <Flex align="center" justify="space-between" mb="none" pb={1} pt={2}>
+              <Flex
+                align="center"
+                data-id="8aa867ecac0b"
+                justify="space-between"
+                mb="none"
+                pb={1}
+                pt={2}>
                 <Box
                   color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
+                  data-id="152360f1bf7d"
                   fontSize="11px"
                   fontWeight="bold"
                   left="none"
                   position="static"
-                  zIndex={2}
-                >
+                  zIndex={2}>
                   {label}
                   {required && (
                     <Asterisk
+                      data-id="d23da9f910f9"
                       fill="questionListElement.iconAsterisk"
                       h="9px"
                       mb="8px"
                       ml="5px"
                       stroke="questionListElement.iconAsterisk"
-                      w="9px"
-                    />
+                      w="9px" />
                   )}{' '}
                   {tooltip && (
-                    <Tooltip hasArrow label={tooltip} placement="top">
-                      <Icon h="14px" mb={1} name="info" />
+                    <Tooltip data-id="f0ea5d76d863" hasArrow label={tooltip} placement="top">
+                      <Icon data-id="1c252e7c06e7" h="14px" mb={1} name="info" />
                     </Tooltip>
                   )}
                 </Box>
@@ -98,6 +105,7 @@ const TextInputMultiline = ({
               borderWidth="1px"
               color="textInput.font"
               cursor="pointer"
+              data-id="8931ed7e3471"
               defaultValue={value}
               fontSize="smm"
               h="100px"
@@ -106,18 +114,16 @@ const TextInputMultiline = ({
               name={name}
               onBlur={onBlur}
               onChange={onChange}
-              placeholder={placeholder}
-            />
+              placeholder={placeholder} />
             {error && (
-              <Box color="textInput.error" fontSize={14} ml={1}>
+              <Box color="textInput.error" data-id="7ff6b50cf8ca" fontSize={14} ml={1}>
                 {error.message}
               </Box>
             )}
-          </Box>
+          </Box>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

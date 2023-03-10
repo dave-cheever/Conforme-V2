@@ -24,6 +24,7 @@ const AuditHeaderButton = ({
       bg={bgColor}
       borderRadius="10px"
       color={fontColor}
+      data-id="0d7b9b4721ff"
       disabled={disabled}
       display={['flex', icon ? 'none' : 'flex', 'flex']}
       fontSize="14px"
@@ -34,8 +35,7 @@ const AuditHeaderButton = ({
       onClick={() => !disabled && onClick()}
       px={4}
       role="group"
-      w={['calc(100% - 1rem - 15px)', 'auto']}
-    >
+      w={['calc(100% - 1rem - 15px)', 'auto']}>
       {name}
     </Button>
     <IconButton
@@ -47,11 +47,11 @@ const AuditHeaderButton = ({
       aria-label="Search database"
       bg="auditHeader.buttonLightBg"
       borderRadius="10px"
+      data-id="7fab498153ad"
       display={['none', icon ? 'flex' : 'none', 'none']}
       icon={icon}
       ml="15px"
-      onClick={onClick}
-    />
+      onClick={onClick} />
   </>
 );
 

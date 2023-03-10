@@ -35,38 +35,45 @@ const Textarea = ({
 }: ITextarea) => {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    <Controller
+    (<Controller
       control={control}
+      data-id="21cfe500574e"
       name={name}
       render={({ field, fieldState }) => {
         const { value } = field;
         const { error } = fieldState;
         return (
-          <Box id={name} mt="none" w="full">
+          (<Box data-id="9c2485a2048e" id={name} mt="none" w="full">
             {label && (
-              <Flex align="center" justify="space-between" mb="none" pb={1} pt={2}>
+              <Flex
+                align="center"
+                data-id="ca7fd8a52059"
+                justify="space-between"
+                mb="none"
+                pb={1}
+                pt={2}>
                 <Box
                   color={error ? 'textMultilineInput.labelFont.error' : 'textMultilineInput.labelFont.normal'}
+                  data-id="6abf8eb5aa97"
                   fontSize={11}
                   fontWeight="bold"
                   left="none"
                   position="static"
-                  zIndex={2}
-                >
+                  zIndex={2}>
                   {label}
                   {required && (
                     <Asterisk
+                      data-id="0c770a110784"
                       fill="questionListElement.iconAsterisk"
                       h="9px"
                       mb="8px"
                       ml="5px"
                       stroke="textMultilineConfirmInput.iconAsterisk"
-                      w="9px"
-                    />
+                      w="9px" />
                   )}{' '}
                   {tooltip && (
-                    <Tooltip hasArrow label={tooltip} placement="top">
-                      <Icon h="14px" mb={1} name="info" />
+                    <Tooltip data-id="249f369c275d" hasArrow label={tooltip} placement="top">
+                      <Icon data-id="d7ce1e0bec82" h="14px" mb={1} name="info" />
                     </Tooltip>
                   )}
                 </Box>
@@ -98,31 +105,34 @@ const Textarea = ({
                   borderWidth="1px"
                   color="textMultilineInput.font"
                   cursor="pointer"
+                  data-id="888991d97cad"
                   fontSize="smm"
                   isDisabled={disabled}
                   maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
                   placeholder={placeholder}
                   pt="5px"
                   rows={4}
-                  {...field}
-                />
+                  {...field} />
                 {error && (
-                  <Box color="textMultilineInput.error" fontSize={14} ml={1}>
+                  <Box
+                    color="textMultilineInput.error"
+                    data-id="e6d610e5e1ae"
+                    fontSize={14}
+                    ml={1}>
                     {error.message}
                   </Box>
                 )}
               </>
             )}
             {readMode && (
-              <Flex fontSize="smm" minH="40px">
+              <Flex data-id="fe75b3c4e255" fontSize="smm" minH="40px">
                 {value}
               </Flex>
             )}
-          </Box>
+          </Box>)
         );
       }}
-      rules={{ validate }}
-    />
+      rules={{ validate }} />)
   );
 };
 

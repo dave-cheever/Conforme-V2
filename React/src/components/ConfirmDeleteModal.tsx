@@ -26,39 +26,44 @@ interface IChatConfirmDeleteModal {
 }
 
 const ChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, onAction }: IChatConfirmDeleteModal) => (
-  <Modal isCentered isOpen={isOpen} onClose={onClose} size="md">
-    <ModalOverlay />
-    <ModalContent>
-      <ModalHeader>
-        <Text fontSize="smm" fontWeight="bold">
+  <Modal
+    data-id="d8b4245cc0be"
+    isCentered
+    isOpen={isOpen}
+    onClose={onClose}
+    size="md">
+    <ModalOverlay data-id="77e3a1713738" />
+    <ModalContent data-id="212840a37c79">
+      <ModalHeader data-id="6435addac411">
+        <Text data-id="a76aa21e1e1f" fontSize="smm" fontWeight="bold">
           Delete message
         </Text>
-        <ModalCloseButton />
+        <ModalCloseButton data-id="9cb0cbaa3d2a" />
       </ModalHeader>
-      <ModalBody mb="40px">
-        <Stack>
-          <Text>Are you sure you want to delete the following message?</Text>
-          <Text fontStyle="italic" fontWeight="bold">
+      <ModalBody data-id="8d7ac56e4dee" mb="40px">
+        <Stack data-id="072fba718bca">
+          <Text data-id="082dde04f6ac">Are you sure you want to delete the following message?</Text>
+          <Text data-id="58886c3b3bce" fontStyle="italic" fontWeight="bold">
             {reactStringReplace(message, chatMentionRegExp, (match, i) => (
-              <ChatMention key={i} tag={match} />
+              <ChatMention data-id="e532a2c3ea2a" key={i} tag={match} />
             ))}
           </Text>
         </Stack>
       </ModalBody>
-      <ModalFooter>
-        <HStack justify="center" spacing={4} w="full">
-          <Button _hover={{ opacity: 0.7 }} onClick={onClose}>
+      <ModalFooter data-id="7dcbd6b38912">
+        <HStack data-id="b786c4d797dc" justify="center" spacing={4} w="full">
+          <Button _hover={{ opacity: 0.7 }} data-id="b3266b9d0c95" onClick={onClose}>
             Cancel
           </Button>
           <Button
             _hover={{ opacity: 0.7 }}
             bg="chatConfirmDeleteModal.deleteButtonBg"
             color="chatConfirmDeleteModal.deleteButtonColor"
+            data-id="01c4dd63f091"
             onClick={async () => {
               onAction(messageId);
               onClose();
-            }}
-          >
+            }}>
             Delete
           </Button>
         </HStack>

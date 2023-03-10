@@ -88,20 +88,34 @@ const EvidenceExpected = ({ evidence }) => {
   if (!response) return null;
 
   return (
-    <Flex direction="column" maxW="342px" w="full">
-      <Flex align="center" mb={2} mt={3}>
-        <Box color="evidence.fontColor" fontSize={11} fontWeight="700" lineHeight="16px" width="300px">
+    (<Flex data-id="0d5c528d84eb" direction="column" maxW="342px" w="full">
+      <Flex align="center" data-id="6e91afd5e51b" mb={2} mt={3}>
+        <Box
+          color="evidence.fontColor"
+          data-id="4fb4efb625df"
+          fontSize={11}
+          fontWeight="700"
+          lineHeight="16px"
+          width="300px">
           {evidence.name}
-          <Asterisk fill="questionListElement.iconAsterisk" h="9px" mb="5px" ml="5px" stroke="datepicker.iconAsterisk" w="9px" />
+          <Asterisk
+            data-id="c39305b5b189"
+            fill="questionListElement.iconAsterisk"
+            h="9px"
+            mb="5px"
+            ml="5px"
+            stroke="datepicker.iconAsterisk"
+            w="9px" />
         </Box>
       </Flex>
       {evidence.uploaded?.id ? (
-        <Flex maxW="380px">
+        <Flex data-id="061248b5300b" maxW="380px">
           <DocumentUploaded
             callback={async () => {
               await removeEvidence();
               refetch();
             }}
+            data-id="2d643e8628fe"
             deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name
               }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
             document={evidence.uploaded}
@@ -118,29 +132,35 @@ const EvidenceExpected = ({ evidence }) => {
                 action: 'responses.edit',
                 data: { response },
               })
-            }
-          />
+            } />
         </Flex>
       ) : status === 'uploading' ? (
-        <DocumentUploading documentName={evidence.name} />
+        <DocumentUploading data-id="a1d5a531fba0" documentName={evidence.name} />
       ) : (
         <Can
           action="responses.edit"
           data={{ response }}
+          data-id="1038a8ac89ea"
           yes={() => (
             <Dropzone
               accept={acceptedFileTypes}
+              data-id="9e35d7c7db33"
               multiple={false}
               onDrop={(acceptedFiles, rejectedFiles) =>
                 upload({
                   acceptedFile: acceptedFiles[0],
                   rejectedFile: rejectedFiles[0],
                 })
-              }
-            >
+              }>
               {({ getRootProps, getInputProps }) => (
-                <Box {...getRootProps()} cursor="pointer" h="65px" maxW="380px" w="full">
-                  <input {...getInputProps()} />
+                <Box
+                  data-id="4536a61bbaa6"
+                  {...getRootProps()}
+                  cursor="pointer"
+                  h="65px"
+                  maxW="380px"
+                  w="full">
+                  <input data-id="0665df7712c8" {...getInputProps()} />
                   <Flex
                     align="center"
                     borderColor="evidence.uploadBorderColor"
@@ -148,34 +168,38 @@ const EvidenceExpected = ({ evidence }) => {
                     borderStyle="dashed"
                     borderWidth="1px"
                     color="evidence.uploadFontColor"
+                    data-id="972d58bd12ed"
                     fontSize="14px"
                     h="full"
                     justify="space-between"
                     px={5}
-                    w="full"
-                  >
-                    <Flex>
+                    w="full">
+                    <Flex data-id="d859d9e75d6b">
                       {' '}
                       Drag and drop or{' '}
-                      <Text color="evidence.browseFontColor" ml={1}>
+                      <Text color="evidence.browseFontColor" data-id="d08ec7b7692d" ml={1}>
                         {' '}
                         browse
                       </Text>
                     </Flex>
-                    <UploadIcon h="21px" w="21px" />
+                    <UploadIcon data-id="60d55d3da3b6" h="21px" w="21px" />
                   </Flex>
                 </Box>
               )}
             </Dropzone>
-          )}
-        />
+          )} />
       )}
       {status === 'rejected' && (
-        <Flex color="red.500" fontSize="12px" fontWeight="bold" mt={2}>
+        <Flex
+          color="red.500"
+          data-id="22eb7abc30ce"
+          fontSize="12px"
+          fontWeight="bold"
+          mt={2}>
           Document not uploaded. Accepted file types include {acceptedFileTypes.map((file) => `${file} `)}
         </Flex>
       )}
-    </Flex>
+    </Flex>)
   );
 };
 

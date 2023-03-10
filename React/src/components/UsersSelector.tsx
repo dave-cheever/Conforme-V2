@@ -39,44 +39,49 @@ const UsersSelector = ({
 
   if (disabled) {
     return (
-      <UsersSelectorList
+      (<UsersSelectorList
+        data-id="c768ed18d5be"
         disabled={disabled}
         filteredUsers={filteredUsers}
         handleChange={handleChange}
         selected={selected}
-        selectedRole={selectedRole}
-      />
+        selectedRole={selectedRole} />)
     );
   }
 
   return (
-    <Stack w="full">
-      <Stack overflow="auto" pb={3} w="full">
+    (<Stack data-id="080219c5f426" w="full">
+      <Stack data-id="d5b3d58a5932" overflow="auto" pb={3} w="full">
         <>
           {note && (
-            <Text color="usersSelector.note" fontSize="12px" fontStyle="italic" opacity="0.3">
+            <Text
+              color="usersSelector.note"
+              data-id="b971a3a045cd"
+              fontSize="12px"
+              fontStyle="italic"
+              opacity="0.3">
               {note}
             </Text>
           )}
           {selected?.length > 0 && (
             <UsersSelectorList
+              data-id="0c29480541a6"
               disabled={disabled}
               filteredUsers={filteredUsers.filter((filteredUser) => selected?.includes(filteredUser._id))}
               handleChange={handleChange}
               selected={selected}
-              selectedRole={selectedRole}
-            />
+              selectedRole={selectedRole} />
           )}
           <UsersSelectorList
+            data-id="0a0815518d47"
             disabled={disabled}
             filteredUsers={filteredUsers.filter((filteredUser) => !selected?.includes(filteredUser._id))}
             handleChange={handleChange}
             selected={selected}
-            selectedRole={selectedRole}
-          />
+            selectedRole={selectedRole} />
         </>
       </Stack>
-    </Stack>
+    </Stack>)
   );
 };
 

@@ -106,79 +106,97 @@ const QuestionSimpleForm = ({
 
   const group = getRootProps();
 
-  return (
-    <>
-      <Flex alignItems="center" mb="20px">
-        <Text fontSize="smm" fontWeight="bold">
-          {questionHeader(questionType)}
-        </Text>
-      </Flex>
-      <TextInput
-        control={control}
-        label={`${capitalize(t('question'))} title`}
-        name="name"
-        placeholder="e.g. where is the tv?"
-        validations={{
-          notEmpty: true,
+  return (<>
+    <Flex alignItems="center" data-id="709af2b2efa8" mb="20px">
+      <Text data-id="da82a7d521c8" fontSize="smm" fontWeight="bold">
+        {questionHeader(questionType)}
+      </Text>
+    </Flex>
+    <TextInput
+      control={control}
+      data-id="c91e85f4ba77"
+      label={`${capitalize(t('question'))} title`}
+      name="name"
+      placeholder="e.g. where is the tv?"
+      validations={{
+        notEmpty: true,
+      }}
+      variant="secondaryVariant" />
+    <Textarea
+      control={control}
+      data-id="76a5de3af0b7"
+      label="Description"
+      name="description"
+      variant="secondaryVariant" />
+    <Checkbox
+      control={control}
+      data-id="d495b68e7c2c"
+      disabled={notApplicable}
+      label="Answer is required"
+      name="required"
+      variant="secondaryVariant" />
+    {questionType === 'switch' && (
+      <>
+        <HStack data-id="573331c847aa" {...group} alignItems="flex-start" spacing="20px">
+          <Text data-id="c46db59f0031">Compliant answer is:</Text>
+          {SwitchOptions.map(({ value, label }) => {
+            const radio = getRadioProps({ value });
+            return (
+              (<CustomRadioButton data-id="a730ec9febb6" key={value} {...radio} fontSize="smm">
+                {label}
+              </CustomRadioButton>)
+            );
+          })}
+        </HStack>
+        <Checkbox
+          control={control}
+          data-id="363dde0fab55"
+          label="NA answer permitted"
+          name="notApplicable"
+          variant="secondaryVariant" />
+      </>
+    )}
+    <Flex data-id="0aa9f298c349" justifyContent="space-between" mt="15px">
+      <Button
+        bg="questionsSimple.form.button.secondary.bg"
+        color="questionsSimple.form.button.secondary.font"
+        data-id="21449055cff0"
+        fontSize="sm"
+        fontWeight="700"
+        h="27px"
+        onClick={() => {
+          setShowQuestionForm(false);
+          setIsEdit(false);
+          setEditQuestionIndex(undefined);
+          setEditQuestion('');
         }}
-        variant="secondaryVariant"
-      />
-      <Textarea control={control} label="Description" name="description" variant="secondaryVariant" />
-      <Checkbox control={control} disabled={notApplicable} label="Answer is required" name="required" variant="secondaryVariant" />
-      {questionType === 'switch' && (
-        <>
-          <HStack {...group} alignItems="flex-start" spacing="20px">
-            <Text>Compliant answer is:</Text>
-            {SwitchOptions.map(({ value, label }) => {
-              const radio = getRadioProps({ value });
-              return (
-                <CustomRadioButton key={value} {...radio} fontSize="smm">
-                  {label}
-                </CustomRadioButton>
-              );
-            })}
-          </HStack>
-          <Checkbox control={control} label="NA answer permitted" name="notApplicable" variant="secondaryVariant" />
-        </>
-      )}
-      <Flex justifyContent="space-between" mt="15px">
-        <Button
-          bg="questionsSimple.form.button.secondary.bg"
-          color="questionsSimple.form.button.secondary.font"
-          fontSize="sm"
-          fontWeight="700"
-          h="27px"
-          onClick={() => {
-            setShowQuestionForm(false);
-            setIsEdit(false);
-            setEditQuestionIndex(undefined);
-            setEditQuestion('');
-          }}
-          p="17px"
-        >
-          Cancel
-        </Button>
-        <Button
-          bg="questionsSimple.form.button.primary.bg"
-          color="questionsSimple.form.button.primary.font"
-          disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
-          fontSize="sm"
-          fontWeight="medium"
-          h="27px"
-          onClick={() => {
-            const question = getValues();
-            addOrUpdateQuestion({ type: questionType, ...question });
-            setShowQuestionForm(false);
-          }}
-          p="17px"
-          rightIcon={<Icon as={OpenMenuArrow} stroke="trackerItemModal.tabs.bottomButton.icon" transform="rotate(270deg)" />}
-          title={questionAlreadyExist ? 'This question already exist' : ''}
-        >
-          Save question
-        </Button>
-      </Flex>
-    </>
-  );
+        p="17px">
+        Cancel
+      </Button>
+      <Button
+        bg="questionsSimple.form.button.primary.bg"
+        color="questionsSimple.form.button.primary.font"
+        data-id="63a0f1f30ae0"
+        disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
+        fontSize="sm"
+        fontWeight="medium"
+        h="27px"
+        onClick={() => {
+          const question = getValues();
+          addOrUpdateQuestion({ type: questionType, ...question });
+          setShowQuestionForm(false);
+        }}
+        p="17px"
+        rightIcon={<Icon
+          as={OpenMenuArrow}
+          data-id="eccab343c6cc"
+          stroke="trackerItemModal.tabs.bottomButton.icon"
+          transform="rotate(270deg)" />}
+        title={questionAlreadyExist ? 'This question already exist' : ''}>
+        Save question
+      </Button>
+    </Flex>
+  </>);
 };
 
 export default QuestionSimpleForm;

@@ -176,13 +176,21 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
     !!(audit.status === 'completed' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true)) || !isUserPermittedToModify;
 
   return (
-    <Stack bgColor="auditAnswer.bg" boxShadow="0px 0px 30px 0px #31323340" h={['full', 'auto']} p={4} rounded="10px" spacing={4}>
-      <Text fontSize="md" fontWeight="semibold">
+    (<Stack
+      bgColor="auditAnswer.bg"
+      boxShadow="0px 0px 30px 0px #31323340"
+      data-id="213f708c658e"
+      h={['full', 'auto']}
+      p={4}
+      rounded="10px"
+      spacing={4}>
+      <Text data-id="bb2f2eae3880" fontSize="md" fontWeight="semibold">
         {questionsCategory.name}
       </Text>
       {audit.auditType?.businessUnitScope === 'answer' && (
         <Dropdown
           control={control}
+          data-id="9210fc07b4a0"
           disabled={isDisabled}
           label={capitalize(t('business unit'))}
           name="businessUnitId"
@@ -196,11 +204,11 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
           validations={{
             notEmpty: true,
           }}
-          variant="secondaryVariant"
-        />
+          variant="secondaryVariant" />
       )}
       <Dropdown
         control={control}
+        data-id="7d0ad008b3c8"
         disabled={isDisabled}
         label="Category"
         name="categoryId"
@@ -210,82 +218,93 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
         }))}
         placeholder="Select category"
         stroke="dropdown.icon"
-        variant="secondaryVariant"
-      />
-      <Stack>
+        variant="secondaryVariant" />
+      <Stack data-id="36e3523a5d2d">
         {questionsCategory.withAnswers ? (
-          <Stack>
+          <Stack data-id="f8c18bd90db1">
             {isCustomQuestion ? (
               <TextInput
                 control={control}
+                data-id="3e8cab6e01fd"
                 disabled={isDisabled}
                 label="Question"
                 name="question"
                 required
                 validations={{
                   notEmpty: true,
-                }}
-              />
+                }} />
             ) : (
-              <Text>{question.question}</Text>
+              <Text data-id="ca1db33dc797">{question.question}</Text>
             )}
             <TextInputMultiline
               control={control}
+              data-id="60d72db6b0dc"
               disabled={isDisabled}
               label="Answer"
               name="answer"
               required
               validations={{
                 notEmpty: true,
-              }}
-            />
+              }} />
           </Stack>
         ) : (
           <TextInputMultiline
             control={control}
+            data-id="120471970bf6"
             disabled={isDisabled}
             label="Description"
             name="question"
             required
             validations={{
               notEmpty: true,
-            }}
-          />
+            }} />
         )}
       </Stack>
       {questionsCategory.options && (
-        <Stack>
+        <Stack data-id="1ec13133d344">
           {questionsCategory.options.map(({ name, value }) => (
-            <Toggle control={control} disabled={isDisabled} falseLabel={name} key={value} name={`options[${value}]`} trueLabel={name} />
+            <Toggle
+              control={control}
+              data-id="7893a1f22b9b"
+              disabled={isDisabled}
+              falseLabel={name}
+              key={value}
+              name={`options[${value}]`}
+              trueLabel={name} />
           ))}
         </Stack>
       )}
-      <Stack>
-        <Text fontSize="ssm" fontWeight="bold" mb={2}>
+      <Stack data-id="53690979d760">
+        <Text data-id="3ff41bd2e1e6" fontSize="ssm" fontWeight="bold" mb={2}>
           Attachments
         </Text>
         {!isDisabled && (
           <DocumentUpload
             callback={async (uploaded) => appendAttachment(uploaded)}
+            data-id="dffabd5e9ea6"
             elementId={answer?._id || `temp-${question._id}`}
-            setUploadStatus={setUploading}
-          />
+            setUploadStatus={setUploading} />
         )}
         {values.attachments?.map((attachment, i) => (
-          <Flex flexDir="column" key={i} mb={2}>
-            <DocumentUploaded callback={async () => removeAttachment(i)} document={attachment} downloadable removable={!isDisabled} />
+          <Flex data-id="75d3583bf9b5" flexDir="column" key={i} mb={2}>
+            <DocumentUploaded
+              callback={async () => removeAttachment(i)}
+              data-id="136e690de3c4"
+              document={attachment}
+              downloadable
+              removable={!isDisabled} />
           </Flex>
         ))}
-        {values.attachments?.length === 0 && isDisabled && <Text fontSize="sm">No uploaded attachments</Text>}
+        {values.attachments?.length === 0 && isDisabled && <Text data-id="4f95b34c870b" fontSize="sm">No uploaded attachments</Text>}
       </Stack>
-
-      <Stack spacing={4}>
-        <Text fontSize="ssm" fontWeight="bold">
+      <Stack data-id="b7f4cf0e5422" spacing={4}>
+        <Text data-id="8020c5997e70" fontSize="ssm" fontWeight="bold">
           Actions
         </Text>
-        {values.actions?.length === 0 && isDisabled && <Text fontSize="sm">No actions</Text>}
+        {values.actions?.length === 0 && isDisabled && <Text data-id="77fc233e87bb" fontSize="sm">No actions</Text>}
         {selectedAction ? (
           <AuditActionForm
+            data-id="cd25fe98e4bb"
             handleSave={async (action) => {
               // If action doesn't exist, needs to be created
               if (!action._id) {
@@ -337,13 +356,13 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                 actions[actionIndex] = action;
                 setValue('actions', actions);
               }
-            }}
-          />
+            }} />
         ) : (
-          <Stack>
+          <Stack data-id="03f2a65cd0da">
             {values.actions?.map((action, index) => (
               <ActionListItem
                 action={action}
+                data-id="f97829d8477d"
                 disabled={isDisabled}
                 index={index}
                 key={action._id}
@@ -363,45 +382,44 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                       values.actions.filter((a, i) => i !== index),
                     );
                   }
-                }}
-              />
+                }} />
             ))}
 
             {!isDisabled && (
               <Button
                 bgColor="auditAnswer.buttons.addAction.bg"
                 color="auditAnswer.buttons.addAction.color"
+                data-id="393f9d66aeb3"
                 fontSize="ssm"
                 fontWeight="semibold"
                 h="28px"
                 onClick={() => setSelectedAction({})}
                 rounded="10px"
-                w="fit-content"
-              >
+                w="fit-content">
                 Add action
               </Button>
             )}
           </Stack>
         )}
       </Stack>
-
-      <HStack>
+      <HStack data-id="a6b4a1f1a420">
         <Button
           bgColor="auditAnswer.buttons.cancel.bg"
           color="auditAnswer.buttons.cancel.color"
+          data-id="d944bd638340"
           fontSize="smm"
           fontWeight="semibold"
           h="40px"
           onClick={handleClose}
-          rounded="10px"
-        >
+          rounded="10px">
           {isDisabled ? 'Close' : 'Cancel'}
         </Button>
-        <Spacer />
+        <Spacer data-id="a9a48024fa85" />
         {!isDisabled && (
           <Button
             bgColor="auditAnswer.buttons.save.bg"
             color="auditAnswer.buttons.save.color"
+            data-id="459f339a752a"
             disabled={!isValid || uploading}
             fontSize="smm"
             fontWeight="semibold"
@@ -414,14 +432,13 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
                   }
                 : saveData
             }
-            rightIcon={<CheckIcon stroke="auditAnswer.buttons.save.color" />}
-            rounded="10px"
-          >
+            rightIcon={<CheckIcon data-id="1e6b4b0a3c37" stroke="auditAnswer.buttons.save.color" />}
+            rounded="10px">
             Save
           </Button>
         )}
       </HStack>
-    </Stack>
+    </Stack>)
   );
 };
 

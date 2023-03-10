@@ -17,28 +17,38 @@ const ResponseLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = fa
   };
 
   return (
-    <Flex align="center" cursor="pointer" mb={[0, 3]} mx={[3, 0]} onClick={redirectPage} w={active ? 'full' : 'fit-content'}>
+    (<Flex
+      align="center"
+      cursor="pointer"
+      data-id="6fdf85811bfa"
+      mb={[0, 3]}
+      mx={[3, 0]}
+      onClick={redirectPage}
+      w={active ? 'full' : 'fit-content'}>
       <Flex
         align="center"
         bg={active ? 'responseLeftTabItem.activeIconBg' : 'responseLeftTabItem.iconBg'}
         borderRadius="8px"
+        data-id="c9c5d1603db9"
         h="30px"
         justify="center"
-        w="30px"
-      >
-        <Icon as={icon} color={active ? 'responseLeftTabItem.activeIconColor' : 'responseLeftTabItem.iconColor'} />
+        w="30px">
+        <Icon
+          as={icon}
+          color={active ? 'responseLeftTabItem.activeIconColor' : 'responseLeftTabItem.iconColor'}
+          data-id="ddadd3902183" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
           color={active ? ['responseLeftTabItem.textColor', 'responseLeftTabItem.activeTextColor'] : 'responseLeftTabItem.textColor'}
+          data-id="27ac7e816e47"
           flexGrow={1}
           fontSize={['11px', '14px']}
-          ml={3}
-        >
+          ml={3}>
           {label}
         </Flex>
       )}
-    </Flex>
+    </Flex>)
   );
 };
 

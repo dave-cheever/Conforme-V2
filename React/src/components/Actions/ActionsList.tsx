@@ -22,10 +22,24 @@ const ActionsList = ({
   setSortOrder: (order: 'asc' | 'desc') => void;
   editAction: (action: IAction) => void;
 }) => (
-  <Box h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
-    <Box bg="actionsList.bg" borderRadius="20px" h="fit-content" minH="full" pb={7} w="full">
-      <AdminTableHeader>
+  <Box
+    data-id="b7d84f3800a4"
+    h="full"
+    ml="10px"
+    overflow="none"
+    p={[3, 6]}
+    w="full">
+    <Box
+      bg="actionsList.bg"
+      borderRadius="20px"
+      data-id="990abd4a03ea"
+      h="fit-content"
+      minH="full"
+      pb={7}
+      w="full">
+      <AdminTableHeader data-id="9bb2aff270ed">
         <AdminTableHeaderElement
+          data-id="1ac37e957da1"
           label="Title"
           onClick={() => {
             setSortType('title');
@@ -33,9 +47,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'title'}
           sortOrder={sortType === 'title' ? sortOrder : undefined}
-          w="17%"
-        />
+          w="17%" />
         <AdminTableHeaderElement
+          data-id="491ffb916d90"
           label="Priority"
           onClick={() => {
             setSortType('priority');
@@ -43,9 +57,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'priority'}
           sortOrder={sortType === 'priority' ? sortOrder : undefined}
-          w="8%"
-        />
+          w="8%" />
         <AdminTableHeaderElement
+          data-id="407690a3370e"
           label="Due date"
           onClick={() => {
             setSortType('dueDate');
@@ -53,9 +67,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'dueDate'}
           sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="09bd1797f543"
           label="Completed date"
           onClick={() => {
             setSortType('completedDate');
@@ -63,9 +77,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'completedDate'}
           sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="cc0d650897d0"
           label="Status"
           onClick={() => {
             setSortType('status');
@@ -73,9 +87,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'status'}
           sortOrder={sortType === 'status' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="86884fada2c3"
           label="Assignee"
           onClick={() => {
             setSortType('assignee.displayName');
@@ -83,9 +97,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'assignee.displayName'}
           sortOrder={sortType === 'assignee.displayName' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="46ee67f292a9"
           label="Created by"
           onClick={() => {
             setSortType('creator.displayName');
@@ -93,9 +107,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'creator.displayName'}
           sortOrder={sortType === 'creator.displayName' ? sortOrder : undefined}
-          w="10%"
-        />
+          w="10%" />
         <AdminTableHeaderElement
+          data-id="0a6373144493"
           label={capitalize(t('location'))}
           onClick={() => {
             setSortType('answer.audit.location.name');
@@ -103,9 +117,9 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'answer.audit.location.name'}
           sortOrder={sortType === 'answer.audit.location.name' ? sortOrder : undefined}
-          w="12.5%"
-        />
+          w="12.5%" />
         <AdminTableHeaderElement
+          data-id="9c957de57e7e"
           label={capitalize(t('business unit'))}
           onClick={() => {
             setSortType('answer.businessUnit.name');
@@ -113,12 +127,20 @@ const ActionsList = ({
           }}
           showSortingIcon={sortType === 'answer.businessUnit.name'}
           sortOrder={sortType === 'answer.businessUnit.name' ? sortOrder : undefined}
-          w="12.5%"
-        />
+          w="12.5%" />
       </AdminTableHeader>
-      <Flex flexDir="column" h="calc(100vh - 310px)" overflowY="auto" w="full">
+      <Flex
+        data-id="d2679eb5f11a"
+        flexDir="column"
+        h="calc(100vh - 310px)"
+        overflowY="auto"
+        w="full">
         {actions?.map((action) => (
-          <ActionsListItem action={action} editAction={editAction} key={action._id} />
+          <ActionsListItem
+            action={action}
+            data-id="762781f1bbe5"
+            editAction={editAction}
+            key={action._id} />
         ))}
       </Flex>
     </Box>

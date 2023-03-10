@@ -22,19 +22,19 @@ const UserAuditsCount = ({ status, auditsCount, userId }: { status?: string; aud
   };
 
   return (
-    <Flex
+    (<Flex
       alignItems="center"
       bg="userItem.responseCountBg"
       cursor="pointer"
+      data-id="d735dcb892fa"
       h="calc(100% - 1px)"
       justifyContent="center"
       mr="1px"
       mt="1px"
       onClick={handleClick}
-      w="calc(25% - 1px)"
-    >
+      w="calc(25% - 1px)">
       {auditsCount || 0}
-    </Flex>
+    </Flex>)
   );
 };
 

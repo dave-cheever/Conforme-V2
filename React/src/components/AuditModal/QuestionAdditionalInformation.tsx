@@ -8,33 +8,33 @@ import QuestionAdditionalButton from './QuestionAdditionalButton';
 const QuestionAdditionalInformation = () => {
   const [activeInformation, setActiveInformation] = useState('Actions');
   return (
-    <Box>
-      <Text fontSize="16px" fontWeight="400">
+    (<Box data-id="da0b157865e3">
+      <Text data-id="879a2f9f5d57" fontSize="16px" fontWeight="400">
         Provide additional information or actions
       </Text>
-      <br />
-      <Flex alignItems="center">
+      <br data-id="b2ad565585ed" />
+      <Flex alignItems="center" data-id="ec13443c1bd6">
         <QuestionAdditionalButton
           activeInformation={activeInformation}
+          data-id="ba2313396a95"
           icon={Icons.HealthKitIcon}
           label="Actions"
           requiredIcon={Icons.RequiredIcon}
-          setActiveInformation={setActiveInformation}
-        />
+          setActiveInformation={setActiveInformation} />
         <QuestionAdditionalButton
           activeInformation={activeInformation}
+          data-id="b4f177efd418"
           icon={Icons.AttachmentIcon}
           label="Attachments"
-          setActiveInformation={setActiveInformation}
-        />
+          setActiveInformation={setActiveInformation} />
         <QuestionAdditionalButton
           activeInformation={activeInformation}
+          data-id="1b4bead3bda2"
           icon={Icons.DetailIcon}
           label="More detail"
-          setActiveInformation={setActiveInformation}
-        />
+          setActiveInformation={setActiveInformation} />
       </Flex>
-    </Box>
+    </Box>)
   );
 };
 

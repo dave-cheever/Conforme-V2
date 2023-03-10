@@ -16,49 +16,53 @@ const DetailsForm = () => {
   const frequencyOptions = useMemo(() => trackerItemFrequencies.map((f) => ({ value: f, label: f })), []);
 
   return (
-    <Stack px={[0, 0, 3]} spacing={4} w="full">
-      <Text color="adminTrackerItemModal.section.details.description" fontSize="14px" opacity="0.7">
+    (<Stack data-id="65772a197273" px={[0, 0, 3]} spacing={4} w="full">
+      <Text
+        color="adminTrackerItemModal.section.details.description"
+        data-id="248dcb976ce6"
+        fontSize="14px"
+        opacity="0.7">
         Please make sure that all {t('tracker item')} details are completed/accurate.
       </Text>
-      <Stack overflow="auto" pb={3} spacing={2} w="full">
+      <Stack data-id="d50ce7bb650b" overflow="auto" pb={3} spacing={2} w="full">
         <Dropdown
           control={control}
+          data-id="a44db0e6a4e8"
           label="Category"
           name="categoryId"
           options={categoriesOptions}
           placeholder="Select category"
           validations={{
             notEmpty: true,
-          }}
-        />
+          }} />
         <Dropdown
           control={control}
+          data-id="c572688396b4"
           label="Regulatory body"
           name="regulatoryBodyId"
           options={regulatoryBodiesOptions}
           placeholder="Select regulatory body"
           validations={{
             notEmpty: true,
-          }}
-        />
+          }} />
         <Datepicker
           control={control}
+          data-id="2e3662471d71"
           label="Expires on (optional)"
           name="dueDate"
-          placeholder={`Define when the ${t('tracker item')} is due`}
-        />
+          placeholder={`Define when the ${t('tracker item')} is due`} />
         <Dropdown
           control={control}
+          data-id="66302897c99e"
           label="Frequency"
           name="frequency"
           options={frequencyOptions}
           placeholder="Define how often it needs to be renewed"
           validations={{
             notEmpty: true,
-          }}
-        />
+          }} />
       </Stack>
-    </Stack>
+    </Stack>)
   );
 };
 

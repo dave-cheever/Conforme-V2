@@ -19,19 +19,27 @@ const ParticipantAvatar = ({
   const [showOverlay, setShowOverlay] = useState(false);
 
   return (
-    <Flex align="center" flexDirection="column" position="relative" textAlign="center" w="80px" {...props}>
+    (<Flex
+      align="center"
+      data-id="ad44474d7dff"
+      flexDirection="column"
+      position="relative"
+      textAlign="center"
+      w="80px"
+      {...props}>
       <Avatar
         cursor="default"
+        data-id="df467aefcc88"
         h={['55px', '64px']}
         name={displayName}
         onMouseEnter={() => isUserAllowedToChange && setShowOverlay(true)}
         src={imgUrl}
-        w={['55px', '64px']}
-      />
+        w={['55px', '64px']} />
       {isUserAllowedToChange && showOverlay && (
         <Flex
           alignItems="center"
           cursor="pointer"
+          data-id="46cc97d8d7c0"
           justifyContent="center"
           onClick={async () => {
             if (canDelete) {
@@ -41,20 +49,36 @@ const ParticipantAvatar = ({
             setShowOverlay(false);
           }}
           onMouseLeave={() => setShowOverlay(false)}
-          pos="absolute"
-        >
-          <Flex bg="participantAvatar.overlay" h="64px" rounded="50%" w="64px" />
+          pos="absolute">
+          <Flex
+            bg="participantAvatar.overlay"
+            data-id="fb9c63882f2c"
+            h="64px"
+            rounded="50%"
+            w="64px" />
           {canDelete ? (
-            <CloseIcon color="participantAvatar.icon" h="20px" opacity="0.95" pos="absolute" w="20px" />
+            <CloseIcon
+              color="participantAvatar.icon"
+              data-id="4700dd257b07"
+              h="20px"
+              opacity="0.95"
+              pos="absolute"
+              w="20px" />
           ) : (
-            <ReplaceIcon h="20px" opacity="0.95" pos="absolute" stroke="participantAvatar.icon" w="20px" />
+            <ReplaceIcon
+              data-id="6a82356319bf"
+              h="20px"
+              opacity="0.95"
+              pos="absolute"
+              stroke="participantAvatar.icon"
+              w="20px" />
           )}
         </Flex>
       )}
-      <Text fontSize="11px" fontWeight="semi_medium" mt="10px">
+      <Text data-id="70384b08cf67" fontSize="11px" fontWeight="semi_medium" mt="10px">
         {displayName}
       </Text>
-    </Flex>
+    </Flex>)
   );
 };
 

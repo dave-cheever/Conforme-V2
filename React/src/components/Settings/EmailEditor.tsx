@@ -31,24 +31,27 @@ const EmailEditor = ({ setHtml, value, options }) => {
   };
 
   return (
-    <Box>
-      <Box className="sun-editor" id="custom_toolbar" />
-      <Stack bgColor="white" direction="row" p={2} spacing={2}>
+    (<Box data-id="d4cc6c9acdc5">
+      <Box className="sun-editor" data-id="680536f990f7" id="custom_toolbar" />
+      <Stack bgColor="white" data-id="14ac45cbad10" direction="row" p={2} spacing={2}>
         {options.map((option: string) => (
-          <Button key={option} onClick={() => insertTag(`%${option}%`)} size="sm">
+          <Button
+            data-id="bfefe22a9131"
+            key={option}
+            onClick={() => insertTag(`%${option}%`)}
+            size="sm">
             {option}
           </Button>
         ))}
       </Stack>
-
       <SunEditor
+        data-id="92597a52b03c"
         getSunEditorInstance={getSunEditorInstance}
         onChange={setHtml}
         setContents={value}
         setDefaultStyle="font-family: Arial, sans-serif;"
-        setOptions={sunEditorOptions}
-      />
-    </Box>
+        setOptions={sunEditorOptions} />
+    </Box>)
   );
 };
 
