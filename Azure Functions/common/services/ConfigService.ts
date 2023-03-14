@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import IConfig from '../interfaces/IConfig';
 import { IOrganization } from '../interfaces/IOrganization';
 import Organizations from './collections/Organizations';
