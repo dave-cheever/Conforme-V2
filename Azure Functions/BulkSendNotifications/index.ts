@@ -81,8 +81,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
     const notifications = await Notifications.find({ status: "pending" }).lean();
     const notificationsSent = await Promise.all(notifications.map(async notification => {
       try {
-        const { templateSettingName } = getTemplateDetails(notification.emailType);
-        const template = await Settings.customFindOneByName(templateSettingName, notification.organizationId);
+        const template = await Settings.customFindOneByName(notification.emailData.template, notification.organizationId);
         const organizationConfigService = new ConfigService();
         await organizationConfigService.getConfig(notification.organizationId);
         const organization = organizationConfigService?.getOrganization();
@@ -93,7 +92,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           emailType: notification.emailType,
           emailData: notification.emailData,
           modulePath: module?.path,
-          template: notification.emailData.template,
+          template: template.value,
           organization,
         });
 
