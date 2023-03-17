@@ -16,6 +16,6 @@ export class EmailService {
   }
 
   public get sendEmail() {
-    return this._emailService.sendEmail;
+    return this._emailService.sendEmail.bind(this._emailService);
   }
 };

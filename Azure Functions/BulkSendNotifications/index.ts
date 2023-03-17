@@ -93,7 +93,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           emailType: notification.emailType,
           emailData: notification.emailData,
           modulePath: module?.path,
-          template: template.value,
+          template: notification.emailData.template,
           organization,
         });
 
