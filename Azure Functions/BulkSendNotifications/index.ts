@@ -82,6 +82,10 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
     const notificationsSent = await Promise.all(notifications.map(async notification => {
       try {
         const template = await Settings.customFindOneByName(notification.emailData.template, notification.organizationId);
+        if (!template) {
+          context.log(`Can not find email template for ${notification.emailData.template} (ID: ${notification._id}).`);
+          return false;
+        }
         const organizationConfigService = new ConfigService();
         await organizationConfigService.getConfig(notification.organizationId);
         const organization = organizationConfigService?.getOrganization();
