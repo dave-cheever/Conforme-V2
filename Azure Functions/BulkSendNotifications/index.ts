@@ -84,7 +84,6 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
         const template = await Settings.customFindOneByName(notification.emailData.template, notification.organizationId);
         if (!template) {
           context.log(`Can not find email template for ${notification.emailData.template} (ID: ${notification._id}).`);
-          return false;
         }
         const organizationConfigService = new ConfigService();
         await organizationConfigService.getConfig(notification.organizationId);
@@ -96,7 +95,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           emailType: notification.emailType,
           emailData: notification.emailData,
           modulePath: module?.path,
-          template: template.value,
+          template: template?.value,
           organization,
         });
 

@@ -178,7 +178,7 @@ commentSchema.statics.sendMentionedEmail = async function (userId: string, organ
       emailData: {
         message: comment.text,
         mentionedUser: user?.displayName || '',
-        template: 'MentionedNotificationEmailTemplate',
+        template: 'mentionedNotificationEmailTemplate',
       },
       to: [user?.email!],
       status: 'pending',

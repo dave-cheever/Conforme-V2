@@ -432,6 +432,7 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
           assignedBy: assignor.displayName,
           walkItemName: associatedWalkItem?.question.question,
           walkItemCategory: associatedWalkItem?.question?.questionsCategory.name,
+          template: 'actionAssignedEmailTemplate',
         },
         status: 'pending',
         to: [assignee?.email],
