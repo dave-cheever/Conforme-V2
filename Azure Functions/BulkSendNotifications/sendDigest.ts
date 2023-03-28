@@ -77,12 +77,12 @@ const sendDigest = async (
 
       const emailService = new EmailService(config);
       await emailService.sendEmail({
-        to: [emailAddress.value],
+        to: emailAddress.value,
         subject,
         body,
       });
     } catch (e) {
-      console.log(e);
+      console.log(JSON.stringify(e, null, 2));
     }
   });
 };
