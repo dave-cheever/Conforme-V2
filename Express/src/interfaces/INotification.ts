@@ -9,6 +9,7 @@ export interface INotification extends IBase {
   to: string[];
   status: 'pending' | 'processing' | 'sent' | 'failed';
   sentDate?: Date;
+  error?: string;
   organizationId: string;
   scope: IScope;
 }

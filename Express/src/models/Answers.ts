@@ -1,6 +1,5 @@
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
-import { capitalize } from 'lodash';
 import { model, Schema } from 'mongoose';
 import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
@@ -121,7 +120,7 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
     const module = organization.modules.find(({ _id }) => _id === answer.scope?.moduleId);
 
     const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
-    const notifications = (questionsCategory.options || []).filter(({ type, value }) => type === 'notification' && answer.options![value]);
+    const notifications = (questionsCategory.options || []).filter(({ type, setting }) => type === 'notification' && answer.options![setting]);
 
     await Promise.all(
       notifications.map(async (notification) => {
@@ -129,11 +128,10 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
         if (emailAddress) {
           await Notifications.customCreate(
             {
-              emailType: notification.value,
+              emailType: notification.setting,
               emailData: {
-                subject: `New ${pluralize(questionsCategory.name, 1)} was created`,
-                template: 'HSENotificationEmailTemplate',
-                LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                questionsCategoryName: pluralize(questionsCategory.name, 1),
+                linkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
                   }" target="_blank">here</a>`,
               },
               status: 'pending',
@@ -307,7 +305,7 @@ answersSchema.statics.customUpdateOne = async function (
 
     const questionsCategory = await QuestionsCategories.customFindById(question.questionsCategoryId, organizationId);
     const notifications = (questionsCategory.options || []).filter(
-      ({ type, value }) => type === 'notification' && !answer.options![value] && updatedAnswer.options![value],
+      ({ type, setting }) => type === 'notification' && !answer.options![setting] && updatedAnswer.options![setting],
     );
 
     await Promise.all(
@@ -316,11 +314,10 @@ answersSchema.statics.customUpdateOne = async function (
         if (emailAddress) {
           await Notifications.customCreate(
             {
-              emailType: notification.value,
+              emailType: notification.setting,
               emailData: {
-                subject: `${capitalize(pluralize(questionsCategory.name, 1))} was updated`,
-                template: 'HSENotificationEmailTemplate',
-                LinkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
+                questionsCategoryName: pluralize(questionsCategory.name, 1),
+                linkTo: `<a href="${getProtocol()}${organization.domain}/${module?.path}/audits/${answer.scope?._id}?questionId=${question._id
                   }" target="_blank">here</a>`,
               },
               status: 'pending',

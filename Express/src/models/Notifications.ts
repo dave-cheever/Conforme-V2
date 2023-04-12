@@ -15,6 +15,7 @@ const notificationsSchema = new Schema<INotification, INotificationModel>({
     enum: ['pending', 'processing', 'sent', 'failed'],
   },
   sentDate: Date,
+  error: String,
   scope: {
     moduleId: String,
   },

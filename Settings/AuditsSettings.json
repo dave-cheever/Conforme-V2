@@ -2,7 +2,7 @@
   {
     "_id": "<random generated UUID>",
     "name": "actionAssignedEmailTemplate",
-    "label": "Action assigned notification",
+    "label": "Action assigned notification template",
     "value": "<p>You have been assigned to action '%ActionTitle% for %WalkItemCategory% named %WalkItemName% (%ActionDueDate%)' by %AssignedBy%, to view click %LinkTo%.</p>",
     "type": "emailTemplate",
     "options": [
@@ -23,9 +23,153 @@
   },
   {
     "_id": "<random generated UUID>",
-    "name": "auditsWeeklyDigestEmailTemplate",
-    "label": "Weekly digest",
-    "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strong>Weekly audits digest</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 18px;\">Number of audits last week: %NumberOfAudits%</span><br></p><p><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Conforme Team</span>&nbsp;<br></p>",
+    "name": "actionAssignedEmailSubject",
+    "label": "Action assigned notification subject",
+    "value": "You have been assigned to an action",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "actionCompletedEmailTemplate",
+    "label": "Action completed notification template",
+    "value": "<p>Action '%ActionTitle%' has been completed, to view click %LinkTo%.</p>",
+    "type": "emailTemplate",
+    "options": ["ActionTitle", "LinkTo"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "actionCompletedEmailSubject",
+    "label": "Action completed notification subject",
+    "value": "An action has been completed",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "actionOverdueEmailTemplate",
+    "label": "Action overdue notification template",
+    "value": "<p>Action '%ActionTitle%' is overdue, to view click %LinkTo%.</p>",
+    "type": "emailTemplate",
+    "options": ["ActionTitle", "LinkTo"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "actionOverdueEmailSubject",
+    "label": "Action overdue notification subject",
+    "value": "Audit action is overdue",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditMissedEmailTemplate",
+    "label": "Missed audit notification template",
+    "value": "<p>Audit has been missed for %AreaName%, to check click %LinkTo%.</p>",
+    "type": "emailTemplate",
+    "options": ["ActionTitle", "LinkTo"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditMissedEmailSubject",
+    "label": "Missed audit notification subject",
+    "value": "Audit has been missed",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditMissedEmailAddress",
+    "label": "Email address for receiving missed audits notification",
+    "value": [],
+    "type": "defaultSettings",
+    "description": "Use this setting to select who should recieve email notification regarding missed audits.",
+    "inputType": "table",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditUpcomingEmailTemplate",
+    "label": "Upcoming audit notification template",
+    "value": "<p>You have upcoming audit for %AreaName%, to view click %LinkTo%.</p>",
+    "type": "emailTemplate",
+    "options": ["ActionTitle", "LinkTo"],
+    "description": "",
+    "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditUpcomingEmailSubject",
+    "label": "Upcoming audit notification subject",
+    "value": "Upcoming audit",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditsDigestEmailTemplate",
+    "label": "Audits digest email template",
+    "value": "<p style=\"text-align: center;\"><span style=\"font-family: Arial; font-size: 24px;\"><strodits digest</strong></span><br></p><p style=\"text-align: center;\">​<br></p><p><span style=\"font-size: 18px;\">Number of audits last week: %NumberOfAudits%</span><br></p><p><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Kind Regards</span><br></p><p><span style=\"font-family: Arial; font-size: 16px;\">Conforme Team</span>&nbsp;<br></p>",
     "type": "emailTemplate",
     "options": ["NumberOfAudits"],
     "description": "",
@@ -38,8 +182,36 @@
   },
   {
     "_id": "<random generated UUID>",
+    "name": "auditsDigestEmailSubject",
+    "label": "Audits digest email subject",
+    "value": "Audits weekly digest",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "auditsDigestEmailAddress",
+    "label": "Email address for receiving audits digest",
+    "value": [],
+    "type": "defaultSettings",
+    "description": "Use this setting to select who should recieve email digest regarding audits.",
+    "inputType": "table",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
     "name": "HSENotificationEmailTemplate",
-    "label": "HSE notification",
+    "label": "HSE notification template",
     "value": "<p>New item needs your attention. You can find it %LinkTo%.<br></p><p>Kind Regards,</p><p>Cielo Costa</p>",
     "type": "emailTemplate",
     "options": ["LinkTo"],
@@ -53,8 +225,67 @@
   },
   {
     "_id": "<random generated UUID>",
-    "name": "auditsWeeklyDigestEmailAddress",
-    "label": "Email address for receiving the weekly digest",
+    "name": "HSENotificationEmailSubject",
+    "label": "HSE notification subject",
+    "value": "%QuestionsCategoryName% review has been submitted",
+    "type": "emailSubject",
+    "options": ["QuestionsCategoryName"],
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "HSENotificationEmailAddress",
+    "label": "Email address for HSE notification",
+    "value": [],
+    "type": "defaultSettings",
+    "description": "Use this setting to select who should recieve email digest regarding audits.",
+    "inputType": "table",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "estatesNotificationEmailTemplate",
+    "label": "HSE notification template",
+    "value": "<p>New item needs your attention. You can find it %LinkTo%.<br></p><p>Kind Regards,</p><p>Cielo Costa</p>",
+    "type": "emailTemplate",
+    "options": ["LinkTo"],
+    "inputType": "emailTemplate",
+    "description": "",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "estatesNotificationEmailSubject",
+    "label": "HSE notification subject",
+    "value": "%QuestionsCategoryName% review has been submitted",
+    "type": "emailSubject",
+    "options": ["QuestionsCategoryName"],
+    "description": "",
+    "inputType": "emailSubject",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "estatesNotificationEmailAddress",
+    "label": "Email address for estates notification",
     "value": [],
     "type": "defaultSettings",
     "description": "Use this setting to select who should recieve email digest regarding audits.",
@@ -89,34 +320,6 @@
     "description": "Use this setting to select retention period for the data in Conforme system.",
     "inputType": "dropdown",
     "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Never"],
-    "scope": {
-      "moduleId": "<module id>"
-    },
-    "organizationId": "<organization's id>",
-    "metatags": {}
-  },
-  {
-    "_id": "<random generated UUID>",
-    "name": "hseEmailAddress",
-    "label": "Email address for HSE notification",
-    "value": [],
-    "type": "defaultSettings",
-    "description": "Use this setting to select who should recieve email digest regarding audits.",
-    "inputType": "table",
-    "scope": {
-      "moduleId": "<module id>"
-    },
-    "organizationId": "<organization's id>",
-    "metatags": {}
-  },
-  {
-    "_id": "<random generated UUID>",
-    "name": "estatesEmailAddress",
-    "label": "Email address for estates notification",
-    "value": [],
-    "type": "defaultSettings",
-    "description": "Use this setting to select who should recieve email digest regarding audits.",
-    "inputType": "table",
     "scope": {
       "moduleId": "<module id>"
     },

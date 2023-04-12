@@ -313,13 +313,11 @@ export const availableOptions = {
   INFORM_HSE: {
     type: 'notification',
     name: 'Inform Health Safety Environment',
-    setting: 'hseEmailAddress',
-    value: 'INFORM_HSE',
+    setting: 'HSENotification',
   },
   INFORM_ESTATES: {
     type: 'notification',
     name: 'Inform Estates',
-    setting: 'estatesEmailAddress',
-    value: 'INFORM_ESTATES',
+    setting: 'estatesNotification',
   },
 };

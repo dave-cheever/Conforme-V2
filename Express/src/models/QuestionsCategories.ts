@@ -33,7 +33,6 @@ const questionsCategoriesSchema = new Schema<IQuestionsCategory, IQuestionsCateg
         enum: ['notification'],
       },
       name: String,
-      value: String,
       setting: String,
     },
   ],

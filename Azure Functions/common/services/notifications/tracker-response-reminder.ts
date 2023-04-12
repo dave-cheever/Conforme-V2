@@ -1,4 +1,4 @@
-const getReponseDueMail = (
+const getTrackerResponseReminder = (
   template,
   { daysToDueDate, firstName, _id, trackerName, trackerResponseLink }
 ) => {
@@ -17,4 +17,4 @@ const getReponseDueMail = (
   return template;
 };
 
-export default getReponseDueMail;
+export default getTrackerResponseReminder;

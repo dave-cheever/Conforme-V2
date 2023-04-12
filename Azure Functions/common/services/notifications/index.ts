@@ -1,138 +1,93 @@
-import { capitalize } from "lodash";
+import camelCase from "lodash/camelCase";
 
 import { IOrganization } from '../../interfaces/IOrganization';
-import { getProtocol, t } from '../../utils';
-import Organizations from '../collections/Organizations';
 import Settings from '../collections/Settings';
 import getActionAssignedEmailTemplate from './action-assigned';
-import getAuditsWeeklyDigestEmailTemplate from './audits-weekly-digest';
-import getTrackerReviewSubmittedEmail from './getTrackerReviewSubmittedEmail';
+import getActionCompletedEmailTemplate from "./action-completed";
+import getActionOverdueEmailTemplate from "./action-overdue";
+import getAuditMissedEmailTemplate from "./audit-missed";
+import getAuditUpcomingEmailTemplate from "./audit-upcoming";
 import getMentionEmail from './mentionEmail';
-import getReponseDueMail from './response-due-mail';
+import getTrackerResponseReminder from './tracker-response-reminder';
 import getResponseWeeklyEmail from './response-weekly-email';
 import getSkeleton from './template';
 
-export const ACTION_ASSIGNED = 'ACTION_ASSIGNED';
-export const ACTION_COMPLETED = 'ACTION_COMPLETED';
-export const ACTION_OVERDUE = 'ACTION_OVERDUE';
-export const AUDIT_MISSED = 'AUDIT_MISSED';
-export const AUDIT_UPCOMING = 'AUDIT_UPCOMING';
-export const AUDITS_WEEKLY_SUMMARY = 'AUDITS_WEEKLY_SUMMARY';
-export const MENTION_NOTIFICATION = 'MENTION_NOTIFICATION';
-export const TRACKER_REMINDER = 'TRACKER_REMINDER';
-export const TRACKER_REVIEW_SUBMITTED = 'TRACKER_REVIEW_SUBMITTED';
-export const TRACKER_WEEKLY_SUMMARY = 'TRACKER_WEEKLY_SUMMARY';
-
-const getEmailSubject = (
-  emailType: string,
-  emailData: any = {},
-  translations: { [word: string]: string } = {}
-) => {
-  switch (emailType) {
-    case ACTION_ASSIGNED:
-      return "You have been assigned to an action";
-    case ACTION_COMPLETED:
-      return "An action has been completed";
-    case ACTION_OVERDUE:
-      return `${capitalize(t("audit", translations))} action overdue`;
-    case AUDIT_MISSED:
-      return `${capitalize(t("audit", translations))} has been missed`;
-    case AUDIT_UPCOMING:
-      return `Upcoming ${t("audit", translations)}`;
-    case AUDITS_WEEKLY_SUMMARY:
-      return `${capitalize(t("audit", translations))} weekly digest`;
-    case MENTION_NOTIFICATION:
-      return "You have been mentioned in chat";
-    case TRACKER_REMINDER:
-      return `${capitalize(t('tracker item', translations))} Reminder: ${emailData.trackerName}`;
-    case TRACKER_WEEKLY_SUMMARY:
-      return `${capitalize(t("tracker item", translations))} Weekly Overview`;
-    default:
-      return emailData.subject;
+const getEmailSubject = async ({
+  emailType,
+  emailData = {},
+  organization,
+}: {
+  emailType?: string;
+  emailData?: any;
+  organization: IOrganization;
+}) => {
+  const subjectSetting = await Settings.customFindOneByName(`${emailType}EmailSubject`, organization._id);
+  if (!subjectSetting) {
+    throw new Error(`Can not find email template setting "${emailType}EmailSubject".`);
   }
+
+  let subject: string;
+  switch (emailType) {
+    default:
+      subject = subjectSetting.value;
+      for (const option of subjectSetting.options) {
+        subject = subject.split(`%${option}%`).join(emailData[camelCase(option)]);
+      }
+  }
+  return subject;
 };
 
 const getEmailTemplate = async ({
   emailType,
-  template,
   emailData,
   organization,
-  organizationId,
   modulePath,
   translations = {},
 }: {
-  emailType: string;
+  emailType?: string;
   emailData: any;
-  organizationId?: string;
-  organization?: IOrganization;
-  template?: string;
+  organization: IOrganization;
   modulePath: string;
   translations?: { [word: string]: string };
 }) => {
+  const template = await Settings.customFindOneByName(`${emailType}EmailTemplate`, organization._id);
+  if (!template) {
+    throw new Error(`Can not find email template setting "${emailType}EmailTemplate".`);
+  }
+
   let body: string;
   switch (emailType) {
-    case ACTION_ASSIGNED:
-      body = getActionAssignedEmailTemplate(template, emailData);
+    case 'actionAssigned':
+      body = getActionAssignedEmailTemplate(template.value, emailData);
       break;
-    case ACTION_COMPLETED:
-      body = `<p>
-        Action "${emailData.actionTitle
-        }" has been completed, to view click <a href = "${getProtocol()}${emailData.actionPath
-        }">here</a>.
-      </p>`;
+    case 'actionCompleted':
+      body = getActionCompletedEmailTemplate(template.value, emailData);
       break;
-    case ACTION_OVERDUE:
-      body = `<p>
-        Action "${emailData.actionTitle}" is overdue, to view click <a href="${getProtocol()}${emailData.actionPath
-        }">here</a>.
-      </p>`;
+    case 'actionOverdue':
+      body = getActionOverdueEmailTemplate(template.value, emailData);
       break;
-    case AUDIT_MISSED:
-      body = `<p>
-        Audit has been missed for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath
-        }">here</a>.
-      </p>`;
+    case 'auditMissed':
+      body = getAuditMissedEmailTemplate(template.value, emailData);
       break;
-    case AUDIT_UPCOMING:
-      body = `<p>
-        You have upcoming audit for ${emailData.areaName}, to view click <a href="${getProtocol()}${emailData.auditPath
-        }">here</a>.
-      </p>`;
+    case 'auditUpcoming':
+      body = getAuditUpcomingEmailTemplate(template.value, emailData);
       break;
-    case AUDITS_WEEKLY_SUMMARY:
-      body = getAuditsWeeklyDigestEmailTemplate(template, emailData);
+    case 'userMentioned':
+      body = getMentionEmail(template.value, emailData);
       break;
-    case MENTION_NOTIFICATION:
-      body = getMentionEmail(template, emailData);
+    case 'trackerResponseReminder':
+      body = getTrackerResponseReminder(template.value, emailData);
       break;
-    case TRACKER_REMINDER:
-      body = getReponseDueMail(template, emailData);
-      break;
-    case TRACKER_REVIEW_SUBMITTED:
-      body = getTrackerReviewSubmittedEmail(template, emailData);
-      break;
-    case TRACKER_WEEKLY_SUMMARY:
-      body = getResponseWeeklyEmail(template, emailData);
+    case 'trackerResponsesDigest':
+      body = getResponseWeeklyEmail(template.value, emailData);
       break;
     default:
-      const emailTemplate = await Settings.customFindOneByName(
-        emailData.template,
-        organization._id
-      );
-      if (emailTemplate) {
-        body = emailTemplate.value;
-        for (const option of emailTemplate.options) {
-          body = body.split(`%${option}%`).join(emailData[option]);
-        }
+      body = template.value;
+      for (const option of template.options) {
+        body = body.split(`%${option}%`).join(emailData[camelCase(option)]);
       }
-  }
-  if (!organization) {
-    if (!organizationId) {
-      throw Error("You need to pass either organization or organizationId");
-    }
-    organization = await Organizations.customFindById(organizationId);
   }
   return getSkeleton(body, organization, modulePath);
 };
 
-export { getEmailSubject, getEmailTemplate };
+export { getEmailTemplate, getEmailSubject };

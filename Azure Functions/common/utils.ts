@@ -1,15 +1,6 @@
 import { differenceInCalendarDays, isSameDay } from 'date-fns';
 
 import { IResponse } from './interfaces/IResponse';
-import {
-  ACTION_ASSIGNED,
-  AUDITS_WEEKLY_SUMMARY,
-  AUDIT_MISSED,
-  TRACKER_REMINDER,
-  TRACKER_WEEKLY_SUMMARY,
-  TRACKER_REVIEW_SUBMITTED,
-  MENTION_NOTIFICATION,
-} from './services/notifications';
 
 export const getProtocol = () => {
   return process.env.ENV?.toLowerCase() === 'dev' ? 'http://' : 'https://';
@@ -20,52 +11,6 @@ export const genMetatags = (action: 'added' | 'updated' | 'removed', userId: str
     [`${action}By`]: userId,
     [`${action}At`]: new Date()
   };
-};
-
-export const getTemplateDetails = (
-  emailType: string
-): {
-  templateSettingName: string;
-  emailSettingName?: string;
-} => {
-  switch (emailType) {
-    case AUDITS_WEEKLY_SUMMARY:
-    case AUDIT_MISSED:
-      return {
-        templateSettingName: 'auditsWeeklyDigestEmailTemplate',
-        emailSettingName: 'auditsWeeklyDigestEmailAddress'
-      };
-
-    case TRACKER_REMINDER:
-      return {
-        templateSettingName: 'responseRemainderEmailTemplate',
-        emailSettingName: 'responseDueEmailDays'
-      };
-
-    case TRACKER_WEEKLY_SUMMARY:
-      return {
-        templateSettingName: 'responseWeeklyEmailTemplate',
-        emailSettingName: 'responseWeeklyEmailAddress'
-      };
-    case ACTION_ASSIGNED:
-      return {
-        templateSettingName: 'actionAssignedEmailTemplate',
-        emailSettingName: 'actionAssigned'
-      };
-    case MENTION_NOTIFICATION:
-      return {
-        templateSettingName: "mentionedNotificationEmailTemplate",
-      };
-    case TRACKER_REVIEW_SUBMITTED:
-      return {
-        templateSettingName: "trackerReviewSubmittedNotificationEmailTemplate",
-      };
-    default:
-      return {
-        templateSettingName: "",
-        emailSettingName: "",
-      };
-  }
 };
 
 // get daysToDueDate for response

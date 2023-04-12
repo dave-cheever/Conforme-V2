@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
 import { Answers, AuditLogs, Audits, Notifications, Organizations, Users } from 'app-models';
-import { ACTION_ASSIGNED, ACTION_COMPLETED } from 'app-shared';
 import {
   genMetatags,
   getAuditValueForAttachments,
@@ -424,7 +423,7 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
 
     await Notifications.customCreate(
       {
-        emailType: ACTION_ASSIGNED,
+        emailType: 'actionAssigned',
         emailData: {
           actionTitle: action.title,
           actionPath,
@@ -432,7 +431,6 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
           assignedBy: assignor.displayName,
           walkItemName: associatedWalkItem?.question.question,
           walkItemCategory: associatedWalkItem?.question?.questionsCategory.name,
-          template: 'actionAssignedEmailTemplate',
         },
         status: 'pending',
         to: [assignee?.email],
@@ -505,7 +503,7 @@ actionsSchema.statics.customCompletedNotification = async function (actionId: st
   if (actionPath && recipients.length > 0) {
     await Notifications.customCreate(
       {
-        emailType: ACTION_COMPLETED,
+        emailType: 'actionCompleted',
         emailData: {
           actionTitle: action.title,
           actionPath,

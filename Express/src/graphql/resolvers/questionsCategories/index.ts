@@ -18,8 +18,7 @@ export const questionsCategoriesTypeDefs = `
   type QuestionsCategoryOption {
     type: String!
     name: String!
-    setting: String
-    value: String
+    setting: String!
   }
 
   type QuestionsCategory {

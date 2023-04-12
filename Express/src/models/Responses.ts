@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IAuditValues, IOrganization, IResponse, IResponseModel, ISearchResult } from 'app-interfaces';
 import { AuditLogs, BusinessUnits, Notifications, Organizations, TrackerItems, Users } from 'app-models';
-import { TRACKER_RESPONSE_ASSIGNED, TRACKER_REVIEW_SUBMITTED } from 'app-shared';
 import {
   genMetatags,
   getAuditValueForAttachments,
@@ -475,10 +474,8 @@ responseSchema.statics.submitReviewNotification = async function (response: IRes
         const assignee = await Users.customFindByIdWithDetails({ userId, organization });
         await Notifications.customCreate(
           {
-            emailType: TRACKER_REVIEW_SUBMITTED,
+            emailType: 'trackerReviewSubmitted',
             emailData: {
-              subject: `${trackerItem.name} review has been submitted`,
-              template: 'trackerReviewSubmittedNotificationEmailTemplate',
               trackerItemName: trackerItem.name,
               trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${response._id}">here</a>`,
             },
@@ -521,14 +518,12 @@ responseSchema.statics.customAssigneeNotification = async function (
         const assignee = await Users.customFindByIdWithDetails({ userId, organization });
         await Notifications.customCreate(
           {
-            emailType: TRACKER_RESPONSE_ASSIGNED,
+            emailType: 'trackerResponseAssigned',
             emailData: {
-              subject: `You have been assigned to ${trackerItem.name}`,
-              template: 'trackerResponseAssigneeTemplate',
-              ItemName: trackerItem.name,
-              LinkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
-              AssignedRole: assignedRole,
-              AssignedBy: assignor.displayName,
+              itemName: trackerItem.name,
+              linkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
+              assignedRole,
+              assignedBy: assignor.displayName,
             },
             status: 'pending',
             to: [assignee?.email],

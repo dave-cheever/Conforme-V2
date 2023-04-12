@@ -7,9 +7,9 @@ const organization = async (
   { req, organization: sessionOrganization },
 ) => {
   try {
-    if (sessionOrganization) 
+    if (sessionOrganization)
       return sessionOrganization;
-    
+
     const organization = await Organizations.customFindByDomain(getDomain(req));
     return sessionizeOrganization(organization);
   } catch (err: any) {

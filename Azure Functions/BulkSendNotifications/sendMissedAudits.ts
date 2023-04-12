@@ -1,16 +1,17 @@
+import { Context } from '@azure/functions';
 import { endOfDay, startOfDay } from 'date-fns';
 import { IAudit } from '../common/interfaces/IAudit';
 
 import IConfig from '../common/interfaces/IConfig';
 import { IOrganization } from '../common/interfaces/IOrganization';
 import Audits from '../common/services/collections/Audits';
+import Notifications from '../common/services/collections/Notifications';
 import Settings from '../common/services/collections/Settings';
 import Users from '../common/services/collections/Users';
 import { EmailService } from '../common/services/EmailService';
-import { AUDIT_MISSED, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
-import { getTemplateDetails } from '../common/utils';
+import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 
-const sendMissedAudits = async (config: IConfig) => {
+const sendMissedAudits = async (config: IConfig, context: Context) => {
   const auditsByOrganization: {
     _id: string; // Organization ID,
     organization: IOrganization;
@@ -74,47 +75,69 @@ const sendMissedAudits = async (config: IConfig) => {
     },
   ]);
 
+  const emailService = new EmailService(config);
   await Promise.all(
     auditsByOrganization.map(async ({ audits, organization }) => {
-      const emailService = new EmailService(config);
-      const { emailSettingName } = getTemplateDetails(AUDIT_MISSED);
-
+      let notificationId: string;
       await Promise.all(audits.map(async audit => {
-        const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
-        const subject = getEmailSubject(AUDIT_MISSED, {}, module.translations);
-        const body = await getEmailTemplate({
-          emailType: AUDIT_MISSED,
-          emailData: {
+        try {
+          const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
+
+          const emailType = 'auditMissed';
+          const emailData = {
             areaName: audit.area?.name,
             auditPath: `${organization.domain}/${module?.path}/audits/${audit._id}`,
-          },
-          modulePath: module.path,
-          organization
-        });
+          };
+          const subject = await getEmailSubject({ emailType, organization });
+          const body = await getEmailTemplate({
+            emailType,
+            emailData,
+            modulePath: module.path,
+            organization
+          });
 
-        let recipients: string[] = [];
-        const emailAddress = await Settings.customFindOneByName(emailSettingName, organization._id);
-        if (emailAddress) recipients = emailAddress.value;
+          let recipients: string[] = [];
+          const emailAddress = await Settings.customFindOneByName('auditMissedEmailAddress', organization._id);
+          if (emailAddress) recipients = emailAddress.value;
 
-        const auditor = await Users.customFindByIdWithDetails({
-          userId: audit.auditorId,
-          organization,
-        });
-        if (auditor) recipients.push(auditor.email);
-
-        if (auditor.managerId) {
-          const lineManager = await Users.customFindByIdWithDetails({
-            userId: auditor.managerId,
+          const auditor = await Users.customFindByIdWithDetails({
+            userId: audit.auditorId,
             organization,
           });
-          if (lineManager) recipients.push(lineManager.email);
-        }
+          if (auditor) recipients.push(auditor.email);
 
-        await emailService.sendEmail({
-          to: recipients,
-          subject,
-          body,
-        });
+          if (auditor.managerId) {
+            const lineManager = await Users.customFindByIdWithDetails({
+              userId: auditor.managerId,
+              organization,
+            });
+            if (lineManager) recipients.push(lineManager.email);
+          }
+
+          // Save notification in database
+          const notification = await Notifications.customCreate({
+            emailType,
+            emailData,
+            status: 'pending',
+            to: recipients,
+            scope: {
+              moduleId: module?._id,
+            },
+          }, 'system', organization._id);
+          notificationId = notification._id;
+
+          await emailService.sendEmail({
+            to: recipients,
+            subject,
+            body,
+          });
+          await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+        } catch (e) {
+          const error = JSON.stringify({ message: e.message, response: e.response });
+          await Notifications.updateOne({ _id: notificationId }, { error });
+          context.log.error(`Missed audit notification failed for audit ${audit._id}.`);
+          context.log.error(error);
+        }
       }));
     })
   );

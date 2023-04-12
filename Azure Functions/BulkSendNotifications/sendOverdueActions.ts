@@ -1,18 +1,14 @@
+import { Context } from '@azure/functions';
+
 import Actions from '../common/services/collections/Actions';
 import Answers from '../common/services/collections/Answers';
 import Users from '../common/services/collections/Users';
-import Organizations from '../common/services/collections/Organizations';
-
-import { GraphService } from '../common/services/GraphService';
-import {
-  ACTION_OVERDUE,
-  getEmailSubject,
-  getEmailTemplate
-} from '../common/services/notifications';
+import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 import IConfig from '../common/interfaces/IConfig';
 import { EmailService } from '../common/services/EmailService';
+import Notifications from '../common/services/collections/Notifications';
 
-const sendOverdueActions = async (config: IConfig) => {
+const sendOverdueActions = async (config: IConfig, context: Context) => {
   const actionsByOrganization = await Actions.aggregate([
     {
       $match: {
@@ -51,80 +47,104 @@ const sendOverdueActions = async (config: IConfig) => {
     }
   ]);
 
+  const emailService = new EmailService(config);
   await Promise.all(
     actionsByOrganization.map(async ({ actions, organization }) => {
       await Promise.all(
         actions.map(async action => {
-          const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
-          let actionPath = '';
-          const recipients: string[] = [];
+          let notificationId: string;
+          try {
+            const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
+            let actionPath = '';
+            const recipients: string[] = [];
 
-          if (action.assigneeId) {
-            const assignee = await Users.customFindByIdWithDetails({
-              userId: action.assigneeId,
-              organization
-            });
-            if (assignee) recipients.push(assignee.email);
-          }
+            if (action.assigneeId) {
+              const assignee = await Users.customFindByIdWithDetails({
+                userId: action.assigneeId,
+                organization
+              });
+              if (assignee) recipients.push(assignee.email);
+            }
 
-          // If action was created in an answer, in an audit,
-          if (action.scope?._id && action.scope?.type === 'answer') {
-            const answers = await Answers.aggregate([
-              {
-                $match: {
-                  $and: [
-                    {
-                      'metatags.removedAt': { $eq: null }
-                    },
-                    {
-                      _id: action.scope._id,
-                      'scope.type': 'audit'
-                    }
-                  ]
+            // If action was created in an answer, in an audit,
+            if (action.scope?._id && action.scope?.type === 'answer') {
+              const answers = await Answers.aggregate([
+                {
+                  $match: {
+                    $and: [
+                      {
+                        'metatags.removedAt': { $eq: null }
+                      },
+                      {
+                        _id: action.scope._id,
+                        'scope.type': 'audit'
+                      }
+                    ]
+                  }
+                },
+                {
+                  $lookup: {
+                    from: 'audits',
+                    localField: 'scope._id',
+                    foreignField: '_id',
+                    as: 'audit'
+                  }
+                },
+                {
+                  $unwind: {
+                    path: '$audit',
+                    preserveNullAndEmptyArrays: true
+                  }
                 }
-              },
-              {
-                $lookup: {
-                  from: 'audits',
-                  localField: 'scope._id',
-                  foreignField: '_id',
-                  as: 'audit'
-                }
-              },
-              {
-                $unwind: {
-                  path: '$audit',
-                  preserveNullAndEmptyArrays: true
-                }
-              }
-            ]);
-            const answer = answers[0];
-            if (module && answer)
-              actionPath = `${organization.domain}/${module.path}/actions?id=${action._id}`;
+              ]);
+              const answer = answers[0];
+              if (module && answer)
+                actionPath = `${organization.domain}/${module.path}/actions?id=${action._id}`;
 
-            const auditor = await Users.customFindByIdWithDetails({
-              userId: answer?.audit.auditorId,
-              organization
-            });
-            if (auditor) recipients.push(auditor.email);
-          }
+              const auditor = await Users.customFindByIdWithDetails({
+                userId: answer?.audit.auditorId,
+                organization
+              });
+              if (auditor) recipients.push(auditor.email);
+            }
 
-          const subject = getEmailSubject(ACTION_OVERDUE, {}, module.translations);
-          const body = await getEmailTemplate({
-            emailType: ACTION_OVERDUE,
-            emailData: {
+            const emailType = 'actionOverdue';
+            const emailData = {
               actionTitle: action.title,
               actionPath
-            },
-            modulePath: module.path,
-            organization
-          });
-          const emailService = new EmailService(config);
-          await emailService.sendEmail({
-            to: recipients,
-            subject,
-            body,
-          });
+            };
+            const subject = await getEmailSubject({ emailType, organization });
+            const body = await getEmailTemplate({
+              emailType,
+              emailData,
+              modulePath: module.path,
+              organization,
+            });
+
+            // Save notification in database
+            const notification = await Notifications.customCreate({
+              emailType,
+              emailData,
+              status: 'pending',
+              to: recipients,
+              scope: {
+                moduleId: module?._id,
+              },
+            }, 'system', organization._id);
+            notificationId = notification._id;
+
+            await emailService.sendEmail({
+              to: recipients,
+              subject,
+              body,
+            });
+            await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+          } catch (e) {
+            const error = JSON.stringify({ message: e.message, response: e.response });
+            await Notifications.updateOne({ _id: notificationId }, { error });
+            context.log.error(`Overdue notification failed for action ${action._id}.`);
+            context.log.error(error);
+          }
         })
       );
     })

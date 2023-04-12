@@ -1,13 +1,15 @@
+import { Context } from '@azure/functions';
 import { getDate } from 'date-fns';
 
 import IConfig from '../common/interfaces/IConfig';
 import Audits from '../common/services/collections/Audits';
+import Notifications from '../common/services/collections/Notifications';
 import Settings from '../common/services/collections/Settings';
 import Users from '../common/services/collections/Users';
 import { EmailService } from '../common/services/EmailService';
-import { AUDIT_UPCOMING, getEmailSubject, getEmailTemplate } from '../common/services/notifications';
+import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
 
-const sendComingUpAudits = async (config: IConfig) => {
+const sendComingUpAudits = async (config: IConfig, context: Context) => {
   const auditsByOrganization = await Audits.aggregate([
     {
       $match: {
@@ -69,28 +71,52 @@ const sendComingUpAudits = async (config: IConfig) => {
         const emailService = new EmailService(config);
 
         await Promise.all(audits.map(async audit => {
-          const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
-          const subject = getEmailSubject(AUDIT_UPCOMING, {}, module.translations);
-          const body = await getEmailTemplate({
-            emailType: AUDIT_UPCOMING,
-            emailData: {
+          let notificationId: string;
+          try {
+            const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
+
+            const emailType = 'auditUpcoming';
+            const emailData = {
               areaName: audit.area?.name,
               auditPath: `${organization.domain}/${module?.path}/audits/${audit._id}`,
-            },
-            modulePath: module.path,
-            organization,
-          });
-
-          const auditor = await Users.customFindByIdWithDetails({
-            userId: audit.auditorId,
-            organization,
-          });
-          if (auditor) {
-            await emailService.sendEmail({
-              to: [auditor.email],
-              subject,
-              body,
+            };
+            const subject = await getEmailSubject({ emailType, organization });
+            const body = await getEmailTemplate({
+              emailType,
+              emailData,
+              modulePath: module.path,
+              organization,
             });
+
+            const auditor = await Users.customFindByIdWithDetails({
+              userId: audit.auditorId,
+              organization,
+            });
+            if (auditor) {
+              // Save notification in database
+              const notification = await Notifications.customCreate({
+                emailType,
+                emailData,
+                status: 'pending',
+                to: [auditor.email],
+                scope: {
+                  moduleId: module?._id,
+                },
+              }, 'system', organization._id);
+              notificationId = notification._id;
+
+              await emailService.sendEmail({
+                to: [auditor.email],
+                subject,
+                body,
+              });
+              await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+            }
+          } catch (e) {
+            const error = JSON.stringify({ message: e.message, response: e.response });
+            await Notifications.updateOne({ _id: notificationId }, { error });
+            context.log.error(`Upcoming audit notification failed for audit ${audit._id}.`);
+            context.log.error(error);
           }
         }));
       }

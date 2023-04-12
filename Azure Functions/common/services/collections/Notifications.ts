@@ -7,7 +7,7 @@ import { genMetatags } from "../../utils";
 
 const notificationsSchema = new Schema<INotification, INotificationModel>({
   _id: String,
-  emailType: Number,
+  emailType: String,
   emailData: Schema.Types.Mixed,
   to: [String],
   status: {
@@ -15,6 +15,7 @@ const notificationsSchema = new Schema<INotification, INotificationModel>({
     enum: ["pending", "processing", "sent", "failed"],
   },
   sentDate: Date,
+  error: String,
   organizationId: String,
   metatags: {
     addedAt: Date,

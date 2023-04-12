@@ -50,7 +50,6 @@ actionsSchema.statics.customFind = async function (
   selector: any = {},
   organizationId: string
 ): Promise<IAction[]> {
-  console.log('selector', selector);
   const actions = await this.find({
     ...selector,
     organizationId,

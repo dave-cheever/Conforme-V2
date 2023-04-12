@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { IAudit, IComment, ICommentModel, IOrganization, IResponse, ITrackerItem } from 'app-interfaces';
 import { AuditLogs, Audits, Notifications, Responses, TrackerItems, Users } from 'app-models';
-import { MENTION_NOTIFICATION } from 'app-shared';
 import {
   genMetatags,
   getAuditRecordValues,
@@ -174,11 +173,10 @@ commentSchema.statics.sendMentionedEmail = async function (userId: string, organ
   const module = organization.modules.find(({ _id }) => _id === comment.scope?.moduleId);
   await Notifications.customCreate(
     {
-      emailType: MENTION_NOTIFICATION,
+      emailType: 'userMentioned',
       emailData: {
         message: comment.text,
         mentionedUser: user?.displayName || '',
-        template: 'mentionedNotificationEmailTemplate',
       },
       to: [user?.email!],
       status: 'pending',

@@ -7,21 +7,17 @@ import { ConfigService } from '../common/services/ConfigService';
 import { LoggingService } from '../common/services/LoggingService';
 import { StorageService } from '../common/services/StorageService';
 import { endOfWeek, getHours, getMinutes, isAfter, isBefore, isSameDay, isSameWeek, parseISO, set, startOfWeek, sub } from 'date-fns';
-import sendDigest from './sendDigest';
+import sendAuditsDigest from './sendAuditsDigest';
 import {
   getEmailSubject,
   getEmailTemplate,
-  TRACKER_REMINDER,
-  TRACKER_WEEKLY_SUMMARY
 } from '../common/services/notifications';
 import sendUpcomingAudits from './sendUpcomingAudits';
 import sendMissedAudits from './sendMissedAudits';
 import sendOverdueActions from './sendOverdueActions';
-import sendResponseWeeklyEmail from './sendResponseWeeklyEmail';
-import sendResponseDueEmail from './sendResponseDueEmail';
+import sendTrackerResponseDigest from './sendTrackerResponseDigest';
+import sendTrackerResponseReminder from './sendTrackerResponseReminder';
 import Notifications from '../common/services/collections/Notifications';
-import Settings from "../common/services/collections/Settings";
-import { getTemplateDetails } from '../common/utils';
 import { EmailService } from '../common/services/EmailService';
 
 const timerTrigger: AzureFunction = async function (context: Context): Promise<void> {
@@ -53,23 +49,24 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
       if (!isSameWeek(now, lastBulkScanDate)) {
         loggingService.Write('Weekly notifications triggered');
         const lastWeek = sub(now, { weeks: 1 });
-        await sendDigest(
+        await sendAuditsDigest(
           {
             since: startOfWeek(lastWeek, { weekStartsOn: 1 }),
             to: endOfWeek(lastWeek, { weekStartsOn: 1 }),
           },
-          config
+          config,
+          context,
         );
-        await sendResponseWeeklyEmail(TRACKER_WEEKLY_SUMMARY, config);
+        await sendTrackerResponseDigest(config, context);
       }
 
       // Send daily digest if now and last scan date is different day
       if (!isSameDay(now, lastBulkScanDate)) {
         loggingService.Write('Daily notifications triggered');
-        await sendUpcomingAudits(config);
-        await sendMissedAudits(config);
-        await sendOverdueActions(config);
-        await sendResponseDueEmail(TRACKER_REMINDER, config);
+        await sendMissedAudits(config, context);
+        await sendUpcomingAudits(config, context);
+        await sendOverdueActions(config, context);
+        await sendTrackerResponseReminder(config, context);
       }
 
       loggingService.Write('Scheduled notifications sent');
@@ -81,25 +78,24 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
     const notifications = await Notifications.find({ status: "pending" }).lean();
     const notificationsSent = await Promise.all(notifications.map(async notification => {
       try {
-        const template = await Settings.customFindOneByName(notification.emailData.template, notification.organizationId);
-        if (!template) {
-          context.log(`Can not find email template for ${notification.emailData.template} (ID: ${notification._id}).`);
-        }
         const organizationConfigService = new ConfigService();
-        await organizationConfigService.getConfig(notification.organizationId);
+        const organizationConfig = await organizationConfigService.getConfig(notification.organizationId);
         const organization = organizationConfigService?.getOrganization();
         const module = organization?.modules?.find((module) => module._id === notification.scope.moduleId);
 
-        const subject = getEmailSubject(notification.emailType, notification.emailData);
+        const subject = await getEmailSubject({
+          emailType: notification.emailType,
+          emailData: notification.emailData,
+          organization,
+        });
         const body = await getEmailTemplate({
           emailType: notification.emailType,
           emailData: notification.emailData,
           modulePath: module?.path,
-          template: template?.value,
           organization,
         });
 
-        const emailService = new EmailService(config);
+        const emailService = new EmailService(organizationConfig);
         const emailResponseStatus = await emailService.sendEmail({
           to: notification.to,
           subject,
@@ -110,11 +106,12 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           await Notifications.updateOne({ _id: notification._id }, { status: "sent" });
           return true;
         }
+      } catch (e) {
+        const error = JSON.stringify({ message: e.message, response: e.response });
+        await Notifications.updateOne({ _id: notification._id }, { error });
+        context.log.error(`Instant notification failed: ${notification._id}.`);
+        context.log.error(error);
         return false;
-      } catch (notificationError) {
-        context.log(notificationError.message);
-        context.log(notificationError.response.body);
-        context.log.error(`Instant notification failed: ${notification._id}`);
       }
     }));
     loggingService.Write(`Instant notifications sent: ${notificationsSent.filter(Boolean).length}`);

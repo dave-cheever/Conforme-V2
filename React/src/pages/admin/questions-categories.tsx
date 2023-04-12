@@ -37,7 +37,6 @@ const GET_QUESTIONS_CATEGORIES = gql`
         type
         name
         setting
-        value
       }
       scope {
         module
@@ -148,7 +147,7 @@ const QuestionsCategories = () => {
       showInInsights: questionsCategory?.showInInsights,
       countInAuditCard: questionsCategory?.countInAuditCard,
       icon: questionsCategory?.icon,
-      options: (questionsCategory?.options || []).map(({ name, setting, type, value }) => ({ name, setting, type, value })),
+      options: (questionsCategory?.options || []).map(({ name, setting, type }) => ({ name, setting, type })),
       scope: questionsCategory?.scope,
     });
   };
@@ -382,14 +381,14 @@ const QuestionsCategories = () => {
           </Text>
           <CheckboxGroup
             data-id="55e6d4d23d19"
-            defaultValue={questionsCategory.options?.map((option) => option.value)}
+            defaultValue={questionsCategory.options?.map((option) => option.setting)}
             onChange={onChangeOption}>
             {Object.values(availableOptions).map((option) => (
               <Checkbox
                 data-id="5cee867104a9"
-                key={option.value}
+                key={option.setting}
                 label={option.name}
-                value={option.value} />
+                value={option.setting} />
             ))}
           </CheckboxGroup>
         </Stack>

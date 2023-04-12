@@ -1,13 +1,27 @@
 [
   {
     "_id": "<random generated UUID>",
-    "name": "mentionedNotificationEmailTemplate",
-    "label": "Mentioned Notification",
+    "name": "userMentionedEmailTemplate",
+    "label": "User mentioned notificaiton template",
     "value": "<p style=\"text-align: center;\"><span style=\"font-size: 24px;\">Welcome to Conforme</span></p><p><br></p><p style=\"text-align: center;\">&nbsp;</p><p><br></p><p>Dear %MentionedUser%,</p><p><br></p><p>Message is: %Message% </p><p><br></p><p>Thank you for choosing Conforme</p><p><br></p>",
     "type": "emailTemplate",
     "options": ["Message", "MentionedUser"],
     "description": "",
     "inputType": "emailTemplate",
+    "scope": {
+      "moduleId": "<module id>"
+    },
+    "organizationId": "<organization's id>",
+    "metatags": {}
+  },
+  {
+    "_id": "<random generated UUID>",
+    "name": "userMentionedEmailSubject",
+    "label": "User mentioned notificaiton subject",
+    "value": "You have been mentioned in chat",
+    "type": "emailSubject",
+    "description": "",
+    "inputType": "emailSubject",
     "scope": {
       "moduleId": "<module id>"
     },
