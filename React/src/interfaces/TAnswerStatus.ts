@@ -1,1 +1,1 @@
-export type TAnswerStatus = 'open' | 'resolved' | 'closed';
+export type TAnswerStatus = 'open' | 'closed';

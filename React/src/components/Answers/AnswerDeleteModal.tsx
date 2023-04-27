@@ -25,7 +25,7 @@ const DELETE_ANSWER = gql`
   }
 `;
 
-const WalkItemDeleteModal = ({
+const AnswerDeleteModal = ({
   answer,
   isOpen,
   onClose,
@@ -49,7 +49,7 @@ const WalkItemDeleteModal = ({
         },
       });
       refetchAnswers();
-      toast({ ...toastSuccess, description: 'Walk item deleted' });
+      toast({ ...toastSuccess, description: 'Answer deleted' });
     } catch (e: any) {
       toast({
         ...toastFailed,
@@ -100,4 +100,4 @@ const WalkItemDeleteModal = ({
   );
 };
 
-export default WalkItemDeleteModal;
+export default AnswerDeleteModal;

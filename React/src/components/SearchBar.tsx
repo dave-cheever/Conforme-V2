@@ -159,7 +159,7 @@ const SearchBar = () => {
             url = `actions?id=${result._id}`;
             break;
           case 'answers':
-            url = `walk-items?id=${result._id}`;
+            url = `answers?id=${result._id}`;
             break;
           default:
             url = `audits/${result._id}`;
@@ -298,7 +298,7 @@ const SearchBar = () => {
                         h="15px"
                         stroke={
                           `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` ===
-                          `${searchCategory.type}-${searchCategory._id}`
+                            `${searchCategory.type}-${searchCategory._id}`
                             ? 'navigationLeftItem.selectedIconStroke'
                             : 'navigationLeftItem.unselectedIconStroke'
                         }

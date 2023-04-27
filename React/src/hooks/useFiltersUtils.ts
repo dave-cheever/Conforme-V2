@@ -6,7 +6,7 @@ import { capitalize, isEmpty } from 'lodash';
 
 import { useAppContext } from '../contexts/AppProvider';
 import IFilter from '../interfaces/IFilter';
-import { IActionFilters, IAuditFilters, IWalkItemFilters } from '../interfaces/IFilters';
+import { IActionFilters, IAnswerFilters, IAuditFilters } from '../interfaces/IFilters';
 import useConfig from './useConfig';
 
 export const auditWalkTypes = {
@@ -139,7 +139,7 @@ const useFiltersUtils = () => {
       value: [],
     },
   };
-  const initialWalkItemFilters: IWalkItemFilters = {
+  const initialAnswerFilters: IAnswerFilters = {
     status: {
       name: 'Status',
       value: [],
@@ -173,8 +173,8 @@ const useFiltersUtils = () => {
     switch (location.pathname.split('/')[2]) {
       case 'actions':
         return initialActionFilters;
-      case 'walk-items':
-        return initialWalkItemFilters;
+      case 'answers':
+        return initialAnswerFilters;
       case 'audits':
       default:
         return initialAuditFilters;

@@ -8,7 +8,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowDownIcon, CrossIcon, Magnifier } from '../../icons';
-import { IActionUserFilter, IAuditUserFilter, IUserFilter, IWalkItemUserFilter } from '../../interfaces/IFilters';
+import { IActionUserFilter, IAnswerUserFilter, IAuditUserFilter, IUserFilter } from '../../interfaces/IFilters';
 import { IUser } from '../../interfaces/IUser';
 import UsersSelector from '../UsersSelector';
 
@@ -23,7 +23,7 @@ const UserFilter = () => {
     switch (getPath()) {
       case 'actions':
         return 'assignee';
-      case 'walk-items':
+      case 'answers':
         return 'addedBy';
       case 'audits':
       default:
@@ -36,7 +36,7 @@ const UserFilter = () => {
     switch (getPath()) {
       case 'actions':
         return actionUserRoles;
-      case 'walk-items':
+      case 'answers':
         return questionsUserRoles;
       case 'audits':
       default:
@@ -47,8 +47,8 @@ const UserFilter = () => {
     switch (getPath()) {
       case 'actions':
         return filtersValues.usersIds as IActionUserFilter;
-      case 'walkItems':
-        return filtersValues.usersIds as IWalkItemUserFilter;
+      case 'answers':
+        return filtersValues.usersIds as IAnswerUserFilter;
       case 'audits':
       default:
         filtersValues.usersIds as IAuditUserFilter;
@@ -63,11 +63,11 @@ const UserFilter = () => {
             count: (filtersValues.usersIds as IActionUserFilter)?.value?.assigneesIds?.length || 0,
           },
         ];
-      case 'walk-items':
+      case 'answers':
         return [
           {
             name: 'addedBy',
-            count: (filtersValues.usersIds as IWalkItemUserFilter)?.value?.addedByIds?.length || 0,
+            count: (filtersValues.usersIds as IAnswerUserFilter)?.value?.addedByIds?.length || 0,
           },
         ];
       case 'audits':
@@ -88,23 +88,23 @@ const UserFilter = () => {
     () =>
       module?.type === 'tracker'
         ? [
-            {
-              name: 'responsible',
-              count: (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds?.length || 0,
-            },
-            {
-              name: 'accountable',
-              count: (filtersValues.usersIds as IUserFilter)?.value?.accountableIds?.length || 0,
-            },
-            {
-              name: 'contributor',
-              count: (filtersValues.usersIds as IUserFilter)?.value?.contributorIds?.length || 0,
-            },
-            {
-              name: 'follower',
-              count: (filtersValues.usersIds as IUserFilter)?.value?.followerIds?.length || 0,
-            },
-          ]
+          {
+            name: 'responsible',
+            count: (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds?.length || 0,
+          },
+          {
+            name: 'accountable',
+            count: (filtersValues.usersIds as IUserFilter)?.value?.accountableIds?.length || 0,
+          },
+          {
+            name: 'contributor',
+            count: (filtersValues.usersIds as IUserFilter)?.value?.contributorIds?.length || 0,
+          },
+          {
+            name: 'follower',
+            count: (filtersValues.usersIds as IUserFilter)?.value?.followerIds?.length || 0,
+          },
+        ]
         : selectedAuditRoleUsers,
     [filtersValues, module, location.pathname],
   );
@@ -124,7 +124,7 @@ const UserFilter = () => {
       case 'assignee':
         return (filtersValues.usersIds as IActionUserFilter)?.value?.assigneesIds;
       case 'addedBy':
-        return (filtersValues.usersIds as IWalkItemUserFilter)?.value?.addedByIds;
+        return (filtersValues.usersIds as IAnswerUserFilter)?.value?.addedByIds;
       case 'participant':
         return (filtersValues.usersIds as IAuditUserFilter)?.value?.participantsIds;
       default:

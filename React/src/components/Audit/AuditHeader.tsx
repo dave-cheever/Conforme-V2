@@ -93,9 +93,9 @@ const AuditHeader = () => {
         onClick={
           selectedAction
             ? () => {
-                setActionChangesModalOnContinue(() => onDeleteAudit);
-                handleActionChangesModalOpen();
-              }
+              setActionChangesModalOnContinue(() => onDeleteAudit);
+              handleActionChangesModalOpen();
+            }
             : handleDeleteModalOpen
         } />
     ) : null;
@@ -111,9 +111,9 @@ const AuditHeader = () => {
         onClick={
           selectedAction
             ? () => {
-                setActionChangesModalOnContinue(() => handleRecurringModalOpen);
-                handleActionChangesModalOpen();
-              }
+              setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+              handleActionChangesModalOpen();
+            }
             : handleRecurringModalOpen
         } />
     ) : null;
@@ -131,9 +131,9 @@ const AuditHeader = () => {
           onClick={
             selectedAction
               ? () => {
-                  setActionChangesModalOnContinue(() => onSubmitAudit);
-                  handleActionChangesModalOpen();
-                }
+                setActionChangesModalOnContinue(() => onSubmitAudit);
+                handleActionChangesModalOpen();
+              }
               : handleSubmitModalOpen
           } />)
       );

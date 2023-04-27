@@ -5,9 +5,9 @@ import { capitalize } from 'lodash';
 import { Trashcan } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 import Can from '../can';
-import WalkItemDeleteModal from './WalkItemDeleteModal';
+import AnswerDeleteModal from './AnswerDeleteModal';
 
-const WalkItemsListItem = ({
+const AnswersListItem = ({
   answer,
   refetchAnswers,
   editAnswer,
@@ -20,7 +20,7 @@ const WalkItemsListItem = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (<>
-    <WalkItemDeleteModal
+    <AnswerDeleteModal
       answer={answer}
       data-id="1cd611f67cfe"
       isOpen={isOpen}
@@ -28,7 +28,7 @@ const WalkItemsListItem = ({
       refetchAnswers={refetchAnswers} />
     <Box
       bg="white"
-      borderBottomColor="walkItemsList.headerBorderColor"
+      borderBottomColor="answersList.headerBorderColor"
       borderBottomWidth="1px"
       cursor="pointer"
       data-id="b32f61ecbdf5"
@@ -46,7 +46,7 @@ const WalkItemsListItem = ({
           <Flex data-id="84a14b65ba63" flexDir="column" w="10%">
             <Flex
               align="flex-start"
-              color="walkItemsList.fontColor"
+              color="answersList.fontColor"
               data-id="f9f8d6f0a7cf"
               fontSize="smm"
               fontWeight="400"
@@ -65,7 +65,7 @@ const WalkItemsListItem = ({
           <Flex data-id="5f9ed47b8f8f" flexDir="column" w="15%">
             <Flex
               align="flex-start"
-              color="walkItemsList.fontColor"
+              color="answersList.fontColor"
               data-id="919032a37ae7"
               fontSize="smm"
               fontWeight="400"
@@ -84,7 +84,7 @@ const WalkItemsListItem = ({
         <Flex data-id="9ab90fdcdff9" flexDir="column" w="6%">
           <Flex
             align="flex-start"
-            color={`walkItemsList.${answer?.status}`}
+            color={`answersList.${answer?.status}`}
             data-id="61ef301cf7f0"
             fontSize="smm"
             h="50%"
@@ -101,7 +101,7 @@ const WalkItemsListItem = ({
           <Flex data-id="116b6736af00" flexDir="column" w="19%">
             <Flex
               align="flex-start"
-              color="walkItemsList.fontColor"
+              color="answersList.fontColor"
               data-id="b092ee97c56f"
               fontSize="smm"
               h="50%"
@@ -125,7 +125,7 @@ const WalkItemsListItem = ({
           <Flex data-id="d3f6872183ee" flexDir="column" w="19%">
             <Flex
               align="flex-start"
-              color="walkItemsList.fontColor"
+              color="answersList.fontColor"
               data-id="2c8087aefc0d"
               fontSize="smm"
               fontWeight="400"
@@ -145,7 +145,7 @@ const WalkItemsListItem = ({
         <Flex data-id="bab817a537a1" flexDir="column" w="5%">
           <Flex
             align="flex-start"
-            color="walkItemsList.fontColor"
+            color="answersList.fontColor"
             data-id="f8a7546c4393"
             fontSize="smm"
             fontWeight="400"
@@ -170,7 +170,7 @@ const WalkItemsListItem = ({
                     size="xs"
                     src={answer.addedBy?.imgUrl} />
                   <Text
-                    color="walkItemsList.fontColor"
+                    color="answersList.fontColor"
                     data-id="aab06571e7b2"
                     fontSize="13px"
                     lineHeight="17px"
@@ -196,7 +196,7 @@ const WalkItemsListItem = ({
           label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
           <Flex data-id="c5f30f2ffb79" w="8%">
             <Flex
-              color="walkItemsList.fontColor"
+              color="answersList.fontColor"
               data-id="5e0975b25aa6"
               fontSize="smm"
               fontWeight="400"
@@ -223,7 +223,7 @@ const WalkItemsListItem = ({
                 aria-label="Delete"
                 bg="none"
                 data-id="b1c3123d66f9"
-                icon={<Trashcan data-id="a4c0dc96c4ba" stroke="walkItemsList.iconColor" />}
+                icon={<Trashcan data-id="a4c0dc96c4ba" stroke="answersList.iconColor" />}
                 minWidth="none"
                 onClick={() => onOpen()}
                 p={1} />
@@ -234,4 +234,4 @@ const WalkItemsListItem = ({
   </>);
 };
 
-export default WalkItemsListItem;
+export default AnswersListItem;

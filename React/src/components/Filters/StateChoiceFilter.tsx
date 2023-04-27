@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { CheckboxGroup, Stack } from '@chakra-ui/react';
 
-import { actionStatuses, walkItemStatuses } from '../../bootstrap/config';
+import { actionStatuses, answerStatuses } from '../../bootstrap/config';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useFiltersUtils, { actionPriorities, auditWalkTypes } from '../../hooks/useFiltersUtils';
@@ -20,8 +20,8 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
     switch (getPath()) {
       case 'actions':
         return actionStatuses;
-      case 'walk-items':
-        return walkItemStatuses;
+      case 'answers':
+        return answerStatuses;
       case 'audits':
       default:
         return auditStatuses;

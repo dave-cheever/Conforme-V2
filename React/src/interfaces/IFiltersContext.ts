@@ -2,15 +2,15 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { IBaseWithName } from './IBaseWithName';
 import { IBusinessUnit } from './IBusinessUnit';
-import IFilters, { IActionFilters, IAuditFilters, IResponseFilters, IWalkItemFilters } from './IFilters';
+import IFilters, { IActionFilters, IAnswerFilters, IAuditFilters, IResponseFilters } from './IFilters';
 import { ILocation } from './ILocation';
 import { IQuestionsCategory } from './IQuestionsCategory';
 import { ITrackerItem } from './ITrackerItem';
 import { IUser } from './IUser';
+import { TAnswerStatus } from './TAnswerStatus';
 import { TAuditStatus } from './TAuditStatus';
 import TAuditWalkType from './TAuditWalkType';
 import { TDeepPartial } from './TDeepPartial';
-import { TWalkItemStatus } from './TWalkItemStatus';
 
 export interface IFiltersContext {
   filtersValues: IFilters;
@@ -37,8 +37,8 @@ export interface IFiltersContext {
   setAuditFiltersValue: Dispatch<SetStateAction<TDeepPartial<IAuditFilters>>>;
   actionFiltersValue: TDeepPartial<IActionFilters>;
   setActionFiltersValue: Dispatch<SetStateAction<TDeepPartial<IActionFilters>>>;
-  walkItemFiltersValue: TDeepPartial<IWalkItemFilters>;
-  setWalkItemFiltersValue: Dispatch<SetStateAction<TDeepPartial<IWalkItemFilters>>>;
+  answerFiltersValue: TDeepPartial<IAnswerFilters>;
+  setAnswerFiltersValue: Dispatch<SetStateAction<TDeepPartial<IAnswerFilters>>>;
 
   setDefaultFilters: Dispatch<SetStateAction<object>>;
 
@@ -51,7 +51,7 @@ export interface IFiltersContext {
   users: Partial<IUser>[];
   locations: Partial<ILocation>[];
   auditStatuses: TAuditStatus[];
-  walkItemStatuses: TWalkItemStatus[];
+  answerStatuses: TAnswerStatus[];
   auditWalkTypes: TAuditWalkType[];
   questionsCategories: Partial<IQuestionsCategory>[];
 }

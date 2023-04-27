@@ -32,6 +32,7 @@ const defaultPermissions = [
   'items.view',
   'actions.view',
   'questions.view',
+  'answers.view',
   'categories.view',
   'locations.view',
   'regulatoryBodies.view',

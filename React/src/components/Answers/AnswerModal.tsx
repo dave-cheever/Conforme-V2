@@ -53,13 +53,13 @@ const SAVE_ANSWER = gql`
   }
 `;
 
-const WalkItemModal = ({
-  walkItem,
+const AnswerModal = ({
+  answer,
   refetch,
   handleDeleteQuestionModalOpen,
   closeModal,
 }: {
-  walkItem?: IAnswer;
+  answer?: IAnswer;
   refetch: () => void;
   handleDeleteQuestionModalOpen: () => void;
   closeModal: () => void;
@@ -68,13 +68,13 @@ const WalkItemModal = ({
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
   const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
-  const { question, audit } = walkItem as IAnswer;
+  const { question, audit } = answer as IAnswer;
   const { questionsCategory } = question as IQuestion<any>;
   const isCustomQuestion = !!question?.scope?._id;
   const isUserPermittedToModify = isPermitted({
     user,
     action: 'answers.edit',
-    data: { answer: walkItem, audit: walkItem?.audit },
+    data: { answer, audit: answer?.audit },
   });
   const isUserPermittedToModifyStatus = isPermitted({
     user,
@@ -103,12 +103,12 @@ const WalkItemModal = ({
   let isFormEnabled = isUserPermittedToModify;
   if (audit?.status === 'completed') {
     if (questionsCategory?.notBlockedAfterCompletion) {
-      if (questionsCategory?.useStatus && walkItem?.status === 'closed') isFormEnabled = false;
+      if (questionsCategory?.useStatus && answer?.status === 'closed') isFormEnabled = false;
       else isFormEnabled = isUserPermittedToModify;
     } else isFormEnabled = false;
   }
 
-  const canChangeStatus = questionsCategory?.useStatus && isUserPermittedToModifyStatus && walkItem?.status !== 'closed';
+  const canChangeStatus = questionsCategory?.useStatus && isUserPermittedToModifyStatus && answer?.status !== 'closed';
 
   const [saveQuestion] = useMutation(SAVE_QUESTION);
   const [saveAnswer] = useMutation(SAVE_ANSWER);
@@ -126,24 +126,24 @@ const WalkItemModal = ({
 
   useEffect(() => {
     reset({
-      status: walkItem?.status,
-      attachments: walkItem?.attachments ?? [],
+      status: answer?.status,
+      attachments: answer?.attachments ?? [],
       question: question?.question || '',
-      options: walkItem?.options || {},
-      answer: walkItem?.answer || '',
+      options: answer?.options || {},
+      answer: answer?.answer || '',
     });
-  }, [JSON.stringify(walkItem)]);
+  }, [JSON.stringify(answer)]);
 
   const handlePrimaryButtonClick = async () => {
-    if (!walkItem) return;
+    if (!answer) return;
 
     const questionData = {
-      _id: walkItem?.questionId,
+      _id: answer?.questionId,
       question: values.question,
     };
 
     const answerData = {
-      _id: walkItem._id,
+      _id: answer._id,
       options: values.options,
       answer: values.answer,
       status: values.status,
@@ -191,10 +191,10 @@ const WalkItemModal = ({
             <Avatar
               data-id="9586146a9e69"
               mr={3}
-              name={walkItem?.addedBy?.displayName}
+              name={answer?.addedBy?.displayName}
               rounded="full"
               size="xs"
-              src={walkItem?.addedBy?.imgUrl} />
+              src={answer?.addedBy?.imgUrl} />
             <Text data-id="482e1723c2f1" noOfLines={1}>{question?.question}</Text>
           </Flex>
           <Flex alignItems="center" data-id="93c636bc7b9d">
@@ -202,7 +202,7 @@ const WalkItemModal = ({
               ariaLabel={`${capitalize(t('question'))}-share-button`}
               data-id="c83f7606caf7"
               onClick={() => {
-                setShareItemUrl(`walk-items?id=${walkItem?._id}`);
+                setShareItemUrl(`answers?id=${answer?._id}`);
                 setShareItemName(question?.question);
                 handleShareOpen();
               }} />
@@ -211,7 +211,7 @@ const WalkItemModal = ({
               data-id="589e2bfee231"
               h="15px"
               onClick={closeModal}
-              stroke="walkItemModal.closeIcon"
+              stroke="answerModal.closeIcon"
               w="15px" />
           </Flex>
         </Flex>
@@ -230,7 +230,7 @@ const WalkItemModal = ({
                 Related {t('audit')}
               </Text>
               <HStack
-                bg="walkItemModal.question.bg"
+                bg="answerModal.question.bg"
                 boxShadow="simple"
                 data-id="ecbebfa18549"
                 flexGrow={1}
@@ -248,39 +248,39 @@ const WalkItemModal = ({
                     align="center"
                     data-id="9826a9e525c7"
                     direction="row"
-                    onClick={() => openInNewTab(`/audits/${walkItem?.audit?._id}`)}
+                    onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
                     spacing={2}>
                     <Text
-                      color="walkItemModal.question.color"
+                      color="answerModal.question.color"
                       data-id="971500565d8b"
                       fontSize="smm"
                       isTruncated>
-                      {`${walkItem?.audit?.auditor?.displayName} - ${walkItem?.audit?.reference}`}
+                      {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
                     </Text>
                     <OpenExternalIcon data-id="306ec541fe07" fill="transparent" stroke="black" />
                   </Stack>
-                  <Text color="walkItemModal.auditType" data-id="16a19081644c" fontSize="ssm">
-                    {walkItem?.audit?.auditType?.name}
+                  <Text color="answerModal.auditType" data-id="16a19081644c" fontSize="ssm">
+                    {answer?.audit?.auditType?.name}
                   </Text>
                   <Text
-                    color={`walkItemModal.status.${walkItem?.audit?.status}`}
+                    color={`answerModal.status.${answer?.audit?.status}`}
                     data-id="b081f5a4ed7e"
                     fontSize="smm"
                     fontWeight="semibold">
-                    {`${capitalize(walkItem?.audit?.status)}`}
+                    {`${capitalize(answer?.audit?.status)}`}
                   </Text>
                 </Stack>
 
                 <HStack data-id="ad897983bc34" spacing={2}>
-                  {(walkItem?.attachments || []).slice(0, 2).map((attachment) => (
+                  {(answer?.attachments || []).slice(0, 2).map((attachment) => (
                     <DocumentThumbnail data-id="f16a070b3483" document={attachment} key={attachment.id} />
                   ))}
-                  {(walkItem?.attachments || []).length > 2 &&
-                    ((walkItem?.attachments || []).length === 3 ? (
+                  {(answer?.attachments || []).length > 2 &&
+                    ((answer?.attachments || []).length === 3 ? (
                       <DocumentThumbnail
                         data-id="604615890dac"
-                        document={walkItem!.attachments![2]}
-                        key={walkItem!.attachments![2].id} />
+                        document={answer!.attachments![2]}
+                        key={answer!.attachments![2].id} />
                     ) : (
                       <Flex
                         align="center"
@@ -291,7 +291,7 @@ const WalkItemModal = ({
                         justify="center"
                         rounded="3px"
                         w="55px">
-                        +{(walkItem?.attachments || []).length - 2}
+                        +{(answer?.attachments || []).length - 2}
                       </Flex>
                     ))}
                 </HStack>
@@ -314,9 +314,9 @@ const WalkItemModal = ({
                     fontWeight="bold">
                     Type
                   </Text>
-                  <Text data-id="ec06a7172f7d" fontSize="13px">{walkItem?.question?.questionsCategory?.name}</Text>
+                  <Text data-id="ec06a7172f7d" fontSize="13px">{answer?.question?.questionsCategory?.name}</Text>
                 </GridItem>
-                {walkItem?.question?.category && (
+                {answer?.question?.category && (
                   <GridItem data-id="5fed2ac0a42d">
                     <Text
                       color="auditActionForm.labelFont.normal"
@@ -325,7 +325,7 @@ const WalkItemModal = ({
                       fontWeight="bold">
                       Category
                     </Text>
-                    <Text data-id="deaa06398685" fontSize="13px">{walkItem?.question?.category?.name}</Text>
+                    <Text data-id="deaa06398685" fontSize="13px">{answer?.question?.category?.name}</Text>
                   </GridItem>
                 )}
                 <GridItem data-id="c10df0be7ee5">
@@ -336,9 +336,9 @@ const WalkItemModal = ({
                     fontWeight="bold">
                     Date added
                   </Text>
-                  <Text data-id="0219e1e5b4ca" fontSize="13px">{format(new Date(walkItem?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
+                  <Text data-id="0219e1e5b4ca" fontSize="13px">{format(new Date(answer?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
                 </GridItem>
-                {walkItem?.creator && (
+                {answer?.creator && (
                   <GridItem data-id="bcde15fe79fb">
                     <Text
                       color="auditActionForm.labelFont.normal"
@@ -350,9 +350,9 @@ const WalkItemModal = ({
                     <Flex align="center" data-id="deadbc4c7da0" direction="row" mt={1}>
                       <Avatar
                         data-id="a9bac42fe470"
-                        name={walkItem?.creator?.displayName}
+                        name={answer?.creator?.displayName}
                         size="xs"
-                        src={walkItem?.creator?.imgUrl} />
+                        src={answer?.creator?.imgUrl} />
                       <Text
                         data-id="e4d003a12817"
                         fontSize="13px"
@@ -363,7 +363,7 @@ const WalkItemModal = ({
                         textOverflow="ellipsis"
                         w="full"
                         whiteSpace="nowrap">
-                        {walkItem?.creator?.displayName}
+                        {answer?.creator?.displayName}
                       </Text>
                     </Flex>
                   </GridItem>
@@ -376,7 +376,7 @@ const WalkItemModal = ({
                     fontWeight="bold">
                     Unique ID
                   </Text>
-                  <Text data-id="4795414032c0" fontSize="13px">{walkItem?._id}</Text>
+                  <Text data-id="4795414032c0" fontSize="13px">{answer?._id}</Text>
                 </GridItem>
               </Grid>
               <Grid
@@ -469,7 +469,7 @@ const WalkItemModal = ({
                     <DocumentUpload
                       callback={async (uploaded) => appendAttachment(uploaded)}
                       data-id="ddadc80b2de4"
-                      elementId={walkItem?._id || `temp-${question?._id}`} />
+                      elementId={answer?._id || `temp-${question?._id}`} />
                   </>
                 )}
                 {values.attachments?.map((attachment, i) => (
@@ -485,12 +485,12 @@ const WalkItemModal = ({
                 {values.attachments?.length === 0 && !isUserPermittedToModify && <Text data-id="6345cf33304f" fontSize="sm">No uploaded attachments</Text>}
               </Stack>
 
-              {Array.isArray(walkItem?.actions) && walkItem!.actions!.length > 0 && (
+              {Array.isArray(answer?.actions) && answer!.actions!.length > 0 && (
                 <Stack data-id="a333550c9afa" spacing={4}>
                   <Text data-id="5c32442f0832" fontSize="smm" fontWeight="semibold">
                     Actions
                   </Text>
-                  {walkItem?.actions?.map((action, index) => (
+                  {answer?.actions?.map((action, index) => (
                     <ActionListItem
                       action={action}
                       data-id="036416285ee3"
@@ -511,12 +511,12 @@ const WalkItemModal = ({
             w="full">
             <Can
               action="answers.delete"
-              data={{ answer: walkItem, audit: walkItem?.audit }}
+              data={{ answer, audit: answer?.audit }}
               data-id="f62dc58ed779"
               yes={() => (
                 <Button
-                  bg="walkItemModal.buttons.secondary.bg"
-                  color="walkItemModal.buttons.secondary.color"
+                  bg="answerModal.buttons.secondary.bg"
+                  color="answerModal.buttons.secondary.color"
                   data-id="74c68864f256"
                   fontSize="smm"
                   fontWeight="700"
@@ -531,8 +531,8 @@ const WalkItemModal = ({
             <Spacer data-id="290ca7f53482" />
             {(isFormEnabled || canChangeStatus) && (
               <Button
-                bg="walkItemModal.buttons.primary.bg"
-                color="walkItemModal.buttons.primary.color"
+                bg="answerModal.buttons.primary.bg"
+                color="answerModal.buttons.primary.color"
                 data-id="88e5feac2a94"
                 disabled={!isValid}
                 fontSize="smm"
@@ -544,7 +544,7 @@ const WalkItemModal = ({
                   as={TickIcon}
                   data-id="00ebbcc2a756"
                   size={24}
-                  stroke="walkItemModal.buttons.primary.icon" />}
+                  stroke="answerModal.buttons.primary.icon" />}
                 rounded="10px"
                 w="fit-content">
                 Update
@@ -557,10 +557,10 @@ const WalkItemModal = ({
   </>);
 };
 
-export default WalkItemModal;
+export default AnswerModal;
 
-export const walkItemModalStyles = {
-  walkItemModal: {
+export const answerModalStyles = {
+  answerModal: {
     shareButton: {
       bg: '#FFFFFF',
       hoverBg: '#818197',

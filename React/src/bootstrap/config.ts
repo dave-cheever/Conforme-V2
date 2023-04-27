@@ -32,7 +32,7 @@ export const actionStatuses = {
   overdue: 'Overdue',
 };
 
-export const walkItemStatuses = {
+export const answerStatuses = {
   open: 'Open',
   closed: 'Closed',
 };

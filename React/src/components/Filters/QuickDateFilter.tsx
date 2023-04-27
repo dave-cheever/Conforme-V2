@@ -35,7 +35,7 @@ const QuickDateFilter = ({ filterName, toggleActiveFilters }: { filterName: stri
     switch (getPath()) {
       case 'actions':
         return filtersValues.dueDate;
-      case 'walk-items':
+      case 'answers':
         return filtersValues.createdDate;
       case 'audits':
       default:
@@ -47,7 +47,7 @@ const QuickDateFilter = ({ filterName, toggleActiveFilters }: { filterName: stri
     switch (getPath()) {
       case 'actions':
         return 'dueDate';
-      case 'walk-items':
+      case 'answers':
         return 'createdDate';
       case 'audits':
       default:

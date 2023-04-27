@@ -3,12 +3,12 @@
     "_id": "<random generated UUID>",
     "name": "actionAssignedEmailTemplate",
     "label": "Action assigned notification template",
-    "value": "<p>You have been assigned to action '%ActionTitle% for %WalkItemCategory% named %WalkItemName% (%ActionDueDate%)' by %AssignedBy%, to view click %LinkTo%.</p>",
+    "value": "<p>You have been assigned to action '%ActionTitle% for %AnswerCategory% named %AnswerName% (%ActionDueDate%)' by %AssignedBy%, to view click %LinkTo%.</p>",
     "type": "emailTemplate",
     "options": [
       "ActionTitle",
-      "WalkItemCategory",
-      "WalkItemName",
+      "AnswerCategory",
+      "AnswerName",
       "ActionDueDate",
       "AssignedBy",
       "LinkTo"

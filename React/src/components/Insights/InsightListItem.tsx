@@ -24,7 +24,7 @@ const InsightListItem = ({
   insightsModel?: 'users' | 'businessUnits' | 'locations';
 }) => {
   const { navigateTo } = useNavigate();
-  const { setAuditFiltersValue, setWalkItemFiltersValue, setActionFiltersValue } = useFiltersContext();
+  const { setAuditFiltersValue, setAnswerFiltersValue, setActionFiltersValue } = useFiltersContext();
 
   const handleClickForAudits = (status?: string) => {
     navigateTo('/');
@@ -48,7 +48,7 @@ const InsightListItem = ({
   };
 
   const handleClickForAnswers = (status?: string) => {
-    navigateTo('/walk-items');
+    navigateTo('/answers');
     const filter: { value: string[] | { addedByIds: string[] } } = {
       value: [item._id],
     };
@@ -60,7 +60,7 @@ const InsightListItem = ({
       };
     }
 
-    setWalkItemFiltersValue({
+    setAnswerFiltersValue({
       [`${insightsModel}Ids`]: filter,
       status: {
         value: status ? [status] : [],

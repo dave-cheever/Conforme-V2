@@ -17,7 +17,7 @@ interface IActionUserFilterObject {
   assigneesIds: string[] | null;
 }
 
-interface IWalkItemUserFilterObject {
+interface IAnswerUserFilterObject {
   addedByIds: string[] | null;
 }
 
@@ -35,9 +35,9 @@ export interface IActionUserFilter {
   value: IActionUserFilterObject | null;
 }
 
-export interface IWalkItemUserFilter {
+export interface IAnswerUserFilter {
   name: string;
-  value: IWalkItemUserFilterObject | null;
+  value: IAnswerUserFilterObject | null;
 }
 
 export interface IFilterBoolean {
@@ -74,12 +74,12 @@ export interface IActionFilters {
   dueDate?: IFilterString;
 }
 
-export interface IWalkItemFilters {
+export interface IAnswerFilters {
   locationsIds?: IFilter;
   businessUnitsIds?: IFilter;
   status?: IFilterString;
   questionsCategoriesIds?: IFilter;
-  usersIds?: IWalkItemUserFilter;
+  usersIds?: IAnswerUserFilter;
   createdDate?: IFilterString;
 }
 
@@ -94,7 +94,7 @@ export default interface IFilters {
   usersRoles?: IFilter;
   collections?: IFilter;
   action?: IFilter;
-  usersIds?: IUserFilter | IAuditUserFilter | IActionUserFilter | IWalkItemUserFilter;
+  usersIds?: IUserFilter | IAuditUserFilter | IActionUserFilter | IAnswerUserFilter;
   locationsIds?: IFilter;
   status?: IFilterString;
   priority?: IFilterString;

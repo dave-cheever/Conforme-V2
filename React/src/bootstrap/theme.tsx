@@ -21,6 +21,9 @@ import { summaryModalStyles } from '../components/AdminTrackerItemModal/Summary'
 import { summaryItemModalStyles } from '../components/AdminTrackerItemModal/SummaryItem';
 import { trackerItemModalStyles } from '../components/AdminTrackerItemModal/TrackerItemModal';
 import { alertDialogStyles } from '../components/AlertDialog';
+import { answerModalStyles } from '../components/Answers/AnswerModal';
+import { answersListStyles } from '../components/Answers/AnswersList';
+import { answerSquareStyles } from '../components/Answers/AnswerSquare';
 import { auditActionFormStyles } from '../components/Audit/AuditActionForm';
 import { auditAnswerStyles } from '../components/Audit/AuditAnswer';
 import { auditHeaderStyles } from '../components/Audit/AuditHeader';
@@ -107,9 +110,6 @@ import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsLi
 import { trackerItemsSquareStyles } from '../components/TrackerItem/TrackerItemSquare';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
-import { walkItemModalStyles } from '../components/WalkItems/WalkItemModal';
-import { walkItemsListStyles } from '../components/WalkItems/WalkItemsList';
-import { walkItemSquareStyles } from '../components/WalkItems/WalkItemSquare';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
 import { actionsStyles } from '../pages/actions';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
@@ -119,6 +119,7 @@ import { locationsStyles } from '../pages/admin/locations';
 import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
 import { trackerItemsAdminWithContextStyles } from '../pages/admin/tracker-items';
 import { userItemStyles } from '../pages/admin/users';
+import { answersStyles } from '../pages/answers';
 import { auditItemStyles } from '../pages/audit';
 import { auditHistoryStyles } from '../pages/audit/history';
 import { auditParticipantsStyles } from '../pages/audit/participants';
@@ -133,7 +134,6 @@ import { historyPageStyles } from '../pages/tracker-item/history';
 import { trackerItemResponseStyles } from '../pages/tracker-item/index';
 import { teamPageStyles } from '../pages/tracker-item/team';
 import { trackerItemStyles } from '../pages/tracker-items';
-import { walkItemsStyles } from '../pages/walk-items';
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -304,10 +304,10 @@ const getTheme = (organizationTheme?: any) => {
         ...auditsStyles,
         ...userMenuStyles,
         ...userSelectorStyles,
-        ...walkItemsStyles,
-        ...walkItemsListStyles,
-        ...walkItemSquareStyles,
-        ...walkItemModalStyles,
+        ...answersStyles,
+        ...answersListStyles,
+        ...answerSquareStyles,
+        ...answerModalStyles,
         ...actionsInsightsStyles,
         ...answersInsightsStyles,
         ...auditsInsightsStyles,

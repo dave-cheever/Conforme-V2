@@ -8,14 +8,14 @@ import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
+import AnswerDeleteModal from '../components/Answers/AnswerDeleteModal';
+import AnswerModal from '../components/Answers/AnswerModal';
+import AnswersList from '../components/Answers/AnswersList';
+import AnswerSquare from '../components/Answers/AnswerSquare';
 import ChangeViewButton from '../components/ChangeViewButton';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
-import WalkItemDeleteModal from '../components/WalkItems/WalkItemDeleteModal';
-import WalkItemModal from '../components/WalkItems/WalkItemModal';
-import WalkItemsList from '../components/WalkItems/WalkItemsList';
-import WalkItemSquare from '../components/WalkItems/WalkItemSquare';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
@@ -128,13 +128,13 @@ const GET_ANSWERS = gql`
   }
 `;
 
-const WalkItems = () => {
+const Answers = () => {
   const {
     isOpen: isDeleteQuestionModalOpen,
     onOpen: handleDeleteQuestionModalOpen,
     onClose: handleDeleteQuestionModalClose,
   } = useDisclosure();
-  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, walkItemFiltersValue, setWalkItemFiltersValue, usedFilters } =
+  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, answerFiltersValue, setAnswerFiltersValue, usedFilters } =
     useFiltersContext();
   const { user } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -196,15 +196,15 @@ const WalkItems = () => {
 
   // Set pre-defined filters
   useEffect(() => {
-    if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+    if (answerFiltersValue && !isEmpty(answerFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
       // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
       const delayFilters = setTimeout(() => {
-        setFilters(Object.entries(walkItemFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
-        setWalkItemFiltersValue({});
+        setFilters(Object.entries(answerFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setAnswerFiltersValue({});
         clearTimeout(delayFilters);
       }, 100);
     }
-  }, [filtersValues, usedFilters, setWalkItemFiltersValue, walkItemFiltersValue, setFilters]);
+  }, [filtersValues, usedFilters, setAnswerFiltersValue, answerFiltersValue, setFilters]);
 
   useEffect(() => {
     setFilters({
@@ -243,9 +243,9 @@ const WalkItems = () => {
     }
   }, [filtersValues]);
 
-  const [selectedWalkItem, setSelectedWalkItem] = useState<IAnswer>();
+  const [selectedAnswer, setSelectedAnswer] = useState<IAnswer>();
   const handleOpenModal = (answer: IAnswer) => {
-    setSelectedWalkItem(answer);
+    setSelectedAnswer(answer);
     setAdminModalState('edit');
   };
 
@@ -255,8 +255,8 @@ const WalkItems = () => {
 
       setFilteredAnswers(items);
       if (queryParams.has('id')) {
-        const walkItem = items.find(({ _id }) => _id === queryParams.get('id'));
-        handleOpenModal(walkItem);
+        const answer = items.find(({ _id }) => _id === queryParams.get('id'));
+        handleOpenModal(answer);
       }
     }
   }, [data?.answers, user]);
@@ -282,8 +282,8 @@ const WalkItems = () => {
   );
 
   return (<>
-    <WalkItemDeleteModal
-      answer={selectedWalkItem ?? ({} as IAnswer)}
+    <AnswerDeleteModal
+      answer={selectedAnswer ?? ({} as IAnswer)}
       data-id="62498e1d991e"
       isOpen={isDeleteQuestionModalOpen}
       onClose={handleDeleteQuestionModalClose}
@@ -294,12 +294,12 @@ const WalkItems = () => {
       onClose={closeModal}
       size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
       variant="adminModal">
-      <WalkItemModal
+      <AnswerModal
+        answer={selectedAnswer}
         closeModal={closeModal}
         data-id="86d3e719d971"
         handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
-        refetch={refetch}
-        walkItem={selectedWalkItem} />
+        refetch={refetch} />
     </Modal>
     <Header
       breadcrumbs={[capitalize(pluralize(t('question')))]}
@@ -315,7 +315,7 @@ const WalkItems = () => {
           <CSVLink
             data={csvData}
             data-id="5a492d1b03e3"
-            filename="walk-items.csv"
+            filename="answers.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
@@ -367,8 +367,8 @@ const WalkItems = () => {
                   data-id="d6b70656e6af"
                   key={panel._id}
                   _selected={{
-                    bg: 'walkItems.tabBg',
-                    color: 'walkItems.tabColor',
+                    bg: 'answers.tabBg',
+                    color: 'answers.tabColor',
                   }}
                   borderRadius="10px"
                   fontSize="smm"
@@ -401,7 +401,7 @@ const WalkItems = () => {
                       templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
                       w="full">
                       {sortedAnswers.map((answer) => (
-                        <WalkItemSquare
+                        <AnswerSquare
                           data-id="803def365757"
                           answer={answer}
                           editAnswer={handleOpenModal}
@@ -410,7 +410,7 @@ const WalkItems = () => {
                     </Grid>
                   )}
                   {viewMode === 'list' && (
-                    <WalkItemsList
+                    <AnswersList
                       data-id="d10f98c52554"
                       answers={sortedAnswers}
                       editAnswer={handleOpenModal}
@@ -431,10 +431,10 @@ const WalkItems = () => {
   </>);
 };
 
-export default WalkItems;
+export default Answers;
 
-export const walkItemsStyles = {
-  walkItems: {
+export const answersStyles = {
+  answers: {
     header: {
       menuButtonBg: 'white',
       rightIcon: '#9A9EA1',

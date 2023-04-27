@@ -5,9 +5,9 @@ import { capitalize } from 'lodash';
 import { IAnswer } from '../../interfaces/IAnswer';
 import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
-import WalkItemsListItem from './WalkItemsListItem';
+import AnswersListItem from './AnswersListItem';
 
-const WalkItemsList = ({
+const AnswersList = ({
   answers,
   sortOrder,
   sortType,
@@ -26,7 +26,7 @@ const WalkItemsList = ({
 }) => (
   <Box data-id="2bbf3cb51d71" h="full" overflow="none" w="full">
     <Box
-      bg="walkItemsList.bg"
+      bg="answersList.bg"
       borderRadius="20px"
       data-id="9ed6a0796976"
       h="full"
@@ -120,7 +120,7 @@ const WalkItemsList = ({
         overflowY="auto"
         w="full">
         {answers?.map((answer) => (
-          <WalkItemsListItem
+          <AnswersListItem
             answer={answer}
             data-id="ecf11473c1b0"
             editAnswer={editAnswer}
@@ -132,10 +132,10 @@ const WalkItemsList = ({
   </Box>
 );
 
-export default WalkItemsList;
+export default AnswersList;
 
-export const walkItemsListStyles = {
-  walkItemsList: {
+export const answersListStyles = {
+  answersList: {
     bg: 'white',
     headerBorderColor: '#F0F0F0',
     iconColor: '#282F36',

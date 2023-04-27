@@ -3,12 +3,12 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 import useFiltersUtils from '../hooks/useFiltersUtils';
-import IFilters, { IActionFilters, IAuditFilters, IResponseFilters, IWalkItemFilters } from '../interfaces/IFilters';
+import IFilters, { IActionFilters, IAnswerFilters, IAuditFilters, IResponseFilters } from '../interfaces/IFilters';
 import { IFiltersContext } from '../interfaces/IFiltersContext';
+import { TAnswerStatus } from '../interfaces/TAnswerStatus';
 import { TAuditStatus } from '../interfaces/TAuditStatus';
 import TAuditWalkType from '../interfaces/TAuditWalkType';
 import { TDeepPartial } from '../interfaces/TDeepPartial';
-import { TWalkItemStatus } from '../interfaces/TWalkItemStatus';
 import { useAppContext } from './AppProvider';
 
 export const FiltersContext = createContext({} as IFiltersContext);
@@ -73,7 +73,7 @@ const FiltersProvider = ({ children }) => {
   const [responseFiltersValue, setResponseFiltersValue] = useState<TDeepPartial<IResponseFilters>>({});
   const [auditFiltersValue, setAuditFiltersValue] = useState<TDeepPartial<IAuditFilters>>({});
   const [actionFiltersValue, setActionFiltersValue] = useState<TDeepPartial<IActionFilters>>({});
-  const [walkItemFiltersValue, setWalkItemFiltersValue] = useState<TDeepPartial<IWalkItemFilters>>({});
+  const [answerFiltersValue, setAnswerFiltersValue] = useState<TDeepPartial<IAnswerFilters>>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(null);
   const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{
@@ -128,8 +128,8 @@ const FiltersProvider = ({ children }) => {
       setAuditFiltersValue,
       actionFiltersValue,
       setActionFiltersValue,
-      walkItemFiltersValue,
-      setWalkItemFiltersValue,
+      answerFiltersValue,
+      setAnswerFiltersValue,
       setDefaultFilters,
       numberOfSelectedFilters,
       trackerItems: data?.trackerItems,
@@ -139,7 +139,7 @@ const FiltersProvider = ({ children }) => {
       businessUnits: data?.businessUnits,
       users: [...(data?.users || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
       auditStatuses: ['upcoming', 'completed', 'missed'] as TAuditStatus[],
-      walkItemStatuses: ['open', 'closed'] as TWalkItemStatus[],
+      answerStatuses: ['open', 'closed'] as TAnswerStatus[],
       auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],
       questionsCategories: data?.questionsCategories,
     }),
@@ -157,8 +157,8 @@ const FiltersProvider = ({ children }) => {
       setAuditFiltersValue,
       actionFiltersValue,
       setActionFiltersValue,
-      walkItemFiltersValue,
-      setWalkItemFiltersValue,
+      answerFiltersValue,
+      setAnswerFiltersValue,
       data,
     ],
   );

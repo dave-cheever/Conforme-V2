@@ -57,10 +57,10 @@ const useConfig = () => {
     },
     {
       type: 'menuItem',
-      label: capitalize(pluralize(t('question'))),
-      url: '/walk-items',
+      label: capitalize(pluralize(t('answer'))),
+      url: '/answers',
       icon: ObservationEye,
-      permission: 'questions.view',
+      permission: 'answers.view',
     },
     {
       type: 'menuItem',

@@ -34,63 +34,64 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
 <details>
   <summary>Organization JSON</summary>
 
-  ```json
-  {
-    "id": <organization's id>,
-    "name": <organization's name>,
-    "domain": <domain>,
-    "logoUrl": <logo url>,
-    "bgImageUrl": <bg image url>,
-    "bgImageTabletUrl": <tablet bg image url>,
-    "theme": {
-      "colors": {
-        "brand": {
-          "primary": "#FFFFFF",
-          "secondary": "#A1A1A1",
-          "primaryFont": "#CCCCCC",
-          "secondaryFont": "#434C52",
-          "active": "#B98474",
-          "lightGrey": "#E3E3E3"
-        }
+```json
+{
+  "id": <organization's id>,
+  "name": <organization's name>,
+  "domain": <domain>,
+  "logoUrl": <logo url>,
+  "bgImageUrl": <bg image url>,
+  "bgImageTabletUrl": <tablet bg image url>,
+  "theme": {
+    "colors": {
+      "brand": {
+        "primary": "#FFFFFF",
+        "secondary": "#A1A1A1",
+        "primaryFont": "#CCCCCC",
+        "secondaryFont": "#434C52",
+        "active": "#B98474",
+        "lightGrey": "#E3E3E3"
       }
-    },
-    "modules": [{
-      "name": <module name>,
-      "type": "audits",
-      "defaultFilters": {
-        "audits": <audits default filters>
-        "actions": <actions default filters>
-        ...
-      }
-      "path": <module path>,
-      "showInNavigation": <true/false>
-      "translations": {
-        "audit": "walk"
-      }
-    }, {
-      "name": <module name>,
-      "type": "tracker",
-      "path": <module path>,
-      "showInNavigation": <true/false>,
-      "translations": {
-        "tracker item": "document"
-      }
-    }],
-    "allowedTenantsIds": [
-      <tenant id>
-    ],
-    "accessGroupId": <access group id>,
-    "readersGroupId": <reader's group id>,
-    "adminsGroupId": <admin's group id>,
-    "licenceExpirationDate": "2022-06-18T11:46:00.835Z",
-    "spSiteUrl": <sharepoint site url>,
-    "spLibraryId": <sharepoint library url>,
-    "tenantId": <tenant id>,
-    "clientId": <AAD app id>,
-    "secret": <AAD app secret>,
-    "metatags": {}
-  }
-  ```
+    }
+  },
+  "modules": [{
+    "name": <module name>,
+    "type": "audits",
+    "defaultFilters": {
+      "audits": <audits default filters>
+      "actions": <actions default filters>
+      ...
+    }
+    "path": <module path>,
+    "showInNavigation": <true/false>
+    "translations": {
+      "audit": "walk"
+    }
+  }, {
+    "name": <module name>,
+    "type": "tracker",
+    "path": <module path>,
+    "showInNavigation": <true/false>,
+    "translations": {
+      "tracker item": "document"
+    }
+  }],
+  "allowedTenantsIds": [
+    <tenant id>
+  ],
+  "accessGroupId": <access group id>,
+  "readersGroupId": <reader's group id>,
+  "adminsGroupId": <admin's group id>,
+  "licenceExpirationDate": "2022-06-18T11:46:00.835Z",
+  "spSiteUrl": <sharepoint site url>,
+  "spLibraryId": <sharepoint library url>,
+  "tenantId": <tenant id>,
+  "clientId": <AAD app id>,
+  "secret": <AAD app secret>,
+  "metatags": {}
+}
+```
+
 </details>
 &nbsp;
 
@@ -108,40 +109,33 @@ In order to authenticate with your local development site and also to be able to
 <details>
   <summary>Automated steps</summary>
 
-  - Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
-  - Navigate to Azure Active Directory
-  - Select 'App Registration'
-  - Click on 'New registration'
-  - Enter app name (i.e. 'conforme')
-  - Select the option 'Accounts in this organizational directory only (Single tenant)'
-  - Enter 'https://<API_URL>/auth/aad/callback' in redirect URL
-  - Click on Register
-  - Copy the Application (client) ID and add to your organization as `<AAD app id>`
-  - Copy the Directory (tenant) ID and add to your organization as `<tenant id>`
-  - Generate the Client Secret
-    - Click on 'Certificates & secrets'
-    - Click on 'New client secret'
-    - Select 'Never' for when the secret should expire
-    - Copy the value from Key and add to your organization as `<AAD app secret>`
+- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
+- Navigate to Azure Active Directory
+- Select 'App Registration'
+- Click on 'New registration'
+- Enter app name (i.e. 'conforme')
+- Select the option 'Accounts in this organizational directory only (Single tenant)'
+- Enter 'https://<API_URL>/auth/aad/callback' in redirect URL
+- Click on Register
+- Copy the Application (client) ID and add to your organization as `<AAD app id>`
+- Copy the Directory (tenant) ID and add to your organization as `<tenant id>`
+- Generate the Client Secret - Click on 'Certificates & secrets' - Click on 'New client secret' - Select 'Never' for when the secret should expire - Copy the value from Key and add to your organization as `<AAD app secret>`
 </details>
 <details open>
   <summary>Manual steps</summary>
 
-  - Give app permissions
-    - Click on 'API permissions'
-    - Click on 'Add a permission'
-    - Select 'Microsoft Graph'
-    - Select 'Application permissions'
-    - Find and select 'Group.Read.All'
-    - Press 'Add permissions'
-    - Press 'Grant admin consent for ...' and then 'Yes'
-  - Do the same for 'User.Read.All'
-  - Do the same for 'Sites.ReadWrite.All'
-  - Do the same for 'Mail.Send'
-  - Grant required authentication data
-    - Click on 'Authentication'
-    - Under 'Implicit grant' select 'ID tokens'
-    - Press 'Save' button
+- Give app permissions
+  - Click on 'API permissions'
+  - Click on 'Add a permission'
+  - Select 'Microsoft Graph'
+  - Select 'Application permissions'
+  - Find and select 'Group.Read.All'
+  - Press 'Add permissions'
+  - Press 'Grant admin consent for ...' and then 'Yes'
+- Do the same for 'User.Read.All'
+- Do the same for 'Sites.ReadWrite.All'
+- Do the same for 'Mail.Send'
+- Grant required authentication data - Click on 'Authentication' - Under 'Implicit grant' select 'ID tokens' - Press 'Save' button
 </details>
 
 ## Access Security Group
@@ -151,18 +145,19 @@ In order to access the application you must configure a Azure Active Directory s
 <details>
   <summary>Automated steps</summary>
 
-  - Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
-  - Navigate to Azure Active Directory
-  - Click on Groups
-  - Select New group
-  - Make sure 'Security' type is selected
-  - Enter 'Conforme Access' as the group name
-  - Click on Owners and add the admin user from your dev tenant
-  - Click on Members and add any users from your dev tenant that you intend to use for testing locally
-  - Click on create
-  - Copy the Oject Id from the group and add to your organization as `<access group id>`
+- Go to https://portal.azure.com and login as the admin user for your developer O365 tenant
+- Navigate to Azure Active Directory
+- Click on Groups
+- Select New group
+- Make sure 'Security' type is selected
+- Enter 'Conforme Access' as the group name
+- Click on Owners and add the admin user from your dev tenant
+- Click on Members and add any users from your dev tenant that you intend to use for testing locally
+- Click on create
+- Copy the Oject Id from the group and add to your organization as `<access group id>`
 
-  Follow the same for Readers (`<reader's group id>`) and Admins (`<admin's group id>`) AD groups.
+Follow the same for Readers (`<reader's group id>`) and Admins (`<admin's group id>`) AD groups.
+
 </details>
 
 ## SharePoint
@@ -198,37 +193,37 @@ Conforme uses Azure Functions app to send notifications.
 <details>
   <summary>Automated steps</summary>
 
-  - Start by opening the [Function App section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp)
-  - Click the **Create** button in the top menu
-  - Fill in the following values depending on environment:
-    - SIT
-      - Subscription: Conforme - SIT
-      - Resource group: rg-conforme-web-sit
-      - Function App name: conforme-functions-sit
-      - Publish: Code
-      - Runtime stack: Node.js
-      - Version: 14 LTS
-      - Location: UK South
-    - SAT
-      - Subscription: Conforme - SAT
-      - Resource group: rg-conforme-web-sat
-      - Registry name: conforme-functions-sat
-      - Publish: Code
-      - Runtime stack: Node.js
-      - Version: 14 LTS
-      - Location: UK South
-    - PROD
-      - Subscription: Conforme - Production
-      - Resource group: rg-conforme-web-prod
-      - Registry name: conforme-functions-prod
-      - Publish: Code
-      - Runtime stack: Node.js
-      - Version: 14 LTS
-      - Location: UK South
-  - Click the **Next: Hosting >** button in the top menu
-  - Select "Linux" as operating system
-  - Go to the **Review + create** tab
-  - Read it carefully and make sure everything is correct, then click on the **Create** button
+- Start by opening the [Function App section of Azure](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp)
+- Click the **Create** button in the top menu
+- Fill in the following values depending on environment:
+  - SIT
+    - Subscription: Conforme - SIT
+    - Resource group: rg-conforme-web-sit
+    - Function App name: conforme-functions-sit
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+  - SAT
+    - Subscription: Conforme - SAT
+    - Resource group: rg-conforme-web-sat
+    - Registry name: conforme-functions-sat
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+  - PROD
+    - Subscription: Conforme - Production
+    - Resource group: rg-conforme-web-prod
+    - Registry name: conforme-functions-prod
+    - Publish: Code
+    - Runtime stack: Node.js
+    - Version: 14 LTS
+    - Location: UK South
+- Click the **Next: Hosting >** button in the top menu
+- Select "Linux" as operating system
+- Go to the **Review + create** tab
+- Read it carefully and make sure everything is correct, then click on the **Create** button
 </details>
 &nbsp;
 
@@ -265,49 +260,49 @@ Conforme uses a CosmosDB service running in Azure.
 <details>
   <summary>Automated steps</summary>
 
-  - Start by opening the [Cosmos DB section of Azure](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DocumentDb%2FdatabaseAccounts)
-  - Press **+ Create** button at the top
-  - Select **Azure Cosmos DB API for MongoDB**
-  - Fill in the following values depending on environment:
-    - SIT
-      - Subscription: Conforme - SIT
-      - Resource group: rg-conforme-web-sit
-      - Account name: conforme-db-sit
-      - Location: (Europe) UK West
-      - Capacity mode: Provisioned throughtput
-      - Apply Free Tier Discount: Apply
-      - Limit total account throughput: selected
-      - Version: 4.2
-    - SAT
-      - Subscription: Conforme - SAT
-      - Resource group: rg-conforme-web-sat
-      - Registry name: conforme-db-sat
-      - Location: (Europe) UK West
-      - Capacity mode: Provisioned throughtput
-      - Apply Free Tier Discount: Apply
-      - Limit total account throughput: selected
-      - Version: 4.2
-    - PROD
-      - Subscription: Conforme - Production
-      - Resource group: rg-conforme-web-prod
-      - Registry name: conforme-db-prod
-      - Location: (Europe) UK West
-      - Capacity mode: Provisioned throughtput
-      - Apply Free Tier Discount: Apply
-      - Limit total account throughput: selected
-      - Version: 4.2
-  - Go to the **Review + create** tab
-  - Read it carefully and make sure everything is correct, then click on the **Create** button
+- Start by opening the [Cosmos DB section of Azure](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DocumentDb%2FdatabaseAccounts)
+- Press **+ Create** button at the top
+- Select **Azure Cosmos DB API for MongoDB**
+- Fill in the following values depending on environment:
+  - SIT
+    - Subscription: Conforme - SIT
+    - Resource group: rg-conforme-web-sit
+    - Account name: conforme-db-sit
+    - Location: (Europe) UK West
+    - Capacity mode: Provisioned throughtput
+    - Apply Free Tier Discount: Apply
+    - Limit total account throughput: selected
+    - Version: 4.2
+  - SAT
+    - Subscription: Conforme - SAT
+    - Resource group: rg-conforme-web-sat
+    - Registry name: conforme-db-sat
+    - Location: (Europe) UK West
+    - Capacity mode: Provisioned throughtput
+    - Apply Free Tier Discount: Apply
+    - Limit total account throughput: selected
+    - Version: 4.2
+  - PROD
+    - Subscription: Conforme - Production
+    - Resource group: rg-conforme-web-prod
+    - Registry name: conforme-db-prod
+    - Location: (Europe) UK West
+    - Capacity mode: Provisioned throughtput
+    - Apply Free Tier Discount: Apply
+    - Limit total account throughput: selected
+    - Version: 4.2
+- Go to the **Review + create** tab
+- Read it carefully and make sure everything is correct, then click on the **Create** button
 
-  Now lets create a collection.
+Now lets create a collection.
 
-  - Open **Data Explorer**
-  - Select **New database** from the top menu
-  - Enter database name (same as account name)
-  - Make sure that **Provision throughput** option is checked
-  - Select **Autoscale**
-  - Set **Database Max RU/s** to 4000
-  - Press **OK** at the bottom
+- Open **Data Explorer**
+- Select **New database** from the top menu
+- Enter database name (same as account name)
+- Make sure that **Provision throughput** option is checked
+- Select **Autoscale**
+- Set **Database Max RU/s** to 4000
+- Press **OK** at the bottom
 </details>
 &nbsp;
 
@@ -316,8 +311,9 @@ After the first app run all the collections will be created in the database.
 ### Collections indexes
 
 You need to add some indexes to the database to allow collections to be sorted by these indexes. When you run the app, collections should be created.
-To add an index, open the database in Data Explorer, select the collection and get to 'Settings', then switch to 'Indexing Policy' tab. Under 'Current index(es)' in new row paste '$** in 'Definition' column and select 'Wildcard' in 'Type' column. Press 'Save' button at the top bar.
+To add an index, open the database in Data Explorer, select the collection and get to 'Settings', then switch to 'Indexing Policy' tab. Under 'Current index(es)' in new row paste '$\*\* in 'Definition' column and select 'Wildcard' in 'Type' column. Press 'Save' button at the top bar.
 Add the wildcard index in the following collections:
+
 - auditLogs
 - audits
 - trackerItems
@@ -325,7 +321,7 @@ Add the wildcard index in the following collections:
 You can also add indexes from database console:
 
 ```js
-db.auditLogs.createIndex( {"$**": 1 } )
+db.auditLogs.createIndex({ "$**": 1 });
 ```
 
 ### Translations
@@ -334,6 +330,7 @@ In order to change a translation in a module, just add a new property to the mod
 
 Possible translations for Audits module:
 
+- answer
 - audit
 - auditor
 - question
@@ -379,10 +376,12 @@ Every organization also needs its system settings to be configured in the databa
 There are 2 setting variables for use in both modules.
 
 Configuration values:
- - Count of elements on the audit log
+
+- Count of elements on the audit log
 
 Email notification templates:
- - Mentioned Notification
+
+- Mentioned Notification
 
 To import settings to the app open [general settings JSON file](/Settings/GeneralSettings.json), fill with missing data and insert to the database to Settings collection.
 
@@ -391,16 +390,18 @@ To import settings to the app open [general settings JSON file](/Settings/Genera
 There is 8 setting variables for tracker module.
 
 Configuration values:
- - Email address for receiving the weekly digest
- - Days from due date email reminders are sent
- - The number of days before a responses due date that its status changes to "Coming up"
- - Count of elements on the audit log
+
+- Email address for receiving the weekly digest
+- Days from due date email reminders are sent
+- The number of days before a responses due date that its status changes to "Coming up"
+- Count of elements on the audit log
 
 Email notification templates:
- - Weekly summary
- - Tracker response assigned notification
- - Response reminder notification
- - Tracker review submitted notification
+
+- Weekly summary
+- Tracker response assigned notification
+- Response reminder notification
+- Tracker review submitted notification
 
 To import settings to the app open [tracker settings JSON file](/Settings/TrackerSettings.json), fill with missing data and insert to the database to Settings collection.
 
@@ -409,19 +410,21 @@ To import settings to the app open [tracker settings JSON file](/Settings/Tracke
 There is 11 setting variables for audits module.
 
 Configuration values:
- - Email address for receiving the weekly digest
- - Email address for HSE notification
- - Email address for estates notification
- - The days of month when to send upcoming and missed audit notifications
- - Retention period
- - Count of elements on the audit log
+
+- Email address for receiving the weekly digest
+- Email address for HSE notification
+- Email address for estates notification
+- The days of month when to send upcoming and missed audit notifications
+- Retention period
+- Count of elements on the audit log
 
 Email notification templates:
- - Weekly digest
- - Action assigned notification
- - HSE notification
- - Mentioned notification
- - Tracker review submitted notification
+
+- Weekly digest
+- Action assigned notification
+- HSE notification
+- Mentioned notification
+- Tracker review submitted notification
 
 To import settings to the app open [audits settings JSON file](/Settings/AuditsSettings.json), fill with missing data and insert to the database to Settings collection.
 

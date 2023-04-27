@@ -48,8 +48,8 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                 ? 'navigationLeftItem.selectedLabelBg'
                 : 'navigationLeftItem.unselectedLabelBg'
               : isPathActive(url, { exact: true })
-              ? 'navigationLeftItem.selectedLabelBg'
-              : 'navigationLeftItem.unselectedLabelBg'
+                ? 'navigationLeftItem.selectedLabelBg'
+                : 'navigationLeftItem.unselectedLabelBg'
           }
           data-id="640122fb3b87"
           h="30px"
@@ -61,26 +61,26 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
             as={icon}
             data-id="0d8ef485e550"
             fill={
-              menuItem.url == '/walk-items'
+              menuItem.url == '/answers'
                 ? menuItem.subSections
                   ? isPathActive(url)
                     ? 'navigationLeftItem.selectedIconStroke'
                     : 'navigationLeftItem.unselectedIconStroke'
                   : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
+                    ? 'navigationLeftItem.selectedIconStroke'
+                    : 'navigationLeftItem.unselectedIconStroke'
                 : ''
             }
             h="15px"
             stroke={
-              menuItem.url != '/walk-items'
+              menuItem.url != '/answers'
                 ? menuItem.subSections
                   ? isPathActive(url)
                     ? 'navigationLeftItem.selectedIconStroke'
                     : 'navigationLeftItem.unselectedIconStroke'
                   : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
+                    ? 'navigationLeftItem.selectedIconStroke'
+                    : 'navigationLeftItem.unselectedIconStroke'
                 : ''
             }
             w="15px" />
@@ -97,8 +97,8 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                 ? 'navigationLeftItem.selectedMenuItem'
                 : 'navigationLeftItem.unselectedMenuItem'
               : isPathActive(url, { exact: true })
-              ? 'navigationLeftItem.selectedMenuItem'
-              : 'navigationLeftItem.unselectedMenuItem'
+                ? 'navigationLeftItem.selectedMenuItem'
+                : 'navigationLeftItem.unselectedMenuItem'
           }
           data-id="0c5a4e0c95fc"
           fontWeight="400"

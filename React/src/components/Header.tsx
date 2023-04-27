@@ -20,7 +20,7 @@ const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBread
   const isAuditPage =
     isPathActive('/audits') ||
     isPathActive('/actions') ||
-    isPathActive('/walk-items') ||
+    isPathActive('/answers') ||
     isPathActive('/dashboard') ||
     isPathActive('/tracker-items');
 

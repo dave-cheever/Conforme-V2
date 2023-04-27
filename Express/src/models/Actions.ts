@@ -399,27 +399,27 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
 
     const assignorId = latestAssociatedAuditLog[0]?.metatags.addedBy;
     const assignor = await Users.customFindByIdWithDetails({ userId: assignorId ?? action.metatags.addedBy, organization });
-    const associatedWalkItemPipeline: any[] = [
+    const associatedAnswerPipeline: any[] = [
       {
         $match: { _id: action.scope._id },
       },
     ];
 
     join({
-      pipeline: associatedWalkItemPipeline,
+      pipeline: associatedAnswerPipeline,
       collection: 'questions',
       from: 'questionId',
       to: 'question',
     });
 
     join({
-      pipeline: associatedWalkItemPipeline,
+      pipeline: associatedAnswerPipeline,
       collection: 'questionsCategories',
       from: 'question.questionsCategoryId',
       to: 'question.questionsCategory',
     });
 
-    const associatedWalkItem = (await Answers.aggregate(associatedWalkItemPipeline))?.[0];
+    const associatedAnswer = (await Answers.aggregate(associatedAnswerPipeline))?.[0];
 
     await Notifications.customCreate(
       {
@@ -429,8 +429,8 @@ actionsSchema.statics.customAssigneeNotification = async function (actionId: str
           actionPath,
           actionDueDate: action.dueDate ? `Due ${format(new Date(action.dueDate), 'd LLLL Y')}` : 'No due date',
           assignedBy: assignor.displayName,
-          walkItemName: associatedWalkItem?.question.question,
-          walkItemCategory: associatedWalkItem?.question?.questionsCategory.name,
+          answerName: associatedAnswer?.question.question,
+          answerCategory: associatedAnswer?.question?.questionsCategory.name,
         },
         status: 'pending',
         to: [assignee?.email],

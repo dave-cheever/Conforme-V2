@@ -69,7 +69,7 @@ const GET_USERS_ANSWERS_INSIGHTS = gql`
 `;
 
 const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
-  const { filtersValues, setFilters, walkItemFiltersValue, setWalkItemFiltersValue, usedFilters } = useFiltersContext();
+  const { filtersValues, setFilters, answerFiltersValue, setAnswerFiltersValue, usedFilters } = useFiltersContext();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS_INSIGHTS, {
     variables: {
       answersInsightsQueryInput: {
@@ -79,15 +79,15 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
   });
 
   useEffect(() => {
-    if (walkItemFiltersValue && !isEmpty(walkItemFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
+    if (answerFiltersValue && !isEmpty(answerFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
       // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
       const delayFilters = setTimeout(() => {
-        setFilters(Object.entries(walkItemFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
-        setWalkItemFiltersValue({});
+        setFilters(Object.entries(answerFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
+        setAnswerFiltersValue({});
         clearTimeout(delayFilters);
       }, 100);
     }
-  }, [filtersValues, usedFilters, setWalkItemFiltersValue, walkItemFiltersValue, setFilters]);
+  }, [filtersValues, usedFilters, setAnswerFiltersValue, answerFiltersValue, setFilters]);
 
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query

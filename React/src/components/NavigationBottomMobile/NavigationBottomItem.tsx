@@ -49,8 +49,8 @@ const NavigationBottomItem = ({
               ? 'navigationLeftItemTablet.selectedLabelBg'
               : 'navigationLeftItemTablet.unselectedLabelBg'
             : isPathActive(url, { exact: true })
-            ? 'navigationLeftItemTablet.selectedLabelBg'
-            : 'navigationLeftItemTablet.unselectedLabelBg'
+              ? 'navigationLeftItemTablet.selectedLabelBg'
+              : 'navigationLeftItemTablet.unselectedLabelBg'
         }
         data-id="2114dc3d50de"
         h="30px"
@@ -61,26 +61,26 @@ const NavigationBottomItem = ({
           as={icon}
           data-id="c2f625465a98"
           fill={
-            menuItem.url == '/walk-items'
+            menuItem.url == '/answers'
               ? menuItem.subSections
                 ? isPathActive(url)
                   ? 'navigationLeftItem.selectedIconStroke'
                   : 'navigationLeftItem.unselectedIconStroke'
                 : isPathActive(url, { exact: true })
-                ? 'navigationLeftItem.selectedIconStroke'
-                : 'navigationLeftItem.unselectedIconStroke'
+                  ? 'navigationLeftItem.selectedIconStroke'
+                  : 'navigationLeftItem.unselectedIconStroke'
               : ''
           }
           h="15px"
           stroke={
-            menuItem.url != '/walk-items'
+            menuItem.url != '/answers'
               ? menuItem.subSections
                 ? isPathActive(url)
                   ? 'navigationLeftItem.selectedIconStroke'
                   : 'navigationLeftItem.unselectedIconStroke'
                 : isPathActive(url, { exact: true })
-                ? 'navigationLeftItem.selectedIconStroke'
-                : 'navigationLeftItem.unselectedIconStroke'
+                  ? 'navigationLeftItem.selectedIconStroke'
+                  : 'navigationLeftItem.unselectedIconStroke'
               : ''
           }
           w="15px" />

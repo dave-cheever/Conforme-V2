@@ -7,7 +7,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 
-const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) => {
+const AnswerSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) => {
   const { openInNewTab } = useNavigate();
   return (
     (<Stack
@@ -25,7 +25,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
       w={['full', 'full', '350px']}>
       <Flex align="center" data-id="2c889d94a85b" justify="space-between">
         <Box
-          color="walkItemSquare.audit"
+          color="answerSquare.audit"
           data-id="0f0235b6ddf9"
           fontSize="ssm"
           opacity="1"
@@ -48,7 +48,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           </Tooltip>
         </Skeleton>
         <Text
-          color="walkItemSquare.title"
+          color="answerSquare.title"
           data-id="3af3897093d1"
           fontSize="md"
           fontWeight="bold"
@@ -67,9 +67,9 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             textOverflow="ellipsis"
             w="200px"
             whiteSpace="nowrap">
-            <Text color="walkItemSquare.section.title" data-id="502f6aef842f">Status</Text>
+            <Text color="answerSquare.section.title" data-id="502f6aef842f">Status</Text>
             <Text
-              color="walkItemSquare.section.text"
+              color="answerSquare.section.text"
               data-id="dc2d8310a61c"
               fontSize="ssm"
               textTransform="capitalize">
@@ -86,12 +86,12 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           textOverflow="ellipsis"
           w="200px"
           whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title" data-id="88d2eecb0e37">Date</Text>
+          <Text color="answerSquare.section.title" data-id="88d2eecb0e37">Date</Text>
           <Tooltip
             data-id="f4862e819372"
             label={format(new Date(answer?.metatags?.addedAt!), 'LLL-y') ?? '-'}>
             <Text
-              color="walkItemSquare.section.text"
+              color="answerSquare.section.text"
               data-id="ab2c975b0463"
               fontSize="ssm"
               textTransform="capitalize">
@@ -109,10 +109,10 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           textOverflow="ellipsis"
           w="200px"
           whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title" data-id="4aab2771a2fa">{capitalize(t('location'))}</Text>
+          <Text color="answerSquare.section.title" data-id="4aab2771a2fa">{capitalize(t('location'))}</Text>
           <Tooltip data-id="9997c3146caf" label={answer?.audit?.location?.name ?? '-'}>
             <Text
-              color="walkItemSquare.section.text"
+              color="answerSquare.section.text"
               data-id="1db069d7268a"
               fontSize="ssm"
               isTruncated
@@ -130,7 +130,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           textOverflow="ellipsis"
           w="200px"
           whiteSpace="nowrap">
-          <Text color="walkItemSquare.section.title" data-id="cf610698ec09">{capitalize(t('business unit'))}</Text>
+          <Text color="answerSquare.section.title" data-id="cf610698ec09">{capitalize(t('business unit'))}</Text>
           <Tooltip
             data-id="0310d2e5b32a"
             label={
@@ -139,7 +139,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
                 : answer?.businessUnit?.name ?? '-'
             }>
             <Text
-              color="walkItemSquare.section.text"
+              color="answerSquare.section.text"
               data-id="1025026a498a"
               fontSize="ssm"
               textTransform="capitalize">
@@ -160,7 +160,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
           w="200px"
           whiteSpace="nowrap">
           <Text
-            color="walkItemSquare.section.title"
+            color="answerSquare.section.title"
             data-id="2dd84df43800"
             fontSize="ssm">
             Linked to
@@ -173,7 +173,7 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
             onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
             spacing={2}>
             <Text
-              color="walkItemSquare.section.text"
+              color="answerSquare.section.text"
               data-id="1b47d4da4fa8"
               fontSize="ssm"
               isTruncated
@@ -185,18 +185,18 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
         </Box>
         <Button
           _hover={{
-            bg: 'walkItemSquare.button.default.bg',
+            bg: 'answerSquare.button.default.bg',
           }}
           alignSelf="flex-end"
-          bg="walkItemSquare.button.default.bg"
-          color="walkItemSquare.button.default.color"
+          bg="answerSquare.button.default.bg"
+          color="answerSquare.button.default.color"
           data-id="dd63a6455c67"
           fontSize="ssm"
           h="28px"
           onClick={() => editAnswer(answer)}
           rightIcon={<ChevronRight
             boxSize="15px"
-            color="walkItemSquare.button.default.color"
+            color="answerSquare.button.default.color"
             data-id="30084d3fd275" />}
           w="85px">
           {answer?.audit?.status === 'upcoming' ? 'Update' : 'View'}
@@ -206,10 +206,10 @@ const WalkItemSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (
   );
 };
 
-export default WalkItemSquare;
+export default AnswerSquare;
 
-export const walkItemSquareStyles = {
-  walkItemSquare: {
+export const answerSquareStyles = {
+  answerSquare: {
     badge: {
       bg: '#41B916',
       color: '#FFF',

@@ -69,7 +69,7 @@ const BusinessUnits = () => {
   const toast = useToast();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
-  const { setResponseFiltersValue, setWalkItemFiltersValue, setAuditFiltersValue } = useFiltersContext();
+  const { setResponseFiltersValue, setAnswerFiltersValue, setAuditFiltersValue } = useFiltersContext();
   const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS);
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
@@ -270,8 +270,8 @@ const BusinessUnits = () => {
                 h="10px"
                 ml="13px"
                 onClick={() => {
-                  setWalkItemFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                  navigateTo('/walk-items');
+                  setAnswerFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                  navigateTo('/answers');
                 }}
                 stroke="#282F36"
                 w="10px" />

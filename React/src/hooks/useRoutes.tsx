@@ -20,6 +20,7 @@ import RegulatoryBodies from '../pages/admin/regulatory-bodies';
 import Settings from '../pages/admin/settings';
 import TrackerItemsAdmin from '../pages/admin/tracker-items';
 import Users from '../pages/admin/users';
+import Answers from '../pages/answers';
 import Assets from '../pages/assets';
 import Audit from '../pages/audit';
 import AuditHistory from '../pages/audit/history';
@@ -37,7 +38,6 @@ import TrackerItemAuditLog from '../pages/tracker-item/audit-log';
 import History from '../pages/tracker-item/history';
 import TrackerItemResponse from '../pages/tracker-item/index';
 import Team from '../pages/tracker-item/team';
-import WalkItems from '../pages/walk-items';
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -81,17 +81,17 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
-    path: '/walk-items',
-    key: 'walk-items',
+    path: '/answers',
+    key: 'answers',
     exact: true,
-    component: WalkItems,
+    component: Answers,
     layout: DefaultLayout,
   },
   {
-    path: '/walk-items/:id',
-    key: 'walk-item',
+    path: '/answers/:id',
+    key: 'answer',
     exact: true,
-    component: WalkItems,
+    component: Answers,
     layout: DefaultLayout,
   },
   {
