@@ -130,7 +130,8 @@ const QuestionsCategories = () => {
   }, [reset, adminModalState]);
 
   const onChangeOption = (values) => {
-    setValue('options', [...values.map((value) => availableOptions[value])]);
+    const options = availableOptions.filter(({ setting }) => values.includes(setting));
+    setValue('options', options);
   };
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
@@ -383,7 +384,7 @@ const QuestionsCategories = () => {
             data-id="55e6d4d23d19"
             defaultValue={questionsCategory.options?.map((option) => option.setting)}
             onChange={onChangeOption}>
-            {Object.values(availableOptions).map((option) => (
+            {availableOptions.map(option => (
               <Checkbox
                 data-id="5cee867104a9"
                 key={option.setting}

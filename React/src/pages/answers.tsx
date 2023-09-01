@@ -40,7 +40,7 @@ const GET_ANSWERS = gql`
           notBlockedAfterCompletion
           options {
             name
-            value
+            setting
           }
         }
         category {

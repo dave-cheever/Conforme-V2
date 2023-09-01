@@ -1,6 +1,7 @@
 import { RepeatClockIcon } from '@chakra-ui/icons';
 
 import { AuditIcon, ProgressIcon, TeamsIcon } from '../icons';
+import { IAuditOption } from '../interfaces/IAuditOption';
 
 export const toastSuccess: any = {
   title: 'Success',
@@ -309,15 +310,12 @@ export const priorities = [
   },
 ];
 
-export const availableOptions = {
-  INFORM_HSE: {
-    type: 'notification',
-    name: 'Inform Health Safety Environment',
-    setting: 'HSENotification',
-  },
-  INFORM_ESTATES: {
-    type: 'notification',
-    name: 'Inform Estates',
-    setting: 'estatesNotification',
-  },
-};
+export const availableOptions: IAuditOption[] = [{
+  type: 'notification',
+  name: 'Inform Health Safety Environment',
+  setting: 'HSENotification',
+}, {
+  type: 'notification',
+  name: 'Inform Estates',
+  setting: 'estatesNotification',
+}];

@@ -79,7 +79,7 @@ const GET_AUDIT_DATA = gql`
       options {
         type
         name
-        value
+        setting
       }
     }
     auditTypeQuestions: questions(questionQuery: $auditTypeQuestionQuery) {

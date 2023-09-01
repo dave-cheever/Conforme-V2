@@ -49,7 +49,6 @@ export const questionsCategoriesTypeDefs = `
     type: String!
     name: String!
     setting: String
-    value: String
   }
 
   input QuestionsCategoryCreateInput {

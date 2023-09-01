@@ -262,14 +262,14 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Stack>
       {questionsCategory.options && (
         <Stack data-id="1ec13133d344">
-          {questionsCategory.options.map(({ name, value }) => (
+          {questionsCategory.options.map(({ name, setting }) => (
             <Toggle
               control={control}
               data-id="7893a1f22b9b"
               disabled={isDisabled}
               falseLabel={name}
-              key={value}
-              name={`options[${value}]`}
+              key={setting}
+              name={`options[${setting}]`}
               trueLabel={name} />
           ))}
         </Stack>
@@ -427,9 +427,9 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
             onClick={
               selectedAction
                 ? () => {
-                    setActionChangesModalOnContinue(() => saveData);
-                    handleActionChangesModalOpen();
-                  }
+                  setActionChangesModalOnContinue(() => saveData);
+                  handleActionChangesModalOpen();
+                }
                 : saveData
             }
             rightIcon={<CheckIcon data-id="1e6b4b0a3c37" stroke="auditAnswer.buttons.save.color" />}

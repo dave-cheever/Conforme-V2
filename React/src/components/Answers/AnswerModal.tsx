@@ -446,14 +446,14 @@ const AnswerModal = ({
                 <GridItem data-id="feb2bab11e97">
                   {questionsCategory?.options && (
                     <Stack data-id="ac12f8c5acf4">
-                      {questionsCategory.options.map(({ name, value }) => (
+                      {questionsCategory.options.map(({ name, setting }) => (
                         <Toggle
                           control={control}
                           data-id="89847dd4238d"
                           disabled={!isFormEnabled}
                           falseLabel={name}
                           key={name}
-                          name={`options[${value}]`}
+                          name={`options[${setting}]`}
                           trueLabel={name} />
                       ))}
                     </Stack>
