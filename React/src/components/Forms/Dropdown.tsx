@@ -120,7 +120,9 @@ const Dropdown = ({
                 icon={<ChevronRight
                   data-id="455ad790a86d"
                   stroke="dropdown.chevronDownIcon"
-                  transform="rotate(90deg)" />}
+                  transform="rotate(90deg)"
+                  w={6}
+                />}
                 isDisabled={disabled}
                 name={name}
                 onBlur={onBlur}
