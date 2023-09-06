@@ -4,7 +4,7 @@ import { Text, Tooltip } from '@chakra-ui/react';
 
 import { useResponseContext } from '../contexts/ResponseProvider';
 
-const ChatMention = ({ tag }) => {
+function ChatMention({ tag }) {
   const { getUpdatedDisplayName } = useResponseContext();
   const [displayTag, setDisplayTag] = useState<string>();
   const [userId, setUserId] = useState<string>();
@@ -39,7 +39,7 @@ const ChatMention = ({ tag }) => {
       </Text>
     </Tooltip>)
   );
-};
+}
 
 export const chatMentionStyles = {
   chatMention: {

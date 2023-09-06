@@ -2,8 +2,8 @@ import { Avatar, Box, Text } from '@chakra-ui/react';
 
 import { IAuditor } from '../../interfaces/IAuditor';
 
-const Auditor = ({ name, designation, imgSrc }: IAuditor) => (
-  <Box
+function Auditor({ name, designation, imgSrc }: IAuditor) {
+  return <Box
     _hover={{
       cursor: 'pointer',
       borderRadius: '8px',
@@ -40,6 +40,6 @@ const Auditor = ({ name, designation, imgSrc }: IAuditor) => (
       </Text>
     </Box>
   </Box>
-);
+}
 
 export default Auditor;

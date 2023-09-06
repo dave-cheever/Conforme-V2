@@ -16,7 +16,7 @@ interface IUsersSelector {
   handleChange: (any) => void;
 }
 
-const UsersSelector = ({
+function UsersSelector({
   allowUnassigned = false,
   users,
   searchText,
@@ -25,7 +25,7 @@ const UsersSelector = ({
   note,
   disabled,
   handleChange,
-}: IUsersSelector) => {
+}: IUsersSelector) {
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const UsersSelector = ({
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default UsersSelector;
 

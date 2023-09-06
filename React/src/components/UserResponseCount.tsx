@@ -3,7 +3,7 @@ import { Flex } from '@chakra-ui/react';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useNavigate from '../hooks/useNavigate';
 
-const UserResponseCount = ({ userId, role, responseCount }) => {
+function UserResponseCount({ userId, role, responseCount }) {
   const { setFilters, setResponseFiltersValue } = useFiltersContext();
   const { navigateTo } = useNavigate();
 
@@ -60,6 +60,6 @@ const UserResponseCount = ({ userId, role, responseCount }) => {
       {responseCount || 0}
     </Flex>)
   );
-};
+}
 
 export default UserResponseCount;

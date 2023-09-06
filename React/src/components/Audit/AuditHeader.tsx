@@ -31,7 +31,111 @@ import AuditHeaderButton from './AuditHeaderButton';
 import AuditRecurringModal from './AuditRecurringModal';
 import AuditSubmitModal from './AuditSubmitModal';
 
-const AuditHeader = () => {
+function DeleteButton({
+  user,
+  selectedAction,
+  setActionChangesModalOnContinue,
+  onDeleteAudit,
+  handleActionChangesModalOpen,
+  handleDeleteModalOpen,
+}) {
+  return isPermitted({ user, action: 'audits.delete' }) ? (
+    <AuditHeaderButton
+      bgColor="transparent"
+      data-id="c14d64ff45ff"
+      fontColor="#DC0043"
+      icon={null}
+      name="Delete"
+      onClick={
+        selectedAction
+          ? () => {
+            setActionChangesModalOnContinue(() => onDeleteAudit);
+            handleActionChangesModalOpen();
+          }
+          : handleDeleteModalOpen
+      } />
+  ) : null
+}
+
+function RecurringButton({
+  user,
+  audit,
+  selectedAction,
+  setActionChangesModalOnContinue,
+  handleActionChangesModalOpen,
+  handleRecurringModalOpen,
+}) {
+  return audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
+    <AuditHeaderButton
+      bgColor="transparent"
+      data-id="374301477b74"
+      fontColor="#DC0043"
+      icon={null}
+      name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
+      onClick={
+        selectedAction
+          ? () => {
+            setActionChangesModalOnContinue(() => handleRecurringModalOpen);
+            handleActionChangesModalOpen();
+          }
+          : handleRecurringModalOpen
+      } />
+  ) : null
+}
+
+function SubmitButton({
+  audit,
+  user,
+  questions,
+  selectedAction,
+  setActionChangesModalOnContinue,
+  onSubmitAudit,
+  handleActionChangesModalOpen,
+  handleSubmitModalOpen,
+}) {
+  if (audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } })) {
+    return (
+      (<AuditHeaderButton
+        bgColor="#DC0043"
+        data-id="174da23dafba"
+        disabled={!questions || Object.keys(questions).length === 0}
+        fontColor="white"
+        icon={null}
+        name="Submit"
+        onClick={
+          selectedAction
+            ? () => {
+              setActionChangesModalOnContinue(() => onSubmitAudit);
+              handleActionChangesModalOpen();
+            }
+            : handleSubmitModalOpen
+        } />)
+    );
+  }
+  return null;
+}
+
+function AuditShareButton({
+  audit,
+  businessUnit,
+  location,
+  handleShareOpen,
+  setShareItemUrl,
+  setShareItemName,
+}) {
+  return <ShareButton
+    ariaLabel="audit-share-button"
+    data-id="7f75968e37b5"
+    ml={['auto', '24px']}
+    mr="auto"
+    onClick={() => {
+      setShareItemUrl(`audits/${audit?._id}`);
+      setShareItemName(businessUnit?.name || location?.name || '');
+      handleShareOpen();
+    }} />
+}
+
+function AuditHeader() {
   const { user } = useAppContext();
   const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
   const toast = useToast();
@@ -81,78 +185,6 @@ const AuditHeader = () => {
       description: `${capitalize(t('audit'))} deleted`,
     });
   };
-
-  const DeleteButton = () =>
-    isPermitted({ user, action: 'audits.delete' }) ? (
-      <AuditHeaderButton
-        bgColor="transparent"
-        data-id="c14d64ff45ff"
-        fontColor="#DC0043"
-        icon={null}
-        name="Delete"
-        onClick={
-          selectedAction
-            ? () => {
-              setActionChangesModalOnContinue(() => onDeleteAudit);
-              handleActionChangesModalOpen();
-            }
-            : handleDeleteModalOpen
-        } />
-    ) : null;
-
-  const RecurringButton = () =>
-    audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
-      <AuditHeaderButton
-        bgColor="transparent"
-        data-id="374301477b74"
-        fontColor="#DC0043"
-        icon={null}
-        name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
-        onClick={
-          selectedAction
-            ? () => {
-              setActionChangesModalOnContinue(() => handleRecurringModalOpen);
-              handleActionChangesModalOpen();
-            }
-            : handleRecurringModalOpen
-        } />
-    ) : null;
-
-  const SubmitButton = () => {
-    if (audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } })) {
-      return (
-        (<AuditHeaderButton
-          bgColor="#DC0043"
-          data-id="174da23dafba"
-          disabled={!questions || Object.keys(questions).length === 0}
-          fontColor="white"
-          icon={null}
-          name="Submit"
-          onClick={
-            selectedAction
-              ? () => {
-                setActionChangesModalOnContinue(() => onSubmitAudit);
-                handleActionChangesModalOpen();
-              }
-              : handleSubmitModalOpen
-          } />)
-      );
-    }
-    return null;
-  };
-
-  const AuditShareButton = () => (
-    <ShareButton
-      ariaLabel="audit-share-button"
-      data-id="7f75968e37b5"
-      ml={['auto', '24px']}
-      mr="auto"
-      onClick={() => {
-        setShareItemUrl(`audits/${audit?._id}`);
-        setShareItemName(businessUnit?.name || location?.name || '');
-        handleShareOpen();
-      }} />
-  );
 
   return (<>
     <AuditSubmitModal
@@ -279,14 +311,48 @@ const AuditHeader = () => {
           direction="row"
           display={['none', 'flex']}
           spacing={[3, 6]}>
-          <AuditShareButton data-id="4203886d17bf" />
+          <AuditShareButton
+            audit={audit}
+            businessUnit={businessUnit}
+            data-id="4203886d17bf"
+            handleShareOpen={handleShareOpen}
+            location={location}
+            setShareItemName={setShareItemName}
+            setShareItemUrl={setShareItemUrl}
+          />
           {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
             <>
-              <DeleteButton data-id="a9aa362ecc86" />
-              {audit?.walkType === 'physical' && <RecurringButton data-id="2fed6fa2ee6a" />}
+              <DeleteButton
+                data-id="a9aa362ecc86"
+                handleActionChangesModalOpen={handleActionChangesModalOpen}
+                handleDeleteModalOpen={handleDeleteModalOpen}
+                onDeleteAudit={onDeleteAudit}
+                selectedAction={selectedAction}
+                setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                user={user}
+              />
+              {audit?.walkType === 'physical' && <RecurringButton
+                audit={audit}
+                data-id="2fed6fa2ee6a"
+                handleActionChangesModalOpen={handleActionChangesModalOpen}
+                handleRecurringModalOpen={handleRecurringModalOpen}
+                selectedAction={selectedAction}
+                setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                user={user}
+              />}
             </>
           )}
-          <SubmitButton data-id="a2c29e2ce909" />
+          <SubmitButton
+            audit={audit}
+            data-id="a2c29e2ce909"
+            handleActionChangesModalOpen={handleActionChangesModalOpen}
+            handleSubmitModalOpen={handleSubmitModalOpen}
+            onSubmitAudit={onSubmitAudit}
+            questions={questions}
+            selectedAction={selectedAction}
+            setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+            user={user}
+          />
         </Stack>
       </Flex>
 
@@ -326,10 +392,44 @@ const AuditHeader = () => {
                 minW={['calc(100vw - 50px)', '325px']}
                 w="100%"
                 zIndex="10">
-                <AuditShareButton data-id="f83784dadb02" />
-                <DeleteButton data-id="b7a0af37ebd7" />
-                <RecurringButton data-id="de80a7578f97" />
-                <SubmitButton data-id="10cc8844cca4" />
+                <AuditShareButton
+                  audit={audit}
+                  businessUnit={businessUnit}
+                  data-id="f83784dadb02"
+                  handleShareOpen={handleShareOpen}
+                  location={location}
+                  setShareItemName={setShareItemName}
+                  setShareItemUrl={setShareItemUrl}
+                />
+                <DeleteButton
+                  data-id="a9aa362ecc86"
+                  handleActionChangesModalOpen={handleActionChangesModalOpen}
+                  handleDeleteModalOpen={handleDeleteModalOpen}
+                  onDeleteAudit={onDeleteAudit}
+                  selectedAction={selectedAction}
+                  setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                  user={user}
+                />
+                <RecurringButton
+                  audit={audit}
+                  data-id="de80a7578f97"
+                  handleActionChangesModalOpen={handleActionChangesModalOpen}
+                  handleRecurringModalOpen={handleRecurringModalOpen}
+                  selectedAction={selectedAction}
+                  setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                  user={user}
+                />
+                <SubmitButton
+                  audit={audit}
+                  data-id="10cc8844cca4"
+                  handleActionChangesModalOpen={handleActionChangesModalOpen}
+                  handleSubmitModalOpen={handleSubmitModalOpen}
+                  onSubmitAudit={onSubmitAudit}
+                  questions={questions}
+                  selectedAction={selectedAction}
+                  setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                  user={user}
+                />
               </MenuList>
             </>
           )}
@@ -337,7 +437,7 @@ const AuditHeader = () => {
       </Flex>
     </Flex>
   </>);
-};
+}
 
 export default AuditHeader;
 

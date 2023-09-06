@@ -4,8 +4,8 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 
 import Loader from '../Loader';
 
-const DocumentUploading = ({ documentName }: { documentName: string }) => (
-  <Flex
+function DocumentUploading({ documentName }: { documentName: string }) {
+  return <Flex
     align="center"
     borderColor="evidence.uploadBorderColor"
     borderRadius="10px"
@@ -46,6 +46,6 @@ const DocumentUploading = ({ documentName }: { documentName: string }) => (
       </Flex>
     </Flex>
   </Flex>
-);
+}
 
 export default DocumentUploading;

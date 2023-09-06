@@ -9,7 +9,7 @@ interface IMultipleChoices extends IField {
   placeholder?: string;
 }
 
-const MultipleChoices = ({
+function MultipleChoices({
   control,
   name,
   label,
@@ -18,8 +18,8 @@ const MultipleChoices = ({
   disabled = false,
   readMode = false,
   defaultvalue,
-}: IMultipleChoices) => (
-  <Box data-id="83291a9e33ef" id={name} w="full">
+}: IMultipleChoices) {
+  return <Box data-id="83291a9e33ef" id={name} w="full">
     {label && (
       <Flex
         align="center"
@@ -101,7 +101,7 @@ const MultipleChoices = ({
         }} />
     ))}
   </Box>
-);
+}
 
 export default MultipleChoices;
 

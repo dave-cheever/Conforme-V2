@@ -13,7 +13,7 @@ interface IQuestionListElement {
   removeQuestion?: () => void;
   editQuestion?: () => void;
 }
-const QuestionListElement = ({ question, bgColor, removeQuestion, editQuestion }: IQuestionListElement) => {
+function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }: IQuestionListElement) {
   const ref: any = useRef(null);
   const [isTextOverflown, setIsTextOverflown] = useState(false);
 
@@ -87,7 +87,7 @@ const QuestionListElement = ({ question, bgColor, removeQuestion, editQuestion }
         w="20px" />}
     </Stack>)
   );
-};
+}
 
 export default QuestionListElement;
 

@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 
 const usePrompt = (when: boolean, message: string) => {
-  const history = useHistory();
+  // const navigate = useNavigate();
 
   const self = useRef<any | null>();
 
@@ -19,7 +18,7 @@ const usePrompt = (when: boolean, message: string) => {
   useEffect(() => {
     self.current = null;
 
-    if (when) self.current = history.block(message);
+    // if (when) self.current = navigate.block(message);
 
     window.addEventListener('beforeunload', onWindowOrTabClose);
 

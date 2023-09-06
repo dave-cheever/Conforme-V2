@@ -168,12 +168,14 @@ const checkMemberGroups = async ({
   organization: IOrganization;
 }) => {
   try {
-    await graphSetup(organization._id);
-    const res = await graph.users.getById(userId).checkMemberGroups(Object.values(groups));
+    const client = await getClient(organization._id);
+    const res = await client.post(`/users/${userId}/checkMemberGroups`, {
+      groupIds: Object.values(groups),
+    });
     return Object.keys(groups).reduce(
       (acc, curr) => ({
         ...acc,
-        [curr]: res.includes(groups[curr]),
+        [curr]: (res.data?.value || []).includes(groups[curr]),
       }),
       {},
     );

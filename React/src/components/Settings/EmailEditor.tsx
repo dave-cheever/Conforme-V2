@@ -16,7 +16,7 @@ const sunEditorOptions = {
   toolbarContainer: '#custom_toolbar',
 };
 
-const EmailEditor = ({ setHtml, value, options }) => {
+function EmailEditor({ setHtml, value, options }) {
   const editorRef = useRef();
 
   const getSunEditorInstance = (sunEditor) => {
@@ -53,6 +53,6 @@ const EmailEditor = ({ setHtml, value, options }) => {
         setOptions={sunEditorOptions} />
     </Box>)
   );
-};
+}
 
 export default EmailEditor;

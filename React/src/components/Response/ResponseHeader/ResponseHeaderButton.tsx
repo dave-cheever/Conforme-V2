@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { Button, IconButton } from '@chakra-ui/react';
 
-const ResponseHeaderButton = ({
+function ResponseHeaderButton({
   icon,
   name,
   onClick,
@@ -16,8 +16,8 @@ const ResponseHeaderButton = ({
   loading?: boolean;
   disabled?: boolean;
   primary?: boolean;
-}) => (
-  <>
+}) {
+  return <>
     <Button
       _hover={
         disabled
@@ -66,6 +66,6 @@ const ResponseHeaderButton = ({
       onClick={onClick}
       role="group" />
   </>
-);
+}
 
 export default ResponseHeaderButton;

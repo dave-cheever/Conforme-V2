@@ -4,7 +4,7 @@ import { Flex, Image } from '@chakra-ui/react';
 
 import { ISetting } from '../../interfaces/ISetting';
 
-const EmailTemplate = ({
+function EmailTemplate({
   active,
   template,
   setSelectedTemplate,
@@ -14,7 +14,7 @@ const EmailTemplate = ({
   template: ISetting;
   setSelectedTemplate: (template) => void;
   updateImage: number;
-}) => {
+}) {
   const onClick = () => {
     setSelectedTemplate(template);
   };
@@ -49,7 +49,7 @@ const EmailTemplate = ({
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default EmailTemplate;
 

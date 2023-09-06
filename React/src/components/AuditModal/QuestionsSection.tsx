@@ -38,7 +38,7 @@ const arrowPointerStyle = {
   borderRight: '0 solid transparent',
 };
 
-const QuestionsSection = () => {
+function QuestionsSection() {
   const [questionGroups, setQuestionGroups] = useState<IGroupQuestion[]>([]);
   const [expandedItem, setExpandedItem] = useState<string>('');
   const [selectedGroup, setSelectedGroup] = useState<'category' | 'kloe'>('category');
@@ -94,6 +94,6 @@ const QuestionsSection = () => {
       <QuestionAdditionalInformation data-id="e773c8e5b72a" />
     </Box>)
   );
-};
+}
 
 export default QuestionsSection;

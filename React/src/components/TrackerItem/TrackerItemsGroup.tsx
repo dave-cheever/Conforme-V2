@@ -7,7 +7,7 @@ import useResponseUtils from '../../hooks/useResponseUtils';
 import { IResponse } from '../../interfaces/IResponse';
 import TrackerItemSquare from './TrackerItemSquare';
 
-const TrackerGridItems = ({
+function TrackerGridItems({
   responses,
   loading,
   total,
@@ -19,7 +19,7 @@ const TrackerGridItems = ({
   total: number;
   scrollerRef: any; // Using 'any' as there is no exported interface to use
   loadResponses: (page: number) => Promise<void>;
-}) => {
+}) {
   const [filteredResults, setFilteredResults] = useState<any>({});
   const { responseStatusesGroup } = useResponseUtils();
 
@@ -90,7 +90,7 @@ const TrackerGridItems = ({
       </Flex>
     </InfiniteScroll>)
   );
-};
+}
 
 export default TrackerGridItems;
 

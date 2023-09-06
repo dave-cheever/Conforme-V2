@@ -19,7 +19,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const NumberInput = ({
+function NumberInput({
   control,
   name,
   label,
@@ -29,7 +29,7 @@ const NumberInput = ({
   validations = {},
   disabled = false,
   help,
-}: INumberInput) => {
+}: INumberInput) {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     (<Controller
@@ -116,7 +116,7 @@ const NumberInput = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export const numberInputStyles = {
   numberInput: {

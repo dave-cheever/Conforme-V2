@@ -5,7 +5,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon, WarningIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
 
-const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (action: IAction) => void }) => {
+function ActionSquare({ action, editAction }: { action: IAction; editAction: (action: IAction) => void }) {
   const { openInNewTab } = useNavigate();
 
   const isOverdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
@@ -68,8 +68,8 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
           data-id="a020a4b78b8d"
           fontSize="md"
           fontWeight="bold"
-          isTruncated
           ml={3}
+          noOfLines={1}
           w="calc(100% - 24px)">
           {action?.title}
         </Text>
@@ -132,7 +132,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
             color="actionSquare.section.text"
             data-id="7d858fa06e38"
             fontSize="ssm"
-            isTruncated>
+            noOfLines={1}>
             {action?.answer?.question?.question},{' '}
             {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
               ? action?.answer?.audit?.businessUnit?.name ?? '-'
@@ -179,7 +179,7 @@ const ActionSquare = ({ action, editAction }: { action: IAction; editAction: (ac
       </Flex>
     </Stack>)
   );
-};
+}
 
 export default ActionSquare;
 

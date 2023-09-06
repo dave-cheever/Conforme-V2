@@ -4,7 +4,7 @@ import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 
 import { CheckIcon, CrossIcon } from '../../../icons';
 
-const ResponseHeaderStatus = ({ heading, status }) => {
+function ResponseHeaderStatus({ heading, status }) {
   const [color, setColor] = useState<string>();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const ResponseHeaderStatus = ({ heading, status }) => {
       </Stack>
     </VStack>)
   );
-};
+}
 
 export default ResponseHeaderStatus;
 

@@ -53,7 +53,7 @@ const GENERATE_EMAIL_TEMPLATE = gql`
   }
 `;
 
-const EmailTemplates = ({ selectedTemplate, setSelectedTemplate, isOpen, onClose, updateImage, setUpdateImage }) => {
+function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose, updateImage, setUpdateImage }) {
   const { module } = useAppContext();
   const { data: emailTemplates, loading } = useQuery(GET_EMAIL_TEMPLATES, { variables: { type: 'emailTemplate', moduleId: module?._id } });
   const [updateSetting, { loading: saveLoading }] = useMutation(UPDATE_SETTINGS);
@@ -154,7 +154,7 @@ const EmailTemplates = ({ selectedTemplate, setSelectedTemplate, isOpen, onClose
       </Modal>
     </Flex>)
   );
-};
+}
 
 export default EmailTemplates;
 

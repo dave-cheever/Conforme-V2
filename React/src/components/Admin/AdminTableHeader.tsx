@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-const AdminTableHeader = ({ children, title }: { children: React.ReactNode; title?: string }) => (
-  <Box
+function AdminTableHeader({ children, title }: { children: React.ReactNode; title?: string }) {
+  return <Box
     bg="adminTableHeader.bg"
     data-id="ac4e728345d1"
     top={0}
@@ -27,7 +27,7 @@ const AdminTableHeader = ({ children, title }: { children: React.ReactNode; titl
       {children}
     </Flex>
   </Box>
-);
+}
 
 export default AdminTableHeader;
 

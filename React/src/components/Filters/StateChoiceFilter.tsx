@@ -10,7 +10,7 @@ import useFiltersUtils, { actionPriorities, auditWalkTypes } from '../../hooks/u
 import useNavigate from '../../hooks/useNavigate';
 import FilterCheckBox from './FilterCheckBox';
 
-const StateChoiceFilter = ({ name }: { name: string }) => {
+function StateChoiceFilter({ name }: { name: string }) {
   const { filtersValues, setFilters } = useFiltersContext();
   const { trackerItemStatuses } = useFiltersUtils();
   const location = useLocation();
@@ -55,6 +55,6 @@ const StateChoiceFilter = ({ name }: { name: string }) => {
       </Stack>
     </CheckboxGroup>)
   );
-};
+}
 
 export default StateChoiceFilter;

@@ -12,6 +12,7 @@ import {
   subYears,
 } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { IUser } from 'app-interfaces';
 import { Audits, Users } from 'app-models';
@@ -21,7 +22,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['audits', ...elements]);
   try {
     const user = await authorize();
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': auditQueryInput?.showArchived ? { $exists: true } : { $eq: null },

@@ -11,7 +11,7 @@ import {
   UnsafeCondition,
 } from '../icons';
 
-const Icon = ({ icon, ...props }) => {
+function Icon({ icon, ...props }) {
   switch (icon) {
     case 'safeBehaviour':
       return <SafeBehaviour data-id="8d055665c39e" {...props} />;
@@ -36,6 +36,6 @@ const Icon = ({ icon, ...props }) => {
     default:
       return null;
   }
-};
+}
 
 export default Icon;

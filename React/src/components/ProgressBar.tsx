@@ -6,8 +6,8 @@ interface IProgressBar {
   value: number;
 }
 
-const ProgressBar = ({ value }: IProgressBar) => (
-  <Progress
+function ProgressBar({ value }: IProgressBar) {
+  return <Progress
     borderRadius="20px"
     colorScheme="#FFFFFF"
     data-id="ffb3138d2811"
@@ -15,6 +15,6 @@ const ProgressBar = ({ value }: IProgressBar) => (
     mr="2"
     value={value}
     width={55} />
-);
+}
 
 export default ProgressBar;

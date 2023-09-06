@@ -17,7 +17,7 @@ import { capitalize } from 'lodash';
 import { toastSuccess } from '../../bootstrap/config';
 import { useAuditContext } from '../../contexts/AuditProvider';
 
-const AuditRecurringModal = ({ isOpen, onClose }) => {
+function AuditRecurringModal({ isOpen, onClose }) {
   const { audit, updateAudit, refetch } = useAuditContext();
   const toast = useToast();
 
@@ -77,7 +77,7 @@ const AuditRecurringModal = ({ isOpen, onClose }) => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export const auditNewQuestionModalStyles = {
   auditNewQuestionModal: {

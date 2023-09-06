@@ -31,7 +31,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const ChatItem = ({ onAction, comment }: IChatItem) => {
+function ChatItem({ onAction, comment }: IChatItem) {
   const { metatags, authorId, _id, text } = comment;
   const [getParticipantDetailById, { data, loading }] = useLazyQuery(GET_USERS_BY_ID);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
@@ -124,6 +124,7 @@ const ChatItem = ({ onAction, comment }: IChatItem) => {
             action="comments.delete"
             data={{ comment }}
             data-id="37a0dc23ef23"
+            // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <Button
                 colorScheme="red"
@@ -144,7 +145,7 @@ const ChatItem = ({ onAction, comment }: IChatItem) => {
       </Box>
     </Flex>
   </>);
-};
+}
 
 export default ChatItem;
 

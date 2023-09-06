@@ -3,8 +3,8 @@ import { Stack } from '@chakra-ui/react';
 import * as Icons from '../icons/index';
 import DashboardFilterButton from './DashboardFilterButton';
 
-const DashboardFilters = () => (
-  <Stack data-id="bfc7a1ba4448" direction="row" spacing={5}>
+function DashboardFilters() {
+  return <Stack data-id="bfc7a1ba4448" direction="row" spacing={5}>
     <DashboardFilterButton
       buttonType="allTypes"
       data-id="437242c03224"
@@ -41,6 +41,6 @@ const DashboardFilters = () => (
       isDisable={false}
       label="Accident Investigation" />
   </Stack>
-);
+}
 
 export default DashboardFilters;

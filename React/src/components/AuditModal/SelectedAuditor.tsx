@@ -5,7 +5,7 @@ import { Avatar, Box, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/rea
 import { IAuditor } from '../../interfaces/IAuditor';
 import AuditModalContext from './AuditModalContext';
 
-const SelectedAuditor = ({ name, designation, imgSrc }: IAuditor) => {
+function SelectedAuditor({ name, designation, imgSrc }: IAuditor) {
   const modalContext = useContext(AuditModalContext);
 
   const auditor: IAuditor = {
@@ -62,6 +62,6 @@ const SelectedAuditor = ({ name, designation, imgSrc }: IAuditor) => {
         w="20px" />
     </Tag>)
   );
-};
+}
 
 export default SelectedAuditor;

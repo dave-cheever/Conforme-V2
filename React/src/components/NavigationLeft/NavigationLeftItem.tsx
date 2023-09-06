@@ -12,7 +12,7 @@ import Can from '../can';
 import NavigationLeftFilters from './NavigationLeftFilters';
 import SubSection from './SubSection';
 
-const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
+function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
   const { organizationConfig } = useAppContext();
   const isTrackerComponent = organizationConfig?.modules.find(({ type }) => type === 'tracker');
   const { navigateTo, isPathActive } = useNavigate();
@@ -117,6 +117,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
                 action={subSection.permission}
                 data-id="e1a086b588f1"
                 key={subSection.url}
+                // eslint-disable-next-line react/no-unstable-nested-components
                 yes={() => <SubSection
                   data-id="7bd8fbe36294"
                   key={subSection.label}
@@ -153,7 +154,7 @@ const NavigationLeftItem = ({ menuItem }: { menuItem: IMenuItem }) => {
       )}
     </Box>
   </>);
-};
+}
 
 export default NavigationLeftItem;
 

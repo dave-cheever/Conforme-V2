@@ -19,7 +19,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const TrackerItemSquare = ({ response }: { response: IResponse }) => {
+function TrackerItemSquare({ response }: { response: IResponse }) {
   const { navigateTo } = useNavigate();
   const { responseStatuses, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
@@ -214,7 +214,7 @@ const TrackerItemSquare = ({ response }: { response: IResponse }) => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default TrackerItemSquare;
 

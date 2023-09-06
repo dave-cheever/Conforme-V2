@@ -62,7 +62,7 @@ const GET_TRACKER_ITEMS = gql`
   }
 `;
 
-const TrackerItemsAdmin = () => {
+function TrackerItemsAdmin() {
   const device = useDevice();
   const { filtersValues, setUsedFilters, setShowFiltersPanel } = useFiltersContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -269,7 +269,7 @@ const TrackerItemsAdmin = () => {
                   w={['80%', 'calc(100% / 4)']}>
                   <Box data-id="eb014d3ce91b" fontSize="smm">
                     {trackerItem.name ? (
-                      <Text data-id="5b25881b9d07" isTruncated>{trackerItem.name}</Text>
+                      <Text data-id="5b25881b9d07" noOfLines={1}>{trackerItem.name}</Text>
                     ) : (
                       <Text
                         color="adminTrackerItems.element.unnamed"
@@ -353,13 +353,13 @@ const TrackerItemsAdmin = () => {
       </Box>
     </Box>
   </>);
-};
+}
 
-const TrackerItemsAdminWithContext = (props) => (
-  <TrackerItemModalProvider data-id="4cb9ee2d83d9" {...props}>
+function TrackerItemsAdminWithContext(props) {
+  return <TrackerItemModalProvider data-id="4cb9ee2d83d9" {...props}>
     <TrackerItemsAdmin data-id="84e9258ca419" />
   </TrackerItemModalProvider>
-);
+}
 
 export default TrackerItemsAdminWithContext;
 

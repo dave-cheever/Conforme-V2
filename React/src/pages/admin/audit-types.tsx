@@ -73,7 +73,7 @@ const defaultValues: Partial<Omit<IAuditType, 'recurring'> & { recurring: string
   businessUnitScope: undefined,
 };
 
-const AuditTypes = () => {
+function AuditTypes() {
   const toast = useToast();
   const frequencyOptions = useMemo(() => auditFrequencies.map((f) => ({ value: f, label: f })), []);
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
@@ -547,7 +547,7 @@ const AuditTypes = () => {
       </Box>
     </Flex>
   </>);
-};
+}
 
 export default AuditTypes;
 

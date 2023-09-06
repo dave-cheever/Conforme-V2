@@ -14,7 +14,7 @@ import StateChoiceFilter from './StateChoiceFilter';
 import TrackerItemFilter from './TrackerItemFilter';
 import UserFilter from './UserFilter';
 
-const QuickFiltersItem = ({ name, filter, toggleActiveFilters }: { name: string; filter: IFilter; toggleActiveFilters?: () => void }) => {
+function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string; filter: IFilter; toggleActiveFilters?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { setFilters, filtersValues } = useFiltersContext();
@@ -140,7 +140,7 @@ const QuickFiltersItem = ({ name, filter, toggleActiveFilters }: { name: string;
       )}
     </Flex>
   );
-};
+}
 
 export default QuickFiltersItem;
 

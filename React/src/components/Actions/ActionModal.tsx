@@ -54,7 +54,7 @@ const DELETE_ACTION = gql`
   }
 `;
 
-const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeModal: () => void; refetch: () => void }) => {
+function ActionModal({ action, closeModal, refetch }: { action?: IAction; closeModal: () => void; refetch: () => void }) {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
@@ -145,8 +145,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
     }
   };
 
-  return (<>
-    <ModalContent
+  return (<ModalContent
       bg="actionModal.bg"
       data-id="e07489b5ec0d"
       h="100vh"
@@ -236,7 +235,7 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
                     color="actionModal.question.color"
                     data-id="ae57d245c6e8"
                     fontSize="smm"
-                    isTruncated
+                    noOfLines={1}
                     whiteSpace="break-spaces"
                     wordBreak="break-word">
                     {action?.answer?.question?.question}
@@ -460,9 +459,8 @@ const ActionModal = ({ action, closeModal, refetch }: { action?: IAction; closeM
           )}
         </Flex>
       </ModalFooter>
-    </ModalContent>
-  </>);
-};
+    </ModalContent>);
+}
 
 export default ActionModal;
 

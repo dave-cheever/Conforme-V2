@@ -9,7 +9,7 @@ import InsightListItem from './InsightListItem';
 import InsightsDetailedTableHeader from './InsightsDetailedTableHeader';
 import InsightsDetailedTableHeaderElement from './InsightsDetailedTableHeaderElement';
 
-const InsightsDetailedTable = ({
+function InsightsDetailedTable({
   insightsType = 'audits',
   insightsModel = 'users',
   questionsCategoriesId,
@@ -27,7 +27,7 @@ const InsightsDetailedTable = ({
   loadMoreLocations?: LazyQueryExecFunction<any, any>;
   loadMoreBusinessUnits?: LazyQueryExecFunction<any, any>;
   loadMoreUsers?: LazyQueryExecFunction<any, any>;
-}) => {
+}) {
   const { sortedData, sortOrder, sortType, setSortOrder, setSortType } = useSort(
     data ?? [],
     insightsModel === 'users' ? 'displayName' : 'name',
@@ -56,7 +56,6 @@ const InsightsDetailedTable = ({
   const loadMore = () => {
     switch (insightsModel) {
       case 'users':
-      default:
         if (loadMoreUsers) {
           loadMoreUsers({
             variables: {
@@ -107,6 +106,22 @@ const InsightsDetailedTable = ({
           });
         }
         break;
+      default:
+        if (loadMoreUsers) {
+          loadMoreUsers({
+            variables: {
+              usersPagination: {
+                limit: 5,
+                offset: data.length,
+              },
+              ...(insightsType === 'answers' && {
+                usersAnswersCountInput: {
+                  questionsCategoriesId,
+                },
+              }),
+            },
+          });
+        }
     }
   };
 
@@ -170,7 +185,7 @@ const InsightsDetailedTable = ({
       )}
     </Box>)
   );
-};
+}
 
 export const insightsDetailedTableStyles = {
   insightsDetailedTable: {

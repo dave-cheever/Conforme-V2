@@ -35,7 +35,7 @@ const GET_AUDIT_LOGS = gql`
   }
 `;
 
-const AuditLog = () => {
+function AuditLog() {
   const [dateLimit, setDateLimit] = useState(new Date());
   const { response } = useResponseContext();
   const { settings } = useAppContext();
@@ -189,6 +189,6 @@ const AuditLog = () => {
         ))}
     </Flex>)
   );
-};
+}
 
 export default AuditLog;

@@ -65,7 +65,7 @@ const defaultValues: Partial<IBusinessUnit> = {
   ownerId: '',
 };
 
-const BusinessUnits = () => {
+function BusinessUnits() {
   const toast = useToast();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -237,9 +237,7 @@ const BusinessUnits = () => {
         </Text>
       </Flex>
       {device !== 'mobile' && (
-        <>
-          <Box data-id="d169dd4443da" w="calc(70% / 2)">{businessUnit?.owner?.displayName}</Box>
-        </>
+        <Box data-id="d169dd4443da" w="calc(70% / 2)">{businessUnit?.owner?.displayName}</Box>
       )}
       {module?.type === 'tracker' && (
         <Flex align="center" data-id="038185a293c7" w={['20%', 'calc(70% / 2)']}>
@@ -432,7 +430,7 @@ const BusinessUnits = () => {
       </Box>
     </Flex>
   </>);
-};
+}
 
 export default BusinessUnits;
 

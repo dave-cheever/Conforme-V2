@@ -9,7 +9,7 @@ import { IAction } from '../../interfaces/IAction';
 import { IUser } from '../../interfaces/IUser';
 import UserAvatar from '../UserAvatar';
 
-const ActionListItem = ({
+function ActionListItem({
   action,
   disabled = false,
   index,
@@ -19,7 +19,7 @@ const ActionListItem = ({
   disabled?: boolean;
   index: number;
   onDelete?: () => void;
-}) => {
+}) {
   const { setSelectedAction } = useAuditContext();
   const [assigneeDetails, setAssigneeDetails] = useState<IUser>();
 
@@ -85,7 +85,7 @@ const ActionListItem = ({
       </HStack>
     </HStack>)
   );
-};
+}
 
 export const actionListElementStyles = {
   actionListElement: {

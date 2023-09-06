@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { Box, MenuItem, Spacer } from '@chakra-ui/react';
 
-const ResponseHeaderMenuItem = ({
+function ResponseHeaderMenuItem({
   name,
   icon,
   onClick,
@@ -12,8 +12,8 @@ const ResponseHeaderMenuItem = ({
   name: string;
   onClick?: () => void;
   disabled?: boolean;
-}) => (
-  <MenuItem
+}) {
+  return <MenuItem
     color="responseHeaderMenuItem.optionsMenuColor"
     data-id="6dfd745985b9"
     isDisabled={disabled}
@@ -23,7 +23,7 @@ const ResponseHeaderMenuItem = ({
     <Spacer data-id="fe2b1d66eafc" />
     {icon && <Box data-id="2b2560aff4b0" p="2">{icon}</Box>}
   </MenuItem>
-);
+}
 
 export default ResponseHeaderMenuItem;
 

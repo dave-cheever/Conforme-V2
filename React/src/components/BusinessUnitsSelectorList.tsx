@@ -10,8 +10,8 @@ interface IBusinessUnitsSelectorList {
   handleChange: (any) => void;
 }
 
-const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, handleChange }: IBusinessUnitsSelectorList) => (
-  <CheckboxGroup
+function BusinessUnitsSelectorList({ filteredBusinessUnits, selected, handleChange }: IBusinessUnitsSelectorList) {
+  return <CheckboxGroup
     data-id="d5eced54c75b"
     onChange={(value) =>
       handleChange({
@@ -28,6 +28,6 @@ const BusinessUnitsSelectorList = ({ filteredBusinessUnits, selected, handleChan
       ))}
     </Stack>
   </CheckboxGroup>
-);
+}
 
 export default BusinessUnitsSelectorList;

@@ -4,8 +4,8 @@ import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { FileRightIcon, LicensesWhiteIcon, MessageIcon, RedDotIcon } from '../icons';
 
-const LicensesPanel = () => (
-  <Box
+function LicensesPanel() {
+  return <Box
     borderRadius="lg"
     boxShadow="0px 4px 10px rgba(0, 0, 0, 0.05)"
     data-id="da32d5e701bd"
@@ -106,6 +106,6 @@ const LicensesPanel = () => (
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default LicensesPanel;

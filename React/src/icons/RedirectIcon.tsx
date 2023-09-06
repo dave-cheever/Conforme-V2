@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@chakra-ui/icons';
 
-const RedirectIcon = (props: IconProps) => (
-  <Icon data-id="afe85114505c" fill="none" viewBox="0 0 24 24" {...props}>
+function RedirectIcon(props: IconProps) {
+  return <Icon data-id="afe85114505c" fill="none" viewBox="0 0 24 24" {...props}>
     <path
       d="M5 18.4669L18.6889 5"
       data-id="86816eb34699"
@@ -13,6 +13,6 @@ const RedirectIcon = (props: IconProps) => (
       strokeLinecap="round"
       strokeLinejoin="round" />
   </Icon>
-);
+}
 
 export default RedirectIcon;

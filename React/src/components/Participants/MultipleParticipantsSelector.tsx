@@ -5,7 +5,7 @@ import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantsAddButton from './ParticipantsAddButton';
 import ParticipantsSelector from './ParticipantsSelector';
 
-const MultipleParticipantsSelector = ({
+function MultipleParticipantsSelector({
   label,
   maxParticipants,
   isUserAllowedToChange = false,
@@ -17,8 +17,8 @@ const MultipleParticipantsSelector = ({
   isUserAllowedToChange: boolean;
   selectedParticipants: IUser[];
   onChange: (participants: IUser[]) => void;
-}) => (
-  <Stack data-id="5c654050a4e1" spacing={6}>
+}) {
+  return <Stack data-id="5c654050a4e1" spacing={6}>
     <ParticipantsSelector
       canDelete
       data-id="28825f446dea"
@@ -40,6 +40,6 @@ const MultipleParticipantsSelector = ({
       </Flex>
     </ParticipantsSelector>
   </Stack>
-);
+}
 
 export default MultipleParticipantsSelector;

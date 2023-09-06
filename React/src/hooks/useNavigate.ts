@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate as useReactNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
 
 const useNavigate = () => {
-  const history = useHistory();
+  const navigate = useReactNavigate();
   const location = useLocation();
   const { module } = useAppContext();
 
@@ -18,10 +18,10 @@ const useNavigate = () => {
 
     // Remove module path from current path
     // and slash if present as last character
-    const currentPath = history.location.pathname.replace(new RegExp('/([a-zA-Z0-9-]*)'), '').replace(new RegExp('(/$)'), '');
+    const currentPath = location.pathname.replace(/\/([a-zA-Z0-9-]*)/, '').replace(/(\/$)/, '');
 
     // Remove slash if present as last character
-    const clearPath = path.replace(new RegExp('(/$)'), '');
+    const clearPath = path.replace(/(\/$)/, '');
 
     if (exact) return currentPath === clearPath;
     return currentPath.includes(clearPath);
@@ -35,7 +35,7 @@ const useNavigate = () => {
    * @param state additional state to pass
    */
   const navigateTo = (path: string, state?: any) => {
-    history.push(`/${module?.path}${path}`, state);
+    navigate(`/${module?.path}${path}`, state);
   };
 
   const openInNewTab = (path: string) => {
@@ -43,7 +43,7 @@ const useNavigate = () => {
   };
 
   return {
-    history,
+    navigate,
     getPath,
     isPathActive,
     navigateTo,

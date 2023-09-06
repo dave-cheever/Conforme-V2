@@ -8,7 +8,7 @@ import useDevice from '../../hooks/useDevice';
 import { ArrowDownIcon } from '../../icons';
 import TabItem from './TabItem';
 
-const Tabs = () => {
+function Tabs() {
   const { activeTab, setActiveTab } = useSettingsContext();
   const device = useDevice();
 
@@ -54,6 +54,6 @@ const Tabs = () => {
       ))}
     </Flex>)
   );
-};
+}
 
 export default Tabs;

@@ -27,7 +27,7 @@ import { useAppContext } from '../contexts/AppProvider';
 import { useShareContext } from '../contexts/ShareProvider';
 import { AddIcon, Copy, CrossIcon } from '../icons';
 
-const ShareModal = () => {
+function ShareModal() {
   const toast = useToast();
   const { isShareOpen, handleShareClose, shareItemUrl, shareItemName } = useShareContext();
   const { organizationConfig, module, user } = useAppContext();
@@ -241,7 +241,7 @@ const ShareModal = () => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default ShareModal;
 

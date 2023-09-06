@@ -9,7 +9,7 @@ import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from '../NavigationLeft/NavigationLeftFilters';
 import SubSection from '../NavigationLeft/SubSection';
 
-const NavigationBottomItem = ({
+function NavigationBottomItem({
   menuItem,
   filtersOpen,
   setFiltersOpen,
@@ -21,7 +21,7 @@ const NavigationBottomItem = ({
   setFiltersOpen: (value: boolean) => void;
   subsectionOpen: boolean;
   setSubsectionOpen: (value: boolean) => void;
-}) => {
+}) {
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const { responsesStatusesCounts } = useFiltersContext();
@@ -145,6 +145,6 @@ const NavigationBottomItem = ({
       )}
     </Flex>)
   );
-};
+}
 
 export default NavigationBottomItem;

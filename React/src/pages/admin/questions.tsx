@@ -73,7 +73,7 @@ const defaultValues: Partial<IQuestion<TQuestionValue>> = {
   },
 };
 
-const Questions = () => {
+function Questions() {
   const toast = useToast();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_QUESTIONS, {
@@ -148,9 +148,10 @@ const Questions = () => {
 
   const handleAddQuestion = async () => {
     const question = getValues();
-    const { maxQuestionsNumber: selectedCategoryMaxQuestions, name: selectedCategoryName } = questionsCategories?.find(
+    const questionCategory = questionsCategories?.find(
       (cat) => cat._id === question.questionsCategoryId,
     );
+    const { maxQuestionsNumber: selectedCategoryMaxQuestions, name: selectedCategoryName } = questionCategory;
     const questionsNumberForSelectedCategory = questions.filter(
       (_question) => _question.questionsCategoryId === question.questionsCategoryId,
     ).length;
@@ -393,6 +394,6 @@ const Questions = () => {
       </Box>
     </Flex>
   </>);
-};
+}
 
 export default Questions;

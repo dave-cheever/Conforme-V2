@@ -14,7 +14,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabled = false }: ICheckbox) => {
+function Checkbox({ control, name, label, tooltip = '', validations = {}, disabled = false }: ICheckbox) {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     (<Controller
@@ -64,6 +64,6 @@ const Checkbox = ({ control, name, label, tooltip = '', validations = {}, disabl
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default Checkbox;

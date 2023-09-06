@@ -6,7 +6,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { chartColors } from '../bootstrap/config';
 import { IBaseWithName } from '../interfaces/IBaseWithName';
 
-const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
+function Chart({ items, label }: { items: IBaseWithName[]; label: string }) {
   const [chartData, setChartData] = useState<number[]>([]);
   const [chartLabels, setChartLabels] = useState<string[]>([]);
 
@@ -73,6 +73,6 @@ const Chart = ({ items, label }: { items: IBaseWithName[]; label: string }) => {
       </Box>
     </Flex>)
   );
-};
+}
 
 export default Chart;

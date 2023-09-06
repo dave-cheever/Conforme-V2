@@ -40,7 +40,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const UserData = ({
+function UserData({
   name,
   user,
   setShowResults,
@@ -52,8 +52,8 @@ const UserData = ({
   setShowResults: (x: boolean) => void;
   setSearchedInputValue: (x: string) => void;
   onChange: (x: any) => void;
-}) => (
-  <Flex
+}) {
+  return <Flex
     _hover={{
       cursor: 'pointer',
       bg: 'peoplePicker.hover.bg',
@@ -90,9 +90,9 @@ const UserData = ({
       </Box>
     </Flex>
   </Flex>
-);
+}
 
-const PeoplePicker = ({
+function PeoplePicker({
   control,
   name,
   label,
@@ -102,7 +102,7 @@ const PeoplePicker = ({
   disabled = false,
   required,
   showAsDropdown = true,
-}: IPeoplePicker) => {
+}: IPeoplePicker) {
   const [showResults, setShowResults] = useState<boolean>(false);
   const [searchText, setSearchText] = useState('');
   const [searchedInputValue, setSearchedInputValue] = useState('');
@@ -348,7 +348,7 @@ const PeoplePicker = ({
         }}
         rules={{ validate }} />)
   );
-};
+}
 
 export default PeoplePicker;
 

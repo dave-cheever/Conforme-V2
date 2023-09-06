@@ -1,5 +1,6 @@
 
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Categories, Responses } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
@@ -19,7 +20,7 @@ const categories = async (
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       for (const category of categories) {
-        const pipeline: any[] = [];
+        const pipeline: PipelineStage[] = [];
         join({
           pipeline,
           collection: 'trackerItems',

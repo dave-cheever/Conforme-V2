@@ -6,7 +6,7 @@ import { auditStatuses } from '../../hooks/useAuditUtils';
 import { IAudit } from '../../interfaces/IAudit';
 import AuditSquare from './AuditSquare';
 
-const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
+function AuditsGroup({ audits }: { audits: IAudit[] }) {
   const [filteredResults, setFilteredResults] = useState<any>({});
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const AuditsGroup = ({ audits }: { audits: IAudit[] }) => {
       {Object.keys(auditStatuses).map((status) => renderGroup(status))}
     </Flex>)
   );
-};
+}
 
 export default AuditsGroup;
 

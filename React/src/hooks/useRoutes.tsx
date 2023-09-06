@@ -1,4 +1,4 @@
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import Can from '../components/can';
 import { useAppContext } from '../contexts/AppProvider';
@@ -59,13 +59,13 @@ const openRoutes: Array<IRoute> = [
     path: '*',
     key: 'not-allowed',
     component: () => (
-      <Redirect
+      <Navigate
         data-id="7b09f5e18669"
         key="not-allowed"
-        to={{
-          pathname: '/login',
-          state: { redirectUrl: `${window.location.pathname}${window.location.search}` },
-        }} />
+        replace
+        state={{ redirectUrl: `${window.location.pathname}${window.location.search}` }}
+        to="/login"
+      />
     ),
     layout: PureLayout,
   },
@@ -305,29 +305,29 @@ const protectedRoutes: Array<IRoute> = [
 
 const useRoutes = () => {
   const { user, module } = useAppContext();
-  if (!user) return openRoutes;
+  if (!user) return openRoutes.map((route) => ({ ...route, element: <route.component /> }));
   return [
     ...protectedRoutes.map((route) => ({
       ...route,
       path: `/:modulePath${route.path}`,
-      component: () => (
-        <Can
-          action={route.permission}
-          data-id="0bd23c229298"
-          no={() => <Redirect
-            data-id="50994d77ea25"
-            key="not-found"
-            to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />}
-          yes={() => <route.layout component={route.component} key={route.key} />} />
-      ),
+      element: <Can
+        action={route.permission}
+        data-id="0bd23c229298"
+        no={() => <Navigate
+          data-id="50994d77ea25"
+          key="not-found"
+          to={module ? `/${module.path}/dashboard` : '/'} />}
+        yes={() => <route.layout component={route.component} key={route.key} />}
+      />,
     })),
     {
       path: '*',
       key: 'not-found',
-      component: () => <Redirect
+      element: <Navigate
         data-id="1ce68823769f"
         key="not-found"
-        to={{ pathname: module ? `/${module.path}/dashboard` : '/' }} />,
+        to={module ? `/${module.path}/dashboard` : '/'}
+      />,
       layout: DefaultLayout,
     },
   ];

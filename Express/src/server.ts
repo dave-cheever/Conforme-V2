@@ -1,4 +1,6 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { json } from 'body-parser';
 import session from 'cookie-session';
 import cors from 'cors';
 import express from 'express';
@@ -10,6 +12,7 @@ import { ISession, IUser } from 'app-interfaces';
 import { CORSConfig, getProtocol } from 'app-utils';
 
 import { context, resolvers, typeDefs } from './graphql';
+import { IContext } from './graphql/context';
 import initPassport from './passport-config';
 import baseRouter from './routes';
 
@@ -27,12 +30,8 @@ global.apiUrl = `${getProtocol()}${process.env.API_URL}`;
 const getApp = async () => {
   const app = express();
 
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context,
-  });
-  await server.start();
+  const apolloServer = new ApolloServer<IContext>({ typeDefs, resolvers });
+  await apolloServer.start();
 
   initPassport(passport);
   app.disable('x-powered-by');
@@ -54,15 +53,16 @@ const getApp = async () => {
   app.set('trust proxy', 1);
   app.use(passport.initialize());
   app.use(passport.session());
-  // app.use(setOrganization);
   app.use('/', baseRouter(passport));
   app.use('/images', express.static('public'));
   app.use('/images', (req, res) => res.status(StatusCodes.PERMANENT_REDIRECT).redirect(`${global.apiUrl}/images/placeholder.png`));
 
-  server.applyMiddleware({
-    app,
-    cors: CORSConfig,
-  });
+  app.use(
+    '/graphql',
+    cors(CORSConfig),
+    json(),
+    expressMiddleware<IContext>(apolloServer, { context }),
+  );
 
   return app;
 };

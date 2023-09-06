@@ -7,7 +7,7 @@ import { capitalize } from 'lodash';
 import { OpenMenuArrow } from '../../icons';
 import AuditModalContext from './AuditModalContext';
 
-const AreaToInspect = () => {
+function AreaToInspect() {
   const modalContext = useContext(AuditModalContext);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -105,6 +105,6 @@ const AreaToInspect = () => {
       </Collapse>
     </Box>)
   );
-};
+}
 
 export default AreaToInspect;

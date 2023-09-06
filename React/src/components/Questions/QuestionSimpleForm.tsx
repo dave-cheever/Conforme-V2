@@ -15,7 +15,7 @@ import Checkbox from '../Forms/Checkbox';
 import Textarea from '../Forms/Textarea';
 import TextInput from '../Forms/TextInput';
 
-const QuestionSimpleForm = ({
+function QuestionSimpleForm({
   questionType,
   editQuestionIndex,
   editableValue,
@@ -24,7 +24,7 @@ const QuestionSimpleForm = ({
   setIsEdit,
   setEditQuestionIndex,
   setEditQuestion,
-}: IQuestionFormBase<string>) => {
+}: IQuestionFormBase<string>) {
   const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
@@ -197,7 +197,7 @@ const QuestionSimpleForm = ({
       </Button>
     </Flex>
   </>);
-};
+}
 
 export default QuestionSimpleForm;
 

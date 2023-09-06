@@ -10,7 +10,7 @@ import { useFiltersContext } from '../contexts/FiltersProvider';
 import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 
-const DefaultLayout = ({ component: Component }: { component: any }) => {
+function DefaultLayout({ component: Component }: { component: any }) {
   const { usedFilters } = useFiltersContext();
   const device = useDevice();
   return (
@@ -42,6 +42,6 @@ const DefaultLayout = ({ component: Component }: { component: any }) => {
       </Flex>
     </ShareProvider>)
   );
-};
+}
 
 export default DefaultLayout;

@@ -9,7 +9,7 @@ import { Home } from '../../../icons';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 import ResponseDetail from './ResponseDetail';
 
-const ResponseLeftNavigationMobile = () => {
+function ResponseLeftNavigationMobile() {
   const { navigateTo } = useNavigate();
 
   const { response } = useResponseContext();
@@ -62,6 +62,6 @@ const ResponseLeftNavigationMobile = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default ResponseLeftNavigationMobile;

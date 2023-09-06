@@ -9,7 +9,7 @@ import { CrossIcon } from '../../icons';
 import { isPermitted } from '../can';
 import FiltersPanelItem from './FiltersPanelItem';
 
-const FiltersPanel = () => {
+function FiltersPanel() {
   const { user } = useAppContext();
   const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
   const panelRef = useRef(null);
@@ -111,7 +111,7 @@ const FiltersPanel = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default FiltersPanel;
 

@@ -53,7 +53,7 @@ const defaultValues = {
   name: '',
 };
 
-const RegulatoryBodies = () => {
+function RegulatoryBodies() {
   const toast = useToast();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_REGULATORY_BODIES);
@@ -301,7 +301,7 @@ const RegulatoryBodies = () => {
       </Flex>
     </Box>
   </>);
-};
+}
 
 export default RegulatoryBodies;
 

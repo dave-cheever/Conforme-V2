@@ -1,6 +1,6 @@
 import { Button, IconButton } from '@chakra-ui/react';
 
-const AuditHeaderButton = ({
+function AuditHeaderButton({
   icon,
   name,
   onClick,
@@ -8,8 +8,8 @@ const AuditHeaderButton = ({
   bgColor = 'auditHeader.buttonLightBg',
   fontColor = 'auditHeader.buttonLightColor',
   disabled = false,
-}) => (
-  <>
+}) {
+  return <>
     <Button
       _hover={
         disabled
@@ -53,6 +53,6 @@ const AuditHeaderButton = ({
       ml="15px"
       onClick={onClick} />
   </>
-);
+}
 
 export default AuditHeaderButton;

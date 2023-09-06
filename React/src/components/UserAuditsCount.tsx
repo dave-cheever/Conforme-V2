@@ -3,7 +3,7 @@ import { Flex } from '@chakra-ui/react';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useNavigate from '../hooks/useNavigate';
 
-const UserAuditsCount = ({ status, auditsCount, userId }: { status?: string; auditsCount?: number; userId: string }) => {
+function UserAuditsCount({ status, auditsCount, userId }: { status?: string; auditsCount?: number; userId: string }) {
   const { setAuditFiltersValue } = useFiltersContext();
   const { navigateTo } = useNavigate();
 
@@ -36,6 +36,6 @@ const UserAuditsCount = ({ status, auditsCount, userId }: { status?: string; aud
       {auditsCount || 0}
     </Flex>)
   );
-};
+}
 
 export default UserAuditsCount;

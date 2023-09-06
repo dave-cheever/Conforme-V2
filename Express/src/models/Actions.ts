@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { isEmpty } from 'lodash';
-import { model, Schema } from 'mongoose';
+import { model, PipelineStage, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAction, IActionModel, IAuditValue, IAuditValues, IOrganization } from 'app-interfaces';
@@ -149,7 +149,7 @@ actionsSchema.statics.customCreate = async function (action: IAction, userId: st
 
 actionsSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IAction[]> {
   const { searchText } = searchQuery;
-  const pipeline: any[] = [
+  const pipeline: PipelineStage[] = [
     {
       $match: {
         'metatags.removedAt': { $eq: null },

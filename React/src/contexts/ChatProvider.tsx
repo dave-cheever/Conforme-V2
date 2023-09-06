@@ -31,7 +31,7 @@ export const useChatContext = () => {
   return context;
 };
 
-const ChatProvider = ({ children, component }: { children: React.ReactNode; component: 'audit' | 'response' }) => {
+function ChatProvider({ children, component }: { children: React.ReactNode; component: 'audit' | 'response' }) {
   const { isOpen: isOpenMessage, onOpen: handleOpenMessage, onClose: handleCloseMessage } = useDisclosure();
   const [getParticipants, { data: participantsData, loading: participantsLoading }] = useLazyQuery(GET_PARTICIPANTS);
   const { audit } = useAuditContext();
@@ -74,6 +74,6 @@ const ChatProvider = ({ children, component }: { children: React.ReactNode; comp
   ) as IChatContext;
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
-};
+}
 
 export default ChatProvider;

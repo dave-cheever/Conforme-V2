@@ -9,7 +9,7 @@ import { toastSuccess } from '../../../bootstrap/config';
 import { ArrowRight, Copy, DetailIcon } from '../../../icons';
 import ResponseLeftItem from '../ResponseLeftItem';
 
-const ResponseDetail = ({ response }) => {
+function ResponseDetail({ response }) {
   const toast = useToast();
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -133,6 +133,6 @@ const ResponseDetail = ({ response }) => {
       </ModalContent>
     </Modal>
   </>);
-};
+}
 
 export default ResponseDetail;

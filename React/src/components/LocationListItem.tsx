@@ -9,7 +9,7 @@ import useNavigate from '../hooks/useNavigate';
 import { ArrowCount } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
 
-const LocationListItem = ({ location, openLocationModal }: { location: ILocation; openLocationModal }) => {
+function LocationListItem({ location, openLocationModal }: { location: ILocation; openLocationModal }) {
   const device = useDevice();
   const { module } = useAppContext();
   const { navigateTo } = useNavigate();
@@ -81,6 +81,6 @@ const LocationListItem = ({ location, openLocationModal }: { location: ILocation
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default LocationListItem;

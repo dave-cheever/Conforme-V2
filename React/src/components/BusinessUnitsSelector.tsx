@@ -16,7 +16,7 @@ interface IBusinessUnitsSelector {
   handleChange: (any) => void;
 }
 
-const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handleChange }: IBusinessUnitsSelector) => {
+function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handleChange }: IBusinessUnitsSelector) {
   const [filteredBusinessUnits, setFilteredBusinessUnits] = useState<IBusinessUnit[]>([]);
 
   const [selectedType] = useState<string>('');
@@ -102,7 +102,7 @@ const BusinessUnitsSelector = ({ businessUnits, selected, note, disabled, handle
       {/* </Stack> */}
     </Stack>)
   );
-};
+}
 
 export default BusinessUnitsSelector;
 

@@ -47,7 +47,7 @@ const GET_DUPLICATE_AUDITS = gql`
   }
 `;
 
-const AuditModal = ({ refetch }) => {
+function AuditModal({ refetch }) {
   const toast = useToast();
   const { navigateTo, openInNewTab } = useNavigate();
   const { user } = useAppContext();
@@ -121,8 +121,7 @@ const AuditModal = ({ refetch }) => {
     }
   };
 
-  return (<>
-    <ModalContent
+  return (<ModalContent
       bg="auditModal.bg"
       data-id="da7a09e0879e"
       h={['auto', '100vh']}
@@ -325,9 +324,8 @@ const AuditModal = ({ refetch }) => {
           </Flex>
         </Stack>
       </ModalBody>
-    </ModalContent>
-  </>);
-};
+    </ModalContent>);
+}
 
 export default AuditModal;
 

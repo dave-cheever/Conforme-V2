@@ -7,7 +7,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, OpenExternalIcon } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 
-const AnswerSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) => {
+function AnswerSquare({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) {
   const { openInNewTab } = useNavigate();
   return (
     (<Stack
@@ -52,8 +52,8 @@ const AnswerSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
           data-id="3af3897093d1"
           fontSize="md"
           fontWeight="bold"
-          isTruncated
           ml={3}
+          noOfLines={1}
           w="calc(100% - 24px)">
           {answer?.question?.question}
         </Text>
@@ -115,7 +115,7 @@ const AnswerSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
               color="answerSquare.section.text"
               data-id="1db069d7268a"
               fontSize="ssm"
-              isTruncated
+              noOfLines={1}
               textTransform="capitalize">
               {answer?.audit?.location?.name ?? '-'}
             </Text>
@@ -176,8 +176,8 @@ const AnswerSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
               color="answerSquare.section.text"
               data-id="1b47d4da4fa8"
               fontSize="ssm"
-              isTruncated
-              maxWidth="250px">
+              maxWidth="250px"
+              noOfLines={1}>
               {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
             </Text>
             <OpenExternalIcon data-id="97f80f97cc2c" fill="transparent" stroke="black" />
@@ -204,7 +204,7 @@ const AnswerSquare = ({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
       </Flex>
     </Stack>)
   );
-};
+}
 
 export default AnswerSquare;
 

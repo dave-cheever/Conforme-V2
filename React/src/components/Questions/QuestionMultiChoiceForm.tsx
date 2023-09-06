@@ -22,7 +22,7 @@ const defaultValues: Partial<ITrackerQuestion<IQuestionChoice[]>> = {
   value: [{ label: '', isCorrect: false }],
 };
 
-const QuestionMultiChoiceForm = ({
+function QuestionMultiChoiceForm({
   questionType,
   editQuestionIndex,
   editableValue,
@@ -31,7 +31,7 @@ const QuestionMultiChoiceForm = ({
   setIsEdit,
   setEditQuestionIndex,
   setEditQuestion,
-}: IQuestionFormBase<IQuestionChoice[]>) => {
+}: IQuestionFormBase<IQuestionChoice[]>) {
   const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
@@ -321,7 +321,7 @@ const QuestionMultiChoiceForm = ({
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default QuestionMultiChoiceForm;
 

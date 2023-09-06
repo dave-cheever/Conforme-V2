@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import StatusSelector from '../StatusSelector';
 
-const WalkTypeFilter = () => {
+function WalkTypeFilter() {
   const { filtersValues, setFilters, auditStatuses } = useFiltersContext();
   const value = useMemo(() => filtersValues.status?.value, [filtersValues]) as string[];
 
@@ -22,6 +22,6 @@ const WalkTypeFilter = () => {
         status={auditStatuses} />
     </Box>)
   );
-};
+}
 
 export default WalkTypeFilter;

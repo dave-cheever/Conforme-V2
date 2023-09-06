@@ -49,7 +49,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const Team = () => {
+function Team() {
   const { user } = useAppContext();
   const { response, snapshot, refetch, updateResponse } = useResponseContext();
   const maxParticipants = 20;
@@ -152,7 +152,7 @@ const Team = () => {
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default Team;
 

@@ -3,8 +3,8 @@ import { Box, Text } from '@chakra-ui/react';
 import { Bar } from '../../icons';
 import { INavItem } from '../../interfaces/INavItem';
 
-const NavigationLeftSeperator = ({ label }: INavItem) => (
-  <Box
+function NavigationLeftSeperator({ label }: INavItem) {
+  return <Box
     alignContent="center"
     data-id="19810a631780"
     display="flex"
@@ -27,6 +27,6 @@ const NavigationLeftSeperator = ({ label }: INavItem) => (
       {label}
     </Text>
   </Box>
-);
+}
 
 export default NavigationLeftSeperator;

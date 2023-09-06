@@ -2,8 +2,8 @@ import { Avatar, Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 
 import { InvestigationWhiteIcon, MessageIcon, RedDotIcon } from '../icons';
 
-const AccidentInvestigationPanel = () => (
-  <Box
+function AccidentInvestigationPanel() {
+  return <Box
     borderRadius="lg"
     boxShadow="0px 4px 10px rgba(0, 0, 0, 0.05)"
     data-id="c2c25105f3d0"
@@ -114,6 +114,6 @@ const AccidentInvestigationPanel = () => (
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default AccidentInvestigationPanel;

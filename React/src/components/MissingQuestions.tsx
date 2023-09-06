@@ -3,8 +3,8 @@ import { t } from 'i18next';
 
 import { QuestionIcon } from '../icons';
 
-const MissingQuestions = ({ questionsLeft }: { questionsLeft: number }) => (
-  <Popover data-id="a3e118151585" placement="top" trigger="hover">
+function MissingQuestions({ questionsLeft }: { questionsLeft: number }) {
+  return <Popover data-id="a3e118151585" placement="top" trigger="hover">
     <PopoverTrigger data-id="f47055585d5e">
       <Flex align="center" data-id="4dbcc2fe92b6">
         <QuestionIcon color="white" data-id="7feacb3280c3" fill="brand.primary" mr={1} />
@@ -25,6 +25,6 @@ const MissingQuestions = ({ questionsLeft }: { questionsLeft: number }) => (
       </PopoverBody>
     </PopoverContent>
   </Popover>
-);
+}
 
 export default MissingQuestions;

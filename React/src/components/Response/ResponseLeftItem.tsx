@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-const ResponseLeftItem = ({ heading, value }: { heading: string; value: string }) => (
-  <Flex
+function ResponseLeftItem({ heading, value }: { heading: string; value: string }) {
+  return <Flex
     align="flex-start"
     data-id="d8074ffba067"
     flexDir="column"
@@ -18,6 +18,6 @@ const ResponseLeftItem = ({ heading, value }: { heading: string; value: string }
       {value || '-'}
     </Text>
   </Flex>
-);
+}
 
 export default ResponseLeftItem;

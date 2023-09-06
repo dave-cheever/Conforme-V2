@@ -5,7 +5,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { Home } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
-const AuditLeftNavigationMobile = () => {
+function AuditLeftNavigationMobile() {
   const { auditNavigationTabs } = useConfig();
   const { navigateTo } = useNavigate();
 
@@ -65,6 +65,6 @@ const AuditLeftNavigationMobile = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default AuditLeftNavigationMobile;

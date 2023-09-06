@@ -7,7 +7,7 @@ import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import { ArrowRight } from '../icons';
 
-const Login = () => {
+function Login() {
   const toast = useToast();
   const params = window.location.search.split('&');
   const { organizationConfig } = useAppContext();
@@ -185,7 +185,7 @@ const Login = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default Login;
 

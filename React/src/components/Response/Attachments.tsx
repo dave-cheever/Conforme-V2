@@ -21,7 +21,7 @@ const REMOVE_DOCUMENT = gql`
   }
 `;
 
-const Attachments = () => {
+function Attachments() {
   const { user } = useAppContext();
   const { response, snapshot, refetch } = useResponseContext();
 
@@ -87,6 +87,7 @@ const Attachments = () => {
                 action="responses.edit"
                 data={{ response }}
                 data-id="aca89066aa99"
+                // eslint-disable-next-line react/no-unstable-nested-components
                 yes={() => (
                   <DocumentUpload
                     callback={async (uploaded) => {
@@ -134,6 +135,6 @@ const Attachments = () => {
       )}
     </VStack>)
   );
-};
+}
 
 export default Attachments;

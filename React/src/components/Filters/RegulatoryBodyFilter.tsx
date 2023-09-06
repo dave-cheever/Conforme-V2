@@ -5,7 +5,7 @@ import { CheckboxGroup, Stack } from '@chakra-ui/react';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import FilterCheckBox from './FilterCheckBox';
 
-const RegulatoryBodyFilter = () => {
+function RegulatoryBodyFilter() {
   const { filtersValues, setFilters, regulatoryBodies } = useFiltersContext();
   const value = useMemo(() => filtersValues.regulatoryBodiesIds?.value, [filtersValues]) as string[];
 
@@ -21,6 +21,6 @@ const RegulatoryBodyFilter = () => {
       </Stack>
     </CheckboxGroup>)
   );
-};
+}
 
 export default RegulatoryBodyFilter;

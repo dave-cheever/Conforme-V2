@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import Dropzone, { FileRejection } from 'react-dropzone';
+import Dropzone, { Accept, FileRejection } from 'react-dropzone';
 
 import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
@@ -26,12 +26,16 @@ const REMOVE_DOCUMENT = gql`
   }
 `;
 
-const EvidenceExpected = ({ evidence }) => {
+function EvidenceExpected({ evidence }) {
   const toast = useToast();
   const { user } = useAppContext();
   const { response, snapshot, refetch } = useResponseContext();
-  const acceptedFileTypes = useMemo(
-    () => ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', 'image/*', '.zip', '.html', '.pptx', '.ppt', '.msg'],
+  const acceptedFileTypes = useMemo<Accept>(
+    () => ({
+      'application/*': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip'],
+      'images/*': [],
+      'text/*': ['.txt', '.html'],
+    }),
     [],
   );
   const [status, setStatus] = useState<'idle' | 'uploading' | 'rejected'>('idle');
@@ -141,6 +145,7 @@ const EvidenceExpected = ({ evidence }) => {
           action="responses.edit"
           data={{ response }}
           data-id="1038a8ac89ea"
+          // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
             <Dropzone
               accept={acceptedFileTypes}
@@ -196,12 +201,12 @@ const EvidenceExpected = ({ evidence }) => {
           fontSize="12px"
           fontWeight="bold"
           mt={2}>
-          Document not uploaded. Accepted file types include {acceptedFileTypes.map((file) => `${file} `)}
+          Document not uploaded. Accepted file types include '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip', '.txt', '.html' and all image types.
         </Flex>
       )}
     </Flex>)
   );
-};
+}
 
 export default EvidenceExpected;
 

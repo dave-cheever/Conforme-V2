@@ -1,19 +1,19 @@
-import { AuthenticationError } from 'apollo-server-express';
 import { isAfter, isBefore, parseISO, sub } from 'date-fns';
+import { GraphQLError } from 'graphql';
 
-import { IUser } from 'app-interfaces';
+import { IOrganization, IUser } from 'app-interfaces';
 import { Organizations } from 'app-models';
 import { sessionizeOrganization } from 'app-utils';
 
-const context = ({ req, res }) => {
-  const { organization } = req.session;
+const context = async ({ req, res }) => {
+  const { organization } = req.session || {};
 
   // Function to authorize user in GraphQL methods
   // Throws an error if session is not valid
   const authorize = async (): Promise<IUser> => {
     const { user } = req;
     if (!user)
-      throw new AuthenticationError('Invalid session');
+      throw new GraphQLError('Invalid session');
 
     // Check organization licence
     // And refresh organization in cookie once at 6 hours
@@ -28,7 +28,7 @@ const context = ({ req, res }) => {
         new Date(),
       );
       if (!isLicenceValid)
-        throw new AuthenticationError("Organization's licence expired");
+        throw new GraphQLError("Organization's licence expired");
 
       req.session.passport.licenceLastChecked = new Date();
       req.session.organization = sessionizeOrganization(latestOrganization);
@@ -45,3 +45,10 @@ const context = ({ req, res }) => {
 };
 
 export default context;
+
+export interface IContext {
+  req: any;
+  res: any;
+  organization: IOrganization;
+  authorize: () => Promise<IUser>;
+};

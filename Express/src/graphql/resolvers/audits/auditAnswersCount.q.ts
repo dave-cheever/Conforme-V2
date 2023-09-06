@@ -1,8 +1,10 @@
+import { PipelineStage } from 'mongoose';
+
 import { Questions } from 'app-models';
 
 const auditAnswersCount = async (_, { auditId }, { organization }) => {
   try {
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'scope._id': auditId,

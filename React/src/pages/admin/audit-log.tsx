@@ -33,7 +33,7 @@ const GET_AUDIT_LOGS = gql`
   }
 `;
 
-const AuditLog = () => {
+function AuditLog() {
   const dateLimit = useMemo(() => new Date(), []);
   const { settings } = useAppContext();
   const auditLogLimit = useMemo(() => {
@@ -153,6 +153,6 @@ const AuditLog = () => {
       </Flex>
     </Box>
   </>);
-};
+}
 
 export default AuditLog;

@@ -10,8 +10,8 @@ interface IStatusSelectorList {
   handleChange: (any) => void;
 }
 
-const StatusSelectorList = ({ filteredStatuses, selected, handleChange }: IStatusSelectorList) => (
-  <CheckboxGroup
+function StatusSelectorList({ filteredStatuses, selected, handleChange }: IStatusSelectorList) {
+  return <CheckboxGroup
     data-id="983702cfe6d8"
     onChange={(value) => handleChange({ target: { name: 'status', value } })}
     value={selected}>
@@ -25,6 +25,6 @@ const StatusSelectorList = ({ filteredStatuses, selected, handleChange }: IStatu
       ))}
     </Stack>
   </CheckboxGroup>
-);
+}
 
 export default StatusSelectorList;

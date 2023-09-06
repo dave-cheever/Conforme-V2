@@ -9,14 +9,14 @@ import { questionHeader } from '../../utils/helpers';
 import Checkbox from '../Forms/Checkbox';
 import TextInput from '../Forms/TextInput';
 
-const QuestionEmailForm = ({
+function QuestionEmailForm({
   questionType,
   addOrUpdateQuestion,
   setShowQuestionForm,
   setIsEdit,
   setEditQuestionIndex,
   setEditQuestion,
-}: IQuestionFormBase<string>) => {
+}: IQuestionFormBase<string>) {
   const { trackerItem } = useTrackerItemModalContext();
   const {
     control,
@@ -98,7 +98,7 @@ const QuestionEmailForm = ({
       </Button>
     </Flex>
   </>);
-};
+}
 
 export default QuestionEmailForm;
 

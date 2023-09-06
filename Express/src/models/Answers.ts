@@ -1,6 +1,6 @@
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
-import { model, Schema } from 'mongoose';
+import { model, PipelineStage, Schema } from 'mongoose';
 import pluralize from 'pluralize';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -175,7 +175,7 @@ answersSchema.statics.customCreate = async function (answer: IAnswer, userId: st
 
 answersSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IAnswer[]> {
   const { searchText, questionsCategoryId } = searchQuery;
-  const pipeline: any[] = [
+  const pipeline: PipelineStage[] = [
     {
       $match: {
         'metatags.removedAt': { $eq: null },

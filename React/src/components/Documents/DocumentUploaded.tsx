@@ -17,7 +17,7 @@ const GET_DOCUMENT_DETAILS = gql`
   }
 `;
 
-const DocumentUploaded = ({
+function DocumentUploaded({
   document,
   removable = false,
   deleteModalMessage,
@@ -31,7 +31,7 @@ const DocumentUploaded = ({
   downloadable?: boolean;
   callback?: () => Promise<void>;
   doNotAwaitCallback?: boolean;
-}) => {
+}) {
   const { data } = useQuery(GET_DOCUMENT_DETAILS, {
     variables: { filesDetailsQuery: { ids: [document?.id] } },
   });
@@ -122,7 +122,7 @@ const DocumentUploaded = ({
       </HStack>
     </Flex>
   </>);
-};
+}
 
 export default DocumentUploaded;
 

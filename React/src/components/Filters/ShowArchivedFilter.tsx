@@ -4,7 +4,7 @@ import { HStack, Switch, Text } from "@chakra-ui/react"
 
 import { useFiltersContext } from "../../contexts/FiltersProvider";
 
-const ShowArchivedFilter = () => {
+function ShowArchivedFilter() {
   const { filtersValues, setFilters } = useFiltersContext();
   const value = useMemo(() => (filtersValues.showArchived?.value), [filtersValues])
 

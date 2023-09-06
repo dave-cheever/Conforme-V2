@@ -25,7 +25,7 @@ import useDevice from '../../hooks/useDevice';
 import Loader from '../Loader';
 import ParticipantListItem from './ParticipantListItem';
 
-const ParticipantsModal = () => {
+function ParticipantsModal() {
   const device = useDevice();
   const {
     label,
@@ -183,7 +183,7 @@ const ParticipantsModal = () => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default ParticipantsModal;
 

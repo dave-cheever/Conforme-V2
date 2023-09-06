@@ -9,7 +9,7 @@ import QuestionMultiChoiceForm from './QuestionMultiChoiceForm';
 import QuestionSimpleForm from './QuestionSimpleForm';
 import QuestionSingleChoiceForm from './QuestionSingleChoiceForm';
 
-const QuestionForm = ({
+function QuestionForm({
   setShowQuestionForm,
   questionType,
   addOrUpdateQuestion,
@@ -18,8 +18,8 @@ const QuestionForm = ({
   setEditQuestionIndex,
   setEditQuestion,
   editQuestionIndex,
-}) => (
-  <Flex
+}) {
+  return <Flex
     bg="questionForm.bg"
     boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
     data-id="b6307f532a44"
@@ -79,7 +79,7 @@ const QuestionForm = ({
         setShowQuestionForm={setShowQuestionForm} />
     )}
   </Flex>
-);
+}
 
 export default QuestionForm;
 

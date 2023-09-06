@@ -26,7 +26,7 @@ const GET_QUESTIONS_CATEGORIES = gql`
   }
 `;
 
-const Insights = () => {
+function Insights() {
   const { data, loading, error } = useQuery(GET_QUESTIONS_CATEGORIES, {
     variables: {
       questionsCategoryQuery: {
@@ -146,7 +146,7 @@ const Insights = () => {
       )}
     </Flex>)
   );
-};
+}
 
 export default Insights;
 

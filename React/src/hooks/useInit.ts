@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { initReactI18next } from 'react-i18next';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import i18n from 'i18next';
@@ -68,7 +68,7 @@ const useInit = () => {
   const { loading: loadingSettings, error: settingsError, data: settingsData } = useQuery(SETTINGS);
   const { loading: loadingOrganization, error: organizationError, data: organizationData } = useQuery(ORGANIZATION);
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (settingsData) {
@@ -90,7 +90,7 @@ const useInit = () => {
       let module = organization.modules.find((m) => m.path === modulePath);
       if (!module) {
         [module] = organization.modules;
-        history.push(module.path);
+        navigate(module.path);
       }
 
       setModule(module);

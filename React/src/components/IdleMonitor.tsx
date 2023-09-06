@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useInterval from 'react-useinterval';
 
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useToast } from '@chakra-ui/react';
@@ -16,9 +16,9 @@ const events = ['mousemove', 'click', 'keypress'];
 let idleEvent: NodeJS.Timeout;
 let idleLogoutEvent: NodeJS.Timeout;
 
-const IdleMonitor = () => {
+function IdleMonitor() {
   const toast = useToast();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { user, setUser } = useAppContext();
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(timeBeforeSessionEnds);
@@ -73,7 +73,7 @@ const IdleMonitor = () => {
     };
     localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
     setUser(null);
-    history.push('/logout');
+    navigate('/logout');
   };
 
   const setTimers = async () => {
@@ -104,7 +104,7 @@ const IdleMonitor = () => {
   }, [modalIsOpen]);
 
   return (
-    (<Modal data-id="f0b0579fe21d" isOpen={modalIsOpen} onClose={() => {}}>
+    (<Modal data-id="f0b0579fe21d" isOpen={modalIsOpen} onClose={() => { }}>
       <ModalOverlay data-id="fe54873c4303" />
       <ModalContent data-id="03d2d7be8a84">
         <ModalHeader data-id="682364375995" fontSize="lg" fontWeight="bold">
@@ -127,6 +127,6 @@ const IdleMonitor = () => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default IdleMonitor;

@@ -68,7 +68,7 @@ const GET_USERS_ANSWERS_INSIGHTS = gql`
   }
 `;
 
-const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
+function AnswersInsights({ answerType, questionsCategoriesId }) {
   const { filtersValues, setFilters, answerFiltersValue, setAnswerFiltersValue, usedFilters } = useFiltersContext();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS_INSIGHTS, {
     variables: {
@@ -259,7 +259,7 @@ const AnswersInsights = ({ answerType, questionsCategoriesId }) => {
       )}
     </Box>)
   );
-};
+}
 
 export default AnswersInsights;
 

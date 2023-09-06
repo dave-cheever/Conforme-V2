@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
@@ -95,10 +95,10 @@ const GET_ACTIONS = gql`
   }
 `;
 
-const Actions = () => {
+function Actions() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
   const {
     filtersValues,
@@ -117,7 +117,7 @@ const Actions = () => {
     // If id is in URL params, clean it
     if (queryParams.has('id')) {
       queryParams.delete('id');
-      history.replace({
+      navigate({
         search: queryParams.toString(),
       });
     }
@@ -203,7 +203,7 @@ const Actions = () => {
 
   useEffect(() => {
     if (data && data?.actions && !error) {
-      const items = [...data?.actions];
+      const items = [...(data?.actions || [])];
 
       setFilteredActions(items);
     }
@@ -247,7 +247,7 @@ const Actions = () => {
 
   useEffect(() => {
     if (data && data?.actions && !error) {
-      const items = [...data?.actions];
+      const items = [...(data?.actions || [])];
       setFilteredActions(items);
 
       // Open modal with action from the URL params
@@ -305,32 +305,30 @@ const Actions = () => {
         viewMode={viewMode}
         views={['grid', 'list']} />
       {device !== 'mobile' && (
-        <>
-          <CSVLink
-            data={csvData}
-            data-id="b48e84287463"
-            filename="actions.csv"
-            headers={csvHeaders}
-            target="_blank">
-            <Button
-              _hover={{
-                bg: 'reasponseHeader.buttonLightBgHover',
-                color: 'reasponseHeader.buttonLightColorHover',
-                cursor: 'pointer',
-                '&:hover svg path': { stroke: 'white' },
-              }}
-              bg="white"
-              borderRadius="10px"
-              data-id="d7abc5e71d44"
-              display="none"
-              ml="15px"
-              rightIcon={<ExportIcon data-id="ea0f6b5ff60c" height="15px" width="15px" />}>
-              <Text data-id="e56aeaf3231f" fontSize="smm" fontWeight="bold">
-                Export
-              </Text>
-            </Button>
-          </CSVLink>
-        </>
+        <CSVLink
+          data={csvData}
+          data-id="b48e84287463"
+          filename="actions.csv"
+          headers={csvHeaders}
+          target="_blank">
+          <Button
+            _hover={{
+              bg: 'reasponseHeader.buttonLightBgHover',
+              color: 'reasponseHeader.buttonLightColorHover',
+              cursor: 'pointer',
+              '&:hover svg path': { stroke: 'white' },
+            }}
+            bg="white"
+            borderRadius="10px"
+            data-id="d7abc5e71d44"
+            display="none"
+            ml="15px"
+            rightIcon={<ExportIcon data-id="ea0f6b5ff60c" height="15px" width="15px" />}>
+            <Text data-id="e56aeaf3231f" fontSize="smm" fontWeight="bold">
+              Export
+            </Text>
+          </Button>
+        </CSVLink>
       )}
       <SortButton
         data-id="19893118c24d"
@@ -422,7 +420,7 @@ const Actions = () => {
       )}
     </Flex>
   </>);
-};
+}
 
 export default Actions;
 

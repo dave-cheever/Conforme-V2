@@ -12,7 +12,7 @@ import { IActionUserFilter, IAnswerUserFilter, IAuditUserFilter, IUserFilter } f
 import { IUser } from '../../interfaces/IUser';
 import UsersSelector from '../UsersSelector';
 
-const UserFilter = () => {
+function UserFilter() {
   const { module } = useAppContext();
   const location = useLocation();
   const { getPath } = useNavigate();
@@ -385,6 +385,6 @@ const UserFilter = () => {
         users={users as IUser[]} />
     </Box>)
   );
-};
+}
 
 export default UserFilter;

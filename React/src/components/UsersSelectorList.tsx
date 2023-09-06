@@ -13,8 +13,8 @@ interface IUsersSelectorList {
   handleChange: (any) => void;
 }
 
-const UsersSelectorList = ({ filteredUsers, selected, selectedRole, handleChange }: IUsersSelectorList) => (
-  <CheckboxGroup
+function UsersSelectorList({ filteredUsers, selected, selectedRole, handleChange }: IUsersSelectorList) {
+  return <CheckboxGroup
     data-id="052c105327fe"
     onChange={(value) => handleChange({ target: { userRole: selectedRole, value } })}
     value={selected ?? []}>
@@ -24,6 +24,6 @@ const UsersSelectorList = ({ filteredUsers, selected, selectedRole, handleChange
       ))}
     </Stack>
   </CheckboxGroup>
-);
+}
 
 export default UsersSelectorList;

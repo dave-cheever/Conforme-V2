@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
@@ -14,8 +14,8 @@ import Can from '../can';
 import NavigationLeftItem from './NavigationLeftItem';
 import NavigationLeftItemTablet from './NavigationLeftItemTablet';
 
-const NavigationLeft = () => {
-  const history = useHistory();
+function NavigationLeft() {
+  const location = useLocation();
   const { navigateTo, isPathActive } = useNavigate();
   const { cleanFilters, showFiltersPanel } = useFiltersContext();
   const { module } = useAppContext();
@@ -26,10 +26,10 @@ const NavigationLeft = () => {
 
   useEffect(() => {
     if (!(isPathActive('/', { exact: true }) || isPathActive('/items'))) cleanFilters();
-  }, [history.location.pathname]);
+  }, [location.pathname]);
 
-  return (<>
-    <Box
+  return (
+    (<Box
       bg="navigationLeft.bg"
       data-id="47c28dc91b51"
       display={['none', 'block', 'block']}
@@ -67,6 +67,7 @@ const NavigationLeft = () => {
               action={menuItem.permission}
               data-id="29d2a3cc89b6"
               key={`menu${i}`}
+              // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => {
                 if (device === 'desktop') return <NavigationLeftItem data-id="e93f85db199f" menuItem={menuItem} />;
 
@@ -81,7 +82,7 @@ const NavigationLeft = () => {
                       subsectionOpen={subsectionOpen} />)
                   );
                 }
-                return <></>;
+                return <Box data-id="6283424152e0" />;
               }} />
           ))}
         </Box>
@@ -103,9 +104,9 @@ const NavigationLeft = () => {
           ml="20px"
           w="27px" />}
       </Flex>
-    </Box>
-  </>);
-};
+    </Box>)
+  );
+}
 
 export default NavigationLeft;
 

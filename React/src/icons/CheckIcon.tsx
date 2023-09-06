@@ -1,6 +1,6 @@
 import { Icon } from '@chakra-ui/icons';
 
-const CheckIcon = (props) => {
+function CheckIcon(props) {
   const { isIndeterminate, isChecked, ...rest } = props;
   return (
     (<Icon data-id="6b3e5cba1aa6" viewBox="0 0 18 13" {...rest}>
@@ -12,6 +12,6 @@ const CheckIcon = (props) => {
         strokeLinejoin="round" />
     </Icon>)
   );
-};
+}
 
 export default CheckIcon;

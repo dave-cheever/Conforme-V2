@@ -1,11 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { Prompt } from 'react-router-dom';
+import { unstable_usePrompt as usePrompt } from 'react-router-dom';
 
 import { Box, Flex, Grid, Stack, Text } from '@chakra-ui/react';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
-import usePrompt from '../../hooks/usePrompt';
 import { MessageSquareIcon } from '../../icons';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 import { isPermitted } from '../can';
@@ -17,7 +16,7 @@ const styles = {
   },
 };
 
-const ResponseQuestions = ({ disabled = false }) => {
+function ResponseQuestions({ disabled = false }) {
   const { user } = useAppContext();
   const { response, snapshot, snapshots, setIsQuestionFormDirty, isQuestionFormDirty, activeTab, questionsForm } = useResponseContext();
   const isUserPermitted = useMemo(
@@ -40,26 +39,29 @@ const ResponseQuestions = ({ disabled = false }) => {
     reset(
       questions?.reduce(
         (acc, { name, value }) =>
-          ({
-            ...acc,
-            [name]: value || '',
-          } as { [name: string]: TQuestionValue }),
+        ({
+          ...acc,
+          [name]: value || '',
+        } as { [name: string]: TQuestionValue }),
         {} as { [name: string]: TQuestionValue },
       ),
     );
   }, [JSON.stringify(questions)]);
 
-  usePrompt(isQuestionFormDirty, 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?');
+  usePrompt({
+    when: isQuestionFormDirty,
+    message: 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?',
+  });
   useEffect(() => {
     setIsQuestionFormDirty(isDirty);
   }, [isDirty]);
 
   if (!response) return null;
   return (<>
-    <Prompt
+    {/* <Prompt
       data-id="714a60514a03"
       message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
-      when={isQuestionFormDirty} />
+      when={isQuestionFormDirty} /> */}
     <Stack data-id="31585380bbdd" minH={['80vh', 0]} mt={2} spacing={4} w="full">
       <Grid data-id="076e558d5eec" gap={4} templateColumns="1fr" w={['full', '80%']}>
         {questions.length === 0 && (
@@ -114,7 +116,7 @@ const ResponseQuestions = ({ disabled = false }) => {
       </Grid>
     </Stack>
   </>);
-};
+}
 
 export default ResponseQuestions;
 

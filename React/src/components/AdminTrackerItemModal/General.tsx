@@ -11,7 +11,7 @@ import { Datepicker, Dropdown, Textarea, TextInput } from '../Forms';
 import AddTrackerItemAttribute from './AddTrackerItemAttribute';
 import SectionHeader from './SectionHeader';
 
-const GeneralForm = () => {
+function GeneralForm() {
   const { trackerItem, control, categories, regulatoryBodies, setValue, refetch } = useTrackerItemModalContext();
 
   const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
@@ -213,6 +213,6 @@ const GeneralForm = () => {
       </Box>
     </Stack>
   </>);
-};
+}
 
 export default GeneralForm;

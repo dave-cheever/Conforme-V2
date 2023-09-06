@@ -13,7 +13,7 @@ interface ISitesSelector {
   handleChange: (any) => void;
 }
 
-const StatusSelector = ({ status, selected, note, disabled, handleChange }: ISitesSelector) => {
+function StatusSelector({ status, selected, note, disabled, handleChange }: ISitesSelector) {
   const [filteredStatuses, setFilteredStatuses] = useState<string[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
@@ -85,7 +85,7 @@ const StatusSelector = ({ status, selected, note, disabled, handleChange }: ISit
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default StatusSelector;
 

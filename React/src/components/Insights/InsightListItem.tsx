@@ -10,7 +10,7 @@ import { IUser } from '../../interfaces/IUser';
 import UserAvatar from '../UserAvatar';
 import InsightCount from './InsightCount';
 
-const InsightListItem = ({
+function InsightListItem({
   item,
   light = true,
   questionsCategoriesId,
@@ -22,7 +22,7 @@ const InsightListItem = ({
   questionsCategoriesId?: string;
   insightsType?: 'audits' | 'actions' | 'answers';
   insightsModel?: 'users' | 'businessUnits' | 'locations';
-}) => {
+}) {
   const { navigateTo } = useNavigate();
   const { setAuditFiltersValue, setAnswerFiltersValue, setActionFiltersValue } = useFiltersContext();
 
@@ -199,6 +199,6 @@ const InsightListItem = ({
       </Grid>
     </Flex>)
   );
-};
+}
 
 export default InsightListItem;

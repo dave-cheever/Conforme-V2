@@ -14,7 +14,7 @@ import { isPermitted } from '../../components/can';
 import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
 
-const Audit = () => {
+function Audit() {
   const { user } = useAppContext();
   const { audit, questions, questionsCategories, selectedQuestion, setSelectedQuestion, customQuestionsCategories, refetch } =
     useAuditContext();
@@ -75,39 +75,37 @@ const Audit = () => {
             </Button>
           )}
       </HStack>
-      {!(selectedQuestion && !isDeleteQuestionModalOpen && Object.entries(questions).length > 0) && (
-        <>
-          {selectedQuestion || Object.entries(questions).length > 0 ? (
-            <Stack
-              data-id="1af66393863d"
-              overflow="auto"
-              pb="25px"
-              spacing={4}
-              w="calc(100% + 10px)">
-              {questionsCategories.map((category) => (
-                <AuditQuestionsCategory
-                  data-id="33976db3c41f"
-                  handleDelete={handleDeleteQuestionModalOpen}
-                  key={category._id}
-                  questionsCategory={category} />
-              ))}
-            </Stack>
-          ) : (
-            <Box
-              bg="white"
-              data-id="dbfbbf293b7e"
-              fontSize="18px"
-              fontStyle="italic"
-              h="auto"
-              px={6}
-              py={6}
-              rounded="20px"
-              w="full">
-              <Text data-id="8c70f4497ca3">No {pluralize(t('question'))} found</Text>
-            </Box>
-          )}
-        </>
-      )}
+      {!(selectedQuestion && !isDeleteQuestionModalOpen && Object.entries(questions).length > 0) ? (
+        selectedQuestion || Object.entries(questions).length > 0 ? (
+          <Stack
+            data-id="1af66393863d"
+            overflow="auto"
+            pb="25px"
+            spacing={4}
+            w="calc(100% + 10px)">
+            {questionsCategories.map((category) => (
+              <AuditQuestionsCategory
+                data-id="33976db3c41f"
+                handleDelete={handleDeleteQuestionModalOpen}
+                key={category._id}
+                questionsCategory={category} />
+            ))}
+          </Stack>
+        ) : (
+          <Box
+            bg="white"
+            data-id="dbfbbf293b7e"
+            fontSize="18px"
+            fontStyle="italic"
+            h="auto"
+            px={6}
+            py={6}
+            rounded="20px"
+            w="full">
+            <Text data-id="8c70f4497ca3">No {pluralize(t('question'))} found</Text>
+          </Box>
+        )
+      ) : ''}
       {selectedQuestion && !isDeleteQuestionModalOpen && (
         <AuditAnswer
           data-id="38eba759a866"
@@ -119,7 +117,7 @@ const Audit = () => {
       )}
     </Stack>)
   );
-};
+}
 
 export default Audit;
 

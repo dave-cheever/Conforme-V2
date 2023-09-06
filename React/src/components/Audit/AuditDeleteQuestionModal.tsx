@@ -3,7 +3,7 @@ import { t } from 'i18next';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 
-const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
+function AuditDeleteQuestionModal({ isOpen, onClose }) {
   const { selectedQuestion, deleteQuestion, deleteAnswer, refetch } = useAuditContext();
 
   if (!selectedQuestion) return null;
@@ -60,7 +60,7 @@ const AuditDeleteQuestionModal = ({ isOpen, onClose }) => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export const auditNewQuestionModalStyles = {
   auditNewQuestionModal: {

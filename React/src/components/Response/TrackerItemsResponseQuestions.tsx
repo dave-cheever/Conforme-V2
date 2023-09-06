@@ -14,8 +14,8 @@ const defaultValues = {
   multitask: '',
 };
 
-const SectionNumber = ({ value }: any) => (
-  <Box
+function SectionNumber({ value }: any) {
+  return <Box
     bg="TrackerItemsResponseQuestions.sectionNumber.bg"
     borderRadius="8px"
     color="TrackerItemsResponseQuestions.sectionNumber.color"
@@ -29,9 +29,9 @@ const SectionNumber = ({ value }: any) => (
     w="38px">
     {value}
   </Box>
-);
+}
 
-const TrackerItemsResponseQuestions = () => {
+function TrackerItemsResponseQuestions() {
   const { control } = useForm({
     mode: 'all',
     defaultValues,
@@ -123,7 +123,7 @@ const TrackerItemsResponseQuestions = () => {
       </Flex>
     </Stack>)
   );
-};
+}
 
 export default TrackerItemsResponseQuestions;
 

@@ -30,7 +30,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Dropdown = ({
+function Dropdown({
   control,
   name,
   stroke,
@@ -46,7 +46,7 @@ const Dropdown = ({
   Icon,
   onAction,
   attributeType,
-}: IDropdown) => {
+}: IDropdown) {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     (<Controller
@@ -170,7 +170,7 @@ const Dropdown = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export const dropdownStyles = {
   dropdown: {

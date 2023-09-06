@@ -7,12 +7,12 @@ import { useParticipantsModalContext } from '../../contexts/ParticipantsModalPro
 import { ReplaceIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 
-const ParticipantAvatar = ({
+function ParticipantAvatar({
   user,
   ...props
 }: {
   user: IUser;
-} & any) => {
+} & any) {
   const { openParticipantsModal, openParticipantDeleteModal, canDelete, isUserAllowedToChange, setParticipantToDelete } =
     useParticipantsModalContext();
   const { displayName, imgUrl } = user;
@@ -80,7 +80,7 @@ const ParticipantAvatar = ({
       </Text>
     </Flex>)
   );
-};
+}
 
 export default ParticipantAvatar;
 

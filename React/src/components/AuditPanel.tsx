@@ -10,8 +10,8 @@ interface IAuditPanel {
   open: () => void;
 }
 
-const AuditPanel = ({ isMentioned, open }: IAuditPanel) => (
-  <Box
+function AuditPanel({ isMentioned, open }: IAuditPanel) {
+  return <Box
     borderRadius="lg"
     data-id="2802dd0905e3"
     h="312px"
@@ -151,6 +151,6 @@ const AuditPanel = ({ isMentioned, open }: IAuditPanel) => (
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default AuditPanel;

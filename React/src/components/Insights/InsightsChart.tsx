@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import { EChartsOption, init } from 'echarts';
 import type { ECharts } from 'echarts';
 
-const InsightsChart = ({ option }: { option: EChartsOption }) => {
+function InsightsChart({ option }: { option: EChartsOption }) {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,6 +25,6 @@ const InsightsChart = ({ option }: { option: EChartsOption }) => {
   }, [option]);
 
   return <Box data-id="e5e3baeb8589" h="500px" ref={chartRef} w="100%" />;
-};
+}
 
 export default InsightsChart;

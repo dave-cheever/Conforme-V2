@@ -4,8 +4,8 @@ import AreaToInspect from './AreaToInspect';
 import AuditorSearchBar from './AuditorSearchBar';
 import SelectedAuditors from './SelectedAuditors';
 
-const ParticipantsSection = () => (
-  <>
+function ParticipantsSection() {
+  return <>
     <Text
       color="auditModal.participants.text"
       data-id="aba1fcd888bb"
@@ -90,6 +90,6 @@ const ParticipantsSection = () => (
       </Box>
     </SimpleGrid>
   </>
-);
+}
 
 export default ParticipantsSection;

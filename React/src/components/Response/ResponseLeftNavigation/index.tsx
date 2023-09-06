@@ -36,7 +36,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const ResponseLeftNavigation = () => {
+function ResponseLeftNavigation() {
   const { navigateTo } = useNavigate();
   const toast = useToast();
   const { module } = useAppContext();
@@ -212,7 +212,7 @@ const ResponseLeftNavigation = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default ResponseLeftNavigation;
 

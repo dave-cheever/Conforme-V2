@@ -6,6 +6,7 @@ import useValidate from '../../hooks/useValidate';
 import { Asterisk } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
+import SwitchButton from './SwitchButton';
 
 interface ISwitch extends IField {
   placeholder?: string;
@@ -20,40 +21,9 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Switch = ({ control, name, label, required, requiredAnswer, notApplicable, disabled, validations = {} }: ISwitch) => {
+function Switch({ control, name, label, required, requiredAnswer, notApplicable, disabled, validations = {} }: ISwitch) {
   const validate = useValidate(label || name, validations, definedValidations);
 
-  const RenderButton = ({ laterality, value, onchange, name, requiredAnswer }) => (
-    <Button
-      _hover={disabled ? {} : { bg: 'switch.activebtn.bg', color: 'switch.activebtn.color' }}
-      bg={
-        laterality === 'left' && value === 'yes'
-          ? 'switch.activebtn.bg'
-          : laterality === 'right' && value === 'no'
-          ? 'switch.activebtn.bg'
-          : 'switch.btn.bg'
-      }
-      color={
-        laterality === 'left' && value === 'yes'
-          ? 'switch.activebtn.color'
-          : laterality === 'right' && value === 'no'
-          ? 'switch.activebtn.color'
-          : 'switch.btn.color'
-      }
-      data-id="9c2ec21293ba"
-      disabled={requiredAnswer === 'na' || disabled}
-      fontSize="smm"
-      fontWeight="bold"
-      name={name}
-      onClick={() => {
-        if (disabled) return;
-        if ((laterality === 'left' && value === 'yes') || (laterality === 'right' && value === 'no')) onchange('');
-        else onchange(laterality === 'left' ? 'yes' : 'no');
-      }}
-      p="10px 20px">
-      {laterality === 'left' ? 'Yes' : 'No'}
-    </Button>
-  );
   return (
     (<Controller
       control={control}
@@ -106,16 +76,18 @@ const Switch = ({ control, name, label, required, requiredAnswer, notApplicable,
               )}
             </Text>
             <Flex data-id="5d9cb745744b">
-              <RenderButton
+              <SwitchButton
                 data-id="3e6a1e2bf6cb"
+                disabled={disabled}
                 laterality="left"
                 name={name}
                 onchange={onChange}
                 requiredAnswer={requiredAnswer}
                 value={value} />
               &nbsp;&nbsp;
-              <RenderButton
+              <SwitchButton
                 data-id="00117738024f"
+                disabled={disabled}
                 laterality="right"
                 name={name}
                 onchange={onChange}
@@ -163,7 +135,7 @@ const Switch = ({ control, name, label, required, requiredAnswer, notApplicable,
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default Switch;
 

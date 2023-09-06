@@ -16,7 +16,7 @@ import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
 
-const ResponseLayout = ({ component: Component }: { component: any }) => {
+function ResponseLayout({ component: Component }: { component: any }) {
   const { loading, response } = useResponseContext();
   const { isOpenMessage, handleCloseMessage, handleOpenMessage } = useChatContext();
   const device = useDevice();
@@ -93,7 +93,7 @@ const ResponseLayout = ({ component: Component }: { component: any }) => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export const responseLayoutStyles = {
   responseLayout: {
@@ -101,14 +101,14 @@ export const responseLayoutStyles = {
   },
 };
 
-const ResponseLayoutWithContext = (props) => (
-  <ResponseProvider data-id="4f11d34b7362" {...props}>
+function ResponseLayoutWithContext(props) {
+  return <ResponseProvider data-id="4f11d34b7362" {...props}>
     <ShareProvider data-id="a843725a1f17">
       <ChatProvider component="response" data-id="47ee6248619d">
         <ResponseLayout data-id="c6b32501edef" {...props} />
       </ChatProvider>
     </ShareProvider>
   </ResponseProvider>
-);
+}
 
 export default ResponseLayoutWithContext;

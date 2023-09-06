@@ -6,7 +6,7 @@ import { TrackerItemModalContext } from '../../contexts/TrackerItemModalProvider
 import useTrackerItemModal from '../../hooks/useTrackerItemModal';
 import { CrossIcon } from '../../icons';
 
-const DeleteTrackerItemModal = ({ refetch }) => {
+function DeleteTrackerItemModal({ refetch }) {
   const { trackerItem } = useContext(TrackerItemModalContext);
   const { deleteTrackerItem, closeModal } = useTrackerItemModal(refetch);
 
@@ -79,7 +79,7 @@ const DeleteTrackerItemModal = ({ refetch }) => {
       </Flex>
     </ModalContent>)
   );
-};
+}
 
 export const deleteTrackerItemModalStyles = {
   deleteTrackerItemModal: {

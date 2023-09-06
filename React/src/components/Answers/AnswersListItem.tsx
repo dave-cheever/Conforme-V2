@@ -7,7 +7,7 @@ import { IAnswer } from '../../interfaces/IAnswer';
 import Can from '../can';
 import AnswerDeleteModal from './AnswerDeleteModal';
 
-const AnswersListItem = ({
+function AnswersListItem({
   answer,
   refetchAnswers,
   editAnswer,
@@ -15,7 +15,7 @@ const AnswersListItem = ({
   answer: IAnswer;
   refetchAnswers: () => void;
   editAnswer: (answer: IAnswer) => void;
-}) => {
+}) {
   const { audit } = answer;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -217,6 +217,7 @@ const AnswersListItem = ({
             action="answers.delete"
             data={{ answer, audit }}
             data-id="4d29e40e07be"
+            // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <IconButton
                 _hover={{ opacity: 0.7 }}
@@ -232,6 +233,6 @@ const AnswersListItem = ({
       </Flex>
     </Box>
   </>);
-};
+}
 
 export default AnswersListItem;

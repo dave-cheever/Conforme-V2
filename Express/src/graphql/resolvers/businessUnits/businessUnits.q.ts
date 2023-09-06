@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Actions, Answers, Audits, BusinessUnits, Responses, Users } from 'app-models';
 import { doesPathExist, getActionStatus, join } from 'app-utils';
@@ -18,7 +19,7 @@ const businessUnits = async (
       businessUnits.map(async (businessUnit) => {
         if (shouldJoin('trackerItemsResponsesCount')) {
           // eslint-disable-next-line no-async-promise-executor
-          const pipeline: any[] = [
+          const pipeline: PipelineStage[] = [
             {
               $match: {
                 businessUnitId: businessUnit._id,
@@ -82,7 +83,7 @@ const businessUnits = async (
 
         // Inject actions count
         const getActionsCount = async (selector: object = {}) => {
-          const pipeline: any[] = [
+          const pipeline: PipelineStage[] = [
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
@@ -141,7 +142,7 @@ const businessUnits = async (
         // Inject answers stats
         if (businessUnitsAnswersCountInput?.questionsCategoriesId) {
           const getAnswersCount = async (selector: object = {}) => {
-            const pipeline: any[] = [
+            const pipeline: PipelineStage[] = [
               {
                 $match: {
                   'metatags.removedAt': { $eq: null },

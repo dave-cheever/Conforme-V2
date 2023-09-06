@@ -4,8 +4,8 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import Header from '../components/Header';
 
-const Terms = () => (
-  <Flex data-id="a24cd4541fa6" direction="column" h="full" w="full">
+function Terms() {
+  return <Flex data-id="a24cd4541fa6" direction="column" h="full" w="full">
     <Header
       breadcrumbs={['Home', 'Terms and conditions']}
       data-id="41d6581d9a09"
@@ -26,6 +26,6 @@ const Terms = () => (
       </Text>
     </Flex>
   </Flex>
-);
+}
 
 export default Terms;

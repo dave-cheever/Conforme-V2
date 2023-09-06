@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Comments } from 'app-models';
 import { doesPathExist, getProjectFields, join } from 'app-utils';
@@ -8,7 +9,7 @@ const comments = async (_, { _id }, __, info: GraphQLResolveInfo) => {
     doesPathExist(info.fieldNodes, ['comments', ...elements]);
 
   try {
-    const pipeline: any[] = [];
+    const pipeline: PipelineStage[] = [];
 
     if (_id) {
       pipeline.push({

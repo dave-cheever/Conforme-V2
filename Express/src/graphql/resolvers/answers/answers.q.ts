@@ -11,6 +11,7 @@ import {
   startOfYear,
 } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Answers, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
@@ -19,7 +20,7 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['answers', ...elements]);
   try {
     const user = await authorize();
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': { $eq: null },

@@ -4,7 +4,7 @@ import { Box, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { actionsInsightsTypes, auditsInsightsTypes, insightsCardsDotsPosition } from '../../bootstrap/config';
 import { InsightsCardDots } from '../../icons';
 
-const InsightsCard = ({
+function InsightsCard({
   count,
   onSelect,
   selected = false,
@@ -16,8 +16,8 @@ const InsightsCard = ({
   selected?: boolean;
   status: string;
   type?: 'audits' | 'actions';
-}) => (
-  <Flex
+}) {
+  return <Flex
     align="center"
     cursor="pointer"
     data-id="9b1cfd24a456"
@@ -78,7 +78,7 @@ const InsightsCard = ({
       </Icon>
     )}
   </Flex>
-);
+}
 
 export default InsightsCard;
 

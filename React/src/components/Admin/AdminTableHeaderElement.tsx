@@ -2,7 +2,7 @@ import { Flex, Text, Tooltip } from '@chakra-ui/react';
 
 import { ArrowDownIcon, ArrowUpIcon } from '../../icons';
 
-const AdminTableHeaderElement = ({
+function AdminTableHeaderElement({
   w,
   ml,
   label,
@@ -18,8 +18,8 @@ const AdminTableHeaderElement = ({
   sortOrder?: 'asc' | 'desc';
   showSortingIcon?: boolean;
   tooltip?: string;
-}) => (
-  <Flex
+}) {
+  return <Flex
     alignItems="center"
     cursor="pointer"
     data-id="43a1f6d144cf"
@@ -45,7 +45,7 @@ const AdminTableHeaderElement = ({
         ml="10px" />
     )}
   </Flex>
-);
+}
 
 export default AdminTableHeaderElement;
 

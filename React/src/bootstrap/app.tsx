@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
@@ -20,12 +20,12 @@ function App() {
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
-  const { history } = useNavigate();
+  const { navigate } = useNavigate();
 
   // Redirect to last path
   useEffect(() => {
     const redirectPath = localStorage.getItem('redirectUrl');
-    if (redirectPath) history.push(redirectPath);
+    if (redirectPath) navigate(redirectPath);
     localStorage.removeItem('redirectUrl');
   }, []);
 
@@ -56,23 +56,23 @@ function App() {
       {user && <IdleMonitor data-id="70d9b5aff63a" />}
       <AdminProvider data-id="3936a5fd8325">
         <FiltersProvider data-id="c63426c7a6be">
-          <Switch data-id="f7c0226baff0">
+          <Routes data-id="f7c0226baff0">
             {routes.map((props) => (
               <Route data-id="bb5c7c440edc" {...props} />
             ))}
-          </Switch>
+          </Routes>
         </FiltersProvider>
       </AdminProvider>
     </ChakraProvider>)
   );
 }
 
-const AppWithContext = () => (
-  <AppProvider data-id="1485cd05cde6">
+function AppWithContext() {
+  return <AppProvider data-id="1485cd05cde6">
     <ConfigProvider data-id="f93a4ac1fd0d">
       <App data-id="59ebca745f27" />
     </ConfigProvider>
   </AppProvider>
-);
+}
 
 export default AppWithContext;

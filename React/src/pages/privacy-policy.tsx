@@ -4,8 +4,8 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import Header from '../components/Header';
 
-const PrivacyPolicy = () => (
-  <Flex data-id="0817a5361b86" direction="column" h="full" w="full">
+function PrivacyPolicy() {
+  return <Flex data-id="0817a5361b86" direction="column" h="full" w="full">
     <Header
       breadcrumbs={['Home', 'Privacy policy']}
       data-id="64a15d61b160"
@@ -26,6 +26,6 @@ const PrivacyPolicy = () => (
       </Text>
     </Flex>
   </Flex>
-);
+}
 
 export default PrivacyPolicy;

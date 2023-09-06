@@ -16,7 +16,7 @@ import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
 
-const AuditLayout = ({ component: Component }: { component: any }) => {
+function AuditLayout({ component: Component }: { component: any }) {
   const { loading, audit } = useAuditContext();
   const { isOpenMessage, handleCloseMessage, handleOpenMessage } = useChatContext();
   const device = useDevice();
@@ -93,16 +93,16 @@ const AuditLayout = ({ component: Component }: { component: any }) => {
       </Flex>
     </Flex>)
   );
-};
+}
 
-const AuditWithContext = (props) => (
-  <AuditProvider data-id="961e1e8853a6" {...props}>
+function AuditWithContext(props) {
+  return <AuditProvider data-id="961e1e8853a6" {...props}>
     <ShareProvider data-id="8fa03651f49b">
       <ChatProvider component="audit" data-id="dc3f74a8e3a3">
         <AuditLayout data-id="8ac286791a03" {...props} />
       </ChatProvider>
     </ShareProvider>
   </AuditProvider>
-);
+}
 
 export default AuditWithContext;

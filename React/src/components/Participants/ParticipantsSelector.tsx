@@ -7,7 +7,7 @@ import { IUser } from '../../interfaces/IUser';
 import ParticipantsDeleteModal from './ParticipantsDeleteModal';
 import ParticipantsModal from './ParticipantsModal';
 
-const ParticipantsSelector = ({
+function ParticipantsSelector({
   children,
   label,
   maxParticipants,
@@ -23,7 +23,7 @@ const ParticipantsSelector = ({
   isUserAllowedToChange: boolean;
   defaultSelectedParticipantsIds: string[];
   onChange: (participants: IUser[]) => void;
-}) => {
+}) {
   const {
     setDefaultSelectedParticipantsIds,
     selectedParticipants,
@@ -75,12 +75,12 @@ const ParticipantsSelector = ({
     )}
     {children}
   </>);
-};
+}
 
-const ParticipantsSelectorWithContext = (props) => (
-  <ParticipantsModalProvider data-id="640d7d9ad4c5">
+function ParticipantsSelectorWithContext(props) {
+  return <ParticipantsModalProvider data-id="640d7d9ad4c5">
     <ParticipantsSelector data-id="12c06ae1de55" {...props} />
   </ParticipantsModalProvider>
-);
+}
 
 export default ParticipantsSelectorWithContext;

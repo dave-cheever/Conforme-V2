@@ -12,6 +12,7 @@ import {
 } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 import { groupBy, sumBy } from 'lodash';
+import { PipelineStage } from 'mongoose';
 
 import { Audits } from 'app-models';
 import { doesPathExist } from 'app-utils';
@@ -22,7 +23,7 @@ const auditsInsights = async (_, { auditsInsightsQueryInput }, { authorize, orga
   try {
     await authorize();
 
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': auditsInsightsQueryInput?.showArchived ? { $exists: true } : { $eq: null },

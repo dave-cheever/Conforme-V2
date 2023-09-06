@@ -15,14 +15,14 @@ const GET_USER = gql`
   }
 `;
 
-const UserAvatar = ({
+function UserAvatar({
   userId,
   callback, // function that can be called to return details of user
   ...props
 }: AvatarProps & {
   userId: string;
   callback?: (userDetails: IUser) => void;
-}) => {
+}) {
   const { data } = useQuery(GET_USER, {
     variables: {
       userQueryInput: { usersIds: [userId] },
@@ -41,6 +41,6 @@ const UserAvatar = ({
       name={user?.displayName}
       src={user?.imgUrl} />
   );
-};
+}
 
 export default UserAvatar;

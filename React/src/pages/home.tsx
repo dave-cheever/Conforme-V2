@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Grid, Menu, MenuButton, MenuItem, MenuList, Spacer, Text, useDisclosure } from '@chakra-ui/react';
@@ -11,10 +11,10 @@ import LicensesPanel from '../components/LicensesPanel';
 export const HomeContext = createContext({
   filterType: ['allTypes'],
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  filterHandler: (type: string) => {},
+  filterHandler: (type: string) => { },
 });
 
-const Home = () => {
+function Home() {
   const [filterType, setFilterType] = useState<Array<string>>(['allTypes']);
 
   const filterHandler = (type: string) => {
@@ -31,10 +31,10 @@ const Home = () => {
     setFilterType((prevFilters) => [...prevFilters.filter((item) => item !== 'allTypes'), type]);
   };
 
-  const HomeContextTemplate = {
+  const HomeContextTemplate = useMemo(() => ({
     filterType,
     filterHandler,
-  };
+  }), [filterType, filterHandler]);
 
   const { onOpen: openAuditModal } = useDisclosure();
 
@@ -90,6 +90,6 @@ const Home = () => {
       </Flex>
     </HomeContext.Provider>)
   );
-};
+}
 
 export default Home;

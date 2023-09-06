@@ -13,7 +13,7 @@ const UPDATE_SETTINGS = gql`
   }
 `;
 
-const Notification = () => {
+function Notification() {
   const { control, notificationSettings, formValues, reset, refetch } = useSettingsContext();
   const [updateSetting] = useMutation(UPDATE_SETTINGS);
 
@@ -92,6 +92,6 @@ const Notification = () => {
       ))}
     </Stack>)
   );
-};
+}
 
 export default Notification;

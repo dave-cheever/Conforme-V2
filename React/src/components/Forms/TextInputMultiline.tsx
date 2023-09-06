@@ -27,7 +27,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const TextInputMultiline = ({
+function TextInputMultiline({
   control,
   name,
   label,
@@ -37,7 +37,7 @@ const TextInputMultiline = ({
   disabled = false,
   required,
   styles,
-}: ITextInputMultiline) => {
+}: ITextInputMultiline) {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     (<Controller
@@ -125,6 +125,6 @@ const TextInputMultiline = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default TextInputMultiline;

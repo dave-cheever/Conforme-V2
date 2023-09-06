@@ -33,7 +33,7 @@ const GET_HISTORICAL_AUDITS = gql`
   }
 `;
 
-const AuditHistory = () => {
+function AuditHistory() {
   const { navigateTo } = useNavigate();
   const { audit, questionsCategories } = useAuditContext();
   const device = useDevice();
@@ -200,7 +200,7 @@ const AuditHistory = () => {
       )}
     </Stack>)
   );
-};
+}
 
 export default AuditHistory;
 

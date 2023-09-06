@@ -1,6 +1,6 @@
 import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 
-const DocumentDeleteModal = ({
+function DocumentDeleteModal({
   message,
   isOpen,
   handleClose,
@@ -10,8 +10,8 @@ const DocumentDeleteModal = ({
   isOpen: boolean;
   handleClose: () => void;
   handleDelete: () => void;
-}) => (
-  <Modal data-id="de9fedfddfaf" isOpen={isOpen} onClose={handleClose}>
+}) {
+  return <Modal data-id="de9fedfddfaf" isOpen={isOpen} onClose={handleClose}>
     <ModalOverlay data-id="1625bf003463" />
     <ModalContent data-id="d381b6c13b45">
       <ModalHeader data-id="fa82cf2f6a5b">Delete file</ModalHeader>
@@ -41,6 +41,6 @@ const DocumentDeleteModal = ({
       </ModalFooter>
     </ModalContent>
   </Modal>
-);
+}
 
 export default DocumentDeleteModal;

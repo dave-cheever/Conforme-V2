@@ -24,7 +24,7 @@ interface IAlertDialog {
   onClose?: any;
 }
 
-const AlertDialog = ({ isOpen, title, description, state, showButtons, handleYes, handleNo, onClose }: IAlertDialog) => {
+function AlertDialog({ isOpen, title, description, state, showButtons, handleYes, handleNo, onClose }: IAlertDialog) {
   const cancelRef: any = React.useRef();
   return (
     (<AlertDialogChakra
@@ -70,7 +70,7 @@ const AlertDialog = ({ isOpen, title, description, state, showButtons, handleYes
       </AlertDialogContent>
     </AlertDialogChakra>)
   );
-};
+}
 
 export const alertDialogStyles = {
   alertDialog: {

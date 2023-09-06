@@ -22,7 +22,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Textarea = ({
+function Textarea({
   control,
   name,
   label,
@@ -32,7 +32,7 @@ const Textarea = ({
   validations = {},
   disabled = false,
   readMode = false,
-}: ITextarea) => {
+}: ITextarea) {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     (<Controller
@@ -134,7 +134,7 @@ const Textarea = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default Textarea;
 

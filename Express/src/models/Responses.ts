@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { difference, uniq } from 'lodash';
-import { model, Schema } from 'mongoose';
+import { model, PipelineStage, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAuditValues, IOrganization, IResponse, IResponseModel, ISearchResult } from 'app-interfaces';
@@ -293,7 +293,7 @@ responseSchema.statics.customCreate = async function (response: IResponse, userI
 responseSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<ISearchResult[]> {
   const { searchText } = searchQuery;
 
-  const pipeline: any[] = [
+  const pipeline: PipelineStage[] = [
     { // Search must be the first step to make use of index and improve performance
       $match: {
         name: new RegExp(searchText, 'i'),

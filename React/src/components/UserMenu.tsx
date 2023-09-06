@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate as useReactNavigate } from 'react-router-dom';
 
 import { Avatar, Menu, MenuButton, MenuList, Text, useDisclosure } from '@chakra-ui/react';
 import addHours from 'date-fns/addHours';
@@ -8,14 +8,14 @@ import { useAppContext } from '../contexts/AppProvider';
 import useNavigate from '../hooks/useNavigate';
 import { isPermitted } from './can';
 
-const UserMenu = () => {
+function UserMenu() {
   const { user, setUser } = useAppContext();
-  const history = useHistory();
+  const navigate = useReactNavigate();
   const { navigateTo } = useNavigate();
   const { onOpen, onClose, isOpen } = useDisclosure();
 
   const logout = async () => {
-    history.push('/logout');
+    navigate('/logout');
     await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
       credentials: 'include',
       mode: 'no-cors',
@@ -115,7 +115,7 @@ const UserMenu = () => {
       </MenuList>
     </Menu>)
   );
-};
+}
 
 export default UserMenu;
 

@@ -1,19 +1,19 @@
 import React from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { Flex, Icon } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
 
-const ResponseLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = false }) => {
-  const history = useHistory();
+function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false }) {
+  const location = useLocation();
   const { navigateTo, isPathActive } = useNavigate();
-  const { id }: { id: string } = useParams();
+  const { id } = useParams();
 
   const active = isPathActive(`/tracker-item/${id}${url}`, { exact: true });
 
   const redirectPage = () => {
-    navigateTo(`/tracker-item/${id}${url}${history.location.search}`);
+    navigateTo(`/tracker-item/${id}${url}${location.search}`);
   };
 
   return (
@@ -50,7 +50,7 @@ const ResponseLeftTabItem = ({ label, icon, url, isDesktop = true, isMobile = fa
       )}
     </Flex>)
   );
-};
+}
 
 export default ResponseLeftTabItem;
 

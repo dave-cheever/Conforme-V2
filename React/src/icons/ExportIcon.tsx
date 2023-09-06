@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@chakra-ui/icons';
 
-const ExportIcon = (props: IconProps) => (
-  <Icon data-id="2b417842201a" viewBox="0 0 24 24" {...props}>
+function ExportIcon(props: IconProps) {
+  return <Icon data-id="2b417842201a" viewBox="0 0 24 24" {...props}>
     <path
       d="M12 2V13.7333"
       data-id="7bd3d9de8439"
@@ -24,6 +24,6 @@ const ExportIcon = (props: IconProps) => (
       strokeLinecap="round"
       strokeLinejoin="round" />
   </Icon>
-);
+}
 
 export default ExportIcon;

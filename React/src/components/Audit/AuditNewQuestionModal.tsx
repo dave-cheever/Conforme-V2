@@ -8,7 +8,7 @@ import useDevice from '../../hooks/useDevice';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
 import Icon from '../Icon';
 
-const AuditNewQuestionModal = ({ isOpen, onClose }) => {
+function AuditNewQuestionModal({ isOpen, onClose }) {
   const { audit, questions, customQuestionsCategories, setSelectedQuestion } = useAuditContext();
   const device = useDevice();
 
@@ -90,7 +90,7 @@ const AuditNewQuestionModal = ({ isOpen, onClose }) => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export const auditNewQuestionModalStyles = {
   auditNewQuestionModal: {

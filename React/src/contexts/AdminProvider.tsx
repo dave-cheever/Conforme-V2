@@ -11,7 +11,7 @@ export const useAdminContext = () => {
   return context;
 };
 
-const AdminProvider = ({ children }: any) => {
+function AdminProvider({ children }: any) {
   const [adminModalState, setAdminModalState] = useState<AdminModalState>('closed');
 
   const value = useMemo(
@@ -23,6 +23,6 @@ const AdminProvider = ({ children }: any) => {
   );
 
   return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
-};
+}
 
 export default AdminProvider;

@@ -5,7 +5,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { Close, LocationIcon, TickIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 
-const TrackerListItem = ({ response }: { response: IResponse }) => {
+function TrackerListItem({ response }: { response: IResponse }) {
   const { navigateTo } = useNavigate();
 
   return (
@@ -139,6 +139,6 @@ const TrackerListItem = ({ response }: { response: IResponse }) => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default TrackerListItem;

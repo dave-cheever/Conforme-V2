@@ -3,7 +3,7 @@ import { t } from 'i18next';
 
 import { useAuditContext } from '../../contexts/AuditProvider';
 
-const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }) => {
+function AuditActionChangesModal({ onSave, setSelectedAction, isAcionFormValid }) {
   const {
     actionChangesModalOnContinue: onContinue,
     handleActionChangesModalClose: onClose,
@@ -80,6 +80,6 @@ const AuditActionChangesModal = ({ onSave, setSelectedAction, isAcionFormValid }
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default AuditActionChangesModal;

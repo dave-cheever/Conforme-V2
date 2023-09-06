@@ -10,7 +10,7 @@ export const useNavigationTopContext = () => {
   return context;
 };
 
-const NavigationTopProvider = ({ children }) => {
+function NavigationTopProvider({ children }) {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [searchText, setSearchText] = useState<string>('');
 
@@ -26,6 +26,6 @@ const NavigationTopProvider = ({ children }) => {
   );
 
   return <NavigationTopContext.Provider value={value}>{children}</NavigationTopContext.Provider>;
-};
+}
 
 export default NavigationTopProvider;

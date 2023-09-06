@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 
 import Chat from './Chat';
 
-const ChatMobileAndTablet = ({ component }: { component: 'audit' | 'response' }) => (
-  <Box
+function ChatMobileAndTablet({ component }: { component: 'audit' | 'response' }) {
+  return <Box
     bg="white"
     boxShadow="lg"
     data-id="3527630b69f2"
@@ -14,6 +14,6 @@ const ChatMobileAndTablet = ({ component }: { component: 'audit' | 'response' })
     zIndex="9">
     <Chat component={component} data-id="a2d95e92394b" />
   </Box>
-);
+}
 
 export default ChatMobileAndTablet;

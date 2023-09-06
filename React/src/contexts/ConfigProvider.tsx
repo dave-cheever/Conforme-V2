@@ -13,7 +13,7 @@ export const useConfigContext = () => {
   return context;
 };
 
-const ConfigProvider = ({ children }) => {
+function ConfigProvider({ children }) {
   const { organizationConfig, module } = useAppContext();
   const { auditsMenuItems, trackerMenuItems } = useConfig();
   const menuItems = useMemo(() => {
@@ -31,6 +31,6 @@ const ConfigProvider = ({ children }) => {
   );
 
   return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>;
-};
+}
 
 export default ConfigProvider;

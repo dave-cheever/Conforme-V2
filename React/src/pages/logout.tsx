@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Avatar, Box, Button, Flex, Image, useToast, VStack } from '@chakra-ui/react';
 
@@ -7,12 +7,12 @@ import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 
-const Logout = () => {
+function Logout() {
   const toast = useToast();
   const params = window.location.search.split('&');
   const { organizationConfig } = useAppContext();
   const device = useDevice();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
   const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
@@ -29,7 +29,7 @@ const Logout = () => {
 
   const redirectToLogin = () => {
     localStorage.removeItem('logOutUser');
-    history.push('/login');
+    navigate('/login');
   };
 
   const user = useMemo(() => {
@@ -158,7 +158,7 @@ const Logout = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default Logout;
 

@@ -41,12 +41,12 @@ const definedValidations: TDefinedValidations = {
     if (!value.match(emailRegExp)) return 'Invalid Email';
   },
   isUrl: (label, validationValue, value) => {
-    const regex = new RegExp('(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)');
+    const regex = /(www.)?[a-zA-Z0-9@:%._+~#?&//=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%._+~#?&//=]*)/;
     if (!value.match(regex)) return 'Invalid URL';
   },
 };
 
-const TextInput = ({
+function TextInput({
   control,
   name,
   label,
@@ -59,7 +59,7 @@ const TextInput = ({
   styles,
   initialValue,
   isUrl,
-}: ITextInput) => {
+}: ITextInput) {
   const validate = useValidate(label || name, validations, definedValidations, initialValue);
   return (
     (<Controller
@@ -70,8 +70,8 @@ const TextInput = ({
         const { value } = field;
         const { error } = fieldState;
 
-        const URLButton = () => (
-          <Button
+        function URLButton() {
+          return <Button
             bg="textInput.openLinkButtonBg"
             color="textInput.openLinkButtonColor"
             data-id="a91477c04b2b"
@@ -84,7 +84,7 @@ const TextInput = ({
             w="80px">
             Open link
           </Button>
-        );
+        }
         return (
           (<Box data-id="f2cf2107816e" id={name} mt="none" w="full">
             {label && (
@@ -187,7 +187,7 @@ const TextInput = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default TextInput;
 

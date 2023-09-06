@@ -7,7 +7,7 @@ import Loader from '../../components/Loader';
 import HistoricalListItem from '../../components/Response/HistoricalListItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 
-const Team = () => {
+function Team() {
   const { snapshotsLoading, snapshots } = useResponseContext();
 
   if (snapshotsLoading) {
@@ -83,7 +83,7 @@ const Team = () => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export const historyPageStyles = {
   historyPage: {

@@ -5,7 +5,7 @@ import { Flex, Stack } from '@chakra-ui/react';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import QuickFiltersItem from './QuickFiltersItem';
 
-const QuickFilters = ({ w }: { w: string | number | {} }) => {
+function QuickFilters({ w }: { w: string | number | {} }) {
   const { filtersValues, usedFilters } = useFiltersContext();
 
   const [activeFilters, setActiveFilters] = useState<boolean[]>(Object.entries(filtersValues).map(() => false) || []);
@@ -39,6 +39,6 @@ const QuickFilters = ({ w }: { w: string | number | {} }) => {
       </Flex>
     </Stack>)
   );
-};
+}
 
 export default QuickFilters;

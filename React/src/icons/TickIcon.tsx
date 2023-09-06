@@ -1,6 +1,6 @@
 import { Icon } from '@chakra-ui/icons';
 
-const TickIcon = (props) => {
+function TickIcon(props) {
   const { isIndeterminate, isChecked, ...rest } = props;
 
   return (
@@ -13,6 +13,6 @@ const TickIcon = (props) => {
         strokeLinejoin="round" />
     </Icon>)
   );
-};
+}
 
 export default TickIcon;

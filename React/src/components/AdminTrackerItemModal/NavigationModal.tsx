@@ -4,7 +4,7 @@ import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvi
 import { ErrorSign } from '../../icons';
 import { generateTabColors } from '../../utils/helpers';
 
-const NavigationModal = () => {
+function NavigationModal() {
   const { trackerItem, trackerItemModalSections, errors, selectedSectionIndex, visitedTab, selectSection, trigger } =
     useTrackerItemModalContext();
 
@@ -51,7 +51,7 @@ const NavigationModal = () => {
       ))}
     </Flex>)
   );
-};
+}
 
 export default NavigationModal;
 

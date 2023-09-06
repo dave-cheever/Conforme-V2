@@ -85,7 +85,7 @@ const GET_USERS_AUDITS_INSIGHTS = gql`
   }
 `;
 
-const AuditsInsights = () => {
+function AuditsInsights() {
   const { filtersValues, setFilters, setDefaultFilters, auditFiltersValue, setAuditFiltersValue, usedFilters } = useFiltersContext();
   const { module } = useAppContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS_INSIGHTS);
@@ -327,7 +327,7 @@ const AuditsInsights = () => {
       )}
     </Box>)
   );
-};
+}
 
 export default AuditsInsights;
 

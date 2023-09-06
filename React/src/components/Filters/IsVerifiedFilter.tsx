@@ -4,7 +4,7 @@ import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 
-const IsVerifiedFilter = () => {
+function IsVerifiedFilter() {
   const { filtersValues, setFilters } = useFiltersContext();
   const value = useMemo(() => filtersValues.isVerified?.value, [filtersValues]) as string;
 
@@ -24,6 +24,6 @@ const IsVerifiedFilter = () => {
       </Stack>
     </RadioGroup>)
   );
-};
+}
 
 export default IsVerifiedFilter;

@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Actions, Answers, Audits, Responses, Users } from 'app-models';
 import { doesPathExist, getActionStatus, join } from 'app-utils';
@@ -81,7 +82,7 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
 
         // Inject actions count
         const getActionsCount = async (selector: object = {}) => {
-          const pipeline: any[] = [
+          const pipeline: PipelineStage[] = [
             {
               $match: {
                 assigneeId: user._id,
@@ -113,7 +114,7 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
         // Inject answers count
         if (usersAnswersCountInput?.questionsCategoriesId) {
           const getAnswersCount = async (selector: object = {}) => {
-            const pipeline: any[] = [
+            const pipeline: PipelineStage[] = [
               {
                 $match: {
                   'metatags.removedAt': { $eq: null },

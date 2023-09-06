@@ -4,8 +4,8 @@ import { Button, Flex } from '@chakra-ui/react';
 
 import QuestionIcon from './QuestionIcon';
 
-const QuestionTile = ({ setQuestionType, type, buttonText, setShowQuestionForm, disabled }) => (
-  <Flex
+function QuestionTile({ setQuestionType, type, buttonText, setShowQuestionForm, disabled }) {
+  return <Flex
     alignItems="center"
     bg="adminTrackerItemModal.section.questions.tile.bg"
     borderRadius="10px"
@@ -33,6 +33,6 @@ const QuestionTile = ({ setQuestionType, type, buttonText, setShowQuestionForm, 
       {buttonText}
     </Button>
   </Flex>
-);
+}
 
 export default QuestionTile;

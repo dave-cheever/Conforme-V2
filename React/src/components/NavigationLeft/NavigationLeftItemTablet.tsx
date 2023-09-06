@@ -9,7 +9,7 @@ import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from './NavigationLeftFilters';
 import SubSection from './SubSection';
 
-const NavigationLeftItemTablet = ({
+function NavigationLeftItemTablet({
   menuItem,
   filtersOpen,
   setFiltersOpen,
@@ -21,14 +21,13 @@ const NavigationLeftItemTablet = ({
   setFiltersOpen: (value: boolean) => void;
   subsectionOpen: boolean;
   setSubsectionOpen: (value: boolean) => void;
-}) => {
+}) {
   const [menuOpen, setMenuOpen] = useState(true);
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon } = menuItem;
   const { responsesStatusesCounts } = useFiltersContext();
 
-  return (<>
-    <Box
+  return (<Box
       _hover={{
         cursor: 'pointer',
       }}
@@ -160,9 +159,8 @@ const NavigationLeftItemTablet = ({
           ))}
         </Box>
       )}
-    </Box>
-  </>);
-};
+    </Box>);
+}
 
 export default NavigationLeftItemTablet;
 

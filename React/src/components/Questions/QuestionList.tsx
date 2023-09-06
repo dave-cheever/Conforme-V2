@@ -6,7 +6,7 @@ import { Box, Flex, Stack } from '@chakra-ui/react';
 import { Move } from '../../icons';
 import QuestionListElement from './QuestionListElement';
 
-const QuestionList = ({ setIsDragging, trackerItem, disabled, handleChange, handleEdit }) => {
+function QuestionList({ setIsDragging, trackerItem, disabled, handleChange, handleEdit }) {
   const moveQuestion = (result) => {
     setIsDragging(false);
     if (!result.source || !result.destination) return;
@@ -78,7 +78,7 @@ const QuestionList = ({ setIsDragging, trackerItem, disabled, handleChange, hand
       </DragDropContext>
     </Stack>)
   );
-};
+}
 
 export default QuestionList;
 

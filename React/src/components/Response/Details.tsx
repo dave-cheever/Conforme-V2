@@ -20,7 +20,7 @@ const UPDATE_DUE_DATE = gql`
   }
 `;
 
-const Details = () => {
+function Details() {
   const { response, snapshot, refetch, activeTab, setActiveTab, handleRenewalOpen } = useResponseContext();
   const [updateDueDate] = useMutation(UPDATE_DUE_DATE);
   const startRef = useRef<DatePicker>();
@@ -145,6 +145,7 @@ const Details = () => {
                   action="responses.edit"
                   data={{ response }}
                   data-id="e83f27a79335"
+                  // eslint-disable-next-line react/no-unstable-nested-components
                   yes={() => (
                     <Flex align="center" data-id="f8b76251428b">
                       <DatePicker
@@ -176,7 +177,7 @@ const Details = () => {
       <ResponseQuestions data-id="91f3a1ea351a" disabled={activeTab === 0} />
     </VStack>)
   );
-};
+}
 
 export default Details;
 

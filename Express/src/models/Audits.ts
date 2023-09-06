@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { GraphQLError } from 'graphql';
 import { uniq } from 'lodash';
-import { model, Schema } from 'mongoose';
+import { model, PipelineStage, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IAudit, IAuditModel, IAuditValue, IAuditValues } from 'app-interfaces';
@@ -195,7 +195,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
 
 auditsSchema.statics.customSearch = async function (searchQuery, user, organizationId): Promise<IAudit[]> {
   const { searchText } = searchQuery;
-  const pipeline: any[] = [
+  const pipeline: PipelineStage[] = [
     {
       $match: {
         'metatags.removedAt': { $eq: null },

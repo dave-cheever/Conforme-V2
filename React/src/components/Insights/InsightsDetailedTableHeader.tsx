@@ -1,7 +1,7 @@
 import { Grid } from '@chakra-ui/react';
 
-const InsightsDetailedTableHeader = ({ children }) => (
-  <Grid
+function InsightsDetailedTableHeader({ children }) {
+  return <Grid
     bg="white"
     borderBottom="1px solid"
     borderColor="adminTableHeader.border"
@@ -13,6 +13,6 @@ const InsightsDetailedTableHeader = ({ children }) => (
     templateColumns="1fr repeat(4, 135px)">
     {children}
   </Grid>
-);
+}
 
 export default InsightsDetailedTableHeader;

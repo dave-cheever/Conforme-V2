@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Flex, IconButton, Stack, Text, useDisclosure } from '@chakra-ui/react';
 
@@ -17,9 +17,9 @@ import SubSection from './NavigationLeft/SubSection';
 import SearchBar from './SearchBar';
 import UserMenu from './UserMenu';
 
-const NavigationTop = () => {
+function NavigationTop() {
   const device = useDevice();
-  const history = useHistory();
+  const location = useLocation();
   const { trackerAddItems, auditAddItems } = useConfig();
   const { isPathActive, navigateTo } = useNavigate();
   const { module } = useAppContext();
@@ -61,17 +61,18 @@ const NavigationTop = () => {
           zIndex="5">
           {module?.type === 'audits'
             ? auditAddItems.map((item) => {
-                if (item.permission) {
-                  return (
-                    (<Can
-                      action={item.permission}
-                      data-id="bb02aa0c8d5e"
-                      key={item.url}
-                      yes={() => <SubSection data-id="3b7ff7eacbb0" key={item.label} showIcon subsection={item} />} />)
-                  );
-                }
-                return <SubSection data-id="e2de2224871c" key={item.label} showIcon subsection={item} />;
-              })
+              if (item.permission) {
+                return (
+                  (<Can
+                    action={item.permission}
+                    data-id="bb02aa0c8d5e"
+                    key={item.url}
+                    // eslint-disable-next-line react/no-unstable-nested-components
+                    yes={() => <SubSection data-id="3b7ff7eacbb0" key={item.label} showIcon subsection={item} />} />)
+                );
+              }
+              return <SubSection data-id="e2de2224871c" key={item.label} showIcon subsection={item} />;
+            })
             : trackerAddItems.map((item) => <SubSection data-id="69f80f124301" key={item.label} showIcon subsection={item} />)}
         </Box>
       )}
@@ -108,6 +109,7 @@ const NavigationTop = () => {
           <Can
             action="adminPanel"
             data-id="da8f9cfb2b0c"
+            // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <IconButton
                 _hover={{ opacity: 0.7 }}
@@ -118,7 +120,7 @@ const NavigationTop = () => {
                 color="white"
                 data-id="d00903fe3874"
                 display={
-                  ['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'
+                  ['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(location.pathname) ? 'none' : 'block'
                 }
                 flexShrink={0}
                 h={['52px', '45px']}
@@ -147,6 +149,7 @@ const NavigationTop = () => {
           <Can
             action="audits.add"
             data-id="a3a476596997"
+            // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <IconButton
                 _hover={{ opacity: 0.7 }}
@@ -156,7 +159,7 @@ const NavigationTop = () => {
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
                 data-id="b5bf85567bbe"
-                display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(history.location.pathname) ? 'none' : 'block'}
+                display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(location.pathname) ? 'none' : 'block'}
                 flexShrink={0}
                 h={['52px', '45px']}
                 icon={
@@ -228,13 +231,13 @@ const NavigationTop = () => {
       </Stack> */}
     </Flex>)
   );
-};
+}
 
-const NavigationTopWithContext = (props) => (
-  <NavigationTopProvider data-id="3ed99d2f26ac" {...props}>
+function NavigationTopWithContext(props) {
+  return <NavigationTopProvider data-id="3ed99d2f26ac" {...props}>
     <NavigationTop data-id="fc54358b3b5d" />
   </NavigationTopProvider>
-);
+}
 
 export default NavigationTopWithContext;
 

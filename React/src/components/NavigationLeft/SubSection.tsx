@@ -4,7 +4,7 @@ import { useAdminContext } from '../../contexts/AdminProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ISubSection } from '../../interfaces/INavItem';
 
-const SubSection = ({
+function SubSection({
   subsection,
   setMenuOpen,
   menuOpen,
@@ -14,7 +14,7 @@ const SubSection = ({
   menuOpen?: boolean;
   showIcon?: boolean;
   setMenuOpen?: (value: boolean) => void;
-}) => {
+}) {
   const { navigateTo, isPathActive } = useNavigate();
   const { setAdminModalState } = useAdminContext();
   const { url, label, icon } = subsection;
@@ -52,7 +52,7 @@ const SubSection = ({
       <Text data-id="dc05a0f7a116" ml="25px">{label}</Text>
     </Flex>)
   );
-};
+}
 
 export default SubSection;
 

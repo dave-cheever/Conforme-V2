@@ -22,7 +22,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const TextMultilineConfirmInput = ({
+function TextMultilineConfirmInput({
   control,
   name,
   label,
@@ -31,7 +31,7 @@ const TextMultilineConfirmInput = ({
   validations = {},
   disabled = false,
   defaultvalue,
-}: ItextMultilineConfirmInput) => {
+}: ItextMultilineConfirmInput) {
   const inputRef = useRef<any>();
   const [tempValue, setTempValue] = useState(defaultvalue || '');
   const validate = useValidate(label || name, validations, definedValidations);
@@ -166,7 +166,7 @@ const TextMultilineConfirmInput = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default TextMultilineConfirmInput;
 

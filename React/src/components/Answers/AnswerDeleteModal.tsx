@@ -25,7 +25,7 @@ const DELETE_ANSWER = gql`
   }
 `;
 
-const AnswerDeleteModal = ({
+function AnswerDeleteModal({
   answer,
   isOpen,
   onClose,
@@ -35,7 +35,7 @@ const AnswerDeleteModal = ({
   isOpen: boolean;
   onClose: () => void;
   refetchAnswers: () => void;
-}) => {
+}) {
   const [deleteAnswer] = useMutation(DELETE_ANSWER);
   const toast = useToast();
   const { setAdminModalState } = useAdminContext();
@@ -98,6 +98,6 @@ const AnswerDeleteModal = ({
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default AnswerDeleteModal;

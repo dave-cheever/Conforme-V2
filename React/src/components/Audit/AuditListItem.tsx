@@ -7,7 +7,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
-const AuditListItem = ({ audit }: { audit: IAudit }) => {
+function AuditListItem({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();
   return (
     (<Box
@@ -130,6 +130,6 @@ const AuditListItem = ({ audit }: { audit: IAudit }) => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default AuditListItem;

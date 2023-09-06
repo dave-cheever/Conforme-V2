@@ -7,7 +7,7 @@ import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import AnswersListItem from './AnswersListItem';
 
-const AnswersList = ({
+function AnswersList({
   answers,
   sortOrder,
   sortType,
@@ -23,8 +23,8 @@ const AnswersList = ({
   setSortOrder: (order: 'asc' | 'desc') => void;
   refetchAnswers: () => void;
   editAnswer: (answer: IAnswer) => void;
-}) => (
-  <Box data-id="2bbf3cb51d71" h="full" overflow="none" w="full">
+}) {
+  return <Box data-id="2bbf3cb51d71" h="full" overflow="none" w="full">
     <Box
       bg="answersList.bg"
       borderRadius="20px"
@@ -130,7 +130,7 @@ const AnswersList = ({
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default AnswersList;
 

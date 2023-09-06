@@ -13,7 +13,7 @@ export const useShareContext = () => {
   return context;
 };
 
-const ShareProvider = ({ children }) => {
+function ShareProvider({ children }) {
   const { isOpen: isShareOpen, onOpen: handleShareOpen, onClose: handleShareClose } = useDisclosure();
   const [shareItemUrl, setShareItemUrl] = useState<string | undefined>();
   const [shareItemName, setShareItemName] = useState<string | undefined>();
@@ -32,6 +32,6 @@ const ShareProvider = ({ children }) => {
   );
 
   return <ShareContext.Provider value={value}>{children}</ShareContext.Provider>;
-};
+}
 
 export default ShareProvider;

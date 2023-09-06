@@ -27,7 +27,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Datepicker = ({
+function Datepicker({
   control,
   name,
   label,
@@ -38,7 +38,7 @@ const Datepicker = ({
   disabled = false,
   readMode = false,
   styles,
-}: IDatepicker) => {
+}: IDatepicker) {
   const datePickerRef = useRef();
   const validate = useValidate(label || name, validations, definedValidations);
   return (
@@ -164,7 +164,7 @@ const Datepicker = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export const datepickerStyles = {
   datepicker: {

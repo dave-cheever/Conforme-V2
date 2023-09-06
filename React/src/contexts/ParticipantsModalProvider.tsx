@@ -40,7 +40,7 @@ export const useParticipantsModalContext = () => {
   return context;
 };
 
-const ParticipantsModalProvider = ({ children }) => {
+function ParticipantsModalProvider({ children }) {
   const toast = useToast();
   const { isOpen: isParticipantsModalOpen, onOpen: openParticipantsModal, onClose: closeParticipantsModal } = useDisclosure();
   const {
@@ -157,6 +157,6 @@ const ParticipantsModalProvider = ({ children }) => {
   );
 
   return <ParticipantsModalContext.Provider value={value}>{children}</ParticipantsModalContext.Provider>;
-};
+}
 
 export default ParticipantsModalProvider;

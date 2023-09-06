@@ -8,7 +8,7 @@ import pluralize from 'pluralize';
 import { TrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import useTrackerItemModal from '../../hooks/useTrackerItemModal';
 
-const CloneTrackerItemModal = ({ refetch }) => {
+function CloneTrackerItemModal({ refetch }) {
   const { trackerItem } = useContext(TrackerItemModalContext);
   const { cloneTrackerItem, closeModal } = useTrackerItemModal(refetch);
 
@@ -92,7 +92,7 @@ const CloneTrackerItemModal = ({ refetch }) => {
       </Flex>
     </ModalContent>)
   );
-};
+}
 
 export default CloneTrackerItemModal;
 

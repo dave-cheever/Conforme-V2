@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Flex, Icon, Text } from '@chakra-ui/react';
 
-const ResponseTabItem = ({ setActiveTab, index, active, label, icon }) => {
+function ResponseTabItem({ setActiveTab, index, active, label, icon }) {
   const onClick = () => {
     setActiveTab(index);
   };
@@ -30,7 +30,7 @@ const ResponseTabItem = ({ setActiveTab, index, active, label, icon }) => {
       </Text>
     </Flex>)
   );
-};
+}
 
 export default ResponseTabItem;
 

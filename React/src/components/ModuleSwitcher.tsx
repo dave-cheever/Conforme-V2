@@ -7,7 +7,7 @@ import useDevice from '../hooks/useDevice';
 import { IModule } from '../interfaces/IModule';
 import { getInitials } from '../utils/helpers';
 
-const ModuleSwitcher = () => {
+function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
   const device = useDevice();
 
@@ -54,7 +54,7 @@ const ModuleSwitcher = () => {
       ))}
     </Stack>)
   );
-};
+}
 
 export const moduleSwitcherStyles = {
   moduleSwitcher: {

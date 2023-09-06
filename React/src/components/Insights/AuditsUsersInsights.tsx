@@ -8,7 +8,7 @@ import { ArrowDownIcon, ArrowUpIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 import UserAvatar from '../UserAvatar';
 
-const AuditsUsersInsights = ({
+function AuditsUsersInsights({
   sortOrder,
   sortType,
   setSortOrder,
@@ -25,8 +25,8 @@ const AuditsUsersInsights = ({
   sortType: string;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
-}) => (
-  <Box
+}) {
+  return <Box
     bg="white"
     data-id="dcabdc831794"
     my={['15px', '25px']}
@@ -145,7 +145,7 @@ const AuditsUsersInsights = ({
       ))}
     </Flex>
   </Box>
-);
+}
 
 export default AuditsUsersInsights;
 

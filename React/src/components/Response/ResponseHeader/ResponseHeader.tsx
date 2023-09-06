@@ -35,7 +35,7 @@ import ResponseHeaderButton from './ResponseHeaderButton';
 import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import ResponseHeaderStatus from './ResponseHeaderStatus';
 
-const ReasponseHeader = () => {
+function ReasponseHeader() {
   const {
     response,
     snapshot,
@@ -383,7 +383,7 @@ const ReasponseHeader = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default ReasponseHeader;
 

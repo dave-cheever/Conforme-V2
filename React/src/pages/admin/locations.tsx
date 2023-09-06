@@ -66,7 +66,7 @@ const defaultValues: Partial<ILocation> = {
   notes: '',
 };
 
-const Locations = () => {
+function Locations() {
   const toast = useToast();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
@@ -365,7 +365,7 @@ const Locations = () => {
       </Flex>
     </Box>
   </>);
-};
+}
 
 export default Locations;
 

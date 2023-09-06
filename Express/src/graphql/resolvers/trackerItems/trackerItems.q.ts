@@ -1,5 +1,6 @@
 
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { TrackerItems } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
@@ -18,7 +19,7 @@ const trackerItems = async (
     if (!isPermitted({ user, action: 'trackerItems.view' }))
       throw new Error('User is not permitted');
 
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': { $eq: null },

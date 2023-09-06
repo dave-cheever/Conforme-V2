@@ -4,7 +4,7 @@ import { IUser } from '../../interfaces/IUser';
 import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantsSelector from './ParticipantsSelector';
 
-const SingleParticipantSelector = ({
+function SingleParticipantSelector({
   label,
   isUserAllowedToChange = false,
   selectedParticipant,
@@ -14,8 +14,8 @@ const SingleParticipantSelector = ({
   isUserAllowedToChange: boolean;
   selectedParticipant: IUser;
   onChange: (participants: IUser) => void;
-}) => (
-  <Stack data-id="44fe7e8537a8" spacing={6}>
+}) {
+  return <Stack data-id="44fe7e8537a8" spacing={6}>
     <ParticipantsSelector
       data-id="a9519f8bde3d"
       defaultSelectedParticipantsIds={[selectedParticipant._id]}
@@ -26,6 +26,6 @@ const SingleParticipantSelector = ({
       <ParticipantAvatar data-id="81c9b8130ecd" user={selectedParticipant} />
     </ParticipantsSelector>
   </Stack>
-);
+}
 
 export default SingleParticipantSelector;

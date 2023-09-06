@@ -279,7 +279,7 @@ export const useAuditContext = () => {
   return context;
 };
 
-const AuditProvider = ({ children }) => {
+function AuditProvider({ children }) {
   const toast = useToast();
   const { module } = useAppContext();
   const { id }: { id: string } = useParams();
@@ -451,6 +451,6 @@ const AuditProvider = ({ children }) => {
   );
 
   return <AuditContext.Provider value={value}>{children}</AuditContext.Provider>;
-};
+}
 
 export default AuditProvider;

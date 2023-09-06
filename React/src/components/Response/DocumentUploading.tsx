@@ -3,8 +3,8 @@ import { Box, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
 import { Close } from '../../icons';
 import Loader from '../Loader';
 
-const DocumentUploading = ({ documentName, cancelUpload }: { documentName: string; cancelUpload?: () => void }) => (
-  <Flex
+function DocumentUploading({ documentName, cancelUpload }: { documentName: string; cancelUpload?: () => void }) {
+  return <Flex
     align="center"
     borderColor="evidence.uploadBorderColor"
     borderRadius="10px"
@@ -43,7 +43,7 @@ const DocumentUploading = ({ documentName, cancelUpload }: { documentName: strin
         <Text
           data-id="ef7f68aacdcb"
           fontWeight="700"
-          isTruncated
+          noOfLines={1}
           textOverflow="ellipsis">
           {documentName}
         </Text>
@@ -63,6 +63,6 @@ const DocumentUploading = ({ documentName, cancelUpload }: { documentName: strin
       </Tooltip>
     </Flex>
   </Flex>
-);
+}
 
 export default DocumentUploading;

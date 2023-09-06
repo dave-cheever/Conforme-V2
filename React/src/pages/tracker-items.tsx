@@ -82,7 +82,7 @@ const GET_RESPONSES = gql`
   }
 `;
 
-const TrackerItems = () => {
+function TrackerItems() {
   const { module } = useAppContext();
   const device = useDevice();
   const scrollerRef = useRef<any>(null); // Using 'any' as there is no exported interface to use
@@ -361,7 +361,7 @@ const TrackerItems = () => {
       )}
     </Flex>
   </>);
-};
+}
 
 export default TrackerItems;
 

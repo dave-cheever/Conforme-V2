@@ -70,7 +70,7 @@ const GET_AUDITS = gql`
   }
 `;
 
-const Audits = () => {
+function Audits() {
   const { t } = useTranslation();
   const {
     filtersValues,
@@ -233,8 +233,7 @@ const Audits = () => {
         viewMode={viewMode}
         views={['grid', 'list', 'group']} />
       {device !== 'mobile' && (
-        <>
-          <CSVLink
+        <CSVLink
             data={csvData}
             data-id="39c6f57fa46c"
             filename="audits.csv"
@@ -258,7 +257,6 @@ const Audits = () => {
               </Text>
             </Button>
           </CSVLink>
-        </>
       )}
       <SortButton
         data-id="f2ae2eb1e511"
@@ -319,13 +317,13 @@ const Audits = () => {
       )}
     </Flex>
   </>);
-};
+}
 
-const AuditsWithContext = () => (
-  <AuditModalProvider data-id="5b60c03025f5">
+function AuditsWithContext() {
+  return <AuditModalProvider data-id="5b60c03025f5">
     <Audits data-id="c5293404d035" />
   </AuditModalProvider>
-);
+}
 
 export default AuditsWithContext;
 

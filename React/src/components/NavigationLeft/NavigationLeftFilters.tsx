@@ -5,14 +5,14 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useResponseUtils from '../../hooks/useResponseUtils';
 
-const NavigationLeftFilters = ({
+function NavigationLeftFilters({
   filter,
   setFiltersOpen,
 }: {
   filter: any;
   menuOpen?: boolean;
   setFiltersOpen?: (value: boolean) => void;
-}) => {
+}) {
   const { responseStatuses } = useResponseUtils();
   const { filtersValues, setFilters } = useFiltersContext();
   const itemStatusFilterValue = useMemo(() => filtersValues.itemStatus?.value, [filtersValues]) as string[];
@@ -107,7 +107,7 @@ const NavigationLeftFilters = ({
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default NavigationLeftFilters;
 

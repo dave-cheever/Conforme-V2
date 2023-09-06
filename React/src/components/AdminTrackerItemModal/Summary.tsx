@@ -18,7 +18,7 @@ export const details = {
   fields: [],
 };
 
-const Summary = () => {
+function Summary() {
   const { trackerItem, categories, regulatoryBodies, businessUnits } = useTrackerItemModalContext();
 
   const selectedBusinessUnits = useMemo(
@@ -125,7 +125,7 @@ const Summary = () => {
       )}
     </Stack>)
   );
-};
+}
 
 export default Summary;
 

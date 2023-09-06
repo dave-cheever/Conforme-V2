@@ -30,17 +30,17 @@ const validateForm = (values: FormikValues, fields: IFormField[]) => {
           if (isArray(values[name])) {
             // If value is an array (like in a Table)
             values[name].forEach((value) => {
-              if (!value.removed && !new RegExp(/^-?\d+\.?\d*$/).test(value[name]))
+              if (!value.removed && !(/^-?\d+\.?\d*$/).test(value[name]))
                 errors[name] = `Please only use numbers in a decimal format`;
             });
           } else if (isObject(values[name]) && !isArray(values[name])) {
             // If value is an object (like in a DataGrid)
             Object.keys(values[name]).forEach((key) => {
               const dataValue = values[name][key];
-              if (!dataValue.removed && !new RegExp(/^-?\d+\.?\d*$/).test(dataValue.value))
+              if (!dataValue.removed && !(/^-?\d+\.?\d*$/).test(dataValue.value))
                 errors[name] = `Please only use numbers in a decimal format`;
             });
-          } else if (!new RegExp(/^-?\d+\.?\d*$/).test(values[name])) {
+          } else if (!(/^-?\d+\.?\d*$/).test(values[name])) {
             // If value is single value
             errors[name] = `Please only use numbers in a decimal format`;
           }

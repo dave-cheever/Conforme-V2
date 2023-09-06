@@ -44,7 +44,7 @@ export const useAuditModalContext = () => {
   return context;
 };
 
-const AuditModalProvider = ({ children }) => {
+function AuditModalProvider({ children }) {
   const { user } = useAppContext();
   const { data, refetch } = useQuery(GET_FORM_DATA);
   const auditTypes = data?.auditTypes || [];
@@ -106,6 +106,6 @@ const AuditModalProvider = ({ children }) => {
   ) as IAuditModalContext;
 
   return <AuditModalContext.Provider value={value}>{children}</AuditModalContext.Provider>;
-};
+}
 
 export default AuditModalProvider;

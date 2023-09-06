@@ -2,7 +2,7 @@ import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
 
 import { useParticipantsModalContext } from '../../contexts/ParticipantsModalProvider';
 
-const ParticipantsDeleteModal = () => {
+function ParticipantsDeleteModal() {
   const { isParticipantDeleteModalOpen, closeParticipantDeleteModal, label, selectParticipant, participantToDelete } =
     useParticipantsModalContext();
 
@@ -48,7 +48,7 @@ const ParticipantsDeleteModal = () => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default ParticipantsDeleteModal;
 

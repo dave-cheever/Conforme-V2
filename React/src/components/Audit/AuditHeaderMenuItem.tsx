@@ -1,7 +1,7 @@
 import { Box, MenuItem, Spacer } from '@chakra-ui/react';
 
-const AuditHeaderMenuItem = ({ title, icon, onClick, disabled = false }) => (
-  <MenuItem
+function AuditHeaderMenuItem({ title, icon, onClick, disabled = false }) {
+  return <MenuItem
     color="auditHeadeMenuItem.optionsMenuColor"
     data-id="fea53ed5ae61"
     isDisabled={disabled}
@@ -11,7 +11,7 @@ const AuditHeaderMenuItem = ({ title, icon, onClick, disabled = false }) => (
     <Spacer data-id="8029ffbd8692" />
     <Box data-id="db917d220753" p="2">{icon}</Box>
   </MenuItem>
-);
+}
 
 export default AuditHeaderMenuItem;
 

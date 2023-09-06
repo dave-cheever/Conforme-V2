@@ -5,7 +5,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import * as Icons from '../../icons';
 import QuestionAdditionalButton from './QuestionAdditionalButton';
 
-const QuestionAdditionalInformation = () => {
+function QuestionAdditionalInformation() {
   const [activeInformation, setActiveInformation] = useState('Actions');
   return (
     (<Box data-id="da0b157865e3">
@@ -36,6 +36,6 @@ const QuestionAdditionalInformation = () => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default QuestionAdditionalInformation;

@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react';
 
 import { ShareIcon } from '../icons';
 
-const ShareButton = ({
+function ShareButton({
   ariaLabel,
   onClick,
   disabled = false,
@@ -14,8 +14,8 @@ const ShareButton = ({
   disabled?: boolean;
   mr?: string | number | {};
   ml?: string | number|{};
-}) => (
-  <Button
+}) {
+  return <Button
     _hover={
       disabled
         ? {}
@@ -44,6 +44,6 @@ const ShareButton = ({
     w={['calc(100% - 1rem - 15px)', 'auto']}>
     Share
   </Button>
-);
+}
 
 export default ShareButton;

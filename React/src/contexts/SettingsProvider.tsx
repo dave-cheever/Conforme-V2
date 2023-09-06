@@ -82,7 +82,7 @@ export const useSettingsContext = () => {
   return context;
 };
 
-const SettingsProvider = ({ children }) => {
+function SettingsProvider({ children }) {
   const { module } = useAppContext();
   const { data, loading, refetch } = useQuery(GET_SETTINGS_DATA, {
     variables: {
@@ -165,6 +165,6 @@ const SettingsProvider = ({ children }) => {
   ) as unknown as ISettingsContext;
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
-};
+}
 
 export default SettingsProvider;

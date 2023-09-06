@@ -12,12 +12,12 @@ export interface QuestionGroupProps {
   setExpandedItem: Dispatch<SetStateAction<string>>;
 }
 
-const QuestionGroup = ({
+function QuestionGroup({
   questionGroupItem: { questionAnswered, id, totalQuestion, name, description },
   isExpanded,
   setExpandedItem,
-}: QuestionGroupProps) => (
-  <Box
+}: QuestionGroupProps) {
+  return <Box
     cursor="pointer"
     data-id="895459aec803"
     maxH="400px"
@@ -92,5 +92,5 @@ const QuestionGroup = ({
       </Box>
     </Collapse>
   </Box>
-);
+}
 export default QuestionGroup;

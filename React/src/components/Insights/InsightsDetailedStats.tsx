@@ -22,7 +22,7 @@ const GET_TOTALS = gql`
   }
 `;
 
-const InsightsDetailedStats = ({
+function InsightsDetailedStats({
   insightsType = 'audits',
   questionsCategoryName = 'Questions category',
   businessUnits,
@@ -42,7 +42,7 @@ const InsightsDetailedStats = ({
   loadMoreLocations: LazyQueryExecFunction<any, any>;
   loadMoreBusinessUnits: LazyQueryExecFunction<any, any>;
   loadMoreUsers: LazyQueryExecFunction<any, any>;
-}) => {
+}) {
   const device = useDevice();
   const { data: totals } = useQuery(GET_TOTALS);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -219,6 +219,6 @@ const InsightsDetailedStats = ({
       </Tabs>
     </Box>)
   );
-};
+}
 
 export default InsightsDetailedStats;

@@ -56,7 +56,7 @@ export const useFiltersContext = () => {
   return context;
 };
 
-const FiltersProvider = ({ children }) => {
+function FiltersProvider({ children }) {
   const { module } = useAppContext();
   const { data } = useQuery(GET_FILTERS_DATA, {
     variables: {
@@ -164,6 +164,6 @@ const FiltersProvider = ({ children }) => {
   );
 
   return <FiltersContext.Provider value={value}>{children}</FiltersContext.Provider>;
-};
+}
 
 export default FiltersProvider;

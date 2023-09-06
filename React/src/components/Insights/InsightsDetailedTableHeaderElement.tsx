@@ -2,7 +2,7 @@ import { Flex, Text, Tooltip } from '@chakra-ui/react';
 
 import { ArrowDownIcon, ArrowUpIcon } from '../../icons';
 
-const InsightsDetailedTableHeaderElement = ({
+function InsightsDetailedTableHeaderElement({
   ml,
   pl,
   label,
@@ -20,8 +20,8 @@ const InsightsDetailedTableHeaderElement = ({
   sortOrder?: 'asc' | 'desc';
   showSortingIcon?: boolean;
   tooltip?: string;
-}) => (
-  <Flex
+}) {
+  return <Flex
     alignItems="center"
     bg={color}
     cursor="pointer"
@@ -43,21 +43,19 @@ const InsightsDetailedTableHeaderElement = ({
       <Text color={color !== 'white' ? 'white' : '#787486'} data-id="ccd172ca9e99">{label}</Text>
     </Tooltip>
     {sortOrder && (
-      <>
-        {sortOrder === 'desc' ? (
-          <ArrowDownIcon
-            color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
-            data-id="ecf19fdd4fd5"
-            ml="5px" />
-        ) : (
-          <ArrowUpIcon
-            color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
-            data-id="755a314f55c5"
-            ml="5px" />
-        )}
-      </>
+      sortOrder === 'desc' ? (
+        <ArrowDownIcon
+          color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
+          data-id="ecf19fdd4fd5"
+          ml="5px" />
+      ) : (
+        <ArrowUpIcon
+          color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
+          data-id="755a314f55c5"
+          ml="5px" />
+      )
     )}
   </Flex>
-);
+}
 
 export default InsightsDetailedTableHeaderElement;

@@ -6,7 +6,7 @@ import moment from 'moment';
 import { IAuditLog } from '../../interfaces/IAuditLog';
 import AuditLogRecord from './AuditLogRecord';
 
-const AuditLogDay = ({ auditLog }: { auditLog: IAuditLog }) => {
+function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
   const daysAgo = useCallback((day) => {
     const today = moment(new Date().toISOString().split('T')[0]);
     let value = '';
@@ -52,7 +52,7 @@ const AuditLogDay = ({ auditLog }: { auditLog: IAuditLog }) => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export const auditLogDayStyles = {
   auditLogDayStyles: {

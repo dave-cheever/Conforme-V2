@@ -2,8 +2,8 @@ import { Checkbox, Text } from '@chakra-ui/react';
 
 import { TickIcon } from '../../icons';
 
-const FilterCheckBox = ({ value, label }) => (
-  <Checkbox
+function FilterCheckBox({ value, label }) {
+  return <Checkbox
     colorScheme="purpleHeart"
     css={{
       '.chakra-checkbox__control': {
@@ -34,6 +34,6 @@ const FilterCheckBox = ({ value, label }) => (
       {label}
     </Text>
   </Checkbox>
-);
+}
 
 export default FilterCheckBox;

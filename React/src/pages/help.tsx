@@ -2,8 +2,8 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import Header from '../components/Header';
 
-const Help = () => (
-  <Flex
+function Help() {
+  return <Flex
     data-id="2760428c859f"
     flexDirection="column"
     h="full"
@@ -29,6 +29,6 @@ const Help = () => (
       </Text>
     </Flex>
   </Flex>
-);
+}
 
 export default Help;

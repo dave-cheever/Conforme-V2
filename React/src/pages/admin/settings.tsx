@@ -12,7 +12,7 @@ import SettingsProvider, { useSettingsContext } from '../../contexts/SettingsPro
 import useDevice from '../../hooks/useDevice';
 import { ISetting } from '../../interfaces/ISettings';
 
-const Settings = () => {
+function Settings() {
   const { loading, activeTab } = useSettingsContext();
   const [selectedTemplate, setSelectedTemplate] = useState<ISetting | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -131,12 +131,12 @@ const Settings = () => {
       </Flex>
     </Box>)
   );
-};
+}
 
-const SettingsWithContext = (props) => (
-  <SettingsProvider data-id="d092ac29f472" {...props}>
+function SettingsWithContext(props) {
+  return <SettingsProvider data-id="d092ac29f472" {...props}>
     <Settings data-id="0bb73c35c5b7" />
   </SettingsProvider>
-);
+}
 
 export default SettingsWithContext;

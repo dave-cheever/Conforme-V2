@@ -11,7 +11,7 @@ interface IDashboardFilterButton {
   icon?: ComponentWithAs<'svg', IconProps>;
 }
 
-const DashboardFilterButton = ({ label, isDisable, buttonType, icon }: IDashboardFilterButton) => {
+function DashboardFilterButton({ label, isDisable, buttonType, icon }: IDashboardFilterButton) {
   const { filterType, filterHandler } = useContext(HomeContext);
 
   return (
@@ -39,6 +39,6 @@ const DashboardFilterButton = ({ label, isDisable, buttonType, icon }: IDashboar
       {label}
     </Button>)
   );
-};
+}
 
 export default DashboardFilterButton;

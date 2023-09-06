@@ -7,7 +7,7 @@ import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import AuditListItem from './AuditListItem';
 
-const AuditsList = ({
+function AuditsList({
   audits,
   sortOrder,
   sortType,
@@ -19,8 +19,8 @@ const AuditsList = ({
   sortType: string;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
-}) => (
-  <Box
+}) {
+  return <Box
     data-id="c9dcc715eafc"
     h="full"
     ml="10px"
@@ -109,7 +109,7 @@ const AuditsList = ({
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default AuditsList;
 

@@ -1,5 +1,6 @@
 import { addMonths, endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear, subYears } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Actions, AuditLogs, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join, priorities } from 'app-utils';
@@ -8,7 +9,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['actions', ...elements]);
   try {
     const user = await authorize();
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': { $eq: null },

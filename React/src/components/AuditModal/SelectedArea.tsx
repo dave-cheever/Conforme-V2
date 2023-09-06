@@ -5,7 +5,7 @@ import { Button, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/r
 import { OpenMenuArrow } from '../../icons';
 import AuditModalContext from './AuditModalContext';
 
-const SelectedBusinessUnit = () => {
+function SelectedBusinessUnit() {
   const modalContext = useContext(AuditModalContext);
 
   return (
@@ -41,6 +41,6 @@ const SelectedBusinessUnit = () => {
       </MenuList>
     </Menu>)
   );
-};
+}
 
 export default SelectedBusinessUnit;

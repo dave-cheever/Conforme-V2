@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { AuditTypes } from 'app-models';
 import { doesPathExist } from 'app-utils';
@@ -6,7 +7,7 @@ import { doesPathExist } from 'app-utils';
 const auditTypes = async (_, __, { organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['auditTypes', ...elements]);
   try {
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': { $eq: null },

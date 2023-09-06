@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useDisclosure, useToast } from '@chakra-ui/react';
@@ -152,12 +152,12 @@ export const useResponseContext = () => {
   return context;
 };
 
-const ResponseProvider = ({ children }) => {
+function ResponseProvider({ children }) {
   const toast = useToast();
   const { id }: { id: string } = useParams();
-  const history = useHistory();
+  const location = useLocation();
   const { navigateTo } = useNavigate();
-  const query = new URLSearchParams(history.location.search);
+  const query = new URLSearchParams(location.search);
 
   const snapshot = query.get('snapshot');
   const { data, loading, refetch } = useQuery(GET_RESPONSE, {
@@ -292,6 +292,6 @@ const ResponseProvider = ({ children }) => {
   );
 
   return <ResponseContext.Provider value={value}>{children}</ResponseContext.Provider>;
-};
+}
 
 export default ResponseProvider;

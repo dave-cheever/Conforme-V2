@@ -54,7 +54,7 @@ const defaultValues = {
   name: '',
 };
 
-const Categories = () => {
+function Categories() {
   const toast = useToast();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
@@ -305,7 +305,7 @@ const Categories = () => {
       </Flex>
     </Box>
   </>);
-};
+}
 
 export default Categories;
 

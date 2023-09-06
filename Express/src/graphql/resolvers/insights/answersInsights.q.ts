@@ -12,6 +12,7 @@ import {
 } from 'date-fns';
 import { GraphQLResolveInfo } from 'graphql';
 import { groupBy, sumBy } from 'lodash';
+import { PipelineStage } from 'mongoose';
 
 import { Answers } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
@@ -22,7 +23,7 @@ const answersInsights = async (_, { answersInsightsQueryInput }, { authorize, or
   try {
     await authorize();
 
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           'metatags.removedAt': { $eq: null },

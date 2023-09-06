@@ -10,7 +10,7 @@ interface IQuestionAdditionalButton {
   setActiveInformation: Function;
 }
 
-const QuestionAdditionalButton = ({ label, icon, requiredIcon, activeInformation, setActiveInformation }: IQuestionAdditionalButton) => {
+function QuestionAdditionalButton({ label, icon, requiredIcon, activeInformation, setActiveInformation }: IQuestionAdditionalButton) {
   const active = useMemo(() => activeInformation === label, [activeInformation, label]);
 
   return (
@@ -43,6 +43,6 @@ const QuestionAdditionalButton = ({ label, icon, requiredIcon, activeInformation
       )}
     </Box>)
   );
-};
+}
 
 export default QuestionAdditionalButton;

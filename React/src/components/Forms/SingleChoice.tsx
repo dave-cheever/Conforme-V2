@@ -10,7 +10,7 @@ interface ISingleChoices extends IField {
   placeholder?: string;
 }
 
-const SingleChoices = ({ name, label, required, tooltip = '', defaultvalue, options, readMode = false, setValue }: ISingleChoices) => {
+function SingleChoices({ name, label, required, tooltip = '', defaultvalue, options, readMode = false, setValue }: ISingleChoices) {
   const [selectedRadio, setSelectedRadio] = useState<string>(defaultvalue);
 
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -82,7 +82,7 @@ const SingleChoices = ({ name, label, required, tooltip = '', defaultvalue, opti
       </VStack>
     </Box>)
   );
-};
+}
 
 export default SingleChoices;
 

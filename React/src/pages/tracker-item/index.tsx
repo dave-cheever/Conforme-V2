@@ -23,7 +23,7 @@ const UPDATE_RESPONSE = gql`
   }
 `;
 
-const TrackerItemResponse = () => {
+function TrackerItemResponse() {
   const {
     response,
     snapshot,
@@ -155,6 +155,7 @@ const TrackerItemResponse = () => {
                     action="responses.edit"
                     data={{ response }}
                     data-id="40bf98993fac"
+                    // eslint-disable-next-line react/no-unstable-nested-components
                     yes={() => (
                       <Flex data-id="9b78196a361d" onClick={(e) => e.stopPropagation()}>
                         <DatePicker
@@ -224,7 +225,7 @@ const TrackerItemResponse = () => {
       </VStack>
     </>
   );
-};
+}
 
 export default TrackerItemResponse;
 

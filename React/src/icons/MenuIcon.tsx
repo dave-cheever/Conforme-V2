@@ -1,6 +1,6 @@
 import { Icon } from '@chakra-ui/icons';
 
-const MenuIcon = (props) => {
+function MenuIcon(props) {
   const { isIndeterminate, isChecked, ...rest } = props;
   return (
     (<Icon data-id="083301d1fb3d" viewBox="0 0 24 24" {...rest}>
@@ -33,6 +33,6 @@ const MenuIcon = (props) => {
         data-id="eeebe5149375" />
     </Icon>)
   );
-};
+}
 
 export default MenuIcon;

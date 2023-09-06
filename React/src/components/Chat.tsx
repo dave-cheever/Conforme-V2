@@ -64,7 +64,7 @@ const defaultValues = {
   text: '',
 };
 
-const Chat = ({ component }: { component: 'audit' | 'response' }) => {
+function Chat({ component }: { component: 'audit' | 'response' }) {
   const toast = useToast();
   const device = useDevice();
   const { module } = useAppContext();
@@ -310,7 +310,9 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
           action={component === 'audit' ? 'auditComments.add' : 'comments.add'}
           data={{ ...(component === 'audit' ? { audit } : { response }) }}
           data-id="049cac06fd01"
+          // eslint-disable-next-line react/no-unstable-nested-components
           no={() => <Box data-id="af9c097bef41" h="20px" />}
+          // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
             <MessageInput
               control={control}
@@ -325,7 +327,7 @@ const Chat = ({ component }: { component: 'audit' | 'response' }) => {
       </Flex>
     </Stack>
   </>);
-};
+}
 
 export default Chat;
 

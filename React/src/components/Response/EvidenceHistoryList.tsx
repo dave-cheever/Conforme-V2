@@ -5,7 +5,7 @@ import { useResponseContext } from '../../contexts/ResponseProvider';
 import { isPermitted } from '../can';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 
-const EvidenceHistoryList = () => {
+function EvidenceHistoryList() {
   const { user } = useAppContext();
   const { response, snapshot } = useResponseContext();
   return (
@@ -39,6 +39,6 @@ const EvidenceHistoryList = () => {
         ))}
     </Flex>)
   );
-};
+}
 
 export default EvidenceHistoryList;

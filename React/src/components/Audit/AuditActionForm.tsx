@@ -11,7 +11,7 @@ import PeoplePicker from '../Forms/PeoplePicker';
 import TextInputMultiline from '../Forms/TextInputMultiline';
 import AuditActionChangesModal from './AuditActionChangesModal';
 
-const ActionForm = ({ handleSave }) => {
+function ActionForm({ handleSave }) {
   const { selectedAction, setSelectedAction } = useAuditContext();
 
   const { control, formState, watch, reset } = useForm({
@@ -163,7 +163,7 @@ const ActionForm = ({ handleSave }) => {
       </HStack>
     </Stack>
   </>);
-};
+}
 
 export const auditActionFormStyles = {
   auditActionForm: {

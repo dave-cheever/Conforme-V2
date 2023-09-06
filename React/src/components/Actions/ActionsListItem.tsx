@@ -5,7 +5,7 @@ import { capitalize } from 'lodash';
 import { LocationIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
 
-const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: (action: IAction) => void }) => {
+function ActionsListItem({ action, editAction }: { action: IAction; editAction: (action: IAction) => void }) {
   const isOverdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
 
   return (
@@ -162,6 +162,6 @@ const ActionsListItem = ({ action, editAction }: { action: IAction; editAction: 
       </Flex>
     </Box>)
   );
-};
+}
 
 export default ActionsListItem;

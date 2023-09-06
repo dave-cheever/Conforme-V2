@@ -1,5 +1,6 @@
 
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { RegulatoryBodies, Responses } from 'app-models';
 import { doesPathExist, join } from 'app-utils';
@@ -20,7 +21,7 @@ const regulatoryBodies = async (
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       for (const regulatoryBody of regulatoryBodies) {
-        const pipeline: any[] = [];
+        const pipeline: PipelineStage[] = [];
         join({
           pipeline,
           collection: 'trackerItems',

@@ -15,7 +15,7 @@ import QuestionForm from '../Questions/QuestionForm';
 import QuestionList from '../Questions/QuestionList';
 import SectionHeader from './SectionHeader';
 
-const QuestionsForm = () => {
+function QuestionsForm() {
   const { trackerItem, setValue } = useTrackerItemModalContext();
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showQuestionForm, setShowQuestionForm] = useState<boolean>(false);
@@ -172,7 +172,7 @@ const QuestionsForm = () => {
       )}
     </Stack>)
   );
-};
+}
 
 export default QuestionsForm;
 

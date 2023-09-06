@@ -19,7 +19,7 @@ const RENEW_RESPONSE = gql`
   }
 `;
 
-const RenewalModal = () => {
+function RenewalModal() {
   const { navigateTo } = useNavigate();
   const [renewResponse] = useMutation(RENEW_RESPONSE);
   const { response, isRenewalOpen, handleRenewalClose, refetch, setActiveTab } = useContext(ResponseContext);
@@ -120,7 +120,7 @@ const RenewalModal = () => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export const responseRenewalModalStyles = {
   renewResponseModal: {

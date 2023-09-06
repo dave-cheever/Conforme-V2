@@ -9,6 +9,7 @@ import {
 } from 'date-fns';
 import { response } from 'express';
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Responses } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
@@ -18,7 +19,7 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
   try {
     const { limit = 0, offset = 0, sortBy = 'calculatedStatus', sortDirection = 'asc' } = responsesPagination || {};
     const user = await authorize();
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           organizationId: organization._id,

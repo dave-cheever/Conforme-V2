@@ -63,7 +63,7 @@ export const useTrackerItemModalContext = () => {
   return context;
 };
 
-const TrackerItemModalProvider = ({ children }) => {
+function TrackerItemModalProvider({ children }) {
   const { data, refetch } = useQuery(GET_FORM_DATA);
   const [savingDialogDetails, setSavingDialogDetails] = useState<ITrackerItemModalDialogDetails>(initialDialogDetails);
   const [visitedTab, setVisitedTab] = useState<number>(0);
@@ -199,6 +199,6 @@ const TrackerItemModalProvider = ({ children }) => {
   ) as ITrackerItemModalContext;
 
   return <TrackerItemModalContext.Provider value={value}>{children}</TrackerItemModalContext.Provider>;
-};
+}
 
 export default TrackerItemModalProvider;

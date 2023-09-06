@@ -53,7 +53,7 @@ const UPDATE_USER = gql`
   }
 `;
 
-const Users = () => {
+function Users() {
   const { module } = useAppContext();
   const device = useDevice();
   const { data, loading, refetch } = useQuery(GET_USERS);
@@ -249,7 +249,7 @@ const Users = () => {
     <Flex
       alignItems="center"
       bg="#FFFFFF"
-      borderBottomRadius={i === data?.users.length - 1 ? [0, 'lg'] : ''}
+      borderBottomRadius={i === (data?.users || []).length - 1 ? [0, 'lg'] : ''}
       boxShadow="sm"
       data-id="246eb1efe836"
       flexShrink={0}
@@ -280,7 +280,7 @@ const Users = () => {
       {device !== 'mobile' && (
         <>
           <Box data-id="fd0475afcc93" w="16%">{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>
-          <Box data-id="ab4ef3862b03" w="16%">{user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}</Box>
+          <Box data-id="ab4ef3862b03" w="16%">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>
           <Flex data-id="8f0afdfdd223" flexDir="column" w="16%">
             {getDefaultPages(user._id).length === 1 ? (
               <Box data-id="db4de0041d43">{getDefaultPages(user._id).find(({ url }) => url === user.defaultPage)?.name}</Box>
@@ -319,10 +319,10 @@ const Users = () => {
         w={['40%', 'calc(16% - 20px)']}>
         {user?.lastLogin
           ? upperFirst(
-              formatDistanceToNow(new Date(user?.lastLogin), {
-                addSuffix: true,
-              }),
-            )
+            formatDistanceToNow(new Date(user?.lastLogin), {
+              addSuffix: true,
+            }),
+          )
           : 'Never'}
       </Flex>
     </Flex>
@@ -414,7 +414,7 @@ const Users = () => {
       </Box>
     </Flex>
   </>);
-};
+}
 
 export default Users;
 

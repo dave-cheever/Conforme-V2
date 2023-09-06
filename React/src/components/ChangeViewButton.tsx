@@ -7,7 +7,7 @@ import useDevice from '../hooks/useDevice';
 import { ChevronRight, GridIcon, GroupIcon, ListIcon } from '../icons';
 import { TViewMode } from '../interfaces/TViewMode';
 
-const ChangeViewButton = ({
+function ChangeViewButton({
   viewMode,
   setViewMode,
   views = [],
@@ -15,7 +15,7 @@ const ChangeViewButton = ({
   viewMode: TViewMode;
   setViewMode: (mode: TViewMode) => void;
   views: TViewMode[];
-}) => {
+}) {
   const { user } = useAppContext();
   const device = useDevice();
   useEffect(() => {
@@ -120,6 +120,6 @@ const ChangeViewButton = ({
       </MenuList>
     </Menu>)
   );
-};
+}
 
 export default ChangeViewButton;

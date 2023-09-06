@@ -15,7 +15,7 @@ const GET_AUDIT_ANSWERS_COUNT = gql`
   }
 `;
 
-const AuditSquare = ({ audit }: { audit: IAudit }) => {
+function AuditSquare({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();
 
   const { data, loading, error } = useQuery(GET_AUDIT_ANSWERS_COUNT, {
@@ -106,7 +106,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
           whiteSpace="nowrap">
           <Text color="auditSquare.titleFontColor" data-id="6b9e284a5444">{capitalize(t('location'))}</Text>
           <Tooltip data-id="7b8fe4d4a757" label={audit?.location?.name}>
-            <Text data-id="1e178faf7018" isTruncated maxWidth="80%">
+            <Text data-id="1e178faf7018" maxWidth="80%" noOfLines={1}>
               {audit?.location?.name}
             </Text>
           </Tooltip>
@@ -180,7 +180,7 @@ const AuditSquare = ({ audit }: { audit: IAudit }) => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default AuditSquare;
 

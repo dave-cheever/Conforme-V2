@@ -18,7 +18,7 @@ import {
 } from './index';
 import Table from './Table';
 
-const Field = ({ control, ...field }) => {
+function Field({ control, ...field }) {
   const {
     type,
     name,
@@ -118,6 +118,6 @@ const Field = ({ control, ...field }) => {
     default:
       return (<div data-id="99eba1af74d6">Field "{name}" of type "{type}" is not supported</div>);
   }
-};
+}
 
 export default Field;

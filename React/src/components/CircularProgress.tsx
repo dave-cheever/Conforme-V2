@@ -3,8 +3,8 @@ import { Box, CircularProgressLabel, CircularProgress as Progress, Text } from '
 import { EllipsisIcon } from '../icons';
 import { ICircularProgress } from '../interfaces/ICircularProgress';
 
-const CircularProgress = ({ value }: ICircularProgress) => (
-  <Box data-id="0b869d26f7a0">
+function CircularProgress({ value }: ICircularProgress) {
+  return <Box data-id="0b869d26f7a0">
     <EllipsisIcon boxSize={2} data-id="6ad314715121" transform="translate(-22px, 60px)" />
     <EllipsisIcon boxSize={2} data-id="4b780ca5322e" transform="translate(55px, -21px)" />
     <EllipsisIcon boxSize={2} data-id="86c746fe7172" transform="translate(57px, 135px)" />
@@ -38,6 +38,6 @@ const CircularProgress = ({ value }: ICircularProgress) => (
       </CircularProgressLabel>
     </Progress>
   </Box>
-);
+}
 
 export default CircularProgress;

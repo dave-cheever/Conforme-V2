@@ -7,7 +7,7 @@ import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import ActionsListItem from './ActionsListItem';
 
-const ActionsList = ({
+function ActionsList({
   actions,
   sortOrder,
   sortType,
@@ -21,8 +21,8 @@ const ActionsList = ({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
   editAction: (action: IAction) => void;
-}) => (
-  <Box
+}) {
+  return <Box
     data-id="b7d84f3800a4"
     h="full"
     ml="10px"
@@ -145,7 +145,7 @@ const ActionsList = ({
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default ActionsList;
 

@@ -6,7 +6,7 @@ import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { ILocation } from '../../interfaces/ILocation';
 import LocationsSelector from '../LocationsSelector';
 
-const LocationFilter = () => {
+function LocationFilter() {
   const { filtersValues, setFilters, locations } = useFiltersContext();
   const value = useMemo(() => filtersValues.locationsIds?.value, [filtersValues]) as string[];
 
@@ -23,6 +23,6 @@ const LocationFilter = () => {
         selected={value} />
     </Box>)
   );
-};
+}
 
 export default LocationFilter;

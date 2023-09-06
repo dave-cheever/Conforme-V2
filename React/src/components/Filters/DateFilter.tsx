@@ -11,7 +11,7 @@ import { actionsFilterDates, auditsFilterDates, trackerFilterDates } from '../..
 import useNavigate from '../../hooks/useNavigate';
 import { MinusIcon } from '../../icons';
 
-const DateFilter = ({ filterName }: { filterName: string }) => {
+function DateFilter({ filterName }: { filterName: string }) {
   const { filtersValues, setFilters } = useFiltersContext();
   const { module } = useAppContext();
   const location = useLocation();
@@ -122,6 +122,6 @@ const DateFilter = ({ filterName }: { filterName: string }) => {
       )}
     </Box>)
   );
-};
+}
 
 export default DateFilter;

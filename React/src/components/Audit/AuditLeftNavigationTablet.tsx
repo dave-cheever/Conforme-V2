@@ -6,7 +6,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { ChevronRight, ConformeSmall } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
-const AuditLeftNavigationTablet = () => {
+function AuditLeftNavigationTablet() {
   const { auditNavigationTabs } = useConfig();
   const { navigateTo } = useNavigate();
   const { organizationConfig } = useAppContext();
@@ -71,6 +71,6 @@ const AuditLeftNavigationTablet = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default AuditLeftNavigationTablet;

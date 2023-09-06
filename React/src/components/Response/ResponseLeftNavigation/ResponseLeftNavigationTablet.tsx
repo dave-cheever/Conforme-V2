@@ -11,7 +11,7 @@ import { getInitials } from '../../../utils/helpers';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 import ResponseDetail from './ResponseDetail';
 
-const ResponseLeftNavigationTablet = () => {
+function ResponseLeftNavigationTablet() {
   const { navigateTo } = useNavigate();
   const { module } = useAppContext();
 
@@ -78,6 +78,6 @@ const ResponseLeftNavigationTablet = () => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export default ResponseLeftNavigationTablet;

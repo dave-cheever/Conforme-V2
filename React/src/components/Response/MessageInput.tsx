@@ -25,7 +25,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const MessageInput = ({ control, name, label, placeholder = '', validations = {}, disabled = false, onAction }: IMessageInput) => {
+function MessageInput({ control, name, label, placeholder = '', validations = {}, disabled = false, onAction }: IMessageInput) {
   const validate = useValidate(label || name, validations, definedValidations);
   const { chatParticipants } = useChatContext();
   const mentionRef = useRef<HTMLInputElement>(null);
@@ -104,7 +104,7 @@ const MessageInput = ({ control, name, label, placeholder = '', validations = {}
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default MessageInput;
 

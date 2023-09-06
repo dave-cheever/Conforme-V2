@@ -10,7 +10,7 @@ import DocumentUploading from '../Response/DocumentUploading';
 
 const defaultFileTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', 'image/*', '.zip', '.html', '.pptx', '.ppt', '.msg'];
 
-const DocumentUpload = ({
+function DocumentUpload({
   elementId,
   documentName,
   callback,
@@ -32,7 +32,7 @@ const DocumentUpload = ({
   setUploadStatus?: (uploading: boolean) => void;
   doNotAwaitCallback?: boolean;
   acceptedFileTypes?: string[];
-}) => {
+}) {
   const toast = useToast();
   const uploadControllerRef = useRef<{ [key: string]: AbortController }>({});
   const [rejected, setRejected] = useState<boolean>(false);
@@ -144,6 +144,6 @@ const DocumentUpload = ({
       )}
     </Flex>)
   );
-};
+}
 
 export default DocumentUpload;

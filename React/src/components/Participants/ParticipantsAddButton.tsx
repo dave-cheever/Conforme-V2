@@ -3,7 +3,7 @@ import { IconButton } from '@chakra-ui/react';
 
 import { useParticipantsModalContext } from '../../contexts/ParticipantsModalProvider';
 
-const ParticipantsAddButton = (props) => {
+function ParticipantsAddButton(props) {
   const { openParticipantsModal } = useParticipantsModalContext();
 
   return (
@@ -20,7 +20,7 @@ const ParticipantsAddButton = (props) => {
       w="64px"
       {...props} />)
   );
-};
+}
 
 export const participantsAddButtonStyles = {
   participantsAddButton: {

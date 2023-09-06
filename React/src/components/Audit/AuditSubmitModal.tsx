@@ -17,7 +17,7 @@ import { capitalize } from 'lodash';
 import { toastSuccess } from '../../bootstrap/config';
 import { useAuditContext } from '../../contexts/AuditProvider';
 
-const AuditSubmitModal = ({ isOpen, onClose }) => {
+function AuditSubmitModal({ isOpen, onClose }) {
   const { audit, submitAudit, refetch } = useAuditContext();
   const toast = useToast();
 
@@ -81,7 +81,7 @@ const AuditSubmitModal = ({ isOpen, onClose }) => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export const auditNewQuestionModalStyles = {
   auditNewQuestionModal: {

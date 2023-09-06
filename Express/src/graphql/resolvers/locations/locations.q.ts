@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { PipelineStage } from 'mongoose';
 
 import { Actions, Answers, Audits, Locations, Responses, Users } from 'app-models';
 import { doesPathExist, getActionStatus, join } from 'app-utils';
@@ -16,7 +17,7 @@ const locations = async (
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       for (const location of locations) {
-        const pipeline: any[] = [];
+        const pipeline: PipelineStage[] = [];
         join({
           pipeline,
           collection: 'trackerItems',
@@ -111,7 +112,7 @@ const locations = async (
 
     if (shouldJoin('totalActionsCount')) {
       for (const location of locations) {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
           {
             $match: {
               'metatags.removedAt': { $eq: null },
@@ -148,7 +149,7 @@ const locations = async (
 
     if (shouldJoin('completedActionsCount')) {
       for (const location of locations) {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
           {
             $match: {
               'metatags.removedAt': { $eq: null },
@@ -186,7 +187,7 @@ const locations = async (
 
     if (shouldJoin('inProgressActionsCount')) {
       for (const location of locations) {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
           {
             $match: {
               'metatags.removedAt': { $eq: null },
@@ -222,7 +223,7 @@ const locations = async (
 
     if (shouldJoin('overdueActionsCount')) {
       for (const location of locations) {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
           {
             $match: {
               'metatags.removedAt': { $eq: null },
@@ -258,7 +259,7 @@ const locations = async (
 
     if (locationsAnswersCountInput?.questionsCategoriesId) {
       const getAnswersCount = async (locationId: string, selector: object = {}) => {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
           {
             $match: {
               'metatags.removedAt': { $eq: null },

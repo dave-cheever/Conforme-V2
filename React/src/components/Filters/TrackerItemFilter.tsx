@@ -7,7 +7,7 @@ import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { Magnifier } from '../../icons';
 import FilterCheckBox from './FilterCheckBox';
 
-const TrackerItemFilter = () => {
+function TrackerItemFilter() {
   const { filtersValues, setFilters, trackerItems } = useFiltersContext();
   const value = useMemo(() => filtersValues.trackerItemsIds?.value, [filtersValues]) as string[];
   const [search, setSearch] = useState<string>('');
@@ -58,6 +58,6 @@ const TrackerItemFilter = () => {
       </CheckboxGroup>
     </Stack>)
   );
-};
+}
 
 export default TrackerItemFilter;

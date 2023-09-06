@@ -2,6 +2,7 @@ import { Response } from 'express';
 import fs from "fs/promises";
 import StatusCodes from 'http-status-codes';
 import { isEmpty } from "lodash";
+import { PipelineStage } from 'mongoose';
 import * as XLSX from 'xlsx';
 
 import { IOrganization } from "app-interfaces";
@@ -34,7 +35,7 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
     await log(`\nParsing file: ${files[0].originalname}`);
 
     // Get all responses and save in app memory to avoid running aggregation thousand of times
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           organizationId: organization._id,

@@ -21,7 +21,7 @@ import { Dropdown, TextInput, Toggle } from '../Forms';
 import TextInputMultiline from '../Forms/TextInputMultiline';
 import AuditActionForm from './AuditActionForm';
 
-const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuestionWithAnswer>; handleClose: () => void }) => {
+function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuestionWithAnswer>; handleClose: () => void }) {
   const toast = useToast();
   const { user, module } = useAppContext();
   const {
@@ -440,7 +440,7 @@ const AuditAnswer = ({ question, handleClose }: { question: TDeepPartial<TQuesti
       </HStack>
     </Stack>)
   );
-};
+}
 
 export const auditAnswerStyles = {
   auditAnswer: {

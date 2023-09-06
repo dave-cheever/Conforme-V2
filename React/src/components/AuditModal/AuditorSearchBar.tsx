@@ -7,7 +7,7 @@ import { IAuditor } from '../../interfaces/IAuditor';
 import AuditModalContext from './AuditModalContext';
 import Auditor from './Auditor';
 
-const AuditorSearchBar = () => {
+function AuditorSearchBar() {
   const modalContext = useContext(AuditModalContext);
   const auditors = useMemo(() => modalContext.auditors, [modalContext.auditors]);
 
@@ -96,6 +96,6 @@ const AuditorSearchBar = () => {
       </Collapse>
     </Box>)
   );
-};
+}
 
 export default AuditorSearchBar;

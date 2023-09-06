@@ -8,7 +8,7 @@ import { trackerItemFrequencies } from '../../hooks/useResponseUtils';
 import Datepicker from '../Forms/Datepicker';
 import Dropdown from '../Forms/Dropdown';
 
-const DetailsForm = () => {
+function DetailsForm() {
   const { control, categories, regulatoryBodies } = useTrackerItemModalContext();
 
   const categoriesOptions = useMemo(() => categories.map(({ _id, name }) => ({ value: _id, label: name })), [categories]);
@@ -64,6 +64,6 @@ const DetailsForm = () => {
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default DetailsForm;

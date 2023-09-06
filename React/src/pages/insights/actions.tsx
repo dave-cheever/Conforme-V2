@@ -82,7 +82,7 @@ const GET_USERS_ACTIONS_INSIGHTS = gql`
   }
 `;
 
-const ActionsInsights = () => {
+function ActionsInsights() {
   const { filtersValues, setFilters, actionFiltersValue, setActionFiltersValue, usedFilters } = useFiltersContext();
   const { data, loading, error, refetch } = useQuery(GET_ACTIONS_INSIGHTS);
 
@@ -301,7 +301,7 @@ const ActionsInsights = () => {
       )}
     </Box>)
   );
-};
+}
 
 export default ActionsInsights;
 

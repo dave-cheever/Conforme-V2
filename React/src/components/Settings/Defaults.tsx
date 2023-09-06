@@ -15,7 +15,7 @@ const UPDATE_SETTINGS = gql`
   }
 `;
 
-const Defaults = () => {
+function Defaults() {
   const [updateSetting] = useMutation(UPDATE_SETTINGS);
   const { control, categories, businessUnits, regulatoryBodies, defaultSettings, formValues, errors, reset, refetch } =
     useSettingsContext();
@@ -112,6 +112,6 @@ const Defaults = () => {
       ))}
     </Stack>)
   );
-};
+}
 
 export default Defaults;

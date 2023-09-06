@@ -7,7 +7,7 @@ import { t } from 'i18next';
 import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import SectionHeader from './SectionHeader';
 
-const AdditionalDetailsForm = () => {
+function AdditionalDetailsForm() {
   const { trackerItem, setValue } = useTrackerItemModalContext();
 
   const handleEvidenceItemChange = (value: string, index: number) => {
@@ -125,7 +125,7 @@ const AdditionalDetailsForm = () => {
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default AdditionalDetailsForm;
 

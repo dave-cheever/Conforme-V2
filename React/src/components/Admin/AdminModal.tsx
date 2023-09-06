@@ -25,7 +25,7 @@ interface IAdminModal {
   children: JSX.Element | JSX.Element[];
 }
 
-const AdminModal = ({ isOpenModal, modalType, onAction, collection, children }: IAdminModal) => {
+function AdminModal({ isOpenModal, modalType, onAction, collection, children }: IAdminModal) {
   const { user } = useAppContext();
   const { onClose } = useDisclosure();
 
@@ -167,7 +167,7 @@ const AdminModal = ({ isOpenModal, modalType, onAction, collection, children }: 
       )}
     </Modal>)
   );
-};
+}
 
 export default AdminModal;
 

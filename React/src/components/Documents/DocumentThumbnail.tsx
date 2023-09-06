@@ -15,14 +15,13 @@ const GET_DOCUMENT_DETAILS = gql`
   }
 `;
 
-const DocumentThumbnail = ({ document }: { document: IDocument | undefined }) => {
+function DocumentThumbnail({ document }: { document: IDocument | undefined }) {
   const { data } = useQuery(GET_DOCUMENT_DETAILS, {
     variables: { filesDetailsQuery: { ids: [document?.id] } },
   });
   const documentDetails = (data?.filesDetails || [])[0];
 
-  return (<>
-    <Flex
+  return (<Flex
       align="center"
       borderColor="documentUploaded.border"
       borderRadius="3px"
@@ -46,8 +45,7 @@ const DocumentThumbnail = ({ document }: { document: IDocument | undefined }) =>
         maxW="55px"
         src={documentDetails?.thumbnail}
         w="auto" />
-    </Flex>
-  </>);
-};
+    </Flex>);
+}
 
 export default DocumentThumbnail;

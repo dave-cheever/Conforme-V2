@@ -10,8 +10,8 @@ interface ILocationsSelectorList {
   handleChange: (any) => void;
 }
 
-const LocationsSelectorList = ({ filteredLocations, selected, handleChange }: ILocationsSelectorList) => (
-  <CheckboxGroup
+function LocationsSelectorList({ filteredLocations, selected, handleChange }: ILocationsSelectorList) {
+  return <CheckboxGroup
     data-id="a7f12bd3c709"
     onChange={(value) =>
       handleChange({
@@ -28,6 +28,6 @@ const LocationsSelectorList = ({ filteredLocations, selected, handleChange }: IL
       ))}
     </Stack>
   </CheckboxGroup>
-);
+}
 
 export default LocationsSelectorList;

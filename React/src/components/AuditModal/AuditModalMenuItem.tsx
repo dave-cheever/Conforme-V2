@@ -5,7 +5,7 @@ import { Box, Icon, Text } from '@chakra-ui/react';
 import { IAuditModalMenuItemProps } from '../../interfaces/IAuditModalMenuItemProps';
 import AuditModalContext from './AuditModalContext';
 
-const AuditModalMenuItem = ({ label, icon }: IAuditModalMenuItemProps) => {
+function AuditModalMenuItem({ label, icon }: IAuditModalMenuItemProps) {
   const modalContext = useContext(AuditModalContext);
   const active = useMemo(() => modalContext.activePage === label, [modalContext.activePage, label]);
 
@@ -44,6 +44,6 @@ const AuditModalMenuItem = ({ label, icon }: IAuditModalMenuItemProps) => {
       </Text>
     </Box>)
   );
-};
+}
 
 export default AuditModalMenuItem;

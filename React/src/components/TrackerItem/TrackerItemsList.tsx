@@ -10,7 +10,7 @@ import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import Loader from '../Loader';
 import TrackerListItem from './TrackerListItem';
 
-const TrackerListItems = ({
+function TrackerListItems({
   responses,
   loading,
   total,
@@ -30,8 +30,8 @@ const TrackerListItems = ({
   loadResponses: (page: number) => Promise<void>;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
-}) => (
-  <Box data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
+}) {
+  return <Box data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
     <Box
       bg="trackerList.bg"
       borderRadius="20px"
@@ -124,7 +124,7 @@ const TrackerListItems = ({
       </Flex>
     </Box>
   </Box>
-);
+}
 
 export default TrackerListItems;
 

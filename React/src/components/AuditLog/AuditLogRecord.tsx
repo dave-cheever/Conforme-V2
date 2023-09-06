@@ -28,7 +28,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
+function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
   const { navigateTo, isPathActive } = useNavigate();
   const { module } = useAppContext();
 
@@ -164,7 +164,7 @@ const AuditLogRecord = ({ audit }: { audit: IAuditLogRecord }) => {
       </Flex>
     </Flex>)
   );
-};
+}
 
 export const auditLogRecordStyles = {
   auditLogRecordStyles: {

@@ -16,7 +16,7 @@ interface ILocationsSelector {
   handleChange: (any) => void;
 }
 
-const LocationsSelector = ({ locations, selected, note, disabled, handleChange }: ILocationsSelector) => {
+function LocationsSelector({ locations, selected, note, disabled, handleChange }: ILocationsSelector) {
   const [filteredLocations, setFilteredLocations] = useState<ILocation[]>([]);
   const [selectedType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
@@ -89,7 +89,7 @@ const LocationsSelector = ({ locations, selected, note, disabled, handleChange }
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default LocationsSelector;
 

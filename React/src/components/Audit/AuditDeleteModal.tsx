@@ -18,7 +18,7 @@ import { toastSuccess } from '../../bootstrap/config';
 import { useAuditContext } from '../../contexts/AuditProvider';
 import useNavigate from '../../hooks/useNavigate';
 
-const AuditDeleteModal = ({ isOpen, onClose }) => {
+function AuditDeleteModal({ isOpen, onClose }) {
   const { audit, deleteAudit, refetch } = useAuditContext();
   const toast = useToast();
   const { navigateTo } = useNavigate();
@@ -81,7 +81,7 @@ const AuditDeleteModal = ({ isOpen, onClose }) => {
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export const auditNewQuestionModalStyles = {
   auditNewQuestionModal: {

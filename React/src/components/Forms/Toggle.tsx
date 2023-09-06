@@ -21,7 +21,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const Toggle = ({
+function Toggle({
   control,
   name,
   label,
@@ -32,7 +32,7 @@ const Toggle = ({
   help = '',
   trueLabel = 'Yes',
   falseLabel = 'No',
-}: IToggle) => {
+}: IToggle) {
   const validate = useValidate(label || name, validations, definedValidations);
 
   return (
@@ -121,7 +121,7 @@ const Toggle = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default Toggle;
 

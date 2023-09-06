@@ -2,7 +2,7 @@ import React from 'react';
 
 import { QuestionDateIcon, QuestionTextIcon, QuestionToggleIcon } from '../../icons';
 
-const QuestionIcon = ({ type, ...props }) => {
+function QuestionIcon({ type, ...props }) {
   switch (type) {
     case 'textConfirm':
       return <QuestionTextIcon data-id="1a41dbd18c2c" {...props} />;
@@ -15,6 +15,6 @@ const QuestionIcon = ({ type, ...props }) => {
     default:
       return null;
   }
-};
+}
 
 export default QuestionIcon;

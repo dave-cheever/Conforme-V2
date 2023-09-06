@@ -45,7 +45,7 @@ const dummyAuditors = [
   },
 ];
 
-const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
+function AuditModalLegacy({ onClose, isOpen }: IAuditModal) {
   const [auditorSearchText, setAuditorSearchText] = useState('');
   const [auditors, setAuditors] = useState<IAuditor[]>([]);
   const [selectedAuditors, setSelectedAuditors] = useState<IAuditor[]>([]);
@@ -86,21 +86,20 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
   const participantsActive = useMemo(() => activePage === 'Participants', [activePage]);
   const questionsActive = useMemo(() => activePage === 'Questions', [activePage]);
   const reviewActive = useMemo(() => activePage === 'Review', [activePage]);
+  const contextValues = useMemo(() => ({
+    activePage,
+    setActivePage,
+    selectedBusinessUnit,
+    setSelectedBusinessUnit,
+    auditors,
+    selectedAuditors,
+    updateSelectedAuditors,
+    auditorSearchText,
+    updateAuditorSearchText,
+  }), [activePage, selectedBusinessUnit, auditors, selectedAuditors, auditorSearchText]);
 
   return (
-    (<AuditModalContext.Provider
-      value={{
-        activePage,
-        setActivePage,
-        selectedBusinessUnit,
-        setSelectedBusinessUnit,
-        auditors,
-        selectedAuditors,
-        updateSelectedAuditors,
-        auditorSearchText,
-        updateAuditorSearchText,
-      }}
-    >
+    (<AuditModalContext.Provider value={contextValues}>
       <Modal
         data-id="68d28b40ec07"
         isOpen={isOpen}
@@ -256,6 +255,6 @@ const AuditModalLegacy = ({ onClose, isOpen }: IAuditModal) => {
       </Modal>
     </AuditModalContext.Provider>)
   );
-};
+}
 
 export default AuditModalLegacy;

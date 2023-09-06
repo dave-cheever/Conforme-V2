@@ -5,7 +5,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import { ArrowRight, ErrorSign } from '../../icons';
 
-const NavigationMobileModal = () => {
+function NavigationMobileModal() {
   const { trackerItemModalSections, selectedSectionIndex, selectSection, errors, trigger } = useTrackerItemModalContext();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -114,7 +114,7 @@ const NavigationMobileModal = () => {
       )}
     </Flex>)
   );
-};
+}
 
 export default NavigationMobileModal;
 

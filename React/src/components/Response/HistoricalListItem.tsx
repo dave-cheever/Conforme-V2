@@ -19,7 +19,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-const HistoricalListItem = ({ response }: { response: IResponse }) => {
+function HistoricalListItem({ response }: { response: IResponse }) {
   const { navigateTo } = useNavigate();
   const { snapshot } = useResponseContext();
   const [getUsers, { data: { usersById: responseUsers = [] } = [], loading: responsibleLoading }] = useLazyQuery(GET_USERS_BY_ID);
@@ -145,7 +145,7 @@ const HistoricalListItem = ({ response }: { response: IResponse }) => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export const historicalListItemStyles = {
   historicalListItem: {

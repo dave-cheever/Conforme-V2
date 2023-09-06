@@ -6,7 +6,7 @@ import { IAuditor } from '../../interfaces/IAuditor';
 import AuditModalContext from './AuditModalContext';
 import SelectedAuditor from './SelectedAuditor';
 
-const SelectedUsers = () => {
+function SelectedUsers() {
   // IAuditor
 
   const modalContext = useContext(AuditModalContext);
@@ -25,6 +25,6 @@ const SelectedUsers = () => {
       ))}
     </SimpleGrid>)
   );
-};
+}
 
 export default SelectedUsers;

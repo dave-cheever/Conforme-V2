@@ -8,7 +8,7 @@ import { CheckIcon, MinusIcon } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import SectionHeader from './SectionHeader';
 
-const LocationsForm = () => {
+function LocationsForm() {
   const { locations, trackerItem, setValue, trigger } = useTrackerItemModalContext();
   const [searchText, setSearchText] = useState<string>('');
   const [filteredLocations, setFilteredLocations] = useState<IBusinessUnit[]>([]);
@@ -158,7 +158,7 @@ const LocationsForm = () => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default LocationsForm;
 

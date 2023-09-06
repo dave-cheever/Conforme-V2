@@ -6,7 +6,7 @@ import { useConfigContext } from '../../contexts/ConfigProvider';
 import Can from '../can';
 import NavigationBottomItem from './NavigationBottomItem';
 
-const NavigationBottomMobile = () => {
+function NavigationBottomMobile() {
   const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -36,6 +36,7 @@ const NavigationBottomMobile = () => {
           action={menuItem.permission}
           data-id="bf62123ce440"
           key={`menu${i}`}
+          // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
             <NavigationBottomItem
               data-id="c1a343c9cf2f"
@@ -48,7 +49,7 @@ const NavigationBottomMobile = () => {
       ))}
     </Flex>)
   );
-};
+}
 
 export default NavigationBottomMobile;
 

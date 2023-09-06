@@ -6,7 +6,7 @@ import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import BusinessUnitsSelector from '../BusinessUnitsSelector';
 
-const BusinessUnitFilter = () => {
+function BusinessUnitFilter() {
   const { filtersValues, setFilters, businessUnits } = useFiltersContext();
   const value = useMemo(() => filtersValues.businessUnitsIds?.value, [filtersValues]) as string[];
 
@@ -23,6 +23,6 @@ const BusinessUnitFilter = () => {
         selected={value} />
     </Box>)
   );
-};
+}
 
 export default BusinessUnitFilter;

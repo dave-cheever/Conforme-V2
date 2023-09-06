@@ -1,3 +1,4 @@
+import { PipelineStage } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AuditLogs } from 'app-models';
@@ -7,7 +8,7 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
     const { skip, limit, actions, dateLimit, elementId, userId, fields, moduleId } =
       auditLogsQuery;
 
-    const pipeline: any = [
+    const pipeline: PipelineStage[] = [
       {
         $match: {
           organizationId: organization._id,

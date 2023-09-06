@@ -4,13 +4,13 @@ import { useAuditContext } from '../../contexts/AuditProvider';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
 import AuditQuestionListItem from './AuditQuestionListItem';
 
-const AuditQuestionsCategory = ({
+function AuditQuestionsCategory({
   questionsCategory,
   handleDelete,
 }: {
   questionsCategory: IQuestionsCategory;
   handleDelete: () => void;
-}) => {
+}) {
   const { questions } = useAuditContext();
   const categoryQuestions = questions[questionsCategory._id];
   if (!categoryQuestions) return null;
@@ -34,6 +34,6 @@ const AuditQuestionsCategory = ({
       </Stack>
     </Stack>)
   );
-};
+}
 
 export default AuditQuestionsCategory;

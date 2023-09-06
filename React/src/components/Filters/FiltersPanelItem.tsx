@@ -15,7 +15,7 @@ import StateChoiceFilter from './StateChoiceFilter';
 import TrackerItemFilter from './TrackerItemFilter';
 import UserFilter from './UserFilter';
 
-const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) => {
+function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
   const { isOpen, onToggle } = useDisclosure();
   const { setFilters, filtersValues } = useFiltersContext();
 
@@ -61,8 +61,8 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
     setFilters({ filters: updatedFiltersValue });
   };
 
-  return (<>
-    {name === 'showArchived' ? (
+  return (
+    name === 'showArchived' ? (
       <ShowArchivedFilter data-id="e70badd418f8" />
     ) : (
       <Flex
@@ -110,9 +110,9 @@ const FiltersPanelItem = ({ name, filter }: { name: string; filter: IFilter }) =
         </Flex>
         {isOpen && renderPanel()}
       </Flex>
-    )}
-  </>);
-};
+    )
+  );
+}
 
 export default FiltersPanelItem;
 

@@ -12,7 +12,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { CalendarIcon, MinusIcon } from '../../icons';
 import CustomDatePicker from './CustomDatePicker';
 
-const QuickDateFilter = ({ filterName, toggleActiveFilters }: { filterName: string; toggleActiveFilters?: () => void }) => {
+function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: string; toggleActiveFilters?: () => void }) {
   const { filtersValues, setFilters } = useFiltersContext();
   const { module } = useAppContext();
   const location = useLocation();
@@ -178,6 +178,6 @@ const QuickDateFilter = ({ filterName, toggleActiveFilters }: { filterName: stri
       )}
     </Flex>)
   );
-};
+}
 
 export default QuickDateFilter;

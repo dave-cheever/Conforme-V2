@@ -3,7 +3,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import { TickIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 
-const ParticipantListItem = ({
+function ParticipantListItem({
   user,
   isSelected,
   onSelectParticipant,
@@ -11,8 +11,8 @@ const ParticipantListItem = ({
   user: IUser;
   isSelected: boolean;
   onSelectParticipant: (user: IUser) => void;
-}) => (
-  <Flex
+}) {
+  return <Flex
     align="center"
     cursor="pointer"
     data-id="af8a6dfc65ea"
@@ -47,7 +47,7 @@ const ParticipantListItem = ({
       </Box>
     </Flex>
   </Flex>
-);
+}
 
 export default ParticipantListItem;
 

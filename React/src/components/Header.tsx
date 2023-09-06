@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
@@ -12,9 +12,10 @@ import FilterButton from './FilterButton';
 interface IHeader {
   breadcrumbs: string[];
   mobileBreadcrumbs?: string[];
+  children?: React.ReactNode;
 }
 
-const Header: FunctionComponent<IHeader> = ({ children, breadcrumbs, mobileBreadcrumbs }) => {
+function Header({ children, breadcrumbs, mobileBreadcrumbs }: IHeader) {
   const { usedFilters } = useFiltersContext();
   const { isPathActive } = useNavigate();
   const isAuditPage =

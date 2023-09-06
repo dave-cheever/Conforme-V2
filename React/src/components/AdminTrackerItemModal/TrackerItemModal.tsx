@@ -14,7 +14,7 @@ import AlertDialog from '../AlertDialog';
 import NavigationMobileModal from './NavigationMobileModal';
 import NavigationModal from './NavigationModal';
 
-const TrackerItemModal = ({ refetch }) => {
+function TrackerItemModal({ refetch }) {
   const toast = useToast();
   const device = useDevice();
   const { user } = useAppContext();
@@ -271,7 +271,7 @@ const TrackerItemModal = ({ refetch }) => {
       state={savingDialogDetails.state}
       title={savingDialogDetails.title} />
   </>);
-};
+}
 
 export default TrackerItemModal;
 

@@ -28,7 +28,7 @@ const REMOVE_PARTICIPANT = gql`
 // TODO: FixMe
 // Follow button was hidden and methods used above were removed. Use updateResponse instead.
 
-const FollowButton = ({ isMobile = false }) => {
+function FollowButton({ isMobile = false }) {
   const { response, refetch } = useResponseContext();
   const { user } = useAppContext();
   const toast = useToast();
@@ -122,6 +122,7 @@ const FollowButton = ({ isMobile = false }) => {
       (<Can
         action="responses.manageFollower"
         data-id="6569777318bf"
+        // eslint-disable-next-line react/no-unstable-nested-components
         yes={() => (
           <ResponseHeaderMenuItem
             data-id="7d799883554a"
@@ -136,6 +137,7 @@ const FollowButton = ({ isMobile = false }) => {
     (<Can
       action="responses.manageFollower"
       data-id="ccb326bd96ac"
+      // eslint-disable-next-line react/no-unstable-nested-components
       yes={() => (
         <ResponseHeaderButton
           data-id="55cc28e133b4"
@@ -145,6 +147,6 @@ const FollowButton = ({ isMobile = false }) => {
           onClick={isFollower ? handleUnFollow : handleFollow} />
       )} />)
   );
-};
+}
 
 export default FollowButton;

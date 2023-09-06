@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import StatusSelector from '../StatusSelector';
 
-const StatusFilter = () => {
+function StatusFilter() {
   const { filtersValues, setFilters, auditStatuses } = useFiltersContext();
   const value = useMemo(() => filtersValues.status?.value, [filtersValues]) as string[];
 
@@ -22,6 +22,6 @@ const StatusFilter = () => {
         status={auditStatuses} />
     </Box>)
   );
-};
+}
 
 export default StatusFilter;

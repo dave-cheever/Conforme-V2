@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
@@ -15,7 +15,9 @@ const client = new ApolloClient({
   credentials: 'include',
 });
 
-ReactDOM.render(
+const container: Element = document.getElementById('root')!;
+const root = createRoot(container);
+root.render(
   <React.StrictMode>
     <ApolloProvider client={client} data-id="8377c6dc8ec1">
       <BrowserRouter data-id="d92d8185dfdb">
@@ -23,7 +25,6 @@ ReactDOM.render(
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

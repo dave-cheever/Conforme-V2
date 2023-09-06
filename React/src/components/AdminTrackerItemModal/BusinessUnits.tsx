@@ -9,7 +9,7 @@ import { CheckIcon, MinusIcon } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import SectionHeader from './SectionHeader';
 
-const BusinessUnitsForm = () => {
+function BusinessUnitsForm() {
   const { businessUnits, trackerItem, setValue, trigger } = useTrackerItemModalContext();
   const [searchText, setSearchText] = useState<string>('');
   const [filteredBU, setFilteredBU] = useState<IBusinessUnit[]>([]);
@@ -163,7 +163,7 @@ const BusinessUnitsForm = () => {
       </Flex>
     </Box>)
   );
-};
+}
 
 export default BusinessUnitsForm;
 

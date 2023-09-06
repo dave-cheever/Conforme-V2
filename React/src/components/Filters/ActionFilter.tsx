@@ -5,7 +5,7 @@ import { Checkbox, CheckboxGroup, Stack, Text } from '@chakra-ui/react';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { actions } from '../../hooks/useFiltersUtils';
 
-const ActionFilter = () => {
+function ActionFilter() {
   const { filtersValues, setFilters } = useFiltersContext();
   const value = useMemo(() => filtersValues.action?.value, [filtersValues]) as string[];
 
@@ -41,6 +41,6 @@ const ActionFilter = () => {
       </Stack>
     </CheckboxGroup>)
   );
-};
+}
 
 export default ActionFilter;

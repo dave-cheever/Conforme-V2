@@ -8,8 +8,8 @@ import { range } from 'lodash';
 const years = range(1990, getYear(new Date()) + 1, 1);
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const CustomDatePicker = ({ clickOutsideHandler, ...props }) => (
-  <DatePicker
+function CustomDatePicker({ clickOutsideHandler, ...props }) {
+  return <DatePicker
     data-id="488f0b4e02cc"
     renderCustomHeader={({ date, changeYear, changeMonth }) => (
       <Flex
@@ -66,6 +66,6 @@ const CustomDatePicker = ({ clickOutsideHandler, ...props }) => (
       </Flex>
     )}
     {...props} />
-);
+}
 
 export default CustomDatePicker;

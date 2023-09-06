@@ -16,7 +16,7 @@ export const useAppContext = () => {
   return context;
 };
 
-const AppProvider = ({ children }) => {
+function AppProvider({ children }) {
   const [roles, setRoles] = useState<IRoles>();
   const [settings, setSettings] = useState<ISetting[]>([]);
   const [organizationConfig, setOrganizationConfig] = useState<IOrganization>();
@@ -40,6 +40,6 @@ const AppProvider = ({ children }) => {
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-};
+}
 
 export default AppProvider;

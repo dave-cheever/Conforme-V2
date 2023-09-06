@@ -2,7 +2,7 @@ import { Box, Button, Flex, HStack, Menu, MenuButton, MenuList, Spacer, Text } f
 
 import { ChevronRight } from '../icons';
 
-const SortButton = ({
+function SortButton({
   sortBy,
   sortOrder,
   sortType,
@@ -16,8 +16,8 @@ const SortButton = ({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
   ml?: number | string | {};
-}) => (
-  <Box data-id="edb62cd329ee" ml={ml ?? '15px'}>
+}) {
+  return <Box data-id="edb62cd329ee" ml={ml ?? '15px'}>
     <Menu autoSelect={false} data-id="9e6c02425b38">
       {({ onClose }) => (
         <>
@@ -112,7 +112,7 @@ const SortButton = ({
       )}
     </Menu>
   </Box>
-);
+}
 
 export default SortButton;
 

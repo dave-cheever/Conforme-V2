@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Modal, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useDisclosure } from '@chakra-ui/react';
@@ -128,7 +128,7 @@ const GET_ANSWERS = gql`
   }
 `;
 
-const Answers = () => {
+function Answers() {
   const {
     isOpen: isDeleteQuestionModalOpen,
     onOpen: handleDeleteQuestionModalOpen,
@@ -167,7 +167,7 @@ const Answers = () => {
     { label: 'Date added', key: 'metatags.addedAt' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const allowedFilters = useMemo(
@@ -179,7 +179,7 @@ const Answers = () => {
     // If id is in URL params, clean it
     if (queryParams.has('id')) {
       queryParams.delete('id');
-      history.replace({
+      navigate({
         search: queryParams.toString(),
       });
     }
@@ -251,7 +251,7 @@ const Answers = () => {
 
   useEffect(() => {
     if (data && data?.answers && !error) {
-      const items = [...data?.answers];
+      const items = [...(data?.answers || [])];
 
       setFilteredAnswers(items);
       if (queryParams.has('id')) {
@@ -311,32 +311,30 @@ const Answers = () => {
         viewMode={viewMode}
         views={['grid', 'list']} />
       {device !== 'mobile' && (
-        <>
-          <CSVLink
-            data={csvData}
-            data-id="5a492d1b03e3"
-            filename="answers.csv"
-            headers={csvHeaders}
-            target="_blank">
-            <Button
-              _hover={{
-                bg: 'reasponseHeader.buttonLightBgHover',
-                color: 'reasponseHeader.buttonLightColorHover',
-                cursor: 'pointer',
-                '&:hover svg path': { stroke: 'white' },
-              }}
-              bg="white"
-              borderRadius="10px"
-              data-id="21b90ee35575"
-              display="none"
-              ml="15px"
-              rightIcon={<ExportIcon data-id="3930a1d714c2" height="15px" width="15px" />}>
-              <Text data-id="9a22411e1581" fontSize="smm" fontWeight="bold">
-                Export
-              </Text>
-            </Button>
-          </CSVLink>
-        </>
+        <CSVLink
+          data={csvData}
+          data-id="5a492d1b03e3"
+          filename="answers.csv"
+          headers={csvHeaders}
+          target="_blank">
+          <Button
+            _hover={{
+              bg: 'reasponseHeader.buttonLightBgHover',
+              color: 'reasponseHeader.buttonLightColorHover',
+              cursor: 'pointer',
+              '&:hover svg path': { stroke: 'white' },
+            }}
+            bg="white"
+            borderRadius="10px"
+            data-id="21b90ee35575"
+            display="none"
+            ml="15px"
+            rightIcon={<ExportIcon data-id="3930a1d714c2" height="15px" width="15px" />}>
+            <Text data-id="9a22411e1581" fontSize="smm" fontWeight="bold">
+              Export
+            </Text>
+          </Button>
+        </CSVLink>
       )}
       <SortButton
         data-id="85e7ef276126"
@@ -429,7 +427,7 @@ const Answers = () => {
       {/* eslint-enable */}
     </Flex>
   </>);
-};
+}
 
 export default Answers;
 

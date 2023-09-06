@@ -10,7 +10,7 @@ interface IProps {
   isLoadingMore: boolean;
 }
 
-const AuditLog = ({ auditLogs, loading, isLoadingMore }: IProps) => {
+function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
   if (loading) {
     return (
       (<Flex data-id="92b99b55ebbf" h="calc(100vh - 150px)" w="full">
@@ -34,7 +34,7 @@ const AuditLog = ({ auditLogs, loading, isLoadingMore }: IProps) => {
     </Flex>
     {isLoadingMore && <Loader center data-id="fffffe97dc26" size="md" />}
   </>);
-};
+}
 
 export const auditLogStyles = {
   auditLog: {

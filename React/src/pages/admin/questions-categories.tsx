@@ -78,7 +78,7 @@ const defaultValues: Partial<IQuestionsCategory> = {
   },
 };
 
-const QuestionsCategories = () => {
+function QuestionsCategories() {
   const toast = useToast();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_QUESTIONS_CATEGORIES);
@@ -450,6 +450,6 @@ const QuestionsCategories = () => {
       </Box>
     </Flex>
   </>);
-};
+}
 
 export default QuestionsCategories;

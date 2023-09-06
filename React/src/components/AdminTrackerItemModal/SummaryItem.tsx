@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
 
-const SummaryItem = ({ children, label }) => (
-  <Flex data-id="6834375c9f61" flexDir="column">
+function SummaryItem({ children, label }) {
+  return <Flex data-id="6834375c9f61" flexDir="column">
     <Text
       color="summaryItemModal.label"
       data-id="b02d112a831b"
@@ -16,7 +16,7 @@ const SummaryItem = ({ children, label }) => (
       {children}
     </Text>
   </Flex>
-);
+}
 
 export default SummaryItem;
 

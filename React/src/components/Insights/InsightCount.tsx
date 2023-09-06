@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 
-const InsightCount = ({ count, onClick }) => (
-  <Flex
+function InsightCount({ count, onClick }) {
+  return <Flex
     alignItems="center"
     cursor="pointer"
     data-id="518389a9e0fc"
@@ -14,6 +14,6 @@ const InsightCount = ({ count, onClick }) => (
     py={1}>
     {count || 0}
   </Flex>
-);
+}
 
 export default InsightCount;

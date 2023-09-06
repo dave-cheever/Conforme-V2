@@ -23,7 +23,7 @@ const definedValidations: TDefinedValidations = {
   },
 };
 
-const TextConfirmInput = ({
+function TextConfirmInput({
   control,
   name,
   label,
@@ -32,7 +32,7 @@ const TextConfirmInput = ({
   validations = {},
   disabled = false,
   defaultvalue,
-}: ItextConfirmInput) => {
+}: ItextConfirmInput) {
   const inputRef = useRef<any>();
   const [tempValue, setTempValue] = useState(defaultvalue || '');
   const validate = useValidate(label || name, validations, definedValidations);
@@ -166,7 +166,7 @@ const TextConfirmInput = ({
       }}
       rules={{ validate }} />)
   );
-};
+}
 
 export default TextConfirmInput;
 

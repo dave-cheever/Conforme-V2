@@ -15,7 +15,8 @@ const filesRouter = () => {
     GraphService.inMemoryStrategy.any(),
     async (req: Request, res: Response) => {
       try {
-        const { body, files, user, session } = req;
+        const { body, user, session } = req;
+        const files: Express.Multer.File[] = req.files as Express.Multer.File[];
         const { organization } = session;
 
         if (!user) {
@@ -44,7 +45,7 @@ const filesRouter = () => {
         let uploaded: { name: string; id: string; addedAt: Date }[] = [];
         if (files && files.length > 0) {
           uploaded = await GraphService.uploadDocuments(
-            files as Express.Multer.File[],
+            files,
             filePath,
             organization as IOrganization,
           );

@@ -25,8 +25,8 @@ interface IChatConfirmDeleteModal {
   onAction: (id: string) => void;
 }
 
-const ChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, onAction }: IChatConfirmDeleteModal) => (
-  <Modal
+function ChatConfirmDeleteModal({ isOpen, messageId, message, onClose, onAction }: IChatConfirmDeleteModal) {
+  return <Modal
     data-id="d8b4245cc0be"
     isCentered
     isOpen={isOpen}
@@ -70,7 +70,7 @@ const ChatConfirmDeleteModal = ({ isOpen, messageId, message, onClose, onAction 
       </ModalFooter>
     </ModalContent>
   </Modal>
-);
+}
 
 export const chatConfirmDeleteModalStyles = {
   chatConfirmDeleteModal: {

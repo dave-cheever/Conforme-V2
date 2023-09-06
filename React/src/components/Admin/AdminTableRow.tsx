@@ -6,7 +6,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBaseWithName } from '../../interfaces/IBaseWithName';
 
-const AdminTableRow = ({
+function AdminTableRow({
   element,
   responseToEdit,
   edit,
@@ -14,7 +14,7 @@ const AdminTableRow = ({
   element: IBaseWithName;
   responseToEdit: 'regulatoryBodiesIds' | 'categoriesIds';
   edit?: () => void;
-}) => {
+}) {
   const { module } = useAppContext();
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
@@ -67,5 +67,5 @@ const AdminTableRow = ({
       )}
     </Flex>)
   );
-};
+}
 export default AdminTableRow;

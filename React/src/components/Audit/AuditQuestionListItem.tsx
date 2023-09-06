@@ -10,7 +10,7 @@ import { ActionsIcon, AreaInfoIcon, Eye, Trashcan } from '../../icons';
 import Can, { isPermitted } from '../can';
 import DocumentThumbnail from '../Documents/DocumentThumbnail';
 
-const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestionWithAnswer; handleDelete: () => void }) => {
+function AuditQuestionListItem({ question, handleDelete }: { question: TQuestionWithAnswer; handleDelete: () => void }) {
   const { user } = useAppContext();
   const { audit, setSelectedQuestion } = useAuditContext();
   const numberOfActions = (question?.answer?.actions || []).length;
@@ -22,7 +22,7 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
       data-id="ed300c529993"
       h="90px"
       key={question._id}
-      onClick={device === 'mobile' ? () => setSelectedQuestion(question) : () => {}}
+      onClick={device === 'mobile' ? () => setSelectedQuestion(question) : () => { }}
       p={4}
       rounded="10px">
       <Stack data-id="0ce5d2360e07" flexGrow={1} spacing={2}>
@@ -99,6 +99,7 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
             action="answers.delete"
             data={{ answer: question?.answer, audit }}
             data-id="4478d598c2a7"
+            // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <>
                 <Spacer data-id="37e9e938549a" />
@@ -125,6 +126,6 @@ const AuditQuestionListItem = ({ question, handleDelete }: { question: TQuestion
       )}
     </HStack>)
   );
-};
+}
 
 export default AuditQuestionListItem;

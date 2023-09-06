@@ -4,13 +4,13 @@ import { Flex, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
 
 import { IBusinessUnit } from '../interfaces/IBusinessUnit';
 
-const BusinessUnitsCarousel = ({
+function BusinessUnitsCarousel({
   businessUnits,
   selectedBusinessUnits,
 }: {
   businessUnits: IBusinessUnit[];
   selectedBusinessUnits: IBusinessUnit[];
-}) => {
+}) {
   if (selectedBusinessUnits?.length > 10) {
     return (
       (<Flex
@@ -65,6 +65,6 @@ const BusinessUnitsCarousel = ({
       ))}
     </Stack>)
   );
-};
+}
 
 export default BusinessUnitsCarousel;

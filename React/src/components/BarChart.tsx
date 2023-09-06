@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-const BarChart = ({ data, label }) => {
+function BarChart({ data, label }) {
   const newArr = data.reduce((acc, curr) => ({ ...acc, [curr._id]: curr.count }), {});
 
   const values: number[] = Object.values(newArr);
@@ -54,7 +54,7 @@ const BarChart = ({ data, label }) => {
       )}
     </Flex>)
   );
-};
+}
 
 export default BarChart;
 

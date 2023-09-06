@@ -33,7 +33,7 @@ const CREATE_REGULATORY_BODY = gql`
   }
 `;
 
-const AddTrackerItemAttribute = ({ isOpenModal, onAction, attributeType, newAttributeValue, refetch }: IAddTrackerItemAttribute) => {
+function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttributeValue, refetch }: IAddTrackerItemAttribute) {
   const { onClose } = useDisclosure();
   const [createCategory] = useMutation(CREATE_CATEGORY);
   const [createRegulatoryBody] = useMutation(CREATE_REGULATORY_BODY);
@@ -165,7 +165,7 @@ const AddTrackerItemAttribute = ({ isOpenModal, onAction, attributeType, newAttr
       </ModalContent>
     </Modal>)
   );
-};
+}
 
 export default AddTrackerItemAttribute;
 
