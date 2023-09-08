@@ -1,4 +1,3 @@
-import { graph } from '@pnp/graph-commonjs';
 import { AdalFetchClient } from '@pnp/nodejs-commonjs';
 import axios from 'axios';
 import multer from 'multer';
@@ -10,21 +9,6 @@ import { getProtocol } from 'app-utils';
 
 const inMemoryStorage = multer.memoryStorage();
 const inMemoryStrategy = multer({ storage: inMemoryStorage });
-
-// Function used where Graph API is used via @pnp library
-const graphSetup = async (organizationId: string) => {
-  if (!organizationId) throw new Error('No organization id');
-
-  const organization = await Organizations.customFindById(organizationId);
-  if (!organizationId) throw new Error('Wrong organization config');
-
-  const { clientId, tenantId, secret } = organization;
-  graph.setup({
-    graph: {
-      fetchClientFactory: () => new AdalFetchClient(tenantId || '', clientId || '', secret || ''),
-    },
-  });
-};
 
 // Function used where Graph API is used via HTTP request
 const getClient = async (organizationId: string) => {
@@ -49,7 +33,6 @@ const getClient = async (organizationId: string) => {
 const getUserPhoto = async ({ userId, organization }) => {
   try {
     const client = await getClient(organization._id);
-    await graphSetup(organization);
     const res = await client.get(`users/${userId}/photos/96x96/$value`, {
       responseType: 'arraybuffer',
     });
@@ -63,9 +46,9 @@ const getUserPhoto = async ({ userId, organization }) => {
 // userId can be AAD ID or email
 const getUserData = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
   try {
-    await graphSetup(organization._id);
-    const userData = await graph.users.getById(userId)();
-    return userData;
+    const client = await getClient(organization._id);
+    const res = await client.get(`users/${userId}`);
+    return res.data;
   } catch (e) {
     console.log(e);
     return null;
@@ -74,7 +57,8 @@ const getUserData = async ({ userId, organization }: { userId: string; organizat
 
 const getBasicUsers = async ({ usersIds, organization }: { usersIds: string[]; organization: IOrganization }) => {
   try {
-    await graphSetup(organization._id);
+    // const graph = await graphSetup(organization._id);
+    const client = await getClient(organization._id);
     if (usersIds.length === 0) return [];
 
     // Graph API allows to search by maximum 15 child clauses using 'OR' operator
@@ -91,8 +75,8 @@ const getBasicUsers = async ({ usersIds, organization }: { usersIds: string[]; o
     for (const chunk of chunks) {
       const query = `id in (${chunk.map((id) => `'${id}'`).join(', ')})`;
       try {
-        const chunkUsers = await graph.users.filter(query).get();
-        users.push(...chunkUsers);
+        const res = await client.get(`users?$filter=${query}`);
+        users.push(...(res.data?.value || []));
       } catch (e: any) {
         logger.error(e.message);
         return [];
@@ -123,7 +107,7 @@ const getUsers = async ({
   organization: IOrganization;
 }) => {
   try {
-    await graphSetup(organization._id);
+    const client = await getClient(organization._id);
     let filterQuery = '';
     if (searchText) {
       if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(searchText))
@@ -138,10 +122,12 @@ const getUsers = async ({
         `;
       }
     }
-    let res = await graph.users.filter(filterQuery).select('id', 'givenName', 'surname', 'displayName', 'userPrincipalName', 'jobTitle', 'department').get();
-    if (filterByJobTitle && filterByJobTitle.length > 0) res = res.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
+    const properties = ['id', 'givenName', 'surname', 'displayName', 'userPrincipalName', 'jobTitle', 'department'].join(',');
+    const res = await client.get(`users?$filter=${filterQuery}&$select=${properties}`);
+    let users = res.data?.value || [];
+    if (filterByJobTitle && filterByJobTitle.length > 0) users = users.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
 
-    return res.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle, department }) => ({
+    return users.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle, department }) => ({
       _id: id,
       displayName,
       firstName: givenName,
@@ -188,7 +174,6 @@ const checkMemberGroups = async ({
 // userId can be AAD ID or email
 const getLineManagerId = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
   try {
-    await graphSetup(organization._id);
     const client = await getClient(organization._id);
     const res = await client.get(`users/${userId}/manager`);
     return res.data.id;

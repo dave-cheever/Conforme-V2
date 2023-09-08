@@ -43,7 +43,6 @@
     "react-infinite-scroller": "^1.2.6",
     "react-mentions": "^4.4.10",
     "react-router-dom": "^6.15.0",
-    "react-scripts": "^5.0.1",
     "react-string-replace": "^1.1.1",
     "react-useinterval": "^1.0.2",
     "sentence-case": "^3.0.4",
@@ -88,6 +87,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/indefinite": "^2.3.1",
@@ -113,6 +113,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.3",
+    "react-scripts": "^5.0.1",
     "typescript": "^5.2.2",
     "vite-plugin-eslint": "^1.8.1"
   }

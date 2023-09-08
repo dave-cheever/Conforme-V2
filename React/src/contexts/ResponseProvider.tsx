@@ -154,7 +154,7 @@ export const useResponseContext = () => {
 
 function ResponseProvider({ children }) {
   const toast = useToast();
-  const { id }: { id: string } = useParams();
+  const { id } = useParams();
   const location = useLocation();
   const { navigateTo } = useNavigate();
   const query = new URLSearchParams(location.search);

@@ -10,6 +10,7 @@ import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { Asterisk, UploadIcon } from '../../icons';
+import { listSupportedFileTypes } from '../../utils/helpers';
 import Can, { isPermitted } from '../can';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 import DocumentUploading from './DocumentUploading';
@@ -201,7 +202,7 @@ function EvidenceExpected({ evidence }) {
           fontSize="12px"
           fontWeight="bold"
           mt={2}>
-          Document not uploaded. Accepted file types include '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip', '.txt', '.html' and all image types.
+          Document not uploaded. Accepted file types include {listSupportedFileTypes(acceptedFileTypes)}.
         </Flex>
       )}
     </Flex>)

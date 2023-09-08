@@ -303,3 +303,14 @@ export const getInitials = (name = '') => {
   const initials = names.map((n) => n.charAt(0)).join('');
   return initials.toUpperCase();
 };
+
+export const listSupportedFileTypes = (fileTypes: { [mimeType: string]: string[] }) => {
+  const types = Object.entries(fileTypes).reduce((acc, [currMime, currExt]) => {
+    let newAcc = `${acc}`;
+    if (acc.length > 0) newAcc += ', ';
+    if (currExt.length > 0) newAcc += `${currExt.join(', ')}`;
+    else newAcc += `${currMime}`;
+    return newAcc;
+  }, '');
+  return types;
+};

@@ -282,7 +282,7 @@ export const useAuditContext = () => {
 function AuditProvider({ children }) {
   const toast = useToast();
   const { module } = useAppContext();
-  const { id }: { id: string } = useParams();
+  const { id } = useParams();
   const { navigateTo } = useNavigate();
 
   const [updateAudit] = useMutation(UPDATE_AUDIT);

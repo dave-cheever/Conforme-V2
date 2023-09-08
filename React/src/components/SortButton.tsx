@@ -62,11 +62,9 @@ function SortButton({
                 <Spacer data-id="991f9491dab9" />
                 <HStack data-id="63b1c3cd64af">
                   <Box
-                    align="center"
                     bg={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.menuItemFocus' : undefined}
                     data-id="1df1f2ba41bc"
                     h="30px"
-                    justify="center"
                     onClick={() => {
                       setSortType(sortItem.key);
                       setSortOrder('asc');

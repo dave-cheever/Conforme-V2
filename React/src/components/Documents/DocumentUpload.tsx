@@ -6,9 +6,14 @@ import axios from 'axios';
 
 import { toastFailed } from '../../bootstrap/config';
 import UploadIcon from '../../icons/UploadIcon';
+import { listSupportedFileTypes } from '../../utils/helpers';
 import DocumentUploading from '../Response/DocumentUploading';
 
-const defaultFileTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', 'image/*', '.zip', '.html', '.pptx', '.ppt', '.msg'];
+const defaultFileTypes = {
+  'application/*': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip'],
+  'images/*': [],
+  'text/*': ['.txt', '.html'],
+};
 
 function DocumentUpload({
   elementId,
@@ -31,7 +36,7 @@ function DocumentUpload({
   ) => Promise<void>;
   setUploadStatus?: (uploading: boolean) => void;
   doNotAwaitCallback?: boolean;
-  acceptedFileTypes?: string[];
+  acceptedFileTypes?: { [mimeType: string]: string[] };
 }) {
   const toast = useToast();
   const uploadControllerRef = useRef<{ [key: string]: AbortController }>({});
@@ -139,7 +144,7 @@ function DocumentUpload({
           fontSize="12px"
           fontWeight="bold"
           mt={2}>
-          Document not uploaded. Accepted file types include {acceptedFileTypes.map((file) => `${file} `)}
+          Document not uploaded. Accepted file types include {listSupportedFileTypes(acceptedFileTypes)}
         </Flex>
       )}
     </Flex>)

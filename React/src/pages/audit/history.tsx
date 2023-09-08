@@ -116,7 +116,7 @@ function AuditHistory() {
                       bg="auditHistory.listItem.bg.default"
                       data-id="3964bd975b4e"
                       key={audit._id}
-                      onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => {}}
+                      onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}
                       p={4}
                       role="group"
                       rounded="10px"
@@ -193,7 +193,7 @@ function AuditHistory() {
               fontStyle="italic"
               h="full"
               w="full">
-              {error || 'No history'}
+              {error?.message || 'No history'}
             </Flex>
           )}
         </Stack>

@@ -24,7 +24,6 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.9.2",
-    "@pnp/graph-commonjs": "^2.15.0",
     "@pnp/nodejs-commonjs": "^2.15.0",
     "body-parser": "^1.20.2",
     "command-line-args": "^5.2.1",

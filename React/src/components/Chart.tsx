@@ -27,7 +27,7 @@ function Chart({ items, label }: { items: IBaseWithName[]; label: string }) {
         data: [...chartData],
         weight: 1,
         backgroundColor: [...chartColors],
-        borderWidth: '5px',
+        borderWidth: 5,
       },
     ],
 
