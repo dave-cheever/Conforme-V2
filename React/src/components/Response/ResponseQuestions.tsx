@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { unstable_usePrompt as usePrompt } from 'react-router-dom';
 
 import { Box, Flex, Grid, Stack, Text } from '@chakra-ui/react';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import usePrompt from '../../hooks/usePrompt';
 import { MessageSquareIcon } from '../../icons';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
 import { isPermitted } from '../can';
@@ -48,10 +48,8 @@ function ResponseQuestions({ disabled = false }) {
     );
   }, [JSON.stringify(questions)]);
 
-  usePrompt({
-    when: isQuestionFormDirty,
-    message: 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?',
-  });
+  usePrompt(isQuestionFormDirty, 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?');
+
   useEffect(() => {
     setIsQuestionFormDirty(isDirty);
   }, [isDirty]);

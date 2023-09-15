@@ -1,4 +1,4 @@
-import { isDate } from 'date-fns';
+import { format, isDate, subDays } from 'date-fns';
 import { Response } from 'express';
 import fs from "fs/promises";
 import StatusCodes from 'http-status-codes';
@@ -102,6 +102,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
     const logFileName = `5c51ec19-9428-4ef5-b262-9decd407b295-${new Date().valueOf()}.txt`;
     const log = async (text: string) => fs.appendFile(`./${logFileName}`, text);
     await log(`Migration script "5c51ec19-9428-4ef5-b262-9decd407b295" started for ${organization.name} (${organization._id})`);
+    await log(`\nDate: ${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}`);
     await log(`\nParsing file: ${files[0].originalname}`);
 
     //  it will generate a workbook from buffer upload
@@ -137,8 +138,8 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
               await log(`\n\tDocument number: ${data['Document Number']}`);
 
               // Only document with 'Current', 'Under review', 'Draft' status are allowed to insert
-              const status = (data.Status || '').toLowerCase();
-              if (!['current', 'under review', 'draft'].includes(status))
+              const status = (data.Status || '').trim().toLowerCase();
+              if (!['reserved', 'current', 'under review', 'draft'].includes(status))
                 throw new Error(`Document will not be parsed because of its "${data.Status}" status`);
 
               await log(`\n\tOwner "${data.Owner}" `);
@@ -275,6 +276,9 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                   await log(`\n\tDue date set to ${nextReviewDate}`);
                   dueDate = new Date(nextReviewDate);
                 } else await log('\n\tNext Review Due is not correct date, leaving empty');
+              } else if (status === 'current') {
+                await log('\n\tMissing due date, but status is "current", so setting to yesterday');
+                dueDate = subDays(new Date(), 1);
               } else await log('\n\tMissing due date, leaving empty');
 
               if (!dueDate && lastCompletionDate) dueDate = getNextRenewalDate(lastCompletionDate, trackerItem.frequency)

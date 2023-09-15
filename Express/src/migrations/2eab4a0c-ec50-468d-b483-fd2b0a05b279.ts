@@ -1,4 +1,4 @@
-import { isDate } from 'date-fns';
+import { format, isDate } from 'date-fns';
 import { Response } from 'express';
 import fs from "fs/promises";
 import StatusCodes from 'http-status-codes';
@@ -102,6 +102,7 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
     const logFileName = `2eab4a0c-ec50-468d-b483-fd2b0a05b279-${new Date().valueOf()}.txt`;
     const log = async (text: string) => fs.appendFile(`./${logFileName}`, text);
     await log(`Migration script "2eab4a0c-ec50-468d-b483-fd2b0a05b279" started for ${organization.name} (${organization._id})`);
+    await log(`\nDate: ${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}`);
     await log(`\nParsing file: ${files[0].originalname}`);
 
     //  it will generate a workbook from buffer upload
@@ -137,8 +138,8 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
               await log(`\n\tDocument number: ${data['Document Number']}`);
 
               // Only document with 'Current', 'Under review', 'Draft' status are allowed to insert
-              const status = (data.Status || '').toLowerCase();
-              if (!['current', 'under review', 'draft'].includes(status))
+              const status = (data.Status || '').trim().toLowerCase();
+              if (!['reserved', 'current', 'under review', 'draft'].includes(status))
                 throw new Error(`Document will not be parsed because of its "${data.Status}" status`);
 
               await log(`\n\tOwner "${data.Owner}" `);

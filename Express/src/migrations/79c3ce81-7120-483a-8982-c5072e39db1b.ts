@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { Response } from 'express';
 import fs from "fs/promises";
 import StatusCodes from 'http-status-codes';
@@ -32,6 +33,7 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
     const logFileName = `79c3ce81-7120-483a-8982-c5072e39db1b-${new Date().valueOf()}.txt`;
     const log = async (text: string) => fs.appendFile(`./${logFileName}`, text);
     await log(`Migration script "79c3ce81-7120-483a-8982-c5072e39db1b" started for ${organization.name} (${organization._id})`);
+    await log(`\nDate: ${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}`);
     await log(`\nParsing file: ${files[0].originalname}`);
 
     // Get all responses and save in app memory to avoid running aggregation thousand of times
@@ -65,7 +67,7 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
     ];
     const responses = (await Responses.aggregate(pipeline) || []).map(response => ({
       ...response,
-      formattedTrackerItemName: response.trackerItemName.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase(),
+      formattedTrackerItemName: response.trackerItemName.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase().split(' '),
     }));
 
     // Generate a workbook from buffer upload
@@ -100,14 +102,42 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
             await log(`\n\tDocument name: ${data.Name}`);
             await log(`\n\tDocument path: ${data.Path}`);
 
-            const response = responses.find(({ trackerItemName, formattedTrackerItemName }) => {
+            const response = responses.reduce((acc, curr) => {
+              const { trackerItemName, formattedTrackerItemName } = curr;
+
               // Search by document number
-              if (documentNumberExist && new RegExp(data['Document Number'], 'i').test(trackerItemName)) return true;
+              if (documentNumberExist && new RegExp(data['Document Number'], 'i').test(trackerItemName)) {
+                return {
+                  score: 999, // If document number match then pick the document
+                  response: curr,
+                };
+              }
 
               // Search by document name (without file extension and special characters)
-              const documentName = data.Name.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-              return formattedTrackerItemName.includes(documentName);
-            })
+              const documentName = data.Name.replace(/\.[a-zA-Z]{3,4}$/, '').replace(/[^a-zA-Z0-9]/g, ' ').toLowerCase().split(' ');
+
+              // Get score fo search - one point for one word in the document name
+              const score = documentName.reduce((pointsAcc: number, pointsCurr: string[]) => {
+                if (pointsCurr && formattedTrackerItemName.includes(pointsCurr)) return pointsAcc + 1;
+                return pointsAcc;
+              }, 0);
+
+              if (trackerItemName === "XP100 - XP100 17025 Supplement" && data.Name === "XP100 17025 Supplement.pdf") {
+                console.log('formattedTrackerItemName', formattedTrackerItemName);
+                console.log('documentName', documentName);
+                console.log('score', score);
+              }
+
+              // Minimum score is 2
+              if (score >= 2 && score > acc.score) {
+                return {
+                  score,
+                  response: curr,
+                };
+              }
+
+              return acc;
+            }, { score: 0, response: undefined }).response;
             if (!response) throw new Error(`Document could not be found in the database`);
 
             await Responses.customUpdateOne({ _id: response._id }, {
