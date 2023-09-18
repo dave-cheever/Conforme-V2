@@ -4,6 +4,7 @@ import { IUser } from '../../interfaces/IUser';
 import { IUserModel } from '../../interfaces/IUserModel';
 import { getProtocol } from '../../utils';
 import { GraphService } from '../GraphService';
+import IConfig from '../../interfaces/IConfig';
 
 const userSchema = new Schema<IUser, IUserModel>({
   _id: String,
@@ -39,19 +40,23 @@ userSchema.statics.customFindById = async function (userId: string): Promise<IUs
 // This method includes user details from MS Graph
 userSchema.statics.customFindByIdWithDetails = async function ({
   userId,
-  organization
+  organization,
+  config,
 }: {
   userId: string;
   organization: IOrganization;
+  config: IConfig;
 }): Promise<IUser> {
+  const graphService = new GraphService(config);
+
   const user = await this.customFindById(userId, organization._id);
   if (!user) throw new Error('User not found');
 
-  const userDetails = await GraphService.getUserData({ userId, organization });
+  const userDetails = await graphService.getUserData({ userId, organization });
   const { givenName, surname, displayName, mail, userPrincipalName, jobTitle } = userDetails;
 
   let role = 'user';
-  const roles: any = await GraphService.checkMemberGroups({
+  const roles: any = await graphService.checkMemberGroups({
     userId,
     groups: {
       admin: organization.adminsGroupId || '',

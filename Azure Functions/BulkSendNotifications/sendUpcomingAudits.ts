@@ -91,6 +91,7 @@ const sendComingUpAudits = async (config: IConfig, context: Context) => {
             const auditor = await Users.customFindByIdWithDetails({
               userId: audit.auditorId,
               organization,
+              config,
             });
             if (auditor) {
               // Save notification in database

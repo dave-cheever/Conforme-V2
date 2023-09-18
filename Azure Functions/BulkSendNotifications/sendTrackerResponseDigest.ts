@@ -55,8 +55,9 @@ const sendResponseWeeklyEmail = async (config: IConfig, context: Context) => {
       //get all responses by organization id
       const responses: IResponse[] = await Response.aggregate(pipeline);
 
+      const graphService = new GraphService(config);
       for (const response of responses) {
-        const responsibleDetails = await GraphService.getUserData({
+        const responsibleDetails = await graphService.getUserData({
           organization,
           userId: response.responsibleId,
         });

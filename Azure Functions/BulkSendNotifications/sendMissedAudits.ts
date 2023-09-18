@@ -103,6 +103,7 @@ const sendMissedAudits = async (config: IConfig, context: Context) => {
           const auditor = await Users.customFindByIdWithDetails({
             userId: audit.auditorId,
             organization,
+            config,
           });
           if (auditor) recipients.push(auditor.email);
 
@@ -110,6 +111,7 @@ const sendMissedAudits = async (config: IConfig, context: Context) => {
             const lineManager = await Users.customFindByIdWithDetails({
               userId: auditor.managerId,
               organization,
+              config,
             });
             if (lineManager) recipients.push(lineManager.email);
           }

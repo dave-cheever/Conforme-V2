@@ -26,13 +26,9 @@ const getEmailSubject = async ({
     throw new Error(`Can not find email template setting "${emailType}EmailSubject".`);
   }
 
-  let subject: string;
-  switch (emailType) {
-    default:
-      subject = subjectSetting.value;
-      for (const option of subjectSetting.options) {
-        subject = subject.split(`%${option}%`).join(emailData[camelCase(option)]);
-      }
+  let subject: string = subjectSetting.value;
+  for (const option of subjectSetting.options || []) {
+    subject = subject.split(`%${option}%`).join(emailData[camelCase(option)]);
   }
   return subject;
 };

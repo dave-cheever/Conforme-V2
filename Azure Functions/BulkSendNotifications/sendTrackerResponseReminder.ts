@@ -69,10 +69,10 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
       for (const response of filteredResponses) {
         let notificationId: string;
         try {
-
+          const graphService = new GraphService(config);
           const recipients = [];
 
-          const accountable = await GraphService.getUserData({
+          const accountable = await graphService.getUserData({
             organization,
             userId: response.accountableId,
           });
@@ -84,7 +84,7 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
             });
           }
 
-          const responsible = await GraphService.getUserData({
+          const responsible = await graphService.getUserData({
             organization,
             userId: response.responsibleId,
           });

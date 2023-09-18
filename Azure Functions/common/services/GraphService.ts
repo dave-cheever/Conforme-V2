@@ -1,4 +1,3 @@
-import { graph } from "@pnp/graph-commonjs";
 import { AdalFetchClient } from "@pnp/nodejs-commonjs";
 import axios from "axios";
 
@@ -9,28 +8,21 @@ import Organizations from "./collections/Organizations";
 
 export class GraphService {
   private _config: IConfig;
-  private _adalClient: AdalFetchClient;
   private _sender: string;
 
   public constructor(config: IConfig) {
     this._config = config;
-
-    this._adalClient = new AdalFetchClient(
-      config.GraphTenantId || "",
-      config.GraphAppId || "",
-      config.GraphSecret || ""
-    );
     this._sender = config.EmailSender;
-
-    graph.setup({
-      graph: {
-        fetchClientFactory: () => this._adalClient,
-      },
-    });
   }
 
-  private async getClient() {
-    const token = await this._adalClient.acquireToken();
+  private async getClient(organizationId: string) {
+    if (!organizationId) throw new Error("No organization id");
+
+    const organization = await Organizations.customFindById(organizationId);
+    if (!organizationId) throw new Error("Wrong organization config");
+
+    const { clientId, tenantId, secret } = organization;
+    const token = await new AdalFetchClient(tenantId || '', clientId || '', secret || '').acquireToken();
     const client = axios.create({
       baseURL: this._config.GraphUrl,
       headers: {
@@ -41,39 +33,20 @@ export class GraphService {
     return client;
   }
 
-  private static async graphSetup(organizationId: string) {
-    if (!organizationId) throw new Error("No organization id");
-
-    const organization = await Organizations.customFindById(organizationId);
-    if (!organizationId) throw new Error("Wrong organization config");
-
-    const { clientId, tenantId, secret } = organization;
-    graph.setup({
-      graph: {
-        fetchClientFactory: () =>
-          new AdalFetchClient(tenantId || "", clientId || "", secret || ""),
-      },
-    });
-  }
-
   // userId can be AAD ID or email
-  public static async getUserData({
+  public async getUserData({
     userId,
     organization,
   }: {
     userId: string;
     organization: IOrganization;
   }) {
-    await this.graphSetup(organization._id);
-    const userData = await graph.users.getById(userId)();
-    // const userGroups = await graph.users.getById(userId).memberOf();
-    return {
-      ...userData,
-      // groups: userGroups.map(({ id, displayName }) => ({ id, displayName })) // TODO: fix me
-    };
+    const client = await this.getClient(organization._id);
+    const res = await client.get(`users/${userId}`);
+    return res.data;
   }
 
-  public static async checkMemberGroups({
+  public async checkMemberGroups({
     userId,
     groups,
     organization,
@@ -82,22 +55,27 @@ export class GraphService {
     groups: { [name: string]: string };
     organization: IOrganization;
   }) {
-    await this.graphSetup(organization._id);
-    const res = await graph.users
-      .getById(userId)
-      .checkMemberGroups(Object.values(groups));
-    return Object.keys(groups).reduce(
-      (acc, curr) => ({
-        ...acc,
-        [curr]: res.includes(groups[curr]),
-      }),
-      {}
-    );
+    try {
+      const client = await this.getClient(organization._id);
+      const res = await client.post(`/users/${userId}/checkMemberGroups`, {
+        groupIds: Object.values(groups),
+      });
+      return Object.keys(groups).reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr]: (res.data?.value || []).includes(groups[curr]),
+        }),
+        {},
+      );
+    } catch (e) {
+      console.log(e);
+      return {};
+    }
   }
 
-  public async sendEmail(email: IEmail): Promise<number> {
+  public async sendEmail(email: IEmail, organizationId: string): Promise<number> {
     try {
-      const client = await this.getClient();
+      const client = await this.getClient(organizationId);
 
       const toRecipients = email.to.map((address) => ({
         emailAddress: {

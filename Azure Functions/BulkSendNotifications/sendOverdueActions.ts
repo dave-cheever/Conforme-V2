@@ -61,7 +61,8 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
             if (action.assigneeId) {
               const assignee = await Users.customFindByIdWithDetails({
                 userId: action.assigneeId,
-                organization
+                organization,
+                config,
               });
               if (assignee) recipients.push(assignee.email);
             }
@@ -103,7 +104,8 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
 
               const auditor = await Users.customFindByIdWithDetails({
                 userId: answer?.audit.auditorId,
-                organization
+                organization,
+                config,
               });
               if (auditor) recipients.push(auditor.email);
             }
