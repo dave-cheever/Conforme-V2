@@ -75,7 +75,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
     }
 
     // Instant notifications are sent every 5 minutes
-    const notifications = await Notifications.find({ status: "pending", organizationId: "underio" }).lean();
+    const notifications = await Notifications.find({ status: "pending" }).lean();
     const notificationsSent = await Promise.all(notifications.map(async notification => {
       try {
         const organizationConfigService = new ConfigService();
