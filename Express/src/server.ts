@@ -48,6 +48,7 @@ const getApp = async () => {
       domain: process.env.APPSETTING_NODE_ENV === 'dev' ? undefined : process.env.API_URL,
       sameSite: process.env.APPSETTING_NODE_ENV === 'dev' ? false : 'none',
       maxAge: Number(process.env.SESS_LIFETIME_IN_MINUTES || 15) * 60 * 1000,
+      resave: true,
     }),
   );
   app.set('trust proxy', 1);

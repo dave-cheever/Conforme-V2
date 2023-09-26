@@ -3,7 +3,6 @@ import { Router } from 'express';
 import { Organizations } from 'app-models';
 import {
   getDomain,
-  getProtocol,
   isSignedIn,
   redirectAfterLogin,
   sessionizeOrganization,
@@ -38,11 +37,11 @@ const authRouter = (passport) => {
     )(req, res, next);
   });
 
-  router.get('/logout', isSignedIn, (req, res) => {
-    req.logout(() => {
-      if (req.session) req.session.passport = {};
-      res.redirect(`${getProtocol()}${req.session.organization.domain}/logout`);
+  router.delete('/logout', isSignedIn, (req, res) => {
+    req.logout((err) => {
+      console.error(err);
     });
+    res.json('OK');
   });
 
   return router;

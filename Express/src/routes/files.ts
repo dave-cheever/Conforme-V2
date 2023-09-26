@@ -63,16 +63,8 @@ const filesRouter = () => {
 
   router.get(
     '/photo/:userId',
-    isSignedIn,
     async (req: Request, res: Response) => {
       try {
-        const { user } = req;
-        if (!user) {
-          return res
-            .status(StatusCodes.FORBIDDEN)
-            .json({ message: 'Session is not valid' });
-        }
-
         if (!req.params.userId) return res.status(StatusCodes.OK).end();
 
         const photo = await GraphService.getUserPhoto({

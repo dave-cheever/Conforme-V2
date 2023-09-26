@@ -1,36 +1,16 @@
-import { useNavigate as useReactNavigate } from 'react-router-dom';
-
 import { Avatar, Menu, MenuButton, MenuList, Text, useDisclosure } from '@chakra-ui/react';
-import addHours from 'date-fns/addHours';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
+import useLogout from '../hooks/useLogout';
 import useNavigate from '../hooks/useNavigate';
 import { isPermitted } from './can';
 
 function UserMenu() {
-  const { user, setUser } = useAppContext();
-  const navigate = useReactNavigate();
+  const { user } = useAppContext();
   const { navigateTo } = useNavigate();
+  const logout = useLogout();
   const { onOpen, onClose, isOpen } = useDisclosure();
-
-  const logout = async () => {
-    navigate('/logout');
-    await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
-      credentials: 'include',
-      mode: 'no-cors',
-    });
-
-    // logOut user is expired after 24 hours
-    const logOutUser = {
-      displayName: user?.displayName,
-      imgUrl: user?.imgUrl,
-      firstName: user?.firstName,
-      expiresAt: addHours(new Date(), 24),
-    };
-    localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
-    setUser(null);
-  };
 
   const pageRedirect = (page: string) => {
     navigateTo(page);
@@ -108,7 +88,7 @@ function UserMenu() {
           fontSize="smm"
           mt="10px"
           my="10px"
-          onClick={() => logout()}
+          onClick={logout}
           pt="10px">
           Logout
         </Text>

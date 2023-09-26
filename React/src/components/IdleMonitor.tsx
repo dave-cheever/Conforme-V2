@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useInterval from 'react-useinterval';
 
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useToast } from '@chakra-ui/react';
 import { differenceInSeconds, parseISO } from 'date-fns';
-import addHours from 'date-fns/addHours';
 import { debounce } from 'lodash';
 
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
+import useLogout from '../hooks/useLogout';
 import useSession from '../hooks/useSession';
 
 const timeBeforeSessionEnds = Number(process.env.REACT_APP_TIME_BEFORE_SESSION_ENDS || 60);
@@ -18,8 +17,8 @@ let idleLogoutEvent: NodeJS.Timeout;
 
 function IdleMonitor() {
   const toast = useToast();
-  const navigate = useNavigate();
-  const { user, setUser } = useAppContext();
+  const logout = useLogout();
+  const { setUser } = useAppContext();
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(timeBeforeSessionEnds);
   const refetch = useSession();
@@ -56,24 +55,6 @@ function IdleMonitor() {
       setSecondsLeft(timeBeforeSessionEnds);
       setModalIsOpen(true);
     }
-  };
-
-  const logout = async () => {
-    await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
-      credentials: 'include',
-      mode: 'no-cors',
-    });
-
-    // logOut user is expired after 24 hours
-    const logOutUser = {
-      displayName: user?.displayName,
-      imgUrl: user?.imgUrl,
-      firstName: user?.firstName,
-      expiresAt: addHours(new Date(), 24),
-    };
-    localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
-    setUser(null);
-    navigate('/logout');
   };
 
   const setTimers = async () => {
