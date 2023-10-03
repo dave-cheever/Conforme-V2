@@ -11,8 +11,8 @@ import {
   Icon,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
-  Spacer,
   Stack,
   Text,
   useToast,
@@ -121,10 +121,11 @@ function AuditModal({ refetch }) {
     }
   };
 
-  return (<ModalContent
+  return (
+    (<ModalContent
       bg="auditModal.bg"
       data-id="da7a09e0879e"
-      h={['auto', '100vh']}
+      h="100vh"
       m="0"
       overflow="hidden"
       p={[4, 6]}
@@ -157,11 +158,12 @@ function AuditModal({ refetch }) {
           </Flex>
         </Flex>
       </ModalHeader>
-      <ModalBody data-id="d8d95ff45eb8" h="calc(100% - 1rem)" p="1rem 0 0 0">
-        <Stack data-id="d0ad1d52513f" h="100%" justify="space-between" spacing={2}>
+      <ModalBody data-id="d8d95ff45eb8" overflowY="auto" p="1rem 0 0 0">
+        <Stack data-id="d0ad1d52513f" justify="space-between" spacing={2}>
           <Stack
             data-id="bf5f4914e0ca"
             flexGrow={1}
+            justify="space-between"
             overflowY="auto"
             px={2}
             py={0}
@@ -264,67 +266,69 @@ function AuditModal({ refetch }) {
               label="Participants"
               onChange={selectParticipants}
               selectedParticipants={selectedParticipants} />
-          </Stack>
-          <Flex
-            data-id="f5cfdee79b9f"
-            flexBasis="calc(40px + 1rem)"
-            flexShrink={0}
-            justify="space-between"
-            pt={4}
-            w="full">
-            {data?.audits?.length > 0 && (
-              <Alert data-id="d0b17882edaa" status="warning">
-                <Text as="h3" data-id="144e4aa5ed14">
-                  {data?.audits?.[0].auditType.name} for {data?.audits?.[0].businessUnit.name} for {format(new Date(), 'MMMM Y')} already{' '}
-                  <Text
-                    _hover={{
-                      textDecoration: 'underline',
-                      cursor: 'pointer',
-                    }}
-                    as="span"
-                    color="auditModal.existentAuditLink.color"
-                    data-id="0f907946ad48"
-                    onClick={() => openInNewTab(`/audits/${data?.audits?.[0]?._id}`)}>
-                    exists
+            <Flex
+              data-id="f5cfdee79b9f"
+              flexBasis="calc(40px + 1rem)"
+              flexShrink={0}
+              justify="space-between"
+              pt={4}
+              w="full">
+              {data?.audits?.length > 0 && (
+                <Alert data-id="d0b17882edaa" status="warning">
+                  <Text as="h3" data-id="144e4aa5ed14">
+                    {data?.audits?.[0].auditType.name} for {data?.audits?.[0].businessUnit.name} for {format(new Date(), 'MMMM Y')} already{' '}
+                    <Text
+                      _hover={{
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                      }}
+                      as="span"
+                      color="auditModal.existentAuditLink.color"
+                      data-id="0f907946ad48"
+                      onClick={() => openInNewTab(`/audits/${data?.audits?.[0]?._id}`)}>
+                      exists
+                    </Text>
                   </Text>
-                </Text>
-              </Alert>
-            )}
-            <Spacer data-id="2dc3dbc1b5e8" />
-            <Button
-              bg="auditModal.tabs.bottomButton.bg"
-              color="auditModal.tabs.bottomButton.color"
-              data-id="b3179b1d428d"
-              disabled={
-                !audit.walkType ||
-                !audit.locationId ||
-                !!(
-                  audit.auditTypeId &&
-                  auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' &&
-                  !audit.businessUnitId
-                )
-              }
-              fontSize="smm"
-              fontWeight="700"
-              h="40px"
-              minW="inherit"
-              ml={3}
-              onClick={() => {
-                handlePrimaryButtonClick();
-              }}
-              rightIcon={<Icon
-                as={TickIcon}
-                data-id="3fb66e812544"
-                size={24}
-                stroke="auditModal.tabs.bottomButton.icon" />}
-              rounded="10px"
-              w="max-content">
-              Start {t('audit')}
-            </Button>
-          </Flex>
+                </Alert>
+              )}
+            </Flex>
+          </Stack>
         </Stack>
       </ModalBody>
-    </ModalContent>);
+      <ModalFooter data-id="2671f95864b8" p={1}>
+        <Button
+          bg="auditModal.tabs.bottomButton.bg"
+          color="auditModal.tabs.bottomButton.color"
+          data-id="b3179b1d428d"
+          disabled={
+            !audit.walkType ||
+            !audit.locationId ||
+            !!(
+              audit.auditTypeId &&
+              auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' &&
+              !audit.businessUnitId
+            )
+          }
+          fontSize="smm"
+          fontWeight="700"
+          h="40px"
+          minW="inherit"
+          ml={3}
+          onClick={() => {
+            handlePrimaryButtonClick();
+          }}
+          rightIcon={<Icon
+            as={TickIcon}
+            data-id="3fb66e812544"
+            size={24}
+            stroke="auditModal.tabs.bottomButton.icon" />}
+          rounded="10px"
+          w="max-content">
+          Start {t('audit')}
+        </Button>
+      </ModalFooter>
+    </ModalContent>)
+  );
 }
 
 export default AuditModal;

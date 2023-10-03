@@ -12,12 +12,12 @@ function ParticipantsAddButton(props) {
       bg="participantsAddButton.bg"
       color="participantsAddButton.color"
       data-id="80335e69006a"
-      h="64px"
+      h={['55px', '64px']}
       icon={<AddIcon data-id="463875e4cd26" />}
       isRound
       mx="8px"
       onClick={openParticipantsModal}
-      w="64px"
+      w={['55px', '64px']}
       {...props} />)
   );
 }

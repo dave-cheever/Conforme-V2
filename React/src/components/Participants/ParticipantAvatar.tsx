@@ -53,9 +53,9 @@ function ParticipantAvatar({
           <Flex
             bg="participantAvatar.overlay"
             data-id="fb9c63882f2c"
-            h="64px"
+            h={['55px', '64px']}
             rounded="50%"
-            w="64px" />
+            w={['55px', '64px']} />
           {canDelete ? (
             <CloseIcon
               color="participantAvatar.icon"

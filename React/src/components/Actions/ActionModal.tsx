@@ -215,7 +215,7 @@ function ActionModal({ action, closeModal, refetch }: { action?: IAction; closeM
             px={6}
             py={4}
             rounded="10px"
-            spacing={2}>
+            spacing={6}>
             <Stack data-id="163e95ebcb07" spacing={1}>
               <Stack
                 _hover={{
@@ -411,13 +411,12 @@ function ActionModal({ action, closeModal, refetch }: { action?: IAction; closeM
         </Stack>
       </Stack>
     </ModalBody>
-    <ModalFooter data-id="a14b7ad52efe">
+    <ModalFooter data-id="a14b7ad52efe" p={1}>
       <Flex
         data-id="4709849a4fa4"
         flexBasis="calc(40px + 1rem)"
         flexShrink={0}
         justify="space-between"
-        pt={4}
         w="full">
         {isPermitted({ user, action: 'actions.delete' }) ? (
           <Button
