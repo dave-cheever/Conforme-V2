@@ -174,7 +174,7 @@ function AnswerModal({
     (<ModalContent
       bg="actionModal.bg"
       data-id="60f6bdf9feda"
-      h="100vh"
+      h="100%"
       m="0"
       overflow="hidden"
       p={[4, 6]}

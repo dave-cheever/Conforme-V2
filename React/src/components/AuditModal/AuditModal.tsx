@@ -125,7 +125,7 @@ function AuditModal({ refetch }) {
     (<ModalContent
       bg="auditModal.bg"
       data-id="da7a09e0879e"
-      h="100vh"
+      h="100%"
       m="0"
       overflow="hidden"
       p={[4, 6]}

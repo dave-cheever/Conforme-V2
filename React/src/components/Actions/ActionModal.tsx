@@ -148,7 +148,7 @@ function ActionModal({ action, closeModal, refetch }: { action?: IAction; closeM
   return (<ModalContent
     bg="actionModal.bg"
     data-id="e07489b5ec0d"
-    h="100vh"
+    h="100%"
     m="0"
     overflow="hidden"
     p={[4, 6]}
