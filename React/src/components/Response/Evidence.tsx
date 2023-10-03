@@ -34,7 +34,7 @@ function EvidenceExpected({ evidence }) {
   const acceptedFileTypes = useMemo<Accept>(
     () => ({
       'application/*': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip'],
-      'images/*': [],
+      'image/*': [],
       'text/*': ['.txt', '.html'],
     }),
     [],

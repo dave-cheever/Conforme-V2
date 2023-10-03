@@ -11,7 +11,7 @@ import DocumentUploading from '../Response/DocumentUploading';
 
 const defaultFileTypes = {
   'application/*': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip'],
-  'images/*': [],
+  'image/*': [],
   'text/*': ['.txt', '.html'],
 };
 
