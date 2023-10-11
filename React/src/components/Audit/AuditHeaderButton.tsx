@@ -12,18 +12,19 @@ function AuditHeaderButton({
   return <>
     <Button
       _hover={
-        disabled
-          ? {}
-          : {
-              bg: 'auditHeader.buttonLightBgHover',
-              color: 'auditHeader.buttonLightColorHover',
-              cursor: 'pointer',
-              stroke: 'green',
-            }
+        disabled ? {
+          color: 'auditHeader.buttonLightColorHover',
+          cursor: 'not-allowed',
+        } : {
+          bg: 'auditHeader.buttonLightBgHover',
+          color: 'auditHeader.buttonLightColorHover',
+          cursor: 'pointer',
+          stroke: 'green',
+        }
       }
-      bg={bgColor}
+      bg={disabled ? 'auditHeader.buttonLightBgHover' : bgColor}
       borderRadius="10px"
-      color={fontColor}
+      color={disabled ? 'auditHeader.buttonLightColorHover' : fontColor}
       data-id="0d7b9b4721ff"
       disabled={disabled}
       display={['flex', icon ? 'none' : 'flex', 'flex']}
