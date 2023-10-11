@@ -11,15 +11,15 @@ function AuditListItem({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();
   return (
     (<Box
-      bg="white"
-      borderBottomColor="auditsList.headerBorderColor"
-      borderBottomWidth="1px"
-      cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
-      data-id="4f60324a20f3"
-      onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
-      p="15px 25px"
-      py={[1, 0]}
-      w="full">
+        bg="white"
+        borderBottomColor="auditsList.headerBorderColor"
+        borderBottomWidth="1px"
+        cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
+        data-id="4f60324a20f3"
+        onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
+        p="15px 25px"
+        py={[1, 0]}
+        w="full">
       <Flex
         align="center"
         data-id="289e52ec130d"
@@ -83,7 +83,7 @@ function AuditListItem({ audit }: { audit: IAudit }) {
             {auditWalkTypes[audit.walkType]}
           </Flex>
         </Flex>
-        <Box data-id="efe9c7681a1d" pr={2} w="30%">
+        <Box data-id="efe9c7681a1d" pr={2} w="20%">
           <Skeleton data-id="30660cd6f678" isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
               <Flex align="center" data-id="b58e2c0e5930" direction="row">
@@ -113,6 +113,25 @@ function AuditListItem({ audit }: { audit: IAudit }) {
             )}
           </Skeleton>
         </Box>
+        <Flex data-id="3ed7eaa08285" flexDir="column" w="10%">
+          <Flex
+            align="flex-start"
+            color="auditsList.fontColor"
+            data-id="40e6a48d2551"
+            fontSize="14px"
+            fontWeight="400"
+            h="50%"
+            lineHeight="18px"
+            noOfLines={1}
+            opacity="1"
+            overflow="hidden"
+            pr={2}
+            pt="3px"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap">
+            {audit.reference}
+          </Flex>
+        </Flex>
         <Flex data-id="7145b061c35e" w="10%">
           <Flex
             color="auditsList.fontColor"

@@ -20,95 +20,107 @@ function AuditsList({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
-  return <Box
-    data-id="c9dcc715eafc"
-    h="full"
-    ml="10px"
-    overflow="none"
-    p={[3, 6]}
-    w="full">
+  return (
     <Box
-      bg="auditsList.bg"
-      borderRadius="20px"
-      data-id="76e7d843efdb"
-      h="fit-content"
-      minH="full"
-      pb={7}
+      data-id="c9dcc715eafc"
+      h="full"
+      ml="10px"
+      overflow="none"
+      p={[3, 6]}
       w="full">
-      <AdminTableHeader data-id="c7b56c6c8070">
-        <AdminTableHeaderElement
-          data-id="f7a8ba1a2f1e"
-          label="Due date"
-          onClick={() => {
-            setSortType('dueDate');
-            setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'dueDate'}
-          sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-          w="10%" />
-        <AdminTableHeaderElement
-          data-id="26c008b9ae44"
-          label={capitalize(t('location'))}
-          onClick={() => {
-            setSortType('location.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'location.name' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'location.name'}
-          sortOrder={sortType === 'location.name' ? sortOrder : undefined}
-          w="30%" />
-        <AdminTableHeaderElement
-          data-id="55d46f8588f6"
-          label="Status"
-          onClick={() => {
-            setSortType('status');
-            setSortOrder(sortOrder === 'asc' && sortType === 'status' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'status'}
-          sortOrder={sortType === 'status' ? sortOrder : undefined}
-          w="10%" />
-        <AdminTableHeaderElement
-          data-id="f6ebd23b73e0"
-          label="Walk type"
-          onClick={() => {
-            setSortType('walkType');
-            setSortOrder(sortOrder === 'asc' && sortType === 'walkType' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'walkType'}
-          sortOrder={sortType === 'walkType' ? sortOrder : undefined}
-          w="10%" />
-        <AdminTableHeaderElement
-          data-id="1bb7fd9140c6"
-          label="Auditor"
-          onClick={() => {
-            setSortType('auditor.displayName');
-            setSortOrder(sortOrder === 'asc' && sortType === 'auditor.displayName' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'auditor.displayName'}
-          sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
-          w="30%" />
-        <AdminTableHeaderElement
-          data-id="f1ffb96e3fb2"
-          label="Date submitted"
-          onClick={() => {
-            setSortType('completedDate');
-            setSortOrder(sortOrder === 'asc' && sortType === 'completedDate' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'completedDate'}
-          sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
-          w="10%" />
-      </AdminTableHeader>
-      <Flex
-        data-id="917ca53a38a8"
-        flexDir="column"
-        h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']}
-        overflowY="auto"
+      <Box
+        bg="auditsList.bg"
+        borderRadius="20px"
+        data-id="76e7d843efdb"
+        h="fit-content"
+        minH="full"
+        pb={7}
         w="full">
-        {audits?.map((audit) => (
-          <AuditListItem audit={audit} data-id="1f8b84b5294b" key={audit._id} />
-        ))}
-      </Flex>
+        <AdminTableHeader data-id="c7b56c6c8070">
+          <AdminTableHeaderElement
+            data-id="f7a8ba1a2f1e"
+            label="Due date"
+            onClick={() => {
+              setSortType('dueDate');
+              setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'dueDate'}
+            sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
+            w="10%" />
+          <AdminTableHeaderElement
+            data-id="26c008b9ae44"
+            label={capitalize(t('location'))}
+            onClick={() => {
+              setSortType('location.name');
+              setSortOrder(sortOrder === 'asc' && sortType === 'location.name' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'location.name'}
+            sortOrder={sortType === 'location.name' ? sortOrder : undefined}
+            w="30%" />
+          <AdminTableHeaderElement
+            data-id="55d46f8588f6"
+            label="Status"
+            onClick={() => {
+              setSortType('status');
+              setSortOrder(sortOrder === 'asc' && sortType === 'status' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'status'}
+            sortOrder={sortType === 'status' ? sortOrder : undefined}
+            w="10%" />
+          <AdminTableHeaderElement
+            data-id="f6ebd23b73e0"
+            label="Walk type"
+            onClick={() => {
+              setSortType('walkType');
+              setSortOrder(sortOrder === 'asc' && sortType === 'walkType' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'walkType'}
+            sortOrder={sortType === 'walkType' ? sortOrder : undefined}
+            w="10%" />
+          <AdminTableHeaderElement
+            data-id="1bb7fd9140c6"
+            label="Auditor"
+            onClick={() => {
+              setSortType('auditor.displayName');
+              setSortOrder(sortOrder === 'asc' && sortType === 'auditor.displayName' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'auditor.displayName'}
+            sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
+            w="20%" />
+          <AdminTableHeaderElement
+            data-id="ff39c57a287e"
+            label="Reference"
+            onClick={() => {
+              setSortType('reference');
+              setSortOrder(sortOrder === 'asc' && sortType === 'reference' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'reference'}
+            sortOrder={sortType === 'reference' ? sortOrder : undefined}
+            w="10%" />
+          <AdminTableHeaderElement
+            data-id="f1ffb96e3fb2"
+            label="Date submitted"
+            onClick={() => {
+              setSortType('completedDate');
+              setSortOrder(sortOrder === 'asc' && sortType === 'completedDate' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'completedDate'}
+            sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
+            w="10%" />
+        </AdminTableHeader>
+        <Flex
+          data-id="917ca53a38a8"
+          flexDir="column"
+          h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']}
+          overflowY="auto"
+          w="full">
+          {audits?.map((audit) => (
+            <AuditListItem audit={audit} data-id="1f8b84b5294b" key={audit._id} />
+          ))}
+        </Flex>
+      </Box>
     </Box>
-  </Box>
+  );
 }
 
 export default AuditsList;
