@@ -88,7 +88,7 @@ function Audits() {
   const { audit, reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
-  const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'dueDate', 'desc');
+  const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'auditor.displayName', 'asc');
   const sortBy = [
     { label: 'Due date', key: 'dueDate' },
     { label: capitalize(t('location')), key: 'location.name' },
