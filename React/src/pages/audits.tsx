@@ -83,7 +83,7 @@ function Audits() {
     usedFilters,
   } = useFiltersContext();
   const device = useDevice();
-  const { module } = useAppContext();
+  const { user, module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { audit, reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
@@ -150,9 +150,15 @@ function Audits() {
             value,
           },
         }),
-        {},
+        {
+          usersIds: {
+            value: {
+              auditorsIds: [user!._id],
+            },
+          },
+        },
       );
-      setDefaultFilters(Object.entries(module!.defaultFilters.audits!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}));
+      setDefaultFilters(defaultFilters);
       setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
     }
   }, []);
@@ -234,29 +240,29 @@ function Audits() {
         views={['grid', 'list', 'group']} />
       {device !== 'mobile' && (
         <CSVLink
-            data={csvData}
-            data-id="39c6f57fa46c"
-            filename="audits.csv"
-            headers={csvHeaders}
-            target="_blank">
-            <Button
-              _hover={{
-                bg: 'reasponseHeader.buttonLightBgHover',
-                color: 'reasponseHeader.buttonLightColorHover',
-                cursor: 'pointer',
-                '&:hover svg path': { stroke: 'white' },
-              }}
-              bg="white"
-              borderRadius="10px"
-              data-id="358c8463aff6"
-              display="none"
-              ml="15px"
-              rightIcon={<ExportIcon data-id="d7c9bee09c61" height="15px" width="15px" />}>
-              <Text data-id="ce45ced54779" fontSize="smm" fontWeight="bold">
-                Export
-              </Text>
-            </Button>
-          </CSVLink>
+          data={csvData}
+          data-id="39c6f57fa46c"
+          filename="audits.csv"
+          headers={csvHeaders}
+          target="_blank">
+          <Button
+            _hover={{
+              bg: 'reasponseHeader.buttonLightBgHover',
+              color: 'reasponseHeader.buttonLightColorHover',
+              cursor: 'pointer',
+              '&:hover svg path': { stroke: 'white' },
+            }}
+            bg="white"
+            borderRadius="10px"
+            data-id="358c8463aff6"
+            display="none"
+            ml="15px"
+            rightIcon={<ExportIcon data-id="d7c9bee09c61" height="15px" width="15px" />}>
+            <Text data-id="ce45ced54779" fontSize="smm" fontWeight="bold">
+              Export
+            </Text>
+          </Button>
+        </CSVLink>
       )}
       <SortButton
         data-id="f2ae2eb1e511"
