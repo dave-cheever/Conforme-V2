@@ -341,6 +341,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
                       _id: action._id,
                       title: action.title,
                       dueDate: action.dueDate ? endOfDay(action.dueDate) : null,
+                      status: action.status,
                       priority: action.priority,
                       description: action.description,
                       assigneeId: action.assigneeId,

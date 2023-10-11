@@ -80,6 +80,19 @@ function ActionForm({ handleSave }) {
             stroke="dropdown.icon"
             variant="secondaryVariant" />
         </GridItem>
+        <GridItem data-id="c4a5f233e5da">
+          <Dropdown
+            control={control}
+            data-id="82ef441e264d"
+            label="Status"
+            name="status"
+            options={[
+              { label: 'Open', value: 'open' },
+              { label: 'Closed', value: 'closed' },
+            ]}
+            stroke="dropdown.icon"
+            variant="secondaryVariant" />
+        </GridItem>
       </Grid>
       <TextInputMultiline
         control={control}
