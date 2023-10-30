@@ -1,4 +1,4 @@
-import { getDate } from 'date-fns';
+import { getDate, isAfter } from 'date-fns';
 
 import { IAudit, TFrequency } from 'app-interfaces';
 import { Audits, AuditTypes, Organizations } from 'app-models';
@@ -23,7 +23,7 @@ const calculateAudits = async () => {
 
         // Update not completed audits to missed
         audits
-          .filter(({ status }) => status === 'upcoming')
+          .filter(({ status, dueDate }) => status === 'upcoming' && isAfter(new Date(), new Date(dueDate)))
           .forEach(async (audit) => {
             await Audits.customUpdateOne(
               { _id: audit._id },

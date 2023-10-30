@@ -1,4 +1,4 @@
-import { isAfter, subDays } from 'date-fns';
+import { isAfter, startOfDay, subDays } from 'date-fns';
 
 import { IAudit } from 'app-interfaces';
 import { Audits, AuditTypes } from 'app-models';
@@ -14,7 +14,7 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
     if (!auditType) throw new Error('Audit type not found');
     if (!auditType?.startingDate) throw new Error('Audit type starting date is required');
 
-    let dueDate = subDays(auditType.startingDate, 1);
+    let dueDate = subDays(startOfDay(auditType.startingDate), 1);
     do dueDate = getNextRenewalDate(dueDate, auditType.frequency);
     while (isAfter(new Date(), dueDate));
 
