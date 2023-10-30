@@ -80,7 +80,13 @@ function FiltersProvider({ children }) {
     [statusName: string]: number;
   }>({});
   const numberOfSelectedFilters = Object.values(filtersValues).filter(
-    (filter) => filter?.value && !filter?.hideFromPanel && filter?.value.length > 0,
+    (filter) => {
+      if (!filter?.value || filter?.hideFromPanel) return false;
+      if (Array.isArray(filter?.value)) return filter?.value.length > 0;
+      if (typeof filter?.value === 'object' && !Array.isArray(filter?.value) && filter?.value !== null)
+        return Object.values(filter?.value).reduce((acc: number, curr) => acc + (curr as string[]).length, 0) > 0;
+      return false;
+    },
   ).length;
 
   const setFilters = (filters = {}) => {

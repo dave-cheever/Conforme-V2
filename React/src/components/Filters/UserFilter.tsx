@@ -43,17 +43,7 @@ function UserFilter() {
         return auditUserRoles;
     }
   }, [location.pathname]);
-  const auditUserIdsFilter = useMemo(() => {
-    switch (getPath()) {
-      case 'actions':
-        return filtersValues.usersIds as IActionUserFilter;
-      case 'answers':
-        return filtersValues.usersIds as IAnswerUserFilter;
-      case 'audits':
-      default:
-        filtersValues.usersIds as IAuditUserFilter;
-    }
-  }, [location.pathname]);
+
   const selectedAuditRoleUsers = useMemo(() => {
     switch (getPath()) {
       case 'actions':
@@ -70,7 +60,7 @@ function UserFilter() {
             count: (filtersValues.usersIds as IAnswerUserFilter)?.value?.addedByIds?.length || 0,
           },
         ];
-      case 'audits':
+      case 'dashboard':
       default:
         return [
           {
@@ -83,7 +73,8 @@ function UserFilter() {
           },
         ];
     }
-  }, [location.pathname]);
+  }, [JSON.stringify(filtersValues), location.pathname]);
+
   const selectedRoleUsers = useMemo(
     () =>
       module?.type === 'tracker'
@@ -106,7 +97,7 @@ function UserFilter() {
           },
         ]
         : selectedAuditRoleUsers,
-    [filtersValues, module, location.pathname],
+    [JSON.stringify(filtersValues), module, location.pathname],
   );
 
   const selectedUsers = useMemo(() => {
@@ -173,7 +164,7 @@ function UserFilter() {
   };
 
   const handleAuditUserChange = ({ target: { userRole, value } }) => {
-    const userIdsFilter = auditUserIdsFilter?.value;
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
     switch (userRole) {
       case 'auditor':
         setFilters({
@@ -214,7 +205,6 @@ function UserFilter() {
 
   const handleClearFilter = (selectedRoleUser) => {
     const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
-
     switch (selectedRoleUser.name) {
       case 'responsible':
         setFilters({
@@ -254,8 +244,7 @@ function UserFilter() {
   };
 
   const handleClearAuditFilter = (selectedRoleUser) => {
-    const userIdsFilter = auditUserIdsFilter?.value;
-
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
     switch (selectedRoleUser.name) {
       case 'auditor':
         setFilters({

@@ -127,6 +127,13 @@ function Audits() {
 
   // Set default filters
   useEffect(() => {
+    let defaultFilters = {
+      usersIds: {
+        value: {
+          auditorsIds: [user!._id],
+        },
+      },
+    };
     if (!isEmpty(module?.defaultFilters?.audits)) {
       /**
        * Convert filters from
@@ -143,24 +150,18 @@ function Audits() {
        *  }
        * }
        */
-      const defaultFilters = Object.entries(module!.defaultFilters.audits!).reduce(
+      defaultFilters = Object.entries(module!.defaultFilters.audits!).reduce(
         (acc, [key, value]) => ({
           ...acc,
           [key]: {
             value,
           },
         }),
-        {
-          usersIds: {
-            value: {
-              auditorsIds: [user!._id],
-            },
-          },
-        },
+        defaultFilters,
       );
-      setDefaultFilters(defaultFilters);
-      setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
     }
+    setDefaultFilters(defaultFilters);
+    setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
   }, []);
 
   useEffect(() => {

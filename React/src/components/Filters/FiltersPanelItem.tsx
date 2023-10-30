@@ -19,8 +19,17 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
   const { isOpen, onToggle } = useDisclosure();
   const { setFilters, filtersValues } = useFiltersContext();
 
-  const filtersLength = useMemo(
-    () => (Array.isArray(filtersValues?.[name]?.value) ? filtersValues?.[name]?.value?.length : 0),
+  const filtersLength: number = useMemo(
+    () => {
+      const filterValue = filtersValues?.[name]?.value;
+      if (Array.isArray(filterValue))
+        return filterValue?.length;
+
+      if (typeof filterValue === 'object' && !Array.isArray(filterValue) && filterValue !== null)
+        return Object.values(filterValue).reduce((acc: number, curr) => acc + (curr as string[]).length, 0);
+
+      return 0;
+    },
     [filtersValues, name],
   );
 
