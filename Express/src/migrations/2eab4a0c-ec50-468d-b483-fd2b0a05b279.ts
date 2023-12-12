@@ -261,12 +261,12 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
               if (!response) throw new Error('\n\tCould not find created response');
 
               let lastCompletionDate;
-              if ('Effective from Date' in data) {
-                const effectiveDate = data['Effective from Date'];
+              if ('DateIssued/Reviewed' in data) {
+                const effectiveDate = data['DateIssued/Reviewed'];
                 if (isDate(effectiveDate)) {
                   await log(`\n\tLast completion date set to ${effectiveDate}`);
                   lastCompletionDate = new Date(effectiveDate);
-                } else await log('\n\tEffective from Date is not correct date, leaving empty');
+                } else await log('\n\tDateIssued/Reviewed is not correct date, leaving empty');
               } else await log('\n\tMissing last completion date, leaving empty');
 
               let dueDate;
