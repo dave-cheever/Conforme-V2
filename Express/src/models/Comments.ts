@@ -28,6 +28,7 @@ const commentSchema = new Schema<IComment, ICommentModel>({
     },
     _id: String,
   },
+  organizationId: String,
   metatags: {
     addedAt: Date,
     addedBy: String,
