@@ -223,6 +223,11 @@ const createBREGlobalDocuments = async (res: Response, organization: IOrganizati
                 else await log('\n\tVersion is not correct number, leaving empty');
               } else await log('\n\tMissing version number, leaving empty');
 
+              let frequency = '3 years';
+              if (sheet === 'Standards, LPS and CoPs' || sheet === 'Standards, BES') {
+                frequency = '5 years';
+              }
+
               const trackerItem = generateTrackerItemTemplate({
                 name: typeof data['Document Number'] === 'string' ? `${data['Document Number']} - ${data['Title/Description']}` : data['Title/Description'],
                 description: '',

@@ -20,6 +20,7 @@ const generateTrackerItemTemplate = ({
   locationsIds,
   version,
   selectedStatus,
+  frequency,
 }) => ({
   name,
   description,
@@ -27,7 +28,7 @@ const generateTrackerItemTemplate = ({
   regulatoryBodyId,
   dueDateCalculation: 'fromCompletionDate',
   dueDateEditable: false,
-  frequency: '3 years',
+  frequency,
   businessUnitsIds,
   locationsIds,
   evidenceItems: [],
@@ -223,6 +224,11 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 else await log('\n\tVersion is not correct number, leaving empty');
               } else await log('\n\tMissing version number, leaving empty');
 
+              let frequency = '3 years';
+              if (sheet === 'XB200 H&S') {
+                frequency = 'Annual';
+              }
+
               const trackerItem = generateTrackerItemTemplate({
                 name: typeof data['Document Number'] === 'string' ? `${data['Document Number']} - ${data['Title/Description']}` : data['Title/Description'],
                 description: '',
@@ -232,6 +238,7 @@ const createBREGroupDocuments = async (res: Response, organization: IOrganizatio
                 locationsIds: [location._id],
                 version,
                 selectedStatus: status,
+                frequency,
               });
 
               const reference = await TrackerItems.customGenerateReference();
