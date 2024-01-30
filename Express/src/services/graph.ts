@@ -209,22 +209,24 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
     logger.error('Graph error: Wrong SharePoint configuration');
     throw new Error('Graph error: Wrong SharePoint configuration');
   }
-  const spUrlStart = organization.spSiteUrl?.match(/https:\/\/.*\.com/g) || '';
-  const spStart = spUrlStart[0].replace('https://', '').replace('.com', '.com:');
-  const spUrlSite = organization.spSiteUrl?.match(/sites\/.*/g) || organization.spSiteUrl?.match(/teams\/.*/g);
+  const splocationId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
   const client = await getClient(organization._id);
+  const site = await client.get(splocationId);
+  const { id: siteId } = site.data;
+  if (!siteId) {
+    throw new Error('Graph error: Wrong SharePoint site configuration');
+  }
+
   try {
-    const { data } = await client.get(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
-    const res = await client.get(
-      `sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/thumbnails/0/small`,
-    );
+    const fileRes = await client.get(`sites/${siteId}/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
+    const thumbnailRes = await client.get(`sites/${siteId}/lists/${organization.spLibraryId}/items/${id}/driveItem/thumbnails/0/small`);
     return {
-      thumbnail: res.data.url,
-      path: data['@microsoft.graph.downloadUrl'],
-      preview: data.webUrl,
+      thumbnail: thumbnailRes?.data.url,
+      path: fileRes?.data['@microsoft.graph.downloadUrl'],
+      preview: fileRes?.data.webUrl,
     };
   } catch (e: any) {
-    console.log(e);
+    logger.error(e.response?.data?.error?.message || 'Unknown error');
     throw new Error(e.response?.data?.error?.message || 'Unknown error');
   }
 };
