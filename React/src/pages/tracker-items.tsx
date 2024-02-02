@@ -22,14 +22,14 @@ import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
 
 const GET_RESPONSES_TOTALS = gql`
-  query ResponsesTotals($responsesQuery: ResponsesQuery) {
+  query ResponsesTotals($responsesQuery: Any) {
     responses(responsesQuery: $responsesQuery) {
       total
     }
   }
 `;
 const GET_RESPONSES = gql`
-  query Responses($responsesQuery: ResponsesQuery, $responsesPagination: PaginationInput) {
+  query Responses($responsesQuery: Any, $responsesPagination: PaginationInput) {
     responses(responsesQuery: $responsesQuery, responsesPagination: $responsesPagination) {
       responses {
         _id
@@ -49,6 +49,7 @@ const GET_RESPONSES = gql`
           }
         }
         questions {
+          name
           type
           value
           required
@@ -145,7 +146,7 @@ function TrackerItems() {
   });
 
   useEffect(() => {
-    setUsedFilters([
+    const filters = [
       'trackerItemsIds',
       'categoriesIds',
       'usersIds',
@@ -154,7 +155,9 @@ function TrackerItems() {
       'itemStatus',
       'regulatoryBodiesIds',
       'dueDate',
-    ]);
+    ];
+    if (module && (module?.customQuestionsInDashboard || []).length > 0) filters.unshift(...module.customQuestionsInDashboard);
+    setUsedFilters(filters);
     return () => {
       setShowFiltersPanel(false);
       setUsedFilters([]);

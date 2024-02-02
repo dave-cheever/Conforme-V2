@@ -4,6 +4,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { IResponse } from '../../interfaces/IResponse';
 import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
@@ -31,6 +32,8 @@ function TrackerListItems({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
+  const { module } = useAppContext();
+
   return <Box data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
     <Box
       bg="trackerList.bg"
@@ -91,7 +94,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'responsible.displayName'}
           sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
-          w="20%" />
+          w={(module?.customQuestionsInDashboard || []).length === 0 ? "20%" : (module?.customQuestionsInDashboard || []).length === 1 ? "15%" : "10%"} />
         <AdminTableHeaderElement
           data-id="3c0328581ec0"
           label={capitalize(t('business unit'))}
@@ -101,7 +104,17 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'businessUnit.name'}
           sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w="20%" />
+          w={(module?.customQuestionsInDashboard || []).length === 0 ? "20%" : (module?.customQuestionsInDashboard || []).length === 1 ? "15%" : "10%"} />
+        {(module?.customQuestionsInDashboard || []).length > 0 && (
+          <AdminTableHeaderElement
+            label={module!.customQuestionsInDashboard[0]}
+            w="10%" />
+        )}
+        {(module?.customQuestionsInDashboard || []).length > 1 && (
+          <AdminTableHeaderElement
+            label={module!.customQuestionsInDashboard[1]}
+            w="10%" />
+        )}
       </AdminTableHeader>
       <Flex
         data-id="199e6641ce84"

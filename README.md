@@ -74,7 +74,8 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
     "showInNavigation": <true/false>,
     "translations": {
       "tracker item": "document"
-    }
+    },
+    "customQuestionsInDashboard": [<name of custom question>],
   }],
   "allowedTenantsIds": [
     <tenant id>

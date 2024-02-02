@@ -1,8 +1,11 @@
+import { useMemo } from 'react';
+
 import { gql, useQuery } from '@apollo/client';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import format from 'date-fns/format';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import useNavigate from '../../hooks/useNavigate';
 import useResponseUtils from '../../hooks/useResponseUtils';
 import { LocationIcon, QuestionIcon, UploadedTick } from '../../icons';
@@ -20,8 +23,9 @@ const GET_USERS_BY_ID = gql`
 `;
 
 function TrackerItemSquare({ response }: { response: IResponse }) {
+  const { module } = useAppContext();
   const { navigateTo } = useNavigate();
-  const { responseStatuses, isEvidenceUploaded, areRequiredQuestionsAnswered } = useResponseUtils();
+  const { responseStatuses, isEvidenceUploaded, areRequiredQuestionsAnswered, getCustomQuestionsInDashboard } = useResponseUtils();
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
       userQueryInput: {
@@ -30,6 +34,8 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
     },
   });
   const responsible: IUser = responseResponsible && responseResponsible.length !== 0 && responseResponsible[0];
+
+  const customQuestionsInDashboard = useMemo(() => getCustomQuestionsInDashboard(module!, response), [module, response]);
 
   return (
     (<Box
@@ -40,7 +46,7 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
       cursor="pointer"
       data-id="b768fed011d7"
       flexShrink={0}
-      h="290px"
+      h={customQuestionsInDashboard.length > 0 ? "310px" : "290px"}
       onClick={() => navigateTo(`/tracker-item/${response._id}`)}
       p="20px 25px 20px 25px"
       w={['full', 'full', '350px']}>
@@ -175,11 +181,46 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
           </Box>
         </Box>
       </Flex>
+      {customQuestionsInDashboard.length > 0 && (
+        <Flex alignItems="flex-start" h="50px" py="4" w="full">
+          <Box
+            color="trackerSquare.categoryFontColor"
+            fontSize="11px"
+            w={customQuestionsInDashboard[1] ? "50%" : "full"}>
+            <Box>{customQuestionsInDashboard[0].name}</Box>
+            <Box
+              color="trackerSquare.nameFontColor"
+              fontSize="14px"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap">
+              {customQuestionsInDashboard[0].value}
+            </Box>
+          </Box>
+          {customQuestionsInDashboard[1] && (
+            <Box
+              color="trackerSquare.regulatoryFontColor"
+              fontSize="11px"
+              ml={3}
+              w="50%">
+              <Box>{customQuestionsInDashboard[1].name}</Box>
+              <Box
+                color="trackerSquare.nameFontColor"
+                fontSize="13px"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap">
+                {customQuestionsInDashboard[1].value}
+              </Box>
+            </Box>
+          )}
+        </Flex>
+      )}
       <Flex
         align="center"
         data-id="75c788998fcd"
         justify="space-between"
-        pt="50px"
+        pt={customQuestionsInDashboard.length > 0 ? "20px" : "50px"}
         w="full">
         <Button
           _hover={{

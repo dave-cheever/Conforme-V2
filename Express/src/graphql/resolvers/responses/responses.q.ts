@@ -7,13 +7,16 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
-import { response } from 'express';
 import { GraphQLResolveInfo } from 'graphql';
 import { PipelineStage } from 'mongoose';
 
 import { Responses } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
+import { flatten } from 'lodash';
 
+// There is a set of pre-defined filters that are passed in responsesQuery object:
+// _id, trackerItemsIds, regulatoryBodiesIds, categoriesIds, businessUnitsIds, locationsIds, usersIds, dueDate, itemStatus, includeNotPublished
+// All the rest are filters from dynamic questions defined in tracker item
 const responses = async (_, { responsesQuery, responsesPagination }, { authorize, organization }, info: GraphQLResolveInfo) => {
   const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['responses', 'responses', ...elements]);
   try {
@@ -27,7 +30,7 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       },
     ];
 
-    if (!isPermitted({ user, action: 'responses.viewAll', data: { response } })) {
+    if (!isPermitted({ user, action: 'responses.viewAll' })) {
       pipeline.push({
         $match: {
           $or: [
@@ -40,36 +43,39 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       });
     }
 
+    const { _id, trackerItemsIds, regulatoryBodiesIds, categoriesIds, businessUnitsIds, locationsIds,
+      usersIds, dueDate, itemStatus, includeNotPublished, ...questionsQuery } = responsesQuery || {};
+
     // Filter by response id
-    if (responsesQuery?._id) {
+    if (_id) {
       pipeline.push({
         $match: {
-          _id: responsesQuery._id,
+          _id,
         },
       });
     }
 
     // Filter by tracker item id
-    if (responsesQuery?.trackerItemsIds) {
+    if (trackerItemsIds) {
       pipeline.push({
         $match: {
-          trackerItemId: { $in: responsesQuery.trackerItemsIds },
+          trackerItemId: { $in: trackerItemsIds },
         },
       });
     }
 
     // Filter by business unit id
-    if (responsesQuery?.businessUnitsIds) {
+    if (businessUnitsIds) {
       pipeline.push({
         $match: {
-          businessUnitId: { $in: responsesQuery.businessUnitsIds },
+          businessUnitId: { $in: businessUnitsIds },
         },
       });
     }
 
     // Filter by due date
-    if (responsesQuery?.dueDate) {
-      const [filter, startDate, endDate] = responsesQuery?.dueDate;
+    if (dueDate) {
+      const [filter, startDate, endDate] = dueDate;
       let $match;
       switch (filter) {
         case 'noDueDate':
@@ -168,7 +174,7 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
     }
 
     // Filter by published state
-    if (!(responsesQuery?.includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
+    if (!(includeNotPublished && isPermitted({ user, action: 'responses.viewAll' }))) {
       pipeline.push({
         $match: {
           published: true,
@@ -179,10 +185,10 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
     // Join tracker item
     if (
       // Need to get Tracker Item if there are any dependant filters
-      responsesQuery?.includeNotPublished ||
-      responsesQuery?.categoriesIds ||
-      responsesQuery?.regulatoryBodiesIds ||
-      responsesQuery?.itemStatus ||
+      includeNotPublished ||
+      categoriesIds ||
+      regulatoryBodiesIds ||
+      itemStatus ||
       shouldJoin(['trackerItem']) ||
       shouldJoin(['calculatedStatus']) ||
       sortBy === 'calculatedStatus'
@@ -196,44 +202,44 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
     }
 
     // Filter by category id (in tracker item)
-    if (responsesQuery?.categoriesIds) {
+    if (categoriesIds) {
       pipeline.push({
         $match: {
-          'trackerItem.categoryId': { $in: responsesQuery.categoriesIds },
+          'trackerItem.categoryId': { $in: categoriesIds },
         },
       });
     }
 
     // Filter by location id (in tracker item)
-    if (responsesQuery?.locationsIds) {
+    if (locationsIds) {
       pipeline.push({
         $match: {
-          'trackerItem.locationsIds': { $in: responsesQuery.locationsIds },
+          'trackerItem.locationsIds': { $in: locationsIds },
         },
       });
     }
 
     // Filter by user id (in tracker item)
-    if (responsesQuery?.usersIds) {
+    if (usersIds) {
       const conds: any = [];
-      if (responsesQuery?.usersIds.responsibleIds?.length > 0) {
+      if (usersIds.responsibleIds?.length > 0) {
         conds.push({
-          responsibleId: { $in: responsesQuery.usersIds.responsibleIds },
+          responsibleId: { $in: usersIds.responsibleIds },
         });
       }
-      if (responsesQuery?.usersIds.accountableIds?.length > 0) {
+      if (usersIds.accountableIds?.length > 0) {
         conds.push({
-          accountableId: { $in: responsesQuery.usersIds.accountableIds },
+          accountableId: { $in: usersIds.accountableIds },
         });
       }
-      if (responsesQuery?.usersIds.contributorIds?.length > 0) {
+      if (usersIds.contributorIds?.length > 0) {
         conds.push({
-          contributorsIds: { $in: responsesQuery.usersIds.contributorIds },
+          contributorsIds: { $in: usersIds.contributorIds },
         });
       }
-      if (responsesQuery?.usersIds.followerIds?.length > 0) {
+      if (usersIds.followerIds?.length > 0) {
         conds.push({
-          followersIds: { $in: responsesQuery.usersIds.followerIds },
+          followersIds: { $in: usersIds.followerIds },
         });
       }
       pipeline.push({
@@ -244,13 +250,37 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
     }
 
     // Filter by regulatory body id (in tracker item)
-    if (responsesQuery?.regulatoryBodiesIds) {
+    if (regulatoryBodiesIds) {
       pipeline.push({
         $match: {
           'trackerItem.regulatoryBodyId': {
-            $in: responsesQuery.regulatoryBodiesIds,
+            $in: regulatoryBodiesIds,
           },
         },
+      });
+    }
+
+    // Filter by custom questions
+    if (Object.keys(questionsQuery).length > 0) {
+      Object.entries(questionsQuery as { [questionName: string]: string[] }).forEach(([questionName, values]) => {
+        const questionsOr = flatten(values.map((value) => [
+          {
+            "questions.name": questionName,
+            "questions.value": {
+              label: value,
+              isCorrect: true,
+            },
+          },
+          {
+            "questions.name": questionName,
+            "questions.value": value,
+          },
+        ]));
+        pipeline.push({
+          $match: {
+            $or: questionsOr,
+          },
+        });
       });
     }
 
@@ -284,7 +314,7 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       });
     }
 
-    if (responsesQuery?.itemStatus || shouldJoin(['calculatedStatus']) || sortBy === 'calculatedStatus') {
+    if (itemStatus || shouldJoin(['calculatedStatus']) || sortBy === 'calculatedStatus') {
       // Move responses to array
       pipeline.push({
         $group: {
@@ -433,10 +463,10 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       });
     }
 
-    if (responsesQuery?.itemStatus) {
+    if (itemStatus) {
       pipeline.push({
         $match: {
-          calculatedStatus: { $in: responsesQuery.itemStatus },
+          calculatedStatus: { $in: itemStatus },
         },
       });
     }

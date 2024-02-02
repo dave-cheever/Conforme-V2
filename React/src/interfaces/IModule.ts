@@ -15,4 +15,5 @@ export interface IModule {
   path: string;
   showInNavigation: boolean;
   translations: { [key: string]: string };
+  customQuestionsInDashboard: string[];
 }

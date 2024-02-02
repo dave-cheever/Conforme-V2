@@ -15,7 +15,7 @@ import { IUser } from '../interfaces/IUser';
 export const ResponseContext = createContext({} as IResponseContext);
 
 const GET_RESPONSE = gql`
-  query Responses($responsesQuery: ResponsesQuery) {
+  query Responses($responsesQuery: Any) {
     responses(responsesQuery: $responsesQuery) {
       responses {
         _id

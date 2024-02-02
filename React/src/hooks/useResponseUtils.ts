@@ -1,7 +1,8 @@
-import { differenceInDays, startOfDay } from 'date-fns';
+import { differenceInDays, format, isValid, startOfDay } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty, isInteger } from 'lodash';
 
+import { IModule } from '../interfaces/IModule';
 import { IQuestionChoice } from '../interfaces/IQuestionChoice';
 import { IResponse } from '../interfaces/IResponse';
 import { ITrackerQuestion } from '../interfaces/ITrackerQuestion';
@@ -105,12 +106,54 @@ const useResponseUtils = () => {
       });
   };
 
+  const getQuestionAnswer = (question: ITrackerQuestion<TQuestionValue>): string => {
+    switch (question.type) {
+      case "switch":
+        return question.value ? capitalize(question.value as string) : '-';
+
+      case "datepicker":
+        return question.value && isValid(question.value) ? format(new Date(question.value as string), "d MMM yyyy") : '-';
+
+      case "singleChoice": {
+        if (!question.value) return '-';
+        const answer = question.options?.find(({ value }) => value === question.value);
+        return answer?.label || '-';
+      }
+
+      case 'multipleChoice': {
+        if (!question.value) return '-';
+        const answers = (question.value as { label: string; isCorrect: boolean }[]).filter(({ isCorrect }) => isCorrect).map(({ label }) => label);
+        return answers.join(', ');
+      }
+
+      default:
+        return question.value as string || '-';
+    }
+  };
+
+  const getCustomQuestionsInDashboard = (module: IModule, response: IResponse) => {
+    const questionsAndAnswers = (module?.customQuestionsInDashboard || []).reduce((acc, questionName) => {
+      const newAcc = [...acc];
+      const question = (response?.questions || []).find(({ name }) => name === questionName);
+      if (question) {
+        newAcc.push({
+          name: questionName,
+          value: getQuestionAnswer(question),
+        });
+      }
+      return newAcc;
+    }, [] as { name: string; value: string; }[]);
+    return questionsAndAnswers;
+  };
+
   return {
     responseStatuses,
     responseStatusesGroup,
     getRenewalStatusText,
     areRequiredQuestionsAnswered,
     isEvidenceUploaded,
+    getQuestionAnswer,
+    getCustomQuestionsInDashboard,
   };
 };
 

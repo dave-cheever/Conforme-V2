@@ -1,4 +1,5 @@
 import addDocuments from './addDocuments.m';
+import customQuestionsOptions from './customQuestionsOptions.q';
 import removeDocument from './removeDocument.m';
 import renewResponse from './renewResponse.m';
 import responses from './responses.q';
@@ -9,6 +10,7 @@ import updateResponseQuestions from './updateResponseQuestions.m';
 const responsesResolvers = {
   Query: {
     responses,
+    customQuestionsOptions,
   },
   Mutation: {
     addDocuments,
@@ -120,7 +122,8 @@ export const responsesTypeDefs = `
 `;
 
 export const responsesQueryDefs = `
-  responses(responsesQuery: ResponsesQuery, responsesPagination: PaginationInput): ResponsesResults!
+  responses(responsesQuery: Any, responsesPagination: PaginationInput): ResponsesResults!
+  customQuestionsOptions(filterName: String!): [Options]!
 `;
 
 export const responsesMutationDefs = `

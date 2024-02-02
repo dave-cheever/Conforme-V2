@@ -122,12 +122,6 @@ const updateDocumentPathInDocuments = async (res: Response, organization: IOrgan
                 return pointsAcc;
               }, 0);
 
-              if (trackerItemName === "XP100 - XP100 17025 Supplement" && data.Name === "XP100 17025 Supplement.pdf") {
-                console.log('formattedTrackerItemName', formattedTrackerItemName);
-                console.log('documentName', documentName);
-                console.log('score', score);
-              }
-
               // Minimum score is 2
               if (score >= 2 && score > acc.score) {
                 return {

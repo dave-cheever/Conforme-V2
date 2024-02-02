@@ -1,12 +1,20 @@
+import { useMemo } from 'react';
+
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import useNavigate from '../../hooks/useNavigate';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { Close, LocationIcon, TickIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 
 function TrackerListItem({ response }: { response: IResponse }) {
   const { navigateTo } = useNavigate();
+  const { module } = useAppContext();
+  const { getCustomQuestionsInDashboard } = useResponseUtils();
+
+  const customQuestionsInDashboard = useMemo(() => getCustomQuestionsInDashboard(module!, response), [module, response]);
 
   return (
     (<Box
@@ -90,7 +98,11 @@ function TrackerListItem({ response }: { response: IResponse }) {
             )}
           </Box>
         </Box>
-        <Box data-id="2837ac2f6ba5" pr={4} w="20%">
+        <Box
+          data-id="2837ac2f6ba5"
+          pr={4}
+          w={customQuestionsInDashboard.length === 0 ? "20%" : customQuestionsInDashboard.length === 1 ? "15%" : "10%"}
+        >
           {response.responsible ? (
             <Flex align="center" data-id="735022a416dc" direction="row">
               <Avatar
@@ -118,7 +130,10 @@ function TrackerListItem({ response }: { response: IResponse }) {
             </Flex>
           )}
         </Box>
-        <Box data-id="19eb22f1e66d" w="20%">
+        <Box
+          data-id="19eb22f1e66d"
+          w={customQuestionsInDashboard.length === 0 ? "20%" : customQuestionsInDashboard.length === 1 ? "15%" : "10%"}
+        >
           <Flex data-id="ec3e298e5b76">
             <LocationIcon boxSize="12px" data-id="282c7de29976" mt="2px" />
             <Text
@@ -136,6 +151,40 @@ function TrackerListItem({ response }: { response: IResponse }) {
             </Text>
           </Flex>
         </Box>
+        {customQuestionsInDashboard.length > 0 && (
+          <Box w="10%">
+            <Flex>
+              <Text
+                color="trackerList.fontColor"
+                fontSize="13px"
+                lineHeight="17px"
+                opacity="1"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                w="full"
+                whiteSpace="nowrap">
+                {customQuestionsInDashboard[0].value || '-'}
+              </Text>
+            </Flex>
+          </Box>
+        )}
+        {customQuestionsInDashboard.length > 1 && (
+          <Box w="10%">
+            <Flex>
+              <Text
+                color="trackerList.fontColor"
+                fontSize="13px"
+                lineHeight="17px"
+                opacity="1"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                w="full"
+                whiteSpace="nowrap">
+                {customQuestionsInDashboard[1].value || '-'}
+              </Text>
+            </Flex>
+          </Box>
+        )}
       </Flex>
     </Box>)
   );

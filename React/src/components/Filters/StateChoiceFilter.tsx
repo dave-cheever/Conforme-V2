@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { gql, useQuery } from '@apollo/client';
 import { CheckboxGroup, Stack } from '@chakra-ui/react';
 
 import { actionStatuses, answerStatuses } from '../../bootstrap/config';
@@ -8,13 +9,29 @@ import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useFiltersUtils, { actionPriorities, auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
+import Loader from '../Loader';
 import FilterCheckBox from './FilterCheckBox';
+
+const GET_RESPONSES_ANSWERS = gql`
+  query ResponsesAnswers($filterName: String!) {
+    customQuestionsOptions(filterName: $filterName) {
+      value
+      label
+    }
+  }
+`;
 
 function StateChoiceFilter({ name }: { name: string }) {
   const { filtersValues, setFilters } = useFiltersContext();
   const { trackerItemStatuses } = useFiltersUtils();
   const location = useLocation();
   const { getPath } = useNavigate();
+  const { data: responsesAnswers, loading } = useQuery(GET_RESPONSES_ANSWERS, {
+    variables: {
+      filterName: name,
+    },
+    skip: ['itemStatus', 'status', 'priority', 'walkType'].includes(name),
+  });
 
   const usedStatuses = useMemo(() => {
     switch (getPath()) {
@@ -41,7 +58,7 @@ function StateChoiceFilter({ name }: { name: string }) {
       case 'walkType':
         return Object.entries(auditWalkTypes).map(([key, label]) => <FilterCheckBox data-id="12151aa633de" key={key} label={label} value={key} />);
       default:
-        break;
+        return (responsesAnswers?.customQuestionsOptions || []).map((option) => <FilterCheckBox data-id="12151aa633de" key={option.value} label={option.label} value={option.value} />);
     }
   };
 
@@ -51,7 +68,7 @@ function StateChoiceFilter({ name }: { name: string }) {
       onChange={(newValue) => setFilters({ [name]: newValue })}
       value={value}>
       <Stack data-id="4ae498068ead" direction="column" overflow="auto">
-        {renderChoices()}
+        {loading ? <Loader size="sm" /> : renderChoices()}
       </Stack>
     </CheckboxGroup>)
   );

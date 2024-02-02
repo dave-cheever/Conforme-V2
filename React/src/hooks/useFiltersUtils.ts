@@ -201,9 +201,14 @@ const useFiltersUtils = () => {
     const filters = {};
     for (const filterName of usedFilters) {
       // Get filter config from existing or initial filters
-      const filter: IFilter = cleanFilters[filterName];
+      let filter: IFilter = cleanFilters[filterName];
 
-      if (!filter) continue;
+      if (!filter) {
+        filter = {
+          name: filterName,
+          value: [],
+        };
+      }
 
       // Check if value was set
       if (newFilters[filterName] !== undefined) filter.value = newFilters[filterName];

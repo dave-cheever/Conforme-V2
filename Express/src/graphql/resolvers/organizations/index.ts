@@ -16,6 +16,7 @@ export const organizationsTypeDefs = `
     path: String!
     showInNavigation: Boolean
     translations: Any
+    customQuestionsInDashboard: [String]
   }
 
   type Organization {
