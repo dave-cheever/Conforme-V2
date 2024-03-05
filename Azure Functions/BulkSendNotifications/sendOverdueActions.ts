@@ -7,6 +7,7 @@ import { getEmailSubject, getEmailTemplate } from '../common/services/notificati
 import IConfig from '../common/interfaces/IConfig';
 import { EmailService } from '../common/services/EmailService';
 import Notifications from '../common/services/collections/Notifications';
+import { getCircularReplacer } from '../common/utils';
 
 const sendOverdueActions = async (config: IConfig, context: Context) => {
   const actionsByOrganization = await Actions.aggregate([
@@ -53,6 +54,7 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
       await Promise.all(
         actions.map(async action => {
           let notificationId: string;
+          let notificationMetatags = {};
           try {
             const module = organization.modules.find(({ _id }) => _id === action.scope.moduleId);
             let actionPath = '';
@@ -134,16 +136,29 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
               },
             }, 'system', organization._id);
             notificationId = notification._id;
+            notificationMetatags = notification.metatags;
 
             await emailService.sendEmail({
               to: recipients,
               subject,
               body,
             });
-            await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+            await Notifications.updateOne({ _id: notificationId }, {
+              status: "sent",
+              metatags: {
+                ...notification.metatags,
+                updatedAt: new Date(),
+              },
+            });
           } catch (e) {
-            const error = JSON.stringify({ message: e.message, response: e.response });
-            await Notifications.updateOne({ _id: notificationId }, { error });
+            const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+            await Notifications.updateOne({ _id: notificationId }, {
+              error,
+              metatags: {
+                ...notificationMetatags,
+                updatedAt: new Date(),
+              },
+            });
             context.log.error(`Overdue notification failed for action ${action._id}.`);
             context.log.error(error);
           }

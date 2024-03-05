@@ -11,7 +11,7 @@ import {
   getEmailSubject,
   getEmailTemplate,
 } from "../common/services/notifications";
-import { getDaysToDueDate, getProtocol } from "../common/utils";
+import { getCircularReplacer, getDaysToDueDate, getProtocol } from "../common/utils";
 
 const sendTrackerResponseReminder = async (config: IConfig, context: Context) => {
   const organizations = await Organizations.aggregate([
@@ -68,6 +68,7 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
 
       for (const response of filteredResponses) {
         let notificationId: string;
+        let notificationMetatags = {};
         try {
           const graphService = new GraphService(config);
           const recipients = [];
@@ -143,23 +144,36 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
               },
             }, 'system', organization._id);
             notificationId = notification._id;
+            notificationMetatags = notification.metatags;
 
             await emailService.sendEmail({
               to: [recipient.email],
               subject,
               body,
             });
-            await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+            await Notifications.updateOne({ _id: notificationId }, {
+              status: "sent",
+              metatags: {
+                ...notification.metatags,
+                updatedAt: new Date(),
+              },
+            });
           }
         } catch (e) {
-          const error = JSON.stringify({ message: e.message, response: e.response });
-          await Notifications.updateOne({ _id: notificationId }, { error });
+          const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+          await Notifications.updateOne({ _id: notificationId }, {
+            error,
+            metatags: {
+              ...notificationMetatags,
+              updatedAt: new Date(),
+            },
+          });
           context.log.error(`Tracker response reminder notification failed for response ${response._id}.`);
           context.log.error(error);
         }
       }
     } catch (e) {
-      const error = JSON.stringify({ message: e.message, response: e.response });
+      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
       context.log.error(`Tracker response reminder notification failed for organization ${organization._id}.`);
       context.log.error(error);
     }

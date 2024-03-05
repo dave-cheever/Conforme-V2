@@ -10,6 +10,7 @@ import Settings from '../common/services/collections/Settings';
 import Users from '../common/services/collections/Users';
 import { EmailService } from '../common/services/EmailService';
 import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
+import { getCircularReplacer } from '../common/utils';
 
 const sendMissedAudits = async (config: IConfig, context: Context) => {
   const auditsByOrganization: {
@@ -79,6 +80,7 @@ const sendMissedAudits = async (config: IConfig, context: Context) => {
   await Promise.all(
     auditsByOrganization.map(async ({ audits, organization }) => {
       let notificationId: string;
+      let notificationMetatags = {};
       await Promise.all(audits.map(async audit => {
         try {
           const module = organization.modules.find(({ _id }) => _id === audit.scope?.moduleId);
@@ -127,16 +129,29 @@ const sendMissedAudits = async (config: IConfig, context: Context) => {
             },
           }, 'system', organization._id);
           notificationId = notification._id;
+          notificationMetatags = notification.metatags;
 
           await emailService.sendEmail({
             to: recipients,
             subject,
             body,
           });
-          await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+          await Notifications.updateOne({ _id: notificationId }, {
+            status: "sent",
+            metatags: {
+              ...notification.metatags,
+              updatedAt: new Date(),
+            },
+          });
         } catch (e) {
-          const error = JSON.stringify({ message: e.message, response: e.response });
-          await Notifications.updateOne({ _id: notificationId }, { error });
+          const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+          await Notifications.updateOne({ _id: notificationId }, {
+            error,
+            metatags: {
+              ...notificationMetatags,
+              updatedAt: new Date(),
+            },
+          });
           context.log.error(`Missed audit notification failed for audit ${audit._id}.`);
           context.log.error(error);
         }

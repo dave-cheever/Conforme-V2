@@ -8,6 +8,7 @@ import Settings from "../common/services/collections/Settings";
 import { EmailService } from "../common/services/EmailService";
 import { GraphService } from "../common/services/GraphService";
 import { getEmailSubject, getEmailTemplate } from "../common/services/notifications";
+import { getCircularReplacer } from "../common/utils";
 
 const sendResponseWeeklyEmail = async (config: IConfig, context: Context) => {
   const organizations = await Organizations.aggregate([
@@ -22,6 +23,7 @@ const sendResponseWeeklyEmail = async (config: IConfig, context: Context) => {
   const emailService = new EmailService(config);
   for (const organization of organizations) {
     let notificationId: string;
+    let notificationMetatags = {};
     try {
       const recipients = await Settings.customFindOneByName(`${emailType}EmailAddress`, organization._id);
       if (!recipients) {
@@ -100,16 +102,29 @@ const sendResponseWeeklyEmail = async (config: IConfig, context: Context) => {
         },
       }, 'system', organization._id);
       notificationId = notification._id;
+      notificationMetatags = notification.metatags;
 
       await emailService.sendEmail({
         to: recipients.value,
         subject,
         body,
       });
-      await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+      await Notifications.updateOne({ _id: notificationId }, {
+        status: "sent",
+        metatags: {
+          ...notification.metatags,
+          updatedAt: new Date(),
+        },
+      });
     } catch (e) {
-      const error = JSON.stringify({ message: e.message, response: e.response });
-      await Notifications.updateOne({ _id: notificationId }, { error });
+      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+      await Notifications.updateOne({ _id: notificationId }, {
+        error,
+        metatags: {
+          ...notificationMetatags,
+          updatedAt: new Date(),
+        },
+      });
       context.log.error(`Tracker response weekly digest notification failed for organization ${organization._id}.`);
       context.log.error(error);
     }

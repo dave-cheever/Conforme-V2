@@ -34,3 +34,21 @@ export const getDaysToDueDate = (response: IResponse) => {
 export const t = (word: string, translations: { [word: string]: string }) => {
   return translations[word] || word;
 };
+
+/**
+ * Returns a replacer function that handles circular references in JSON.stringify.
+ *
+ * @return {function} A replacer function for JSON.stringify
+ */
+export const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};

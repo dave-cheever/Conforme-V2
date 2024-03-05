@@ -5,6 +5,7 @@ import Notifications from '../common/services/collections/Notifications';
 import Settings from '../common/services/collections/Settings';
 import { EmailService } from '../common/services/EmailService';
 import { getEmailSubject, getEmailTemplate } from '../common/services/notifications';
+import { getCircularReplacer } from '../common/utils';
 
 const sendDigest = async (
   {
@@ -61,6 +62,7 @@ const sendDigest = async (
   const emailService = new EmailService(config);
   auditsByModule.forEach(async ({ _id: moduleId, organization, audits }) => {
     let notificationId: string;
+    let notificationMetatags = {};
     try {
       const module = organization.modules.find(({ _id }) => _id === moduleId);
 
@@ -90,16 +92,29 @@ const sendDigest = async (
         },
       }, 'system', organization._id);
       notificationId = notification._id;
+      notificationMetatags = notification.metatags;
 
       await emailService.sendEmail({
         to: receiver.value,
         subject,
         body,
       });
-      await Notifications.updateOne({ _id: notificationId }, { status: "sent" });
+      await Notifications.updateOne({ _id: notificationId }, {
+        status: "sent",
+        metatags: {
+          ...notification.metatags,
+          updatedAt: new Date(),
+        },
+      });
     } catch (e) {
-      const error = JSON.stringify({ message: e.message, response: e.response });
-      await Notifications.updateOne({ _id: notificationId }, { error });
+      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+      await Notifications.updateOne({ _id: notificationId }, {
+        error,
+        metatags: {
+          ...notificationMetatags,
+          updatedAt: new Date(),
+        },
+      });
       context.log.error(`Audits weekly digest notification failed for module ${moduleId}.`);
       context.log.error(error);
     }

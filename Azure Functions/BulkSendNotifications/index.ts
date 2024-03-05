@@ -19,6 +19,8 @@ import sendTrackerResponseDigest from './sendTrackerResponseDigest';
 import sendTrackerResponseReminder from './sendTrackerResponseReminder';
 import Notifications from '../common/services/collections/Notifications';
 import { EmailService } from '../common/services/EmailService';
+import { getCircularReplacer } from '../common/utils';
+import _ from 'lodash';
 
 const timerTrigger: AzureFunction = async function (context: Context): Promise<void> {
   const now = new Date();
@@ -81,7 +83,7 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
         const organizationConfigService = new ConfigService();
         const organizationConfig = await organizationConfigService.getConfig(notification.organizationId);
         const organization = organizationConfigService?.getOrganization();
-        const module = organization?.modules?.find((module) => module._id === notification.scope.moduleId);
+        const module = organization?.modules?.find((module) => module._id === notification.scope?.moduleId);
 
         const subject = await getEmailSubject({
           emailType: notification.emailType,
@@ -97,18 +99,30 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
 
         const emailService = new EmailService(organizationConfig);
         const emailResponseStatus = await emailService.sendEmail({
-          to: notification.to,
+          to: _.uniq(notification.to),
           subject,
           body,
         });
 
         if (emailResponseStatus === 202) {
-          await Notifications.updateOne({ _id: notification._id }, { status: "sent" });
+          await Notifications.updateOne({ _id: notification._id }, {
+            status: "sent",
+            metatags: {
+              ...notification.metatags,
+              updatedAt: new Date(),
+            },
+          });
           return true;
         }
       } catch (e) {
-        const error = JSON.stringify({ message: e.message, response: e.response });
-        await Notifications.updateOne({ _id: notification._id }, { error });
+        const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+        await Notifications.updateOne({ _id: notification._id }, {
+          error,
+          metatags: {
+            ...notification.metatags,
+            updatedAt: new Date(),
+          },
+        });
         context.log.error(`Instant notification failed: ${notification._id}.`);
         context.log.error(error);
         return false;
