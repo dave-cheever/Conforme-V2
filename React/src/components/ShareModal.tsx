@@ -37,11 +37,15 @@ function ShareModal() {
   const URL = useMemo(() => `${process.env.REACT_APP_CLIENT_URL}/${module?.path}/${shareItemUrl}`, [shareItemUrl]);
 
   const email = useMemo(
-    () =>
-      `mailto:${[...mails, mail].join(';')}?subject=${user?.displayName} is sharing ${shareItemName} - ${module?.name} - ${
-        organizationConfig?.name
-      }&body=Please click on this link to access the '${shareItemName}' in ${module?.name}:%0A%0A${URL}%0A%0A${organizationConfig?.name}`,
-    [shareItemName, mail, mails, module, organizationConfig],
+    () => {
+      const subject = `${user?.displayName} is sharing ${shareItemName} - ${module?.name} - ${organizationConfig?.name}`;
+      const body = `Please click on this link to access the '${shareItemName}' in ${module?.name}:
+      
+      ${URL}
+      
+      ${organizationConfig?.name}`;
+      return `mailto:${[...mails, mail].join(';')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }, [shareItemName, mail, mails, module, organizationConfig],
   );
 
   const updateMails = () => {
