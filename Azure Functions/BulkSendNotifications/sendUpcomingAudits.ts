@@ -82,6 +82,26 @@ const sendComingUpAudits = async (config: IConfig, context: Context) => {
               areaName: audit.area?.name,
               auditPath: `${organization.domain}/${module?.path}/audits/${audit._id}`,
             };
+
+            const auditor = await Users.customFindByIdWithDetails({
+              userId: audit.auditorId,
+              organization,
+              config,
+            });
+
+            // Save notification in database
+            const notification = await Notifications.customCreate({
+              emailType,
+              emailData,
+              status: 'pending',
+              to: [auditor?.email],
+              scope: {
+                moduleId: module?._id,
+              },
+            }, 'system', organization._id);
+            notificationId = notification._id;
+            notificationMetatags = notification.metatags;
+
             const subject = await getEmailSubject({ emailType, organization });
             const body = await getEmailTemplate({
               emailType,
@@ -90,25 +110,7 @@ const sendComingUpAudits = async (config: IConfig, context: Context) => {
               organization,
             });
 
-            const auditor = await Users.customFindByIdWithDetails({
-              userId: audit.auditorId,
-              organization,
-              config,
-            });
             if (auditor) {
-              // Save notification in database
-              const notification = await Notifications.customCreate({
-                emailType,
-                emailData,
-                status: 'pending',
-                to: [auditor.email],
-                scope: {
-                  moduleId: module?._id,
-                },
-              }, 'system', organization._id);
-              notificationId = notification._id;
-              notificationMetatags = notification.metatags;
-
               await emailService.sendEmail({
                 to: [auditor.email],
                 subject,
@@ -123,8 +125,9 @@ const sendComingUpAudits = async (config: IConfig, context: Context) => {
               });
             }
           } catch (e) {
-            const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+            const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer());
             await Notifications.updateOne({ _id: notificationId }, {
+              status: "failed",
               error,
               metatags: {
                 ...notificationMetatags,

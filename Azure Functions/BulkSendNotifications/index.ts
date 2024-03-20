@@ -115,8 +115,9 @@ const timerTrigger: AzureFunction = async function (context: Context): Promise<v
           return true;
         }
       } catch (e) {
-        const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+        const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer());
         await Notifications.updateOne({ _id: notification._id }, {
+          status: "failed",
           error,
           metatags: {
             ...notification.metatags,

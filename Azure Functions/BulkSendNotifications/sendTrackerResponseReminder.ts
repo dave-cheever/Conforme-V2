@@ -104,14 +104,6 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
             dueDate,
           } = response;
 
-          const subject = await getEmailSubject({
-            emailType,
-            emailData: {
-              trackerItemName: trackerItem.name,
-            },
-            organization,
-          });
-
           // TODO: For now take the first tracker module.
           // Need to add module scope to tracker objects in order to fix it.
           const module = organization.modules.find(({ type }) => type === 'tracker');
@@ -126,13 +118,6 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
               _id,
             };
 
-            const body = await getEmailTemplate({
-              emailType,
-              emailData,
-              modulePath: module.path,
-              organization,
-            });
-
             // Save notification in database
             const notification = await Notifications.customCreate({
               emailType,
@@ -145,6 +130,20 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
             }, 'system', organization._id);
             notificationId = notification._id;
             notificationMetatags = notification.metatags;
+
+            const subject = await getEmailSubject({
+              emailType,
+              emailData: {
+                trackerItemName: trackerItem.name,
+              },
+              organization,
+            });
+            const body = await getEmailTemplate({
+              emailType,
+              emailData,
+              modulePath: module.path,
+              organization,
+            });
 
             await emailService.sendEmail({
               to: [recipient.email],
@@ -160,8 +159,9 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
             });
           }
         } catch (e) {
-          const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+          const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer());
           await Notifications.updateOne({ _id: notificationId }, {
+            status: "failed",
             error,
             metatags: {
               ...notificationMetatags,
@@ -173,7 +173,7 @@ const sendTrackerResponseReminder = async (config: IConfig, context: Context) =>
         }
       }
     } catch (e) {
-      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer());
       context.log.error(`Tracker response reminder notification failed for organization ${organization._id}.`);
       context.log.error(error);
     }

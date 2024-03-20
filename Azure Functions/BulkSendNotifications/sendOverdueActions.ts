@@ -51,8 +51,10 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
   const emailService = new EmailService(config);
   await Promise.all(
     actionsByOrganization.map(async ({ actions, organization }) => {
+      if (organization._id !== 'underio') return;
       await Promise.all(
         actions.map(async action => {
+          console.log('action', action);
           let notificationId: string;
           let notificationMetatags = {};
           try {
@@ -117,13 +119,6 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
               actionTitle: action.title,
               actionPath
             };
-            const subject = await getEmailSubject({ emailType, organization });
-            const body = await getEmailTemplate({
-              emailType,
-              emailData,
-              modulePath: module.path,
-              organization,
-            });
 
             // Save notification in database
             const notification = await Notifications.customCreate({
@@ -138,6 +133,14 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
             notificationId = notification._id;
             notificationMetatags = notification.metatags;
 
+            const subject = await getEmailSubject({ emailType, organization });
+            const body = await getEmailTemplate({
+              emailType,
+              emailData,
+              modulePath: module.path,
+              organization,
+            });
+
             await emailService.sendEmail({
               to: recipients,
               subject,
@@ -151,8 +154,9 @@ const sendOverdueActions = async (config: IConfig, context: Context) => {
               },
             });
           } catch (e) {
-            const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+            const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer());
             await Notifications.updateOne({ _id: notificationId }, {
+              status: "failed",
               error,
               metatags: {
                 ...notificationMetatags,

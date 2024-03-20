@@ -70,16 +70,8 @@ const sendDigest = async (
       const emailData = {
         numberOfAudits: audits.length,
       };
-      const subject = await getEmailSubject({ emailType, organization });
-      const body = await getEmailTemplate({
-        emailType,
-        emailData,
-        modulePath: module.path,
-        organization
-      });
 
       const receiver = receivers.find(({ organizationId }) => organizationId === organization._id);
-      if (!receiver) throw new Error(`Can not find email address setting "auditsWeeklyDigestEmailAddress" for organization ${organization._id}`);
 
       // Save notification in database
       const notification = await Notifications.customCreate({
@@ -94,6 +86,15 @@ const sendDigest = async (
       notificationId = notification._id;
       notificationMetatags = notification.metatags;
 
+      if (!receiver) throw new Error(`Can not find email address setting "auditsWeeklyDigestEmailAddress" for organization ${organization._id}`);
+
+      const subject = await getEmailSubject({ emailType, organization });
+      const body = await getEmailTemplate({
+        emailType,
+        emailData,
+        modulePath: module.path,
+        organization
+      });
       await emailService.sendEmail({
         to: receiver.value,
         subject,
@@ -107,8 +108,9 @@ const sendDigest = async (
         },
       });
     } catch (e) {
-      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer);
+      const error = JSON.stringify({ message: e.message, response: e.response }, getCircularReplacer());
       await Notifications.updateOne({ _id: notificationId }, {
+        status: "failed",
         error,
         metatags: {
           ...notificationMetatags,
