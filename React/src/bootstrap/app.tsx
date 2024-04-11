@@ -13,6 +13,7 @@ import useAuth from '../hooks/useAuth';
 import useInit from '../hooks/useInit';
 import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
+import { markerio } from './markerio';
 import getTheme from './theme';
 
 function App() {
@@ -28,6 +29,20 @@ function App() {
     if (redirectPath) navigate(redirectPath);
     localStorage.removeItem('redirectUrl');
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      markerio()?.setCustomData({
+        organizationConfig: organizationConfig as unknown as string,
+      });
+      if (user) {
+        markerio()?.setReporter({
+          email: user.email,
+          fullName: user.displayName,
+        });
+      }
+    }, 1000);
+  }, [organizationConfig, user]);
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (

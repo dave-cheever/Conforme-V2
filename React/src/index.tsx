@@ -6,6 +6,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import axios from 'axios';
 
 import App from './bootstrap/app';
+import loadWidget from './bootstrap/markerio';
 import reportWebVitals from './reportWebVitals';
 
 axios.defaults.withCredentials = true;
@@ -31,3 +32,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+loadWidget();
