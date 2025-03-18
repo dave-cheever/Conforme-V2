@@ -434,3 +434,8 @@ To import settings to the app open [audits settings JSON file](/Settings/AuditsS
 To run and properly debug the app locally you will need to open two concurrent versions of VS Code, one for the API and one for the Client application.
 
 Follow the instructions in the readme files for the API (Express) and Client (REACT) applications.
+
+
+## Demo Scripts
+
+A demo scripts Azure function has been built to assist with managing demo environment demo, see the `Demo Database Scripts` readme file for more info.
