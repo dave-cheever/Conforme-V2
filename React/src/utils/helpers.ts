@@ -314,3 +314,13 @@ export const listSupportedFileTypes = (fileTypes: { [mimeType: string]: string[]
   }, '');
   return types;
 };
+
+
+export const formatEmail = (email:string) => {
+  if (email.includes('#EXT#')) {
+    const parts = email.split('#EXT#');
+    const [local, domain] = parts[0].split('_');
+    return `${local}@${domain}`;
+  }
+  return email;
+};

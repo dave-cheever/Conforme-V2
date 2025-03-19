@@ -2,6 +2,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { TickIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
+import { formatEmail } from '../../utils/helpers';
 
 function ParticipantListItem({
   user,
@@ -43,7 +44,7 @@ function ParticipantListItem({
         {user.displayName} - {user.jobTitle || 'No job title'}
       </Text>
       <Box data-id="19d537928976" fontSize="sm" top="-4px" wordBreak="break-word">
-        {user.email}
+        {formatEmail(user.email)}
       </Box>
     </Flex>
   </Flex>
