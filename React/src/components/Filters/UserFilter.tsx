@@ -79,23 +79,23 @@ function UserFilter() {
     () =>
       module?.type === 'tracker'
         ? [
-          {
-            name: 'responsible',
-            count: (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds?.length || 0,
-          },
-          {
-            name: 'accountable',
-            count: (filtersValues.usersIds as IUserFilter)?.value?.accountableIds?.length || 0,
-          },
-          {
-            name: 'contributor',
-            count: (filtersValues.usersIds as IUserFilter)?.value?.contributorIds?.length || 0,
-          },
-          {
-            name: 'follower',
-            count: (filtersValues.usersIds as IUserFilter)?.value?.followerIds?.length || 0,
-          },
-        ]
+            {
+              name: 'responsible',
+              count: (filtersValues.usersIds as IUserFilter)?.value?.responsibleIds?.length || 0,
+            },
+            {
+              name: 'accountable',
+              count: (filtersValues.usersIds as IUserFilter)?.value?.accountableIds?.length || 0,
+            },
+            {
+              name: 'contributor',
+              count: (filtersValues.usersIds as IUserFilter)?.value?.contributorIds?.length || 0,
+            },
+            {
+              name: 'follower',
+              count: (filtersValues.usersIds as IUserFilter)?.value?.followerIds?.length || 0,
+            },
+          ]
         : selectedAuditRoleUsers,
     [JSON.stringify(filtersValues), module, location.pathname],
   );
@@ -284,7 +284,7 @@ function UserFilter() {
   };
 
   return (
-    (<Box data-id="935aa59a1f52" w="full">
+    <Box data-id="935aa59a1f52" w="full">
       <Select
         _active={{ bg: 'dropdown.activeBg' }}
         _disabled={{
@@ -309,7 +309,8 @@ function UserFilter() {
         iconSize="15px"
         onChange={(value) => {
           setSelectedRole(value.target.value);
-        }}>
+        }}
+      >
         {(module?.type === 'tracker' ? userRoles : baseAuditUserRoles).map((role, i) => (
           <option data-id="e4a0c843d731" key={i} value={role.value}>
             {role.label}
@@ -329,14 +330,9 @@ function UserFilter() {
           pl={8}
           placeholder="Search user"
           value={searchText}
-          w="full" />
-        <Magnifier
-          data-id="a8680ae1fd62"
-          h="12px"
-          ml="14px"
-          mt="22px"
-          position="absolute"
-          w="12x" />
+          w="full"
+        />
+        <Magnifier data-id="a8680ae1fd62" h="12px" ml="14px" mt="22px" position="absolute" w="12x" />
       </InputGroup>
       <Box data-id="14c42752f759" mt={2} w="full">
         {selectedRoleUsers
@@ -348,8 +344,9 @@ function UserFilter() {
                 data-id="fca044831375"
                 fontSize="smm"
                 fontWeight="semi_medium"
-                textTransform="capitalize">
-                {`${selectedRoleUser.count} ${selectedRoleUser.name}`}
+                textTransform="capitalize"
+              >
+                {`${selectedRoleUser.count} ${selectedRoleUser.name === 'addedBy' ? 'users selected' : selectedRoleUser.name}`}
               </Text>
               <Spacer data-id="795eb3c78348" />
               <CrossIcon
@@ -360,7 +357,8 @@ function UserFilter() {
                   module?.type === 'tracker' ? handleClearFilter(selectedRoleUser) : handleClearAuditFilter(selectedRoleUser)
                 }
                 stroke="usersSelector.roles.selectedRole.crossIcon"
-                w="15px" />
+                w="15px"
+              />
             </Flex>
           ))}
       </Box>
@@ -371,8 +369,9 @@ function UserFilter() {
         searchText={searchText}
         selected={selectedUsers}
         selectedRole={selectedRole}
-        users={users as IUser[]} />
-    </Box>)
+        users={users as IUser[]}
+      />
+    </Box>
   );
 }
 
