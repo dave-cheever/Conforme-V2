@@ -221,6 +221,7 @@ function Locations() {
         direction="column"
         w={['full', '70%']}>
         <TextInput
+          required
           control={control}
           data-id="1668554bc1a6"
           initialValue={currentLocationName.toLowerCase()}
@@ -238,6 +239,7 @@ function Locations() {
           name="notes"
           placeholder="Add your notes here" />
         <PeoplePicker
+          required
           control={control}
           data-id="910976b16797"
           label="Owner"

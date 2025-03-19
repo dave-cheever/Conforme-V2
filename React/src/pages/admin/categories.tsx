@@ -198,6 +198,7 @@ function Categories() {
       onAction={handleAction}>
       <Flex align="flex-start" data-id="b1f73fb84928" direction="column" w="full">
         <TextInput
+          required
           control={control}
           data-id="19ea0a600288"
           initialValue={currentCategoryName.toLowerCase()}

@@ -197,6 +197,7 @@ function RegulatoryBodies() {
       onAction={handleAction}>
       <Flex align="flex-start" data-id="8e1e0aa9c450" direction="column" w="full">
         <TextInput
+          required
           control={control}
           data-id="4a52b00be91d"
           initialValue={currentRegulatoryBodyName.toLowerCase()}

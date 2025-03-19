@@ -180,6 +180,7 @@ function AuditModal({ refetch }) {
                 {auditTypes?.length > 1 && (
                   <GridItem data-id="e39f74c8ee89" w="100%">
                     <Dropdown
+                      required
                       control={control}
                       data-id="ea42eecee549"
                       label="Audit Type"

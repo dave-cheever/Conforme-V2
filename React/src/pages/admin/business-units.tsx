@@ -308,6 +308,7 @@ function BusinessUnits() {
         spacing={2}
         w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
         <TextInput
+          required
           control={control}
           data-id="2059c276d1a1"
           initialValue={currentBusinessUnitName.toLowerCase()}

@@ -296,6 +296,7 @@ function Questions() {
         spacing={2}
         w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
         <Dropdown
+          required
           control={control}
           data-id="aec2e30b2f10"
           label="Questions Category"
