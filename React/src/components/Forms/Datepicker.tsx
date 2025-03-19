@@ -113,9 +113,13 @@ function Datepicker({
               mb="-5px"
               mt="5px"
               overflow="hidden"
-              pt="none">
+              pt="none"
+              onClick={() => {
+                if (!disabled) (datePickerRef.current as any).setOpen(true);
+              }}
+              >
               {disabled || readMode ? (
-                <Text data-id="7fcef2fbc2f8" fontSize="smm" pl={readMode ? 0 : 4}>
+                <Text data-id="7fcef2fbc2f8" fontSize="smm" w={"full"} pl={readMode ? 0 : 4}>
                   {value ? format(new Date(value), 'd MMM yyyy') : ''}
                 </Text>
               ) : (
@@ -142,9 +146,7 @@ function Datepicker({
                   ml="5px"
                   mr="10px"
                   mt="-2px"
-                  onClick={() => {
-                    if (!disabled) (datePickerRef.current as any).setOpen(true);
-                  }}
+                 
                   stroke="datepicker.font"
                   w="14px" />
               )}

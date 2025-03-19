@@ -267,7 +267,7 @@ function QuestionsCategories() {
       data-id="7372de14aed5"
       flexShrink={0}
       h="73px"
-      key={questionsCategory._id}
+      key={questionsCategory?._id}
       mb="1px"
       p={4}
       w="full">

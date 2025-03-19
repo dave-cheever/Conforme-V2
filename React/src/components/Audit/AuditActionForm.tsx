@@ -68,7 +68,7 @@ function ActionForm({ handleSave }) {
             name="assigneeId" />
         </GridItem>
         <GridItem data-id="20e5c6158772">
-          <Datepicker control={control} data-id="ce242b7f13be" label="Due date" name="dueDate" />
+          <Datepicker control={control} data-id="ce242b7f13be" label="Due date" name="dueDate" w="full" />
         </GridItem>
         <GridItem data-id="c4a5f233e5da">
           <Dropdown

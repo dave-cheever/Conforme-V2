@@ -25,7 +25,7 @@ const updateQuestionsCategory = async (
     if (!questionsCategory) throw new Error("Question Category doesn't exist");
 
     const updatedQuestionsCategory = await QuestionsCategories.customUpdateOne(
-      { _id: questionsCategory._id },
+      { _id: questionsCategory?._id },
       questionsCategoryInput,
       user._id,
       organization._id,

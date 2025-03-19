@@ -45,12 +45,12 @@ function Insights() {
         usedFilters: ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds'],
       },
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
-        _id: questionsCategory._id,
-        name: questionsCategory.name,
+        _id: questionsCategory?._id,
+        name: questionsCategory?.name,
         component: <AnswersInsights
-          answerType={questionsCategory.name}
+          answerType={questionsCategory?.name}
           data-id="8a2241ed78a0"
-          questionsCategoriesId={questionsCategory._id} />,
+          questionsCategoriesId={questionsCategory?._id} />,
         usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
       {

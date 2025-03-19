@@ -79,13 +79,13 @@ function SearchBar() {
         { type: 'all', label: 'All categories', icon: MenuIcon, searchIn: 'all' },
         audits,
         ...(questionsCategoriesData?.questionsCategories ?? []).map((questionsCategory) => ({
-          _id: questionsCategory._id,
+          _id: questionsCategory?._id,
           label: questionsCategory.name,
           // eslint-disable-next-line react/no-unstable-nested-components
           icon: (props) => <QuestionsCategoryIcon
             data-id="34703839adfd"
-            icon={questionsCategory.icon}
-            key={questionsCategory._id}
+            icon={questionsCategory?.icon}
+            key={questionsCategory?._id}
             {...props} />,
           type: 'answers',
           url: '/answers',

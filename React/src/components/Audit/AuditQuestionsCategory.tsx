@@ -12,13 +12,13 @@ function AuditQuestionsCategory({
   handleDelete: () => void;
 }) {
   const { questions } = useAuditContext();
-  const categoryQuestions = questions[questionsCategory._id];
+  const categoryQuestions = questions[questionsCategory?._id];
   if (!categoryQuestions) return null;
 
   return (
     (<Stack
       data-id="d8e159e69caf"
-      key={questionsCategory._id}
+      key={questionsCategory?._id}
       pr='10px'
       spacing={4}
       w="full">
