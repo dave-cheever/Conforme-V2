@@ -351,7 +351,7 @@ function AuditProvider({ children }) {
   }, [JSON.stringify(auditData), JSON.stringify(auditType)]);
 
   const customQuestionsCategories = useMemo(
-    () => questionsCategories.filter((category) => category.allowCustomQuestions),
+    () => questionsCategories.filter((category) => category?.allowCustomQuestions),
     [questionsCategories],
   );
 

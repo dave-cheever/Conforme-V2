@@ -145,17 +145,17 @@ function AuditHistory() {
                           {questionsCategories.map((questionsCategory) => (
                             <HStack
                               data-id="1723fc525ab0"
-                              key={questionsCategory._id}
-                              opacity={audit.questionsCategoriesCount[questionsCategory._id] ? 1 : 0.25}
+                              key={questionsCategory?._id}
+                              opacity={audit.questionsCategoriesCount[questionsCategory?._id] ? 1 : 0.25}
                               spacing={2}>
                               <Icon
                                 data-id="b341a930df77"
                                 fill="auditHistory.listItem.icon.fill"
                                 h="13px"
-                                icon={questionsCategory.icon}
+                                icon={questionsCategory?.icon}
                                 stroke="auditHistory.listItem.icon.stroke"
                                 w="13px" />
-                              <Text data-id="798bd0d54823">{audit.questionsCategoriesCount[questionsCategory._id] || 0}</Text>
+                              <Text data-id="798bd0d54823">{audit.questionsCategoriesCount[questionsCategory?._id] || 0}</Text>
                             </HStack>
                           ))}
                         </HStack>

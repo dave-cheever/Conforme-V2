@@ -16,6 +16,7 @@ import pluralize from 'pluralize';
 import { useAppContext } from '../../contexts/AppProvider';
 import { ChevronRight, Close } from '../../icons';
 import { AdminModalState } from '../../interfaces/IAdminContext';
+import { useState } from 'react';
 
 interface IAdminModal {
   isOpenModal: boolean;
@@ -28,9 +29,20 @@ interface IAdminModal {
 function AdminModal({ isOpenModal, modalType, onAction, collection, children }: IAdminModal) {
   const { user } = useAppContext();
   const { onClose } = useDisclosure();
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const confirmDelete = () => {
+    setIsConfirmDeleteOpen(false);
+    onAction('delete');
+  };
+
 
   return (
-    (<Modal
+    (<><Modal
       data-id="90fc313a4d62"
       isOpen={isOpenModal}
       onClose={onClose}
@@ -92,7 +104,7 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
                     data-id="0270011e535a"
                     fontSize="smm"
                     fontWeight="bold"
-                    onClick={() => onAction('delete')}>
+                    onClick={() => setIsConfirmDeleteOpen(true)}>
                     Delete
                   </Button>
                 )}
@@ -165,7 +177,28 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
           </Flex>
         </ModalContent>
       )}
-    </Modal>)
+    </Modal>
+      <Modal isOpen={isConfirmDeleteOpen} onClose={() => setIsConfirmDeleteOpen(false)} isCentered>
+        <ModalOverlay />
+        <ModalContent bg="white" borderRadius="12px" p={6} textAlign="center" boxShadow="lg">
+          <Box fontSize="xl" fontWeight="bold" mb={4} color="gray.800">
+            Confirm Delete
+          </Box>
+          <Box color="gray.600" mb={6}>
+            Are you sure you want to delete this item? This action cannot be undone.
+          </Box>
+          <Flex justify="center">
+            <Button variant="outline" colorScheme="gray" mr={3} onClick={() => setIsConfirmDeleteOpen(false)}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </Flex>
+        </ModalContent>
+      </Modal>
+
+    </>)
   );
 }
 
