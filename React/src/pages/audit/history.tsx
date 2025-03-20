@@ -142,7 +142,7 @@ function AuditHistory() {
                           </Text>
                         </Flex>
                         <HStack data-id="1dd609f507fe" fontSize="smm" spacing={6}>
-                          {questionsCategories.map((questionsCategory , index) => (
+                          {questionsCategories.map((questionsCategory, index) => (
                             <HStack
                               key={questionsCategory?._id || index}
                               data-id="1723fc525ab0"

@@ -331,7 +331,7 @@ export const questionSingleChoiceFormStyles = {
       error: '#E53E3E',
     },
     scrollBar: {
-      bg: '#E5E5E5',
+      bg: '#f5f5f5',
       color: '#DDD',
     },
     icon: {

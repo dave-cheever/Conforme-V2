@@ -119,7 +119,7 @@ function Datepicker({
               }}
               >
               {disabled || readMode ? (
-                <Text data-id="7fcef2fbc2f8" fontSize="smm" w={"full"} pl={readMode ? 0 : 4}>
+                <Text data-id="7fcef2fbc2f8" fontSize="smm" w="full" pl={readMode ? 0 : 4}>
                   {value ? format(new Date(value), 'd MMM yyyy') : ''}
                 </Text>
               ) : (

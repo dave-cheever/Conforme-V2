@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Avatar,
   Box,
@@ -16,7 +18,6 @@ import pluralize from 'pluralize';
 import { useAppContext } from '../../contexts/AppProvider';
 import { ChevronRight, Close } from '../../icons';
 import { AdminModalState } from '../../interfaces/IAdminContext';
-import { useState } from 'react';
 
 interface IAdminModal {
   isOpenModal: boolean;
@@ -31,15 +32,10 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
   const { onClose } = useDisclosure();
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
-  const handleDeleteClick = () => {
-    setIsConfirmDeleteOpen(true);
-  };
-
   const confirmDelete = () => {
     setIsConfirmDeleteOpen(false);
     onAction('delete');
   };
-
 
   return (
     (<><Modal

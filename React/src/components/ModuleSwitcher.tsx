@@ -60,7 +60,7 @@ export const moduleSwitcherStyles = {
   moduleSwitcher: {
     background: '#efefef',
     button: {
-      default: '#e5e5e5',
+      default: '#f5f5f5',
       active: '#462AC4',
       text: {
         default: '#000000',

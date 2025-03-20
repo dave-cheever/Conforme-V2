@@ -100,10 +100,10 @@ const getEmailTemplate = ({
             }</style>
 
       </head>
-      <body style="background-color:#F5F5F5;">
+      <body style="background-color:#f5f5f5;">
 
 
-      <div style="background-color:#F5F5F5;">
+      <div style="background-color:#f5f5f5;">
 
 
       <!--[if mso | IE]>
@@ -115,9 +115,9 @@ const getEmailTemplate = ({
       <![endif]-->
 
 
-      <div style="background:#F5F5F5;background-color:#F5F5F5;Margin:0px auto;max-width:600px;">
+      <div style="background:#f5f5f5;background-color:#f5f5f5;Margin:0px auto;max-width:600px;">
 
-        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F5F5;background-color:#F5F5F5;width:100%;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#f5f5f5;background-color:#f5f5f5;width:100%;">
           <tbody>
             <tr>
               <td style="direction:ltr;font-size:0px;padding:0px 0px 0px 0px;text-align:center;vertical-align:top;">
@@ -345,7 +345,7 @@ const getEmailTemplate = ({
             
       <div class="mj-column-per-100 outlook-group-fix" style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
         
-      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#F5F5F5;vertical-align:top;" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f5f5f5;vertical-align:top;" width="100%">
         
             <tbody>
           

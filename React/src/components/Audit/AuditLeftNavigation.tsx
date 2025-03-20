@@ -69,7 +69,7 @@ export default AuditLeftNavigation;
 
 export const auditLeftNavigationStyles = {
   auditLeftNavigation: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     goBackColor: '#818197',
     color: '#282F36',
     building: '#2B3236',

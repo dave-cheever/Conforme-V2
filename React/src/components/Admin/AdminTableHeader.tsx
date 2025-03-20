@@ -33,7 +33,7 @@ export default AdminTableHeader;
 
 export const adminTableHeaderStyles = {
   adminTableHeader: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     font: '#818197',
     border: '#F0F0F0',
   },

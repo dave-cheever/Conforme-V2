@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-
 import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
 
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
-import { ArrowRight } from '../icons';
+import SignInButton from '../icons/SignInButton';
 
 function Login() {
   const toast = useToast();
@@ -68,18 +67,19 @@ function Login() {
           h="full"
           justify={['center', 'center', 'flex-end']}
           order={[2, 2, 1]}
-          w={['full', 'full', '30%']}>
+          w={['full', 'full', '45%']}>
           <VStack align="center" data-id="481f61719b09" spacing={5} textAlign="center">
             <Flex
               color="loginPage.organizationNameColor"
               data-id="ff89586c1608"
-              fontSize="24px"
+              fontSize="40px"
               fontWeight="bold"
-              lineHeight="41px"
               mb={3}
+              pl={12}
               noOfLines={2}
               textOverflow="ellipsis"
-              w="240px">
+              w="full"
+            >
               {organizationConfig?.name}
             </Flex>
             <Flex
@@ -107,7 +107,7 @@ function Login() {
               h="40px"
               lineHeight="18px"
               onClick={loginWithAzureAD}
-              w="204px">
+              w="min-content">
               Login as {user?.firstName || user?.displayName}
             </Button>
             <Flex
@@ -134,37 +134,28 @@ function Login() {
           h="full"
           justify={['center', 'center', 'flex-end']}
           order={[2, 2, 1]}
-          w={['full', 'full', '30%']}>
+          w={['full', 'full', '45%']}>
           <Flex
             data-id="d17119994624"
             flexDir="column"
-            textAlign={['center', 'center', 'start']}>
+            textAlign="center">
             <Text
               color="loginPage.organizationNameColor"
               data-id="595eeea26c04"
-              fontSize="36px"
+              fontSize="40px"
               fontWeight="bold"
               lineHeight="41px"
-              mb="50px"
+              mb="40px"
               noOfLines={2}
               textOverflow="ellipsis"
-              w="240px">
+              w="full"
+              px="8"
+            >
               {organizationConfig?.name}
             </Text>
-            <Button
-              _hover={{ bg: 'loginPage.hoverColor' }}
-              bg="loginPage.button.bg"
-              borderRadius="10px"
-              color="loginPage.button.color"
-              data-id="6140549ce0f0"
-              fontSize="14px"
-              h="40px"
-              lineHeight="18px"
-              onClick={loginWithAzureAD}
-              rightIcon={<ArrowRight data-id="6770ef8de428" mt={1} />}
-              w="240px">
-              Login with Azure AD
-            </Button>
+            <Flex justify="center">
+              <SignInButton onClick={loginWithAzureAD} cursor="pointer" w="215px" h="41px"/>
+            </Flex>
           </Flex>
         </Flex>
       )}
@@ -179,7 +170,8 @@ function Login() {
           <Image
             data-id="01d3aec22abd"
             h="full"
-            maxW="max-content"
+            fit="contain"
+            maxW="1000px"
             src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />
         </Box>
       </Flex>
@@ -191,13 +183,13 @@ export default Login;
 
 export const loginPageStyles = {
   loginPage: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     organizationNameColor: '#282F36',
     avatarBorderColor: '#6d649845',
     descriptionColor: '#818197',
     hoverColor: '#462AC4',
     button: {
-      bg: 'purpleHeart',
+      bg: '#462AC4',
       color: 'white',
     },
   },

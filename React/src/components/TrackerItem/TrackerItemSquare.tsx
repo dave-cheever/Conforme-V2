@@ -39,9 +39,9 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
 
   return (
     (<Box
-      _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)' }}
+      _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.04)' }}
       bg="white"
-      borderRadius="20px"
+      borderRadius="10px"
       boxShadow="sm"
       cursor="pointer"
       data-id="b768fed011d7"

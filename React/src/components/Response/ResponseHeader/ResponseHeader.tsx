@@ -389,7 +389,7 @@ export default ReasponseHeader;
 
 export const responseHeaderStyles = {
   reasponseHeader: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     heading: '#282F36',
     badge: {
       draft: {

@@ -97,6 +97,7 @@ import SearchIcon from './SearchIcon';
 import SendMessageIcon from './SendMessageIcon';
 import Share from './Share';
 import ShareIcon from './ShareIcon';
+import SignInButton from './SignInButton';
 import SiteIcon from './SiteIcon';
 import SubmitIcon from './SubmitIcon';
 import TeamsIcon from './TeamsIcon';
@@ -211,6 +212,7 @@ export {
   SendMessageIcon,
   Share,
   ShareIcon,
+  SignInButton,
   SiteIcon,
   SubmitIcon,
   TeamsIcon,

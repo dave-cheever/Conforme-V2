@@ -112,7 +112,7 @@ export default NavigationLeft;
 
 export const navigationLeftStyles = {
   navigationLeft: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     organizationNameFontColor: '#282F36',
   },
 };

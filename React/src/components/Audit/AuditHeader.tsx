@@ -443,7 +443,7 @@ export default AuditHeader;
 
 export const auditHeaderStyles = {
   auditHeader: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     heading: '#282F36',
     badge: '#FF9A00',
     badgeBg: 'rgba(255, 154, 0, 0.1)',

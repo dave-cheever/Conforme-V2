@@ -331,7 +331,7 @@ export const questionMultiChoiceFormStyles = {
       color: '#818197',
     },
     scrollBar: {
-      bg: '#E5E5E5',
+      bg: '#f5f5f5',
       color: '#DDD',
     },
     icon: {

@@ -243,7 +243,7 @@ export default NavigationTopWithContext;
 
 export const navigationTopStyles = {
   navigationTop: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     bgMobile: '#FFFFFF',
     inputBg: '#FFFFFF',
     inputIconColor: '#282F36',

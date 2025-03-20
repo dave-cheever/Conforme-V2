@@ -164,7 +164,7 @@ export default Logout;
 
 export const logoutPageStyles = {
   logoutPage: {
-    bg: '#E5E5E5',
+    bg: '#f5f5f5',
     organizationNameColor: '#282F36',
     avatarBorderColor: '#6d649845',
     descriptionColor: '#818197',

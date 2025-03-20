@@ -161,11 +161,11 @@ const getTheme = (organizationTheme?: any) => {
       xs: '10px',
       ssm: '11px',
       sm: '12px',
-      smm: '14px',
-      md: '16px',
-      lg: '18px',
-      xl: '20px',
-      xxl: '24px',
+      smm: '16px',
+      md: '18px',
+      lg: '20px',
+      xl: '22px',
+      xxl: '26px',
     },
     fontWeights: {
       ...theme.fontWeights,
@@ -351,7 +351,7 @@ const getTheme = (organizationTheme?: any) => {
           progress: '#A2171E',
         },
         layout: {
-          bg: '#E5E5E5',
+          bg: '#f5f5f5',
         },
         dashboardFilters: {
           active: '#FFFFFF',

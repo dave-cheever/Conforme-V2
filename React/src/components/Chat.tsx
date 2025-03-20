@@ -336,7 +336,7 @@ export const chatStyles = {
     bg: '#ffffff',
     text: '#282F3680',
     scrollBar: {
-      bg: '#E5E5E5',
+      bg: '#f5f5f5',
       color: '#DDD',
     },
     image: {
