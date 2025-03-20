@@ -20,7 +20,7 @@ function AuditLayout({ component: Component }: { component: any }) {
   const { loading, audit } = useAuditContext();
   const { isOpenMessage, handleCloseMessage, handleOpenMessage } = useChatContext();
   const device = useDevice();
-  const isTabletAndMobile = device === 'tablet' || device === 'mobile';
+  const isTabletAndMobile = device === 'tablet' || device === 'mobile' ;
 
   if (loading && !audit) {
     return (

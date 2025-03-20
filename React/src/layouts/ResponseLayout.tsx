@@ -20,7 +20,7 @@ function ResponseLayout({ component: Component }: { component: any }) {
   const { loading, response } = useResponseContext();
   const { isOpenMessage, handleCloseMessage, handleOpenMessage } = useChatContext();
   const device = useDevice();
-  const isTabletAndMobile = device === 'tablet' || device === 'mobile';
+  const isTabletAndMobile = device === 'tablet' || device === 'mobile' ;
 
   if (loading && !response) {
     return (
