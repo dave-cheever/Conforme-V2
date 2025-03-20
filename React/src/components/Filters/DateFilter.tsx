@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
-import { useLocation } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Checkbox, Stack, Text } from '@chakra-ui/react';
 
@@ -25,7 +25,7 @@ function DateFilter({ filterName }: { filterName: string }) {
       default:
         return auditsFilterDates;
     }
-  }, [location.pathname]);
+  }, [getPath, location.pathname]);
 
   const auditsFiltersValue = useMemo(() => {
     switch (getPath()) {
@@ -51,17 +51,19 @@ function DateFilter({ filterName }: { filterName: string }) {
     }
   }, [location.pathname]);
 
-  const value = useMemo(() => {
-    const val = (module?.type === 'tracker' ? filtersValues.dueDate : auditsFiltersValue)?.value;
-    return Array.isArray(val) ? val : [val];
-  }, [filtersValues, module?.type]);
-  const [filterValue, startDate, endDate] = Array.isArray(value) ? value : [value, null, null];
+  const value = useMemo(
+    () => (module?.type === 'tracker' ? filtersValues?.dueDate : auditsFiltersValue)?.value || [],
+    [filtersValues, module?.type],
+  );
+  const [filterValue, startDate, endDate] = value || [];
 
   const onChange = (e, key) => {
-    if (e.target.checked) setFilters({ [module?.type === 'tracker' ? 'dueDate' : auditsOnChangeKey]: [key] });
-    else setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: [] });
+    if (e.target.checked) 
+      setFilters({ [module?.type === 'tracker' ? 'dueDate' : auditsOnChangeKey]: [key] });
+    else 
+      setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: null });
+    
   };
-
   return (
     (<Box data-id="cfe370d3d087" w="full">
       <Stack data-id="3cbbb633a003" direction="column" mb={5}>
@@ -112,11 +114,8 @@ function DateFilter({ filterName }: { filterName: string }) {
           data-id="9759578d957f"
           endDate={endDate ? new Date(endDate) : null}
           inline
-          onChange={(dates) => {
-            const [start, end] = dates;
-            setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['dateRange', start, end] });
-          }}
-          selected={startDate}
+          onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date || new Date()] })}
+          selected={startDate ? new Date(startDate) : null}
           selectsRange
           startDate={startDate ? new Date(startDate) : new Date()} />
       )}

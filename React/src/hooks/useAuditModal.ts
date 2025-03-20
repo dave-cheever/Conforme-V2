@@ -19,7 +19,7 @@ const CREATE_AUDIT = gql`
   }
 `;
 
-const useAuditModal = (refetch = () => {}) => {
+const useAuditModal = (refetch = () => { }) => {
   const toast = useToast();
   const { module } = useAppContext();
   const { setAdminModalState } = useContext(AdminContext);
@@ -30,6 +30,12 @@ const useAuditModal = (refetch = () => {}) => {
 
   const saveAudit = async (audit: Partial<IAudit>) => {
     try {
+
+      const requiredFields = ['walkType', 'locationId'];
+      const missingFields = requiredFields.filter((field) => !audit[field]);
+
+      if (missingFields.length > 0) throw new Error("Please fill all fields with an asterisk (*).");
+      
       const { data } = await create({
         variables: {
           audit: {
@@ -40,10 +46,12 @@ const useAuditModal = (refetch = () => {}) => {
           },
         },
       });
-      const auditId = data.createAudit._id;
-      reset({ ...audit, _id: auditId });
 
+      const auditId = data?.createAudit?._id;
+
+      reset({ ...audit, _id: auditId });
       refetch();
+
       toast({
         ...toastSuccess,
         description: `${capitalize(t('audit'))} ${audit.hasOwnProperty('_id') ? 'saved' : 'added'}`,
@@ -51,7 +59,17 @@ const useAuditModal = (refetch = () => {}) => {
 
       return auditId;
     } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
+      console.error("Error saving audit:", e);
+
+      const errorMessage =
+        e?.message?.includes("Please fill all fields")
+          ? e.message
+          : e?.graphQLErrors?.[0]?.message || "An unexpected error occurred.";
+
+      toast({
+        ...toastFailed,
+        description: errorMessage,
+      });
     }
   };
 
