@@ -128,15 +128,17 @@ function ActionSquare({ action, editAction }: { action: IAction; editAction: (ac
           direction="row"
           onClick={() => openInNewTab(`/audits/${action?.answer?.audit?._id}`)}
           spacing={2}>
-          <Text
-            color="actionSquare.section.text"
-            data-id="7d858fa06e38"
-            fontSize="ssm"
-            noOfLines={1}>
-            {action?.answer?.question?.question},{' '}
-            {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
-              ? action?.answer?.audit?.businessUnit?.name ?? '-'
-              : action?.answer?.businessUnit?.name ?? '-'}
+         <Text
+              color="actionSquare.section.text"
+              data-id="7d858fa06e38"
+              fontSize="ssm"
+              noOfLines={1}>
+              {action?.answer?.question?.question 
+                ? `${action.answer.question.question}: ` 
+                : ''}
+              {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
+                ? action?.answer?.audit?.businessUnit?.name ?? '-'
+                : action?.answer?.businessUnit?.name ?? '-'}
           </Text>
           <OpenExternalIcon data-id="46925e0859eb" fill="transparent" stroke="black" />
         </Stack>
