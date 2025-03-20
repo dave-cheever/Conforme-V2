@@ -398,13 +398,25 @@ function Answers() {
                       px={[0, 4]}
                       templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
                       w="full">
-                      {sortedAnswers.map((answer) => (
-                        <AnswerSquare
-                          data-id="803def365757"
-                          answer={answer}
-                          editAnswer={handleOpenModal}
-                          key={answer._id} />
-                      ))}
+                        {sortedAnswers.length > 0 ? (
+                          sortedAnswers.map((answer) => (
+                            <AnswerSquare
+                              data-id="803def365757"
+                              answer={answer}
+                              editAnswer={handleOpenModal}
+                              key={answer._id}
+                            />
+                          ))
+                        ) : (
+                          <Flex
+                            data-id="dad222c8f90c"
+                            fontSize="18px"
+                            fontStyle="italic"
+                            h="full"
+                            w="full">
+                            No {t('question')}s found
+                          </Flex>
+                        )}
                     </Grid>
                   )}
                   {viewMode === 'list' && (

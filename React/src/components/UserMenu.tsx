@@ -40,7 +40,9 @@ function UserMenu() {
         data-id="d3cc6dae5991"
         minW="175px"
         p="15px 20px 15px 20px"
-        textAlign="right">
+        textAlign="right"
+        mr={3}
+      >
         <Text
           data-id="6d4b2e8e6139"
           fontWeight="semibold"
