@@ -51,11 +51,11 @@ function DateFilter({ filterName }: { filterName: string }) {
     }
   }, [location.pathname]);
 
-  const value = useMemo(
-    () => (module?.type === 'tracker' ? filtersValues.dueDate : auditsFiltersValue)?.value,
-    [filtersValues, module?.type],
-  );
-  const [filterValue, startDate, endDate] = value || [];
+  const value = useMemo(() => {
+    const val = (module?.type === 'tracker' ? filtersValues.dueDate : auditsFiltersValue)?.value;
+    return Array.isArray(val) ? val : [val];
+  }, [filtersValues, module?.type]);
+  const [filterValue, startDate, endDate] = Array.isArray(value) ? value : [value, null, null];
 
   const onChange = (e, key) => {
     if (e.target.checked) setFilters({ [module?.type === 'tracker' ? 'dueDate' : auditsOnChangeKey]: [key] });
@@ -88,7 +88,7 @@ function DateFilter({ filterName }: { filterName: string }) {
             }}
             data-id="ba83bf0a23a2"
             icon={<MinusIcon data-id="993de56d9a90" />}
-            isChecked={value?.includes(key)}
+            isChecked={Array.isArray(value) && value.includes(key)}
             key={key}
             onChange={(e) => onChange(e, key)}>
             <Text

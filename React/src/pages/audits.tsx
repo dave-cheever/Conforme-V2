@@ -165,27 +165,45 @@ function Audits() {
   }, []);
 
   useEffect(() => {
-    // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
-      if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
-
-      const [key, value] = filter;
-
+    const parsedFilters = Object.entries(filtersValues).reduce((acc, [key, value]) => {
+      if (!value || !allowedFilters.includes(key)) return acc;
+  
+      let extractedValue = value?.value; 
+      
+      if (key === "dueDate") {
+        if (Array.isArray(extractedValue) && extractedValue.length > 0) {
+          extractedValue = extractedValue[0]; 
+        } else if (typeof extractedValue !== "string") {
+          return acc; 
+        }
+      }
+  
+      if (key === "usersIds" && typeof extractedValue === "object") {
+        if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) {
+          return acc;
+        }
+      }
+  
       if (
-        !value.value ||
-        (Array.isArray(value.value) && value.value.length === 0) ||
-        (key === 'usersIds' && value.value?.auditorsIds?.length === 0 && value.value?.participantsIds?.length === 0)
-      )
+        extractedValue === undefined ||
+        extractedValue === null ||
+        (Array.isArray(extractedValue) && extractedValue.length === 0)
+      ) {
         return acc;
-
+      }
+  
       return {
         ...acc,
-        [key]: value?.value,
+        [key]: extractedValue, 
       };
     }, {});
-
-    if (parsedFilters) refetch({ auditQueryInput: parsedFilters });
+  
+    if (Object.keys(parsedFilters).length > 0) {
+      refetch({ auditQueryInput: parsedFilters });
+    }
   }, [filtersValues]);
+  
+  
 
   // Load audits
   useEffect(() => {
