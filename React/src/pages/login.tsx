@@ -75,7 +75,6 @@ function Login() {
               fontSize="40px"
               fontWeight="bold"
               mb={3}
-              pl={12}
               noOfLines={2}
               textOverflow="ellipsis"
               w="full"

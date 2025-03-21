@@ -22,60 +22,47 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
     ];
 
     if (dateLimit) {
-      pipeline.push({
-        $match: {
-          'metatags.addedAt': {
-            $lte: new Date(dateLimit),
+      const parsedDate = new Date(dateLimit);
+      if (!isNaN(parsedDate.getTime())) {
+        pipeline.push({
+          $match: {
+            'metatags.addedAt': { $lte: parsedDate },
           },
-        },
-      });
+        });
+      }
     }
 
     if (actions?.length > 0) {
       pipeline.push({
         $match: {
-          $or: actions.map(action => ({ action })),
+          action: { $in: actions },
         },
       });
     }
 
     if (fields?.length > 0) {
-      const fieldsPipeline: object[] = [];
-      fields.forEach((field) => {
-        fieldsPipeline.push({
-          [`values.${field}`]: {
-            $exists: true,
-          },
-        });
-      });
       pipeline.push({
         $match: {
-          $or: fieldsPipeline,
+          $or: fields.map((field) => ({ [`values.${field}`]: { $exists: true } })),
         },
       });
     }
 
     if (elementId) {
       pipeline.push({
-        $match: {
-          'element._id': elementId,
-        },
+        $match: { 'element._id': elementId },
       });
     }
 
     if (userId) {
       pipeline.push({
-        $match: {
-          'metatags.addedBy': userId,
-        },
+        $match: { 'metatags.addedBy': userId },
       });
     }
 
     if (moduleId) {
       pipeline.push({
-        $match: {
-          'moduleId': moduleId,
-        },
+        $match: { moduleId },
       });
     }
 
@@ -124,31 +111,30 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
       },
     });
 
-    const [auditLogs, totalAuditLogs] = await Promise.all([
-      AuditLogs.aggregate(pipeline),
-      AuditLogs.find({
-        organizationId: organization._id,
-        ...(elementId && { 'element._id': elementId }),
-        ...(userId && { 'metatags.addedBy': userId }),
-        ...(moduleId && { 'moduleId': moduleId }),
-        ...(actions?.length > 0 && { $or: actions.map(action => ({ action })) }),
-        ...(fields?.length > 0 && { $or: fields.map((field: string) => ({ [`values.${field}`]: { $exists: true } })) }),
-        ...(dateLimit && {
-          $match: {
-            'metatags.addedAt': {
-              $lte: new Date(dateLimit),
-            },
-          },
-        }),
-      }).count(),
-    ]);
+    // Fix: Remove $match from find() and structure correctly
+    const totalAuditLogs = await AuditLogs.countDocuments({
+      organizationId: organization._id,
+      ...(elementId && { 'element._id': elementId }),
+      ...(userId && { 'metatags.addedBy': userId }),
+      ...(moduleId && { moduleId }),
+      ...(actions?.length > 0 && { action: { $in: actions } }),
+      ...(fields?.length > 0 && {
+        $or: fields.map((field) => ({ [`values.${field}`]: { $exists: true } })),
+      }),
+      ...(dateLimit && !isNaN(new Date(dateLimit).getTime()) && {
+        'metatags.addedAt': { $lte: new Date(dateLimit) },
+      }),
+    });
+
+    const auditLogs = await AuditLogs.aggregate(pipeline);
+
     return {
       _id: uuidv4(),
       totalAuditLogs,
       auditLogs,
     };
   } catch (err: any) {
-    throw new Error(err);
+    throw new Error(err.message || 'Error fetching audit logs');
   }
 };
 
