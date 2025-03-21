@@ -108,7 +108,7 @@ function AuditModal({ refetch }) {
     if (!auditType) {
       return toast({
         ...toastFailed,
-        description: 'You need to create an audit type',
+        description: `You need to ${!auditTypes || auditTypes.length == 0 ? 'create' : 'select'} an audit type`,
       });
     }
 
