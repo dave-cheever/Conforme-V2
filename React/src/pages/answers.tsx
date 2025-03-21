@@ -160,7 +160,7 @@ function Answers() {
     { label: 'Type', key: 'question.questionsCategory.name' },
     { label: 'Description', key: 'question.question' },
     { label: 'Status', key: 'status' },
-    { label: capitalize(t('location')), key: 'location.name' },
+    { label: capitalize(t('location')), key: 'audit.location.name' },
     { label: capitalize(t('business unit')), key: 'businessUnit.name' },
     { label: '# of actions', key: 'actions.length' },
     { label: 'Added by', key: 'addedBy.displayName' },

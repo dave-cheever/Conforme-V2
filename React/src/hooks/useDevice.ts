@@ -7,7 +7,7 @@ const useDevice = () => {
       tablet: 'tablet',
       desktop: 'desktop',
     }, { 
-      ssr: true,
+      ssr: false,
     }) || 'desktop';
   return device;
 };
