@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
+import { isArray } from 'lodash';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useLocation } from 'react-router-dom';
 
@@ -55,8 +56,8 @@ function DateFilter({ filterName }: { filterName: string }) {
     () => (module?.type === 'tracker' ? filtersValues?.dueDate : auditsFiltersValue)?.value || [],
     [filtersValues, module?.type],
   );
-  const [filterValue, startDate, endDate] = value || [];
-
+  const [filterValue, startDate, endDate] = isArray(value) ? value :value.value || [];
+  
   const onChange = (e, key) => {
     if (e.target.checked) 
       setFilters({ [module?.type === 'tracker' ? 'dueDate' : auditsOnChangeKey]: [key] });
@@ -106,7 +107,7 @@ function DateFilter({ filterName }: { filterName: string }) {
         <DatePicker
           data-id="61275d36431e"
           inline
-          onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date] })}
+          onChange={(date) => setFilters({ [module?.type === 'tracker' || filterName==="createdDate" ?  'dueDate' : filterName]: module?.type === 'tracker' ? ['exactDate', date] : [['exactDate', date]] }) }
           selected={startDate ? new Date(startDate) : new Date()} />
       )}
       {filterValue === 'dateRange' && (
@@ -114,7 +115,7 @@ function DateFilter({ filterName }: { filterName: string }) {
           data-id="9759578d957f"
           endDate={endDate ? new Date(endDate) : null}
           inline
-          onChange={(date) => setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date || new Date()] })}
+          onChange={(date) => setFilters({ [module?.type === 'tracker'|| filterName==="createdDate" ? 'dueDate' : filterName]: [["dateRange", ...date || new Date()]] })}
           selected={startDate ? new Date(startDate) : null}
           selectsRange
           startDate={startDate ? new Date(startDate) : new Date()} />

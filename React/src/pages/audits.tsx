@@ -135,21 +135,7 @@ function Audits() {
       },
     };
     if (!isEmpty(module?.defaultFilters?.audits)) {
-      /**
-       * Convert filters from
-       *
-       * {
-       *  filterName: ["filterValue"]
-       * }
-       *
-       * to
-       *
-       * {
-       *  filterName: {
-       *    value: ["filterValue"]
-       *  }
-       * }
-       */
+     
       defaultFilters = Object.entries(module!.defaultFilters.audits!).reduce(
         (acc, [key, value]) => ({
           ...acc,
@@ -171,26 +157,17 @@ function Audits() {
       let extractedValue = value?.value; 
       
       if (key === "dueDate") {
-        if (Array.isArray(extractedValue) && extractedValue.length > 0) {
-          extractedValue = extractedValue[0]; 
-        } else if (typeof extractedValue !== "string") {
-          return acc; 
-        }
+        if (Array.isArray(extractedValue) && extractedValue.length > 0) extractedValue = extractedValue[0]; 
+        else if (typeof extractedValue !== "string") return acc; 
       }
   
-      if (key === "usersIds" && typeof extractedValue === "object") {
-        if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) {
-          return acc;
-        }
-      }
+      if (key === "usersIds" && typeof extractedValue === "object") if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) return acc;
   
       if (
         extractedValue === undefined ||
         extractedValue === null ||
         (Array.isArray(extractedValue) && extractedValue.length === 0)
-      ) {
-        return acc;
-      }
+      ) return acc;
   
       return {
         ...acc,
@@ -198,13 +175,9 @@ function Audits() {
       };
     }, {});
   
-    if (Object.keys(parsedFilters).length > 0) {
-      refetch({ auditQueryInput: parsedFilters });
-    }
+    if (Object.keys(parsedFilters).length > 0) refetch({ auditQueryInput: parsedFilters })
   }, [filtersValues]);
   
-  
-
   // Load audits
   useEffect(() => {
     if (data && data?.audits && !error) setFilteredAudits(data?.audits);

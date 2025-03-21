@@ -36,7 +36,7 @@ function AuditLeftNavigation() {
             data-id="9356c63f39ea"
             fontSize="16px"
             fontWeight="bold"
-            w="80px">
+            w="full">
             {organizationConfig?.name}
           </Text>
         </Box>

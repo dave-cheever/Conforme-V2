@@ -6,6 +6,8 @@ const useDevice = () => {
       base: 'mobile',
       tablet: 'tablet',
       desktop: 'desktop',
+    }, { 
+      ssr: true,
     }) || 'desktop';
   return device;
 };
