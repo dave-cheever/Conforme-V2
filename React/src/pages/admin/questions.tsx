@@ -75,6 +75,7 @@ const defaultValues: Partial<IQuestion<TQuestionValue>> = {
 
 function Questions() {
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_QUESTIONS, {
     variables: {
@@ -147,6 +148,8 @@ function Questions() {
   };
 
   const handleAddQuestion = async () => {
+    if(isLoading) return;
+    setIsLoading(true);
     const question = getValues();
     const questionCategory = questionsCategories?.find(
       (cat) => cat._id === question.questionsCategoryId,
@@ -179,11 +182,14 @@ function Questions() {
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
+      setIsLoading(false);
       setAdminModalState('closed');
     }
   };
 
   const handleUpdateQuestion = async () => {
+    if(isLoading) return;
+    setIsLoading(true);
     try {
       if (Object.keys(errors).length === 0) {
         const question = getValues();
@@ -212,11 +218,14 @@ function Questions() {
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
+      setIsLoading(false);
       setAdminModalState('closed');
     }
   };
 
   const handleDeleteQuestion = async () => {
+    if(isLoading) return;
+    setIsLoading(true);
     try {
       const _id = getValues('_id');
       await deleteFunction({ variables: { _id } });
@@ -225,6 +234,7 @@ function Questions() {
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
+      setIsLoading(false);
       setAdminModalState('closed');
     }
   };
@@ -290,7 +300,8 @@ function Questions() {
       data-id="125850428c46"
       isOpenModal={adminModalState !== 'closed'}
       modalType={adminModalState}
-      onAction={handleAction}>
+      onAction={handleAction}
+      >
       <Stack
         data-id="b6bb827943fc"
         spacing={2}
