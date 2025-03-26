@@ -1,14 +1,19 @@
-import { getDate, isAfter } from 'date-fns';
+import { getDate, isAfter, subDays } from 'date-fns';
 
 import { IAudit, TFrequency } from 'app-interfaces';
 import { Audits, AuditTypes, Organizations } from 'app-models';
 import { getNextRenewalDate } from 'app-utils';
 
-const shouldCalculate = (startDate: Date, frequency: TFrequency) => {
-  // If today is start day then calculate
-  if (frequency === 'Monthly') return getDate(new Date()) === getDate(startDate);
-};
+const shouldCalculate = (startDate: Date, frequency: TFrequency, windowInDays = 1) => {
+  const today = new Date();
 
+  if (frequency === 'Monthly') {
+    // Calculate a window i.e yesterday where the calculation could have been missed
+    const windowStartDate = subDays(today, windowInDays);
+    return getDate(today) === getDate(startDate) || getDate(windowStartDate) === getDate(startDate);
+  }
+  return false;
+};
 const calculateAudits = async () => {
   const allowedDomains: string[] = process.env.ALLOWED_DOMAINS?.split(';') || [];
   const organizations = await Organizations.find({ domain: { $in: allowedDomains } }).lean();
@@ -23,7 +28,11 @@ const calculateAudits = async () => {
 
         // Update not completed audits to missed
         audits
-          .filter(({ status, dueDate }) => status === 'upcoming' && isAfter(new Date(), new Date(dueDate)))
+          .filter(({ status, dueDate }) => {
+            const today = new Date();
+            const dueDateObj = new Date(dueDate);
+            return status === 'upcoming' && isAfter(today, dueDateObj);
+          })
           .forEach(async (audit) => {
             await Audits.customUpdateOne(
               { _id: audit._id },
