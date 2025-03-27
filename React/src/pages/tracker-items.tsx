@@ -300,7 +300,16 @@ function TrackerItems() {
       overflow="auto"
       pb={4}>
       {error ? (
-        <Text data-id="624d02f86128">{error.message}</Text>
+        <Flex
+        data-id="864e662bfe75"
+        fontSize="18px"
+        fontStyle="italic"
+        justifyContent="center"
+        alignItems="center"
+        h="200px"
+        w="full">
+        No Tracker Items found ,Try adjusting the filters.
+        </Flex>
       ) : (
         <>
           {viewMode === 'grid' && (

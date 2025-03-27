@@ -269,50 +269,81 @@ function Audits() {
       h={['calc(100vh - 80px)', 'full']}
       overflow="auto"
       pb={[4, 0]}>
-      {error ? (
-        <Text data-id="f7a4ac7f4df3">{error.message}</Text>
-      ) : loading ? (
-        <Loader center data-id="24a7de8c60a9" />
+      {loading ? (
+  <Loader center data-id="24a7de8c60a9" />
+) : (
+  <>
+    {viewMode === 'grid' && (
+      <Grid
+        data-id="32f1dd5d8dc5"
+        display={['grid', 'grid', 'flex']}
+        flexWrap="wrap"
+        gap={[4, 4, 6]}
+        h="fit-content"
+        pb={[14, 8]}
+        pt="3"
+        px={[4, 8]}
+        templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+        w="full">
+        {sortedAudits.length > 0 ? (
+          sortedAudits.map((audit) => (
+            <AuditSquare audit={audit} data-id="78c2a1327b38" key={audit._id} />
+          ))
+        ) : (
+          <Flex
+            data-id="864e662bfe75"
+            fontSize="18px"
+            fontStyle="italic"
+            justifyContent="center"
+            alignItems="center"
+            h="200px"
+            w="full">
+            No audits found. Try adjusting the filters.
+          </Flex>
+        )}
+      </Grid>
+    )}
+    {viewMode === 'list' && (
+      sortedAudits.length > 0 ? (
+        <AuditsList
+          audits={sortedAudits}
+          data-id="df4d1191f7df"
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortOrder={sortOrder}
+          sortType={sortType} 
+        />
       ) : (
-        <>
-          {viewMode === 'grid' && (
-            <Grid
-              data-id="32f1dd5d8dc5"
-              display={['grid', 'grid', 'flex']}
-              flexWrap="wrap"
-              gap={[4, 4, 6]}
-              h="fit-content"
-              pb={[14, 8]}
-              pt="3"
-              px={[4, 8]}
-              templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-              w="full">
-              {sortedAudits.length > 0 ? (
-                sortedAudits?.map((audit) => <AuditSquare audit={audit} data-id="78c2a1327b38" key={audit._id} />)
-              ) : (
-                <Flex
-                  data-id="864e662bfe75"
-                  fontSize="18px"
-                  fontStyle="italic"
-                  h="full"
-                  w="full">
-                  No audits found
-                </Flex>
-              )}
-            </Grid>
-          )}
-          {viewMode === 'list' && (
-            <AuditsList
-              audits={sortedAudits}
-              data-id="df4d1191f7df"
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType} />
-          )}
-          {viewMode === 'group' && <AuditsGroup audits={sortedAudits} data-id="7bb6297801dc" />}
-        </>
-      )}
+        <Flex
+          data-id="864e662bfe75"
+          fontSize="18px"
+          fontStyle="italic"
+          justifyContent="center"
+          alignItems="center"
+          h="200px"
+          w="full">
+          No audits found. Try adjusting the filters.
+        </Flex>
+      )
+    )}
+    {viewMode === 'group' && (
+      sortedAudits.length > 0 ? (
+        <AuditsGroup audits={sortedAudits} data-id="7bb6297801dc" />
+      ) : (
+        <Flex
+          data-id="864e662bfe75"
+          fontSize="18px"
+          fontStyle="italic"
+          justifyContent="center"
+          alignItems="center"
+          h="200px"
+          w="full">
+          No audits found. Try adjusting the filters.
+        </Flex>
+      )
+    )}
+  </>
+)}
     </Flex>
   </>);
 }
