@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import Dropzone, { Accept, FileRejection } from 'react-dropzone';
+import Dropzone, { FileRejection } from 'react-dropzone';
 
 import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
@@ -31,7 +31,7 @@ function EvidenceExpected({ evidence }) {
   const toast = useToast();
   const { user } = useAppContext();
   const { response, snapshot, refetch } = useResponseContext();
-  const acceptedFileTypes = useMemo<Accept>(
+  const acceptedFileTypes = useMemo<{[mimeType: string]: string[] }>(
     () => ({
       'application/*': ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.pptx', '.ppt', '.msg', '.zip'],
       'image/*': [],

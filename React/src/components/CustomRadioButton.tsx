@@ -1,9 +1,9 @@
 import { CheckIcon } from '@chakra-ui/icons';
-import { Flex, useRadio } from '@chakra-ui/react';
+import { Flex, useCheckbox, useRadio } from '@chakra-ui/react';
 
 function CustomRadioButton({ children, ...props }) {
-  const { getInputProps, getCheckboxProps } = useRadio(props);
-
+  const { getInputProps } = useRadio(props);
+  const { getCheckboxProps } = useCheckbox(props);
   const input: any = getInputProps();
   const checkbox = getCheckboxProps();
 

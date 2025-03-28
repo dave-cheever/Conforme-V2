@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { Flex, Grid, Text } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty, uniqBy } from 'lodash';
 import pluralize from 'pluralize';

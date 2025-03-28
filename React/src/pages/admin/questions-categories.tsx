@@ -133,7 +133,7 @@ function QuestionsCategories() {
   }, [reset, adminModalState]);
 
   const onChangeOption = (values) => {
-    const options = availableOptions.filter(({ setting }) => values.includes(setting));
+    const options = availableOptions(!!module?.featureFlags?.enableSafetyWalk).filter(({ setting }) => values.includes(setting));
     setValue('options', options);
   };
 
