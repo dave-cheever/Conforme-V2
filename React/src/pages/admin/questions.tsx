@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 import pluralize from 'pluralize';
+import { t } from 'i18next';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -172,7 +172,7 @@ function Questions() {
       if (Object.keys(errors).length === 0) {
         await createFunction({ variables: { question } });
         refetch();
-        toast({ ...toastSuccess, description: 'Question added' });
+        toast({ ...toastSuccess, description: `${t('question')} added` });
       } else {
         toast({
           ...toastFailed,

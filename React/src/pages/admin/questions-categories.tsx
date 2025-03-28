@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { capitalize } from 'lodash';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, CheckboxGroup, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-// import { omit } from 'lodash';
+import pluralize from 'pluralize';
 import { t } from 'i18next';
 
 import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -19,6 +20,7 @@ import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
+import { useAppContext } from '../../contexts/AppProvider';
 
 const GET_QUESTIONS_CATEGORIES = gql`
   query {
@@ -80,6 +82,7 @@ const defaultValues: Partial<IQuestionsCategory> = {
 
 function QuestionsCategories() {
   const toast = useToast();
+  const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_QUESTIONS_CATEGORIES);
   const [createFunction] = useMutation(CREATE_QUESTIONS_CATEGORY);
@@ -173,7 +176,7 @@ function QuestionsCategories() {
           },
         });
         refetch();
-        toast({ ...toastSuccess, description: 'Questions category added' });
+        toast({ ...toastSuccess, description: 'Questions set added' });
       } else {
         toast({
           ...toastFailed,
@@ -208,7 +211,7 @@ function QuestionsCategories() {
           },
         });
         refetch();
-        toast({ ...toastSuccess, description: 'Questions category updated' });
+        toast({ ...toastSuccess, description: `${t('question')} set updated` });
       } else {
         toast({
           ...toastFailed,
@@ -227,7 +230,7 @@ function QuestionsCategories() {
       const { _id } = questionsCategory;
       await deleteFunction({ variables: { _id } });
       refetch();
-      toast({ ...toastSuccess, description: 'Questions category deleted' });
+      toast({ ...toastSuccess, description: `${t('question')} set deleted` });
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
@@ -321,16 +324,16 @@ function QuestionsCategories() {
         <Toggle
           control={control}
           data-id="f2f1c45030ad"
-          label="Allow custom questions"
+          label={`Allow custom ${pluralize(t('question'))}`}
           name="allowCustomQuestions"
-          placeholder="Allow custom questions"
+          placeholder={`Allow custom ${pluralize(t('question'))}`}
           variant="secondaryVariant" />
         <NumberInput
           control={control}
           data-id="253941f1d791"
           label="Max number of questions"
           name="maxQuestionsNumber"
-          placeholder="Max number of questions"
+          placeholder={`Max number of ${pluralize(t('question'))}`}
           required
           tooltip="0 means no limit"
           variant="secondaryVariant" />
@@ -340,7 +343,7 @@ function QuestionsCategories() {
           label="Editable after submission"
           name="notBlockedAfterCompletion"
           placeholder="Editable after submission"
-          tooltip="If enabled, questions and answers in this category will be editable after submission"
+          tooltip={`If enabled, ${pluralize(t('question'))} and answers in this category will be editable after submission`}
           variant="secondaryVariant" />
         <Toggle
           control={control}
@@ -356,7 +359,7 @@ function QuestionsCategories() {
           label="Show in insights"
           name="showInInsights"
           placeholder="Show in insights"
-          tooltip="If enabled, answers related to this questions category will be shown in insights"
+          tooltip={`If enabled, answers related to this ${pluralize(t('question'))} category will be shown in insights`}
           variant="secondaryVariant" />
         <Toggle
           control={control}
@@ -364,7 +367,7 @@ function QuestionsCategories() {
           label="Count in audit card"
           name="countInAuditCard"
           placeholder="Count in audit card"
-          tooltip={`If enabled, total of questions related to this question category will be displayed in ${t('audit')} card`}
+          tooltip={`If enabled, total of ${pluralize(t('question'))} related to this question category will be displayed in ${t('audit')} card`}
           variant="secondaryVariant" />
         <TextInput
           control={control}
@@ -376,29 +379,31 @@ function QuestionsCategories() {
           validations={{
             notEmpty: true,
           }} />
-        <Stack data-id="01666afa274c" pt={2}>
-          <Text data-id="671ec986613e" fontSize="11px" fontWeight="bold">
-            Options
-          </Text>
-          <CheckboxGroup
-            data-id="55e6d4d23d19"
-            defaultValue={questionsCategory.options?.map((option) => option.setting)}
-            onChange={onChangeOption}>
-            {availableOptions.map(option => (
-              <Checkbox
-                data-id="5cee867104a9"
-                key={option.setting}
-                label={option.name}
-                value={option.setting} />
-            ))}
-          </CheckboxGroup>
-        </Stack>
+        {availableOptions(!!module?.featureFlags?.enableSafetyWalk).length > 0 &&
+          <Stack data-id="01666afa274c" pt={2}>
+            <Text data-id="671ec986613e" fontSize="11px" fontWeight="bold">
+              Options
+            </Text>
+            <CheckboxGroup
+              data-id="55e6d4d23d19"
+              defaultValue={questionsCategory.options?.map((option) => option.setting)}
+              onChange={onChangeOption}>
+              {availableOptions(!!module?.featureFlags?.enableSafetyWalk).map(option => (
+                <Checkbox
+                  data-id="5cee867104a9"
+                  key={option.setting}
+                  label={option.name}
+                  value={option.setting} />
+              ))}
+            </CheckboxGroup>
+          </Stack>
+        }
       </Stack>
     </AdminModal>
     <Header
-      breadcrumbs={['Admin', 'Questions categories']}
+      breadcrumbs={['Admin', `${t('question')} sets`]}
       data-id="878057915508"
-      mobileBreadcrumbs={['Questions categories']} />
+      mobileBreadcrumbs={[`${t('question')} sets`]} />
     <Flex
       data-id="659cd2aa32e8"
       h="calc(100vh - 160px)"
@@ -412,7 +417,7 @@ function QuestionsCategories() {
         <AdminTableHeader data-id="926a317ff445">
           <AdminTableHeaderElement
             data-id="f5e345434dc2"
-            label="Question Categories"
+            label={`${capitalize(t('question'))} Set`}
             onClick={() => {
               setSortType('questionCategory');
               setSortOrder(sortOrder === 'asc' && sortType === 'questionCategory' ? 'desc' : 'asc');
@@ -443,7 +448,7 @@ function QuestionsCategories() {
               justify="center"
               mt={4}
               w="full">
-              No questions categories found
+              No ${t('question')} sets found
             </Flex>
           )}
         </Flex>

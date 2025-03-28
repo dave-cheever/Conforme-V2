@@ -58,6 +58,7 @@ const ORGANIZATION = gql`
         showInNavigation
         translations
         customQuestionsInDashboard
+        featureFlags
       }
       revokedPermissions
     }

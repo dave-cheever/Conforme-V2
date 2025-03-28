@@ -13,7 +13,7 @@ export interface IAudit extends IBase {
   status: TAuditStatus;
   dueDate: Date;
   completedDate?: Date;
-  walkType: 'physical' | 'virtual';
+  walkType?: 'physical' | 'virtual';
   locationId?: string;
   businessUnitId?: string;
   auditorId: string;

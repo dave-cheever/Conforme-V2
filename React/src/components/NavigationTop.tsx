@@ -123,7 +123,7 @@ function NavigationTop() {
                   ['/', '/admin/users', '/admin/settings', '/admin/audit-log'].includes(location.pathname) ? 'none' : 'block'
                 }
                 flexShrink={0}
-                h={['52px', '45px']}
+                h={['52px', '40px']}
                 icon={
                   isOpen ? (
                     <CrossIcon
@@ -131,17 +131,18 @@ function NavigationTop() {
                       h="20px"
                       ml="1"
                       stroke="navigationTop.addIcon"
-                      w="20px" />
+                      w="20px" 
+                    />
                   ) : (
-                    <AddIcon data-id="5b1e2b8025ce" h="20px" stroke="navigationTop.addIcon" w="20px" />
+                    <AddIcon data-id="5b1e2b8025ce" h="21px" stroke="navigationTop.addIcon" w="21px" />
                   )
                 }
-                mr="30px"
                 onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
                 rounded={['20px', '8px']}
-                w={['52px', '45px']}
+                w={['52px', '40px']}
+                ml={3}
                 zIndex={5} />
             )} />
         )}
@@ -161,7 +162,7 @@ function NavigationTop() {
                 data-id="b5bf85567bbe"
                 display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(location.pathname) ? 'none' : 'block'}
                 flexShrink={0}
-                h={['52px', '45px']}
+                h={['52px', '40px']}
                 icon={
                   isOpen ? (
                     <CrossIcon
@@ -171,15 +172,15 @@ function NavigationTop() {
                       stroke="navigationTop.addIcon"
                       w="20px" />
                   ) : (
-                    <AddIcon data-id="6cff50759b96" h="20px" stroke="navigationTop.addIcon" w="20px" />
+                    <AddIcon data-id="6cff50759b96" h="21px" stroke="navigationTop.addIcon" w="21px" />
                   )
                 }
-                mr="30px"
                 onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
+                ml={4}
                 rounded={['20px', '8px']}
-                w={['52px', '45px']}
+                w={['52px', '40px']}
                 zIndex={5} />
             )} />
         )}

@@ -310,12 +310,17 @@ export const priorities = [
   },
 ];
 
-export const availableOptions: IAuditOption[] = [{
-  type: 'notification',
-  name: 'Inform Health Safety Environment',
-  setting: 'HSENotification',
-}, {
-  type: 'notification',
-  name: 'Inform Estates',
-  setting: 'estatesNotification',
-}];
+export const availableOptions: (enableSafetyWalk: boolean) => IAuditOption[] = (enableSafetyWalk) => {
+  if (enableSafetyWalk) {
+    return [{
+      type: 'notification',
+      name: 'Inform Health Safety Environment',
+      setting: 'HSENotification',
+    }, {
+      type: 'notification',
+      name: 'Inform Estates',
+      setting: 'estatesNotification',
+    }];
+  } 
+  return []
+} 

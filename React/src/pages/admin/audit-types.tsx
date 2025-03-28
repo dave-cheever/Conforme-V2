@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, Flex, HStack, Select, Spacer, Stack, Text, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
-import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -343,17 +342,12 @@ function AuditTypes() {
           <Dropdown
             control={control}
             data-id="43949da485b2"
-            help={`Defines the scope of ${capitalize(
-              t('business unit'),
-            )} in audit. If "audit" then during audit creation user will have to pick ${capitalize(
-              t('business unit'),
-            )}. If "answer" then during answer creation user will have to pick ${capitalize(t('business unit'))}.`}
-            label={`${capitalize(t('business unit'))} scope`}
+            label={`When should a ${t('business unit')} be assigned to an ${t('audit')} `}
             name="businessUnitScope"
             options={[
-              { value: undefined, label: 'None' },
-              { value: 'audit', label: 'Audit' },
-              { value: 'answer', label: 'Answer' },
+              { value: undefined, label: 'Never' },
+              { value: 'audit', label: `When creating ${pluralize(t('audit'))}` },
+              { value: 'answer', label: `When completing ${pluralize(t('question'))}` },
             ]}
             required
             variant="secondaryVariant" />

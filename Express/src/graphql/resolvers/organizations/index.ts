@@ -17,6 +17,7 @@ export const organizationsTypeDefs = `
     showInNavigation: Boolean
     translations: Any
     customQuestionsInDashboard: [String]
+    featureFlags: Any
   }
 
   type Organization {

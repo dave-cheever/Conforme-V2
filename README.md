@@ -76,6 +76,11 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
       "tracker item": "document"
     },
     "customQuestionsInDashboard": [<name of custom question>],
+    
+    "featureFlags": {
+      // Feature flags are optional. Each feature flag is described below.
+      "enableSafetyWalk": true // Available in the audit module, configures the system as per requirements for BRE Safety Walk. Adds an additional walk type of virtual or physical to an audit (walk). Hides category and business unit from audits.
+    }
   }],
   "allowedTenantsIds": [
     <tenant id>
@@ -438,4 +443,4 @@ Follow the instructions in the readme files for the API (Express) and Client (RE
 
 ## Demo Scripts
 
-A demo scripts Azure function has been built to assist with managing demo environment demo, see the `Demo Database Scripts` readme file for more info.
+A demo scripts Azure function has been built to assist with managing the demo environment, see the `Demo Database Scripts` readme file for more info.

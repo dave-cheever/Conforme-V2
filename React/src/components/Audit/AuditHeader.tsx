@@ -136,7 +136,7 @@ function AuditShareButton({
 }
 
 function AuditHeader() {
-  const { user } = useAppContext();
+  const { module, user } = useAppContext();
   const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
   const toast = useToast();
   const {
@@ -296,14 +296,16 @@ function AuditHeader() {
               </Tooltip>
             </Flex>
           )}
-          <Flex data-id="5e783ba7be41" direction="column" justify="center">
-            <Text data-id="b28b0b0978ff" fontSize="11px" opacity={0.5}>
-              Type
-            </Text>
-            <Text data-id="40cf3410e579" fontSize="smm" textTransform="capitalize">
-              {audit?.walkType}
-            </Text>
-          </Flex>
+          {module?.featureFlags?.enableSafetyWalk && 
+            <Flex data-id="5e783ba7be41" direction="column" justify="center">
+              <Text data-id="b28b0b0978ff" fontSize="11px" opacity={0.5}>
+                Type
+              </Text>
+              <Text data-id="40cf3410e579" fontSize="smm" textTransform="capitalize">
+                {audit?.walkType}
+              </Text>
+            </Flex>
+          }
         </Stack>
         <Spacer data-id="770633f3daec" />
         <Stack

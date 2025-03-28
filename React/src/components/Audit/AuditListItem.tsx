@@ -6,9 +6,11 @@ import { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
+import { useAppContext } from '../../contexts/AppProvider';
 
 function AuditListItem({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();
+    const { module } = useAppContext();
   return (
     (<Box
         bg="white"
@@ -64,25 +66,27 @@ function AuditListItem({ audit }: { audit: IAudit }) {
             </Flex>
           </Flex>
         </Flex>
-        <Flex data-id="adaf80016293" flexDir="column" w="10%">
-          <Flex
-            align="flex-start"
-            color="auditsList.fontColor"
-            data-id="277232c3e4e3"
-            fontSize="14px"
-            fontWeight="400"
-            h="50%"
-            lineHeight="18px"
-            noOfLines={1}
-            opacity="1"
-            overflow="hidden"
-            pr={2}
-            pt="3px"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap">
-            {auditWalkTypes[audit.walkType]}
+        {module?.featureFlags?.enableSafetyWalk && 
+          <Flex data-id="adaf80016293" flexDir="column" w="10%">
+            <Flex
+              align="flex-start"
+              color="auditsList.fontColor"
+              data-id="277232c3e4e3"
+              fontSize="14px"
+              fontWeight="400"
+              h="50%"
+              lineHeight="18px"
+              noOfLines={1}
+              opacity="1"
+              overflow="hidden"
+              pr={2}
+              pt="3px"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap">
+              {auditWalkTypes[audit?.walkType || ""]}
+            </Flex>
           </Flex>
-        </Flex>
+        }       
         <Box data-id="efe9c7681a1d" pr={2} w="20%">
           <Skeleton data-id="30660cd6f678" isLoaded={!!audit} rounded="full">
             {audit.auditor ? (

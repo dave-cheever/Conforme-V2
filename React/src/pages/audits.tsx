@@ -99,7 +99,13 @@ function Audits() {
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
   const allowedFilters = useMemo(
-    () => ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived'],
+    () => {
+      const filters: string[] = [];
+      if (module?.featureFlags?.enableSafetyWalk) filters.push('walkType');
+      filters.push('status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived');
+
+      return filters
+    },
     [],
   );
 

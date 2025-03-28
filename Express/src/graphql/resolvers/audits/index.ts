@@ -22,7 +22,7 @@ export const auditsTypeDefs = `
   type Audit {
     _id: ID!
     auditTypeId: String!
-    walkType: String!
+    walkType: String
     reference: String!
     status: String!
     dueDate: Date!
@@ -63,7 +63,7 @@ export const auditsTypeDefs = `
 
   input AuditCreateInput {
     auditTypeId: String!
-    walkType: String!
+    walkType: String
     locationId: ID
     businessUnitId: ID
     auditorId: ID!

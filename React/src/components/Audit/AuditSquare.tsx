@@ -8,6 +8,7 @@ import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
 import { CheckIcon, ObservationEye, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
+import { useAppContext } from '../../contexts/AppProvider';
 
 const GET_AUDIT_ANSWERS_COUNT = gql`
   query ($auditId: ID!) {
@@ -17,7 +18,7 @@ const GET_AUDIT_ANSWERS_COUNT = gql`
 
 function AuditSquare({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();
-
+  const { module } = useAppContext();
   const { data, loading, error } = useQuery(GET_AUDIT_ANSWERS_COUNT, {
     variables: {
       auditId: audit._id,
@@ -111,18 +112,33 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Text>
           </Tooltip>
         </Box>
-        <Box
-          data-id="8aaa5fe38bae"
-          fontSize={['smm', 'ssm']}
-          lineHeight="20px"
-          overflow="hidden"
-          pl={2}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap">
-          <Text color="auditSquare.titleFontColor" data-id="7dd6692ae6ac">Type</Text>
-          <Text data-id="4733171fb578" textTransform="capitalize">{audit?.walkType}</Text>
-        </Box>
+        {module?.featureFlags?.enableSafetyWalk ?
+          <Box
+            data-id="8aaa5fe38bae"
+            fontSize={['smm', 'ssm']}
+            lineHeight="20px"
+            overflow="hidden"
+            pl={2}
+            textOverflow="ellipsis"
+            w="200px"
+            whiteSpace="nowrap">
+            <Text color="auditSquare.titleFontColor" data-id="7dd6692ae6ac">Type</Text>
+            <Text data-id="4733171fb578" textTransform="capitalize">{audit?.walkType}</Text>
+          </Box>
+          :
+          <Box
+            data-id="8aaa5fe38bae"
+            fontSize={['smm', 'ssm']}
+            lineHeight="20px"
+            overflow="hidden"
+            pl={2}
+            textOverflow="ellipsis"
+            w="200px"
+            whiteSpace="nowrap">
+            <Text color="auditSquare.titleFontColor" data-id="7dd6692ae6ac">{capitalize(t('business unit'))}</Text>
+            <Text data-id="4733171fb578" textTransform="capitalize">{audit?.businessUnit?.name}</Text>
+          </Box>
+        }
       </Flex>
       <Flex alignItems="flex-start" data-id="3cebc66717c1" h="50px" py="4" w="full">
         <Box data-id="9dc70ae5e075" fontSize={['smm', 'ssm']} ml={2} w="50%">

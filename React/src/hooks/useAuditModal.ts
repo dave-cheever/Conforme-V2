@@ -31,7 +31,8 @@ const useAuditModal = (refetch = () => { }) => {
   const saveAudit = async (audit: Partial<IAudit>) => {
     try {
 
-      const requiredFields = ['walkType', 'locationId'];
+      const requiredFields = ['locationId'];
+      if (module?.featureFlags?.enableSafetyWalk) requiredFields.push('walkType');
       const missingFields = requiredFields.filter((field) => !audit[field]);
 
       if (missingFields.length > 0) throw new Error("Please fill all fields with an asterisk (*).");

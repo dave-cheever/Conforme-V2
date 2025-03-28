@@ -55,7 +55,7 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
                 pl={10}
-                placeholder={`Search ${pluralize(t('site'))}`}
+                placeholder={`Search ${pluralize(t('location'))}`}
                 value={searchText}
                 w="full" />
               <SearchIcon

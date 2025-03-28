@@ -50,7 +50,7 @@ const GET_DUPLICATE_AUDITS = gql`
 function AuditModal({ refetch }) {
   const toast = useToast();
   const { navigateTo, openInNewTab } = useNavigate();
-  const { user } = useAppContext();
+  const { module, user } = useAppContext();
   const [getDuplicateAudits, { data }] = useLazyQuery(GET_DUPLICATE_AUDITS, { fetchPolicy: 'network-only' });
   const {
     audit,
@@ -177,10 +177,10 @@ function AuditModal({ refetch }) {
                 data-id="46f258c3934d"
                 rowGap={2}
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
-                {auditTypes?.length > 1 && (
                   <GridItem data-id="e39f74c8ee89" w="100%">
                     <Dropdown
                       required
+                      disabled={auditTypes?.length === 1}
                       control={control}
                       data-id="ea42eecee549"
                       label="Audit Type"
@@ -195,26 +195,26 @@ function AuditModal({ refetch }) {
                         notEmpty: true,
                       }} />
                   </GridItem>
-                )}
-                <GridItem data-id="cd00d4a564da" w="100%">
-                  <Dropdown
-                    control={control}
-                    data-id="c2f11242bcc2"
-                    label="Type"
-                    name="walkType"
-                    options={[
-                      { value: 'virtual', label: 'Virtual' },
-                      { value: 'physical', label: 'Physical' },
-                    ]}
-                    placeholder="Select walk type"
-                    required
-                    stroke="dropdown.icon"
-                    validations={{
-                      notEmpty: true,
-                    }}
-                    variant="secondaryVariant" />
-                </GridItem>
-
+                {module?.featureFlags?.enableSafetyWalk && 
+                  <GridItem data-id="cd00d4a564da" w="100%">
+                    <Dropdown
+                      control={control}
+                      data-id="c2f11242bcc2"
+                      label="Type"
+                      name="walkType"
+                      options={[
+                        { value: 'virtual', label: 'Virtual' },
+                        { value: 'physical', label: 'Physical' },
+                      ]}
+                      placeholder="Select walk type"
+                      required
+                      stroke="dropdown.icon"
+                      validations={{
+                        notEmpty: true,
+                      }}
+                      variant="secondaryVariant" />
+                  </GridItem>
+                }
                 <GridItem data-id="ed2f960b3d6a" w="100%">
                   <Dropdown
                     control={control}
@@ -302,7 +302,7 @@ function AuditModal({ refetch }) {
           color="auditModal.tabs.bottomButton.color"
           data-id="b3179b1d428d"
           disabled={
-            !audit.walkType ||
+            module?.featureFlags?.enableSafetyWalk && !audit.walkType ||
             !audit.locationId ||
             !!(
               audit.auditTypeId &&

@@ -6,6 +6,7 @@ import { IAudit } from '../../interfaces/IAudit';
 import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import AuditListItem from './AuditListItem';
+import { useAppContext } from '../../contexts/AppProvider';
 
 function AuditsList({
   audits,
@@ -20,6 +21,7 @@ function AuditsList({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
+    const { module } = useAppContext();
   return (
     <Box
       data-id="c9dcc715eafc"
@@ -67,7 +69,7 @@ function AuditsList({
             showSortingIcon={sortType === 'status'}
             sortOrder={sortType === 'status' ? sortOrder : undefined}
             w="10%" />
-          <AdminTableHeaderElement
+          {module?.featureFlags?.enableSafetyWalk && <AdminTableHeaderElement
             data-id="f6ebd23b73e0"
             label="Walk type"
             onClick={() => {
@@ -77,6 +79,7 @@ function AuditsList({
             showSortingIcon={sortType === 'walkType'}
             sortOrder={sortType === 'walkType' ? sortOrder : undefined}
             w="10%" />
+          }
           <AdminTableHeaderElement
             data-id="1bb7fd9140c6"
             label="Auditor"

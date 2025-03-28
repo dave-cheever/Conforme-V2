@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
@@ -35,7 +35,7 @@ function NavigationLeft() {
       display={['none', 'block', 'block']}
       fontWeight="semibold"
       h="100vh"
-      w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '240px']}>
+      w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '230px']}>
       <Box
         alignItems="center"
         cursor="pointer"
