@@ -79,10 +79,19 @@ function Categories() {
   }, [data]);
 
   useEffect(() => {
-    if (sortOrder)
-      setCategories([...categories].sort((a, b) => (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString())));
-    else setCategories([...categories].sort((a, b) => (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+    setCategories(
+      [...categories].sort((a, b) => {
+        const valueA = (a[sortType] || '').toString().toLowerCase();
+        const valueB = (b[sortType] || '').toString().toLowerCase();
+        if (sortOrder === 'asc') {
+          return valueA.localeCompare(valueB);
+        } else {
+          return valueB.localeCompare(valueA);
+        }
+      })
+    );
+  }, [sortType, sortOrder, data]); 
+
 
   const {
     control,

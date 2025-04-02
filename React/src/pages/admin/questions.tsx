@@ -108,13 +108,17 @@ function Questions() {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      const compareA = (a[sortType] || '').toString().toLowerCase();
+      const compareB = (b[sortType] || '').toString().toLowerCase();
 
-      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      if (compareA < compareB) return sortOrder === 'asc' ? -1 : 1;
+      if (compareA > compareB) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
     };
-    if (sortOrder) setQuestions([...questions].sort((a, b) => sort(a, b)));
-    else setQuestions([...questions].sort((a, b) => sort(b, a)));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    setQuestions([...questions].sort((a, b) => sort(a, b)));
+  }, [sortType, sortOrder, questions]); // Added 'questions' to the dependency array
+
 
   const {
     control,

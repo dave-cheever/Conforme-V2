@@ -90,16 +90,22 @@ function Locations() {
     setLocations(getLocations(data?.locations));
   }, [data]);
 
+
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-
-      if (sortType === 'notes') return (a.notes || '-').localeCompare(b.notes || '-');
-      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      let result;
+      if (sortType === 'owner') {
+        result = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      } else if (sortType === 'notes') {
+        result = (a.notes || '-').localeCompare(b.notes || '-');
+      } else {
+        result = (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      }
+      return sortOrder === 'asc' ? result : -result;
     };
-    if (sortOrder) setLocations([...locations].sort((a, b) => sort(a, b)));
-    else setLocations([...locations].sort((a, b) => sort(b, a)));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+    setLocations([...locations].sort((a, b) => sort(a, b)));
+  }, [sortType, sortOrder, locations]); 
+
 
   const {
     control,

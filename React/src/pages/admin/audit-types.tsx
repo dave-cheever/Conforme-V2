@@ -104,13 +104,17 @@ function AuditTypes() {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-
-      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      let comparison = 0;
+      if (sortType === 'owner') {
+        comparison = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      } else {
+        comparison = (a[sortType] || '').toString().localeCompare((b[sortType] || '').toString());
+      }
+      return sortOrder === 'asc' ? comparison : -comparison;
     };
-    if (sortOrder) setAuditTypes([...auditTypes].sort((a, b) => sort(a, b)));
-    else setAuditTypes([...auditTypes].sort((a, b) => sort(b, a)));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+    setAuditTypes([...auditTypes].sort(sort));
+  }, [sortType, sortOrder, auditTypes]); 
+
 
   const {
     control,

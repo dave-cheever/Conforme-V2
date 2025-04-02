@@ -106,12 +106,15 @@ function QuestionsCategories() {
   useEffect(() => {
     const sort = (a, b) => {
       if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-
-      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      return (a[sortType] || '').toString().localeCompare((b[sortType] || '').toString());
     };
-    if (sortOrder) setQuestionsCategories([...questionsCategories].sort((a, b) => sort(a, b)));
-    else setQuestionsCategories([...questionsCategories].sort((a, b) => sort(b, a)));
+
+    const sortedData = [...questionsCategories].sort((a, b) => 
+      sortOrder === 'asc' ? sort(a, b) : sort(b, a)
+    );
+    setQuestionsCategories(sortedData);
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const {
     control,
@@ -415,15 +418,15 @@ function QuestionsCategories() {
         p={[0, '0 25px 30px 30px']}
         w="full">
         <AdminTableHeader data-id="926a317ff445">
-          <AdminTableHeaderElement
+         <AdminTableHeaderElement
             data-id="f5e345434dc2"
             label={`${capitalize(t('question'))} Set`}
             onClick={() => {
-              setSortType('questionCategory');
-              setSortOrder(sortOrder === 'asc' && sortType === 'questionCategory' ? 'desc' : 'asc');
+              setSortType('name'); // Change 'questionCategory' to 'name'
+              setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
             }}
-            showSortingIcon={sortType === 'questionCategory'}
-            sortOrder={sortType === 'questionCategory' ? sortOrder : undefined}
+            showSortingIcon={sortType === 'name'}
+            sortOrder={sortType === 'name' ? sortOrder : undefined}
             w="full" />
         </AdminTableHeader>
         <Flex

@@ -93,13 +93,23 @@ function BusinessUnits() {
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'owner') return (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-
-      return (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+      let aValue = a[sortType];
+      let bValue = b[sortType];
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return aValue.localeCompare(bValue);
+      }
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return aValue - bValue;
+      }
+      return 0; 
     };
-    if (sortOrder) setBusinessUnits([...businessUnits].sort((a, b) => sort(a, b)));
-    else setBusinessUnits([...businessUnits].sort((a, b) => sort(b, a)));
-  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
+    setBusinessUnits((prevBusinessUnits) =>
+      [...prevBusinessUnits].sort((a, b) =>
+        sortOrder === 'asc' ? sort(a, b) : sort(b, a)
+      )
+    );
+}, [sortType, sortOrder, businessUnits]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const {
     control,
