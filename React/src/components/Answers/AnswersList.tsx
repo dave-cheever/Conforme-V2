@@ -119,14 +119,26 @@ function AnswersList({
         h={['full', 'calc(100vh - 295px)', 'calc(100vh - 293px)']}
         overflowY="auto"
         w="full">
-        {answers?.map((answer) => (
+        {answers?.length > 0 ?  answers?.map((answer) => (
           <AnswersListItem
             answer={answer}
             data-id="ecf11473c1b0"
             editAnswer={editAnswer}
             key={answer._id}
             refetchAnswers={refetchAnswers} />
-        ))}
+        )): (
+           <Flex
+              data-id="dad222c8f90c"
+              fontSize="18px"
+              textAlign="center"
+              fontStyle="italic"
+              margin="auto"
+              padding="10"
+              h="full"
+              w="fit">
+               No {t('question')}s found
+            </Flex>
+        )}
       </Flex>
     </Box>
   </Box>
