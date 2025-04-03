@@ -109,12 +109,9 @@ function QuestionsCategories() {
       return (a[sortType] || '').toString().localeCompare((b[sortType] || '').toString());
     };
 
-    const sortedData = [...questionsCategories].sort((a, b) => 
-      sortOrder === 'asc' ? sort(a, b) : sort(b, a)
-    );
+    const sortedData = [...questionsCategories].sort((a, b) => (sortOrder === 'asc' ? sort(a, b) : sort(b, a)));
     setQuestionsCategories(sortedData);
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
-
 
   const {
     control,
@@ -276,7 +273,8 @@ function QuestionsCategories() {
       key={questionsCategory?._id}
       mb="1px"
       p={4}
-      w="full">
+      w="full"
+    >
       <Flex
         cursor="pointer"
         data-id="327a1806fcb2"
@@ -284,105 +282,109 @@ function QuestionsCategories() {
         mr={4}
         onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
         pl={1}
-        w="full">
-        <Text
-          data-id="783735d8f66a"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap">
+        w="full"
+      >
+        <Text data-id="783735d8f66a" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {questionsCategory.name}
         </Text>
       </Flex>
     </Flex>
   );
 
-  return (<>
-    <AdminModal
-      collection="questions categories"
-      data-id="13249c03003c"
-      isOpenModal={adminModalState !== 'closed'}
-      modalType={adminModalState}
-      onAction={handleAction}>
-      <Stack
-        data-id="725e3c41cb69"
-        spacing={2}
-        w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
-        <TextInput
-          control={control}
-          data-id="1df615f21513"
-          label="Name"
-          name="name"
-          placeholder="Name"
-          required
-          validations={{
-            notEmpty: true,
-          }} />
-        <Toggle
-          control={control}
-          data-id="bdf24a3f97fe"
-          label="Allow answers"
-          name="withAnswers"
-          placeholder="Allow answers"
-          variant="secondaryVariant" />
-        <Toggle
-          control={control}
-          data-id="f2f1c45030ad"
-          label={`Allow custom ${pluralize(t('question'))}`}
-          name="allowCustomQuestions"
-          placeholder={`Allow custom ${pluralize(t('question'))}`}
-          variant="secondaryVariant" />
-        <NumberInput
-          control={control}
-          data-id="253941f1d791"
-          label="Max number of questions"
-          name="maxQuestionsNumber"
-          placeholder={`Max number of ${pluralize(t('question'))}`}
-          required
-          tooltip="0 means no limit"
-          variant="secondaryVariant" />
-        <Toggle
-          control={control}
-          data-id="064d0141a86b"
-          label="Editable after submission"
-          name="notBlockedAfterCompletion"
-          placeholder="Editable after submission"
-          tooltip={`If enabled, ${pluralize(t('question'))} and answers in this category will be editable after submission`}
-          variant="secondaryVariant" />
-        <Toggle
-          control={control}
-          data-id="20d730cc8c70"
-          label="Use status"
-          name="useStatus"
-          placeholder="Use status"
-          tooltip="If disabled, status will not show for associated answers"
-          variant="secondaryVariant" />
-        <Toggle
-          control={control}
-          data-id="631dc51bc0b0"
-          label="Show in insights"
-          name="showInInsights"
-          placeholder="Show in insights"
-          tooltip={`If enabled, answers related to this ${pluralize(t('question'))} category will be shown in insights`}
-          variant="secondaryVariant" />
-        <Toggle
-          control={control}
-          data-id="d1b0109222d1"
-          label="Count in audit card"
-          name="countInAuditCard"
-          placeholder="Count in audit card"
-          tooltip={`If enabled, total of ${pluralize(t('question'))} related to this question category will be displayed in ${t('audit')} card`}
-          variant="secondaryVariant" />
-        <TextInput
-          control={control}
-          data-id="0bf8dde0c19d"
-          label="Icon"
-          name="icon"
-          placeholder="Icon"
-          required
-          validations={{
-            notEmpty: true,
-          }} />
-        {availableOptions(!!module?.featureFlags?.enableSafetyWalk).length > 0 &&
+  return (
+    <>
+      <AdminModal
+        collection="questions categories"
+        data-id="13249c03003c"
+        isOpenModal={adminModalState !== 'closed'}
+        modalType={adminModalState}
+        onAction={handleAction}
+      >
+        <Stack data-id="725e3c41cb69" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+          <TextInput
+            control={control}
+            data-id="1df615f21513"
+            label="Name"
+            name="name"
+            placeholder="Name"
+            required
+            validations={{
+              notEmpty: true,
+            }}
+          />
+          <Toggle
+            control={control}
+            data-id="bdf24a3f97fe"
+            label="Allow answers"
+            name="withAnswers"
+            placeholder="Allow answers"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            data-id="f2f1c45030ad"
+            label="Allow custom questions"
+            name="allowCustomQuestions"
+            placeholder="Allow custom questions"
+            variant="secondaryVariant"
+          />
+          <NumberInput
+            control={control}
+            data-id="253941f1d791"
+            label="Max number of questions"
+            name="maxQuestionsNumber"
+            placeholder="Max number of questions"
+            required
+            tooltip="0 means no limit"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            data-id="064d0141a86b"
+            label="Editable after submission"
+            name="notBlockedAfterCompletion"
+            placeholder="Editable after submission"
+            tooltip="If enabled, questions and answers in this category will be editable after submission"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            data-id="20d730cc8c70"
+            label="Use status"
+            name="useStatus"
+            placeholder="Use status"
+            tooltip="If disabled, status will not show for associated answers"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            data-id="631dc51bc0b0"
+            label="Show in insights"
+            name="showInInsights"
+            placeholder="Show in insights"
+            tooltip="If enabled, answers related to this questions category will be shown in insights"
+            variant="secondaryVariant"
+          />
+          <Toggle
+            control={control}
+            data-id="d1b0109222d1"
+            label="Count in audit card"
+            name="countInAuditCard"
+            placeholder="Count in audit card"
+            tooltip={`If enabled, total of questions related to this question category will be displayed in ${t('audit')} card`}
+            variant="secondaryVariant"
+          />
+          <TextInput
+            control={control}
+            data-id="0bf8dde0c19d"
+            label="Icon"
+            name="icon"
+            placeholder="Icon"
+            required
+            validations={{
+              notEmpty: true,
+            }}
+          />
           <Stack data-id="01666afa274c" pt={2}>
             <Text data-id="671ec986613e" fontSize="11px" fontWeight="bold">
               Options
@@ -390,74 +392,55 @@ function QuestionsCategories() {
             <CheckboxGroup
               data-id="55e6d4d23d19"
               defaultValue={questionsCategory.options?.map((option) => option.setting)}
-              onChange={onChangeOption}>
-              {availableOptions(!!module?.featureFlags?.enableSafetyWalk).map(option => (
-                <Checkbox
-                  data-id="5cee867104a9"
-                  key={option.setting}
-                  label={option.name}
-                  value={option.setting} />
+              onChange={onChangeOption}
+            >
+              {availableOptions.map((option) => (
+                <Checkbox data-id="5cee867104a9" key={option.setting} label={option.name} value={option.setting} />
               ))}
             </CheckboxGroup>
           </Stack>
-        }
-      </Stack>
-    </AdminModal>
-    <Header
-      breadcrumbs={['Admin', `${t('question')} sets`]}
-      data-id="878057915508"
-      mobileBreadcrumbs={[`${t('question')} sets`]} />
-    <Flex
-      data-id="659cd2aa32e8"
-      h="calc(100vh - 160px)"
-      overflow="auto"
-      px={['25px', 0]}>
-      <Box
-        data-id="6beca923ee44"
-        h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-        p={[0, '0 25px 30px 30px']}
-        w="full">
-        <AdminTableHeader data-id="926a317ff445">
-         <AdminTableHeaderElement
-            data-id="f5e345434dc2"
-            label={`${capitalize(t('question'))} Set`}
-            onClick={() => {
-              setSortType('name'); // Change 'questionCategory' to 'name'
-              setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-            }}
-            showSortingIcon={sortType === 'name'}
-            sortOrder={sortType === 'name' ? sortOrder : undefined}
-            w="full" />
-        </AdminTableHeader>
-        <Flex
-          bg="white"
-          borderBottomRadius="20px"
-          data-id="660a8c628b7c"
-          flexDir="column"
-          fontSize="smm"
-          h="full"
-          overflow="auto"
-          w="full">
-          {loading ? (
-            <Loader center data-id="63cab2bad96b" />
-          ) : questionsCategories?.length > 0 ? (
-            questionsCategories?.map(renderQuestionsCategoryRow)
-          ) : (
-            <Flex
-              data-id="eca1eaed42aa"
-              fontSize="18px"
-              fontStyle="italic"
-              h="full"
-              justify="center"
-              mt={4}
-              w="full">
-              No ${t('question')} sets found
-            </Flex>
-          )}
-        </Flex>
-      </Box>
-    </Flex>
-  </>);
+        </Stack>
+      </AdminModal>
+      <Header breadcrumbs={['Admin', 'Questions categories']} data-id="878057915508" mobileBreadcrumbs={['Questions categories']} />
+      <Flex data-id="659cd2aa32e8" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
+        <Box data-id="6beca923ee44" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+          <AdminTableHeader data-id="926a317ff445">
+            <AdminTableHeaderElement
+              data-id="f5e345434dc2"
+              label="Question Categories"
+              onClick={() => {
+                setSortType('name'); // Change 'questionCategory' to 'name'
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
+              }}
+              showSortingIcon={sortType === 'name'}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
+              w="full"
+            />
+          </AdminTableHeader>
+          <Flex
+            bg="white"
+            borderBottomRadius="20px"
+            data-id="660a8c628b7c"
+            flexDir="column"
+            fontSize="smm"
+            h="full"
+            overflow="auto"
+            w="full"
+          >
+            {loading ? (
+              <Loader center data-id="63cab2bad96b" />
+            ) : questionsCategories?.length > 0 ? (
+              questionsCategories?.map(renderQuestionsCategoryRow)
+            ) : (
+              <Flex data-id="eca1eaed42aa" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+                No questions categories found
+              </Flex>
+            )}
+          </Flex>
+        </Box>
+      </Flex>
+    </>
+  );
 }
 
 export default QuestionsCategories;

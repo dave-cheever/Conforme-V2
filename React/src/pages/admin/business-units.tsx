@@ -101,15 +101,10 @@ function BusinessUnits() {
       if (typeof aValue === 'number' && typeof bValue === 'number') {
         return aValue - bValue;
       }
-      return 0; 
+      return 0;
     };
-    setBusinessUnits((prevBusinessUnits) =>
-      [...prevBusinessUnits].sort((a, b) =>
-        sortOrder === 'asc' ? sort(a, b) : sort(b, a)
-      )
-    );
-}, [sortType, sortOrder, businessUnits]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    setBusinessUnits((prevBusinessUnits) => [...prevBusinessUnits].sort((a, b) => (sortOrder === 'asc' ? sort(a, b) : sort(b, a))));
+  }, [sortType, sortOrder, businessUnits]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,
@@ -229,7 +224,8 @@ function BusinessUnits() {
       key={businessUnit._id}
       mb="1px"
       p={4}
-      w="full">
+      w="full"
+    >
       <Flex
         cursor="pointer"
         data-id="62602cb9c5b0"
@@ -237,17 +233,16 @@ function BusinessUnits() {
         mr={4}
         onClick={() => openBusinessUnitModal('edit', businessUnit)}
         pl={1}
-        w={['80%', '30%']}>
-        <Text
-          data-id="265ac9aaf161"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap">
+        w={['80%', '30%']}
+      >
+        <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {businessUnit.name}
         </Text>
       </Flex>
       {device !== 'mobile' && (
-        <Box data-id="d169dd4443da" w="calc(70% / 2)">{businessUnit?.owner?.displayName}</Box>
+        <Box data-id="d169dd4443da" w="calc(70% / 2)">
+          {businessUnit?.owner?.displayName}
+        </Box>
       )}
       {module?.type === 'tracker' && (
         <Flex align="center" data-id="038185a293c7" w={['20%', 'calc(70% / 2)']}>
@@ -263,7 +258,8 @@ function BusinessUnits() {
                 navigateTo('/');
               }}
               stroke="#282F36"
-              w="10px" />
+              w="10px"
+            />
           </Tooltip>
         </Flex>
       )}
@@ -282,7 +278,8 @@ function BusinessUnits() {
                   navigateTo('/answers');
                 }}
                 stroke="#282F36"
-                w="10px" />
+                w="10px"
+              />
             </Tooltip>
           </Flex>
           <Flex align="center" data-id="55e68fa3ad52" w={['20%', 'calc(70% / 2)']}>
@@ -298,7 +295,8 @@ function BusinessUnits() {
                   navigateTo('/dashboard');
                 }}
                 stroke="#282F36"
-                w="10px" />
+                w="10px"
+              />
             </Tooltip>
           </Flex>
         </>
@@ -306,141 +304,128 @@ function BusinessUnits() {
     </Flex>
   );
 
-  return (<>
-    <AdminModal
-      collection={t('business unit')}
-      data-id="f27643991a09"
-      isOpenModal={adminModalState !== 'closed'}
-      modalType={adminModalState}
-      onAction={handleAction}>
-      <Stack
-        data-id="a4243ef9e5cd"
-        spacing={2}
-        w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
-        <TextInput
-          required
-          control={control}
-          data-id="2059c276d1a1"
-          initialValue={currentBusinessUnitName.toLowerCase()}
-          label="Name"
-          name="name"
-          placeholder="Name"
-          validations={{
-            notEmpty: true,
-            uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),
-          }} />
-        <PeoplePicker
-          control={control}
-          data-id="2151fa34ef8e"
-          label="Owner"
-          name="ownerId"
-          placeholder="Name"
-          showAsDropdown={false} />
-      </Stack>
-    </AdminModal>
-    <Header
-      breadcrumbs={['Admin', pluralize(capitalize(t('business unit')))]}
-      data-id="ac1ee3c30cc8"
-      mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]} />
-    <Flex
-      data-id="33879bce2f4d"
-      h="calc(100vh - 160px)"
-      overflow="auto"
-      px={['25px', 0]}>
-      <Box
-        data-id="71b1095147a4"
-        h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-        p={[0, '0 25px 30px 30px']}
-        w="full">
-        <AdminTableHeader data-id="fc13c9d295b4">
-          <AdminTableHeaderElement
-            data-id="ba04d2d0810b"
-            label={`${capitalize(t('business unit'))} name`}
-            onClick={() => {
-              setSortType('name');
-              setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
+  return (
+    <>
+      <AdminModal
+        collection={t('business unit')}
+        data-id="f27643991a09"
+        isOpenModal={adminModalState !== 'closed'}
+        modalType={adminModalState}
+        onAction={handleAction}
+      >
+        <Stack data-id="a4243ef9e5cd" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+          <TextInput
+            required
+            control={control}
+            data-id="2059c276d1a1"
+            initialValue={currentBusinessUnitName.toLowerCase()}
+            label="Name"
+            name="name"
+            placeholder="Name"
+            validations={{
+              notEmpty: true,
+              uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),
             }}
-            showSortingIcon={sortType === 'name'}
-            sortOrder={sortType === 'name' ? sortOrder : undefined}
-            w={['80%', '30%']} />
-          {device !== 'mobile' && (
+          />
+          <PeoplePicker control={control} data-id="2151fa34ef8e" label="Owner" name="ownerId" placeholder="Name" showAsDropdown={false} />
+        </Stack>
+      </AdminModal>
+      <Header
+        breadcrumbs={['Admin', pluralize(capitalize(t('business unit')))]}
+        data-id="ac1ee3c30cc8"
+        mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
+      />
+      <Flex data-id="33879bce2f4d" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
+        <Box data-id="71b1095147a4" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+          <AdminTableHeader data-id="fc13c9d295b4">
             <AdminTableHeaderElement
-              data-id="9e47b1978e0d"
-              label="Owner"
+              data-id="ba04d2d0810b"
+              label={`${capitalize(t('business unit'))} name`}
               onClick={() => {
-                setSortType('owner');
-                setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
+                setSortType('name');
+                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
               }}
-              showSortingIcon={sortType === 'owner'}
-              sortOrder={sortType === 'owner' ? sortOrder : undefined}
-              w="calc(70% / 2)" />
-          )}
-          {module?.type === 'tracker' ? (
-            <AdminTableHeaderElement
-              data-id="6074f7bf737f"
-              label="Responses count"
-              onClick={() => {
-                setSortType('trackerItemsResponsesCount');
-                setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-              sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-              tooltip="Only published items"
-              w={['20%', 'calc(70% / 2)']} />
-          ) : (
-            <>
+              showSortingIcon={sortType === 'name'}
+              sortOrder={sortType === 'name' ? sortOrder : undefined}
+              w={['80%', '30%']}
+            />
+            {device !== 'mobile' && (
               <AdminTableHeaderElement
-                data-id="14fe17021f88"
-                label={`${capitalize(pluralize(t('question')))} count`}
+                data-id="9e47b1978e0d"
+                label="Owner"
                 onClick={() => {
-                  setSortType('totalAnswersCount');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  setSortType('owner');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
                 }}
-                showSortingIcon={sortType === 'totalAnswersCount'}
-                sortOrder={sortType === 'totalAnswersCount' && sortType === 'totalAnswersCount' ? sortOrder : undefined}
-                w={['20%', 'calc(70% / 2)']} />
+                showSortingIcon={sortType === 'owner'}
+                sortOrder={sortType === 'owner' ? sortOrder : undefined}
+                w="calc(70% / 2)"
+              />
+            )}
+            {module?.type === 'tracker' ? (
               <AdminTableHeaderElement
-                data-id="939037a384ef"
-                label={`${capitalize(pluralize(t('audit')))} count`}
+                data-id="6074f7bf737f"
+                label="Responses count"
                 onClick={() => {
-                  setSortType('totalAuditsCount');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  setSortType('trackerItemsResponsesCount');
+                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
                 }}
-                showSortingIcon={sortType === 'totalAuditsCount'}
-                sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                w={['20%', 'calc(70% / 2)']} />
-            </>
-          )}
-        </AdminTableHeader>
-        <Flex
-          bg="white"
-          borderBottomRadius="20px"
-          data-id="3ab58dd63565"
-          flexDir="column"
-          fontSize="smm"
-          h="full"
-          overflow="auto"
-          w="full">
-          {loading ? (
-            <Loader center data-id="f338242108dc" />
-          ) : businessUnits?.length > 0 ? (
-            businessUnits?.map(renderBusinessUnitRow)
-          ) : (
-            <Flex
-              data-id="794f2811e3b3"
-              fontSize="18px"
-              fontStyle="italic"
-              h="full"
-              justify="center"
-              mt={4}
-              w="full">
-              No {pluralize(t('business unit'))} found
-            </Flex>
-          )}
-        </Flex>
-      </Box>
-    </Flex>
-  </>);
+                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
+                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
+                tooltip="Only published items"
+                w={['20%', 'calc(70% / 2)']}
+              />
+            ) : (
+              <>
+                <AdminTableHeaderElement
+                  data-id="14fe17021f88"
+                  label={`${capitalize(pluralize(t('question')))} count`}
+                  onClick={() => {
+                    setSortType('totalAnswersCount');
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'totalAnswersCount'}
+                  sortOrder={sortType === 'totalAnswersCount' && sortType === 'totalAnswersCount' ? sortOrder : undefined}
+                  w={['20%', 'calc(70% / 2)']}
+                />
+                <AdminTableHeaderElement
+                  data-id="939037a384ef"
+                  label={`${capitalize(pluralize(t('audit')))} count`}
+                  onClick={() => {
+                    setSortType('totalAuditsCount');
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  }}
+                  showSortingIcon={sortType === 'totalAuditsCount'}
+                  sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
+                  w={['20%', 'calc(70% / 2)']}
+                />
+              </>
+            )}
+          </AdminTableHeader>
+          <Flex
+            bg="white"
+            borderBottomRadius="20px"
+            data-id="3ab58dd63565"
+            flexDir="column"
+            fontSize="smm"
+            h="full"
+            overflow="auto"
+            w="full"
+          >
+            {loading ? (
+              <Loader center data-id="f338242108dc" />
+            ) : businessUnits?.length > 0 ? (
+              businessUnits?.map(renderBusinessUnitRow)
+            ) : (
+              <Flex data-id="794f2811e3b3" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+                No {pluralize(t('business unit'))} found
+              </Flex>
+            )}
+          </Flex>
+        </Box>
+      </Flex>
+    </>
+  );
 }
 
 export default BusinessUnits;

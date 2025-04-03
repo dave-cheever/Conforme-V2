@@ -119,7 +119,6 @@ function Questions() {
     setQuestions([...questions].sort((a, b) => sort(a, b)));
   }, [sortType, sortOrder, questions]); // Added 'questions' to the dependency array
 
-
   const {
     control,
     formState: { errors },
@@ -152,12 +151,10 @@ function Questions() {
   };
 
   const handleAddQuestion = async () => {
-    if(isLoading) return;
+    if (isLoading) return;
     setIsLoading(true);
     const question = getValues();
-    const questionCategory = questionsCategories?.find(
-      (cat) => cat._id === question.questionsCategoryId,
-    );
+    const questionCategory = questionsCategories?.find((cat) => cat._id === question.questionsCategoryId);
     const { maxQuestionsNumber: selectedCategoryMaxQuestions, name: selectedCategoryName } = questionCategory;
     const questionsNumberForSelectedCategory = questions.filter(
       (_question) => _question.questionsCategoryId === question.questionsCategoryId,
@@ -192,7 +189,7 @@ function Questions() {
   };
 
   const handleUpdateQuestion = async () => {
-    if(isLoading) return;
+    if (isLoading) return;
     setIsLoading(true);
     try {
       if (Object.keys(errors).length === 0) {
@@ -228,7 +225,7 @@ function Questions() {
   };
 
   const handleDeleteQuestion = async () => {
-    if(isLoading) return;
+    if (isLoading) return;
     setIsLoading(true);
     try {
       const _id = getValues('_id');
@@ -278,7 +275,8 @@ function Questions() {
       key={question._id}
       mb="1px"
       p={4}
-      w="full">
+      w="full"
+    >
       <Flex
         cursor="pointer"
         data-id="8743b484e5d2"
@@ -286,130 +284,97 @@ function Questions() {
         mr={4}
         onClick={() => openQuestionModal('edit', question)}
         pl={1}
-        w="full">
-        <Text
-          data-id="64222f997a92"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap">
+        w="full"
+      >
+        <Text data-id="64222f997a92" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {question.question}
         </Text>
       </Flex>
     </Flex>
   );
 
-  return (<>
-    <AdminModal
-      collection="questions"
-      data-id="125850428c46"
-      isOpenModal={adminModalState !== 'closed'}
-      modalType={adminModalState}
-      onAction={handleAction}
+  return (
+    <>
+      <AdminModal
+        collection="questions"
+        data-id="125850428c46"
+        isOpenModal={adminModalState !== 'closed'}
+        modalType={adminModalState}
+        onAction={handleAction}
       >
-      <Stack
-        data-id="b6bb827943fc"
-        spacing={2}
-        w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
-        <Dropdown
-          required
-          control={control}
-          data-id="aec2e30b2f10"
-          label="Questions Category"
-          name="questionsCategoryId"
-          options={questionsCategories?.map(({ _id, name }) => ({
-            label: name,
-            value: _id,
-          }))}
-          placeholder="Questions category"
-          validations={{
-            notEmpty: true,
-          }}
-          variant="secondaryVariant" />
-        <TextInput
-          control={control}
-          data-id="838152df7ef1"
-          label="Question"
-          name="question"
-          placeholder="Question"
-          required
-          validations={{
-            notEmpty: true,
-          }} />
-        <TextInputMultiline
-          control={control}
-          data-id="46a14008f017"
-          label="Description"
-          name="description"
-          placeholder="Description" />
-        <TextInput
-          control={control}
-          data-id="ec54740e17f3"
-          label="Positive value"
-          name="positiveValue"
-          placeholder="Positive value" />
-        <TextInput
-          control={control}
-          data-id="b22cc52a8670"
-          label="Negative value"
-          name="negativeValue"
-          placeholder="Negative value" />
-      </Stack>
-    </AdminModal>
-    <Header
-      breadcrumbs={['Admin', 'Questions']}
-      data-id="fd41c88fa390"
-      mobileBreadcrumbs={['Questions']} />
-    <Flex
-      data-id="37f9704ed253"
-      h="calc(100vh - 160px)"
-      overflow="auto"
-      px={['25px', 0]}>
-      <Box
-        data-id="b1c3342b2a30"
-        h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-        p={[0, '0 25px 30px 30px']}
-        w="full">
-        <AdminTableHeader data-id="b2e9e78efe45">
-          <AdminTableHeaderElement
-            data-id="af2c58e1ef04"
-            label="Question"
-            onClick={() => {
-              setSortType('question');
-              setSortOrder(sortOrder === 'asc' && sortType === 'question' ? 'desc' : 'asc');
+        <Stack data-id="b6bb827943fc" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+          <Dropdown
+            required
+            control={control}
+            data-id="aec2e30b2f10"
+            label="Questions Category"
+            name="questionsCategoryId"
+            options={questionsCategories?.map(({ _id, name }) => ({
+              label: name,
+              value: _id,
+            }))}
+            placeholder="Questions category"
+            validations={{
+              notEmpty: true,
             }}
-            showSortingIcon={sortType === 'question'}
-            sortOrder={sortType === 'question' ? sortOrder : undefined}
-            w="full" />
-        </AdminTableHeader>
-        <Flex
-          bg="white"
-          borderBottomRadius="20px"
-          data-id="85c701753503"
-          flexDir="column"
-          fontSize="smm"
-          h="full"
-          overflow="auto"
-          w="full">
-          {loading ? (
-            <Loader center data-id="515105f6eb5d" />
-          ) : questions?.length > 0 ? (
-            questions?.map(renderQuestionRow)
-          ) : (
-            <Flex
-              data-id="2f754733ddff"
-              fontSize="18px"
-              fontStyle="italic"
-              h="full"
-              justify="center"
-              mt={4}
-              w="full">
-              No questions found
-            </Flex>
-          )}
-        </Flex>
-      </Box>
-    </Flex>
-  </>);
+            variant="secondaryVariant"
+          />
+          <TextInput
+            control={control}
+            data-id="838152df7ef1"
+            label="Question"
+            name="question"
+            placeholder="Question"
+            required
+            validations={{
+              notEmpty: true,
+            }}
+          />
+          <TextInputMultiline control={control} data-id="46a14008f017" label="Description" name="description" placeholder="Description" />
+          <TextInput control={control} data-id="ec54740e17f3" label="Positive value" name="positiveValue" placeholder="Positive value" />
+          <TextInput control={control} data-id="b22cc52a8670" label="Negative value" name="negativeValue" placeholder="Negative value" />
+        </Stack>
+      </AdminModal>
+      <Header breadcrumbs={['Admin', 'Questions']} data-id="fd41c88fa390" mobileBreadcrumbs={['Questions']} />
+      <Flex data-id="37f9704ed253" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
+        <Box data-id="b1c3342b2a30" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+          <AdminTableHeader data-id="b2e9e78efe45">
+            <AdminTableHeaderElement
+              data-id="af2c58e1ef04"
+              label="Question"
+              onClick={() => {
+                setSortType('question');
+                setSortOrder(sortOrder === 'asc' && sortType === 'question' ? 'desc' : 'asc');
+              }}
+              showSortingIcon={sortType === 'question'}
+              sortOrder={sortType === 'question' ? sortOrder : undefined}
+              w="full"
+            />
+          </AdminTableHeader>
+          <Flex
+            bg="white"
+            borderBottomRadius="20px"
+            data-id="85c701753503"
+            flexDir="column"
+            fontSize="smm"
+            h="full"
+            overflow="auto"
+            w="full"
+          >
+            {loading ? (
+              <Loader center data-id="515105f6eb5d" />
+            ) : questions?.length > 0 ? (
+              questions?.map(renderQuestionRow)
+            ) : (
+              <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+                No questions found
+              </Flex>
+            )}
+          </Flex>
+        </Box>
+      </Flex>
+    </>
+  );
 }
 
 export default Questions;
