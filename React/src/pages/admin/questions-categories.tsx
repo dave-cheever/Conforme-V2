@@ -392,7 +392,7 @@ function QuestionsCategories() {
               defaultValue={questionsCategory.options?.map((option) => option.setting)}
               onChange={onChangeOption}
             >
-              {availableOptions.map((option) => (
+              {availableOptions(!!module?.featureFlags?.enableSafetyWalk).map((option) => (
                 <Checkbox data-id="5cee867104a9" key={option.setting} label={option.name} value={option.setting} />
               ))}
             </CheckboxGroup>
