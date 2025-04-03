@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
-import { isArray } from 'lodash';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import { useLocation } from 'react-router-dom';
 
 import { Box, Checkbox, Stack, Text } from '@chakra-ui/react';
+import { isArray } from 'lodash';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';

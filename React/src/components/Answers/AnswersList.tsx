@@ -130,11 +130,11 @@ function AnswersList({
            <Flex
               data-id="dad222c8f90c"
               fontSize="18px"
-              textAlign="center"
               fontStyle="italic"
+              h="full"
               margin="auto"
               padding="10"
-              h="full"
+              textAlign="center"
               w="fit">
                No {t('question')}s found
             </Flex>

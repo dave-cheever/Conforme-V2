@@ -1,12 +1,12 @@
 import { Avatar, Box, Flex, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
-import { useAppContext } from '../../contexts/AppProvider';
 
 function AuditListItem({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();

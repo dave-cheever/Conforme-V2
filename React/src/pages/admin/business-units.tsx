@@ -93,14 +93,12 @@ function BusinessUnits() {
 
   useEffect(() => {
     const sort = (a, b) => {
-      let aValue = a[sortType];
-      let bValue = b[sortType];
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return aValue.localeCompare(bValue);
-      }
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return aValue - bValue;
-      }
+      const aValue = a[sortType];
+      const bValue = b[sortType];
+      if (typeof aValue === 'string' && typeof bValue === 'string') return aValue.localeCompare(bValue);
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') return aValue - bValue;
+
       return 0;
     };
     setBusinessUnits((prevBusinessUnits) => [...prevBusinessUnits].sort((a, b) => (sortOrder === 'asc' ? sort(a, b) : sort(b, a))));
@@ -315,13 +313,13 @@ function BusinessUnits() {
       >
         <Stack data-id="a4243ef9e5cd" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
-            required
             control={control}
             data-id="2059c276d1a1"
             initialValue={currentBusinessUnitName.toLowerCase()}
             label="Name"
             name="name"
             placeholder="Name"
+            required
             validations={{
               notEmpty: true,
               uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),

@@ -43,9 +43,9 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs }: IHeader) {
         mt={['0px', '5px']} />}
       <Text
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
-        fontSize="20px"
         data-id="4e3ce528c3ed"
         display={i === breadCrumbs.length - 1 ? 'flex' : 'flex'}
+        fontSize="20px"
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
         mr={1}
         pl={[0, 2]}>

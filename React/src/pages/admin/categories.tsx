@@ -79,18 +79,14 @@ function Categories() {
   }, [data]);
 
   useEffect(() => {
-    setCategories(
-      [...categories].sort((a, b) => {
+    setCategories((prevCategories) =>
+      [...prevCategories].sort((a, b) => {
         const valueA = (a[sortType] || '').toString().toLowerCase();
         const valueB = (b[sortType] || '').toString().toLowerCase();
-        if (sortOrder === 'asc') {
-          return valueA.localeCompare(valueB);
-        } else {
-          return valueB.localeCompare(valueA);
-        }
+        return sortOrder === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
       }),
     );
-  }, [sortType, sortOrder, data]);
+  }, [sortType, sortOrder]);
 
   const {
     control,
@@ -208,13 +204,13 @@ function Categories() {
       >
         <Flex align="flex-start" data-id="b1f73fb84928" direction="column" w="full">
           <TextInput
-            required
             control={control}
             data-id="19ea0a600288"
             initialValue={currentCategoryName.toLowerCase()}
             label="Name"
             name="name"
             placeholder="Category name"
+            required
             validations={{
               notEmpty: true,
               uniqueValue: categories.map(({ name }) => name.toLowerCase()),

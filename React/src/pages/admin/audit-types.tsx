@@ -105,11 +105,9 @@ function AuditTypes() {
   useEffect(() => {
     const sort = (a, b) => {
       let comparison = 0;
-      if (sortType === 'owner') {
-        comparison = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-      } else {
-        comparison = (a[sortType] || '').toString().localeCompare((b[sortType] || '').toString());
-      }
+      if (sortType === 'owner') comparison = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      else comparison = (a[sortType] || '').toString().localeCompare((b[sortType] || '').toString());
+
       return sortOrder === 'asc' ? comparison : -comparison;
     };
     setAuditTypes([...auditTypes].sort(sort));

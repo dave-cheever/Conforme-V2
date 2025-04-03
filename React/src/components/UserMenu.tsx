@@ -39,9 +39,9 @@ function UserMenu() {
         boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
         data-id="d3cc6dae5991"
         minW="175px"
+        mr={3}
         p="15px 20px 15px 20px"
         textAlign="right"
-        mr={3}
       >
         <Text
           data-id="6d4b2e8e6139"

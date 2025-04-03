@@ -1,10 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { capitalize } from 'lodash';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, CheckboxGroup, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-import pluralize from 'pluralize';
 import { t } from 'i18next';
 
 import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -18,9 +16,9 @@ import Toggle from '../../components/Forms/Toggle';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
+import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
-import { useAppContext } from '../../contexts/AppProvider';
 
 const GET_QUESTIONS_CATEGORIES = gql`
   query {

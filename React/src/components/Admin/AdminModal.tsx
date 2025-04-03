@@ -174,17 +174,17 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
         </ModalContent>
       )}
     </Modal>
-      <Modal isOpen={isConfirmDeleteOpen} onClose={() => setIsConfirmDeleteOpen(false)} isCentered>
+      <Modal isCentered isOpen={isConfirmDeleteOpen} onClose={() => setIsConfirmDeleteOpen(false)}>
         <ModalOverlay />
-        <ModalContent bg="white" borderRadius="12px" p={6} textAlign="center" boxShadow="lg">
-          <Box fontSize="xl" fontWeight="bold" mb={4} color="gray.800">
+        <ModalContent bg="white" borderRadius="12px" boxShadow="lg" p={6} textAlign="center">
+          <Box color="gray.800" fontSize="xl" fontWeight="bold" mb={4}>
             Confirm Delete
           </Box>
           <Box color="gray.600" mb={6}>
             Are you sure you want to delete this item? This action cannot be undone.
           </Box>
           <Flex justify="center">
-            <Button variant="outline" colorScheme="gray" mr={3} onClick={() => setIsConfirmDeleteOpen(false)}>
+            <Button colorScheme="gray" mr={3} onClick={() => setIsConfirmDeleteOpen(false)} variant="outline">
               Cancel
             </Button>
             <Button colorScheme="red" onClick={confirmDelete}>

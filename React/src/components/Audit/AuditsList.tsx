@@ -2,11 +2,11 @@ import { Box, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { IAudit } from '../../interfaces/IAudit';
 import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import AuditListItem from './AuditListItem';
-import { useAppContext } from '../../contexts/AppProvider';
 
 function AuditsList({
   audits,

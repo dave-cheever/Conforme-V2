@@ -179,10 +179,9 @@ function AuditModal({ refetch }) {
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
                   <GridItem data-id="e39f74c8ee89" w="100%">
                     <Dropdown
-                      required
-                      disabled={auditTypes?.length === 1}
                       control={control}
                       data-id="ea42eecee549"
+                      disabled={auditTypes?.length === 1}
                       label="Audit Type"
                       name="auditTypeId"
                       options={(auditTypes ?? []).map((auditType) => ({
@@ -190,6 +189,7 @@ function AuditModal({ refetch }) {
                         label: auditType.name,
                       }))}
                       placeholder="Select audit type"
+                      required
                       stroke="dropdown.icon"
                       validations={{
                         notEmpty: true,

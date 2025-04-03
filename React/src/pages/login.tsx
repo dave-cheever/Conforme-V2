@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+
 import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
 
 import { toastFailed } from '../bootstrap/config';
@@ -146,14 +147,14 @@ function Login() {
               lineHeight="41px"
               mb="40px"
               noOfLines={2}
+              px="8"
               textOverflow="ellipsis"
               w="full"
-              px="8"
             >
               {organizationConfig?.name}
             </Text>
             <Flex justify="center">
-              <SignInButton onClick={loginWithAzureAD} cursor="pointer" w="215px" h="41px"/>
+              <SignInButton cursor="pointer" h="41px" onClick={loginWithAzureAD} w="215px"/>
             </Flex>
           </Flex>
         </Flex>
@@ -168,8 +169,8 @@ function Login() {
         <Box data-id="144d4a61df5f" h={['30vh', '40vh', '95vh']} overflow="hidden">
           <Image
             data-id="01d3aec22abd"
-            h="full"
             fit="contain"
+            h="full"
             maxW="1000px"
             src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />
         </Box>

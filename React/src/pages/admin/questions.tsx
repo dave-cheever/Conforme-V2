@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-import pluralize from 'pluralize';
 import { t } from 'i18next';
+import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -304,7 +305,6 @@ function Questions() {
       >
         <Stack data-id="b6bb827943fc" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <Dropdown
-            required
             control={control}
             data-id="aec2e30b2f10"
             label="Questions Category"
@@ -314,6 +314,7 @@ function Questions() {
               value: _id,
             }))}
             placeholder="Questions category"
+            required
             validations={{
               notEmpty: true,
             }}

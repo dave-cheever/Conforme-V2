@@ -4,11 +4,11 @@ import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { auditStatuses } from '../../hooks/useAuditUtils';
 import useNavigate from '../../hooks/useNavigate';
 import { CheckIcon, ObservationEye, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
-import { useAppContext } from '../../contexts/AppProvider';
 
 const GET_AUDIT_ANSWERS_COUNT = gql`
   query ($auditId: ID!) {

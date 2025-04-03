@@ -93,13 +93,10 @@ function Locations() {
   useEffect(() => {
     const sort = (a, b) => {
       let result;
-      if (sortType === 'owner') {
-        result = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
-      } else if (sortType === 'notes') {
-        result = (a.notes || '-').localeCompare(b.notes || '-');
-      } else {
-        result = (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
-      }
+      if (sortType === 'owner') result = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
+      else if (sortType === 'notes') result = (a.notes || '-').localeCompare(b.notes || '-');
+      else result = (a[sortType] || 0).toString().localeCompare((b[sortType] || 0).toString());
+
       return sortOrder === 'asc' ? result : -result;
     };
     setLocations([...locations].sort((a, b) => sort(a, b)));
@@ -223,13 +220,13 @@ function Locations() {
       >
         <Flex align="flex-start" data-id="23969460d22e" direction="column" w={['full', '70%']}>
           <TextInput
-            required
             control={control}
             data-id="1668554bc1a6"
             initialValue={currentLocationName.toLowerCase()}
             label={`${capitalize(t('location'))} name`}
             name="name"
             placeholder="e.g. London"
+            required
             validations={{
               notEmpty: true,
               uniqueValue: locations.map(({ name }) => name.toLowerCase()),
@@ -237,12 +234,12 @@ function Locations() {
           />
           <TextInputMultiline control={control} data-id="e273a22cbfed" label="Notes" name="notes" placeholder="Add your notes here" />
           <PeoplePicker
-            required
             control={control}
             data-id="910976b16797"
             label="Owner"
             name="ownerId"
             placeholder="Name"
+            required
             showAsDropdown={false}
             validations={{
               notEmpty: true,

@@ -137,12 +137,12 @@ function NavigationTop() {
                     <AddIcon data-id="5b1e2b8025ce" h="21px" stroke="navigationTop.addIcon" w="21px" />
                   )
                 }
+                ml={3}
                 onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
                 rounded={['20px', '8px']}
                 w={['52px', '40px']}
-                ml={3}
                 zIndex={5} />
             )} />
         )}
@@ -175,10 +175,10 @@ function NavigationTop() {
                     <AddIcon data-id="6cff50759b96" h="21px" stroke="navigationTop.addIcon" w="21px" />
                   )
                 }
+                ml={4}
                 onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
-                ml={4}
                 rounded={['20px', '8px']}
                 w={['52px', '40px']}
                 zIndex={5} />

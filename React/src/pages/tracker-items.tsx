@@ -301,12 +301,12 @@ function TrackerItems() {
       pb={4}>
       {error ? (
         <Flex
+        alignItems="center"
         data-id="864e662bfe75"
         fontSize="18px"
         fontStyle="italic"
-        justifyContent="center"
-        alignItems="center"
         h="200px"
+        justifyContent="center"
         w="full">
         No Tracker Items found ,Try adjusting the filters.
         </Flex>

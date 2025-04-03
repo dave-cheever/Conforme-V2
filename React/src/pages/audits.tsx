@@ -297,12 +297,12 @@ function Audits() {
           ))
         ) : (
           <Flex
+            alignItems="center"
             data-id="864e662bfe75"
             fontSize="18px"
             fontStyle="italic"
-            justifyContent="center"
-            alignItems="center"
             h="200px"
+            justifyContent="center"
             w="full">
             No audits found. Try adjusting the filters.
           </Flex>
@@ -321,12 +321,12 @@ function Audits() {
         />
       ) : (
         <Flex
+          alignItems="center"
           data-id="864e662bfe75"
           fontSize="18px"
           fontStyle="italic"
-          justifyContent="center"
-          alignItems="center"
           h="200px"
+          justifyContent="center"
           w="full">
           No audits found. Try adjusting the filters.
         </Flex>
@@ -337,12 +337,12 @@ function Audits() {
         <AuditsGroup audits={sortedAudits} data-id="7bb6297801dc" />
       ) : (
         <Flex
+          alignItems="center"
           data-id="864e662bfe75"
           fontSize="18px"
           fontStyle="italic"
-          justifyContent="center"
-          alignItems="center"
           h="200px"
+          justifyContent="center"
           w="full">
           No audits found. Try adjusting the filters.
         </Flex>
