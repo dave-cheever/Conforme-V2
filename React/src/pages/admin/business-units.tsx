@@ -241,19 +241,19 @@ function BusinessUnits() {
         mr={4}
         onClick={() => openBusinessUnitModal('edit', businessUnit)}
         pl={1}
-        w={['80%', '30%']}
+        w={['40%', '30%']}
       >
-        <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+        <Text data-id="265ac9aaf161"  overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {businessUnit.name}
         </Text>
       </Flex>
       {device !== 'mobile' && (
-        <Box data-id="d169dd4443da" w="calc(70% / 2)">
+        <Box data-id="d169dd4443da" w={['30%', '30%']}>
           {businessUnit?.owner?.displayName}
         </Box>
       )}
       {module?.type === 'tracker' && (
-        <Flex align="center" data-id="038185a293c7" w={['20%', 'calc(70% / 2)']}>
+        <Flex align="center" data-id="038185a293c7" w={['15%', '20%']}>
           <Text data-id="325510124911">{businessUnit.trackerItemsResponsesCount || 0}</Text>
           <Tooltip data-id="a70f6f28c413" fontSize="md" label="Show Items">
             <ArrowCount
@@ -273,7 +273,7 @@ function BusinessUnits() {
       )}
       {module?.type === 'audits' && (
         <>
-          <Flex align="center" data-id="db85ba830398" w={['20%', 'calc(70% / 2)']}>
+          <Flex align="center" data-id="db85ba830398" w={['15%', '20%']}>
             <Text data-id="49560825d319">{businessUnit.totalAnswersCount || 0}</Text>
             <Tooltip data-id="1070df803807" fontSize="md" label="Show Items">
               <ArrowCount
@@ -290,7 +290,7 @@ function BusinessUnits() {
               />
             </Tooltip>
           </Flex>
-          <Flex align="center" data-id="55e68fa3ad52" w={['20%', 'calc(70% / 2)']}>
+          <Flex align="center" data-id="55e68fa3ad52" w={['15%', '20%']}>
             <Text data-id="efecbaf85dda">{businessUnit.totalAuditsCount || 0}</Text>
             <Tooltip data-id="ed7dabf6e0b7" fontSize="md" label="Show Items">
               <ArrowCount
@@ -345,7 +345,7 @@ function BusinessUnits() {
       />
       <Flex data-id="33879bce2f4d" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box data-id="71b1095147a4" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
-          <AdminTableHeader data-id="fc13c9d295b4">
+          <AdminTableHeader data-id="fc13c9d295b4" >
             <AdminTableHeaderElement
               data-id="ba04d2d0810b"
               label={`${capitalize(t('business unit'))} name`}
@@ -355,7 +355,7 @@ function BusinessUnits() {
               }}
               showSortingIcon={sortType === 'name'}
               sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w={['80%', '30%']}
+              w={['40%', '30%']}
             />
             {device !== 'mobile' && (
               <AdminTableHeaderElement
@@ -367,7 +367,7 @@ function BusinessUnits() {
                 }}
                 showSortingIcon={sortType === 'owner'}
                 sortOrder={sortType === 'owner' ? sortOrder : undefined}
-                w="calc(70% / 2)"
+                w={['30%', '30%']}
               />
             )}
             {module?.type === 'tracker' ? (
@@ -381,7 +381,7 @@ function BusinessUnits() {
                 showSortingIcon={sortType === 'trackerItemsResponsesCount'}
                 sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
                 tooltip="Only published items"
-                w={['20%', 'calc(70% / 2)']}
+                w={['15%', '20%']}
               />
             ) : (
               <>
@@ -394,7 +394,7 @@ function BusinessUnits() {
                   }}
                   showSortingIcon={sortType === 'totalAnswersCount'}
                   sortOrder={sortType === 'totalAnswersCount' && sortType === 'totalAnswersCount' ? sortOrder : undefined}
-                  w={['20%', 'calc(70% / 2)']}
+                  w={['15%', '20%']}
                 />
                 <AdminTableHeaderElement
                   data-id="939037a384ef"
@@ -405,7 +405,7 @@ function BusinessUnits() {
                   }}
                   showSortingIcon={sortType === 'totalAuditsCount'}
                   sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                  w={['20%', 'calc(70% / 2)']}
+                  w={['15%', '20%']}
                 />
               </>
             )}

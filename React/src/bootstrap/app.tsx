@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
-import './styles.css';
 import IdleMonitor from '../components/IdleMonitor';
 import AdminProvider from '../contexts/AdminProvider';
 import AppProvider, { useAppContext } from '../contexts/AppProvider';
@@ -14,6 +13,7 @@ import useInit from '../hooks/useInit';
 import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
 import { markerio } from './markerio';
+import './styles.css';
 import getTheme from './theme';
 
 function App() {
