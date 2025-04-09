@@ -12,6 +12,7 @@ import { IField } from '../../interfaces/IField';
 import { IUser } from '../../interfaces/IUser';
 import { TDefinedValidations } from '../../interfaces/TValidations';
 import Loader from '../Loader';
+import { formatEmail } from '../../utils/helpers';
 
 interface IPeoplePicker extends IField {
   placeholder?: string;
@@ -86,7 +87,7 @@ function UserData({
         overflow="hidden"
         position="relative"
         textOverflow="ellipsis">
-        {user?.email}
+        {formatEmail(user?.email)}
       </Box>
     </Flex>
   </Flex>
