@@ -19,7 +19,7 @@ const categories = async (
     }, organization._id);
 
     if (shouldJoin('trackerItemsResponsesCount')) {
-      for (const category of categories) {
+      const promises = categories.map(async (category) => {
         const pipeline: PipelineStage[] = [];
         join({
           pipeline,
@@ -37,11 +37,20 @@ const categories = async (
         pipeline.push({
           $count: 'count',
         });
-        const responses = await Responses.aggregate(pipeline);
-        if (responses && responses.length > 0)
-          category.trackerItemsResponsesCount = responses[0].count;
-
-      }
+  
+        try {
+          const responses = await Responses.aggregate(pipeline);
+          if (responses && responses.length > 0) {
+            category.trackerItemsResponsesCount = responses[0].count;
+          }
+        } catch (error) {
+          console.error(`Error fetching tracker item count for category ${category._id}:`, error);
+        }
+        return category;
+      });
+  
+      // Wait for all promises to resolve (all category counts to be fetched)
+      await Promise.all(promises);
     }
 
     return categories.sort((a, b) => a.name.localeCompare(b.name));
