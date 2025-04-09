@@ -110,8 +110,9 @@ function AuditTypes() {
 
       return sortOrder === 'asc' ? comparison : -comparison;
     };
-    setAuditTypes([...auditTypes].sort(sort));
-  }, [sortType, sortOrder, auditTypes]);
+
+    setAuditTypes((prev) => [...prev].sort(sort));
+  }, [sortType, sortOrder]);
 
   const {
     control,

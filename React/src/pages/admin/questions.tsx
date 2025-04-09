@@ -117,8 +117,8 @@ function Questions() {
       return 0;
     };
 
-    setQuestions([...questions].sort((a, b) => sort(a, b)));
-  }, [sortType, sortOrder, questions]); // Added 'questions' to the dependency array
+    setQuestions((prevQuestions) => [...prevQuestions].sort(sort));
+  }, [sortType, sortOrder]);
 
   const {
     control,

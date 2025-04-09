@@ -91,6 +91,8 @@ function Locations() {
   }, [data]);
 
   useEffect(() => {
+    if (!data?.locations) return;
+
     const sort = (a, b) => {
       let result;
       if (sortType === 'owner') result = (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '');
@@ -99,8 +101,9 @@ function Locations() {
 
       return sortOrder === 'asc' ? result : -result;
     };
-    setLocations([...locations].sort((a, b) => sort(a, b)));
-  }, [sortType, sortOrder, locations]);
+
+    setLocations([...data.locations].sort((a, b) => sort(a, b)));
+  }, [sortType, sortOrder, data]);
 
   const {
     control,

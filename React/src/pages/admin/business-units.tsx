@@ -93,16 +93,26 @@ function BusinessUnits() {
 
   useEffect(() => {
     const sort = (a, b) => {
+      if (sortType === 'owner') {
+        return sortOrder === 'asc'
+          ? (a.owner?.displayName || '').localeCompare(b.owner?.displayName || '')
+          : (b.owner?.displayName || '').localeCompare(a.owner?.displayName || '');
+      }
+
       const aValue = a[sortType];
       const bValue = b[sortType];
-      if (typeof aValue === 'string' && typeof bValue === 'string') return aValue.localeCompare(bValue);
 
-      if (typeof aValue === 'number' && typeof bValue === 'number') return aValue - bValue;
+      if (typeof aValue === 'string' && typeof bValue === 'string')
+        return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
 
-      return 0;
+      const aNum = typeof aValue === 'number' ? aValue : 0;
+      const bNum = typeof bValue === 'number' ? bValue : 0;
+
+      return sortOrder === 'asc' ? aNum - bNum : bNum - aNum;
     };
-    setBusinessUnits((prevBusinessUnits) => [...prevBusinessUnits].sort((a, b) => (sortOrder === 'asc' ? sort(a, b) : sort(b, a))));
-  }, [sortType, sortOrder, businessUnits]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    setBusinessUnits((prevBusinessUnits) => [...prevBusinessUnits].sort(sort));
+  }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,
