@@ -19,6 +19,7 @@ import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IAuditType } from '../../interfaces/IAuditType';
+import { useAppContext } from '../../contexts/AppProvider';
 
 const GET_AUDIT_TYPES = gql`
   query {
@@ -74,6 +75,7 @@ const defaultValues: Partial<Omit<IAuditType, 'recurring'> & { recurring: string
 
 function AuditTypes() {
   const toast = useToast();
+  const { organizationConfig } = useAppContext();
   const frequencyOptions = useMemo(() => auditFrequencies.map((f) => ({ value: f, label: f })), []);
   const { adminModalState, setAdminModalState } = useContext(AdminContext);
   const { data, loading, refetch } = useQuery(GET_AUDIT_TYPES);
@@ -83,6 +85,19 @@ function AuditTypes() {
   const device = useDevice();
   const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [disablePastDate, setDisablePastDate] = useState(false);
+
+  const fetchSettings = () => {
+    if (organizationConfig) {
+      const safetyWalkModule = organizationConfig.modules.find((module) => module.name === 'Safety Walk');
+      const disablePastDate = !!safetyWalkModule?.featureFlags?.disablePastDateSelection;
+      setDisablePastDate(disablePastDate);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, [organizationConfig]);
 
   const getAuditTypes = (auditTypesArray: IAuditType[]) => {
     if (!auditTypesArray) return [];
@@ -325,7 +340,9 @@ function AuditTypes() {
             validations={{
               notEmpty: true,
             }}
+            disablePastDate={disablePastDate}
           />
+
           <Dropdown
             control={control}
             data-id="7488a717820b"

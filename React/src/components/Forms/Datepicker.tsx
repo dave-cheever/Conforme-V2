@@ -17,6 +17,7 @@ interface IDatepicker extends IField {
       font?: string;
     };
   };
+  disablePastDate?: boolean;
 }
 
 const definedValidations: TDefinedValidations = {
@@ -38,11 +39,12 @@ function Datepicker({
   disabled = false,
   readMode = false,
   styles,
+  disablePastDate = false,
 }: IDatepicker) {
   const datePickerRef = useRef();
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    (<Controller
+    <Controller
       control={control}
       data-id="44f15e14bd0e"
       name={name}
@@ -50,14 +52,9 @@ function Datepicker({
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          (<Box data-id="e4adafedf8cd" id={name} w="full">
+          <Box data-id="e4adafedf8cd" id={name} w="full">
             {label && (
-              <Flex
-                align="center"
-                data-id="32f81c4931a4"
-                justify="space-between"
-                mb="none"
-                pt={2}>
+              <Flex align="center" data-id="32f81c4931a4" justify="space-between" mb="none" pt={2}>
                 <Box
                   color={error ? 'datepicker.labelFont.error' : styles ? styles?.textInput?.font : 'datepicker.labelFont.normal'}
                   data-id="c5948fe344e2"
@@ -65,7 +62,8 @@ function Datepicker({
                   fontWeight="bold"
                   left="none"
                   position="static"
-                  zIndex={2}>
+                  zIndex={2}
+                >
                   {label}
                   {required && (
                     <Asterisk
@@ -75,7 +73,8 @@ function Datepicker({
                       mb="8px"
                       ml="5px"
                       stroke="datepicker.iconAsterisk"
-                      w="9px" />
+                      w="9px"
+                    />
                   )}{' '}
                   {tooltip && (
                     <Tooltip data-id="e2a5b83c3aec" hasArrow label={tooltip} placement="top">
@@ -98,10 +97,10 @@ function Datepicker({
                 readMode
                   ? 'transparent'
                   : disabled
-                  ? 'datepicker.disabled.border'
-                  : error
-                  ? 'datepicker.border.error'
-                  : 'datepicker.border.normal'
+                    ? 'datepicker.disabled.border'
+                    : error
+                      ? 'datepicker.border.error'
+                      : 'datepicker.border.normal'
               }
               borderRadius="8px"
               borderWidth="1px"
@@ -117,7 +116,7 @@ function Datepicker({
               }}
               overflow="hidden"
               pt="none"
-              >
+            >
               {disabled || readMode ? (
                 <Text data-id="7fcef2fbc2f8" fontSize="smm" pl={readMode ? 0 : 4} w="full">
                   {value ? format(new Date(value), 'd MMM yyyy') : ''}
@@ -137,34 +136,22 @@ function Datepicker({
                   ref={datePickerRef}
                   selected={value ? new Date(value) : null}
                   showPopperArrow={false}
-                  showYearDropdown />
+                  showYearDropdown
+                  minDate={disablePastDate ? new Date() : undefined}
+                />
               )}
-              {!readMode && (
-                <CalendarIcon
-                  data-id="3e461f54c200"
-                  h="16px"
-                  ml="5px"
-                  mr="10px"
-                  mt="-2px"
-                 
-                  stroke="datepicker.font"
-                  w="14px" />
-              )}
+              {!readMode && <CalendarIcon data-id="3e461f54c200" h="16px" ml="5px" mr="10px" mt="-2px" stroke="datepicker.font" w="14px" />}
             </Flex>
             {error && (
-              <Box
-                color="datepicker.error"
-                data-id="66e5f79ad32d"
-                fontSize="smm"
-                ml={1}
-                mt={1}>
+              <Box color="datepicker.error" data-id="66e5f79ad32d" fontSize="smm" ml={1} mt={1}>
                 {error.message}
               </Box>
             )}
-          </Box>)
+          </Box>
         );
       }}
-      rules={{ validate }} />)
+      rules={{ validate }}
+    />
   );
 }
 

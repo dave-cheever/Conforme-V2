@@ -16,8 +16,9 @@ export interface IModule {
   showInNavigation: boolean;
   translations: { [key: string]: string };
   customQuestionsInDashboard: string[];
-  featureFlags?: { 
-    [key: string]: boolean | undefined,
-    "enableSafetyWalk"?: boolean,
+  featureFlags?: {
+    [key: string]: boolean | undefined;
+    enableSafetyWalk?: boolean;
+    disablePastDateSelection?: boolean;
   };
 }

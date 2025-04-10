@@ -80,6 +80,8 @@ The idea of Conforme is to run multiple instances of the app for multiple organi
     "featureFlags": {
       // Feature flags are optional. Each feature flag is described below.
       "enableSafetyWalk": true // Available in the audit module, configures the system as per requirements for BRE Safety Walk. Adds an additional walk type of virtual or physical to an audit (walk). Hides category and business unit from audits.
+      ,
+      "disablePastDateSelection" : false // If set to true, past date will be disabled in react-datepicker, while creating an audit. If set to false, past dates can be selected from date picker. Default value is false.
     }
   }],
   "allowedTenantsIds": [
