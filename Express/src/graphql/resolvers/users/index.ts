@@ -14,9 +14,19 @@ const usersResolvers = {
   Mutation: {
     updateUser,
   },
+  User: {
+    defaultPage: (user) => {
+      return Array.isArray(user.defaultPage) ? user.defaultPage : [];
+    }
+  },
 };
 
 export const usersTypeDefs = `
+ type DefaultPage {
+    name: String
+    path: String
+  }
+
   type User {
     _id: ID!
     firstName: String
@@ -27,7 +37,7 @@ export const usersTypeDefs = `
     jobTitle: String
     role: String!
     imgUrl: String
-    defaultPage: String!
+    defaultPage: [DefaultPage]
     organizationsIds: [String!]
     metatags: Metatags!
     lastLogin: Date
@@ -49,7 +59,7 @@ export const usersTypeDefs = `
     resolvedAnswersCount: Int
     closedAnswersCount: Int
   }
-  
+
   type Session {
     user: User!
     sessionExpiration: Date!
@@ -63,13 +73,19 @@ export const usersTypeDefs = `
     usersIds: [String!]!
   }
 
+
   input UsersAnswersCountInput {
     questionsCategoriesId: ID!
   }
 
+  input  DefaultPageInput {
+    name: String
+    path: String
+  }
+
   input UpdateUserModifyInput {
     _id: ID!
-    defaultPage: String
+    defaultPage: [DefaultPageInput]
   }
 `;
 

@@ -14,6 +14,7 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
     // Lookup info for users in parallel using promise.all
     users = await Promise.all(
       users.map(async (user) => {
+        user.defaultPage = Array.isArray(user.defaultPage) ? user.defaultPage : [];
 
         // Inject RACF count
         const getRACFCount = async (selector: object) => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 import { IAppContext } from '../interfaces/IAppContext';
 import { IModule } from '../interfaces/IModule';
@@ -36,7 +36,7 @@ function AppProvider({ children }) {
       user,
       setUser,
     }),
-    [roles, settings, organizationConfig, user],
+    [roles, settings, organizationConfig,module, user],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

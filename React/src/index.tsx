@@ -1,10 +1,10 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import axios from 'axios';
 
+import React from 'react';
 import App from './bootstrap/app';
 import loadWidget from './bootstrap/markerio';
 import reportWebVitals from './reportWebVitals';

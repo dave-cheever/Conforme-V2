@@ -32,7 +32,10 @@ const GET_USERS = gql`
       jobTitle
       lastLogin
       imgUrl
-      defaultPage
+      defaultPage{
+      name
+      path
+      }
       responsibleCount
       accountableCount
       contributorCount
@@ -64,7 +67,7 @@ function Users() {
   const onHomePageChange = async (e, userId) => {
     setLoadingUsers((currentLoadingUsers) => [...currentLoadingUsers, userId]);
     await updateFunction({
-      variables: { values: { _id: userId, defaultPage: e.target.value } },
+      variables: { values: { _id: userId, defaultPage: [{ name: module?.name, path: e.target.value }] } },
     });
     await refetch();
     setLoadingUsers((currentLoadingUsers) => currentLoadingUsers.filter((id) => id !== userId));
@@ -78,11 +81,10 @@ function Users() {
       },
     ];
     const user = users.find(({ _id }) => _id === userId);
-
     if (isPermitted({ user, action: 'adminPanel' })) {
       pages.push({
         name: 'Admin Page',
-        url: module?.type === 'tracker' ? '/admin/tracker-items' : '/audits',
+        url: module?.type === 'tracker' ? `/${module?.path}/admin/tracker-items` : `/${module?.path}/admin/audit-types`,
       });
     }
     return pages;
@@ -283,7 +285,7 @@ function Users() {
           <Box data-id="ab4ef3862b03" w="16%">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>
           <Flex data-id="8f0afdfdd223" flexDir="column" w="16%">
             {getDefaultPages(user._id).length === 1 ? (
-              <Box data-id="db4de0041d43">{getDefaultPages(user._id).find(({ url }) => url === user.defaultPage)?.name}</Box>
+              <Box data-id="db4de0041d43">{getDefaultPages(user._id).find(({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'))?.name}</Box>
             ) : loadingUsers.includes(user._id) ? (
               <Flex data-id="fb8ef86f4542" w="130px">
                 <Loader data-id="94999430ea63" size="sm" />
@@ -294,7 +296,7 @@ function Users() {
                 fontSize="smm"
                 icon={<ArrowDownIcon data-id="265a8477f9a0" ml={3} />}
                 onChange={(e) => onHomePageChange(e, user._id)}
-                value={user.defaultPage}
+                value={user.defaultPage?.find((value) =>value.name == module?.name)?.path}
                 variant="unstyled"
                 w="130px">
                 {getDefaultPages(user._id).map((page) => (

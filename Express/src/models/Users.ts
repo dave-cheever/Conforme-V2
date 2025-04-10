@@ -15,7 +15,22 @@ const userSchema = new Schema<IUser, IUserModel>({
   jobTitle: String,
   role: String,
   managerId: String,
-  defaultPage: String,
+  defaultPage: {
+    type: [{
+      name: { type: String },
+      path: { type: String }
+    }],
+    default: [],
+    set: (val: any) => {
+      if (typeof val === 'string') {
+        return [{ name: 'Document Control', path: val }];
+      }
+      if (val && !Array.isArray(val) && typeof val === 'object') {
+        return [val];
+      }
+      return Array.isArray(val) ? val : [];
+    }
+  },
   organizationsIds: [String],
   userCreated: Date,
   lastLogin: Date,
@@ -45,9 +60,10 @@ userSchema.statics.customFindById = async function (userId: string): Promise<IUs
 };
 
 userSchema.statics.customAdd = async function (user: IUser, organizationId: string): Promise<IUser> {
+
   const newUser = await this.create({
     ...user,
-    defaultPage: '/',
+    defaultPage: [],
     organizationsIds: [organizationId],
     userCreated: Date.now(),
   });

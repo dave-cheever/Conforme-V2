@@ -16,7 +16,10 @@ const USERS = gql`
         jobTitle
         role
         imgUrl
-        defaultPage
+        defaultPage{
+        name
+        path
+        }
       }
     }
   }

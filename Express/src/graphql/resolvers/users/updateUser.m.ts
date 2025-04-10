@@ -19,14 +19,40 @@ const updateUser = async (
     );
     if (!updateUser) throw new Error("User doesn't exist");
 
+    // Ensure defaultPage is an array, otherwise set it to an empty array
+    let updatedDefaultPage = Array.isArray(updateUser.defaultPage) ? [...updateUser.defaultPage] : [];
+    if (updateUserModifyInput.defaultPage) {
+      updateUserModifyInput.defaultPage.forEach((newPage) => {
+        // Find if the module name already exists in the array
+        const index = updatedDefaultPage.findIndex(
+          (page) => page.name === newPage.name
+        );
+
+        if (index !== -1) {
+          // If it exists, update the specific module
+          updatedDefaultPage[index] = {
+            ...updatedDefaultPage[index],
+            ...newPage, // Update the properties of the matched module
+          };
+        } else {
+          // If the module doesn't exist, add the new module
+          updatedDefaultPage.push(newPage);
+        }
+      });
+    }
+
+    // Now build the updated user object
     const updatedUser = {
       ...updateUser._doc,
       ...updateUserModifyInput,
+      defaultPage: updatedDefaultPage, // Use the modified defaultPage
       metatags: {
         ...updateUser?.metatags,
         ...genMetatags('updated', user._id),
       },
     };
+
+    // Update the user in the database
     await Users.updateOne({ _id: updateUser._id }, updatedUser);
 
     return updatedUser;

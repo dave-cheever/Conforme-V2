@@ -8,7 +8,22 @@ import IConfig from '../../interfaces/IConfig';
 
 const userSchema = new Schema<IUser, IUserModel>({
   _id: String,
-  defaultPage: String,
+  defaultPage:{
+    type: [{
+      name: { type: String },
+      path: { type: String }
+    }],
+    default: [],
+    set: (val: any) => {
+      if (typeof val === 'string') {
+        return [{ name: 'Document Control', path: val }];
+      }
+      if (val && !Array.isArray(val) && typeof val === 'object') {
+        return [val];
+      }
+      return Array.isArray(val) ? val : [];
+    }
+  },
   organizationsIds: [String],
   userCreated: Date,
   lastLogin: Date,

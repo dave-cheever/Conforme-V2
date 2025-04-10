@@ -1,5 +1,11 @@
 import { IBase } from './IBase';
 
+
+export interface DefaultPage {
+  name?: string,
+  path?: string,
+}
+
 export interface IUser extends IBase {
   organizationsIds?: string[];
   firstName?: string;
@@ -9,7 +15,7 @@ export interface IUser extends IBase {
   jobTitle?: string;
   role: 'reader' | 'admin' | 'user';
   imgUrl?: string;
-  defaultPage?: string;
+  defaultPage?: DefaultPage[];
   lastLogin: Date;
   userCreated?: Date;
 

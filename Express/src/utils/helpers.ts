@@ -166,8 +166,7 @@ export const redirectAfterLogin = async (req, res, errorMessage, organization) =
     const [paramName, paramValue] = params.split('=');
     if (paramName === 'redirect' && paramValue.indexOf(clientUrl) === 0) redirectUrl = paramValue;
   }
-  redirectUrl = `${clientUrl}${user?.defaultPage || ''}`;
-
+  redirectUrl = `${clientUrl}`;
   if (errorMessage) redirectUrl += `/login?errorMessage=${errorMessage}`;
 
   // update the last Login of user

@@ -17,18 +17,30 @@ import './styles.css';
 import getTheme from './theme';
 
 function App() {
-  const { user, organizationConfig } = useAppContext();
+  const { user, organizationConfig ,module} = useAppContext();
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
   const { navigate } = useNavigate();
 
-  // Redirect to last path
+
   useEffect(() => {
-    const redirectPath = localStorage.getItem('redirectUrl');
-    if (redirectPath) navigate(redirectPath);
-    localStorage.removeItem('redirectUrl');
-  }, []);
+    if (user && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
+
+
+      const defaultPage = user.defaultPage.find((value)=>value.name===module?.name)
+      const defaultPath = defaultPage?.path;
+      if (defaultPath === "/") {
+        navigate(defaultPath);
+
+      } else {
+        navigate(`${defaultPath}`);
+
+      }
+    }
+  }, [user?.defaultPage]);
+
+
 
   useEffect(() => {
     setTimeout(() => {
