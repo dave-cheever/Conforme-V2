@@ -5,6 +5,7 @@ import { gql, useMutation } from '@apollo/client';
 import { Box, Button, Flex, Modal, ModalCloseButton, ModalContent, ModalOverlay, useDisclosure, useToast } from '@chakra-ui/react';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import { useAppContext } from '../../contexts/AppProvider';
 import TextInput from '../Forms/TextInput';
 
 interface IAddTrackerItemAttribute {
@@ -16,8 +17,8 @@ interface IAddTrackerItemAttribute {
 }
 
 const CREATE_CATEGORY = gql`
-  mutation ($name: String!) {
-    createCategory(name: $name) {
+  mutation ($name: String!, $moduleId: ID!) {
+    createCategory(name: $name, moduleId: $moduleId) {
       _id
       name
     }
@@ -34,6 +35,7 @@ const CREATE_REGULATORY_BODY = gql`
 `;
 
 function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttributeValue, refetch }: IAddTrackerItemAttribute) {
+  const { module } = useAppContext();
   const { onClose } = useDisclosure();
   const [createCategory] = useMutation(CREATE_CATEGORY);
   const [createRegulatoryBody] = useMutation(CREATE_REGULATORY_BODY);
@@ -70,9 +72,7 @@ function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttr
         const values = getValues();
         switch (type) {
           case 'Category': {
-            const { data: category } = await createCategory({
-              variables: values,
-            });
+            const { data: category } = await createCategory({ variables: { ...values, moduleId: module?._id } });
             refetch();
             toast({ ...toastSuccess, description: 'Category added' });
             newAttributeValue({

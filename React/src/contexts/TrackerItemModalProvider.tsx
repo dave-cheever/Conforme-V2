@@ -15,12 +15,13 @@ import Summary from '../components/AdminTrackerItemModal/Summary';
 import { ITrackerItem } from '../interfaces/ITrackerItem';
 import { ITrackerItemModalContext } from '../interfaces/ITrackerItemModalContext';
 import { ITrackerItemModalDialogDetails } from '../interfaces/ITrackerItemModalDialogDetails';
+import { useAppContext } from './AppProvider';
 
 export const TrackerItemModalContext = createContext({} as ITrackerItemModalContext);
 
 const GET_FORM_DATA = gql`
-  query {
-    categories {
+  query ($moduleId: ID!) {
+    categories (moduleId: $moduleId){
       _id
       name
     }
@@ -64,7 +65,8 @@ export const useTrackerItemModalContext = () => {
 };
 
 function TrackerItemModalProvider({ children }) {
-  const { data, refetch } = useQuery(GET_FORM_DATA);
+  const { module } = useAppContext();
+  const { data, refetch } = useQuery(GET_FORM_DATA,{ variables: { moduleId: module?._id }, skip: !module?._id });
   const [savingDialogDetails, setSavingDialogDetails] = useState<ITrackerItemModalDialogDetails>(initialDialogDetails);
   const [visitedTab, setVisitedTab] = useState<number>(0);
 
