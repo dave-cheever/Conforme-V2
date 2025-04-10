@@ -18,6 +18,7 @@ export const locationsTypeDefs = `
   type Location {
     _id: ID!
     name: String!
+    scope: Scope!
     ownerId: String!
     organizationId: String
     notes: String
@@ -40,6 +41,7 @@ export const locationsTypeDefs = `
 
   input LocationInput {
     name: String!
+    moduleId: ID!
     ownerId: String!
     notes: String
   }
@@ -50,10 +52,6 @@ export const locationsTypeDefs = `
     ownerId: String! 
     notes: String
   }
-
-  input LocationQueryInput {
-    _id: ID!
-  }
   
   input LocationsAnswersCountInput {
     questionsCategoriesId: ID!
@@ -61,7 +59,7 @@ export const locationsTypeDefs = `
 `;
 
 export const locationsQueryDefs = `
-  locations(locationQueryInput: LocationQueryInput, locationsAnswersCountInput: LocationsAnswersCountInput, locationsPagination: PaginationInput): [Location!]!
+  locations(moduleId: ID, locationsAnswersCountInput: LocationsAnswersCountInput, locationsPagination: PaginationInput): [Location!]!
 `;
 
 export const locationsMutationDefs = `

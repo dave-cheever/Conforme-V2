@@ -21,6 +21,9 @@ const createLocation = async (
       name: locationInput.name.trim(),
       organizationId: organization._id,
       metatags: genMetatags('added', user._id),
+      scope: {
+        moduleId:locationInput?.moduleId,
+      },
     };
 
     const location = await Locations.customCreate(

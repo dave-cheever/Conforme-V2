@@ -1,4 +1,4 @@
-import { IBase, IUser } from 'app-interfaces';
+import { IBase, IScope, IUser } from 'app-interfaces';
 
 export interface ILocation extends IBase {
   _id: string;
@@ -6,6 +6,7 @@ export interface ILocation extends IBase {
   ownerId: string;
   organizationId: string;
   notes: string;
+  scope:IScope,
 
   // Additional fields - can be added when getting from database
   owner?: IUser;

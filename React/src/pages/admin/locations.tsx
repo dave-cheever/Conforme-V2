@@ -23,8 +23,8 @@ import useDevice from '../../hooks/useDevice';
 import { ILocation } from '../../interfaces/ILocation';
 
 const GET_LOCATIONS = gql`
-  query {
-    locations {
+ query ($moduleId: ID!) {
+    locations(moduleId: $moduleId) {
       _id
       name
       ownerId
@@ -70,7 +70,7 @@ function Locations() {
   const toast = useToast();
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
-  const { data, loading, refetch } = useQuery(GET_LOCATIONS);
+  const { data, loading, refetch } = useQuery(GET_LOCATIONS, { variables: { moduleId: module?._id }, skip: !module?._id });
   const [createFunction] = useMutation(CREATE_LOCATION);
   const [updateFunction] = useMutation(UPDATE_LOCATION);
   const [deleteFunction] = useMutation(DELETE_LOCATION);
@@ -140,7 +140,7 @@ function Locations() {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
-        await createFunction({ variables: { values } });
+        await createFunction({ variables: { values:{...values, moduleId: module?._id }}});
         toast({ ...toastSuccess, description: `${capitalize(t('location'))} added` });
         refetch();
       } else {

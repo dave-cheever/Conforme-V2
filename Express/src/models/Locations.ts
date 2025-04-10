@@ -59,6 +59,17 @@ const locationsSchema = new Schema<ILocation, ILocationModel>({
   },
   ownerId: String,
   organizationId: String,
+  scope: {
+    module: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    moduleId: String,
+    type: {
+      type: String,
+    },
+    _id: String,
+  },
   notes: String,
   metatags: {
     addedAt: Date,

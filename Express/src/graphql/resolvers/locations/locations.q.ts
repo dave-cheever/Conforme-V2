@@ -6,14 +6,14 @@ import { doesPathExist, getActionStatus, join } from 'app-utils';
 
 const locations = async (
   _,
-  { locationQueryInput = {}, locationsAnswersCountInput, locationsPagination },
+  { moduleId, locationsAnswersCountInput, locationsPagination },
   { organization },
   info: GraphQLResolveInfo,
 ) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['locations', element]);
 
   try {
-    let locations = await Locations.customFind(locationQueryInput, organization._id, locationsPagination);
+    let locations = await Locations.customFind(moduleId && { 'scope.moduleId': moduleId } , organization._id, locationsPagination);
 
     if (shouldJoin('trackerItemsResponsesCount')) {
       for (const location of locations) {
