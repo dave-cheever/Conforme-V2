@@ -1,37 +1,40 @@
-import { getDate, isAfter, subDays } from 'date-fns';
+import { isAfter, subDays } from 'date-fns';
 
 import { IAudit, TFrequency } from 'app-interfaces';
 import { Audits, AuditTypes, Organizations } from 'app-models';
 import { getNextRenewalDate } from 'app-utils';
 
-const shouldCalculate = (startDate: Date, frequency: TFrequency, windowInDays = 1) => {
-  const today = new Date();
-
+const shouldCalculate = (dueDate: Date, frequency: TFrequency, windowInDays = 1) => {
   if (frequency === 'Monthly') {
-    // Calculate a window i.e yesterday where the calculation could have been missed
+    const today = new Date();
+    const normalizeDate = (date: Date) => new Date(date.setHours(0, 0, 0, 0));
     const windowStartDate = subDays(today, windowInDays);
-    return getDate(today) === getDate(startDate) || getDate(windowStartDate) === getDate(startDate);
+    const normalizedToday = normalizeDate(today);
+    const normalizedWindowStartDate = normalizeDate(windowStartDate);
+    const normalizedDueDate = normalizeDate(dueDate);
+    return normalizedDueDate.getTime() >= normalizedWindowStartDate.getTime() && normalizedDueDate.getTime() <= normalizedToday.getTime();
   }
   return false;
 };
+
 const calculateAudits = async () => {
   const allowedDomains: string[] = process.env.ALLOWED_DOMAINS?.split(';') || [];
   const organizations = await Organizations.find({ domain: { $in: allowedDomains } }).lean();
   for (const organization of organizations) {
     const auditTypes = await AuditTypes.customFind({}, organization._id);
+    const safetyWalkModule: any = organization.modules.find((module) => module.name === 'Safety Walk');
+    const isSafetyWalkEnabled = safetyWalkModule?.featureFlags?.enableSafetyWalk;
 
     await Promise.all(
       auditTypes.map(async (auditType) => {
-        if (!shouldCalculate(auditType.startingDate, auditType.frequency)) return;
-
-        const audits = await Audits.customFind({ auditTypeId: auditType._id, walkType: 'physical' }, organization._id);
-
+        const auditQuery: Record<string, any> = { auditTypeId: auditType._id };
+        if (isSafetyWalkEnabled) auditQuery.walkType = 'physical';
+        const audits = await Audits.customFind(auditQuery, organization._id);
         // Update not completed audits to missed
         audits
           .filter(({ status, dueDate }) => {
-            const today = new Date();
             const dueDateObj = new Date(dueDate);
-            return status === 'upcoming' && isAfter(today, dueDateObj);
+            return status === 'upcoming' && isAfter(new Date(), dueDateObj) && shouldCalculate(dueDateObj, auditType.frequency);
           })
           .forEach(async (audit) => {
             await Audits.customUpdateOne(
@@ -44,31 +47,29 @@ const calculateAudits = async () => {
 
         // Create upcoming audits
         const upcomingAudits = audits
-          // Get upcoming and completed audits
           .filter(({ status }) => status !== 'missed')
-          // Sort by due date to get the latest
           .sort(({ dueDate: a }, { dueDate: b }) => new Date(b!).getTime() - new Date(a!).getTime())
-          // Get the first one per businessUnit
           .reduce((acc, item) => {
             if (!acc.some((audit) => audit.businessUnitId === item.businessUnitId)) acc.push(item);
             return acc;
           }, [] as IAudit[]);
         for (const audit of upcomingAudits) {
           if (audit.recurring) {
+            const newAudit: Record<string, any> = {
+              auditTypeId: auditType._id,
+              reference: await Audits.customGenerateReference(organization._id, audit.scope.moduleId),
+              status: 'upcoming',
+              dueDate: getNextRenewalDate(audit.dueDate, auditType.frequency),
+              locationId: audit.locationId,
+              businessUnitId: audit.businessUnitId,
+              auditorId: audit.auditorId,
+              participantsIds: [],
+              recurring: auditType.recurring,
+              scope: audit.scope,
+            };
+            if (isSafetyWalkEnabled) newAudit.walkType = 'physical';
             await Audits.customCreate(
-              {
-                auditTypeId: auditType._id,
-                reference: await Audits.customGenerateReference(organization._id, audit.scope.moduleId),
-                status: 'upcoming',
-                dueDate: getNextRenewalDate(audit.dueDate, auditType.frequency),
-                walkType: 'physical',
-                locationId: audit.locationId,
-                businessUnitId: audit.businessUnitId,
-                auditorId: audit.auditorId,
-                participantsIds: [],
-                recurring: auditType.recurring,
-                scope: audit.scope,
-              },
+              newAudit,
               audit.metatags.addedBy,
               organization._id,
             );
