@@ -30,7 +30,7 @@ global.apiUrl = `${getProtocol()}${process.env.API_URL}`;
 const getApp = async () => {
   const app = express();
 
-  const apolloServer = new ApolloServer<IContext>({ typeDefs, resolvers });
+  const apolloServer = new ApolloServer<IContext>({typeDefs, resolvers });
   await apolloServer.start();
 
   initPassport(passport);

@@ -24,8 +24,8 @@ import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 
 const GET_BUSINESS_UNITS = gql`
-  query {
-    businessUnits {
+  query ($moduleId: ID!) {
+    businessUnits(moduleId: $moduleId) {
       _id
       name
       ownerId
@@ -70,7 +70,7 @@ function BusinessUnits() {
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { setResponseFiltersValue, setAnswerFiltersValue, setAuditFiltersValue } = useFiltersContext();
-  const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS);
+  const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS,{ variables: { moduleId: module?._id }, skip: !module?._id });
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);
@@ -148,7 +148,7 @@ function BusinessUnits() {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
-        await createFunction({ variables: { values } });
+        await createFunction({ variables: { values:{...values, moduleId: module?._id }}});
         refetch();
         toast({ ...toastSuccess, description: `${capitalize(t('business unit'))} added` });
       } else {

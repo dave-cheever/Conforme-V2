@@ -6,14 +6,14 @@ import { doesPathExist, getActionStatus, join } from 'app-utils';
 
 const businessUnits = async (
   _,
-  { businessUnitQueryInput = {}, businessUnitsAnswersCountInput, businessUnitsPagination },
+  { moduleId, businessUnitsAnswersCountInput, businessUnitsPagination },
   { organization },
   info: GraphQLResolveInfo,
 ) => {
   const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['businessUnits', element]);
 
   try {
-    let businessUnits = await BusinessUnits.customFind(businessUnitQueryInput, organization._id, businessUnitsPagination);
+    let businessUnits = await BusinessUnits.customFind(moduleId && { 'scope.moduleId': moduleId }, organization._id, businessUnitsPagination);
 
     businessUnits = await Promise.all(
       businessUnits.map(async (businessUnit) => {

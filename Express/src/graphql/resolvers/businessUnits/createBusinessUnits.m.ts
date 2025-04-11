@@ -17,6 +17,9 @@ const createBusinessUnit = async (
     const newBusinessUnit = {
       ...businessUnitInput,
       name: businessUnitInput.name.trim(),
+      scope: {
+        moduleId:businessUnitInput?.moduleId,
+      },
     };
     const createdBusinessUnit = await BusinessUnits.customCreate(
       newBusinessUnit,

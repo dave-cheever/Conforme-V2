@@ -27,6 +27,17 @@ const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
   ownerId: String,
   imgUrl: String,
   organizationId: String,
+  scope: {
+    module: {
+      type: String,
+      enum: ['audits', 'tracker'],
+    },
+    moduleId: String,
+    type: {
+      type: String,
+    },
+    _id: String,
+  },
   metatags: {
     addedAt: Date,
     addedBy: String,

@@ -19,6 +19,7 @@ export const businessUnitsTypeDefs = `
     _id: ID!
     identifier: String
     name: String!
+    scope:Scope!
     imgUrl: String
     ownerId: String
     owner: User
@@ -40,6 +41,7 @@ export const businessUnitsTypeDefs = `
 
   input BusinessUnitInput {
     identifier: String
+    moduleId:ID!
     name: String!
     ownerId: String
   }
@@ -50,9 +52,7 @@ export const businessUnitsTypeDefs = `
     ownerId: String
   }
 
-  input BusinessUnitQueryInput {
-    _id: ID!
-  }
+
 
   input BusinessUnitsAnswersCountInput {
     questionsCategoriesId: ID!
@@ -60,13 +60,13 @@ export const businessUnitsTypeDefs = `
 `;
 
 export const businessUnitsQueryDefs = `
-  businessUnits(businessUnitQueryInput: BusinessUnitQueryInput, businessUnitsAnswersCountInput: BusinessUnitsAnswersCountInput, businessUnitsPagination: PaginationInput): [BusinessUnit!]!
+  businessUnits(moduleId: ID, businessUnitsAnswersCountInput: BusinessUnitsAnswersCountInput, businessUnitsPagination: PaginationInput): [BusinessUnit!]!
 `;
 
 export const businessUnitsMutationDefs = `
   createBusinessUnit(businessUnitInput: BusinessUnitInput!): BusinessUnit!
   updateBusinessUnit(businessUnitModifyInput: BusinessUnitModifyInput!): BusinessUnit!
-  deleteBusinessUnit(_id: String!): Boolean!  
+  deleteBusinessUnit(_id: String!): Boolean!
 `;
 
 export default businessUnitsResolvers;
