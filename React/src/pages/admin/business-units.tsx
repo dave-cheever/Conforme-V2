@@ -70,7 +70,7 @@ function BusinessUnits() {
   const { module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { setResponseFiltersValue, setAnswerFiltersValue, setAuditFiltersValue } = useFiltersContext();
-  const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS,{ variables: { moduleId: module?._id }, skip: !module?._id });
+  const { data, loading, refetch } = useQuery(GET_BUSINESS_UNITS, { variables: { moduleId: module?._id }, skip: !module?._id });
   const [createFunction] = useMutation(CREATE_BUSINESS_UNIT);
   const [updateFunction] = useMutation(UPDATE_BUSINESS_UNIT);
   const [deleteFunction] = useMutation(DELETE_BUSINESS_UNIT);

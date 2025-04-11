@@ -129,6 +129,7 @@ function Datepicker({
                   dateFormatCalendar="MMMM"
                   disabledKeyboardNavigation
                   dropdownMode="select"
+                  minDate={disablePastDate ? new Date() : undefined}
                   name={name}
                   onCalendarClose={onBlur}
                   onChange={(date) => onChange(date)}
@@ -137,7 +138,6 @@ function Datepicker({
                   selected={value ? new Date(value) : null}
                   showPopperArrow={false}
                   showYearDropdown
-                  minDate={disablePastDate ? new Date() : undefined}
                 />
               )}
               {!readMode && <CalendarIcon data-id="3e461f54c200" h="16px" ml="5px" mr="10px" mt="-2px" stroke="datepicker.font" w="14px" />}

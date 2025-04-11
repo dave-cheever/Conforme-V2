@@ -15,11 +15,11 @@ import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
+import { useAppContext } from '../../contexts/AppProvider';
 import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IAuditType } from '../../interfaces/IAuditType';
-import { useAppContext } from '../../contexts/AppProvider';
 
 const GET_AUDIT_TYPES = gql`
   query {
@@ -333,6 +333,7 @@ function AuditTypes() {
           <Datepicker
             control={control}
             data-id="ecd810896977"
+            disablePastDate={disablePastDate}
             label="Starting date"
             name="startingDate"
             placeholder="Starting date"
@@ -340,7 +341,6 @@ function AuditTypes() {
             validations={{
               notEmpty: true,
             }}
-            disablePastDate={disablePastDate}
           />
 
           <Dropdown

@@ -11,8 +11,8 @@ import { Asterisk, ChevronRight, Trashcan } from '../../icons';
 import { IField } from '../../interfaces/IField';
 import { IUser } from '../../interfaces/IUser';
 import { TDefinedValidations } from '../../interfaces/TValidations';
-import Loader from '../Loader';
 import { formatEmail } from '../../utils/helpers';
+import Loader from '../Loader';
 
 interface IPeoplePicker extends IField {
   placeholder?: string;

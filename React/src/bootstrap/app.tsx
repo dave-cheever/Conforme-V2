@@ -17,30 +17,25 @@ import './styles.css';
 import getTheme from './theme';
 
 function App() {
-  const { user, organizationConfig ,module} = useAppContext();
+  const { user, organizationConfig, module} = useAppContext();
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
   const { navigate } = useNavigate();
 
-
   useEffect(() => {
     if (user && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
 
-
       const defaultPage = user.defaultPage.find((value)=>value.name===module?.name)
       const defaultPath = defaultPage?.path;
-      if (defaultPath === "/") {
+      if (defaultPath === "/") 
         navigate(defaultPath);
 
-      } else {
+       else 
         navigate(`${defaultPath}`);
-
-      }
+      
     }
   }, [user?.defaultPage]);
-
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -58,27 +53,16 @@ function App() {
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (
-      (<ChakraProvider data-id="8bb923075c38" theme={getTheme(organizationConfig?.theme)}>
-        <Flex
-          alignItems="center"
-          data-id="33d5cdd6386a"
-          h="100vh"
-          justifyContent="center"
-          w="100vw">
-          <Spinner
-            color="brand.primary"
-            data-id="db2f2811922f"
-            emptyColor="gray.200"
-            size="xl"
-            speed="0.65s"
-            thickness="4px" />
+      <ChakraProvider data-id="8bb923075c38" theme={getTheme(organizationConfig?.theme)}>
+        <Flex alignItems="center" data-id="33d5cdd6386a" h="100vh" justifyContent="center" w="100vw">
+          <Spinner color="brand.primary" data-id="db2f2811922f" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
         </Flex>
-      </ChakraProvider>)
+      </ChakraProvider>
     );
   }
 
   return (
-    (<ChakraProvider data-id="ba8f0b72a649" theme={getTheme(organizationConfig?.theme)}>
+    <ChakraProvider data-id="ba8f0b72a649" theme={getTheme(organizationConfig?.theme)}>
       <CSSReset data-id="98971139de59" />
       {user && <IdleMonitor data-id="70d9b5aff63a" />}
       <AdminProvider data-id="3936a5fd8325">
@@ -90,16 +74,18 @@ function App() {
           </Routes>
         </FiltersProvider>
       </AdminProvider>
-    </ChakraProvider>)
+    </ChakraProvider>
   );
 }
 
 function AppWithContext() {
-  return <AppProvider data-id="1485cd05cde6">
-    <ConfigProvider data-id="f93a4ac1fd0d">
-      <App data-id="59ebca745f27" />
-    </ConfigProvider>
-  </AppProvider>
+  return (
+    <AppProvider data-id="1485cd05cde6">
+      <ConfigProvider data-id="f93a4ac1fd0d">
+        <App data-id="59ebca745f27" />
+      </ConfigProvider>
+    </AppProvider>
+  );
 }
 
 export default AppWithContext;

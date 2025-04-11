@@ -1,6 +1,5 @@
 import { IBase } from './IBase';
 
-
 export interface DefaultPage {
   name?: string,
   path?: string,

@@ -66,7 +66,7 @@ export const useTrackerItemModalContext = () => {
 
 function TrackerItemModalProvider({ children }) {
   const { module } = useAppContext();
-  const { data, refetch } = useQuery(GET_FORM_DATA,{ variables: { moduleId: module?._id }, skip: !module?._id });
+  const { data, refetch } = useQuery(GET_FORM_DATA, { variables: { moduleId: module?._id }, skip: !module?._id });
   const [savingDialogDetails, setSavingDialogDetails] = useState<ITrackerItemModalDialogDetails>(initialDialogDetails);
   const [visitedTab, setVisitedTab] = useState<number>(0);
 

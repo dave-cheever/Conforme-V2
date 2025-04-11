@@ -36,7 +36,7 @@ function AppProvider({ children }) {
       user,
       setUser,
     }),
-    [roles, settings, organizationConfig,module, user],
+    [roles, settings, organizationConfig, module, user],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
