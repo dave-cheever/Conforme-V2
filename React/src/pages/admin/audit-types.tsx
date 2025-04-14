@@ -89,7 +89,7 @@ function AuditTypes() {
 
   const fetchSettings = () => {
     if (organizationConfig) {
-      const safetyWalkModule = organizationConfig.modules.find((module) => module.name === 'Safety Walk');
+      const safetyWalkModule = organizationConfig.modules.find((module) => module.type === 'audits');
       const disablePastDate = !!safetyWalkModule?.featureFlags?.disablePastDateSelection;
       setDisablePastDate(disablePastDate);
     }
