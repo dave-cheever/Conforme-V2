@@ -5,7 +5,6 @@ import { Audits, AuditTypes, Organizations } from 'app-models';
 import { getNextRenewalDate } from 'app-utils';
 
 const shouldCalculate = (dueDate: Date, frequency: TFrequency, windowInDays = 1) => {
-  if (frequency === 'Monthly') {
     const today = new Date();
     const normalizeDate = (date: Date) => new Date(date.setHours(0, 0, 0, 0));
     const windowStartDate = subDays(today, windowInDays);
@@ -13,8 +12,6 @@ const shouldCalculate = (dueDate: Date, frequency: TFrequency, windowInDays = 1)
     const normalizedWindowStartDate = normalizeDate(windowStartDate);
     const normalizedDueDate = normalizeDate(dueDate);
     return normalizedDueDate.getTime() >= normalizedWindowStartDate.getTime() && normalizedDueDate.getTime() <= normalizedToday.getTime();
-  }
-  return false;
 };
 
 const calculateAudits = async () => {
@@ -22,7 +19,7 @@ const calculateAudits = async () => {
   const organizations = await Organizations.find({ domain: { $in: allowedDomains } }).lean();
   for (const organization of organizations) {
     const auditTypes = await AuditTypes.customFind({}, organization._id);
-    const safetyWalkModule: any = organization.modules.find((module) => module.name === 'Safety Walk');
+    const safetyWalkModule: any = organization.modules.find((module) => module.type === 'audits');
     const isSafetyWalkEnabled = safetyWalkModule?.featureFlags?.enableSafetyWalk;
 
     await Promise.all(
