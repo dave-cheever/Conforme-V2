@@ -305,7 +305,7 @@ function AuditTypes() {
         modalType={adminModalState}
         onAction={handleAction}
       >
-        <Stack data-id="58b2d418f910" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+        <Stack data-id="58b2d418f910" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 80px)'}>
           <TextInput
             control={control}
             data-id="4a3fec84e4e7"
