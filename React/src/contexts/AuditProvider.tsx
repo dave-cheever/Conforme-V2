@@ -99,6 +99,9 @@ const GET_AUDIT_DATA = gql`
           addedAt
           thumbnail
         }
+        notes
+        negativeValue
+        positiveValue
         options
         metatags {
           updatedAt
@@ -141,6 +144,9 @@ const GET_AUDIT_DATA = gql`
         businessUnit {
           name
         }
+        notes
+        negativeValue
+        positiveValue
         answer
         status
         attachments {

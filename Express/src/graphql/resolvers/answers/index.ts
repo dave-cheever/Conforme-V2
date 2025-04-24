@@ -35,6 +35,9 @@ export const answersTypeDefs = `
     addedBy: User!
     creator : User!
     actions: [Action]
+    positiveValue: String  
+    negativeValue: String  
+    notes: String    
   }
 
   input AnswerUsersInput {
@@ -61,6 +64,9 @@ export const answersTypeDefs = `
     attachments: [DocumentInput]
     businessUnitId: String
     scope: ScopeInput!
+    positiveValue: String   
+    negativeValue: String   
+    notes: String  
   }
   
   input AnswerModifyInput {
@@ -70,6 +76,9 @@ export const answersTypeDefs = `
     options: Any
     attachments: [DocumentInput]
     businessUnitId: String
+    positiveValue: String  
+    negativeValue: String   
+    notes: String
   }
 
   input AnswerDocumentsAddInput {

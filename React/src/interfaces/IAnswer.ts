@@ -20,7 +20,9 @@ export interface IAnswer extends IBase {
     [name: string]: boolean;
   };
   scope: IScope;
-
+  negativeValue?: string,
+  positiveValue?:  string,
+  notes?: string,
   // Additional fields - can be added in the API
   audit?: IAudit;
   businessUnit?: IBusinessUnit;

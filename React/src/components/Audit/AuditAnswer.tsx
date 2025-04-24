@@ -60,6 +60,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
   });
 
   useEffect(() => {
+
     reset({
       businessUnitId: answer?.businessUnitId,
       categoryId: question.categoryId || '',
@@ -69,6 +70,10 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       answer: answer?.answer || '',
       actions: answer?.actions || [],
     });
+    setValue('notes', answer?.notes);
+    setValue('positiveValue', answer?.positiveValue);
+    setValue('negativeValue', answer?.negativeValue);
+
   }, [JSON.stringify(question)]);
 
   const saveData = async () => {
@@ -88,6 +93,9 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         name: attachment.name,
         addedAt: attachment.addedAt,
       })),
+      positiveValue:values.positiveValue,
+      negativeValue:values.negativeValue,
+      notes: values.notes,
     };
 
     try {
@@ -187,7 +195,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       <Text data-id="bb2f2eae3880" fontSize="md" fontWeight="semibold">
         {questionsCategory.name}
       </Text>
-      {audit.auditType?.businessUnitScope === 'answer' && (
+      {audit.auditType?.businessUnitScope === 'answer'&& !module?.featureFlags?.enableSafetyWalk && (
         <Dropdown
           control={control}
           data-id="9210fc07b4a0"
@@ -206,7 +214,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           }}
           variant="secondaryVariant" />
       )}
-      <Dropdown
+      {!module?.featureFlags?.enableSafetyWalk && <Dropdown
         control={control}
         data-id="7d0ad008b3c8"
         disabled={isDisabled}
@@ -218,7 +226,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         }))}
         placeholder="Select category"
         stroke="dropdown.icon"
-        variant="secondaryVariant" />
+        variant="secondaryVariant" />}
       <Stack data-id="36e3523a5d2d">
         {questionsCategory.withAnswers ? (
           <Stack data-id="f8c18bd90db1">
@@ -234,7 +242,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
                   notEmpty: true,
                 }} />
             ) : (
-              <Text data-id="ca1db33dc797">{question.question}</Text>
+              <></>
             )}
             <TextInputMultiline
               control={control}
@@ -252,7 +260,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
             control={control}
             data-id="120471970bf6"
             disabled={isDisabled}
-            label="Description"
+            label="What is the audit question?"
             name="question"
             required
             validations={{
@@ -262,6 +270,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Stack>
       {questionsCategory.options && (
         <Stack data-id="1ec13133d344">
+          {module?.featureFlags?.enableSafetyWalk && <Text>Questions Category</Text> }
+
           {questionsCategory.options.map(({ name, setting }) => (
             <Toggle
               control={control}
@@ -272,6 +282,32 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
               name={`options[${setting}]`}
               trueLabel={name} />
           ))}
+        </Stack>
+      )}
+      {module?.featureFlags?.enableSafetyWalk && (question?.positiveValue || question?.negativeValue) &&(
+        <Stack data-id="1ec13133d344">
+          <Text>Walk Choices</Text>
+
+          {question?.positiveValue && (
+            <Toggle
+              control={control}
+              data-id="7893a1f22b9b"
+              disabled={isDisabled}
+              falseLabel={`${question?.positiveValue }`}
+              key={`${question?.positiveValue }` }
+              name={`positiveValue`}
+              trueLabel={"Positive Value "} />
+          )}
+          {question?.negativeValue && (
+            <Toggle
+              control={control}
+              data-id="7893a1f22b9b"
+              disabled={isDisabled}
+              falseLabel={`${question?.negativeValue }`}
+              key={`${question?.negativeValue }` }
+              name={`negativeValue`}
+              trueLabel={"Negative Value "} />
+          )}
         </Stack>
       )}
       <Stack data-id="53690979d760">
@@ -403,6 +439,20 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           </Stack>
         )}
       </Stack>
+      {module?.featureFlags?.enableSafetyWalk && <Stack>
+      <TextInputMultiline
+            control={control}
+            data-id="120471970bf6"
+            disabled={isDisabled}
+            label="Notes"
+            name="notes"
+            required={false}
+            validations={{
+              notEmpty: true,
+
+            }} />
+      </Stack>}
+
       <HStack data-id="a6b4a1f1a420">
         <Button
           bgColor="auditAnswer.buttons.cancel.bg"

@@ -24,6 +24,9 @@ const answersSchema = new Schema<IAnswer, IAnswerModel>({
   businessUnitId: String,
   questionId: String,
   answer: Schema.Types.Mixed,
+  negativeValue: String,
+  positiveValue:  String,
+  notes: String,
   attachments: [
     {
       _id: false,
@@ -36,10 +39,12 @@ const answersSchema = new Schema<IAnswer, IAnswerModel>({
     type: String,
     enum: ['open', 'resolved', 'closed'],
   },
+
   options: {
     type: Map,
     of: Boolean,
   },
+  
   scope: {
     module: {
       type: String,

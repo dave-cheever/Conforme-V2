@@ -9,8 +9,9 @@ import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
 function AuditListItem({ audit }: { audit: IAudit }) {
+  
   const { navigateTo } = useNavigate();
-    const { module } = useAppContext();
+  const { module } = useAppContext();
   return (
     (<Box
         bg="white"
@@ -66,7 +67,8 @@ function AuditListItem({ audit }: { audit: IAudit }) {
             </Flex>
           </Flex>
         </Flex>
-        {module?.featureFlags?.enableSafetyWalk && 
+
+        {module?.featureFlags?.enableSafetyWalk &&
           <Flex data-id="adaf80016293" flexDir="column" w="10%">
             <Flex
               align="flex-start"
@@ -86,7 +88,7 @@ function AuditListItem({ audit }: { audit: IAudit }) {
               {auditWalkTypes[audit?.walkType || ""]}
             </Flex>
           </Flex>
-        }       
+        }
         <Box data-id="efe9c7681a1d" pr={2} w="20%">
           <Skeleton data-id="30660cd6f678" isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
