@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { gql, useQuery } from '@apollo/client';
 import { InfoOutlineIcon, SearchIcon } from '@chakra-ui/icons';
-import { Box, Flex, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Text, Tooltip } from '@chakra-ui/react';
 
 import useDevice from '../../hooks/useDevice';
 import useValidate from '../../hooks/useValidate';
@@ -31,6 +31,7 @@ const SEARCH_USERS = gql`
       displayName
       email
       jobTitle
+      imgUrl
     }
   }
 `;
@@ -77,19 +78,23 @@ function UserData({
     role="group"
     w="full"
     wordBreak="break-word">
-    <Flex data-id="3313c5d0e6bc" direction="column" ml={2}>
-      <Text color="black" data-id="386706826faf" fontSize="smm" fontWeight="semibold">
-        {user?.displayName} - {user.jobTitle || 'No job title'}
-      </Text>
-      <Box
-        data-id="1fbdea6839b1"
-        fontSize="sm"
-        overflow="hidden"
-        position="relative"
-        textOverflow="ellipsis">
-        {formatEmail(user?.email)}
-      </Box>
-    </Flex>
+     <Flex align="center">
+        {user.imgUrl && (
+          <Avatar
+            data-id="dc03862a1e27"
+            name={user.displayName}
+            size="xs"
+            src={`${process.env.REACT_APP_API_URL}/files/photo/${user._id}`} />
+        )}
+        <Flex direction="column" ml={3}>
+          <Text color="black" fontSize="smm" fontWeight="semibold">
+            {user?.displayName} {user.jobTitle ? ` - ${user.jobTitle}` : ''}
+          </Text>
+          <Box fontSize="sm" overflow="hidden" textOverflow="ellipsis">
+            {formatEmail(user?.email)}
+          </Box>
+        </Flex>
+      </Flex>
   </Flex>
 }
 
