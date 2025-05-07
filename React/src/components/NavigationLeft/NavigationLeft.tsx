@@ -1,24 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, Icon } from '@chakra-ui/react';
 
-import { useAppContext } from '../../contexts/AppProvider';
 import { useConfigContext } from '../../contexts/ConfigProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { Conforme, ConformeSmall } from '../../icons';
-import { getInitials } from '../../utils/helpers';
 import Can from '../can';
+import ModuleSwitcher from '../ModuleSwitcher';
 import NavigationLeftItem from './NavigationLeftItem';
 import NavigationLeftItemTablet from './NavigationLeftItemTablet';
 
 function NavigationLeft() {
   const location = useLocation();
-  const { navigateTo, isPathActive } = useNavigate();
+  const { isPathActive } = useNavigate();
   const { cleanFilters, showFiltersPanel } = useFiltersContext();
-  const { module } = useAppContext();
   const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -36,23 +34,18 @@ function NavigationLeft() {
       fontWeight="semibold"
       h="100vh"
       w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '230px']}>
+     
       <Box
         alignItems="center"
         cursor="pointer"
         data-id="d2ece50108d9"
         display="flex"
         h="80px"
-        onClick={() => navigateTo('/')}>
-        <Text
-          color="navigationLeft.organizationNameFontColor"
-          data-id="1517b24beb4a"
-          fontSize="16px"
-          fontWeight="bold"
-          ml="24px"
-          w="full">
-          {showFiltersPanel || device === 'tablet' ? getInitials(module?.name) : module?.name}
-        </Text>
+        justifyContent="center"
+      >
+        <ModuleSwitcher data-id="e97e8f7ff427" />
       </Box>
+      
       <Flex
         data-id="10cc9b2fcd5f"
         direction="column"

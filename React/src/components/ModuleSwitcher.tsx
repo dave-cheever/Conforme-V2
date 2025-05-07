@@ -1,58 +1,62 @@
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Flex, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
-import useDevice from '../hooks/useDevice';
 import { IModule } from '../interfaces/IModule';
 import { getInitials } from '../utils/helpers';
 
 function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
-  const device = useDevice();
+  const navigate = useNavigate();
 
   const modulesInNavigation = useMemo(
     () => organizationConfig?.modules?.filter(({ showInNavigation }) => !!showInNavigation),
     [organizationConfig],
   );
 
-  const chooseModule = (module: IModule) => {
-    setModule(module);
-    window.location.assign(`/${module.path}`);
+  const chooseModule = (selectedModule: IModule) => {
+    setModule(selectedModule);
+    navigate(`/${selectedModule.path}`);
   };
 
-  if (device === 'mobile' || (modulesInNavigation && modulesInNavigation.length < 2)) return null;
+  if (!modulesInNavigation || modulesInNavigation.length < 2) return null;
 
   return (
-    (<Stack
-      backgroundColor="moduleSwitcher.background"
-      data-id="fd295d0a3c18"
-      p="5px"
-      w="50px">
-      {organizationConfig?.modules?.map((m) => (
-        <Tooltip
-          data-id="d16c3126ad75"
-          hasArrow
-          key={m.path}
-          label={m.name}
-          placement="right">
-          <Flex
-            align="center"
-            backgroundColor={m.path === module?.path ? 'moduleSwitcher.button.active' : 'moduleSwitcher.button.default'}
-            color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'moduleSwitcher.button.text.default'}
-            cursor={m.path === module?.path ? 'default' : 'pointer'}
-            data-id="f0e5e1bb2708"
-            fontSize="md"
-            h="40px"
-            justify="center"
-            onClick={() => m.path !== module?.path && chooseModule(m)}
-            rounded="md"
-            w="40px">
-            <Text data-id="37c06144bd61">{getInitials(m.name)}</Text>
-          </Flex>
-        </Tooltip>
-      ))}
-    </Stack>)
+    <Box data-id="fd295d0a3c18">
+      <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />} w="auto">
+          {module?.name || 'Select Module'}
+        </MenuButton>
+        <MenuList zIndex={100}>
+          {modulesInNavigation.map((m) => (
+            <MenuItem
+              _hover={{ bg: 'gray.100', color: 'black' }}
+              bg={m.path === module?.path ? 'moduleSwitcher.button.active' : 'transparent'}
+              color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'inherit'} 
+              key={m.path}
+              onClick={() => chooseModule(m)}
+            >
+              <Flex align="center" gap="2">
+                <Text fontWeight="bold">{getInitials(m.name)}</Text>
+                <Text>{m.name}</Text>
+              </Flex>
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
+    </Box>
   );
 }
 

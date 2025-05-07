@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
 import FiltersPanel from '../components/Filters/FiltersPanel';
-import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationBottomMobile from '../components/NavigationBottomMobile';
 import NavigationLeft from '../components/NavigationLeft/NavigationLeft';
 import NavigationTop from '../components/NavigationTop';
@@ -16,7 +15,6 @@ function DefaultLayout({ component: Component }: { component: any }) {
   return (
     (<ShareProvider data-id="c26ee54e23a7">
       <Flex data-id="82e11df66280" minH="100vh">
-        <ModuleSwitcher data-id="e97e8f7ff427" />
         <NavigationLeft data-id="236b6594671a" />
         <Flex
           data-id="0faa875e8f2e"

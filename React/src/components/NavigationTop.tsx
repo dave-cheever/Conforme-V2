@@ -1,18 +1,17 @@
 import { useLocation } from 'react-router-dom';
 
-import { Box, Flex, IconButton, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useAuditContext } from '../contexts/AuditProvider';
-import { useFiltersContext } from '../contexts/FiltersProvider';
 import NavigationTopProvider, { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import { useResponseContext } from '../contexts/ResponseProvider';
 import useConfig from '../hooks/useConfig';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
 import { AddIcon, CrossIcon, SearchIcon } from '../icons';
-import { getInitials } from '../utils/helpers';
 import Can from './can';
+import ModuleSwitcher from './ModuleSwitcher';
 import SubSection from './NavigationLeft/SubSection';
 import SearchBar from './SearchBar';
 import UserMenu from './UserMenu';
@@ -21,9 +20,8 @@ function NavigationTop() {
   const device = useDevice();
   const location = useLocation();
   const { trackerAddItems, auditAddItems } = useConfig();
-  const { isPathActive, navigateTo } = useNavigate();
+  const { isPathActive } = useNavigate();
   const { module } = useAppContext();
-  const { showFiltersPanel } = useFiltersContext();
   const { isSearchBarOpen, setIsSearchBarOpen } = useNavigationTopContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -92,18 +90,8 @@ function NavigationTop() {
           cursor="pointer"
           data-id="902872a3c37e"
           display={device !== 'mobile' || isSearchBarOpen ? 'none' : 'flex'}
-          h="80px"
-          onClick={() => navigateTo('/')}>
-          <Text
-            color="navigationTop.organizationName"
-            data-id="5618ec17b212"
-            fontSize="md"
-            fontWeight="bold"
-            lineHeight="19px"
-            ml={[6, 0]}
-            w="100%">
-            {showFiltersPanel ? getInitials(module?.name) : module?.name}
-          </Text>
+          h="80px">
+         <ModuleSwitcher data-id="e97e8f7ff427" />
         </Flex>
         {!isTrackerItemPage && module?.type === 'tracker' && (
           <Can
