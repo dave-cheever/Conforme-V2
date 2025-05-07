@@ -1,4 +1,3 @@
-import React from 'react';
 import { Controller } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '@chakra-ui/icons';
@@ -139,7 +138,7 @@ function Dropdown({
                   </option>
                 ))}
               </Select>
-              {Icon && onAction && <Icon
+              {Icon && onAction && !value &&  <Icon
                 cursor="pointer"
                 data-id="0f46ffa60722"
                 ml="20px"
