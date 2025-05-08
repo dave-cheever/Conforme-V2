@@ -308,7 +308,7 @@ function TrackerItems() {
         h="200px"
         justifyContent="center"
         w="full">
-        No Tracker Items found ,Try adjusting the filters.
+        No Tracker Items found. Try adjusting the filters.
         </Flex>
       ) : (
         <>

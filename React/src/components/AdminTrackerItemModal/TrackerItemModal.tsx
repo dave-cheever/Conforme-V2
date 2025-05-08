@@ -125,6 +125,7 @@ function TrackerItemModal({ refetch }) {
       m="0"
       maxH="none"
       minH="100vh"
+      minW={['full', '850px']}
       p={['25px', '35px']}
       position="absolute"
       rounded="0">
@@ -191,7 +192,7 @@ function TrackerItemModal({ refetch }) {
             justifyContent="space-between"
             p="25px"
             rounded="20px"
-            w={['full', '440px']}>
+            w={['full', '580px']}>
             <Flex
               data-id="aa6e77c991a3"
               mb="20px"
