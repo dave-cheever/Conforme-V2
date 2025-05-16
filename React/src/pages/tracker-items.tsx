@@ -134,6 +134,7 @@ function TrackerItems() {
     },
   });
   const [getTrackerResponses, { error, loading }] = useLazyQuery(GET_RESPONSES, {
+    fetchPolicy: 'no-cache',
     variables: {
       responsesQuery: {},
       responsesPagination: {
