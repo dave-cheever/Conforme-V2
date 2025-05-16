@@ -5,7 +5,6 @@ import pluralize from 'pluralize';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
-import useDevice from '../../hooks/useDevice';
 import { ActionsIcon, AreaInfoIcon, Eye, Trashcan } from '../../icons';
 import Can, { isPermitted } from '../can';
 import DocumentThumbnail from '../Documents/DocumentThumbnail';
@@ -15,14 +14,14 @@ function AuditQuestionListItem({ question, handleDelete }: { question: TQuestion
   const { audit, setSelectedQuestion } = useAuditContext();
   const numberOfActions = (question?.answer?.actions || []).length;
   const isUserPermittedToModify = isPermitted({ user, action: 'audits.edit', data: { audit } });
-  const device = useDevice();
   return (
     (<HStack
       bgColor="auditItem.listItem.bg"
       data-id="ed300c529993"
       h="90px"
+      cursor="pointer"
       key={question._id}
-      onClick={device === 'mobile' ? () => setSelectedQuestion(question) : () => { }}
+      onClick={() => setSelectedQuestion(question)}
       p={4}
       rounded="10px">
       <Stack data-id="0ce5d2360e07" flexGrow={1} spacing={2}>
