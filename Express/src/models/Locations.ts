@@ -43,12 +43,13 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
 
 // custom validation for unique name
 async function validateUniqueName(this: any, name: string) {
-  const locationsCount = await models.Location.find({
+  const locationsCount = await models.Location.countDocuments({
     name,
     organizationId: this.organizationId,
+    'scope.moduleId': this.scope?.moduleId,
     'metatags.removedAt': { $eq: null },
-  }).count();
-  return !locationsCount;
+  });
+  return locationsCount === 0;
 }
 
 const locationsSchema = new Schema<ILocation, ILocationModel>({
