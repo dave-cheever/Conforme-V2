@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, CheckboxGroup, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import * as ChakraIcons from '@chakra-ui/icons';
+import { Box, CheckboxGroup, Flex, FormLabel, Icon, Select, Stack, Text, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 
 import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -18,6 +19,7 @@ import Loader from '../../components/Loader';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
+import { ChevronRight } from '../../icons';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
 
 const GET_QUESTIONS_CATEGORIES = gql`
@@ -89,6 +91,11 @@ function QuestionsCategories() {
   const device = useDevice();
   const [sortType, setSortType] = useState('questionsCategory');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const allIconNames = Object.keys(ChakraIcons).filter((key) =>
+  key.endsWith('Icon'),
+  );
+  allIconNames.sort((a, b) => a.localeCompare(b));
 
   const getQuestionsCategories = (questionsCategoriesArray: IQuestionsCategory[]) => {
     if (!questionsCategoriesArray) return [];
@@ -371,18 +378,59 @@ function QuestionsCategories() {
             placeholder="Count in audit card"
             tooltip={`If enabled, total of questions related to this question category will be displayed in ${t('audit')} card`}
             variant="secondaryVariant"
-          />
-          <TextInput
+          />      
+           <Controller
             control={control}
-            data-id="0bf8dde0c19d"
-            label="Icon"
             name="icon"
-            placeholder="Icon"
-            required
-            validations={{
-              notEmpty: true,
-            }}
-          />
+            render={({ field }) => (
+                <>
+                  <FormLabel
+                    data-id="0bf8dde0c19d"
+                    fontSize="12px"
+                    fontWeight="regular"
+                    mb={1}
+                  >
+                    Icon
+                  </FormLabel>
+                  <Select
+                    {...field}
+                    _active={{ bg: 'dropdown.activeBg' }}
+                    _focus={{
+                      borderColor: 'dropdown.border.focus.normal',
+                     }}
+                    _placeholder={{ color: 'dropdown.placeholder' }}
+                    bg="dropdown.bg"
+                    borderColor="dropdown.border.normal"
+                    borderRadius="8px"
+                    borderWidth="1px"
+                    color="dropdown.font"
+                    css={{ paddingTop: '0' }}
+                    data-id="5e82ddb87871"
+                    fontSize="smm"
+                    h="42px"
+                    icon={<ChevronRight data-id="5488fb98d036" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
+                    mb={2}
+                    placeholder="Select an icon"
+                    variant="outline"
+                  >
+                    {allIconNames.map((iconName) => (
+                      <option key={iconName} value={iconName}>
+                        {iconName}
+                      </option>
+                    ))}
+                  </Select>
+                  {field.value && ChakraIcons[field.value] && (
+                    <Flex align="center" gap={2} mt={1}>
+                      <Text fontSize="sm">
+                       Preview:
+                      </Text>
+                      <Icon as={ChakraIcons[field.value]} boxSize={4} />
+                    </Flex>
+                  )}
+                </>
+              )}
+            rules={{ required: 'Icon is required' }}
+            />
           <Stack data-id="01666afa274c" pt={2}>
             <Text data-id="671ec986613e" fontSize="11px" fontWeight="bold">
               Options

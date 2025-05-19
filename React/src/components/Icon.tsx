@@ -1,3 +1,5 @@
+import * as ChakraIcons from '@chakra-ui/icons';
+
 import {
   DangerIcon,
   GridIcon,
@@ -33,8 +35,13 @@ function Icon({ icon, ...props }) {
       return <ListIcon data-id="90334fa867b8" {...props} />;
     case 'group':
       return <GroupIcon data-id="988fd98a5c5a" {...props} />;
-    default:
+    default: {
+      const ChakraIconComponent = ChakraIcons[icon];
+      if (ChakraIconComponent) 
+        return <ChakraIconComponent data-id="chakra-fallback-icon" {...props} />;
+      
       return null;
+    }
   }
 }
 
