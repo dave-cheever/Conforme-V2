@@ -39,6 +39,7 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
 
   return (
     (<><Modal
+      blockScrollOnMount={false}
       data-id="90fc313a4d62"
       isOpen={isOpenModal}
       onClose={onClose}

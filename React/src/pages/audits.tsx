@@ -218,6 +218,7 @@ function Audits() {
 
   return (<>
     <Modal
+      blockScrollOnMount={false}
       data-id="5926f822cca0"
       isOpen={adminModalState !== 'closed'}
       key={audit._id}

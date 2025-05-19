@@ -165,6 +165,7 @@ function TrackerItemsAdmin() {
 
   return (<>
     <Modal
+      blockScrollOnMount={false}
       data-id="f0d3a72b6d59"
       isOpen={adminModalState !== 'closed'}
       key={trackerItem._id}
