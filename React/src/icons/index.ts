@@ -51,6 +51,7 @@ import FollowIcon from './FollowIcon';
 import GridIcon from './GridIcon';
 import GroupIcon from './GroupIcon';
 import HealthKitIcon from './HealthKitIcon';
+import HelpSupportIcon from './HelpIcon';
 import Home from './Home';
 import Insights from './Insights';
 import InsightsCardDots from './InsightsCardDots';
@@ -226,4 +227,5 @@ export {
   UploadedTick,
   UploadIcon,
   WarningIcon,
+  HelpSupportIcon,
 };

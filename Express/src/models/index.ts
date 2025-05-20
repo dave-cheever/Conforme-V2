@@ -6,6 +6,7 @@ import AuditTypes from './AuditTypes';
 import BusinessUnits from './BusinessUnits';
 import Categories from './Categories';
 import Comments from './Comments';
+import Help from './Help';
 import Locations from './Locations';
 import Notifications from './Notifications';
 import Organizations from './Organizations';
@@ -36,4 +37,5 @@ export {
   Settings,
   TrackerItems,
   Users,
+  Help,
 };

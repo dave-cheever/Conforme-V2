@@ -36,6 +36,10 @@ import {
   commnentsTypeDefs,
 } from './resolvers/comments';
 import { graphQueryDefs, graphTypeDefs } from './resolvers/graph';
+import {
+  helpQueryDefs,
+  helpTypeDefs,
+} from './resolvers/help'
 import { insightsQueryDefs, insightsTypeDefs } from './resolvers/insights';
 import {
   locationsMutationDefs,
@@ -160,6 +164,7 @@ const typeDefs = gql`
   ${settingsTypeDefs}
   ${trackerItemsTypeDefs}
   ${usersTypeDefs}
+  ${helpTypeDefs}
 
   type Query {
     ${actionsQueryDefs}
@@ -182,6 +187,7 @@ const typeDefs = gql`
     ${settingsQueryDefs}
     ${trackerItemsQueryDefs}
     ${usersQueryDefs}
+    ${helpQueryDefs}
   }
   type Mutation {
     ${actionsMutationDefs}

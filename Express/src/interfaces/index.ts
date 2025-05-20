@@ -19,6 +19,7 @@ import { IBusinessUnitModel } from './IBusinessUnitModel';
 import { IComment } from './IComment';
 import { ICommentModel } from './ICommentModel';
 import { IDocument } from './IDocument';
+import { IHelp } from './IHelp';
 import { ILocation } from './ILocation';
 import { ILocationModel } from './ILocationModel';
 import { IModule } from './IModule';
@@ -110,4 +111,5 @@ export {
   TModuleType,
   TQuestionType,
   TQuestionValue,
+  IHelp,
 };

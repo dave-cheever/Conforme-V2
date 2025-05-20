@@ -8,6 +8,7 @@ import businessUnitsResolvers from './businessUnits';
 import categoriesResolvers from './categories';
 import commentsResolvers from './comments';
 import graphResolvers from './graph';
+import helpResolvers from './help';
 import insightsResolvers from './insights';
 import locationsResolvers from './locations';
 import organizationsResolvers from './organizations';
@@ -44,6 +45,7 @@ export default {
     ...settingsResolvers.Query,
     ...trackerItemsResolvers.Query,
     ...usersResolvers.Query,
+    ...helpResolvers.Query,
   },
   Mutation: {
     ...actionsResolvers.Mutation,

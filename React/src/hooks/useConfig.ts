@@ -9,6 +9,7 @@ import {
   CategoryIcon,
   CheckIcon,
   EditIcon,
+  HelpSupportIcon,
   Home,
   Insights,
   ListIcon,
@@ -91,8 +92,14 @@ const useConfig = () => {
         { label: 'Categories', url: '/admin/categories', permission: 'adminPanel.categories' },
         { label: 'Users', url: '/admin/users' },
         { label: 'Audit log', url: '/admin/audit-log' },
-        { label: 'Other settings', url: '/admin/settings' },
       ],
+    },
+    {
+      type: 'menuItem',
+      label: 'Help & Support',
+      url: '/help',
+      icon: HelpSupportIcon,
+      permission: 'home.view',
     },
   ];
 
@@ -138,6 +145,13 @@ const useConfig = () => {
         { label: 'Audit log', url: '/admin/audit-log' },
         { label: 'Other settings', url: '/admin/settings' },
       ],
+    },
+    {
+      type: 'menuItem',
+      label: 'Help & Support',
+      url: '/help',
+      icon: HelpSupportIcon,
+      permission: 'home.view',
     },
   ];
 

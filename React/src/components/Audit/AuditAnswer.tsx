@@ -230,7 +230,7 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       <Stack data-id="36e3523a5d2d">
         {questionsCategory.withAnswers ? (
           <Stack data-id="f8c18bd90db1">
-            {isCustomQuestion ? (
+            {isCustomQuestion && (
               <TextInput
                 control={control}
                 data-id="3e8cab6e01fd"
@@ -241,8 +241,6 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
                 validations={{
                   notEmpty: true,
                 }} />
-            ) : (
-              <></>
             )}
             <TextInputMultiline
               control={control}
@@ -295,8 +293,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
               disabled={isDisabled}
               falseLabel={`${question?.positiveValue }`}
               key={`${question?.positiveValue }` }
-              name={`positiveValue`}
-              trueLabel={"Positive Value "} />
+              name="positiveValue"
+              trueLabel="Positive Value " />
           )}
           {question?.negativeValue && (
             <Toggle
@@ -305,8 +303,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
               disabled={isDisabled}
               falseLabel={`${question?.negativeValue }`}
               key={`${question?.negativeValue }` }
-              name={`negativeValue`}
-              trueLabel={"Negative Value "} />
+              name="negativeValue"
+              trueLabel="Negative Value " />
           )}
         </Stack>
       )}
