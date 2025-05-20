@@ -17,9 +17,9 @@ function AuditQuestionListItem({ question, handleDelete }: { question: TQuestion
   return (
     (<HStack
       bgColor="auditItem.listItem.bg"
+      cursor="pointer"
       data-id="ed300c529993"
       h="90px"
-      cursor="pointer"
       key={question._id}
       onClick={() => setSelectedQuestion(question)}
       p={4}

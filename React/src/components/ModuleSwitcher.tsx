@@ -11,14 +11,17 @@ import {
   MenuItem,
   MenuList,
   Text,
-} from '@chakra-ui/react';
+ useMediaQuery } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
+import { useFiltersContext } from '../contexts/FiltersProvider';
 import { IModule } from '../interfaces/IModule';
 import { getInitials } from '../utils/helpers';
 
 function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
+  const { showFiltersPanel } = useFiltersContext();
+  const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
   const navigate = useNavigate();
 
   const modulesInNavigation = useMemo(
@@ -36,9 +39,26 @@ function ModuleSwitcher() {
   return (
     <Box data-id="fd295d0a3c18">
       <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />} w="auto">
-          {module?.name || 'Select Module'}
-        </MenuButton>
+      <MenuButton as={Button} minW="200px" px="4" variant="ghost" w="auto">
+        <Flex align="center" justify="space-between" w="100%">
+          <Text
+            display="inline-block"
+            isTruncated
+            marginLeft={showFiltersPanel || isTabletWidth ? '10' : '2'}
+            maxW="150px"
+            minW="100px"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {showFiltersPanel || isTabletWidth
+              ? getInitials(module?.name)
+              : (module?.name || 'Select Module')}
+          </Text>
+          <ChevronDownIcon ml="2" />
+        </Flex>
+      </MenuButton>
+
         <MenuList zIndex={100}>
           {modulesInNavigation.map((m) => (
             <MenuItem

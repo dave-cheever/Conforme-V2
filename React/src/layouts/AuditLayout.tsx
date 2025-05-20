@@ -7,7 +7,6 @@ import AuditLeftNavigationTablet from '../components/Audit/AuditLeftNavigationTa
 import Chat from '../components/Chat';
 import ChatMobileAndTablet from '../components/ChatMobileAndTablet';
 import Loader from '../components/Loader';
-import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
 import ShareModal from '../components/ShareModal';
 import AuditProvider, { useAuditContext } from '../contexts/AuditProvider';
@@ -32,7 +31,6 @@ function AuditLayout({ component: Component }: { component: any }) {
 
   return (
     (<Flex data-id="df533dbbdad0" h="full" minH="100vh" w="full">
-      <ModuleSwitcher data-id="bb13a4b4bd36" />
       <AuditLeftNavigation data-id="cc2799666d30" />
       <AuditLeftNavigationTablet data-id="4679ecdef9fa" />
       <Flex

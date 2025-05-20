@@ -3,7 +3,6 @@ import { Flex, IconButton } from '@chakra-ui/react';
 import Chat from '../components/Chat';
 import ChatMobileAndTablet from '../components/ChatMobileAndTablet';
 import Loader from '../components/Loader';
-import ModuleSwitcher from '../components/ModuleSwitcher';
 import NavigationTop from '../components/NavigationTop';
 import ReasponseHeader from '../components/Response/ResponseHeader/ResponseHeader';
 import ResponseLeftNavigation from '../components/Response/ResponseLeftNavigation';
@@ -32,7 +31,6 @@ function ResponseLayout({ component: Component }: { component: any }) {
 
   return (
     (<Flex data-id="2f41fa2e035b" h="full" minH="100vh" w="full">
-      <ModuleSwitcher data-id="08e40b89daa3" />
       <ResponseLeftNavigation data-id="b7674ac38f45" />
       <ResponseLeftNavigationTablet data-id="d070ecad0101" />
       <Flex
