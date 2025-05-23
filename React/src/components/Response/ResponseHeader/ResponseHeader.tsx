@@ -239,11 +239,11 @@ function ReasponseHeader() {
             </Text>
           </Stack>
         )}
-        <Spacer data-id="ad0936a55bab" display={['none', 'flex']} />
+        <Spacer data-id="ad0936a55bab" display={['flex']} />
         <Flex
           color="white"
           data-id="7119e874716f"
-          display={['none', 'flex']}
+          display={['flex']}
           h="40px"
           justify="flex-end"
           mr={6}>

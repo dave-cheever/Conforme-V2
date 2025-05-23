@@ -37,7 +37,7 @@ function ModuleSwitcher() {
   if (!modulesInNavigation || modulesInNavigation.length < 2) return null;
 
   return (
-    <Box data-id="fd295d0a3c18">
+    <Box data-id="fd295d0a3c18" pl={2}>
       <Menu>
       <MenuButton as={Button} minW="200px" px="4" variant="ghost" w="auto">
         <Flex align="center" justify="space-between" w="100%">

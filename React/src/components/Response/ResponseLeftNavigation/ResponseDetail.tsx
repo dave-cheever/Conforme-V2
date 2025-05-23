@@ -4,12 +4,45 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Avatar, Box, Flex, Icon, Modal, ModalBody, ModalContent, useDisclosure, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
+import { gql, useQuery } from '@apollo/client';
 
 import { toastSuccess } from '../../../bootstrap/config';
 import { ArrowRight, Copy, DetailIcon } from '../../../icons';
 import ResponseLeftItem from '../ResponseLeftItem';
+import { IUser } from '../../../interfaces/IUser';
 
 function ResponseDetail({ response }) {
+
+  const GET_USERS_BY_ID = gql`
+  query ($responsibleQuery: UserQueryInput, $accountableQuery: UserQueryInput) {
+    responsible: usersById(userQueryInput: $responsibleQuery) {
+      _id
+      firstName
+      lastName
+      displayName
+      imgUrl
+    }
+    accountable: usersById(userQueryInput: $accountableQuery) {
+      _id
+      firstName
+      lastName
+      displayName
+      imgUrl
+    }
+  }
+`;
+
+  const { data: { accountable: responseAccountable, responsible: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, {
+    variables: {
+      accountableQuery: { usersIds: response?.accountableId || [] },
+      responsibleQuery: { usersIds: response?.responsibleId || [] },
+    },
+  });
+
+  const accountable: IUser = responseAccountable && responseAccountable?.length !== 0 && responseAccountable[0];
+
+  const responsible: IUser = responseResponsible && responseResponsible?.length !== 0 && responseResponsible[0];
+
   const toast = useToast();
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -100,16 +133,41 @@ function ResponseDetail({ response }) {
                     data-id="7dc18869afe3"
                     mr={2}
                     name={
-                      response.owner?.firstName && response.owner?.lastName
-                        ? `${response.owner?.firstName} ${response.owner?.lastName}`
-                        : `${response.owner?.displayName}`
+                      accountable && accountable.firstName && accountable.lastName
+                        ? `${accountable.firstName} ${accountable.lastName}`
+                        : `${accountable?.displayName}`
                     }
                     size="xs"
-                    src={response.owner?.imgUrl} />
+                    src={accountable && accountable.imgUrl} />
                   <Flex data-id="b2b81150b3c1" mr={2}>
-                    {response.owner?.firstName && response.owner?.lastName
-                      ? `${response.owner?.firstName} ${response.owner?.lastName}`
-                      : `${response.owner?.displayName || '-'}`}
+                    {accountable && accountable.firstName && accountable.lastName
+                      ? `${accountable.firstName} ${accountable.lastName}`
+                      : `${accountable?.displayName || '-'}`}
+                  </Flex>
+                </Flex>
+              </Box>
+
+              <Box data-id="e68e7c6cec6d" h="50px" mt={1}>
+                <Box data-id="98b6daf1f3db" fontSize="11px" opacity={0.5}>
+                  Accountableee
+                </Box>
+                <Flex align="center" data-id="32f7676d04f7" fontSize="14px" minH="28px">
+                  <Avatar
+                    bg="responseLeftNavigation.avatar"
+                    color="white"
+                    data-id="7dc18869afe3"
+                    mr={2}
+                    name={
+                      responsible && responsible.firstName && responsible.lastName
+                        ? `${responsible.firstName} ${responsible.lastName}`
+                        : `${responsible?.displayName}`
+                    }
+                    size="xs"
+                    src={responsible && responsible.imgUrl} />
+                  <Flex data-id="b2b81150b3c1" mr={2}>
+                    {responsible && responsible.firstName && responsible.lastName
+                      ? `${responsible.firstName} ${responsible.lastName}`
+                      : `${responsible?.displayName || '-'}`}
                   </Flex>
                 </Flex>
               </Box>

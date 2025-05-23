@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { Button, IconButton } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 
 function ResponseHeaderButton({
   icon,
@@ -33,7 +33,6 @@ function ResponseHeaderButton({
       color={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Color`}
       data-id="c104bdb6d779"
       disabled={disabled}
-      display={['none', 'none', 'flex']}
       fontSize="14px"
       fontWeight="bold"
       isLoading={loading}
@@ -44,27 +43,6 @@ function ResponseHeaderButton({
       role="group">
       {name}
     </Button>
-    <IconButton
-      _hover={
-        disabled
-          ? {}
-          : {
-              bg: `reasponseHeader.button${primary ? 'Dark' : 'Light'}BgHover`,
-              color: `reasponseHeader.button${primary ? 'Dark' : 'Light'}ColorHover`,
-              cursor: 'pointer',
-              stroke: 'white',
-            }
-      }
-      aria-label="Search database"
-      bg={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Bg`}
-      borderRadius="10px"
-      data-id="31375f91bd85"
-      disabled={disabled}
-      display={['none', 'flex', 'none']}
-      icon={icon}
-      ml="15px"
-      onClick={onClick}
-      role="group" />
   </>
 }
 
