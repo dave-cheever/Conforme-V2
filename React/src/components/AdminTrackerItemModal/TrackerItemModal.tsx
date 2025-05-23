@@ -27,6 +27,7 @@ function TrackerItemModal({ refetch }) {
     selectedSection,
     selectedSectionIndex,
     selectSection,
+    isValidating,
   } = useTrackerItemModalContext();
   const { saveTrackerItem, closeModal } = useTrackerItemModal(refetch);
   const { Component } = selectedSection;
@@ -235,7 +236,8 @@ function TrackerItemModal({ refetch }) {
                   (Object.keys(errors).length > 0 ||
                     isActionRequiredToComplete ||
                     trackerItem?.locationsIds?.length === 0 ||
-                    trackerItem?.businessUnitsIds?.length === 0) &&
+                    trackerItem?.businessUnitsIds?.length === 0 ||
+                    isValidating) &&
                   selectedSection.name === 'Summary' &&
                   buttonText !== 'Unpublish'
                 }
@@ -243,10 +245,7 @@ function TrackerItemModal({ refetch }) {
                 fontWeight="700"
                 h="40px"
                 ml={3}
-                onClick={() => {
-                  trigger(Object.keys(selectedSection.fields || []) as any);
-                  handlePrimaryButtonClick();
-                }}
+                onClick={handlePrimaryButtonClick}
                 rightIcon={<Icon
                   as={OpenMenuArrow}
                   data-id="557f37756bd1"
@@ -254,7 +253,7 @@ function TrackerItemModal({ refetch }) {
                   transform="rotate(270deg)" />}
                 rounded="10px"
                 w="fit-content">
-                {buttonText}
+                  {isValidating ? 'Validating...' : buttonText}
               </Button>
             </Flex>
           </Flex>

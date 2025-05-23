@@ -33,4 +33,5 @@ export interface ITrackerItemModalContext {
   selectedSection: ITrackerItemModalSection;
   selectedSectionIndex: number;
   selectSection: (sectionIndex: number) => void;
+  isValidating: boolean;
 }

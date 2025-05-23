@@ -140,7 +140,7 @@ function TrackerItemModalProvider({ children }) {
     trigger,
     reset: resetForm,
   } = useForm({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues,
   });
   const trackerItem = watch() as Partial<ITrackerItem>;
@@ -152,9 +152,25 @@ function TrackerItemModalProvider({ children }) {
     [selectedSection],
   );
 
+  const [isValidating, setIsValidating] = useState(false);
+
   const selectSection = async (sectionIndex: number) => {
-    setSelectedSection(trackerItemModalSections[sectionIndex]);
-    if (sectionIndex > visitedTab) setVisitedTab(sectionIndex);
+    if (isValidating) return;
+    setIsValidating(true);
+    try {
+      const fields = Object.keys(trackerItemModalSections[selectedSectionIndex].fields || []);
+      if (fields.length > 0) {
+        const isValid = await trigger(fields as any);
+        if (!isValid) {
+          setIsValidating(false);
+          return;
+        }
+      }
+      setSelectedSection(trackerItemModalSections[sectionIndex]);
+      if (sectionIndex > visitedTab) setVisitedTab(sectionIndex);
+    } finally {
+      setIsValidating(false);
+    }
   };
 
   const setValue = (name, value) => {
@@ -195,9 +211,10 @@ function TrackerItemModalProvider({ children }) {
       setSavingDialogDetails,
       visitedTab,
       setVisitedTab,
+      isValidating,
     }),
 
-    [control, errors, trackerItem, data, selectedSection, selectedSectionIndex, savingDialogDetails, visitedTab],
+    [control, errors, trackerItem, data, selectedSection, selectedSectionIndex, savingDialogDetails, visitedTab, isValidating],
   ) as ITrackerItemModalContext;
 
   return <TrackerItemModalContext.Provider value={value}>{children}</TrackerItemModalContext.Provider>;
