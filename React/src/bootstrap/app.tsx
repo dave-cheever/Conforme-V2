@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
@@ -22,20 +22,19 @@ function App() {
   const loadingUser = useAuth();
   const routes = useRoutes();
   const { navigate } = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (user && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
-
-      const defaultPage = user.defaultPage.find((value)=>value.name===module?.name)
+    const isFromLogin = location.pathname === '/login';
+    if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
+      const defaultPage = user.defaultPage.find((value) => value.name === module?.name);
       const defaultPath = defaultPage?.path;
       if (defaultPath === "/") 
         navigate(defaultPath);
-
        else 
         navigate(`${defaultPath}`);
-      
     }
-  }, [user?.defaultPage]);
+  }, [user, location.pathname]);
 
   useEffect(() => {
     setTimeout(() => {

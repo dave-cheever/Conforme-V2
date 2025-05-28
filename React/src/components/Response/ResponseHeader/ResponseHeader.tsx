@@ -303,7 +303,7 @@ function ReasponseHeader() {
             }
             name="Share"
             onClick={() => {
-              setShareItemUrl(`compliance-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`);
+              setShareItemUrl(`tracker-item/${response?._id}${snapshot ? `?snapshot=${snapshot}` : ''}`);
               setShareItemName(response?.trackerItem?.name);
               handleShareOpen();
             }} />
