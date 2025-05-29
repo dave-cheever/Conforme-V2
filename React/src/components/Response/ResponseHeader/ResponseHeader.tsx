@@ -243,7 +243,7 @@ function ReasponseHeader() {
         <Flex
           color="white"
           data-id="7119e874716f"
-          display={['flex']}
+          display={['none', 'flex', 'flex']}
           h="40px"
           justify="flex-end"
           mr={6}>
@@ -333,7 +333,7 @@ function ReasponseHeader() {
                 rightIcon={<ArrowDownIcon data-id="bd8550f22a53" />}
                 textAlign="left"
                 w="full">
-                'Options'
+                Options
               </MenuButton>
 
               <MenuList
