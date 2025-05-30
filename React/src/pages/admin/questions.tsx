@@ -136,6 +136,14 @@ function Questions() {
     if (adminModalState === 'closed') reset(defaultValues);
   }, [reset, adminModalState]);
 
+  useEffect(() => {
+    if (questionsCategories?.length === 1) 
+      {reset({
+        ...getValues(),
+        questionsCategoryId: questionsCategories[0]._id,
+      });}
+  }, [questionsCategories]);
+
   // If modal opened in edit or delete mode, reset the form and set values of edited element
   const openQuestionModal = (action: 'edit' | 'delete', question: IQuestion<TQuestionValue>) => {
     setAdminModalState(action);
