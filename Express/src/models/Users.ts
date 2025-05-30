@@ -60,7 +60,6 @@ userSchema.statics.customFindById = async function (userId: string): Promise<IUs
 };
 
 userSchema.statics.customAdd = async function (user: IUser, organizationId: string): Promise<IUser> {
-
   const newUser = await this.create({
     ...user,
     defaultPage: [],
@@ -114,22 +113,30 @@ userSchema.statics.customFindWithDetails = async function ({
       if (roles.admin) role = 'admin';
       else if (roles.reader) role = 'reader';
 
+      if (userDetails) {
+        // Only update fields if userDetails are present and not empty
       const updatedUser = {
-        ...user,
-        firstName: userDetails?.givenName || '',
-        lastName: userDetails?.surname || '',
-        displayName: userDetails?.displayName || '',
-        email: userDetails?.mail || userDetails?.userPrincipalName || '',
-        jobTitle: userDetails?.jobTitle || '',
-        role,
-        managerId,
-        metatags: {
-          ...user.metatags,
-          ...genMetatags('updated', user._id),
-        },
-      };
-      await Users.updateOne({ _id: user._id }, updatedUser);
-      return updatedUser;
+          ...user,
+          firstName: userDetails.givenName?.trim() ? userDetails.givenName : user.firstName,
+          lastName: userDetails.surname?.trim() ? userDetails.surname : user.lastName,
+          displayName: userDetails.displayName?.trim() ? userDetails.displayName : user.displayName,
+          email: userDetails.mail?.trim() || userDetails.userPrincipalName?.trim()
+            ? userDetails.mail || userDetails.userPrincipalName
+            : user.email,
+          jobTitle: userDetails.jobTitle?.trim() ? userDetails.jobTitle : user.jobTitle,
+          role,
+          managerId,
+          metatags: {
+            ...user.metatags,
+            ...genMetatags('updated', user._id),
+          },
+        };
+        await Users.updateOne({ _id: user._id }, updatedUser);
+        return updatedUser;
+      } else {
+        // User not found in Entra ID, do NOT overwrite fields
+        return user;
+      }
     }
     return user;
   });

@@ -18,9 +18,9 @@ import {
 import { chatMentionRegExp } from '../../utils/regular-expressions';
 import ChatMention from '../ChatMention';
 
-const GET_USERS_BY_ID = gql`
+const GET_USERS_BY_ID_FROM_DB = gql`
   query ($userQueryInput: UserQueryInput) {
-    usersById(userQueryInput: $userQueryInput) {
+    usersByIdFromDb(userQueryInput: $userQueryInput) {
       _id
       displayName
       imgUrl
@@ -32,13 +32,13 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
   const { navigateTo, isPathActive } = useNavigate();
   const { module } = useAppContext();
 
-  const { data: { usersById } = [] } = useQuery(GET_USERS_BY_ID, {
+  const { data: { usersByIdFromDb } = [] } = useQuery(GET_USERS_BY_ID_FROM_DB, {
     variables: {
       userQueryInput: { usersIds: audit.metatags?.addedBy || [] },
     },
   });
 
-  const auditAddedUser: IUser = usersById && usersById?.length !== 0 && usersById[0];
+  const auditAddedUser: IUser = usersByIdFromDb && usersByIdFromDb?.length !== 0 && usersByIdFromDb[0];
 
   const isResponseAudit = isPathActive('/tracker-item');
 
@@ -97,6 +97,7 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
           borderColor="auditLogRecordStyles.info.border"
           data-id="98d604a944dd"
           h="32px"
+          name={auditAddedUser?.displayName}
           rounded="full"
           src={auditAddedUser?.imgUrl}
           w="32px" />

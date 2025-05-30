@@ -22,9 +22,9 @@ interface IChatItem {
   onAction: (id: string) => void;
 }
 
-const GET_USERS_BY_ID = gql`
+const GET_USERS_BY_ID_FROM_DB = gql`
   query ($userQueryInput: UserQueryInput) {
-    author: usersById(userQueryInput: $userQueryInput) {
+    author: usersByIdFromDb(userQueryInput: $userQueryInput) {
       displayName
       imgUrl
     }
@@ -33,7 +33,7 @@ const GET_USERS_BY_ID = gql`
 
 function ChatItem({ onAction, comment }: IChatItem) {
   const { metatags, authorId, _id, text } = comment;
-  const [getParticipantDetailById, { data, loading }] = useLazyQuery(GET_USERS_BY_ID);
+  const [getParticipantDetailById, { data, loading }] = useLazyQuery(GET_USERS_BY_ID_FROM_DB);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const device = useDevice();
   const { user } = useAppContext();

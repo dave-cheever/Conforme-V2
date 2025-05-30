@@ -17,16 +17,16 @@ import { getInitials } from '../../../utils/helpers';
 import ResponseLeftItem from '../ResponseLeftItem';
 import ResponseLeftTabItem from '../ResponseLeftTabItem';
 
-const GET_USERS_BY_ID = gql`
+const GET_USERS_BY_ID_FROM_DB = gql`
   query ($responsibleQuery: UserQueryInput, $accountableQuery: UserQueryInput) {
-    responsible: usersById(userQueryInput: $responsibleQuery) {
+    responsible: usersByIdFromDb(userQueryInput: $responsibleQuery) {
       _id
       firstName
       lastName
       displayName
       imgUrl
     }
-    accountable: usersById(userQueryInput: $accountableQuery) {
+    accountable: usersByIdFromDb(userQueryInput: $accountableQuery) {
       _id
       firstName
       lastName
@@ -44,7 +44,7 @@ function ResponseLeftNavigation() {
   const { showFiltersPanel } = useFiltersContext();
 
   const { response } = useResponseContext();
-  const { data: { accountable: responseAccountable, responsible: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID, {
+  const { data: { accountable: responseAccountable, responsible: responseResponsible } = [] } = useQuery(GET_USERS_BY_ID_FROM_DB, {
     variables: {
       accountableQuery: { usersIds: response?.accountableId || [] },
       responsibleQuery: { usersIds: response?.responsibleId || [] },

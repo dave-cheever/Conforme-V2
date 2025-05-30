@@ -9,9 +9,9 @@ import useNavigate from '../../hooks/useNavigate';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
 
-const GET_USERS_BY_ID = gql`
+const GET_USERS_BY_ID_FROM_DB = gql`
   query ($userQueryInput: UserQueryInput) {
-    usersById(userQueryInput: $userQueryInput) {
+    usersByIdFromDb(userQueryInput: $userQueryInput) {
       _id
       displayName
       imgUrl
@@ -22,18 +22,21 @@ const GET_USERS_BY_ID = gql`
 function HistoricalListItem({ response }: { response: IResponse }) {
   const { navigateTo } = useNavigate();
   const { snapshot } = useResponseContext();
-  const [getUsers, { data: { usersById: responseUsers = [] } = [], loading: responsibleLoading }] = useLazyQuery(GET_USERS_BY_ID);
+  const [getUsers, { data: { usersByIdFromDb: responseUsers = [] } = {}, loading: responsibleLoading }] =
+    useLazyQuery(GET_USERS_BY_ID_FROM_DB);
 
   useEffect(() => {
+    const userIds = [response.responsibleId, response.metatags?.updatedBy].filter(Boolean);
     getUsers({
       variables: {
         userQueryInput: {
-          usersIds: [response.responsibleId, response.metatags?.updatedBy],
+          usersIds: userIds,
         },
       },
     });
   }, [response]);
 
+  const responsibleUser: IUser = responseUsers.find(({ _id }) => _id === response.responsibleId);
   const lastUpdatedBy: IUser = responseUsers.find(({ _id }) => _id === response.metatags?.updatedBy);
   const active = getTime(new Date(response.lastCompletionDate!)).toString() === snapshot;
 
@@ -78,13 +81,13 @@ function HistoricalListItem({ response }: { response: IResponse }) {
         </Flex>
         <Box data-id="d8638f50969c" pr="20px" w="25%">
           <Skeleton data-id="2565056795a3" isLoaded={!responsibleLoading} rounded="full">
-            {response.responsible ? (
+            {responsibleUser ? (
               <Flex align="center" data-id="3df599cf5384" direction="row">
                 <Avatar
                   data-id="eda3bdaca613"
-                  name={response.responsible?.displayName}
+                  name={responsibleUser?.displayName}
                   size="xs"
-                  src={response.responsible?.imgUrl} />
+                  src={responsibleUser?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
                   data-id="92345d6caf62"
@@ -97,7 +100,7 @@ function HistoricalListItem({ response }: { response: IResponse }) {
                   textOverflow="ellipsis"
                   w="full"
                   whiteSpace="nowrap">
-                  {response.responsible?.displayName}
+                  {responsibleUser?.displayName}
                 </Text>
               </Flex>
             ) : (
@@ -111,11 +114,7 @@ function HistoricalListItem({ response }: { response: IResponse }) {
           <Skeleton data-id="0c8a68752e86" isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
               <Flex align="center" data-id="c61ec76d4907" direction="row">
-                <Avatar
-                  data-id="439c5e5fbdb3"
-                  name={lastUpdatedBy?.displayName}
-                  size="xs"
-                  src={lastUpdatedBy?.imgUrl} />
+                <Avatar data-id="439c5e5fbdb3" name={lastUpdatedBy?.displayName} size="xs" src={lastUpdatedBy?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
                   data-id="16ae5a02b9a0"
@@ -132,11 +131,11 @@ function HistoricalListItem({ response }: { response: IResponse }) {
                 </Text>
               </Flex>
             ) : (
-              <Flex
-                data-id="8279e830843a"
-                fontSize="13px"
-                fontStyle="italic"
-                fontWeight={active ? '700' : '400'}>
+                <Flex
+                  data-id="8279e830843a"
+                  fontSize="13px"
+                  fontStyle="italic"
+                  fontWeight={active ? '700' : '400'}>
                 Unassigned
               </Flex>
             )}

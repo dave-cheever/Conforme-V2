@@ -11,35 +11,35 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { IUser } from '../../interfaces/IUser';
 
-const GET_USERS_BY_ID = gql`
+const GET_USERS_BY_ID_FROM_DB = gql`
   query (
     $userAccountableQuery: UserQueryInput
     $userResponsibleQuery: UserQueryInput
     $userContibuterQuery: UserQueryInput
     $userFollowersQuery: UserQueryInput
   ) {
-    accountable: usersById(userQueryInput: $userAccountableQuery) {
+    accountable: usersByIdFromDb(userQueryInput: $userAccountableQuery) {
       _id
       firstName
       lastName
       displayName
       imgUrl
     }
-    responsible: usersById(userQueryInput: $userResponsibleQuery) {
+    responsible: usersByIdFromDb(userQueryInput: $userResponsibleQuery) {
       _id
       firstName
       lastName
       displayName
       imgUrl
     }
-    contributors: usersById(userQueryInput: $userContibuterQuery) {
+    contributors: usersByIdFromDb(userQueryInput: $userContibuterQuery) {
       _id
       firstName
       lastName
       displayName
       imgUrl
     }
-    followers: usersById(userQueryInput: $userFollowersQuery) {
+    followers: usersByIdFromDb(userQueryInput: $userFollowersQuery) {
       _id
       firstName
       lastName
@@ -54,7 +54,7 @@ function Team() {
   const { response, snapshot, refetch, updateResponse } = useResponseContext();
   const maxParticipants = 20;
 
-  const { data: racf, loading } = useQuery(GET_USERS_BY_ID, {
+  const { data: racf, loading } = useQuery(GET_USERS_BY_ID_FROM_DB, {
     variables: {
       userAccountableQuery: { usersIds: response?.accountableId || [] },
       userResponsibleQuery: { usersIds: response?.responsibleId || [] },

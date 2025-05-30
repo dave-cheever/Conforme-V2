@@ -3,6 +3,7 @@ import session from './session.q';
 import updateUser from './updateUser.m';
 import users from './users.q';
 import usersById from './usersById.q';
+import usersByIdFromDb from './usersByIdFromDb.q';
 
 const usersResolvers = {
   Query: {
@@ -10,6 +11,7 @@ const usersResolvers = {
     users,
     searchUsers,
     usersById,
+    usersByIdFromDb,
   },
   Mutation: {
     updateUser,
@@ -17,7 +19,7 @@ const usersResolvers = {
   User: {
     defaultPage: (user) => {
       return Array.isArray(user.defaultPage) ? user.defaultPage : [];
-    }
+    },
   },
 };
 
@@ -87,6 +89,14 @@ export const usersTypeDefs = `
     _id: ID!
     defaultPage: [DefaultPageInput]
   }
+
+  type Query {
+    session: Session!
+    users(usersAnswersCountInput: UsersAnswersCountInput, usersPagination: PaginationInput): [User!]!
+    searchUsers(searchQuery: SearchUserQuery): [User!]!
+    usersById(userQueryInput: UserQueryInput): [User!]!
+    usersByIdFromDb(userQueryInput: UserQueryInput): [User!]!
+  }
 `;
 
 export const usersQueryDefs = `
@@ -94,6 +104,7 @@ export const usersQueryDefs = `
   users(usersAnswersCountInput: UsersAnswersCountInput, usersPagination: PaginationInput): [User!]!
   searchUsers(searchQuery: SearchUserQuery): [User!]!
   usersById(userQueryInput: UserQueryInput): [User!]!
+  usersByIdFromDb(userQueryInput: UserQueryInput): [User!]!
 `;
 
 export const usersMutationsDefs = `
