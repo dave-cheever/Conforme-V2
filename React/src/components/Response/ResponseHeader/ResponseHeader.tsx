@@ -32,7 +32,6 @@ import { ArrowDownIcon, SaveIcon, ShareIcon, SubmitIcon } from '../../../icons';
 import past from '../../../utils/tense';
 import { isPermitted } from '../../can';
 import ResponseHeaderButton from './ResponseHeaderButton';
-import ResponseHeaderMenuItem from './ResponseHeaderMenuItem';
 import ResponseHeaderStatus from './ResponseHeaderStatus';
 
 function ReasponseHeader() {
@@ -279,8 +278,8 @@ function ReasponseHeader() {
                       !areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)
                         ? {}
                         : {
-                            stroke: 'reasponseHeader.buttonLightColorHover',
-                          }
+                          stroke: 'reasponseHeader.buttonLightColorHover',
+                        }
                     }
                     data-id="a0ce37414d9f"
                     fontSize="15px"
@@ -344,32 +343,20 @@ function ReasponseHeader() {
                 data-id="2162de14e883"
                 minW={['calc(100vw - 50px)', '325px']}
                 w="100%"
+                display={'flex'}
+                flexDir={'column'}
                 zIndex="10">
                 {/* <FollowButton isMobile /> */}
-                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} />}
+                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton width='fit-content' data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} />}
                 {response.status === 'draft' && !snapshot && (
                   <>
-                    <ResponseHeaderMenuItem data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} />
-                    <ResponseHeaderMenuItem
-                      data-id="f292070c3b92"
-                      disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)}
-                      name="Submit review"
-                      onClick={submitReview} />
+                    <ResponseHeaderButton width='fit-content' data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} />
+                    <ResponseHeaderButton width='fit-content' disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} data-id="f292070c3b92" name="Submit review" onClick={submitReview} />
                   </>
                 )}
-                <ResponseHeaderMenuItem
-                  data-id="85fb49993c30"
-                  icon={
-                    <ShareIcon
-                      _groupHover={{
-                        stroke: 'reasponseHeader.buttonLightColorHover',
-                      }}
-                      data-id="52bca3f82603"
-                      fontSize="15px"
-                      stroke="reasponseHeader.buttonLightColor" />
-                  }
-                  name="Share"
-                  onClick={handleShareOpen} />
+
+                <ResponseHeaderButton width='fit-content' data-id="85fb49993c30" name="Share" onClick={handleShareOpen} />
+
                 <MenuDivider
                   border="1px"
                   borderColor="reasponseHeader.optionsMenuDivider"

@@ -9,6 +9,7 @@ function ResponseHeaderButton({
   loading = false,
   disabled = false,
   primary = false,
+  width,
 }: {
   icon?: ReactElement<any, any>;
   name: string;
@@ -16,9 +17,11 @@ function ResponseHeaderButton({
   loading?: boolean;
   disabled?: boolean;
   primary?: boolean;
+  width?: string;
 }) {
   return <>
     <Button
+      width={width && width}
       _hover={
         disabled
           ? {}
@@ -37,7 +40,6 @@ function ResponseHeaderButton({
       fontWeight="bold"
       isLoading={loading}
       leftIcon={icon}
-      ml="15px"
       onClick={onClick}
       px={4}
       role="group">
