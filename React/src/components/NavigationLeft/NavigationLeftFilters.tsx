@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-
+import { useLocation } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -13,9 +13,16 @@ function NavigationLeftFilters({
   menuOpen?: boolean;
   setFiltersOpen?: (value: boolean) => void;
 }) {
-  const { responseStatuses } = useResponseUtils();
+  const { pathname } = useLocation();
   const { filtersValues, setFilters } = useFiltersContext();
-  const itemStatusFilterValue = useMemo(() => filtersValues.itemStatus?.value, [filtersValues]) as string[];
+  const { responseStatuses } = useResponseUtils();
+  const itemStatusFilterValue = useMemo(
+    () => filtersValues.itemStatus?.value,
+    [filtersValues]
+  ) as string[];
+
+  const lastPathSegment = pathname.split('/').filter(Boolean).pop();
+  if (lastPathSegment === 'help') return null;
 
   const updateFilters = (name: any) => {
     let newValue: any = [];
@@ -28,7 +35,7 @@ function NavigationLeftFilters({
   };
 
   return (
-    (<Flex data-id="3143fecc7acc" direction="column" key={filter[0]}>
+    <Flex data-id="3143fecc7acc" direction="column" key={filter[0]}>
       {filter[0] === 'comingUp' && (
         <Flex data-id="883873cdc842" py={2}>
           <Flex
@@ -38,7 +45,8 @@ function NavigationLeftFilters({
             ml="25px"
             opacity="0.3"
             rounded="lg"
-            w="30px" />
+            w="30px"
+          />
         </Flex>
       )}
       <Flex
@@ -66,7 +74,8 @@ function NavigationLeftFilters({
         }}
         position="relative"
         right={[0, '37px']}
-        w={['170px', '175px']}>
+        w={['170px', '175px']}
+      >
         <Flex align="center" data-id="2315dc824dec">
           <Box
             bg={`navigationLeftFilters.${filter[0]}`}
@@ -74,7 +83,8 @@ function NavigationLeftFilters({
             h="8px"
             mr={8}
             rounded="full"
-            w="8px" />
+            w="8px"
+          />
           {responseStatuses[filter[0]]}
         </Flex>
         <Flex
@@ -101,11 +111,12 @@ function NavigationLeftFilters({
           left="10px"
           position="relative"
           rounded="10px"
-          w="34px">
+          w="34px"
+        >
           {filter[1]}
         </Flex>
       </Flex>
-    </Flex>)
+    </Flex>
   );
 }
 

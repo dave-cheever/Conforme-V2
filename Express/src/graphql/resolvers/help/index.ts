@@ -11,6 +11,8 @@ export const helpTypeDefs = `
     _id: ID!
     module: String!
     content: String!
+    terms: String!
+    privacy: String!
   }
 `;
 

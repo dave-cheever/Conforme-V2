@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
+
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
