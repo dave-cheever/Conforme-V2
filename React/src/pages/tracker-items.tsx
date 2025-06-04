@@ -222,29 +222,26 @@ function TrackerItems() {
    */
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
-      if (!filter || !filter[1]) return { ...acc };
-
-      const [key, value] = filter;
-      // Convert 'Status' to 'status' for the query
-      if (key === 'Status') key = 'status';
+      const parsedFilters = Object.entries(filtersValues).reduce((acc, [rawKey, value]) => {
+      const key = rawKey === 'Status' ? 'status' : rawKey;
 
       if (
-        !value.value ||
+        !value?.value ||
         (typeof value.value === 'object' && Object.keys(value.value).length === 0) ||
         (key === 'usersIds' &&
           value.value.responsibleIds?.length === 0 &&
           value.value.accountableIds?.length === 0 &&
           value.value.contributorIds?.length === 0 &&
           value.value.followerIds?.length === 0)
-      )
+      ) 
         return acc;
 
-      return {
-        ...acc,
-        [key]: value.value,
-      };
-    }, {});
+    return {
+      ...acc,
+      [key]: value.value,
+    };
+      }, {});
+
     setParsedFilters(parsedFilters);
   }, [JSON.stringify(filtersValues)]); // eslint-disable-line react-hooks/exhaustive-deps
 
