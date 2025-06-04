@@ -21,7 +21,6 @@ function ResponseHeaderButton({
 }) {
   return <>
     <Button
-      width={width && width}
       _hover={
         disabled
           ? {}
@@ -42,7 +41,8 @@ function ResponseHeaderButton({
       leftIcon={icon}
       onClick={onClick}
       px={4}
-      role="group">
+      role="group"
+      width={width && width}>
       {name}
     </Button>
   </>

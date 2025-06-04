@@ -341,21 +341,21 @@ function ReasponseHeader() {
                 boxShadow="0px 0px 80px"
                 color="reasponseHeader.optionsMenuBoxShadow"
                 data-id="2162de14e883"
-                minW={['calc(100vw - 50px)', '325px']}
-                w="100%"
                 display={'flex'}
                 flexDir={'column'}
+                minW={['calc(100vw - 50px)', '325px']}
+                w="100%"
                 zIndex="10">
                 {/* <FollowButton isMobile /> */}
-                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton width='fit-content' data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} />}
+                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} width='fit-content' />}
                 {response.status === 'draft' && !snapshot && (
                   <>
-                    <ResponseHeaderButton width='fit-content' data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} />
-                    <ResponseHeaderButton width='fit-content' disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} data-id="f292070c3b92" name="Submit review" onClick={submitReview} />
+                    <ResponseHeaderButton data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} width='fit-content' />
+                    <ResponseHeaderButton data-id="f292070c3b92" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} name="Submit review" onClick={submitReview} width='fit-content' />
                   </>
                 )}
 
-                <ResponseHeaderButton width='fit-content' data-id="85fb49993c30" name="Share" onClick={handleShareOpen} />
+                <ResponseHeaderButton data-id="85fb49993c30" name="Share" onClick={handleShareOpen} width='fit-content' />
 
                 <MenuDivider
                   border="1px"

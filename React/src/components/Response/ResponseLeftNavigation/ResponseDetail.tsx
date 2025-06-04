@@ -1,15 +1,15 @@
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import { gql, useQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Icon, Modal, ModalBody, ModalContent, useDisclosure, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
-import { gql, useQuery } from '@apollo/client';
 
 import { toastSuccess } from '../../../bootstrap/config';
 import { ArrowRight, Copy, DetailIcon } from '../../../icons';
-import ResponseLeftItem from '../ResponseLeftItem';
 import { IUser } from '../../../interfaces/IUser';
+import ResponseLeftItem from '../ResponseLeftItem';
 
 function ResponseDetail({ response }) {
 

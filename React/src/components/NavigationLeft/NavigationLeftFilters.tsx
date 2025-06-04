@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { Box, Flex } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -18,7 +19,7 @@ function NavigationLeftFilters({
   const { responseStatuses } = useResponseUtils();
   const itemStatusFilterValue = useMemo(
     () => filtersValues.itemStatus?.value,
-    [filtersValues]
+    [filtersValues],
   ) as string[];
 
   const lastPathSegment = pathname.split('/').filter(Boolean).pop();

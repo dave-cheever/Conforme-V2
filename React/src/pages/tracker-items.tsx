@@ -225,7 +225,7 @@ function TrackerItems() {
     const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
       if (!filter || !filter[1]) return { ...acc };
 
-      let [key, value] = filter;
+      const [key, value] = filter;
       // Convert 'Status' to 'status' for the query
       if (key === 'Status') key = 'status';
 
