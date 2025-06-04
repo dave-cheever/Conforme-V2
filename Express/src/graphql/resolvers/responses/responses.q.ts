@@ -44,7 +44,7 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
     }
 
     const { _id, trackerItemsIds, regulatoryBodiesIds, categoriesIds, businessUnitsIds, locationsIds,
-      usersIds, dueDate, itemStatus, includeNotPublished, ...questionsQuery } = responsesQuery || {};
+      usersIds, dueDate, itemStatus, status, includeNotPublished, ...questionsQuery } = responsesQuery || {};
 
     // Filter by response id
     if (_id) {
@@ -467,6 +467,14 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       pipeline.push({
         $match: {
           calculatedStatus: { $in: itemStatus },
+        },
+      });
+    }
+
+    if (status) {
+      pipeline.push({
+        $match: {
+          status: { $in: status },
         },
       });
     }

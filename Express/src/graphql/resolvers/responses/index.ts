@@ -91,6 +91,7 @@ export const responsesTypeDefs = `
     dueDate: [String]
     itemStatus: [String]
     includeNotPublished: Boolean
+    status: [String]
   }
 
   input ResponseDocumentsAddInput {

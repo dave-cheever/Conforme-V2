@@ -13,6 +13,7 @@ import RegulatoryBodyFilter from './RegulatoryBodyFilter';
 import ShowArchivedFilter from './ShowArchivedFilter';
 import StateChoiceFilter from './StateChoiceFilter';
 import TrackerItemFilter from './TrackerItemFilter';
+import TrackerItemStatusFilter from './TrackerItemStatusFilter';
 import UserFilter from './UserFilter';
 
 function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
@@ -57,6 +58,9 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
 
       case 'usersIds':
         return <UserFilter data-id="bfdb546cbb74" />;
+
+      case 'Status':
+        return <TrackerItemStatusFilter data-id="37449d201df8" name={name} />;
 
       default:
         return <StateChoiceFilter data-id="37719d801df8" name={name} />;
