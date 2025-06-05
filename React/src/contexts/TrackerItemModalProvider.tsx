@@ -60,7 +60,6 @@ export interface ITrackerItemModalSection {
 export const useTrackerItemModalContext = () => {
   const context = useContext(TrackerItemModalContext);
   if (!context) throw new Error('useTrackerItemModalContext must be used within the TrackerItemModalProvider');
-
   return context;
 };
 
@@ -71,65 +70,20 @@ function TrackerItemModalProvider({ children }) {
   const [visitedTab, setVisitedTab] = useState<number>(0);
 
   const trackerItemModalSections: ITrackerItemModalSection[] = [
-    {
-      name: 'Details',
-      fields: {
-        name: '',
-        description: '',
-        categoryId: undefined,
-        regulatoryBodyId: undefined,
-        dueDate: undefined,
-        frequency: undefined,
-        dueDateCalculation: 'fromDueDate',
-        dueDateEditable: false,
-      },
-      Component: GeneralForm,
-    },
-    {
-      name: 'Locations',
-      fields: {
-        locationsIds: [],
-      },
-      Component: LocationsForm,
-    },
-    {
-      name: pluralize(capitalize(t('business unit'))),
-      fields: {
-        businessUnitsIds: [],
-      },
-      Component: BusinessUnitsForm,
-    },
-    {
-      name: 'Evidence',
-      fields: {
-        evidenceItems: [],
-        allowAttachments: true,
-      },
-      Component: AdditionalDetailsForm,
-    },
-    {
-      name: capitalize(pluralize(t('question'))),
-      fields: {
-        questions: [],
-      },
-      Component: QuestionsForm,
-    },
-    {
-      name: 'Summary',
-      Component: Summary,
-      fields: {
-        _id: undefined,
-        published: false,
-      },
-    },
+    { name: 'Details', fields: { name: '', description: '', categoryId: undefined, regulatoryBodyId: undefined, dueDate: undefined, frequency: undefined, dueDateCalculation: 'fromDueDate', dueDateEditable: false }, Component: GeneralForm },
+    { name: 'Locations', fields: { locationsIds: [] }, Component: LocationsForm },
+    { name: pluralize(capitalize(t('business unit'))), fields: { businessUnitsIds: [] }, Component: BusinessUnitsForm },
+    { name: 'Evidence', fields: { evidenceItems: [], allowAttachments: true }, Component: AdditionalDetailsForm },
+    { name: capitalize(pluralize(t('question'))), fields: { questions: [] }, Component: QuestionsForm },
+    { name: 'Summary', fields: { _id: undefined, published: false }, Component: Summary },
   ];
 
   const defaultValues: Partial<ITrackerItem> = {
-    ...trackerItemModalSections[0].fields, // General
-    ...trackerItemModalSections[1].fields, // Locations
-    ...trackerItemModalSections[2].fields, // Business units
-    ...trackerItemModalSections[3].fields, // Additional details
-    ...trackerItemModalSections[4].fields, // Questions
+    ...trackerItemModalSections[0].fields,
+    ...trackerItemModalSections[1].fields,
+    ...trackerItemModalSections[2].fields,
+    ...trackerItemModalSections[3].fields,
+    ...trackerItemModalSections[4].fields,
   };
 
   const {
@@ -140,15 +94,15 @@ function TrackerItemModalProvider({ children }) {
     trigger,
     reset: resetForm,
   } = useForm({
-    mode: 'onChange',
+    mode: 'onBlur',
     defaultValues,
   });
+
   const trackerItem = watch() as Partial<ITrackerItem>;
 
   const [selectedSection, setSelectedSection] = useState<ITrackerItemModalSection>(trackerItemModalSections[0]);
   const selectedSectionIndex = useMemo(
     () => trackerItemModalSections.findIndex(({ name }) => name === selectedSection.name),
-
     [selectedSection],
   );
 
@@ -158,13 +112,10 @@ function TrackerItemModalProvider({ children }) {
     if (isValidating) return;
     setIsValidating(true);
     try {
-      const fields = Object.keys(trackerItemModalSections[selectedSectionIndex].fields || []);
-      if (fields.length > 0) {
-        const isValid = await trigger(fields as any);
-        if (!isValid) {
-          setIsValidating(false);
-          return;
-        }
+      const currentFields = Object.keys(trackerItemModalSections[selectedSectionIndex].fields || []);
+      if (currentFields.length > 0) {
+        const isValid = await trigger(currentFields as any);
+        if (!isValid) return;
       }
       setSelectedSection(trackerItemModalSections[sectionIndex]);
       if (sectionIndex > visitedTab) setVisitedTab(sectionIndex);
@@ -175,16 +126,14 @@ function TrackerItemModalProvider({ children }) {
 
   const setValue = (name, value) => {
     setFormValue(name, value);
-    trigger(name, value);
   };
 
   const reset = (trackerItem?: Partial<ITrackerItem>, sectionIndex = 0) => {
     resetForm(trackerItem || defaultValues);
     setTimeout(() => {
-      if (sectionIndex) {
-        // Validate first page when opening the form in other page
+      if (sectionIndex) 
         trigger(Object.keys(trackerItemModalSections[0].fields || []) as any);
-      }
+      
       setSelectedSection(trackerItemModalSections[sectionIndex]);
       setVisitedTab(sectionIndex);
     }, 1);
@@ -213,11 +162,24 @@ function TrackerItemModalProvider({ children }) {
       setVisitedTab,
       isValidating,
     }),
-
-    [control, errors, trackerItem, data, selectedSection, selectedSectionIndex, savingDialogDetails, visitedTab, isValidating],
+    [
+      control,
+      errors,
+      trackerItem,
+      data,
+      selectedSection,
+      selectedSectionIndex,
+      savingDialogDetails,
+      visitedTab,
+      isValidating,
+    ],
   ) as ITrackerItemModalContext;
 
-  return <TrackerItemModalContext.Provider value={value}>{children}</TrackerItemModalContext.Provider>;
+  return (
+    <TrackerItemModalContext.Provider value={value}>
+      {children}
+    </TrackerItemModalContext.Provider>
+  );
 }
 
 export default TrackerItemModalProvider;
