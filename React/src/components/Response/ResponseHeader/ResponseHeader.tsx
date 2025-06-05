@@ -245,6 +245,7 @@ function ReasponseHeader() {
           display={['none', 'flex', 'flex']}
           h="40px"
           justify="flex-end"
+          columnGap={'8px'}
           mr={6}>
           {/* <FollowButton /> */}
           {response.status === 'submitted' && !snapshot && (
@@ -347,15 +348,15 @@ function ReasponseHeader() {
                 w="100%"
                 zIndex="10">
                 {/* <FollowButton isMobile /> */}
-                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} width='fit-content' />}
+                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton isListView data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} />}
                 {response.status === 'draft' && !snapshot && (
                   <>
-                    <ResponseHeaderButton data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} width='fit-content' />
-                    <ResponseHeaderButton data-id="f292070c3b92" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} name="Submit review" onClick={submitReview} width='fit-content' />
+                    <ResponseHeaderButton isListView data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} />
+                    <ResponseHeaderButton isListView data-id="f292070c3b92" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} name="Submit review" onClick={submitReview} />
                   </>
                 )}
 
-                <ResponseHeaderButton data-id="85fb49993c30" name="Share" onClick={handleShareOpen} width='fit-content' />
+                <ResponseHeaderButton isListView data-id="85fb49993c30" name="Share" onClick={handleShareOpen}  />
 
                 <MenuDivider
                   border="1px"

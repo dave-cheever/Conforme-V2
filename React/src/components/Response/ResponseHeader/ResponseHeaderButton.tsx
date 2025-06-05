@@ -9,7 +9,7 @@ function ResponseHeaderButton({
   loading = false,
   disabled = false,
   primary = false,
-  width,
+  isListView
 }: {
   icon?: ReactElement<any, any>;
   name: string;
@@ -17,7 +17,7 @@ function ResponseHeaderButton({
   loading?: boolean;
   disabled?: boolean;
   primary?: boolean;
-  width?: string;
+  isListView?: boolean;
 }) {
   return <>
     <Button
@@ -42,7 +42,10 @@ function ResponseHeaderButton({
       onClick={onClick}
       px={4}
       role="group"
-      width={width && width}>
+      display={isListView ? 'flex' : 'initial'}
+      flexDir={isListView ? 'row' : 'initial'}
+      justifyContent={isListView ? 'space-between' : 'initial'}
+>
       {name}
     </Button>
   </>
