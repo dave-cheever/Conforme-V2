@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Box, Flex, Icon } from '@chakra-ui/react';
+import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
 import { useConfigContext } from '../../contexts/ConfigProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
-import { Conforme, ConformeSmall } from '../../icons';
 import Can from '../can';
 import ModuleSwitcher from '../ModuleSwitcher';
 import NavigationLeftItem from './NavigationLeftItem';
@@ -15,6 +14,7 @@ import NavigationLeftItemTablet from './NavigationLeftItemTablet';
 
 function NavigationLeft() {
   const location = useLocation();
+  const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
   const { isPathActive } = useNavigate();
   const { cleanFilters, showFiltersPanel } = useFiltersContext();
   const { menuItems } = useConfigContext();
@@ -33,8 +33,7 @@ function NavigationLeft() {
       display={['none', 'block', 'block']}
       fontWeight="semibold"
       h="100vh"
-      w={showFiltersPanel ? ['0px', '80px', '80px'] : ['0px', '80px', '230px']}>
-     
+      w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '253px']}>
       <Box
         alignItems="center"
         cursor="pointer"
@@ -45,15 +44,20 @@ function NavigationLeft() {
       >
         <ModuleSwitcher data-id="e97e8f7ff427" />
       </Box>
-      
+
       <Flex
         data-id="10cc9b2fcd5f"
         direction="column"
+        gap={"25px"}
         h="calc(100% - 80px)"
         justify="space-between"
         overflowX={device === 'desktop' ? 'hidden' : 'unset'}
         overflowY={device === 'desktop' ? 'auto' : 'unset'}
-        pt={['0px', '10px']}>
+        pb={"18px"}
+        pl={"14px"}
+        pr={"14px"}
+        pt={"18px"}
+      >
         <Box data-id="f2d5871013ad">
           {menuItems.map((menuItem: any, i) => (
             <Can
@@ -79,23 +83,7 @@ function NavigationLeft() {
               }} />
           ))}
         </Box>
-        {device === 'desktop' && (
-          <Icon
-            as={showFiltersPanel ? ConformeSmall : Conforme}
-            data-id="5eff0a6971bc"
-            h="30px"
-            mb="20px"
-            ml="20px"
-            mt={2}
-            w={showFiltersPanel ? '27px' : '103px'} />
-        )}
-        {device === 'tablet' && <Icon
-          as={ConformeSmall}
-          data-id="0a66b63f6b9d"
-          h="30px"
-          mb="20px"
-          ml="20px"
-          w="27px" />}
+
       </Flex>
     </Box>)
   );
@@ -105,7 +93,9 @@ export default NavigationLeft;
 
 export const navigationLeftStyles = {
   navigationLeft: {
-    bg: '#f5f5f5',
-    organizationNameFontColor: '#282F36',
+    bg: '#110B30',
+    vigationLeft: {
+      bg: '#f5f5f5',
+    },
   },
-};
+}

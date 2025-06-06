@@ -1,6 +1,6 @@
 import { Box, Button, Flex, HStack, Menu, MenuButton, MenuList, Spacer, Text } from '@chakra-ui/react';
 
-import { ChevronRight } from '../icons';
+import { ChevronRight, UpAndDownIcon } from '../icons';
 
 function SortButton({
   sortBy,
@@ -26,18 +26,19 @@ function SortButton({
             _hover={{}}
             as={Button}
             bg="sortButton.menuButtonBg"
+            border={"1px solid #CBD5E0"}
             data-id="cb617272ae6d"
             fontSize="14px"
             fontWeight="700"
             h="40px"
-            ml={['15px', '0']}
-            rightIcon={<ChevronRight
+            leftIcon={<UpAndDownIcon
               color="sortButton.rightIcon"
               data-id="c3c8799dfe9d"
               h="12px"
               mt="3px"
               transform="rotate(90deg)"
               w="12px" />}
+            ml={['15px', '0']}
             rounded="10px">
             <Flex align="center" data-id="387fc30084b0" mr="1">
               <Text data-id="56ce5132037e" fontSize="smm" fontWeight="semi_medium">

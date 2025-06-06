@@ -7,9 +7,10 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
   const { showFiltersPanel, setShowFiltersPanel, numberOfSelectedFilters } = useFiltersContext();
 
   return (
-    (<Flex
+    <Flex
       align="center"
-      bg="header.filterBackgroundColor"
+      bg="white"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       color="brand.primaryFont"
       cursor="pointer"
@@ -21,19 +22,25 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       minW="120px"
       mr={!insightsFilter ? [6, 6, 4] : undefined}
       onClick={() => setShowFiltersPanel(!showFiltersPanel)}
-      p={4}>
-      <Flex
-        color="white"
-        data-id="bdbe7e115113"
-        fontSize="smm"
-        fontWeight="semi_medium">
-        Filters
+      px={4}
+    >
+      <Flex align="center" gap="2">
+        <Filter data-id="13a98323065c" h="18px" mt={"7px"} />
+        <Flex
+          color="black"
+          data-id="bdbe7e115113"
+          fontSize="smm"
+          fontWeight="semi_medium"
+        >
+          Filters
+        </Flex>
       </Flex>
+
       {numberOfSelectedFilters > 0 && (
         <Flex
           align="center"
           bg="header.selectedFilterColor"
-          borderRadius="10px"
+          borderRadius="md"
           color="white"
           data-id="351cbb907a96"
           fontSize="12px"
@@ -41,17 +48,13 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
           h="20px"
           justify="center"
           lineHeight="14px"
-          mx="2"
-          w="27px">
+          ml="2"
+          w="20px"
+        >
           {numberOfSelectedFilters}
         </Flex>
       )}
-      <Filter
-        data-id="13a98323065c"
-        h="18px"
-        ml={3}
-        transform={numberOfSelectedFilters > 0 ? 'rotate(180deg)' : ''} />
-    </Flex>)
+    </Flex>
   );
 }
 

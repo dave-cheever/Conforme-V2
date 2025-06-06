@@ -487,6 +487,14 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
         to: 'responsible',
       });
     }
+    if (shouldJoin(['contributors'])) {
+      join({
+        pipeline,
+        collection: 'users',
+        from: 'contributorsIds',
+        to: 'contributors',
+      });
+    }
 
     // Push all responses to array and count total
     pipeline.push({
@@ -511,9 +519,16 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       },
     });
 
-    pipeline.push({ $project: getProjectFields(info.fieldNodes, 'responses') });
+    pipeline.push({
+      $project: {
+        ...getProjectFields(info.fieldNodes, 'responses'), contributors: {
+          displayName: 1,
+          imgUrl: 1
+        }
+      }
+    });
     const res = (await Responses.aggregate(pipeline))[0];
-
+    console.log(res?.responses)
     return {
       responses: res?.responses || [],
       total: res?.total?.total || 0,

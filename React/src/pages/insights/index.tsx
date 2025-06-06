@@ -86,6 +86,7 @@ function Insights() {
         data-id="98049fce081b"
         mobileBreadcrumbs={['Insights']}>
         {device === 'mobile' && <FilterButton data-id="c7f77bc3876e" insightsFilter />}
+
       </Header>
       {device !== 'mobile' && (
         <Flex

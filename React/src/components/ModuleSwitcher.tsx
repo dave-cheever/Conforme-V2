@@ -6,15 +6,18 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
- useMediaQuery } from '@chakra-ui/react';
+  useMediaQuery,
+} from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
+import { Conforme } from '../icons';
 import { IModule } from '../interfaces/IModule';
 import { getInitials } from '../utils/helpers';
 
@@ -22,6 +25,7 @@ function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
   const { showFiltersPanel } = useFiltersContext();
   const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
+  const [isMobile] = useMediaQuery('(max-width: 747px)');
   const navigate = useNavigate();
 
   const modulesInNavigation = useMemo(
@@ -39,9 +43,27 @@ function ModuleSwitcher() {
   return (
     <Box data-id="fd295d0a3c18" pl={2}>
       <Menu>
-      <MenuButton as={Button} minW="200px" px="4" variant="ghost" w="auto">
-        <Flex align="center" justify="space-between" w="100%">
+       <MenuButton
+          _active={{ bg: "navigationLeftItem.unselectedLabelBg" }}
+          _hover={{  bg: !isMobile && "navigationLeftItem.selectedLabelBg"}}
+          as={Button}
+          bg="navigationLeftItem.unselectedLabelBg"
+          minW="200px"
+          px="0"
+          variant="ghost"
+          w="auto"
+          >
+          <Flex align="center" justify="space-between" w="100%">
+            {!isTabletWidth && !showFiltersPanel && (
+              <Icon
+                as={Conforme}
+                data-id="5eff0a6971bc"
+                h="30px"
+                w="30px"/>
+            )}
+            
           <Text
+            color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
             display="inline-block"
             isTruncated
             marginLeft={showFiltersPanel || isTabletWidth ? '10' : '2'}
@@ -62,7 +84,6 @@ function ModuleSwitcher() {
         <MenuList zIndex={100}>
           {modulesInNavigation.map((m) => (
             <MenuItem
-              _hover={{ bg: 'gray.100', color: 'black' }}
               bg={m.path === module?.path ? 'moduleSwitcher.button.active' : 'transparent'}
               color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'inherit'} 
               key={m.path}
@@ -82,10 +103,10 @@ function ModuleSwitcher() {
 
 export const moduleSwitcherStyles = {
   moduleSwitcher: {
-    background: '#efefef',
+    background: '#09051B',
     button: {
-      default: '#f5f5f5',
-      active: '#462AC4',
+      default: '#462AC4',
+      active: '#110B30',
       text: {
         default: '#000000',
         active: '#ffffff',

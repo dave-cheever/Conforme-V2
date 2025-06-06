@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { Flex, Grid } from '@chakra-ui/react';
+import { Divider, Flex, Grid } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty, uniqBy } from 'lodash';
 import pluralize from 'pluralize';
@@ -74,9 +74,11 @@ const GET_RESPONSES = gql`
           displayName
           role
         }
+
         metatags {
           addedBy
         }
+
       }
       total
     }
@@ -283,6 +285,15 @@ function TrackerItems() {
             setViewMode={setViewMode}
             viewMode={viewMode}
             views={['grid', 'list', 'group']} />
+
+          <Divider
+            borderColor="gray.300"
+            height="30px"
+            ml={2}
+            mr={2}
+            mt={1}
+            orientation="vertical"
+          />
           <SortButton
             data-id="72f816f7350e"
             setSortOrder={setSortOrder}
@@ -301,14 +312,14 @@ function TrackerItems() {
       pb={4}>
       {error ? (
         <Flex
-        alignItems="center"
-        data-id="864e662bfe75"
-        fontSize="18px"
-        fontStyle="italic"
-        h="200px"
-        justifyContent="center"
-        w="full">
-        No Tracker Items found. Try adjusting the filters.
+          alignItems="center"
+          data-id="864e662bfe75"
+          fontSize="18px"
+          fontStyle="italic"
+          h="200px"
+          justifyContent="center"
+          w="full">
+          No Tracker Items found ,Try adjusting the filters.
         </Flex>
       ) : (
         <>
@@ -334,15 +345,15 @@ function TrackerItems() {
                 {responses.length > 0
                   ? responses.map((response) => <TrackerItemSquare data-id="3c73d7318f93" key={response._id} response={response} />)
                   : !loading && (
-                      <Flex
-                        data-id="4d543a578ec2"
-                        fontSize="18px"
-                        fontStyle="italic"
-                        h="full"
-                        w="full">
-                        No {pluralize(t('tracker item'))} found
-                      </Flex>
-                    )}
+                    <Flex
+                      data-id="4d543a578ec2"
+                      fontSize="18px"
+                      fontStyle="italic"
+                      h="full"
+                      w="full">
+                      No {pluralize(t('tracker item'))} found
+                    </Flex>
+                  )}
               </Grid>
               {loading && <Loader center data-id="331bdbe7d31a" h="60px" key="infinite-loader" />}
             </InfiniteScroll>

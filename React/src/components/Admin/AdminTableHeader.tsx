@@ -15,14 +15,14 @@ function AdminTableHeader({ children, title }: { children: React.ReactNode; titl
       </Box>
     )}
     <Flex
-      bg="white"
+      bg="#EDF2F7"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
       borderTopRadius={title ? undefined : '20px'}
       color="adminTableHeader.font"
       data-id="596c88f2df6e"
-      fontSize="11px"
-      fontWeight="semi_medium"
+      fontSize="14px"
+      fontWeight="semibold"
       p="15px 25px">
       {children}
     </Flex>

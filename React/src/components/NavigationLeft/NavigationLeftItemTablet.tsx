@@ -55,7 +55,7 @@ function NavigationLeftItemTablet({
           data-id="47645b188bad"
           h="30px"
           justifyContent="center"
-          ml="25px"
+          ml="0px"
           onClick={() => {
             if (menuItem.url === '/') {
               setFiltersOpen(!filtersOpen);

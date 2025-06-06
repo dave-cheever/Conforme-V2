@@ -28,7 +28,7 @@ export const responsesTypeDefs = `
     label: String!
     value: String!
   }
-  
+
   type ResponseEvidence {
     name: String!
     uploaded: Document
@@ -64,6 +64,7 @@ export const responsesTypeDefs = `
     attachments: [Document]
     questions: [ResponseQuestion]
     responsible: User
+    contributors:[User!]!
     daysToDueDate: Int
     metatags: Metatags
   }

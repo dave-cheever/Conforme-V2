@@ -4,7 +4,6 @@ import { Box, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
-import { useAppContext } from '../../contexts/AppProvider';
 import { IResponse } from '../../interfaces/IResponse';
 import AdminTableHeader from '../Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
@@ -32,7 +31,6 @@ function TrackerListItems({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
-  const { module } = useAppContext();
 
   return <Box data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
     <Box
@@ -54,7 +52,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'trackerItem.name'}
           sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
-          w="20%" />
+          w="11%" />
         <AdminTableHeaderElement
           data-id="fa257b7cb259"
           label="Due for renewal"
@@ -64,7 +62,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'dueDate'}
           sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-          w="12%" />
+          w="11%" />
         <AdminTableHeaderElement
           data-id="dd6f521e1d31"
           label={capitalize(t('compliant'))}
@@ -74,7 +72,16 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'calculatedStatus'}
           sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
-          w="10%" />
+          w="11%" />
+          <AdminTableHeaderElement
+          data-id="dd6f521e1d31"
+          label={capitalize(t('evidence'))}
+
+          w="11%" />
+           <AdminTableHeaderElement
+          data-id="dd6f521e1d31"
+          label={capitalize(t('category'))}
+          w="11%" />
         <AdminTableHeaderElement
           data-id="b403f441bee2"
           label="Regulatory body"
@@ -84,7 +91,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
           sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
-          w="18%" />
+          w="11%"/>
         <AdminTableHeaderElement
           data-id="c7ff17c8d353"
           label="Responsible"
@@ -94,7 +101,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'responsible.displayName'}
           sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
-          w={(module?.customQuestionsInDashboard || []).length === 0 ? "20%" : (module?.customQuestionsInDashboard || []).length === 1 ? "15%" : "10%"} />
+          w="11%" />
         <AdminTableHeaderElement
           data-id="3c0328581ec0"
           label={capitalize(t('business unit'))}
@@ -104,8 +111,8 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'businessUnit.name'}
           sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w={(module?.customQuestionsInDashboard || []).length === 0 ? "20%" : (module?.customQuestionsInDashboard || []).length === 1 ? "15%" : "10%"} />
-        {(module?.customQuestionsInDashboard || []).length > 0 && (
+          w="11%" />
+        {/* {(module?.customQuestionsInDashboard || []).length > 0 && (
           <AdminTableHeaderElement
             label={module!.customQuestionsInDashboard[0]}
             w="10%" />
@@ -114,8 +121,13 @@ function TrackerListItems({
           <AdminTableHeaderElement
             label={module!.customQuestionsInDashboard[1]}
             w="10%" />
-        )}
+        )} */}
+         <AdminTableHeaderElement
+          data-id="dd6f521e1d31"
+          label={capitalize(t('location'))}
+          w="11%" />
       </AdminTableHeader>
+
       <Flex
         data-id="199e6641ce84"
         flexDir="column"

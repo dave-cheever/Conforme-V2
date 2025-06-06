@@ -1,14 +1,9 @@
-import { useMemo } from 'react';
-
 import { gql, useQuery } from '@apollo/client';
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
-import format from 'date-fns/format';
+import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { format } from 'date-fns';
 
-import { useAppContext } from '../../contexts/AppProvider';
 import useNavigate from '../../hooks/useNavigate';
-import useResponseUtils from '../../hooks/useResponseUtils';
-import { LocationIcon, QuestionIcon, UploadedTick } from '../../icons';
+import { CircledCross, CircledTickBold } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
 
@@ -23,9 +18,8 @@ const GET_USERS_BY_ID = gql`
 `;
 
 function TrackerItemSquare({ response }: { response: IResponse }) {
-  const { module } = useAppContext();
   const { navigateTo } = useNavigate();
-  const { responseStatuses, isEvidenceUploaded, areRequiredQuestionsAnswered, getCustomQuestionsInDashboard } = useResponseUtils();
+  // const { getCustomQuestionsInDashboard } = useResponseUtils();
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
       userQueryInput: {
@@ -34,23 +28,23 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
     },
   });
   const responsible: IUser = responseResponsible && responseResponsible.length !== 0 && responseResponsible[0];
-
-  const customQuestionsInDashboard = useMemo(() => getCustomQuestionsInDashboard(module!, response), [module, response]);
+  // const customQuestionsInDashboard = useMemo(() => getCustomQuestionsInDashboard(module!, response), [module, response]);
 
   return (
     (<Box
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.04)' }}
       bg="white"
+      border={"1px solid #E2E8F0"}
       borderRadius="10px"
       boxShadow="sm"
       cursor="pointer"
       data-id="b768fed011d7"
       flexShrink={0}
-      h={customQuestionsInDashboard.length > 0 ? "310px" : "290px"}
+      h={"254px"}
       onClick={() => navigateTo(`/tracker-item/${response._id}`)}
-      p="20px 25px 20px 25px"
+      p="16px 0px 16px 0px"
       w={['full', 'full', '350px']}>
-      <Flex align="center" data-id="c6cebe2642f9" justify="space-between">
+      {/* <Flex align="center" data-id="c6cebe2642f9" justify="space-between">
         <Flex align="center" data-id="5ca8d46aed4f">
           <Flex
             bgColor={`trackerSquare.${response.calculatedStatus}`}
@@ -96,18 +90,20 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
             </Tooltip>
           )}
         </Stack>
-      </Flex>
+      </Flex> */}
       <Flex
         align="center"
         data-id="fb1ae407c62c"
-        h="52px"
+        h="32px"
         mt={2}
+        p="0px 16px 16px 16px"
         position="relative"
         w="full">
         <Skeleton data-id="42f3b24c3b28" isLoaded={!responsibleLoading} rounded="full">
           <Tooltip data-id="3309a70a8a66" label={responsible?.displayName}>
             <Avatar
-              boxSize="24px"
+              borderRadius={"8px"}
+              boxSize="36px"
               cursor="pointer"
               data-id="df094a1f37ab"
               name={responsible?.displayName}
@@ -115,144 +111,160 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
               src={responsible?.imgUrl} />
           </Tooltip>
         </Skeleton>
-        <Text
-          color="trackerSquare.nameFontColor"
-          data-id="76f96b7e5b6e"
-          fontSize="16px"
-          fontWeight="700"
-          lineHeight="20px"
-          ml={3}
-          noOfLines={2}
-          w="full">
-          {response.trackerItem?.name}
-        </Text>
-      </Flex>
-      <Flex align="center" data-id="db683189b029" h="40px" w="full">
-        <LocationIcon color="trackerSquare.businessUnitFontColor" data-id="4a9b5f8ec4d6" ml={1} />
-        <Box
-          color="trackerSquare.businessUnitFontColor"
-          data-id="a97b4e7bf4cc"
-          fontSize="14px"
-          lineHeight="20px"
-          overflow="hidden"
-          pl={2}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap">
-          {response.businessUnit?.name}
-        </Box>
-      </Flex>
-      <Flex alignItems="flex-start" data-id="cb47e2c4fbdf" h="50px" py="4" w="full">
-        <Box
-          color="trackerSquare.categoryFontColor"
-          data-id="e9373a2261dc"
-          fontSize="11px"
-          w="50%">
-          <Box data-id="b80e8789c400">Regulatory body</Box>
-          <Box
+        <Flex align={"flex-start"} flexDirection={"column"}>
+          <Text
             color="trackerSquare.nameFontColor"
-            data-id="627778184142"
-            fontSize="14px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap">
-            {response.trackerItem?.regulatoryBody?.name ? (
-              response.trackerItem?.regulatoryBody?.name
-            ) : (
-              <Flex data-id="04d32603a42b" fontStyle="italic">Unassigned</Flex>
-            )}
-          </Box>
-        </Box>
-        <Box
-          color="trackerSquare.regulatoryFontColor"
-          data-id="53d37c03dbca"
-          fontSize="11px"
-          ml={3}
-          w="50%">
-          <Box data-id="28a0b4220bb2">Next renewal on</Box>
-          <Box
-            color="trackerSquare.nameFontColor"
-            data-id="7f7168426a6b"
-            fontSize="13px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap">
-            {response?.dueDate ? format(new Date(response?.dueDate), 'd MMM yyyy') : <Flex data-id="ab8eb41a747c" fontStyle="italic">No due date</Flex>}
-          </Box>
-        </Box>
-      </Flex>
-      {customQuestionsInDashboard.length > 0 && (
-        <Flex alignItems="flex-start" h="50px" py="4" w="full">
-          <Box
-            color="trackerSquare.categoryFontColor"
+            data-id="76f96b7e5b6e"
+            fontSize="16px"
+            fontWeight="600"
+            lineHeight="100%"
+            ml={3}
+            noOfLines={2}
+            w="full">
+            {response.trackerItem?.name}
+          </Text>
+          <Text
+            color="trackerSquare.fontColor"
+            data-id="fd632f8dc403"
             fontSize="11px"
-            w={customQuestionsInDashboard[1] ? "50%" : "full"}>
-            <Box>{customQuestionsInDashboard[0].name}</Box>
-            <Box
-              color="trackerSquare.nameFontColor"
-              fontSize="14px"
+            ml={3}
+
+            opacity="1"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap">
+            {response.trackerItem?.category?.name ? response.trackerItem?.category?.name : <Flex data-id="7a7048a5e737" fontStyle="italic">Unassigned</Flex>}
+          </Text>
+        </Flex>
+      </Flex>
+      <Divider color={"#E2E8F0"} w={"full"} />
+
+      <Flex data-id="ad60805790d9" flexDirection={"row"} justifyContent={"space-between"} p="16px">
+
+        <Flex data-id="ad60805790d9" flexDirection={"column"} gap={"16px"} w={"60%"}>
+          <Text
+            color={"#4A5568"}
+            fontSize={"14px"}
+            fontWeight={"600"}
+          >
+            Compliant
+          </Text>
+          {response && response.calculatedStatus === 'nonCompliant' ? (
+            <Flex align="center" data-id="c63dcb7094a8">
+              <CircledCross data-id="36f28ceab0c4" mr={2} stroke="trackerList.crossIcon" />
+              <Flex
+                color="trackerList.crossIcon"
+                data-id="cd7f66f6f585"
+                fontSize="14px"
+                fontWeight="700">
+                No
+              </Flex>
+            </Flex>
+          ) : (
+            <Flex align="flex-end" data-id="0ce15d4739e6">
+              <CircledTickBold data-id="d92e102e49c1" mr={2} stroke="trackerList.tickIcon" />
+              <Flex
+                color="trackerList.tickIcon"
+                data-id="e1b2ea6eef46"
+                fontSize="14px"
+                fontWeight="700">
+                Yes
+              </Flex>
+            </Flex>
+          )}
+          <Flex  data-id="5b66254df22c" flexDirection={"column"} gap={"16px"} w={"60%"} >
+            <Text
+              color={"#4A5568"}
+              fontSize={"14px"}
+              fontWeight={"600"}
+            >
+              Business unit        </Text>
+            <Text
+              color="trackerList.fontColor"
+              data-id="83206fb5d1e3"
+              fontSize="13px"
+              isTruncated
+              lineHeight="17px"
+              opacity="1"
               overflow="hidden"
               textOverflow="ellipsis"
-              whiteSpace="nowrap">
-              {customQuestionsInDashboard[0].value}
-            </Box>
-          </Box>
-          {customQuestionsInDashboard[1] && (
-            <Box
-              color="trackerSquare.regulatoryFontColor"
-              fontSize="11px"
-              ml={3}
-              w="50%">
-              <Box>{customQuestionsInDashboard[1].name}</Box>
-              <Box
-                color="trackerSquare.nameFontColor"
-                fontSize="13px"
-                overflow="hidden"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap">
-                {customQuestionsInDashboard[1].value}
-              </Box>
-            </Box>
-          )}
+              whiteSpace="nowrap"
+            >
+              {response.businessUnit?.name}
+              </Text>
+          </Flex>
         </Flex>
-      )}
-      <Flex
-        align="center"
-        data-id="75c788998fcd"
-        justify="space-between"
-        pt={customQuestionsInDashboard.length > 0 ? "20px" : "50px"}
-        w="full">
-        <Button
-          _hover={{
-            bg: response.calculatedStatus === 'nonCompliant' ? 'trackerSquare.nonCompliant' : 'trackerSquare.buttonBg',
-          }}
-          bg={response.calculatedStatus === 'nonCompliant' ? 'trackerSquare.nonCompliant' : 'trackerSquare.buttonBg'}
-          color={response.calculatedStatus === 'nonCompliant' ? 'white' : 'trackerSquare.fontColor'}
-          data-id="cda89f75ede5"
-          fontSize="11px"
-          h="28px"
-          onClick={() => navigateTo(`/tracker-item/${response._id}`)}
-          rightIcon={
-            <ChevronRightIcon
-              boxSize="20px"
-              color={response.calculatedStatus === 'nonCompliant' ? 'white' : 'trackerSquare.fontColor'}
-              data-id="1fb2f808ddf8" />
-          }
-          w="85px">
-          Details
-        </Button>
-        <Flex
-          align="center"
-          color="trackerSquare.nameFontColor"
-          data-id="f4e3b68e4087"
-          flexDirection="column"
-          justify="center"
-          mr={1}>
-          <Box data-id="ee1ccb50bedb" fontSize="11px" fontWeight="700">
-            {response.calculatedStatus && responseStatuses[response.calculatedStatus]}
-          </Box>
+        <Flex  data-id="ad60805790d9" flexDirection={"column"} gap={"16px"} w={"60%"}>
+
+          <Text
+            color={"#4A5568"}
+            fontSize={"14px"}
+            fontWeight={"600"}
+          >
+            Evidence
+          </Text>
+          <Flex data-id="ad60805790d9" >
+            {response && Array.isArray(response.evidence) && response.evidence.length > 0 ? (
+              <Flex align="flex-end" data-id="0ce15d4739e6">
+                <CircledTickBold data-id="d92e102e49c1" mr={2} stroke="trackerList.tickIcon" />
+                <Flex
+                  color="trackerList.tickIcon"
+                  data-id="e1b2ea6eef46"
+                  fontSize="14px"
+                  fontWeight="700">
+                  Uploaded
+                </Flex>
+              </Flex>
+            ) : (
+              <Flex align="center" data-id="c63dcb7094a8">
+                <CircledCross data-id="36f28ceab0c4" mr={2} stroke="trackerList.crossIcon" />
+                <Flex
+                  color="trackerList.crossIcon"
+                  data-id="cd7f66f6f585"
+                  fontSize="14px"
+                  fontWeight="700">
+                  Missing
+                </Flex>
+              </Flex>
+
+            )}
+
+          </Flex>
+          <Flex data-id="5b66254df22c" flexDirection={"column"} gap={"16px"} w={"60%"}>
+            <Text
+              color={"#4A5568"}
+              fontSize={"14px"}
+              fontWeight={"600"}
+            >
+              Due Date
+            </Text>
+            <Flex
+              color="trackerList.fontColor"
+              data-id="dcbdd90a95dc"
+              fontSize="14px"
+              fontWeight="500"
+              opacity="1">
+              {response?.dueDate ? format(new Date(response?.dueDate), 'dd/MM/yyyy') : <Flex data-id="575ecfde3d16" fontStyle="italic">No Due Date</Flex>}
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
+      <Flex  align={"center"} bg={"#EDF2F7"} borderRadius={"0px 0px 8px 8px"} h="32px" w={"full"}>
+
+            {response.contributors?.map((contributor, index)=>{
+              console.log("contributor", contributor)
+               return <Avatar
+              boxSize="20px"
+              cursor="pointer"
+              data-id="df094a1f37ab"
+              ml={`${16+index+1}px`}
+              name={contributor?.displayName}
+              size="sm"
+              src={contributor?.imgUrl} />},
+            )}
+
+      </Flex>
+
     </Box>)
   );
 }

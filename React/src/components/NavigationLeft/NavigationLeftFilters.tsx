@@ -133,8 +133,9 @@ export const navigationLeftFiltersStyles = {
     unselectedLabelBg: '#ffffff',
     selectedLabelFontColor: '#ffffff',
     unselectedLabelFontColor: '#818197',
-    selectedFontColor: '#282F36',
-    unselectedFontColor: '#818197',
+    selectedFontColor: '#ffffff',
+    unselectedFontColor: '#ffffff',
     seperator: '#818197',
+    selectedMenuItem: "#462AC4",
   },
 };

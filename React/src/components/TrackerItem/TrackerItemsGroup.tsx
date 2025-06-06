@@ -43,23 +43,29 @@ function TrackerGridItems({
       <Flex
         align="center"
         bg={`trackerGroup.${group}`}
+        borderRadius={"md"}
         color="#FFFFFF"
         data-id="a8547be36b6b"
         fontWeight="700"
         justify="space-between"
+        justifyContent={"center"}
         mb={4}
         minH="40px"
         pl={5}
         pr={4}
-        rounded="full"
-        w="full">
+        textColor={`trackerTextGroup.${group}`}
+        w="full"
+        >
         {responseStatusesGroup[group]}
       </Flex>
       <Stack
         align="center"
+        bg={"#F7FAFC"}
+        borderRadius={"md"}
+        boxShadow={"sm"}
         data-id="7eea0b4006b9"
         direction="column"
-        pb={5}
+        p={4}
         spacing={6}
         w="full">
         {filteredResults[group]
@@ -72,7 +78,7 @@ function TrackerGridItems({
           })
           ?.map((response: IResponse) => (
             <TrackerItemSquare data-id="77e2a3bdac5d" key={response._id} response={response} />
-          ))}
+          ))}??
       </Stack>
     </Flex>
   );
@@ -96,6 +102,11 @@ export default TrackerGridItems;
 
 export const trackerGroupItemsStyles = {
   trackerGroup: {
+    compliant: '#C6F6D5',
+    nonCompliant: '#FED7D7',
+    comingUp: '#FEEBCB',
+  },
+  trackerTextGroup: {
     compliant: '#62c240',
     nonCompliant: '#FC5960',
     comingUp: '#FFA012',

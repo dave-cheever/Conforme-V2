@@ -1,24 +1,15 @@
-import { useMemo } from 'react';
-
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
-import { useAppContext } from '../../contexts/AppProvider';
 import useNavigate from '../../hooks/useNavigate';
-import useResponseUtils from '../../hooks/useResponseUtils';
-import { Close, LocationIcon, TickIcon } from '../../icons';
+import { CircledCross, CircledTickBold, LocationIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 
 function TrackerListItem({ response }: { response: IResponse }) {
   const { navigateTo } = useNavigate();
-  const { module } = useAppContext();
-  const { getCustomQuestionsInDashboard } = useResponseUtils();
-
-  const customQuestionsInDashboard = useMemo(() => getCustomQuestionsInDashboard(module!, response), [module, response]);
 
   return (
     (<Box
-      bg="white"
       borderBottomColor="trackerList.headerBorderColor"
       borderBottomWidth="1px"
       cursor="pointer"
@@ -26,6 +17,14 @@ function TrackerListItem({ response }: { response: IResponse }) {
       onClick={() => navigateTo(`/tracker-item/${response._id}`)}
       p="15px 25px"
       py={[1, 0]}
+      sx={{
+        '&:nth-of-type(even)': {
+          bg: 'gray.50',
+        },
+        '&:nth-of-type(odd)': {
+          bg: 'white',
+        },
+      }}
       w="full">
       <Flex
         align="center"
@@ -33,36 +32,35 @@ function TrackerListItem({ response }: { response: IResponse }) {
         h={['full', '73px']}
         position="relative"
         w="full">
-        <Flex data-id="d3f2e9709450" flexDir="column" w="20%">
+        <Flex data-id="d3f2e9709450" flexDir="column" w={"11%"}>
           <Flex
             align="flex-start"
             color="trackerList.fontColor"
             data-id="a809f8d9a091"
             fontSize="14px"
-            fontWeight="400"
+            fontWeight="500"
             h="50%"
-            lineHeight="18px"
             noOfLines={1}
             opacity="1"
             pt="3px"
-            textOverflow="ellipsis">
+            textOverflow="ellipsis" >
             {response.trackerItem?.name}
           </Flex>
         </Flex>
-        <Flex data-id="5b66254df22c" w="12%">
+        <Flex data-id="5b66254df22c" w={"11%"}>
           <Flex
             color="trackerList.fontColor"
             data-id="dcbdd90a95dc"
             fontSize="14px"
-            fontWeight="400"
+            fontWeight="500"
             opacity="1">
-            {response?.dueDate ? format(new Date(response?.dueDate), 'd MMM yyyy') : <Flex data-id="575ecfde3d16" fontStyle="italic">No due date</Flex>}
+            {response?.dueDate ? format(new Date(response?.dueDate), 'dd/MM/yyyy') : <Flex data-id="575ecfde3d16" fontStyle="italic">No Due Date</Flex>}
           </Flex>
         </Flex>
-        <Flex data-id="ad60805790d9" w="10%">
+        <Flex data-id="ad60805790d9" w={"11%"}>
           {response && response.calculatedStatus === 'nonCompliant' ? (
             <Flex align="center" data-id="c63dcb7094a8">
-              <Close data-id="36f28ceab0c4" mr={2} stroke="trackerList.crossIcon" />
+              <CircledCross data-id="36f28ceab0c4" mr={2} stroke="trackerList.crossIcon" />
               <Flex
                 color="trackerList.crossIcon"
                 data-id="cd7f66f6f585"
@@ -73,7 +71,7 @@ function TrackerListItem({ response }: { response: IResponse }) {
             </Flex>
           ) : (
             <Flex align="flex-end" data-id="0ce15d4739e6">
-              <TickIcon data-id="d92e102e49c1" mr={2} stroke="trackerList.tickIcon" />
+              <CircledTickBold data-id="d92e102e49c1" mr={2} stroke="trackerList.tickIcon" />
               <Flex
                 color="trackerList.tickIcon"
                 data-id="e1b2ea6eef46"
@@ -84,12 +82,52 @@ function TrackerListItem({ response }: { response: IResponse }) {
             </Flex>
           )}
         </Flex>
-        <Box data-id="dcf65665ac32" w="18%">
+        <Flex data-id="ad60805790d9" w={"11%"}>
+          {response && Array.isArray(response.evidence) && response.evidence.length > 0 ? (
+            <Flex align="flex-end" data-id="0ce15d4739e6">
+              <CircledTickBold data-id="d92e102e49c1" mr={2} stroke="trackerList.tickIcon" />
+              <Flex
+                color="trackerList.tickIcon"
+                data-id="e1b2ea6eef46"
+                fontSize="14px"
+                fontWeight="700">
+                Uploaded
+              </Flex>
+            </Flex>
+          ) : (
+            <Flex align="center" data-id="c63dcb7094a8">
+              <CircledCross data-id="36f28ceab0c4" mr={2} stroke="trackerList.crossIcon" />
+              <Flex
+                color="trackerList.crossIcon"
+                data-id="cd7f66f6f585"
+                fontSize="14px"
+                fontWeight="700">
+                Missing
+              </Flex>
+            </Flex>
+
+          )}
+        </Flex>
+        <Box data-id="dcf65665ac32" w={"11%"}>
           <Box
             color="trackerList.fontColor"
             data-id="fb2328ea6fc5"
             fontSize="14px"
-            fontWeight="400"
+            fontWeight="500"
+            opacity="1">
+            {response.trackerItem?.category?.name ? (
+              response.trackerItem?.category?.name
+            ) : (
+              <Flex data-id="8a85dbfcfb9e" fontStyle="italic">-</Flex>
+            )}
+          </Box>
+        </Box>
+        <Box data-id="dcf65665ac32" w={"11%"}>
+          <Box
+            color="trackerList.fontColor"
+            data-id="fb2328ea6fc5"
+            fontSize="14px"
+            fontWeight="500"
             opacity="1">
             {response.trackerItem?.regulatoryBody?.name ? (
               response.trackerItem?.regulatoryBody?.name
@@ -101,7 +139,7 @@ function TrackerListItem({ response }: { response: IResponse }) {
         <Box
           data-id="2837ac2f6ba5"
           pr={4}
-          w={customQuestionsInDashboard.length === 0 ? "20%" : customQuestionsInDashboard.length === 1 ? "15%" : "10%"}
+          w={"11%"}
         >
           {response.responsible ? (
             <Flex align="center" data-id="735022a416dc" direction="row">
@@ -132,7 +170,7 @@ function TrackerListItem({ response }: { response: IResponse }) {
         </Box>
         <Box
           data-id="19eb22f1e66d"
-          w={customQuestionsInDashboard.length === 0 ? "20%" : customQuestionsInDashboard.length === 1 ? "15%" : "10%"}
+          w={"12%"}
         >
           <Flex data-id="ec3e298e5b76">
             <LocationIcon boxSize="12px" data-id="282c7de29976" mt="2px" />
@@ -140,19 +178,43 @@ function TrackerListItem({ response }: { response: IResponse }) {
               color="trackerList.fontColor"
               data-id="83206fb5d1e3"
               fontSize="13px"
+              isTruncated
+              lineHeight="17px"
+              opacity="1"
+              overflow="hidden"
+              pl={2}
+              textOverflow="ellipsis"
+
+              whiteSpace="nowrap"
+            >
+              {response.businessUnit?.name}
+            </Text>
+          </Flex>
+        </Box>
+        <Box
+          data-id="19eb22f1e66d"
+          w={"11%"}
+        >
+          <Flex data-id="ec3e298e5b76">
+            <Text
+              color="trackerList.fontColor"
+              data-id="83206fb5d1e3"
+              fontSize="13px"
+              isTruncated
               lineHeight="17px"
               opacity="1"
               overflow="hidden"
               pl={2}
               textOverflow="ellipsis"
               w="full"
-              whiteSpace="nowrap">
-              {response.businessUnit?.name}
+              whiteSpace="nowrap"
+            >
+              {Array.isArray(response.trackerItem?.locations) && response.trackerItem?.locations?.length > 0 ? `${response.trackerItem?.locations[0].name},+${response.trackerItem?.locations?.length}other ` : "-"}
             </Text>
           </Flex>
         </Box>
-        {customQuestionsInDashboard.length > 0 && (
-          <Box w="10%">
+        {/* {customQuestionsInDashboard.length > 0 && (
+          <Box flex={1}>
             <Flex>
               <Text
                 color="trackerList.fontColor"
@@ -169,7 +231,7 @@ function TrackerListItem({ response }: { response: IResponse }) {
           </Box>
         )}
         {customQuestionsInDashboard.length > 1 && (
-          <Box w="10%">
+          <Box flex={1}>
             <Flex>
               <Text
                 color="trackerList.fontColor"
@@ -184,7 +246,7 @@ function TrackerListItem({ response }: { response: IResponse }) {
               </Text>
             </Flex>
           </Box>
-        )}
+        )} */}
       </Flex>
     </Box>)
   );

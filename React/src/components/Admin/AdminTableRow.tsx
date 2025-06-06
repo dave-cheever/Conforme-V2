@@ -21,7 +21,6 @@ function AdminTableRow({
   return (
     (<Flex
       align="center"
-      bg="adminTableRow.bg"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
       color="adminTableRow.font"
@@ -32,8 +31,17 @@ function AdminTableRow({
       h="60px"
       key={element._id}
       pl={5}
+      sx={{
+        '&:nth-of-type(even)': {
+          bg: 'gray.50',
+        },
+        '&:nth-of-type(odd)': {
+          bg: 'white',
+        },
+      }}
       w="full">
       <Flex
+
         align="center"
         cursor="pointer"
         data-id="9fdfe4d5bf9d"

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { Flex, Text } from '@chakra-ui/react';
+import { Divider, Flex, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
 
 import { useFiltersContext } from '../contexts/FiltersProvider';
@@ -69,6 +69,14 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs }: IHeader) {
           {children}
         </Flex>
         {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="b947f2c69a3e" />}
+        <Divider
+                    borderColor="gray.300"
+                    height="30px"
+                    ml={2}
+                    mr={2}
+                    mt={1}
+                    orientation="vertical"
+                  />
       </Flex>
     </Flex>)
   );

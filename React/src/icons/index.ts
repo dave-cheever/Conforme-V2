@@ -108,6 +108,7 @@ import Trashcan from './Trashcan';
 import UnFollowIcon from './UnFollowIcon';
 import UnsafeAct from './UnsafeAct';
 import UnsafeCondition from './UnsafeCondition';
+import UpAndDownIcon from './UpAndDownIcon';
 import UploadedCross from './UploadedCross';
 import UploadedTick from './UploadedTick';
 import UploadIcon from './UploadIcon';
@@ -226,6 +227,7 @@ export {
   UploadedCross,
   UploadedTick,
   UploadIcon,
+  UpAndDownIcon,
   WarningIcon,
   HelpSupportIcon,
 };

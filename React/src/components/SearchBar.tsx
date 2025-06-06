@@ -181,7 +181,7 @@ function SearchBar() {
   };
 
   return (
-    (<Flex data-id="1bbf0fad73e2" direction="column" position="relative" ref={ref}>
+    (<Flex border={"1px solid #CBD5E0"} borderRadius={"md"} data-id="1bbf0fad73e2" direction="column"  position="relative" ref={ref} w="449px">
       <InputGroup
         data-id="a5273cba17ab"
         display="block"
@@ -223,6 +223,7 @@ function SearchBar() {
             w="13.5px" />
         </InputRightElement>
         <Input
+         _placeholder={{ color: '#A0AEC0' }}
           bg="navigationTop.inputBg"
           data-id="76b7cf59603e"
           fontSize="smm"
@@ -237,7 +238,8 @@ function SearchBar() {
           }}
           placeholder="Search"
           rounded="10px"
-          value={searchText} />
+          value={searchText}
+          w="447px" />
       </InputGroup>
       {isOpen && (
         <Box
@@ -307,7 +309,7 @@ function SearchBar() {
                     </Flex>
                   </Flex>
                   <Box
-                    color="navigationLeftItem.unselectedMenuItem"
+                    color="black"
                     data-id="7c1179ee898e"
                     fontWeight="400"
                     ml="5">

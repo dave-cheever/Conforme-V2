@@ -26,6 +26,16 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         cursor: 'pointer',
       }}
       alignItems="center"
+      bg={
+            menuItem.subSections
+              ? isPathActive(url)
+                ? 'navigationLeftItem.selectedLabelBg'
+                : 'navigationLeftItem.unselectedLabelBg'
+              : isPathActive(url, { exact: true })
+                ? 'navigationLeftItem.selectedLabelBg'
+                : 'navigationLeftItem.unselectedLabelBg'
+          }
+      borderRadius={"md"}
       data-id="b44d50f8ecb0"
       display="flex"
       fontSize="md"
@@ -38,8 +48,9 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         else navigateTo(url);
       }}
       pos="relative"
-      w="240px">
-      <Flex align="center" data-id="ae4bc8aaeef4" h="100%">
+      w="225px"
+      >
+      <Flex align="center" data-id="ae4bc8aaeef4" h="100%" >
         <Flex
           alignItems="center"
           bg={
@@ -103,7 +114,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
           data-id="0c5a4e0c95fc"
           fontWeight="400"
           ml="5">
-          {!showFiltersPanel && capitalize(label)}
+          {!showFiltersPanel && capitalize(label) }
         </Box>
       )}
     </Box>
@@ -160,10 +171,10 @@ export default NavigationLeftItem;
 
 export const navigationLeftItemStyles = {
   navigationLeftItem: {
-    selectedMenuItem: '#1F1F1F',
-    unselectedMenuItem: '#818197',
-    selectedLabelBg: '#462AC4',
-    unselectedLabelBg: '#ffffff',
+    selectedMenuItem: '#ffffff',
+    unselectedMenuItem: '#ffffff',
+    selectedLabelBg: '#1B0D5B',
+    unselectedLabelBg: '##110B30',
     selectedIconStroke: '#ffffff',
     unselectedIconStroke: '#818197',
   },

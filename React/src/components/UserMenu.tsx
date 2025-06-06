@@ -1,4 +1,5 @@
-import { Avatar, Menu, MenuButton, MenuList, Text, useDisclosure } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { Avatar, Box, Flex, Icon, Menu, MenuButton, MenuList, Text, useDisclosure } from '@chakra-ui/react';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
@@ -19,19 +20,36 @@ function UserMenu() {
   return (
     (<Menu data-id="e985cdb96443" isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
       <MenuButton color="white" data-id="74d7a3b3cdc8">
-        <Avatar
-          bg="userMenu.avatar.bg"
-          borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
-          borderWidth="5px"
-          color="userMenu.avatar.color"
-          data-id="8c0b24efa538"
-          h="41px"
-          mr={5}
-          name={user?.displayName}
-          rounded="full"
-          size="sm"
-          src={user?.imgUrl}
-          w="41px" />
+      <Flex align="center" justify="space-between" w="100%">
+  {/* Avatar and text */}
+  <Flex align="center" m={5}>
+    <Avatar
+      bg="userMenu.avatar.bg"
+      borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
+      borderRadius={"md"}
+      borderWidth="5px"
+      color="userMenu.avatar.color"
+      data-id="8c0b24efa538"
+      h="41px"
+      mr={3}
+      name={user?.displayName}
+      size="md"
+      src={user?.imgUrl}
+      w="41px"
+    />
+     <Box minW="0" textAlign={"start"}>
+      <Text color={"black"} fontSize="14px" fontWeight="600" isTruncated>
+        {user?.displayName}
+      </Text>
+      <Text color="gray.500" fontSize="xs" isTruncated>
+        {user?.role}
+      </Text>
+    </Box>
+      <Icon as={ChevronDownIcon} boxSize={5} color="gray.500" m={4} />
+
+  </Flex>
+
+</Flex>
       </MenuButton>
       <MenuList
         border="0px"
@@ -110,7 +128,7 @@ export const userMenuStyles = {
       color: 'white',
       bg: '#462AC4',
       borderColor: 'white',
-      borderColorOpened: '#E93C44',
+      // borderColorOpened: '#E93C44',
     },
   },
 };

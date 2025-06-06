@@ -49,13 +49,13 @@ function NavigationTop() {
           bottom={['140px', 'auto']}
           boxShadow="0px 0px 15px rgba(49, 50, 51, 0.25)"
           data-id="a80532bb0f3c"
-          left={['auto', '25px']}
+          left={['auto', '30rem']}
           position={['fixed', 'absolute']}
           py={4}
           right={['15px', 'auto']}
           rounded="10px"
           top={['auto', '80px']}
-          w="235px"
+          w="250px"
           zIndex="5">
           {module?.type === 'audits'
             ? auditAddItems.map((item) => {
@@ -71,7 +71,7 @@ function NavigationTop() {
               }
               return <SubSection data-id="e2de2224871c" key={item.label} showIcon subsection={item} />;
             })
-            : trackerAddItems.map((item) => <SubSection data-id="69f80f124301" key={item.label} showIcon subsection={item} />)}
+            : trackerAddItems.map((item) => <SubSection data-id="69f80f124301" isPopover key={item.label} showIcon subsection={item} />)}
         </Box>
       )}
       <Stack
@@ -93,6 +93,11 @@ function NavigationTop() {
           h="80px">
          <ModuleSwitcher data-id="e97e8f7ff427" />
         </Flex>
+        <Flex
+          data-id="bf65bf2f1b3d"
+          display={device !== 'mobile' || (device === 'mobile' && isSearchBarOpen) ? 'block' : 'none'}>
+          <SearchBar data-id="37fc8873fa31" />
+        </Flex>
         {!isTrackerItemPage && module?.type === 'tracker' && (
           <Can
             action="adminPanel"
@@ -102,7 +107,8 @@ function NavigationTop() {
               <IconButton
                 _hover={{ opacity: 0.7 }}
                 aria-label="Add"
-                bg="navigationTop.addButton"
+                bg="white"
+                border={"1px solid #CBD5E0"}
                 bottom={['75px', '0']}
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
@@ -118,11 +124,11 @@ function NavigationTop() {
                       data-id="c63268f552d1"
                       h="20px"
                       ml="1"
-                      stroke="navigationTop.addIcon"
-                      w="20px" 
+                      stroke="black"
+                      w="20px"
                     />
                   ) : (
-                    <AddIcon data-id="5b1e2b8025ce" h="21px" stroke="navigationTop.addIcon" w="21px" />
+                    <AddIcon data-id="5b1e2b8025ce" h="21px" stroke="black" w="21px" />
                   )
                 }
                 ml={3}
@@ -143,7 +149,8 @@ function NavigationTop() {
               <IconButton
                 _hover={{ opacity: 0.7 }}
                 aria-label="Add"
-                bg="navigationTop.addButton"
+                 bg="white"
+                border={"1px solid #CBD5E0"}
                 bottom={['75px', '0']}
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
@@ -157,10 +164,10 @@ function NavigationTop() {
                       data-id="91cf3a59fe73"
                       h="20px"
                       ml="1"
-                      stroke="navigationTop.addIcon"
+                     stroke="black"
                       w="20px" />
                   ) : (
-                    <AddIcon data-id="6cff50759b96" h="21px" stroke="navigationTop.addIcon" w="21px" />
+                    <AddIcon data-id="6cff50759b96" h="21px" stroke="black" w="21px" />
                   )
                 }
                 ml={4}
@@ -172,11 +179,6 @@ function NavigationTop() {
                 zIndex={5} />
             )} />
         )}
-        <Flex
-          data-id="bf65bf2f1b3d"
-          display={device !== 'mobile' || (device === 'mobile' && isSearchBarOpen) ? 'block' : 'none'}>
-          <SearchBar data-id="37fc8873fa31" />
-        </Flex>
       </Stack>
       <Flex
         align="center"
