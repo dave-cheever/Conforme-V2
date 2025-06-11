@@ -9,7 +9,7 @@ function ResponseHeaderButton({
   loading = false,
   disabled = false,
   primary = false,
-  isListView
+  isListView,
 }: {
   icon?: ReactElement<any, any>;
   name: string;
@@ -35,16 +35,16 @@ function ResponseHeaderButton({
       color={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Color`}
       data-id="c104bdb6d779"
       disabled={disabled}
+      display={isListView ? 'flex' : 'initial'}
+      flexDir={isListView ? 'row' : 'initial'}
       fontSize="14px"
       fontWeight="bold"
       isLoading={loading}
+      justifyContent={isListView ? 'space-between' : 'initial'}
       leftIcon={icon}
       onClick={onClick}
       px={4}
       role="group"
-      display={isListView ? 'flex' : 'initial'}
-      flexDir={isListView ? 'row' : 'initial'}
-      justifyContent={isListView ? 'space-between' : 'initial'}
 >
       {name}
     </Button>

@@ -59,9 +59,9 @@ function Terms() {
       w="full"
     >
       <Header
-        breadcrumbs={['Home', 'Help']}
+        breadcrumbs={['Home', 'Terms and Conditions']}
         data-id="8ce59d2a505b"
-        mobileBreadcrumbs={['Help']}
+        mobileBreadcrumbs={['Terms and Conditions']}
       />
       <Flex
         bg="white"

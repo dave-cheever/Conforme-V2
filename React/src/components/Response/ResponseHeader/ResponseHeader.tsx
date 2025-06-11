@@ -241,11 +241,11 @@ function ReasponseHeader() {
         <Spacer data-id="ad0936a55bab" display={['flex']} />
         <Flex
           color="white"
+          columnGap={'8px'}
           data-id="7119e874716f"
           display={['none', 'flex', 'flex']}
           h="40px"
           justify="flex-end"
-          columnGap={'8px'}
           mr={6}>
           {/* <FollowButton /> */}
           {response.status === 'submitted' && !snapshot && (
@@ -348,15 +348,15 @@ function ReasponseHeader() {
                 w="100%"
                 zIndex="10">
                 {/* <FollowButton isMobile /> */}
-                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton isListView data-id="4ed2d890331f" name="Start review" onClick={handleRenewalOpen} />}
+                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton data-id="4ed2d890331f" isListView name="Start review" onClick={handleRenewalOpen} />}
                 {response.status === 'draft' && !snapshot && (
                   <>
-                    <ResponseHeaderButton isListView data-id="ea66366a036e" name="Save" onClick={updateResponseQuestions} />
-                    <ResponseHeaderButton isListView data-id="f292070c3b92" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} name="Submit review" onClick={submitReview} />
+                    <ResponseHeaderButton data-id="ea66366a036e" isListView name="Save" onClick={updateResponseQuestions} />
+                    <ResponseHeaderButton data-id="f292070c3b92" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} isListView name="Submit review" onClick={submitReview} />
                   </>
                 )}
 
-                <ResponseHeaderButton isListView data-id="85fb49993c30" name="Share" onClick={handleShareOpen}  />
+                <ResponseHeaderButton data-id="85fb49993c30" isListView name="Share" onClick={handleShareOpen}  />
 
                 <MenuDivider
                   border="1px"

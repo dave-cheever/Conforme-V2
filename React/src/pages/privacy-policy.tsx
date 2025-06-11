@@ -59,9 +59,9 @@ function PrivacyPolicy() {
       w="full"
     >
       <Header
-        breadcrumbs={['Home', 'Help']}
+        breadcrumbs={['Home', 'Privacy Policy']}
         data-id="8ce59d2a505b"
-        mobileBreadcrumbs={['Help']}
+        mobileBreadcrumbs={['Privacy Policy']}
       />
       <Flex
         bg="white"
