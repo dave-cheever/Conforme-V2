@@ -10,12 +10,14 @@ function SubSection({
   menuOpen,
   showIcon,
   isPopover,
+  onClick,
 }: {
   subsection: ISubSection;
   menuOpen?: boolean;
   showIcon?: boolean;
   setMenuOpen?: (value: boolean) => void;
   isPopover?: boolean;
+  onClick?: () => void;
 }) {
   const { navigateTo, isPathActive } = useNavigate();
   const { setAdminModalState } = useAdminContext();
@@ -53,6 +55,7 @@ function SubSection({
           navigateTo(url);
           if (showIcon) setAdminModalState('add');
           if (setMenuOpen) setMenuOpen(!menuOpen);
+          if (onClick) onClick();
         }}
         pl={9}
         pr={9}
