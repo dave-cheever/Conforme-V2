@@ -250,7 +250,9 @@ function Locations() {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="13ef30011341" />
+      <Header
+      breadcrumbs={['Admin', pluralize(capitalize(t('location')))]}
+      data-id="13ef30011341" pageLabel={capitalize(t('location'))} />
       <Box data-id="305629609ebb" h="calc(100vh - 160px)" p={['0', '0 25px 30px 30px']}>
         <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]}>
           <Box

@@ -100,6 +100,7 @@ function TrackerItems() {
     setDefaultFilters,
     usedFilters,
   } = useFiltersContext();
+
   const [responses, setResponses] = useState<IResponse[]>([]);
   const [parsedFilters, setParsedFilters] = useState({});
   const { sortOrder, sortType, setSortType, setSortOrder } = useSort([], 'dueDate');
@@ -277,7 +278,8 @@ function TrackerItems() {
     <Header
       breadcrumbs={[pluralize(t('tracker item'))]}
       data-id="93c49454aa8f"
-      mobileBreadcrumbs={[pluralize(t('tracker item'))]}>
+      mobileBreadcrumbs={[pluralize(t('tracker item'))]}
+      pageLabel={capitalize(t('tracker item'))}>
       {device !== 'mobile' && (
         <>
           <ChangeViewButton
@@ -301,6 +303,7 @@ function TrackerItems() {
             sortBy={sortBy}
             sortOrder={sortOrder}
             sortType={sortType} />
+
         </>
       )}
     </Header>

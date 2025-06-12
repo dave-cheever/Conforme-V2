@@ -66,12 +66,12 @@ function NavigationTop() {
                     data-id="bb02aa0c8d5e"
                     key={item.url}
                     // eslint-disable-next-line react/no-unstable-nested-components
-                    yes={() => <SubSection data-id="3b7ff7eacbb0" key={item.label} isPopover showIcon subsection={item} />} />)
+                    yes={() => <SubSection data-id="3b7ff7eacbb0" isPopover key={item.label} showIcon subsection={item} />} />)
                 );
               }
-              return <SubSection data-id="e2de2224871c" key={item.label} showIcon isPopover  subsection={item}  />;
+              return <SubSection data-id="e2de2224871c" isPopover key={item.label} showIcon  subsection={item}  />;
             })
-            : trackerAddItems.map((item) => <SubSection data-id="69f80f124301" isPopover key={item.label} showIcon subsection={item} onClick={onClose} />)}
+            : trackerAddItems.map((item) => <SubSection data-id="69f80f124301" isPopover key={item.label} onClick={onClose} showIcon subsection={item} />)}
         </Box>
       )}
       <Stack
@@ -170,12 +170,13 @@ function NavigationTop() {
                     <AddIcon data-id="6cff50759b96" h="21px" stroke="black" w="21px" />
                   )
                 }
-                ml={4}
+                ml={['0', '4']}
+                mr={['4', '0']}
                 onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
                 rounded={['20px', '8px']}
-                w={['52px', '40px']}
+                w={['50px']}
                 zIndex={5} />
             )} />
         )}

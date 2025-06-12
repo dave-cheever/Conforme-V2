@@ -148,7 +148,7 @@ function BusinessUnits() {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
-        await createFunction({ variables: { values:{...values, moduleId: module?._id }}});
+        await createFunction({ variables: { values: { ...values, moduleId: module?._id } } });
         refetch();
         toast({ ...toastSuccess, description: `${capitalize(t('business unit'))} added` });
       } else {
@@ -243,7 +243,7 @@ function BusinessUnits() {
         pl={1}
         w={['40%', '30%']}
       >
-        <Text data-id="265ac9aaf161"  overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+        <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {businessUnit.name}
         </Text>
       </Flex>
@@ -342,6 +342,7 @@ function BusinessUnits() {
         breadcrumbs={['Admin', pluralize(capitalize(t('business unit')))]}
         data-id="ac1ee3c30cc8"
         mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
+        pageLabel={capitalize(t('business unit'))}
       />
       <Flex data-id="33879bce2f4d" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box data-id="71b1095147a4" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">

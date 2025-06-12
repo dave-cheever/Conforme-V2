@@ -5,6 +5,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import * as ChakraIcons from '@chakra-ui/icons';
 import { Box, CheckboxGroup, Flex, FormLabel, Icon, Select, Stack, Text, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
+import { capitalize } from 'lodash';
 
 import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
@@ -447,7 +448,9 @@ function QuestionsCategories() {
           </Stack>
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Questions categories']} data-id="878057915508" mobileBreadcrumbs={['Questions categories']} />
+      <Header
+      breadcrumbs={['Admin', 'Questions categories']}
+      data-id="878057915508" mobileBreadcrumbs={['Questions categories']} pageLabel={`${capitalize(t('question'))} set`} />
       <Flex data-id="659cd2aa32e8" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box data-id="6beca923ee44" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader data-id="926a317ff445">

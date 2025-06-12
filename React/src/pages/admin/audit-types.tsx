@@ -514,7 +514,9 @@ function AuditTypes() {
           </Stack>
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Audit types']} data-id="a14d6d59aac0" mobileBreadcrumbs={['Audit types']} />
+      <Header
+      breadcrumbs={['Admin', 'Audit types']}
+      data-id="a14d6d59aac0" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
       <Flex data-id="790af0b7b837" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box data-id="105632f83f3c" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader data-id="e77d6573756f">
@@ -529,6 +531,7 @@ function AuditTypes() {
               sortOrder={sortType === 'name' ? sortOrder : undefined}
               w="full"
             />
+
           </AdminTableHeader>
           <Flex
             bg="white"

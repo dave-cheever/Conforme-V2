@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
+import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
@@ -344,7 +345,9 @@ function Questions() {
           <TextInput control={control} data-id="b22cc52a8670" label="Negative value" name="negativeValue" placeholder="Negative value" />
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Questions']} data-id="fd41c88fa390" mobileBreadcrumbs={['Questions']} />
+      <Header
+      breadcrumbs={['Admin', 'Questions']}
+      data-id="fd41c88fa390" mobileBreadcrumbs={['Questions']} pageLabel={capitalize(t('question'))} />
       <Flex data-id="37f9704ed253" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
         <Box data-id="b1c3342b2a30" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
           <AdminTableHeader data-id="b2e9e78efe45">

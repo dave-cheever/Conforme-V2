@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Modal, ModalOverlay, Spacer, Stack, Text } from '@chakra-ui/react';
@@ -185,7 +185,8 @@ function TrackerItemsAdmin() {
     <Header
       breadcrumbs={['Admin', pluralize(t('tracker item'))]}
       data-id="23a21c064eaf"
-      mobileBreadcrumbs={[pluralize(t('tracker item'))]} />
+      mobileBreadcrumbs={[pluralize(t('tracker item'))]}
+      pageLabel={capitalize(t('tracker item'))} />
     <Box
       data-id="994cf98f6802"
       h={['full', 'calc(100vh - 160px)']}
@@ -206,6 +207,7 @@ function TrackerItemsAdmin() {
             showSortingIcon={sortType === 'name'}
             sortOrder={sortType === 'name' ? sortOrder : undefined}
             w={['80%', 'calc(100% / 4)']} />
+
           {device !== 'mobile' && (
             <>
               <AdminTableHeaderElement

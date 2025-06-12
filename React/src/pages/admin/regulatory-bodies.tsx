@@ -213,7 +213,8 @@ function RegulatoryBodies() {
     <Header
       breadcrumbs={['Admin', 'Regulatory bodies']}
       data-id="9ad99eeb7265"
-      mobileBreadcrumbs={['Regulatory bodies']} />
+      mobileBreadcrumbs={['Regulatory bodies']}
+      pageLabel="Regulatory body" />
     <Box
       data-id="64ecc43d64ea"
       h={['full', 'calc(100vh - 160px)']}

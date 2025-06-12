@@ -218,7 +218,9 @@ function Categories() {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Categories']} data-id="785ad45decb2" mobileBreadcrumbs={['Categories']} />
+      <Header
+        breadcrumbs={['Admin', 'Categories']}
+        data-id="785ad45decb2" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
       <Box data-id="f13ecd68fd5e" h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex data-id="de7dc4ff2c7a" h="full" px={['25px', 0]}>
           <Box

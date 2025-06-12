@@ -218,6 +218,7 @@ const useConfig = () => {
   ];
 
   const trackerAddItems = [
+    { label: capitalize(t('tracker item')), url: '/dashboards', icon: BlankPage },
     { label: capitalize(t('tracker item')), url: '/admin/tracker-items', icon: BlankPage },
     { label: 'Regulatory body', url: '/admin/regulatory-bodies', icon: RegulatoryBodyIcon },
     { label: 'Category', url: '/admin/categories', icon: CategoryIcon },
