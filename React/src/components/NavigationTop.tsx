@@ -66,10 +66,10 @@ function NavigationTop() {
                     data-id="bb02aa0c8d5e"
                     key={item.url}
                     // eslint-disable-next-line react/no-unstable-nested-components
-                    yes={() => <SubSection data-id="3b7ff7eacbb0" key={item.label} showIcon subsection={item} onClick={onClose}/>} />)
+                    yes={() => <SubSection data-id="3b7ff7eacbb0" key={item.label} isPopover showIcon subsection={item} />} />)
                 );
               }
-              return <SubSection data-id="e2de2224871c" key={item.label} showIcon subsection={item} onClick={onClose} />;
+              return <SubSection data-id="e2de2224871c" key={item.label} showIcon isPopover  subsection={item}  />;
             })
             : trackerAddItems.map((item) => <SubSection data-id="69f80f124301" isPopover key={item.label} showIcon subsection={item} onClick={onClose} />)}
         </Box>
