@@ -9,12 +9,13 @@ import { genMetatags, getAuditValueForString, getAuditValueForUser, getBasicElem
 
 // custom validation for unique name
 async function validateUniqueName(this: any, name: string) {
-  const buCount = await models.BusinessUnit.find({
+  const buCount = await models.BusinessUnit.countDocuments({
     name,
     organizationId: this.organizationId,
+     'scope.moduleId': this.scope?.moduleId,
     'metatags.removedAt': { $eq: null },
-  }).count();
-  return !buCount;
+  })
+  return buCount === 0;
 }
 
 const businessUnitSchema = new Schema<IBusinessUnit, IBusinessUnitModel>({
