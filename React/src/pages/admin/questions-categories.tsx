@@ -93,10 +93,9 @@ function QuestionsCategories() {
   const [sortType, setSortType] = useState('questionsCategory');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const allIconNames = Object.keys(ChakraIcons).filter((key) =>
-  key.endsWith('Icon'),
-  );
-  allIconNames.sort((a, b) => a.localeCompare(b));
+  const allIconNames = Object.keys(ChakraIcons)
+    .filter((key) => key.endsWith('Icon') && key !== 'AccordionIcon' && key !== 'createIcon')
+    .sort((a, b) => a.localeCompare(b));
 
   const getQuestionsCategories = (questionsCategoriesArray: IQuestionsCategory[]) => {
     if (!questionsCategoriesArray) return [];
@@ -392,7 +391,7 @@ function QuestionsCategories() {
                     mb={1}
                   >
                     Icon
-                  </FormLabel>
+                </FormLabel>
                   <Select
                     {...field}
                     _active={{ bg: 'dropdown.activeBg' }}
@@ -425,7 +424,7 @@ function QuestionsCategories() {
                       <Text fontSize="sm">
                        Preview:
                       </Text>
-                      <Icon as={ChakraIcons[field.value]} boxSize={4} />
+                      <Icon as={ChakraIcons[field.value] || ""} boxSize={4} />
                     </Flex>
                   )}
                 </>
