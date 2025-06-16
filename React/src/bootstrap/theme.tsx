@@ -152,9 +152,9 @@ const getTheme = (organizationTheme?: any) => {
     },
     fonts: {
       ...theme.fonts,
-      body: "'Lato', sans-serif",
-      heading: "'Lato', sans-serif",
-      mono: "'Lato', sans-serif",
+      body: "'DM Sans', sans-serif",
+      heading: "'DM Sans', sans-serif",
+      mono: "'DM Sans', sans-serif",
     },
     fontSizes: {
       ...theme.fontSizes,

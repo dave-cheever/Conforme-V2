@@ -61,10 +61,23 @@ function ModuleSwitcher() {
                 h="30px"
                 w="30px"/>
             )}
-            
+
+            {!isTabletWidth && !showFiltersPanel && !isMobile && (
+            <Box
+              bg="white"
+              h="28px"
+              ml="3"
+              mr="1"
+              opacity="44%"
+              w="1px"
+            />
+          )}
+              
           <Text
             color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
             display="inline-block"
+            fontSize={isMobile ? '16px' : '22px'}
+            fontWeight="600"
             isTruncated
             marginLeft={showFiltersPanel || isTabletWidth ? '10' : '2'}
             maxW="150px"
@@ -74,7 +87,13 @@ function ModuleSwitcher() {
             whiteSpace="nowrap"
           >
             {showFiltersPanel || isTabletWidth
-              ? getInitials(module?.name)
+                ? <>
+                   <Icon
+                    as={Conforme}
+                    data-id="5eff0a6971bc"
+                    h="30px"
+                    w="30px"/>
+                </>
               : (module?.name || 'Select Module')}
           </Text>
           <ChevronDownIcon ml="2" />
