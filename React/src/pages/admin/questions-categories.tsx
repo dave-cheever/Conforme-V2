@@ -108,7 +108,6 @@ function QuestionsCategories() {
     .filter((key) => key.endsWith('Icon') && !excludedIcons.includes(key))
     .sort((a, b) => a.localeCompare(b));
 
-
   const getQuestionsCategories = (questionsCategoriesArray: IQuestionsCategory[]) => {
     if (!questionsCategoriesArray) return [];
 

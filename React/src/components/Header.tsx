@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { Divider, Flex, IconButton, Text } from '@chakra-ui/react';
+import { Button, Divider, Flex, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
 
 import { useAdminContext } from '../contexts/AdminProvider';
@@ -17,12 +17,12 @@ interface IHeader {
   breadcrumbs: string[];
   mobileBreadcrumbs?: string[];
   children?: React.ReactNode;
-  pageLabel?:string;
+  pageLabel?: string;
 }
 
 function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader) {
   const { usedFilters } = useFiltersContext();
-  const { isPathActive, navigateTo} = useNavigate();
+  const { isPathActive, navigateTo } = useNavigate();
   const { setAdminModalState } = useAdminContext();
   const { trackerAddItems, auditAddItems } = useConfig();
   const { module } = useAppContext();
@@ -37,16 +37,27 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
     "/documents/admin/users",
     "/documents/admin/audit-log",
     "/documents/admin/settings",
+    "/documents/help",
+    "/documents/terms-and-conditions",
+    "/documents/privacy-policy",
     "/safety-health-environment-walk/admin/settings",
+    "/safety-health-environment-walk/answers",
     "/safety-health-environment-walk/admin/audit-log",
     "/safety-health-environment-walk/admin/users",
     "/safety-health-environment-walk/insights",
+    "/safety-health-environment-walk/actions",
+    "/safety-health-environment-walk/help",
+    "/safety-health-environment-walk/terms-and-conditions",
+    "/safety-health-environment-walk/privacy-policy",
   ];
 
   function isPathAllowed() {
     return !excludedPaths.includes(window.location.pathname);
   }
-  const item = module?.type === 'audits' ? auditAddItems.find((item) => item.label === pageLabel) : trackerAddItems.find((item) => item.label === pageLabel);
+  const item =
+    module?.type === 'audits'
+      ? auditAddItems.find((item) => item.label === pageLabel)
+      : trackerAddItems.find((item) => item.label === pageLabel);
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => {
@@ -91,49 +102,56 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
         <Flex data-id="5fd3aa3efb55" justify="flex-end" mr="15px" w="full">
           {children}
         </Flex>
-        {isPathAllowed()?<Can
-          action="audits.add"
-          data-id="a3a476596997"
-          yes={() => (
-            <IconButton
-              _hover={{ opacity: 0.7 }}
-              aria-label="Add"
-              bg="navigationTop.addButton"
-              bottom={['140px', '0']}
-              boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
-              color="white"
-              data-id="b5bf85567bbe"
-              display={'block'}
-              flexShrink={0}
-              h={['52px', '40px']}
-              icon={
-                <AddIcon data-id="6cff50759b96" h="21px" stroke="navigationTop.addIcon" w="21px" />
-              }
-              ml={['0', '4']}
-              mr={['4', '0']}
-              onClick={() => {
-                console.log("itme", item?.url)
-                const targetUrl = item?.url === '/dashboards'
-                  ? '/admin/tracker-items'
-                  : item?.url;
-
-                navigateTo(targetUrl || '');
-                setAdminModalState('add');
-              }}
-              position={['fixed', 'relative']}
-              right={['0', usedFilters.length > 0 ? '15' : '25']}
-              rounded={['20px', '8px']}
-              w={['50px']}
-              zIndex={5} />
-          )} />:<></>}
         {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="b947f2c69a3e" />}
-         <Divider
-            borderColor="gray.300"
-            height="30px"
-            ml={2}
-            mr={2}
-            mt={1}
-            orientation="vertical"/>
+        
+        {isPathAllowed() && (<Can
+            action="audits.add"
+            data-id="a3a476596997"
+            yes={() => (
+              <> 
+                {usedFilters && isAuditPage && usedFilters.length > 0 &&
+                  <Divider
+                  borderColor="gray.300"
+                  display={['none', 'block']}
+                  height="30px"
+                  ml={0}
+                  mr={5}
+                  mt={1}
+                  orientation="vertical"/>}
+               
+                  <Button
+                    _hover={{ opacity: 0.7 }}
+                    aria-label="Add"
+                    bg="navigationTop.addButton"
+                    bottom={['78px', '0']}
+                    boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
+                    color="white"
+                    data-id="b5bf85567bbe"
+                    display={'flex'}
+                    flexShrink={0}
+                    fontSize={['12px', '14px']}
+                    fontWeight={'500'}
+                    h={['42px', '40px']}
+                    leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '16px']} stroke="navigationTop.addIcon" w={['10px', '16px']} />}
+                    ml={['0', '4']}
+                    mr={['20', '0']}
+                    onClick={() => {
+                      const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
+                      navigateTo(targetUrl || '');
+                      setAdminModalState('add');
+                    }}
+                    position={['fixed', 'relative']}
+                    right={['0', usedFilters.length > 0 ? '15' : '25']}
+                  rounded={['10px', '8px']}
+                  w={['auto']}
+                  zIndex={5}
+                  >
+                    {`Add ${item?.label || ''}`}
+                  </Button>
+              </>
+            )}
+          />
+        )}       
       </Flex>
     </Flex>)
   );

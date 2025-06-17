@@ -231,7 +231,8 @@ function Audits() {
     <Header
       breadcrumbs={[pluralize(t('audit'))]}
       data-id="2dd476cb0929"
-      mobileBreadcrumbs={[pluralize(t('audit'))]}>
+      mobileBreadcrumbs={[pluralize(t('audit'))]}
+      pageLabel='Audit'>
       <ChangeViewButton
         data-id="bafef65da6de"
         setViewMode={setViewMode}
