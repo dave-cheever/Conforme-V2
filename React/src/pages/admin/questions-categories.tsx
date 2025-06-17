@@ -93,9 +93,21 @@ function QuestionsCategories() {
   const [sortType, setSortType] = useState('questionsCategory');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+  const excludedIcons = [
+    'AccordionIcon',
+    'createIcon',
+    'AlertIcon',
+    'CheckboxIcon',
+    'FormErrorIcon',
+    'ListIcon',
+    'MenuIcon',
+    'StepIcon',
+  ];
+
   const allIconNames = Object.keys(ChakraIcons)
-    .filter((key) => key.endsWith('Icon') && key !== 'AccordionIcon' && key !== 'createIcon')
+    .filter((key) => key.endsWith('Icon') && !excludedIcons.includes(key))
     .sort((a, b) => a.localeCompare(b));
+
 
   const getQuestionsCategories = (questionsCategoriesArray: IQuestionsCategory[]) => {
     if (!questionsCategoriesArray) return [];
