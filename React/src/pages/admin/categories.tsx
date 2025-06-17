@@ -193,6 +193,28 @@ function Categories() {
     }
   };
 
+  const handleAddAndResetCategory = async () => {
+    try {
+      const isValid = await trigger();
+      if (!isValid) {
+        return toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
+      }
+
+      const values = getValues();
+      await createFunction({ variables: { ...values, moduleId: module?._id } });
+      toast({ ...toastSuccess, description: 'Category added' });
+
+      reset(defaultValues);
+      setCurrentCategoryName('');
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
+
   return (
     <>
       <AdminModal
@@ -201,6 +223,7 @@ function Categories() {
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
+        onAddMore={adminModalState === 'add' ? handleAddAndResetCategory : undefined}
       >
         <Flex align="flex-start" data-id="b1f73fb84928" direction="column" w="full">
           <TextInput

@@ -218,16 +218,16 @@ function AuditTypes() {
   };
 
   const handleDeleteAuditType = async () => {
-    try {
-      const _id = getValues('_id');
-      await deleteFunction({ variables: { _id } });
-      refetch();
-      toast({ ...toastSuccess, description: 'Audit type deleted' });
-    } catch (e: any) {
-      toast({ ...toastFailed, description: e.message });
-    } finally {
-      setAdminModalState('closed');
-    }
+      try {
+        const _id = getValues('_id');
+        await deleteFunction({ variables: { _id } });
+        refetch();
+        toast({ ...toastSuccess, description: 'Audit type deleted' });
+      } catch (e: any) {
+        toast({ ...toastFailed, description: e.message });
+      } finally {
+        setAdminModalState('closed');
+      }
   };
 
   const handleAction = async (action) => {
@@ -252,6 +252,28 @@ function AuditTypes() {
         setAdminModalState('closed');
     }
   };
+
+  const handleAddAndResetAuditType = async () => {
+  const isValid = await trigger();
+  if (!isValid) {
+    return toast({
+      ...toastFailed,
+      description: 'Please complete all the required fields',
+    });
+  }
+
+  try {
+    const auditType = getValues();
+    await createFunction({
+      variables: { auditType: { ...auditType, recurring: auditType.recurring === 'yes' } },
+    });
+    toast({ ...toastSuccess, description: 'Audit type added' });
+    reset({ ...defaultValues });
+    refetch();
+  } catch (e: any) {
+    toast({ ...toastFailed, description: e.message });
+  }
+};
 
   const moveSection = (sectionIndex: number, newPosition: number) => {
     if (newPosition < 0 || newPosition >= sections.length) return;
@@ -304,6 +326,7 @@ function AuditTypes() {
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
+        onAddMore={adminModalState === 'add' ? handleAddAndResetAuditType : undefined}
       >
         <Stack data-id="58b2d418f910" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 80px)'}>
           <TextInput

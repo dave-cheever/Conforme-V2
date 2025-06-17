@@ -266,6 +266,41 @@ function QuestionsCategories() {
     }
   };
 
+  const handleAddAndResetQuestionsCategory = async () => {
+    const isValid = await trigger();
+    if (!isValid) {
+      return toast({
+        ...toastFailed,
+        description: 'Please complete all the required fields',
+      });
+    }
+
+    try {
+      await createFunction({
+        variables: {
+          questionsCategory: {
+            _id: questionsCategory?._id,
+            name: questionsCategory?.name,
+            withAnswers: questionsCategory?.withAnswers,
+            allowCustomQuestions: questionsCategory?.allowCustomQuestions,
+            maxQuestionsNumber: questionsCategory?.maxQuestionsNumber,
+            showInInsights: questionsCategory?.showInInsights,
+            countInAuditCard: questionsCategory?.countInAuditCard,
+            icon: questionsCategory?.icon,
+            options: questionsCategory?.options,
+            scope: questionsCategory?.scope,
+          },
+        },
+      });
+
+      toast({ ...toastSuccess, description: 'Questions set added' });
+      reset(defaultValues);
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+};
+
   const renderQuestionsCategoryRow = (questionsCategory: IQuestionsCategory, i: number) => (
     <Flex
       alignItems="center"
@@ -304,6 +339,7 @@ function QuestionsCategories() {
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
+        onAddMore={adminModalState === 'add' ? handleAddAndResetQuestionsCategory : undefined}
       >
         <Stack data-id="725e3c41cb69" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput

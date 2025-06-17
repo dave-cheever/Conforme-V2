@@ -68,8 +68,8 @@ const defaultValues: Partial<IQuestion<TQuestionValue>> = {
   question: '',
   description: '',
   questionsCategoryId: '',
-  positiveValue: null,
-  negativeValue: null,
+  positiveValue: '',
+  negativeValue: '',
   scope: {
     module: 'audits',
   },
@@ -273,6 +273,37 @@ function Questions() {
     }
   };
 
+  const handleAddAndResetQuestion = async () => {
+    const isValid = await trigger();
+    if (!isValid) {
+      return toast({
+        ...toastFailed,
+        description: 'Please complete all the required fields',
+      });
+    }
+
+    const question = getValues();
+    const questionCategory = questionsCategories?.find((cat) => cat._id === question.questionsCategoryId);
+    const { maxQuestionsNumber, name } = questionCategory;
+    const questionsCountForCategory = questions.filter(q => q.questionsCategoryId === question.questionsCategoryId).length;
+
+    if (maxQuestionsNumber - questionsCountForCategory <= 0) {
+      return toast({
+        ...toastFailed,
+        description: `Cannot add more than ${maxQuestionsNumber} ${name} ${pluralize('question', maxQuestionsNumber)}.`,
+      });
+    }
+
+    try {
+      await createFunction({ variables: { question } });
+      toast({ ...toastSuccess, description: `${t('question')} added` });
+      reset({ ...defaultValues });
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
+
   const renderQuestionRow = (question: IQuestion<TQuestionValue>, i: number) => (
     <Flex
       alignItems="center"
@@ -311,6 +342,8 @@ function Questions() {
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
+        onAddMore={adminModalState === 'add' ? handleAddAndResetQuestion : undefined}
+        
       >
         <Stack data-id="b6bb827943fc" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <Dropdown

@@ -212,6 +212,27 @@ function Locations() {
     }
   };
 
+  const handleAddAndResetLocation = async () => {
+    try {
+      const isValid = await trigger();
+      if (!isValid) {
+        return toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
+      }
+
+      const values = getValues();
+      await createFunction({ variables: { values: { ...values, moduleId: module?._id } } });
+      toast({ ...toastSuccess, description: `${capitalize(t('location'))} added` });
+      reset(defaultValues);
+      setCurrentLocationName('');
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
+
   return (
     <>
       <AdminModal
@@ -220,6 +241,7 @@ function Locations() {
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
+        onAddMore={adminModalState === 'add' ? handleAddAndResetLocation : undefined}
       >
         <Flex align="flex-start" data-id="23969460d22e" direction="column" w={['full', '70%']}>
           <TextInput

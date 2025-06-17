@@ -25,9 +25,10 @@ interface IAdminModal {
   onAction: (modalType?: any) => void;
   collection: string;
   children: JSX.Element | JSX.Element[];
+  onAddMore?: () => void; 
 }
 
-function AdminModal({ isOpenModal, modalType, onAction, collection, children }: IAdminModal) {
+function AdminModal({ isOpenModal, modalType, onAction, collection, children, onAddMore }: IAdminModal) {
   const { user } = useAppContext();
   const { onClose } = useDisclosure();
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
@@ -92,7 +93,12 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
               p={25}>
               {children}
               <Spacer data-id="96ffd27de89f" />
-              <Flex data-id="ad3ed1713194" justify="space-between" mt={5}>
+              <Flex
+                data-id="ad3ed1713194"
+                flexWrap="wrap"
+                gap={3}
+                justify="space-between"
+                mt={5}>
                 {modalType === 'edit' && (
                   <Button
                     _hover={{ bg: 'adminModal.button.remove.bg' }}
@@ -105,17 +111,32 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children }: 
                     Delete
                   </Button>
                 )}
-                <Button
-                  _hover={{ bg: 'adminModal.button.hover' }}
-                  bg="adminModal.button.bg"
-                  color="adminModal.button.color"
-                  data-id="6eb5b4465298"
-                  fontSize="smm"
-                  fontWeight="bold"
-                  onClick={() => onAction(modalType)}>
-                  {modalType === 'edit' ? 'Update' : 'Add'}
-                  <ChevronRight data-id="9f3b554adde2" ml="5px" />
-                </Button>
+
+                <Flex gap={3}>
+                  {/* Add More Button — only in add mode and if onAddMore exists */}
+                  {modalType === 'add' && onAddMore && (
+                    <Button
+                      bg="gray.300"
+                      color="black"
+                      fontSize="smm"
+                      fontWeight="bold"
+                      onClick={onAddMore}>
+                      Add More
+                    </Button>
+                  )}
+
+                  <Button
+                    _hover={{ bg: 'adminModal.button.hover' }}
+                    bg="adminModal.button.bg"
+                    color="adminModal.button.color"
+                    data-id="6eb5b4465298"
+                    fontSize="smm"
+                    fontWeight="bold"
+                    onClick={() => onAction(modalType)}>
+                    {modalType === 'edit' ? 'Update' : 'Add'}
+                    <ChevronRight data-id="9f3b554adde2" ml="5px" />
+                  </Button>
+                </Flex>
               </Flex>
             </Flex>
           </ModalBody>

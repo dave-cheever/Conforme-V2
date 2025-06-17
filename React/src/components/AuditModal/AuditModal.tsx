@@ -121,6 +121,24 @@ function AuditModal({ refetch }) {
     }
   };
 
+  const handleAddAndResetAudit = async () => {
+    const auditType = auditTypes.find(({ _id }) => _id === audit.auditTypeId);
+    if (!auditType) {
+      return toast({
+        ...toastFailed,
+        description: `You need to ${!auditTypes || auditTypes.length === 0 ? 'create' : 'select'} an audit type`,
+      });
+    }
+
+    const { metatags, ...auditValues } = audit;
+    const auditId = await saveAudit({ ...auditValues, recurring: auditType.recurring });
+
+    if (auditId) {
+      toast({ description: 'Audit added', status: 'success' });
+      reset({ ...audit, auditTypeId: undefined, walkType: undefined, locationId: undefined, businessUnitId: undefined });
+    }
+};
+
   return (
     (<ModalContent
       bg="auditModal.bg"
@@ -297,6 +315,21 @@ function AuditModal({ refetch }) {
         </Stack>
       </ModalBody>
       <ModalFooter data-id="2671f95864b8" p={1}>
+        <Button
+          bg="auditModal.tabs.bottomButton.bg"
+          color="auditModal.tabs.bottomButton.color"
+          fontSize="smm"
+          fontWeight="700"
+          h="40px"
+          minW="inherit"
+          ml={3}
+          onClick={handleAddAndResetAudit}
+          rounded="10px"
+          variant="outline"
+        >
+          Start & Add More
+        </Button>
+
         <Button
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"

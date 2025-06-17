@@ -106,7 +106,6 @@ function TextInputMultiline({
               color="textInput.font"
               cursor="pointer"
               data-id="8931ed7e3471"
-              defaultValue={value}
               fontSize="smm"
               h="100px"
               isDisabled={disabled}
@@ -114,7 +113,8 @@ function TextInputMultiline({
               name={name}
               onBlur={onBlur}
               onChange={onChange}
-              placeholder={placeholder} />
+              placeholder={placeholder}
+              value={value || ''} />
             {error && (
               <Box color="textInput.error" data-id="7ff6b50cf8ca" fontSize={14} ml={1}>
                 {error.message}

@@ -188,13 +188,36 @@ function RegulatoryBodies() {
     }
   };
 
+  const handleAddAndReset = async () => {
+  try {
+    const isValid = await trigger();
+    if (!isValid) {
+      return toast({
+        ...toastFailed,
+        description: 'Please complete all the required fields',
+      });
+    }
+
+    const values = getValues();
+    await createFunction({ variables: values });
+    toast({ ...toastSuccess, description: 'Regulatory body added' });
+    reset(defaultValues);
+    setCurrentRegulatoryBodyName('');
+    refetch();
+  } catch (e: any) {
+    toast({ ...toastFailed, description: e.message });
+  }
+};
+
   return (<>
     <AdminModal
       collection="regulatory body"
       data-id="f481222aa73b"
       isOpenModal={adminModalState !== 'closed'}
       modalType={adminModalState}
-      onAction={handleAction}>
+      onAction={handleAction}
+      onAddMore={adminModalState === 'add' ? handleAddAndReset : undefined}
+    >
       <Flex align="flex-start" data-id="8e1e0aa9c450" direction="column" w="full">
         <TextInput
           control={control}

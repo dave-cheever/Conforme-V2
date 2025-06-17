@@ -220,6 +220,27 @@ function BusinessUnits() {
     }
   };
 
+  const handleAddAndResetBusinessUnit = async () => {
+    try {
+      const isValid = await trigger();
+      if (!isValid) {
+        return toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
+      }
+
+      const values = getValues();
+      await createFunction({ variables: { values: { ...values, moduleId: module?._id } } });
+      toast({ ...toastSuccess, description: `${capitalize(t('business unit'))} added` });
+      reset(defaultValues);
+      setCurrentBusinessUnitName('');
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
+
   const renderBusinessUnitRow = (businessUnit: IBusinessUnit, i: number) => (
     <Flex
       alignItems="center"
@@ -320,6 +341,7 @@ function BusinessUnits() {
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
+        onAddMore={adminModalState === 'add' ? handleAddAndResetBusinessUnit : undefined}
       >
         <Stack data-id="a4243ef9e5cd" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput

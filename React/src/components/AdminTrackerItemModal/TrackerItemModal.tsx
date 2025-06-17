@@ -17,6 +17,7 @@ import NavigationModal from './NavigationModal';
 function TrackerItemModal({ refetch }) {
   const toast = useToast();
   const device = useDevice();
+  const { reset } = useTrackerItemModalContext();
   const { user } = useAppContext();
   const {
     trackerItem,
@@ -118,6 +119,15 @@ function TrackerItemModal({ refetch }) {
     return `Add ${t('tracker item')}`;
   }, [trackerItem, selectedSection]);
 
+  const handleAddMoreButtonClick = async () => {
+    try {
+      await saveTrackerItem(trackerItem);
+      reset();
+    } catch (error) {
+      console.error('Error saving tracker item:', error);
+    }
+  };
+
   return (<>
     <ModalContent
       bg="trackerItemModal.bg"
@@ -201,63 +211,63 @@ function TrackerItemModal({ refetch }) {
               overflowY="auto">
               <Component data-id="49d41e48985c" />
             </Flex>
-            <Flex
-              data-id="3c0494440235"
-              justifyContent={selectedSection.name !== 'Details' ? 'space-between' : 'flex-end'}
-              w="full">
-              {selectedSection.name !== 'Details' && (
-                <Button
-                  _hover={{
-                    bg: 'trackerItemModal.tabs.bottomButton.hover',
-                  }}
-                  bg="trackerItemModal.tabs.bottomButton.bg"
-                  color="trackerItemModal.tabs.bottomButton.color"
-                  data-id="373fe7d33b17"
-                  fontSize="smm"
-                  fontWeight="700"
-                  h="40px"
-                  leftIcon={<Icon
-                    as={OpenMenuArrow}
-                    data-id="407626d43c79"
-                    stroke="trackerItemModal.tabs.bottomButton.icon"
-                    transform="rotate(90deg)" />}
-                  onClick={handlePreviousButtonClick}
-                  rounded="10px"
-                  w="fit-content">
-                  Back
-                </Button>
-              )}
-              <Button
-                _hover={{ bg: 'trackerItemModal.tabs.bottomButton.hover' }}
-                bg="trackerItemModal.tabs.bottomButton.bg"
-                color="trackerItemModal.tabs.bottomButton.color"
-                data-id="71e20892796f"
-                disabled={
-                  (Object.keys(errors).length > 0 ||
-                    isActionRequiredToComplete ||
-                    trackerItem?.locationsIds?.length === 0 ||
-                    trackerItem?.businessUnitsIds?.length === 0 ||
-                    isValidating) &&
-                  selectedSection.name === 'Summary' &&
-                  buttonText !== 'Unpublish'
-                }
-                fontSize="smm"
-                fontWeight="700"
-                h="40px"
-                ml={3}
-                onClick={handlePrimaryButtonClick}
-                rightIcon={<Icon
-                  as={OpenMenuArrow}
-                  data-id="557f37756bd1"
-                  stroke="trackerItemModal.tabs.bottomButton.icon"
-                  transform="rotate(270deg)" />}
-                rounded="10px"
-                w="fit-content">
-                  {isValidating ? 'Validating...' : buttonText}
-              </Button>
+              <Flex
+                data-id="3c0494440235"
+                justifyContent="space-between"
+                w="full">
+                {selectedSection.name !== 'Details' && (
+                  <Button
+                    bg="trackerItemModal.tabs.bottomButton.bg"
+                    color="trackerItemModal.tabs.bottomButton.color"
+                    fontSize="smm"
+                    fontWeight="700"
+                    h="40px"
+                    leftIcon={<Icon as={OpenMenuArrow} transform="rotate(90deg)" />}
+                    onClick={handlePreviousButtonClick}
+                    rounded="10px"
+                    w="fit-content">
+                    Back
+                  </Button>
+                )}
+
+                <Flex gap={3}>
+                  {selectedSection.name === 'Summary' && !trackerItem._id &&  (
+                    <Button
+                      bg="gray.300"
+                      color="black"
+                      disabled={
+                        (Object.keys(errors).length > 0 ||
+                          isActionRequiredToComplete ||
+                          trackerItem?.locationsIds?.length === 0 ||
+                          trackerItem?.businessUnitsIds?.length === 0)
+                      }
+                      fontSize="smm"
+                      fontWeight="700"
+                      h="40px"
+                      onClick={handleAddMoreButtonClick}
+                      rounded="10px"
+                      w="fit-content">
+                      Add More
+                    </Button>
+                  )}
+
+                  <Button
+                    _hover={{ bg: 'trackerItemModal.tabs.bottomButton.hover' }}
+                    bg="trackerItemModal.tabs.bottomButton.bg"
+                    color="trackerItemModal.tabs.bottomButton.color"
+                    fontSize="smm"
+                    fontWeight="700"
+                    h="40px"                  
+                    onClick={handlePrimaryButtonClick}
+                    rightIcon={<Icon as={OpenMenuArrow} transform="rotate(270deg)" />}
+                    rounded="10px"
+                    w="fit-content">
+                    {isValidating ? 'Validating...' : buttonText}
+                  </Button>
+              </Flex>
+             </Flex>
             </Flex>
           </Flex>
-        </Flex>
       </ModalBody>
     </ModalContent>
     <AlertDialog
