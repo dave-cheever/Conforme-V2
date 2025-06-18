@@ -11,7 +11,7 @@ function AdminTableHeaderElement({
 }: {
   w: any;
   ml?: string;
-  label: string;
+  label: React.ReactNode;
   onClick?;
   sortOrder?: 'asc' | 'desc';
   showSortingIcon?: boolean;

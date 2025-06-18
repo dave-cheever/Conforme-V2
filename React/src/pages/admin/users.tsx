@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Avatar, Box, Flex, Select, Text } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { Avatar, Box, Flex, Select, Text, Tooltip } from '@chakra-ui/react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { t } from 'i18next';
 import { upperFirst } from 'lodash';
@@ -16,6 +17,7 @@ import UserAuditsCount from '../../components/UserAuditsCount';
 import UserResponseCount from '../../components/UserResponseCount';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
+import useNavigate from '../../hooks/useNavigate';
 import useSort from '../../hooks/useSort';
 import { ArrowDownIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
@@ -59,6 +61,7 @@ const UPDATE_USER = gql`
 function Users() {
   const { module } = useAppContext();
   const device = useDevice();
+  const { navigateTo } = useNavigate();
   const { data, loading, refetch } = useQuery(GET_USERS);
   const [updateFunction] = useMutation(UPDATE_USER);
   const [loadingUsers, setLoadingUsers] = useState<string[]>([]);
@@ -93,21 +96,34 @@ function Users() {
   const renderCountHeaders = () =>
     module?.type === 'tracker' ? (
       <>
-        <AdminTableHeaderElement
-          data-id="816f54127346"
-          label="R"
-          ml="13px"
-          onClick={() => {
-            setSortType('responsibleCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'responsibleCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'responsibleCount'}
-          sortOrder={sortType === 'responsibleCount' ? sortOrder : undefined}
-          tooltip="Responsible on number of responses"
+       <AdminTableHeaderElement
+        data-id="816f54127346"
+        label={
+          <Flex align="center" gap="1">
+            <Text>R</Text>
+            <Tooltip hasArrow label="Responsible on number of responses">
+              <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+            </Tooltip>
+          </Flex>
+        }
+        ml="13px"
+        onClick={() => {
+          setSortType('responsibleCount');
+          setSortOrder(sortOrder === 'asc' && sortType === 'responsibleCount' ? 'desc' : 'asc');
+        }}
+        showSortingIcon={sortType === 'responsibleCount'}
+        sortOrder={sortType === 'responsibleCount' ? sortOrder : undefined}
           w="calc(25% - 13px)" />
         <AdminTableHeaderElement
           data-id="ae67569ac89c"
-          label="A"
+           label={
+            <Flex align="center" gap="1">
+              <Text>A</Text>
+              <Tooltip hasArrow label="Accountable on number of responses">
+                  <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('accountableCount');
@@ -115,11 +131,17 @@ function Users() {
           }}
           showSortingIcon={sortType === 'accountableCount'}
           sortOrder={sortType === 'accountableCount' ? sortOrder : undefined}
-          tooltip="Accountable on number of responses"
           w="calc(25% - 13px)" />
         <AdminTableHeaderElement
           data-id="7eefc7a20c98"
-          label="C"
+           label={
+            <Flex align="center" gap="1">
+              <Text>C</Text>
+              <Tooltip hasArrow label="Contributor on number of responses">
+                <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('contributorCount');
@@ -127,11 +149,17 @@ function Users() {
           }}
           showSortingIcon={sortType === 'contributorCount'}
           sortOrder={sortType === 'contributorCount' ? sortOrder : undefined}
-          tooltip="Contributor on number of responses"
           w="calc(25% - 13px)" />
         <AdminTableHeaderElement
           data-id="38060c94261b"
-          label="F"
+          label={
+            <Flex align="center" gap="1">
+              <Text>F</Text>
+              <Tooltip hasArrow label="Follower on number of responses">
+                 <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('followerCount');
@@ -139,14 +167,20 @@ function Users() {
           }}
           showSortingIcon={sortType === 'followerCount'}
           sortOrder={sortType === 'followerCount' ? sortOrder : undefined}
-          tooltip="Follower on number of responses"
           w="calc(25% - 13px)" />
       </>
     ) : (
       <>
         <AdminTableHeaderElement
           data-id="e756e05b6f34"
-          label="T"
+           label={
+            <Flex align="center" gap="1">
+              <Text>T</Text>
+              <Tooltip hasArrow label={`Total number of ${pluralize(t('audit'))}`}>
+                <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('totalAuditsCount');
@@ -154,11 +188,17 @@ function Users() {
           }}
           showSortingIcon={sortType === 'totalAuditsCount'}
           sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
-          tooltip={`Total number of ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)" />
         <AdminTableHeaderElement
           data-id="3d691d6ab0b1"
-          label="C"
+          label={
+            <Flex align="center" gap="1">
+              <Text>C</Text>
+              <Tooltip hasArrow label={`Number of completed ${pluralize(t('audit'))}`}>
+                <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('completedAuditsCount');
@@ -166,11 +206,17 @@ function Users() {
           }}
           showSortingIcon={sortType === 'completedAuditsCount'}
           sortOrder={sortType === 'completedAuditsCount' ? sortOrder : undefined}
-          tooltip={`Number of completed ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)" />
         <AdminTableHeaderElement
           data-id="e7c41813879a"
-          label="U"
+          label={
+            <Flex align="center" gap="1">
+              <Text>U</Text>
+              <Tooltip hasArrow label={`Number of upcoming ${pluralize(t('audit'))}`}>
+                 <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('upcomingAuditsCount');
@@ -178,11 +224,17 @@ function Users() {
           }}
           showSortingIcon={sortType === 'upcomingAuditsCount'}
           sortOrder={sortType === 'upcomingAuditsCount' ? sortOrder : undefined}
-          tooltip={`Number of upcoming ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)" />
         <AdminTableHeaderElement
           data-id="3eaecbcd7b51"
-          label="M"
+          label={
+            <Flex align="center" gap="1">
+              <Text>M</Text>
+              <Tooltip hasArrow label={`Number of missed ${pluralize(t('audit'))}`}>
+                 <InfoOutlineIcon boxSize="2.5" color="gray.500" marginTop={-2} onClick={()=>{navigateTo('/help')}} />
+              </Tooltip>
+            </Flex>
+           }
           ml="13px"
           onClick={() => {
             setSortType('missedAuditsCount');
@@ -190,7 +242,6 @@ function Users() {
           }}
           showSortingIcon={sortType === 'missedAuditsCount'}
           sortOrder={sortType === 'missedAuditsCount' ? sortOrder : undefined}
-          tooltip={`Number of missed ${pluralize(t('audit'))}`}
           w="calc(25% - 13px)" />
       </>
     );
