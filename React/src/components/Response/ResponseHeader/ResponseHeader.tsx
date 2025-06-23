@@ -109,11 +109,11 @@ function ReasponseHeader() {
   if (!response) return null;
   return (
     (<Flex
-      bg="reasponseHeader.bg"
       data-id="8e7ece118cc4"
       direction="column"
       mb="15px"
       pl={6}
+      pt={4}
       w="full"
       zIndex={1}>
       <Stack

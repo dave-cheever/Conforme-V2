@@ -245,6 +245,7 @@ function RegulatoryBodies() {
       p={['0', '0 25px 30px 30px']}>
       <Flex data-id="01b0531a4b72" h="full" px={['25px', 0]}>
         <Box
+           border="1px solid #E2E8F0"
           data-id="e7b58d152793"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
           mr={[0, 0, '50px']}

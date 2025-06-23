@@ -110,6 +110,9 @@ function Team() {
     (<Stack
       alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
+      border="1px solid"
+      borderColor="#E2E8F0"
+      borderRadius="8px"
       data-id="38e4414c2140"
       fontSize="smm"
       fontWeight="bold"

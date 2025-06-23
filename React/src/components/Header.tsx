@@ -34,21 +34,21 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
     isPathActive('/dashboard') ||
     isPathActive('/tracker-items');
   const excludedPaths = [
-    "/documents/admin/users",
-    "/documents/admin/audit-log",
-    "/documents/admin/settings",
-    "/documents/help",
-    "/documents/terms-and-conditions",
-    "/documents/privacy-policy",
-    "/safety-health-environment-walk/admin/settings",
-    "/safety-health-environment-walk/answers",
-    "/safety-health-environment-walk/admin/audit-log",
-    "/safety-health-environment-walk/admin/users",
-    "/safety-health-environment-walk/insights",
-    "/safety-health-environment-walk/actions",
-    "/safety-health-environment-walk/help",
-    "/safety-health-environment-walk/terms-and-conditions",
-    "/safety-health-environment-walk/privacy-policy",
+    '/documents/admin/users',
+    '/documents/admin/audit-log',
+    '/documents/admin/settings',
+    '/documents/help',
+    '/documents/terms-and-conditions',
+    '/documents/privacy-policy',
+    '/safety-health-environment-walk/admin/settings',
+    '/safety-health-environment-walk/answers',
+    '/safety-health-environment-walk/admin/audit-log',
+    '/safety-health-environment-walk/admin/users',
+    '/safety-health-environment-walk/insights',
+    '/safety-health-environment-walk/actions',
+    '/safety-health-environment-walk/help',
+    '/safety-health-environment-walk/terms-and-conditions',
+    '/safety-health-environment-walk/privacy-policy',
   ];
 
   function isPathAllowed() {
@@ -68,13 +68,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex align="center" data-id="bed31f747997" h="full" key={`bc-${i}`}>
-      {i > 0 && <ArrowRight
-        color="#818197"
-        data-id="1507ccf9eca0"
-        display="flex"
-        ml={2}
-        mr={1}
-        mt={['0px', '5px']} />}
+      {i > 0 && <ArrowRight color="#818197" data-id="1507ccf9eca0" display="flex" ml={2} mr={1} mt={['0px', '5px']} />}
       <Text
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
         data-id="4e3ce528c3ed"
@@ -82,19 +76,15 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
         fontSize="20px"
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
         mr={1}
-        pl={[0, 2]}>
+        pl={[0, 2]}
+      >
         {capitalize(breadcrumb)}
       </Text>
     </Flex>
   );
 
   return (
-    (<Flex
-      align="center"
-      data-id="254db3433c08"
-      h={['60px', '70px']}
-      position="relative"
-      zIndex="2">
+    <Flex align="center" background="#ffffff" data-id="254db3433c08" h={['60px', '70px']} pb="10px" position="relative" zIndex="2">
       <Flex data-id="29c8a722c6a3" justify="space-between" w="full">
         <Flex data-id="20c16a3e4d08" display="flex" flexShrink={0} ml="5">
           {breadCrumbs.map(renderBreadcrumb)}
@@ -103,59 +93,54 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
           {children}
         </Flex>
         {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="b947f2c69a3e" />}
-        
-        {isPathAllowed() && (<Can
+
+        {isPathAllowed() && (
+          <Can
             action="audits.add"
             data-id="a3a476596997"
             yes={() => (
-              <> 
-                {usedFilters && isAuditPage && usedFilters.length > 0 &&
-                  <Divider
-                  borderColor="gray.300"
-                  display={['none', 'block']}
-                  height="30px"
-                  ml={0}
-                  mr={5}
-                  mt={1}
-                  orientation="vertical"/>}
-               
-                  <Button
-                    _hover={{ opacity: 0.7 }}
-                    aria-label="Add"
-                    bg="navigationTop.addButton"
-                    bottom={['78px', '0']}
-                    boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
-                    color="white"
-                    data-id="b5bf85567bbe"
-                    display={'flex'}
-                    flexShrink={0}
-                    fontSize={['12px', '14px']}
-                    fontWeight={'500'}
-                    h={['42px', '40px']}
-                    leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '16px']} stroke="navigationTop.addIcon" w={['10px', '16px']} />}
-                    ml={['0', '4']}
-                    mr={['20', '0']}
-                    onClick={() => {
-                      const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
-                      navigateTo(targetUrl || '');
-                      setAdminModalState('add');
-                    }}
-                    position={['fixed', 'relative']}
-                    right={['0', usedFilters.length > 0 ? '15' : '25']}
+              <>
+                {usedFilters && isAuditPage && usedFilters.length > 0 && (
+                  <Divider borderColor="gray.300" display={['none', 'block']} height="30px" ml={0} mr={5} mt={1} orientation="vertical" />
+                )}
+
+                <Button
+                  _hover={{ opacity: 0.7 }}
+                  aria-label="Add"
+                  bg="navigationTop.addButton"
+                  bottom={['78px', '0']}
+                  boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
+                  color="white"
+                  data-id="b5bf85567bbe"
+                  display={'flex'}
+                  flexShrink={0}
+                  fontSize={['12px', '14px']}
+                  fontWeight={'500'}
+                  h={['42px', '40px']}
+                  leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '16px']} stroke="navigationTop.addIcon" w={['10px', '16px']} />}
+                  ml={['0', '4']}
+                  mr={['20', '0']}
+                  onClick={() => {
+                    const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
+                    navigateTo(targetUrl || '');
+                    setAdminModalState('add');
+                  }}
+                  position={['fixed', 'relative']}
+                  right={['0', usedFilters.length > 0 ? '15' : '25']}
                   rounded={['10px', '8px']}
                   w={['auto']}
                   zIndex={5}
-                  >
-                    {`Add ${item?.label || ''}`}
-                  </Button>
+                >
+                  {`Add ${item?.label || ''}`}
+                </Button>
               </>
             )}
           />
-        )}       
+        )}
       </Flex>
-    </Flex>)
+    </Flex>
   );
-};
+}
 
 export default Header;
 

@@ -36,7 +36,9 @@ function NavigationTop() {
   return (
     (<Flex
       align="center"
-      bg={['navigationTop.bgMobile', 'navigationTop.bg']}
+      bg={['navigationTop.bgMobile']}
+      borderBottom="1px solid"
+      borderColor="navigationTop.navBorder"
       data-id="1a2fd16652ef"
       h={['72px', '80px']}
       justify="space-between"
@@ -235,7 +237,7 @@ export default NavigationTopWithContext;
 
 export const navigationTopStyles = {
   navigationTop: {
-    bg: '#f5f5f5',
+    bg: '#FFFFFF',
     bgMobile: '#FFFFFF',
     inputBg: '#FFFFFF',
     inputIconColor: '#282F36',
@@ -243,6 +245,7 @@ export const navigationTopStyles = {
     addButton: '#462AC4',
     searchIconBackground: '#F0F0F0',
     avatarBg: '#A2171E',
+    navBorder: "#E2E8F0",
     searchBarIconFill: '#282F36',
     notificationIconHover: '#FFFFFF',
     notificationBadgeBorder: '#FFFFFF',

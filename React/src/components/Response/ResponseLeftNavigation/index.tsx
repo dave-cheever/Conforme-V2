@@ -74,7 +74,9 @@ function ResponseLeftNavigation() {
           data-id="3bd02a5cc1f9"
           display="flex"
           h="80px"
+          minW="200px"
           onClick={() => navigateTo('/')}>
+          <Icon as={Conforme} data-id="c6f9c652c7fc" h="35px" w="50px" />
           <Text
             color="navigationLeft.organizationNameFontColor"
             data-id="9f4d8594b408"
@@ -116,10 +118,10 @@ function ResponseLeftNavigation() {
             },
           }}>
           <Box data-id="3dfb5a10f729" h="50px">
-            <Box data-id="229afdc1a7b7" fontSize="11px" opacity={0.5}>
+            <Box color="responseLeftNavigation.color" data-id="229afdc1a7b7" fontSize="16px" opacity="64%">
               Item ID
             </Box>
-            <Flex align="center" data-id="dc03023e06d7" fontSize="14px" minH="28px">
+            <Flex align="center" data-id="dc03023e06d7" fontSize="16px" minH="28px">
               <Flex data-id="52592d3a897d" mr={2}>{response?.trackerItem.reference}</Flex>
               <CopyToClipboard
                 data-id="1034bd82bf20"
@@ -146,10 +148,10 @@ function ResponseLeftNavigation() {
             heading={capitalize(t('business unit'))}
             value={response?.businessUnit?.name || '-'} />
           <Box data-id="b48ef33e296c" h="50px" mt={2}>
-            <Box data-id="93f9449d0469" fontSize="11px" opacity={0.5}>
+            <Box color="responseLeftNavigation.color"  data-id="93f9449d0469" fontSize="16px" opacity="64%">
               Accountable
             </Box>
-            <Flex align="center" data-id="5acf50dedfbd" fontSize="14px" minH="28px">
+             <Flex align="center" data-id="5acf50dedfbd" fontSize="16px" minH="28px">
               <Avatar
                 bg="responseLeftNavigation.avatar"
                 color="white"
@@ -162,7 +164,7 @@ function ResponseLeftNavigation() {
                 }
                 size="xs"
                 src={accountable && accountable.imgUrl} />
-              <Flex data-id="9def953b4b06" mr={2}>
+              <Flex data-id="9def953b4b06">
                 {accountable && accountable.firstName && accountable.lastName
                   ? `${accountable.firstName} ${accountable.lastName}`
                   : `${accountable?.displayName || '-'}`}
@@ -170,10 +172,10 @@ function ResponseLeftNavigation() {
             </Flex>
           </Box>
           <Box data-id="f78dda737007" h="50px" mt={2}>
-            <Box data-id="1bf1c59d0f62" fontSize="11px" opacity={0.5}>
+             <Box color="responseLeftNavigation.color"  data-id="1bf1c59d0f62" fontSize="16px" opacity="64%">
               Responsible
             </Box>
-            <Flex align="center" data-id="f857574f8c38" fontSize="14px" minH="28px">
+              <Flex align="center" data-id="f857574f8c38" fontSize="16px" minH="28px">
               <Avatar
                 bg="responseLeftNavigation.avatar"
                 color="white"
@@ -186,7 +188,7 @@ function ResponseLeftNavigation() {
                 }
                 size="xs"
                 src={responsible && responsible.imgUrl} />
-              <Flex data-id="4db276e28c1f" mr={2}>
+              <Flex data-id="4db276e28c1f">
                 {responsible && responsible.firstName && responsible.lastName
                   ? `${responsible.firstName} ${responsible.lastName}`
                   : `${responsible?.displayName || '-'}`}
@@ -207,9 +209,6 @@ function ResponseLeftNavigation() {
             value={response?.trackerItem?.frequency || '-'} />
         </Box>
       </Flex>
-      <Flex data-id="098a84f122bd">
-        <Icon as={Conforme} data-id="c6f9c622c7fc" h="35px" mb="20px" w="103px" />
-      </Flex>
     </Flex>)
   );
 }
@@ -218,9 +217,9 @@ export default ResponseLeftNavigation;
 
 export const responseLeftNavigationStyles = {
   responseLeftNavigation: {
-    bg: '#f5f5f5',
+    bg: '#110B30',
     goBackColor: '#818197',
-    color: '#282F36',
+    color: '#ffffff',
     building: '#2B3236',
     copy: '#FF9A00',
     avatar: '#462AC4',

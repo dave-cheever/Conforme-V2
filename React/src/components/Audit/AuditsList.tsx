@@ -21,23 +21,19 @@ function AuditsList({
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
-    const { module } = useAppContext();
+  const { module } = useAppContext();
   return (
-    <Box
-      data-id="c9dcc715eafc"
-      h="full"
-      ml="10px"
-      overflow="none"
-      p={[3, 6]}
-      w="full">
+    <Box bg="#ffffff" data-id="c9dcc715eafc" h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
       <Box
         bg="auditsList.bg"
-        borderRadius="20px"
+        border="1px solid #E2E8F0"
+        borderRadius="10px"
         data-id="76e7d843efdb"
         h="fit-content"
         minH="full"
         pb={7}
-        w="full">
+        w="full"
+      >
         <AdminTableHeader data-id="c7b56c6c8070">
           <AdminTableHeaderElement
             data-id="f7a8ba1a2f1e"
@@ -48,7 +44,8 @@ function AuditsList({
             }}
             showSortingIcon={sortType === 'dueDate'}
             sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-            w="10%" />
+            w="10%"
+          />
           <AdminTableHeaderElement
             data-id="26c008b9ae44"
             label={capitalize(t('location'))}
@@ -58,7 +55,8 @@ function AuditsList({
             }}
             showSortingIcon={sortType === 'location.name'}
             sortOrder={sortType === 'location.name' ? sortOrder : undefined}
-            w="30%" />
+            w="20%"
+          />
           <AdminTableHeaderElement
             data-id="55d46f8588f6"
             label="Status"
@@ -68,18 +66,21 @@ function AuditsList({
             }}
             showSortingIcon={sortType === 'status'}
             sortOrder={sortType === 'status' ? sortOrder : undefined}
-            w="10%" />
-          {module?.featureFlags?.enableSafetyWalk && <AdminTableHeaderElement
-            data-id="f6ebd23b73e0"
-            label="Walk type"
-            onClick={() => {
-              setSortType('walkType');
-              setSortOrder(sortOrder === 'asc' && sortType === 'walkType' ? 'desc' : 'asc');
-            }}
-            showSortingIcon={sortType === 'walkType'}
-            sortOrder={sortType === 'walkType' ? sortOrder : undefined}
-            w="10%" />
-          }
+            w="10%"
+          />
+          {module?.featureFlags?.enableSafetyWalk && (
+            <AdminTableHeaderElement
+              data-id="f6ebd23b73e0"
+              label="Walk type"
+              onClick={() => {
+                setSortType('walkType');
+                setSortOrder(sortOrder === 'asc' && sortType === 'walkType' ? 'desc' : 'asc');
+              }}
+              showSortingIcon={sortType === 'walkType'}
+              sortOrder={sortType === 'walkType' ? sortOrder : undefined}
+              w="10%"
+            />
+          )}
           <AdminTableHeaderElement
             data-id="1bb7fd9140c6"
             label="Auditor"
@@ -89,7 +90,8 @@ function AuditsList({
             }}
             showSortingIcon={sortType === 'auditor.displayName'}
             sortOrder={sortType === 'auditor.displayName' ? sortOrder : undefined}
-            w="20%" />
+            w="20%"
+          />
           <AdminTableHeaderElement
             data-id="ff39c57a287e"
             label="Reference"
@@ -99,7 +101,8 @@ function AuditsList({
             }}
             showSortingIcon={sortType === 'reference'}
             sortOrder={sortType === 'reference' ? sortOrder : undefined}
-            w="10%" />
+            w="15%"
+          />
           <AdminTableHeaderElement
             data-id="f1ffb96e3fb2"
             label="Date submitted"
@@ -109,17 +112,11 @@ function AuditsList({
             }}
             showSortingIcon={sortType === 'completedDate'}
             sortOrder={sortType === 'completedDate' ? sortOrder : undefined}
-            w="10%" />
+            w="15%"
+          />
         </AdminTableHeader>
-        <Flex
-          data-id="917ca53a38a8"
-          flexDir="column"
-          h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']}
-          overflowY="auto"
-          w="full">
-          {audits?.map((audit) => (
-            <AuditListItem audit={audit} data-id="1f8b84b5294b" key={audit._id} />
-          ))}
+        <Flex data-id="917ca53a38a8" flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">
+          {audits?.map((audit) => <AuditListItem audit={audit} data-id="1f8b84b5294b" key={audit._id} />)}
         </Flex>
       </Box>
     </Box>
@@ -140,6 +137,6 @@ export const auditsListStyles = {
     tickIcon: '#41BA17',
     imageBg: '#ffffff',
     evidenceFontColor: '#818197',
-    headerBorderColor: '#F0F0F0',
+    headerBorderColor: '#E2E8F0',
   },
 };

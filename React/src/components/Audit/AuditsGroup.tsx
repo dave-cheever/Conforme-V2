@@ -11,54 +11,63 @@ function AuditsGroup({ audits }: { audits: IAudit[] }) {
 
   useEffect(() => {
     const filteredAudits: any = {};
-    filteredAudits.upcoming = audits.filter((audit) => audit.status === 'upcoming');
     filteredAudits.completed = audits.filter((audit) => audit.status === 'completed');
+    filteredAudits.upcoming = audits.filter((audit) => audit.status === 'upcoming');
     filteredAudits.missed = audits.filter((audit) => audit.status === 'missed');
     setFilteredResults(filteredAudits);
   }, [audits]);
 
+  const auditsTextGroup = {
+    completed: '#62c240',
+    upcoming: '#FFA012',
+    missed: '#FC5960',
+  };
+
+  const auditsGroupBg = {
+    completed: '#C6F6D5',
+    upcoming: '#FEEBCB',
+    missed: '#FED7D7',
+  };
+
   const renderGroup = (group: string) => (
-    <Flex
-      data-id="6708791be2c7"
-      direction="column"
-      key={group}
-      minW="calc(347px + 1rem)"
-      pl={8}
-      pr={3}
-      pt={2}>
+    <Flex data-id="6708791be2c7" direction="column" key={group} minW="calc(347px + 1rem)" pl={3} pr={2} pt={2}>
       <Flex
         align="center"
-        bg={`auditsGroup.${group}`}
+        bg={auditsGroupBg[group]}
+        borderRadius={'md'}
         color="#FFFFFF"
         data-id="61add5e89243"
         fontWeight="700"
-        justify="space-between"
+        justifyContent={'center'}
         mb={4}
         minH="40px"
         pl={5}
         pr={4}
-        rounded="full"
-        w="full">
+        textColor={auditsTextGroup[group]}
+        w="full"
+      >
         {auditStatuses[group]}
       </Flex>
       <Stack
         align="center"
+        bg={'#F7FAFC'}
+        borderRadius={'md'}
+        boxShadow={'sm'}
         data-id="f3102cc0888b"
         direction="column"
-        pb={5}
+        p={4}
         spacing={6}
-        w="full">
-        {filteredResults[group]?.map((audit: IAudit) => (
-          <AuditSquare audit={audit} data-id="1ceb33212fbf" key={audit._id} />
-        ))}
+        w="full"
+      >
+        {filteredResults[group]?.map((audit: IAudit) => <AuditSquare audit={audit} data-id="1ceb33212fbf" key={audit._id} />)}
       </Stack>
     </Flex>
   );
 
   return (
-    (<Flex data-id="a7525929df3b" h="full" overflow="auto" pt="3" w="full">
+    <Flex bg="#ffffff" data-id="a7525929df3b" h="full" overflow="auto" pt="3" w="full">
       {Object.keys(auditStatuses).map((status) => renderGroup(status))}
-    </Flex>)
+    </Flex>
   );
 }
 
@@ -69,5 +78,15 @@ export const auditsGroupStyles = {
     completed: '#62c240',
     upcoming: '#FFA012',
     missed: '#FC5960',
+  },
+  auditsTextGroup: {
+    completed: '#62c240',
+    upcoming: '#FFA012',
+    missed: '#FC5960',
+  },
+  auditsGroupBg: {
+    completed: '#C6F6D5',
+    upcoming: '#FEEBCB',
+    missed: '#FED7D7',
   },
 };

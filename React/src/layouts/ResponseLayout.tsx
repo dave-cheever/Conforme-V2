@@ -40,7 +40,6 @@ function ResponseLayout({ component: Component }: { component: any }) {
         w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
         <NavigationTop data-id="8763982d4954" />
         <Flex
-          bg="layout.bg"
           data-id="f0afe864ad9f"
           flexDirection="column"
           flexGrow={1}

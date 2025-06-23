@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 
-import { CheckIcon, CrossIcon } from '../../../icons';
+import { ErrorCircleIcon, SuccessCircleIcon } from '../../../icons';
 
 function ResponseHeaderStatus({ heading, status }) {
   const [color, setColor] = useState<string>();
@@ -14,9 +14,9 @@ function ResponseHeaderStatus({ heading, status }) {
   }, [status]);
 
   const renderIcon = () => {
-    if (status === 'Yes') return <CheckIcon data-id="d33d21096bf0" stroke={color} w="16px" />;
+    if (status === 'Yes') return <SuccessCircleIcon data-id="d33d21096bf0" stroke={color} w="16px" />;
 
-    if (status === 'No') return <CrossIcon data-id="d5b1b5516efd" stroke={color} w="16px" />;
+    if (status === 'No') return <ErrorCircleIcon data-id="d5b1b5516efd" stroke={color} w="16px" />;
 
     return null;
   };

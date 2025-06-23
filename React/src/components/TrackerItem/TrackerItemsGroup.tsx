@@ -91,7 +91,7 @@ function TrackerGridItems({
       loadMore={loadResponses}
       ref={scrollerRef}
       useWindow={false}>
-      <Flex data-id="efa7eba0e047" h="full" overflow="auto" pt="3" w="full">
+      <Flex bg="#ffffff" data-id="efa7eba0e047" h="full" overflow="auto" pt="3" w="full">
         {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
       </Flex>
     </InfiniteScroll>)

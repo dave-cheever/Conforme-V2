@@ -273,24 +273,26 @@ function Audits() {
         sortType={sortType} />
     </Header>
     <Flex
+      bg="#ffffff"
       data-id="9eb10120da8c"
       h={['calc(100vh - 80px)', 'full']}
       overflow="auto"
       pb={[4, 0]}>
       {loading ? (
-  <Loader center data-id="24a7de8c60a9" />
+  <Loader bg="#ffffff" center data-id="24a7de8c60a9" />
 ) : (
   <>
     {viewMode === 'grid' && (
       <Grid
+        bg="#ffffff"
         data-id="32f1dd5d8dc5"
         display={['grid', 'grid', 'flex']}
         flexWrap="wrap"
-        gap={[4, 4, 6]}
+        gap={[4, 4, 4]}
         h="fit-content"
         pb={[14, 8]}
         pt="3"
-        px={[4, 8]}
+        px={[4, 6]}
         templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
         w="full">
         {sortedAudits.length > 0 ? (
@@ -324,6 +326,7 @@ function Audits() {
       ) : (
         <Flex
           alignItems="center"
+          bg="#ffffff"
           data-id="864e662bfe75"
           fontSize="18px"
           fontStyle="italic"

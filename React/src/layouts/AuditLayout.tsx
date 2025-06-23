@@ -40,7 +40,6 @@ function AuditLayout({ component: Component }: { component: any }) {
         w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
         <NavigationTop data-id="f38dfa2c86d8" />
         <Flex
-          bg="layout.bg"
           data-id="6c2b00e9a7d2"
           flexDirection="column"
           h={['calc(100vh - 126px)', 'calc(100vh - 80px)']}

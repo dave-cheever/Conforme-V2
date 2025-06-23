@@ -36,7 +36,7 @@ export default TabItem;
 
 export const settingsTabItemStyles = {
   settingsTabItem: {
-    activeBg: '#282F36',
+    activeBg: '#462AC4',
     bg: 'white',
     activeColor: 'white',
     color: '#818197',

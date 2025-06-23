@@ -25,7 +25,6 @@ function DefaultLayout({ component: Component }: { component: any }) {
           <NavigationTop data-id="b699dce0996d" />
           <ShareModal data-id="45ffc2ebe27c" />
           <Flex
-            bg="layout.bg"
             data-id="e5a4d37afdd0"
             flexDirection="column"
             h="calc(100vh - 80px)"

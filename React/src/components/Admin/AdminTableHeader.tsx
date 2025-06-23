@@ -18,12 +18,12 @@ function AdminTableHeader({ children, title }: { children: React.ReactNode; titl
       bg="#EDF2F7"
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
-      borderTopRadius={title ? undefined : '20px'}
+      borderTopRadius={title ? undefined : '10px'}
       color="adminTableHeader.font"
       data-id="596c88f2df6e"
       fontSize="14px"
       fontWeight="semibold"
-      p="15px 25px">
+      p="10px 10px">
       {children}
     </Flex>
   </Box>

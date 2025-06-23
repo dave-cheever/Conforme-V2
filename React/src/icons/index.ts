@@ -42,6 +42,7 @@ import DetailIcon from './DetailIcon';
 import DownloadIcon from './DownloadIcon';
 import EditIcon from './EditIcon';
 import EllipsisIcon from './EllipsisIcon';
+import ErrorCircleIcon from './ErrorCircle';
 import ErrorSign from './ErrorSign';
 import ExportIcon from './ExportIcon';
 import Eye from './Eye';
@@ -101,6 +102,7 @@ import ShareIcon from './ShareIcon';
 import SignInButton from './SignInButton';
 import SiteIcon from './SiteIcon';
 import SubmitIcon from './SubmitIcon';
+import SuccessCircleIcon from './Success';
 import TeamsIcon from './TeamsIcon';
 import ThumbUpIcon from './ThumbUpIcon';
 import TickIcon from './TickIcon';
@@ -159,6 +161,7 @@ export {
   DownloadIcon,
   EditIcon,
   EllipsisIcon,
+  ErrorCircleIcon,
   ErrorSign,
   ExportIcon,
   Eye,
@@ -217,6 +220,7 @@ export {
   SignInButton,
   SiteIcon,
   SubmitIcon,
+  SuccessCircleIcon,
   TeamsIcon,
   ThumbUpIcon,
   TickIcon,

@@ -246,9 +246,11 @@ function Categories() {
         data-id="785ad45decb2" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
       <Box data-id="f13ecd68fd5e" h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex data-id="de7dc4ff2c7a" h="full" px={['25px', 0]}>
-          <Box
+          <Box     
+            border="1px solid #E2E8F0"
             data-id="68abdc5bbebd"
-            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+            h="fit-content"
+            // h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
             w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
           >

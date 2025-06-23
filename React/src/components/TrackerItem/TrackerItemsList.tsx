@@ -32,10 +32,11 @@ function TrackerListItems({
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
 
-  return <Box data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
+  return <Box bg="#ffffff" data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
     <Box
       bg="trackerList.bg"
-      borderRadius="20px"
+      border="1px solid #E2E8F0"
+      borderRadius="10px"
       data-id="4619f99c26b4"
       h="fit-content"
       mb={7}
@@ -52,7 +53,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'trackerItem.name'}
           sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
-          w="11%" />
+          w="13%" />
         <AdminTableHeaderElement
           data-id="fa257b7cb259"
           label="Due for renewal"
@@ -72,16 +73,16 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'calculatedStatus'}
           sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
-          w="11%" />
+          w="8%" />
           <AdminTableHeaderElement
           data-id="dd6f521e1d31"
           label={capitalize(t('evidence'))}
 
-          w="11%" />
+          w="12%" />
            <AdminTableHeaderElement
           data-id="dd6f521e1d31"
           label={capitalize(t('category'))}
-          w="11%" />
+          w="12%" />
         <AdminTableHeaderElement
           data-id="b403f441bee2"
           label="Regulatory body"
@@ -91,7 +92,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
           sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
-          w="11%"/>
+          w="12%"/>
         <AdminTableHeaderElement
           data-id="c7ff17c8d353"
           label="Responsible"
@@ -101,7 +102,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'responsible.displayName'}
           sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
-          w="11%" />
+          w="13%" />
         <AdminTableHeaderElement
           data-id="3c0328581ec0"
           label={capitalize(t('business unit'))}
@@ -111,7 +112,7 @@ function TrackerListItems({
           }}
           showSortingIcon={sortType === 'businessUnit.name'}
           sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w="11%" />
+          w="12%" />
         {/* {(module?.customQuestionsInDashboard || []).length > 0 && (
           <AdminTableHeaderElement
             label={module!.customQuestionsInDashboard[0]}
@@ -125,7 +126,7 @@ function TrackerListItems({
          <AdminTableHeaderElement
           data-id="dd6f521e1d31"
           label={capitalize(t('location'))}
-          w="11%" />
+          w="8%" />
       </AdminTableHeader>
 
       <Flex

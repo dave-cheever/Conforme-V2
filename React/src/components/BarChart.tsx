@@ -31,7 +31,7 @@ function BarChart({ data, label }) {
         <>
           <Flex data-id="b6a30375c4e2" flexDir="column">
             {data.map((el) => (
-              <Flex alignItems="center" data-id="0f7e27fa77b5" key={el._id}>
+              <Flex alignItems="center" color="#272727" data-id="0f7e27fa77b5" key={el._id}>
                 <Box
                   bg="barChart.bg"
                   data-id="29821c7f7efb"

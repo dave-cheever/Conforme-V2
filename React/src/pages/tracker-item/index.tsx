@@ -83,8 +83,9 @@ function TrackerItemResponse() {
       <RenewalModal data-id="7f05297e6ef7" />
       {/* <Confetti height={confettiHeight} recycle={false} run={run} width={confettiWidth} /> */}
       <VStack
-        bg="trackerItemResponse.bg"
-        borderRadius="20px"
+        border="1px solid"
+        borderColor="trackerItemResponse.borderColor"
+        borderRadius="8px"
         data-id="480bd5641c9b"
         h={['fit-content', 'full']}
         p={[4, 6]}
@@ -232,6 +233,7 @@ export default TrackerItemResponse;
 export const trackerItemResponseStyles = {
   trackerItemResponse: {
     bg: 'white',
+    borderColor: "#E2E8F0",
     nextButtonColor: '#818197',
     labelColor: '#818197',
     expandButtonText: '#462AC4',

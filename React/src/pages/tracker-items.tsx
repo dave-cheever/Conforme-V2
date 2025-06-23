@@ -334,7 +334,8 @@ function TrackerItems() {
               loadMore={loadResponses}
               ref={scrollerRef}
               useWindow={false}>
-              <Grid
+                <Grid
+                bg="#ffffff"
                 data-id="06d832594699"
                 display={['grid', 'grid', 'flex']}
                 flexWrap="wrap"

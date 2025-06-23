@@ -19,15 +19,18 @@ function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = fa
   return (
     (<Flex
       align="center"
+      bg={isDesktop && active ? 'responseLeftTabItem.activeIconBg' : ""}
+      borderRadius={'4px'}
       cursor="pointer"
       data-id="6fdf85811bfa"
       mb={[0, 3]}
       mx={[3, 0]}
       onClick={redirectPage}
+      padding={isDesktop ? '3px' : '2px 0'}
       w={active ? 'full' : 'fit-content'}>
       <Flex
         align="center"
-        bg={active ? 'responseLeftTabItem.activeIconBg' : 'responseLeftTabItem.iconBg'}
+        bg={active ? 'responseLeftTabItem.activeIconBg' : ''}
         borderRadius="8px"
         data-id="c9c5d1603db9"
         h="30px"
@@ -35,12 +38,12 @@ function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = fa
         w="30px">
         <Icon
           as={icon}
-          color={active ? 'responseLeftTabItem.activeIconColor' : 'responseLeftTabItem.iconColor'}
+          color={isDesktop ? "responseLeftTabItem.activeIconColor" :  active ? 'responseLeftTabItem.activeIconColor' : 'responseLeftTabItem.iconColor'}
           data-id="ddadd3902183" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
-          color={active ? ['responseLeftTabItem.textColor', 'responseLeftTabItem.activeTextColor'] : 'responseLeftTabItem.textColor'}
+          color={isDesktop ? 'responseLeftTabItem.activeTextColor' :   active ? ['responseLeftTabItem.textColor', 'responseLeftTabItem.activeTextColor'] : 'responseLeftTabItem.textColor'}
           data-id="27ac7e816e47"
           flexGrow={1}
           fontSize={['11px', '14px']}
@@ -56,9 +59,8 @@ export default ResponseLeftTabItem;
 
 export const responseLeftTabItemStyles = {
   responseLeftTabItem: {
-    iconBg: '#FFFFFF',
     activeIconBg: '#462AC4',
-    activeTextColor: '#1F1F1F',
+    activeTextColor: '#ffffff',
     textColor: '#818197',
     activeIconColor: 'white',
     iconColor: '#818197',

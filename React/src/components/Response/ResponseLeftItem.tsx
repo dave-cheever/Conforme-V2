@@ -7,12 +7,12 @@ function ResponseLeftItem({ heading, value }: { heading: string; value: string }
     flexDir="column"
     h="50px"
     mt={2}>
-    <Box data-id="fd7376fdeb2f" fontSize="11px" opacity={0.5}>
+   <Box color="responseLeftNavigation.color"  data-id="fd7376fdeb2f" fontSize="16px" opacity="64%">
       {heading}
     </Box>
     <Text
       data-id="6f05679e98f5"
-      fontSize="14px"
+      fontSize="16px"
       noOfLines={1}
       textOverflow="ellipsis">
       {value || '-'}
@@ -21,3 +21,9 @@ function ResponseLeftItem({ heading, value }: { heading: string; value: string }
 }
 
 export default ResponseLeftItem;
+
+export const ResponseLeftItemStyles = {
+  responseLeftNavigation: {
+    color: '#ffffff',
+  },
+};

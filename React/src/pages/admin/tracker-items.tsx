@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Box, Flex, Modal, ModalOverlay, Spacer, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Modal, ModalOverlay, Stack, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -190,6 +190,7 @@ function TrackerItemsAdmin() {
     <Box
       data-id="994cf98f6802"
       h={['full', 'calc(100vh - 160px)']}
+      mt="10px"
       overflow="auto"
       p="0 25px 30px 30px">
       <Box
@@ -206,8 +207,7 @@ function TrackerItemsAdmin() {
             }}
             showSortingIcon={sortType === 'name'}
             sortOrder={sortType === 'name' ? sortOrder : undefined}
-            w={['80%', 'calc(100% / 4)']} />
-
+            w="calc(100% / 4)"/>
           {device !== 'mobile' && (
             <>
               <AdminTableHeaderElement
@@ -230,125 +230,72 @@ function TrackerItemsAdmin() {
                 showSortingIcon={sortType === 'regulatoryBody'}
                 sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
                 w="calc(100% / 4)" />
-              <Flex data-id="a8f7e2c1d5b3" w="calc(100% / 4)">
-                <Spacer data-id="0ae489c6d93e" />
-                <Text color="trackerItemsAdminWithContext.labelColor" data-id="6a8af8364ff2">Actions</Text>
-              </Flex>
+              <Box color="gray.500" data-id="a8f7e2c1d5b3" textAlign="right" w="calc(100% / 4)">
+              Actions
+              </Box>
             </>
           )}
         </AdminTableHeader>
+
         <Stack
           bg="white"
+          border="1px solid #E2E8F0"
           borderBottomRadius="20px"
           data-id="7fa63e0fa928"
+          gap="0px"
           h="100%"
           overflow="auto">
           {loading ? (
             <Loader center data-id="44737a8930ae" />
           ) : (
-            sortedData.map((trackerItem) => (
-              <Flex
+          sortedData.map((trackerItem, index) => (
+            <Flex
                 align="center"
-                bg="adminTrackerItems.element.bg"
+                bg={index % 2 === 0 ? 'gray.50' : 'white'}
                 borderBottom="1px solid"
-                borderColor="adminTableHeader.border"
-                color="adminTrackerItems.element.font"
+                borderColor="gray.200"
                 cursor="pointer"
                 data-id="96461dd538df"
-                flexShrink={0}
                 fontSize="14px"
                 h="73px"
                 key={trackerItem._id}
-                mt="0px"
                 px="25px"
-                w="full"
-                zIndex={4}>
-                <Flex
-                  data-id="686b0b610452"
-                  flexDirection="column"
-                  fontWeight="semi_medium"
-                  onClick={() => openModal('edit', trackerItem)}
-                  pr={2}
-                  w={['80%', 'calc(100% / 4)']}>
-                  <Box data-id="eb014d3ce91b" fontSize="smm">
-                    {trackerItem.name ? (
-                      <Text data-id="5b25881b9d07" noOfLines={1}>{trackerItem.name}</Text>
-                    ) : (
-                      <Text
-                        color="adminTrackerItems.element.unnamed"
-                        data-id="cf52a494ddef"
-                        fontStyle="italic">
-                        Unnamed {t('tracker item')}
-                      </Text>
-                    )}
-                  </Box>
-                  <Flex alignItems="center" data-id="2843cf36a78d">
-                    <Box
-                      color="adminTrackerItems.element.category"
-                      data-id="00e0982d1771"
-                      fontSize="11px"
-                      lineHeight="25px">
-                      {trackerItem.category?.name}
-                    </Box>
-                    {!trackerItem.published && (
-                      <Box
-                        bg="#818197"
-                        borderRadius="7px"
-                        color="#FFFFFF"
-                        data-id="4f9590acbd31"
-                        fontSize="11px"
-                        ml={trackerItem.category ? 2 : 0}
-                        p="3px 9px">
-                        Draft
-                      </Box>
-                    )}
+                py="10px"
+                w="full">
+              <Flex
+                data-id="686b0b610452"
+                direction="column"
+                w="calc(100% / 4)">
+                <Text data-id="5b25881b9d07" noOfLines={1}>{trackerItem.name || `Unnamed ${t('tracker item')}`}</Text>
+                  <Flex align="center" mt="1">
+                      <Text color="gray.500" fontSize="11px">{trackerItem.category?.name}</Text>
+                      {!trackerItem.published && (
+                        <Box bg="gray.600" borderRadius="md" color="white" fontSize="11px" ml={2} px={2} py={1}>Draft</Box>
+                      )}
+                    </Flex>
                   </Flex>
-                </Flex>
-                {device !== 'mobile' && (
-                  <>
-                    <Box
-                      data-id="ba5dc06f000b"
-                      onClick={() => openModal('edit', trackerItem)}
-                      w="calc(100% / 4)">
-                      {trackerItem.frequency}{' '}
-                    </Box>
-                    <Box
-                      data-id="76980342e80b"
-                      onClick={() => openModal('edit', trackerItem)}
-                      w="calc(100% / 4)">
-                      {trackerItem.regulatoryBody?.name}
-                    </Box>
-                  </>
-                )}
-                <Box data-id="b27b1fc74638" textAlign="end" w="calc(100% / 4)" zIndex={5}>
-                  <Copy
-                    _hover={{
-                      color: 'trackerItemsAdminWithContext.strokeHover',
-                      opacity: 0.7,
-                      cursor: 'pointer',
-                    }}
-                    data-id="e4be5197a6fd"
-                    fill="transparent"
-                    fontSize="15px"
-                    onClick={() => {
-                      openModal('clone', trackerItem);
-                    }}
-                    stroke="trackerItemsAdminWithContext.stroke" />
-                  &nbsp;&nbsp;&nbsp;&nbsp;
+
+                  <Text w="calc(100% / 4)">{trackerItem.frequency}</Text>
+
+                  <Text w="calc(100% / 4)">{trackerItem.regulatoryBody?.name || '-'}</Text>
+
+                  <Flex gap={4} justify="flex-end" w="calc(100% / 4)">
+                    <Copy
+                      _hover={{ stroke: '#FFFFFF' }}
+                      cursor="pointer"
+                      onClick={(e) => {
+                      e.stopPropagation();
+                        openModal('clone', trackerItem);
+                      }}
+                      stroke="#282F36"/>
                   <Trashcan
-                    _hover={{
-                      color: 'trackerItemsAdminWithContext.strokeHover',
-                      opacity: 0.7,
-                      cursor: 'pointer',
-                    }}
-                    data-id="e2e34b6cf144"
-                    fill="transparent"
-                    fontSize="15px"
-                    onClick={() => {
+                    _hover={{ stroke: '#FFFFFF' }}
+                      cursor="pointer"
+                    onClick={(e) => {e.stopPropagation();
                       openModal('delete', trackerItem);
                     }}
-                    stroke="trackerItemsAdminWithContext.binStroke" />
-                </Box>
+                    stroke="#282F36"/>
+                </Flex>
               </Flex>
             ))
           )}
