@@ -1,24 +1,28 @@
-import { AddIcon } from '@chakra-ui/icons';
-import { IconButton } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 
 import { useParticipantsModalContext } from '../../contexts/ParticipantsModalProvider';
+import { AddUserIcon } from '../../icons';
 
 function ParticipantsAddButton(props) {
   const { openParticipantsModal } = useParticipantsModalContext();
 
   return (
-    (<IconButton
-      aria-label="Add participant"
-      bg="participantsAddButton.bg"
-      color="participantsAddButton.color"
+    <Button
+      bg="#FFFFFF"
+      border="1px solid #CBD5E0"
+      borderRadius="8px"
+      color="#2D3748"
       data-id="80335e69006a"
-      h={['55px', '64px']}
-      icon={<AddIcon data-id="463875e4cd26" />}
-      isRound
-      mx="8px"
+      fontSize="14px"
+      fontWeight="500"
+      height="44px"
+      leftIcon={<AddUserIcon />}
       onClick={openParticipantsModal}
-      w={['55px', '64px']}
-      {...props} />)
+      px="16px"
+      {...props}
+    >
+      <Text as="span" mr="1">Add </Text> {props.label ? <Text as="span">{props.label}</Text> : 'Participant'}
+    </Button>
   );
 }
 

@@ -18,7 +18,7 @@ function MultipleParticipantsSelector({
   selectedParticipants: IUser[];
   onChange: (participants: IUser[]) => void;
 }) {
-  return <Stack data-id="5c654050a4e1" spacing={6}>
+  return <Stack data-id="5c654050a4e1" spacing={2}>
     <ParticipantsSelector
       canDelete
       data-id="28825f446dea"
@@ -27,7 +27,7 @@ function MultipleParticipantsSelector({
       label={label}
       maxParticipants={maxParticipants}
       onChange={onChange}>
-      <Flex align="top" data-id="61f22ce9c992" mt="0!important" wrap="wrap">
+      <Flex align="center" data-id="61f22ce9c992" mt="0!important" wrap="wrap">
         {selectedParticipants.map((participant) => (
           <ParticipantAvatar
             data-id="c5fbdb49310c"
@@ -36,7 +36,7 @@ function MultipleParticipantsSelector({
             mt={6}
             user={participant} />
         ))}
-        {isUserAllowedToChange && <ParticipantsAddButton data-id="b4972ddbd31f" mr={6} mt={6} />}
+        {isUserAllowedToChange && <ParticipantsAddButton data-id="b4972ddbd31f" label={label} mr={6} />}
       </Flex>
     </ParticipantsSelector>
   </Stack>

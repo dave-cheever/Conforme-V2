@@ -18,14 +18,17 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
   return (
     <Flex
       align="center"
+      bg={isDesktop && active ? 'auditLeftTabItem.activeIconBg' : ""}
+      borderRadius={'4px'}
       cursor="pointer"
       data-id="62cbbf86e136"
       mb={[0, 3]}
       mx={[3, 0]}
-      onClick={redirectPage}>
+      onClick={redirectPage}
+      padding={isDesktop ? '3px' : '2px 0'}>
       <Flex
         align="center"
-        bg={active ? 'auditLeftTabItem.selectedLabelBg' : 'auditLeftTabItem.iconBg'}
+         bg={active ? 'auditLeftTabItem.activeIconBg' : ''}
         borderRadius="8px"
         data-id="ab6cc2193dd7"
         h="30px"
@@ -33,12 +36,13 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
         w="30px">
         <Icon
           as={icon}
-          color={active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'}
+          color={isDesktop ? "auditLeftTabItem.activeIconColor" :  active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'}
+          // color={active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'}
           data-id="467136ae8a4c" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
-          color={active ? ['auditLeftTabItem.textColor', 'auditLeftTabItem.activeTextColor'] : 'auditLeftTabItem.textColor'}
+           color={isDesktop ? 'auditLeftTabItem.activeTextColor' :   active ? ['auditLeftTabItem.textColor', 'auditLeftTabItem.activeTextColor'] : 'auditLeftTabItem.textColor'}
           data-id="fb182e49b7c3"
           flexGrow={1}
           fontSize={['11px', '14px']}
@@ -56,7 +60,7 @@ export const auditLeftTabItemStyles = {
   auditLeftTabItem: {
     iconBg: '#DDDDDD',
     activeIconBg: '#462AC4',
-    activeTextColor: '#1F1F1F',
+    activeTextColor: '#ffffff',
     textColor: '#818197',
     activeIconColor: 'white',
     iconColor: '#818197',

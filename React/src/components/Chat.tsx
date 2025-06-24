@@ -6,6 +6,7 @@ import {
   Avatar,
   Box,
   Flex,
+  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -18,6 +19,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import format from 'date-fns/format';
 
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
@@ -167,166 +169,177 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
     return 'Follower';
   };
 
-  return (<>
-    <Modal data-id="c416b27e4920" isCentered isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay data-id="920b309afd1d" />
-      <ModalContent data-id="b24be10c80bf">
-        <ModalHeader data-id="e2840c4ec3d2">List of all participants</ModalHeader>
-        <ModalCloseButton data-id="915b4445fa8c" />
-        <ModalBody data-id="4089beea5b16" pr={2}>
-          <Flex
-            data-id="f6fbbd8447ef"
-            flexDirection="column"
-            maxH="80vh"
-            overflowY="auto"
-            pr={4}>
-            {chatParticipants?.map((user) => (
-              <Flex
-                align="center"
-                data-id="fd2510a28f89"
-                justify="space-between"
-                key={user._id}
-                px="1"
-                py="2">
-                <Flex align="center" data-id="ed6e5d82c72e">
-                  <Avatar
-                    data-id="efba2b51f6e5"
-                    h="32px"
-                    mr={chatParticipants.length > 1 ? '10px' : ''}
-                    name={user?.displayName}
-                    p="2px"
-                    rounded="full"
-                    src={user?.imgUrl}
-                    w="32px" />
-                  <Text data-id="bda699b1ea04" fontSize="14px">{user.displayName}</Text>
+  return (
+    <>
+      <Modal data-id="c416b27e4920" isCentered isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay data-id="920b309afd1d" />
+        <ModalContent data-id="b24be10c80bf">
+          <ModalHeader data-id="e2840c4ec3d2">List of all participants</ModalHeader>
+          <ModalCloseButton data-id="915b4445fa8c" />
+          <ModalBody data-id="4089beea5b16" pr={2}>
+            <Flex data-id="f6fbbd8447ef" flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
+              {chatParticipants?.map((user) => (
+                <Flex align="center" data-id="fd2510a28f89" justify="space-between" key={user._id} px="1" py="2">
+                  <Flex align="center" data-id="ed6e5d82c72e">
+                    <Avatar
+                      data-id="efba2b51f6e5"
+                      h="32px"
+                      mr={chatParticipants.length > 1 ? '10px' : ''}
+                      name={user?.displayName}
+                      p="2px"
+                      rounded="full"
+                      src={user?.imgUrl}
+                      w="32px"
+                    />
+                    <Text data-id="bda699b1ea04" fontSize="14px">
+                      {user.displayName}
+                    </Text>
+                  </Flex>
+                  <Text data-id="132a0e0041cf" fontSize="14px" fontWeight="700">
+                    {getRole(user._id)}
+                  </Text>
                 </Flex>
-                <Text data-id="132a0e0041cf" fontSize="14px" fontWeight="700">
-                  {getRole(user._id)}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-    <Stack
-      bg={['chat.bg', 'chat.bg', 'transparent']}
-      borderRadius="20px"
-      boxShadow={['lg', 'lg', 'none']}
-      data-id="e4e6934efe1e"
-      h="auto"
-      maxW={['calc(100vw - 36px)', '300px']}
-      minW={['calc(100vw - 36px)', '300px']}
-      pl="25px"
-      position="fixed"
-      pr={['25px', '25px', '0px']}
-      right="25px"
-      spacing={2}>
-      <Flex alignItems="center" data-id="e9f5a8019a4f" flexDirection="column">
-        <Text
-          color="chat.text"
-          data-id="b06e71ece3f5"
-          fontSize="11px"
-          fontWeight="400"
-          lineHeight="16px"
-          my="10px">
-          Chat
-        </Text>
-        {participantsLoading ? (
-          <SkeletonCircle data-id="6dcdf82d6c3f" mb={2} size="32px" />
-        ) : (
-          <Flex data-id="48f294f1e8cf" justify="center" mb={2} w="full">
-            {chatParticipants.slice(0, 3).map((user, i) => (
-              <Avatar
-                data-id="439a10c8a264"
-                h="32px"
-                key={i}
-                mr={chatParticipants.length > 1 ? '10px' : ''}
-                name={user?.displayName}
-                p="2px"
-                rounded="full"
-                src={user?.imgUrl}
-                w="32px" />
-            ))}
-            {chatParticipants.length > 3 && (
-              <Flex
-                align="center"
-                bg="chat.image.bg"
-                color="chat.image.color"
-                cursor="pointer"
-                data-id="ce1635018931"
-                fontSize="11px"
-                fontWeight="bold"
-                justify="center"
-                onClick={onOpen}
-                rounded="full"
-                w="32px">
-                +{chatParticipants.length - 3}
-              </Flex>
+              ))}
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Stack
+        bg={['chat.bg', 'chat.bg', 'transparent']}
+        border="1px solid #E2E8F0"
+        borderRadius="6px"
+        boxShadow={['lg', 'lg', 'none']}
+        data-id="e4e6934efe1e"
+        h="auto"
+        maxW={['calc(100vw - 36px)', '300px']}
+        minW={['calc(100vw - 36px)', '300px']}
+        position="fixed"
+        right="25px"
+        spacing={2}
+      >
+        <Flex alignItems="center" bg="white" borderBottom="1px solid #E2E8F0" data-id="e9f5a8019a4f" px={4} py={3}>
+          <Text color="#282F36" flex={1} fontSize="md" fontWeight="bold">
+         {response?.trackerItem?.name &&  `"${response?.trackerItem?.name}"`} Chat
+          </Text>
+          <HStack mr={2} spacing={-2}>
+            {participantsLoading ? (
+              <SkeletonCircle size="8" />
+            ) : (
+              chatParticipants
+                .slice(0, 3)
+                .map((user, i) => (
+                  <Avatar border="2px solid white" key={i} name={user?.displayName} size="xs" src={user?.imgUrl} zIndex={3 - i} />
+                ))
             )}
-            {chatParticipants.length === 0 && (
-              <Flex data-id="87f47121220e" fontSize="13px" fontStyle="italic" mb="4">
-                No participants
-              </Flex>
-            )}
-          </Flex>
-        )}
-      </Flex>
-      <Flex
-        align="space-between"
-        data-id="1f538f7e1e88"
-        flexDirection="column"
-        grow={1}
-        overflow="hidden"
-        pr="10px"
-        w="calc(100% + 10px)">
-        <Flex
-          data-id="d51bdd56980e"
-          flexDirection="column"
-          h={['calc(100vh - 460px)', 'calc(100vh - 406px )', `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 360px)'}`]}
-          overflow="auto"
-          pr="10px"
-          ref={divRef}
-          sx={{
-            '&::-webkit-scrollbar': {
-              backgroundColor: 'chat.scrollBar.bg',
-              width: '4px',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: 'chat.scrollBar.color',
-            },
-          }}
-          w="calc(100% + 10px)">
-          {loading && <Loader center data-id="1ab7fbb9802f" size="md" />}
-          {comments.map((comment) => (
-            <ChatSent
-              comment={comment}
-              data-id="75e5eaba6cdf"
-              key={comment._id}
-              onAction={deleteComment} />
-          ))}
+          </HStack>
+          {!participantsLoading && chatParticipants.length > 3 && (
+            <Flex
+              align="center"
+              bg="#F5F6FA"
+              border="2px solid white"
+              color="#6B7280"
+              fontSize="sm"
+              fontWeight="600"
+              h="28px"
+              justify="center"
+              ml={1}
+              onClick={onOpen}
+              rounded="full"
+              w="28px"
+            >
+              +{chatParticipants.length - 3}
+            </Flex>
+          )}
         </Flex>
-        <Can
-          action={component === 'audit' ? 'auditComments.add' : 'comments.add'}
-          data={{ ...(component === 'audit' ? { audit } : { response }) }}
-          data-id="049cac06fd01"
-          // eslint-disable-next-line react/no-unstable-nested-components
-          no={() => <Box data-id="af9c097bef41" h="20px" />}
-          // eslint-disable-next-line react/no-unstable-nested-components
-          yes={() => (
-            <MessageInput
-              control={control}
-              data-id="a7ba86656806"
-              name="text"
-              onAction={addComment}
-              placeholder="Send message"
-              validations={{
-                notEmpty: true,
-              }} />
-          )} />
-      </Flex>
-    </Stack>
-  </>);
+        <Flex
+          align="space-between"
+          data-id="1f538f7e1e88"
+          flexDirection="column"
+          grow={1}
+          overflow="hidden"
+          pr="10px"
+          w="calc(100% + 10px)"
+        >
+          <Flex
+            data-id="d51bdd56980e"
+            flexDirection="column"
+            h={['calc(100vh - 460px)', 'calc(100vh - 406px )', `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 360px)'}`]}
+            overflow="auto"
+            p="20px"
+            ref={divRef}
+            sx={{
+              '&::-webkit-scrollbar': {
+                backgroundColor: 'chat.scrollBar.bg',
+                width: '4px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: 'chat.scrollBar.color',
+              },
+            }}
+            w="calc(100% + 10px)"
+          >
+            {loading && <Loader center data-id="1ab7fbb9802f" size="md" />}
+              {comments.map((comment, idx) => {
+                let currentTime = '';
+                let prevTime = '';
+
+                const currentAddedAt = comment.metatags?.addedAt;
+                if (typeof currentAddedAt === 'string') 
+                  currentTime = format(new Date(currentAddedAt), 'h:mm a');
+
+                const prevAddedAt = comments[idx - 1]?.metatags?.addedAt;
+                if (typeof prevAddedAt === 'string') 
+                  prevTime = format(new Date(prevAddedAt), 'h:mm a');
+
+                const showTime = currentTime !== prevTime;
+
+                return (
+                  <React.Fragment key={comment._id}>
+                    {showTime && (
+                      <Flex align="center" justify="center" my={4}>
+                        <Text
+                          bg="white"
+                          borderRadius="lg"
+                          boxShadow="sm"
+                          color="#B0B0C3"
+                          fontSize="sm"
+                          fontWeight="500"
+                          px={3}
+                          py={1}
+                        >
+                          {currentTime}
+                        </Text>
+                      </Flex>
+                    )}
+                    <ChatSent comment={comment} data-id="75e5eaba6cdf" onAction={deleteComment} />
+                  </React.Fragment>
+                );
+              })}
+          </Flex>
+          <Can
+            action={component === 'audit' ? 'auditComments.add' : 'comments.add'}
+            data={{ ...(component === 'audit' ? { audit } : { response }) }}
+            data-id="049cac06fd01"
+            // eslint-disable-next-line react/no-unstable-nested-components
+            no={() => <Box data-id="af9c097bef41" h="20px" />}
+            // eslint-disable-next-line react/no-unstable-nested-components
+            yes={() => (
+              <MessageInput
+                control={control}
+                data-id="a7ba86656806"
+                name="text"
+                onAction={addComment}
+                placeholder="Send message"
+                validations={{
+                  notEmpty: true,
+                }}
+              />
+            )}
+          />
+        </Flex>
+      </Stack>
+    </>
+  );
 }
 
 export default Chat;

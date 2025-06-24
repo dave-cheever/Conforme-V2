@@ -31,6 +31,7 @@ function ResponseHeaderButton({
             }
       }
       bg={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Bg`}
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       color={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Color`}
       data-id="c104bdb6d779"

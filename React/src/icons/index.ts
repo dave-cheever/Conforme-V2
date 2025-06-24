@@ -1,6 +1,7 @@
 import Accidents from './Accidents';
 import ActionsIcon from './ActionsIcon';
 import AddIcon from './AddIcon';
+import AddUserIcon from './AddUser';
 import Admin from './Admin';
 import AreaInfoIcon from './AreaInfoIcon';
 import ArrowCount from './ArrowCount';
@@ -11,6 +12,7 @@ import Assets from './Assets';
 import AssetsIcon from './AssetsIcon';
 import Asterisk from './Asterisk';
 import AsteriskQuestion from './AsteriskQuestion';
+import AttachmentClipIcon from './AttachmentClipIcon';
 import AttachmentIcon from './AttachmentIcon';
 import AtTheRateIcon from './AtTheRateIcon';
 import AuditIcon from './AuditIcon';
@@ -42,6 +44,7 @@ import DetailIcon from './DetailIcon';
 import DownloadIcon from './DownloadIcon';
 import EditIcon from './EditIcon';
 import EllipsisIcon from './EllipsisIcon';
+import EnvelopeIcon from './EnelopeIcon';
 import ErrorCircleIcon from './ErrorCircle';
 import ErrorSign from './ErrorSign';
 import ExportIcon from './ExportIcon';
@@ -78,6 +81,7 @@ import OpenMenuArrow from './OpenMenuArrow';
 import PlusIcon from './PlusIcon';
 import Policies from './Policies';
 import ProgressIcon from './ProgressIcon';
+import QuestionIconNew from './Question';
 import QuestionDateIcon from './QuestionDateIcon';
 import QuestionIcon from './QuestionIcon';
 import QuestionMarkIcon from './QuestionMarkIcon';
@@ -103,6 +107,7 @@ import SignInButton from './SignInButton';
 import SiteIcon from './SiteIcon';
 import SubmitIcon from './SubmitIcon';
 import SuccessCircleIcon from './Success';
+import SwapIcon from './SwapIcon';
 import TeamsIcon from './TeamsIcon';
 import ThumbUpIcon from './ThumbUpIcon';
 import TickIcon from './TickIcon';
@@ -121,6 +126,7 @@ export {
   ActionsIcon,
   Admin,
   AddIcon,
+  AddUserIcon,
   AreaInfoIcon,
   ArrowDownIcon,
   ArrowCount,
@@ -131,6 +137,7 @@ export {
   Asterisk,
   AsteriskQuestion,
   AttachmentIcon,
+  AttachmentClipIcon,
   AtTheRateIcon,
   AuditIcon,
   Audits,
@@ -161,6 +168,7 @@ export {
   DownloadIcon,
   EditIcon,
   EllipsisIcon,
+  EnvelopeIcon,
   ErrorCircleIcon,
   ErrorSign,
   ExportIcon,
@@ -200,6 +208,7 @@ export {
   QuestionIcon,
   QuestionMarkIcon,
   QuestionsIcon,
+  QuestionIconNew,
   QuestionTextIcon,
   QuestionToggleIcon,
   RedDotIcon,
@@ -221,6 +230,7 @@ export {
   SiteIcon,
   SubmitIcon,
   SuccessCircleIcon,
+  SwapIcon,
   TeamsIcon,
   ThumbUpIcon,
   TickIcon,

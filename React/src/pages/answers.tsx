@@ -370,8 +370,11 @@ function Answers() {
                     color: 'answers.tabColor',
                   }}
                   borderRadius="10px"
-                  fontSize="smm"
-                  fontWeight="bold"
+                  fontSize="14px"
+                  fontWeight="600"
+                   _hover={{
+                    opacity: 0.8,
+                  }}
                   mr={[1, 2]}
                   ml={[1, 0]}
                   my={[1, 0]}
@@ -453,7 +456,7 @@ export const answersStyles = {
       menuItemFontSelected: '#462AC4',
       menuItemFont: '#9A9EA1',
     },
-    tabBg: '#1E1836',
+    tabBg: '#462AC4',
     tabColor: '#FFFFFF',
   },
 };

@@ -53,7 +53,7 @@ function ModuleSwitcher() {
           variant="ghost"
           w="auto"
           >
-          <Flex align="center" justify="space-between" w="100%">
+          <Flex align="center" justify={isMobile ? "flex-start" : "space-between"} w="100%">
             {!isTabletWidth && !showFiltersPanel && (
               <Icon
                 as={Conforme}
@@ -76,12 +76,12 @@ function ModuleSwitcher() {
           <Text
             color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
             display="inline-block"
-            fontSize={isMobile ? '16px' : '22px'}
+            fontSize={isMobile ? '12px' : '22px'}
             fontWeight="600"
             isTruncated
             marginLeft={showFiltersPanel || isTabletWidth ? '10' : '2'}
             maxW="150px"
-            minW="100px"
+            minW={isMobile ? '50px' : '100px'}
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
@@ -109,8 +109,8 @@ function ModuleSwitcher() {
               onClick={() => chooseModule(m)}
             >
               <Flex align="center" gap="2">
-                <Text fontWeight="bold">{getInitials(m.name)}</Text>
-                <Text>{m.name}</Text>
+                <Text fontSize={isMobile ? '10px' : '14px'} fontWeight="bold">{getInitials(m.name)}</Text>
+                <Text fontSize={isMobile ? '10px' : '14px'}>{m.name}</Text>
               </Flex>
             </MenuItem>
           ))}

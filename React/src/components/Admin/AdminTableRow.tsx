@@ -28,7 +28,7 @@ function AdminTableRow({
       flexShrink={0}
       flexWrap={['wrap', 'nowrap']}
       fontSize="smm"
-      h="60px"
+      h="55px"
       key={element._id}
       pl={5}
       sx={{
@@ -45,6 +45,7 @@ function AdminTableRow({
         align="center"
         cursor="pointer"
         data-id="9fdfe4d5bf9d"
+        fontSize="14px"
         onClick={edit}
         w={['80%', '50%']}>
         {element.name}
@@ -58,7 +59,7 @@ function AdminTableRow({
           pr={['21px', '0']}
           w={['20%', '50%']}>
           {element.trackerItemsResponsesCount || '0'}
-          <Tooltip data-id="c9dd84cbb3c8" fontSize="md" label="Show Items">
+          <Tooltip data-id="c9dd84cbb3c8" fontSize="14px" label="Show Items">
             <ArrowCount
               cursor="pointer"
               data-id="c7cb46f24f79"

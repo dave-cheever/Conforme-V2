@@ -1,10 +1,8 @@
-import { useState } from 'react';
-
 import { CloseIcon } from '@chakra-ui/icons';
-import { Avatar, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Flex, IconButton, Text } from '@chakra-ui/react';
 
 import { useParticipantsModalContext } from '../../contexts/ParticipantsModalProvider';
-import { ReplaceIcon } from '../../icons';
+import { SwapIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
 
 function ParticipantAvatar({
@@ -13,56 +11,31 @@ function ParticipantAvatar({
 }: {
   user?: IUser;
 } & any) {
-  const { openParticipantsModal, openParticipantDeleteModal, canDelete, isUserAllowedToChange, setParticipantToDelete } =
-    useParticipantsModalContext();
-  const [showOverlay, setShowOverlay] = useState(false);
+  const {
+    openParticipantsModal,
+    openParticipantDeleteModal,
+    canDelete,
+    isUserAllowedToChange,
+    setParticipantToDelete,
+  } = useParticipantsModalContext();
 
-  // If no user, show placeholder with add functionality
   if (!user) {
     return (
       <Flex
         align="center"
-        data-id="ad44474d7dff"
-        flexDirection="column"
-        position="relative"
+        flexDirection="row"
         textAlign="center"
-        w="80px"
-        {...props}>
+        w="180px"
+        {...props}
+      >
         <Avatar
-          cursor="default"
-          data-id="df467aefcc88"
-          h={['55px', '64px']}
+          cursor="pointer"
+          h="38px"
           name="Add User"
-          onMouseEnter={() => isUserAllowedToChange && setShowOverlay(true)}
-          w={['55px', '64px']} />
-        {isUserAllowedToChange && showOverlay && (
-          <Flex
-            alignItems="center"
-            cursor="pointer"
-            data-id="46cc97d8d7c0"
-            justifyContent="center"
-            onClick={() => {
-              openParticipantsModal();
-              setShowOverlay(false);
-            }}
-            onMouseLeave={() => setShowOverlay(false)}
-            pos="absolute">
-            <Flex
-              bg="participantAvatar.overlay"
-              data-id="fb9c63882f2c"
-              h={['55px', '64px']}
-              rounded="50%"
-              w={['55px', '64px']} />
-            <ReplaceIcon
-              data-id="6a82356319bf"
-              h="20px"
-              opacity="0.95"
-              pos="absolute"
-              stroke="participantAvatar.icon"
-              w="20px" />
-          </Flex>
-        )}
-        <Text data-id="70384b08cf67" fontSize="11px" fontWeight="semi_medium" mt="10px">
+          onClick={() => isUserAllowedToChange && openParticipantsModal()}
+          w="38px"
+        />
+        <Text fontSize="11px" fontWeight="semi_medium" ml="10px">
           Add User
         </Text>
       </Flex>
@@ -74,63 +47,57 @@ function ParticipantAvatar({
   return (
     <Flex
       align="center"
-      data-id="ad44474d7dff"
-      flexDirection="column"
-      position="relative"
-      textAlign="center"
-      w="80px"
-      {...props}>
-      <Avatar
-        cursor="default"
-        data-id="df467aefcc88"
-        h={['55px', '64px']}
-        name={displayName}
-        onMouseEnter={() => isUserAllowedToChange && setShowOverlay(true)}
-        src={imgUrl}
-        w={['55px', '64px']} />
-      {isUserAllowedToChange && showOverlay && (
-        <Flex
-          alignItems="center"
-          cursor="pointer"
-          data-id="46cc97d8d7c0"
-          justifyContent="center"
-          onClick={async () => {
+      border="1px solid #CBD5E0"
+      borderRadius="8px"
+      justify="space-between"
+      padding="10px"
+      w="260px"
+      {...props}
+    >
+      {/* Left side: Avatar + Name */}
+      <Flex align="center" columnGap="10px">
+        <Avatar
+          borderRadius="4px"
+          h="38px"
+          name={displayName}
+          src={imgUrl}
+          w="38px"
+        />
+
+        <Flex align="start" columnGap="10px" direction="column">
+          <Text color="#2D3748" fontSize="14px" fontWeight="600">
+             {displayName}
+         </Text>
+          <Text color="#718096" fontSize="12px" fontWeight="500">
+            {user?.jobTitle}
+          </Text>
+        </Flex>
+
+      </Flex>
+
+      {/* Right side: Icon */}
+      {isUserAllowedToChange && (
+        <IconButton
+          aria-label={canDelete ? 'Delete Participant' : 'Replace Participant'}
+          icon={
+            canDelete ? (
+              <CloseIcon boxSize="3" />
+            ) : (
+              <SwapIcon height="18px" width="18px" />
+            )
+          }
+          onClick={() => {
             if (canDelete) {
               setParticipantToDelete(user);
               openParticipantDeleteModal();
-            } else openParticipantsModal();
-            setShowOverlay(false);
+            } else 
+              openParticipantsModal();
+            
           }}
-          onMouseLeave={() => setShowOverlay(false)}
-          pos="absolute">
-          <Flex
-            bg="participantAvatar.overlay"
-            data-id="fb9c63882f2c"
-            h={['55px', '64px']}
-            rounded="50%"
-            w={['55px', '64px']} />
-          {canDelete ? (
-            <CloseIcon
-              color="participantAvatar.icon"
-              data-id="4700dd257b07"
-              h="20px"
-              opacity="0.95"
-              pos="absolute"
-              w="20px" />
-          ) : (
-            <ReplaceIcon
-              data-id="6a82356319bf"
-              h="20px"
-              opacity="0.95"
-              pos="absolute"
-              stroke="participantAvatar.icon"
-              w="20px" />
-          )}
-        </Flex>
+          size="sm"
+          variant="ghost"
+        />
       )}
-      <Text data-id="70384b08cf67" fontSize="11px" fontWeight="semi_medium" mt="10px">
-        {displayName}
-      </Text>
     </Flex>
   );
 }

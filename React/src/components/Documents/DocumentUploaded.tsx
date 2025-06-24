@@ -54,7 +54,7 @@ function DocumentUploaded({
       message={deleteModalMessage || `Are you sure you wish to delete ${document?.name}?`} />
     <Flex
       align="center"
-      bg="documentUploaded.bg"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       color="brand.darkGrey"
       data-id="692ac974b86e"
@@ -73,16 +73,16 @@ function DocumentUploaded({
         data-id="4c6c99e69c2b"
         flexShrink={0}
         fontSize="12px"
-        h="55px"
+        h="45px"
         justify="center"
         overflow="hidden"
-        w="55px">
+        w="45px">
         <Image
           aspectRatio="1 / 1"
           data-id="68397871f312"
           fallback={
             <Flex align="center" data-id="962981fdb686" h="full">
-              <BlankPage data-id="b83c5c6a42d6" h="30px" w="55px" />
+              <BlankPage data-id="b83c5c6a42d6" h="20px" w="45px" />
             </Flex>
           }
           h="auto"
@@ -129,7 +129,7 @@ export default DocumentUploaded;
 export const documentUploadedStyles = {
   documentUploaded: {
     bg: '#F2F2F2',
-    thumbnailBg: '#FFFFFF',
+    thumbnailBg: '#EDF2F7',
     downloadIcon: '#282F36',
     binIcon: 'black',
     border: '#BBBBBB',

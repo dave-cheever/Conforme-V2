@@ -13,8 +13,8 @@ import NavigationLeftFilters from './NavigationLeftFilters';
 import SubSection from './SubSection';
 
 function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
-  const { organizationConfig } = useAppContext();
-  const isTrackerComponent = organizationConfig?.modules.find(({ type }) => type === 'tracker');
+  const { module } = useAppContext();
+  const isTrackerComponent = module?.type === "tracker";
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const [menuOpen, setMenuOpen] = useState(true);

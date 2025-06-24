@@ -114,6 +114,7 @@ function AuditHistory() {
                         bg: 'auditHistory.listItem.bg.hover',
                       }}
                       bg="auditHistory.listItem.bg.default"
+                      border="1px solid #E2E8F0"
                       data-id="3964bd975b4e"
                       key={audit._id}
                       onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}

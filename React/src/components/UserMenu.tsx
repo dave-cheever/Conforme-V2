@@ -38,7 +38,7 @@ function UserMenu() {
       w="41px"
     />
      <Box minW="0" textAlign={"start"}>
-      <Text color={"black"} fontSize="14px" fontWeight="600" isTruncated>
+      <Text color={"black"} fontSize={["12px", "14px"]} fontWeight="600" isTruncated>
         {user?.displayName}
       </Text>
       <Text color="gray.500" fontSize="xs" isTruncated>

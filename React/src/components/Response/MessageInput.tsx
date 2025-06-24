@@ -56,8 +56,9 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
             borderRadius="10px"
             data-id="66fb8f01f63f"
             mb="25px"
+            mx="auto"
             position="relative"
-            w="full">
+            w="90%">
             <MentionsInput
               allowSpaceInQuery
               allowSuggestionsAboveCursor

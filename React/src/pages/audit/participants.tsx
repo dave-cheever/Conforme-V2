@@ -47,7 +47,7 @@ function AuditParticipants() {
     refetch();
   };
 
-  return (<Stack data-id="9df24db2eae2" h={['fit-content', 'full']} spacing={4} w="full">
+  return (<Stack  data-id="9df24db2eae2" h={['fit-content', 'full']} p="10px" rounded='10px' spacing={4} w="98%">
       <Flex data-id="e462380d55a2" justifyContent={['space-between', 'initial']}>
         <Text data-id="12d25ce06e4d" fontSize="xxl" fontWeight="semibold">
           Participants

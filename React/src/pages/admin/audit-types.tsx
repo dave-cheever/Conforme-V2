@@ -218,16 +218,16 @@ function AuditTypes() {
   };
 
   const handleDeleteAuditType = async () => {
-      try {
-        const _id = getValues('_id');
-        await deleteFunction({ variables: { _id } });
-        refetch();
-        toast({ ...toastSuccess, description: 'Audit type deleted' });
-      } catch (e: any) {
-        toast({ ...toastFailed, description: e.message });
-      } finally {
-        setAdminModalState('closed');
-      }
+    try {
+      const _id = getValues('_id');
+      await deleteFunction({ variables: { _id } });
+      refetch();
+      toast({ ...toastSuccess, description: 'Audit type deleted' });
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    } finally {
+      setAdminModalState('closed');
+    }
   };
 
   const handleAction = async (action) => {
@@ -254,26 +254,26 @@ function AuditTypes() {
   };
 
   const handleAddAndResetAuditType = async () => {
-  const isValid = await trigger();
-  if (!isValid) {
-    return toast({
-      ...toastFailed,
-      description: 'Please complete all the required fields',
-    });
-  }
+    const isValid = await trigger();
+    if (!isValid) {
+      return toast({
+        ...toastFailed,
+        description: 'Please complete all the required fields',
+      });
+    }
 
-  try {
-    const auditType = getValues();
-    await createFunction({
-      variables: { auditType: { ...auditType, recurring: auditType.recurring === 'yes' } },
-    });
-    toast({ ...toastSuccess, description: 'Audit type added' });
-    reset({ ...defaultValues });
-    refetch();
-  } catch (e: any) {
-    toast({ ...toastFailed, description: e.message });
-  }
-};
+    try {
+      const auditType = getValues();
+      await createFunction({
+        variables: { auditType: { ...auditType, recurring: auditType.recurring === 'yes' } },
+      });
+      toast({ ...toastSuccess, description: 'Audit type added' });
+      reset({ ...defaultValues });
+      refetch();
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
 
   const moveSection = (sectionIndex: number, newPosition: number) => {
     if (newPosition < 0 || newPosition >= sections.length) return;
@@ -288,35 +288,42 @@ function AuditTypes() {
     setValue('sections', updatedSections);
   };
 
-  const renderAuditTypeRow = (auditType: IAuditType, i: number) => (
-    <Flex
-      alignItems="center"
-      bg="#FFFFFF"
-      borderBottomRadius={i === auditTypes.length - 1 ? 'lg' : ''}
-      boxShadow="sm"
-      data-id="3fc151e99afd"
-      flexShrink={0}
-      h="73px"
-      key={auditType._id}
-      mb="1px"
-      p={4}
-      w="full"
-    >
+  const renderAuditTypeRow = (auditType: IAuditType, i: number) => {
+    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
+    return (
       <Flex
+        _hover={{ bg: '#F5F7FA' }}
+        alignItems="center"
+        bg={rowBg}
+        borderBottomColor="auditsList.headerBorderColor"
+        borderBottomWidth="1px"
+        color="auditsList.fontColor"
         cursor="pointer"
-        data-id="b8b600ae568d"
-        flexDir="column"
-        mr={4}
-        onClick={() => openAuditTypeModal('edit', auditType)}
-        pl={1}
+        data-id="3fc151e99afd"
+        flexShrink={0}
+        fontSize="14px"
+        fontWeight="500"
+        h="50px"
+        key={auditType._id}
+        p={4}
         w="full"
       >
-        <Text data-id="a09e2d687387" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          {auditType.name}
-        </Text>
+        <Flex
+          cursor="pointer"
+          data-id="b8b600ae568d"
+          flexDir="column"
+          mr={4}
+          onClick={() => openAuditTypeModal('edit', auditType)}
+          pl={1}
+          w="full"
+        >
+          <Text data-id="a09e2d687387" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            {auditType.name}
+          </Text>
+        </Flex>
       </Flex>
-    </Flex>
-  );
+    );
+  };
 
   return (
     <>
@@ -537,11 +544,22 @@ function AuditTypes() {
           </Stack>
         </Stack>
       </AdminModal>
-      <Header
-      breadcrumbs={['Admin', 'Audit types']}
-      data-id="a14d6d59aac0" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
-      <Flex data-id="790af0b7b837" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box data-id="105632f83f3c" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+      <Header breadcrumbs={['Admin', 'Audit types']} data-id="a14d6d59aac0" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
+      <Flex
+        bg="auditsList.bg"
+        borderRadius="10px"
+        data-id="ansbajf3738"
+        h="calc(100vh - 160px)"
+        overflow="auto"
+        p={[0, '0 25px 30px 30px']}
+      >
+        <Box
+          border="1px solid"
+          borderColor="auditsList.headerBorderColor"
+          data-id="b66f9mh62g65"
+          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+          w="full"
+        >
           <AdminTableHeader data-id="e77d6573756f">
             <AdminTableHeaderElement
               data-id="51d440e398eb"
@@ -554,28 +572,18 @@ function AuditTypes() {
               sortOrder={sortType === 'name' ? sortOrder : undefined}
               w="full"
             />
-
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            data-id="68a29221d31a"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="h6a8g4n8c3" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader center data-id="6bd31351d6c0" />
+              <Loader center data-id="515105f6eb5d" />
             ) : auditTypes?.length > 0 ? (
               auditTypes?.map(renderAuditTypeRow)
             ) : (
-              <Flex data-id="ae21bcd5b3b0" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+              <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No audit types found
               </Flex>
             )}
-          </Flex>
+          </Box>
         </Box>
       </Flex>
     </>

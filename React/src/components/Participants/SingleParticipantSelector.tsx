@@ -15,7 +15,7 @@ function SingleParticipantSelector({
   selectedParticipant: IUser | undefined;
   onChange: (participants: IUser) => void;
 }) {
-  return <Stack data-id="44fe7e8537a8" spacing={6}>
+  return <Stack data-id="44fe7e8537a8" spacing={2}>
     <ParticipantsSelector
       data-id="a9519f8bde3d"
       defaultSelectedParticipantsIds={[ selectedParticipant && selectedParticipant._id]}

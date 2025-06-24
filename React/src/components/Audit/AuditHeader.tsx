@@ -206,11 +206,11 @@ function AuditHeader() {
         handleRecurringModalClose();
       }} />
     <Flex
-      bg="auditHeader.bg"
       data-id="70735d6970da"
       direction="column"
       mb="15px"
       pl={6}
+      py={5}
       w="full"
       zIndex={1}>
       <Stack
@@ -241,6 +241,7 @@ function AuditHeader() {
           <Badge
             colorScheme="green"
             data-id="22dbb17c7136"
+            fontSize="16px"
             h="fit-content"
             variant="outline">
             Completed
@@ -250,6 +251,7 @@ function AuditHeader() {
           <Badge
             colorScheme="red"
             data-id="5956da468773"
+            fontSize="16px"
             h="fit-content"
             variant="outline">
             Missed

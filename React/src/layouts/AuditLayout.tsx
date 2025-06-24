@@ -74,12 +74,14 @@ function AuditLayout({ component: Component }: { component: any }) {
           )}
           <Flex data-id="ec4e724490d8" flexGrow={1} px="25px" w="full">
             <Flex
+              border="1px solid #E2E8F0"
               data-id="2be747ce7424"
               flexDirection="column"
               h="full"
               maxH={['none', 'calc(100vh - 190px)']}
               pb="25px"
-              w={['full', 'full', 'calc(100% - 300px)']}>
+              rounded="10px"
+              w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="162c0d00cd1f" />
             </Flex>
             {device === 'desktop' && <Chat component="audit" data-id="1cff7db127e9" />}

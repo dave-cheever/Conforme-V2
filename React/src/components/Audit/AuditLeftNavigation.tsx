@@ -1,9 +1,9 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import useConfig from '../../hooks/useConfig';
 import useNavigate from '../../hooks/useNavigate';
-import { ChevronRight, Conforme } from '../../icons';
+import { ChevronRight } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 function AuditLeftNavigation() {
@@ -58,9 +58,6 @@ function AuditLeftNavigation() {
           ))}
         </Flex>
       </Flex>
-      <Flex data-id="8a82975c2ffb">
-        <Icon as={Conforme} data-id="a77cf243d2f3" h="35px" mb="20px" w="103px" />
-      </Flex>
     </Flex>)
   );
 }
@@ -69,9 +66,9 @@ export default AuditLeftNavigation;
 
 export const auditLeftNavigationStyles = {
   auditLeftNavigation: {
-    bg: '#f5f5f5',
+  bg: '#110B30',
     goBackColor: '#818197',
-    color: '#282F36',
+    color: '#ffffff',
     building: '#2B3236',
     copy: '#FF9A00',
     avatar: '#462AC4',

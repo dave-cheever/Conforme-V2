@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
@@ -346,14 +346,14 @@ function Actions() {
             color: 'actions.quickFilter.active.color',
           }}
           _hover={{
-            bg: 'none',
+            opacity: 0.8,
           }}
           bg="actions.quickFilter.default.bg"
           borderRadius="10px"
           color="actions.quickFilter.default.color"
           data-id="b0058513c4f6"
-          fontSize="smm"
-          fontWeight="bold"
+          fontSize="14px"
+          fontWeight="500"
           h="32px"
           isActive={index === activeTab}
           key={status}
@@ -407,14 +407,17 @@ function Actions() {
             </Grid>
           )}
           {viewMode === 'list' && (
-            <ActionsList
-              actions={sortedActions}
-              data-id="0207bec9b9a2"
-              editAction={handleOpenModal}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType} />
+            <Box p="6" w="full">
+              <ActionsList
+                actions={sortedActions}
+                data-id="0207bec9b9a2"
+                editAction={handleOpenModal}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType} />
+            </Box>
+              
           )}
         </>
       )}
@@ -439,7 +442,7 @@ export const actionsStyles = {
         color: '#1E1836',
       },
       active: {
-        bg: '#1E1836',
+        bg: '#462AC4',
         color: '#FFFFFF',
       },
     },

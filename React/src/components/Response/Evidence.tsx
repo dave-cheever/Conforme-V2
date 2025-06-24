@@ -169,6 +169,7 @@ function EvidenceExpected({ evidence }) {
                   <input data-id="0665df7712c8" {...getInputProps()} />
                   <Flex
                     align="center"
+                    bg="#F7FAFC"
                     borderColor="evidence.uploadBorderColor"
                     borderRadius="10px"
                     borderStyle="dashed"

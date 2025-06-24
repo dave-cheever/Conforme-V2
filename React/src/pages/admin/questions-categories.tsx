@@ -93,16 +93,7 @@ function QuestionsCategories() {
   const [sortType, setSortType] = useState('questionsCategory');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const excludedIcons = [
-    'AccordionIcon',
-    'createIcon',
-    'AlertIcon',
-    'CheckboxIcon',
-    'FormErrorIcon',
-    'ListIcon',
-    'MenuIcon',
-    'StepIcon',
-  ];
+  const excludedIcons = ['AccordionIcon', 'createIcon', 'AlertIcon', 'CheckboxIcon', 'FormErrorIcon', 'ListIcon', 'MenuIcon', 'StepIcon'];
 
   const allIconNames = Object.keys(ChakraIcons)
     .filter((key) => key.endsWith('Icon') && !excludedIcons.includes(key))
@@ -310,37 +301,44 @@ function QuestionsCategories() {
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     }
-};
+  };
 
-  const renderQuestionsCategoryRow = (questionsCategory: IQuestionsCategory, i: number) => (
-    <Flex
-      alignItems="center"
-      bg="#FFFFFF"
-      borderBottomRadius={i === questionsCategories.length - 1 ? 'lg' : ''}
-      boxShadow="sm"
-      data-id="7372de14aed5"
-      flexShrink={0}
-      h="73px"
-      key={questionsCategory?._id}
-      mb="1px"
-      p={4}
-      w="full"
-    >
+  const renderQuestionsCategoryRow = (questionsCategory: IQuestionsCategory, i: number) => {
+    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
+    return (
       <Flex
+        _hover={{ bg: '#F5F7FA' }}
+        alignItems="center"
+        bg={rowBg}
+        borderBottomColor="auditsList.headerBorderColor"
+        borderBottomWidth="1px"
+        color="auditsList.fontColor"
         cursor="pointer"
-        data-id="327a1806fcb2"
-        flexDir="column"
-        mr={4}
-        onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
-        pl={1}
+        data-id="7372de14aed5"
+        flexShrink={0}
+        fontSize="14px"
+        fontWeight="500"
+        h="50px"
+        key={questionsCategory?._id}
+        p={4}
         w="full"
       >
-        <Text data-id="783735d8f66a" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          {questionsCategory.name}
-        </Text>
+        <Flex
+          cursor="pointer"
+          data-id="327a1806fcb2"
+          flexDir="column"
+          mr={4}
+          onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
+          pl={1}
+          w="full"
+        >
+          <Text data-id="783735d8f66a" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            {questionsCategory.name}
+          </Text>
+        </Flex>
       </Flex>
-    </Flex>
-  );
+    );
+  };
 
   return (
     <>
@@ -425,59 +423,52 @@ function QuestionsCategories() {
             placeholder="Count in audit card"
             tooltip={`If enabled, total of questions related to this question category will be displayed in ${t('audit')} card`}
             variant="secondaryVariant"
-          />      
-           <Controller
+          />
+          <Controller
             control={control}
             name="icon"
             render={({ field }) => (
-                <>
-                  <FormLabel
-                    data-id="0bf8dde0c19d"
-                    fontSize="12px"
-                    fontWeight="regular"
-                    mb={1}
-                  >
-                    Icon
+              <>
+                <FormLabel data-id="0bf8dde0c19d" fontSize="12px" fontWeight="regular" mb={1}>
+                  Icon
                 </FormLabel>
-                  <Select
-                    {...field}
-                    _active={{ bg: 'dropdown.activeBg' }}
-                    _focus={{
-                      borderColor: 'dropdown.border.focus.normal',
-                     }}
-                    _placeholder={{ color: 'dropdown.placeholder' }}
-                    bg="dropdown.bg"
-                    borderColor="dropdown.border.normal"
-                    borderRadius="8px"
-                    borderWidth="1px"
-                    color="dropdown.font"
-                    css={{ paddingTop: '0' }}
-                    data-id="5e82ddb87871"
-                    fontSize="smm"
-                    h="42px"
-                    icon={<ChevronRight data-id="5488fb98d036" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
-                    mb={2}
-                    placeholder="Select an icon"
-                    variant="outline"
-                  >
-                    {allIconNames.map((iconName) => (
-                      <option key={iconName} value={iconName}>
-                        {iconName}
-                      </option>
-                    ))}
-                  </Select>
-                  {field.value && ChakraIcons[field.value] && (
-                    <Flex align="center" gap={2} mt={1}>
-                      <Text fontSize="sm">
-                       Preview:
-                      </Text>
-                      <Icon as={ChakraIcons[field.value] || ""} boxSize={4} />
-                    </Flex>
-                  )}
-                </>
-              )}
+                <Select
+                  {...field}
+                  _active={{ bg: 'dropdown.activeBg' }}
+                  _focus={{
+                    borderColor: 'dropdown.border.focus.normal',
+                  }}
+                  _placeholder={{ color: 'dropdown.placeholder' }}
+                  bg="dropdown.bg"
+                  borderColor="dropdown.border.normal"
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  color="dropdown.font"
+                  css={{ paddingTop: '0' }}
+                  data-id="5e82ddb87871"
+                  fontSize="smm"
+                  h="42px"
+                  icon={<ChevronRight data-id="5488fb98d036" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
+                  mb={2}
+                  placeholder="Select an icon"
+                  variant="outline"
+                >
+                  {allIconNames.map((iconName) => (
+                    <option key={iconName} value={iconName}>
+                      {iconName}
+                    </option>
+                  ))}
+                </Select>
+                {field.value && ChakraIcons[field.value] && (
+                  <Flex align="center" gap={2} mt={1}>
+                    <Text fontSize="sm">Preview:</Text>
+                    <Icon as={ChakraIcons[field.value] || ''} boxSize={4} />
+                  </Flex>
+                )}
+              </>
+            )}
             rules={{ required: 'Icon is required' }}
-            />
+          />
           <Stack data-id="01666afa274c" pt={2}>
             <Text data-id="671ec986613e" fontSize="11px" fontWeight="bold">
               Options
@@ -495,10 +486,26 @@ function QuestionsCategories() {
         </Stack>
       </AdminModal>
       <Header
-      breadcrumbs={['Admin', 'Questions categories']}
-      data-id="878057915508" mobileBreadcrumbs={['Questions categories']} pageLabel={`${capitalize(t('question'))} set`} />
-      <Flex data-id="659cd2aa32e8" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box data-id="6beca923ee44" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+        breadcrumbs={['Admin', 'Questions categories']}
+        data-id="878057915508"
+        mobileBreadcrumbs={['Questions categories']}
+        pageLabel={`${capitalize(t('question'))} set`}
+      />
+      <Flex
+        bg="auditsList.bg"
+        borderRadius="10px"
+        data-id="659cd2aa32e8"
+        h="calc(100vh - 160px)"
+        overflow="auto"
+        p={[0, '0 25px 30px 30px']}
+      >
+        <Box
+          border="1px solid"
+          borderColor="auditsList.headerBorderColor"
+          data-id="6beca923ee44"
+          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+          w="full"
+        >
           <AdminTableHeader data-id="926a317ff445">
             <AdminTableHeaderElement
               data-id="f5e345434dc2"
@@ -512,26 +519,17 @@ function QuestionsCategories() {
               w="full"
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            data-id="660a8c628b7c"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="b7e2e2e2e2e2" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader center data-id="63cab2bad96b" />
+              <Loader center data-id="515105f6eb5d" />
             ) : questionsCategories?.length > 0 ? (
               questionsCategories?.map(renderQuestionsCategoryRow)
             ) : (
-              <Flex data-id="eca1eaed42aa" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+              <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No questions categories found
               </Flex>
             )}
-          </Flex>
+          </Box>
         </Box>
       </Flex>
     </>

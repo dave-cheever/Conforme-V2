@@ -153,7 +153,7 @@ function AuditLog() {
       flexDir="column"
       h="full"
       overflow="auto"
-      p="25px 30px"
+      p="25px 15px"
       w="full">
       <Flex data-id="19a227057187" mb="3">
         {auditTabs?.map(({ index, label }) => (

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 
 import { IAuditLog } from '../../interfaces/IAuditLog';
@@ -29,19 +29,23 @@ function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
   if (auditLog.records.length === 0) return null;
 
   return (
-    (<Flex data-id="32e75f6fb74c" direction={['column', 'row']} mb="20px">
-      <Flex
-        bg="auditLogDayStyles.dateBg"
+    (<Flex data-id="32e75f6fb74c" direction="column" mb="20px">
+      <Flex alignItems="center" data-id="d1c2f8b3e225" direction="row" justifyContent="space-between">
+        <Flex
         borderRadius="8px"
         color="auditLogDayStyles.dateColor"
         data-id="6ad363594c2b"
-        fontSize="14px"
-        fontWeight="bold"
+        fontSize="16px"
+        fontWeight="500"
         h="fit-content"
         p="6px 13px"
         w="108px">
-        {daysAgo(auditLog._id)}
+        {daysAgo(auditLog._id)} 
+        </Flex>
+
+        <Box borderBottom="1px solid #E2E8F0" data-id="c9f7e4d1b7a5" display={["none", "block"]} height={"1px"} w="full" />
       </Flex>
+    
       <Flex data-id="c50bfda03776" flexDir="column" mt="2" w="full">
         {auditLog.records.map((audit) => (
           <AuditLogRecord
@@ -57,7 +61,7 @@ function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
 export const auditLogDayStyles = {
   auditLogDayStyles: {
     dateBg: '#F0F2F5',
-    dateColor: '#282F36',
+    dateColor: '#4A5568',
   },
 };
 

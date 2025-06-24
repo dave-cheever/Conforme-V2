@@ -1,208 +1,131 @@
-import { Avatar, Box, Button, Flex, Skeleton, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
 import useNavigate from '../../hooks/useNavigate';
-import { ChevronRight, OpenExternalIcon } from '../../icons';
+import { OpenExternalIcon } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 
 function AnswerSquare({ answer, editAnswer }: { answer: IAnswer; editAnswer: (answer: IAnswer) => void }) {
   const { openInNewTab } = useNavigate();
   return (
-    (<Stack
-      _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.18)' }}
+    <Box
+      _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)' }}
       bg="white"
+      border="1px solid #E2E8F0"
       borderRadius="10px"
       boxShadow="sm"
       cursor="pointer"
       data-id="274beff484fa"
       flexShrink={0}
-      h="290px"
+      h="250px"
       onClick={() => editAnswer(answer)}
-      p="20px 25px 20px 25px"
-      spacing={6}
-      w={['full', 'full', '350px']}>
-      <Flex align="center" data-id="2c889d94a85b" justify="space-between">
-        <Box
-          color="answerSquare.audit"
-          data-id="0f0235b6ddf9"
-          fontSize="ssm"
-          opacity="1"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap">
-          <Flex data-id="d49ff9383e9c">{answer?.audit?.auditType?.name}</Flex>
-        </Box>
-      </Flex>
-      <Flex data-id="28f6a5207e80" w="full">
-        <Skeleton data-id="8290d16a7df0" isLoaded={!!answer} rounded="full">
-          <Tooltip data-id="3e6175a8cd23" label={answer?.addedBy?.displayName}>
-            <Avatar
-              boxSize="24px"
-              cursor="pointer"
-              data-id="5bb67ed36331"
-              name={answer?.addedBy?.displayName}
-              size="sm"
-              src={answer?.addedBy?.imgUrl} />
-          </Tooltip>
+      p="16px 0px 16px 0px"
+      w={['full', 'full', '350px']}
+    >
+      {/* Header */}
+      <Flex align="center" h="40px" justify="space-between" p="0px 16px 16px 16px" w="full">
+        <Skeleton isLoaded={!!answer} rounded="full">
+          <Flex alignItems="center">
+            <Tooltip label={answer?.addedBy?.displayName}>
+              <Avatar
+                borderRadius={'8px'}
+                boxSize="36px"
+                cursor="pointer"
+                name={answer?.addedBy?.displayName}
+                size="sm"
+                src={answer?.addedBy?.imgUrl}
+              />
+            </Tooltip>
+            <Flex align={'flex-start'} flexDirection={'column'} minW={0} ml={3}>
+              <Text color="#282F36" fontSize="16px" fontWeight="600" lineHeight="100%" noOfLines={2} w="full">
+                {answer?.question?.question}
+              </Text>
+              <Text color="#818197" fontSize="11px" opacity="1" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                {answer?.audit?.auditType?.name}
+              </Text>
+            </Flex>
+          </Flex>
         </Skeleton>
-        <Text
-          color="answerSquare.title"
-          data-id="3af3897093d1"
-          fontSize="md"
-          fontWeight="bold"
-          ml={3}
-          noOfLines={1}
-          w="calc(100% - 24px)">
-          {answer?.question?.question}
-        </Text>
       </Flex>
-      <Flex data-id="d0efb9d5eb5c" w="full">
-        {answer?.question?.questionsCategory?.useStatus && (
-          <Box
-            data-id="823264d5d481"
-            fontSize={['smm', 'ssm']}
-            overflow="hidden"
-            textOverflow="ellipsis"
-            w="200px"
-            whiteSpace="nowrap">
-            <Text color="answerSquare.section.title" data-id="502f6aef842f">Status</Text>
-            <Text
-              color="answerSquare.section.text"
-              data-id="dc2d8310a61c"
-              fontSize="ssm"
-              textTransform="capitalize">
+      <Divider color="#E2E8F0" w="full" />
+      {/* Details Grid */}
+      <Box p="16px">
+        <Box display="grid" gridColumnGap="32px" gridRowGap="18px" gridTemplateColumns="1fr 1fr">
+          {/* Row 1: Location | Date */}
+          <Box>
+            <Text color="#4A5568" fontSize="14px" fontWeight="600">
+              {capitalize(t('location'))}
+            </Text>
+            <Tooltip label={answer?.audit?.location?.name ?? '-'}>
+              <Text color="#282F36" fontSize="14px" fontWeight="400" isTruncated>
+                {answer?.audit?.location?.name ?? '-'}
+              </Text>
+            </Tooltip>
+          </Box>
+          <Box>
+            <Text color="#4A5568" fontSize="14px" fontWeight="600">
+              Date
+            </Text>
+            <Tooltip label={answer?.metatags?.addedAt ? format(new Date(answer?.metatags?.addedAt), 'd MMM yyyy') : '-'}>
+              <Text color="#282F36" fontSize="14px" fontWeight="400" isTruncated>
+                {answer?.metatags?.addedAt ? format(new Date(answer?.metatags?.addedAt), 'd MMM yyyy') : '-'}
+              </Text>
+            </Tooltip>
+          </Box>
+          {/* Row 2: Status | Business Unit */}
+          <Box>
+            <Text color="#4A5568" fontSize="14px" fontWeight="600">
+              Status
+            </Text>
+            <Text color="#282F36" fontSize="14px" fontWeight="400" isTruncated textTransform="capitalize">
               {answer?.status ?? '-'}
             </Text>
           </Box>
-        )}
-        <Box
-          data-id="d0ed74e8fe89"
-          fontSize={['smm', 'ssm']}
-          lineHeight="20px"
-          overflow="hidden"
-          pl={answer?.question?.questionsCategory?.useStatus ? 2 : 0}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap">
-          <Text color="answerSquare.section.title" data-id="88d2eecb0e37">Date</Text>
-          <Tooltip
-            data-id="f4862e819372"
-            label={format(new Date(answer?.metatags?.addedAt!), 'LLL-y') ?? '-'}>
-            <Text
-              color="answerSquare.section.text"
-              data-id="ab2c975b0463"
-              fontSize="ssm"
-              textTransform="capitalize">
-              {format(new Date(answer?.metatags?.addedAt!), 'LLL-y') ?? '-'}
+          <Box>
+            <Text color="#4A5568" fontSize="14px" fontWeight="600">
+              {capitalize(t('business unit'))}
             </Text>
-          </Tooltip>
+            <Tooltip
+              label={
+                answer?.audit?.auditType?.businessUnitScope === 'audit'
+                  ? answer?.audit?.businessUnit?.name ?? '-'
+                  : answer?.businessUnit?.name ?? '-'
+              }
+            >
+              <Text color="#282F36" fontSize="14px" fontWeight="400" isTruncated textTransform="capitalize">
+                {answer?.audit?.auditType?.businessUnitScope === 'audit'
+                  ? answer?.audit?.businessUnit?.name ?? '-'
+                  : answer?.businessUnit?.name ?? '-'}
+              </Text>
+            </Tooltip>
+          </Box>
         </Box>
-      </Flex>
-      <Flex data-id="0d601a490618" w="full">
-        <Box
-          data-id="00e5ecabe6b5"
-          fontSize={['smm', 'ssm']}
-          lineHeight="20px"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap">
-          <Text color="answerSquare.section.title" data-id="4aab2771a2fa">{capitalize(t('location'))}</Text>
-          <Tooltip data-id="9997c3146caf" label={answer?.audit?.location?.name ?? '-'}>
-            <Text
-              color="answerSquare.section.text"
-              data-id="1db069d7268a"
-              fontSize="ssm"
-              noOfLines={1}
-              textTransform="capitalize">
-              {answer?.audit?.location?.name ?? '-'}
+        {/* Restore Linked to section above the Update/View button */}
+        <Flex align="center" justify="space-between" mb={-2} mt={2}>
+          <Box fontSize="ssm" lineHeight="20px" overflow="hidden" textOverflow="ellipsis" w="200px" whiteSpace="nowrap">
+            <Text color="#4A5568" fontSize="14px" fontWeight="600">
+              Linked To
             </Text>
-          </Tooltip>
-        </Box>
-        <Box
-          data-id="1222f526cf7f"
-          fontSize={['smm', 'ssm']}
-          lineHeight="20px"
-          overflow="hidden"
-          pl={2}
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap">
-          <Text color="answerSquare.section.title" data-id="cf610698ec09">{capitalize(t('business unit'))}</Text>
-          <Tooltip
-            data-id="0310d2e5b32a"
-            label={
-              answer?.audit?.auditType?.businessUnitScope === 'audit'
-                ? answer?.audit?.businessUnit?.name ?? '-'
-                : answer?.businessUnit?.name ?? '-'
-            }>
-            <Text
-              color="answerSquare.section.text"
-              data-id="1025026a498a"
-              fontSize="ssm"
-              textTransform="capitalize">
-              {answer?.audit?.auditType?.businessUnitScope === 'audit'
-                ? answer?.audit?.businessUnit?.name ?? '-'
-                : answer?.businessUnit?.name ?? '-'}
-            </Text>
-          </Tooltip>
-        </Box>
-      </Flex>
-      <Flex align="center" data-id="fb22c917a78c" justify="space-between" w="full">
-        <Box
-          data-id="f117f8ae1113"
-          fontSize={['smm', 'ssm']}
-          lineHeight="20px"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          w="200px"
-          whiteSpace="nowrap">
-          <Text
-            color="answerSquare.section.title"
-            data-id="2dd84df43800"
-            fontSize="ssm">
-            Linked to
-          </Text>
-          <Stack
-            _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
-            align="center"
-            data-id="f278de8c9661"
-            direction="row"
-            onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
-            spacing={2}>
-            <Text
-              color="answerSquare.section.text"
-              data-id="1b47d4da4fa8"
-              fontSize="ssm"
-              maxWidth="250px"
-              noOfLines={1}>
-              {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
-            </Text>
-            <OpenExternalIcon data-id="97f80f97cc2c" fill="transparent" stroke="black" />
-          </Stack>
-        </Box>
-        <Button
-          _hover={{
-            bg: 'answerSquare.button.default.bg',
-          }}
-          alignSelf="flex-end"
-          bg="answerSquare.button.default.bg"
-          color="answerSquare.button.default.color"
-          data-id="dd63a6455c67"
-          fontSize="ssm"
-          h="28px"
-          onClick={() => editAnswer(answer)}
-          rightIcon={<ChevronRight
-            boxSize="15px"
-            color="answerSquare.button.default.color"
-            data-id="30084d3fd275" />}
-          w="85px">
-          {answer?.audit?.status === 'upcoming' ? 'Update' : 'View'}
-        </Button>
-      </Flex>
-    </Stack>)
+            <Flex
+              _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+              align="center"
+              gap={1}
+              onClick={(e) => {
+                e.stopPropagation();
+                openInNewTab(`/audits/${answer?.audit?._id}`);
+              }}
+            >
+              <Text color="answerSquare.section.text" fontSize="ssm" maxWidth="250px" noOfLines={1}>
+                {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
+              </Text>
+              <OpenExternalIcon fill="transparent" stroke="black" />
+            </Flex>
+          </Box>
+        </Flex>
+      </Box>
+    </Box>
   );
 }
 

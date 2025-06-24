@@ -9,33 +9,33 @@ import useNavigate from '../hooks/useNavigate';
 import { ArrowCount } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
 
-function LocationListItem({ location, openLocationModal }: { location: ILocation; openLocationModal }) {
+function LocationListItem({ location, openLocationModal, index }: { location: ILocation; openLocationModal: any; index: number }) {
   const device = useDevice();
   const { module } = useAppContext();
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue, setAuditFiltersValue } = useFiltersContext();
+  const rowBg = index % 2 === 0 ? 'white' : 'gray.50';
 
   return (
-    (<Flex
+    <Flex
+      _hover={{ bg: '#F5F7FA' }}
       align="center"
-      bg="adminTrackerItems.element.bg"
-      borderBottom="1px solid"
-      borderColor="adminTableHeader.border"
-      color="adminTrackerItems.element.font"
+      bg={rowBg}
+      borderBottomColor="auditsList.headerBorderColor"
+      borderBottomWidth="1px"
+      color="auditsList.fontColor"
       cursor="pointer"
       data-id="96adef20cb4f"
       flexShrink={0}
-      fontSize="smm"
-      fontWeight="semi_medium"
-      h="73px"
+      fontSize="14px"
+      fontWeight="500"
+      h="50px"
       mt="0px"
       overflow="hidden"
       pl={6}
-      w="calc(100% - 22px)">
-      <Flex
-        data-id="8270f05bd9d6"
-        onClick={() => openLocationModal('edit', location)}
-        w={['max-content', 'full']}>
+      w="calc(100% - 22px)"
+    >
+      <Flex data-id="8270f05bd9d6" onClick={() => openLocationModal('edit', location)} w={['max-content', 'full']}>
         {location.name}
       </Flex>
       {device !== 'mobile' && device !== 'tablet' && (
@@ -56,7 +56,8 @@ function LocationListItem({ location, openLocationModal }: { location: ILocation
               rounded="full"
               size="sm"
               src={location?.owner?.imgUrl}
-              w="24px" />
+              w="24px"
+            />
             {location?.owner?.displayName}
           </Flex>
         </>
@@ -76,10 +77,11 @@ function LocationListItem({ location, openLocationModal }: { location: ILocation
               navigateTo('/');
             }}
             stroke="locations.tooltipStroke"
-            w="10px" />
+            w="10px"
+          />
         </Tooltip>
       </Flex>
-    </Flex>)
+    </Flex>
   );
 }
 

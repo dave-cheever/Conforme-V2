@@ -111,6 +111,7 @@ function DocumentUpload({
               <input data-id="0ea599b1208f" {...getInputProps()} />
               <Flex
                 align="center"
+                bg="#F7FAFC"
                 borderColor="#D9D9E0"
                 borderRadius="10px"
                 borderStyle="dashed"

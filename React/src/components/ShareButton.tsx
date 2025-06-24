@@ -28,6 +28,7 @@ function ShareButton({
     }
     aria-label={ariaLabel}
     bg="#FFFFFF"
+    border="1px solid #E2E8F0"
     borderRadius="10px"
     color="#818197"
     data-id="916c917183c7"

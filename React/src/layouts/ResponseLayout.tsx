@@ -79,7 +79,7 @@ function ResponseLayout({ component: Component }: { component: any }) {
               h="full"
               maxH={['none', 'calc(100vh - 210px)']}
               pb={[20, 6]}
-              w={['full', 'full', 'calc(100% - 300px)']}>
+              w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="5c93f85622be" />
             </Flex>
             {device === 'desktop' && <Chat component="response" data-id="9eac50ed1857" />}

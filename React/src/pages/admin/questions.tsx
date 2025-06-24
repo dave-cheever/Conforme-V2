@@ -138,11 +138,12 @@ function Questions() {
   }, [reset, adminModalState]);
 
   useEffect(() => {
-    if (questionsCategories?.length === 1) 
-      {reset({
+    if (questionsCategories?.length === 1) {
+      reset({
         ...getValues(),
         questionsCategoryId: questionsCategories[0]._id,
-      });}
+      });
+    }
   }, [questionsCategories]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
@@ -285,7 +286,7 @@ function Questions() {
     const question = getValues();
     const questionCategory = questionsCategories?.find((cat) => cat._id === question.questionsCategoryId);
     const { maxQuestionsNumber, name } = questionCategory;
-    const questionsCountForCategory = questions.filter(q => q.questionsCategoryId === question.questionsCategoryId).length;
+    const questionsCountForCategory = questions.filter((q) => q.questionsCategoryId === question.questionsCategoryId).length;
 
     if (maxQuestionsNumber - questionsCountForCategory <= 0) {
       return toast({
@@ -304,35 +305,42 @@ function Questions() {
     }
   };
 
-  const renderQuestionRow = (question: IQuestion<TQuestionValue>, i: number) => (
-    <Flex
-      alignItems="center"
-      bg="#FFFFFF"
-      borderBottomRadius={i === questions.length - 1 ? 'lg' : ''}
-      boxShadow="sm"
-      data-id="9c031a686e68"
-      flexShrink={0}
-      h="73px"
-      key={question._id}
-      mb="1px"
-      p={4}
-      w="full"
-    >
+  const renderQuestionRow = (question: IQuestion<TQuestionValue>, i: number) => {
+    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
+    return (
       <Flex
+        _hover={{ bg: '#F5F7FA' }}
+        alignItems="center"
+        bg={rowBg}
+        borderBottomColor="auditsList.headerBorderColor"
+        borderBottomWidth="1px"
+        color="auditsList.fontColor"
         cursor="pointer"
-        data-id="8743b484e5d2"
-        flexDir="column"
-        mr={4}
-        onClick={() => openQuestionModal('edit', question)}
-        pl={1}
+        data-id="9c031a686e68"
+        flexShrink={0}
+        fontSize="14px"
+        fontWeight="500"
+        h="50px"
+        key={question._id}
+        p={4}
         w="full"
       >
-        <Text data-id="64222f997a92" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          {question.question}
-        </Text>
+        <Flex
+          cursor="pointer"
+          data-id="8743b484e5d2"
+          flexDir="column"
+          mr={4}
+          onClick={() => openQuestionModal('edit', question)}
+          pl={1}
+          w="full"
+        >
+          <Text data-id="64222f997a92" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            {question.question}
+          </Text>
+        </Flex>
       </Flex>
-    </Flex>
-  );
+    );
+  };
 
   return (
     <>
@@ -343,7 +351,6 @@ function Questions() {
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetQuestion : undefined}
-        
       >
         <Stack data-id="b6bb827943fc" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <Dropdown
@@ -379,10 +386,26 @@ function Questions() {
         </Stack>
       </AdminModal>
       <Header
-      breadcrumbs={['Admin', 'Questions']}
-      data-id="fd41c88fa390" mobileBreadcrumbs={['Questions']} pageLabel={capitalize(t('question'))} />
-      <Flex data-id="37f9704ed253" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box data-id="b1c3342b2a30" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
+        breadcrumbs={['Admin', 'Questions']}
+        data-id="fd41c88fa390"
+        mobileBreadcrumbs={['Questions']}
+        pageLabel={capitalize(t('question'))}
+      />
+      <Flex
+        bg="auditsList.bg"
+        borderRadius="10px"
+        data-id="37f9704ed253"
+        h="calc(100vh - 160px)"
+        overflow="auto"
+       p={[0, '0 25px 30px 30px']}
+      >
+        <Box
+          border="1px solid"
+          borderColor="auditsList.headerBorderColor"
+          data-id="b1c3342b2a30"
+          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+          w="full"
+        >
           <AdminTableHeader data-id="b2e9e78efe45">
             <AdminTableHeaderElement
               data-id="af2c58e1ef04"
@@ -396,16 +419,7 @@ function Questions() {
               w="full"
             />
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            data-id="85c701753503"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="85c701753503" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center data-id="515105f6eb5d" />
             ) : questions?.length > 0 ? (
@@ -415,7 +429,7 @@ function Questions() {
                 No questions found
               </Flex>
             )}
-          </Flex>
+          </Box>
         </Box>
       </Flex>
     </>

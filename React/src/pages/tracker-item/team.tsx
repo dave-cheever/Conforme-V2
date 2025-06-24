@@ -24,6 +24,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
       lastName
       displayName
       imgUrl
+      jobTitle
     }
     responsible: usersByIdFromDb(userQueryInput: $userResponsibleQuery) {
       _id
@@ -31,6 +32,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
       lastName
       displayName
       imgUrl
+      jobTitle
     }
     contributors: usersByIdFromDb(userQueryInput: $userContibuterQuery) {
       _id
@@ -38,6 +40,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
       lastName
       displayName
       imgUrl
+      jobTitle
     }
     followers: usersByIdFromDb(userQueryInput: $userFollowersQuery) {
       _id
@@ -45,6 +48,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
       lastName
       displayName
       imgUrl
+      jobTitle
     }
   }
 `;
@@ -100,14 +104,14 @@ function Team() {
 
   if (loading) {
     return (
-      (<Flex bg="teamPage.bg" data-id="34d7966a0c58" h="full" rounded="20px" w="full">
+      <Flex bg="teamPage.bg" data-id="34d7966a0c58" h="full" rounded="20px" w="full">
         <Loader center data-id="4bd3243c6160" />
-      </Flex>)
+      </Flex>
     );
   }
 
   return (
-    (<Stack
+    <Stack
       alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
       border="1px solid"
@@ -122,21 +126,24 @@ function Team() {
       py={4}
       rounded="20px"
       spacing="40px"
-      w="full">
-      <Stack data-id="0ca0a7e8d5f7" spacing={12} w="full">
+      w="full"
+    >
+      <Stack data-id="0ca0a7e8d5f7" spacing={6} w="full">
         <HStack data-id="9da01514a58d" justify="flex-start" spacing={12}>
           <SingleParticipantSelector
             data-id="11f0371f724c"
             isUserAllowedToChange={isPermittedToManageAccountable}
             label="Accountable"
             onChange={(participant) => selectParticipants({ accountableId: participant._id })}
-            selectedParticipant={accountable} />
+            selectedParticipant={accountable}
+          />
           <SingleParticipantSelector
             data-id="25b77c2a2052"
             isUserAllowedToChange={isPermittedToManageResponsible}
             label="Responsible"
             onChange={(participant) => selectParticipants({ responsibleId: participant._id })}
-            selectedParticipant={responsible} />
+            selectedParticipant={responsible}
+          />
         </HStack>
         <MultipleParticipantsSelector
           data-id="5fc50b465ef6"
@@ -144,16 +151,18 @@ function Team() {
           label="Contributors"
           maxParticipants={maxParticipants}
           onChange={(participants) => selectParticipants({ contributorsIds: participants.map(({ _id }) => _id) })}
-          selectedParticipants={contributors} />
+          selectedParticipants={contributors}
+        />
         <MultipleParticipantsSelector
           data-id="cc552ceab692"
           isUserAllowedToChange={isPermittedToManageFollowers}
           label="Followers"
           maxParticipants={maxParticipants}
           onChange={(participants) => selectParticipants({ followersIds: participants.map(({ _id }) => _id) })}
-          selectedParticipants={followers} />
+          selectedParticipants={followers}
+        />
       </Stack>
-    </Stack>)
+    </Stack>
   );
 }
 

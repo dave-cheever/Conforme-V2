@@ -241,97 +241,104 @@ function BusinessUnits() {
     }
   };
 
-  const renderBusinessUnitRow = (businessUnit: IBusinessUnit, i: number) => (
-    <Flex
-      alignItems="center"
-      bg="#FFFFFF"
-      borderBottomRadius={i === businessUnits.length - 1 ? 'lg' : ''}
-      boxShadow="sm"
-      data-id="c76b0bf9921a"
-      flexShrink={0}
-      h="73px"
-      key={businessUnit._id}
-      mb="1px"
-      p={4}
-      w="full"
-    >
+  const renderBusinessUnitRow = (businessUnit: IBusinessUnit, i: number) => {
+    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
+    return (
       <Flex
+        _hover={{ bg: '#F5F7FA' }}
+        alignItems="center"
+        bg={rowBg}
+        borderBottomColor="auditsList.headerBorderColor"
+        borderBottomWidth="1px"
+        color="auditsList.fontColor"
         cursor="pointer"
-        data-id="62602cb9c5b0"
-        flexDir="column"
-        mr={4}
-        onClick={() => openBusinessUnitModal('edit', businessUnit)}
-        pl={1}
-        w={['40%', '30%']}
+        data-id="c76b0bf9921a"
+        flexShrink={0}
+        fontSize="14px"
+        fontWeight="500"
+        h="50px"
+        key={businessUnit._id}
+        p={4}
+        w="full"
       >
-        <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          {businessUnit.name}
-        </Text>
-      </Flex>
-      {device !== 'mobile' && (
-        <Box data-id="d169dd4443da" w={['30%', '30%']}>
-          {businessUnit?.owner?.displayName}
-        </Box>
-      )}
-      {module?.type === 'tracker' && (
-        <Flex align="center" data-id="038185a293c7" w={['15%', '20%']}>
-          <Text data-id="325510124911">{businessUnit.trackerItemsResponsesCount || 0}</Text>
-          <Tooltip data-id="a70f6f28c413" fontSize="md" label="Show Items">
-            <ArrowCount
-              cursor="pointer"
-              data-id="315701a99129"
-              h="10px"
-              ml="13px"
-              onClick={() => {
-                setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                navigateTo('/');
-              }}
-              stroke="#282F36"
-              w="10px"
-            />
-          </Tooltip>
+        <Flex
+          cursor="pointer"
+          data-id="62602cb9c5b0"
+          flexDir="column"
+          mr={4}
+          onClick={() => openBusinessUnitModal('edit', businessUnit)}
+          pl={1}
+          w={['40%', '30%']}
+        >
+          <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            {businessUnit.name}
+          </Text>
         </Flex>
-      )}
-      {module?.type === 'audits' && (
-        <>
-          <Flex align="center" data-id="db85ba830398" w={['15%', '20%']}>
-            <Text data-id="49560825d319">{businessUnit.totalAnswersCount || 0}</Text>
-            <Tooltip data-id="1070df803807" fontSize="md" label="Show Items">
+        {device !== 'mobile' && (
+          <Box data-id="d169dd4443da" w={['30%', '30%']}>
+            {businessUnit?.owner?.displayName}
+          </Box>
+        )}
+        {module?.type === 'tracker' && (
+          <Flex align="center" data-id="038185a293c7" w={['15%', '20%']}>
+            <Text data-id="325510124911">{businessUnit.trackerItemsResponsesCount || 0}</Text>
+            <Tooltip data-id="a70f6f28c413" fontSize="md" label="Show Items">
               <ArrowCount
                 cursor="pointer"
-                data-id="08e28509876b"
+                data-id="315701a99129"
                 h="10px"
                 ml="13px"
                 onClick={() => {
-                  setAnswerFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                  navigateTo('/answers');
+                  setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                  navigateTo('/');
                 }}
                 stroke="#282F36"
                 w="10px"
               />
             </Tooltip>
           </Flex>
-          <Flex align="center" data-id="55e68fa3ad52" w={['15%', '20%']}>
-            <Text data-id="efecbaf85dda">{businessUnit.totalAuditsCount || 0}</Text>
-            <Tooltip data-id="ed7dabf6e0b7" fontSize="md" label="Show Items">
-              <ArrowCount
-                cursor="pointer"
-                data-id="c44227d82bbf"
-                h="10px"
-                ml="13px"
-                onClick={() => {
-                  setAuditFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                  navigateTo('/dashboard');
-                }}
-                stroke="#282F36"
-                w="10px"
-              />
-            </Tooltip>
-          </Flex>
-        </>
-      )}
-    </Flex>
-  );
+        )}
+        {module?.type === 'audits' && (
+          <>
+            <Flex align="center" data-id="db85ba830398" w={['15%', '20%']}>
+              <Text data-id="49560825d319">{businessUnit.totalAnswersCount || 0}</Text>
+              <Tooltip data-id="1070df803807" fontSize="md" label="Show Items">
+                <ArrowCount
+                  cursor="pointer"
+                  data-id="08e28509876b"
+                  h="10px"
+                  ml="13px"
+                  onClick={() => {
+                    setAnswerFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                    navigateTo('/answers');
+                  }}
+                  stroke="#282F36"
+                  w="10px"
+                />
+              </Tooltip>
+            </Flex>
+            <Flex align="center" data-id="55e68fa3ad52" w={['15%', '20%']}>
+              <Text data-id="efecbaf85dda">{businessUnit.totalAuditsCount || 0}</Text>
+              <Tooltip data-id="ed7dabf6e0b7" fontSize="md" label="Show Items">
+                <ArrowCount
+                  cursor="pointer"
+                  data-id="c44227d82bbf"
+                  h="10px"
+                  ml="13px"
+                  onClick={() => {
+                    setAuditFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                    navigateTo('/dashboard');
+                  }}
+                  stroke="#282F36"
+                  w="10px"
+                />
+              </Tooltip>
+            </Flex>
+          </>
+        )}
+      </Flex>
+    );
+  };
 
   return (
     <>
@@ -366,9 +373,18 @@ function BusinessUnits() {
         mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
         pageLabel={capitalize(t('business unit'))}
       />
-      <Flex data-id="33879bce2f4d" h="calc(100vh - 160px)" overflow="auto" px={['25px', 0]}>
-        <Box data-id="71b1095147a4" h={['calc(100% - 160px)', 'calc(100% - 35px)']} p={[0, '0 25px 30px 30px']} w="full">
-          <AdminTableHeader data-id="fc13c9d295b4" >
+      <Flex
+        bg="auditsList.bg"
+        
+        borderRadius="10px"
+        data-id="33879bce2f4d"
+        h="calc(100vh - 160px)"
+        overflow="auto"
+        p={[0, '0 25px 30px 30px']}
+
+      >
+        <Box border="1px solid" borderColor="auditsList.headerBorderColor" data-id="71b1095147a4" h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="full">
+          <AdminTableHeader data-id="fc13c9d295b4">
             <AdminTableHeaderElement
               data-id="ba04d2d0810b"
               label={`${capitalize(t('business unit'))} name`}
@@ -433,16 +449,7 @@ function BusinessUnits() {
               </>
             )}
           </AdminTableHeader>
-          <Flex
-            bg="white"
-            borderBottomRadius="20px"
-            data-id="3ab58dd63565"
-            flexDir="column"
-            fontSize="smm"
-            h="full"
-            overflow="auto"
-            w="full"
-          >
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="3ab58dd63565" h="full" overflow="auto" w="full">
             {loading ? (
               <Loader center data-id="f338242108dc" />
             ) : businessUnits?.length > 0 ? (
@@ -452,7 +459,7 @@ function BusinessUnits() {
                 No {pluralize(t('business unit'))} found
               </Flex>
             )}
-          </Flex>
+          </Box>
         </Box>
       </Flex>
     </>

@@ -121,14 +121,17 @@ function Insights() {
             <TabList data-id="92b543195c8e">
               {panels?.map((panel) => (
                 <Tab
+                  _hover={{
+                    opacity: 0.8,
+                  }}
                   _selected={{
                     bg: 'insights.tabBg',
                     color: 'insights.tabColor',
                   }}
                   borderRadius="10px"
                   data-id="9e2d9f42096c"
-                  fontSize="smm"
-                  fontWeight="bold"
+                  fontSize="14px"
+                  fontWeight="600"
                   key={panel._id}
                   mr={[1, 2]}>
                   {panel.name}
@@ -160,7 +163,7 @@ export const insightsStyles = {
       menuItemFontSelected: '#462AC4',
       menuItemFont: '#9A9EA1',
     },
-    tabBg: '#1E1836',
+    tabBg: '#462AC4',
     tabColor: '#FFFFFF',
     secondaryText: '#787486',
   },

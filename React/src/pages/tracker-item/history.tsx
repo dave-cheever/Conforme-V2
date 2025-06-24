@@ -1,87 +1,146 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import { getTime } from 'date-fns';
+import React from 'react';
+
+import { gql, useLazyQuery } from '@apollo/client';
+import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { format, getTime } from 'date-fns';
 import { t } from 'i18next';
 import pluralize from 'pluralize';
 
+import AdminTableHeader from '../../components/Admin/AdminTableHeader';
+import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import Loader from '../../components/Loader';
-import HistoricalListItem from '../../components/Response/HistoricalListItem';
 import { useResponseContext } from '../../contexts/ResponseProvider';
+import useNavigate from '../../hooks/useNavigate';
+import { IResponse } from '../../interfaces/IResponse';
+import { IUser } from '../../interfaces/IUser';
+
+const GET_USERS_BY_ID_FROM_DB = gql`
+  query ($userQueryInput: UserQueryInput) {
+    usersByIdFromDb(userQueryInput: $userQueryInput) {
+      _id
+      displayName
+      imgUrl
+    }
+  }
+`;
+
+function HistoricalTableRow({ response, index }: { response: IResponse; index: number }) {
+  const { navigateTo } = useNavigate();
+  const { snapshot } = useResponseContext();
+  const [getUsers, { data: { usersByIdFromDb: responseUsers = [] } = {}, loading: responsibleLoading }] =
+    useLazyQuery(GET_USERS_BY_ID_FROM_DB);
+
+  React.useEffect(() => {
+    const userIds = [response.responsibleId, response.metatags?.updatedBy].filter(Boolean);
+    getUsers({
+      variables: {
+        userQueryInput: {
+          usersIds: userIds,
+        },
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [response]);
+
+  const responsibleUser: IUser = responseUsers.find(({ _id }) => _id === response.responsibleId);
+  const lastUpdatedBy: IUser = responseUsers.find(({ _id }) => _id === response.metatags?.updatedBy);
+  const active = getTime(new Date(response.lastCompletionDate!)).toString() === snapshot;
+  const rowBg = active ? '#F5F7FA' : index % 2 === 0 ? 'white' : 'gray.50';
+
+  return (
+    <Flex
+      _hover={{ bg: '#F5F7FA' }}
+      align="center"
+      bg={rowBg}
+      borderBottom="1px solid"
+      borderColor="historyPage.border"
+      cursor="pointer"
+      data-id="history-table-row"
+      fontWeight={active ? '700' : '400'}
+      minH="60px"
+      onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
+      px="25px"
+      transition="background 0.2s"
+      w="full"
+    >
+      <Flex align="center" minW={0} w="30%">
+        <Text color="historyPage.font" fontSize="14px" isTruncated>
+          {response.trackerItem.name}
+        </Text>
+      </Flex>
+      <Flex align="center" w="20%">
+        <Text color="historyPage.font" fontSize="14px">
+          {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
+        </Text>
+      </Flex>
+      <Flex align="center" w="25%">
+        <Skeleton isLoaded={!responsibleLoading} rounded="full">
+          {responsibleUser ? (
+            <Flex align="center">
+              <Avatar name={responsibleUser.displayName} size="xs" src={responsibleUser.imgUrl} />
+              <Text color="historyPage.font" fontSize="13px" isTruncated pl={3}>
+                {responsibleUser.displayName}
+              </Text>
+            </Flex>
+          ) : (
+            <Text color="historyPage.font" fontSize="13px" fontStyle="italic">
+              Unassigned
+            </Text>
+          )}
+        </Skeleton>
+      </Flex>
+      <Flex align="center" w="25%">
+        <Skeleton isLoaded={!responsibleLoading} rounded="full">
+          {lastUpdatedBy ? (
+            <Flex align="center">
+              <Avatar name={lastUpdatedBy.displayName} size="xs" src={lastUpdatedBy.imgUrl} />
+              <Text color="historyPage.font" fontSize="13px" isTruncated pl={3}>
+                {lastUpdatedBy.displayName}
+              </Text>
+            </Flex>
+          ) : (
+            <Text color="historyPage.font" fontSize="13px" fontStyle="italic">
+              Unassigned
+            </Text>
+          )}
+        </Skeleton>
+      </Flex>
+    </Flex>
+  );
+}
 
 function Team() {
   const { snapshotsLoading, snapshots } = useResponseContext();
 
   if (snapshotsLoading) {
     return (
-      (<Flex
-        bg="historyPage.bg"
-        data-id="975dd01acb6d"
-        h="full"
-        rounded="20px"
-        w="full">
+      <Flex bg="historyPage.bg" data-id="975dd01acb6d" h="full" rounded="20px" w="full">
         <Loader center data-id="0b2119ced720" />
-      </Flex>)
+      </Flex>
     );
   }
 
   return (
-    (<Box
-      bg="historyPage.bg"
-      borderRadius="20px"
-      data-id="8e9704fcdad7"
-      h="fit-content"
-      mb={7}
-      minH="full"
-      pb={7}
-      w="full">
-      <Flex
-        bg="white"
-        borderBottom="1px solid"
-        borderColor="historyPage.border"
-        borderTopRadius="20px"
-        color="historyPage.font"
-        data-id="9a515238c447"
-        fontSize="11px"
-        fontWeight="semi_medium"
-        p="15px 25px">
-        <Flex alignItems="center" data-id="98d1e83d7ee1" w="30%">
-          <Text data-id="c36662c77942">Item name</Text>
+    <Box bg="historyPage.bg" borderRadius="20px" data-id="8e9704fcdad7" h="fit-content" mb={7} minH="full" pb={7} w="full">
+      <Box bg="white" border="1px solid" borderColor="historyPage.border" borderRadius="10px" overflow="hidden">
+        <AdminTableHeader>
+          <AdminTableHeaderElement label="Item name" w="30%" />
+          <AdminTableHeaderElement label="Renewed" w="20%" />
+          <AdminTableHeaderElement label="Responsible" w="25%" />
+          <AdminTableHeaderElement label="Last updated by" w="25%" />
+        </AdminTableHeader>
+        <Flex flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
+          {snapshots.map((response, idx) => (
+            <HistoricalTableRow index={idx} key={getTime(new Date(response.lastCompletionDate!))} response={response} />
+          ))}
+          {snapshots.length === 0 && (
+            <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+              No historical {pluralize(t('tracker item'))} responses found
+            </Flex>
+          )}
         </Flex>
-        <Flex alignItems="center" data-id="9e932a96eb15" w="20%">
-          <Text data-id="c912edf42db7">Renewed</Text>
-        </Flex>
-        <Flex alignItems="center" data-id="1289202c0f2e" w="25%">
-          <Text data-id="c71c907e5ad3">Responsible</Text>
-        </Flex>
-        <Flex alignItems="center" data-id="60017add14c2" w="25%">
-          <Text data-id="2387237aefad">Last updated by</Text>
-        </Flex>
-      </Flex>
-      <Flex
-        data-id="a43b2eb54eda"
-        flexDir="column"
-        h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
-        overflowY="auto"
-        w="full">
-        {snapshots.map((response) => (
-          <HistoricalListItem
-            data-id="936276ff9f91"
-            key={getTime(new Date(response.lastCompletionDate!))}
-            response={response} />
-        ))}
-        {snapshots.length === 0 && (
-          <Flex
-            data-id="7c138995294e"
-            fontSize="18px"
-            fontStyle="italic"
-            h="full"
-            justify="center"
-            mt={4}
-            w="full">
-            No historical {pluralize(t('tracker item'))} responses found
-          </Flex>
-        )}
-      </Flex>
-    </Box>)
+      </Box>
+    </Box>
   );
 }
 

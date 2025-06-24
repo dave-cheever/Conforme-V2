@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Spacer, Stack, useToast } from '@chakra-ui/react';
+import { Box, Flex, Spacer, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -23,7 +23,7 @@ import useDevice from '../../hooks/useDevice';
 import { ILocation } from '../../interfaces/ILocation';
 
 const GET_LOCATIONS = gql`
- query ($moduleId: ID!) {
+  query ($moduleId: ID!) {
     locations(moduleId: $moduleId) {
       _id
       name
@@ -140,7 +140,7 @@ function Locations() {
     try {
       if (Object.keys(errors).length === 0) {
         const values = getValues();
-        await createFunction({ variables: { values:{...values, moduleId: module?._id }}});
+        await createFunction({ variables: { values: { ...values, moduleId: module?._id } } });
         toast({ ...toastSuccess, description: `${capitalize(t('location'))} added` });
         refetch();
       } else {
@@ -272,12 +272,18 @@ function Locations() {
           />
         </Flex>
       </AdminModal>
-      <Header
-      breadcrumbs={['Admin', pluralize(capitalize(t('location')))]}
-      data-id="13ef30011341" pageLabel={capitalize(t('location'))} />
-      <Box data-id="305629609ebb" h="calc(100vh - 160px)" p={['0', '0 25px 30px 30px']}>
+      <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="13ef30011341" pageLabel={capitalize(t('location'))} />
+      <Box
+        bg="auditsList.bg"
+        borderRadius="10px"
+        data-id="305629609ebb"
+        h="calc(100vh - 160px)"
+        p={['0', '0 25px 30px 30px']}
+      >
         <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]}>
           <Box
+            border="1px solid"
+            borderColor="auditsList.headerBorderColor"
             data-id="a281438af26d"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             mr={[0, 0, '50px']}
@@ -355,17 +361,17 @@ function Locations() {
                 <Loader center data-id="358df5122736" />
               </Box>
             ) : (
-              <Stack bg="white" borderBottomRadius="10px" data-id="c078a58c912b" h="full" overflow="auto" spacing="1px">
+              <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="c078a58c912b" h="full" overflow="auto">
                 {locations?.length > 0 ? (
                   locations?.map((location, i) => (
-                    <LocationListItem data-id="a042845458cc" key={i} location={location} openLocationModal={openLocationModal} />
+                    <LocationListItem data-id="a042845458cc" index={i} key={i} location={location} openLocationModal={openLocationModal} />
                   ))
                 ) : (
                   <Flex data-id="e3da38faca1c" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                     No {pluralize(t('location'))} found
                   </Flex>
                 )}
-              </Stack>
+              </Box>
             )}
           </Box>
         </Flex>
