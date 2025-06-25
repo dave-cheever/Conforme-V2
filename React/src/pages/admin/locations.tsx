@@ -286,7 +286,6 @@ function Locations() {
             borderColor="auditsList.headerBorderColor"
             data-id="a281438af26d"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            mr={[0, 0, '50px']}
             w={['full', 'full', 'calc(100%)']}
           >
             <AdminTableHeader data-id="e7aa7d3c7407">

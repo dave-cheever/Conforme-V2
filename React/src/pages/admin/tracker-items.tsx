@@ -190,7 +190,6 @@ function TrackerItemsAdmin() {
     <Box
       data-id="994cf98f6802"
       h={['full', 'calc(100vh - 160px)']}
-      mt="10px"
       overflow="auto"
       p="0 25px 30px 30px">
       <Box
