@@ -218,7 +218,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         spacing={2}
       >
         <Flex alignItems="center" bg="white" borderBottom="1px solid #E2E8F0" data-id="e9f5a8019a4f" px={4} py={3}>
-          <Text color="#282F36" flex={1} fontSize="md" fontWeight="bold">
+        <Text color="#282F36" flex={1} fontSize="14px" fontWeight="bold" noOfLines={2}>
          {response?.trackerItem?.name &&  `"${response?.trackerItem?.name}"`} Chat
           </Text>
           <HStack mr={2} spacing={-2}>

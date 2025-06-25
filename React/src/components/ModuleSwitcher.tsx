@@ -25,7 +25,7 @@ function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
   const { showFiltersPanel } = useFiltersContext();
   const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
-  const [isMobile] = useMediaQuery('(max-width: 747px)');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const navigate = useNavigate();
 
   const modulesInNavigation = useMemo(
@@ -47,7 +47,7 @@ function ModuleSwitcher() {
           _active={{ bg: "navigationLeftItem.unselectedLabelBg" }}
           _hover={{  bg: !isMobile && "navigationLeftItem.selectedLabelBg"}}
           as={Button}
-          bg="navigationLeftItem.unselectedLabelBg"
+          bg={isMobile ? "#FFFFFF" : "#110b30" }
           minW="200px"
           px="0"
           variant="ghost"
