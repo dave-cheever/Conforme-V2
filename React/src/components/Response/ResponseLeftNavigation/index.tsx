@@ -164,7 +164,7 @@ function ResponseLeftNavigation() {
                 }
                 size="xs"
                 src={accountable && accountable.imgUrl} />
-              <Flex data-id="9def953b4b06">
+              <Flex data-id="9def953b4b06" lineHeight="1.05" fontSize="14px">
                 {accountable && accountable.firstName && accountable.lastName
                   ? `${accountable.firstName} ${accountable.lastName}`
                   : `${accountable?.displayName || '-'}`}
@@ -188,7 +188,7 @@ function ResponseLeftNavigation() {
                 }
                 size="xs"
                 src={responsible && responsible.imgUrl} />
-              <Flex data-id="4db276e28c1f">
+              <Flex data-id="4db276e28c1f" lineHeight="1.05" fontSize="14px">
                 {responsible && responsible.firstName && responsible.lastName
                   ? `${responsible.firstName} ${responsible.lastName}`
                   : `${responsible?.displayName || '-'}`}

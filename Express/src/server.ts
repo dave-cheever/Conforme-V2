@@ -1,19 +1,19 @@
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { json } from 'body-parser';
-import session from 'cookie-session';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import logger from 'morgan';
-import passport from 'passport';
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./utils/auth/auth";
 
 import { ISession, IUser } from 'app-interfaces';
 import { CORSConfig, getProtocol } from 'app-utils';
 
 import { context, resolvers, typeDefs } from './graphql';
 import { IContext } from './graphql/context';
-import initPassport from './passport-config';
 import baseRouter from './routes';
 
 // Overwrite global interface
@@ -33,28 +33,17 @@ const getApp = async () => {
   const apolloServer = new ApolloServer<IContext>({typeDefs, resolvers });
   await apolloServer.start();
 
-  initPassport(passport);
   app.disable('x-powered-by');
   app.use(cors(CORSConfig));
+  // Add cookie-parser middleware
+  app.use(cookieParser()); 
+  app.all("/api/auth/*", toNodeHandler(auth));
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use(
-    session({
-      name: process.env.SESS_NAME || 'sessionName',
-      secret: process.env.SESS_SECRET || 'sessionSecret',
-      secure: process.env.APPSETTING_NODE_ENV !== 'dev',
-      httpOnly: true,
-      domain: process.env.APPSETTING_NODE_ENV === 'dev' ? undefined : process.env.API_URL,
-      sameSite: process.env.APPSETTING_NODE_ENV === 'dev' ? false : 'none',
-      maxAge: Number(process.env.SESS_LIFETIME_IN_MINUTES || 15) * 60 * 1000,
-      resave: true,
-    }),
-  );
   app.set('trust proxy', 1);
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use('/', baseRouter(passport));
+
+  app.use('/', baseRouter());
   app.use('/images', express.static('public'));
   app.use('/images', (req, res) => res.status(StatusCodes.PERMANENT_REDIRECT).redirect(`${global.apiUrl}/images/placeholder.png`));
 

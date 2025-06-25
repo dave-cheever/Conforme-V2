@@ -2,9 +2,11 @@ import { addDays, addMonths, addWeeks, addYears, differenceInDays, format, subDa
 import { diff } from 'deep-object-diff';
 import { StatusCodes } from 'http-status-codes';
 import { difference, uniq } from 'lodash';
+import { fromNodeHeaders } from 'better-auth/node';
 
 import { IAction, IAuditValues, IOrganization, IUser } from 'app-interfaces';
 import { Users } from 'app-models';
+import auth from 'src/utils/auth/auth';
 
 import roles from './roles';
 
@@ -101,6 +103,7 @@ export const isPermitted = ({
   revokedPermissions?: string[];
 }): boolean => {
   if (!action) return true;
+  
 
   if (!user || !user.role) return false;
 
@@ -109,6 +112,7 @@ export const isPermitted = ({
 
   const [scope] = action.split('.');
   const { normal, restricted } = permission;
+  
   if (normal && (normal.includes(action) || normal.includes(scope))) return true;
 
   if (
@@ -117,35 +121,58 @@ export const isPermitted = ({
       (typeof restricted[scope] === 'function' && restricted[scope]({ revokedPermissions, permission: action, user, ...data })))
   )
     return true;
-
   return false;
 };
 
-export const isSignedIn = (req, res, next) => {
-  if (!req.isAuthenticated()) {
+export const isSignedIn = async (req, res, next) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        code: 'noAuth',
+        message: 'User not authorized',
+        redirect: req.headers.referer,
+      });
+    }
+    
+    return next();
+  } catch (error) {
     return res.status(StatusCodes.FORBIDDEN).json({
       code: 'noAuth',
       message: 'User not authorized',
       redirect: req.headers.referer,
     });
   }
-  return next();
 };
 
-export const isRoutePermitted = (req, res, next, action, data?) => {
-  const { user } = req;
-  if (!req.isAuthenticated()) {
+export const isRoutePermitted = async (req, res, next, action, data?) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        code: 'noAuth',
+        message: 'User not authorized',
+        redirect: req.headers.referer,
+      });
+    }
+
+    if (!isPermitted({ user: session.user as IUser, action, data }))
+      return res.status(StatusCodes.FORBIDDEN).json({ code: 'notPermitted', message: 'User is not permitted' });
+
+    next();
+  } catch (error) {
     return res.status(StatusCodes.FORBIDDEN).json({
       code: 'noAuth',
       message: 'User not authorized',
       redirect: req.headers.referer,
     });
   }
-
-  if (!isPermitted({ user, action, data }))
-    return res.status(StatusCodes.FORBIDDEN).json({ code: 'notPermitted', message: 'User is not permitted' });
-
-  next();
 };
 
 export const isMigrationRoutePermitted = (req, res, next) => {
@@ -158,7 +185,9 @@ export const isMigrationRoutePermitted = (req, res, next) => {
 
 export const redirectAfterLogin = async (req, res, errorMessage, organization) => {
   let redirectUrl;
-  const { user } = req;
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
   const clientUrl = `${getProtocol()}${organization.domain}`;
 
   const params = req.headers.referer?.split('?')[1];
@@ -170,7 +199,7 @@ export const redirectAfterLogin = async (req, res, errorMessage, organization) =
   if (errorMessage) redirectUrl += `/login?errorMessage=${errorMessage}`;
 
   // update the last Login of user
-  if (user) await Users.updateOne({ _id: user._id }, { ...user, lastLogin: Date.now() });
+  if (session?.user) await Users.updateOne({ userId: session.user.userId }, { ...session.user, lastLogin: Date.now() });
 
   return res.redirect(redirectUrl);
 };

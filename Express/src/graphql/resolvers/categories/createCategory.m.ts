@@ -17,7 +17,7 @@ const createCategory = async (_, { name, moduleId }, { authorize, organization }
           moduleId,
         },
       },
-      user._id,
+      user.userId,
       organization._id,
     );
     return createdCategory;

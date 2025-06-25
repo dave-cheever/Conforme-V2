@@ -29,7 +29,7 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
         <Flex
           color="black"
           data-id="bdbe7e115113"
-          fontSize="smm"
+          fontSize="14px"
           fontWeight="semi_medium"
         >
           Filters

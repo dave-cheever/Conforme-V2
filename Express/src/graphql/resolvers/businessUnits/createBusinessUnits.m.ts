@@ -23,7 +23,7 @@ const createBusinessUnit = async (
     };
     const createdBusinessUnit = await BusinessUnits.customCreate(
       newBusinessUnit,
-      user._id,
+      user.userId,
       organization._id,
     );
     return createdBusinessUnit;

@@ -19,13 +19,13 @@ const updateAction = async (_, { actionInput }, { authorize, organization }) => 
     const updatedAction = await Actions.customUpdateOne({ _id: action._id }, {
       ...actionInput,
       assigneeId: actionInput.assigneeId || null,
-    }, user._id, organization._id);
+    }, user.userId, organization._id);
 
     // Assert user
     Actions.customAssertAssignee(action._id);
 
     // resolve answer status if all actions status related to it are closed
-    Actions.customResolveAnswer(updatedAction?.scope?._id || '', user._id, organization);
+    Actions.customResolveAnswer(updatedAction?.scope?._id || '', user.userId, organization);
 
     // Sent notification if action was reassigned
     if (actionInput.assigneeId && actionInput.assigneeId !== action.assigneeId)

@@ -197,7 +197,7 @@ answersSchema.statics.customSearch = async function (searchQuery, user, organiza
   ) {
     pipeline.push({
       $match: {
-        $or: [{ 'metatags.addedBy': user._id }],
+        $or: [{ 'metatags.addedBy': user.userId }],
       },
     });
   }

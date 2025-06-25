@@ -1,5 +1,5 @@
 import searchUsers from './searchUsers.q';
-import session from './session.q';
+
 import updateUser from './updateUser.m';
 import users from './users.q';
 import usersById from './usersById.q';
@@ -7,7 +7,6 @@ import usersByIdFromDb from './usersByIdFromDb.q';
 
 const usersResolvers = {
   Query: {
-    session,
     users,
     searchUsers,
     usersById,
@@ -31,6 +30,7 @@ export const usersTypeDefs = `
 
   type User {
     _id: ID!
+    userId: String!
     firstName: String
     lastName: String
     displayName: String!

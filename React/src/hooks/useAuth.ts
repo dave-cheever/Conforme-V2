@@ -1,43 +1,29 @@
 import { useEffect } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
-
 import { useAppContext } from '../contexts/AppProvider';
-
-const USERS = gql`
-  query {
-    session {
-      user {
-        _id
-        firstName
-        lastName
-        displayName
-        email
-        jobTitle
-        role
-        imgUrl
-        defaultPage{
-        name
-        path
-        }
-      }
-    }
-  }
-`;
+import authClient  from '../utils/auth-client';
+import { useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
-  const { loading, data, error } = useQuery(USERS);
+
+  const { 
+    data: session, 
+    isPending, // Indicates if the session data is still being fetched
+  } = authClient.useSession();
   const { setUser } = useAppContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (data) setUser(data.session.user);
-  }, [data?.session.user]);
+    if (isPending) return;
+    if (session) setUser(session.user as any)
+    else {
+      setUser(null);
+      authClient.signOut();
+      navigate('/logout');
+    }
+  }, [session, isPending]);
 
-  useEffect(() => {
-    if (error?.message) setUser(null);
-  }, [error]);
-
-  return loading;
+  return isPending;
 };
 
 export default useAuth;

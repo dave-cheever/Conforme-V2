@@ -13,7 +13,7 @@ const createAnswer = async (_, { answer }, { authorize, organization }) => {
     });
     if (!isPermitted) throw new Error('User is not permitted to create an answer.');
 
-    const createdAnswer = await Answers.customCreate(answer, user._id, organization._id);
+    const createdAnswer = await Answers.customCreate(answer, user.userId, organization._id);
 
     return createdAnswer;
   } catch (err: any) {

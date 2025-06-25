@@ -20,13 +20,13 @@ const createTrackerItem = async (
 
     const createdTrackerItem = await TrackerItems.customCreate(
       newTrackerItem,
-      user._id,
+      user.userId,
       organization._id,
     );
 
     TrackerItems.customSynchronizeResponses({
       trackerItem: createdTrackerItem,
-      userId: user._id,
+      userId: user.userId,
       organizationId: organization._id,
     });
 

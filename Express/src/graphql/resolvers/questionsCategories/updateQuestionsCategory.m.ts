@@ -27,7 +27,7 @@ const updateQuestionsCategory = async (
     const updatedQuestionsCategory = await QuestionsCategories.customUpdateOne(
       { _id: questionsCategory?._id },
       questionsCategoryInput,
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedQuestionsCategory;

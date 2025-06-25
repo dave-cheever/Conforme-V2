@@ -49,7 +49,7 @@ const search = async (_, { searchQuery }, { authorize, organization }) => {
           },
         },
       },
-      user._id,
+      user.userId,
       organization._id,
       moduleId,
     );

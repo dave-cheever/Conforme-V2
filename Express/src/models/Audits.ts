@@ -212,7 +212,7 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   ) {
     pipeline.push({
       $match: {
-        $or: [{ auditorId: user._id }, { participantsIds: { $in: [user._id] } }],
+        $or: [{ auditorId: user.userId }, { participantsIds: { $in: [user.userId] } }],
       },
     });
   }

@@ -29,7 +29,7 @@ const updateRegulatoryBody = async (
     const updatedRegulatoryBody = await RegulatoryBodies.customUpdateOne(
       { _id: regulatoryBody._id },
       { name: regulatoryBodyInput.name },
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedRegulatoryBody;

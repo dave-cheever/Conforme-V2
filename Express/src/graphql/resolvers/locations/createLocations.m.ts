@@ -20,7 +20,7 @@ const createLocation = async (
       ...locationInput,
       name: locationInput.name.trim(),
       organizationId: organization._id,
-      metatags: genMetatags('added', user._id),
+      metatags: genMetatags('added', user.userId),
       scope: {
         moduleId:locationInput?.moduleId,
       },
@@ -28,7 +28,7 @@ const createLocation = async (
 
     const location = await Locations.customCreate(
       newLocation,
-      user._id,
+      user.userId,
       organization._id,
     );
 

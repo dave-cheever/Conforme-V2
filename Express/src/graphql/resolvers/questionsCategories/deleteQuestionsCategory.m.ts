@@ -20,7 +20,7 @@ const deleteQuestionsCategory = async (
 
     const deletedResult = await QuestionsCategories.customDelete(
       { _id },
-      user._id,
+      user.userId,
       organization._id,
     );
     return deletedResult;

@@ -23,7 +23,7 @@ const updateCategory = async (
     const updatedCategory = await Categories.customUpdateOne(
       { _id: category._id },
       { name: categoryInput.name },
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedCategory;

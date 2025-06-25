@@ -31,7 +31,7 @@ const updateResponseQuestions = async (
     await Responses.customUpdateOne(
       { _id },
       { questions },
-      user._id,
+      user.userId,
       organization._id,
     );
     return true;

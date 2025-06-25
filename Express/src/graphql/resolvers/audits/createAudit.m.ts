@@ -26,7 +26,7 @@ const createAudit = async (_, { audit }, { authorize, organization }) => {
       dueDate,
     };
 
-    const createdAudit = await Audits.customCreate(newAudit, user._id, organization._id);
+    const createdAudit = await Audits.customCreate(newAudit, user.userId, organization._id);
     return createdAudit;
   } catch (err: any) {
     throw new Error(err);

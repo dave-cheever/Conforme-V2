@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
 
+import authClient from '../utils/auth-client';
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
@@ -10,28 +10,11 @@ import SignInButton from '../icons/SignInButton';
 function Login() {
   const toast = useToast();
   const params = window.location.search.split('&');
-  const { organizationConfig } = useAppContext();
+  const { organizationConfig, user } = useAppContext();
   const device = useDevice();
   const [refresh, setRefresh] = useState(false);
 
-  const user = useMemo(() => {
-    const logOutUser = localStorage.getItem('logOutUser');
-
-    if (!logOutUser) return null;
-
-    try {
-      const expiresAt = new Date(JSON.parse(logOutUser)?.expiresAt).getTime();
-      if (expiresAt < new Date().getTime()) {
-        localStorage.removeItem('logOutUser');
-        return null;
-      }
-      return JSON.parse(logOutUser);
-    } catch (error) {
-      return null;
-    }
-  }, [refresh]);
-
-  const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
+  // const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
   const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
 
   useEffect(() => {
@@ -44,9 +27,23 @@ function Login() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const loginWithAzureAD = async () => {
-    window.open(`${process.env.REACT_APP_API_URL}/auth/aad${redirectUrl ? `?redirect=${redirectUrl}` : ''}`, '_self');
-  };
+  const login = async () => {
+    const loginOptions = {
+      onRequest: () => {},
+      onSuccess: () => {},
+      onError: (ctx) => { toast({ 
+        status: 'error',
+        title: 'Error',
+        description: ctx.message
+      }) },
+    }
+
+    authClient.signIn.social({
+      provider: "microsoft",
+      callbackURL: process.env.REACT_APP_CLIENT_URL,
+    }, loginOptions)
+
+  }
 
   const removeUser = () => {
     window.open(`https://login.microsoftonline.com/common/oauth2/v2.0/logout`, '_blank');
@@ -106,7 +103,7 @@ function Login() {
               fontSize="14px"
               h="40px"
               lineHeight="18px"
-              onClick={loginWithAzureAD}
+              onClick={login}
               w="min-content">
               Login as {user?.firstName || user?.displayName}
             </Button>
@@ -154,7 +151,7 @@ function Login() {
               {organizationConfig?.name}
             </Text>
             <Flex justify="center">
-              <SignInButton cursor="pointer" h="41px" onClick={loginWithAzureAD} w="215px"/>
+              <SignInButton cursor="pointer" h="41px" onClick={login} w="215px"/>
             </Flex>
           </Flex>
         </Flex>

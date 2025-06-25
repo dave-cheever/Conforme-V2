@@ -23,9 +23,9 @@ const createComment = async (_, { commentInput }, { authorize, organization }) =
 
     const newComment = {
       ...commentInput,
-      authorId: user._id,
+      authorId: user.userId,
     };
-    const createdCommment = await Comments.customCreate(newComment, user._id, organization._id);
+    const createdCommment = await Comments.customCreate(newComment, user.userId, organization._id);
 
     // handle mentioning on chat
     const mentionedUserIds = mentionParser(newComment.text);

@@ -84,7 +84,7 @@ function TrackerListItem({ response }: { response: IResponse }) {
         </Flex>
         <Flex data-id="ad60805790d9" w={"12%"}>
           {response && Array.isArray(response.evidence) && response.evidence.length > 0 ? (
-            <Flex align="flex-end" data-id="0ce15d4739e6">
+            <Flex align="center" data-id="0ce15d4739e6">
              <SuccessCircleIcon data-id="d92e102e49c1" mr={1}  />
               <Flex
                 color="trackerList.tickIcon"

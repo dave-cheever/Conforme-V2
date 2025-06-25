@@ -45,12 +45,12 @@ function AuditsUsersInsights({
           data-id="c1978d7ebadb"
           flexDir="column"
           justify="center"
-          key={user._id}
+          key={user.userId}
           mb="15px"
           ml={index === 0 ? '10px' : '20px'}
           mr="10px"
           w="80px">
-          <UserAvatar data-id="31ea0d8374c3" userId={user._id} />
+          <UserAvatar data-id="31ea0d8374c3" userId={user.userId} />
           <Text
             color="auditsUsersInsights.colors.displayName"
             data-id="f37bf3e862d6"
@@ -108,7 +108,7 @@ function AuditsUsersInsights({
         ))}
       </Flex>
       {users.map((user) => (
-        <Flex data-id="46feef976d49" flexDir="column" key={user._id} ml="10px">
+        <Flex data-id="46feef976d49" flexDir="column" key={user.userId} ml="10px">
           <Box
             bg="auditsUsersInsights.colors.statCell"
             data-id="937679324df0"

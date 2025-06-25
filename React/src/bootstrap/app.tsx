@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
-import IdleMonitor from '../components/IdleMonitor';
 import AdminProvider from '../contexts/AdminProvider';
 import AppProvider, { useAppContext } from '../contexts/AppProvider';
 import ConfigProvider from '../contexts/ConfigProvider';
@@ -12,7 +10,6 @@ import useAuth from '../hooks/useAuth';
 import useInit from '../hooks/useInit';
 import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
-import { markerio } from './markerio';
 import './styles.css';
 import getTheme from './theme';
 
@@ -23,7 +20,8 @@ function App() {
   const routes = useRoutes();
   const { navigate } = useNavigate();
   const location = useLocation();
-
+  // Set cookie with client URL for auth flow
+  document.cookie = `clientUrl=${process.env.REACT_APP_CLIENT_URL}; path=/; SameSite=Lax`;
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
     if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
@@ -35,20 +33,6 @@ function App() {
         navigate(`${defaultPath}`);
     }
   }, [user, location.pathname]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      markerio()?.setCustomData({
-        organizationConfig: organizationConfig as unknown as string,
-      });
-      if (user) {
-        markerio()?.setReporter({
-          email: user.email,
-          fullName: user.displayName,
-        });
-      }
-    }, 1000);
-  }, [organizationConfig, user]);
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (
@@ -63,12 +47,12 @@ function App() {
   return (
     <ChakraProvider data-id="ba8f0b72a649" theme={getTheme(organizationConfig?.theme)}>
       <CSSReset data-id="98971139de59" />
-      {user && <IdleMonitor data-id="70d9b5aff63a" />}
+      {/* {user && <IdleMonitor data-id="70d9b5aff63a" />} */}
       <AdminProvider data-id="3936a5fd8325">
         <FiltersProvider data-id="c63426c7a6be">
           <Routes data-id="f7c0226baff0">
             {routes.map((props) => (
-              <Route data-id="bb5c7c440edc" {...props} />
+              <Route data-id="bb5c7c440edc" {...props} key={props.path} />
             ))}
           </Routes>
         </FiltersProvider>

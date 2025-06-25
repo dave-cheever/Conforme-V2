@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
 import { IOrganization } from 'app-interfaces';
-import { createBREGlobalDocuments, createBREGroupDocuments, updateDocumentPathInDocuments } from "app-migrations";
+import { createBREGlobalDocuments, createBREGroupDocuments, updateDocumentPathInDocuments} from "app-migrations";
 import { Organizations } from 'app-models';
 import { GraphService } from 'app-services';
 import { isMigrationRoutePermitted } from 'app-utils';
@@ -34,7 +34,7 @@ const migrationRouter = () => {
             break;
           case '5c51ec19-9428-4ef5-b262-9decd407b295':
             migrationFunction = createBREGroupDocuments;
-            break;
+            break; 
           case '79c3ce81-7120-483a-8982-c5072e39db1b':
             migrationFunction = updateDocumentPathInDocuments;
             break;

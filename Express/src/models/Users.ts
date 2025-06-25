@@ -15,6 +15,7 @@ const userSchema = new Schema<IUser, IUserModel>({
   jobTitle: String,
   role: String,
   managerId: String,
+  userId: String,
   defaultPage: {
     type: [{
       name: { type: String },
@@ -97,12 +98,12 @@ userSchema.statics.customFindWithDetails = async function ({
   // Refresh user data if it wasn't refreshed in the last 6 hours
   const syncedUsersPromises = users.map(async (user) => {
     if (isBefore(new Date(user.metatags?.updatedAt || 0), subHours(new Date(), 6))) {
-      const userDetails = await GraphService.getUserData({ userId: user._id, organization });
-      const managerId = await GraphService.getLineManagerId({ userId: user._id, organization });
+      const userDetails = await GraphService.getUserData({ userId: user.userId || '', organization });
+      const managerId = await GraphService.getLineManagerId({ userId: user.userId || '', organization });
 
       let role = 'user';
       const roles: any = await GraphService.checkMemberGroups({
-        userId: user._id,
+        userIdOrEmail: user.userId || '',
         groups: {
           admin: organization.adminsGroupId || '',
           reader: organization.readersGroupId || '',
@@ -131,7 +132,8 @@ userSchema.statics.customFindWithDetails = async function ({
             ...genMetatags('updated', user._id),
           },
         };
-        await Users.updateOne({ _id: user._id }, updatedUser);
+        const { _id, ...userWithoutId } = updatedUser;
+        await Users.updateOne({ _id: user._id }, userWithoutId);
         return updatedUser;
       } else {
         // User not found in Entra ID, do NOT overwrite fields
@@ -155,7 +157,7 @@ userSchema.statics.customFindByIdWithDetails = async function ({
   organization: IOrganization;
   awaitForResponse: boolean;
 }): Promise<IUser> {
-  const users = await this.customFindWithDetails({ selector: { _id: userId }, organization, awaitForResponse });
+  const users = await this.customFindWithDetails({ selector: { userId }, organization, awaitForResponse });
   if (!users || users.length === 0) throw new Error('User not found');
   return users[0];
 };
@@ -169,10 +171,10 @@ userSchema.statics.customAssertUser = async function ({
 }): Promise<void> {
   try {
     const organization = await Organizations.customFindById(organizationId);
-    const user = await Users.findById(userId).lean();
+    const user = await Users.findOne({ userId }).lean();
     if (user) {
       if (!user.organizationsIds?.includes(organization._id))
-        await Users.updateOne({ _id: user._id }, { organizationsIds: [...(user.organizationsIds || []), organization._id] });
+        await Users.updateOne({ userId: user._id }, { organizationsIds: [...(user.organizationsIds || []), organization._id] });
     } else {
       const userDetails = await GraphService.getUserData({ userId, organization });
       if (!userDetails) {
@@ -184,7 +186,7 @@ userSchema.statics.customAssertUser = async function ({
 
       let role = 'user';
       const roles: any = await GraphService.checkMemberGroups({
-        userId,
+        userIdOrEmail: userId,
         groups: {
           admin: organization.adminsGroupId || '',
           reader: organization.readersGroupId || '',

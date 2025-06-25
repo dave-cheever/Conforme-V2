@@ -129,8 +129,8 @@ function ParticipantsModal() {
                 ].map((user) => (
                   <ParticipantListItem
                     data-id="ce24c45bf549"
-                    isSelected={isParticipantSelected(user._id)}
-                    key={user._id}
+                    isSelected={isParticipantSelected(user.userId)}
+                    key={user.userId}
                     onSelectParticipant={selectParticipant}
                     user={user} />
                 ))}

@@ -23,7 +23,7 @@ const addAnswerDocuments = async (_, { answerDocumentsAddInput }, { authorize, o
     };
     uploaded.forEach((document) => update.attachments?.push(document));
 
-    const updatedAnswer = await Answers.customUpdateOne({ _id }, update, user._id, organization._id);
+    const updatedAnswer = await Answers.customUpdateOne({ _id }, update, user.userId, organization._id);
 
     return !!updatedAnswer;
   } catch (error: any) {

@@ -22,18 +22,18 @@ function UserMenu() {
       <MenuButton color="white" data-id="74d7a3b3cdc8">
       <Flex align="center" justify="space-between" w="100%">
   {/* Avatar and text */}
-  <Flex align="center" m={5}>
+  <Flex align="center" m={3}>
     <Avatar
-      bg="userMenu.avatar.bg"
+      bg="#fff"
       borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
-      borderRadius={"md"}
+      borderRadius={"4px"}
       borderWidth="5px"
       color="userMenu.avatar.color"
       data-id="8c0b24efa538"
       h="41px"
       mr={3}
       name={user?.displayName}
-      size="md"
+      size="sm"
       src={user?.imgUrl}
       w="41px"
     />
@@ -41,8 +41,8 @@ function UserMenu() {
       <Text color={"black"} fontSize={["12px", "14px"]} fontWeight="600" isTruncated>
         {user?.displayName}
       </Text>
-      <Text color="gray.500" fontSize="xs" isTruncated>
-        {user?.role}
+      <Text color="gray.500" fontSize="13px" lineHeight={.8} isTruncated>
+        {(user?.role?.charAt(0).toUpperCase() || "") + (user?.role?.slice(1) || "")}
       </Text>
     </Box>
       <Icon as={ChevronDownIcon} boxSize={5} color="gray.500" m={4} />

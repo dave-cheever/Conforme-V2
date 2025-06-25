@@ -6,25 +6,25 @@
 //
 
 const ifRACHasAccess = ({ user, response }) =>
-  user && (response?.contributorsIds?.includes(user._id) || response?.accountableId === user._id || response?.responsibleId === user._id);
+  user && (response?.contributorsIds?.includes(user.userId) || response?.accountableId === user.userId || response?.responsibleId === user.userId);
 
 const ifRACFHasAccess = ({ user, response }) =>
   user &&
-  (response?.contributorsIds?.includes(user._id) ||
-    response?.followersIds?.includes(user._id) ||
-    response?.accountableId === user._id ||
-    response?.responsibleId === user._id);
+  (response?.contributorsIds?.includes(user.userId) ||
+    response?.followersIds?.includes(user.userId) ||
+    response?.accountableId === user.userId ||
+    response?.responsibleId === user.userId);
 
-const ifRAHasAccess = ({ user, response }) => user && (response?.accountableId === user._id || response?.responsibleId === user._id);
+const ifRAHasAccess = ({ user, response }) => user && (response?.accountableId === user.userId || response?.responsibleId === user.userId);
 
 const ifHasAuditAccess = ({ user, audit }) =>
-  user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id)) && audit.status !== 'completed';
+  user && (audit?.auditorId === user.userId || (audit?.participantsIds || []).includes(user.userId)) && audit.status !== 'completed';
 
 const ifHasActionAccess = ({ user, action, answer, audit }) => {
   // If an action is created from an audit
   if (action?.scope?.type === 'answer' && answer?.scope?.type === 'audit') {
     // Copy of ifHasAuditAccess
-    return user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id));
+    return user && (audit?.auditorId === user.userId || (audit?.participantsIds || []).includes(user.userId));
   }
 
   return false;
@@ -34,7 +34,7 @@ const ifHasAnswerAccess = ({ user, answer, audit }) => {
   // If an answer is created from an audit
   if (answer?.scope?.type === 'audit') {
     // Copy of ifHasAuditAccess
-    return user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id));
+    return user && (audit?.auditorId === user.userId || (audit?.participantsIds || []).includes(user.userId));
   }
 
   return false;
@@ -44,7 +44,7 @@ const ifHasQuestionAccess = ({ user, question, audit }) => {
   // If an answer is created from an audit
   if (question?.scope?.type === 'audit') {
     // Copy of ifHasAuditAccess
-    return user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id));
+    return user && (audit?.auditorId === user.userId || (audit?.participantsIds || []).includes(user.userId));
   }
 
   return false;
@@ -56,7 +56,7 @@ const ifHasQuestionEditAccess = ({ user, question, questionsCategory, audit }) =
   // If an answer is created from an audit
   if (question?.scope?.type === 'audit') {
     // Copy of ifHasAuditAccess
-    return user && (audit?.auditorId === user._id || (audit?.participantsIds || []).includes(user._id));
+    return user && (audit?.auditorId === user.userId || (audit?.participantsIds || []).includes(user.userId));
   }
 
   return false;

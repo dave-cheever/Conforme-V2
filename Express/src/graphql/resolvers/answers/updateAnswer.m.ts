@@ -16,7 +16,7 @@ const updateAnswer = async (_, { answerInput }, { authorize, organization }) => 
     });
     if (!isPermitted) throw new Error('User is not permitted to update this answer.');
 
-    const updatedAnswer = await Answers.customUpdateOne({ _id: answer._id }, answerInput, user._id, organization._id);
+    const updatedAnswer = await Answers.customUpdateOne({ _id: answer._id }, answerInput, user.userId, organization._id);
     return updatedAnswer;
   } catch (err: any) {
     throw new Error(err);

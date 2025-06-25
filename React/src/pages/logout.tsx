@@ -6,6 +6,7 @@ import { Avatar, Box, Button, Flex, Image, useToast, VStack } from '@chakra-ui/r
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
+import authClient from '../utils/auth-client';
 
 function Logout() {
   const toast = useToast();
@@ -53,10 +54,23 @@ function Logout() {
     if (user === null && user !== undefined) return redirectToLogin();
   }, [user]);
 
-  const loginWithAzureAD = async () => {
-    localStorage.removeItem('logOutUser');
-    window.open(`${process.env.REACT_APP_API_URL}/auth/aad${redirectUrl ? `?redirect=${redirectUrl}` : ''}`, '_self');
-  };
+  const login = async () => {
+    const loginOptions = {
+      onRequest: () => {},
+      onSuccess: () => {},
+      onError: (ctx) => { toast({ 
+        status: 'error',
+        title: 'Error',
+        description: ctx.message
+      }) },
+    }
+
+    authClient.signIn.social({
+      provider: "microsoft",
+      callbackURL: process.env.REACT_APP_CLIENT_URL,
+    }, loginOptions)
+
+  }
 
   return (
     (<Flex
@@ -120,8 +134,9 @@ function Logout() {
             fontSize="14px"
             h="40px"
             lineHeight="18px"
-            onClick={loginWithAzureAD}
-            w="204px">
+            onClick={login}
+            w="204px"
+            _hover={{ opacity: 0.8 }}>
             Log back in
           </Button>
           <Flex

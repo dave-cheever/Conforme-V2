@@ -14,7 +14,7 @@ const updateAudit = async (_, { auditInput }, { authorize, organization }) => {
     for (const participantId of audit.participantsIds)
       await Users.customAssertUser({ userId: participantId, organizationId: organization._id });
 
-    const updatedAudit = await Audits.customUpdateOne({ _id: audit._id }, auditInput, user._id, organization._id);
+    const updatedAudit = await Audits.customUpdateOne({ _id: audit._id }, auditInput, user.userId, organization._id);
     return updatedAudit;
   } catch (err: any) {
     throw new Error(err);

@@ -17,7 +17,7 @@ function ParticipantListItem({
     align="center"
     cursor="pointer"
     data-id="af8a6dfc65ea"
-    key={user._id}
+    key={user.userId}
     onClick={() => onSelectParticipant(user)}
     w="full">
     <Flex

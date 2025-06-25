@@ -17,7 +17,7 @@ function SortButton({
   setSortOrder: (order: 'asc' | 'desc') => void;
   ml?: number | string | {};
 }) {
-  return <Box data-id="edb62cd329ee" ml={ml ?? '15px'}>
+  return <Box data-id="edb62cd329ee" >
     <Menu autoSelect={false} data-id="9e6c02425b38">
       {({ onClose }) => (
         <>
@@ -41,7 +41,7 @@ function SortButton({
             ml={['15px', '0']}
             rounded="10px">
             <Flex align="center" data-id="387fc30084b0" mr="1">
-              <Text data-id="56ce5132037e" fontSize="smm" fontWeight="semi_medium">
+              <Text data-id="56ce5132037e" fontSize="14px" fontWeight="semi_medium">
                 Sort by
               </Text>
             </Flex>

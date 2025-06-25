@@ -38,7 +38,6 @@ import {
   redirectAfterLogin,
   removeDatabaseFields,
   sessionizeOrganization,
-  sessionizeUser,
 } from './helpers';
 import checkActionPermission from './permissions-checkers/actions';
 import checkAnswerPermission from './permissions-checkers/answers';
@@ -56,7 +55,6 @@ export {
   getProtocol,
   getClientUrl,
   getDomain,
-  sessionizeUser,
   sessionizeOrganization,
   isMigrationRoutePermitted,
   isPermitted,

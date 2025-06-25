@@ -39,7 +39,7 @@ const removeDocument = async (
     const updatedResponse = await Responses.customUpdateOne(
       { _id },
       update,
-      user._id,
+      user.userId,
       organization._id,
     );
     return !!updatedResponse;

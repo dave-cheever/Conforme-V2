@@ -74,14 +74,14 @@ function AuditModal({ refetch }) {
   }, [adminModalState, JSON.stringify(auditTypes)]);
 
   const selectAuditor = (user: IUser) => {
-    setValue('auditorId', user._id);
+    setValue('auditorId', user.userId);
     setSelectedAuditor(user);
   };
 
   const selectParticipants = (users: IUser[]) => {
     setValue(
       'participantsIds',
-      users.map((user) => user._id),
+      users.map((user) => user.userId).filter((id): id is string => id !== undefined),
     );
     setSelectedParticipants(users);
   };

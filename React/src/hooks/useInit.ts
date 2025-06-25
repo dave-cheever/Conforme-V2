@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { initReactI18next } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import i18n from 'i18next';
 import JSONfn from 'json-fn';
 
 import { useAppContext } from '../contexts/AppProvider';
+import useNavigate from './useNavigate';
 import { IRoles } from '../interfaces/IRoles';
 
 i18n
@@ -70,35 +71,46 @@ const useInit = () => {
   const { loading: loadingSettings, error: settingsError, data: settingsData } = useQuery(SETTINGS);
   const { loading: loadingOrganization, error: organizationError, data: organizationData } = useQuery(ORGANIZATION);
   const location = useLocation();
-  const navigate = useNavigate();
+  const { navigate } = useNavigate();
 
   useEffect(() => {
-    if (settingsData) {
-      const parsedRoles = JSONfn.parse(settingsData.roles) as IRoles;
-      globalThis.roles = parsedRoles;
-      setRoles(parsedRoles);
-      setSettings(settingsData?.settings || []);
+    try {
+      if (settingsData) {
+        const parsedRoles = JSONfn.parse(settingsData.roles) as IRoles;
+        globalThis.roles = parsedRoles;
+        setRoles(parsedRoles);
+        setSettings(settingsData?.settings || []);
+      }
+    } catch (error) {
+      console.error('Error in settings useEffect:', error);
     }
   }, [settingsError, JSON.stringify(settingsData)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (organizationError) throw organizationError;
-
-    if (organizationData) {
-      const { organization } = organizationData;
-      setOrganizationConfig(organization);
-
-      const modulePath = location.pathname.split('/')[1];
-      let module = organization.modules.find((m) => m.path === modulePath);
-      if (!module) {
-        [module] = organization.modules;
-        navigate(module.path);
+    try {
+      if (organizationError) {
+        console.error('Organization error:', organizationError);
+        return;
       }
 
-      setModule(module);
-      i18n.addResourceBundle('en', 'translation', module.translations || {});
-      if (module && user) document.title = `${module.name} - ${organization.name} - Conforme`;
-      else document.title = `${organization.name} - Conforme`;
+      if (organizationData) {
+        const { organization } = organizationData;
+        setOrganizationConfig(organization);
+
+        const modulePath = location.pathname.split('/')[1];
+        let module = organization.modules.find((m) => m.path === modulePath);
+        if (!module) {
+          [module] = organization.modules;
+          navigate(`/${module.path}`);
+        }
+
+        setModule(module);
+        i18n.addResourceBundle('en', 'translation', module.translations || {});
+        if (module && user) document.title = `${module.name} - ${organization.name} - Conforme`;
+        else document.title = `${organization.name} - Conforme`;
+      }
+    } catch (error) {
+      console.error('Error in organization useEffect:', error);
     }
   }, [user, organizationError, organizationData]); // eslint-disable-line react-hooks/exhaustive-deps
 

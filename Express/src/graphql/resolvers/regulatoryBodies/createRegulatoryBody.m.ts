@@ -16,7 +16,7 @@ const createRegulatoryBody = async (
 
     const createdRegulatoryBody = await RegulatoryBodies.customCreate(
       { name: name.trim() },
-      user._id,
+      user.userId,
       organization._id,
     );
     return createdRegulatoryBody;

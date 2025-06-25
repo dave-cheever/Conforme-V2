@@ -25,7 +25,7 @@ const updateSetting = async (
     const updatedSetting = await Settings.customUpdateOne(
       { _id: setting._id },
       settingsUpdate,
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedSetting;

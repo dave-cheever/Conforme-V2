@@ -16,10 +16,10 @@ const deleteAction = async (_, { _id }, { authorize, organization }) => {
     });
     if (!isPermitted) throw new Error('User is not permitted to delete this action.');
 
-    const deletedResult = await Actions.customDelete({ _id }, user._id, organization._id);
+    const deletedResult = await Actions.customDelete({ _id }, user.userId, organization._id);
 
     // resolve answer status if all actions status related to it are closed
-    Actions.customResolveAnswer(action?.scope?._id || '', user._id, organization);
+    Actions.customResolveAnswer(action?.scope?._id || '', user.userId, organization);
 
     return deletedResult;
   } catch (err: any) {

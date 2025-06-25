@@ -5,6 +5,8 @@ import { IOrganization } from 'app-interfaces';
 import { GraphService } from 'app-services';
 import { logger } from 'app-shared';
 import { isSignedIn } from 'app-utils';
+import { Organizations } from 'app-models';
+import getSession from 'src/utils/auth/getSession';
 
 const filesRouter = () => {
   const router = Router();
@@ -15,9 +17,10 @@ const filesRouter = () => {
     GraphService.inMemoryStrategy.any(),
     async (req: Request, res: Response) => {
       try {
-        const { body, user, session } = req;
+        const { body } = req;
+        const session = await getSession(req, res);
         const files: Express.Multer.File[] = req.files as Express.Multer.File[];
-        const { organization } = session;
+        const { organization, user } = session;
 
         if (!user) {
           return res
@@ -67,9 +70,13 @@ const filesRouter = () => {
       try {
         if (!req.params.userId) return res.status(StatusCodes.OK).end();
 
+        const clientUrl = req.cookies?.clientUrl || '';
+        const domain = new URL(clientUrl)?.host || '';
+        if (!domain) return res.status(StatusCodes.OK).end();
+        const organization = await Organizations.customFindByDomain(domain);
         const photo = await GraphService.getUserPhoto({
           userId: req.params.userId,
-          organization: req.session.organization,
+          organization,
         });
         if (!photo) return res.status(StatusCodes.OK).end();
 

@@ -91,7 +91,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
             },
           },
         },
-        user._id,
+        user.userId,
         organization._id,
       );
     };
@@ -129,7 +129,7 @@ const renewResponse = async (_, { _id }, { authorize, organization }) => {
         evidence: newEvidence,
         questions: newQuestions,
       },
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedResponse;

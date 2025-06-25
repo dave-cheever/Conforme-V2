@@ -48,7 +48,7 @@ userSchema.statics.customFind = async function ({ organization }): Promise<IUser
 };
 
 userSchema.statics.customFindById = async function (userId: string): Promise<IUser | null> {
-  const user = await this.findById(userId).lean();
+  const user = await this.findOne({ userId }).lean();
   return user;
 };
 
@@ -91,7 +91,7 @@ userSchema.statics.customFindByIdWithDetails = async function ({
     email: mail || userPrincipalName!,
     jobTitle: jobTitle!,
     role,
-    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user._id}`
+    imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${user.userId}`
   };
 };
 

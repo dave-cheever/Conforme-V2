@@ -6,10 +6,14 @@
   "scripts": {
     "build": "webpack",
     "start": "nodemon --config nodemon.json",
+    "add-user-id-field": "ts-node src/migrations/add-userId-field.ts",
     "lint:check": "eslint src/ --ext .js,.ts",
     "lint:fix": "eslint src/ --ext .js,.ts --fix",
     "format:check": "prettier --check \"**/*.{js,ts,json,md}\"",
     "format:fix": "prettier --write \"**/*.{js,ts,json,md}\""
+  },
+  "engines": {
+    "node": ">=22.0.0"
   },
   "_moduleAliases": {
     "app-interfaces": "./interfaces",
@@ -24,9 +28,12 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.9.2",
-    "@pnp/nodejs-commonjs": "^2.15.0",
+    "@azure/msal-node": "^3.6.1",
+    "axios": "^1.10.0",
+    "better-auth": "^1.2.9",
     "body-parser": "^1.20.2",
     "command-line-args": "^5.2.1",
+    "cookie-parser": "^1.4.7",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "cron": "^2.4.3",
@@ -42,17 +49,16 @@
     "mongoose": "^7.5.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "passport": "^0.5.3",
-    "passport-azure-ad": "^4.3.5",
     "pluralize": "^8.0.0",
     "winston": "^3.10.0",
     "wkhtmltoimage": "^0.1.5",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
+    "@types/axios": "^0.9.36",
     "@types/express": "^4.17.17",
     "@types/lodash": "^4.14.197",
-    "@types/multer": "^1.4.7",
+    "@types/multer": "^1.4.13",
     "@types/node": "^20.5.7",
     "@types/passport": "^1.0.12",
     "@types/passport-azure-ad": "^4.3.1",

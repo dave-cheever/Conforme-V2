@@ -48,12 +48,12 @@ const updateUser = async (
       defaultPage: updatedDefaultPage, // Use the modified defaultPage
       metatags: {
         ...updateUser?.metatags,
-        ...genMetatags('updated', user._id),
+        ...genMetatags('updated', user.userId),
       },
     };
 
     // Update the user in the database
-    await Users.updateOne({ _id: updateUser._id }, updatedUser);
+    await Users.updateOne({ userId: updateUser.userId }, updatedUser);
 
     return updatedUser;
   } catch (err: any) {

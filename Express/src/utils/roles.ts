@@ -59,7 +59,7 @@ const roles = {
       'auditLogs.view': ifRACHasAccess,
       'responses.view': ifRACHasAccess,
       'responses.edit': ifRACHasAccess,
-      'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
+      'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user.userId,
       'responses.manageContributors': ifRAHasAccess,
       'responses.manageFollowers': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
@@ -67,7 +67,7 @@ const roles = {
       // Audits module
       'audits.edit': ifHasAuditAccess,
       'auditComments.add': ifHasAuditAccess,
-      'comments.delete': ({ user, comment }) => user._id === comment.authorId,
+      'comments.delete': ({ user, comment }) => user.userId === comment.authorId,
       'questions.add': ifHasQuestionAccess,
       'questions.edit': ifHasQuestionEditAccess,
       'questions.delete': ifHasQuestionEditAccess,
@@ -97,7 +97,7 @@ const roles = {
     restricted: {
       // Tracker module
       'responses.edit': ifRACHasAccess,
-      'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user._id,
+      'responses.manageResponsible': ({ user, response }) => user && response?.accountableId === user.userId,
       'responses.manageContributors': ifRAHasAccess,
       'responses.manageFollowers': ifRAHasAccess,
       'comments.add': ifRACFHasAccess,
@@ -105,7 +105,7 @@ const roles = {
       // Audits module
       'audits.edit': ifHasAuditAccess,
       'auditComments.add': ifHasAuditAccess,
-      'comments.delete': ({ user, comment }) => user._id === comment.authorId,
+      'comments.delete': ({ user, comment }) => user.userId === comment.authorId,
       'questions.add': ifHasQuestionAccess,
       'questions.edit': ifHasQuestionEditAccess,
       'questions.delete': ifHasQuestionEditAccess,
@@ -148,7 +148,7 @@ const roles = {
     restricted: {
       'audits.changeAuditor': ({ audit }) => audit.status !== 'completed',
       'audits.edit': ({ audit }) => audit.status !== 'completed',
-      'comments.delete': ({ user, comment }) => user._id === comment.authorId,
+      'comments.delete': ({ user, comment }) => user.userId === comment.authorId,
       'answers.delete': ({ audit }) => audit.status !== 'completed',
       adminPanel: ({ permission, revokedPermissions }) => {
         if (revokedPermissions?.includes(permission)) return false;

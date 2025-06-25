@@ -27,7 +27,7 @@ const updateLocation = async (
     const updatedLocation = await Locations.customUpdateOne(
       { _id: location._id },
       locationModifyInput,
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedLocation;

@@ -84,8 +84,8 @@ function NavigationTop() {
         fontSize="md"
         fontWeight="semi_medium"
         mr={['0', '20px']}
-        pl={[0, 2]}
-        spacing={4}
+        pl={[0, 6]}
+        spacing={0}
         w="full">
         <Flex
           alignItems="center"

@@ -61,12 +61,12 @@ const questions = async (_, { questionQuery }, { authorize, organization }, info
       /**
        * User's direct reports. The user is a manager of these users.
        */
-      const users = await Users.customFindWithDetails({ selector: { managerId: user._id }, organization });
+      const users = await Users.customFindWithDetails({ selector: { managerId: user.userId }, organization });
 
       /**
        * Array of all users including the user himself and his direct reports
        */
-      const userIds = [user._id, ...users.map((user) => user._id)];
+      const userIds = [user.userId, ...users.map((user) => user.userId)];
 
       const $or: { [key: string]: string }[] = [];
       userIds.forEach((_id) => {

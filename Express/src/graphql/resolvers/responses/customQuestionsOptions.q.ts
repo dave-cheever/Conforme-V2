@@ -33,10 +33,10 @@ const customQuestionsOptions = async (_, { filterName }, { authorize, organizati
       pipeline.push({
         $match: {
           $or: [
-            { accountableId: user._id },
-            { responsibleId: user._id },
-            { contributorsIds: { $in: [user._id] } },
-            { followersIds: { $in: [user._id] } },
+            { accountableId: user.userId },
+            { responsibleId: user.userId },
+            { contributorsIds: { $in: [user.userId] } },
+            { followersIds: { $in: [user.userId] } },
           ],
         },
       });

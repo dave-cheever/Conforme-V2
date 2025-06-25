@@ -5,5 +5,5 @@ import updateDocumentPathInDocuments from './79c3ce81-7120-483a-8982-c5072e39db1
 export {
   createBREGlobalDocuments,
   createBREGroupDocuments,
-  updateDocumentPathInDocuments,
+  updateDocumentPathInDocuments
 };

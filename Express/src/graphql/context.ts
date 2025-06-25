@@ -3,37 +3,34 @@ import { GraphQLError } from 'graphql';
 
 import { IOrganization, IUser } from 'app-interfaces';
 import { Organizations } from 'app-models';
-import { sessionizeOrganization } from 'app-utils';
+import { fromNodeHeaders } from 'better-auth/node';
+import auth from 'src/utils/auth/auth';
 
 const context = async ({ req, res }) => {
-  const { organization } = req.session || {};
+
+  const clientUrl = req.cookies?.clientUrl || '';
+  const domain = new URL(clientUrl)?.host || '';
+  let organization;
+  try {
+    organization = await Organizations.customFindByDomain(domain);
+  } catch (error) {
+    console.log('No organization found');
+  }
 
   // Function to authorize user in GraphQL methods
   // Throws an error if session is not valid
   const authorize = async (): Promise<IUser> => {
-    const { user } = req;
-    if (!user)
-      throw new GraphQLError('Invalid session');
 
-    // Check organization licence
-    // And refresh organization in cookie once at 6 hours
-    const { licenceLastChecked } = req.session.passport;
-    if (
-      !licenceLastChecked ||
-      isBefore(parseISO(licenceLastChecked), sub(new Date(), { hours: 6 }))
-    ) {
-      const latestOrganization = await Organizations.customFindById(organization._id);
-      const isLicenceValid = isAfter(
-        new Date(latestOrganization.licenceExpirationDate),
-        new Date(),
-      );
-      if (!isLicenceValid)
-        throw new GraphQLError("Organization's licence expired");
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
 
-      req.session.passport.licenceLastChecked = new Date();
-      req.session.organization = sessionizeOrganization(latestOrganization);
-    }
-    return user;
+    if (!session)
+      throw new GraphQLError('No session found');
+
+    return { 
+      ...session.user
+    } as IUser;
   };
 
   return {

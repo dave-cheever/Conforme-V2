@@ -13,7 +13,7 @@ const deleteLocation = async (_, { _id }, { authorize, organization }) => {
 
     const deletedResult = await Locations.customDelete(
       { _id },
-      user._id,
+      user.userId,
       organization._id,
     );
     return deletedResult;

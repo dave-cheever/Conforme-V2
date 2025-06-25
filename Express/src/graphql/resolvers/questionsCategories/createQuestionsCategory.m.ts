@@ -7,7 +7,7 @@ const createQuestionsCategory = async (_, { questionsCategory }, { authorize, or
 
     if (!isPermitted({ user, action: 'questionsCategories.add' })) throw new Error('User is not permitted');
 
-    const createdQuestionsCategory = await QuestionsCategories.customCreate(questionsCategory, user._id, organization._id);
+    const createdQuestionsCategory = await QuestionsCategories.customCreate(questionsCategory, user.userId, organization._id);
     return createdQuestionsCategory;
   } catch (err: any) {
     throw new Error(err);

@@ -27,13 +27,13 @@ const updateTrackerItem = async (
     const updatedTrackerItem = await TrackerItems.customUpdateOne(
       { _id: trackerItem._id },
       trackerItemModifyInput,
-      user._id,
+      user.userId,
       organization._id,
     );
 
     TrackerItems.customSynchronizeResponses({
       trackerItem: updatedTrackerItem,
-      userId: user._id,
+      userId: user.userId,
       prevDueDate: trackerItem.dueDate,
       organizationId: organization._id,
     });

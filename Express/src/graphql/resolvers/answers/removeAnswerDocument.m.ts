@@ -25,7 +25,7 @@ const removeAnswerDocument = async (_, { answerDocumentRemoveInput }, { authoriz
     const update: Partial<IAnswer> = {};
     update.attachments = answer.attachments?.filter((attachment) => attachment.id !== documentId);
 
-    const updatedAnswer = await Answers.customUpdateOne({ _id }, update, user._id, organization._id);
+    const updatedAnswer = await Answers.customUpdateOne({ _id }, update, user.userId, organization._id);
     return !!updatedAnswer;
   } catch (error: any) {
     throw new Error(error);

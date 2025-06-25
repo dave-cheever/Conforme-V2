@@ -1,4 +1,4 @@
-import { AdalFetchClient } from '@pnp/nodejs-commonjs';
+import { ConfidentialClientApplication, Configuration } from '@azure/msal-node';
 import axios from 'axios';
 import multer from 'multer';
 
@@ -18,25 +18,51 @@ const getClient = async (organizationId: string) => {
   if (!organizationId) throw new Error('Wrong organization config');
 
   const { clientId, tenantId, secret } = organization;
-  const token = await new AdalFetchClient(tenantId || '', clientId || '', secret || '').acquireToken();
-  const client = axios.create({
-    baseURL: process.env.GRAPH_URL,
-    headers: {
-      Authorization: `${token.tokenType} ${token.accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  return client;
+  
+  // Create MSAL confidential client application
+  const msalConfig: Configuration = {
+    auth: {
+      clientId: clientId || '',
+      authority: `https://login.microsoftonline.com/${tenantId || ''}`,
+      clientSecret: secret || '',
+    }
+  };
+
+  const cca = new ConfidentialClientApplication(msalConfig);
+  
+  // Acquire token for Microsoft Graph
+  const tokenRequest = {
+    scopes: ['https://graph.microsoft.com/.default']
+  };
+
+  try {
+    const response = await cca.acquireTokenByClientCredential(tokenRequest);
+    if (!response || !response.accessToken) {
+      throw new Error('Failed to acquire access token');
+    }
+
+    const client = axios.create({
+      baseURL: process.env.GRAPH_URL,
+      headers: {
+        Authorization: `Bearer ${response.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return client;
+  } catch (error) {
+    logger.error('MSAL token acquisition failed:', error);
+    throw new Error('Failed to authenticate with Microsoft Graph');
+  }
 };
 
 // userId can be AAD ID or email
-const getUserPhoto = async ({ userId, organization }) => {
+const getUserPhoto = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
   try {
     const client = await getClient(organization._id);
     const res = await client.get(`users/${userId}/photos/96x96/$value`, {
       responseType: 'arraybuffer',
     });
-    return Buffer.from(res.data);
+    return Buffer.from(res.data as ArrayBuffer);
   } catch (e) {
     console.log(`Not found profile photo for user with ID ${userId}`);
     return undefined;
@@ -50,7 +76,7 @@ const getUserData = async ({ userId, organization }: { userId: string; organizat
     const res = await client.get(`users/${userId}`);
     return res.data;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return null;
   }
 };
@@ -76,7 +102,8 @@ const getBasicUsers = async ({ usersIds, organization }: { usersIds: string[]; o
       const query = `id in (${chunk.map((id) => `'${id}'`).join(', ')})`;
       try {
         const res = await client.get(`users?$filter=${query}`);
-        users.push(...(res.data?.value || []));
+        const responseData = res.data as { value?: any[] };
+        users.push(...(responseData?.value || []));
       } catch (e: any) {
         logger.error(e.message);
         return [];
@@ -124,7 +151,8 @@ const getUsers = async ({
     }
     const properties = ['id', 'givenName', 'surname', 'displayName', 'userPrincipalName', 'jobTitle', 'department'].join(',');
     const res = await client.get(`users?$filter=${filterQuery}&$select=${properties}`);
-    let users = res.data?.value || [];
+    const responseData = res.data as { value?: any[] };
+    let users = responseData?.value || [];
     if (filterByJobTitle && filterByJobTitle.length > 0) users = users.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
 
     return users.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle, department }) => ({
@@ -145,28 +173,29 @@ const getUsers = async ({
 
 // userId can be AAD ID or email
 const checkMemberGroups = async ({
-  userId,
+  userIdOrEmail,
   groups,
   organization,
 }: {
-  userId: string;
+  userIdOrEmail: string;
   groups: { [name: string]: string };
   organization: IOrganization;
 }) => {
   try {
     const client = await getClient(organization._id);
-    const res = await client.post(`/users/${userId}/checkMemberGroups`, {
+    const res = await client.post(`/users/${userIdOrEmail}/checkMemberGroups`, {
       groupIds: Object.values(groups),
     });
+    const responseData = res.data as { value?: string[] };
     return Object.keys(groups).reduce(
       (acc, curr) => ({
         ...acc,
-        [curr]: (res.data?.value || []).includes(groups[curr]),
+        [curr]: (responseData?.value || []).includes(groups[curr]),
       }),
       {},
     );
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return {};
   }
 };
@@ -176,7 +205,8 @@ const getLineManagerId = async ({ userId, organization }: { userId: string; orga
   try {
     const client = await getClient(organization._id);
     const res = await client.get(`users/${userId}/manager`);
-    return res.data.id;
+    const responseData = res.data as { id?: string };
+    return responseData.id;
   } catch (e: any) {
     console.log(`Line manager not found for user with ID ${userId}`);
   }
@@ -212,7 +242,8 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
   const splocationId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
   const client = await getClient(organization._id);
   const site = await client.get(splocationId);
-  const { id: siteId } = site.data;
+  const siteData = site.data as { id?: string };
+  const { id: siteId } = siteData;
   if (!siteId) {
     throw new Error('Graph error: Wrong SharePoint site configuration');
   }
@@ -220,10 +251,12 @@ const getFileDetails = async (id: string, organization: IOrganization): Promise<
   try {
     const fileRes = await client.get(`sites/${siteId}/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
     const thumbnailRes = await client.get(`sites/${siteId}/lists/${organization.spLibraryId}/items/${id}/driveItem/thumbnails/0/small`);
+    const fileData = fileRes.data as any;
+    const thumbnailData = thumbnailRes.data as any;
     return {
-      thumbnail: thumbnailRes?.data.url,
-      path: fileRes?.data['@microsoft.graph.downloadUrl'],
-      preview: fileRes?.data.webUrl,
+      thumbnail: thumbnailData?.url,
+      path: fileData?.['@microsoft.graph.downloadUrl'],
+      preview: fileData?.webUrl,
     };
   } catch (e: any) {
     logger.error(e.response?.data?.error?.message || 'Unknown error');
@@ -244,7 +277,8 @@ const uploadDocuments = async (
 
   const client = await getClient(organization._id);
   const site = await client.get(splocationId);
-  const { id } = site.data;
+  const siteData = site.data as { id?: string };
+  const { id } = siteData;
   if (!id) {
     logger.error('Graph error: Wrong SharePoint site configuration');
     return [];
@@ -265,7 +299,9 @@ const uploadDocuments = async (
         let documentExistantTimes = 0;
 
         try {
-          (await client.get(`sites/${id}/drive/root:/${path}:/children`))?.data?.value?.map((file) => {
+          const childrenRes = await client.get(`sites/${id}/drive/root:/${path}:/children`);
+          const childrenData = childrenRes.data as { value?: any[] };
+          childrenData?.value?.map((file) => {
             if (new RegExp(document.originalname.split('.')[0]).test(file?.name)) documentExistantTimes += 1;
 
             return undefined;
@@ -276,15 +312,14 @@ const uploadDocuments = async (
           `sites/${id}/drive/root:/${path}/${incrementFileName(document.originalname, documentExistantTimes)}:/createUploadSession`,
           {},
         );
-        const { uploadUrl } = uploadSession.data;
+        const uploadSessionData = uploadSession.data as { uploadUrl?: string };
+        const { uploadUrl } = uploadSessionData;
         if (!uploadUrl) throw new Error('Graph error: Cannot generate upload url');
 
         let uploadedBytes = 0;
         const upload = async () => {
           const chunk = document.buffer.slice(uploadedBytes, 10 * 1024 * 1024 + uploadedBytes); // Chunks has 10 megabytes
           const result = await client.put(uploadUrl, chunk, {
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity,
             headers: {
               'Content-Length': chunk.length,
               'Content-Range': `bytes ${uploadedBytes}-${chunk.length + uploadedBytes - 1}/${document.size}`,
@@ -296,21 +331,22 @@ const uploadDocuments = async (
           return result;
         };
 
-        const getItemId = async (result) => {
+        const getItemId = async (result: any) => {
           const res = await client.get(`drives/${result.data.parentReference.driveId}/items/${result.data.id}?$select=sharepointids`);
-          return res.data.sharepointIds.listItemId;
+          const resData = res.data as { sharepointIds?: { listItemId?: string } };
+          return resData.sharepointIds?.listItemId;
         };
 
         const result = await upload();
         const locationId = await getItemId(result);
         return {
           name: incrementFileName(document.originalname, documentExistantTimes),
-          id: locationId,
+          id: locationId || '',
           addedAt: new Date(),
         };
       } catch (e: any) {
-        logger.error(e.response.data.error.message);
-        throw new Error(e.response.data.error.message);
+        logger.error(e.response?.data?.error?.message || 'Unknown error');
+        throw new Error(e.response?.data?.error?.message || 'Unknown error');
       }
     }),
   );
@@ -329,7 +365,8 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
   const splocationId = `sites/${organization.spSiteUrl.replace('https://', '').replace('.com', '.com:')}`;
 
   const site = await client.get(splocationId);
-  const { id: locationId } = site.data;
+  const siteData = site.data as { id?: string };
+  const { id: locationId } = siteData;
   if (!locationId) {
     logger.error('Graph error: Wrong SharePoint site configuration');
     return false;
@@ -338,6 +375,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
   try {
     // Get file details
     const fileDetails = await client.get(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
+    const fileDetailsData = fileDetails.data as any;
 
     // Create folder
     const folderRes = await client.post(`sites/${locationId}/drive/items/root/children`, {
@@ -345,29 +383,31 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
       folder: {},
       '@microsoft.graph.conflictBehavior': 'replace',
     });
+    const folderResData = folderRes.data as { id?: string };
 
     // Move file to new folder
     await client.patch(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`, {
       parentReference: {
         path: `sites/${locationId}/drive/items/root:/${newPath}`,
-        id: folderRes.data.id,
+        id: folderResData.id,
       },
       name: newName,
     });
 
     try {
       // Get old folder details
-      const tempFolderDetails = await client.get(`sites/${locationId}/drive/items/${fileDetails.data.parentReference.id}`);
+      const tempFolderDetails = await client.get(`sites/${locationId}/drive/items/${fileDetailsData.parentReference.id}`);
+      const tempFolderDetailsData = tempFolderDetails.data as { folder?: { childCount?: number } };
 
       // Delete old folder if empty
-      if (tempFolderDetails.data.folder.childCount === 0)
-        await client.delete(`sites/${locationId}/drive/items/${fileDetails.data.parentReference.id}`);
+      if (tempFolderDetailsData.folder?.childCount === 0)
+        await client.delete(`sites/${locationId}/drive/items/${fileDetailsData.parentReference.id}`);
     } catch (deleteErr: any) { } // do not do anything if folder was already removed
 
     return true;
   } catch (e: any) {
-    logger.error(e.response.data.error.message);
-    throw new Error(e.response.data.error.message);
+    logger.error(e.response?.data?.error?.message || 'Unknown error');
+    throw new Error(e.response?.data?.error?.message || 'Unknown error');
   }
 };
 
@@ -384,8 +424,8 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
     await client.delete(`sites/${spStart}/${spUrlSite}:/lists/${organization.spLibraryId}/items/${id}/driveItem/`);
     return true;
   } catch (e: any) {
-    logger.error(e.response.data.error.message);
-    throw new Error(e.response.data.error.message);
+    logger.error(e.response?.data?.error?.message || 'Unknown error');
+    throw new Error(e.response?.data?.error?.message || 'Unknown error');
   }
 };
 

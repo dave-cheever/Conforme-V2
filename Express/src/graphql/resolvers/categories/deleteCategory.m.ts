@@ -10,7 +10,7 @@ const deleteCategory = async (_, { _id }, { authorize, organization }) => {
 
     const deletedResult = await Categories.customDelete(
       { _id },
-      user._id,
+      user.userId,
       organization._id,
     );
     return deletedResult;

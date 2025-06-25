@@ -45,7 +45,7 @@ const submitResponse = async (_, { _id }, { authorize, organization }) => {
         lastCompletionDate: new Date(),
         dueDate,
       },
-      user._id,
+      user.userId,
       organization._id,
     );
     return dueDate;

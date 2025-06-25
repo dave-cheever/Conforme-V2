@@ -23,7 +23,7 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
         $match: {
           $and: [
             {
-              $or: [{ assigneeId: user?._id }, { 'metatags.addedBy': user?._id }],
+              $or: [{ assigneeId: user?.userId }, { 'metatags.addedBy': user?.userId }],
             },
           ],
         },
@@ -259,31 +259,31 @@ const actions = async (_, { actionQueryInput }, { authorize, organization }, inf
       /**
        * User's direct reports. The user is a manager of these users.
        */
-      const users = await Users.customFindWithDetails({ selector: { managerId: user._id }, organization });
+      const users = await Users.customFindWithDetails({ selector: { managerId: user.userId }, organization });
 
       /**
        * Array of all users including the user himself and his direct reports
        */
-      const userIds = [user._id, ...users.map((user) => user._id)];
+      const userIds = [user.userId, ...users.map((user) => user.userId)];
 
       const $or: { [key: string]: string }[] = [];
-      userIds.forEach((_id) => {
+      userIds.forEach((userId) => {
         $or.push(
           ...[
             {
-              'answer.audit.auditorId': _id,
+              'answer.audit.auditorId': userId,
             },
             {
-              'answer.audit.participantsIds': _id,
+              'answer.audit.participantsIds': userId,
             },
             {
-              'answer.audit.location.ownerId': _id,
+              'answer.audit.location.ownerId': userId,
             },
             {
-              'answer.audit.businessUnit.ownerId': _id,
+              'answer.audit.businessUnit.ownerId': userId,
             },
             {
-              assigneeId: _id,
+              assigneeId: userId,
             },
           ],
         );

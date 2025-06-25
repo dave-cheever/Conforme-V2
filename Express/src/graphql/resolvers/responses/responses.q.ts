@@ -34,10 +34,10 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       pipeline.push({
         $match: {
           $or: [
-            { accountableId: user._id },
-            { responsibleId: user._id },
-            { contributorsIds: { $in: [user._id] } },
-            { followersIds: { $in: [user._id] } },
+            { accountableId: user.userId },
+            { responsibleId: user.userId },
+            { contributorsIds: { $in: [user.userId] } },
+            { followersIds: { $in: [user.userId] } },
           ],
         },
       });
@@ -528,7 +528,6 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       }
     });
     const res = (await Responses.aggregate(pipeline))[0];
-    console.log(res?.responses)
     return {
       responses: res?.responses || [],
       total: res?.total?.total || 0,

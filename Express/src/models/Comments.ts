@@ -170,7 +170,7 @@ commentSchema.statics.customDelete = async function (
 };
 
 commentSchema.statics.sendMentionedEmail = async function (userId: string, organization: IOrganization, comment: IComment): Promise<void> {
-  const user = await Users.findById(userId).lean();
+  const user = await Users.findOne({ userId }).lean();
   const module = organization.modules.find(({ _id }) => _id === comment.scope?.moduleId);
   await Notifications.customCreate(
     {

@@ -6,7 +6,7 @@ const usersByIdFromDb = async (_, { userQueryInput }, { organization }) => {
     if (!usersIds || usersIds.length === 0) return [];
     // Fetch users from MongoDB by their IDs and organization
     const users = await Users.find({
-      _id: { $in: usersIds },
+      userId: { $in: usersIds },
       organizationsIds: { $in: [organization._id] },
       'metatags.removedAt': { $eq: null },
     }).lean();

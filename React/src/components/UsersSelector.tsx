@@ -67,7 +67,7 @@ function UsersSelector({
             <UsersSelectorList
               data-id="0c29480541a6"
               disabled={disabled}
-              filteredUsers={filteredUsers.filter((filteredUser) => selected?.includes(filteredUser._id))}
+              filteredUsers={filteredUsers.filter((filteredUser) => selected?.includes(filteredUser.userId))}
               handleChange={handleChange}
               selected={selected}
               selectedRole={selectedRole} />
@@ -75,7 +75,7 @@ function UsersSelector({
           <UsersSelectorList
             data-id="0a0815518d47"
             disabled={disabled}
-            filteredUsers={filteredUsers.filter((filteredUser) => !selected?.includes(filteredUser._id))}
+            filteredUsers={filteredUsers.filter((filteredUser) => !selected?.includes(filteredUser.userId))}
             handleChange={handleChange}
             selected={selected}
             selectedRole={selectedRole} />

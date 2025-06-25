@@ -6,6 +6,7 @@ export interface DefaultPage {
 }
 
 export interface IUser extends IBase {
+  userId: string;
   organizationsIds?: string[];
   firstName?: string;
   lastName?: string;

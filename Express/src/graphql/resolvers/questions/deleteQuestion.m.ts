@@ -16,7 +16,7 @@ const deleteQuestion = async (_, { _id }, { authorize, organization }) => {
     });
     if (!isPermitted) throw new Error('User is not permitted to delete this question.');
 
-    const deletedResult = await Questions.customDelete({ _id }, user._id, organization._id);
+    const deletedResult = await Questions.customDelete({ _id }, user.userId, organization._id);
     return deletedResult;
   } catch (err: any) {
     throw new Error(err);

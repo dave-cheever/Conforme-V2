@@ -1,4 +1,4 @@
-import { AdalFetchClient } from "@pnp/nodejs-commonjs";
+import { ConfidentialClientApplication } from "@azure/msal-node";
 import axios from "axios";
 
 import IConfig from "../interfaces/IConfig";
@@ -22,15 +22,41 @@ export class GraphService {
     if (!organizationId) throw new Error("Wrong organization config");
 
     const { clientId, tenantId, secret } = organization;
-    const token = await new AdalFetchClient(tenantId || '', clientId || '', secret || '').acquireToken();
-    const client = axios.create({
-      baseURL: this._config.GraphUrl,
-      headers: {
-        Authorization: `${token.tokenType} ${token.accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return client;
+    
+    // Create MSAL confidential client application
+    const msalConfig = {
+      auth: {
+        clientId: clientId || '',
+        authority: `https://login.microsoftonline.com/${tenantId || ''}`,
+        clientSecret: secret || '',
+      }
+    };
+
+    const cca = new ConfidentialClientApplication(msalConfig);
+    
+    // Acquire token for Microsoft Graph
+    const tokenRequest = {
+      scopes: ['https://graph.microsoft.com/.default']
+    };
+
+    try {
+      const response = await cca.acquireTokenByClientCredential(tokenRequest);
+      if (!response || !response.accessToken) {
+        throw new Error('Failed to acquire access token');
+      }
+
+      const client = axios.create({
+        baseURL: this._config.GraphUrl,
+        headers: {
+          Authorization: `Bearer ${response.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return client;
+    } catch (error) {
+      console.error('MSAL token acquisition failed:', error);
+      throw new Error('Failed to authenticate with Microsoft Graph');
+    }
   }
 
   // userId can be AAD ID or email

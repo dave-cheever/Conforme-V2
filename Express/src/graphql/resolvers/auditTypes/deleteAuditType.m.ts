@@ -7,7 +7,7 @@ const deleteAuditType = async (_, { _id }, { authorize, organization }) => {
 
     if (!isPermitted({ user, action: 'auditTypes.delete' })) throw new Error('User is not permitted to delete this audit type.');
 
-    const deletedResult = await AuditTypes.customDelete({ _id }, user._id, organization._id);
+    const deletedResult = await AuditTypes.customDelete({ _id }, user.userId, organization._id);
     return deletedResult;
   } catch (err: any) {
     throw new Error(err);

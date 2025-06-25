@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, Divider, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -237,7 +237,15 @@ function Audits() {
         data-id="bafef65da6de"
         setViewMode={setViewMode}
         viewMode={viewMode}
-        views={['grid', 'list', 'group']} />
+        views={['grid', 'list', 'group']} 
+      />
+      <Divider
+        borderColor="gray.300"
+        height="30px"
+        mx={4}
+        mt={1}
+        orientation="vertical"
+      />
       {device !== 'mobile' && (
         <CSVLink
           data={csvData}

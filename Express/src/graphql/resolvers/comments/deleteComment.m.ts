@@ -13,7 +13,7 @@ const deleteComment = async (_, { _id }, { authorize, organization }) => {
 
     const deletedResult = await Comments.customDelete(
       { _id },
-      user._id,
+      user.userId,
       organization._id,
     );
     return deletedResult;

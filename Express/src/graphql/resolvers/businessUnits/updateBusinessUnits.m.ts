@@ -29,7 +29,7 @@ const updateBusinessUnit = async (
     const updatedBusinessUnit = await BusinessUnits.customUpdateOne(
       { _id: businessUnit._id },
       businessUnitModifyInput,
-      user._id,
+      user.userId,
       organization._id,
     );
     return updatedBusinessUnit;

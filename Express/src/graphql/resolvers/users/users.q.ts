@@ -34,19 +34,19 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
         }
         if (shouldJoin(['responsibleCount']))
           // eslint-disable-next-line no-param-reassign
-          user.responsibleCount = await getRACFCount({ responsibleId: user._id });
+          user.responsibleCount = await getRACFCount({ responsibleId: user.userId });
 
         if (shouldJoin(['accountableCount']))
           // eslint-disable-next-line no-param-reassign
-          user.accountableCount = await getRACFCount({ accountableId: user._id });
+          user.accountableCount = await getRACFCount({ accountableId: user.userId });
 
         if (shouldJoin(['contributorCount']))
           // eslint-disable-next-line no-param-reassign
-          user.contributorCount = await getRACFCount({ contributorsIds: user._id });
+          user.contributorCount = await getRACFCount({ contributorsIds: user.userId });
 
         if (shouldJoin(['followerCount']))
           // eslint-disable-next-line no-param-reassign
-          user.followerCount = await getRACFCount({ followersIds: user._id });
+          user.followerCount = await getRACFCount({ followersIds: user.userId });
 
         // Inject audits count
         const getAuditsCount = async (selector: object = {}) => {
@@ -54,7 +54,7 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
             {
               $match: {
                 'metatags.removedAt': { $eq: null },
-                auditorId: user._id,
+                auditorId: user.userId,
                 organizationId: organization._id,
                 ...selector,
               },
@@ -86,7 +86,7 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
           const pipeline: PipelineStage[] = [
             {
               $match: {
-                assigneeId: user._id,
+                assigneeId: user.userId,
                 'metatags.removedAt': { $eq: null },
                 organizationId: organization._id,
                 ...selector,
@@ -133,7 +133,7 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
             pipeline.push({
               $match: {
                 'question.questionsCategoryId': usersAnswersCountInput.questionsCategoriesId,
-                'metatags.addedBy': user._id,
+                'metatags.addedBy': user.userId,
                 ...selector,
               },
             });

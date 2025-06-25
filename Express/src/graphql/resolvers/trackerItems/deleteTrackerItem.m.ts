@@ -28,7 +28,7 @@ const deleteTrackerItem = async (
       ...trackerItem,
       metatags: {
         ...trackerItem?.metatags,
-        ...genMetatags('removed', user._id),
+        ...genMetatags('removed', user.userId),
       },
     };
     await TrackerItems.updateOne(

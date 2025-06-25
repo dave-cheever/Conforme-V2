@@ -318,10 +318,10 @@ responseSchema.statics.customSearch = async function (searchQuery, user, organiz
     pipeline.push({
       $match: {
         $or: [
-          { 'trackerResponse.accountableId': user._id },
-          { 'trackerResponse.responsibleId': user._id },
-          { 'trackerResponse.contributorsIds': { $in: [user._id] } },
-          { 'trackerResponse.followersIds': { $in: [user._id] } },
+          { 'trackerResponse.accountableId': user.userId },
+          { 'trackerResponse.responsibleId': user.userId },
+          { 'trackerResponse.contributorsIds': { $in: [user.userId] } },
+          { 'trackerResponse.followersIds': { $in: [user.userId] } },
         ],
       },
     });

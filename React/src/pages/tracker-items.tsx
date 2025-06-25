@@ -291,8 +291,7 @@ function TrackerItems() {
           <Divider
             borderColor="gray.300"
             height="30px"
-            ml={2}
-            mr={2}
+            mx={4}
             mt={1}
             orientation="vertical"
           />
