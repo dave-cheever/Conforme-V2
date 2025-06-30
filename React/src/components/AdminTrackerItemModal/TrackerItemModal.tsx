@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { Avatar, Button, Flex, Icon, ModalBody, ModalContent, ModalHeader, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
@@ -8,6 +8,7 @@ import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { initialDialogDetails, useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import useDevice from '../../hooks/useDevice';
+import useNavigate from '../../hooks/useNavigate';
 import useTrackerItemModal from '../../hooks/useTrackerItemModal';
 import { Close, OpenMenuArrow, Save } from '../../icons';
 import AlertDialog from '../AlertDialog';
@@ -19,6 +20,8 @@ function TrackerItemModal({ refetch }) {
   const device = useDevice();
   const { reset } = useTrackerItemModalContext();
   const { user } = useAppContext();
+  const {navigateTo} = useNavigate();
+
   const {
     trackerItem,
     errors,
@@ -56,11 +59,16 @@ function TrackerItemModal({ refetch }) {
           description: `Are you sure you wish to unpublish this ${t('tracker item')}? It will hide all existing responses.`,
           state: undefined,
           showButtons: true,
-          action: () =>
-            saveTrackerItem({
+          action: async () =>{
+            const  savedTrackerItemId= await saveTrackerItem({
               ...trackerItem,
               published: false,
-            }),
+            })
+            closeModal();
+            navigateTo(`/tracker-item/${savedTrackerItemId}`);
+
+          },
+
         };
         return setSavingDialogDetails(savingDialogDetails);
       }
@@ -81,11 +89,15 @@ function TrackerItemModal({ refetch }) {
         )}? It will become available for completion by all relevant ${pluralize(t('business unit'))}.`,
         state: undefined,
         showButtons: true,
-        action: () =>
-          saveTrackerItem({
+        action: async () =>{
+          const  savedTrackerItemId= await saveTrackerItem({
             ...trackerItem,
             published: true,
-          }),
+          })
+          closeModal()
+          navigateTo(`/tracker-item/${savedTrackerItemId}`);
+
+        },
       };
       return setSavingDialogDetails(savingDialogDetails);
     }

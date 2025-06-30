@@ -73,14 +73,17 @@ const useTrackerItemModal = (refetch = () => { }) => {
         reset({ ...trackerItemInput, _id: savedTrackerItemId }, selectedSectionIndex);
       }
       refetch();
+
       toast({
         ...toastSuccess,
         description: `${trackerItemInput.name} ${trackerItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}`,
       });
+      return savedTrackerItemId;
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
       setSavingDialogDetails(initialDialogDetails);
+
     }
   };
 
