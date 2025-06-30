@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
 import AdminProvider from '../contexts/AdminProvider';

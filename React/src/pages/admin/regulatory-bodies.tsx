@@ -260,7 +260,7 @@ function RegulatoryBodies() {
               }}
               showSortingIcon={sortType === 'name'}
               sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w={['80%', '50%']} />
+              w={['50%', '50%']} />
             <AdminTableHeaderElement
               data-id="b02cea8a0663"
               label="Responses count (only published items)"
@@ -270,7 +270,7 @@ function RegulatoryBodies() {
               }}
               showSortingIcon={sortType === 'trackerItemsResponsesCount'}
               sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-              w={['20%', '50%']} />
+              w={['50%', '50%']} />
           </AdminTableHeader>
           <Stack
             bg="white"
@@ -283,13 +283,14 @@ function RegulatoryBodies() {
             {loading ? (
               <Loader center data-id="0105fbc54650" />
             ) : regulatoryBodies?.length > 0 ? (
-              regulatoryBodies?.map((regulatoryBody) => (
+              regulatoryBodies?.map((regulatoryBody, index) => (
                 <AdminTableRow
                   data-id="c5e9e67a04c2"
                   edit={() => openRegulatoryBodyModal('edit', regulatoryBody)}
                   element={regulatoryBody}
+                  index={index}
                   key={regulatoryBody._id}
-                  responseToEdit="regulatoryBodiesIds" />
+                  responseToEdit="regulatoryBodiesIds"/>
               ))
             ) : (
               <Flex

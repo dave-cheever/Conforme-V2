@@ -10,35 +10,32 @@ function AdminTableRow({
   element,
   responseToEdit,
   edit,
+  index,
 }: {
   element: IBaseWithName;
   responseToEdit: 'regulatoryBodiesIds' | 'categoriesIds';
   edit?: () => void;
+  index: number;
 }) {
   const { module } = useAppContext();
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
   return (
     (<Flex
+       _hover={{ bg: '#F5F7FA' }}
       align="center"
+      bg={index % 2 === 0 ? 'white' : 'gray.50'}
       borderBottom="1px solid"
       borderColor="adminTableHeader.border"
       color="adminTableRow.font"
+      cursor="pointer"
       data-id="6b6c4b02bd5d"
       flexShrink={0}
       flexWrap={['wrap', 'nowrap']}
       fontSize="smm"
       h="55px"
       key={element._id}
-      pl={5}
-      sx={{
-        '&:nth-of-type(even)': {
-          bg: 'gray.50',
-        },
-        '&:nth-of-type(odd)': {
-          bg: 'white',
-        },
-      }}
+       pl={5}
       w="full">
       <Flex
 
@@ -47,7 +44,7 @@ function AdminTableRow({
         data-id="9fdfe4d5bf9d"
         fontSize="14px"
         onClick={edit}
-        w={['80%', '50%']}>
+        w={['70%', '50%']}>
         {element.name}
       </Flex>
       {module?.type === 'tracker' && (

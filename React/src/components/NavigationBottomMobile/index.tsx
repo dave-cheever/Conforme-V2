@@ -55,6 +55,6 @@ export default NavigationBottomMobile;
 
 export const navigationBottomMobileStyles = {
   navigationBottomMobile: {
-    bg: '#FFFFFF',
+    bg: '#110b30',
   },
 };

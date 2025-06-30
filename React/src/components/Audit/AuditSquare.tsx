@@ -51,7 +51,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
       >
         <Skeleton data-id="818e323eea55" isLoaded={!!audit} rounded="full">
           <Flex>
-              <Tooltip data-id="16be615c3cf3" label={audit?.auditor?.displayName}>
+            <Tooltip data-id="16be615c3cf3" label={audit?.auditor?.displayName}>
               <Avatar
                 borderRadius={'8px'}
                 boxSize="36px"
@@ -70,6 +70,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
                 fontWeight="600"
                 lineHeight="100%"
                 noOfLines={2}
+                overflow="hidden"
+                textOverflow="ellipsis"
                 w="full"
               >
                 {`${audit?.auditor?.displayName} - ${audit?.reference}`}
@@ -85,11 +87,10 @@ function AuditSquare({ audit }: { audit: IAudit }) {
               >
                 {audit?.auditType?.name}
               </Text>
-           </Flex>
+            </Flex>
           </Flex>
-          
         </Skeleton>
-      
+
         {!loading && !error && data && (
           <Tooltip data-id="ee49241a0676" label="Observations">
             <Flex align="center" data-id="9defc41d2bc3" fontSize="11px" fontWeight="700">

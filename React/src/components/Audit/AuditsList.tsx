@@ -116,7 +116,7 @@ function AuditsList({
           />
         </AdminTableHeader>
         <Flex data-id="917ca53a38a8" flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">
-          {audits?.map((audit) => <AuditListItem audit={audit} data-id="1f8b84b5294b" key={audit._id} />)}
+          {audits?.map((audit, index) => <AuditListItem audit={audit} data-id="1f8b84b5294b" index={index} key={audit._id} />)}
         </Flex>
       </Box>
     </Box>

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
 import authClient  from '../utils/auth-client';
-import { useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
 

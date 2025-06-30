@@ -12,6 +12,7 @@ module.exports = (env) => ({
     alias: {
       'node-fetch$': 'node-fetch/lib/index.js',
       graphql$: 'graphql/index.js',
+      src: path.resolve(__dirname, 'src'),
       'app-interfaces': path.resolve(__dirname, 'src/interfaces/inedx.ts'),
       'app-utils': path.resolve(__dirname, 'src/utils/index.ts'),
       'app-services': path.resolve(__dirname, 'src/services/index.ts'),

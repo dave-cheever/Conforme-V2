@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+
 import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
 
-import authClient from '../utils/auth-client';
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import SignInButton from '../icons/SignInButton';
+import authClient from '../utils/auth-client';
 
 function Login() {
   const toast = useToast();
@@ -34,7 +35,7 @@ function Login() {
       onError: (ctx) => { toast({ 
         status: 'error',
         title: 'Error',
-        description: ctx.message
+        description: ctx.message,
       }) },
     }
 

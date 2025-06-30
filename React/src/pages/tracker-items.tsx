@@ -21,6 +21,8 @@ import useSort from '../hooks/useSort';
 import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
 
+const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
+
 const GET_RESPONSES_TOTALS = gql`
   query ResponsesTotals($responsesQuery: Any) {
     responses(responsesQuery: $responsesQuery) {
@@ -291,8 +293,8 @@ function TrackerItems() {
           <Divider
             borderColor="gray.300"
             height="30px"
-            mx={4}
             mt={1}
+            mx={4}
             orientation="vertical"
           />
           <SortButton
@@ -326,25 +328,28 @@ function TrackerItems() {
       ) : (
         <>
           {viewMode === 'grid' && (
-            <InfiniteScroll
+            <InfiniteScrollComponent
               data-id="c573b6b779c3"
               hasMore={!loading && responses.length < total}
               initialLoad={false}
               loadMore={loadResponses}
               ref={scrollerRef}
               useWindow={false}>
-                <Grid
+              <Grid
+                alignItems="center"
                 bg="#ffffff"
                 data-id="06d832594699"
                 display={['grid', 'grid', 'flex']}
                 flexWrap="wrap"
                 gap={6}
                 h="fit-content"
+                justifyItems="center"
                 pb={[0, 8]}
                 pt="3"
                 px={[4, 8]}
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
-                w="full">
+                w="full"
+              >
                 {responses.length > 0
                   ? responses.map((response) => <TrackerItemSquare data-id="3c73d7318f93" key={response._id} response={response} />)
                   : !loading && (
@@ -359,7 +364,7 @@ function TrackerItems() {
                   )}
               </Grid>
               {loading && <Loader center data-id="331bdbe7d31a" h="60px" key="infinite-loader" />}
-            </InfiniteScroll>
+            </InfiniteScrollComponent>
           )}
           {viewMode === 'list' && (
             <TrackerItemsList

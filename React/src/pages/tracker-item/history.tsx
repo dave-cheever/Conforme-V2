@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { gql, useLazyQuery } from '@apollo/client';
-import { Avatar, Box, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format, getTime } from 'date-fns';
 import { t } from 'i18next';
 import pluralize from 'pluralize';
@@ -58,48 +58,75 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
       data-id="history-table-row"
       fontWeight={active ? '700' : '400'}
       minH="60px"
-      onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
-      px="25px"
+      onClick={() =>
+        navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)
+      }
+      px={['5px', '25px']}
       transition="background 0.2s"
       w="full"
     >
+      {/* Item name */}
       <Flex align="center" minW={0} w="30%">
-        <Text color="historyPage.font" fontSize="14px" isTruncated>
+        <Text color="historyPage.font" fontSize={['12px', '14px']} isTruncated>
           {response.trackerItem.name}
         </Text>
       </Flex>
+
+      {/* Renewed date */}
       <Flex align="center" w="20%">
-        <Text color="historyPage.font" fontSize="14px">
+        <Text color="historyPage.font" fontSize={['12px', '14px']}>
           {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
         </Text>
       </Flex>
-      <Flex align="center" w="25%">
-        <Skeleton isLoaded={!responsibleLoading} rounded="full">
+
+      {/* Responsible */}
+      <Flex align="center" minW={0} w="25%">
+        <Skeleton isLoaded={!responsibleLoading} rounded="full" w="full">
           {responsibleUser ? (
-            <Flex align="center">
+            <Flex align="center" minW={0} w="full">
               <Avatar name={responsibleUser.displayName} size="xs" src={responsibleUser.imgUrl} />
-              <Text color="historyPage.font" fontSize="13px" isTruncated pl={3}>
-                {responsibleUser.displayName}
-              </Text>
+              <Tooltip label={responsibleUser.displayName}>
+                <Text
+                  color="historyPage.font"
+                  fontSize={['11px', '13px']}
+                  isTruncated
+                  maxW="calc(100% - 32px)"
+                  noOfLines={1}
+                  pl={2}
+                >
+                  {responsibleUser.displayName}
+                </Text>
+              </Tooltip>
             </Flex>
           ) : (
-            <Text color="historyPage.font" fontSize="13px" fontStyle="italic">
+            <Text color="historyPage.font" fontSize={['11px', '13px']} fontStyle="italic">
               Unassigned
             </Text>
           )}
         </Skeleton>
       </Flex>
-      <Flex align="center" w="25%">
-        <Skeleton isLoaded={!responsibleLoading} rounded="full">
+
+      {/* Last updated by */}
+      <Flex align="center" minW={0} w="25%">
+        <Skeleton isLoaded={!responsibleLoading} rounded="full" w="full">
           {lastUpdatedBy ? (
-            <Flex align="center">
+            <Flex align="center" minW={0} w="full">
               <Avatar name={lastUpdatedBy.displayName} size="xs" src={lastUpdatedBy.imgUrl} />
-              <Text color="historyPage.font" fontSize="13px" isTruncated pl={3}>
-                {lastUpdatedBy.displayName}
-              </Text>
+              <Tooltip label={lastUpdatedBy.displayName}>
+                <Text
+                  color="historyPage.font"
+                  fontSize={['11px', '13px']}
+                  isTruncated
+                  maxW="calc(100% - 32px)"
+                  noOfLines={1}
+                  pl={2}
+                >
+                  {lastUpdatedBy.displayName}
+                </Text>
+              </Tooltip>
             </Flex>
           ) : (
-            <Text color="historyPage.font" fontSize="13px" fontStyle="italic">
+            <Text color="historyPage.font" fontSize={['11px', '13px']} fontStyle="italic">
               Unassigned
             </Text>
           )}

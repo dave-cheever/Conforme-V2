@@ -17,7 +17,7 @@ function ResponseLeftNavigationMobile() {
   return (
     (<Flex
       align="center"
-      bg="white"
+      bg="#110b30"
       bottom="0px"
       boxShadow="0px 0px 80px rgba(49, 50, 51, 0.15)"
       color="responseLeftNavigation.color"
@@ -41,7 +41,7 @@ function ResponseLeftNavigationMobile() {
           h="30px"
           mr={3}
           onClick={() => navigateTo('/tracker-items')}>
-          <Home data-id="173f3b3a634a" ml={2} stroke="responseLeftNavigation.goBackColor" />
+          <Home data-id="173f3b3a634a" ml={2} stroke="#ffffff" />
           <Divider data-id="a74a9309aec2" ml={3} orientation="vertical" />
         </Flex>
         <Flex data-id="a3f02aee8759" justify="space-between" w="full">

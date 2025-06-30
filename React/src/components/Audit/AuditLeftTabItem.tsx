@@ -36,13 +36,12 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
         w="30px">
         <Icon
           as={icon}
-          color={isDesktop ? "auditLeftTabItem.activeIconColor" :  active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'}
-          // color={active ? 'auditLeftTabItem.activeIconColor' : 'auditLeftTabItem.iconColor'}
-          data-id="467136ae8a4c" />
+          data-id="467136ae8a4c"
+          stroke="#ffffff" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
-           color={isDesktop ? 'auditLeftTabItem.activeTextColor' :   active ? ['auditLeftTabItem.textColor', 'auditLeftTabItem.activeTextColor'] : 'auditLeftTabItem.textColor'}
+          color="#ffffff"
           data-id="fb182e49b7c3"
           flexGrow={1}
           fontSize={['11px', '14px']}

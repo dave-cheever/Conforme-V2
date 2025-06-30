@@ -10,6 +10,8 @@ import AdminTableHeaderElement from '../Admin/AdminTableHeaderElement';
 import Loader from '../Loader';
 import TrackerListItem from './TrackerListItem';
 
+const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
+
 function TrackerListItems({
   responses,
   loading,
@@ -135,18 +137,18 @@ function TrackerListItems({
         h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
         overflowY="auto"
         w="full">
-        <InfiniteScroll
+        <InfiniteScrollComponent
           data-id="bdc800eaf22d"
           hasMore={!loading && responses.length < total}
           initialLoad={false}
           loadMore={loadResponses}
           ref={scrollerRef}
           useWindow={false}>
-          {responses?.map((response) => (
-            <TrackerListItem data-id="024c9586ed68" key={response._id} response={response} />
+          {responses?.map((response, index) => (
+            <TrackerListItem data-id="024c9586ed68" index={index} key={response._id} response={response} />
           ))}
           {loading && <Loader center data-id="2965be834216" h="60px" key="infinite-loader" />}
-        </InfiniteScroll>
+        </InfiniteScrollComponent>
       </Flex>
     </Box>
   </Box>

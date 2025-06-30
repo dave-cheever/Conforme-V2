@@ -117,7 +117,7 @@ function AuditLog() {
       data-id="949e7c1a34f6"
       h="calc(100vh - 150px)"
       overflow="auto"
-      p="30px"
+      p={["10px", "30px"]}
       pt="0px">
       <Flex
         bg="white"

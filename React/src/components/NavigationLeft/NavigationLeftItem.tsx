@@ -71,29 +71,9 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
           <Icon
             as={icon}
             data-id="0d8ef485e550"
-            fill={
-              menuItem.url == '/answers'
-                ? menuItem.subSections
-                  ? isPathActive(url)
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                  : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                : ''
-            }
+            fill="#ffffff"
             h="15px"
-            stroke={
-              menuItem.url != '/answers'
-                ? menuItem.subSections
-                  ? isPathActive(url)
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                  : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                : ''
-            }
+            stroke="#ffffff"
             w="15px" />
         </Flex>
         {showFiltersPanel && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (

@@ -26,6 +26,8 @@ import { ExportIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
 
+const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
+
 const GET_AUDITS = gql`
   query ($auditQueryInput: AuditQueryInput) {
     audits(auditQueryInput: $auditQueryInput) {
@@ -242,12 +244,12 @@ function Audits() {
       <Divider
         borderColor="gray.300"
         height="30px"
-        mx={4}
         mt={1}
+        mx={4}
         orientation="vertical"
       />
       {device !== 'mobile' && (
-        <CSVLink
+        <CSVLinkComponent
           data={csvData}
           data-id="39c6f57fa46c"
           filename="audits.csv"
@@ -270,7 +272,7 @@ function Audits() {
               Export
             </Text>
           </Button>
-        </CSVLink>
+        </CSVLinkComponent>
       )}
       <SortButton
         data-id="f2ae2eb1e511"

@@ -95,14 +95,14 @@ function TrackerItemResponse() {
         w="full"
       >
         <Tabs colorScheme="purple" index={tabIndex} onChange={setActiveTab} variant="unstyled" w="full">
-          <TabList mb={4}>
+          <TabList mb={4} overflow="auto">
             <Tab
               _focus={{ boxShadow: 'none' }}
               _selected={{ bg: '#462AC4', color: 'white' }}
               alignItems="center"
               borderRadius="10px"
               display="flex"
-              fontSize="14px"
+              fontSize={["12px", "14px"]}
               fontWeight="500"
               gap={2}
               mr={3}
@@ -117,7 +117,7 @@ function TrackerItemResponse() {
               alignItems="center"
               borderRadius="10px"
               display="flex"
-              fontSize="14px"
+              fontSize={["12px", "14px"]}
               fontWeight="500"
               gap={2}
               mr={3}
@@ -132,7 +132,7 @@ function TrackerItemResponse() {
               alignItems="center"
               borderRadius="10px"
               display="flex"
-              fontSize="14px"
+              fontSize={["12px", "14px"]}
               fontWeight="500"
               gap={2}
               px={3}

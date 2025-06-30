@@ -258,6 +258,7 @@ function BusinessUnits() {
         fontWeight="500"
         h="50px"
         key={businessUnit._id}
+        onClick={() => openBusinessUnitModal('edit', businessUnit)}
         p={4}
         w="full"
       >
@@ -266,9 +267,8 @@ function BusinessUnits() {
           data-id="62602cb9c5b0"
           flexDir="column"
           mr={4}
-          onClick={() => openBusinessUnitModal('edit', businessUnit)}
           pl={1}
-          w={['40%', '30%']}
+          w={['70%', '30%']}
         >
           <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {businessUnit.name}
@@ -300,7 +300,7 @@ function BusinessUnits() {
         )}
         {module?.type === 'audits' && (
           <>
-            <Flex align="center" data-id="db85ba830398" w={['15%', '20%']}>
+            <Flex align="center" data-id="db85ba830398" w={['40%', '20%']}>
               <Text data-id="49560825d319">{businessUnit.totalAnswersCount || 0}</Text>
               <Tooltip data-id="1070df803807" fontSize="md" label="Show Items">
                 <ArrowCount
@@ -317,7 +317,7 @@ function BusinessUnits() {
                 />
               </Tooltip>
             </Flex>
-            <Flex align="center" data-id="55e68fa3ad52" w={['15%', '20%']}>
+            <Flex align="center" data-id="55e68fa3ad52" w={['22%', '20%']}>
               <Text data-id="efecbaf85dda">{businessUnit.totalAuditsCount || 0}</Text>
               <Tooltip data-id="ed7dabf6e0b7" fontSize="md" label="Show Items">
                 <ArrowCount
@@ -373,17 +373,21 @@ function BusinessUnits() {
         mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
         pageLabel={capitalize(t('business unit'))}
       />
-      <Flex
+      <Box
         bg="auditsList.bg"
-        
         borderRadius="10px"
         data-id="33879bce2f4d"
         h="calc(100vh - 160px)"
-        overflow="auto"
-        p={[0, '0 25px 30px 30px']}
-
+        p={['0', '0 25px 30px 30px']}
       >
-        <Box border="1px solid" borderColor="auditsList.headerBorderColor" data-id="71b1095147a4" h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="full">
+        <Flex data-id="204333a2a9a01" h="full" px={['25px', 0]}>
+          <Box
+            border="1px solid"
+            borderColor="auditsList.headerBorderColor"
+            data-id="a281438af26d"
+            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+            w={['full', 'full', 'calc(100%)']}
+          >
           <AdminTableHeader data-id="fc13c9d295b4">
             <AdminTableHeaderElement
               data-id="ba04d2d0810b"
@@ -394,7 +398,7 @@ function BusinessUnits() {
               }}
               showSortingIcon={sortType === 'name'}
               sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w={['40%', '30%']}
+              w={['70%', '30%']}
             />
             {device !== 'mobile' && (
               <AdminTableHeaderElement
@@ -433,7 +437,7 @@ function BusinessUnits() {
                   }}
                   showSortingIcon={sortType === 'totalAnswersCount'}
                   sortOrder={sortType === 'totalAnswersCount' && sortType === 'totalAnswersCount' ? sortOrder : undefined}
-                  w={['15%', '20%']}
+                  w={['40%', '20%']}
                 />
                 <AdminTableHeaderElement
                   data-id="939037a384ef"
@@ -444,7 +448,7 @@ function BusinessUnits() {
                   }}
                   showSortingIcon={sortType === 'totalAuditsCount'}
                   sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                  w={['15%', '20%']}
+                  w={['20%', '20%']}
                 />
               </>
             )}
@@ -459,9 +463,10 @@ function BusinessUnits() {
                 No {pluralize(t('business unit'))} found
               </Flex>
             )}
+            </Box>
           </Box>
-        </Box>
-      </Flex>
+        </Flex>
+      </Box>
     </>
   );
 }

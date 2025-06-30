@@ -25,7 +25,7 @@ function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
       data-id="4851d1175a41"
       flexDirection="column"
       position="relative"
-      pt="20px"
+      pt={["0px", "20px"]}
       rounded="md"
       w="100%">
       {auditLogs.map((auditLog, index) => (

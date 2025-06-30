@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Box, Flex, Modal, ModalOverlay, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Modal, ModalOverlay, Stack, Text, useMediaQuery } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -68,6 +68,7 @@ function TrackerItemsAdmin() {
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_TRACKER_ITEMS);
   const { trackerItem, reset } = useTrackerItemModalContext();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const trackerItems = useMemo(() => [...(data?.trackerItems || [])].sort((a, b) => a.name.localeCompare(b.name)), [data]);
   const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -249,8 +250,9 @@ function TrackerItemsAdmin() {
           ) : (
           sortedData.map((trackerItem, index) => (
             <Flex
+                 _hover={{ bg: '#F5F7FA' }}
                 align="center"
-                bg={index % 2 === 0 ? 'gray.50' : 'white'}
+                bg={index % 2 === 0 ? 'white' : 'gray.50'}
                 borderBottom="1px solid"
                 borderColor="gray.200"
                 cursor="pointer"
@@ -258,6 +260,7 @@ function TrackerItemsAdmin() {
                 fontSize="14px"
                 h="73px"
                 key={trackerItem._id}
+                onClick={() => openModal('edit', trackerItem)}
                 px="25px"
                 py="10px"
                 w="full">
@@ -268,7 +271,7 @@ function TrackerItemsAdmin() {
                 <Text data-id="5b25881b9d07" noOfLines={1}>{trackerItem.name || `Unnamed ${t('tracker item')}`}</Text>
                   <Flex align="center" mt="1">
                       <Text color="gray.500" fontSize="11px">{trackerItem.category?.name}</Text>
-                      {!trackerItem.published && (
+                      {!isMobile && !trackerItem.published && (
                         <Box bg="gray.600" borderRadius="md" color="white" fontSize="11px" ml={2} px={2} py={1}>Draft</Box>
                       )}
                     </Flex>

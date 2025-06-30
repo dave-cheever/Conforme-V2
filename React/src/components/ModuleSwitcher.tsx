@@ -24,7 +24,7 @@ import { getInitials } from '../utils/helpers';
 function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
   const { showFiltersPanel } = useFiltersContext();
-  const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
+  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1279px)');
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const navigate = useNavigate();
 
@@ -44,12 +44,13 @@ function ModuleSwitcher() {
     <Box data-id="fd295d0a3c18" pl={2}>
       <Menu>
        <MenuButton
-          _active={{ bg: "navigationLeftItem.unselectedLabelBg" }}
+          _active={{ bg: "transparent" }}
           _hover={{  bg: !isMobile && "navigationLeftItem.selectedLabelBg"}}
           as={Button}
           bg={isMobile ? "#FFFFFF" : "#110b30" }
-          minW="200px"
+          minW={isMobile ? "150px" : "200px"}
           px="0"
+          textAlign="left"
           variant="ghost"
           w="auto"
           >
@@ -79,7 +80,7 @@ function ModuleSwitcher() {
             fontSize={isMobile ? '12px' : '22px'}
             fontWeight="600"
             isTruncated
-            marginLeft={showFiltersPanel || isTabletWidth ? '10' : '2'}
+            marginLeft={showFiltersPanel || isTabletWidth ? '20' : '2'}
             maxW="150px"
             minW={isMobile ? '50px' : '100px'}
             overflow="hidden"
@@ -94,7 +95,7 @@ function ModuleSwitcher() {
                     h="30px"
                     w="30px"/>
                 </>
-              : (module?.name || 'Select Module')}
+              : ( isMobile? getInitials(module?.name) :  module?.name || 'Select Module')}
           </Text>
           <ChevronDownIcon ml="2" />
         </Flex>

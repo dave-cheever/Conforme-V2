@@ -60,15 +60,11 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
       : trackerAddItems.find((item) => item.label === pageLabel);
 
   const device = useDevice();
-  const breadCrumbs = useMemo(() => {
-    if (device === 'mobile') return mobileBreadcrumbs || [];
-
-    return breadcrumbs;
-  }, [device, breadcrumbs, mobileBreadcrumbs]);
+  const breadCrumbs = useMemo(() => breadcrumbs, [device, breadcrumbs, mobileBreadcrumbs]);
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
     <Flex align="center" data-id="bed31f747997" h="full" key={`bc-${i}`}>
-      {i > 0 && <ArrowRight color="#818197" data-id="1507ccf9eca0" display="flex" ml={2} mr={1} mt={['0px', '5px']} />}
+      {i > 0 && <ArrowRight color="#818197" data-id="1507ccf9eca0" display="flex" ml={2} mr={1} mt={['4px', '5px']} />}
       <Text
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
         data-id="4e3ce528c3ed"
@@ -119,7 +115,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                   h={['42px', '40px']}
                   leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '16px']} stroke="navigationTop.addIcon" w={['10px', '16px']} />}
                   ml={['0', '4']}
-                  mr={['20', '0']}
+                  mr={['6rem', '0']}
                   onClick={() => {
                     const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
                     navigateTo(targetUrl || '');

@@ -15,7 +15,7 @@ function Logout() {
   const device = useDevice();
   const navigate = useNavigate();
 
-  const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
+  // const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
   const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
 
   useEffect(() => {
@@ -61,7 +61,7 @@ function Logout() {
       onError: (ctx) => { toast({ 
         status: 'error',
         title: 'Error',
-        description: ctx.message
+        description: ctx.message,
       }) },
     }
 
@@ -127,6 +127,7 @@ function Logout() {
             </Flex>
           </Flex>
           <Button
+            _hover={{ opacity: 0.8 }}
             bg="loginPage.button.bg"
             borderRadius="10px"
             color="loginPage.button.color"
@@ -135,8 +136,7 @@ function Logout() {
             h="40px"
             lineHeight="18px"
             onClick={login}
-            w="204px"
-            _hover={{ opacity: 0.8 }}>
+            w="204px">
             Log back in
           </Button>
           <Flex

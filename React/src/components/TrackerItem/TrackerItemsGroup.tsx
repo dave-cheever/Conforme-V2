@@ -7,6 +7,8 @@ import useResponseUtils from '../../hooks/useResponseUtils';
 import { IResponse } from '../../interfaces/IResponse';
 import TrackerItemSquare from './TrackerItemSquare';
 
+const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
+
 function TrackerGridItems({
   responses,
   loading,
@@ -84,7 +86,7 @@ function TrackerGridItems({
   );
 
   return (
-    (<InfiniteScroll
+    (<InfiniteScrollComponent
       data-id="1a81faae9299"
       hasMore={!loading && responses.length < total}
       initialLoad={false}
@@ -94,7 +96,7 @@ function TrackerGridItems({
       <Flex bg="#ffffff" data-id="efa7eba0e047" h="full" overflow="auto" pt="3" w="full">
         {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
       </Flex>
-    </InfiniteScroll>)
+    </InfiniteScrollComponent>)
   );
 }
 

@@ -59,8 +59,8 @@ function AuditParticipants() {
         data-id="7db4ae35fbc8"
         h="full"
         overflow="auto"
-        px={6}
-        py={4}
+        px={[2, 6]}
+        py={[2, 4]}
         rounded="20px"
         spacing={12}
         w="full">

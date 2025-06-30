@@ -12,7 +12,7 @@ function AuditLeftNavigationMobile() {
   return (
     (<Flex
       align="center"
-      bg="white"
+      bg="#110b30"
       bottom="0px"
       boxShadow="0px 0px 80px rgba(49, 50, 51, 0.15)"
       color="auditLeftNavigation.color"
@@ -38,13 +38,12 @@ function AuditLeftNavigationMobile() {
           onClick={() => navigateTo('/audits')}>
           <Flex
             align="center"
-            bg="auditLeftTabItem.iconBg"
             borderRadius="8px"
             data-id="515b2057aece"
             h="30px"
             justify="center"
             w="30px">
-            <Home data-id="c14888d69334" stroke="responseLeftNavigation.goBackColor" />
+            <Home data-id="c14888d69334" stroke="#ffffff" />
           </Flex>
           <Divider data-id="cf550ea43ce3" ml={3} orientation="vertical" />
         </Flex>

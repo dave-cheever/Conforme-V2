@@ -7,8 +7,8 @@ import i18n from 'i18next';
 import JSONfn from 'json-fn';
 
 import { useAppContext } from '../contexts/AppProvider';
-import useNavigate from './useNavigate';
 import { IRoles } from '../interfaces/IRoles';
+import useNavigate from './useNavigate';
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next

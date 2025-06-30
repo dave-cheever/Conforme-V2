@@ -25,6 +25,8 @@ import { ExportIcon } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
 
+const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
+
 const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
     answers(answerQuery: $answerQuery) {
@@ -311,7 +313,7 @@ function Answers() {
         viewMode={viewMode}
         views={['grid', 'list']} />
       {device !== 'mobile' && (
-        <CSVLink
+        <CSVLinkComponent
           data={csvData}
           data-id="5a492d1b03e3"
           filename="answers.csv"
@@ -334,7 +336,7 @@ function Answers() {
               Export
             </Text>
           </Button>
-        </CSVLink>
+        </CSVLinkComponent>
       )}
       <SortButton
         data-id="85e7ef276126"

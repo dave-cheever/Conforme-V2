@@ -30,7 +30,7 @@ function AdminTableHeaderElement({
       hasArrow
       isDisabled={tooltip === ''}
       label={tooltip}>
-      <Text color="adminTableHeaderElement.fontColor" data-id="a3595b917e58" fontSize="14px" fontWeight="600">{label}</Text>
+      <Text color="adminTableHeaderElement.fontColor" data-id="a3595b917e58" fontSize={["12px", "14px"]} fontWeight="600">{label}</Text>
     </Tooltip>
     {/* {sortOrder !== null && sortOrder === 'desc' ? (
       <ArrowDownIcon

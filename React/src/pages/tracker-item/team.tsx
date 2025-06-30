@@ -128,8 +128,8 @@ function Team() {
       spacing="40px"
       w="full"
     >
-      <Stack data-id="0ca0a7e8d5f7" spacing={6} w="full">
-        <HStack data-id="9da01514a58d" justify="flex-start" spacing={12}>
+      <Stack data-id="0ca0a7e8d5f7" spacing="6" w="full">
+        <HStack alignItems="flex-start" data-id="9da01514a58d" flexDirection={["column", "row"]} justify="flex-start" spacing={[2, 12]}>
           <SingleParticipantSelector
             data-id="11f0371f724c"
             isUserAllowedToChange={isPermittedToManageAccountable}

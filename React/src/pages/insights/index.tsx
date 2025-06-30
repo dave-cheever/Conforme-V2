@@ -118,7 +118,16 @@ function Insights() {
             onChange={(index) => setSelectedPanel(index)}
             variant="unstyled"
             w="full">
-            <TabList data-id="92b543195c8e">
+            <TabList
+              data-id="92b543195c8e"
+              overflowX="auto"
+              sx={{
+                '::-webkit-scrollbar': {
+                  display: 'none',
+                },
+              }}
+              whiteSpace="nowrap"
+            >
               {panels?.map((panel) => (
                 <Tab
                   _hover={{
@@ -133,7 +142,10 @@ function Insights() {
                   fontSize="14px"
                   fontWeight="600"
                   key={panel._id}
-                  mr={[1, 2]}>
+                  minW="fit-content"
+                  mr={[1, 2]}
+                  px={4} // ensures decent padding for mobile
+                >
                   {panel.name}
                 </Tab>
               ))}

@@ -60,41 +60,21 @@ function NavigationBottomItem({
         <Icon
           as={icon}
           data-id="c2f625465a98"
-          fill={
-            menuItem.url == '/answers'
-              ? menuItem.subSections
-                ? isPathActive(url)
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
-                : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
-              : ''
-          }
+          fill="#ffffff"
           h="15px"
-          stroke={
-            menuItem.url != '/answers'
-              ? menuItem.subSections
-                ? isPathActive(url)
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
-                : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedIconStroke'
-                  : 'navigationLeftItem.unselectedIconStroke'
-              : ''
-          }
+          stroke="#ffffff"
           w="15px" />
       </Flex>
       {((menuItem.subSections && isPathActive(url)) || (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
         <>
-          <Text color="#818197" data-id="8cc50409e264" fontSize="11px" ml="15px">
+          <Text color="#ffffff" data-id="8cc50409e264" fontSize="11px" ml="15px">
             {label}
           </Text>
           {menuItem.subSections && <ArrowRight
             boxSize="10px"
             data-id="9fdd6046ecdb"
             ml="15px"
-            stroke="#818197"
+            stroke="#fffff"
             transform="rotate(270deg)" />}
         </>
       )}
@@ -139,7 +119,7 @@ function NavigationBottomItem({
           w="235px"
           zIndex="5">
           {menuItem.subSections?.map((subSection) => (
-            <SubSection data-id="c4c6e92175e2" key={subSection.label} subsection={subSection} />
+            <SubSection data-id="c4c6e92175e2" isPopover key={subSection.label} subsection={subSection} />
           ))}
         </Box>
       )}

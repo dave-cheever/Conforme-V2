@@ -38,12 +38,12 @@ function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = fa
         w="30px">
         <Icon
           as={icon}
-          color={isDesktop ? "responseLeftTabItem.activeIconColor" :  active ? 'responseLeftTabItem.activeIconColor' : 'responseLeftTabItem.iconColor'}
+          color="#ffffff"
           data-id="ddadd3902183" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
-          color={isDesktop ? 'responseLeftTabItem.activeTextColor' :   active ? ['responseLeftTabItem.textColor', 'responseLeftTabItem.activeTextColor'] : 'responseLeftTabItem.textColor'}
+          color={'responseLeftTabItem.activeTextColor'}
           data-id="27ac7e816e47"
           flexGrow={1}
           fontSize={['11px', '14px']}

@@ -42,6 +42,7 @@ function SubSection({
             : 'subSection.unselectedFontColor'
         }
         cursor="pointer"
+        data-id="9983yhd31g362"
         fontSize="14px"
         fontWeight="400"
         key={label}
@@ -60,12 +61,14 @@ function SubSection({
         pl={9}
         pr={9}
       >
-        {!showIcon && !isPopover && (
+        {!showIcon && (
         <Box
             bg={
-              isPathActive(url, { exact: true })
-                ? 'subSection.selectedIndicator'
-                : 'subSection.unselectedIndicator'
+               isPopover
+            ? isPathActive(url, { exact: true }) ? 'white' : 'black'
+            : isPathActive(url, { exact: true }) && !showIcon
+            ? 'subSection.selectedIndicator'
+                :'subSection.unselectedIndicator'
             }
             h="8px"
             rounded="50%"

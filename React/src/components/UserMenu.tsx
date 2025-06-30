@@ -41,7 +41,7 @@ function UserMenu() {
       <Text color={"black"} fontSize={["12px", "14px"]} fontWeight="600" isTruncated>
         {user?.displayName}
       </Text>
-      <Text color="gray.500" fontSize="13px" lineHeight={.8} isTruncated>
+      <Text color="gray.500" fontSize="13px" isTruncated lineHeight={.8}>
         {(user?.role?.charAt(0).toUpperCase() || "") + (user?.role?.slice(1) || "")}
       </Text>
     </Box>

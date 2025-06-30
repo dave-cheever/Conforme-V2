@@ -25,6 +25,8 @@ import { ExportIcon } from '../icons';
 import { IAction } from '../interfaces/IAction';
 import { TViewMode } from '../interfaces/TViewMode';
 
+const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
+
 const GET_ACTIONS = gql`
   query ($actionQueryInput: ActionQueryInput) {
     actions(actionQueryInput: $actionQueryInput) {
@@ -305,7 +307,7 @@ function Actions() {
         viewMode={viewMode}
         views={['grid', 'list']} />
       {device !== 'mobile' && (
-        <CSVLink
+        <CSVLinkComponent
           data={csvData}
           data-id="b48e84287463"
           filename="actions.csv"
@@ -328,7 +330,7 @@ function Actions() {
               Export
             </Text>
           </Button>
-        </CSVLink>
+        </CSVLinkComponent>
       )}
       <SortButton
         data-id="19893118c24d"

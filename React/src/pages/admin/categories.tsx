@@ -264,7 +264,7 @@ function Categories() {
                 }}
                 showSortingIcon={sortType === 'name'}
                 sortOrder={sortType === 'name' ? sortOrder : undefined}
-                w={['80%', '50%']}
+                w={['70%', '50%']}
               />
               {module?.type === 'tracker' && (
                 <AdminTableHeaderElement
@@ -293,11 +293,12 @@ function Categories() {
               {loading ? (
                 <Loader center data-id="3f45d2e8a2a1" />
               ) : categories?.length > 0 ? (
-                categories?.map((category) => (
+                categories?.map((category, index) => (
                   <AdminTableRow
                     data-id="01df96183ed7"
                     edit={() => openCategoryModal('edit', category)}
                     element={category}
+                    index={index}
                     key={category._id}
                     responseToEdit="categoriesIds"
                   />

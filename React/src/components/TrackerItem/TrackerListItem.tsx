@@ -5,11 +5,13 @@ import useNavigate from '../../hooks/useNavigate';
 import { ErrorCircleIcon, SuccessCircleIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 
-function TrackerListItem({ response }: { response: IResponse }) {
+function TrackerListItem({ response, index }: { response: IResponse, index: number}) {
   const { navigateTo } = useNavigate();
 
   return (
     (<Box
+      _hover={{ bg: '#F5F7FA' }}
+      bg={index % 2 === 0 ? 'white' : 'gray.50'}
       borderBottomColor="trackerList.headerBorderColor"
       borderBottomWidth="1px"
       cursor="pointer"
@@ -17,14 +19,6 @@ function TrackerListItem({ response }: { response: IResponse }) {
       onClick={() => navigateTo(`/tracker-item/${response._id}`)}
       p="15px 25px"
       py={[1, 0]}
-      sx={{
-        '&:nth-of-type(even)': {
-          bg: 'gray.50',
-        },
-        '&:nth-of-type(odd)': {
-          bg: 'white',
-        },
-      }}
       w="full">
       <Flex
         align="center"

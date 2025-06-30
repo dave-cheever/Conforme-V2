@@ -72,7 +72,7 @@ function ResponseLayout({ component: Component }: { component: any }) {
               w="52px"
               zIndex={5} />
           )}
-          <Flex data-id="8b9c5399812d" flexGrow={1} px={6} w="full">
+          <Flex data-id="8b9c5399812d" flexGrow={1} px={[2, 6]} w="full">
             <Flex
               data-id="c119cd17023c"
               flexDirection="column"

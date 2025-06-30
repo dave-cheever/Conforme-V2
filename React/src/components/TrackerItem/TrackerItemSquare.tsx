@@ -56,14 +56,21 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
       </Tooltip>
     </Skeleton>
     <Box flex="1">
-        <Text
-          color="#1A202C"
-          fontSize="16px"
-          fontWeight="600"
-          lineHeight="1.4"
-          noOfLines={1}>
-          {response.trackerItem?.name}
-        </Text>
+      <Text
+        color="#1A202C"
+        fontSize="16px"
+        fontWeight="600"
+        isTruncated
+        lineHeight="1.4"
+        maxWidth="250px"
+        noOfLines={1}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+      >
+            {response.trackerItem?.name}
+      </Text>
+
       <Text color="#718096" fontSize="14px" fontWeight="500" noOfLines={1}>
         {response.trackerItem?.category?.name || <i>Unassigned</i>}
       </Text>

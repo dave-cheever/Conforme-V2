@@ -553,12 +553,13 @@ function AuditTypes() {
         overflow="auto"
         p={[0, '0 25px 30px 30px']}
       >
-        <Box
+        <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]} w="full">
+          <Box
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
           data-id="b66f9mh62g65"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-          w="full"
+          w={['full', 'full', 'calc(100%)']}
         >
           <AdminTableHeader data-id="e77d6573756f">
             <AdminTableHeaderElement
@@ -584,7 +585,8 @@ function AuditTypes() {
               </Flex>
             )}
           </Box>
-        </Box>
+          </Box>
+        </Flex>
       </Flex>
     </>
   );

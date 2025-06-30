@@ -8,11 +8,13 @@ import useNavigate from '../../hooks/useNavigate';
 // import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
-function AuditListItem({ audit }: { audit: IAudit }) {
+function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
   const { navigateTo } = useNavigate();
   const { module } = useAppContext();
   return (
     <Box
+      _hover={{ bg: '#F5F7FA' }}
+      bg={index % 2 === 0 ? 'white' : 'gray.50'}
       borderBottomColor="auditsList.headerBorderColor"
       borderBottomWidth="1px"
       cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
@@ -20,14 +22,6 @@ function AuditListItem({ audit }: { audit: IAudit }) {
       onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
       p="15px 25px"
       py={[1, 0]}
-      sx={{
-        '&:nth-of-type(even)': {
-          bg: 'gray.50',
-        },
-        '&:nth-of-type(odd)': {
-          bg: 'white',
-        },
-      }}
       w="full"
     >
       <Flex align="center" data-id="289e52ec130d" h={['full', '55px']} position="relative" w="full">

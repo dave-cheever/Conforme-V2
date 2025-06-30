@@ -74,29 +74,9 @@ function NavigationLeftItemTablet({
           <Icon
             as={icon}
             data-id="27c25f1d5d16"
-            fill={
-              menuItem.url == '/answers'
-                ? menuItem.subSections
-                  ? isPathActive(url)
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                  : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                : ''
-            }
+            fill="#ffffff"
             h="15px"
-            stroke={
-              menuItem.url != '/answers'
-                ? menuItem.subSections
-                  ? isPathActive(url)
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                  : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItem.selectedIconStroke'
-                    : 'navigationLeftItem.unselectedIconStroke'
-                : ''
-            }
+            stroke="#ffffff"
             w="15px" />
         </Flex>
         {menuItem.subSections && <ArrowRight
@@ -152,6 +132,7 @@ function NavigationLeftItemTablet({
           {menuItem.subSections?.map((subSection) => (
             <SubSection
               data-id="3b7e67504e5a"
+              isPopover
               key={subSection.label}
               menuOpen={menuOpen}
               setMenuOpen={setMenuOpen}

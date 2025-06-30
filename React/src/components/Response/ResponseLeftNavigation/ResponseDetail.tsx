@@ -59,7 +59,7 @@ function ResponseDetail({ response }) {
       <Flex align="center" cursor="pointer" data-id="ecbcaaee6fb0">
         <Flex
           align="center"
-          bg={isOpen ? 'responseLeftNavigation.responseDetailActiveColor' : 'responseLeftTabItem.iconBg'}
+          bg={isOpen ? 'responseLeftTabItem.activeIconBg' : ''}
           borderRadius="8px"
           data-id="3ddefce48728"
           h="30px"
@@ -67,7 +67,7 @@ function ResponseDetail({ response }) {
           w="30px">
           <Icon
             as={DetailIcon}
-            color="responseLeftTabItem.iconColor"
+            color="#ffffff"
             data-id="8f96be6c83ab" />
         </Flex>
         <ArrowRight

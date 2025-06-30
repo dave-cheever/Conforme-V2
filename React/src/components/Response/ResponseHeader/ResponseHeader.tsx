@@ -117,7 +117,7 @@ function ReasponseHeader() {
       w="full"
       zIndex={1}>
       <Stack
-        alignItems="center"
+        alignItems={['flex-start', 'center']}
         data-id="f8858aed86a9"
         direction={['column', 'row']}
         mb="15px"

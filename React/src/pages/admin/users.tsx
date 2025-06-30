@@ -451,14 +451,15 @@ function Users() {
         data-id="3557cac5f756"
         h="calc(100vh - 160px)"
         overflow="auto"
-        p={[0, '0 25px 30px 30px']}
+        p={['0', '0 25px 30px 30px']}
       >
-        <Box
+        <Flex data-id="203r513a2a9a01" h="full" px={['25px', 0]} w="full">
+          <Box
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
           data-id="b039112968ee"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-          w="full"
+           w={['full', 'full', 'calc(100%)']}
         >
           <AdminTableHeader data-id="3350252466f2">
             <AdminTableHeaderElement
@@ -530,7 +531,8 @@ function Users() {
           <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="e22951ab0519" h="full" overflow="auto" w="full">
             {loading ? <Loader center data-id="2cafeec1cd87" /> : users.map((user, i) => renderUserRow(user, i))}
           </Box>
-        </Box>
+          </Box>
+        </Flex>
       </Flex>
     </>
   );

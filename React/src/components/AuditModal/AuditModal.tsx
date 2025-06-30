@@ -133,10 +133,9 @@ function AuditModal({ refetch }) {
     const { metatags, ...auditValues } = audit;
     const auditId = await saveAudit({ ...auditValues, recurring: auditType.recurring });
 
-    if (auditId) {
-      toast({ description: 'Audit added', status: 'success' });
+    if (auditId) 
       reset({ ...audit, auditTypeId: undefined, walkType: undefined, locationId: undefined, businessUnitId: undefined });
-    }
+    
 };
 
   return (
@@ -319,7 +318,7 @@ function AuditModal({ refetch }) {
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
           fontSize="smm"
-          fontWeight="700"
+          fontWeight="500"
           h="40px"
           minW="inherit"
           ml={3}
@@ -344,7 +343,7 @@ function AuditModal({ refetch }) {
             )
           }
           fontSize="smm"
-          fontWeight="700"
+          fontWeight="500"
           h="40px"
           minW="inherit"
           ml={3}
@@ -386,7 +385,7 @@ export const auditModalStyles = {
     tabs: {
       bg: '#F0F2F5',
       bottomButton: {
-        bg: '#DC0043',
+        bg: '#462AC4',
         color: '#ffffff',
         icon: '#ffffff',
         hover: '#DC0043',

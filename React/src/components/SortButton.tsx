@@ -17,7 +17,7 @@ function SortButton({
   setSortOrder: (order: 'asc' | 'desc') => void;
   ml?: number | string | {};
 }) {
-  return <Box data-id="edb62cd329ee" >
+  return <Box data-id="edb62cd329ee" ml={ml ?? '10px'}>
     <Menu autoSelect={false} data-id="9e6c02425b38">
       {({ onClose }) => (
         <>
