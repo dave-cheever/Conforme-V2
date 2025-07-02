@@ -64,7 +64,7 @@ const getUserPhoto = async ({ userId, organization }: { userId: string; organiza
     });
     return Buffer.from(res.data as ArrayBuffer);
   } catch (e) {
-    console.log(`Not found profile photo for user with ID ${userId}`);
+    // console.log(`Not found profile photo for user with ID ${userId}`);
     return undefined;
   }
 };
@@ -208,7 +208,7 @@ const getLineManagerId = async ({ userId, organization }: { userId: string; orga
     const responseData = res.data as { id?: string };
     return responseData.id;
   } catch (e: any) {
-    console.log(`Line manager not found for user with ID ${userId}`);
+    // console.log(`Line manager not found for user with ID ${userId}`);
   }
 };
 

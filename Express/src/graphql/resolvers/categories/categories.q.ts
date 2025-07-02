@@ -52,7 +52,6 @@ const categories = async (
       // Wait for all promises to resolve (all category counts to be fetched)
       await Promise.all(promises);
     }
-    console.log(categories)
     return categories.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);

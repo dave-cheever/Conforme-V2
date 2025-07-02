@@ -83,6 +83,24 @@ function RegulatoryBodies() {
       setRegulatoryBodies([...regulatoryBodies].sort((a, b) => (b[sortType] || 0).toString().localeCompare((a[sortType] || 0).toString())));
   }, [sortType, sortOrder]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+    if (data?.regulatoryBodies) {
+      setRegulatoryBodies([...data.regulatoryBodies].sort((a, b) => {
+        const aValue = a[sortType] || '';
+        const bValue = b[sortType] || '';
+        if (sortType === 'trackerItemsResponsesCount') {
+          return sortOrder === 'asc'
+            ? Number(aValue) - Number(bValue)
+            : Number(bValue) - Number(aValue);
+        } 
+          return sortOrder === 'asc'
+            ? aValue.toString().localeCompare(bValue.toString())
+            : bValue.toString().localeCompare(aValue.toString());
+        
+      }));
+    }
+  }, [data, sortType, sortOrder]);
+
   const {
     control,
     formState: { errors },

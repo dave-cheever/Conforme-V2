@@ -30,7 +30,7 @@ function AuditsGroup({ audits }: { audits: IAudit[] }) {
   };
 
   const renderGroup = (group: string) => (
-    <Flex data-id="6708791be2c7" direction="column" key={group} minW="calc(347px + 1rem)" pl={3} pr={2} pt={2}>
+    <Flex data-id="6708791be2c7" direction="column" key={group}  minW="380px" pl={3} pr={2} pt={2} w="380px">
       <Flex
         align="center"
         bg={auditsGroupBg[group]}

@@ -22,7 +22,7 @@ function App() {
   const { navigate } = useNavigate();
   const location = useLocation();
   // Set cookie with client URL for auth flow
-  document.cookie = `clientUrl=${process.env.REACT_APP_CLIENT_URL}; path=/; SameSite=Lax`;
+  document.cookie = `clientUrl=${process.env.REACT_APP_CLIENT_URL}; path=/; SameSite=None; Secure;`;
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
     if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {

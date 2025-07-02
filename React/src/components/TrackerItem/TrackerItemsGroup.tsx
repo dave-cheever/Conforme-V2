@@ -38,10 +38,11 @@ function TrackerGridItems({
       data-id="38ff559a9b1e"
       direction="column"
       key={group}
-      minW="calc(347px + 1rem)"
+      minW="380px"
       pl={8}
       pr={3}
-      pt={2}>
+      pt={2}
+      w="380px">
       <Flex
         align="center"
         bg={`trackerGroup.${group}`}
