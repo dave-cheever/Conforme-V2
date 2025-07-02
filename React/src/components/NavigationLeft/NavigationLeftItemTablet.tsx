@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Box, Flex, Icon } from '@chakra-ui/react';
 
@@ -26,7 +26,24 @@ function NavigationLeftItemTablet({
   const { navigateTo, isPathActive } = useNavigate();
   const { url, icon } = menuItem;
   const { responsesStatusesCounts } = useFiltersContext();
+  const boxRef = useRef<HTMLDivElement>(null); 
+  
+  useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (boxRef.current && !boxRef.current.contains(event.target as Node)) {
+      if (filtersOpen) setFiltersOpen(false);
+      if (subsectionOpen) setSubsectionOpen(false);
+    }
+  }
 
+  if (filtersOpen || subsectionOpen) 
+    document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+  }, [filtersOpen, subsectionOpen, setFiltersOpen, setSubsectionOpen]);
+  
   return (<Box
       _hover={{
         cursor: 'pointer',
@@ -125,6 +142,7 @@ function NavigationLeftItemTablet({
           overflowY="auto"
           pos="absolute"
           py="15px"
+          ref={boxRef}
           rounded="10px"
           top="0"
           w="235px"

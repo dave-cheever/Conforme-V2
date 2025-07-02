@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Box, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
@@ -33,6 +34,23 @@ function NavigationTop() {
   const { audit } = useAuditContext();
   const isAuditPage = isPathActive(`/audits/${audit?._id}`);
 
+  const boxRef = useRef<HTMLDivElement>(null); 
+
+  useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (boxRef.current && !boxRef.current.contains(event.target as Node)) 
+      onClose();
+    
+  }
+
+  if (isOpen) 
+    document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+  }, [isOpen, onClose]);
+
   return (
     (<Flex
       align="center"
@@ -54,6 +72,7 @@ function NavigationTop() {
           left={['auto', '30rem']}
           position={['fixed', 'absolute']}
           py={4}
+          ref={boxRef}
           right={['15px', 'auto']}
           rounded="10px"
           top={['auto', '80px']}
