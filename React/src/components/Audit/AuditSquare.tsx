@@ -62,7 +62,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
                 src={audit?.auditor?.imgUrl}
               />
             </Tooltip>
-            <Flex align={'flex-start'} flexDirection={'column'} ml={3}>
+            <Flex align="flex-start" flexDirection="column" ml={3} w="14rem">
               <Text
                 color="auditSquare.nameFontColor"
                 data-id="84c14f877bab"
