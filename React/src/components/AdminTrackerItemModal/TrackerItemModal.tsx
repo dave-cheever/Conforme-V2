@@ -234,7 +234,7 @@ function TrackerItemModal({ refetch }) {
                     fontSize="smm"
                     fontWeight="700"
                     h="40px"
-                    leftIcon={<Icon as={OpenMenuArrow} transform="rotate(90deg)" />}
+                    leftIcon={<Icon as={OpenMenuArrow} stroke="#ffffff" transform="rotate(90deg)" />}
                     onClick={handlePreviousButtonClick}
                     rounded="10px"
                     w="fit-content">
@@ -271,7 +271,7 @@ function TrackerItemModal({ refetch }) {
                     fontWeight="700"
                     h="40px"                  
                     onClick={handlePrimaryButtonClick}
-                    rightIcon={<Icon as={OpenMenuArrow} transform="rotate(270deg)" />}
+                    rightIcon={<Icon as={OpenMenuArrow} stroke="#ffffff" transform="rotate(270deg)" />}
                     rounded="10px"
                     w="fit-content">
                     {isValidating ? 'Validating...' : buttonText}

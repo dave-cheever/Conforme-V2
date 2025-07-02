@@ -80,7 +80,7 @@ function TrackerGridItems({
             return a.dueDate && b.dueDate ? a.dueDate.toString().localeCompare(b.dueDate.toString()) : 0;
           })
           ?.map((response: IResponse) => (
-            <TrackerItemSquare data-id="77e2a3bdac5d" key={response._id} response={response} />
+            <TrackerItemSquare data-id="77e2a3bdac5d" isGroupView key={response._id} response={response} />
           ))}??
       </Stack>
     </Flex>

@@ -17,7 +17,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-function TrackerItemSquare({ response }: { response: IResponse }) {
+function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isGroupView?: boolean }) {
   const { navigateTo } = useNavigate();
   // const { getCustomQuestionsInDashboard } = useResponseUtils();
   const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
@@ -62,7 +62,7 @@ function TrackerItemSquare({ response }: { response: IResponse }) {
         fontWeight="600"
         isTruncated
         lineHeight="1.4"
-        maxWidth="250px"
+        maxWidth={isGroupView ? "230px" : "250px"}
         noOfLines={1}
         overflow="hidden"
         textOverflow="ellipsis"
