@@ -322,7 +322,8 @@ function Questions() {
         fontWeight="500"
         h="50px"
         key={question._id}
-        p={4}
+        px={2}
+        py={4}
         w="full"
       >
         <Flex

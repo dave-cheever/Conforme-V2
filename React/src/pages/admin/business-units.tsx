@@ -259,14 +259,14 @@ function BusinessUnits() {
         h="50px"
         key={businessUnit._id}
         onClick={() => openBusinessUnitModal('edit', businessUnit)}
-        p={4}
+        px={2}
+        py={4}
         w="full"
       >
         <Flex
           cursor="pointer"
           data-id="62602cb9c5b0"
           flexDir="column"
-          mr={4}
           pl={1}
           w={['70%', '30%']}
         >

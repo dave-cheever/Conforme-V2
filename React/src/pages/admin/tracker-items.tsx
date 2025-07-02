@@ -261,7 +261,7 @@ function TrackerItemsAdmin() {
                 h="73px"
                 key={trackerItem._id}
                 onClick={() => openModal('edit', trackerItem)}
-                px="25px"
+                px="10px"
                 py="10px"
                 w="full">
               <Flex

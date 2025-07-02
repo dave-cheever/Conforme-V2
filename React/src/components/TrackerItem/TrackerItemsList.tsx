@@ -78,11 +78,13 @@ function TrackerListItems({
           w="8%" />
           <AdminTableHeaderElement
           data-id="dd6f521e1d31"
+          hideSortIcon
           label={capitalize(t('evidence'))}
 
           w="12%" />
            <AdminTableHeaderElement
           data-id="dd6f521e1d31"
+          hideSortIcon
           label={capitalize(t('category'))}
           w="12%" />
         <AdminTableHeaderElement

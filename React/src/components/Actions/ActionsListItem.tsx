@@ -20,7 +20,7 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
       data-id="3c3884e96633"
       fontSize="14px"
       onClick={() => editAction(action)}
-      p="15px 25px"
+      px="10px"
       py={[1, 0]}
       w="full"
     >

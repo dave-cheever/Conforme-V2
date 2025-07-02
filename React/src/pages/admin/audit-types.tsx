@@ -305,7 +305,8 @@ function AuditTypes() {
         fontWeight="500"
         h="50px"
         key={auditType._id}
-        p={4}
+        px={2}
+        py={4}
         w="full"
       >
         <Flex

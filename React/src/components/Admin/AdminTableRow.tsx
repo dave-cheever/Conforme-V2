@@ -35,7 +35,7 @@ function AdminTableRow({
       fontSize="smm"
       h="55px"
       key={element._id}
-       pl={5}
+      pl={2}
       w="full">
       <Flex
 

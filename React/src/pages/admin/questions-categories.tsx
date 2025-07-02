@@ -320,7 +320,8 @@ function QuestionsCategories() {
         fontWeight="500"
         h="50px"
         key={questionsCategory?._id}
-        p={4}
+        px={2}
+        py={4}
         w="full"
       >
         <Flex

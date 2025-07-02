@@ -32,7 +32,7 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
       h="50px"
       mt="0px"
       overflow="hidden"
-      pl={6}
+      pl={3}
     >
       <Flex data-id="8270f05bd9d6" onClick={() => openLocationModal('edit', location)} w={['max-content', 'full']}>
         {location.name}

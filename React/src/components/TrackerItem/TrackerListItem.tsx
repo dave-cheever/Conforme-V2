@@ -17,7 +17,7 @@ function TrackerListItem({ response, index }: { response: IResponse, index: numb
       cursor="pointer"
       data-id="224dd8f3a847"
       onClick={() => navigateTo(`/tracker-item/${response._id}`)}
-      p="15px 25px"
+      px="10px"
       py={[1, 0]}
       w="full">
       <Flex

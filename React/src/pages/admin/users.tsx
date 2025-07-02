@@ -368,7 +368,7 @@ function Users() {
         fontWeight="500"
         h="50px"
         key={user._id}
-        px="25px"
+        px="10px"
         w="full"
       >
         <Flex data-id="c22d9407defe" w={['60%', '16%']}>
