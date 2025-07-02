@@ -120,7 +120,7 @@ export const auth = betterAuth({
               message: "User doesn't exist in Conforme AAD group",
             });
           }
-          const existingDbUser = (await Users.customFindWithDetails({ selector: { email: user.email }, organization }))[0] || {};
+          const existingDbUser = (await Users.customFindWithDetails({ selector: { email: user.email }, organization, caseInsensitive: true }))[0] || {};
 
           const updatedOrganisationIds = (existingDbUser.organizationsIds || []).includes(organization._id) ? existingDbUser.organizationsIds : [ ...(existingDbUser.organizationsIds || []), organization._id ] as any;
           const userId = existingDbUser?._id || uuid.v4().toString();

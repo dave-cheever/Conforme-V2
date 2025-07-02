@@ -91,22 +91,25 @@ function NavigationLeftFilters({
         <Flex
           align="center"
           bg={
-            filter[0] === 'all' && itemStatusFilterValue?.length === 0
-              ? 'navigationLeftFilters.selectedLabelBg'
-              : itemStatusFilterValue?.includes(filter[0])
-              ? 'navigationLeftFilters.selectedLabelBg'
-              : 'navigationLeftFilters.unselectedLabelBg'
+            (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+            itemStatusFilterValue?.includes(filter[0])
+              ? '#ffffff'
+              : 'transparent'
+          }
+          border={
+            (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+            itemStatusFilterValue?.includes(filter[0])
+              ? 'none'
+              : '1px solid #CBD5E0'
           }
           color={
-            filter[0] === 'all' && itemStatusFilterValue?.length === 0
-              ? 'navigationLeftFilters.selectedLabelFontColor'
-              : itemStatusFilterValue?.includes(filter[0])
-              ? 'navigationLeftFilters.selectedLabelFontColor'
-              : 'navigationLeftFilters.unselectedLabelFontColor'
+            (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+            itemStatusFilterValue?.includes(filter[0])
+              ? '#110B30'
+              : '#CBD5E0'
           }
-          data-id="bc11c8b2254e"
           fontSize="11px"
-          fontWeight="700"
+          fontWeight="600"
           h="20px"
           justify="center"
           left="10px"

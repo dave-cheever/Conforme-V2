@@ -76,15 +76,30 @@ userSchema.statics.customFindWithDetails = async function ({
   pagination = {},
   organization,
   awaitForResponse = false,
+  caseInsensitive = false,
 }: {
   selector: any;
   pagination?: { limit?: number; offset?: number };
   organization: IOrganization;
   awaitForResponse: boolean;
+  caseInsensitive?: boolean;
 }): Promise<IUser[]> {
   if (!organization) return [];
+  
+  // Handle case-insensitive email lookup
+  let processedSelector = { ...selector };
+  if (caseInsensitive) {
+    // Apply case-insensitive matching to all string fields in the selector
+    Object.keys(processedSelector).forEach(key => {
+      const value = processedSelector[key];
+      if (typeof value === 'string') {
+        processedSelector[key] = { $regex: new RegExp(`^${value}$`, 'i') };
+      }
+    });
+  }
+  
   let usersRequested = this.find({
-    ...selector,
+    ...processedSelector,
     organizationsIds: { $in: [organization._id] as any }, // There is TS issue inside mongoose library with $in type
     'metatags.removedAt': { $eq: null },
   });

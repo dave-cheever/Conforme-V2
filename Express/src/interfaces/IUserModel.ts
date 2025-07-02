@@ -7,11 +7,13 @@ export interface IUserModel extends IBaseModel<IUser> {
     pagination,
     organization,
     awaitForResponse,
+    caseInsensitive,
   }: {
     selector: any;
     pagination?: { limit?: number; offset?: number };
     organization: IOrganization;
     awaitForResponse?: boolean;
+    caseInsensitive?: boolean;
   }) => Promise<IUser[]>;
   customFindByIdWithDetails: ({
     userId,
