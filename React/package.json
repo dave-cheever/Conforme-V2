@@ -48,6 +48,7 @@
     "react-router-dom": "^6.15.0",
     "react-string-replace": "^1.1.1",
     "react-useinterval": "^1.0.2",
+    "react-window": "^1.8.11",
     "sentence-case": "^3.0.4",
     "suneditor": "^2.45.1",
     "suneditor-react": "^3.6.1",
