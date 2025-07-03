@@ -31,10 +31,11 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
       fontWeight="500"
       h="50px"
       mt="0px"
+      onClick={() => openLocationModal('edit', location)}
       overflow="hidden"
       pl={3}
     >
-      <Flex data-id="8270f05bd9d6" onClick={() => openLocationModal('edit', location)} w={['max-content', 'full']}>
+      <Flex data-id="8270f05bd9d6"  w={['max-content', 'full']}>
         {location.name}
       </Flex>
       {device !== 'mobile' && device !== 'tablet' && (

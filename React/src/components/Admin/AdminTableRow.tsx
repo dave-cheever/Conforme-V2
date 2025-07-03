@@ -35,15 +35,15 @@ function AdminTableRow({
       fontSize="smm"
       h="55px"
       key={element._id}
+      onClick={edit}
       pl={2}
       w="full">
       <Flex
-
         align="center"
         cursor="pointer"
         data-id="9fdfe4d5bf9d"
         fontSize="14px"
-        onClick={edit}
+        
         w={['70%', '50%']}>
         {element.name}
       </Flex>

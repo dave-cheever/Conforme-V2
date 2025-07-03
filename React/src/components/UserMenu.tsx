@@ -24,7 +24,7 @@ function UserMenu() {
   {/* Avatar and text */}
   <Flex align="center" m={3}>
     <Avatar
-      bg="#fff"
+      bg="userMenu.avatar.bg"
       borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
       borderRadius={"4px"}
       borderWidth="5px"
