@@ -1,23 +1,15 @@
-
 import { GraphQLResolveInfo } from 'graphql';
 import { PipelineStage } from 'mongoose';
 
 import { TrackerItems } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
-const trackerItems = async (
-  _,
-  { trackerItemsQueryInput },
-  { authorize, organization },
-  info: GraphQLResolveInfo,
-) => {
-  const shouldJoin = (element: string) =>
-    doesPathExist(info.fieldNodes, ['trackerItems', element]);
+const trackerItems = async (_, { trackerItemsQueryInput, pagination }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (element: string) => doesPathExist(info.fieldNodes, ['trackerItems', element]);
   try {
     const user = await authorize();
 
-    if (!isPermitted({ user, action: 'trackerItems.view' }))
-      throw new Error('User is not permitted');
+    if (!isPermitted({ user, action: 'trackerItems.view' })) throw new Error('User is not permitted');
 
     const pipeline: PipelineStage[] = [
       {
@@ -102,12 +94,34 @@ const trackerItems = async (
       });
     }
 
+    // Add $facet for pagination and total count
     pipeline.push({
-      $project: getProjectFields(info.fieldNodes, 'trackerItems'),
+      $facet: {
+        trackerItems: [
+          { $sort: { name: 1 } }, // You can make sortBy/sortDirection dynamic if needed
+          { $skip: pagination?.offset || 0 },
+          { $limit: pagination?.limit || 20 },
+        ],
+        total: [{ $count: 'total' }],
+      },
     });
-
-    const trackerItems = await TrackerItems.aggregate(pipeline);
-    return trackerItems;
+    pipeline.push({
+      $unwind: {
+        path: '$total',
+        preserveNullAndEmptyArrays: true,
+      },
+    });
+    pipeline.push({
+      $project: {
+        trackerItems: 1,
+        total: '$total.total',
+      },
+    });
+    const res = (await TrackerItems.aggregate(pipeline))[0];
+    return {
+      trackerItems: res?.trackerItems || [],
+      total: res?.total || 0,
+    };
   } catch (err: any) {
     throw new Error(err);
   }

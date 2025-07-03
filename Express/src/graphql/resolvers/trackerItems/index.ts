@@ -116,10 +116,15 @@ export const trackerItemsTypeDefs = `
     questions: [QuestionInput]
     published: Boolean
   }
+
+  type TrackerItemsResult {
+    trackerItems: [TrackerItem!]!
+    total: Int!
+  }
 `;
 
 export const trackerItemsQueryDefs = `
-  trackerItems(trackerItemsQueryInput: TrackerItemsQueryInput): [TrackerItem!]!
+  trackerItems(trackerItemsQueryInput: TrackerItemsQueryInput, pagination: PaginationInput): TrackerItemsResult!
 `;
 
 export const trackerItemsMutationDefs = `
