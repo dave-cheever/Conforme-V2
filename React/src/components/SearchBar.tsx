@@ -239,15 +239,15 @@ function SearchBar() {
           placeholder="Search"
           rounded="10px"
           value={searchText}
-          w="447px" />
+          w={["90%", "447px"]} />
       </InputGroup>
       {isOpen && (
         <Box
           data-id="2f0f3c420f1e"
           display={isSearchBarOpen ? 'block' : 'none'}
           position="absolute"
-          pt={[6, 12]}
-          w="full"
+          pt={[10, 12]}
+          w={['100%', null, '40rem']}
           zIndex={0}>
           <Flex
             bg="white"
@@ -256,6 +256,7 @@ function SearchBar() {
             direction="row"
             fontSize="smm"
             rounded="10px">
+              
             {/* eslint-disable-next-line react/jsx-sort-props */}
             <Box
               bg="searchBar.categoriesBg"
@@ -264,7 +265,7 @@ function SearchBar() {
               borderTopRightRadius="none"
               data-id="625fcc3a70d0"
               pb={2}
-              px={3}>
+              px={[2, 3]}>
               {searchCategories.map((searchCategory) => (
                 <Box
                   _hover={{
@@ -280,30 +281,33 @@ function SearchBar() {
                   mt={2}
                   onClick={() => setSelectedSearchCategory(searchCategory)}
                   pos="relative"
-                  w={['100px', '200px']}>
+                  w={['150px', '200px']}>
                   <Flex align="center" data-id="b36d7379d190" h="100%">
                     <Flex
                       alignItems="center"
                       bg={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
                           ? 'navigationLeftItem.selectedLabelBg'
-                          : 'navigationLeftItem.unselectedLabelBg'
+                          : '#e7e7e7'
                       }
                       data-id="d99165ca9f16"
-                      h="30px"
+                      h={['22px', '30px']}
                       justifyContent="center"
                       rounded="8px"
-                      w="30px">
+                      w={['22px', '30px']}>
                       <Icon
                         as={searchCategory.icon}
-                        data-id="8c7de759428a"
-                        fill="transparent"
+                        color={
+                        `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
+                          ? '#ffffff'
+                          : '#111111'
+                        }
+                        data-id="8c7de759428a"                       
                         h="15px"
                         stroke={
-                          `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` ===
-                            `${searchCategory.type}-${searchCategory._id}`
-                            ? 'navigationLeftItem.selectedIconStroke'
-                            : 'navigationLeftItem.unselectedIconStroke'
+                        `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
+                          ? '#ffffff'
+                          : '#111111'
                         }
                         w="15px" />
                     </Flex>
@@ -312,7 +316,9 @@ function SearchBar() {
                     color="black"
                     data-id="7c1179ee898e"
                     fontWeight="400"
-                    ml="5">
+                    fontSize={['12px', '14px']}
+                    ml={[2, 5]}
+                    >
                     {searchCategory.label}
                   </Box>
                 </Box>
@@ -365,7 +371,7 @@ function SearchBar() {
 
                   ) : (
                     <Flex align="center" data-id="6479715af01d" justify="center" mt={4}>
-                      <Text data-id="561cea50604d">Enter search phrase in the box above</Text>
+                      <Text fontSize={["12px", "14px"]} data-id="561cea50604d">Enter search phrase in the box above</Text>
                     </Flex>
                   )}
                 </Flex>
