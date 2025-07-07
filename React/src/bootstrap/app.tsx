@@ -24,8 +24,11 @@ function App() {
   // Set cookie with client URL for auth flow
   const clientUrl = process.env.REACT_APP_CLIENT_URL || '';
   const clientDomain = new URL(clientUrl).hostname;
-  document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${clientDomain}`;
-
+  const domainParts = clientDomain.split('.');
+  const topLevelDomain =
+  domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
+  document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${topLevelDomain}`;
+  
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
     if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {

@@ -213,6 +213,22 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       });
     }
 
+    // Manually join the auditor for audit using userId
+    pipeline.push({
+      $lookup: {
+        from: 'users',
+        localField: 'audit.auditorId',
+        foreignField: 'userId',
+        as: 'audit.auditor',
+      },
+    });
+    pipeline.push({
+      $unwind: {
+        path: '$audit.auditor',
+        preserveNullAndEmptyArrays: true,
+      },
+    });
+
     // For "user" role filter answers
     if (!isPermitted({ user, action: 'answers.viewAll' })) {
       // If user doesn't have permissions to get all answers
@@ -241,20 +257,20 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
       const userIds = [user.userId, ...users.map((user) => user.userId)];
 
       const $or: { [key: string]: string }[] = [];
-      userIds.forEach((_id) => {
+      userIds.forEach((userId) => {
         $or.push(
           ...[
             {
-              'audit.auditorId': _id,
+              'audit.auditorId': userId,
             },
             {
-              'audit.participantsIds': _id,
+              'audit.participantsIds': userId,
             },
             {
-              'audit.location.ownerId': _id,
+              'audit.location.ownerId': userId,
             },
             {
-              'audit.businessUnit.ownerId': _id,
+              'audit.businessUnit.ownerId': userId,
             },
           ],
         );
@@ -295,11 +311,19 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
     }
 
     if (shouldJoin(['audit', 'auditor'])) {
-      join({
-        pipeline,
-        collection: 'users',
-        from: 'audit.auditorId',
-        to: 'audit.auditor',
+      pipeline.push({
+        $lookup: {
+          from: 'users',
+          localField: 'audit.auditorId',
+          foreignField: 'userId',
+          as: 'audit.auditor',
+        },
+      });
+      pipeline.push({
+        $unwind: {
+          path: '$audit.auditor',
+          preserveNullAndEmptyArrays: true,
+        },
       });
     }
 
