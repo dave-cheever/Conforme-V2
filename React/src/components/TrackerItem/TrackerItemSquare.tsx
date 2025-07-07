@@ -9,7 +9,7 @@ import { IUser } from '../../interfaces/IUser';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
-    usersById(userQueryInput: $userQueryInput) {
+    usersByIdFromDb(userQueryInput: $userQueryInput) {
       _id
       displayName
       imgUrl
@@ -20,7 +20,7 @@ const GET_USERS_BY_ID = gql`
 function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isGroupView?: boolean }) {
   const { navigateTo } = useNavigate();
   // const { getCustomQuestionsInDashboard } = useResponseUtils();
-  const { data: { usersById: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
+  const { data: { usersByIdFromDb: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
       userQueryInput: {
         usersIds: response?.responsibleId || [],

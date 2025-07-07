@@ -74,7 +74,7 @@ function TrackerItemsAdmin() {
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { trackerItem, reset } = useTrackerItemModalContext();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const pageSize = 20;
+  const pageSize = 10;
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
@@ -82,6 +82,7 @@ function TrackerItemsAdmin() {
   const [total, setTotal] = useState(0);
   const [sortType, setSortType] = useState('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortedTrackerItems, setSortedTrackerItems] = useState<any[]>([]);
   const filtersRef = useRef({});
   const sortRef = useRef({ sortType: 'name', sortOrder: 'asc' });
   const prevFilters = useRef<any>(null);
@@ -95,22 +96,26 @@ function TrackerItemsAdmin() {
     };
   }, []);
 
-  const parsedFilters = useMemo(() => Object.entries(filtersValues).reduce((acc, [key, value]) => {
-      if (
-        !value.value ||
-        (Array.isArray(value.value) && value.value.length === 0) ||
-        (key === 'usersIds' &&
-          value.value.responsibleIds?.length === 0 &&
-          value.value.accountableIds?.length === 0 &&
-          value.value.contributorIds?.length === 0 &&
-          value.value.followerIds?.length === 0)
-      )
-        return acc;
-      return {
-        ...acc,
-        [key]: value.value,
-      };
-    }, {}), [filtersValues]);
+  const parsedFilters = useMemo(
+    () =>
+      Object.entries(filtersValues).reduce((acc, [key, value]) => {
+        if (
+          !value.value ||
+          (Array.isArray(value.value) && value.value.length === 0) ||
+          (key === 'usersIds' &&
+            value.value.responsibleIds?.length === 0 &&
+            value.value.accountableIds?.length === 0 &&
+            value.value.contributorIds?.length === 0 &&
+            value.value.followerIds?.length === 0)
+        )
+          return acc;
+        return {
+          ...acc,
+          [key]: value.value,
+        };
+      }, {}),
+    [filtersValues],
+  );
 
   const [fetchTrackerItems, { loading, data, refetch }] = useLazyQuery(GET_TRACKER_ITEMS, {
     fetchPolicy: 'network-only',
@@ -151,11 +156,9 @@ function TrackerItemsAdmin() {
 
   useEffect(() => {
     if (data && data.trackerItems) {
-      if (page === 1) 
-        setTrackerItems(data.trackerItems.trackerItems);
-       else 
-        setTrackerItems((prev) => [...prev, ...data.trackerItems.trackerItems]);
-      
+      if (page === 1) setTrackerItems(data.trackerItems.trackerItems);
+      else setTrackerItems((prev) => [...prev, ...data.trackerItems.trackerItems]);
+
       setTotal(data.trackerItems.total);
       setAllLoaded(
         data.trackerItems.trackerItems.length === 0 ||
@@ -220,6 +223,27 @@ function TrackerItemsAdmin() {
       5,
     );
   };
+
+  useEffect(() => {
+    // Sort the currently loaded trackerItems in the frontend
+    if (!trackerItems) return;
+    const sorted = [...trackerItems].sort((a, b) => {
+      let aValue; let bValue;
+      if (sortType === 'regulatoryBody') {
+        aValue = a.regulatoryBody?.name?.toString() || '';
+        bValue = b.regulatoryBody?.name?.toString() || '';
+      } else {
+        aValue = a[sortType]?.toString() || '';
+        bValue = b[sortType]?.toString() || '';
+      }
+      if (sortOrder === 'asc') 
+        return aValue.localeCompare(bValue);
+       
+        return bValue.localeCompare(aValue);
+      
+    });
+    setSortedTrackerItems(sorted);
+  }, [sortType, sortOrder, trackerItems]);
 
   return (
     <>
@@ -300,7 +324,7 @@ function TrackerItemsAdmin() {
           )}
           <Stack bg="white" border="1px solid #E2E8F0" borderBottomRadius="20px" data-id="7fa63e0fa928" gap="0px" h="100%" overflow="auto">
             <InfiniteScrollComponent hasMore={!loading && trackerItems.length < total} loadMore={loadMore} pageStart={1} useWindow={false}>
-              {trackerItems.map((trackerItem, index) => (
+              {sortedTrackerItems.map((trackerItem, index) => (
                 <Flex
                   _hover={{ bg: '#F5F7FA' }}
                   align="center"
@@ -310,7 +334,7 @@ function TrackerItemsAdmin() {
                   cursor="pointer"
                   data-id="96461dd538df"
                   fontSize="14px"
-                  h="73px"
+                  h="60px"
                   key={trackerItem._id}
                   onClick={() => openModal('edit', trackerItem)}
                   px="10px"
