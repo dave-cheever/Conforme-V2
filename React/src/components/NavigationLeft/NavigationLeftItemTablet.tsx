@@ -4,7 +4,6 @@ import { Box, Flex, Icon } from '@chakra-ui/react';
 
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
-import { ArrowRight } from '../../icons';
 import { IMenuItem } from '../../interfaces/IMenu';
 import NavigationLeftFilters from './NavigationLeftFilters';
 import SubSection from './SubSection';
@@ -54,9 +53,10 @@ function NavigationLeftItemTablet({
       fontSize="md"
       fontWeight="normal"
       h="42px"
+      justifyContent="center"
       mt="5px"
       pos="relative"
-      w="90px">
+      w="auto">
       <Flex align="center" data-id="2291e781bcb4" h="100%">
         <Flex
           align="center"
@@ -96,12 +96,6 @@ function NavigationLeftItemTablet({
             stroke="#ffffff"
             w="15px" />
         </Flex>
-        {menuItem.subSections && <ArrowRight
-          boxSize="10px"
-          data-id="e41a549dfe3c"
-          ml="10px"
-          stroke="#818197"
-          viewBox="0 0 10 10" />}
       </Flex>
       {filtersOpen && menuItem.url === '/' && (
         <Box
@@ -138,7 +132,7 @@ function NavigationLeftItemTablet({
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
           data-id="c7dad1258a0f"
           maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
-          ml="80px"
+          ml="18rem"
           overflowY="auto"
           pos="absolute"
           py="15px"

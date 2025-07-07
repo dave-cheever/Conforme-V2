@@ -36,7 +36,15 @@ function NavigationLeftFilters({
   };
 
   return (
-    <Flex data-id="3143fecc7acc" direction="column" key={filter[0]}>
+    <Flex
+      bg={
+        (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+        itemStatusFilterValue?.includes(filter[0])
+        ? 'subSectionBG.selectedFontColor'
+        : 'subSectionBG.unselectedFontColor'
+      }
+      borderRadius="6px"
+      data-id="3143fecc7acc" direction="column" key={filter[0]}>
       {filter[0] === 'comingUp' && (
         <Flex data-id="883873cdc842" py={2}>
           <Flex

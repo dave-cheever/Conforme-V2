@@ -35,7 +35,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                 ? 'navigationLeftItem.selectedLabelBg'
                 : 'navigationLeftItem.unselectedLabelBg'
           }
-      borderRadius={"md"}
+      borderRadius={"6px"}
       data-id="b44d50f8ecb0"
       display="flex"
       fontSize="md"
@@ -48,7 +48,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         else navigateTo(url);
       }}
       pos="relative"
-      w="225px"
+      w="230px"
       >
       <Flex align="center" data-id="ae4bc8aaeef4" h="100%" >
         <Flex
