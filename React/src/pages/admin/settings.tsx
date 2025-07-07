@@ -56,7 +56,7 @@ function Settings() {
         flexDirection="row"
         h={['calc(100% - 160px)', 'calc(100% - 85px)']}
         px="25px"
-        w={['full', 'calc(100vw - 80px)', 'calc(100vw - 240px)']}>
+        w="full">
         <Flex
           bg="white"
           borderRadius="20px"
