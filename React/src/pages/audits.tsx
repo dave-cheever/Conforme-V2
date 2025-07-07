@@ -138,7 +138,7 @@ function Audits() {
     let defaultFilters = {
       usersIds: {
         value: {
-          auditorsIds: [user!._id],
+          auditorsIds: [user!.userId],
         },
       },
     };

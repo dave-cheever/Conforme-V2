@@ -56,7 +56,7 @@ function AuditModalProvider({ children }) {
   const [selectedParticipants, setSelectedParticipants] = useState<IUser[]>([]);
 
   const defaultValues: Partial<IAudit> = {
-    auditorId: user?._id,
+    auditorId: user?.userId,
     participantsIds: [],
     metatags: {
       addedAt: new Date(),
