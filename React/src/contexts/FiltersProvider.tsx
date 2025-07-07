@@ -16,9 +16,11 @@ export const FiltersContext = createContext({} as IFiltersContext);
 const GET_FILTERS_DATA = gql`
   query ($trackerItemsQueryInput: TrackerItemsQueryInput, $moduleId: ID) {
     trackerItems(trackerItemsQueryInput: $trackerItemsQueryInput) {
-      _id
-      name
-      published
+      trackerItems {
+        _id
+        name
+        published
+      }
     }
     categories(moduleId: $moduleId) {
       _id
@@ -79,15 +81,13 @@ function FiltersProvider({ children }) {
   const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{
     [statusName: string]: number;
   }>({});
-  const numberOfSelectedFilters = Object.values(filtersValues).filter(
-    (filter) => {
-      if (!filter?.value || filter?.hideFromPanel) return false;
-      if (Array.isArray(filter?.value)) return filter?.value.length > 0;
-      if (typeof filter?.value === 'object' && !Array.isArray(filter?.value) && filter?.value !== null)
-        return Object.values(filter?.value).reduce((acc: number, curr) => acc + (curr as string[]).length, 0) > 0;
-      return false;
-    },
-  ).length;
+  const numberOfSelectedFilters = Object.values(filtersValues).filter((filter) => {
+    if (!filter?.value || filter?.hideFromPanel) return false;
+    if (Array.isArray(filter?.value)) return filter?.value.length > 0;
+    if (typeof filter?.value === 'object' && !Array.isArray(filter?.value) && filter?.value !== null)
+      return Object.values(filter?.value).reduce((acc: number, curr) => acc + (curr as string[]).length, 0) > 0;
+    return false;
+  }).length;
 
   const setFilters = (filters = {}) => {
     setFiltersValues(
@@ -138,7 +138,7 @@ function FiltersProvider({ children }) {
       setAnswerFiltersValue,
       setDefaultFilters,
       numberOfSelectedFilters,
-      trackerItems: data?.trackerItems,
+      trackerItems: data?.trackerItems?.trackerItems,
       categories: data?.categories,
       locations: data?.locations,
       regulatoryBodies: data?.regulatoryBodies,
