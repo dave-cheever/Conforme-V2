@@ -25,7 +25,7 @@ const GET_FORM_DATA = gql`
       _id
       name
     }
-    locations {
+    locations (moduleId: $moduleId) {
       _id
       name
     }
@@ -33,7 +33,7 @@ const GET_FORM_DATA = gql`
       _id
       name
     }
-    businessUnits {
+    businessUnits (moduleId: $moduleId) {
       _id
       name
     }

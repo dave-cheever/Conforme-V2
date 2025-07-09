@@ -11,7 +11,7 @@ import { useAppContext } from './AppProvider';
 export const AuditModalContext = createContext({} as IAuditModalContext);
 
 const GET_FORM_DATA = gql`
-  query {
+  query ($moduleId: ID!) {
     auditTypes {
       _id
       name
@@ -26,11 +26,11 @@ const GET_FORM_DATA = gql`
       _id
       displayName
     }
-    locations {
+    locations(moduleId: $moduleId) {
       _id
       name
     }
-    businessUnits {
+    businessUnits(moduleId: $moduleId) {
       _id
       name
     }
@@ -45,8 +45,8 @@ export const useAuditModalContext = () => {
 };
 
 function AuditModalProvider({ children }) {
-  const { user } = useAppContext();
-  const { data, refetch } = useQuery(GET_FORM_DATA);
+  const { user, module } = useAppContext();
+  const { data, refetch } = useQuery(GET_FORM_DATA, { variables: { moduleId: module?._id }, skip: !module?._id });
   const auditTypes = data?.auditTypes || [];
   const locations = data?.locations || [];
   const businessUnits = data?.businessUnits || [];
