@@ -49,9 +49,18 @@ function ActionSquare({ action, editAction }: { action: IAction; editAction: (ac
               />
             </Tooltip>
             <Flex direction="column" minW={0} ml={3}>
-              <Text color="#282F36" data-id="a020a4b78b8d" fontSize="16px" fontWeight="600" isTruncated noOfLines={1}>
-                {action?.title}
-              </Text>
+               <Text
+                  color="#282F36"
+                  data-id="a020a4b78b8d"
+                  fontSize="16px"
+                  fontWeight="600"
+                  maxW="220px"
+                  noOfLines={1}
+                  wordBreak="break-word"
+                >
+                  {action?.title}
+                </Text>
+
               <Text color="#818197" data-id="f80fabbc8028" fontSize="11px" noOfLines={1}>
                 {action?.answer?.audit?.auditType?.name}
               </Text>
