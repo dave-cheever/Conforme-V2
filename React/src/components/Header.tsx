@@ -1,12 +1,15 @@
 import { useMemo } from 'react';
 
-import { Divider, Flex, Text } from '@chakra-ui/react';
+import { Button, Divider, Flex, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
 
+import { useAdminContext } from '../contexts/AdminProvider';
+import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
+import useConfig from '../hooks/useConfig';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
-import { ArrowRight } from '../icons';
+import { AddIcon, ArrowRight } from '../icons';
 import Can from './can';
 import FilterButton from './FilterButton';
 
@@ -17,9 +20,12 @@ interface IHeader {
   pageLabel?: string;
 }
 
-function Header({ children, breadcrumbs, mobileBreadcrumbs }: IHeader) {
+function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader) {
   const { usedFilters } = useFiltersContext();
-  const { isPathActive } = useNavigate();
+  const { isPathActive, navigateTo } = useNavigate();
+  const { setAdminModalState } = useAdminContext();
+  const { trackerAddItems, auditAddItems } = useConfig();
+  const { module } = useAppContext();
 
   const isAuditPage =
     isPathActive('/audits') ||
@@ -48,6 +54,10 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs }: IHeader) {
   function isPathAllowed() {
     return !excludedPaths.includes(window.location.pathname);
   }
+  const item =
+    module?.type === 'audits'
+      ? auditAddItems.find((item) => item.label === pageLabel)
+      : trackerAddItems.find((item) => item.label === pageLabel);
 
   const device = useDevice();
   const breadCrumbs = useMemo(() => breadcrumbs, [device, breadcrumbs, mobileBreadcrumbs]);
@@ -90,6 +100,35 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs }: IHeader) {
                   <Divider borderColor="gray.300" display={['none', 'block']} height="30px" ml={0} mr={5} mt={1} orientation="vertical" />
                 )}
 
+                <Button
+                  _hover={{ opacity: 0.7 }}
+                  aria-label="Add"
+                  bg="navigationTop.addButton"
+                  bottom={['78px', '0']}
+                  boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
+                  color="white"
+                  data-id="b5bf85567bbe"
+                  display={['none', 'flex']}
+                  flexShrink={0}
+                  fontSize={['12px', '14px']}
+                  fontWeight={'500'}
+                  h={['42px', '40px']}
+                  leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '16px']} stroke="navigationTop.addIcon" w={['10px', '16px']} />}
+                  ml={['0', '4']}
+                  mr={['6rem', '0']}
+                  onClick={() => {
+                    const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
+                    navigateTo(targetUrl || '');
+                    setAdminModalState('add');
+                  }}
+                  position={['fixed', 'relative']}
+                  right={['0', usedFilters.length > 0 ? '15' : '25']}
+                  rounded={['10px', '8px']}
+                  w={['auto']}
+                  zIndex={5}
+                >
+                  {`Add ${item?.label || ''}`}
+                </Button>
               </>
             )}
           />
