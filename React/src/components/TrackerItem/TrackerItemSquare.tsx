@@ -50,7 +50,7 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
         <Avatar
           borderRadius="8px"
           boxSize="36px"
-          name={responsible?.displayName}
+          name={responsible?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
           src={responsible?.imgUrl}
         />
       </Tooltip>
