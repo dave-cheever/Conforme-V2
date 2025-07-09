@@ -185,7 +185,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                       data-id="efba2b51f6e5"
                       h="32px"
                       mr={chatParticipants.length > 1 ? '10px' : ''}
-                      name={user?.displayName}
+                      name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                       p="2px"
                       rounded="full"
                       src={user?.imgUrl}
@@ -228,7 +228,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
               chatParticipants
                 .slice(0, 3)
                 .map((user, i) => (
-                  <Avatar border="2px solid white" key={i} name={user?.displayName} size="xs" src={user?.imgUrl} zIndex={3 - i} />
+                  <Avatar border="2px solid white" key={i}  name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={user?.imgUrl} zIndex={3 - i} />
                 ))
             )}
           </HStack>

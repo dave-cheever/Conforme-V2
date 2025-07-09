@@ -38,7 +38,7 @@ function UserAvatar({
     <Avatar
       data-id="210cd7ccf387"
       {...props}
-      name={user?.displayName}
+      name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
       src={user?.imgUrl} />
   );
 }

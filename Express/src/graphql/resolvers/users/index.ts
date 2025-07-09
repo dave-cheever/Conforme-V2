@@ -69,6 +69,7 @@ export const usersTypeDefs = `
 
   input SearchUserQuery {
     searchText: String
+    organization: String
   }
 
   input UserQueryInput {

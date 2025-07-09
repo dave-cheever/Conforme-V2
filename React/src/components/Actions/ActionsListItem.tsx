@@ -92,7 +92,7 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
           <Skeleton data-id="584507e45ec0" isLoaded={!!action} rounded="full">
             {action.assignee ? (
               <Tooltip data-id="f0e177c067ad" label={action.assignee?.displayName}>
-                <Avatar data-id="f999c936b314" name={action.assignee?.displayName} size="xs" src={action.assignee?.imgUrl} />
+                <Avatar data-id="f999c936b314"  name={action?.assignee?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={action.assignee?.imgUrl} />
               </Tooltip>
             ) : (
               <Flex data-id="2a0c06e3e9b8" fontSize="14px" fontStyle="italic" fontWeight="500">
@@ -105,7 +105,7 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
           <Skeleton data-id="c2be8acc8c98" isLoaded={!!action} rounded="full">
             {action.creator ? (
               <Tooltip data-id="fbe47ff88856" label={action.creator?.displayName}>
-                <Avatar data-id="e04ef11669ef" name={action.creator?.displayName} size="xs" src={action.creator?.imgUrl} />
+                <Avatar data-id="e04ef11669ef"  name={action?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={action.creator?.imgUrl} />
               </Tooltip>
             ) : (
               <Flex data-id="5a73ad0ae8b8" fontSize="14px" fontStyle="italic" fontWeight="500">

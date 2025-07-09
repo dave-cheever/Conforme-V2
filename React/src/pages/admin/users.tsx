@@ -376,7 +376,12 @@ function Users() {
             borderColor="brand.active"
             data-id="192faa91d5b5"
             mr={3}
-            name={user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
+            name={
+              (user.firstName && user.lastName
+                ? `${user.firstName} ${user.lastName}`
+                : user.displayName
+              )?.replace(/\s*\(.*?\)\s*/g, '')
+            }
             rounded="full"
             size="sm"
             src={user.imgUrl}

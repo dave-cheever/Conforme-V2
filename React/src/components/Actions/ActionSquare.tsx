@@ -43,8 +43,8 @@ function ActionSquare({ action, editAction }: { action: IAction; editAction: (ac
                 borderRadius="8px"
                 boxSize="36px"
                 cursor="pointer"
-                data-id="02bc017105fd"
-                name={action?.assignee?.displayName}
+                data-id="02bc017105fd"                
+                name={action?.assignee?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 src={action?.assignee?.imgUrl}
               />
             </Tooltip>

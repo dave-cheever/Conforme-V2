@@ -126,7 +126,7 @@ function AuditHistory() {
                       <Avatar
                         alignSelf="flex-start"
                         data-id="08fbeeffb1a2"
-                        name={audit?.auditor?.displayName}
+                        name={audit?.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                         size="sm"
                         src={audit?.auditor?.imgUrl} />
                       <Stack data-id="4f7ad31179ff" flexGrow={1} spacing={2}>

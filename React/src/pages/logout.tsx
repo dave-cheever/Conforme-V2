@@ -110,7 +110,7 @@ function Logout() {
               borderWidth="4px"
               data-id="a6ccca234009"
               h="75px"
-              name={user?.displayName}
+              name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
               src={user?.imgUrl}
               w="75px" />
           </Flex>

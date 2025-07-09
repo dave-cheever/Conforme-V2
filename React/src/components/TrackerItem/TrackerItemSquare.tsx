@@ -156,7 +156,7 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
         boxSize="20px"
         key={index}
         ml={index === 0 ? '0' : '-6px'}
-        name={c.displayName}
+        name={c?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
         src={c.imgUrl}
       />
     ))}

@@ -158,7 +158,7 @@ function AuditModal({ refetch }) {
             <Avatar
               data-id="ecc99630896e"
               mr={3}
-              name={user?.displayName}
+              name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
               rounded="full"
               size="xs"
               src={user?.imgUrl} />

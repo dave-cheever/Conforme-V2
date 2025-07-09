@@ -52,7 +52,7 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
               data-id="bc3ca127f3da"
               h="24px"
               mr="10px"
-              name={location?.owner?.displayName}
+              name={location?.owner?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
               rounded="full"
               size="sm"
               src={location?.owner?.imgUrl}

@@ -33,7 +33,7 @@ function AnswerSquare({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
                 borderRadius={'8px'}
                 boxSize="36px"
                 cursor="pointer"
-                name={answer?.addedBy?.displayName}
+                name={answer?.addedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 size="sm"
                 src={answer?.addedBy?.imgUrl}
               />

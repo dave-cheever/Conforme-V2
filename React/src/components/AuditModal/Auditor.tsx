@@ -20,7 +20,7 @@ function Auditor({ name, designation, imgSrc }: IAuditor) {
       h="36px"
       lineHeight="0px"
       mr="15px"
-      name={name}
+      name={name?.replace(/\s*\(.*?\)\s*/g, '')} 
       src={imgSrc}
       w="36px" />
     <Box data-id="9cec15c173fb">

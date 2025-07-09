@@ -128,17 +128,20 @@ function ResponseDetail({ response }) {
                 </Box>
                 <Flex align="center" data-id="32f7676d04f7" fontSize="14px" minH="28px">
                   <Avatar
-                    bg="responseLeftNavigation.avatar"
-                    color="white"
-                    data-id="7dc18869afe3"
-                    mr={2}
-                    name={
-                      accountable && accountable.firstName && accountable.lastName
-                        ? `${accountable.firstName} ${accountable.lastName}`
-                        : `${accountable?.displayName}`
-                    }
-                    size="xs"
-                    src={accountable && accountable.imgUrl} />
+                      bg="responseLeftNavigation.avatar"
+                      color="white"
+                      data-id="7dc18869afe3"
+                      mr={2}
+                      name={
+                        (
+                          accountable && accountable.firstName && accountable.lastName
+                            ? `${accountable.firstName} ${accountable.lastName}`
+                            : `${accountable?.displayName}`
+                        )?.replace(/\s*\(.*?\)\s*/g, '')
+                      }
+                      size="xs"
+                      src={accountable && accountable.imgUrl}
+                    />
                   <Flex data-id="b2b81150b3c1" mr={2}>
                     {accountable && accountable.firstName && accountable.lastName
                       ? `${accountable.firstName} ${accountable.lastName}`

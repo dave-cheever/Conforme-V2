@@ -59,7 +59,7 @@ function ParticipantAvatar({
         <Avatar
           borderRadius="4px"
           h="38px"
-          name={displayName}
+          name={displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
           src={imgUrl}
           w="38px"
         />

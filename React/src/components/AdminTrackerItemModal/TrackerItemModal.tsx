@@ -163,7 +163,7 @@ function TrackerItemModal({ refetch }) {
             <Avatar
               data-id="6b482dd8a926"
               mr={3}
-              name={user?.displayName}
+              name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
               rounded="full"
               size="xs"
               src={user?.imgUrl} />

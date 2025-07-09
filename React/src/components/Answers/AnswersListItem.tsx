@@ -169,7 +169,7 @@ function AnswersListItem({
               <Skeleton data-id="136093dab47e" isLoaded={!!answer} pr={1} rounded="full">
                 {answer.addedBy ? (
                   <Flex align="center" data-id="217de9441ce2" direction="row">
-                    <Avatar data-id="0ab0e498199c" name={answer.addedBy?.displayName} size="xs" src={answer.addedBy?.imgUrl} />
+                    <Avatar data-id="0ab0e498199c" name={answer?.addedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={answer.addedBy?.imgUrl} />
                     <Text
                       color="auditsList.fontColor"
                       data-id="aab06571e7b2"

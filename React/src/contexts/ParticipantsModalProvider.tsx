@@ -6,6 +6,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 import { toastFailed } from '../bootstrap/config';
 import { IParticipantsModalContext } from '../interfaces/IParticipantsModalContext';
 import { IUser } from '../interfaces/IUser';
+import { useAppContext } from './AppProvider';
 
 const GET_SELECTED_USERS = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -49,6 +50,8 @@ function ParticipantsModalProvider({ children }) {
     onClose: closeParticipantDeleteModal,
   } = useDisclosure();
 
+  const { organizationConfig } = useAppContext();
+
   const [label, setLabel] = useState('');
 
   const [maxParticipants, setMaxParticipants] = useState<number>();
@@ -57,7 +60,7 @@ function ParticipantsModalProvider({ children }) {
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { data, loading } = useQuery(SEARCH_USERS, {
-    variables: { searchQuery: { searchText: searchQuery } },
+    variables: { searchQuery: { searchText: searchQuery, organization: organizationConfig?._id } },
     skip: !searchQuery,
   });
 
@@ -89,7 +92,8 @@ function ParticipantsModalProvider({ children }) {
   const selectParticipant = (user: IUser) => {
     // If only one participant can be selected replace currently selected with it
     if (maxParticipants === 1) setSelectedParticipants([user]);
-    else if (isParticipantSelected(user.userId)) setSelectedParticipants([...selectedParticipants.filter(({ _id }) => _id !== user.userId)]);
+    else if (isParticipantSelected(user.userId))
+      setSelectedParticipants([...selectedParticipants.filter(({ _id }) => _id !== user.userId)]);
     else if (selectedParticipants.length === maxParticipants) {
       toast({
         ...toastFailed,

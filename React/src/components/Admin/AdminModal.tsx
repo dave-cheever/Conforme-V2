@@ -66,7 +66,7 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
                 <Avatar
                   data-id="3cf29549c1a0"
                   mx={3}
-                  name={user?.displayName}
+                  name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                   rounded="full"
                   size="sm"
                   src={user?.imgUrl} />

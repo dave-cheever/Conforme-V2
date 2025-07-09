@@ -94,7 +94,7 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
       p="4">
       <Avatar
         mt="1"
-        name={auditAddedUser?.displayName}
+        name={auditAddedUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
         size="sm"
         src={auditAddedUser?.imgUrl}
       />

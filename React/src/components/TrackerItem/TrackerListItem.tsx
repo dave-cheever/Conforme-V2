@@ -139,7 +139,7 @@ function TrackerListItem({ response, index }: { response: IResponse, index: numb
             <Flex align="center" data-id="735022a416dc" direction="row">
               <Avatar
                 data-id="dc03862aae27"
-                name={response.responsible.displayName}
+                name={response.responsible.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                 size="xs"
                 src={`${process.env.REACT_APP_API_URL}/files/photo/${response.responsible._id}`} />
               <Text

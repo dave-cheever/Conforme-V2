@@ -111,7 +111,7 @@ function ActionForm({ handleSave }) {
                 <Flex align="center" data-id="40b81b8ade10" direction="row">
                   <Avatar
                     data-id="182a002344fc"
-                    name={selectedAction?.assignor?.displayName}
+                    name={selectedAction?.assignor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                     size="xs"
                     src={selectedAction?.assignor?.imgUrl}
                   />

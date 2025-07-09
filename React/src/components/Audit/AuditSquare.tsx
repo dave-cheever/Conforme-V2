@@ -57,7 +57,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
                 boxSize="36px"
                 cursor="pointer"
                 data-id="e4b8bb88a47d"
-                name={audit?.auditor?.displayName}
+                name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                 size="sm"
                 src={audit?.auditor?.imgUrl}
               />

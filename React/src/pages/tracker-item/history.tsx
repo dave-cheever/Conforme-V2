@@ -84,7 +84,7 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
         <Skeleton isLoaded={!responsibleLoading} rounded="full" w="full">
           {responsibleUser ? (
             <Flex align="center" minW={0} w="full">
-              <Avatar name={responsibleUser.displayName} size="xs" src={responsibleUser.imgUrl} />
+              <Avatar name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={responsibleUser.imgUrl} />
               <Tooltip label={responsibleUser.displayName}>
                 <Text
                   color="historyPage.font"
@@ -111,7 +111,7 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
         <Skeleton isLoaded={!responsibleLoading} rounded="full" w="full">
           {lastUpdatedBy ? (
             <Flex align="center" minW={0} w="full">
-              <Avatar name={lastUpdatedBy.displayName} size="xs" src={lastUpdatedBy.imgUrl} />
+              <Avatar name={lastUpdatedBy.displayName?.replace(/\s*\(.*?\)\s*/g, '')}  size="xs" src={lastUpdatedBy.imgUrl} />
               <Tooltip label={lastUpdatedBy.displayName}>
                 <Text
                   color="historyPage.font"

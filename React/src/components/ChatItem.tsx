@@ -61,7 +61,7 @@ function ChatItem({ onAction, comment }: IChatItem) {
                 data-id="95819a8477ae"
                 loading="lazy"
                 mr={2}
-                name={chatAuthor?.displayName}
+                name={chatAuthor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 p="2px"
                 rounded="full"
                 size="sm"

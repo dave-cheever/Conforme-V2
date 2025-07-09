@@ -91,7 +91,7 @@ function Login() {
                 borderWidth="4px"
                 data-id="e4c262781a82"
                 h="75px"
-                name={user?.displayName}
+                name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                 src={user?.imgUrl}
                 w="75px" />
             </Flex>

@@ -36,7 +36,7 @@ function SelectedAuditor({ name, designation, imgSrc }: IAuditor) {
           h="36px"
           lineHeight="0px"
           mr="15px"
-          name={name}
+          name={name?.replace(/\s*\(.*?\)\s*/g, '')} 
           src={imgSrc}
           w="36px" />
         <TagLabel data-id="7864c8eaeee3">

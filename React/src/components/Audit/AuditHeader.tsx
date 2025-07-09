@@ -230,7 +230,7 @@ function AuditHeader() {
           <HStack data-id="9b7be6440785" justify="center">
             <Avatar
               data-id="3727b4af4ef6"
-              name={auditor?.displayName}
+              name={auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
               rounded="full"
               size="xs"
               src={auditor?.imgUrl} />

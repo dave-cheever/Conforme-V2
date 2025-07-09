@@ -189,7 +189,7 @@ function ActionModal({
                 <Avatar
                   data-id="3739132585c0"
                   mr={3}
-                  name={action?.assignee?.displayName}
+                  name={action?.assignee?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                   rounded="full"
                   size="xs"
                   src={action?.assignee?.imgUrl}
@@ -435,7 +435,7 @@ function ActionModal({
                     >
                       <Avatar
                         data-id="e9c608c6b835"
-                        name={action?.creator?.displayName}
+                        name={action?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                         size="xs"
                         src={action?.creator?.imgUrl}
                       />

@@ -18,21 +18,21 @@ const getClient = async (organizationId: string) => {
   if (!organizationId) throw new Error('Wrong organization config');
 
   const { clientId, tenantId, secret } = organization;
-  
+
   // Create MSAL confidential client application
   const msalConfig: Configuration = {
     auth: {
       clientId: clientId || '',
       authority: `https://login.microsoftonline.com/${tenantId || ''}`,
       clientSecret: secret || '',
-    }
+    },
   };
 
   const cca = new ConfidentialClientApplication(msalConfig);
-  
+
   // Acquire token for Microsoft Graph
   const tokenRequest = {
-    scopes: ['https://graph.microsoft.com/.default']
+    scopes: ['https://graph.microsoft.com/.default'],
   };
 
   try {
@@ -153,10 +153,60 @@ const getUsers = async ({
     const res = await client.get(`users?$filter=${filterQuery}&$select=${properties}`);
     const responseData = res.data as { value?: any[] };
     let users = responseData?.value || [];
-    if (filterByJobTitle && filterByJobTitle.length > 0) users = users.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
+    if (filterByJobTitle && filterByJobTitle.length > 0)
+      users = users.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
 
     return users.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle, department }) => ({
       _id: id,
+      displayName,
+      firstName: givenName,
+      lastName: surname,
+      email: userPrincipalName,
+      jobTitle,
+      department,
+      imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${id}`,
+    }));
+  } catch (e: any) {
+    console.log(e);
+    throw new Error(e);
+  }
+};
+
+const getUsersWithOrg = async ({
+  searchText,
+  filterByJobTitle,
+  organization,
+}: {
+  searchText: string;
+  filterByJobTitle?: string[];
+  organization: string;
+}) => {
+  try {
+    const client = await getClient(organization);
+    let filterQuery = '';
+    if (searchText) {
+      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(searchText))
+        filterQuery = `id eq '${searchText}'`;
+      else {
+        filterQuery = `
+          startsWith(givenName,'${searchText}') or
+          startsWith(surname,'${searchText}') or
+          startsWith(displayName,'${searchText}') or
+          startsWith(userPrincipalName,'${searchText}') or
+          startsWith(mail,'${searchText}')
+        `;
+      }
+    }
+    const properties = ['id', 'givenName', 'surname', 'displayName', 'userPrincipalName', 'jobTitle', 'department'].join(',');
+    const res = await client.get(`users?$filter=${filterQuery}&$select=${properties}`);
+    const responseData = res.data as { value?: any[] };
+    let users = responseData?.value || [];
+    if (filterByJobTitle && filterByJobTitle.length > 0)
+      users = users.filter((el) => el.jobTitle && filterByJobTitle.includes(el.jobTitle));
+
+    return users.map(({ id, givenName, displayName, surname, userPrincipalName, jobTitle, department }) => ({
+      _id: id,
+      userId: id,
       displayName,
       firstName: givenName,
       lastName: surname,
@@ -306,7 +356,7 @@ const uploadDocuments = async (
 
             return undefined;
           });
-        } catch { }
+        } catch {}
 
         const uploadSession = await client.post(
           `sites/${id}/drive/root:/${path}/${incrementFileName(document.originalname, documentExistantTimes)}:/createUploadSession`,
@@ -402,7 +452,7 @@ const moveDocument = async (id: string, newPath: string, newName: string, organi
       // Delete old folder if empty
       if (tempFolderDetailsData.folder?.childCount === 0)
         await client.delete(`sites/${locationId}/drive/items/${fileDetailsData.parentReference.id}`);
-    } catch (deleteErr: any) { } // do not do anything if folder was already removed
+    } catch (deleteErr: any) {} // do not do anything if folder was already removed
 
     return true;
   } catch (e: any) {
@@ -442,4 +492,5 @@ export default {
   moveDocument,
   deleteDocument,
   getFileDetails,
+  getUsersWithOrg,
 };

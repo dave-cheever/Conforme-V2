@@ -87,7 +87,7 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
           <Skeleton data-id="30660cd6f678" isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
               <Flex align="center" data-id="b58e2c0e5930" direction="row">
-                <Avatar data-id="b92882619dcf" name={audit.auditor?.displayName} size="xs" src={audit.auditor?.imgUrl} />
+                <Avatar data-id="b92882619dcf" name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={audit.auditor?.imgUrl} />
                 <Text
                   color="auditsList.fontColor"
                   data-id="92431cfa5efa"

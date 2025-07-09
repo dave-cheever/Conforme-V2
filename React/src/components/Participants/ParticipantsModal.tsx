@@ -61,13 +61,14 @@ function ParticipantsModal() {
   };
 
   return (
-    (<Modal
+    <Modal
       data-id="acaaf7c4a575"
       isCentered={device !== 'mobile'}
       isOpen={isParticipantsModalOpen}
       onClose={handleClose}
       scrollBehavior="inside"
-      variant="teamModal">
+      variant="teamModal"
+    >
       <ModalContent data-id="7de6be3b1c1c" m={0}>
         <ModalHeader data-id="35a466823ec4">
           <Text data-id="fabf1fe6df6f">Select {label.toLowerCase()}</Text>
@@ -92,7 +93,8 @@ function ParticipantsModal() {
               placeholder="Name"
               rounded="10px"
               value={searchQuery}
-              zIndex={2} />
+              zIndex={2}
+            />
           </InputGroup>
 
           <Flex data-id="4f7d7529faae">
@@ -104,35 +106,27 @@ function ParticipantsModal() {
                   fontSize="smm"
                   fontWeight="semi_medium"
                   ml="2"
-                  mt={2}>
+                  mt={2}
+                >
                   {`${selectedParticipants.length} ${pluralize('user', selectedParticipants.length)}`} selected
                 </Text>
               ))}
           </Flex>
 
-          <Flex
-            data-id="ab9d60baded7"
-            direction="column"
-            maxH={['full', '258px']}
-            mt="20px">
+          <Flex data-id="ab9d60baded7" direction="column" maxH={['full', '258px']} mt="20px">
             {usersList.length > 0 && (
-              <VStack
-                align="start"
-                alignItems="flex-start"
-                data-id="55f99ddad5b5"
-                h="full"
-                overflow="auto"
-                spacing={2}>
+              <VStack align="start" alignItems="flex-start" data-id="55f99ddad5b5" h="full" overflow="auto" spacing={2}>
                 {[
                   ...usersList.filter(({ _id }) => isParticipantSelected(_id)).sort((a, b) => a.displayName.localeCompare(b.displayName)),
                   ...usersList.filter(({ _id }) => !isParticipantSelected(_id)).sort((a, b) => a.displayName.localeCompare(b.displayName)),
                 ].map((user) => (
                   <ParticipantListItem
                     data-id="ce24c45bf549"
-                    isSelected={isParticipantSelected(user.userId)}
-                    key={user.userId}
+                    isSelected={isParticipantSelected(user._id)}
+                    key={user._id}
                     onSelectParticipant={selectParticipant}
-                    user={user} />
+                    user={user}
+                  />
                 ))}
               </VStack>
             )}
@@ -145,19 +139,15 @@ function ParticipantsModal() {
                 h="40px"
                 justify="flexStart"
                 spacing={2}
-                w="full">
+                w="full"
+              >
                 <Loader center data-id="fa1a6b080dff" size="sm" w="20px" />
                 <Text data-id="640b8ac59ee4">Searching...</Text>
               </HStack>
             ) : (
               usersList.length === selectedParticipants.length &&
               searchQuery && (
-                <Flex
-                  align="center"
-                  data-id="7d0ca98a9832"
-                  fontSize="smm"
-                  fontStyle="italic"
-                  h="40px">
+                <Flex align="center" data-id="7d0ca98a9832" fontSize="smm" fontStyle="italic" h="40px">
                   No {selectedParticipants.length > 0 ? 'more ' : ''} results found
                 </Flex>
               )
@@ -176,12 +166,13 @@ function ParticipantsModal() {
             mb={['44px', '6px']}
             mr="1px"
             onClick={closeParticipantsModal}
-            w="68px">
+            w="68px"
+          >
             {canDelete ? 'Close' : 'Replace'}
           </Button>
         </ModalFooter>
       </ModalContent>
-    </Modal>)
+    </Modal>
   );
 }
 

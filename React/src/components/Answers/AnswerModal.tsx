@@ -191,7 +191,7 @@ function AnswerModal({
             <Avatar
               data-id="9586146a9e69"
               mr={3}
-              name={answer?.addedBy?.displayName}
+              name={answer?.addedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
               rounded="full"
               size="xs"
               src={answer?.addedBy?.imgUrl} />
@@ -351,7 +351,7 @@ function AnswerModal({
                     <Flex align="center" data-id="deadbc4c7da0" direction="row" mt={1}>
                       <Avatar
                         data-id="a9bac42fe470"
-                        name={answer?.creator?.displayName}
+                        name={answer?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                         size="xs"
                         src={answer?.creator?.imgUrl} />
                       <Text

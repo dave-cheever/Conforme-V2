@@ -85,7 +85,7 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
                     pl="13px"
                     py="10px"
                     w="full">
-                    <Avatar data-id="a68c3369dd6e" name={highlightedDisplay?.displayName} size="xs" />
+                    <Avatar data-id="a68c3369dd6e" name={highlightedDisplay?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}   size="xs" />
                     <Text data-id="e11e566ab0a9" ml={3} noOfLines={1} textOverflow="ellipsis">
                       {highlightedDisplay?.displayName}
                     </Text>

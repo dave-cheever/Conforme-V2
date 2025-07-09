@@ -85,7 +85,7 @@ function HistoricalListItem({ response }: { response: IResponse }) {
               <Flex align="center" data-id="3df599cf5384" direction="row">
                 <Avatar
                   data-id="eda3bdaca613"
-                  name={responsibleUser?.displayName}
+                  name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                   size="xs"
                   src={responsibleUser?.imgUrl} />
                 <Text
@@ -114,7 +114,7 @@ function HistoricalListItem({ response }: { response: IResponse }) {
           <Skeleton data-id="0c8a68752e86" isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
               <Flex align="center" data-id="c61ec76d4907" direction="row">
-                <Avatar data-id="439c5e5fbdb3" name={lastUpdatedBy?.displayName} size="xs" src={lastUpdatedBy?.imgUrl} />
+                <Avatar data-id="439c5e5fbdb3" name={lastUpdatedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={lastUpdatedBy?.imgUrl} />
                 <Text
                   color="historicalListItem.fontColor"
                   data-id="16ae5a02b9a0"

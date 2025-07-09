@@ -32,7 +32,7 @@ function UserMenu() {
       data-id="8c0b24efa538"
       h="41px"
       mr={3}
-      name={user?.displayName}
+      name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
       size="sm"
       src={user?.imgUrl}
       w="41px"
