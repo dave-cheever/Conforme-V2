@@ -102,6 +102,7 @@ function NavigationTop() {
         display="flex"
         fontSize="md"
         fontWeight="semi_medium"
+        justifyContent={["center", "flex-start"]}
         mr={['0', '20px']}
         pl={[0, 6]}
         spacing={0}

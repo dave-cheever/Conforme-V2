@@ -181,7 +181,7 @@ function SearchBar() {
   };
 
   return (
-    (<Flex border={"1px solid #CBD5E0"} borderRadius={"md"} data-id="1bbf0fad73e2" direction="column"  position="relative" ref={ref} w="449px">
+    (<Flex border={"1px solid #CBD5E0"} borderRadius={"md"} data-id="1bbf0fad73e2" direction="column"  position="relative" ref={ref} w={["auto", "449px"]}>
       <InputGroup
         data-id="a5273cba17ab"
         display="block"
@@ -315,8 +315,8 @@ function SearchBar() {
                   <Box
                     color="black"
                     data-id="7c1179ee898e"
-                    fontWeight="400"
                     fontSize={['12px', '14px']}
+                    fontWeight="400"
                     ml={[2, 5]}
                     >
                     {searchCategory.label}
@@ -355,7 +355,7 @@ function SearchBar() {
                                   {searchCategories.find(({ type, _id }) => type === result.type && _id == result.scope._id)?.label}
                                 </Text>
                               )}
-                              <Text data-id="5a545e18dda7" fontSize="smm" fontWeight="bold" noOfLines={1}>
+                              <Text data-id="5a545e18dda7" fontSize={["11px", "14px"]} fontWeight="bold" noOfLines={1}>
                                 {result.title}
                               </Text>
                             </Flex>
@@ -365,13 +365,13 @@ function SearchBar() {
                       </>
                     ) : (
                       <Flex align="center" data-id="50533d923e29" justify="center" mt={4}>
-                        <Text data-id="44e8f209a4f5">No results found</Text>
+                        <Text data-id="44e8f209a4f5" fontSize={['12px', '14px']}>No results found</Text>
                       </Flex>
                     )
 
                   ) : (
                     <Flex align="center" data-id="6479715af01d" justify="center" mt={4}>
-                      <Text fontSize={["12px", "14px"]} data-id="561cea50604d">Enter search phrase in the box above</Text>
+                      <Text data-id="561cea50604d" fontSize={["12px", "14px"]}>Enter search phrase in the box above</Text>
                     </Flex>
                   )}
                 </Flex>
