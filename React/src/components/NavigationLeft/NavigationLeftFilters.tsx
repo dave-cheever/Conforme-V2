@@ -37,98 +37,105 @@ function NavigationLeftFilters({
 
   return (
     <Flex
+    borderRadius="6px"
+    data-id="3143fecc7acc"
+    direction="column"
+    key={filter[0]}
+  >
+    {filter[0] === 'comingUp' && (
+      <Flex data-id="883873cdc842" py={2}>
+        <Flex
+          bg="navigationLeftFilters.seperator"
+          data-id="fa271f7b04b8"
+          h="1px"
+          ml="25px"
+          opacity="0.3"
+          rounded="lg"
+          w="30px"
+        />
+      </Flex>
+    )}
+
+    <Flex
+      align="center"
       bg={
         (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
         itemStatusFilterValue?.includes(filter[0])
-        ? 'subSectionBG.selectedFontColor'
-        : 'subSectionBG.unselectedFontColor'
+          ? 'subSectionBG.selectedFontColor'
+          : 'subSectionBG.unselectedFontColor'
       }
       borderRadius="6px"
-      data-id="3143fecc7acc" direction="column" key={filter[0]}>
-      {filter[0] === 'comingUp' && (
-        <Flex data-id="883873cdc842" py={2}>
-          <Flex
-            bg="navigationLeftFilters.seperator"
-            data-id="fa271f7b04b8"
-            h="1px"
-            ml="25px"
-            opacity="0.3"
-            rounded="lg"
-            w="30px"
-          />
-        </Flex>
-      )}
-      <Flex
-        align="center"
-        color={
-          filter[0] === 'all'
-            ? itemStatusFilterValue?.length === 0
-              ? 'navigationLeftFilters.selectedFontColor'
-              : 'navigationLeftFilters.unselectedFontColor'
-            : itemStatusFilterValue?.includes(filter[0])
+      color={
+        filter[0] === 'all'
+          ? itemStatusFilterValue?.length === 0
             ? 'navigationLeftFilters.selectedFontColor'
             : 'navigationLeftFilters.unselectedFontColor'
+          : itemStatusFilterValue?.includes(filter[0])
+          ? 'navigationLeftFilters.selectedFontColor'
+          : 'navigationLeftFilters.unselectedFontColor'
+      }
+      cursor="pointer"
+      data-id="d4f80633f5fe"
+      fontSize="14px"
+      fontWeight="400"
+      justify="space-between"
+      lineHeight="40px"
+      ml="36px"
+      onClick={() => {
+        updateFilters(filter[0]);
+        if (setFiltersOpen) setFiltersOpen(false);
+      }}
+      pl="35px"
+      position="relative"
+      pr="21px"
+      right={[0, '37px']}
+      w="100%"
+    >
+      <Flex align="center" data-id="2315dc824dec">
+        <Box
+          bg={`navigationLeftFilters.${filter[0]}`}
+          data-id="1fd0c0f8c46b"
+          h="8px"
+          mr={8}
+          rounded="full"
+          w="8px"
+        />
+        {responseStatuses[filter[0]]}
+      </Flex>
+      <Flex
+        align="center"
+        bg={
+          (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+          itemStatusFilterValue?.includes(filter[0])
+            ? '#ffffff'
+            : 'transparent'
         }
-        cursor="pointer"
-        data-id="d4f80633f5fe"
-        fontSize="14px"
-        fontWeight="400"
-        justify="space-between"
-        key={filter[0]}
-        lineHeight="40px"
-        ml={['25px', '60px', '70px']}
-        onClick={() => {
-          updateFilters(filter[0]);
-          if (setFiltersOpen) setFiltersOpen(false);
-        }}
+        border={
+          (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+          itemStatusFilterValue?.includes(filter[0])
+            ? 'none'
+            : '1px solid #CBD5E0'
+        }
+        color={
+          (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+          itemStatusFilterValue?.includes(filter[0])
+            ? '#110B30'
+            : '#CBD5E0'
+        }
+        fontSize="11px"
+        fontWeight="600"
+        h="20px"
+        justify="center"
+        left="10px"
         position="relative"
-        right={[0, '37px']}
-        w={['170px', '175px']}
+        rounded="10px"
+        w="34px"
       >
-        <Flex align="center" data-id="2315dc824dec">
-          <Box
-            bg={`navigationLeftFilters.${filter[0]}`}
-            data-id="1fd0c0f8c46b"
-            h="8px"
-            mr={8}
-            rounded="full"
-            w="8px"
-          />
-          {responseStatuses[filter[0]]}
-        </Flex>
-        <Flex
-          align="center"
-          bg={
-            (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
-            itemStatusFilterValue?.includes(filter[0])
-              ? '#ffffff'
-              : 'transparent'
-          }
-          border={
-            (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
-            itemStatusFilterValue?.includes(filter[0])
-              ? 'none'
-              : '1px solid #CBD5E0'
-          }
-          color={
-            (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
-            itemStatusFilterValue?.includes(filter[0])
-              ? '#110B30'
-              : '#CBD5E0'
-          }
-          fontSize="11px"
-          fontWeight="600"
-          h="20px"
-          justify="center"
-          left="10px"
-          position="relative"
-          rounded="10px"
-          w="34px"
-        >
-          {filter[1]}
-        </Flex>
+        {filter[1]}
       </Flex>
     </Flex>
+   </Flex>
+
   );
 }
 

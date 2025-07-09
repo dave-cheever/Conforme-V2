@@ -8,7 +8,7 @@ import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { initialDialogDetails, useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import useDevice from '../../hooks/useDevice';
-import useNavigate from '../../hooks/useNavigate';
+// import useNavigate from '../../hooks/useNavigate';
 import useTrackerItemModal from '../../hooks/useTrackerItemModal';
 import { Close, OpenMenuArrow, Save } from '../../icons';
 import AlertDialog from '../AlertDialog';
@@ -20,7 +20,7 @@ function TrackerItemModal({ refetch }) {
   const device = useDevice();
   const { reset } = useTrackerItemModalContext();
   const { user } = useAppContext();
-  const {navigateTo} = useNavigate();
+  // const {navigateTo} = useNavigate();
 
   const {
     trackerItem,
@@ -60,12 +60,12 @@ function TrackerItemModal({ refetch }) {
           state: undefined,
           showButtons: true,
           action: async () =>{
-            const  savedTrackerItemId= await saveTrackerItem({
-              ...trackerItem,
-              published: false,
-            })
+            // const  savedTrackerItemId= await saveTrackerItem({
+            //   ...trackerItem,
+            //   published: false,
+            // })
             closeModal();
-            navigateTo(`/tracker-item/${savedTrackerItemId}`);
+            // navigateTo(`/tracker-item/${savedTrackerItemId}`);
 
           },
 
@@ -90,12 +90,12 @@ function TrackerItemModal({ refetch }) {
         state: undefined,
         showButtons: true,
         action: async () =>{
-          const  savedTrackerItemId= await saveTrackerItem({
-            ...trackerItem,
-            published: true,
-          })
+          // const  savedTrackerItemId= await saveTrackerItem({
+          //   ...trackerItem,
+          //   published: true,
+          // })
           closeModal()
-          navigateTo(`/tracker-item/${savedTrackerItemId}`);
+          // navigateTo(`/tracker-item/${savedTrackerItemId}`);
 
         },
       };
