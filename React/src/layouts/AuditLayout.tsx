@@ -72,14 +72,13 @@ function AuditLayout({ component: Component }: { component: any }) {
               w="52px"
               zIndex={5} />
           )}
-          <Flex data-id="ec4e724490d8" flexGrow={1} px="25px" w="full">
+          <Flex data-id="ec4e724490d8" flexGrow={1}  px={[2, 6]} w="full">
             <Flex
-              border="1px solid #E2E8F0"
               data-id="2be747ce7424"
               flexDirection="column"
               h="full"
               maxH={['none', 'calc(100vh - 190px)']}
-              pb="25px"
+              pb={[20, 3]}
               rounded="10px"
               w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="162c0d00cd1f" />

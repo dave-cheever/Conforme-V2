@@ -89,7 +89,7 @@ function TrackerItemResponse() {
         borderColor="trackerItemResponse.borderColor"
         borderRadius="8px"
         data-id="480bd5641c9b"
-        h={['fit-content', 'auto']}
+        h={['fit-content', 'full']}
         p={[4, 6]}
         spacing={8}
         w="full"

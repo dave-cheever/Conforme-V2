@@ -210,7 +210,7 @@ function AuditHeader() {
       direction="column"
       mb="15px"
       pl={6}
-      py={5}
+      pt={4}
       w="full"
       zIndex={1}>
       <Stack

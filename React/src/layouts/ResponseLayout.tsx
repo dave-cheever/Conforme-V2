@@ -78,7 +78,7 @@ function ResponseLayout({ component: Component }: { component: any }) {
               flexDirection="column"
               h="full"
               maxH={['none', 'calc(100vh - 210px)']}
-              pb={[20, 6]}
+              pb={[20, 4]}
               w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="5c93f85622be" />
             </Flex>

@@ -78,11 +78,26 @@ function AuditHistory() {
   return (
     (<Stack
       bg="auditHistory.bg"
+      border="1px solid #E2E8F0"
       data-id="ded581b6cc4a"
+      h="full"
+      maxH={['none', 'calc(100vh - 220px)']}
+      overflowY="auto"
       px={6}
       py={6}
       rounded="20px"
-      w="full">
+      sx={{
+        '&::-webkit-scrollbar': {
+          width: '0px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'transparent',
+        },
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none', // IE and Edge
+      }}
+      w="full"
+    >
       {loading ? (
         <Loader data-id="4f2c246e3c31" />
       ) : (
