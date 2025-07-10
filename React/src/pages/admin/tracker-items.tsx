@@ -228,7 +228,8 @@ function TrackerItemsAdmin() {
     // Sort the currently loaded trackerItems in the frontend
     if (!trackerItems) return;
     const sorted = [...trackerItems].sort((a, b) => {
-      let aValue; let bValue;
+      let aValue;
+      let bValue;
       if (sortType === 'regulatoryBody') {
         aValue = a.regulatoryBody?.name?.toString() || '';
         bValue = b.regulatoryBody?.name?.toString() || '';
@@ -236,14 +237,29 @@ function TrackerItemsAdmin() {
         aValue = a[sortType]?.toString() || '';
         bValue = b[sortType]?.toString() || '';
       }
-      if (sortOrder === 'asc') 
-        return aValue.localeCompare(bValue);
-       
-        return bValue.localeCompare(aValue);
-      
+      if (sortOrder === 'asc') return aValue.localeCompare(bValue);
+
+      return bValue.localeCompare(aValue);
     });
     setSortedTrackerItems(sorted);
   }, [sortType, sortOrder, trackerItems]);
+
+  const handleItemAdded = () => {
+    setPage(1);
+    setAllLoaded(false);
+    setTrackerItems([]);
+    fetchTrackerItems({
+      variables: {
+        trackerItemsQueryInput: filtersRef.current,
+        pagination: {
+          limit: pageSize,
+          offset: 0,
+          sortBy: sortRef.current.sortType,
+          sortDirection: sortRef.current.sortOrder,
+        },
+      },
+    });
+  };
 
   return (
     <>
@@ -263,7 +279,7 @@ function TrackerItemsAdmin() {
         ) : adminModalState === 'clone' ? (
           <CloneTrackerItemModal data-id="d0ef61d19e94" refetch={refetch} />
         ) : (
-          <TrackerItemModal data-id="1bab993c353f" refetch={refetch} />
+          <TrackerItemModal data-id="1bab993c353f" onItemAdded={handleItemAdded} refetch={refetch} />
         )}
       </Modal>
       <Header
