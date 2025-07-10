@@ -446,3 +446,12 @@ Follow the instructions in the readme files for the API (Express) and Client (RE
 ## Demo Scripts
 
 A demo scripts Azure function has been built to assist with managing the demo environment, see the `Demo Database Scripts` readme file for more info.
+
+
+## Node Upgrade release breaking changes
+- We need to run the migration script `add-userId-field.ts` prior to deploying better-auth updates.
+- We need to add CLIENT_URL, AZURE_AD_TENANT_ID, AZURE_AD_CLIENT_SECRET to the Express environment variables.
+- Upgrade the app service to Node 22.
+- Ensure pipelines are running Node 22.
+- Add wildcard index `$**` to the `users` and `verification` collections in the database.
+- Add new callback url to App registration in Azure with format `${API_URL}/api/auth/callback/microsoft`.

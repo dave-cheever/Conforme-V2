@@ -44,7 +44,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Node Upgrade release breaking changes
-- We need to run the migration script `add-userId-field.ts` prior to deploying better-auth updates.
-- We need to add CLIENT_URL to the Express environment variables.
