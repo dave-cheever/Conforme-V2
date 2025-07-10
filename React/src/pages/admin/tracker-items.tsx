@@ -244,7 +244,7 @@ function TrackerItemsAdmin() {
     setSortedTrackerItems(sorted);
   }, [sortType, sortOrder, trackerItems]);
 
-  const handleItemAdded = () => {
+  const handleListRefresh = () => {
     setPage(1);
     setAllLoaded(false);
     setTrackerItems([]);
@@ -275,11 +275,11 @@ function TrackerItemsAdmin() {
       >
         <ModalOverlay data-id="2745e073445d" />
         {adminModalState === 'delete' ? (
-          <DeleteTrackerItemModal data-id="5e7ec7a2d405" refetch={refetch} />
+          <DeleteTrackerItemModal data-id="5e7ec7a2d405" onItemDeleted={handleListRefresh} refetch={refetch} />
         ) : adminModalState === 'clone' ? (
           <CloneTrackerItemModal data-id="d0ef61d19e94" refetch={refetch} />
         ) : (
-          <TrackerItemModal data-id="1bab993c353f" onItemAdded={handleItemAdded} refetch={refetch} />
+          <TrackerItemModal data-id="1bab993c353f" onItemAdded={handleListRefresh} refetch={refetch} />
         )}
       </Modal>
       <Header

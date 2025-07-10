@@ -64,6 +64,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
               ...trackerItem,
               published: false,
             });
+            if (onItemAdded) onItemAdded();
             closeModal();
             // navigateTo(`/tracker-item/${savedTrackerItemId}`);
           },
@@ -92,7 +93,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
             ...trackerItem,
             published: true,
           });
-          if (onItemAdded && !trackerItem._id) onItemAdded();
+          if (onItemAdded) onItemAdded();
           closeModal();
           // navigateTo(`/tracker-item/${savedTrackerItemId}`);
         },
@@ -112,6 +113,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
     };
     trigger();
     saveTrackerItem(trackerItem);
+    if (onItemAdded) onItemAdded();
     return setSavingDialogDetails(savingDialogDetails);
   };
 
