@@ -407,6 +407,7 @@ function Questions() {
           data-id="b1c3342b2a30"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
           w="full"
+          overflow="hidden"
         >
           <AdminTableHeader data-id="b2e9e78efe45">
             <AdminTableHeaderElement

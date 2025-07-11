@@ -35,9 +35,13 @@ function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = fa
         data-id="c9c5d1603db9"
         h="30px"
         justify="center"
-        w="30px">
+        w="30px"
+        pl={1}
+      >
         <Icon
           as={icon}
+          h="21px"
+          w="21px"
           color="#ffffff"
           data-id="ddadd3902183" />
       </Flex>

@@ -102,9 +102,9 @@ function NavigationTop() {
         display="flex"
         fontSize="md"
         fontWeight="semi_medium"
-        justifyContent={["center", "flex-start"]}
+        justifyContent={["space-between", "flex-start"]}
         mr={['0', '20px']}
-        pl={[0, 6]}
+        pl={isSearchBarOpen ? [3, 6] : [0, 6]}
         spacing={0}
         w="full">
         <Flex
@@ -198,7 +198,7 @@ function NavigationTop() {
                 position={['fixed', 'relative']}
                 right={['15px', '0']}
                 rounded={['20px', '8px']}
-                w={['50px']}
+                w={['52px', '40px']}  
                 zIndex={5} />
             )} />
         )}
@@ -265,7 +265,7 @@ export const navigationTopStyles = {
     addButton: '#462AC4',
     searchIconBackground: '#F0F0F0',
     avatarBg: '#A2171E',
-    navBorder: "#E2E8F0",
+    navBorder: "#CBD5E0",
     searchBarIconFill: '#282F36',
     notificationIconHover: '#FFFFFF',
     notificationBadgeBorder: '#FFFFFF',

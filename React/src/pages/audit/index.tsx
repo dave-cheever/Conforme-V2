@@ -38,7 +38,7 @@ function Audit() {
   }, [JSON.stringify(queryStringParams), JSON.stringify(questions)]);
 
   return (
-    (<Stack border="1px solid #E2E8F0" data-id="2e50f70287d8"  h={['fit-content', 'full']} p="10px" rounded="10px" w="full">
+    (<Stack border="1px solid #CBD5E0" data-id="2e50f70287d8"  h={['fit-content', 'full']} p="10px" rounded="10px" w="full">
       <AuditNewQuestionModal
         data-id="e7a9f14ce098"
         isOpen={isNewQuestionModalOpen}

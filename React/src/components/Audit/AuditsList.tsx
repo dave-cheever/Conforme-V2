@@ -26,13 +26,14 @@ function AuditsList({
     <Box bg="#ffffff" data-id="c9dcc715eafc" h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
       <Box
         bg="auditsList.bg"
-        border="1px solid #E2E8F0"
+        border="1px solid #CBD5E0"
         borderRadius="10px"
         data-id="76e7d843efdb"
         h="fit-content"
         minH="full"
         pb={7}
         w="full"
+        overflow="hidden"
       >
         <AdminTableHeader data-id="c7b56c6c8070">
           <AdminTableHeaderElement
@@ -137,6 +138,6 @@ export const auditsListStyles = {
     tickIcon: '#41BA17',
     imageBg: '#ffffff',
     evidenceFontColor: '#818197',
-    headerBorderColor: '#E2E8F0',
+    headerBorderColor: '#CBD5E0',
   },
 };

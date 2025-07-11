@@ -67,7 +67,7 @@ function BusinessUnitsForm() {
             </Flex>
             <InputGroup
               border="1px solid"
-              borderColor="rgba(129, 129, 151, 0.4)"
+              borderColor="#CBD5E0"
               data-id="180ab2bd2761"
               h="42px"
               rounded="10px">

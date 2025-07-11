@@ -23,7 +23,7 @@ function AuditHeaderButton({
         }
       }
       bg={disabled ? 'auditHeader.buttonLightBgHover' : bgColor}
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       color={disabled ? 'auditHeader.buttonLightColorHover' : fontColor}
       data-id="0d7b9b4721ff"

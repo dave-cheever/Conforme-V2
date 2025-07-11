@@ -17,7 +17,7 @@ function AuditQuestionListItem({ question, handleDelete }: { question: TQuestion
   return (
     (<HStack
       bgColor="auditItem.listItem.bg"
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       cursor="pointer"
       data-id="ed300c529993"
       h="90px"

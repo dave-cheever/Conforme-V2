@@ -168,8 +168,8 @@ export const locationsFormModalStyles = {
     searchIcon: '#818197',
     searchBarText: '#818197',
     selectBg: '#FFFFFF',
-    selectBorderColor: 'rgba(129, 129, 151, 0.4)',
-    inputBorderColor: 'rgba(129, 129, 151, 0.4)',
+    selectBorderColor: '#CBD5E0',
+    inputBorderColor: '#CBD5E0',
     checkbox: {
       unchecked: {
         border: '#CBCCCD',

@@ -263,11 +263,13 @@ function RegulatoryBodies() {
       p={['0', '0 25px 30px 30px']}>
       <Flex data-id="01b0531a4b72" h="full" px={['25px', 0]}>
         <Box
-           border="1px solid #E2E8F0"
+           border="1px solid #CBD5E0"
           data-id="e7b58d152793"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
           mr={[0, 0, '50px']}
-          w={['full', 'full', 'calc(100% - 250px)']}>
+          w={['full', 'full', 'calc(100% - 250px)']}
+          overflow="hidden"
+          >
           <AdminTableHeader data-id="bbdf19a574e5">
             <AdminTableHeaderElement
               data-id="5e42b69f8862"

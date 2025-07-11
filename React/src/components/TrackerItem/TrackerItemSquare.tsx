@@ -34,7 +34,7 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
     (<Box
   _hover={{ boxShadow: "0px 4px 12px rgba(16, 24, 40, 0.08)" }}
   bg="white"
-  border="1px solid #E2E8F0"
+  border="1px solid #CBD5E0"
   borderRadius="12px"
   boxShadow="0px 1px 2px rgba(16, 24, 40, 0.05)"
   cursor="pointer"

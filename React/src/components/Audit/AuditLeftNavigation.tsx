@@ -22,7 +22,7 @@ function AuditLeftNavigation() {
       justifyContent="space-between"
       overflow="auto"
       px={6}
-      w="240px">
+      w="280px">
       <Flex data-id="a51f6f137003" flexDirection="column">
         <Box
           alignItems="center"
@@ -67,7 +67,7 @@ export default AuditLeftNavigation;
 export const auditLeftNavigationStyles = {
   auditLeftNavigation: {
   bg: '#110B30',
-    goBackColor: '#818197',
+    goBackColor: '#fff',
     color: '#ffffff',
     building: '#2B3236',
     copy: '#FF9A00',

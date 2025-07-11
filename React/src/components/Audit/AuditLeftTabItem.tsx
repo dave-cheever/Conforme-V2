@@ -28,14 +28,17 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
       padding={isDesktop ? '3px' : '2px 0'}>
       <Flex
         align="center"
-         bg={active ? 'auditLeftTabItem.activeIconBg' : ''}
+        bg={active ? 'auditLeftTabItem.activeIconBg' : ''}
         borderRadius="8px"
         data-id="ab6cc2193dd7"
         h="30px"
         justify="center"
+        pl={2}
         w="30px">
         <Icon
           as={icon}
+          h="19px"
+          w="19px"
           data-id="467136ae8a4c"
           stroke="#ffffff" />
       </Flex>

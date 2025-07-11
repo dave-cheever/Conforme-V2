@@ -37,12 +37,13 @@ function TrackerListItems({
   return <Box bg="#ffffff" data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
     <Box
       bg="trackerList.bg"
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       data-id="4619f99c26b4"
       h="fit-content"
       mb={7}
       minH="full"
+      overflow="hidden"
       pb={7}
       w="full">
       <AdminTableHeader data-id="c9ff3d9f5e18">

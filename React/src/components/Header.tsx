@@ -113,7 +113,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                   fontSize={['12px', '14px']}
                   fontWeight={'500'}
                   h={['42px', '40px']}
-                  leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '16px']} stroke="navigationTop.addIcon" w={['10px', '16px']} />}
+                  leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
                   ml={['0', '4']}
                   mr={['6rem', '0']}
                   onClick={() => {

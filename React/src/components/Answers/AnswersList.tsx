@@ -33,10 +33,10 @@ function AnswersList({
       data-id="c9dcc715eafc"
       h="full"
       ml="10px"
-      overflow="none"
+      overflow="hidden"
       w="full"
     >
-      <Box bg="auditsList.bg" data-id="9ed6a0796976" h="full" w="full">
+      <Box bg="auditsList.bg" data-id="9ed6a0796976" h="full" w="full" >
         <AdminTableHeader data-id="8d072756422b">
           <AdminTableHeaderElement
             data-id="94ec98491bcc"

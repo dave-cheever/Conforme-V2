@@ -289,7 +289,7 @@ function TrackerItemsAdmin() {
         pageLabel={capitalize(t('tracker item'))}
       />
       <Box data-id="994cf98f6802" h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box data-id="1c71f4a3ff6f" h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="100%">
+        <Box data-id="1c71f4a3ff6f" h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="100%" overflow="hidden">
           <AdminTableHeader data-id="0253915db4ee">
             <AdminTableHeaderElement
               data-id="17600bfc110f"
@@ -338,7 +338,7 @@ function TrackerItemsAdmin() {
               {error}
             </Alert>
           )}
-          <Stack bg="white" border="1px solid #E2E8F0" borderBottomRadius="20px" data-id="7fa63e0fa928" gap="0px" h="100%" overflow="auto">
+          <Stack bg="white" border="1px solid #CBD5E0" borderBottomRadius="20px" data-id="7fa63e0fa928" gap="0px" h="100%" overflow="auto">
             <InfiniteScrollComponent hasMore={!loading && trackerItems.length < total} loadMore={loadMore} pageStart={1} useWindow={false}>
               {sortedTrackerItems.map((trackerItem, index) => (
                 <Flex

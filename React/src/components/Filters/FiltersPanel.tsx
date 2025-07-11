@@ -31,7 +31,6 @@ function FiltersPanel() {
   return (
     (<Flex
       bg="filterPanel.bg"
-      borderBottomStartRadius={['0px', '20px']}
       boxShadow="md"
       data-id="cf42d7a14e56"
       direction="column"

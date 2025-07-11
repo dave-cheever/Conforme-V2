@@ -115,7 +115,7 @@ function Team() {
       alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
       border="1px solid"
-      borderColor="#E2E8F0"
+      borderColor="#CBD5E0"
       borderRadius="8px"
       data-id="38e4414c2140"
       fontSize="smm"
@@ -124,7 +124,6 @@ function Team() {
       overflow={['visible', 'auto']}
       px={6}
       py={4}
-      rounded="20px"
       spacing="40px"
       w="full"
     >

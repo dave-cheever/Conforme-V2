@@ -78,7 +78,7 @@ function AuditHistory() {
   return (
     (<Stack
       bg="auditHistory.bg"
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       data-id="ded581b6cc4a"
       h="full"
       maxH={['none', 'calc(100vh - 220px)']}
@@ -129,7 +129,7 @@ function AuditHistory() {
                         bg: 'auditHistory.listItem.bg.hover',
                       }}
                       bg="auditHistory.listItem.bg.default"
-                      border="1px solid #E2E8F0"
+                      border="1px solid #CBD5E0"
                       data-id="3964bd975b4e"
                       key={audit._id}
                       onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}

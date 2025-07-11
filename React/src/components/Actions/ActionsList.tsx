@@ -31,7 +31,7 @@ function ActionsList({
       data-id="b7d84f3800a4"
       h="full"
       ml="10px"
-      overflow="none"
+      overflow="hidden"
       w="full"
     >
       <Box bg="auditsList.bg" data-id="990abd4a03ea" h="fit-content" minH="full" pb={7} w="full">

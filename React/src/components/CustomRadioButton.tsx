@@ -50,8 +50,8 @@ export const customRadioButtonStyles = {
     checkedBorder: '#462AC4',
     checkedIcon: 'white',
     textColor: '#818197',
-    disabledBg: '#E2E8F0',
-    disabledBorder: '#E2E8F0',
+    disabledBg: '#CBD5E0',
+    disabledBorder: '#CBD5E0',
     disabledColor: '#718096',
   },
 };

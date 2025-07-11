@@ -311,7 +311,7 @@ export default TrackerItemResponse;
 export const trackerItemResponseStyles = {
   trackerItemResponse: {
     bg: 'white',
-    borderColor: '#E2E8F0',
+    borderColor: '#CBD5E0',
     nextButtonColor: '#818197',
     labelColor: '#818197',
     expandButtonText: '#462AC4',

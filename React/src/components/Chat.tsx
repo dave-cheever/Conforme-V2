@@ -206,7 +206,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
       </Modal>
       <Stack
         bg={['chat.bg', 'chat.bg', 'transparent']}
-        border="1px solid #E2E8F0"
+        border="1px solid #CBD5E0"
         borderRadius="6px"
         boxShadow={['lg', 'lg', 'none']}
         data-id="e4e6934efe1e"
@@ -216,8 +216,9 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         position="fixed"
         right="25px"
         spacing={2}
+        overflow="hidden"
       >
-        <Flex alignItems="center" bg="white" borderBottom="1px solid #E2E8F0" data-id="e9f5a8019a4f" px={4} py={3}>
+        <Flex alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" data-id="e9f5a8019a4f" px={4} py={3}>
         <Text color="#282F36" flex={1} fontSize="14px" fontWeight="bold" noOfLines={2}>
          {response?.trackerItem?.name &&  `"${response?.trackerItem?.name}"`} Chat
           </Text>
@@ -299,9 +300,9 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                       <Flex align="center" justify="center" my={4}>
                         <Text
                           bg="white"
-                          borderRadius="lg"
-                          boxShadow="sm"
-                          color="#B0B0C3"
+                          // borderRadius="lg"
+                          // boxShadow="sm"
+                          color="rgb(0,0,0,0.5)"
                           fontSize="sm"
                           fontWeight="500"
                           px={3}

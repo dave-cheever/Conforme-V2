@@ -24,8 +24,8 @@ import { getInitials } from '../utils/helpers';
 function ModuleSwitcher() {
   const { organizationConfig, module, setModule } = useAppContext();
   const { showFiltersPanel } = useFiltersContext();
-  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1279px)');
-  const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1279px)', { ssr: false });
+  const [isMobile] = useMediaQuery('(max-width: 768px)', { ssr: false });
   const navigate = useNavigate();
 
   const modulesInNavigation = useMemo(
@@ -49,18 +49,21 @@ function ModuleSwitcher() {
           as={Button}
           bg={isMobile ? "#FFFFFF" : "#110b30" }
           minW={isMobile ? "150px" : "200px"}
-          px="0"
+          px="2"
           textAlign="left"
           variant="ghost"
           w="auto"
+          h="60px"
           >
-          <Flex align="center" justify={isMobile ? "flex-start" : "space-between"} w="100%">
+          <Flex align="flex-start" justify={isMobile ? "flex-start" : "space-between"} w="100%" gap="2">
             {!isTabletWidth && !showFiltersPanel && (
-              <Icon
-                as={Conforme}
-                data-id="5eff0a6971bc"
-                h="30px"
-                w="30px"/>
+              <Box display="flex" alignItems="center" alignSelf="center">
+                <Icon
+                  as={Conforme}
+                  data-id="5eff0a6971bc"
+                  h="30px"
+                  w="30px"/>
+              </Box>
             )}
 
             {!isTabletWidth && !showFiltersPanel && !isMobile && (
@@ -71,33 +74,50 @@ function ModuleSwitcher() {
               mr="1"
               opacity="44%"
               w="1px"
+              alignSelf="center"
             />
           )}
               
-          <Text
-            color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
-            display="inline-block"
-            fontSize={isMobile ? '12px' : '22px'}
-            fontWeight="600"
-            isTruncated
+          <Flex
+            flex="1"
             marginLeft={showFiltersPanel || isTabletWidth ? '20' : '2'}
-            maxW="150px"
-            minW={isMobile ? '50px' : '100px'}
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
+            maxW={isMobile ? "120px" : "145px"}
+            minW={isMobile ? '50px' : '120px'}
+            align="center"
           >
-            {showFiltersPanel || isTabletWidth
-                ? <>
-                   <Icon
-                    as={Conforme}
-                    data-id="5eff0a6971bc"
-                    h="30px"
-                    w="30px"/>
-                </>
-              : ( isMobile? getInitials(module?.name) :  module?.name || 'Select Module')}
-          </Text>
-          <ChevronDownIcon ml="2" />
+            <Text
+              as="div"
+              color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
+              fontSize={isMobile ? '12px' : '22px'}
+              fontWeight="600"
+              lineHeight={isMobile ? '1.2' : '1.15'}
+              wordBreak="break-word"
+              whiteSpace="normal"
+              overflow="hidden"
+              justifyContent={isMobile ? "center" : "left"}
+              pt={"2px"}
+              maxH={isMobile ? "29px" : "58px"}
+              sx={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {showFiltersPanel || isTabletWidth
+                  ? <Flex pl={"18px"}>
+                     <Icon
+                      as={Conforme}
+                      data-id="5eff0a6971bc"
+                      h="30px"
+                      w="30px"/>
+                  </Flex>
+                : ( isMobile? <Flex pt="6px">{getInitials(module?.name)}</Flex> : module?.name || 'Select Module')}
+            </Text>
+          </Flex>
+          <Box display="flex" alignItems="center" alignSelf="center">
+            <ChevronDownIcon h="24px" w="24px" color="moduleSwitcher.button.text.active"/>
+          </Box>
         </Flex>
       </MenuButton>
 
@@ -108,6 +128,7 @@ function ModuleSwitcher() {
               color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'inherit'} 
               key={m.path}
               onClick={() => chooseModule(m)}
+              _hover={{ bg: 'moduleSwitcher.button.active', color: 'moduleSwitcher.button.text.active', opacity: 0.8 }}
             >
               <Flex align="center" gap="2">
                 <Text fontSize={isMobile ? '10px' : '14px'} fontWeight="bold">{getInitials(m.name)}</Text>

@@ -66,7 +66,7 @@ function ResponseLeftNavigation() {
       justifyContent="space-between"
       overflow="auto"
       px={6}
-      w="240px">
+      w="280px">
       <Flex data-id="140f53bac576" flexDirection="column">
         <Box
           alignItems="center"
@@ -218,7 +218,7 @@ export default ResponseLeftNavigation;
 export const responseLeftNavigationStyles = {
   responseLeftNavigation: {
     bg: '#110B30',
-    goBackColor: '#818197',
+    goBackColor: '#fff',
     color: '#ffffff',
     building: '#2B3236',
     copy: '#FF9A00',

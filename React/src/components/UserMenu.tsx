@@ -26,18 +26,18 @@ function UserMenu() {
     <Avatar
       bg="userMenu.avatar.bg"
       borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
-      borderRadius={"4px"}
+      borderRadius={"8px"}
       borderWidth="5px"
       color="userMenu.avatar.color"
       data-id="8c0b24efa538"
-      h="41px"
+      h="40px"
       mr={3}
       name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
       size="sm"
       src={user?.imgUrl}
-      w="41px"
+      w="40px"
     />
-     <Box minW="0" textAlign={"start"}>
+     <Box minW="0" textAlign={"start"} >
       <Text color={"black"} fontSize={["12px", "14px"]} fontWeight="600" isTruncated>
         {user?.displayName}
       </Text>

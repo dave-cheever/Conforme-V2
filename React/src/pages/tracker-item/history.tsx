@@ -4,7 +4,6 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format, getTime } from 'date-fns';
 import { t } from 'i18next';
-import pluralize from 'pluralize';
 
 import AdminTableHeader from '../../components/Admin/AdminTableHeader';
 import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
@@ -148,8 +147,8 @@ function Team() {
   }
 
   return (
-    <Box bg="historyPage.bg" borderRadius="20px" data-id="8e9704fcdad7" h="fit-content" mb={7} minH="full" pb={7} w="full">
-      <Box bg="white" border="1px solid" borderColor="historyPage.border" borderRadius="10px" overflow="hidden">
+    <Box bg="historyPage.bg" data-id="8e9704fcdad7"  w="full">
+      <Box bg="white" border="1px solid" borderColor="historyPage.border" borderRadius="8px" overflow="hidden">
         <AdminTableHeader>
           <AdminTableHeaderElement label="Item name" w="30%" />
           <AdminTableHeaderElement label="Renewed" w="20%" />
@@ -162,7 +161,7 @@ function Team() {
           ))}
           {snapshots.length === 0 && (
             <Flex fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-              No historical {pluralize(t('tracker item'))} responses found
+              No historical {t('tracker item')} responses found
             </Flex>
           )}
         </Flex>
@@ -174,7 +173,7 @@ function Team() {
 export const historyPageStyles = {
   historyPage: {
     bg: '#FFFFFF',
-    border: '#F0F0F0',
+    border: '#CBD5E0',
     font: '#818197',
   },
 };

@@ -33,7 +33,7 @@ function NavigationLeft() {
       display={['none', 'block', 'block']}
       fontWeight="semibold"
       h="100vh"
-      w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '260px']}>
+      w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
       <Box
         alignItems="center"
         cursor="pointer"

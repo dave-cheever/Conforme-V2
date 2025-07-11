@@ -43,7 +43,7 @@ function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
         {daysAgo(auditLog._id)} 
         </Flex>
 
-        <Box borderBottom="1px solid #E2E8F0" data-id="c9f7e4d1b7a5" display={["none", "block"]} height={"1px"} w="full" />
+        <Box borderBottom="1px solid #CBD5E0" data-id="c9f7e4d1b7a5" display={["none", "block"]} height={"1px"} w="full" />
       </Flex>
     
       <Flex data-id="c50bfda03776" flexDir="column" mt="2" w="full">

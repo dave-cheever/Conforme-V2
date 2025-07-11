@@ -507,6 +507,7 @@ function QuestionsCategories() {
           data-id="6beca923ee44"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             w={['full', 'full', 'calc(100%)']}
+            overflow="hidden"
         >
           <AdminTableHeader data-id="926a317ff445">
             <AdminTableHeaderElement

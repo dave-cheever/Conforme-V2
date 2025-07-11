@@ -48,7 +48,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         else navigateTo(url);
       }}
       pos="relative"
-      w="230px"
+      w="250px"
       >
       <Flex align="center" data-id="ae4bc8aaeef4" h="100%" >
         <Flex
@@ -72,9 +72,9 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
             as={icon}
             data-id="0d8ef485e550"
             fill="#ffffff"
-            h="15px"
+            h="21px"
             stroke="#ffffff"
-            w="15px" />
+            w="21px" />
         </Flex>
         {showFiltersPanel && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
           <ArrowRight boxSize="10px" data-id="9cbeca74411a" ml={1} />

@@ -24,7 +24,7 @@ function ActionSquare({ action, editAction }: { action: IAction; editAction: (ac
     <Box
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)' }}
       bg="white"
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       boxShadow="sm"
       cursor="pointer"
@@ -74,7 +74,7 @@ function ActionSquare({ action, editAction }: { action: IAction; editAction: (ac
         )}
       </Flex>
 
-      <Divider color="#E2E8F0" w="full" />
+      <Divider color="#CBD5E0" w="full" />
 
       <Box p="16px">
         <Box columnGap="32px" display="grid" gridTemplateColumns="1fr 1fr" rowGap="18px">

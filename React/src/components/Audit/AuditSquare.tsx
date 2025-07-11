@@ -28,7 +28,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
     <Box
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.04)' }}
       bg="white"
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       boxShadow="sm"
       cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
@@ -102,7 +102,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
           </Tooltip>
         )}
       </Flex>
-      <Divider color="#E2E8F0" w="full" />
+      <Divider color="#CBD5E0" w="full" />
       <Box p="16px">
         <Box display="grid" gridColumnGap="32px" gridRowGap="18px" gridTemplateColumns="1fr 1fr">
           {/* Row 1: Site | Due date */}

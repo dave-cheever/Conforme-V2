@@ -247,12 +247,13 @@ function Categories() {
       <Box data-id="f13ecd68fd5e" h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex data-id="de7dc4ff2c7a" h="full" px={['25px', 0]}>
           <Box     
-            border="1px solid #E2E8F0"
+            border="1px solid #CBD5E0"
             data-id="68abdc5bbebd"
             h="fit-content"
             // h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
             w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
+            overflow="hidden"
           >
             <AdminTableHeader data-id="9a8f6d144d9b">
               <AdminTableHeaderElement

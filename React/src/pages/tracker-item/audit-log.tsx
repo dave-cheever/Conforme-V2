@@ -147,7 +147,7 @@ function AuditLog() {
     (<Flex
       bg="white"
       border="1px solid"
-      borderColor="#E2E8F0"
+      borderColor="#CBD5E0"
       borderRadius="8px"
       data-id="1695b75757c3"
       flexDir="column"

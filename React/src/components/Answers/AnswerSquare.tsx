@@ -13,7 +13,7 @@ function AnswerSquare({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
     <Box
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)' }}
       bg="white"
-      border="1px solid #E2E8F0"
+      border="1px solid #CBD5E0"
       borderRadius="10px"
       boxShadow="sm"
       cursor="pointer"
@@ -49,7 +49,7 @@ function AnswerSquare({ answer, editAnswer }: { answer: IAnswer; editAnswer: (an
           </Flex>
         </Skeleton>
       </Flex>
-      <Divider color="#E2E8F0" w="full" />
+      <Divider color="#CBD5E0" w="full" />
       {/* Details Grid */}
       <Box p="16px">
         <Box display="grid" gridColumnGap="32px" gridRowGap="18px" gridTemplateColumns="1fr 1fr">
