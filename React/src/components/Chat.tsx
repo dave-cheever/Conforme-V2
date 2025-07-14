@@ -213,10 +213,10 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         h="auto"
         maxW={['calc(100vw - 36px)', '300px']}
         minW={['calc(100vw - 36px)', '300px']}
+        overflow="hidden"
         position="fixed"
         right="25px"
         spacing={2}
-        overflow="hidden"
       >
         <Flex alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" data-id="e9f5a8019a4f" px={4} py={3}>
         <Text color="#282F36" flex={1} fontSize="14px" fontWeight="bold" noOfLines={2}>

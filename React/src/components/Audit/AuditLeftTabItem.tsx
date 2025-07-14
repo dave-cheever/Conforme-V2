@@ -37,10 +37,10 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
         w="30px">
         <Icon
           as={icon}
-          h="19px"
-          w="19px"
           data-id="467136ae8a4c"
-          stroke="#ffffff" />
+          h="19px"
+          stroke="#ffffff"
+          w="19px" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex

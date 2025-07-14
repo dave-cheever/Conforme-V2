@@ -48,16 +48,16 @@ function ModuleSwitcher() {
           _hover={{  bg: !isMobile && "navigationLeftItem.selectedLabelBg"}}
           as={Button}
           bg={isMobile ? "#FFFFFF" : "#110b30" }
+          h="60px"
           minW={isMobile ? "150px" : "200px"}
           px="2"
           textAlign="left"
           variant="ghost"
           w="auto"
-          h="60px"
           >
-          <Flex align="flex-start" justify={isMobile ? "flex-start" : "space-between"} w="100%" gap="2">
+          <Flex align="flex-start" gap="2" justify={isMobile ? "flex-start" : "space-between"} w="100%">
             {!isTabletWidth && !showFiltersPanel && (
-              <Box display="flex" alignItems="center" alignSelf="center">
+              <Box alignItems="center" alignSelf="center" display="flex">
                 <Icon
                   as={Conforme}
                   data-id="5eff0a6971bc"
@@ -68,41 +68,41 @@ function ModuleSwitcher() {
 
             {!isTabletWidth && !showFiltersPanel && !isMobile && (
             <Box
+              alignSelf="center"
               bg="white"
               h="28px"
               ml="3"
               mr="1"
               opacity="44%"
               w="1px"
-              alignSelf="center"
             />
           )}
               
           <Flex
+            align="center"
             flex="1"
             marginLeft={showFiltersPanel || isTabletWidth ? '20' : '2'}
             maxW={isMobile ? "120px" : "145px"}
             minW={isMobile ? '50px' : '120px'}
-            align="center"
           >
             <Text
               as="div"
               color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
               fontSize={isMobile ? '12px' : '22px'}
               fontWeight="600"
-              lineHeight={isMobile ? '1.2' : '1.15'}
-              wordBreak="break-word"
-              whiteSpace="normal"
-              overflow="hidden"
               justifyContent={isMobile ? "center" : "left"}
-              pt={"2px"}
+              lineHeight={isMobile ? '1.2' : '1.15'}
               maxH={isMobile ? "29px" : "58px"}
+              overflow="hidden"
+              pt={"2px"}
               sx={{
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical',
                 textOverflow: 'ellipsis',
               }}
+              whiteSpace="normal"
+              wordBreak="break-word"
             >
               {showFiltersPanel || isTabletWidth
                   ? <Flex pl={"18px"}>
@@ -115,8 +115,8 @@ function ModuleSwitcher() {
                 : ( isMobile? <Flex pt="6px">{getInitials(module?.name)}</Flex> : module?.name || 'Select Module')}
             </Text>
           </Flex>
-          <Box display="flex" alignItems="center" alignSelf="center">
-            <ChevronDownIcon h="24px" w="24px" color="moduleSwitcher.button.text.active"/>
+          <Box alignItems="center" alignSelf="center" display="flex">
+            <ChevronDownIcon color="moduleSwitcher.button.text.active" h="24px" w="24px"/>
           </Box>
         </Flex>
       </MenuButton>
@@ -124,11 +124,11 @@ function ModuleSwitcher() {
         <MenuList zIndex={100}>
           {modulesInNavigation.map((m) => (
             <MenuItem
-              bg={m.path === module?.path ? 'moduleSwitcher.button.active' : 'transparent'}
-              color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'inherit'} 
+              _hover={{ bg: 'moduleSwitcher.button.active', color: 'moduleSwitcher.button.text.active', opacity: 0.8 }}
+              bg={m.path === module?.path ? 'moduleSwitcher.button.active' : 'transparent'} 
+              color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'inherit'}
               key={m.path}
               onClick={() => chooseModule(m)}
-              _hover={{ bg: 'moduleSwitcher.button.active', color: 'moduleSwitcher.button.text.active', opacity: 0.8 }}
             >
               <Flex align="center" gap="2">
                 <Text fontSize={isMobile ? '10px' : '14px'} fontWeight="bold">{getInitials(m.name)}</Text>

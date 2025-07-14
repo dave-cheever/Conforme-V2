@@ -97,7 +97,7 @@ function ParticipantsModalProvider({ children }) {
 
     }
     else if (isParticipantSelected(user._id))
-      setSelectedParticipants([...selectedParticipants.filter(({ _id }) => _id !== user.userId)]);
+      setSelectedParticipants([...selectedParticipants.filter(({ _id }) => _id !== user._id)]);
     else if (selectedParticipants.length === maxParticipants) {
       toast({
         ...toastFailed,

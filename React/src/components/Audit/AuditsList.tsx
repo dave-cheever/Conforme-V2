@@ -31,9 +31,9 @@ function AuditsList({
         data-id="76e7d843efdb"
         h="fit-content"
         minH="full"
+        overflow="hidden"
         pb={7}
         w="full"
-        overflow="hidden"
       >
         <AdminTableHeader data-id="c7b56c6c8070">
           <AdminTableHeaderElement

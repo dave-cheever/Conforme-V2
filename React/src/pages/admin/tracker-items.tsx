@@ -289,7 +289,7 @@ function TrackerItemsAdmin() {
         pageLabel={capitalize(t('tracker item'))}
       />
       <Box data-id="994cf98f6802" h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box data-id="1c71f4a3ff6f" h={['calc(100% - 160px)', 'calc(100% - 35px)']} w="100%" overflow="hidden">
+        <Box data-id="1c71f4a3ff6f" h={['calc(100% - 160px)', 'calc(100% - 35px)']} overflow="hidden" w="100%">
           <AdminTableHeader data-id="0253915db4ee">
             <AdminTableHeaderElement
               data-id="17600bfc110f"

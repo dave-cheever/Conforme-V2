@@ -249,11 +249,11 @@ function Categories() {
           <Box     
             border="1px solid #CBD5E0"
             data-id="68abdc5bbebd"
+            overflow="hidden"
+            w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
             h="fit-content"
             // h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
-            w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
-            overflow="hidden"
           >
             <AdminTableHeader data-id="9a8f6d144d9b">
               <AdminTableHeaderElement

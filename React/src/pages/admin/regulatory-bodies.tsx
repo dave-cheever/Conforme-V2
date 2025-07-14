@@ -267,8 +267,8 @@ function RegulatoryBodies() {
           data-id="e7b58d152793"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
           mr={[0, 0, '50px']}
-          w={['full', 'full', 'calc(100% - 250px)']}
           overflow="hidden"
+          w={['full', 'full', 'calc(100% - 250px)']}
           >
           <AdminTableHeader data-id="bbdf19a574e5">
             <AdminTableHeaderElement
