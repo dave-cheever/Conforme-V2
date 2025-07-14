@@ -41,7 +41,7 @@ function ParticipantListItem({
         fontSize="smm"
         fontWeight="semibold"
         wordBreak="break-word">
-        {user.displayName} - {user.jobTitle || 'No job title'}
+        {user.displayName}{user.jobTitle && ` - ${user.jobTitle}`}
       </Text>
       <Box data-id="19d537928976" fontSize="sm" top="-4px" wordBreak="break-word">
         {formatEmail(user.email)}

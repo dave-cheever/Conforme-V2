@@ -121,7 +121,7 @@ function PeoplePicker({
   const [pickerActive, setPickerActive] = useState(false);
   const { organizationConfig } = useAppContext();
   const { data, loading, refetch } = useQuery(SEARCH_USERS, {
-    variables: { searchQuery: { searchText, organization: organizationConfig } },
+    variables: { searchQuery: { searchText, organization: organizationConfig?._id } },
   });
   const validate = useValidate(label || name, validations, definedValidations);
   const device = useDevice();

@@ -91,8 +91,12 @@ function ParticipantsModalProvider({ children }) {
    */
   const selectParticipant = (user: IUser) => {
     // If only one participant can be selected replace currently selected with it
-    if (maxParticipants === 1) setSelectedParticipants([user]);
-    else if (isParticipantSelected(user.userId))
+    if (maxParticipants === 1) {
+      if (isParticipantSelected(user._id)) setSelectedParticipants([]);
+      else setSelectedParticipants([user]);
+
+    }
+    else if (isParticipantSelected(user._id))
       setSelectedParticipants([...selectedParticipants.filter(({ _id }) => _id !== user.userId)]);
     else if (selectedParticipants.length === maxParticipants) {
       toast({

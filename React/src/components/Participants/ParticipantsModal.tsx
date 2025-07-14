@@ -166,7 +166,7 @@ function ParticipantsModal() {
             mb={['44px', '6px']}
             mr="1px"
             onClick={closeParticipantsModal}
-            w="68px"
+            w="fit-content"
           >
             {canDelete ? 'Close' : 'Replace'}
           </Button>
