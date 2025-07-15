@@ -6,6 +6,7 @@ import useNavigate from '../../hooks/useNavigate';
 import { CircledCross, CircledTickBold } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
+import useResponseUtils from '../../hooks/useResponseUtils';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {
@@ -19,6 +20,7 @@ const GET_USERS_BY_ID = gql`
 
 function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isGroupView?: boolean }) {
   const { navigateTo } = useNavigate();
+    const { isEvidenceUploaded } = useResponseUtils();
   // const { getCustomQuestionsInDashboard } = useResponseUtils();
   const { data: { usersByIdFromDb: responseResponsible } = [], loading: responsibleLoading } = useQuery(GET_USERS_BY_ID, {
     variables: {
@@ -116,7 +118,7 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
           Evidence
         </Text>
         <Flex align="center" mt="4px">
-          {response.evidence?.length > 0 ? (
+          {isEvidenceUploaded(response) ? (
             <>
               <CircledTickBold mr={1} stroke="trackerList.tickIcon" />
               <Text color="trackerList.tickIcon" fontSize="14px" fontWeight="700">Uploaded</Text>
