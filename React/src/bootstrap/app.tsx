@@ -15,7 +15,7 @@ import './styles.css';
 import getTheme from './theme';
 
 function App() {
-  const { user, organizationConfig, module} = useAppContext();
+  const { user, organizationConfig, module } = useAppContext();
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
@@ -23,21 +23,18 @@ function App() {
   const location = useLocation();
   // Set cookie with client URL for auth flow
   const clientUrl = process.env.REACT_APP_CLIENT_URL || '';
-  const clientDomain = new URL(clientUrl).hostname;
-  const domainParts = clientDomain.split('.');
-  const topLevelDomain =
-  domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
-  document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${topLevelDomain}`;
-  
+  // const clientDomain = new URL(clientUrl).hostname;
+  // const domainParts = clientDomain.split('.');
+  // const topLevelDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
+  document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.conforme-sit.app`;
+
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
     if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
       const defaultPage = user.defaultPage.find((value) => value.name === module?.name);
       const defaultPath = defaultPage?.path;
-      if (defaultPath === "/") 
-        navigate(defaultPath);
-       else 
-        navigate(`${defaultPath}`);
+      if (defaultPath === '/') navigate(defaultPath);
+      else navigate(`${defaultPath}`);
     }
   }, [user, location.pathname]);
 
