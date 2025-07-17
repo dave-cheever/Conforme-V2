@@ -27,6 +27,7 @@ const SEARCH_USERS = gql`
   query ($searchQuery: SearchUserQuery) {
     searchUsers(searchQuery: $searchQuery) {
       _id
+      userId
       firstName
       lastName
       displayName

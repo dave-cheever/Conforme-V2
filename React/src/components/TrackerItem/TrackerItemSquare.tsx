@@ -3,10 +3,10 @@ import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/
 import { format } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { CircledCross, CircledTickBold } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
-import useResponseUtils from '../../hooks/useResponseUtils';
 
 const GET_USERS_BY_ID = gql`
   query ($userQueryInput: UserQueryInput) {

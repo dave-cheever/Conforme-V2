@@ -27,7 +27,7 @@ function MultipleParticipantsSelector({
       label={label}
       maxParticipants={maxParticipants}
       onChange={onChange}>
-      <Flex align="center" data-id="61f22ce9c992" mt="0!important" wrap="wrap">
+      <Flex align="center" alignItems="baseline" data-id="61f22ce9c992" mt="0!important" wrap="wrap">
         {selectedParticipants.map((participant) => (
           <ParticipantAvatar
             data-id="c5fbdb49310c"
