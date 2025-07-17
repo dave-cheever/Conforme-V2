@@ -24,7 +24,7 @@ function ResponseQuestions({ disabled = false }) {
     [JSON.stringify(user), JSON.stringify(response)],
   );
   const questions = useMemo(() => {
-    if (response.status !== 'draft' || activeTab === 1 || snapshot) return response?.questions || [];
+    if (response.status !== 'draft' || activeTab !== 1 || snapshot) return response?.questions || [];
     return snapshots[0]?.questions || [];
   }, [JSON.stringify(response), JSON.stringify(snapshots), snapshot, activeTab]);
 
