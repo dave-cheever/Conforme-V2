@@ -142,13 +142,21 @@ function Answers() {
   const { adminModalState, setAdminModalState } = useAdminContext();
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
-  const panels = useMemo(
-    () => [
-      { _id: 'all', name: 'All' },
-      ...(data?.auditTypes ?? []).reduce((acc, auditType) => [...acc, ...(auditType.questionsCategories ?? [])], []),
-    ],
-    [data?.auditTypes],
-  );
+  const panels = useMemo(() => {
+    const allCategories = (data?.auditTypes ?? []).flatMap(
+      (auditType) => auditType.questionsCategories ?? [],
+    );
+
+    const uniqueCategoriesMap = new Map();
+    for (const category of allCategories) {
+      if (!uniqueCategoriesMap.has(category._id)) 
+        uniqueCategoriesMap.set(category._id, category);
+      
+    }
+
+    return [{ _id: 'all', name: 'All' }, ...Array.from(uniqueCategoriesMap.values())];
+  }, [data?.auditTypes]);
+
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
   const {
