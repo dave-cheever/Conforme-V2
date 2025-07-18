@@ -219,7 +219,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         spacing={2}
       >
         <Flex alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" data-id="e9f5a8019a4f" px={4} py={3}>
-        <Text color="#282F36" flex={1} fontSize="14px" fontWeight="bold" noOfLines={2}>
+        <Text color="#282F36" flex={1} fontSize="14px" fontWeight="bold" noOfLines={1}>
          {response?.trackerItem?.name &&  `"${response?.trackerItem?.name}"`} Chat
           </Text>
           <HStack mr={2} spacing={-2}>
@@ -264,7 +264,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           <Flex
             data-id="d51bdd56980e"
             flexDirection="column"
-            h={['calc(100vh - 460px)', 'calc(100vh - 406px )', `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 360px)'}`]}
+            h={['calc(100vh - 460px)', 'calc(100vh - 406px )', `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 358px)'}`]}
             overflow="auto"
             p="20px"
             ref={divRef}
