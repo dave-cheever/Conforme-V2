@@ -8,7 +8,7 @@ import { toastFailed } from '../../bootstrap/config';
 import { useAppContext } from '../../contexts/AppProvider';
 import { initialDialogDetails, useTrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import useDevice from '../../hooks/useDevice';
-// import useNavigate from '../../hooks/useNavigate';
+import useNavigate from '../../hooks/useNavigate';
 import useTrackerItemModal from '../../hooks/useTrackerItemModal';
 import { Close, OpenMenuArrow, Save } from '../../icons';
 import AlertDialog from '../AlertDialog';
@@ -18,9 +18,9 @@ import NavigationModal from './NavigationModal';
 function TrackerItemModal({ refetch, onItemAdded }) {
   const toast = useToast();
   const device = useDevice();
+  const {navigateTo } = useNavigate();
   const { reset } = useTrackerItemModalContext();
   const { user } = useAppContext();
-  // const {navigateTo} = useNavigate();
 
   const {
     trackerItem,
@@ -60,13 +60,14 @@ function TrackerItemModal({ refetch, onItemAdded }) {
           state: undefined,
           showButtons: true,
           action: async () => {
-            await saveTrackerItem({
+          const id =   await saveTrackerItem({
               ...trackerItem,
               published: false,
             });
+            
+            navigateTo(`/tracker-item/${id}`);
             if (onItemAdded) onItemAdded();
             closeModal();
-            // navigateTo(`/tracker-item/${savedTrackerItemId}`);
           },
         };
         return setSavingDialogDetails(savingDialogDetails);
@@ -89,13 +90,14 @@ function TrackerItemModal({ refetch, onItemAdded }) {
         state: undefined,
         showButtons: true,
         action: async () => {
-          await saveTrackerItem({
+        const id=  await saveTrackerItem({
             ...trackerItem,
             published: true,
           });
-          if (onItemAdded) onItemAdded();
+
+          navigateTo(`/tracker-item/${id}`);
+           if (onItemAdded) onItemAdded();
           closeModal();
-          // navigateTo(`/tracker-item/${savedTrackerItemId}`);
         },
       };
       return setSavingDialogDetails(savingDialogDetails);

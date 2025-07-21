@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 
@@ -36,7 +36,20 @@ const CLONE_TRACKER_ITEM = gql`
   }
 `;
 
-const useTrackerItemModal = (refetch = () => { }) => {
+// Add responses query
+const GET_RESPONSES_BY_TRACKER_ITEM_ID = gql`
+  query ($trackerItemsIds: [ID!]) {
+    responses(responsesQuery: { trackerItemsIds: $trackerItemsIds }) {
+      responses {
+        _id
+        trackerItemId
+        businessUnitId
+      }
+    }
+  }
+`;
+
+const useTrackerItemModal = (refetch = () => {}) => {
   const toast = useToast();
   const { setAdminModalState } = useContext(AdminContext);
   const { reset, setValue, selectedSectionIndex, setSavingDialogDetails } = useTrackerItemModalContext();
@@ -44,6 +57,24 @@ const useTrackerItemModal = (refetch = () => { }) => {
   const [update] = useMutation(UPDATE_TRACKER_ITEM);
   const [remove] = useMutation(DELETE_TRACKER_ITEM);
   const [clone] = useMutation(CLONE_TRACKER_ITEM);
+  const client = useApolloClient();
+
+  // Helper to poll for the response after tracker item save
+  const waitForResponseId = async (trackerItemId, maxAttempts = 5, delayMs = 500) => {
+    for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+      const { data: responsesData } = await client.query({
+        query: GET_RESPONSES_BY_TRACKER_ITEM_ID,
+        variables: { trackerItemsIds: [trackerItemId] },
+        fetchPolicy: 'network-only',
+      });
+      const responses = responsesData?.responses?.responses || [];
+      if (responses.length > 0) return responses[0]._id;
+      await new Promise((resolve) => {
+        setTimeout(resolve, delayMs);
+      });
+    }
+    return null;
+  };
 
   const closeModal = useCallback(() => setAdminModalState('closed'), []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -74,16 +105,17 @@ const useTrackerItemModal = (refetch = () => { }) => {
       }
       refetch();
 
+      // Wait for the response(s) for this tracker item to be available
+      const responseId = await waitForResponseId(savedTrackerItemId);
       toast({
         ...toastSuccess,
         description: `${trackerItemInput.name} ${trackerItemInput.hasOwnProperty('_id') ? 'saved' : 'added'}`,
       });
-      return savedTrackerItemId;
+      return responseId;
     } catch (e: any) {
       toast({ ...toastFailed, description: e.message });
     } finally {
       setSavingDialogDetails(initialDialogDetails);
-
     }
   };
 
