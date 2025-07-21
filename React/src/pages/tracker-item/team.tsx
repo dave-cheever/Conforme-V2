@@ -128,7 +128,7 @@ function Team() {
       w="full"
     >
       <Stack data-id="0ca0a7e8d5f7" spacing="6" w="full">
-        <HStack alignItems="flex-start" data-id="9da01514a58d" flexDirection={["column", "row"]} justify="flex-start" spacing={[2, 12]}>
+        <HStack alignItems="flex-start" data-id="9da01514a58d" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
           <SingleParticipantSelector
             data-id="11f0371f724c"
             isUserAllowedToChange={isPermittedToManageAccountable}
@@ -149,7 +149,23 @@ function Team() {
           isUserAllowedToChange={isPermittedToManageContributors}
           label="Contributors"
           maxParticipants={maxParticipants}
-          onChange={(participants) => selectParticipants({ contributorsIds: participants.map(({ _id }) => _id) })}
+          onChange={(participants) => {
+            const oldIds = contributors.map((c) => c._id);
+            const newIds = participants.map((p) => p._id);
+
+            if (newIds.length < oldIds.length) {
+              // Removal: use the new array as-is
+              selectParticipants({ contributorsIds: newIds });
+            } else {
+              // Addition or replacement: merge
+              const mergedIds = Array.from(new Set([...oldIds, ...newIds]));
+              selectParticipants({ contributorsIds: mergedIds });
+            }
+          }}
+          onRemove={(participantId) => {
+            const updatedIds = contributors.filter((c) => c._id !== participantId).map((c) => c._id);
+            selectParticipants({ contributorsIds: updatedIds });
+          }}
           selectedParticipants={contributors}
         />
         <MultipleParticipantsSelector
@@ -157,7 +173,21 @@ function Team() {
           isUserAllowedToChange={isPermittedToManageFollowers}
           label="Followers"
           maxParticipants={maxParticipants}
-          onChange={(participants) => selectParticipants({ followersIds: participants.map(({ _id }) => _id) })}
+          onChange={(participants) => {
+            const oldIds = followers.map((f) => f._id);
+            const newIds = participants.map((p) => p._id);
+
+            if (newIds.length < oldIds.length) 
+              selectParticipants({ followersIds: newIds });
+             else {
+              const mergedIds = Array.from(new Set([...oldIds, ...newIds]));
+              selectParticipants({ followersIds: mergedIds });
+            }
+          }}
+          onRemove={(participantId) => {
+            const updatedIds = followers.filter((f) => f._id !== participantId).map((f) => f._id);
+            selectParticipants({ followersIds: updatedIds });
+          }}
           selectedParticipants={followers}
         />
       </Stack>
