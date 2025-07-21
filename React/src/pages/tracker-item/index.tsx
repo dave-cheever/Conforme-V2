@@ -90,6 +90,7 @@ function TrackerItemResponse() {
         borderRadius="8px"
         data-id="480bd5641c9b"
         h={['fit-content', 'full']}
+        overflowY="scroll"
         p={[4, 6]}
         spacing={8}
         w="full"
