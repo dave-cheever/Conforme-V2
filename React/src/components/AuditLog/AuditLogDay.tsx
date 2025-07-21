@@ -39,7 +39,7 @@ function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
         fontWeight="500"
         h="fit-content"
         p="6px 13px"
-        w="108px">
+        w="180px">
         {daysAgo(auditLog._id)} 
         </Flex>
 

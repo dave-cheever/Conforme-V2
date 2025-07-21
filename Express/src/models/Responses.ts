@@ -282,6 +282,7 @@ responseSchema.statics.customCreate = async function (response: IResponse, userI
         },
         userId,
         organizationId,
+        createdResponse._doc.scope?.moduleId,
       );
     };
     addAuditLog();
@@ -294,21 +295,24 @@ responseSchema.statics.customSearch = async function (searchQuery, user, organiz
   const { searchText } = searchQuery;
 
   const pipeline: PipelineStage[] = [
-    { // Search must be the first step to make use of index and improve performance
+    {
+      // Search must be the first step to make use of index and improve performance
       $match: {
         name: new RegExp(searchText, 'i'),
         organizationId,
       },
-    }, {
+    },
+    {
       $lookup: {
-        from: "trackerResponses",
-        localField: "_id",
-        foreignField: "trackerItemId",
-        as: "trackerResponse",
+        from: 'trackerResponses',
+        localField: '_id',
+        foreignField: 'trackerItemId',
+        as: 'trackerResponse',
       },
-    }, {
+    },
+    {
       $unwind: {
-        path: "$trackerResponse",
+        path: '$trackerResponse',
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -410,7 +414,7 @@ responseSchema.statics.customUpdateOne = async function (
   const usersIds = [...(updates.contributorsIds || []), ...(updates.followersIds || [])];
   if (updates.responsibleId) usersIds.push(updates.responsibleId);
   if (updates.accountableId) usersIds.push(updates.accountableId);
-  await Promise.all(uniq(usersIds).map(async userId => Users.customAssertUser({ userId, organizationId })));
+  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
   const organization = await Organizations.customFindById(organizationId);
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
@@ -436,6 +440,7 @@ responseSchema.statics.customUpdateOne = async function (
         },
         userId,
         organizationId,
+        updatedResponse.scope?.moduleId,
       );
     };
     addAuditLog();

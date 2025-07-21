@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { isEqual } from 'date-fns';
+import moment from 'moment';
 
 import AuditLogComponent from '../../components/AuditLog/AuditLog';
 import Header from '../../components/Header';
@@ -35,7 +35,7 @@ const GET_AUDIT_LOGS = gql`
 
 function AuditLog() {
   const dateLimit = useMemo(() => new Date(), []);
-  const { settings } = useAppContext();
+  const { settings, module, organizationConfig } = useAppContext();
   const auditLogLimit = useMemo(() => {
     if (settings.length === 0) return 5;
 
@@ -47,6 +47,12 @@ function AuditLog() {
     return 5;
   }, [settings]);
 
+  const getColl = () => {
+    if (module?.type === 'tracker') return 'trackerItems';
+    if (module?.type === 'audits') return 'audits';
+    return undefined;
+  };
+
   const { data, loading, refetch } = useQuery(GET_AUDIT_LOGS, {
     variables: {
       auditLogsQuery: {
@@ -54,6 +60,8 @@ function AuditLog() {
         limit: auditLogLimit,
         dateLimit,
         actions: ['add', 'update', 'delete'],
+        organizationId: organizationConfig?._id,
+        coll: getColl(),
       },
     },
   });
@@ -70,46 +78,66 @@ function AuditLog() {
         limit: auditLogLimit,
         dateLimit,
         actions: ['add', 'update', 'delete'],
+        organizationId: organizationConfig?._id,
+        coll: getColl(),
       },
     });
   }, [skip, dateLimit, refetch, auditLogLimit]);
 
-  useEffect(() => {
-    if (data) {
-      setAuditLogs((currentLogs) =>
-        data.auditLog.auditLogs.reduce((acc, curr) => {
-          const newAcc = [...acc];
-          const currentLog = newAcc.find(({ _id }) => _id === curr._id);
-          if (currentLog) {
-            curr.records.forEach((record) => {
-              if (!currentLog.records.some(({ metatags: { addedAt } }) => isEqual(new Date(record.metatags.addedAt), new Date(addedAt)))) {
-                setCountAuditLogs((prevValue) => prevValue + 1);
-                currentLog.records.push(record);
-              }
-            });
-            setIsLoadingMore(false);
-          } else {
-            newAcc.push({
-              _id: curr._id,
-              records: curr.records.map((record, index) => {
-                setCountAuditLogs(index + 1);
-                return {
-                  action: record.action,
-                  coll: record.coll,
-                  element: record.element,
-                  values: record.values,
-                  metatags: record.metatags,
-                };
-              }),
-            });
-            setIsLoadingMore(false);
-          }
-          return newAcc;
-        }, currentLogs),
-      );
-      setTotalAuditLogs(data?.auditLog?.totalAuditLogs > 0 ? data?.auditLog?.totalAuditLogs : 0);
-    }
-  }, [data]);
+useEffect(() => {
+  if (data) {
+    console.log("Fetched raw data", data);
+    const groupedByDay: Record<string, IAuditLog> = {};
+
+    data.auditLog.auditLogs.forEach((group) => {
+      group.records.forEach((record) => {
+        const dateKey = moment(record.metatags.addedAt).format('YYYY-MM-DD');
+        if (!groupedByDay[dateKey]) {
+          groupedByDay[dateKey] = {
+            _id: dateKey,
+            totalAuditLogs: 0,
+            records: [],
+          };
+        }
+
+        // Prevent duplicates
+        const alreadyExists = groupedByDay[dateKey].records.some(
+          (r) => r.metatags?.addedAt === record.metatags.addedAt,
+        );
+
+        if (!alreadyExists) {
+          groupedByDay[dateKey].records.push(record);
+          setCountAuditLogs((prev) => prev + 1);
+        }
+      });
+    });
+
+    // Convert object to array and sort by date (latest first)
+    const sortedAuditLogs = Object.values(groupedByDay).sort((a, b) =>
+      moment(b._id).diff(moment(a._id)),
+    );
+
+    setAuditLogs((prev) => {
+      const merged = [...prev];
+      sortedAuditLogs.forEach((newLog) => {
+        const existing = merged.find((p) => p._id === newLog._id);
+        if (existing) {
+          newLog.records.forEach((r) => {
+            if (!existing.records.some((e) => e.metatags?.addedAt === r.metatags?.addedAt)) 
+              existing.records.push(r);
+            
+          });
+        } else 
+          merged.push(newLog);
+        
+      });
+      return merged;
+    });
+
+    setTotalAuditLogs(data?.auditLog?.totalAuditLogs || 0);
+    setIsLoadingMore(false);
+  }
+}, [data]);
 
   return (<>
     <Header breadcrumbs={['Admin', 'Audit log']} data-id="87fb4abfbc7b" />

@@ -5,13 +5,13 @@ import { AuditLogs } from 'app-models';
 
 const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
   try {
-    const { skip, limit, actions, dateLimit, elementId, userId, fields, moduleId } =
-      auditLogsQuery;
+    const { skip, limit, actions, dateLimit, elementId, userId, fields, moduleId, organizationId, coll } = auditLogsQuery;
+    const orgId = organizationId || organization?._id;
 
     const pipeline: PipelineStage[] = [
       {
         $match: {
-          organizationId: organization._id,
+          organizationId: orgId,
         },
       },
       {
@@ -66,6 +66,12 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
       });
     }
 
+    if (coll) {
+      pipeline.push({
+        $match: { coll },
+      });
+    }
+
     if (skip) {
       pipeline.push({
         $skip: skip,
@@ -113,17 +119,19 @@ const auditLogs = async (_, { auditLogsQuery }, { organization }) => {
 
     // Fix: Remove $match from find() and structure correctly
     const totalAuditLogs = await AuditLogs.countDocuments({
-      organizationId: organization._id,
+      organizationId: orgId,
       ...(elementId && { 'element._id': elementId }),
       ...(userId && { 'metatags.addedBy': userId }),
       ...(moduleId && { moduleId }),
+      ...(coll && { coll }),
       ...(actions?.length > 0 && { action: { $in: actions } }),
       ...(fields?.length > 0 && {
         $or: fields.map((field) => ({ [`values.${field}`]: { $exists: true } })),
       }),
-      ...(dateLimit && !isNaN(new Date(dateLimit).getTime()) && {
-        'metatags.addedAt': { $lte: new Date(dateLimit) },
-      }),
+      ...(dateLimit &&
+        !isNaN(new Date(dateLimit).getTime()) && {
+          'metatags.addedAt': { $lte: new Date(dateLimit) },
+        }),
     });
 
     const auditLogs = await AuditLogs.aggregate(pipeline);

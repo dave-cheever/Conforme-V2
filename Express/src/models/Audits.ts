@@ -145,7 +145,7 @@ const getAuditRecordValues = async ({ oldValues = {}, newValues = {}, organizati
 auditsSchema.statics.customGenerateReference = async function (organizationId: string, moduleId: string): Promise<string> {
   let reference = '0000001';
   let selector: object = { organizationId };
-  if (moduleId) selector = { ...selector, "scope.moduleId": moduleId };
+  if (moduleId) selector = { ...selector, 'scope.moduleId': moduleId };
 
   const lastAudit = await this.findOne(selector).sort({ 'metatags.addedAt': -1 }).lean();
   if (lastAudit && lastAudit.reference) {
@@ -185,6 +185,7 @@ auditsSchema.statics.customCreate = async function (audit: IAudit, userId: strin
         },
         userId,
         organizationId,
+        createdAudit._doc.scope?.moduleId,
       );
     };
     addAuditLog();
@@ -236,10 +237,10 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
   // Filter by search text (in businessUnit name, auditor and reference)
   pipeline.push({
     $match: {
-      '$or': [
+      $or: [
         { 'businessUnit.name': new RegExp(searchText, 'i') },
         { 'auditor.displayName': new RegExp(searchText, 'i') },
-        { 'reference': new RegExp(searchText, 'i') },
+        { reference: new RegExp(searchText, 'i') },
       ],
     },
   });
@@ -363,6 +364,7 @@ auditsSchema.statics.customUpdateOne = async function (
         },
         userId,
         organizationId,
+        updatedAudit.scope?.moduleId,
       );
     };
     addAuditLog();
@@ -410,6 +412,7 @@ auditsSchema.statics.customDelete = async function (selector: object = {}, userI
         },
         userId,
         organizationId,
+        updatedAudit.scope?.moduleId,
       );
     };
     addAuditLog();

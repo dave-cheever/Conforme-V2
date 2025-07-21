@@ -44,6 +44,8 @@ input AuditLogsQuery {
   userId: String
   moduleId: String
   fields: [String]
+  organizationId: String
+  coll: String
 }
 `;
 
