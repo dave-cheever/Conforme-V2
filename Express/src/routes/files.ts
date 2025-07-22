@@ -14,25 +14,22 @@ const filesRouter = () => {
   router.post(
     '/document',
     isSignedIn,
+    //@ts-expect-error
     GraphService.inMemoryStrategy.any(),
     async (req: Request, res: Response) => {
       try {
         const { body } = req;
         const session = await getSession(req, res);
         const files: Express.Multer.File[] = req.files as Express.Multer.File[];
-        const { organization, user } = session;
 
-        if (!user) {
-          return res
-            .status(StatusCodes.FORBIDDEN)
-            .json({ message: 'Session is not valid' });
+        if (!session || !('user' in session) || !('organization' in session)) {
+          return res.status(StatusCodes.FORBIDDEN).json({ message: 'Session is not valid' });
         }
+        const { organization, user } = session;
 
         const { elementId, documentName } = body;
         if (!elementId) {
-          return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ error: 'Please pass element id' });
+          return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Please pass element id' });
         }
 
         let filePath = elementId;
@@ -47,11 +44,7 @@ const filesRouter = () => {
 
         let uploaded: { name: string; id: string; addedAt: Date }[] = [];
         if (files && files.length > 0) {
-          uploaded = await GraphService.uploadDocuments(
-            files,
-            filePath,
-            organization as IOrganization,
-          );
+          uploaded = await GraphService.uploadDocuments(files, filePath, organization as IOrganization);
         }
 
         return res.status(StatusCodes.OK).json(uploaded);
@@ -64,36 +57,29 @@ const filesRouter = () => {
     },
   );
 
-  router.get(
-    '/photo/:userId',
-    async (req: Request, res: Response) => {
-      try {
-        if (!req.params.userId) return res.status(StatusCodes.OK).end();
+  router.get('/photo/:userId', async (req: Request, res: Response) => {
+    try {
+      if (!req.params.userId) return res.status(StatusCodes.OK).end();
 
-        const clientUrl = req.cookies?.clientUrl || '';
-        const domain = new URL(clientUrl)?.host || '';
-        if (!domain) return res.status(StatusCodes.OK).end();
-        const organization = await Organizations.customFindByDomain(domain);
-        const photo = await GraphService.getUserPhoto({
-          userId: req.params.userId,
-          organization,
-        });
-        if (!photo) return res.status(StatusCodes.OK).end();
+      const clientUrl = req.cookies?.clientUrl || '';
+      const domain = new URL(clientUrl)?.host || '';
+      if (!domain) return res.status(StatusCodes.OK).end();
+      const organization = await Organizations.customFindByDomain(domain);
+      const photo = await GraphService.getUserPhoto({
+        userId: req.params.userId,
+        organization,
+      });
+      if (!photo) return res.status(StatusCodes.OK).end();
 
-        const buffer = Buffer.from(photo);
-        return res
-          .status(StatusCodes.OK)
-          .set('Content-Type', 'image/jpeg')
-          .set('Content-Length', buffer.length.toString())
-          .end(buffer);
-      } catch (err: any) {
-        logger.error(err.message, err);
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          error: err.message,
-        });
-      }
-    },
-  );
+      const buffer = Buffer.from(photo);
+      return res.status(StatusCodes.OK).set('Content-Type', 'image/jpeg').set('Content-Length', buffer.length.toString()).end(buffer);
+    } catch (err: any) {
+      logger.error(err.message, err);
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: err.message,
+      });
+    }
+  });
 
   return router;
 };
