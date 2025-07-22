@@ -18,15 +18,22 @@ const styles = {
 
 function ResponseQuestions({ disabled = false }) {
   const { user } = useAppContext();
-  const { response, snapshot, snapshots, setIsQuestionFormDirty, isQuestionFormDirty, activeTab, questionsForm } = useResponseContext();
+  const { response, snapshot, snapshots, setIsQuestionFormDirty, isQuestionFormDirty, questionsForm } = useResponseContext();
   const isUserPermitted = useMemo(
     () => isPermitted({ user, action: 'responses.edit', data: { response } }),
     [JSON.stringify(user), JSON.stringify(response)],
   );
+
   const questions = useMemo(() => {
-    if (response.status !== 'draft' || activeTab !== 1 || snapshot) return response?.questions || [];
-    return snapshots[0]?.questions || [];
-  }, [JSON.stringify(response), JSON.stringify(snapshots), snapshot, activeTab]);
+    if (snapshot && snapshots[0]?.questions?.length) 
+      return snapshots[0].questions;
+    
+    return response.questions || [];
+  }, [
+    response.questions,
+    snapshots,
+    snapshot,
+  ]);
 
   const {
     control,
@@ -37,16 +44,15 @@ function ResponseQuestions({ disabled = false }) {
 
   useEffect(() => {
     reset(
-      questions?.reduce(
-        (acc, { name, value }) =>
-        ({
+      questions.reduce(
+        (acc, { name, value }) => ({
           ...acc,
-          [name]: value || '',
-        } as { [name: string]: TQuestionValue }),
-        {} as { [name: string]: TQuestionValue },
+          [name]: value ?? '',
+        }),
+        {} as Record<string, TQuestionValue>,
       ),
     );
-  }, [JSON.stringify(questions)]);
+  }, [questions, reset]);
 
   usePrompt(isQuestionFormDirty, 'You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?');
 
