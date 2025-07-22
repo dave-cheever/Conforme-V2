@@ -54,7 +54,7 @@ function GeneralForm() {
         refetch={refetch} />
     )}
     <Stack data-id="bd4a71571430" overflow="auto" spacing={4} w="full">
-      <Box data-id="511640f69eb2" w="calc(100% - 80px)">
+      <Box data-id="511640f69eb2" w={['100%', 'calc(100% - 80px)']}>   
         <SectionHeader data-id="829b8178d596" label="General details" />
         <Stack data-id="1d64c56fb379" pb={3} spacing={2} w="full">
           <TextInput

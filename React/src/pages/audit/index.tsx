@@ -56,7 +56,7 @@ function Audit() {
         justify={['space-between', 'initial']}
         spacing={4}
         w="full">
-        <Text data-id="050372c2cdb2" fontSize="xxl" fontWeight="semibold">
+        <Text data-id="050372c2cdb2" fontSize={["20px", "xxl"]} fontWeight="semibold">
           {capitalize(pluralize(t('question')))}
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&

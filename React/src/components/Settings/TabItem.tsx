@@ -18,7 +18,7 @@ function TabItem({ label, setActiveTab, active, index }) {
       color={active ? 'settingsTabItem.activeColor' : 'settingsTabItem.color'}
       cursor="pointer"
       data-id="15397fe6a2d6"
-      fontSize={['11px', '14px']}
+      fontSize='14px'
       fontWeight="700"
       h={['fit-content', '30px']}
       mr={[1, 3]}

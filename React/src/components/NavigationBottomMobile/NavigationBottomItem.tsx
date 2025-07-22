@@ -67,7 +67,7 @@ function NavigationBottomItem({
       </Flex>
       {((menuItem.subSections && isPathActive(url)) || (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
         <>
-          <Text color="#ffffff" data-id="8cc50409e264" fontSize="11px" ml="15px">
+          <Text color="#ffffff" data-id="8cc50409e264" fontSize="16px" ml="15px">
             {label}
           </Text>
           {menuItem.subSections && <ArrowRight

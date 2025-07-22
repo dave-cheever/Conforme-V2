@@ -225,7 +225,7 @@ function AuditHeader() {
           alignItems={['flex-start', 'center']}
           color="auditHeader.heading"
           data-id="533f5a888af7"
-          fontSize="xxl"
+          fontSize={["24px", "xxl"]}
           fontWeight="bold">
           <HStack data-id="9b7be6440785" justify="center">
             <Avatar
@@ -261,7 +261,7 @@ function AuditHeader() {
       <Flex data-id="18708d7aa951" pr="25px">
         <Stack data-id="3e76045ca82c" direction={['column', 'row']} spacing={[3, 6]}>
           <Flex data-id="bce4726db370" direction="column" justify="center">
-            <Text data-id="08c671d75912" fontSize="11px" opacity={0.5}>
+            <Text data-id="08c671d75912" fontSize={["12px", "11px"]} opacity={0.5}>
               Item ID
             </Text>
             <Text data-id="9be7f9c82ab2" fontSize="smm">{audit?.reference}</Text>
@@ -272,7 +272,7 @@ function AuditHeader() {
               direction="column"
               justify="center"
               wordBreak="break-all">
-              <Text data-id="3bdcdfdb4200" fontSize="11px" opacity={0.5}>
+              <Text data-id="3bdcdfdb4200" fontSize={["12px", "11px"]}  opacity={0.5}>
                 {capitalize(t('location'))}
               </Text>
               <Tooltip data-id="2b3df963e728" label={location?.name}>
@@ -288,7 +288,7 @@ function AuditHeader() {
               direction="column"
               justify="center"
               wordBreak="break-all">
-              <Text data-id="d44d77bc1f07" fontSize="11px" opacity={0.5}>
+              <Text data-id="d44d77bc1f07" fontSize={["12px", "11px"]}  opacity={0.5}>
                 {capitalize(t('business unit'))}
               </Text>
               <Tooltip data-id="67c9402c7251" label={businessUnit?.name}>
@@ -300,7 +300,7 @@ function AuditHeader() {
           )}
           {module?.featureFlags?.enableSafetyWalk && 
             <Flex data-id="5e783ba7be41" direction="column" justify="center">
-              <Text data-id="b28b0b0978ff" fontSize="11px" opacity={0.5}>
+              <Text data-id="b28b0b0978ff" fontSize={["12px", "11px"]}  opacity={0.5}>
                 Type
               </Text>
               <Text data-id="40cf3410e579" fontSize="smm" textTransform="capitalize">

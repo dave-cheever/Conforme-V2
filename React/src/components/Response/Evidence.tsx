@@ -98,7 +98,7 @@ function EvidenceExpected({ evidence }) {
         <Box
           color="evidence.fontColor"
           data-id="4fb4efb625df"
-          fontSize={11}
+           fontSize={["14px", "11px"]}
           fontWeight="700"
           lineHeight="16px"
           width="300px">

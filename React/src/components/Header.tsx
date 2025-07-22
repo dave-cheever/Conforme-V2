@@ -69,7 +69,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
         data-id="4e3ce528c3ed"
         display={i === breadCrumbs.length - 1 ? 'flex' : 'flex'}
-        fontSize="20px"
+        fontSize={["18px", "20px"]}
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
         mr={1}
         pl={[0, 2]}

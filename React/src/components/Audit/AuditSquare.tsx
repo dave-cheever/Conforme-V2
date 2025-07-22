@@ -79,7 +79,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
               <Text
                 color="auditSquare.fontColor"
                 data-id="4fc30da2b418"
-                fontSize="11px"
+                fontSize={["12px", "11px"]}
                 opacity="1"
                 overflow="hidden"
                 textOverflow="ellipsis"

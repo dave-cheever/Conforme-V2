@@ -59,10 +59,10 @@ function Attachments() {
       w="full">
       {response?.trackerItem?.evidenceItems?.length > 0 && (
         <Flex data-id="74e341d83883" flexDirection="column" h="full" w="full">
-          <Text data-id="211d4d4ae79a" fontSize="sm" fontWeight="medium">
+          <Text data-id="211d4d4ae79a" fontSize={["14px", "sm"]} fontWeight="medium">
             Evidence expected
           </Text>
-          <Text data-id="5c39bef6ad19" fontSize="sm" my={1}>
+          <Text data-id="5c39bef6ad19" fontSize={["14px", "sm"]} my={1}>
             Upload all expected evidence and complete any required question to record this {t('tracker item')} as complete.
           </Text>
           <Stack
@@ -79,7 +79,7 @@ function Attachments() {
       {response.trackerItem?.allowAttachments && (
         <Stack data-id="b406dc5a324f" justify={['center', 'flex-start']} w="full">
           <Stack data-id="696c9746c473" maxW="380px">
-            <Text data-id="03291013c1b6" fontSize="11px" fontWeight="700" mb={2}>
+            <Text data-id="03291013c1b6" fontSize={["14px", "11px"]} fontWeight="700" mb={2}>
               Attachments
             </Text>
             {!snapshot && (
@@ -102,7 +102,7 @@ function Attachments() {
           </Stack>
 
           {response.attachments.length > 0 && (
-            <Flex data-id="b41a1355f7a6" fontSize="11px" fontWeight="bold" my={2}>
+            <Flex data-id="b41a1355f7a6" fontSize={["14px", "11px"]} fontWeight="bold" my={2}>
               Uploaded attachments
             </Flex>
           )}

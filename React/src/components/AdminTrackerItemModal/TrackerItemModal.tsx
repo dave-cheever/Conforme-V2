@@ -159,7 +159,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
       >
         <ModalHeader alignItems="center" data-id="b24c9acd0f16" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
           <Flex data-id="4d57dcdb0d8a" justifyContent="space-between">
-            <Flex alignItems="center" data-id="19b4d523acfe" fontSize={['14px', '24px']}>
+            <Flex alignItems="center" data-id="19b4d523acfe" fontSize={['16px', '24px']}>
               <Avatar
                 data-id="6b482dd8a926"
                 mr={3}
@@ -206,7 +206,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
               flexDir="column"
               h={['calc(100vh - 180px)', 'calc(100vh - 120px)']}
               justifyContent="space-between"
-              p="25px"
+              p={["14px", "25px"]}
               rounded="20px"
               w={['full', '580px']}
             >

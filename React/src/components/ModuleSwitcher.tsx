@@ -88,13 +88,13 @@ function ModuleSwitcher() {
             <Text
               as="div"
               color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
-              fontSize={isMobile ? '12px' : '22px'}
+              fontSize={isMobile ? '18px' : '22px'}
               fontWeight="600"
               justifyContent={isMobile ? "center" : "left"}
               lineHeight={isMobile ? '1.2' : '1.15'}
               maxH={isMobile ? "29px" : "58px"}
               overflow="hidden"
-              pt={"2px"}
+              pt={isMobile ? "0px" : "2px"}
               sx={{
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
@@ -131,8 +131,8 @@ function ModuleSwitcher() {
               onClick={() => chooseModule(m)}
             >
               <Flex align="center" gap="2">
-                <Text fontSize={isMobile ? '10px' : '14px'} fontWeight="bold">{getInitials(m.name)}</Text>
-                <Text fontSize={isMobile ? '10px' : '14px'}>{m.name}</Text>
+                <Text fontSize={isMobile ? '12px' : '14px'} fontWeight="bold">{getInitials(m.name)}</Text>
+                <Text fontSize={isMobile ? '12px' : '14px'}>{m.name}</Text>
               </Flex>
             </MenuItem>
           ))}
