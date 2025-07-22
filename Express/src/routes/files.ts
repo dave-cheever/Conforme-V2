@@ -14,7 +14,6 @@ const filesRouter = () => {
   router.post(
     '/document',
     isSignedIn,
-    //@ts-expect-error
     GraphService.inMemoryStrategy.any(),
     async (req: Request, res: Response) => {
       try {
