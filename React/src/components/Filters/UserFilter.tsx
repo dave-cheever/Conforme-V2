@@ -10,10 +10,11 @@ import useNavigate from '../../hooks/useNavigate';
 import { ArrowDownIcon, CrossIcon, Magnifier } from '../../icons';
 import { IActionUserFilter, IAnswerUserFilter, IAuditUserFilter, IUserFilter } from '../../interfaces/IFilters';
 import { IUser } from '../../interfaces/IUser';
+import updateLocalStorageFilter from '../../utils/filterStorage';
 import UsersSelector from '../UsersSelector';
 
 function UserFilter() {
-  const { module } = useAppContext();
+  const { user, module } = useAppContext();
   const location = useLocation();
   const { getPath } = useNavigate();
   const { filtersValues, setFilters, users } = useFiltersContext();
@@ -124,82 +125,118 @@ function UserFilter() {
   }, [filtersValues, selectedRole, location.pathname]) as string[];
 
   const handleUserChange = ({ target: { userRole, value } }) => {
-    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
-    switch (userRole) {
-      case 'responsible':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            responsibleIds: value,
-          },
-        });
-        break;
-      case 'accountable':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            accountableIds: value,
-          },
-        });
-        break;
-      case 'contributor':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            contributorIds: value,
-          },
-        });
-        break;
-      case 'follower':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            followerIds: value,
-          },
-        });
-        break;
-      default:
-        break;
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value || {};
+    if (user && module) {
+      updateLocalStorageFilter(
+        module._id,
+        'usersIds',
+        'User',
+        {
+          ...userIdsFilter,
+          [`${userRole  }Ids`]: value,
+        },
+        user._id,
+        setFilters,
+      );
+    } else {
+      switch (userRole) {
+        case 'responsible':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              responsibleIds: value,
+            },
+          });
+          break;
+        case 'accountable':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              accountableIds: value,
+            },
+          });
+          break;
+        case 'contributor':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              contributorIds: value,
+            },
+          });
+          break;
+        case 'follower':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              followerIds: value,
+            },
+          });
+          break;
+        default:
+          break;
+      }
     }
   };
 
+  const auditRoleKeyMap = {
+    auditor: 'auditorsIds',
+    participant: 'participantsIds',
+    assignee: 'assigneesIds',
+    addedBy: 'addedByIds',
+  };
+
   const handleAuditUserChange = ({ target: { userRole, value } }) => {
-    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value;
-    switch (userRole) {
-      case 'auditor':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            auditorsIds: value,
-          },
-        });
-        break;
-      case 'assignee':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            assigneesIds: value,
-          },
-        });
-        break;
-      case 'addedBy':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            addedByIds: value,
-          },
-        });
-        break;
-      case 'participant':
-        setFilters({
-          usersIds: {
-            ...userIdsFilter,
-            participantsIds: value,
-          },
-        });
-        break;
-      default:
-        break;
+    const userIdsFilter = (filtersValues.usersIds as IUserFilter)?.value || {};
+    const key = auditRoleKeyMap[userRole] || userRole;
+    if (user && module) {
+      updateLocalStorageFilter(
+        module._id,
+        'usersIds',
+        'User',
+        {
+          ...userIdsFilter,
+          [key]: value,
+        },
+        user._id,
+        setFilters,
+      );
+    } else {
+      switch (userRole) {
+        case 'auditor':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              auditorsIds: value,
+            },
+          });
+          break;
+        case 'assignee':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              assigneesIds: value,
+            },
+          });
+          break;
+        case 'addedBy':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              addedByIds: value,
+            },
+          });
+          break;
+        case 'participant':
+          setFilters({
+            usersIds: {
+              ...userIdsFilter,
+              participantsIds: value,
+            },
+          });
+          break;
+        default:
+          break;
+      }
     }
   };
 

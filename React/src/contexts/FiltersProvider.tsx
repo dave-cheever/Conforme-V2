@@ -59,7 +59,7 @@ export const useFiltersContext = () => {
 };
 
 function FiltersProvider({ children }) {
-  const { module } = useAppContext();
+  const { user, module } = useAppContext();
   const { data } = useQuery(GET_FILTERS_DATA, {
     variables: {
       trackerItemsQueryInput: {
@@ -69,7 +69,49 @@ function FiltersProvider({ children }) {
     },
   });
   const { getFilters } = useFiltersUtils();
-  const [filtersValues, setFiltersValues] = useState<IFilters>(getFilters());
+
+  // NEW: Load filters from localStorage if available
+  const getInitialFilters = () => {
+    if (module && user) {
+      const localStorageKey = `${module._id}-filters-${user._id}`;
+      const existing = localStorage.getItem(localStorageKey);
+      if (existing) {
+        try {
+          const parsed = JSON.parse(existing);
+          // parsed is an object: { [key]: { name, value } }
+          // We want to extract { [key]: value } for getFilters
+          const newFilters = Object.fromEntries(
+            Object.entries(parsed).map(([key, obj]) => {
+              if (key === 'usersIds') {
+                let mergedValue;
+                if (module?.type === 'tracker') 
+                  mergedValue = { responsibleIds: [], accountableIds: [], contributorIds: [], followerIds: [], ...(obj as any).value };
+                 else if (module?.type === 'audits') 
+                  mergedValue = { auditorsIds: [], participantsIds: [], ...(obj as any).value };
+                 else if (module?.type === 'actions') 
+                  mergedValue = { assigneesIds: [], ...(obj as any).value };
+                 else if (module?.type === 'answers') 
+                  mergedValue = { addedByIds: [], ...(obj as any).value };
+                 else 
+                  mergedValue = { ...(obj as any).value };
+                
+                return [key, mergedValue];
+              }
+              return [key, (obj as any).value];
+            }),
+          );
+          // usedFilters will be the keys present in localStorage
+          const usedFilters = Object.keys(newFilters);
+          return getFilters({ usedFilters, newFilters });
+        } catch (e) {
+          // fallback to default if parsing fails
+        }
+      }
+    }
+    return getFilters();
+  };
+
+  const [filtersValues, setFiltersValues] = useState<IFilters>(getInitialFilters);
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
   const [defaultFilters, setDefaultFilters] = useState<object>({});
   const [responseFiltersValue, setResponseFiltersValue] = useState<TDeepPartial<IResponseFilters>>({});
@@ -99,19 +141,21 @@ function FiltersProvider({ children }) {
   };
 
   const cleanFilters = () => {
-    setFiltersValues(
-      getFilters({
-        defaultFilters,
-        usedFilters,
-        isCleanFilters: true,
-      }),
-    );
+    if (module && user) {
+      const localStorageKey = `${module._id}-filters-${user._id}`;
+      localStorage.removeItem(localStorageKey);
+      setFiltersValues(
+        getFilters({
+          defaultFilters,
+          usedFilters,
+          isCleanFilters: true,
+        }),
+      );
+    }
   };
 
   useEffect(() => {
     setFilters();
-
-    return () => cleanFilters();
   }, [usedFilters, defaultFilters]);
 
   const value = useMemo(

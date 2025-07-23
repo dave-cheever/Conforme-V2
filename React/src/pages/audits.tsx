@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Divider, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -89,7 +89,8 @@ function Audits() {
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { audit, reset, trigger } = useAuditModalContext();
   const { data, loading, error, refetch } = useQuery(GET_AUDITS);
-  const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
+  const [ filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
+  const [ filtersInitialized, setFiltersInitialized] = useState(false);
   const { sortedData: sortedAudits, sortOrder, sortType, setSortType, setSortOrder } = useSort(filteredAudits, 'auditor.displayName', 'asc');
   const sortBy = [
     { label: 'Due date', key: 'dueDate' },
@@ -100,93 +101,87 @@ function Audits() {
     { label: 'Date submitted', key: 'completedDate' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
-  const allowedFilters = useMemo(
-    () => {
-      const filters: string[] = [];
-      if (module?.featureFlags?.enableSafetyWalk) filters.push('walkType');
-      filters.push('status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived');
 
-      return filters
-    },
-    [],
-  );
+  const allowedFilters = useMemo(() => {
+    const filters: string[] = [];
+    if (module?.featureFlags?.enableSafetyWalk) filters.push('walkType');
+    filters.push('status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived');
+    return filters;
+  }, [module]);
+
+  useEffect(() => {
+    if (!user || usedFilters.length === 0) return;
+    const stored = localStorage.getItem(`${module?._id}-filters-${user._id}`);
+    if (!stored) {
+      setFiltersInitialized(true);
+      return;
+    }
+    try {
+      const parsed = JSON.parse(stored);
+      const validFilters = Object.entries(parsed).reduce((acc, [key, filter]) => {
+        const value = (filter as { value: any })?.value;
+        const isValidArray = Array.isArray(value) && value.length > 0;
+        const isValidObject = typeof value === 'object' && value !== null && Object.keys(value).length > 0;
+        if (isValidArray || isValidObject) acc[key] = { value };
+        return acc;
+      }, {} as Record<string, { value: any }>);
+      if (Object.keys(validFilters).length > 0) {
+        const plainValues = Object.entries(validFilters).reduce((acc, [key, val]) => ({ ...acc, [key]: val.value }), {});
+        setDefaultFilters(plainValues);
+        setAuditFiltersValue((curr) => ({ ...curr, ...validFilters }));
+      } else 
+        setFiltersInitialized(true);
+      
+    } catch (err) {
+      console.error("Failed to parse stored filters", err);
+      setFiltersInitialized(true);
+    }
+  }, [user, usedFilters]);
+
+  useEffect(() => {
+    const buValue = filtersValues?.businessUnitsIds?.value;
+    const ready = Array.isArray(buValue) && buValue.length > 0;
+    if (ready && !filtersInitialized) 
+      setFiltersInitialized(true);
+    
+  }, [filtersValues, filtersInitialized]);
 
   useEffect(() => {
     setUsedFilters(allowedFilters);
-
     return () => {
       setDefaultFilters({});
       setShowFiltersPanel(false);
       setUsedFilters([]);
     };
-  }, []);
+  }, [allowedFilters]);
 
-  // Set pre-defined filters
   useEffect(() => {
     if (auditFiltersValue && !isEmpty(auditFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
-      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
       const delayFilters = setTimeout(() => {
         setFilters(Object.entries(auditFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
         setAuditFiltersValue({});
         clearTimeout(delayFilters);
       }, 100);
     }
-  }, [filtersValues, usedFilters, setAuditFiltersValue, auditFiltersValue, setFilters]);
-
-  // Set default filters
-  useEffect(() => {
-    let defaultFilters = {
-      usersIds: {
-        value: {
-          auditorsIds: [user!.userId],
-        },
-      },
-    };
-    if (!isEmpty(module?.defaultFilters?.audits)) {
-
-      defaultFilters = Object.entries(module!.defaultFilters.audits!).reduce(
-        (acc, [key, value]) => ({
-          ...acc,
-          [key]: {
-            value,
-          },
-        }),
-        defaultFilters,
-      );
-    }
-    setDefaultFilters(defaultFilters);
-    setAuditFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
-  }, []);
+  }, [filtersValues, usedFilters, auditFiltersValue, setAuditFiltersValue, setFilters]);
 
   useEffect(() => {
     const parsedFilters = Object.entries(filtersValues).reduce((acc, [key, value]) => {
       if (!value || !allowedFilters.includes(key)) return acc;
-
       let extractedValue = value?.value;
-
       if (key === "dueDate") {
         if (Array.isArray(extractedValue) && extractedValue.length > 0) extractedValue = extractedValue[0];
         else if (typeof extractedValue !== "string") return acc;
       }
-
-      if (key === "usersIds" && typeof extractedValue === "object") if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) return acc;
-
-      if (
-        extractedValue === undefined ||
-        extractedValue === null ||
-        (Array.isArray(extractedValue) && extractedValue.length === 0)
-      ) return acc;
-
-      return {
-        ...acc,
-        [key]: extractedValue,
-      };
+      if (key === "usersIds" && typeof extractedValue === "object")
+        if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) return acc;
+      if (extractedValue === undefined || extractedValue === null || (Array.isArray(extractedValue) && extractedValue.length === 0)) return acc;
+      return { ...acc, [key]: extractedValue };
     }, {});
 
-    if (Object.keys(parsedFilters).length > 0) refetch({ auditQueryInput: parsedFilters })
+    if (Object.keys(parsedFilters).length > 0) refetch({ auditQueryInput: parsedFilters });
   }, [filtersValues]);
 
-  // Load audits
   useEffect(() => {
     if (data && data?.audits && !error) setFilteredAudits(data?.audits);
   }, [data?.audits]);
@@ -208,171 +203,58 @@ function Audits() {
     { label: 'Participants', key: 'participants' },
   ];
 
-  const csvData = useMemo(
-    () =>
-      (filteredAudits ?? []).map(({ participantsIds, auditorId, reference, metatags, ...audit }) => ({
-        ...audit,
-        dueDate: audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : 'No due date',
-        participants: audit?.participants?.map((participant) => participant.displayName).join(', '),
-      })),
-    [JSON.stringify(filteredAudits)],
-  );
+  const csvData = useMemo(() => (filteredAudits ?? []).map(({ participantsIds, auditorId, reference, metatags, ...audit }) => ({
+    ...audit,
+    dueDate: audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : 'No due date',
+    participants: audit?.participants?.map((participant) => participant.displayName).join(', '),
+  })), [JSON.stringify(filteredAudits)]);
 
   return (<>
-    <Modal
-      blockScrollOnMount={false}
-      data-id="5926f822cca0"
-      isOpen={adminModalState !== 'closed'}
-      key={audit._id}
-      onClose={onCloseModal}
-      size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
-      variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}>
-      <ModalOverlay data-id="1ffc74d0cbca" />
-      <AuditModal data-id="76df78cb3226" refetch={refetch} />
+    <Modal isOpen={adminModalState !== 'closed'} key={audit._id} onClose={onCloseModal} size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'} variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}>
+      <ModalOverlay />
+      <AuditModal refetch={refetch} />
     </Modal>
-    <Header
-      breadcrumbs={[pluralize(t('audit'))]}
-      data-id="2dd476cb0929"
-      mobileBreadcrumbs={[pluralize(t('audit'))]}
-      pageLabel='Audit'>
-      <ChangeViewButton
-        data-id="bafef65da6de"
-        setViewMode={setViewMode}
-        viewMode={viewMode}
-        views={['grid', 'list', 'group']} 
-      />
-      <Divider
-        borderColor="gray.300"
-        height="30px"
-        mt={1}
-        mx={4}
-        orientation="vertical"
-      />
+    <Header breadcrumbs={[pluralize(t('audit'))]} mobileBreadcrumbs={[pluralize(t('audit'))]}>
+      <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
       {device !== 'mobile' && (
-        <CSVLinkComponent
-          data={csvData}
-          data-id="39c6f57fa46c"
-          filename="audits.csv"
-          headers={csvHeaders}
-          target="_blank">
+        <CSVLinkComponent data={csvData} filename="audits.csv" headers={csvHeaders} target="_blank">
           <Button
-            _hover={{
-              bg: 'reasponseHeader.buttonLightBgHover',
-              color: 'reasponseHeader.buttonLightColorHover',
-              cursor: 'pointer',
-              '&:hover svg path': { stroke: 'white' },
-            }}
+            _hover={{ bg: 'reasponseHeader.buttonLightBgHover', color: 'reasponseHeader.buttonLightColorHover', cursor: 'pointer', '&:hover svg path': { stroke: 'white' } }}
             bg="white"
             borderRadius="10px"
-            data-id="358c8463aff6"
             display="none"
             ml="15px"
-            rightIcon={<ExportIcon data-id="d7c9bee09c61" height="15px" width="15px" />}>
-            <Text data-id="ce45ced54779" fontSize="smm" fontWeight="bold">
-              Export
-            </Text>
+            rightIcon={<ExportIcon height="15px" width="15px" />}>
+            <Text fontSize="smm" fontWeight="bold">Export</Text>
           </Button>
         </CSVLinkComponent>
       )}
-      <SortButton
-        data-id="f2ae2eb1e511"
-        setSortOrder={setSortOrder}
-        setSortType={setSortType}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
-        sortType={sortType} />
+      <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
     </Header>
-    <Flex
-      bg="#ffffff"
-      data-id="9eb10120da8c"
-      h={['calc(100vh - 80px)', 'full']}
-      overflow="auto"
-      pb={[4, 0]}>
-      {loading ? (
-  <Loader bg="#ffffff" center data-id="24a7de8c60a9" />
-) : (
-  <>
-    {viewMode === 'grid' && (
-      <Grid
-        bg="#ffffff"
-        data-id="32f1dd5d8dc5"
-        display={['grid', 'grid', 'flex']}
-        flexWrap="wrap"
-        gap={[4, 4, 4]}
-        h="fit-content"
-        pb={[14, 8]}
-        pt="3"
-        px={[4, 6]}
-        templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-        w="full">
-        {sortedAudits.length > 0 ? (
-          sortedAudits.map((audit) => (
-            <AuditSquare audit={audit} data-id="78c2a1327b38" key={audit._id} />
-          ))
+    <Flex h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
+      {loading ? <Loader center /> : (
+        viewMode === 'grid' ? (
+          <Grid display={['grid', 'grid', 'flex']} flexWrap="wrap" gap={[4, 4, 6]} h="fit-content" pb={[14, 8]} pt="3" px={[4, 8]} templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']} w="full">
+            {sortedAudits.length > 0 ? sortedAudits.map((audit) => <AuditSquare audit={audit} key={audit._id} />) : (
+              <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">No audits found. Try adjusting the filters.</Flex>
+            )}
+          </Grid>
+        ) : viewMode === 'list' ? (
+          sortedAudits.length > 0 ? (
+            <AuditsList audits={sortedAudits} setSortOrder={setSortOrder} setSortType={setSortType} sortOrder={sortOrder} sortType={sortType} />
+          ) : (
+            <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">No audits found. Try adjusting the filters.</Flex>
+          )
         ) : (
-          <Flex
-            alignItems="center"
-            data-id="864e662bfe75"
-            fontSize="18px"
-            fontStyle="italic"
-            h="200px"
-            justifyContent="center"
-            w="full">
-            No audits found. Try adjusting the filters.
-          </Flex>
-        )}
-      </Grid>
-    )}
-    {viewMode === 'list' && (
-      sortedAudits.length > 0 ? (
-        <AuditsList
-          audits={sortedAudits}
-          data-id="df4d1191f7df"
-          setSortOrder={setSortOrder}
-          setSortType={setSortType}
-          sortOrder={sortOrder}
-          sortType={sortType}
-        />
-      ) : (
-        <Flex
-          alignItems="center"
-          bg="#ffffff"
-          data-id="864e662bfe75"
-          fontSize="18px"
-          fontStyle="italic"
-          h="200px"
-          justifyContent="center"
-          w="full">
-          No audits found. Try adjusting the filters.
-        </Flex>
-      )
-    )}
-    {viewMode === 'group' && (
-      sortedAudits.length > 0 ? (
-        <AuditsGroup audits={sortedAudits} data-id="7bb6297801dc" />
-      ) : (
-        <Flex
-          alignItems="center"
-          data-id="864e662bfe75"
-          fontSize="18px"
-          fontStyle="italic"
-          h="200px"
-          justifyContent="center"
-          w="full">
-          No audits found. Try adjusting the filters.
-        </Flex>
-      )
-    )}
-  </>
-)}
+          sortedAudits.length > 0 ? <AuditsGroup audits={sortedAudits} /> : <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">No audits found. Try adjusting the filters.</Flex>
+        )
+      )}
     </Flex>
   </>);
 }
 
 function AuditsWithContext() {
-  return <AuditModalProvider data-id="5b60c03025f5">
-    <Audits data-id="c5293404d035" />
-  </AuditModalProvider>
+  return <AuditModalProvider><Audits /></AuditModalProvider>;
 }
 
 export default AuditsWithContext;

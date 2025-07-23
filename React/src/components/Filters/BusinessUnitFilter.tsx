@@ -2,26 +2,32 @@ import { useMemo } from 'react';
 
 import { Box } from '@chakra-ui/react';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
+import updateLocalStorageFilter from '../../utils/filterStorage';
 import BusinessUnitsSelector from '../BusinessUnitsSelector';
 
 function BusinessUnitFilter() {
+  const { user, module } = useAppContext();
   const { filtersValues, setFilters, businessUnits } = useFiltersContext();
   const value = useMemo(() => filtersValues.businessUnitsIds?.value, [filtersValues]) as string[];
 
   const handleChange = ({ target: { value } }) => {
-    setFilters({ businessUnitsIds: value });
+    const newValues = Array.isArray(value) ? value : [value];
+    if(user && module)
+    updateLocalStorageFilter(module._id, 'businessUnitsIds', 'Business unit', newValues, user?._id, setFilters);
   };
 
   return (
-    (<Box data-id="43d1b58a06d7" w="full">
+    <Box data-id="43d1b58a06d7" w="full">
       <BusinessUnitsSelector
         businessUnits={businessUnits as IBusinessUnit[]}
         data-id="2f97a01dbbc9"
         handleChange={handleChange}
-        selected={value} />
-    </Box>)
+        selected={value}
+      />
+    </Box>
   );
 }
 

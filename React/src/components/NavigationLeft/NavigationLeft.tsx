@@ -1,30 +1,22 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
 import { useConfigContext } from '../../contexts/ConfigProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
-import useNavigate from '../../hooks/useNavigate';
 import Can from '../can';
 import ModuleSwitcher from '../ModuleSwitcher';
 import NavigationLeftItem from './NavigationLeftItem';
 import NavigationLeftItemTablet from './NavigationLeftItemTablet';
 
 function NavigationLeft() {
-  const location = useLocation();
   const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
-  const { isPathActive } = useNavigate();
-  const { cleanFilters, showFiltersPanel } = useFiltersContext();
+  const {showFiltersPanel } = useFiltersContext();
   const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const device = useDevice();
-
-  useEffect(() => {
-    if (!(isPathActive('/', { exact: true }) || isPathActive('/items'))) cleanFilters();
-  }, [location.pathname]);
 
   return (
     (<Box

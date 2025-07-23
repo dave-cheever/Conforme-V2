@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Divider, Flex, Grid } from '@chakra-ui/react';
 import { t } from 'i18next';
-import { capitalize, isEmpty, uniqBy } from 'lodash';
+import { capitalize, uniqBy } from 'lodash';
 import pluralize from 'pluralize';
 
 import ChangeViewButton from '../components/ChangeViewButton';
@@ -20,6 +20,7 @@ import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
 import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
+import { removeEmptyArraysAndObjects } from '../utils/helpers';
 
 const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
 
@@ -30,6 +31,7 @@ const GET_RESPONSES_TOTALS = gql`
     }
   }
 `;
+
 const GET_RESPONSES = gql`
   query Responses($responsesQuery: Any, $responsesPagination: PaginationInput) {
     responses(responsesQuery: $responsesQuery, responsesPagination: $responsesPagination) {
@@ -76,11 +78,9 @@ const GET_RESPONSES = gql`
           displayName
           role
         }
-
         metatags {
           addedBy
         }
-
       }
       total
     }
@@ -88,23 +88,26 @@ const GET_RESPONSES = gql`
 `;
 
 function TrackerItems() {
-  const { module } = useAppContext();
+  const { module, user } = useAppContext();
   const device = useDevice();
-  const scrollerRef = useRef<any>(null); // Using 'any' as there is no exported interface to use
+  const scrollerRef = useRef<any>(null);
+
   const {
     filtersValues,
     setUsedFilters,
     setFilters,
     setResponsesStatusesCounts,
     setShowFiltersPanel,
-    responseFiltersValue,
     setResponseFiltersValue,
     setDefaultFilters,
     usedFilters,
   } = useFiltersContext();
 
   const [responses, setResponses] = useState<IResponse[]>([]);
-  const [parsedFilters, setParsedFilters] = useState({});
+  const [parsedFilters, setParsedFilters] = useState<Record<string, any>>({});
+  const [localStorageChecked, setLocalStorageChecked] = useState(false);
+  const [hasStoredFilters, setHasStoredFilters] = useState(false);
+
   const { sortOrder, sortType, setSortType, setSortOrder } = useSort([], 'dueDate');
   const sortBy = [
     { label: 'Item name', key: 'trackerItem.name' },
@@ -115,42 +118,23 @@ function TrackerItems() {
     { label: capitalize(t('business unit')), key: 'businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
-
   const [total, setTotal] = useState(1);
+
   const { data: totalCompliantResponses } = useQuery(GET_RESPONSES_TOTALS, {
-    variables: {
-      responsesQuery: {
-        itemStatus: ['compliant'],
-      },
-    },
+    variables: { responsesQuery: { itemStatus: ['compliant'] } },
   });
   const { data: totalComingUpResponses } = useQuery(GET_RESPONSES_TOTALS, {
-    variables: {
-      responsesQuery: {
-        itemStatus: ['comingUp'],
-      },
-    },
+    variables: { responsesQuery: { itemStatus: ['comingUp'] } },
   });
   const { data: totalNonCompliantResponses } = useQuery(GET_RESPONSES_TOTALS, {
-    variables: {
-      responsesQuery: {
-        itemStatus: ['nonCompliant'],
-      },
-    },
-  });
-  const [getTrackerResponses, { error, loading }] = useLazyQuery(GET_RESPONSES, {
-    fetchPolicy: 'no-cache',
-    variables: {
-      responsesQuery: {},
-      responsesPagination: {
-        limit: 10,
-        offset: 0,
-        sortBy: sortType,
-        sortDirection: sortOrder,
-      },
-    },
+    variables: { responsesQuery: { itemStatus: ['nonCompliant'] } },
   });
 
+  const [getTrackerResponses, { error, loading }] = useLazyQuery(GET_RESPONSES, {
+    fetchPolicy: 'no-cache',
+  });
+
+  // Set which filters are available
   useEffect(() => {
     const filters = [
       'trackerItemsIds',
@@ -162,7 +146,9 @@ function TrackerItems() {
       'regulatoryBodiesIds',
       'dueDate',
     ];
-    if (module && (module?.customQuestionsInDashboard || []).length > 0) filters.unshift(...module.customQuestionsInDashboard);
+    if (module?.customQuestionsInDashboard?.length) 
+      filters.unshift(...module.customQuestionsInDashboard);
+    
     setUsedFilters(filters);
     return () => {
       setShowFiltersPanel(false);
@@ -170,228 +156,179 @@ function TrackerItems() {
     };
   }, []);
 
+  // 1️ Read stored filters once, seed context, then mark ready
   useEffect(() => {
-    if (responseFiltersValue && !isEmpty(responseFiltersValue) && !isEmpty(filtersValues) && !isEmpty(usedFilters)) {
-      // Delay setting filters by 100ms to make sure that other useEffects finished and filters won't be cleared
-      const delayFilters = setTimeout(() => {
-        setFilters(Object.entries(responseFiltersValue).reduce((acc, [key, value]) => ({ ...acc, [key]: value.value }), {}));
-        setResponseFiltersValue({});
-        clearTimeout(delayFilters);
-      }, 100);
-    }
-  }, [filtersValues, usedFilters, setResponseFiltersValue, responseFiltersValue, setFilters]);
+    if (!user || usedFilters.length === 0) return;
 
-  // Set default filters
-  useEffect(() => {
-    if (!isEmpty(module?.defaultFilters?.responses)) {
-      /**
-       * Convert filters from
-       *
-       * {
-       *  filterName: ["filterValue"]
-       * }
-       *
-       * to
-       *
-       * {
-       *  filterName: {
-       *    value: ["filterValue"]
-       *  }
-       * }
-       */
-      const defaultFilters = Object.entries(module!.defaultFilters.responses!).reduce(
-        (acc, [key, value]) => ({
-          ...acc,
-          [key]: {
-            value,
+    const key = `${module?._id}-filters-${user._id}`;
+    const stored = localStorage.getItem(key);
+    console.log('ASd', stored);
+    let validFilters: Record<string, { value: any }> = {};
+
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        validFilters = Object.entries(parsed).reduce(
+          (acc, [k, f]) => {
+            const v = (f as any).value;
+            const isArray = Array.isArray(v) && v.length > 0;
+            const isObj = v && typeof v === 'object' && Object.keys(v).length > 0;
+            if (isArray || isObj) acc[k] = { value: v };
+            return acc;
           },
-        }),
-        {},
-      );
-      setDefaultFilters(Object.entries(module!.defaultFilters.responses!).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}));
-      setResponseFiltersValue((curr) => ({ ...curr, ...defaultFilters }));
-    }
-  }, []);
+          {} as Record<string, { value: any }>,
+        );
 
+        if (Object.keys(validFilters).length) {
+          setDefaultFilters(Object.fromEntries(Object.entries(validFilters).map(([k, v]) => [k, v.value])));
+          setResponseFiltersValue((curr) => ({ ...curr, ...validFilters }));
+          setFilters(Object.fromEntries(Object.entries(validFilters).map(([k, v]) => [k, v.value])));
+          setHasStoredFilters(true);
+        }
+      } catch (err) {
+        console.error('Failed to parse stored filters', err);
+      }
+    }
+
+    setLocalStorageChecked(true);
+  }, [user, usedFilters]);
+
+  // 2️ Always re-parse current filtersValues
   useEffect(() => {
-    const responsesStatusesCounts = {
+    const parsed = Object.entries(filtersValues).reduce(
+      (acc, [rawKey, val]) => {
+        if (!val?.value) return acc;
+        const key = rawKey === 'Status' ? 'status' : rawKey;
+        acc[key] = val.value;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+    setParsedFilters(parsed);
+  }, [filtersValues]);
+
+    // Load function
+  const loadResponses = async (page: number) => {
+    const cleanedFilters = removeEmptyArraysAndObjects(parsedFilters);
+    const res = await getTrackerResponses({
+      variables: {
+        responsesQuery: cleanedFilters,
+        responsesPagination: {
+          limit: 20,
+          offset: page * 20 - 20,
+          sortBy: sortType,
+          sortDirection: sortOrder,
+        },
+      },
+    });
+
+    if (res.data?.responses?.responses?.length) 
+      setResponses((r) => uniqBy([...r, ...res.data.responses.responses], '_id'));
+    
+    if (res.data?.responses?.total != null) 
+      setTotal(res.data.responses.total);
+    
+  };
+
+  // 3️ Single, guarded loader for page 1 + resets
+  useEffect(() => {
+    if (!localStorageChecked) return;
+    if (hasStoredFilters && Object.keys(parsedFilters).length === 0) return;
+
+    setResponses([]);
+    if (scrollerRef.current) scrollerRef.current.pageLoaded = 0;
+    loadResponses(1);
+  }, [localStorageChecked, sortOrder, sortType, JSON.stringify(parsedFilters)]);
+
+  // Track totals for status badges
+  useEffect(() => {
+    const counts = {
       nonCompliant: totalNonCompliantResponses?.responses?.total || 0,
       compliant: (totalCompliantResponses?.responses?.total || 0) + (totalComingUpResponses?.responses?.total || 0),
       comingUp: totalComingUpResponses?.responses?.total || 0,
     };
-    setResponsesStatusesCounts(responsesStatusesCounts);
-  }, [totalCompliantResponses?.responses?.total, totalComingUpResponses?.responses?.total, totalNonCompliantResponses?.responses?.total]); // eslint-disable-line react-hooks/exhaustive-deps
+    setResponsesStatusesCounts(counts);
+  }, [totalCompliantResponses?.responses?.total, totalComingUpResponses?.responses?.total, totalNonCompliantResponses?.responses?.total]);
 
-  /**
-   * Parse filters to format expected by API and reload responses on filter change
-   */
-  useEffect(() => {
-    // Parse filters to format expected by GraphQL Query
-      const parsedFilters = Object.entries(filtersValues).reduce((acc, [rawKey, value]) => {
-      const key = rawKey === 'Status' ? 'status' : rawKey;
+  return (
+    <>
+      <Header
+        breadcrumbs={[pluralize(t('tracker item'))]}
+        mobileBreadcrumbs={[pluralize(t('tracker item'))]}
+        pageLabel={capitalize(t('tracker item'))}
+      >
+        {device !== 'mobile' && (
+          <>
+            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
+            <Divider borderColor="gray.300" height="30px" mt={1} mx={4} orientation="vertical" />
+            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
+          </>
+        )}
+      </Header>
 
-      if (
-        !value?.value ||
-        (typeof value.value === 'object' && Object.keys(value.value).length === 0) ||
-        (key === 'usersIds' &&
-          value.value.responsibleIds?.length === 0 &&
-          value.value.accountableIds?.length === 0 &&
-          value.value.contributorIds?.length === 0 &&
-          value.value.followerIds?.length === 0)
-      ) 
-        return acc;
-
-    return {
-      ...acc,
-      [key]: value.value,
-    };
-      }, {});
-
-    setParsedFilters(parsedFilters);
-  }, [JSON.stringify(filtersValues)]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  /**
-   * This function loads responses and pushes (unique) to an array displayed on the dashboard
-   *
-   * @param page Page number defines offset sent to the API
-   */
-  const loadResponses = async (page: number) => {
-    const res = await getTrackerResponses({
-      variables: {
-        responsesQuery: parsedFilters,
-        responsesPagination: { limit: 20, offset: page * 20 - 20, sortBy: sortType, sortDirection: sortOrder },
-      },
-    });
-    if (res.data?.responses?.responses?.length > 0)
-      setResponses((filteredResponses) => uniqBy([...filteredResponses, ...res.data.responses.responses], '_id'));
-    if (res.data?.responses?.total) setTotal(res.data?.responses?.total);
-  };
-
-  /**
-   * Reload responses on filters or sort change
-   */
-  useEffect(() => {
-    setResponses([]);
-    loadResponses(1);
-    if (scrollerRef.current) scrollerRef.current.pageLoaded = 0;
-  }, [sortOrder, sortType, JSON.stringify(parsedFilters)]);
-
-  return (<>
-    <Header
-      breadcrumbs={[pluralize(t('tracker item'))]}
-      data-id="93c49454aa8f"
-      mobileBreadcrumbs={[pluralize(t('tracker item'))]}
-      pageLabel={capitalize(t('tracker item'))}>
-      {device !== 'mobile' && (
-        <>
-          <ChangeViewButton
-            data-id="71ddbd0a13f3"
-            setViewMode={setViewMode}
-            viewMode={viewMode}
-            views={['grid', 'list', 'group']} />
-
-          <Divider
-            borderColor="gray.300"
-            height="30px"
-            mt={1}
-            mx={4}
-            orientation="vertical"
-          />
-          <SortButton
-            data-id="72f816f7350e"
-            setSortOrder={setSortOrder}
-            setSortType={setSortType}
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            sortType={sortType} />
-
-        </>
-      )}
-    </Header>
-    <Flex
-      data-id="7bf7546ba3a8"
-      direction="column"
-      h={['calc(100vh - 200px)', 'calc(100vh - 150px)']}
-      overflow="auto"
-      pb={4}>
-      {error ? (
-        <Flex
-          alignItems="center"
-          data-id="864e662bfe75"
-          fontSize="18px"
-          fontStyle="italic"
-          h="200px"
-          justifyContent="center"
-          w="full">
-          No Tracker Items found ,Try adjusting the filters.
-        </Flex>
-      ) : (
-        <>
-          {viewMode === 'grid' && (
-            <InfiniteScrollComponent
-              data-id="c573b6b779c3"
-              hasMore={!loading && responses.length < total}
-              initialLoad={false}
-              loadMore={loadResponses}
-              ref={scrollerRef}
-              useWindow={false}>
-              <Grid
-                alignItems="center"
-                bg="#ffffff"
-                data-id="06d832594699"
-                display={['grid', 'grid', 'flex']}
-                flexWrap="wrap"
-                gap={6}
-                h="fit-content"
-                justifyItems="center"
-                pb={[0, 8]}
-                pt="3"
-                px={[4, 8]}
-                templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', '']}
-                w="full"
+      <Flex direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
+        {error ? (
+          <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
+            No Tracker Items found, try adjusting the filters.
+          </Flex>
+        ) : (
+          <>
+            {' '}
+            {viewMode === 'grid' && (
+              <InfiniteScrollComponent
+                hasMore={!loading && responses.length < total}
+                initialLoad={false}
+                loadMore={loadResponses}
+                ref={scrollerRef}
+                useWindow={false}
               >
-                {responses.length > 0
-                  ? responses.map((response) => <TrackerItemSquare data-id="3c73d7318f93" key={response._id} response={response} />)
-                  : !loading && (
-                    <Flex
-                      data-id="4d543a578ec2"
-                      fontSize="18px"
-                      fontStyle="italic"
-                      h="full"
-                      w="full">
+                <Grid
+                  bg="#fff"
+                  gap={6}
+                  justifyItems="center"
+                  pb={[0, 8]}
+                  pt={3}
+                  px={[4, 8]}
+                  templateColumns={['1fr', '1fr', 'repeat(auto-fit, minmax(240px, 1fr))']}
+                >
+                  {responses.length ? (
+                    responses.map((r) => <TrackerItemSquare key={r._id} response={r} />)
+                  ) : !loading ? (
+                    <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
                       No {pluralize(t('tracker item'))} found
                     </Flex>
-                  )}
-              </Grid>
-              {loading && <Loader center data-id="331bdbe7d31a" h="60px" key="infinite-loader" />}
-            </InfiniteScrollComponent>
-          )}
-          {viewMode === 'list' && (
-            <TrackerItemsList
-              data-id="2751fbbf7cb7"
-              loading={loading}
-              loadResponses={loadResponses}
-              responses={responses}
-              scrollerRef={scrollerRef}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-              total={total} />
-          )}
-          {viewMode === 'group' && (
-            <TrackerItemsGroup
-              data-id="7e9a9ff79bc2"
-              loading={loading}
-              loadResponses={loadResponses}
-              responses={responses}
-              scrollerRef={scrollerRef}
-              total={total} />
-          )}
-        </>
-      )}
-    </Flex>
-  </>);
+                  ) : null}
+                </Grid>
+                {loading && <Loader center h="60px" />}
+              </InfiniteScrollComponent>
+            )}
+            {viewMode === 'list' && (
+              <TrackerItemsList
+                loading={loading}
+                loadResponses={loadResponses}
+                responses={responses}
+                scrollerRef={scrollerRef}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType}
+                total={total}
+              />
+            )}
+            {viewMode === 'group' && (
+              <TrackerItemsGroup
+                loading={loading}
+                loadResponses={loadResponses}
+                responses={responses}
+                scrollerRef={scrollerRef}
+                total={total}
+              />
+            )}
+          </>
+        )}
+      </Flex>
+    </>
+  );
 }
 
 export default TrackerItems;

@@ -315,7 +315,7 @@ export const listSupportedFileTypes = (fileTypes: { [mimeType: string]: string[]
   return types;
 };
 
-export const formatEmail = (email:string) => {
+export const formatEmail = (email: string) => {
   if (email.includes('#EXT#')) {
     const parts = email.split('#EXT#');
     const [local, domain] = parts[0].split('_');
@@ -323,3 +323,30 @@ export const formatEmail = (email:string) => {
   }
   return email;
 };
+
+/**
+ * Recursively removes keys with empty arrays or empty objects from an object.
+ * @param obj The object to clean
+ * @returns A new object with empty arrays/objects removed
+ */
+export function removeEmptyArraysAndObjects(obj: any): any {
+  if (Array.isArray(obj)) {
+    // Clean each item in the array
+    const cleanedArr = obj.map(removeEmptyArraysAndObjects).filter((item) => {
+      if (Array.isArray(item)) return item.length > 0;
+      if (item && typeof item === 'object') return Object.keys(item).length > 0;
+      return item !== undefined && item !== null;
+    });
+    return cleanedArr;
+  } if (obj && typeof obj === 'object') {
+    const cleanedObj: any = {};
+    Object.entries(obj).forEach(([key, value]) => {
+      const cleanedValue = removeEmptyArraysAndObjects(value);
+      if (Array.isArray(cleanedValue) && cleanedValue.length === 0) return;
+      if (cleanedValue && typeof cleanedValue === 'object' && Object.keys(cleanedValue).length === 0) return;
+      if (cleanedValue !== undefined && cleanedValue !== null) cleanedObj[key] = cleanedValue;
+    });
+    return cleanedObj;
+  }
+  return obj;
+}
