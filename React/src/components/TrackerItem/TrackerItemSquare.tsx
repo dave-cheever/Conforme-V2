@@ -64,7 +64,7 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
         fontWeight="600"
         isTruncated
         lineHeight="1.4"
-        maxWidth={isGroupView ? "230px" : "250px"}
+        maxWidth={isGroupView ? "230px" : "190px"}
         noOfLines={1}
         overflow="hidden"
         textOverflow="ellipsis"

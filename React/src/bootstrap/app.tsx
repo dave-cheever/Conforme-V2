@@ -23,10 +23,10 @@ function App() {
   const location = useLocation();
   // Set cookie with client URL for auth flow
   const clientUrl = process.env.REACT_APP_CLIENT_URL || '';
-  // const clientDomain = new URL(clientUrl).hostname;
-  // const domainParts = clientDomain.split('.');
-  // const topLevelDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
-  document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.conforme-sit.app`;
+  const clientDomain = new URL(clientUrl).hostname;
+  const domainParts = clientDomain.split('.');
+  const topLevelDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
+  document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${topLevelDomain}`;
 
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
