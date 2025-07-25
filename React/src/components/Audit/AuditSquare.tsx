@@ -44,46 +44,55 @@ function AuditSquare({ audit }: { audit: IAudit }) {
         data-id="234fbf9153b6"
         h="40px"
         justify="space-between"
+        minW={0}
         mt={2}
         p="0px 16px 16px 16px"
         position="relative"
-        w="full"
+        w="full" 
       >
-        <Skeleton data-id="818e323eea55" isLoaded={!!audit} rounded="full">
-          <Flex>
+        <Skeleton data-id="818e323eea55" isLoaded={!!audit} minW={0} rounded="full">
+          <Flex align="center" minW={0}>
             <Tooltip data-id="16be615c3cf3" label={audit?.auditor?.displayName}>
               <Avatar
-                borderRadius={'8px'}
+                borderRadius="8px"
                 boxSize="36px"
                 cursor="pointer"
                 data-id="e4b8bb88a47d"
-                name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
+                flexShrink={0}
+                name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 size="sm"
                 src={audit?.auditor?.imgUrl}
               />
             </Tooltip>
-            <Flex align="flex-start" flexDirection="column" ml={3} w="14rem">
+
+            <Flex
+              align="flex-start"
+              direction="column"
+              maxW="100%"
+              minW={0}
+              ml={3}
+            >
               <Text
                 color="auditSquare.nameFontColor"
                 data-id="84c14f877bab"
                 fontSize="16px"
                 fontWeight="600"
+                isTruncated
                 lineHeight="100%"
-                noOfLines={2}
-                overflow="hidden"
-                textOverflow="ellipsis"
+                noOfLines={1}
                 w="full"
               >
                 {`${audit?.auditor?.displayName} - ${audit?.reference}`}
               </Text>
+
               <Text
                 color="auditSquare.fontColor"
                 data-id="4fc30da2b418"
                 fontSize={["12px", "11px"]}
+                isTruncated
+                noOfLines={1}
                 opacity="1"
-                overflow="hidden"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
+                w="full"
               >
                 {audit?.auditType?.name}
               </Text>
@@ -93,15 +102,32 @@ function AuditSquare({ audit }: { audit: IAudit }) {
 
         {!loading && !error && data && (
           <Tooltip data-id="ee49241a0676" label="Observations">
-            <Flex align="center" data-id="9defc41d2bc3" fontSize="11px" fontWeight="700">
-              <ObservationEye data-id="67fb03afc899" fill="auditSquare.eyeIconColor" h="16px" w="16px" />
-              <Text as="span" color="auditSquare.nameFontColor" data-id="f093c9f9c1c5" ml="2">
+            <Flex
+              align="center"
+              data-id="9defc41d2bc3"
+              flexShrink={0} // Prevent it from being squeezed
+              fontSize="11px"
+              fontWeight="700"
+            >
+              <ObservationEye
+                data-id="67fb03afc899"
+                fill="auditSquare.eyeIconColor"
+                h="16px"
+                w="16px"
+              />
+              <Text
+                as="span"
+                color="auditSquare.nameFontColor"
+                data-id="f093c9f9c1c5"
+                ml="2"
+              >
                 {data?.auditAnswersCount}
               </Text>
             </Flex>
           </Tooltip>
         )}
       </Flex>
+
       <Divider color="#CBD5E0" w="full" />
       <Box p="16px">
         <Box display="grid" gridColumnGap="32px" gridRowGap="18px" gridTemplateColumns="1fr 1fr">

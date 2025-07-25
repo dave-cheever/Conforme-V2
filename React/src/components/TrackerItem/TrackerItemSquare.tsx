@@ -57,26 +57,35 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
         />
       </Tooltip>
     </Skeleton>
-    <Box flex="1">
-      <Text
-        color="#1A202C"
-        fontSize="16px"
-        fontWeight="600"
-        isTruncated
-        lineHeight="1.4"
-        maxWidth={isGroupView ? "230px" : "190px"}
-        noOfLines={1}
-        overflow="hidden"
-        textOverflow="ellipsis"
-        whiteSpace="nowrap"
-      >
-            {response.trackerItem?.name}
-      </Text>
+        <Box flex="1" minW={0}>
+            <Text
+              color="#1A202C"
+              fontSize="16px"
+              fontWeight="600"
+              isTruncated
+              lineHeight="1.4"
+              maxW={isGroupView ? { base: "100%", md: "220px" } : { base: "100%", md: "180px" }}
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
+              {response.trackerItem?.name}
+            </Text>
 
-      <Text color="#718096" fontSize="14px" fontWeight="500" noOfLines={1}>
-        {response.trackerItem?.category?.name || <i>Unassigned</i>}
-      </Text>
+            <Text
+              color="#718096"
+              fontSize="14px"
+              fontWeight="500"
+              isTruncated
+              noOfLines={1}
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
+              {response.trackerItem?.category?.name || <i>Unassigned</i>}
+            </Text>
     </Box>
+
   </Flex>
 
   <Divider my="12px" />

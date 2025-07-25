@@ -218,15 +218,15 @@ function TrackerItemModal({ refetch, onItemAdded }) {
                   <Button
                     bg="trackerItemModal.tabs.bottomButton.bg"
                     color="trackerItemModal.tabs.bottomButton.color"
-                    fontSize="smm"
+                    fontSize={["12px", "14px"]}
                     fontWeight="700"
                     h="40px"
                     leftIcon={<Icon as={OpenMenuArrow} stroke="#ffffff" transform="rotate(90deg)" />}
                     onClick={handlePreviousButtonClick}
                     rounded="10px"
-                    w="fit-content"
+                    w={["40px", "fit-content"]}
                   >
-                    Back
+                    {device !== "mobile" ? "Back ": ""}
                   </Button>
                 )}
 
@@ -241,7 +241,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
                         trackerItem?.locationsIds?.length === 0 ||
                         trackerItem?.businessUnitsIds?.length === 0
                       }
-                      fontSize="smm"
+                      fontSize={["12px", "14px"]}
                       fontWeight="700"
                       h="40px"
                       onClick={handleAddMoreButtonClick}
@@ -256,7 +256,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
                     _hover={{ bg: 'trackerItemModal.tabs.bottomButton.hover' }}
                     bg="trackerItemModal.tabs.bottomButton.bg"
                     color="trackerItemModal.tabs.bottomButton.color"
-                    fontSize="smm"
+                    fontSize={["12px", "14px"]}
                     fontWeight="700"
                     h="40px"
                     onClick={handlePrimaryButtonClick}

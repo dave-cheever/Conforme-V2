@@ -162,7 +162,6 @@ function TrackerItems() {
 
     const key = `${module?._id}-filters-${user._id}`;
     const stored = localStorage.getItem(key);
-    console.log('ASd', stored);
     let validFilters: Record<string, { value: any }> = {};
 
     if (stored) {
@@ -289,7 +288,7 @@ function TrackerItems() {
                   pb={[0, 8]}
                   pt={3}
                   px={[4, 8]}
-                  templateColumns={['1fr', '1fr', 'repeat(auto-fit, minmax(240px, 1fr))']}
+                  templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}
                 >
                   {responses.length ? (
                     responses.map((r) => <TrackerItemSquare key={r._id} response={r} />)
