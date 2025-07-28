@@ -162,9 +162,9 @@ function Team() {
               selectParticipants({ contributorsIds: mergedIds });
             }
           }}
-          onRemove={(participantId) => {
-            const updatedIds = contributors.filter((c) => c._id !== participantId).map((c) => c._id);
-            selectParticipants({ contributorsIds: updatedIds });
+          onRemove={(participantId, selectedParticipants) => {
+            const updated = selectedParticipants.filter((c) => c._id !== participantId);
+            selectParticipants({ contributorsIds: updated.map((c) => c._id) });
           }}
           selectedParticipants={contributors}
         />
@@ -177,16 +177,15 @@ function Team() {
             const oldIds = followers.map((f) => f._id);
             const newIds = participants.map((p) => p._id);
 
-            if (newIds.length < oldIds.length) 
-              selectParticipants({ followersIds: newIds });
-             else {
+            if (newIds.length < oldIds.length) selectParticipants({ followersIds: newIds });
+            else {
               const mergedIds = Array.from(new Set([...oldIds, ...newIds]));
               selectParticipants({ followersIds: mergedIds });
             }
           }}
-          onRemove={(participantId) => {
-            const updatedIds = followers.filter((f) => f._id !== participantId).map((f) => f._id);
-            selectParticipants({ followersIds: updatedIds });
+          onRemove={(participantId, selectedParticipants) => {
+            const updated = selectedParticipants.filter((f) => f._id !== participantId);
+            selectParticipants({ followersIds: updated.map((f) => f._id) });
           }}
           selectedParticipants={followers}
         />
