@@ -33,27 +33,14 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
     isPathActive('/answers') ||
     isPathActive('/dashboard') ||
     isPathActive('/tracker-items');
-  const excludedPaths = [
-    '/documents/admin/users',
-    '/documents/admin/audit-log',
-    '/documents/admin/settings',
-    '/documents/help',
-    '/documents/terms-and-conditions',
-    '/documents/privacy-policy',
-    '/safety-health-environment-walk/admin/settings',
-    '/safety-health-environment-walk/answers',
-    '/safety-health-environment-walk/admin/audit-log',
-    '/safety-health-environment-walk/admin/users',
-    '/safety-health-environment-walk/insights',
-    '/safety-health-environment-walk/actions',
-    '/safety-health-environment-walk/help',
-    '/safety-health-environment-walk/terms-and-conditions',
-    '/safety-health-environment-walk/privacy-policy',
-  ];
-
+  
   function isPathAllowed() {
-    return !excludedPaths.includes(window.location.pathname);
-  }
+  const disallowedSuffixes = ['help', 'answers', 'terms-and-conditions', 'privacy-policy', 'audit-log', 'settings', 'users', 'insights', 'actions'];
+  const segments = window.location.pathname.split('/').filter(Boolean); 
+  const lastSegment = segments[segments.length - 1];
+  return !disallowedSuffixes.includes(lastSegment);
+ }
+
   const item =
     module?.type === 'audits'
       ? auditAddItems.find((item) => item.label === pageLabel)
