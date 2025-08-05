@@ -265,7 +265,8 @@ function RegulatoryBodies() {
         <Box
            border="1px solid #CBD5E0"
           data-id="e7b58d152793"
-          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+          h="max-content"
+          minH={['calc(100% - 160px)', 'calc(100% - 35px)']}
           mr={[0, 0, '50px']}
           overflow="hidden"
           w={['full', 'full', 'calc(100% - 250px)']}
