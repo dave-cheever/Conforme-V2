@@ -128,7 +128,8 @@ function TrackerListItems({
             label={module!.customQuestionsInDashboard[1]}
             w="10%" />
         )} */}
-         <AdminTableHeaderElement
+        <AdminTableHeaderElement
+          hideSortIcon
           data-id="dd6f521e1d31"
           label={capitalize(t('location'))}
           w="8%" />
