@@ -1,9 +1,9 @@
-import { APIError, betterAuth } from "better-auth";
+import { betterAuth } from "better-auth";
+import { APIError } from "better-auth/api";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { customSession } from "better-auth/plugins";
 import { isBefore } from "date-fns";
 import { MongoClient } from "mongodb";
-import { v4 as uuidv4 } from 'uuid';
 
 import { Organizations, Users } from "app-models";
 import { GraphService } from "app-services";
@@ -95,7 +95,8 @@ export const auth = betterAuth({
               message: "Organization's licence expired",
             });
           }
-
+          const  graphUser = await GraphService.getUserData({userId: user.email, organization })
+          const graphId = graphUser?.value?.[0]?.id
           // Check if logged user is from allowed tenant or organization is open to all tenants
           if (!organization.allowedTenantsIds.includes('all') && !organization.allowedTenantsIds.includes(tenantId))
             throw new APIError("BAD_REQUEST", {
@@ -103,9 +104,8 @@ export const auth = betterAuth({
             });
           // Check if logged user belong to access group (if configured)
           if (organization.accessGroupId) {
-
             const groups: any = await GraphService.checkMemberGroups({
-              userIdOrEmail: user.email,
+              userIdOrEmail: graphId,
               groups: {
                 access: organization.accessGroupId || '',
               },
@@ -126,7 +126,7 @@ export const auth = betterAuth({
             console.log('error finding existing user', error)
           }
           const updatedOrganisationIds = (existingDbUser.organizationsIds || []).includes(organization._id) ? existingDbUser.organizationsIds : [ ...(existingDbUser.organizationsIds || []), organization._id ] as any;
-          const userId = existingDbUser?._id || uuidv4();
+          const userId = existingDbUser?._id || graphId;
           const enrichedUser = {
             ...user,
             imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${userId}`,

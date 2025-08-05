@@ -73,7 +73,7 @@ const getUserPhoto = async ({ userId, organization }: { userId: string; organiza
 const getUserData = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
   try {
     const client = await getClient(organization._id);
-    const res = await client.get(`users/${userId}`);
+    const res = await client.get(`users?$filter=mail eq '${userId}'`);
     return res.data;
   } catch (e) {
     // console.log(e);
@@ -283,6 +283,7 @@ const addMemberToAccessGroup = async ({
     return null;
   }
 };
+
 
 const getFileDetails = async (id: string, organization: IOrganization): Promise<{ thumbnail: string; path: string; preview: string }> => {
   if (!organization.spSiteUrl || !organization.spLibraryId) {
