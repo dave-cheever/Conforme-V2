@@ -144,9 +144,10 @@ function FiltersProvider({ children }) {
     if (module && user) {
       const localStorageKey = `${module._id}-filters-${user._id}`;
       localStorage.removeItem(localStorageKey);
+      setDefaultFilters({});
       setFiltersValues(
         getFilters({
-          defaultFilters,
+          defaultFilters: {},
           usedFilters,
           isCleanFilters: true,
         }),

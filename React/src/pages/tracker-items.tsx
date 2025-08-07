@@ -227,21 +227,21 @@ function TrackerItems() {
 
     if (res.data?.responses?.responses?.length) 
       setResponses((r) => uniqBy([...r, ...res.data.responses.responses], '_id'));
-    
     if (res.data?.responses?.total != null) 
       setTotal(res.data.responses.total);
-    
   };
 
-  // 3️ Single, guarded loader for page 1 + resets
   useEffect(() => {
     if (!localStorageChecked) return;
-    if (hasStoredFilters && Object.keys(parsedFilters).length === 0) return;
+    if (hasStoredFilters && Object.keys(parsedFilters).length === 0) {
+      setHasStoredFilters(false);
+      return;
+    }
 
     setResponses([]);
     if (scrollerRef.current) scrollerRef.current.pageLoaded = 0;
     loadResponses(1);
-  }, [localStorageChecked, sortOrder, sortType, JSON.stringify(parsedFilters)]);
+  }, [localStorageChecked, sortOrder, sortType, JSON.stringify(parsedFilters), hasStoredFilters]);
 
   // Track totals for status badges
   useEffect(() => {
