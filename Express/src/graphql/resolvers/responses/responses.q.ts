@@ -294,6 +294,18 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       });
     }
 
+    if (shouldJoin(['trackerItem', 'locations'])) {
+      pipeline.push({
+        $lookup: {
+          from: 'locations',
+          localField: 'trackerItem.locationsIds',
+          foreignField: '_id',
+          as: 'trackerItem.locations',
+        },
+      });
+    }
+
+
     // Join regulatory body
     if (shouldJoin(['trackerItem', 'regulatoryBody'])) {
       join({

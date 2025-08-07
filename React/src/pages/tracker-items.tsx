@@ -68,6 +68,10 @@ const GET_RESPONSES = gql`
           regulatoryBody {
             name
           }
+          locations {
+            _id
+            name
+          }
         }
         businessUnit {
           name

@@ -206,7 +206,7 @@ function TrackerListItem({ response, index }: { response: IResponse, index: numb
               w="full"
               whiteSpace="nowrap"
             >
-              {Array.isArray(response.trackerItem?.locations) && response.trackerItem?.locations?.length > 0 ? `${response.trackerItem?.locations[0].name},+${response.trackerItem?.locations?.length}other ` : "-"}
+              {Array.isArray(response.trackerItem?.locations) && response.trackerItem?.locations?.length > 0 ? `${response.trackerItem?.locations[0].name}, +${response.trackerItem?.locations?.length} other ` : "-"}
             </Text>
           </Flex>
         </Box>
