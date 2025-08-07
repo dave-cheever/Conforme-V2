@@ -104,12 +104,33 @@ function ActionsInsights() {
       if (!filter || !filter[1] || !usedFilters.includes(filter[0])) return { ...acc };
 
       const [key, value] = filter;
-      if (
-        !value.value ||
-        (Array.isArray(value.value) && value.value.length === 0) ||
-        (key === 'usersIds' && value.value?.assigneesIds?.length === 0)
-      )
-        return acc;
+
+      if (key === 'usersIds') {
+        const userFilter = value.value;
+        if (!userFilter) return acc;
+
+        // If auditorsIds or participantsIds are provided, we need to transform them
+        let assigneesIds = userFilter.assigneesIds || [];
+
+        // If auditorsIds or participantsIds are provided, use them as assigneesIds
+        if (userFilter.auditorsIds && userFilter.auditorsIds.length > 0) 
+          assigneesIds = [...assigneesIds, ...userFilter.auditorsIds];
+        
+        if (userFilter.participantsIds && userFilter.participantsIds.length > 0) 
+          assigneesIds = [...assigneesIds, ...userFilter.participantsIds];
+
+        // Remove duplicates
+        assigneesIds = [...new Set(assigneesIds)];
+
+        if (assigneesIds.length === 0) return acc;
+
+        return {
+          ...acc,
+          [key]: { assigneesIds },
+        };
+      }
+
+      if (!value.value || (Array.isArray(value.value) && value.value.length === 0)) return acc;
 
       return {
         ...acc,
@@ -248,7 +269,7 @@ function ActionsInsights() {
   ) as EChartsOption;
 
   return (
-    (<Box data-id="37f7df3c97ef" pt="3">
+    <Box data-id="37f7df3c97ef" pt="3">
       {error ? (
         <Text data-id="5eceb1031611">{error.message}</Text>
       ) : loading ? (
@@ -264,7 +285,8 @@ function ActionsInsights() {
                 overflowX: 'scroll',
                 '::-webkit-scrollbar': { display: 'none' },
               },
-            }}>
+            }}
+          >
             {actionsStatsCounts.map((filter) => (
               <InsightsCard
                 count={filter.actions}
@@ -273,7 +295,8 @@ function ActionsInsights() {
                 onSelect={setSelectedActionsStatsCount}
                 selected={selectedActionsStatsCount === filter.status}
                 status={filter.status}
-                type="actions" />
+                type="actions"
+              />
             ))}
           </Flex>
           <Text
@@ -281,7 +304,8 @@ function ActionsInsights() {
             data-id="01c46fe8e8ea"
             fontSize="xxl"
             fontWeight="bold"
-            my={['15px', '25px']}>
+            my={['15px', '25px']}
+          >
             {actionsInsightsTypes[selectedActionsStatsCount]}{' '}
             <Text as="span" color="insights.secondaryText" data-id="de2a1ce1df86">
               actions
@@ -296,10 +320,11 @@ function ActionsInsights() {
             loadMoreLocations={getLocationsData}
             loadMoreUsers={getUsersData}
             locations={locations}
-            users={users} />
+            users={users}
+          />
         </>
       )}
-    </Box>)
+    </Box>
   );
 }
 

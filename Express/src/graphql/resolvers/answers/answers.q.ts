@@ -359,45 +359,75 @@ const answers = async (_, { answerQuery }, { authorize, organization }, info: Gr
 
     let answers = await Answers.aggregate(pipeline);
 
-    answers = answers.map((answer) => ({ ...answer, actions: answer.actions.filter((action) => !action?.metatags?.removedAt) }));
+
+    const fallbackUser = {
+      displayName: "Unknown User",
+      imgUrl: "",
+    };
+
+
+      answers = answers.map((answer) => ({
+        ...answer,
+        audit: {
+          ...answer.audit,
+          auditor:
+            answer.audit?.auditor && answer.audit.auditor._id
+              ? answer.audit.auditor
+              : { ...fallbackUser, _id: "unknown" },
+        },
+        actions: answer.actions?.filter((action) => !action?.metatags?.removedAt) ?? [],
+      }));
+
 
     if (shouldJoin(['addedBy'])) {
       answers = await Promise.all(
         answers.map(async (answer) => {
           try {
+            const user = await Users.customFindByIdWithDetails({
+              userId: answer?.metatags?.addedBy,
+              organization,
+            });
+
             return {
               ...answer,
-              addedBy: await Users.customFindByIdWithDetails({
-                userId: answer?.metatags?.addedBy,
-                organization,
-              }),
+              addedBy: user || fallbackUser,
             };
           } catch (e) {
-            console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
-            return answer;
+            console.log(`Error occurred for addedBy in answer ${answer._id}: ${e}`);
+            return {
+              ...answer,
+              addedBy: fallbackUser,
+            };
           }
-        }),
+        })
       );
     }
 
-    if (shouldJoin(['creator'])) {
+
+      if (shouldJoin(['creator'])) {
       answers = await Promise.all(
         answers.map(async (answer) => {
           try {
+            const user = await Users.customFindByIdWithDetails({
+              userId: answer?.metatags?.addedBy,
+              organization,
+            });
+
             return {
               ...answer,
-              creator: await Users.customFindByIdWithDetails({
-                userId: answer.metatags.addedBy,
-                organization,
-              }),
+              creator: user || fallbackUser,
             };
           } catch (e) {
-            console.log(`Error occured for action with ID ${answer._id}: ${e}`);
-            return answer;
+            console.log(`Error occurred for creator in answer ${answer._id}: ${e}`);
+            return {
+              ...answer,
+              creator: fallbackUser,
+            };
           }
-        }),
+        })
       );
     }
+
 
     if (answerQuery?.usersIds?.addedByIds?.length > 0)
       answers = answers.filter((answer) => answerQuery.usersIds.addedByIds.includes(answer.addedBy._id));

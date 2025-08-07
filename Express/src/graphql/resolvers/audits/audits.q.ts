@@ -48,7 +48,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       });
     }
 
-    // For "user" role filter audits
+    // // For "user" role filter audits
     if (!isPermitted({ user, action: 'audits.viewAll' })) {
       /**
        * User's direct reports. The user is a manager of these users.
@@ -353,19 +353,52 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     let audits = await Audits.aggregate(pipeline);
 
     if (shouldJoin(['auditor']) || shouldJoin(['participants'])) {
+      const fallbackUser = {
+        _id: "unknown",
+        displayName: "Unknown User",
+        imgUrl: "",
+      };
+
       audits = await Promise.all(
         audits.map(async (audit) => {
           try {
-            let auditor;
+            let auditor = fallbackUser;
             let participants: IUser[] = [];
-            if (shouldJoin(['auditor'])) {
-              auditor = await Users.customFindByIdWithDetails({
+
+            // Safely resolve auditor
+            if (shouldJoin(['auditor']) && audit.auditorId) {
+              const foundAuditor = await Users.customFindByIdWithDetails({
                 userId: audit.auditorId,
                 organization,
               });
+
+              if (foundAuditor) {
+                auditor = { ...foundAuditor, imgUrl: foundAuditor.imgUrl || "" };
+              } 
             }
-            if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0)
-              participants = await Users.customFindWithDetails({ selector: { _id: { $in: audit.participantsIds } }, organization });
+
+            // Safely resolve participants
+            if (
+              shouldJoin(['participants']) &&
+              audit.participantsIds &&
+              audit.participantsIds.length > 0
+            ) {
+              try {
+                const foundParticipants = await Users.customFindWithDetails({
+                  selector: { _id: { $in: audit.participantsIds } },
+                  organization,
+                });
+
+                const foundIds = new Set(foundParticipants.map((u) => String(u._id)));
+                participants = audit.participantsIds.map((id) => {
+                  const user = foundParticipants.find((u) => String(u._id) === String(id));
+                  return user || { ...fallbackUser, _id: String(id) };
+                });
+              } catch (e) {
+                console.warn(`Failed to fetch participants for audit ${audit._id}, using fallback.`);
+                participants = audit.participantsIds.map((id) => ({ ...fallbackUser, _id: String(id) }));
+              }
+            }
 
             return {
               ...audit,

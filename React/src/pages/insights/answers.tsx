@@ -96,12 +96,32 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
 
       const [key, value] = filter;
 
-      if (
-        !value.value ||
-        (Array.isArray(value.value) && value.value.length === 0) ||
-        (key === 'usersIds' && value.value?.addedByIds?.length === 0)
-      )
-        return acc;
+      if (key === 'usersIds') {
+        const userFilter = value.value;
+        if (!userFilter) return acc;
+
+        // If auditorsIds or participantsIds are provided, we need to transform them
+        let addedByIds = userFilter.addedByIds || [];
+
+        // If auditorsIds or participantsIds are provided, use them as addedByIds
+        if (userFilter.auditorsIds && userFilter.auditorsIds.length > 0) 
+          addedByIds = [...addedByIds, ...userFilter.auditorsIds];
+        
+        if (userFilter.participantsIds && userFilter.participantsIds.length > 0) 
+          addedByIds = [...addedByIds, ...userFilter.participantsIds];
+
+        // Remove duplicates
+        addedByIds = [...new Set(addedByIds)];
+
+        if (addedByIds.length === 0) return acc;
+
+        return {
+          ...acc,
+          [key]: { addedByIds },
+        };
+      }
+
+      if (!value.value || (Array.isArray(value.value) && value.value.length === 0)) return acc;
 
       return {
         ...acc,
@@ -216,7 +236,7 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
   ) as EChartsOption;
 
   return (
-    (<Box data-id="cbbc2f6482f5" pt="3">
+    <Box data-id="cbbc2f6482f5" pt="3">
       {error ? (
         <Text data-id="5f7805f82787">{error.message}</Text>
       ) : loading ? (
@@ -231,11 +251,7 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
             </GridItem>
             <GridItem data-id="02d7bfdccd8b" w="100%">
               <Flex data-id="b3cd8c2ec805" direction="column" textAlign="left">
-                <Text
-                  as="span"
-                  color="insights.secondaryText"
-                  data-id="1f0b59b358bd"
-                  fontWeight="bold">
+                <Text as="span" color="insights.secondaryText" data-id="1f0b59b358bd" fontWeight="bold">
                   Total {answerType.toLowerCase()}
                 </Text>
                 <Heading color="#1E1836" data-id="31df75a059bb" fontSize="100px">
@@ -254,10 +270,11 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
             locations={locations}
             questionsCategoriesId={questionsCategoriesId}
             questionsCategoryName={answerType}
-            users={users} />
+            users={users}
+          />
         </>
       )}
-    </Box>)
+    </Box>
   );
 }
 
