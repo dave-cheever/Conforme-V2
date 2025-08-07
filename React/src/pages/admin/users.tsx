@@ -460,8 +460,6 @@ function Users() {
       >
         <Flex data-id="203r513a2a9a01" h="full" px={['25px', 0]} w="full">
           <Box
-          border="1px solid"
-          borderColor="auditsList.headerBorderColor"
           data-id="b039112968ee"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
            w={['full', 'full', 'calc(100%)']}
@@ -533,7 +531,7 @@ function Users() {
               w={['40%', 'calc(16% - 20px)']}
             />
           </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="e22951ab0519" h="full" overflow="auto" w="full">
+          <Box bg="auditsList.bg" border="1px solid #cbd5e0" borderBottomRadius="10px" data-id="e22951ab0519" h="full" overflow="auto" w="full">
             {loading ? <Loader center data-id="2cafeec1cd87" /> : users.map((user, i) => renderUserRow(user, i))}
           </Box>
           </Box>
