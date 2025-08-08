@@ -291,7 +291,7 @@ function AuditProvider({ children }) {
   const { id } = useParams();
   const { navigateTo } = useNavigate();
 
-  const [updateAudit] = useMutation(UPDATE_AUDIT);
+  const [updateAudit, { loading: updateAuditLoading }] = useMutation(UPDATE_AUDIT);
   const [submitAudit] = useMutation(SUBMIT_AUDIT);
   const [deleteAudit] = useMutation(DELETE_AUDIT);
 
@@ -434,6 +434,7 @@ function AuditProvider({ children }) {
       saveAction,
       deleteAction,
       updateAudit,
+      updateAuditLoading,
       submitAudit,
       deleteAudit,
       refetch,
@@ -453,6 +454,7 @@ function AuditProvider({ children }) {
       isActionChangesModalOpen,
       actionChangesModalOnContinue,
       isOpenMessage,
+      updateAuditLoading,
     ],
   );
 

@@ -129,8 +129,8 @@ function TrackerListItems({
             w="10%" />
         )} */}
         <AdminTableHeaderElement
-          hideSortIcon
           data-id="dd6f521e1d31"
+          hideSortIcon
           label={capitalize(t('location'))}
           w="8%" />
       </AdminTableHeader>

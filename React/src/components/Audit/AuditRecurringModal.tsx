@@ -18,18 +18,13 @@ import { toastSuccess } from '../../bootstrap/config';
 import { useAuditContext } from '../../contexts/AuditProvider';
 
 function AuditRecurringModal({ isOpen, onClose }) {
-  const { audit, updateAudit, refetch } = useAuditContext();
+  const { audit, updateAudit, refetch, updateAuditLoading } = useAuditContext();
   const toast = useToast();
 
   if (!audit) return null;
 
   return (
-    (<Modal
-      data-id="70affd0aa87b"
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size="sm">
+    <Modal data-id="70affd0aa87b" isCentered isOpen={isOpen} onClose={onClose} size="sm">
       <ModalContent data-id="9eeb837341f5">
         <ModalHeader data-id="38c0cd6b6396">
           <Text data-id="8486d034fc53" fontSize="smm" fontWeight="semibold">
@@ -54,6 +49,8 @@ function AuditRecurringModal({ isOpen, onClose }) {
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
               data-id="94c348131f72"
+              isLoading={updateAuditLoading}
+              loadingText="Updating..."
               onClick={async () => {
                 await updateAudit({
                   variables: {
@@ -69,13 +66,14 @@ function AuditRecurringModal({ isOpen, onClose }) {
                   ...toastSuccess,
                   description: `${capitalize(t('audit'))} updated`,
                 });
-              }}>
+              }}
+            >
               Update
             </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>
-    </Modal>)
+    </Modal>
   );
 }
 

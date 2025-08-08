@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 
 import { gql, useLazyQuery } from '@apollo/client';
 import { Avatar, Box, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
@@ -13,9 +13,9 @@ import useNavigate from '../../hooks/useNavigate';
 import { IResponse } from '../../interfaces/IResponse';
 import { IUser } from '../../interfaces/IUser';
 
-const GET_USERS_BY_ID_FROM_DB = gql`
+const GET_LAST_UPDATED_USER = gql`
   query ($userQueryInput: UserQueryInput) {
-    usersByIdFromDb(userQueryInput: $userQueryInput) {
+    usersById(userQueryInput: $userQueryInput) {
       _id
       displayName
       imgUrl
@@ -26,23 +26,24 @@ const GET_USERS_BY_ID_FROM_DB = gql`
 function HistoricalTableRow({ response, index }: { response: IResponse; index: number }) {
   const { navigateTo } = useNavigate();
   const { snapshot } = useResponseContext();
-  const [getUsers, { data: { usersByIdFromDb: responseUsers = [] } = {}, loading: responsibleLoading }] =
-    useLazyQuery(GET_USERS_BY_ID_FROM_DB);
+  const lastUpdatedById = response?.metatags?.updatedBy;
 
-  React.useEffect(() => {
-    const userIds = [response.responsibleId, response.metatags?.updatedBy].filter(Boolean);
-    getUsers({
-      variables: {
-        userQueryInput: {
-          usersIds: userIds,
+  // Fetch the last updated user details
+  const [getLastUpdatedUser, { data: lastUpdatedUserData, loading: lastUpdatedUserLoading }] = useLazyQuery(GET_LAST_UPDATED_USER);
+
+  useEffect(() => {
+    if (lastUpdatedById) {
+      getLastUpdatedUser({
+        variables: {
+          userQueryInput: { usersIds: [lastUpdatedById] },
         },
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [response]);
+      });
+    }
+  }, [lastUpdatedById, getLastUpdatedUser]);
 
-  const responsibleUser: IUser = responseUsers.find(({ _id }) => _id === response.responsibleId);
-  const lastUpdatedBy: IUser = responseUsers.find(({ _id }) => _id === response.metatags?.updatedBy);
+  const lastUpdatedUser: IUser | null = lastUpdatedUserData?.usersById?.[0] || null;
+  const responsibleUser: IUser | null = response?.responsible || null;
+
   const active = getTime(new Date(response.lastCompletionDate!)).toString() === snapshot;
   const rowBg = active ? '#F5F7FA' : index % 2 === 0 ? 'white' : 'gray.50';
 
@@ -57,9 +58,7 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
       data-id="history-table-row"
       fontWeight={active ? '700' : '400'}
       minH="60px"
-      onClick={() =>
-        navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)
-      }
+      onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
       px={['5px', '25px']}
       transition="background 0.2s"
       w="full"
@@ -80,47 +79,31 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
 
       {/* Responsible */}
       <Flex align="center" minW={0} w="25%">
-        <Skeleton isLoaded={!responsibleLoading} rounded="full" w="full">
-          {responsibleUser ? (
-            <Flex align="center" minW={0} w="full">
-              <Avatar name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={responsibleUser.imgUrl} />
-              <Tooltip label={responsibleUser.displayName}>
-                <Text
-                  color="historyPage.font"
-                  fontSize={['11px', '13px']}
-                  isTruncated
-                  maxW="calc(100% - 32px)"
-                  noOfLines={1}
-                  pl={2}
-                >
-                  {responsibleUser.displayName}
-                </Text>
-              </Tooltip>
-            </Flex>
-          ) : (
-            <Text color="historyPage.font" fontSize={['11px', '13px']} fontStyle="italic">
-              Unassigned
-            </Text>
-          )}
-        </Skeleton>
+        {responsibleUser ? (
+          <Flex align="center" minW={0} w="full">
+            <Avatar name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={responsibleUser.imgUrl} />
+            <Tooltip label={responsibleUser.displayName}>
+              <Text color="historyPage.font" fontSize={['11px', '13px']} isTruncated maxW="calc(100% - 32px)" noOfLines={1} pl={2}>
+                {responsibleUser.displayName}
+              </Text>
+            </Tooltip>
+          </Flex>
+        ) : (
+          <Text color="historyPage.font" fontSize={['11px', '13px']} fontStyle="italic">
+            Unassigned
+          </Text>
+        )}
       </Flex>
 
       {/* Last updated by */}
       <Flex align="center" minW={0} w="25%">
-        <Skeleton isLoaded={!responsibleLoading} rounded="full" w="full">
-          {lastUpdatedBy ? (
+        <Skeleton isLoaded={!lastUpdatedUserLoading} rounded="full" w="full">
+          {lastUpdatedUser ? (
             <Flex align="center" minW={0} w="full">
-              <Avatar name={lastUpdatedBy.displayName?.replace(/\s*\(.*?\)\s*/g, '')}  size="xs" src={lastUpdatedBy.imgUrl} />
-              <Tooltip label={lastUpdatedBy.displayName}>
-                <Text
-                  color="historyPage.font"
-                  fontSize={['11px', '13px']}
-                  isTruncated
-                  maxW="calc(100% - 32px)"
-                  noOfLines={1}
-                  pl={2}
-                >
-                  {lastUpdatedBy.displayName}
+              <Avatar name={lastUpdatedUser.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={lastUpdatedUser.imgUrl} />
+              <Tooltip label={lastUpdatedUser.displayName}>
+                <Text color="historyPage.font" fontSize={['11px', '13px']} isTruncated maxW="calc(100% - 32px)" noOfLines={1} pl={2}>
+                  {lastUpdatedUser.displayName}
                 </Text>
               </Tooltip>
             </Flex>
@@ -147,7 +130,7 @@ function Team() {
   }
 
   return (
-    <Box bg="historyPage.bg" data-id="8e9704fcdad7"  w="full">
+    <Box bg="historyPage.bg" data-id="8e9704fcdad7" w="full">
       <Box bg="white" border="1px solid" borderColor="historyPage.border" borderRadius="8px" overflow="hidden">
         <AdminTableHeader>
           <AdminTableHeaderElement label="Item name" w="30%" />

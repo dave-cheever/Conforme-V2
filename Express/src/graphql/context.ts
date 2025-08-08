@@ -7,7 +7,6 @@ import { fromNodeHeaders } from 'better-auth/node';
 import auth from 'src/utils/auth/auth';
 
 const context = async ({ req, res }) => {
-
   const clientUrl = req.cookies?.clientUrl || '';
   const domain = new URL(clientUrl)?.host || '';
   let organization;
@@ -20,16 +19,14 @@ const context = async ({ req, res }) => {
   // Function to authorize user in GraphQL methods
   // Throws an error if session is not valid
   const authorize = async (): Promise<IUser> => {
-
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
 
-    if (!session)
-      throw new GraphQLError('No session found');
+    if (!session) throw new GraphQLError('No session found');
 
-    return { 
-      ...session.user
+    return {
+      ...session.user,
     } as IUser;
   };
 
@@ -48,4 +45,4 @@ export interface IContext {
   res: any;
   organization: IOrganization;
   authorize: () => Promise<IUser>;
-};
+}

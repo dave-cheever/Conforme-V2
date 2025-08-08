@@ -27,7 +27,7 @@ export interface IAuditContext {
   customQuestionsCategories: IQuestionsCategory[];
   questions: IQuestionsByCategories;
   loading: boolean;
-
+  updateAuditLoading: boolean;
   selectedQuestion?: TDeepPartial<TQuestionWithAnswer>;
   setSelectedQuestion: Dispatch<SetStateAction<TDeepPartial<TQuestionWithAnswer> | undefined>>;
 
