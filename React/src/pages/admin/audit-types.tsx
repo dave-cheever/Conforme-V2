@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -143,6 +143,27 @@ function AuditTypes() {
   });
 
   const sections = watch('sections') || [];
+
+  const selectedQuestionsCategoriesIds = useMemo(() => sections.filter((section) => section.type === 'questionsCategory').map((section) => section._id), [sections]);
+
+  // Get available questions categories that haven't been selected yet
+  const availableQuestionsCategories = useCallback(
+    (currentSectionId?: string) => {
+      if (!questionsCategories) return [];
+
+      if (selectedQuestionsCategoriesIds.length === 0) return questionsCategories;
+
+      // Filter out already selected categories, but include the current section's category
+      const availableCategories = questionsCategories.filter(
+        (category) => !selectedQuestionsCategoriesIds.includes(category._id) || category._id === currentSectionId,
+      );
+
+      return availableCategories.length > 0 ? availableCategories : questionsCategories;
+    },
+    [questionsCategories, selectedQuestionsCategoriesIds],
+  );
+
+  const disableAddNewSection = useMemo(() => selectedQuestionsCategoriesIds.length === questionsCategories?.length, [selectedQuestionsCategoriesIds, questionsCategories]);
 
   // Reset the form after closing
   useEffect(() => {
@@ -514,7 +535,7 @@ function AuditTypes() {
                         <option data-id="efa335fc50f4" value={undefined}>
                           Please select questions category
                         </option>
-                        {questionsCategories?.map(({ _id, name }) => (
+                        {availableQuestionsCategories(section._id)?.map(({ _id, name }) => (
                           <option data-id="2ec3671292d5" key={_id} value={_id}>
                             {name}
                           </option>
@@ -537,8 +558,11 @@ function AuditTypes() {
               data-id="be44fea35efa"
               fontSize="smm"
               fontWeight="bold"
+              isDisabled={disableAddNewSection}
               mt={16}
-              onClick={() => setValue('sections', [...sections, { type: 'questionsCategory' }])}
+              onClick={() => {
+                setValue('sections', [...sections, { type: 'questionsCategory' }]);
+              }}
             >
               Add section
             </Button>
@@ -556,36 +580,36 @@ function AuditTypes() {
       >
         <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]} w="full">
           <Box
-          border="1px solid"
-          borderColor="auditsList.headerBorderColor"
-          data-id="b66f9mh62g65"
-          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-          w={['full', 'full', 'calc(100%)']}
-        >
-          <AdminTableHeader data-id="e77d6573756f">
-            <AdminTableHeaderElement
-              data-id="51d440e398eb"
-              label="Name"
-              onClick={() => {
-                setSortType('name');
-                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w="full"
-            />
-          </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="h6a8g4n8c3" h="full" overflow="auto" w="full">
-            {loading ? (
-              <Loader center data-id="515105f6eb5d" />
-            ) : auditTypes?.length > 0 ? (
-              auditTypes?.map(renderAuditTypeRow)
-            ) : (
-              <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                No audit types found
-              </Flex>
-            )}
-          </Box>
+            border="1px solid"
+            borderColor="auditsList.headerBorderColor"
+            data-id="b66f9mh62g65"
+            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
+            w={['full', 'full', 'calc(100%)']}
+          >
+            <AdminTableHeader data-id="e77d6573756f">
+              <AdminTableHeaderElement
+                data-id="51d440e398eb"
+                label="Name"
+                onClick={() => {
+                  setSortType('name');
+                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                }}
+                showSortingIcon={sortType === 'name'}
+                sortOrder={sortType === 'name' ? sortOrder : undefined}
+                w="full"
+              />
+            </AdminTableHeader>
+            <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="h6a8g4n8c3" h="full" overflow="auto" w="full">
+              {loading ? (
+                <Loader center data-id="515105f6eb5d" />
+              ) : auditTypes?.length > 0 ? (
+                auditTypes?.map(renderAuditTypeRow)
+              ) : (
+                <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+                  No audit types found
+                </Flex>
+              )}
+            </Box>
           </Box>
         </Flex>
       </Flex>
