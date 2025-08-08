@@ -69,6 +69,18 @@ const getUserPhoto = async ({ userId, organization }: { userId: string; organiza
   }
 };
 
+
+const getUserDataByEmail = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
+  try {
+    const client = await getClient(organization._id);
+    const res = await client.get(`users?$filter=mail eq '${userId}'`);
+    return res.data;
+  } catch (e) {
+    // console.log(e);
+    return null;
+  }
+};
+
 // userId can be AAD ID or email
 const getUserData = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
   try {
@@ -483,6 +495,7 @@ const deleteDocument = async (id: string, organization: IOrganization): Promise<
 export default {
   inMemoryStrategy,
   getUserData,
+  getUserDataByEmail,
   getUserPhoto,
   checkMemberGroups,
   getLineManagerId,

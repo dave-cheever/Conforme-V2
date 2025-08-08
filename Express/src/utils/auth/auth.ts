@@ -95,7 +95,7 @@ export const auth = betterAuth({
               message: "Organization's licence expired",
             });
           }
-          const  graphUser = await GraphService.getUserData({userId: user.email, organization })
+          const  graphUser = await GraphService.getUserDataByEmail({userId: user.email, organization })
           const graphId = graphUser?.value?.[0]?.id
           // Check if logged user is from allowed tenant or organization is open to all tenants
           if (!organization.allowedTenantsIds.includes('all') && !organization.allowedTenantsIds.includes(tenantId))
@@ -127,13 +127,19 @@ export const auth = betterAuth({
           }
           const updatedOrganisationIds = (existingDbUser.organizationsIds || []).includes(organization._id) ? existingDbUser.organizationsIds : [ ...(existingDbUser.organizationsIds || []), organization._id ] as any;
           const userId = existingDbUser?._id || graphId;
+          const userDetails = await GraphService.getUserData({userId, organization })
+          const managerId = await GraphService.getLineManagerId({ userId, organization });
           const enrichedUser = {
             ...user,
             imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${userId}`,
+            firstName: userDetails?.givenName || '',
+            lastName: userDetails?.surname || '',
+            displayName: userDetails?.displayName || '',
+            jobTitle: userDetails?.jobTitle || '',
             ...existingDbUser,
             organizationsIds: updatedOrganisationIds,
             userId,
-
+            managerId
           }
           return { data: enrichedUser };
         },
