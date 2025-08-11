@@ -95,7 +95,7 @@ export const auth = betterAuth({
               message: "Organization's licence expired",
             });
           }
-          const  graphUser = await GraphService.getUserDataByEmail({userId: user.email, organization })
+          const  graphUser = await GraphService.getUserDataByEmail({userEmail: user.email, organization })
           const graphId = graphUser?.value?.[0]?.id
           // Check if logged user is from allowed tenant or organization is open to all tenants
           if (!organization.allowedTenantsIds.includes('all') && !organization.allowedTenantsIds.includes(tenantId))

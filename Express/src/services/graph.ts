@@ -69,11 +69,12 @@ const getUserPhoto = async ({ userId, organization }: { userId: string; organiza
   }
 };
 
-
-const getUserDataByEmail = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
+// This function is specifically for login with better Auth. Better auth is only returning the user email and if the user is a guest of the tenant getUserData with userId does not work. 
+// Therefore we use this function to get the users id by email.
+const getUserDataByEmail = async ({ userEmail, organization }: { userEmail: string; organization: IOrganization }) => {
   try {
     const client = await getClient(organization._id);
-    const res = await client.get(`users?$filter=mail eq '${userId}'`);
+    const res = await client.get(`users?$filter=mail eq '${userEmail}'`);
     return res.data;
   } catch (e) {
     // console.log(e);
@@ -81,11 +82,11 @@ const getUserDataByEmail = async ({ userId, organization }: { userId: string; or
   }
 };
 
-// userId can be AAD ID or email
+// userId can be AAD ID 
 const getUserData = async ({ userId, organization }: { userId: string; organization: IOrganization }) => {
   try {
     const client = await getClient(organization._id);
-    const res = await client.get(`users?$filter=mail eq '${userId}'`);
+    const res = await client.get(`users/${userId}`);
     return res.data;
   } catch (e) {
     // console.log(e);
