@@ -354,7 +354,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
 
     if (shouldJoin(['auditor']) || shouldJoin(['participants'])) {
       const fallbackUser = {
-        _id: "unknown",
+        userId: "unknown",
         displayName: "Unknown User",
         imgUrl: "",
       };

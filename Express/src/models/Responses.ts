@@ -490,7 +490,7 @@ responseSchema.statics.submitReviewNotification = async function (response: IRes
               moduleId: module?._id,
             },
           },
-          assignor._id,
+          assignor.userId,
           organization._id,
         );
       }),
@@ -536,7 +536,7 @@ responseSchema.statics.customAssigneeNotification = async function (
               moduleId: module._id,
             },
           },
-          assignor._id,
+          assignor.userId,
           organization._id,
         );
       }),

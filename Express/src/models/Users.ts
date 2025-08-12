@@ -1,5 +1,5 @@
 import { isBefore, subHours } from 'date-fns';
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 
 import { IOrganization, IUser, IUserModel } from 'app-interfaces';
 import { Organizations, Users } from 'app-models';
@@ -7,7 +7,7 @@ import { GraphService } from 'app-services';
 import { genMetatags, getProtocol } from 'app-utils';
 
 const userSchema = new Schema<IUser, IUserModel>({
-  _id: String,
+  _id: Types.ObjectId,
   firstName: String,
   lastName: String,
   displayName: String,
@@ -144,7 +144,7 @@ userSchema.statics.customFindWithDetails = async function ({
           managerId,
           metatags: {
             ...user.metatags,
-            ...genMetatags('updated', user._id),
+            ...genMetatags('updated', user.userId),
           },
         };
         const { _id, ...userWithoutId } = updatedUser;
@@ -193,7 +193,7 @@ userSchema.statics.customAssertUser = async function ({
     } else {
       const userDetails = await GraphService.getUserData({ userId, organization });
       if (!userDetails) {
-        console.log(`User with ID ${userId} couldn't be asserted as doesn't exist in AAD`);
+        console.log(`User with ID ${userId} couldn't be added to db as doesn't exist in AAD`);
         return;
       }
 
@@ -213,6 +213,7 @@ userSchema.statics.customAssertUser = async function ({
       else if (roles.reader) role = 'reader';
 
       const newUser = {
+        _id: new Types.ObjectId(),
         userId,
         firstName: userDetails?.givenName || '',
         lastName: userDetails?.surname || '',
@@ -222,10 +223,14 @@ userSchema.statics.customAssertUser = async function ({
         role,
         managerId,
       };
-      await Users.customAdd(newUser, organization._id);
+      try {
+        await Users.customAdd(newUser, organization._id);
+      } catch (e) {
+        console.log("Custom add error:", e)
+      }
     }
   } catch (e) {
-    console.log(`User with ID ${userId} couldn't be asserted`);
+    console.log(`User with ID ${userId} couldn't be found`);
   }
 };
 
