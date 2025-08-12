@@ -19,8 +19,8 @@ function UsersSelectorList({ filteredUsers, selected, selectedRole, handleChange
     <Stack data-id="397a34bc5fc8" direction="column" w="full">
        {filteredUsers
         ?.filter(user => user.displayName && user.displayName.trim() !== '')
-        .map(({ displayName, _id }) => (
-          <FilterCheckBox data-id="c4a86789c6fb" key={_id} label={displayName} value={_id} />
+        .map(({ displayName, _id, userId }) => (
+          <FilterCheckBox data-id="c4a86789c6fb" key={_id} label={displayName} value={userId} />
         ))}
       </Stack>
   </CheckboxGroup>

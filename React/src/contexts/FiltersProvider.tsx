@@ -47,6 +47,7 @@ const GET_FILTERS_DATA = gql`
       firstName
       lastName
       displayName
+      userId
     }
   }
 `;
