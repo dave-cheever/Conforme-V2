@@ -76,23 +76,19 @@ const trackerItems = async (_, { trackerItemsQueryInput, pagination }, { authori
       });
     }
 
-    if (shouldJoin('category')) {
-      join({
-        pipeline,
-        collection: 'categories',
-        from: 'categoryId',
-        to: 'category',
-      });
-    }
+    join({
+      pipeline,
+      collection: 'categories',
+      from: 'categoryId',
+      to: 'category',
+    });
 
-    if (shouldJoin('regulatoryBody')) {
-      join({
-        pipeline,
-        collection: 'regulatoryBodies',
-        from: 'regulatoryBodyId',
-        to: 'regulatoryBody',
-      });
-    }
+    join({
+      pipeline,
+      collection: 'regulatoryBodies',
+      from: 'regulatoryBodyId',
+      to: 'regulatoryBody',
+    });
 
     // Add $facet for pagination and total count
     pipeline.push({
