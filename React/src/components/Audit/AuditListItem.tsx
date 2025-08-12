@@ -28,7 +28,7 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         <Flex data-id="509b2d90ef50" w="10%">
           <Flex color="auditsList.fontColor" data-id="50cab1117feb" fontSize="14px" fontWeight="500" opacity="1" pr={2}>
             {audit?.dueDate ? (
-              format(new Date(audit?.dueDate), 'MMM-yy')
+              format(new Date(audit?.dueDate), 'dd-MMM-yyyy')
             ) : (
               <Flex data-id="6f021beb92cc" fontSize="14px" fontWeight="500">
                 No due date
@@ -134,7 +134,7 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         <Flex data-id="7145b061c35e" w="15%">
           <Flex color="auditsList.fontColor" data-id="ecfe0c8bb3eb" fontSize="14px" fontWeight="500" opacity="1">
             {audit?.status === 'completed' && audit?.completedDate ? (
-              format(new Date(audit?.completedDate), 'MMM-yy')
+              format(new Date(audit?.completedDate), 'dd-MMM-yyyy')
             ) : (
               <Flex data-id="db9afb7d8b5b" fontSize="14px" fontWeight="500">
                 No submitted date
