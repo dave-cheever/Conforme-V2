@@ -430,9 +430,18 @@ function QuestionsCategories() {
             name="icon"
             render={({ field }) => (
               <>
-                <FormLabel data-id="0bf8dde0c19d" fontSize="12px" fontWeight="regular" mb={1}>
-                  Icon
-                </FormLabel>
+                <FormLabel
+                  alignItems="center"
+                  columnGap={1}
+                  data-id="0bf8dde0c19d"
+                  display={'flex'}
+                  fontSize="12px"
+                  fontWeight="regular"
+                  mb={1}
+                  >
+                    Icon <Text as="span" color="#e93c44" fontSize="22px" fontWeight="bold" mt={"12px"}>*</Text>
+                  </FormLabel>
+
                 <Select
                   {...field}
                   _active={{ bg: 'dropdown.activeBg' }}
