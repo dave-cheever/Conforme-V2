@@ -88,7 +88,7 @@ function AuditQuestionListItem({ question, handleDelete }: { question: TQuestion
           </Flex>
         )}
       </HStack>
-      {audit.status === 'upcoming' && isUserPermittedToModify && (
+      {/* {audit.status === 'upcoming' && isUserPermittedToModify && (
         <Stack data-id="4772b6ab3c88">
           <EditIcon
             cursor="pointer"
@@ -123,7 +123,7 @@ function AuditQuestionListItem({ question, handleDelete }: { question: TQuestion
             onClick={() => setSelectedQuestion(question)}
             stroke="auditItem.listItem.editIcon" />
         </Stack>
-      )}
+      )} */}
     </HStack>)
   );
 }
