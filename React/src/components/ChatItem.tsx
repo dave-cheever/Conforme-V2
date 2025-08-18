@@ -34,7 +34,7 @@ function ChatItem({ onAction, comment }: IChatItem) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const chatAuthor = useMemo(() => {
-    if (authorId === user?._id) return user;
+    if (authorId === user?.userId) return user;
     return data?.author[0];
   }, [data, user, authorId]);
 
@@ -46,7 +46,7 @@ function ChatItem({ onAction, comment }: IChatItem) {
     }
   }, [authorId]);
 
-  const isChatOwner = useMemo(() => user?._id === chatAuthor?._id, [user, chatAuthor]);
+  const isChatOwner = useMemo(() => user?.userId === chatAuthor?.userId, [user, chatAuthor]);
 
   return (
     <>
@@ -68,7 +68,7 @@ function ChatItem({ onAction, comment }: IChatItem) {
                 src={chatAuthor?.imgUrl}
               />
             ))}
-          <Flex alignItems="end" direction="column">
+          <Flex alignItems={isChatOwner ? 'end' : 'baseline'} direction="column">
             {!isChatOwner &&
               (loading ? (
                 <Skeleton height="14px" mb={1} width="80px" />
