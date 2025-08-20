@@ -1,19 +1,14 @@
-import { EditIcon } from '@chakra-ui/icons';
-import { Flex, HStack, Spacer, Stack, Text } from '@chakra-ui/react';
+import { Flex, HStack, Stack, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
-import { useAppContext } from '../../contexts/AppProvider';
 import { TQuestionWithAnswer, useAuditContext } from '../../contexts/AuditProvider';
-import { ActionsIcon, AreaInfoIcon, Eye, Trashcan } from '../../icons';
-import Can, { isPermitted } from '../can';
+import { ActionsIcon, AreaInfoIcon } from '../../icons';
 import DocumentThumbnail from '../Documents/DocumentThumbnail';
 
-function AuditQuestionListItem({ question, handleDelete }: { question: TQuestionWithAnswer; handleDelete: () => void }) {
-  const { user } = useAppContext();
+function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; handleDelete: () => void }) {
   const { audit, setSelectedQuestion } = useAuditContext();
   const numberOfActions = (question?.answer?.actions || []).length;
-  const isUserPermittedToModify = isPermitted({ user, action: 'audits.edit', data: { audit } });
   return (
     (<HStack
       bgColor="auditItem.listItem.bg"
@@ -88,42 +83,7 @@ function AuditQuestionListItem({ question, handleDelete }: { question: TQuestion
           </Flex>
         )}
       </HStack>
-      {/* {audit.status === 'upcoming' && isUserPermittedToModify && (
-        <Stack data-id="4772b6ab3c88">
-          <EditIcon
-            cursor="pointer"
-            data-id="7ae59620536f"
-            onClick={() => setSelectedQuestion(question)}
-            stroke="auditItem.listItem.editIcon" />
-          <Can
-            action="answers.delete"
-            data={{ answer: question?.answer, audit }}
-            data-id="4478d598c2a7"
-            // eslint-disable-next-line react/no-unstable-nested-components
-            yes={() => (
-              <>
-                <Spacer data-id="37e9e938549a" />
-                <Trashcan
-                  cursor="pointer"
-                  data-id="4ced520a3c1b"
-                  onClick={() => {
-                    setSelectedQuestion(question);
-                    handleDelete();
-                  }}
-                  stroke="auditItem.listItem.deleteIcon" />
-              </>
-            )} />
-        </Stack>
-      )}
-      {(audit.status !== 'upcoming' || !isUserPermittedToModify) && (
-        <Stack data-id="459a8f73dbbc">
-          <Eye
-            cursor="pointer"
-            data-id="7f7c21e948fb"
-            onClick={() => setSelectedQuestion(question)}
-            stroke="auditItem.listItem.editIcon" />
-        </Stack>
-      )} */}
+
     </HStack>)
   );
 }

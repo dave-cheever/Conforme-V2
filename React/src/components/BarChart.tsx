@@ -23,20 +23,20 @@ function BarChart({ data, label }) {
         data-id="698498e1746e"
         fontSize="11px"
         h="25px"
-        mb="25px"
-        mt="20px">
+        mt="18px"
+      >
         {label} rank by # of responses
       </Text>
       {maxCount !== -Infinity && (
         <>
           <Flex data-id="b6a30375c4e2" flexDir="column">
             {data.map((el) => (
-              <Flex alignItems="center" color="#272727" data-id="0f7e27fa77b5" key={el._id}>
+              <Flex alignItems="center" color="#272727" data-id="0f7e27fa77b5" h="55px" key={el._id} my="auto">
                 <Box
                   bg="barChart.bg"
                   data-id="29821c7f7efb"
                   h="18px"
-                  mb="42px"
+                  // mb="42px"
                   rounded="20px"
                   w={`${(newArr[el._id] / maxValueOnDivider) * 100}%`} />
               </Flex>
