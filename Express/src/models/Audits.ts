@@ -226,12 +226,20 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     to: 'businessUnit',
   });
 
-  // Join auditor
-  join({
-    pipeline,
-    collection: 'users',
-    from: 'auditorId',
-    to: 'auditor',
+  // Join auditor - use userId field instead of _id
+  pipeline.push({
+    $lookup: {
+      from: 'users',
+      localField: 'auditorId',
+      foreignField: 'userId',
+      as: 'auditor',
+    },
+  });
+  pipeline.push({
+    $unwind: {
+      path: '$auditor',
+      preserveNullAndEmptyArrays: true,
+    },
   });
 
   // Filter by search text (in businessUnit name, auditor and reference)
