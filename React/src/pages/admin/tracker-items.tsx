@@ -288,8 +288,8 @@ function TrackerItemsAdmin() {
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}
       />
-      <Box data-id="994cf98f6802" h={['full', 'calc(100vh - 160px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box border="1px solid #CBD5E0" data-id="1c71f4a3ff6f" h={['calc(100% - 160px)', 'calc(100% - 35px)']} overflow="hidden" w="100%">
+      <Box data-id="994cf98f6802" h={['full', 'calc(100vh - 200px)']} overflow="auto" p="0 25px 30px 30px">
+        <Box border="1px solid #CBD5E0" data-id="1c71f4a3ff6f" h="100%" overflow="hidden" w="100%">
           <AdminTableHeader data-id="0253915db4ee">
             <AdminTableHeaderElement
               data-id="17600bfc110f"
@@ -338,7 +338,14 @@ function TrackerItemsAdmin() {
               {error}
             </Alert>
           )}
-          <Stack bg="white" borderBottomRadius="20px" data-id="7fa63e0fa928" gap="0px" h="100%" overflow="auto">
+          <Stack
+            bg="white"
+            borderBottomRadius="20px"
+            data-id="7fa63e0fa928"
+            gap="0px"
+            h={error ? 'calc(100% - 100px)' : 'calc(100% - 60px)'}
+            overflow="auto"
+          >
             <InfiniteScrollComponent hasMore={!loading && trackerItems.length < total} loadMore={loadMore} pageStart={1} useWindow={false}>
               {sortedTrackerItems.map((trackerItem, index) => (
                 <Flex
