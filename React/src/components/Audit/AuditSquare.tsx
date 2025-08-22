@@ -1,4 +1,3 @@
-import { gql, useQuery } from '@apollo/client';
 import { Avatar, Box, Divider, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
