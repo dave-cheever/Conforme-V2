@@ -48,7 +48,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       });
     }
 
-    // // For "user" role filter audits
+    // For "user" role filter audits
     if (!isPermitted({ user, action: 'audits.viewAll' })) {
       /**
        * User's direct reports. The user is a manager of these users.
@@ -127,11 +127,14 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           foreignField: 'scope._id',
           as: 'answers',
         },
-      })
+      });
 
       pipeline.push({
         $match: {
-          $or: [{ businessUnitId: { $in: auditQueryInput.businessUnitsIds } }, { 'answers.businessUnitId': { $in: auditQueryInput.businessUnitsIds } }],
+          $or: [
+            { businessUnitId: { $in: auditQueryInput.businessUnitsIds } },
+            { 'answers.businessUnitId': { $in: auditQueryInput.businessUnitsIds } },
+          ],
         },
       });
     }
@@ -346,6 +349,35 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
           ...getProjectFields(info.fieldNodes, 'audits'),
           metatags: 1,
           actions: 1,
+          answers: 1,
+        },
+      });
+    }
+
+    if (shouldJoin(['answersCount'])) {
+      pipeline.push({
+        $lookup: {
+          from: 'questions',
+          localField: '_id',
+          foreignField: 'scope._id',
+          as: 'questions',
+        },
+      });
+      pipeline.push({
+        $lookup: {
+          from: 'answers',
+          localField: 'questions._id',
+          foreignField: 'questionId',
+          as: 'answers',
+        },
+      });
+      pipeline.push({
+        $project: {
+          auditorId: shouldJoin(['auditor']),
+          participantsIds: shouldJoin(['participants']),
+          ...getProjectFields(info.fieldNodes, 'audits'),
+          metatags: 1,
+          answers: 1,
         },
       });
     }
@@ -353,52 +385,19 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     let audits = await Audits.aggregate(pipeline);
 
     if (shouldJoin(['auditor']) || shouldJoin(['participants'])) {
-      const fallbackUser = {
-        userId: "unknown",
-        displayName: "Unknown User",
-        imgUrl: "",
-      };
-
       audits = await Promise.all(
         audits.map(async (audit) => {
           try {
-            let auditor = fallbackUser;
+            let auditor;
             let participants: IUser[] = [];
-
-            // Safely resolve auditor
-            if (shouldJoin(['auditor']) && audit.auditorId) {
-              const foundAuditor = await Users.customFindByIdWithDetails({
+            if (shouldJoin(['auditor'])) {
+              auditor = await Users.customFindByIdWithDetails({
                 userId: audit.auditorId,
                 organization,
               });
-
-              if (foundAuditor) {
-                auditor = { ...foundAuditor, imgUrl: foundAuditor.imgUrl || "" };
-              } 
             }
-
-            // Safely resolve participants
-            if (
-              shouldJoin(['participants']) &&
-              audit.participantsIds &&
-              audit.participantsIds.length > 0
-            ) {
-              try {
-                const foundParticipants = await Users.customFindWithDetails({
-                  selector: { _id: { $in: audit.participantsIds } },
-                  organization,
-                });
-
-                const foundIds = new Set(foundParticipants.map((u) => String(u._id)));
-                participants = audit.participantsIds.map((id) => {
-                  const user = foundParticipants.find((u) => String(u._id) === String(id));
-                  return user || { ...fallbackUser, _id: String(id) };
-                });
-              } catch (e) {
-                console.warn(`Failed to fetch participants for audit ${audit._id}, using fallback.`);
-                participants = audit.participantsIds.map((id) => ({ ...fallbackUser, _id: String(id) }));
-              }
-            }
+            if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0)
+              participants = await Users.customFindWithDetails({ selector: { _id: { $in: audit.participantsIds } }, organization });
 
             return {
               ...audit,
@@ -417,6 +416,13 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
       audits = audits.map((audit) => ({
         ...audit,
         numberOfActions: audit.actions?.filter((action) => !action.metatags.removedAt)?.length ?? 0,
+      }));
+    }
+
+    if (shouldJoin(['answersCount'])) {
+      audits = audits.map((audit) => ({
+        ...audit,
+        answersCount: audit.answers?.length || 0,
       }));
     }
 

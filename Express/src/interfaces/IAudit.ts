@@ -22,4 +22,5 @@ export interface IAudit extends IBase {
   participants?: IUser[];
   questions?: IQuestion<any>[];
   numberOfActions?: number;
+  answersCount?: number;
 }

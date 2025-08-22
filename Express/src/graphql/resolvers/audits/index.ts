@@ -1,4 +1,3 @@
-import auditAnswersCount from './auditAnswersCount.q';
 import audits from './audits.q';
 import createAudit from './createAudit.m';
 import deleteAudit from './deleteAudit.m';
@@ -8,7 +7,6 @@ import updateAudit from './updateAudit.m';
 const auditsResolvers = {
   Query: {
     audits,
-    auditAnswersCount,
   },
   Mutation: {
     createAudit,
@@ -33,12 +31,13 @@ export const auditsTypeDefs = `
     businessUnitId: ID
     businessUnit: BusinessUnit
     auditorId: ID!
-    auditor: User!
+    auditor: User
     participantsIds: [ID]
     participants: [User]
     metatags: Metatags
     questions: [Question]
     numberOfActions: Int
+    answersCount: Int
     recurring: Boolean!
     scope: Scope!
   }
@@ -83,7 +82,6 @@ export const auditsTypeDefs = `
 
 export const auditsQueryDefs = `
   audits(auditQueryInput: AuditQueryInput): [Audit!]!
-  auditAnswersCount (auditId: ID!): Int!
 `;
 
 export const auditsMutationDefs = `

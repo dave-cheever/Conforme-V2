@@ -8,21 +8,9 @@ import useNavigate from '../../hooks/useNavigate';
 import { CheckIcon, ObservationEye, WarningIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
 
-const GET_AUDIT_ANSWERS_COUNT = gql`
-  query ($auditId: ID!) {
-    auditAnswersCount(auditId: $auditId)
-  }
-`;
-
 function AuditSquare({ audit }: { audit: IAudit }) {
   const { navigateTo } = useNavigate();
   const { module } = useAppContext();
-  const { data, loading, error } = useQuery(GET_AUDIT_ANSWERS_COUNT, {
-    variables: {
-      auditId: audit._id,
-    },
-    fetchPolicy: 'cache-and-network',
-  });
 
   return (
     <Box
@@ -48,7 +36,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
         mt={2}
         p="0px 16px 16px 16px"
         position="relative"
-        w="full" 
+        w="full"
       >
         <Skeleton data-id="818e323eea55" isLoaded={!!audit} minW={0} rounded="full">
           <Flex align="center" minW={0}>
@@ -65,13 +53,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
               />
             </Tooltip>
 
-            <Flex
-              align="flex-start"
-              direction="column"
-              maxW="100%"
-              minW={0}
-              ml={3}
-            >
+            <Flex align="flex-start" direction="column" maxW="100%" minW={0} ml={3}>
               <Text
                 color="auditSquare.nameFontColor"
                 data-id="84c14f877bab"
@@ -88,7 +70,7 @@ function AuditSquare({ audit }: { audit: IAudit }) {
               <Text
                 color="auditSquare.fontColor"
                 data-id="4fc30da2b418"
-                fontSize={["12px", "11px"]}
+                fontSize={['12px', '11px']}
                 isTruncated
                 noOfLines={1}
                 opacity="1"
@@ -100,32 +82,20 @@ function AuditSquare({ audit }: { audit: IAudit }) {
           </Flex>
         </Skeleton>
 
-        {!loading && !error && data && (
-          <Tooltip data-id="ee49241a0676" label="Observations">
-            <Flex
-              align="center"
-              data-id="9defc41d2bc3"
-              flexShrink={0} // Prevent it from being squeezed
-              fontSize="11px"
-              fontWeight="700"
-            >
-              <ObservationEye
-                data-id="67fb03afc899"
-                fill="auditSquare.eyeIconColor"
-                h="16px"
-                w="16px"
-              />
-              <Text
-                as="span"
-                color="auditSquare.nameFontColor"
-                data-id="f093c9f9c1c5"
-                ml="2"
-              >
-                {data?.auditAnswersCount}
-              </Text>
-            </Flex>
-          </Tooltip>
-        )}
+        <Tooltip data-id="ee49241a0676" label="Observations">
+          <Flex
+            align="center"
+            data-id="9defc41d2bc3"
+            flexShrink={0} // Prevent it from being squeezed
+            fontSize="11px"
+            fontWeight="700"
+          >
+            <ObservationEye data-id="67fb03afc899" fill="auditSquare.eyeIconColor" h="16px" w="16px" />
+            <Text as="span" color="auditSquare.nameFontColor" data-id="f093c9f9c1c5" ml="2">
+              {audit?.answersCount}
+            </Text>
+          </Flex>
+        </Tooltip>
       </Flex>
 
       <Divider color="#CBD5E0" w="full" />
