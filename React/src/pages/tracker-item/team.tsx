@@ -20,6 +20,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
   ) {
     accountable: usersByIdFromDb(userQueryInput: $userAccountableQuery) {
       _id
+      userId
       firstName
       lastName
       displayName
@@ -28,6 +29,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
     }
     responsible: usersByIdFromDb(userQueryInput: $userResponsibleQuery) {
       _id
+      userId
       firstName
       lastName
       displayName
@@ -36,6 +38,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
     }
     contributors: usersByIdFromDb(userQueryInput: $userContibuterQuery) {
       _id
+      userId
       firstName
       lastName
       displayName
@@ -44,6 +47,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
     }
     followers: usersByIdFromDb(userQueryInput: $userFollowersQuery) {
       _id
+      userId
       firstName
       lastName
       displayName
@@ -150,21 +154,19 @@ function Team() {
           label="Contributors"
           maxParticipants={maxParticipants}
           onChange={(participants) => {
-            const oldIds = contributors.map((c) => c._id);
-            const newIds = participants.map((p) => p._id);
+            const newIds = participants.map((p) => p.userId || p._id);
+            const existingIds = contributors.map((c) => {
+              if (typeof c === 'string') return c;
+              return c.userId || c._id;
+            });
 
-            if (newIds.length < oldIds.length) {
-              // Removal: use the new array as-is
-              selectParticipants({ contributorsIds: newIds });
-            } else {
-              // Addition or replacement: merge
-              const mergedIds = Array.from(new Set([...oldIds, ...newIds]));
-              selectParticipants({ contributorsIds: mergedIds });
-            }
+            const mergedIds = Array.from(new Set([...existingIds, ...newIds]));
+            selectParticipants({ contributorsIds: mergedIds });
           }}
           onRemove={(participantId, selectedParticipants) => {
             const updated = selectedParticipants.filter((c) => c._id !== participantId);
-            selectParticipants({ contributorsIds: updated.map((c) => c._id) });
+            const updatedIds = updated.map((c) => c.userId || c._id);
+            selectParticipants({ contributorsIds: updatedIds });
           }}
           selectedParticipants={contributors}
         />
@@ -174,18 +176,18 @@ function Team() {
           label="Followers"
           maxParticipants={maxParticipants}
           onChange={(participants) => {
-            const oldIds = followers.map((f) => f._id);
-            const newIds = participants.map((p) => p._id);
-
-            if (newIds.length < oldIds.length) selectParticipants({ followersIds: newIds });
-            else {
-              const mergedIds = Array.from(new Set([...oldIds, ...newIds]));
-              selectParticipants({ followersIds: mergedIds });
-            }
+            const newIds = participants.map((p) => p.userId || p._id);
+            const existingIds = followers.map((f) => {
+              if (typeof f === 'string') return f;
+              return f.userId || f._id;
+            });
+            const mergedIds = Array.from(new Set([...existingIds, ...newIds]));
+            selectParticipants({ followersIds: mergedIds });
           }}
           onRemove={(participantId, selectedParticipants) => {
             const updated = selectedParticipants.filter((f) => f._id !== participantId);
-            selectParticipants({ followersIds: updated.map((f) => f._id) });
+            const updatedIds = updated.map((f) => f.userId || f._id);
+            selectParticipants({ followersIds: updatedIds });
           }}
           selectedParticipants={followers}
         />

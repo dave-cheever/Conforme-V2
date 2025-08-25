@@ -30,7 +30,7 @@ function MultipleParticipantsSelector({
       <ParticipantsSelector
         canDelete
         data-id="28825f446dea"
-        defaultSelectedParticipantsIds={selectedParticipants.map(({ _id }) => _id)}
+        defaultSelectedParticipantsIds={selectedParticipants.map(({ userId, _id }) => userId || _id)}
         isUserAllowedToChange={isUserAllowedToChange}
         label={label}
         maxParticipants={maxParticipants}

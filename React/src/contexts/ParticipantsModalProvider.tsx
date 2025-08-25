@@ -8,10 +8,11 @@ import { IParticipantsModalContext } from '../interfaces/IParticipantsModalConte
 import { IUser } from '../interfaces/IUser';
 import { useAppContext } from './AppProvider';
 
-const GET_SELECTED_USERS = gql`
+const GET_SELECTED_USERS_FROM_DB = gql`
   query ($userQueryInput: UserQueryInput) {
-    usersById(userQueryInput: $userQueryInput) {
+    usersByIdFromDb(userQueryInput: $userQueryInput) {
       _id
+      userId
       displayName
       jobTitle
       email
@@ -68,12 +69,20 @@ function ParticipantsModalProvider({ children }) {
   const [defaultSelectedParticipantsIds, setDefaultSelectedParticipantsIds] = useState<string[]>([]);
   const [selectedParticipants, setSelectedParticipants] = useState<IUser[]>([]);
   const [participantToDelete, setParticipantToDelete] = useState<IUser | undefined>();
-  const { data: selectedUsersData } = useQuery(GET_SELECTED_USERS, {
+  const { data: selectedUsersData } = useQuery(GET_SELECTED_USERS_FROM_DB, {
     variables: { userQueryInput: { usersIds: defaultSelectedParticipantsIds } },
     skip: defaultSelectedParticipantsIds.length === 0,
   });
   useEffect(() => {
-    if (selectedUsersData?.usersById) setSelectedParticipants(selectedUsersData.usersById);
+    if (selectedUsersData?.usersByIdFromDb) {
+      // Normalize the users data to ensure consistent ID handling
+      const normalizedUsers = selectedUsersData.usersByIdFromDb.map((user) => ({
+        ...user,
+        // Ensure userId is always present for consistency
+        userId: user.userId || user._id,
+      }));
+      setSelectedParticipants(normalizedUsers);
+    }
   }, [JSON.stringify(selectedUsersData)]);
 
   /**
@@ -83,7 +92,7 @@ function ParticipantsModalProvider({ children }) {
    */
   const isParticipantSelected = (userId: string) => {
     if (selectedParticipants.length === 0) return false;
-    return selectedParticipants.findIndex(({ _id }) => _id === userId) > -1;
+    return selectedParticipants.findIndex(({ _id, userId: dbUserId }) => _id === userId || dbUserId === userId) > -1;
   };
 
   /**
@@ -91,14 +100,17 @@ function ParticipantsModalProvider({ children }) {
    * @param user user object
    */
   const selectParticipant = (user: IUser) => {
+    // Use userId as primary identifier, fallback to _id
+    const userIdentifier = user.userId || user._id;
+
     // If only one participant can be selected replace currently selected with it
     if (maxParticipants === 1) {
-      if (isParticipantSelected(user._id)) setSelectedParticipants([]);
+      if (isParticipantSelected(userIdentifier)) setSelectedParticipants([]);
       else setSelectedParticipants([user]);
-
-    }
-    else if (isParticipantSelected(user._id))
-      setSelectedParticipants([...selectedParticipants.filter(({ _id }) => _id !== user._id)]);
+    } else if (isParticipantSelected(userIdentifier))
+      {setSelectedParticipants([
+        ...selectedParticipants.filter(({ _id, userId: dbUserId }) => _id !== userIdentifier && dbUserId !== userIdentifier),
+      ]);}
     else if (selectedParticipants.length === maxParticipants) {
       toast({
         ...toastFailed,
@@ -109,8 +121,31 @@ function ParticipantsModalProvider({ children }) {
 
   const [usersList, setUsersList] = useState<IUser[]>([]);
   useEffect(() => {
-    const users = [...selectedParticipants, ...(data?.searchUsers || []).filter(({ _id }) => !isParticipantSelected(_id))];
-    setUsersList(users);
+    // Get users from Graph API search results
+    const graphUsers = data?.searchUsers || [];
+
+    // Get users from internal database (selected participants)
+    const dbUsers = selectedParticipants || [];
+
+    // Create a map of userIds to users for quick lookup
+    const dbUsersMap = new Map();
+    dbUsers.forEach((user) => {
+      const key = user.userId || user._id;
+      if (key) dbUsersMap.set(key, user);
+    });
+
+    // Merge Graph API users with internal database users
+    // If a Graph API user doesn't exist in DB, still show them but mark them as not yet in DB
+    const mergedUsers = [
+      ...dbUsers, // Internal database users (already selected)
+      ...graphUsers.filter((graphUser) => {
+        // Only show Graph API users that aren't already in selectedParticipants
+        const graphUserId = graphUser.userId || graphUser._id;
+        return !dbUsersMap.has(graphUserId);
+      }),
+    ];
+
+    setUsersList(mergedUsers);
   }, [JSON.stringify(data), selectedParticipants.length]);
 
   const value = useMemo(
