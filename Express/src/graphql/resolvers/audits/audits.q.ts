@@ -397,7 +397,7 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
               });
             }
             if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0)
-              participants = await Users.customFindWithDetails({ selector: { _id: { $in: audit.participantsIds } }, organization });
+              participants = await Users.customFindWithDetails({ selector: { userId: { $in: audit.participantsIds } }, organization });
 
             return {
               ...audit,

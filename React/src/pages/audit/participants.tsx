@@ -47,9 +47,10 @@ function AuditParticipants() {
     refetch();
   };
 
-  return (<Stack border="1px solid #CBD5E0"  data-id="9df24db2eae2" h={['fit-content', 'full']} p="10px" rounded='10px' spacing={4} w="full">
+  return (
+    <Stack border="1px solid #CBD5E0" data-id="9df24db2eae2" h={['fit-content', 'full']} p="10px" rounded="10px" spacing={4} w="full">
       <Flex data-id="e462380d55a2" justifyContent={['space-between', 'initial']}>
-        <Text data-id="12d25ce06e4d" fontSize={["20px", "xxl"]} fontWeight="semibold">
+        <Text data-id="12d25ce06e4d" fontSize={['20px', 'xxl']} fontWeight="semibold">
           Participants
         </Text>
       </Flex>
@@ -63,30 +64,41 @@ function AuditParticipants() {
         py={[2, 4]}
         rounded="20px"
         spacing={12}
-        w="full">
+        w="full"
+      >
         <SingleParticipantSelector
           data-id="4191c5cefbe1"
           isUserAllowedToChange={isPermitted({ user, action: 'audits.changeAuditor', data: { audit } })}
           label="Audited by"
-          onChange={(participant) => selectAuditor(participant._id)}
-          selectedParticipant={audit.auditor!} />
+          onChange={(participant) => selectAuditor(participant.userId)}
+          selectedParticipant={audit.auditor!}
+        />
         {((audit.participants || []).length > 0 || (audit.status === 'upcoming' && isUserPermittedToModify)) && (
           <MultipleParticipantsSelector
             data-id="61dce31e8ab0"
             isUserAllowedToChange={isPermitted({ user, action: 'audits.edit', data: { audit } })}
             label="Participants"
             maxParticipants={20}
-            onChange={(participants) => selectParticipants(participants.map((user) => user?._id))}
-            selectedParticipants={audit.participants!} />
+            onChange={(participants) => selectParticipants(participants.map((user) => user?.userId))}
+            onRemove={(participantId, selectedParticipants) => {
+              const updated = selectedParticipants.filter((p) => p.userId !== participantId);
+              const updatedIds = updated.map((p) => p.userId);
+              selectParticipants(updatedIds);
+            }}
+            selectedParticipants={audit.participants!}
+          />
         )}
       </Stack>
-    </Stack>);
+    </Stack>
+  );
 }
 
 function AuditsParticipantsWithContext() {
-  return <ParticipantsModalProvider data-id="aa1f67143cc0">
-    <AuditParticipants data-id="9acfc0a278e1" />
-  </ParticipantsModalProvider>
+  return (
+    <ParticipantsModalProvider data-id="aa1f67143cc0">
+      <AuditParticipants data-id="9acfc0a278e1" />
+    </ParticipantsModalProvider>
+  );
 }
 
 export default AuditsParticipantsWithContext;

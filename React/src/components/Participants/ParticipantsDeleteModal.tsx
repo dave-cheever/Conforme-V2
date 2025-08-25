@@ -6,9 +6,8 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
   const { isParticipantDeleteModalOpen, closeParticipantDeleteModal, label, participantToDelete } = useParticipantsModalContext();
 
   const handleRemove = () => {
-    if (participantToDelete && onRemove) 
-      onRemove(participantToDelete._id);
-    
+    if (participantToDelete && onRemove) onRemove(participantToDelete.userId);
+
     closeParticipantDeleteModal();
   };
 

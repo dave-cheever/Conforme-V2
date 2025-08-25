@@ -46,6 +46,7 @@ const GET_AUDIT = gql`
       }
       auditor {
         _id
+        userId
         displayName
         imgUrl
         email
@@ -53,6 +54,7 @@ const GET_AUDIT = gql`
       }
       participants {
         _id
+        userId
         displayName
         imgUrl
         email
