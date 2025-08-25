@@ -1,12 +1,14 @@
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
+import useResponseUtils from '../../hooks/useResponseUtils';
 import { ErrorCircleIcon, SuccessCircleIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 
-function TrackerListItem({ response, index }: { response: IResponse, index: number}) {
+function TrackerListItem({ response, index }: { response: IResponse; index: number }) {
   const { navigateTo } = useNavigate();
+  const { isEvidenceUploaded } = useResponseUtils();
 
   return (
     (<Box
@@ -76,31 +78,24 @@ function TrackerListItem({ response, index }: { response: IResponse, index: numb
             </Flex>
           )}
         </Flex>
-        <Flex data-id="ad60805790d9" w={"12%"}>
-          {response && Array.isArray(response.evidence) && response.evidence.length > 0 ? (
-            <Flex align="center" data-id="0ce15d4739e6">
-             <SuccessCircleIcon data-id="d92e102e49c1" mr={1}  />
-              <Flex
-                color="trackerList.tickIcon"
-                data-id="e1b2ea6eef46"
-                fontSize="14px"
-                fontWeight="600">
-                Uploaded
-              </Flex>
-            </Flex>
-          ) : (
-            <Flex align="center" data-id="c63dcb7094a8">
-              <ErrorCircleIcon data-id="36f28ceab0c4" mr={1}  />
-              <Flex
-                color="trackerList.crossIcon"
-                data-id="cd7f66f6f585"
-                fontSize="14px"
-                fontWeight="600">
-                Missing
-              </Flex>
-            </Flex>
-
-          )}
+        <Flex data-id="ad60805790d9" w={'12%'}>
+          <Stack align="center" data-id="7b19fb5447df" direction="row" pr="10px" spacing={2}>
+            {isEvidenceUploaded(response) ? (
+              <SuccessCircleIcon data-id="d33d21096bf0" h="18px" w="18px" />
+            ) : (
+              <ErrorCircleIcon data-id="d5b1b5516efd" h="18px" w="18px" />
+            )}
+            <Text
+              color={isEvidenceUploaded(response) ? '#41B916' : '#E93C44'}
+              data-id="8010c9b2d7c9"
+              fontSize="smm"
+              fontStyle="normal"
+              fontWeight="bold"
+              lineHeight="20px"
+            >
+              {isEvidenceUploaded(response) ? 'Uploaded' : 'Missing'}
+            </Text>
+          </Stack>
         </Flex>
         <Box data-id="dcf65665ac32" w={"12%"}>
           <Box
