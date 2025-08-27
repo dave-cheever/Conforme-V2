@@ -164,8 +164,8 @@ function Team() {
             selectParticipants({ contributorsIds: mergedIds });
           }}
           onRemove={(participantId, selectedParticipants) => {
-            const updated = selectedParticipants.filter((c) => c._id !== participantId);
-            const updatedIds = updated.map((c) => c.userId || c._id);
+            const updated = selectedParticipants.filter((c) => c.userId !== participantId);
+            const updatedIds = updated.map((c) => c.userId || c.userId);
             selectParticipants({ contributorsIds: updatedIds });
           }}
           selectedParticipants={contributors}
@@ -185,8 +185,8 @@ function Team() {
             selectParticipants({ followersIds: mergedIds });
           }}
           onRemove={(participantId, selectedParticipants) => {
-            const updated = selectedParticipants.filter((f) => f._id !== participantId);
-            const updatedIds = updated.map((f) => f.userId || f._id);
+            const updated = selectedParticipants.filter((f) => f.userId !== participantId);
+            const updatedIds = updated.map((f) => f.userId || f.userId);
             selectParticipants({ followersIds: updatedIds });
           }}
           selectedParticipants={followers}
