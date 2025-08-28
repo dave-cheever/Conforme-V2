@@ -59,7 +59,7 @@ const GET_USERS_BY_ID_FROM_DB = gql`
 
 function Team() {
   const { user } = useAppContext();
-  const { response, snapshot, updateResponse } = useResponseContext();
+  const { response, snapshot, refetch, updateResponse } = useResponseContext();
   const maxParticipants = 20;
 
   const { data: racf, loading } = useQuery(GET_USERS_BY_ID_FROM_DB, {
@@ -103,7 +103,7 @@ function Team() {
         },
       },
     });
-    window.location.reload();
+    refetch();
   };
 
   if (loading) {
