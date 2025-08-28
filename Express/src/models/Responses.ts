@@ -414,7 +414,23 @@ responseSchema.statics.customUpdateOne = async function (
   const usersIds = [...(updates.contributorsIds || []), ...(updates.followersIds || [])];
   if (updates.responsibleId) usersIds.push(updates.responsibleId);
   if (updates.accountableId) usersIds.push(updates.accountableId);
-  await Promise.all(uniq(usersIds).map(async (userId) => Users.customAssertUser({ userId, organizationId })));
+
+  // Add error handling for user assertion to prevent 502 errors
+  try {
+    await Promise.all(
+      uniq(usersIds).map(async (userId) => {
+        try {
+          await Users.customAssertUser({ userId, organizationId });
+        } catch (userError) {
+          console.error(`[customUpdateOne] Error asserting user ${userId}:`, userError);
+          // Continue with other users even if one fails
+        }
+      }),
+    );
+  } catch (error) {
+    console.error('[customUpdateOne] Error in user assertion process:', error);
+    // Don't fail the entire update if user assertion fails
+  }
   const organization = await Organizations.customFindById(organizationId);
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
@@ -453,48 +469,62 @@ responseSchema.statics.customUpdateOne = async function (
 };
 
 responseSchema.statics.submitReviewNotification = async function (response: IResponse, organization: IOrganization) {
-  let participants: string[] = [];
+  try {
+    let participants: string[] = [];
 
-  const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
-  if (!trackerItem) return;
+    const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
+    if (!trackerItem) return;
 
-  if (response) {
-    // handle the empty responsible and accountable cases
-    if (response.accountableId !== '') participants.push(response.accountableId);
+    if (response) {
+      // handle the empty responsible and accountable cases
+      if (response.accountableId !== '') participants.push(response.accountableId);
 
-    if (response.responsibleId !== '') participants.push(response.responsibleId);
+      if (response.responsibleId !== '') participants.push(response.responsibleId);
 
-    participants = participants.concat(response.followersIds || []);
-    participants = participants.concat(response.contributorsIds || []);
-  }
+      participants = participants.concat(response.followersIds || []);
+      participants = participants.concat(response.contributorsIds || []);
+    }
 
-  const module = organization.modules.find(({ type }) => type === 'tracker');
-  if (module) {
-    const assignor = await Users.customFindByIdWithDetails({
-      userId: response.metatags.updatedBy ?? response.metatags.addedBy,
-      organization,
-    });
-    await Promise.all(
-      uniq(participants).map(async (userId) => {
-        const assignee = await Users.customFindByIdWithDetails({ userId, organization });
-        await Notifications.customCreate(
-          {
-            emailType: 'trackerReviewSubmitted',
-            emailData: {
-              trackerItemName: trackerItem.name,
-              trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${response._id}">here</a>`,
-            },
-            status: 'pending',
-            to: [assignee?.email],
-            scope: {
-              moduleId: module?._id,
-            },
-          },
-          assignor.userId,
-          organization._id,
-        );
-      }),
-    );
+    const module = organization.modules.find(({ type }) => type === 'tracker');
+    if (module) {
+      const assignor = await Users.customFindByIdWithDetails({
+        userId: response.metatags.updatedBy ?? response.metatags.addedBy,
+        organization,
+      });
+
+      // Process notifications with individual error handling
+      await Promise.allSettled(
+        uniq(participants).map(async (userId) => {
+          try {
+            const assignee = await Users.customFindByIdWithDetails({ userId, organization });
+            if (assignee?.email) {
+              await Notifications.customCreate(
+                {
+                  emailType: 'trackerReviewSubmitted',
+                  emailData: {
+                    trackerItemName: trackerItem.name,
+                    trackerItemPath: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${response._id}">here</a>`,
+                  },
+                  status: 'pending',
+                  to: [assignee.email],
+                  scope: {
+                    moduleId: module?._id,
+                  },
+                },
+                assignor?.userId || 'system',
+                organization._id,
+              );
+            }
+          } catch (participantError) {
+            console.error(`Error creating submit notification for participant ${userId}:`, participantError);
+            // Continue with other participants even if one fails
+          }
+        }),
+      );
+    }
+  } catch (error) {
+    console.error('Error in submitReviewNotification:', error);
+    // Don't throw error to prevent 502
   }
 };
 
@@ -504,43 +534,57 @@ responseSchema.statics.customAssigneeNotification = async function (
   assignedRole: string,
   organization: IOrganization,
 ): Promise<void> {
-  const response = await this.findById(responseId).lean();
-  if (!response) return;
+  try {
+    const response = await this.findById(responseId).lean();
+    if (!response) return;
 
-  const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
-  if (!trackerItem) return;
+    const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organization._id);
+    if (!trackerItem) return;
 
-  // TODO: For now take the first tracker module.
-  // Need to add module scope to tracker objects in order to fix it.
-  const module = organization.modules.find(({ type }) => type === 'tracker');
-  if (module) {
-    const assignor = await Users.customFindByIdWithDetails({
-      userId: response.metatags.updatedBy ?? response.metatags.addedBy,
-      organization,
-    });
-    await Promise.all(
-      participantsIds.map(async (userId) => {
-        const assignee = await Users.customFindByIdWithDetails({ userId, organization });
-        await Notifications.customCreate(
-          {
-            emailType: 'trackerResponseAssigned',
-            emailData: {
-              itemName: trackerItem.name,
-              linkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
-              assignedRole,
-              assignedBy: assignor.displayName,
-            },
-            status: 'pending',
-            to: [assignee?.email],
-            scope: {
-              moduleId: module._id,
-            },
-          },
-          assignor.userId,
-          organization._id,
-        );
-      }),
-    );
+    // TODO: For now take the first tracker module.
+    // Need to add module scope to tracker objects in order to fix it.
+    const module = organization.modules.find(({ type }) => type === 'tracker');
+    if (module) {
+      const assignor = await Users.customFindByIdWithDetails({
+        userId: response.metatags.updatedBy ?? response.metatags.addedBy,
+        organization,
+      });
+
+      // Process notifications with individual error handling
+      await Promise.allSettled(
+        participantsIds.map(async (userId) => {
+          try {
+            const assignee = await Users.customFindByIdWithDetails({ userId, organization });
+            if (assignee?.email) {
+              await Notifications.customCreate(
+                {
+                  emailType: 'trackerResponseAssigned',
+                  emailData: {
+                    itemName: trackerItem.name,
+                    linkTo: `<a href="${getProtocol()}${organization.domain}/${module.path}/tracker-item/${responseId}">here</a>`,
+                    assignedRole,
+                    assignedBy: assignor?.displayName || 'System',
+                  },
+                  status: 'pending',
+                  to: [assignee.email],
+                  scope: {
+                    moduleId: module._id,
+                  },
+                },
+                assignor?.userId || 'system',
+                organization._id,
+              );
+            }
+          } catch (participantError) {
+            console.error(`Error creating notification for participant ${userId}:`, participantError);
+            // Continue with other participants even if one fails
+          }
+        }),
+      );
+    }
+  } catch (error) {
+    console.error('Error in customAssigneeNotification:', error);
+    // Don't throw error to prevent 502
   }
 };
 

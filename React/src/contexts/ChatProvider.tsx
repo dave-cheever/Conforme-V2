@@ -12,10 +12,11 @@ export const ChatContext = createContext({} as IChatContext);
 
 const GET_PARTICIPANTS = gql`
   query ($userQuery: UserQueryInput) {
-    participants: usersById(userQueryInput: $userQuery) {
+    participants: usersByIdFromDb(userQueryInput: $userQuery) {
       id: _id
       display: displayName
       _id
+      userId
       firstName
       lastName
       displayName
