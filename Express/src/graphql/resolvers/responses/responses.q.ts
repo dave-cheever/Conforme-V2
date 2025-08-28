@@ -305,6 +305,7 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
       });
     }
 
+
     // Join regulatory body
     if (shouldJoin(['trackerItem', 'regulatoryBody'])) {
       join({
@@ -491,88 +492,19 @@ const responses = async (_, { responsesQuery, responsesPagination }, { authorize
     }
 
     if (shouldJoin(['responsible'])) {
-      pipeline.push({
-        $addFields: {
-          hasValidResponsibleId: {
-            $and: [{ $ne: ['$responsibleId', null] }, { $ne: ['$responsibleId', ''] }],
-          },
-        },
-      });
-
-      // Only perform the join if responsibleId is valid
-      pipeline.push({
-        $lookup: {
-          from: 'users',
-          localField: 'responsibleId',
-          foreignField: 'userId',
-          as: 'responsible',
-        },
-      });
-
-      pipeline.push({
-        $unwind: {
-          path: '$responsible',
-          preserveNullAndEmptyArrays: true,
-        },
-      });
-
-      // Set responsible to null if responsibleId was invalid
-      pipeline.push({
-        $addFields: {
-          responsible: {
-            $cond: {
-              if: '$hasValidResponsibleId',
-              then: '$responsible',
-              else: null,
-            },
-          },
-        },
-      });
-
-      // Remove the temporary field
-      pipeline.push({
-        $project: {
-          hasValidResponsibleId: 0,
-        },
+      join({
+        pipeline,
+        collection: 'users',
+        from: 'responsibleId',
+        to: 'responsible',
       });
     }
     if (shouldJoin(['contributors'])) {
-      pipeline.push({
-        $addFields: {
-          hasValidContributorsIds: {
-            $and: [{ $ne: ['$contributorsIds', null] }, { $gt: [{ $size: '$contributorsIds' }, 0] }],
-          },
-        },
-      });
-
-      // Only perform the join if contributorsIds is valid
-      pipeline.push({
-        $lookup: {
-          from: 'users',
-          localField: 'contributorsIds',
-          foreignField: 'userId',
-          as: 'contributors',
-        },
-      });
-
-      // Set contributors to empty array if contributorsIds was invalid
-      pipeline.push({
-        $addFields: {
-          contributors: {
-            $cond: {
-              if: '$hasValidContributorsIds',
-              then: '$contributors',
-              else: [],
-            },
-          },
-        },
-      });
-
-      // Remove the temporary field
-      pipeline.push({
-        $project: {
-          hasValidContributorsIds: 0,
-        },
+      join({
+        pipeline,
+        collection: 'users',
+        from: 'contributorsIds',
+        to: 'contributors',
       });
     }
 
