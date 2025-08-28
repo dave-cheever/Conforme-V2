@@ -29,24 +29,33 @@ const usersByIdFromDb = async (_, { userQueryInput }, { organization }) => {
 
     // Priority 1: Search by userId (preferred)
     if (userIdStrings.length > 0) {
-      const usersByUserId = await Users.find({
-        userId: { $in: userIdStrings },
-        organizationsIds: { $in: [organization._id] },
-        'metatags.removedAt': { $eq: null },
-      }).lean();
+      try {
+        const usersByUserId = await Users.find({
+          userId: { $in: userIdStrings },
+          organizationsIds: { $in: [organization._id] },
+          'metatags.removedAt': { $eq: null },
+        }).lean();
 
-      users.push(...usersByUserId);
+        users.push(...usersByUserId);
+      } catch (err) {
+        console.error('[usersByIdFromDb] Error searching by userId:', err);
+        // Continue with ObjectId search as fallback
+      }
     }
 
     // Priority 2: Search by _id only for IDs that weren't found by userId
     if (mongoObjectIds.length > 0) {
-      const usersByObjectId = await Users.find({
-        _id: { $in: mongoObjectIds },
-        organizationsIds: { $in: [organization._id] },
-        'metatags.removedAt': { $eq: null },
-      }).lean();
+      try {
+        const usersByObjectId = await Users.find({
+          _id: { $in: mongoObjectIds },
+          organizationsIds: { $in: [organization._id] },
+          'metatags.removedAt': { $eq: null },
+        }).lean();
 
-      users.push(...usersByObjectId);
+        users.push(...usersByObjectId);
+      } catch (err) {
+        console.error('[usersByIdFromDb] Error searching by ObjectId:', err);
+      }
     }
 
     // Remove any potential duplicates (shouldn't happen with the logic above, but safety first)
@@ -61,7 +70,8 @@ const usersByIdFromDb = async (_, { userQueryInput }, { organization }) => {
     return uniqueUsers;
   } catch (err) {
     console.error('[usersByIdFromDb] Error:', err);
-    throw new Error(err instanceof Error ? err.message : String(err));
+    // Return empty array instead of throwing to prevent 502 errors
+    return [];
   }
 };
 
