@@ -17,10 +17,12 @@ const userSchema = new Schema<IUser, IUserModel>({
   managerId: String,
   userId: String,
   defaultPage: {
-    type: [{
-      name: { type: String },
-      path: { type: String }
-    }],
+    type: [
+      {
+        name: { type: String },
+        path: { type: String },
+      },
+    ],
     default: [],
     set: (val: any) => {
       if (typeof val === 'string') {
@@ -30,7 +32,7 @@ const userSchema = new Schema<IUser, IUserModel>({
         return [val];
       }
       return Array.isArray(val) ? val : [];
-    }
+    },
   },
   organizationsIds: [String],
   userCreated: Date,
@@ -85,19 +87,19 @@ userSchema.statics.customFindWithDetails = async function ({
   caseInsensitive?: boolean;
 }): Promise<IUser[]> {
   if (!organization) return [];
-  
+
   // Handle case-insensitive email lookup
   let processedSelector = { ...selector };
   if (caseInsensitive) {
     // Apply case-insensitive matching to all string fields in the selector
-    Object.keys(processedSelector).forEach(key => {
+    Object.keys(processedSelector).forEach((key) => {
       const value = processedSelector[key];
       if (typeof value === 'string') {
         processedSelector[key] = { $regex: new RegExp(`^${value}$`, 'i') };
       }
     });
   }
-  
+
   let usersRequested = this.find({
     ...processedSelector,
     organizationsIds: { $in: [organization._id] as any }, // There is TS issue inside mongoose library with $in type
@@ -131,14 +133,15 @@ userSchema.statics.customFindWithDetails = async function ({
 
       if (userDetails) {
         // Only update fields if userDetails are present and not empty
-      const updatedUser = {
+        const updatedUser = {
           ...user,
           firstName: userDetails.givenName?.trim() ? userDetails.givenName : user.firstName,
           lastName: userDetails.surname?.trim() ? userDetails.surname : user.lastName,
           displayName: userDetails.displayName?.trim() ? userDetails.displayName : user.displayName,
-          email: userDetails.mail?.trim() || userDetails.userPrincipalName?.trim()
-            ? userDetails.mail || userDetails.userPrincipalName
-            : user.email,
+          email:
+            userDetails.mail?.trim() || userDetails.userPrincipalName?.trim()
+              ? userDetails.mail || userDetails.userPrincipalName
+              : user.email,
           jobTitle: userDetails.jobTitle?.trim() ? userDetails.jobTitle : user.jobTitle,
           role,
           managerId,
@@ -172,9 +175,33 @@ userSchema.statics.customFindByIdWithDetails = async function ({
   organization: IOrganization;
   awaitForResponse: boolean;
 }): Promise<IUser> {
-  const users = await this.customFindWithDetails({ selector: { userId }, organization, awaitForResponse });
-  if (!users || users.length === 0) throw new Error('User not found');
-  return users[0];
+  // Add retry mechanism for race conditions where user might not exist yet
+  const maxRetries = 3;
+  const retryDelay = 100; // 100ms delay between retries
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const users = await this.customFindWithDetails({ selector: { userId }, organization, awaitForResponse });
+      if (!users || users.length === 0) {
+        if (attempt < maxRetries) {
+          // Wait before retrying
+          await new Promise((resolve) => setTimeout(resolve, retryDelay * attempt));
+          continue;
+        }
+        throw new Error('User not found');
+      }
+      return users[0];
+    } catch (error: any) {
+      if (attempt < maxRetries && error.message === 'User not found') {
+        // Wait before retrying
+        await new Promise((resolve) => setTimeout(resolve, retryDelay * attempt));
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  throw new Error('User not found');
 };
 
 userSchema.statics.customAssertUser = async function ({
@@ -189,7 +216,7 @@ userSchema.statics.customAssertUser = async function ({
     const user = await Users.findOne({ userId }).lean();
     if (user) {
       if (!user.organizationsIds?.includes(organization._id))
-        await Users.updateOne({ userId: user._id }, { organizationsIds: [...(user.organizationsIds || []), organization._id] });
+        await Users.updateOne({ userId }, { organizationsIds: [...(user.organizationsIds || []), organization._id] });
     } else {
       const userDetails = await GraphService.getUserData({ userId, organization });
       if (!userDetails) {
@@ -213,7 +240,7 @@ userSchema.statics.customAssertUser = async function ({
       else if (roles.reader) role = 'reader';
 
       const newUser = {
-        _id: new Types.ObjectId(),
+        _id: userId, // Use the userId as _id
         userId,
         firstName: userDetails?.givenName || '',
         lastName: userDetails?.surname || '',
@@ -226,7 +253,7 @@ userSchema.statics.customAssertUser = async function ({
       try {
         await Users.customAdd(newUser, organization._id);
       } catch (e) {
-        console.log("Custom add error:", e)
+        console.log('Custom add error:', e);
       }
     }
   } catch (e) {

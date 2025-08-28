@@ -415,49 +415,67 @@ responseSchema.statics.customUpdateOne = async function (
   if (updates.responsibleId) usersIds.push(updates.responsibleId);
   if (updates.accountableId) usersIds.push(updates.accountableId);
 
-  // Add error handling for user assertion to prevent 502 errors
-  try {
-    await Promise.all(
-      uniq(usersIds).map(async (userId) => {
-        try {
-          await Users.customAssertUser({ userId, organizationId });
-        } catch (userError) {
-          console.error(`[customUpdateOne] Error asserting user ${userId}:`, userError);
-          // Continue with other users even if one fails
-        }
-      }),
-    );
-  } catch (error) {
-    console.error('[customUpdateOne] Error in user assertion process:', error);
-    // Don't fail the entire update if user assertion fails
+  // Ensure user assertion completes before proceeding with audit logging
+  if (usersIds.length > 0) {
+    try {
+      await Promise.all(
+        uniq(usersIds).map(async (userId) => {
+          try {
+            await Users.customAssertUser({ userId, organizationId });
+          } catch (userError) {
+            console.error(`[customUpdateOne] Error asserting user ${userId}:`, userError);
+            // Continue with other users even if one fails
+          }
+        }),
+      );
+
+      // Add a small delay to ensure database transactions are complete
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    } catch (error) {
+      console.error('[customUpdateOne] Error in user assertion process:', error);
+      // Don't fail the entire update if user assertion fails
+    }
   }
+
   const organization = await Organizations.customFindById(organizationId);
   if (updatedResult?.modifiedCount) {
     const addAuditLog = async () => {
-      const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organizationId);
+      try {
+        const trackerItem = await TrackerItems.customFindById(response.trackerItemId, organizationId);
 
-      const oldValues = removeDatabaseFields(response);
-      const newValues = removeDatabaseFields(updatedResponse);
-      const values = await getAuditRecordValues({
-        oldValues,
-        newValues,
-        organization,
-      });
+        const oldValues = removeDatabaseFields(response);
+        const newValues = removeDatabaseFields(updatedResponse);
+        const values = await getAuditRecordValues({
+          oldValues,
+          newValues,
+          organization,
+        });
 
-      AuditLogs.customAudit(
-        {
-          coll: 'responses',
-          action: 'update',
-          element: {
-            _id: response._id,
-            name: trackerItem.name,
+        AuditLogs.customAudit(
+          {
+            coll: 'responses',
+            action: 'update',
+            element: {
+              _id: response._id,
+              name: trackerItem.name,
+            },
+            values,
           },
-          values,
-        },
-        userId,
-        organizationId,
-        updatedResponse.scope?.moduleId,
-      );
+          userId,
+          organizationId,
+          updatedResponse.scope?.moduleId,
+        );
+      } catch (auditLogError: any) {
+        console.error('[customUpdateOne] Error in audit logging process:', auditLogError);
+        console.error('[customUpdateOne] Audit log error details:', {
+          message: auditLogError.message,
+          stack: auditLogError.stack,
+          responseId: response._id,
+          userId,
+          organizationId,
+        });
+        // Don't fail the entire update if audit logging fails
+      }
     };
     addAuditLog();
   }
