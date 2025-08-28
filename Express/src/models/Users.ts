@@ -240,7 +240,7 @@ userSchema.statics.customAssertUser = async function ({
       else if (roles.reader) role = 'reader';
 
       const newUser = {
-        _id: userId, // Use the userId as _id
+        _id: new Types.ObjectId(),
         userId,
         firstName: userDetails?.givenName || '',
         lastName: userDetails?.surname || '',
