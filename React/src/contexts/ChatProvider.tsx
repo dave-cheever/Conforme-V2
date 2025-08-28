@@ -13,9 +13,8 @@ export const ChatContext = createContext({} as IChatContext);
 const GET_PARTICIPANTS = gql`
   query ($userQuery: UserQueryInput) {
     participants: usersByIdFromDb(userQueryInput: $userQuery) {
-      id: _id
-      display: displayName
       _id
+      display: displayName
       userId
       firstName
       lastName
@@ -40,32 +39,46 @@ function ChatProvider({ children, component }: { children: React.ReactNode; comp
 
   useEffect(() => {
     let participants: string[] = [];
+
     if (component === 'audit' && audit) {
-      // handle the empty auditor and participants cases
-      if (audit.auditorId !== '') participants.push(audit.auditorId);
-
-      participants = participants.concat(audit.participantsIds || []);
-      getParticipants({
-        variables: {
-          userQuery: { usersIds: participants },
-        },
-      });
+      if (audit.auditorId && audit.auditorId !== '') {
+        participants.push(audit.auditorId);
+      }
+      participants = participants.concat(audit.participantsIds?.filter((id) => id && id !== '') || []);
     }
+
     if (component === 'response' && response) {
-      // handle the empty responsible and accountable cases
-      if (response.accountableId !== '') participants.push(response?.accountableId);
+      if (response.accountableId && response.accountableId !== '') {
+        participants.push(response.accountableId);
+      }
+      if (response.responsibleId && response.responsibleId !== '') {
+        participants.push(response.responsibleId);
+      }
+      participants = participants.concat(response.followersIds?.filter((id) => id && id !== '') || []);
+      participants = participants.concat(response.contributorsIds?.filter((id) => id && id !== '') || []);
+    }
 
-      if (response.responsibleId !== '') participants.push(response?.responsibleId);
+    // Remove duplicates and filter out empty values
+    const uniqueParticipants = [...new Set(participants.filter((id) => id && id.trim() !== ''))];
 
-      participants = participants.concat(response.followersIds || []);
-      participants = participants.concat(response.contributorsIds || []);
+    if (uniqueParticipants.length > 0) {
+      console.log('Fetching participants:', uniqueParticipants); // Debug log
       getParticipants({
         variables: {
-          userQuery: { usersIds: participants },
+          userQuery: { usersIds: uniqueParticipants },
         },
       });
     }
-  }, [JSON.stringify(audit), JSON.stringify(response)]);
+  }, [
+    audit?._id,
+    audit?.auditorId,
+    audit?.participantsIds?.join(','),
+    response?._id,
+    response?.accountableId,
+    response?.responsibleId,
+    response?.followersIds?.join(','),
+    response?.contributorsIds?.join(','),
+  ]);
 
   const chatParticipants: IUser[] = useMemo(() => participantsData?.participants || [], [participantsData]);
 
