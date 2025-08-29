@@ -385,107 +385,19 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
     let audits = await Audits.aggregate(pipeline);
 
     if (shouldJoin(['auditor']) || shouldJoin(['participants'])) {
-      const fallbackUser = {
-        userId: 'unknown',
-        displayName: 'Unknown User',
-        imgUrl: '',
-        _id: 'unknown',
-      };
-
-      // Helper function to safely fetch user with retry
-      const safeFetchUser = async (userId: string, maxRetries = 3) => {
-        for (let attempt = 1; attempt <= maxRetries; attempt++) {
-          try {
-            // First, ensure user exists in the database
-            await Users.customAssertUser({
-              userId,
-              organizationId: organization._id,
-            });
-
-            // Add a small delay to ensure database transaction is complete
-            await new Promise((resolve) => setTimeout(resolve, 50 * attempt));
-
-            // Now fetch user details
-            const foundUser = await Users.customFindByIdWithDetails({
-              userId,
-              organization,
-            });
-
-            if (foundUser) {
-              return { ...foundUser, imgUrl: foundUser.imgUrl || '' };
-            }
-          } catch (e) {
-            console.warn(`Attempt ${attempt} failed for user ${userId}:`, e);
-            if (attempt === maxRetries) {
-              console.error(`All attempts failed for user ${userId}`);
-              return { ...fallbackUser, _id: userId };
-            }
-            // Wait before retrying
-            await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
-          }
-        }
-        return { ...fallbackUser, _id: userId };
-      };
-
-      // Helper function to safely fetch multiple users
-      const safeFetchUsers = async (userIds: string[]) => {
-        if (!userIds || userIds.length === 0) return [];
-
-        try {
-          // First, ensure all users exist in the database
-          await Promise.all(
-            userIds.map(async (userId) => {
-              try {
-                await Users.customAssertUser({
-                  userId,
-                  organizationId: organization._id,
-                });
-              } catch (e) {
-                console.warn(`Failed to assert user ${userId}:`, e);
-              }
-            }),
-          );
-
-          // Add a small delay to ensure database transactions are complete
-          await new Promise((resolve) => setTimeout(resolve, 100));
-
-          // Now fetch all users
-          const foundUsers = await Users.customFindWithDetails({
-            selector: { userId: { $in: userIds } },
-            organization,
-          });
-
-          // Map back to original order and provide fallbacks for missing users
-          return userIds.map((id) => {
-            const user = foundUsers.find((u) => String(u.userId || u._id) === String(id));
-            if (user) {
-              return { ...user, imgUrl: user.imgUrl || '' };
-            } else {
-              console.warn(`User ${id} not found after assertion`);
-              return { ...fallbackUser, _id: String(id) };
-            }
-          });
-        } catch (e) {
-          console.error(`Failed to fetch users ${userIds.join(', ')}:`, e);
-          return userIds.map((id) => ({ ...fallbackUser, _id: String(id) }));
-        }
-      };
-
       audits = await Promise.all(
         audits.map(async (audit) => {
           try {
             let auditor;
-            let participants;
-
-            // Safely resolve auditor
-            if (shouldJoin(['auditor']) && audit.auditorId) {
-              auditor = await safeFetchUser(audit.auditorId);
+            let participants: IUser[] = [];
+            if (shouldJoin(['auditor'])) {
+              auditor = await Users.customFindByIdWithDetails({
+                userId: audit.auditorId,
+                organization,
+              });
             }
-
-            // Safely resolve participants
-            if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0) {
-              participants = await safeFetchUsers(audit.participantsIds);
-            }
+            if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0)
+              participants = await Users.customFindWithDetails({ selector: { userId: { $in: audit.participantsIds } }, organization });
 
             return {
               ...audit,
@@ -493,15 +405,8 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
               participants,
             };
           } catch (e) {
-            console.error(`Error occurred for audit with ID ${audit._id}:`, e);
-            return {
-              ...audit,
-              auditor: shouldJoin(['auditor']) && audit.auditorId ? { ...fallbackUser, _id: audit.auditorId } : undefined,
-              participants:
-                shouldJoin(['participants']) && audit.participantsIds
-                  ? audit.participantsIds.map((id) => ({ ...fallbackUser, _id: String(id) }))
-                  : [],
-            };
+            console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
+            return audit;
           }
         }),
       );
