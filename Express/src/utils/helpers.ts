@@ -103,7 +103,6 @@ export const isPermitted = ({
   revokedPermissions?: string[];
 }): boolean => {
   if (!action) return true;
-  
 
   if (!user || !user.role) return false;
 
@@ -112,7 +111,7 @@ export const isPermitted = ({
 
   const [scope] = action.split('.');
   const { normal, restricted } = permission;
-  
+
   if (normal && (normal.includes(action) || normal.includes(scope))) return true;
 
   if (
@@ -137,7 +136,7 @@ export const isSignedIn = async (req, res, next) => {
         redirect: req.headers.referer,
       });
     }
-    
+
     return next();
   } catch (error) {
     return res.status(StatusCodes.FORBIDDEN).json({
@@ -199,7 +198,9 @@ export const redirectAfterLogin = async (req, res, errorMessage, organization) =
   if (errorMessage) redirectUrl += `/login?errorMessage=${errorMessage}`;
 
   // update the last Login of user
-  if (session?.user) await Users.updateOne({ userId: session.user.userId }, { ...session.user, lastLogin: Date.now() });
+  if (session?.user && session.user.id) {
+    await Users.updateOne({ id: session.user.id }, { ...session.user, lastLogin: Date.now() });
+  }
 
   return res.redirect(redirectUrl);
 };
