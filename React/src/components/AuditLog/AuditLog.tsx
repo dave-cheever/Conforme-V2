@@ -13,27 +13,29 @@ interface IProps {
 function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
   if (loading) {
     return (
-      (<Flex data-id="92b99b55ebbf" h="calc(100vh - 150px)" w="full">
-        <Loader center data-id="a1754f1ed60a" />
-      </Flex>)
+      <Flex data-id="030925-74701e" h="calc(100vh - 150px)" w="full">
+        <Loader data-id="030925-8d6472" center />
+      </Flex>
     );
   }
 
-  return (<>
-    <Flex
-      bg="auditLog.bg"
-      data-id="4851d1175a41"
-      flexDirection="column"
-      position="relative"
-      pt={["0px", "20px"]}
-      rounded="md"
-      w="100%">
-      {auditLogs.map((auditLog, index) => (
-        <AuditLogDay auditLog={auditLog} data-id="b8998a79f75c" key={index} />
-      ))}
-    </Flex>
-    {isLoadingMore && <Loader center data-id="fffffe97dc26" size="md" />}
-  </>);
+  return (
+    <>
+      <Flex
+        data-id="030925-271f5c"
+        bg="auditLog.bg"
+        flexDirection="column"
+        position="relative"
+        pt={["0px", "20px"]}
+        rounded="md"
+        w="100%">
+        {auditLogs.map((auditLog, index) => (
+          <AuditLogDay data-id="030925-682622" auditLog={auditLog} key={index} />
+        ))}
+      </Flex>
+      {isLoadingMore && <Loader data-id="030925-a22616" center size="md" />}
+    </>
+  );
 }
 
 export const auditLogStyles = {

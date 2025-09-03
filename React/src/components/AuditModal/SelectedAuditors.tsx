@@ -13,17 +13,17 @@ function SelectedUsers() {
   const selectedAuditors = useMemo(() => modalContext.selectedAuditors, [modalContext.selectedAuditors]);
 
   return (
-    (<SimpleGrid columns={2} data-id="5e928822502c" mb="20px" spacing={2}>
+    <SimpleGrid data-id="030925-c6bb7e" columns={2} mb="20px" spacing={2}>
       {selectedAuditors.map((auditor: IAuditor) => (
-        <Box data-id="a3ac1293fc15">
+        <Box data-id="030925-9e3fd6">
           <SelectedAuditor
-            data-id="2d9c9f41c895"
+            data-id="030925-e805b8"
             designation={auditor.designation}
             imgSrc={auditor.imgSrc}
             name={auditor.name} />
         </Box>
       ))}
-    </SimpleGrid>)
+    </SimpleGrid>
   );
 }
 

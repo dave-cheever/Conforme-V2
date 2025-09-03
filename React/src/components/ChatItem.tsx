@@ -50,15 +50,20 @@ function ChatItem({ onAction, comment }: IChatItem) {
 
   return (
     <>
-      <ChatConfirmDeleteModal data-id="dc472a4b9517" isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
-      <Flex align={isChatOwner ? 'flex-end' : 'flex-start'} data-id="14e8c7b098e3" flexDirection="column" mb={3} w="full">
-        <Flex alignItems="end" flexDirection="row" justify={isChatOwner ? 'flex-end' : 'flex-start'} w="full">
+      <ChatConfirmDeleteModal data-id="030925-4d5ea5" isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
+      <Flex data-id="030925-8ddd04" align={isChatOwner ? 'flex-end' : 'flex-start'} flexDirection="column" mb={3} w="full">
+        <Flex
+          data-id="030925-e615c1"
+          alignItems="end"
+          flexDirection="row"
+          justify={isChatOwner ? 'flex-end' : 'flex-start'}
+          w="full">
           {!isChatOwner &&
             (loading ? (
-              <SkeletonCircle mr={2} size="8" />
+              <SkeletonCircle data-id="030925-4ab6fa" mr={2} size="8" />
             ) : (
               <Avatar
-                data-id="95819a8477ae"
+                data-id="030925-19432d"
                 loading="lazy"
                 mr={2}
                 name={chatAuthor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -68,21 +73,29 @@ function ChatItem({ onAction, comment }: IChatItem) {
                 src={chatAuthor?.imgUrl}
               />
             ))}
-          <Flex alignItems={isChatOwner ? 'end' : 'baseline'} direction="column">
+          <Flex
+            data-id="030925-6b9c7f"
+            alignItems={isChatOwner ? 'end' : 'baseline'}
+            direction="column">
             {!isChatOwner &&
               (loading ? (
-                <Skeleton height="14px" mb={1} width="80px" />
+                <Skeleton data-id="030925-8b029f" height="14px" mb={1} width="80px" />
               ) : (
-                <Text color="#718096" fontSize="10px" fontWeight="500" mb={1}>
+                <Text
+                  data-id="030925-ef0532"
+                  color="#718096"
+                  fontSize="10px"
+                  fontWeight="500"
+                  mb={1}>
                   {chatAuthor?.displayName}
                 </Text>
               ))}
             <Box
+              data-id="030925-0a2791"
               bg={isChatOwner ? '#462AC4' : '#EDF2F7'}
               borderRadius={isChatOwner ? '8px 8px 2px 8px' : '8px 8px 8px 4px'}
               boxShadow={isChatOwner ? '0 2px 8px #462AC420' : 'none'}
               color={isChatOwner ? '#FFFFFF' : '#2D3748'}
-              data-id="17b1f009ed87"
               maxW="75%"
               minW="120px"
               onMouseEnter={() => setShowDeleteBtn(true)}
@@ -91,25 +104,28 @@ function ChatItem({ onAction, comment }: IChatItem) {
               px={5}
               py={3}
             >
-              <Text fontSize="sm" mb={1}>
+              <Text data-id="030925-4d23ef" fontSize="sm" mb={1}>
                 {reactStringReplace(text, chatMentionRegExp, (match, i) => (
-                  <ChatMention data-id="1e14aba604d6" key={i} tag={match} />
+                  <ChatMention data-id="030925-944b45" key={i} tag={match} />
                 ))}
               </Text>
-              <Flex align="center" justify={isChatOwner ? 'flex-end' : 'flex-start'}>
+              <Flex
+                data-id="030925-82f6a8"
+                align="center"
+                justify={isChatOwner ? 'flex-end' : 'flex-start'}>
                 <Can
+                  data-id="030925-c4bcec"
                   action="comments.delete"
                   data={{ comment }}
-                  data-id="37a0dc23ef23"
                   yes={() => (
                     <Button
+                      data-id="030925-0d786d"
                       colorScheme="red"
-                      data-id="1eb4608d282d"
                       display={showDeleteBtn ? 'block' : 'none'}
                       mb={2}
                       ml={2}
                       onClick={() => onOpen()}
-                      rightIcon={<DeleteIcon data-id="b213fabd621a" />}
+                      rightIcon={<DeleteIcon data-id="030925-f07c11" />}
                       size="xs"
                     >
                       Delete

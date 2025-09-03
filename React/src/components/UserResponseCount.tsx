@@ -46,19 +46,19 @@ function UserResponseCount({ userId, role, responseCount }) {
   };
 
   return (
-    (<Flex
-      alignItems="center"
-      bg="userItem.responseCountBg"
-      cursor="pointer"
-      data-id="145b0f7e0833"
-      h="calc(100% - 1px)"
-      justifyContent="center"
-      mr="1px"
-      mt="1px"
-      onClick={handleClick}
-      w="calc(25% - 1px)">
+    <Flex
+        data-id="030925-a2f021"
+        alignItems="center"
+        bg="userItem.responseCountBg"
+        cursor="pointer"
+        h="calc(100% - 1px)"
+        justifyContent="center"
+        mr="1px"
+        mt="1px"
+        onClick={handleClick}
+        w="calc(25% - 1px)">
       {responseCount || 0}
-    </Flex>)
+    </Flex>
   );
 }
 

@@ -8,27 +8,27 @@ function ResponseTabItem({ setActiveTab, index, active, label, icon }) {
   };
 
   return (
-    (<Flex
-      _hover={{ bg: 'responseTabItem.activeBg' }}
-      align="center"
-      bg={active ? 'responseTabItem.activeBg' : 'responseTabItem.bg'}
-      borderRadius="10px"
-      color={active ? 'responseTabItem.activeColor' : 'responseTabItem.color'}
-      cursor="pointer"
-      data-id="e5f9139cd779"
-      flexDirection="column"
-      h="62px"
-      onClick={onClick}
-      p="8px 13px 6px 13px">
-      <Icon as={icon} boxSize="15px" data-id="64ed9af3c803" />
+    <Flex
+        data-id="030925-107c1f"
+        _hover={{ bg: 'responseTabItem.activeBg' }}
+        align="center"
+        bg={active ? 'responseTabItem.activeBg' : 'responseTabItem.bg'}
+        borderRadius="10px"
+        color={active ? 'responseTabItem.activeColor' : 'responseTabItem.color'}
+        cursor="pointer"
+        flexDirection="column"
+        h="62px"
+        onClick={onClick}
+        p="8px 13px 6px 13px">
+      <Icon data-id="030925-d536e5" as={icon} boxSize="15px" />
       <Text
-        data-id="68e742fd4225"
+        data-id="030925-19e87e"
         fontSize={['11px', '14px']}
         fontWeight="700"
         mt={3}>
         {label}
       </Text>
-    </Flex>)
+    </Flex>
   );
 }
 

@@ -76,44 +76,44 @@ function AuditHistory() {
   }, [JSON.stringify(data)]);
 
   return (
-    (<Stack
-      bg="auditHistory.bg"
-      border="1px solid #CBD5E0"
-      data-id="ded581b6cc4a"
-      h="full"
-      maxH={['none', 'calc(100vh - 220px)']}
-      overflowY="auto"
-      px={6}
-      py={6}
-      rounded="20px"
-      sx={{
-        '&::-webkit-scrollbar': {
-          width: '0px',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          background: 'transparent',
-        },
-        scrollbarWidth: 'none', // Firefox
-        msOverflowStyle: 'none', // IE and Edge
-      }}
-      w="full"
-    >
+    <Stack
+        data-id="030925-848152"
+        bg="auditHistory.bg"
+        border="1px solid #CBD5E0"
+        h="full"
+        maxH={['none', 'calc(100vh - 220px)']}
+        overflowY="auto"
+        px={6}
+        py={6}
+        rounded="20px"
+        sx={{
+          '&::-webkit-scrollbar': {
+            width: '0px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'transparent',
+          },
+          scrollbarWidth: 'none', // Firefox
+          msOverflowStyle: 'none', // IE and Edge
+        }}
+        w="full"
+      >
       {loading ? (
-        <Loader data-id="4f2c246e3c31" />
+        <Loader data-id="030925-c7a891" />
       ) : (
-        <Stack data-id="e9d3970a9254" spacing={4}>
+        <Stack data-id="030925-97d26b" spacing={4}>
           {Object.entries(days).length > 0 ? (
             Object.entries(days).map(([day, audits]) => (
               <Stack
+                data-id="030925-781afb"
                 align="flex-start"
-                data-id="277479e57780"
                 direction={['column', 'row']}
                 key={day}
                 spacing={4}>
                 <Box
+                  data-id="030925-19da4b"
                   bg="auditHistory.date.bg"
                   color="auditHistory.date.color"
-                  data-id="d139ac8cfeea"
                   flexShrink={0}
                   fontSize="smm"
                   fontWeight="bold"
@@ -122,15 +122,15 @@ function AuditHistory() {
                   rounded="10px">
                   {day}
                 </Box>
-                <Stack data-id="0e435c6faa10" spacing={4} w="full">
+                <Stack data-id="030925-439937" spacing={4} w="full">
                   {audits.map((audit) => (
                     <HStack
+                      data-id="030925-c80024"
                       _hover={{
                         bg: 'auditHistory.listItem.bg.hover',
                       }}
                       bg="auditHistory.listItem.bg.default"
                       border="1px solid #CBD5E0"
-                      data-id="3964bd975b4e"
                       key={audit._id}
                       onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}
                       p={4}
@@ -139,55 +139,55 @@ function AuditHistory() {
                       spacing={4}
                       w="full">
                       <Avatar
+                        data-id="030925-830058"
                         alignSelf="flex-start"
-                        data-id="08fbeeffb1a2"
                         name={audit?.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                         size="sm"
                         src={audit?.auditor?.imgUrl} />
-                      <Stack data-id="4f7ad31179ff" flexGrow={1} spacing={2}>
-                        <Flex data-id="c1021c44e69d" direction="column">
+                      <Stack data-id="030925-6ca794" flexGrow={1} spacing={2}>
+                        <Flex data-id="030925-08d827" direction="column">
                           <Text
+                            data-id="030925-7e1fed"
                             color="auditHistory.listItem.auditor"
-                            data-id="3f5fbf6b3350"
                             fontSize="ssm">
                             {audit.auditor?.displayName}
                             {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
                           </Text>
-                          <Text color="auditHistory.listItem.title" data-id="dc094a807055" fontSize="smm">
+                          <Text data-id="030925-c6e12d" color="auditHistory.listItem.title" fontSize="smm">
                             Completed {a(t('audit') as string)}
                           </Text>
                         </Flex>
-                        <HStack data-id="1dd609f507fe" fontSize="smm" spacing={6}>
+                        <HStack data-id="030925-46c2f6" fontSize="smm" spacing={6}>
                           {questionsCategories.map((questionsCategory, index) => (
                             <HStack
-                              data-id="1723fc525ab0"
+                              data-id="030925-f9a8c3"
                               key={questionsCategory?._id || index}
                               opacity={audit.questionsCategoriesCount[questionsCategory?._id] ? 1 : 0.25}
                               spacing={2}>
                               <Icon
-                                data-id="b341a930df77"
+                                data-id="030925-891095"
                                 fill="auditHistory.listItem.icon.fill"
                                 h="13px"
                                 icon={questionsCategory?.icon}
                                 stroke="auditHistory.listItem.icon.stroke"
                                 w="13px" />
-                              <Text data-id="798bd0d54823">{audit.questionsCategoriesCount[questionsCategory?._id] || 0}</Text>
+                              <Text data-id="030925-217092">{audit.questionsCategoriesCount[questionsCategory?._id] || 0}</Text>
                             </HStack>
                           ))}
                         </HStack>
                       </Stack>
                       {device !== 'mobile' && (
                         <Flex
+                          data-id="030925-00cbf0"
                           _groupHover={{
                             display: 'flex',
                           }}
                           align="center"
-                          data-id="26a8c60c32ba"
                           display="none">
                           <Button
+                            data-id="030925-f2cf51"
                             bg="auditHistory.listItem.button.bg"
                             color="auditHistory.listItem.button.color"
-                            data-id="2274fd84e5b8"
                             fontSize="ssm"
                             fontWeight="bold"
                             h="28px"
@@ -204,7 +204,7 @@ function AuditHistory() {
             ))
           ) : (
             <Flex
-              data-id="b485caa3eb6a"
+              data-id="030925-b107fa"
               fontSize="18px"
               fontStyle="italic"
               h="full"
@@ -214,7 +214,7 @@ function AuditHistory() {
           )}
         </Stack>
       )}
-    </Stack>)
+    </Stack>
   );
 }
 

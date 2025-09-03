@@ -7,14 +7,16 @@ interface IProgressBar {
 }
 
 function ProgressBar({ value }: IProgressBar) {
-  return <Progress
-    borderRadius="20px"
-    colorScheme="#FFFFFF"
-    data-id="ffb3138d2811"
-    height={1}
-    mr="2"
-    value={value}
-    width={55} />
+  return (
+    <Progress
+      data-id="030925-a4239f"
+      borderRadius="20px"
+      colorScheme="#FFFFFF"
+      height={1}
+      mr="2"
+      value={value}
+      width={55} />
+  );
 }
 
 export default ProgressBar;

@@ -42,23 +42,23 @@ function Notification() {
   };
 
   return (
-    (<Stack
-      data-id="34455f2555ce"
-      h="full"
-      overflow="auto"
-      pb={3}
-      spacing={7}
-      w="full">
+    <Stack
+        data-id="030925-620e6b"
+        h="full"
+        overflow="auto"
+        pb={3}
+        spacing={7}
+        w="full">
       {notificationSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value, options }) => (
         <Flex
+          data-id="030925-9ce1a5"
           align={['flex-start', 'center']}
-          data-id="add2ea48e7c3"
           flexDirection={['column', 'row']}
           key={name}>
-          <Flex data-id="f6354dc0dc42" maxW="280px">
+          <Flex data-id="030925-4bc055" maxW="280px">
             <Field
+              data-id="030925-d4161c"
               control={control}
-              data-id="0fb5966b0ac6"
               help={help}
               label={label}
               name={name}
@@ -70,27 +70,27 @@ function Notification() {
               variant={variant} />
           </Flex>
           {wasFieldChanged(name, value) && (
-            <HStack data-id="56d020a3f1f7" ml={3} mt={7} spacing={3}>
+            <HStack data-id="030925-5d1078" ml={3} mt={7} spacing={3}>
               <IconButton
+                data-id="030925-d3ae8a"
                 aria-label="Confirm Icon"
                 colorScheme="purpleHeart"
-                data-id="ebd36acefde5"
-                icon={<CheckIcon data-id="ca6bdd0ef67d" />}
+                icon={<CheckIcon data-id="030925-0031ce" />}
                 onClick={() => updateSettings({ _id, name })}
                 size="sm"
                 variant="outline" />
               <IconButton
+                data-id="030925-63fd32"
                 aria-label="Cross Icon"
                 colorScheme="red"
-                data-id="a376e0f86025"
-                icon={<CloseIcon data-id="22d1379a157b" />}
+                icon={<CloseIcon data-id="030925-383c6e" />}
                 onClick={() => resetValue({ name, value })}
                 size="sm" />
             </HStack>
           )}
         </Flex>
       ))}
-    </Stack>)
+    </Stack>
   );
 }
 

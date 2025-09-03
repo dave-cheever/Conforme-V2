@@ -17,80 +17,82 @@ function QuestionGroup({
   isExpanded,
   setExpandedItem,
 }: QuestionGroupProps) {
-  return <Box
-    cursor="pointer"
-    data-id="895459aec803"
-    maxH="400px"
-    onClick={() => setExpandedItem(() => (isExpanded ? '' : id))}
-    w="full">
-    <Collapse
-      data-id="2656f701b8c1"
-      endingHeight="270px"
-      in={isExpanded}
-      startingHeight="90px">
-      <Box
-        bg="white"
-        borderRadius="10px"
-        boxShadow="-1px 1px 9px 1px rgba(0 0 0  0.5)"
-        data-id="c59db9cf6347"
-        h="full"
-        p="20px"
-        w="full">
-        <Flex data-id="e093c3b3f9f0" justify="space-between">
-          <Flex
-            align="center"
-            bg={
-              questionAnswered === 0
-                ? 'transparent'
-                : questionAnswered < totalQuestion
-                ? 'auditModal.menu.active.text'
-                : 'auditModal.questionGroup.checked'
-            }
-            border={questionAnswered === 0 ? '1px solid #CBCCCD' : ''}
-            borderRadius="50%"
-            data-id="2fcabcbcd0f8"
-            h="5"
-            justify="center"
-            mr={5}
-            w="5">
-            {questionAnswered === 0 ? (
-              ''
-            ) : questionAnswered < totalQuestion ? (
-              <MinusIcon color="white" data-id="2cd90abb8ca6" h="2.5" w="2.5" />
-            ) : (
-              <CheckIcon color="white" data-id="c0b4ee40a782" h="2.5" w="2.5" />
-            )}
+  return (
+    <Box
+      data-id="030925-46195a"
+      cursor="pointer"
+      maxH="400px"
+      onClick={() => setExpandedItem(() => (isExpanded ? '' : id))}
+      w="full">
+      <Collapse
+        data-id="030925-a8396d"
+        endingHeight="270px"
+        in={isExpanded}
+        startingHeight="90px">
+        <Box
+          data-id="030925-e055b0"
+          bg="white"
+          borderRadius="10px"
+          boxShadow="-1px 1px 9px 1px rgba(0 0 0  0.5)"
+          h="full"
+          p="20px"
+          w="full">
+          <Flex data-id="030925-06433d" justify="space-between">
+            <Flex
+              data-id="030925-7e943d"
+              align="center"
+              bg={
+                questionAnswered === 0
+                  ? 'transparent'
+                  : questionAnswered < totalQuestion
+                  ? 'auditModal.menu.active.text'
+                  : 'auditModal.questionGroup.checked'
+              }
+              border={questionAnswered === 0 ? '1px solid #CBCCCD' : ''}
+              borderRadius="50%"
+              h="5"
+              justify="center"
+              mr={5}
+              w="5">
+              {questionAnswered === 0 ? (
+                ''
+              ) : questionAnswered < totalQuestion ? (
+                <MinusIcon data-id="030925-f989dc" color="white" h="2.5" w="2.5" />
+              ) : (
+                <CheckIcon data-id="030925-192097" color="white" h="2.5" w="2.5" />
+              )}
+            </Flex>
+            <Text
+              data-id="030925-29b6c6"
+              color="navigationTop.bg"
+              flexGrow={1}
+              lineHeight="20px">
+              {name}
+            </Text>
+            <Text
+              data-id="030925-e3de26"
+              color="auditModal.menu.text"
+              lineHeight="20px"
+              w={32}>
+              {questionAnswered} / {totalQuestion} Completed
+            </Text>
           </Flex>
           <Text
-            color="navigationTop.bg"
-            data-id="515c1dce642e"
-            flexGrow={1}
-            lineHeight="20px">
-            {name}
-          </Text>
-          <Text
+            data-id="030925-995313"
             color="auditModal.menu.text"
-            data-id="1999bcda7169"
-            lineHeight="20px"
-            w={32}>
-            {questionAnswered} / {totalQuestion} Completed
+            fontSize="sm"
+            fontWeight={400}
+            mt={3}
+            pl={10}>
+            {description}
           </Text>
-        </Flex>
-        <Text
-          color="auditModal.menu.text"
-          data-id="827b7c3822be"
-          fontSize="sm"
-          fontWeight={400}
-          mt={3}
-          pl={10}>
-          {description}
-        </Text>
-        <br data-id="d8cd224d3442" />
-        <Box data-id="6d745a27f5d5" pl={10}>
-          <QuestionAdditionalInformation data-id="fd4f804f23c8" />
+          <br data-id="030925-671603" />
+          <Box data-id="030925-040297" pl={10}>
+            <QuestionAdditionalInformation data-id="030925-6bcca0" />
+          </Box>
         </Box>
-      </Box>
-    </Collapse>
-  </Box>
+      </Collapse>
+    </Box>
+  );
 }
 export default QuestionGroup;

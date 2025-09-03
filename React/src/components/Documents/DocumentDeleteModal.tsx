@@ -11,36 +11,38 @@ function DocumentDeleteModal({
   handleClose: () => void;
   handleDelete: () => void;
 }) {
-  return <Modal data-id="de9fedfddfaf" isOpen={isOpen} onClose={handleClose}>
-    <ModalOverlay data-id="1625bf003463" />
-    <ModalContent data-id="d381b6c13b45">
-      <ModalHeader data-id="fa82cf2f6a5b">Delete file</ModalHeader>
-      <ModalCloseButton data-id="b78d4ac51007" />
-      <ModalBody data-id="4ede0170853e" textAlign="center">{message}</ModalBody>
-      <ModalFooter data-id="58e6367e25cb">
-        <Flex data-id="03321d2eb92d" justify="center" w="full">
-          <Button
-            _hover={{ opacity: 0.7 }}
-            colorScheme="purpleHeart"
-            data-id="7012f872112b"
-            mr={3}
-            onClick={() => {
-              handleDelete();
-              handleClose();
-            }}>
-            Delete
-          </Button>
-          <Button
-            _hover={{ opacity: 0.7 }}
-            colorScheme="red"
-            data-id="ce9a87c80179"
-            onClick={() => handleClose()}>
-            Cancel
-          </Button>
-        </Flex>
-      </ModalFooter>
-    </ModalContent>
-  </Modal>
+  return (
+    <Modal data-id="030925-a37405" isOpen={isOpen} onClose={handleClose}>
+      <ModalOverlay data-id="030925-83b4d2" />
+      <ModalContent data-id="030925-694688">
+        <ModalHeader data-id="030925-5bd970">Delete file</ModalHeader>
+        <ModalCloseButton data-id="030925-cef9f2" />
+        <ModalBody data-id="030925-1805bd" textAlign="center">{message}</ModalBody>
+        <ModalFooter data-id="030925-895294">
+          <Flex data-id="030925-bb6211" justify="center" w="full">
+            <Button
+              data-id="030925-a6246e"
+              _hover={{ opacity: 0.7 }}
+              colorScheme="purpleHeart"
+              mr={3}
+              onClick={() => {
+                handleDelete();
+                handleClose();
+              }}>
+              Delete
+            </Button>
+            <Button
+              data-id="030925-b7658d"
+              _hover={{ opacity: 0.7 }}
+              colorScheme="red"
+              onClick={() => handleClose()}>
+              Cancel
+            </Button>
+          </Flex>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
 }
 
 export default DocumentDeleteModal;

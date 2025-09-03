@@ -4,9 +4,9 @@ import TrackerItems from './tracker-items';
 
 function Dashboard() {
   const { module } = useAppContext();
-  if (module?.type === 'audits') return <Audits data-id="a4bd06468ea0" />;
+  if (module?.type === 'audits') return <Audits data-id="030925-51c537" />;
 
-  return <TrackerItems data-id="67f51d57e1ba" />;
+  return <TrackerItems data-id="030925-d41dfa" />;
 }
 
 export default Dashboard;

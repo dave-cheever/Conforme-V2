@@ -236,33 +236,33 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
   ) as EChartsOption;
 
   return (
-    <Box data-id="cbbc2f6482f5" pt="3">
+    <Box data-id="030925-b88e74" pt="3">
       {error ? (
-        <Text data-id="5f7805f82787">{error.message}</Text>
+        <Text data-id="030925-1908f9">{error.message}</Text>
       ) : loading ? (
-        <Box data-id="0fdb941f0c87" h="100vh">
-          <Loader center data-id="96ed58e2afc9" />
+        <Box data-id="030925-7381b1" h="100vh">
+          <Loader data-id="030925-8a8895" center />
         </Box>
       ) : (
         <>
-          <Grid alignItems="center" data-id="d4dab0f8e0a1" templateColumns="1fr .25fr">
-            <GridItem data-id="2e756da47bdc" w="100%">
-              <InsightsChart data-id="8866350f2e3e" option={echartsOption} />
+          <Grid data-id="030925-7119ec" alignItems="center" templateColumns="1fr .25fr">
+            <GridItem data-id="030925-27371a" w="100%">
+              <InsightsChart data-id="030925-77c7d7" option={echartsOption} />
             </GridItem>
-            <GridItem data-id="02d7bfdccd8b" w="100%">
-              <Flex data-id="b3cd8c2ec805" direction="column" textAlign="left">
-                <Text as="span" color="insights.secondaryText" data-id="1f0b59b358bd" fontWeight="bold">
+            <GridItem data-id="030925-9852c3" w="100%">
+              <Flex data-id="030925-e83d57" direction="column" textAlign="left">
+                <Text data-id="030925-998733" as="span" color="insights.secondaryText" fontWeight="bold">
                   Total {answerType.toLowerCase()}
                 </Text>
-                <Heading color="#1E1836" data-id="31df75a059bb" fontSize="100px">
+                <Heading data-id="030925-76ddae" color="#1E1836" fontSize="100px">
                   {data?.answersInsights?.totalAnswers}
                 </Heading>
               </Flex>
             </GridItem>
           </Grid>
           <InsightsDetailedStats
+            data-id="030925-af1dcf"
             businessUnits={businessUnits}
-            data-id="3df330b119a3"
             insightsType="answers"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

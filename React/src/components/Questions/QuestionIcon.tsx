@@ -5,13 +5,13 @@ import { QuestionDateIcon, QuestionTextIcon, QuestionToggleIcon } from '../../ic
 function QuestionIcon({ type, ...props }) {
   switch (type) {
     case 'textConfirm':
-      return <QuestionTextIcon data-id="1a41dbd18c2c" {...props} />;
+      return <QuestionTextIcon data-id="030925-9cc1fc" {...props} />;
     case 'textMultilineConfirm':
-      return <QuestionTextIcon data-id="4eed1aa09cc5" {...props} />;
+      return <QuestionTextIcon data-id="030925-c2db9f" {...props} />;
     case 'switch':
-      return <QuestionToggleIcon data-id="c1d1ec6a9b69" {...props} />;
+      return <QuestionToggleIcon data-id="030925-75010a" {...props} />;
     case 'datePicker':
-      return <QuestionDateIcon data-id="58dc599f657a" {...props} />;
+      return <QuestionDateIcon data-id="030925-76dd51" {...props} />;
     default:
       return null;
   }

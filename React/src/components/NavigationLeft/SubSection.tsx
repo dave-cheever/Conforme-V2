@@ -25,6 +25,7 @@ function SubSection({
 
   return (
     <Flex
+        data-id="030925-9a0646"
         alignItems="center"
         bg={
           isPopover
@@ -42,7 +43,6 @@ function SubSection({
             : 'subSection.unselectedFontColor'
         }
         cursor="pointer"
-        data-id="9983yhd31g362"
         fontSize="14px"
         fontWeight="400"
         key={label}
@@ -61,36 +61,37 @@ function SubSection({
         pl={9}
         pr={9}
       >
-        {!showIcon && (
-        <Box
-            bg={
-               isPopover
-            ? isPathActive(url, { exact: true }) ? 'white' : 'black'
-            : isPathActive(url, { exact: true }) && !showIcon
-            ? 'subSection.selectedIndicator'
-                :'subSection.unselectedIndicator'
-            }
-            h="8px"
-            rounded="50%"
-            w="8px"
-          />
-        )}
-        {showIcon && (
-          <Icon
-            as={icon as any}
-            h="16px"
-            stroke={
-              isPopover && isPathActive(url, { exact: true })
-                ? 'white'
-                : isPopover
-                ? 'black'
-                : 'subSection.iconStroke'
-            }
-            w="16px"
-      />
-    )}
-      <Text ml="25px">{label}</Text>
-    </Flex>);
+      {!showIcon && (
+      <Box
+        data-id="030925-8211c5"
+        bg={
+           isPopover
+        ? isPathActive(url, { exact: true }) ? 'white' : 'black'
+        : isPathActive(url, { exact: true }) && !showIcon
+        ? 'subSection.selectedIndicator'
+            :'subSection.unselectedIndicator'
+        }
+        h="8px"
+        rounded="50%"
+        w="8px" />
+      )}
+      {showIcon && (
+        <Icon
+          data-id="030925-a1f222"
+          as={icon as any}
+          h="16px"
+          stroke={
+            isPopover && isPathActive(url, { exact: true })
+              ? 'white'
+              : isPopover
+              ? 'black'
+              : 'subSection.iconStroke'
+          }
+          w="16px" />
+  )}
+      <Text data-id="030925-b7295f" ml="25px">{label}</Text>
+    </Flex>
+  );
 }
 
 export default SubSection;

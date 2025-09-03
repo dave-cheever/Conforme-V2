@@ -28,18 +28,18 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
   }, [selectedRadio]);
 
   return (
-    (<Box data-id="635b684bc6a3" id={name} w="full">
+    <Box data-id="030925-143814" id={name} w="full">
       {label && (
         <Flex
+          data-id="030925-b0289f"
           align="center"
-          data-id="cf1cb13db19e"
           justify="space-between"
           mb="none"
           pb={2}
           pt={2}>
           <Box
+            data-id="030925-ea2106"
             color="singleChoices.labelFont.normal"
-            data-id="d2d2a99014eb"
             fontSize="ssm"
             fontWeight="bold"
             left="none"
@@ -48,7 +48,7 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
             {label}
             {required && (
               <Asterisk
-                data-id="9d2718a00cd3"
+                data-id="030925-62aa9d"
                 fill="questionListElement.iconAsterisk"
                 h="9px"
                 mb="8px"
@@ -57,30 +57,30 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
                 w="9px" />
             )}{' '}
             {tooltip && (
-              <Tooltip data-id="eaf9f1a632ad" hasArrow label={tooltip} placement="top">
-                <Icon data-id="509d99e9628d" h="14px" mb={1} name="info" />
+              <Tooltip data-id="030925-39d466" hasArrow label={tooltip} placement="top">
+                <Icon data-id="030925-ea4f9a" h="14px" mb={1} name="info" />
               </Tooltip>
             )}
           </Box>
         </Flex>
       )}
-      <VStack data-id="fa6b61d72e96" {...group} align="stretch">
+      <VStack data-id="030925-6a9448" {...group} align="stretch">
         {options &&
           options.map(({ label, value }) => {
             const radio = getRadioProps({ value });
             return (
-              (<CustomRadioButton
-                data-id="57f5ddda9981"
-                key={value}
-                {...radio}
-                fontSize="smm"
-                isDisabled={readMode}>
+              <CustomRadioButton
+                  data-id="030925-fb4b8c"
+                  key={value}
+                  {...radio}
+                  fontSize="smm"
+                  isDisabled={readMode}>
                 {label}
-              </CustomRadioButton>)
+              </CustomRadioButton>
             );
           })}
       </VStack>
-    </Box>)
+    </Box>
   );
 }
 

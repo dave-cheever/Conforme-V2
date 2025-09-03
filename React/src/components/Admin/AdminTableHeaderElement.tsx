@@ -20,34 +20,37 @@ function AdminTableHeaderElement({
   showSortingIcon?: boolean;
   tooltip?: string;
 }) {
-  return (<Flex
-    alignItems="center"
-    cursor="pointer"
-    data-id="43a1f6d144cf"
-    ml={ml || '0'}
-    onClick={onClick}
-    w={w}>
-    <Tooltip
-      data-id="8a0727b40673"
-      hasArrow
-      isDisabled={tooltip === ''}
-      label={tooltip}>
-      <Text color="adminTableHeaderElement.fontColor" data-id="a3595b917e58" fontSize={['12px', '12.4px']} fontWeight="600">{label}</Text>
-      </Tooltip>
+  return (
+    <Flex
+      data-id="030925-fbdb2b"
+      alignItems="center"
+      cursor="pointer"
+      ml={ml || '0'}
+      onClick={onClick}
+      w={w}>
+      <Tooltip
+        data-id="030925-cf4092"
+        hasArrow
+        isDisabled={tooltip === ''}
+        label={tooltip}>
+        <Text data-id="030925-82a44e" color="adminTableHeaderElement.fontColor" fontSize={['12px', '12.4px']} fontWeight="600">{label}</Text>
+        </Tooltip>
       {!hideSortIcon && (
         <>
           {sortOrder === 'desc' ? (
             <ArrowDownIcon
+              data-id="030925-10d013"
               color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'}
               ml="3px"
-              opacity={sortOrder ? 1 : 0.3} // Fade if undefined
-            />
+              // Fade if undefined
+              opacity={sortOrder ? 1 : 0.3} />
           ) : (
             <ArrowUpIcon
+              data-id="030925-d21226"
               color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'}
               ml="3px"
-              opacity={sortOrder ? 1 : 0.3} // Fade if undefined
-            />
+              // Fade if undefined
+              opacity={sortOrder ? 1 : 0.3} />
           )}
         </>
       )}

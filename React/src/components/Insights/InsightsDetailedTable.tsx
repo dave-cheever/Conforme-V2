@@ -126,10 +126,10 @@ function InsightsDetailedTable({
   };
 
   return (
-    (<Box data-id="57c0cef5bc1a">
-      <InsightsDetailedTableHeader data-id="f690959a7268">
+    <Box data-id="030925-0fdb8f">
+      <InsightsDetailedTableHeader data-id="030925-c7d14e">
         <InsightsDetailedTableHeaderElement
-          data-id="d4f0ab5b54aa"
+          data-id="030925-aa25d0"
           label="Name"
           onClick={() => {
             setSortType(insightsModel === 'users' ? 'displayName' : 'name');
@@ -140,8 +140,8 @@ function InsightsDetailedTable({
           sortOrder={sortType === (insightsModel === 'users' ? 'displayName' : 'name') ? sortOrder : undefined} />
         {(tableFieldsPerType[insightsType] ?? []).map((item) => (
           <InsightsDetailedTableHeaderElement
+            data-id="030925-cc6da7"
             color={item.color}
-            data-id="d6750f19e804"
             key={item.label}
             label={item.label}
             ml="0.75rem"
@@ -154,8 +154,8 @@ function InsightsDetailedTable({
         ))}
       </InsightsDetailedTableHeader>
       <Flex
+        data-id="030925-1f48b9"
         align="center"
-        data-id="e4506328d799"
         flexDir="column"
         mb={5}
         minH="350px"
@@ -163,7 +163,7 @@ function InsightsDetailedTable({
         w="full">
         {sortedData?.map((item, index) => (
           <InsightListItem
-            data-id="70f1c0db7784"
+            data-id="030925-a15c7c"
             insightsModel={insightsModel}
             insightsType={insightsType}
             item={item}
@@ -172,18 +172,18 @@ function InsightsDetailedTable({
         ))}
       </Flex>
       {totals > sortedData.length && (
-        <Flex data-id="7f208cb554f1" justify="end" rounded="md">
+        <Flex data-id="030925-d1e2df" justify="end" rounded="md">
           <Button
+            data-id="030925-08c8fb"
             bg="insightsDetailedTable.loadMore"
             color="white"
-            data-id="9dc120a627ad"
             onClick={loadMore}
             size="sm">
             Load more
           </Button>
         </Flex>
       )}
-    </Box>)
+    </Box>
   );
 }
 

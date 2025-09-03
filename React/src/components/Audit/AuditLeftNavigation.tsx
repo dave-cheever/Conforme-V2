@@ -12,28 +12,28 @@ function AuditLeftNavigation() {
   const { organizationConfig } = useAppContext();
 
   return (
-    (<Flex
-      bg="auditLeftNavigation.bg"
-      color="auditLeftNavigation.color"
-      data-id="90a85cc26cc5"
-      direction="column"
-      display={['none', 'none', 'flex']}
-      fontWeight="400"
-      justifyContent="space-between"
-      overflow="auto"
-      px={6}
-      w="280px">
-      <Flex data-id="a51f6f137003" flexDirection="column">
+    <Flex
+        data-id="030925-614e29"
+        bg="auditLeftNavigation.bg"
+        color="auditLeftNavigation.color"
+        direction="column"
+        display={['none', 'none', 'flex']}
+        fontWeight="400"
+        justifyContent="space-between"
+        overflow="auto"
+        px={6}
+        w="280px">
+      <Flex data-id="030925-8564f8" flexDirection="column">
         <Box
+          data-id="030925-4eaaef"
           alignItems="center"
           cursor="pointer"
-          data-id="eee215561ed3"
           display="flex"
           h="80px"
           onClick={() => navigateTo('/')}>
           <Text
+            data-id="030925-c3f6ec"
             color="navigationLeft.organizationNameFontColor"
-            data-id="9356c63f39ea"
             fontSize="16px"
             fontWeight="bold"
             w="full">
@@ -41,24 +41,24 @@ function AuditLeftNavigation() {
           </Text>
         </Box>
         <Flex
+          data-id="030925-64bc33"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
-          data-id="f20c66d1b11a"
           fontSize="14px"
           h="30px"
           mb="30px"
           onClick={() => navigateTo('/')}>
-          <ChevronRight data-id="5bb4cae944a1" mr={2} transform="Rotate(180deg)" />
+          <ChevronRight data-id="030925-b6d456" mr={2} transform="Rotate(180deg)" />
           Back
         </Flex>
-        <Flex data-id="125a197fae5c" flexDirection="column" mb={2}>
+        <Flex data-id="030925-09a543" flexDirection="column" mb={2}>
           {auditNavigationTabs.map(({ label, icon, url }) => (
-            <AuditLeftTabItem data-id="bd3dba38cd8e" icon={icon} key={url} label={label} url={url} />
+            <AuditLeftTabItem data-id="030925-ecdcc2" icon={icon} key={url} label={label} url={url} />
           ))}
         </Flex>
       </Flex>
-    </Flex>)
+    </Flex>
   );
 }
 

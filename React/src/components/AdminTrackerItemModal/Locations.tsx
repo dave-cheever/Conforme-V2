@@ -39,19 +39,19 @@ function LocationsForm() {
   };
 
   return (
-    (<Box data-id="0983d36e4017" w="full">
-      <Flex data-id="33b8ca8c4117" direction="column">
-        <SectionHeader data-id="687ba8761d75" label="Select location" />
+    <Box data-id="030925-52d811" w="full">
+      <Flex data-id="030925-6701a1" direction="column">
+        <SectionHeader data-id="030925-b6e9e5" label="Select location" />
         <Flex
-          data-id="29596c52e4b2"
+          data-id="030925-ec91c5"
           flexDir={['column', 'row']}
           justifyContent="space-between"
           mb="30px"
           w={['full', 'calc(100% - 80px)']}>
-          <Flex data-id="a27b3451993e" flexDir="column" pt="3" w="full">
+          <Flex data-id="030925-9febe8" flexDir="column" pt="3" w="full">
             <Text
+              data-id="030925-f64880"
               color="locationsFormModal.filterTextColor"
-              data-id="5e9417483395"
               fontFamily="Helvetica"
               fontSize="ssm"
               fontWeight="bold"
@@ -60,17 +60,17 @@ function LocationsForm() {
               Search location by name
             </Text>
             <InputGroup
+              data-id="030925-8fe443"
               border="1px solid"
               borderColor="locationsFormModal.inputBorderColor"
-              data-id="44bbd2e47cef"
               h="42px"
               rounded="10px">
-              <InputLeftElement data-id="42154972d34d" pointerEvents="none">
-                <SearchIcon color="locationsFormModal.searchIcon" data-id="b411877a6698" />
+              <InputLeftElement data-id="030925-f16401" pointerEvents="none">
+                <SearchIcon data-id="030925-843e47" color="locationsFormModal.searchIcon" />
               </InputLeftElement>
               <Input
+                data-id="030925-ed6373"
                 color="locationsFormModal.searchBarText"
-                data-id="ef88e8d6a2ae"
                 fontSize="smm"
                 lineHeight="18px"
                 onChange={(e) => setSearchText(e.target.value)}
@@ -79,8 +79,9 @@ function LocationsForm() {
             </InputGroup>
           </Flex>
         </Flex>
-        <Flex data-id="70a2bb8cb712" mb="30px">
+        <Flex data-id="030925-8e0e4d" mb="30px">
           <Checkbox
+            data-id="030925-5ee267"
             borderColor="locationsFormModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"
             css={{
@@ -107,8 +108,7 @@ function LocationsForm() {
                 color: checkedLocationIds.length === locations.length ? '#282F36' : '#818197',
               },
             }}
-            data-id="053be4377303"
-            icon={checkedLocationIds.length === locations.length ? <CheckIcon data-id="94cbc8d299bb" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="41a7168865a8" />}
+            icon={checkedLocationIds.length === locations.length ? <CheckIcon data-id="030925-e5473c" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="030925-3aebb6" />}
             isChecked={checkedLocationIds.length > 0}
             key="all"
             onChange={() => handleAllCheckBoxSelectedLocations()}
@@ -117,13 +117,14 @@ function LocationsForm() {
           </Checkbox>
         </Flex>
         <CheckboxGroup
+          data-id="030925-658dd6"
           colorScheme="green"
-          data-id="5c55c9539878"
           onChange={(e: any) => handleCheckBoxGroupChange(e)}
           value={checkedLocationIds || []}>
-          <VStack alignItems="flex-start" data-id="fe25bdf7b2e0">
+          <VStack data-id="030925-871f95" alignItems="flex-start">
             {filteredLocations.map((location, index) => (
               <Checkbox
+                data-id="030925-050ca3"
                 borderColor="locationsFormModal.checkbox.unchecked.border"
                 colorScheme="purpleHeart"
                 css={{
@@ -146,8 +147,7 @@ function LocationsForm() {
                     color: checkedLocationIds?.includes(location._id!) ? '#282F36' : '#818197',
                   },
                 }}
-                data-id="0c3463219379"
-                icon={<CheckIcon data-id="488b2d635995" stroke="white" strokeWidth="1.5" />}
+                icon={<CheckIcon data-id="030925-fc3e4b" stroke="white" strokeWidth="1.5" />}
                 key={index}
                 value={location._id}>
                 {location.name}
@@ -156,7 +156,7 @@ function LocationsForm() {
           </VStack>
         </CheckboxGroup>
       </Flex>
-    </Box>)
+    </Box>
   );
 }
 

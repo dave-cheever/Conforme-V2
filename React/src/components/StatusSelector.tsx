@@ -29,7 +29,7 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
   if (disabled)
     {return (
       <StatusSelectorList
-        data-id="e275bb8bf43a"
+        data-id="030925-262440"
         disabled={disabled}
         filteredStatuses={filteredStatuses}
         handleChange={handleChange}
@@ -37,16 +37,16 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
     );}
 
   return (
-    (<Stack data-id="1217404c0340" w="full">
-      <Stack data-id="1200141488d5" overflow="auto" pb={3} w="full">
+    <Stack data-id="030925-c2b3c3" w="full">
+      <Stack data-id="030925-c966b1" overflow="auto" pb={3} w="full">
         <>
-          <Box data-id="5c6339f1b4db" py="5px">
-            <InputGroup data-id="43ada85d5457">
+          <Box data-id="030925-fde257" py="5px">
+            <InputGroup data-id="030925-c96948">
               <Input
+                data-id="030925-2813bf"
                 borderColor="auditFilterPanel.searchBoxBordercolor"
                 borderWidth="1px"
                 color="statusSelector.search.label"
-                data-id="b41f6b6b87e3"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
@@ -55,8 +55,8 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
                 value={searchText}
                 w="full" />
               <SearchIcon
+                data-id="030925-fdad76"
                 bottom="13px"
-                data-id="2f9f8cfc41c0"
                 h="15px"
                 left="14px"
                 position="absolute"
@@ -66,8 +66,8 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
           </Box>
           {note && (
             <Text
+              data-id="030925-f6037a"
               color="statusSelector.note"
-              data-id="6bb3bc946fd4"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"
@@ -76,14 +76,14 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
             </Text>
           )}
           <StatusSelectorList
-            data-id="d4d1702670e4"
+            data-id="030925-ffe4dd"
             disabled={disabled}
             filteredStatuses={filteredStatuses}
             handleChange={handleChange}
             selected={selected} />
         </>
       </Stack>
-    </Stack>)
+    </Stack>
   );
 }
 

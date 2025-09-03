@@ -10,71 +10,71 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
   const { audit, setSelectedQuestion } = useAuditContext();
   const numberOfActions = (question?.answer?.actions || []).length;
   return (
-    (<HStack
-      bgColor="auditItem.listItem.bg"
-      border="1px solid #CBD5E0"
-      cursor="pointer"
-      data-id="ed300c529993"
-      h="90px"
-      key={question._id}
-      onClick={() => setSelectedQuestion(question)}
-      p={4}
-      rounded="10px">
-      <Stack data-id="0ce5d2360e07" flexGrow={1} spacing={2}>
+    <HStack
+        data-id="030925-62acfc"
+        bgColor="auditItem.listItem.bg"
+        border="1px solid #CBD5E0"
+        cursor="pointer"
+        h="90px"
+        key={question._id}
+        onClick={() => setSelectedQuestion(question)}
+        p={4}
+        rounded="10px">
+      <Stack data-id="030925-b7934c" flexGrow={1} spacing={2}>
         {audit?.auditType?.businessUnitScope === 'answer' && (
-          <HStack data-id="071edf37fcb9" spacing={1}>
+          <HStack data-id="030925-873030" spacing={1}>
             <AreaInfoIcon
-              data-id="461730d921a8"
+              data-id="030925-272c13"
               fill="transparent"
               stroke="auditItem.listItem.action.icon" />
             <Text
+              data-id="030925-0ccc89"
               color="auditItem.listItem.action.color"
-              data-id="5144bb38d4c9"
               fontSize="ssm">
               {capitalize(question.answer?.businessUnit?.name)}
             </Text>
           </HStack>
         )}
-        <Text data-id="15c6b8530b9c" fontSize="smm" noOfLines={1}>
+        <Text data-id="030925-b1cd31" fontSize="smm" noOfLines={1}>
           {question.question}
         </Text>
-        <HStack data-id="916400bd1c5d" spacing={6}>
+        <HStack data-id="030925-705d9b" spacing={6}>
           {question.questionsCategory?.useStatus && (
             <Text
+              data-id="030925-331859"
               color="auditItem.listItem.action.color"
-              data-id="f1a31ffff02d"
               fontSize="ssm">
               {capitalize(question.answer?.status)}
             </Text>
           )}
-          <HStack data-id="d94875dd6091" spacing={1}>
+          <HStack data-id="030925-ca360a" spacing={1}>
             <ActionsIcon
-              data-id="249d23ebdb2e"
+              data-id="030925-56441a"
               fill="transparent"
               stroke="auditItem.listItem.action.icon" />
             <Text
+              data-id="030925-7894f5"
               color="auditItem.listItem.action.color"
-              data-id="7ea51b411fd3"
               fontSize="ssm">
               {numberOfActions} {pluralize('Action', numberOfActions)}
             </Text>
           </HStack>
         </HStack>
       </Stack>
-      <HStack data-id="1fcba778ccc1" spacing={2}>
+      <HStack data-id="030925-f73c7f" spacing={2}>
         {(question.answer?.attachments || []).length >= 1 && (
           <DocumentThumbnail
-            data-id="adc0b86ea89c"
+            data-id="030925-a7fcb7"
             document={question.answer!.attachments![0]}
             key={question.answer!.attachments![0]?.id} />
         )}
         {(question.answer?.attachments || []).length - 1 > 1 && (
           <Flex
+            data-id="030925-5c4641"
             align="center"
             border="1px solid"
             borderColor="documentUploaded.border"
             cursor="default"
-            data-id="306a7247b14e"
             h="55px"
             justify="center"
             rounded="3px"
@@ -83,8 +83,7 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
           </Flex>
         )}
       </HStack>
-
-    </HStack>)
+    </HStack>
   );
 }
 

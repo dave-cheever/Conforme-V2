@@ -27,38 +27,38 @@ interface IAlertDialog {
 function AlertDialog({ isOpen, title, description, state, showButtons, handleYes, handleNo, onClose }: IAlertDialog) {
   const cancelRef: any = React.useRef();
   return (
-    (<AlertDialogChakra
-      data-id="290d401c856e"
-      isCentered
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      motionPreset="slideInBottom"
-      onClose={onClose}>
-      <AlertDialogOverlay data-id="d32c26439944" />
-      <AlertDialogContent data-id="31e4d9cfbe70">
-        <AlertDialogHeader data-id="51e100dbd9de">{title}</AlertDialogHeader>
-        <AlertDialogCloseButton data-id="c18b1b498492" />
-        <AlertDialogBody data-id="9e86353b7676">{description}</AlertDialogBody>
-        <AlertDialogFooter data-id="7150bf80cca1" justifyContent="space-between">
-          <Text color="alertDialog.state" data-id="6533b0817499" fontSize="md">
+    <AlertDialogChakra
+        data-id="030925-f09f65"
+        isCentered
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        motionPreset="slideInBottom"
+        onClose={onClose}>
+      <AlertDialogOverlay data-id="030925-4678b0" />
+      <AlertDialogContent data-id="030925-6f2ab0">
+        <AlertDialogHeader data-id="030925-784591">{title}</AlertDialogHeader>
+        <AlertDialogCloseButton data-id="030925-6f6b5e" />
+        <AlertDialogBody data-id="030925-5acfc0">{description}</AlertDialogBody>
+        <AlertDialogFooter data-id="030925-4daa41" justifyContent="space-between">
+          <Text data-id="030925-558e2a" color="alertDialog.state" fontSize="md">
             {state}
           </Text>
           {showButtons && (
-            <HStack data-id="7504d915dc65">
+            <HStack data-id="030925-c85daf">
               <Button
-                data-id="151e439ac343"
+                data-id="030925-25962e"
                 disabled={!!state}
                 onClick={handleNo}
                 ref={cancelRef}>
                 No
               </Button>
               <Button
+                data-id="030925-e25fd1"
                 _hover={{
                   bg: 'alertDialog.buttons.action.hover',
                 }}
                 bg="alertDialog.buttons.action.bg"
                 color="alertDialog.buttons.action.color"
-                data-id="ca2311d321dc"
                 isLoading={!!state}
                 ml={3}
                 onClick={handleYes}>
@@ -68,7 +68,7 @@ function AlertDialog({ isOpen, title, description, state, showButtons, handleYes
           )}
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialogChakra>)
+    </AlertDialogChakra>
   );
 }
 

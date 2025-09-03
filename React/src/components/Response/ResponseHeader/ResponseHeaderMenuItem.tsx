@@ -13,16 +13,18 @@ function ResponseHeaderMenuItem({
   onClick?: () => void;
   disabled?: boolean;
 }) {
-  return <MenuItem
-    color="responseHeaderMenuItem.optionsMenuColor"
-    data-id="6dfd745985b9"
-    isDisabled={disabled}
-    onClick={onClick}
-    w="100%">
-    <Box data-id="23e57ea83df3" p="2">{name}</Box>
-    <Spacer data-id="fe2b1d66eafc" />
-    {icon && <Box data-id="2b2560aff4b0" p="2">{icon}</Box>}
-  </MenuItem>
+  return (
+    <MenuItem
+      data-id="030925-81d4b3"
+      color="responseHeaderMenuItem.optionsMenuColor"
+      isDisabled={disabled}
+      onClick={onClick}
+      w="100%">
+      <Box data-id="030925-e8a580" p="2">{name}</Box>
+      <Spacer data-id="030925-98ddc7" />
+      {icon && <Box data-id="030925-9ea376" p="2">{icon}</Box>}
+    </MenuItem>
+  );
 }
 
 export default ResponseHeaderMenuItem;

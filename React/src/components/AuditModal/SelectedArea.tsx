@@ -9,37 +9,37 @@ function SelectedBusinessUnit() {
   const modalContext = useContext(AuditModalContext);
 
   return (
-    (<Menu data-id="248846222a0f">
+    <Menu data-id="030925-f5e386">
       <MenuButton
+        data-id="030925-da9511"
         _active={{ bg: 'auditModal.menu.bg' }}
         _hover={{ bg: 'auditModal.menu.bg' }}
         as={Button}
         bg="auditModal.menu.bg"
-        data-id="8c04044fa5e7"
-        rightIcon={<OpenMenuArrow data-id="3288024c2839" ml="10px" />}>
+        rightIcon={<OpenMenuArrow data-id="030925-082010" ml="10px" />}>
         <Text
+          data-id="030925-6d6da2"
           color="auditModal.menu.text"
-          data-id="0329d3d54ba4"
           fontSize="md"
           fontWeight="400">
           {modalContext.selectedBusinessUnit}
         </Text>
       </MenuButton>
-      <MenuList data-id="899c4b2f6444">
+      <MenuList data-id="030925-a515f8">
         <MenuItem
-          data-id="62613a02582b"
+          data-id="030925-3feabe"
           minH="48px"
           onClick={() => modalContext.setSelectedBusinessUnit('Surgery')}>
           Surgery
         </MenuItem>
         <MenuItem
-          data-id="ff8ef21501b2"
+          data-id="030925-c95f2d"
           minH="40px"
           onClick={() => modalContext.setSelectedBusinessUnit('Clinical')}>
           Clinical
         </MenuItem>
       </MenuList>
-    </Menu>)
+    </Menu>
   );
 }
 

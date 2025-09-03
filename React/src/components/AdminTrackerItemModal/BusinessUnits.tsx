@@ -40,21 +40,21 @@ function BusinessUnitsForm() {
   };
 
   return (
-    (<Box data-id="f141c47ab1b0" w="full">
-      <Flex data-id="c150a9a23760" direction="column">
-        <SectionHeader data-id="9a2182481534" label={`Select ${t('business unit')}(s)`} />
+    <Box data-id="030925-cb0302" w="full">
+      <Flex data-id="030925-2cbcfa" direction="column">
+        <SectionHeader data-id="030925-fe1551" label={`Select ${t('business unit')}(s)`} />
 
         <Flex
-          data-id="cea8c3cc108e"
+          data-id="030925-49906b"
           flexDir={['column', 'row']}
           justifyContent="space-between"
           mb="30px"
           w={['full', 'calc(100% - 80px)']}>
-          <Flex data-id="03d8d76ed893" flexDir="column" pt="3" w="full">
-            <Flex align="center" data-id="ce95df9ca000" justify="space-between">
+          <Flex data-id="030925-eb1088" flexDir="column" pt="3" w="full">
+            <Flex data-id="030925-eb021c" align="center" justify="space-between">
               <Text
+                data-id="030925-bf33ef"
                 color="locationsFormModal.filterTextColor"
-                data-id="3f2210756fb8"
                 fontFamily="Helvetica"
                 fontSize="ssm"
                 fontWeight="bold"
@@ -66,16 +66,16 @@ function BusinessUnitsForm() {
               </Text>
             </Flex>
             <InputGroup
+              data-id="030925-4089c5"
               border="1px solid"
               borderColor="#CBD5E0"
-              data-id="180ab2bd2761"
               h="42px"
               rounded="10px">
-              <InputLeftElement data-id="79f326d1b662" pointerEvents="none">
-                <SearchIcon color="businessUnitsModal.searchIcon" data-id="95e2721aca0b" />
+              <InputLeftElement data-id="030925-fe187c" pointerEvents="none">
+                <SearchIcon data-id="030925-b48bc0" color="businessUnitsModal.searchIcon" />
               </InputLeftElement>
               <Input
-                data-id="4fbbe6ecdc21"
+                data-id="030925-3ce182"
                 fontSize="14px"
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search"
@@ -84,8 +84,9 @@ function BusinessUnitsForm() {
           </Flex>
         </Flex>
 
-        <Flex data-id="70481d1a51ef" mb="30px">
+        <Flex data-id="030925-28cc32" mb="30px">
           <Checkbox
+            data-id="030925-5ae8a7"
             borderColor="businessUnitsModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"
             css={{
@@ -112,8 +113,7 @@ function BusinessUnitsForm() {
                 color: checkedBUIds.length === businessUnits.length ? '#282F36' : '#818197',
               },
             }}
-            data-id="97ebd4717bf9"
-            icon={checkedBUIds.length === businessUnits.length ? <CheckIcon data-id="bd1bb2c1d250" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="8e0dedd1b411" />}
+            icon={checkedBUIds.length === businessUnits.length ? <CheckIcon data-id="030925-392b58" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="030925-93cf15" />}
             isChecked={checkedBUIds.length > 0}
             key="all"
             onChange={() => handleAllCheckBoxSelectedBU()}
@@ -123,13 +123,14 @@ function BusinessUnitsForm() {
         </Flex>
 
         <CheckboxGroup
+          data-id="030925-4c0f72"
           colorScheme="green"
-          data-id="54ec979e4aa2"
           onChange={(e: any) => handleChange(e)}
           value={trackerItem.businessUnitsIds || []}>
-          <VStack alignItems="flex-start" data-id="d4d327f3df3b">
+          <VStack data-id="030925-2dbe81" alignItems="flex-start">
             {filteredBU.map((businessUnit) => (
               <Checkbox
+                data-id="030925-ed7506"
                 borderColor="businessUnitsModal.checkbox.unchecked.border"
                 css={{
                   '.chakra-checkbox__control': {
@@ -151,8 +152,7 @@ function BusinessUnitsForm() {
                     color: trackerItem?.businessUnitsIds?.includes(businessUnit._id) ? '#282F36' : '#818197',
                   },
                 }}
-                data-id="5beea56ef91f"
-                icon={<CheckIcon data-id="6ff98aa91917" stroke="white" strokeWidth="1.5" />}
+                icon={<CheckIcon data-id="030925-f80ed4" stroke="white" strokeWidth="1.5" />}
                 key={businessUnit._id}
                 value={businessUnit._id}>
                 {businessUnit.name}
@@ -161,7 +161,7 @@ function BusinessUnitsForm() {
           </VStack>
         </CheckboxGroup>
       </Flex>
-    </Box>)
+    </Box>
   );
 }
 

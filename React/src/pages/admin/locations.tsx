@@ -236,17 +236,17 @@ function Locations() {
   return (
     <>
       <AdminModal
+        data-id="030925-5b64f1"
         collection={t('location')}
-        data-id="8cc9cefb27d9"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetLocation : undefined}
       >
-        <Flex align="flex-start" data-id="23969460d22e" direction="column" w={['full', '70%']}>
+        <Flex data-id="030925-2e0f17" align="flex-start" direction="column" w={['full', '70%']}>
           <TextInput
+            data-id="030925-90b172"
             control={control}
-            data-id="1668554bc1a6"
             initialValue={currentLocationName.toLowerCase()}
             label={`${capitalize(t('location'))} name`}
             name="name"
@@ -257,10 +257,10 @@ function Locations() {
               uniqueValue: locations.map(({ name }) => name.toLowerCase()),
             }}
           />
-          <TextInputMultiline control={control} data-id="e273a22cbfed" label="Notes" name="notes" placeholder="Add your notes here" />
+          <TextInputMultiline data-id="030925-d25c17" control={control} label="Notes" name="notes" placeholder="Add your notes here" />
           <PeoplePicker
+            data-id="030925-bef8ca"
             control={control}
-            data-id="910976b16797"
             label="Owner"
             name="ownerId"
             placeholder="Name"
@@ -272,26 +272,26 @@ function Locations() {
           />
         </Flex>
       </AdminModal>
-      <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="13ef30011341" pageLabel={capitalize(t('location'))} />
+      <Header data-id="030925-1fe7da" breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} pageLabel={capitalize(t('location'))} />
       <Box
+        data-id="030925-ecc7ae"
         bg="auditsList.bg"
         borderRadius="10px"
-        data-id="305629609ebb"
         h="calc(100vh - 160px)"
         p={['0', '0 25px 30px 30px']}
       >
-        <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]}>
+        <Flex data-id="030925-b3f722" h="full" px={['25px', 0]}>
           <Box
+            data-id="030925-68db0c"
             border="1px solid"
             borderColor="auditsList.headerBorderColor"
-            data-id="a281499af26d"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
           >
-            <AdminTableHeader data-id="e7aa7d3c7407">
+            <AdminTableHeader data-id="030925-7fb8a5">
               <AdminTableHeaderElement
-                data-id="159a51bef263"
+                data-id="030925-f6afdc"
                 label={`${capitalize(t('location'))} name`}
                 onClick={() => {
                   setSortType('name');
@@ -304,7 +304,7 @@ function Locations() {
               {device !== 'mobile' && device !== 'tablet' && (
                 <>
                   <AdminTableHeaderElement
-                    data-id="43f0c376de5d"
+                    data-id="030925-3e80fa"
                     label="Notes"
                     onClick={() => {
                       setSortType('notes');
@@ -315,7 +315,7 @@ function Locations() {
                     w={['100%', '50%']}
                   />
                   <AdminTableHeaderElement
-                    data-id="dfebf5306be2"
+                    data-id="030925-c061a1"
                     label="Owner"
                     onClick={() => {
                       setSortType('owner');
@@ -327,10 +327,10 @@ function Locations() {
                   />
                 </>
               )}
-              <Spacer data-id="73a8dcc983a8" display={['block', 'none']} />
+              <Spacer data-id="030925-b82588" display={['block', 'none']} />
               {module?.type === 'tracker' ? (
                 <AdminTableHeaderElement
-                  data-id="f0cf4a8cc53d"
+                  data-id="030925-a33779"
                   label="Responses count"
                   onClick={() => {
                     setSortType('trackerItemsResponsesCount');
@@ -343,7 +343,7 @@ function Locations() {
                 />
               ) : (
                 <AdminTableHeaderElement
-                  data-id="d8d8713b18db"
+                  data-id="030925-cf8a75"
                   label={`${capitalize(pluralize(t('audit')))} count`}
                   onClick={() => {
                     setSortType('totalAuditsCount');
@@ -357,17 +357,17 @@ function Locations() {
             </AdminTableHeader>
 
             {loading ? (
-              <Box bg="white" borderBottomRadius="10px" data-id="fbaca2cb7cfc" h="full" w="full">
-                <Loader center data-id="358df5122736" />
+              <Box data-id="030925-c28e89" bg="white" borderBottomRadius="10px" h="full" w="full">
+                <Loader data-id="030925-c2d17a" center />
               </Box>
             ) : (
-              <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="c078a58c912b" h="full" overflow="auto">
+              <Box data-id="030925-ce5ae8" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto">
                 {locations?.length > 0 ? (
                   locations?.map((location, i) => (
-                    <LocationListItem data-id="a042845458cc" index={i} key={i} location={location} openLocationModal={openLocationModal} />
+                    <LocationListItem data-id="030925-805b3c" index={i} key={i} location={location} openLocationModal={openLocationModal} />
                   ))
                 ) : (
-                  <Flex data-id="e3da38faca1c" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+                  <Flex data-id="030925-f68130" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                     No {pluralize(t('location'))} found
                   </Flex>
                 )}

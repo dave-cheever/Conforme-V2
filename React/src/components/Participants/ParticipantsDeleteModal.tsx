@@ -13,27 +13,27 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
 
   return (
     <Modal
-      data-id="5d0af184408c"
+      data-id="030925-5a5fe9"
       isCentered
       isOpen={isParticipantDeleteModalOpen}
       onClose={closeParticipantDeleteModal}
       variant="teamModal"
     >
-      <ModalContent data-id="4f49a4aeb51f">
-        <ModalHeader data-id="5163fcb7cc9c">
-          <Text data-id="d41c2355a9ce">Remove {label.toLowerCase()}?</Text>
-          <ModalCloseButton data-id="8a2cda35da35" />
+      <ModalContent data-id="030925-4989bb">
+        <ModalHeader data-id="030925-3d023c">
+          <Text data-id="030925-426ae9">Remove {label.toLowerCase()}?</Text>
+          <ModalCloseButton data-id="030925-0df02e" />
         </ModalHeader>
-        <ModalBody data-id="339501811b67">
-          <Text color="participantsDeleteModal.modal.body" data-id="ed0a0fc7bed4">
+        <ModalBody data-id="030925-d1f1e0">
+          <Text data-id="030925-50c594" color="participantsDeleteModal.modal.body">
             This action cannot be undone
           </Text>
         </ModalBody>
-        <ModalFooter data-id="9699f036a6da" justifyContent="space-between">
+        <ModalFooter data-id="030925-ae724a" justifyContent="space-between">
           <Button
+            data-id="030925-dff732"
             bg="participantsDeleteModal.modal.button.remove.bg"
             color="participantsDeleteModal.modal.button.remove.color"
-            data-id="fe6e694b76f2"
             h="38px"
             onClick={handleRemove}
             w="95px"
@@ -41,10 +41,10 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
             Remove
           </Button>
           <Button
+            data-id="030925-b4e9f1"
             _hover={{ opacity: '0.9' }}
             bg="participantsDeleteModal.modal.button.keep.bg"
             color="participantsDeleteModal.modal.button.keep.color"
-            data-id="aa6036311c4b"
             h="38px"
             onClick={closeParticipantDeleteModal}
             w="75px"

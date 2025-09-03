@@ -11,23 +11,25 @@ interface IBusinessUnitsSelectorList {
 }
 
 function BusinessUnitsSelectorList({ filteredBusinessUnits, selected, handleChange }: IBusinessUnitsSelectorList) {
-  return <CheckboxGroup
-    data-id="d5eced54c75b"
-    onChange={(value) =>
-      handleChange({
-        target: {
-          name: 'businessUnitsIds',
-          value,
-        },
-      })
-    }
-    value={selected}>
-    <Stack data-id="e68c58abfbdf" direction="column" pb={2} w="full">
-      {filteredBusinessUnits?.map(({ name, _id }) => (
-        <FilterCheckBox data-id="e139a63d72e4" key={_id} label={name} value={_id} />
-      ))}
-    </Stack>
-  </CheckboxGroup>
+  return (
+    <CheckboxGroup
+      data-id="030925-2fc2c1"
+      onChange={(value) =>
+        handleChange({
+          target: {
+            name: 'businessUnitsIds',
+            value,
+          },
+        })
+      }
+      value={selected}>
+      <Stack data-id="030925-a27765" direction="column" pb={2} w="full">
+        {filteredBusinessUnits?.map(({ name, _id }) => (
+          <FilterCheckBox data-id="030925-35bd91" key={_id} label={name} value={_id} />
+        ))}
+      </Stack>
+    </CheckboxGroup>
+  );
 }
 
 export default BusinessUnitsSelectorList;

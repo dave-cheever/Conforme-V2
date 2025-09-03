@@ -26,10 +26,10 @@ function MultipleParticipantsSelector({
   const justRemovedRef = useRef(false);
 
   return (
-    <Stack data-id="5c654050a4e1" spacing={2}>
+    <Stack data-id="030925-38f0be" spacing={2}>
       <ParticipantsSelector
+        data-id="030925-9875b1"
         canDelete
-        data-id="28825f446dea"
         defaultSelectedParticipantsIds={selectedParticipants.map(({ userId, _id }) => userId || _id)}
         isUserAllowedToChange={isUserAllowedToChange}
         label={label}
@@ -42,19 +42,19 @@ function MultipleParticipantsSelector({
           onChange(participants);
         }}
       >
-        <Flex align="center" alignItems="self-end" data-id="61f22ce9c992" gap="3" mt="0!important" wrap="wrap">
+        <Flex data-id="030925-6e693f" align="center" alignItems="self-end" gap="3" mt="0!important" wrap="wrap">
           {selectedParticipants.map((participant) => (
-            <ParticipantAvatar data-id="c5fbdb49310c" key={participant._id} mr={6} mt={6} user={participant} />
+            <ParticipantAvatar data-id="030925-ddaaf5" key={participant._id} mr={6} mt={6} user={participant} />
           ))}
-          {isUserAllowedToChange && <ParticipantsAddButton data-id="b4972ddbd31f" label={label} mr={6} />}
+          {isUserAllowedToChange && <ParticipantsAddButton data-id="030925-c9acf0" label={label} mr={6} />}
         </Flex>
         {/* Only pass onRemove to ParticipantsDeleteModal */}
         <ParticipantsDeleteModal
+          data-id="030925-46b3c9"
           onRemove={(participantId) => {
             justRemovedRef.current = true;
             if (onRemove) onRemove(participantId, selectedParticipants);
-          }}
-        />
+          }} />
       </ParticipantsSelector>
     </Stack>
   );

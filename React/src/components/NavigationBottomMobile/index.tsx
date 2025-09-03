@@ -19,27 +19,27 @@ function NavigationBottomMobile() {
     },
   });
   return (
-    (<Flex
-      bg="navigationBottomMobile.bg"
-      bottom="0px"
-      boxShadow="simple"
-      data-id="abd4e9b034d0"
-      h="60px"
-      justify="space-between"
-      p="15px 25px"
-      position="fixed"
-      ref={ref}
-      w="full"
-      zIndex={10}>
+    <Flex
+        data-id="030925-20c932"
+        bg="navigationBottomMobile.bg"
+        bottom="0px"
+        boxShadow="simple"
+        h="60px"
+        justify="space-between"
+        p="15px 25px"
+        position="fixed"
+        ref={ref}
+        w="full"
+        zIndex={10}>
       {menuItems.map((menuItem: any, i) => (
         <Can
+          data-id="030925-0f86da"
           action={menuItem.permission}
-          data-id="bf62123ce440"
           key={`menu${i}`}
           // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
             <NavigationBottomItem
-              data-id="c1a343c9cf2f"
+              data-id="030925-b150e5"
               filtersOpen={filtersOpen}
               menuItem={menuItem}
               setFiltersOpen={setFiltersOpen}
@@ -47,7 +47,7 @@ function NavigationBottomMobile() {
               subsectionOpen={subsectionOpen} />
           )} />
       ))}
-    </Flex>)
+    </Flex>
   );
 }
 

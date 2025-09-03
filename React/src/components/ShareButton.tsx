@@ -15,36 +15,38 @@ function ShareButton({
   mr?: string | number | {};
   ml?: string | number|{};
 }) {
-  return <Button
-    _hover={
-      disabled
-        ? {}
-        : {
-            bg: '#818197',
-            color: '#FFFFFF',
-            cursor: 'pointer',
-            stroke: '#FFFFFF',
-          }
-    }
-    aria-label={ariaLabel}
-    bg="#FFFFFF"
-    border="1px solid #CBD5E0"
-    borderRadius="10px"
-    color="#818197"
-    data-id="916c917183c7"
-    disabled={disabled}
-    display="flex"
-    fontSize="14px"
-    fontWeight="bold"
-    ml={ml}
-    mr={mr}
-    onClick={onClick}
-    rightIcon={<ShareIcon data-id="a19f2e7036ef" fontSize="15px" />}
-    role="group"
-    stroke="#818197"
-    w={['calc(100% - 1rem - 15px)', 'auto']}>
-    Share
-  </Button>
+  return (
+    <Button
+      data-id="030925-f07434"
+      _hover={
+        disabled
+          ? {}
+          : {
+              bg: '#818197',
+              color: '#FFFFFF',
+              cursor: 'pointer',
+              stroke: '#FFFFFF',
+            }
+      }
+      aria-label={ariaLabel}
+      bg="#FFFFFF"
+      border="1px solid #CBD5E0"
+      borderRadius="10px"
+      color="#818197"
+      disabled={disabled}
+      display="flex"
+      fontSize="14px"
+      fontWeight="bold"
+      ml={ml}
+      mr={mr}
+      onClick={onClick}
+      rightIcon={<ShareIcon data-id="030925-18cf15" fontSize="15px" />}
+      role="group"
+      stroke="#818197"
+      w={['calc(100% - 1rem - 15px)', 'auto']}>
+      Share
+    </Button>
+  );
 }
 
 export default ShareButton;

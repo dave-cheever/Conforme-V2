@@ -37,134 +37,134 @@ function TextConfirmInput({
   const [tempValue, setTempValue] = useState(defaultvalue || '');
   const validate = useValidate(label || name, validations, definedValidations);
   return (
-    (<Controller
-      control={control}
-      data-id="c8a5146630d6"
-      name={name}
-      render={({ field, fieldState }) => {
-        const { onChange, onBlur, value } = field;
-        const showButtons = tempValue !== (value || '');
+    <Controller
+        data-id="030925-8903a5"
+        control={control}
+        name={name}
+        render={({ field, fieldState }) => {
+          const { onChange, onBlur, value } = field;
+          const showButtons = tempValue !== (value || '');
 
-        const { error } = fieldState;
-        return (
-          (<Box data-id="348dcffffb6f" id={name} w="full">
-            {label && (
-              <Flex
-                align="center"
-                data-id="976b630c05b2"
-                justify="space-between"
-                mb="none"
-                pb={2}
-                pt={2}>
-                <Box
-                  color={error ? 'textConfirmInput.labelFont.error' : 'textConfirmInput.labelFont.normal'}
-                  data-id="993513339e39"
-                  fontSize="ssm"
-                  fontWeight="bold"
-                  left="none"
-                  position="static"
-                  zIndex={2}>
-                  {label}
-                  {required && (
-                    <Asterisk
-                      data-id="c591cf373641"
-                      fill="questionListElement.iconAsterisk"
-                      h="9px"
-                      mb="8px"
-                      ml="5px"
-                      stroke="textConfirmInput.iconAsterisk"
-                      w="9px" />
-                  )}{' '}
-                  {tooltip && (
-                    <Tooltip data-id="cacc49e7c9e8" hasArrow label={tooltip} placement="top">
-                      <Icon data-id="60a6b7179f94" h="14px" mb={1} name="info" />
-                    </Tooltip>
-                  )}
-                </Box>
-              </Flex>
-            )}
-            <Flex data-id="162c66cabf3d">
-              <Input
-                _active={{
-                  bg: disabled ? 'textConfirmInput.disabled.bg' : 'textConfirmInput.activeBg',
-                }}
-                _disabled={{
-                  bg: 'textConfirmInput.disabled.bg',
-                  color: 'textConfirmInput.disabled.font',
-                  borderColor: 'textConfirmInput.disabled.border',
-                  cursor: 'not-allowed',
-                }}
-                _focus={{
-                  borderColor: error ? 'textConfirmInput.border.focus.error' : 'textConfirmInput.border.focus.normal',
-                }}
-                _hover={{ cursor: 'auto' }}
-                _placeholder={{ color: 'textConfirmInput.placeholder' }}
-                bg="textConfirmInput.bg"
-                borderColor={error ? 'textConfirmInput.border.error' : 'textConfirmInput.border.normal'}
-                borderRadius={showButtons ? '8px 0 0 8px' : '8px'}
-                borderWidth={showButtons ? '1px 0 1px 1px' : '1px'}
-                color="textConfirmInput.font"
-                cursor="pointer"
-                data-id="c949aac66095"
-                defaultValue={tempValue}
-                h="40px"
-                isDisabled={disabled}
-                maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
-                name={name}
-                onBlur={onBlur}
-                onChange={(event) => setTempValue(event.target.value)}
-                ref={inputRef}
-                type="text" />
-              {showButtons && (
-                <Flex cursor="pointer" data-id="8fa0d1813d8a" direction="column">
-                  <Flex
-                    align="center"
-                    bgColor="textConfirmInput.approve.bg"
-                    borderRadius="0 8px 0 0"
-                    color="textConfirmInput.approve.font"
-                    data-id="f912b692640e"
-                    grow={1}
-                    justify="center"
-                    onClick={() =>
-                      onChange({
-                        target: { name, value: inputRef.current?.value },
-                      })
-                    }
-                    w={6}>
-                    <CheckIcon data-id="90b5006c324a" stroke="textConfirmInput.approve.font" />
-                  </Flex>
-                  <Flex
-                    align="center"
-                    bgColor="textConfirmInput.reject.bg"
-                    borderRadius="0 0 8px 0"
-                    color="textConfirmInput.reject.font"
-                    data-id="5f273f6837e6"
-                    grow={1}
-                    justify="center"
-                    onClick={() => {
-                      if (inputRef.current) inputRef.current.value = value;
-
-                      setTempValue(value);
-                    }}
-                    w={6}>
-                    <CloseIcon data-id="2d8104b5b94d" w="12px" />
-                  </Flex>
+          const { error } = fieldState;
+          return (
+            <Box data-id="030925-032a31" id={name} w="full">
+              {label && (
+                <Flex
+                  data-id="030925-aef89b"
+                  align="center"
+                  justify="space-between"
+                  mb="none"
+                  pb={2}
+                  pt={2}>
+                  <Box
+                    data-id="030925-939906"
+                    color={error ? 'textConfirmInput.labelFont.error' : 'textConfirmInput.labelFont.normal'}
+                    fontSize="ssm"
+                    fontWeight="bold"
+                    left="none"
+                    position="static"
+                    zIndex={2}>
+                    {label}
+                    {required && (
+                      <Asterisk
+                        data-id="030925-6e778e"
+                        fill="questionListElement.iconAsterisk"
+                        h="9px"
+                        mb="8px"
+                        ml="5px"
+                        stroke="textConfirmInput.iconAsterisk"
+                        w="9px" />
+                    )}{' '}
+                    {tooltip && (
+                      <Tooltip data-id="030925-9c1b72" hasArrow label={tooltip} placement="top">
+                        <Icon data-id="030925-090c06" h="14px" mb={1} name="info" />
+                      </Tooltip>
+                    )}
+                  </Box>
                 </Flex>
               )}
-            </Flex>
-            {error && (
-              <Box
-                color="textConfirmInput.error"
-                data-id="cfb73023af74"
-                fontSize={14}
-                ml={1}>
-                {error.message}
-              </Box>
-            )}
-          </Box>)
-        );
-      }}
-      rules={{ validate }} />)
+              <Flex data-id="030925-354521">
+                <Input
+                  data-id="030925-b5239a"
+                  _active={{
+                    bg: disabled ? 'textConfirmInput.disabled.bg' : 'textConfirmInput.activeBg',
+                  }}
+                  _disabled={{
+                    bg: 'textConfirmInput.disabled.bg',
+                    color: 'textConfirmInput.disabled.font',
+                    borderColor: 'textConfirmInput.disabled.border',
+                    cursor: 'not-allowed',
+                  }}
+                  _focus={{
+                    borderColor: error ? 'textConfirmInput.border.focus.error' : 'textConfirmInput.border.focus.normal',
+                  }}
+                  _hover={{ cursor: 'auto' }}
+                  _placeholder={{ color: 'textConfirmInput.placeholder' }}
+                  bg="textConfirmInput.bg"
+                  borderColor={error ? 'textConfirmInput.border.error' : 'textConfirmInput.border.normal'}
+                  borderRadius={showButtons ? '8px 0 0 8px' : '8px'}
+                  borderWidth={showButtons ? '1px 0 1px 1px' : '1px'}
+                  color="textConfirmInput.font"
+                  cursor="pointer"
+                  defaultValue={tempValue}
+                  h="40px"
+                  isDisabled={disabled}
+                  maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={(event) => setTempValue(event.target.value)}
+                  ref={inputRef}
+                  type="text" />
+                {showButtons && (
+                  <Flex data-id="030925-1c63e8" cursor="pointer" direction="column">
+                    <Flex
+                      data-id="030925-64e4b4"
+                      align="center"
+                      bgColor="textConfirmInput.approve.bg"
+                      borderRadius="0 8px 0 0"
+                      color="textConfirmInput.approve.font"
+                      grow={1}
+                      justify="center"
+                      onClick={() =>
+                        onChange({
+                          target: { name, value: inputRef.current?.value },
+                        })
+                      }
+                      w={6}>
+                      <CheckIcon data-id="030925-4a0b4b" stroke="textConfirmInput.approve.font" />
+                    </Flex>
+                    <Flex
+                      data-id="030925-1402b7"
+                      align="center"
+                      bgColor="textConfirmInput.reject.bg"
+                      borderRadius="0 0 8px 0"
+                      color="textConfirmInput.reject.font"
+                      grow={1}
+                      justify="center"
+                      onClick={() => {
+                        if (inputRef.current) inputRef.current.value = value;
+
+                        setTempValue(value);
+                      }}
+                      w={6}>
+                      <CloseIcon data-id="030925-bdf16a" w="12px" />
+                    </Flex>
+                  </Flex>
+                )}
+              </Flex>
+              {error && (
+                <Box
+                  data-id="030925-11e702"
+                  color="textConfirmInput.error"
+                  fontSize={14}
+                  ml={1}>
+                  {error.message}
+                </Box>
+              )}
+            </Box>
+          );
+        }}
+        rules={{ validate }} />
   );
 }
 

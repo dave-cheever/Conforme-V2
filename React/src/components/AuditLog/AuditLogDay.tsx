@@ -29,12 +29,12 @@ function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
   if (auditLog.records.length === 0) return null;
 
   return (
-    (<Flex data-id="32e75f6fb74c" direction="column" mb="20px">
-      <Flex alignItems="center" data-id="d1c2f8b3e225" direction="row" justifyContent="space-between">
+    <Flex data-id="030925-a61092" direction="column" mb="20px">
+      <Flex data-id="030925-8a0a19" alignItems="center" direction="row" justifyContent="space-between">
         <Flex
+        data-id="030925-a0aa08"
         borderRadius="8px"
         color="auditLogDayStyles.dateColor"
-        data-id="6ad363594c2b"
         fontSize="16px"
         fontWeight="500"
         h="fit-content"
@@ -43,18 +43,17 @@ function AuditLogDay({ auditLog }: { auditLog: IAuditLog }) {
         {daysAgo(auditLog._id)} 
         </Flex>
 
-        <Box borderBottom="1px solid #CBD5E0" data-id="c9f7e4d1b7a5" display={["none", "block"]} height={"1px"} w="full" />
+        <Box data-id="030925-5c4f65" borderBottom="1px solid #CBD5E0" display={["none", "block"]} height={"1px"} w="full" />
       </Flex>
-    
-      <Flex data-id="c50bfda03776" flexDir="column" mt="2" w="full">
+      <Flex data-id="030925-a0889c" flexDir="column" mt="2" w="full">
         {auditLog.records.map((audit) => (
           <AuditLogRecord
+            data-id="030925-d2d3e4"
             audit={audit}
-            data-id="a2d0187186d4"
             key={audit.metatags?.addedAt?.toString()} />
         ))}
       </Flex>
-    </Flex>)
+    </Flex>
   );
 }
 

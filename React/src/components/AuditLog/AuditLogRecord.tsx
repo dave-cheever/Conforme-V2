@@ -53,28 +53,33 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
     if (!oldValue && !newValue) return null;
 
     return (
-      <Flex direction="column" key={i} mt="2">
-        <Text color="gray.600" fontSize="xs" fontWeight="medium" mb="1">
+      <Flex data-id="030925-0aa246" direction="column" key={i} mt="2">
+        <Text
+          data-id="030925-aa079b"
+          color="gray.600"
+          fontSize="xs"
+          fontWeight="medium"
+          mb="1">
           {getLabelByField(element)}
         </Text>
-        <Flex>
+        <Flex data-id="030925-4f1cbb">
           <Box
+            data-id="030925-285d18"
             bg={oldValue ? 'red.50' : 'gray.100'}
             borderRadius="md"
             flex="1"
             fontSize="sm"
-            p="2"
-          >
+            p="2">
             {getFieldNameByValues(oldValue)}
           </Box>
           <Box
+            data-id="030925-2d275f"
             bg={newValue ? 'green.50' : 'gray.100'}
             borderRadius="md"
             flex="1"
             fontSize="sm"
             ml="2"
-            p="2"
-          >
+            p="2">
             {getFieldNameByValues(newValue)}
           </Box>
         </Flex>
@@ -84,6 +89,7 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
 
   return (
     <Flex
+      data-id="030925-6b4ce3"
       align="flex-start"
       bg="#F7FAFC"
       border="1px solid #CBD5E0"
@@ -93,29 +99,29 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
       mb="4"
       p="4">
       <Avatar
+        data-id="030925-cc6521"
         mt="1"
-        name={auditAddedUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
+        name={auditAddedUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
         size="sm"
-        src={auditAddedUser?.imgUrl}
-      />
-      <Box flex="1" ml="3">
-        <Flex align="center" justify="space-between">
-          <Text color="#4A5568" fontSize="16px" fontWeight="600">
+        src={auditAddedUser?.imgUrl} />
+      <Box data-id="030925-e0bf2b" flex="1" ml="3">
+        <Flex data-id="030925-edd1e2" align="center" justify="space-between">
+          <Text data-id="030925-d2e7b9" color="#4A5568" fontSize="16px" fontWeight="600">
             {auditAddedUser ? auditAddedUser.displayName : 'Unknown User'}
           </Text>
-          <Text color="#718096" fontSize="14px" fontWeight="500">
+          <Text data-id="030925-81120f" color="#718096" fontSize="14px" fontWeight="500">
             {format(new Date(audit?.metatags?.addedAt!), 'dd/MM/yyyy HH:mm')}
           </Text>
         </Flex>
 
-        <Text color="#718096" fontSize="14px" mt="1">
+        <Text data-id="030925-2543ed" color="#718096" fontSize="14px" mt="1">
           {getFieldNameByAction(audit.action)} {getSingularCollectionName(audit.coll)}{' '}
           {audit.coll === 'comments' && (audit.action === 'add' || audit.action === 'delete') && (
-            <Box as="span" display="inline" ml="2">
+            <Box data-id="030925-eb4b50" as="span" display="inline" ml="2">
               {reactStringReplace(
                 audit.values.text?.[audit.action === 'delete' ? 'old' : 'new']?.value,
                 chatMentionRegExp,
-                (match, i) => <ChatMention key={i} tag={match} />,
+                (match, i) => <ChatMention data-id="030925-cd443e" key={i} tag={match} />,
               )}
             </Box>
           )}
@@ -123,12 +129,12 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
             <>
               {' for '}
               <Text
+                data-id="030925-be55dc"
                 as="span"
                 color="purple.600"
                 cursor="pointer"
                 fontWeight="medium"
-                onClick={goToItem}
-              >
+                onClick={goToItem}>
                 {audit.element.name}
               </Text>
             </>
@@ -136,7 +142,7 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
         </Text>
 
         {audit.action === 'update' && (
-          <Box mt="3">
+          <Box data-id="030925-7e4045" mt="3">
             {Object.keys(audit.values).map((element, i) =>
               displayUpdateDetails(
                 element,

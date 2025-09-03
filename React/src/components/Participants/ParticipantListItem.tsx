@@ -13,41 +13,43 @@ function ParticipantListItem({
   isSelected: boolean;
   onSelectParticipant: (user: IUser) => void;
 }) {
-  return <Flex
-    align="center"
-    cursor="pointer"
-    data-id="af8a6dfc65ea"
-    key={user.userId}
-    onClick={() => onSelectParticipant(user)}
-    w="full">
+  return (
     <Flex
+      data-id="030925-3ce00e"
       align="center"
-      basis="20px"
-      bg={`participantListItem.checkbox.${isSelected ? 'selected' : 'nonSelected'}`}
-      borderColor="participantListItem.checkbox.border"
-      borderRadius="full"
-      borderWidth="1px"
-      data-id="b060c5761cbe"
-      h="20px"
-      justify="center"
-      pt="1"
-      shrink={0}>
-      <TickIcon data-id="1060ec85f7d3" h="10px" stroke="white" w="10px" />
+      cursor="pointer"
+      key={user.userId}
+      onClick={() => onSelectParticipant(user)}
+      w="full">
+      <Flex
+        data-id="030925-59e620"
+        align="center"
+        basis="20px"
+        bg={`participantListItem.checkbox.${isSelected ? 'selected' : 'nonSelected'}`}
+        borderColor="participantListItem.checkbox.border"
+        borderRadius="full"
+        borderWidth="1px"
+        h="20px"
+        justify="center"
+        pt="1"
+        shrink={0}>
+        <TickIcon data-id="030925-e850e3" h="10px" stroke="white" w="10px" />
+      </Flex>
+      <Flex data-id="030925-38926b" direction="column" ml="2">
+        <Text
+          data-id="030925-e59c6a"
+          color="participantListItem.font"
+          fontSize="smm"
+          fontWeight="semibold"
+          wordBreak="break-word">
+          {user.displayName}{user.jobTitle && ` - ${user.jobTitle}`}
+        </Text>
+        <Box data-id="030925-e8b302" fontSize="sm" top="-4px" wordBreak="break-word">
+          {formatEmail(user.email)}
+        </Box>
+      </Flex>
     </Flex>
-    <Flex data-id="1bf23ffa8f13" direction="column" ml="2">
-      <Text
-        color="participantListItem.font"
-        data-id="82c249c37314"
-        fontSize="smm"
-        fontWeight="semibold"
-        wordBreak="break-word">
-        {user.displayName}{user.jobTitle && ` - ${user.jobTitle}`}
-      </Text>
-      <Box data-id="19d537928976" fontSize="sm" top="-4px" wordBreak="break-word">
-        {formatEmail(user.email)}
-      </Box>
-    </Flex>
-  </Flex>
+  );
 }
 
 export default ParticipantListItem;

@@ -9,52 +9,54 @@ function AuditHeaderButton({
   fontColor = 'auditHeader.buttonLightColor',
   disabled = false,
 }) {
-  return <>
-    <Button
-      _hover={
-        disabled ? {
-          color: 'auditHeader.buttonLightColorHover',
-          cursor: 'not-allowed',
-        } : {
+  return (
+    <>
+      <Button
+        data-id="030925-da88f1"
+        _hover={
+          disabled ? {
+            color: 'auditHeader.buttonLightColorHover',
+            cursor: 'not-allowed',
+          } : {
+            bg: 'auditHeader.buttonLightBgHover',
+            color: 'auditHeader.buttonLightColorHover',
+            cursor: 'pointer',
+            stroke: 'green',
+          }
+        }
+        bg={disabled ? 'auditHeader.buttonLightBgHover' : bgColor}
+        border="1px solid #CBD5E0"
+        borderRadius="10px"
+        color={disabled ? 'auditHeader.buttonLightColorHover' : fontColor}
+        disabled={disabled}
+        display={['flex', icon ? 'none' : 'flex', 'flex']}
+        fontSize="14px"
+        fontWeight="bold"
+        isLoading={loading}
+        leftIcon={icon}
+        ml="15px"
+        onClick={() => !disabled && onClick()}
+        px={4}
+        role="group"
+        w={['calc(100% - 1rem - 15px)', 'auto']}>
+        {name}
+      </Button>
+      <IconButton
+        data-id="030925-4729a5"
+        _hover={{
           bg: 'auditHeader.buttonLightBgHover',
           color: 'auditHeader.buttonLightColorHover',
           cursor: 'pointer',
-          stroke: 'green',
-        }
-      }
-      bg={disabled ? 'auditHeader.buttonLightBgHover' : bgColor}
-      border="1px solid #CBD5E0"
-      borderRadius="10px"
-      color={disabled ? 'auditHeader.buttonLightColorHover' : fontColor}
-      data-id="0d7b9b4721ff"
-      disabled={disabled}
-      display={['flex', icon ? 'none' : 'flex', 'flex']}
-      fontSize="14px"
-      fontWeight="bold"
-      isLoading={loading}
-      leftIcon={icon}
-      ml="15px"
-      onClick={() => !disabled && onClick()}
-      px={4}
-      role="group"
-      w={['calc(100% - 1rem - 15px)', 'auto']}>
-      {name}
-    </Button>
-    <IconButton
-      _hover={{
-        bg: 'auditHeader.buttonLightBgHover',
-        color: 'auditHeader.buttonLightColorHover',
-        cursor: 'pointer',
-      }}
-      aria-label="Search database"
-      bg="auditHeader.buttonLightBg"
-      borderRadius="10px"
-      data-id="7fab498153ad"
-      display={['none', icon ? 'flex' : 'none', 'none']}
-      icon={icon}
-      ml="15px"
-      onClick={onClick} />
-  </>
+        }}
+        aria-label="Search database"
+        bg="auditHeader.buttonLightBg"
+        borderRadius="10px"
+        display={['none', icon ? 'flex' : 'none', 'none']}
+        icon={icon}
+        ml="15px"
+        onClick={onClick} />
+    </>
+  );
 }
 
 export default AuditHeaderButton;

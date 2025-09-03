@@ -24,7 +24,7 @@ function InsightsChart({ option }: { option: EChartsOption }) {
     };
   }, [option]);
 
-  return <Box data-id="e5e3baeb8589" h="500px" ref={chartRef} w="100%" />;
+  return <Box data-id="030925-6a5503" h="500px" ref={chartRef} w="100%" />;
 }
 
 export default InsightsChart;

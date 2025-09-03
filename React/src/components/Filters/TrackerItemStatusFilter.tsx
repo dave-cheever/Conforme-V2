@@ -26,10 +26,14 @@ function TrackerItemStatusFilter({ name }: { name: string }) {
   };
 
   return (
-    <CheckboxGroup data-id="tracker-item-status-filter-group" onChange={handleChange} value={value}>
-      <Stack direction="column">
+    <CheckboxGroup data-id="030925-45a8fd" onChange={handleChange} value={value}>
+      <Stack data-id="030925-485c35" direction="column">
         {trackerItemStatusOptions.map((option) => (
-          <FilterCheckBox key={option.value} label={option.label} value={option.value} />
+          <FilterCheckBox
+            data-id="030925-414a3b"
+            key={option.value}
+            label={option.label}
+            value={option.value} />
         ))}
       </Stack>
     </CheckboxGroup>

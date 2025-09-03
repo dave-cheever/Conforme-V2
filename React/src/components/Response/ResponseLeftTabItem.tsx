@@ -17,45 +17,45 @@ function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = fa
   };
 
   return (
-    (<Flex
-      align="center"
-      bg={isDesktop && active ? 'responseLeftTabItem.activeIconBg' : ""}
-      borderRadius={'4px'}
-      cursor="pointer"
-      data-id="6fdf85811bfa"
-      mb={[0, 3]}
-      mx={[3, 0]}
-      onClick={redirectPage}
-      padding={isDesktop ? '3px' : '2px 0'}
-      w={active ? 'full' : 'fit-content'}>
+    <Flex
+        data-id="030925-bf5e87"
+        align="center"
+        bg={isDesktop && active ? 'responseLeftTabItem.activeIconBg' : ""}
+        borderRadius={'4px'}
+        cursor="pointer"
+        mb={[0, 3]}
+        mx={[3, 0]}
+        onClick={redirectPage}
+        padding={isDesktop ? '3px' : '2px 0'}
+        w={active ? 'full' : 'fit-content'}>
       <Flex
+        data-id="030925-485ccc"
         align="center"
         bg={active ? 'responseLeftTabItem.activeIconBg' : ''}
         borderRadius="8px"
-        data-id="c9c5d1603db9"
         h="30px"
         justify="center"
         pl={1}
         w="30px"
       >
         <Icon
+          data-id="030925-574d18"
           as={icon}
           color="#ffffff"
-          data-id="ddadd3902183"
           h="21px"
           w="21px" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
+          data-id="030925-9c1177"
           color={'responseLeftTabItem.activeTextColor'}
-          data-id="27ac7e816e47"
           flexGrow={1}
           fontSize={['11px', '14px']}
           ml={3}>
           {label}
         </Flex>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

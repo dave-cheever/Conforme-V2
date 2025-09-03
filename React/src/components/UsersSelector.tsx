@@ -39,24 +39,24 @@ function UsersSelector({
 
   if (disabled) {
     return (
-      (<UsersSelectorList
-        data-id="c768ed18d5be"
-        disabled={disabled}
-        filteredUsers={filteredUsers}
-        handleChange={handleChange}
-        selected={selected}
-        selectedRole={selectedRole} />)
+      <UsersSelectorList
+          data-id="030925-0d3e11"
+          disabled={disabled}
+          filteredUsers={filteredUsers}
+          handleChange={handleChange}
+          selected={selected}
+          selectedRole={selectedRole} />
     );
   }
 
   return (
-    (<Stack data-id="080219c5f426" w="full">
-      <Stack data-id="d5b3d58a5932" overflow="auto" pb={3} w="full">
+    <Stack data-id="030925-fadb47" w="full">
+      <Stack data-id="030925-aeca86" overflow="auto" pb={3} w="full">
         <>
           {note && (
             <Text
+              data-id="030925-7a5184"
               color="usersSelector.note"
-              data-id="b971a3a045cd"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3">
@@ -65,7 +65,7 @@ function UsersSelector({
           )}
           {selected?.length > 0 && (
             <UsersSelectorList
-              data-id="0c29480541a6"
+              data-id="030925-e64ce7"
               disabled={disabled}
               filteredUsers={filteredUsers.filter((filteredUser) => selected?.includes(filteredUser.userId))}
               handleChange={handleChange}
@@ -73,7 +73,7 @@ function UsersSelector({
               selectedRole={selectedRole} />
           )}
           <UsersSelectorList
-            data-id="0a0815518d47"
+            data-id="030925-8677d4"
             disabled={disabled}
             filteredUsers={filteredUsers.filter((filteredUser) => !selected?.includes(filteredUser.userId))}
             handleChange={handleChange}
@@ -81,7 +81,7 @@ function UsersSelector({
             selectedRole={selectedRole} />
         </>
       </Stack>
-    </Stack>)
+    </Stack>
   );
 }
 

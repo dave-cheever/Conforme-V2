@@ -11,23 +11,25 @@ interface ILocationsSelectorList {
 }
 
 function LocationsSelectorList({ filteredLocations, selected, handleChange }: ILocationsSelectorList) {
-  return <CheckboxGroup
-    data-id="a7f12bd3c709"
-    onChange={(value) =>
-      handleChange({
-        target: {
-          name: 'locationsIds',
-          value,
-        },
-      })
-    }
-    value={selected}>
-    <Stack data-id="21a4ca172a1e" direction="column" w="full">
-      {filteredLocations?.map(({ name, _id }) => (
-        <FilterCheckBox data-id="3fa39da31f38" key={_id} label={name} value={_id} />
-      ))}
-    </Stack>
-  </CheckboxGroup>
+  return (
+    <CheckboxGroup
+      data-id="030925-180e2c"
+      onChange={(value) =>
+        handleChange({
+          target: {
+            name: 'locationsIds',
+            value,
+          },
+        })
+      }
+      value={selected}>
+      <Stack data-id="030925-2cab36" direction="column" w="full">
+        {filteredLocations?.map(({ name, _id }) => (
+          <FilterCheckBox data-id="030925-3fb728" key={_id} label={name} value={_id} />
+        ))}
+      </Stack>
+    </CheckboxGroup>
+  );
 }
 
 export default LocationsSelectorList;

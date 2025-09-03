@@ -210,52 +210,120 @@ function Audits() {
     participants: audit?.participants?.map((participant) => participant.displayName).join(', '),
   })), [JSON.stringify(filteredAudits)]);
 
-  return (<>
-    <Modal isOpen={adminModalState !== 'closed'} key={audit._id} onClose={onCloseModal} size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'} variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}>
-      <ModalOverlay />
-      <AuditModal refetch={refetch} />
-    </Modal>
-    <Header breadcrumbs={[pluralize(t('audit'))]} mobileBreadcrumbs={[pluralize(t('audit'))]}>
-      <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
-      {device !== 'mobile' && (
-        <CSVLinkComponent data={csvData} filename="audits.csv" headers={csvHeaders} target="_blank">
-          <Button
-            _hover={{ bg: 'reasponseHeader.buttonLightBgHover', color: 'reasponseHeader.buttonLightColorHover', cursor: 'pointer', '&:hover svg path': { stroke: 'white' } }}
-            bg="white"
-            borderRadius="10px"
-            display="none"
-            ml="15px"
-            rightIcon={<ExportIcon height="15px" width="15px" />}>
-            <Text fontSize="smm" fontWeight="bold">Export</Text>
-          </Button>
-        </CSVLinkComponent>
-      )}
-      <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
-    </Header>
-    <Flex h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
-      {loading ? <Loader center /> : (
-        viewMode === 'grid' ? (
-          <Grid display={['grid', 'grid', 'flex']} flexWrap="wrap" gap={[4, 4, 6]} h="fit-content" pb={[14, 8]} pt="3" px={[4, 8]} templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']} w="full">
-            {sortedAudits.length > 0 ? sortedAudits.map((audit) => <AuditSquare audit={audit} key={audit._id} />) : (
-              <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">No audits found. Try adjusting the filters.</Flex>
-            )}
-          </Grid>
-        ) : viewMode === 'list' ? (
-          sortedAudits.length > 0 ? (
-            <AuditsList audits={sortedAudits} setSortOrder={setSortOrder} setSortType={setSortType} sortOrder={sortOrder} sortType={sortType} />
+  return (
+    <>
+      <Modal
+        data-id="030925-a17931"
+        isOpen={adminModalState !== 'closed'}
+        key={audit._id}
+        onClose={onCloseModal}
+        size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
+        variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}>
+        <ModalOverlay data-id="030925-837c3f" />
+        <AuditModal data-id="030925-be4d30" refetch={refetch} />
+      </Modal>
+      <Header
+        data-id="030925-023862"
+        breadcrumbs={[pluralize(t('audit'))]}
+        mobileBreadcrumbs={[pluralize(t('audit'))]}>
+        <ChangeViewButton
+          data-id="030925-966d62"
+          setViewMode={setViewMode}
+          viewMode={viewMode}
+          views={['grid', 'list', 'group']} />
+        {device !== 'mobile' && (
+          <CSVLinkComponent
+            data-id="030925-3ab713"
+            data={csvData}
+            filename="audits.csv"
+            headers={csvHeaders}
+            target="_blank">
+            <Button
+              data-id="030925-da98ed"
+              _hover={{ bg: 'reasponseHeader.buttonLightBgHover', color: 'reasponseHeader.buttonLightColorHover', cursor: 'pointer', '&:hover svg path': { stroke: 'white' } }}
+              bg="white"
+              borderRadius="10px"
+              display="none"
+              ml="15px"
+              rightIcon={<ExportIcon data-id="030925-2185ba" height="15px" width="15px" />}>
+              <Text data-id="030925-26d811" fontSize="smm" fontWeight="bold">Export</Text>
+            </Button>
+          </CSVLinkComponent>
+        )}
+        <SortButton
+          data-id="030925-ff38a6"
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          sortType={sortType} />
+      </Header>
+      <Flex
+        data-id="030925-1184ba"
+        h={['calc(100vh - 80px)', 'full']}
+        overflow="auto"
+        pb={[4, 0]}>
+        {loading ? <Loader data-id="030925-44a9f5" center /> : (
+          viewMode === 'grid' ? (
+            <Grid
+              data-id="030925-24b907"
+              display={['grid', 'grid', 'flex']}
+              flexWrap="wrap"
+              gap={[4, 4, 6]}
+              h="fit-content"
+              pb={[14, 8]}
+              pt="3"
+              px={[4, 8]}
+              templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+              w="full">
+              {sortedAudits.length > 0 ? sortedAudits.map((audit) => <AuditSquare data-id="030925-f7a5bb" audit={audit} key={audit._id} />) : (
+                <Flex
+                  data-id="030925-c21052"
+                  alignItems="center"
+                  fontSize="18px"
+                  fontStyle="italic"
+                  h="200px"
+                  justifyContent="center"
+                  w="full">No audits found. Try adjusting the filters.</Flex>
+              )}
+            </Grid>
+          ) : viewMode === 'list' ? (
+            sortedAudits.length > 0 ? (
+              <AuditsList
+                data-id="030925-34d845"
+                audits={sortedAudits}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType} />
+            ) : (
+              <Flex
+                data-id="030925-365fe8"
+                alignItems="center"
+                fontSize="18px"
+                fontStyle="italic"
+                h="200px"
+                justifyContent="center"
+                w="full">No audits found. Try adjusting the filters.</Flex>
+            )
           ) : (
-            <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">No audits found. Try adjusting the filters.</Flex>
+            sortedAudits.length > 0 ? <AuditsGroup data-id="030925-f725b1" audits={sortedAudits} /> : <Flex
+              data-id="030925-c124a2"
+              alignItems="center"
+              fontSize="18px"
+              fontStyle="italic"
+              h="200px"
+              justifyContent="center"
+              w="full">No audits found. Try adjusting the filters.</Flex>
           )
-        ) : (
-          sortedAudits.length > 0 ? <AuditsGroup audits={sortedAudits} /> : <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">No audits found. Try adjusting the filters.</Flex>
-        )
-      )}
-    </Flex>
-  </>);
+        )}
+      </Flex>
+    </>
+  );
 }
 
 function AuditsWithContext() {
-  return <AuditModalProvider><Audits /></AuditModalProvider>;
+  return <AuditModalProvider data-id="030925-fe5ad3"><Audits data-id="030925-322140" /></AuditModalProvider>;
 }
 
 export default AuditsWithContext;

@@ -108,17 +108,17 @@ function ReasponseHeader() {
 
   if (!response) return null;
   return (
-    (<Flex
-      data-id="8e7ece118cc4"
-      direction="column"
-      mb="15px"
-      pl={6}
-      pt={4}
-      w="full"
-      zIndex={1}>
+    <Flex
+        data-id="030925-3f1a9e"
+        direction="column"
+        mb="15px"
+        pl={6}
+        pt={4}
+        w="full"
+        zIndex={1}>
       <Stack
+        data-id="030925-ee7d85"
         alignItems={['flex-start', 'center']}
-        data-id="f8858aed86a9"
         direction={['column', 'row']}
         mb="15px"
         minH="40px"
@@ -126,21 +126,21 @@ function ReasponseHeader() {
         spacing={2}
         w="full">
         <Heading
+          data-id="030925-25030e"
           alignItems={['flex-start', 'center']}
           color="reasponseHeader.heading"
-          data-id="f6c5037acb19"
           fontSize="xxl"
           fontWeight="bold"
           noOfLines={1}>
           {response?.trackerItem?.name}
         </Heading>
-        <HStack data-id="d7c0939031ba">
+        <HStack data-id="030925-aefe10">
           {response.status === 'draft' && (
             <Badge
+              data-id="030925-e937c4"
               bg="reasponseHeader.badge.draft.bg"
               borderRadius="6px"
               color="reasponseHeader.badge.draft.color"
-              data-id="eba41ec58760"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
@@ -152,10 +152,10 @@ function ReasponseHeader() {
           )}
           {response.calculatedStatus === 'comingUp' && (
             <Badge
+              data-id="030925-dc93c2"
               bg="reasponseHeader.badge.comingUp.bg"
               borderRadius="6px"
               color="reasponseHeader.badge.comingUp.color"
-              data-id="d7acdb5adf5b"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
@@ -167,10 +167,10 @@ function ReasponseHeader() {
           )}
           {response.calculatedStatus === 'nonCompliant' && (
             <Badge
+              data-id="030925-291184"
               bg="reasponseHeader.badge.nonCompliant.bg"
               borderRadius="6px"
               color="reasponseHeader.badge.nonCompliant.color"
-              data-id="a2141d345ef4"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
@@ -183,36 +183,36 @@ function ReasponseHeader() {
         </HStack>
       </Stack>
       <Stack
-        data-id="1b8064cadf66"
+        data-id="030925-c99154"
         direction={['column', 'row']}
         mb="15px"
         pr={6}
         spacing={4}>
         <HStack
+          data-id="030925-b0aa82"
           alignItems="center"
-          data-id="529364ae8800"
           pl={['10px', '0px']}
           pr={['35px', '0px']}
           spacing={4}
           w={['full', 'auto']}>
           <ResponseHeaderStatus
-            data-id="677faf0bb242"
+            data-id="030925-1ab78a"
             heading={capitalize(t('compliant'))}
             status={response.calculatedStatus !== 'nonCompliant' ? 'Yes' : 'No'} />
           {response.evidence?.length > 0 && (
             <>
-              <Spacer data-id="0aa844396226" />
+              <Spacer data-id="030925-bc397e" />
               <ResponseHeaderStatus
-                data-id="844748eba9b1"
+                data-id="030925-55f49a"
                 heading="Evidence provided"
                 status={isEvidenceUploaded(response) ? 'Yes' : 'No'} />
             </>
           )}
           {response.questions?.length > 0 && (
             <>
-              <Spacer data-id="f980a326b709" />
+              <Spacer data-id="030925-833f4a" />
               <ResponseHeaderStatus
-                data-id="1aa3dc886a6c"
+                data-id="030925-7cc26d"
                 heading={`${capitalize(pluralize(t('question')))} ${past(t('answer'))}`}
                 status={areRequiredQuestionsAnswered(response) ? 'Yes' : 'No'} />
             </>
@@ -220,16 +220,16 @@ function ReasponseHeader() {
         </HStack>
         {snapshot && (
           <Stack
+            data-id="030925-d77f8f"
             align="center"
             color="reasponseHeader.snapshot.color"
-            data-id="8fdbbd10443e"
             direction={['column', 'row']}
             spacing={1}>
-            <WarningTwoIcon data-id="6cf0b57282f3" />
-            <Text data-id="e3413ec9253c">You are seeing historical data.</Text>
+            <WarningTwoIcon data-id="030925-b22539" />
+            <Text data-id="030925-aaf87e">You are seeing historical data.</Text>
             <Text
+              data-id="030925-ec31b9"
               as={Link}
-              data-id="949bd3527a63"
               onClick={() => {
                 setActiveTab(0);
                 navigateTo(`/tracker-item/${response._id}`);
@@ -238,11 +238,11 @@ function ReasponseHeader() {
             </Text>
           </Stack>
         )}
-        <Spacer data-id="ad0936a55bab" display={['flex']} />
+        <Spacer data-id="030925-2f6cd6" display={['flex']} />
         <Flex
+          data-id="030925-4b53bc"
           color="white"
           columnGap={'8px'}
-          data-id="7119e874716f"
           display={['none', 'flex', 'flex']}
           h="40px"
           justify="flex-end"
@@ -250,7 +250,7 @@ function ReasponseHeader() {
           {/* <FollowButton /> */}
           {response.status === 'submitted' && !snapshot && (
             <ResponseHeaderButton
-              data-id="3d443b457823"
+              data-id="030925-7ef3f4"
               name="Start review"
               onClick={handleRenewalOpen}
               primary={response.calculatedStatus === 'comingUp'} />
@@ -258,23 +258,24 @@ function ReasponseHeader() {
           {response.status === 'draft' && !snapshot && (
             <>
               <ResponseHeaderButton
-                data-id="8d41d0e31bfe"
+                data-id="030925-195eec"
                 icon={
                   <SaveIcon
+                    data-id="030925-b2e8f6"
                     _groupHover={{
                       stroke: 'reasponseHeader.buttonLightColorHover',
                     }}
-                    data-id="a3b7e50c9155"
                     fontSize="15px"
                     stroke="reasponseHeader.buttonLightColor" />
                 }
                 name="Save"
                 onClick={updateResponseQuestions} />
               <ResponseHeaderButton
-                data-id="c22fd4cdc142"
+                data-id="030925-8ef5c1"
                 disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response) || !isUserPermittedToSubmitDocument}
                 icon={
                   <SubmitIcon
+                    data-id="030925-6e2b48"
                     _groupHover={
                       !areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)
                         ? {}
@@ -282,7 +283,6 @@ function ReasponseHeader() {
                           stroke: 'reasponseHeader.buttonLightColorHover',
                         }
                     }
-                    data-id="a0ce37414d9f"
                     fontSize="15px"
                     stroke="reasponseHeader.buttonLightColor" />
                 }
@@ -291,13 +291,13 @@ function ReasponseHeader() {
             </>
           )}
           <ResponseHeaderButton
-            data-id="dd248a43be84"
+            data-id="030925-7a6451"
             icon={
               <ShareIcon
+                data-id="030925-051cfa"
                 _groupHover={{
                   stroke: 'reasponseHeader.buttonLightColorHover',
                 }}
-                data-id="0b6566f686b4"
                 fontSize="15px"
                 stroke="reasponseHeader.buttonLightColor" />
             }
@@ -310,58 +310,58 @@ function ReasponseHeader() {
         </Flex>
       </Stack>
       <Flex
+        data-id="030925-8a5a29"
         alignItems="center"
-        data-id="51fa1ba1e919"
         display={['flex', 'none']}
         h="40px"
         mr="25px">
-        <Menu data-id="523d167c4b62">
+        <Menu data-id="030925-1cc797">
           {({ isOpen }) => (
             <>
               <MenuButton
+                data-id="030925-95d676"
                 as={Button}
                 bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
                 borderRadius="10px"
                 color="reasponseHeader.optionsMenuButtonColor"
                 colorScheme="reasponseHeader.optionsMenuColorScheme"
-                data-id="732eba87a3cc"
                 fontFamily="Helvetica"
                 fontSize="smm"
                 fontWeight="bold"
                 isActive={isOpen}
                 lineHeight="18px"
-                rightIcon={<ArrowDownIcon data-id="bd8550f22a53" />}
+                rightIcon={<ArrowDownIcon data-id="030925-d9d60f" />}
                 textAlign="left"
                 w="full">
                 Options
               </MenuButton>
 
               <MenuList
+                data-id="030925-8201fd"
                 borderColor="reasponseHeader.optionsMenuBorderColor"
                 borderRadius="10px"
                 boxShadow="0px 0px 80px"
                 color="reasponseHeader.optionsMenuBoxShadow"
-                data-id="2162de14e883"
                 display={'flex'}
                 flexDir={'column'}
                 minW={['calc(100vw - 50px)', '325px']}
                 w="100%"
                 zIndex="10">
                 {/* <FollowButton isMobile /> */}
-                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton data-id="4ed2d890331f" isListView name="Start review" onClick={handleRenewalOpen} />}
+                {response.status === 'submitted' && !snapshot && <ResponseHeaderButton data-id="030925-7402ee" isListView name="Start review" onClick={handleRenewalOpen} />}
                 {response.status === 'draft' && !snapshot && (
                   <>
-                    <ResponseHeaderButton data-id="ea66366a036e" isListView name="Save" onClick={updateResponseQuestions} />
-                    <ResponseHeaderButton data-id="f292070c3b92" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} isListView name="Submit review" onClick={submitReview} />
+                    <ResponseHeaderButton data-id="030925-51f5f8" isListView name="Save" onClick={updateResponseQuestions} />
+                    <ResponseHeaderButton data-id="030925-bd2d63" disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)} isListView name="Submit review" onClick={submitReview} />
                   </>
                 )}
 
-                <ResponseHeaderButton data-id="85fb49993c30" isListView name="Share" onClick={handleShareOpen}  />
+                <ResponseHeaderButton data-id="030925-3b9981" isListView name="Share" onClick={handleShareOpen}  />
 
                 <MenuDivider
+                  data-id="030925-e968ef"
                   border="1px"
                   borderColor="reasponseHeader.optionsMenuDivider"
-                  data-id="003a49493e35"
                   ml="20px"
                   mr="20px" />
               </MenuList>
@@ -369,7 +369,7 @@ function ReasponseHeader() {
           )}
         </Menu>
       </Flex>
-    </Flex>)
+    </Flex>
   );
 }
 

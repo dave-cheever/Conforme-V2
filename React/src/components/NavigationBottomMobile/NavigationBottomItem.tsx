@@ -27,21 +27,22 @@ function NavigationBottomItem({
   const { responsesStatusesCounts } = useFiltersContext();
 
   return (
-    (<Flex
-      alignItems="center"
-      data-id="e69bc249bb77"
-      onClick={() => {
-        if (menuItem.url === '/') {
-          setFiltersOpen(!filtersOpen);
-          setSubsectionOpen(false);
-          navigateTo(url);
-        } else if (menuItem.url === '/admin') {
-          setSubsectionOpen(!subsectionOpen);
-          setFiltersOpen(false);
-        } else navigateTo(url);
-      }}
-      pos="relative">
+    <Flex
+        data-id="030925-63b763"
+        alignItems="center"
+        onClick={() => {
+          if (menuItem.url === '/') {
+            setFiltersOpen(!filtersOpen);
+            setSubsectionOpen(false);
+            navigateTo(url);
+          } else if (menuItem.url === '/admin') {
+            setSubsectionOpen(!subsectionOpen);
+            setFiltersOpen(false);
+          } else navigateTo(url);
+        }}
+        pos="relative">
       <Flex
+        data-id="030925-aed1be"
         alignItems="center"
         bg={
           menuItem.subSections
@@ -52,14 +53,13 @@ function NavigationBottomItem({
               ? 'navigationLeftItemTablet.selectedLabelBg'
               : 'navigationLeftItemTablet.unselectedLabelBg'
         }
-        data-id="2114dc3d50de"
         h="30px"
         justifyContent="center"
         rounded="8px"
         w="30px">
         <Icon
+          data-id="030925-9d77a5"
           as={icon}
-          data-id="c2f625465a98"
           fill="#ffffff"
           h="15px"
           stroke="#ffffff"
@@ -67,12 +67,12 @@ function NavigationBottomItem({
       </Flex>
       {((menuItem.subSections && isPathActive(url)) || (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
         <>
-          <Text color="#ffffff" data-id="8cc50409e264" fontSize="16px" ml="15px">
+          <Text data-id="030925-ed416a" color="#ffffff" fontSize="16px" ml="15px">
             {label}
           </Text>
           {menuItem.subSections && <ArrowRight
+            data-id="030925-a75ad5"
             boxSize="10px"
-            data-id="9fdd6046ecdb"
             ml="15px"
             stroke="#fffff"
             transform="rotate(270deg)" />}
@@ -80,10 +80,10 @@ function NavigationBottomItem({
       )}
       {filtersOpen && menuItem.url === '/' && (
         <Box
+          data-id="030925-14baae"
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="5f31e43022b7"
           pos="absolute"
           py="15px"
           right="0"
@@ -92,13 +92,13 @@ function NavigationBottomItem({
           zIndex="5">
           {Object.keys(responsesStatusesCounts).length !== 0 && (
             <NavigationLeftFilters
-              data-id="cd6bdf282f66"
+              data-id="030925-e8b15d"
               filter={['all', responsesStatusesCounts.compliant + responsesStatusesCounts.nonCompliant]}
               setFiltersOpen={setFiltersOpen} />
           )}
           {Object.entries(responsesStatusesCounts).map((filter) => (
             <NavigationLeftFilters
-              data-id="5d9e4161f533"
+              data-id="030925-659b2c"
               filter={filter}
               key={filter[0]}
               setFiltersOpen={setFiltersOpen} />
@@ -107,10 +107,10 @@ function NavigationBottomItem({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
+          data-id="030925-63ec81"
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="1677246ec6a2"
           left={menuItem.subSections ? (isPathActive(url) ? '' : '-200px') : isPathActive(url, { exact: true }) ? '' : '-200px'}
           pos="absolute"
           py="15px"
@@ -119,11 +119,11 @@ function NavigationBottomItem({
           w="235px"
           zIndex="5">
           {menuItem.subSections?.map((subSection) => (
-            <SubSection data-id="c4c6e92175e2" isPopover key={subSection.label} subsection={subSection} />
+            <SubSection data-id="030925-77a6b4" isPopover key={subSection.label} subsection={subSection} />
           ))}
         </Box>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

@@ -307,6 +307,7 @@ function QuestionsCategories() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
+        data-id="030925-1b2164"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -314,7 +315,6 @@ function QuestionsCategories() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
-        data-id="7372de14aed5"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -325,15 +325,15 @@ function QuestionsCategories() {
         w="full"
       >
         <Flex
+          data-id="030925-7b4bbc"
           cursor="pointer"
-          data-id="327a1806fcb2"
           flexDir="column"
           mr={4}
           onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
           pl={1}
           w="full"
         >
-          <Text data-id="783735d8f66a" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          <Text data-id="030925-061347" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {questionsCategory.name}
           </Text>
         </Flex>
@@ -344,17 +344,17 @@ function QuestionsCategories() {
   return (
     <>
       <AdminModal
+        data-id="030925-2d80f5"
         collection="questions categories"
-        data-id="13249c03003c"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetQuestionsCategory : undefined}
       >
-        <Stack data-id="725e3c41cb69" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+        <Stack data-id="030925-a8ae4e" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
+            data-id="030925-981e65"
             control={control}
-            data-id="1df615f21513"
             label="Name"
             name="name"
             placeholder="Name"
@@ -364,24 +364,24 @@ function QuestionsCategories() {
             }}
           />
           <Toggle
+            data-id="030925-7a0ba5"
             control={control}
-            data-id="bdf24a3f97fe"
             label="Allow answers"
             name="withAnswers"
             placeholder="Allow answers"
             variant="secondaryVariant"
           />
           <Toggle
+            data-id="030925-8237e4"
             control={control}
-            data-id="f2f1c45030ad"
             label="Allow custom questions"
             name="allowCustomQuestions"
             placeholder="Allow custom questions"
             variant="secondaryVariant"
           />
           <NumberInput
+            data-id="030925-58dc2f"
             control={control}
-            data-id="253941f1d791"
             label="Max number of questions"
             name="maxQuestionsNumber"
             placeholder="Max number of questions"
@@ -390,8 +390,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
+            data-id="030925-081333"
             control={control}
-            data-id="064d0141a86b"
             label="Editable after submission"
             name="notBlockedAfterCompletion"
             placeholder="Editable after submission"
@@ -399,8 +399,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
+            data-id="030925-59036d"
             control={control}
-            data-id="20d730cc8c70"
             label="Use status"
             name="useStatus"
             placeholder="Use status"
@@ -408,8 +408,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
+            data-id="030925-a54930"
             control={control}
-            data-id="631dc51bc0b0"
             label="Show in insights"
             name="showInInsights"
             placeholder="Show in insights"
@@ -417,8 +417,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
+            data-id="030925-a7050f"
             control={control}
-            data-id="d1b0109222d1"
             label="Count in audit card"
             name="countInAuditCard"
             placeholder="Count in audit card"
@@ -426,23 +426,31 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Controller
+            data-id="030925-3ccf0c"
             control={control}
             name="icon"
             render={({ field }) => (
               <>
                 <FormLabel
+                  data-id="030925-4a34a7"
                   alignItems="center"
                   columnGap={1}
-                  data-id="0bf8dde0c19d"
                   display={'flex'}
                   fontSize="12px"
                   fontWeight="regular"
                   mb={1}
                   >
-                    Icon <Text as="span" color="#e93c44" fontSize="22px" fontWeight="bold" mt={"12px"}>*</Text>
+                    Icon <Text
+                  data-id="030925-fb38d9"
+                  as="span"
+                  color="#e93c44"
+                  fontSize="22px"
+                  fontWeight="bold"
+                  mt={"12px"}>*</Text>
                   </FormLabel>
 
                 <Select
+                  data-id="030925-60dd0b"
                   {...field}
                   _active={{ bg: 'dropdown.activeBg' }}
                   _focus={{
@@ -455,72 +463,69 @@ function QuestionsCategories() {
                   borderWidth="1px"
                   color="dropdown.font"
                   css={{ paddingTop: '0' }}
-                  data-id="5e82ddb87871"
                   fontSize="smm"
                   h="42px"
-                  icon={<ChevronRight data-id="5488fb98d036" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
+                  icon={<ChevronRight data-id="030925-f91714" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
                   mb={2}
                   placeholder="Select an icon"
-                  variant="outline"
-                >
+                  variant="outline">
                   {allIconNames.map((iconName) => (
-                    <option key={iconName} value={iconName}>
+                    <option data-id="030925-b47138" key={iconName} value={iconName}>
                       {iconName}
                     </option>
                   ))}
                 </Select>
                 {field.value && ChakraIcons[field.value] && (
-                  <Flex align="center" gap={2} mt={1}>
-                    <Text fontSize="sm">Preview:</Text>
-                    <Icon as={ChakraIcons[field.value] || ''} boxSize={4} />
+                  <Flex data-id="030925-154564" align="center" gap={2} mt={1}>
+                    <Text data-id="030925-4b6dcc" fontSize="sm">Preview:</Text>
+                    <Icon data-id="030925-d708cd" as={ChakraIcons[field.value] || ''} boxSize={4} />
                   </Flex>
                 )}
               </>
             )}
-            rules={{ required: 'Icon is required' }}
-          />
-          <Stack data-id="01666afa274c" pt={2}>
-            <Text data-id="671ec986613e" fontSize="11px" fontWeight="bold">
+            rules={{ required: 'Icon is required' }} />
+          <Stack data-id="030925-2bcf2c" pt={2}>
+            <Text data-id="030925-1c00b3" fontSize="11px" fontWeight="bold">
               Options
             </Text>
             <CheckboxGroup
-              data-id="55e6d4d23d19"
+              data-id="030925-78e46c"
               defaultValue={questionsCategory.options?.map((option) => option.setting)}
               onChange={onChangeOption}
             >
               {availableOptions(!!module?.featureFlags?.enableSafetyWalk).map((option) => (
-                <Checkbox data-id="5cee867104a9" key={option.setting} label={option.name} value={option.setting} />
+                <Checkbox data-id="030925-7a8eed" key={option.setting} label={option.name} value={option.setting} />
               ))}
             </CheckboxGroup>
           </Stack>
         </Stack>
       </AdminModal>
       <Header
+        data-id="030925-75447b"
         breadcrumbs={['Admin', 'Questions categories']}
-        data-id="878057915508"
         mobileBreadcrumbs={['Questions categories']}
         pageLabel={`${capitalize(t('question'))} set`}
       />
       <Flex
+        data-id="030925-a31380"
         bg="auditsList.bg"
         borderRadius="10px"
-        data-id="659cd2aa32e8"
         h="calc(100vh - 160px)"
         overflow="auto"
         p={[0, '0 25px 30px 30px']}
       >
-         <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]} w="full">
+         <Flex data-id="030925-519fa9" h="full" px={['25px', 0]} w="full">
           <Box
+          data-id="030925-5a3b20"
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
-          data-id="6beca923ee44"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
         >
-          <AdminTableHeader data-id="926a317ff445">
+          <AdminTableHeader data-id="030925-515a04">
             <AdminTableHeaderElement
-              data-id="f5e345434dc2"
+              data-id="030925-e65d2c"
               label="Question Categories"
               onClick={() => {
                 setSortType('name'); // Change 'questionCategory' to 'name'
@@ -531,13 +536,13 @@ function QuestionsCategories() {
               w="full"
             />
           </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="b7e2e2e2e2e2" h="full" overflow="auto" w="full">
+          <Box data-id="030925-9f66b2" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader center data-id="515105f6eb5d" />
+              <Loader data-id="030925-4202f3" center />
             ) : questionsCategories?.length > 0 ? (
               questionsCategories?.map(renderQuestionsCategoryRow)
             ) : (
-              <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+              <Flex data-id="030925-b03e94" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No questions categories found
               </Flex>
             )}

@@ -34,128 +34,130 @@ function TrackerListItems({
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
 
-  return <Box bg="#ffffff" data-id="c629b7df65d2" h="full" overflow="none" p={[3, 6]} w="full">
-    <Box
-      bg="trackerList.bg"
-      border="1px solid #CBD5E0"
-      borderRadius="10px"
-      data-id="4619f99c26b4"
-      h="fit-content"
-      mb={7}
-      minH="full"
-      overflow="hidden"
-      pb={7}
-      w="full">
-      <AdminTableHeader data-id="c9ff3d9f5e18">
-        <AdminTableHeaderElement
-          data-id="2c1b1a674169"
-          label="Item name"
-          onClick={() => {
-            setSortType('trackerItem.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'trackerItem.name' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'trackerItem.name'}
-          sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
-          w="13%" />
-        <AdminTableHeaderElement
-          data-id="fa257b7cb259"
-          label="Due for renewal"
-          onClick={() => {
-            setSortType('dueDate');
-            setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'dueDate'}
-          sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-          w="11%" />
-        <AdminTableHeaderElement
-          data-id="dd6f521e1d31"
-          label={capitalize(t('compliant'))}
-          onClick={() => {
-            setSortType('calculatedStatus');
-            setSortOrder(sortOrder === 'asc' && sortType === 'calculatedStatus' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'calculatedStatus'}
-          sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
-          w="8%" />
-          <AdminTableHeaderElement
-          data-id="dd6f521e1d31"
-          hideSortIcon
-          label={capitalize(t('evidence'))}
-
-          w="12%" />
-           <AdminTableHeaderElement
-          data-id="dd6f521e1d31"
-          hideSortIcon
-          label={capitalize(t('category'))}
-          w="12%" />
-        <AdminTableHeaderElement
-          data-id="b403f441bee2"
-          label="Regulatory body"
-          onClick={() => {
-            setSortType('trackerItem.regulatoryBody.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'trackerItem.regulatoryBody.name' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
-          sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
-          w="12%"/>
-        <AdminTableHeaderElement
-          data-id="c7ff17c8d353"
-          label="Responsible"
-          onClick={() => {
-            setSortType('responsible.displayName');
-            setSortOrder(sortOrder === 'asc' && sortType === 'responsible.displayName' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'responsible.displayName'}
-          sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
-          w="13%" />
-        <AdminTableHeaderElement
-          data-id="3c0328581ec0"
-          label={capitalize(t('business unit'))}
-          onClick={() => {
-            setSortType('businessUnit.name');
-            setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit.name' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'businessUnit.name'}
-          sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-          w="12%" />
-        {/* {(module?.customQuestionsInDashboard || []).length > 0 && (
-          <AdminTableHeaderElement
-            label={module!.customQuestionsInDashboard[0]}
-            w="10%" />
-        )}
-        {(module?.customQuestionsInDashboard || []).length > 1 && (
-          <AdminTableHeaderElement
-            label={module!.customQuestionsInDashboard[1]}
-            w="10%" />
-        )} */}
-        <AdminTableHeaderElement
-          data-id="dd6f521e1d31"
-          hideSortIcon
-          label={capitalize(t('location'))}
-          w="8%" />
-      </AdminTableHeader>
-
-      <Flex
-        data-id="199e6641ce84"
-        flexDir="column"
-        h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
-        overflowY="auto"
+  return (
+    <Box data-id="030925-a76a68" bg="#ffffff" h="full" overflow="none" p={[3, 6]} w="full">
+      <Box
+        data-id="030925-629d91"
+        bg="trackerList.bg"
+        border="1px solid #CBD5E0"
+        borderRadius="10px"
+        h="fit-content"
+        mb={7}
+        minH="full"
+        overflow="hidden"
+        pb={7}
         w="full">
-        <InfiniteScrollComponent
-          data-id="bdc800eaf22d"
-          hasMore={!loading && responses.length < total}
-          initialLoad={false}
-          loadMore={loadResponses}
-          ref={scrollerRef}
-          useWindow={false}>
-          {responses?.map((response, index) => (
-            <TrackerListItem data-id="024c9586ed68" index={index} key={response._id} response={response} />
-          ))}
-          {loading && <Loader center data-id="2965be834216" h="60px" key="infinite-loader" />}
-        </InfiniteScrollComponent>
-      </Flex>
+        <AdminTableHeader data-id="030925-4be9f1">
+          <AdminTableHeaderElement
+            data-id="030925-c99169"
+            label="Item name"
+            onClick={() => {
+              setSortType('trackerItem.name');
+              setSortOrder(sortOrder === 'asc' && sortType === 'trackerItem.name' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'trackerItem.name'}
+            sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
+            w="13%" />
+          <AdminTableHeaderElement
+            data-id="030925-14d673"
+            label="Due for renewal"
+            onClick={() => {
+              setSortType('dueDate');
+              setSortOrder(sortOrder === 'asc' && sortType === 'dueDate' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'dueDate'}
+            sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
+            w="11%" />
+          <AdminTableHeaderElement
+            data-id="030925-137ddb"
+            label={capitalize(t('compliant'))}
+            onClick={() => {
+              setSortType('calculatedStatus');
+              setSortOrder(sortOrder === 'asc' && sortType === 'calculatedStatus' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'calculatedStatus'}
+            sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
+            w="8%" />
+            <AdminTableHeaderElement
+            data-id="030925-24f6ce"
+            hideSortIcon
+            label={capitalize(t('evidence'))}
+
+            w="12%" />
+             <AdminTableHeaderElement
+            data-id="030925-eefb1b"
+            hideSortIcon
+            label={capitalize(t('category'))}
+            w="12%" />
+          <AdminTableHeaderElement
+            data-id="030925-95e336"
+            label="Regulatory body"
+            onClick={() => {
+              setSortType('trackerItem.regulatoryBody.name');
+              setSortOrder(sortOrder === 'asc' && sortType === 'trackerItem.regulatoryBody.name' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
+            sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
+            w="12%"/>
+          <AdminTableHeaderElement
+            data-id="030925-3169f5"
+            label="Responsible"
+            onClick={() => {
+              setSortType('responsible.displayName');
+              setSortOrder(sortOrder === 'asc' && sortType === 'responsible.displayName' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'responsible.displayName'}
+            sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
+            w="13%" />
+          <AdminTableHeaderElement
+            data-id="030925-9952d3"
+            label={capitalize(t('business unit'))}
+            onClick={() => {
+              setSortType('businessUnit.name');
+              setSortOrder(sortOrder === 'asc' && sortType === 'businessUnit.name' ? 'desc' : 'asc');
+            }}
+            showSortingIcon={sortType === 'businessUnit.name'}
+            sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
+            w="12%" />
+          {/* {(module?.customQuestionsInDashboard || []).length > 0 && (
+            <AdminTableHeaderElement
+              label={module!.customQuestionsInDashboard[0]}
+              w="10%" />
+          )}
+          {(module?.customQuestionsInDashboard || []).length > 1 && (
+            <AdminTableHeaderElement
+              label={module!.customQuestionsInDashboard[1]}
+              w="10%" />
+          )} */}
+          <AdminTableHeaderElement
+            data-id="030925-976382"
+            hideSortIcon
+            label={capitalize(t('location'))}
+            w="8%" />
+        </AdminTableHeader>
+
+        <Flex
+          data-id="030925-6d8c53"
+          flexDir="column"
+          h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
+          overflowY="auto"
+          w="full">
+          <InfiniteScrollComponent
+            data-id="030925-a77bab"
+            hasMore={!loading && responses.length < total}
+            initialLoad={false}
+            loadMore={loadResponses}
+            ref={scrollerRef}
+            useWindow={false}>
+            {responses?.map((response, index) => (
+              <TrackerListItem data-id="030925-268e6f" index={index} key={response._id} response={response} />
+            ))}
+            {loading && <Loader data-id="030925-7c042c" center h="60px" key="infinite-loader" />}
+          </InfiniteScrollComponent>
+        </Flex>
+      </Box>
     </Box>
-  </Box>
+  );
 }
 
 export default TrackerListItems;

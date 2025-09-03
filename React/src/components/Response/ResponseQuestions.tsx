@@ -61,65 +61,67 @@ function ResponseQuestions({ disabled = false }) {
   }, [isDirty]);
 
   if (!response) return null;
-  return (<>
-    {/* <Prompt
-      data-id="714a60514a03"
-      message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
-      when={isQuestionFormDirty} /> */}
-    <Stack data-id="31585380bbdd" minH={['80vh', 0]} mt={2} spacing={4} w="full">
-      <Grid data-id="076e558d5eec" gap={4} templateColumns="1fr" w={['full', '80%']}>
-        {questions.length === 0 && (
-          <Text
-            color="responseQuestions.NoQuestion.color"
-            data-id="b294b8e222fa"
-            fontSize="smm">
-            <MessageSquareIcon
-              data-id="4f22ac2dc6df"
-              h="16px"
-              stroke="responseQuestions.NoQuestion.icon"
-              w="16px" />
-            &nbsp; This item has no questions yet
-          </Text>
-        )}
-        {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable, options }, i) => (
-          <Flex data-id="e88fa25ebdc1" key={name}>
-            <Box
-              bg="responseQuestions.sectionNumber.bg"
-              borderRadius="8px"
-              color="responseQuestions.sectionNumber.color"
-              data-id="ec4e9d988b08"
-              fontSize="smm"
-              fontWeight="bold"
-              h="30px"
-              mr="20px"
-              mt="2px"
-              px="13px"
-              py="5px"
-              textAlign="center"
-              w="35px">
-              {i + 1}
-            </Box>
-            <Field
-              control={control}
-              data-id="f1b09ba5be88"
-              defaultvalue={value}
-              disabled={!isUserPermitted || disabled}
-              label={name}
-              name={name}
-              notApplicable={notApplicable}
-              options={options}
-              placeholder={description}
-              readMode={disabled}
-              required={!!required}
-              requiredAnswer={requiredAnswer}
-              setValue={setValue}
-              styles={styles}
-              type={type} />
-          </Flex>
-        ))}
-      </Grid>
-    </Stack>
-  </>);
+  return (
+    <>
+      {/* <Prompt
+        data-id="714a60514a03"
+        message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
+        when={isQuestionFormDirty} /> */}
+      <Stack data-id="030925-d0a6f5" minH={['80vh', 0]} mt={2} spacing={4} w="full">
+        <Grid data-id="030925-b04e89" gap={4} templateColumns="1fr" w={['full', '80%']}>
+          {questions.length === 0 && (
+            <Text
+              data-id="030925-7f079c"
+              color="responseQuestions.NoQuestion.color"
+              fontSize="smm">
+              <MessageSquareIcon
+                data-id="030925-0eeff4"
+                h="16px"
+                stroke="responseQuestions.NoQuestion.icon"
+                w="16px" />
+              &nbsp; This item has no questions yet
+            </Text>
+          )}
+          {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable, options }, i) => (
+            <Flex data-id="030925-5dd4d1" key={name}>
+              <Box
+                data-id="030925-612519"
+                bg="responseQuestions.sectionNumber.bg"
+                borderRadius="8px"
+                color="responseQuestions.sectionNumber.color"
+                fontSize="smm"
+                fontWeight="bold"
+                h="30px"
+                mr="20px"
+                mt="2px"
+                px="13px"
+                py="5px"
+                textAlign="center"
+                w="35px">
+                {i + 1}
+              </Box>
+              <Field
+                data-id="030925-932605"
+                control={control}
+                defaultvalue={value}
+                disabled={!isUserPermitted || disabled}
+                label={name}
+                name={name}
+                notApplicable={notApplicable}
+                options={options}
+                placeholder={description}
+                readMode={disabled}
+                required={!!required}
+                requiredAnswer={requiredAnswer}
+                setValue={setValue}
+                styles={styles}
+                type={type} />
+            </Flex>
+          ))}
+        </Grid>
+      </Stack>
+    </>
+  );
 }
 
 export default ResponseQuestions;

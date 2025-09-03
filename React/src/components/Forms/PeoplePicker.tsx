@@ -59,13 +59,13 @@ function UserData({
 }) {
   return (
     <Flex
+      data-id="030925-633ed4"
       _hover={{
         cursor: 'pointer',
         bg: 'peoplePicker.hover.bg',
       }}
       align="center"
       color="peoplePicker.font"
-      data-id="0962aa9002ea"
       fontWeight="400"
       h="auto"
       justify="space-between"
@@ -82,20 +82,24 @@ function UserData({
       w="full"
       wordBreak="break-word"
     >
-      <Flex align="center">
+      <Flex data-id="030925-171c19" align="center">
         {user.imgUrl && (
           <Avatar
-            data-id="dc03862a1e27"
+            data-id="030925-fb36c3"
             name={user.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
             size="xs"
             src={`${process.env.REACT_APP_API_URL}/files/photo/${user._id}`}
           />
         )}
-        <Flex direction="column" ml={3}>
-          <Text color="black" fontSize="smm" fontWeight="semibold">
+        <Flex data-id="030925-97b836" direction="column" ml={3}>
+          <Text data-id="030925-d6d0a1" color="black" fontSize="smm" fontWeight="semibold">
             {user?.displayName} {user.jobTitle ? ` - ${user.jobTitle}` : ''}
           </Text>
-          <Box fontSize="sm" overflow="hidden" textOverflow="ellipsis">
+          <Box
+            data-id="030925-ad95e8"
+            fontSize="sm"
+            overflow="hidden"
+            textOverflow="ellipsis">
             {formatEmail(user?.email)}
           </Box>
         </Flex>
@@ -140,8 +144,8 @@ function PeoplePicker({
 
   return (
     <Controller
+      data-id="030925-70e794"
       control={control}
-      data-id="c39b5565573c"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, value } = field;
@@ -163,8 +167,8 @@ function PeoplePicker({
 
         return (
           <Box
+            data-id="030925-05ff7b"
             bg={pickerActive ? '#ffffff' : 'none'}
-            data-id="d3edcf8a3c64"
             h={pickerActive ? '100vh' : 'auto'}
             id={name}
             inset={0}
@@ -176,10 +180,10 @@ function PeoplePicker({
             zIndex={pickerActive ? '999' : 'auto'}
           >
             {label && (
-              <Flex align="center" data-id="48efb80c6f8c" justify="space-between" mb="none" pb={1} pt={2}>
+              <Flex data-id="030925-028b07" align="center" justify="space-between" mb="none" pb={1} pt={2}>
                 <Box
+                  data-id="030925-66052c"
                   color={error ? 'peoplePicker.labelFont.error' : 'peoplePicker.labelFont.normal'}
-                  data-id="5b2363588f41"
                   fontSize={11}
                   fontWeight="bold"
                   left="none"
@@ -189,7 +193,7 @@ function PeoplePicker({
                   {label}
                   {required && (
                     <Asterisk
-                      data-id="ad0cc35708f8"
+                      data-id="030925-b19a71"
                       fill="questionListElement.iconAsterisk"
                       h="9px"
                       mb="8px"
@@ -199,15 +203,16 @@ function PeoplePicker({
                     />
                   )}{' '}
                   {tooltip && (
-                    <Tooltip data-id="46f1d3281e95" hasArrow label={tooltip} placement="top">
-                      <Icon data-id="c61354d32129" h="14px" mb={1} name="info" />
+                    <Tooltip data-id="030925-ac0dd7" hasArrow label={tooltip} placement="top">
+                      <Icon data-id="030925-d86e06" h="14px" mb={1} name="info" />
                     </Tooltip>
                   )}
                 </Box>
               </Flex>
             )}
-            <InputGroup data-id="36ef97e9f476">
+            <InputGroup data-id="030925-052971">
               <Input
+                data-id="030925-361f60"
                 _active={{
                   bg: disabled ? 'peoplePicker.disabled.bg' : 'peoplePicker.activeBg',
                 }}
@@ -220,7 +225,6 @@ function PeoplePicker({
                 borderRadius="8px"
                 borderWidth="1px"
                 color="peoplePicker.font"
-                data-id="658b86e4e0d8"
                 disabled={disabled}
                 fontSize="smm"
                 h="40px"
@@ -240,16 +244,16 @@ function PeoplePicker({
                 zIndex={2}
               />
               {!showAsDropdown && (
-                <InputLeftElement data-id="b228f16ae6c6" zIndex={50}>
-                  <SearchIcon data-id="adf55e988107" fill="peoplePicker.searchIcon" />
+                <InputLeftElement data-id="030925-7e3dc7" zIndex={50}>
+                  <SearchIcon data-id="030925-8b3c80" fill="peoplePicker.searchIcon" />
                 </InputLeftElement>
               )}
 
               {!disabled && showAsDropdown && (
-                <InputRightElement cursor="pointer" data-id="2f878e179d11" w={value ? 14 : 8}>
+                <InputRightElement data-id="030925-d24622" cursor="pointer" w={value ? 14 : 8}>
                   {value && (
                     <Trashcan
-                      data-id="5f593fcba729"
+                      data-id="030925-90c63f"
                       onClick={() => {
                         setSearchText('');
                         setSearchedInputValue('');
@@ -260,7 +264,7 @@ function PeoplePicker({
                     />
                   )}
                   <ChevronRight
-                    data-id="2a0ea79eec09"
+                    data-id="030925-4d342a"
                     onClick={() => setShowResults(!showResults)}
                     stroke="peoplePicker.icon"
                     transform="rotate(90deg)"
@@ -271,9 +275,9 @@ function PeoplePicker({
             </InputGroup>
             {showResults && (
               <Flex
+                data-id="030925-fed227"
                 bg="peoplePicker.bg"
                 boxShadow="lg"
-                data-id="14dda49a508e"
                 direction="column"
                 maxH="48vh"
                 overflowY="auto"
@@ -284,16 +288,16 @@ function PeoplePicker({
               >
                 {loading ? (
                   <Flex
+                    data-id="030925-9c6692"
                     align="center"
-                    data-id="d63003efa775"
                     fontStyle="italic"
                     h="50px"
                     justifyContent={showAsDropdown ? 'center' : ''}
                     px={3}
                     w="full"
                   >
-                    <Box data-id="d01a2bf274b8" mr={3} w="40px">
-                      <Loader data-id="d3dc5c413e69" size="md" />
+                    <Box data-id="030925-e62b84" mr={3} w="40px">
+                      <Loader data-id="030925-24c234" size="md" />
                     </Box>
                     {!showAsDropdown && 'Searching...'}
                   </Flex>
@@ -302,7 +306,7 @@ function PeoplePicker({
                     searchText &&
                     users.map((user) => (
                       <UserData
-                        data-id="5106641256e6"
+                        data-id="030925-bf7177"
                         key={user._id}
                         name={name}
                         onChange={onChange}
@@ -314,7 +318,7 @@ function PeoplePicker({
                   ) : (
                     users.map((user) => (
                       <UserData
-                        data-id="a3164ec6157b"
+                        data-id="030925-5db42d"
                         key={user._id}
                         name={name}
                         onChange={onChange}
@@ -326,26 +330,26 @@ function PeoplePicker({
                   )
                 ) : !showAsDropdown ? (
                   searchText && (
-                    <Flex align="center" data-id="dd84c5405cb5" fontStyle="italic" h="35px" pl={5}>
+                    <Flex data-id="030925-812aa5" align="center" fontStyle="italic" h="35px" pl={5}>
                       No results found
                     </Flex>
                   )
                 ) : (
-                  <Flex align="center" data-id="cb050620d4c6" fontStyle="italic" h="35px" pl={5}>
+                  <Flex data-id="030925-34b79b" align="center" fontStyle="italic" h="35px" pl={5}>
                     No results found
                   </Flex>
                 )}
               </Flex>
             )}
             {error && (
-              <Box color="peoplePicker.error" data-id="9159bce661db" fontSize="smm" mt={1} pl={3}>
+              <Box data-id="030925-af00ed" color="peoplePicker.error" fontSize="smm" mt={1} pl={3}>
                 {error.message}
               </Box>
             )}
             {tooltip && (
-              <Flex align="center" color="peoplePicker.tooltip" data-id="3c60fe54e56e" mt={3}>
-                <InfoOutlineIcon data-id="db50976e69c8" />
-                <Box data-id="fffac3533382" fontSize="11px" ml={2}>
+              <Flex data-id="030925-72b814" align="center" color="peoplePicker.tooltip" mt={3}>
+                <InfoOutlineIcon data-id="030925-14ba50" />
+                <Box data-id="030925-8b8c41" fontSize="11px" ml={2}>
                   {tooltip}
                 </Box>
               </Flex>

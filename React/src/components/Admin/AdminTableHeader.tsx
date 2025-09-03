@@ -1,32 +1,34 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 function AdminTableHeader({ children, title }: { children: React.ReactNode; title?: string }) {
-  return <Box
-    bg="adminTableHeader.bg"
-    data-id="ac4e728345d1"
-    top={0}
-    width="100%"
-    zIndex={1}>
-    {title && (
-      <Box bg="white" borderTopRadius="20px" data-id="251a500f8a0d" p="15px 25px">
-        <Text data-id="f9605e58fa4c" fontSize="smm" fontWeight="bold">
-          {title}
-        </Text>
-      </Box>
-    )}
-    <Flex
-      bg="#EDF2F7"
-      borderBottom="1px solid"
-      borderColor="adminTableHeader.border"
-      borderTopRadius={title ? undefined : '10px'}
-      color="adminTableHeader.font"
-      data-id="596c88f2df6e"
-      fontSize="14px"
-      fontWeight="semibold"
-      p="10px 10px">
-      {children}
-    </Flex>
-  </Box>
+  return (
+    <Box
+      data-id="030925-1bcc88"
+      bg="adminTableHeader.bg"
+      top={0}
+      width="100%"
+      zIndex={1}>
+      {title && (
+        <Box data-id="030925-15c38d" bg="white" borderTopRadius="20px" p="15px 25px">
+          <Text data-id="030925-132fc9" fontSize="smm" fontWeight="bold">
+            {title}
+          </Text>
+        </Box>
+      )}
+      <Flex
+        data-id="030925-d76b82"
+        bg="#EDF2F7"
+        borderBottom="1px solid"
+        borderColor="adminTableHeader.border"
+        borderTopRadius={title ? undefined : '10px'}
+        color="adminTableHeader.font"
+        fontSize="14px"
+        fontWeight="semibold"
+        p="10px 10px">
+        {children}
+      </Flex>
+    </Box>
+  );
 }
 
 export default AdminTableHeader;

@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 
 function Licenses() {
-  return <Flex data-id="8dd64be2dc01">Licenses</Flex>
+  return <Flex data-id="030925-519b7e">Licenses</Flex>;
 }
 
 export default Licenses;

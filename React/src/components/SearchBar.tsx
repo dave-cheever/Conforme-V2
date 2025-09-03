@@ -83,7 +83,7 @@ function SearchBar() {
           label: questionsCategory.name,
           // eslint-disable-next-line react/no-unstable-nested-components
           icon: (props) => <QuestionsCategoryIcon
-            data-id="34703839adfd"
+            data-id="030925-2c83e8"
             icon={questionsCategory?.icon}
             key={questionsCategory?._id}
             {...props} />,
@@ -181,36 +181,36 @@ function SearchBar() {
   };
 
   return (
-    (<Flex border={"1px solid #CBD5E0"} borderRadius={"md"} data-id="1bbf0fad73e2" direction="column"  position="relative" ref={ref} w={["auto", "449px"]}>
+    <Flex data-id="030925-945c64" border={"1px solid #CBD5E0"} borderRadius={"md"} direction="column"  position="relative" ref={ref} w={["auto", "449px"]}>
       <InputGroup
-        data-id="a5273cba17ab"
+        data-id="030925-ebe163"
         display="block"
         maxW="100%"
         transition="width .15s"
         w={['calc(100vw - 30px)', isSearchBarOpen ? '550px' : '260px']}
         zIndex={1}>
         <InputLeftElement
+          data-id="030925-6d560c"
           color="navigationTop.inputIconColor"
-          data-id="7ab9dbdb8063"
           pointerEvents="none">
           <SearchIcon
-            data-id="c4caee9485a3"
+            data-id="030925-291307"
             fill="navigationTop.searchBarIcon"
             opacity="1"
             stroke="brand.outerSpace" />
         </InputLeftElement>
         <InputRightElement
-          data-id="5b7d7ed8f862"
+          data-id="030925-bcbfac"
           display={isSearchBarOpen ? 'block' : 'none'}
           h="full">
           <CrossIcon
+            data-id="030925-18c452"
             _active={{}}
             _hover={{
               color: 'navigationTop.notificationIconHover',
               opacity: 0.7,
               cursor: 'pointer',
             }}
-            data-id="02760af478f6"
             h="13.5px"
             ml="15px"
             mt="10px"
@@ -223,9 +223,9 @@ function SearchBar() {
             w="13.5px" />
         </InputRightElement>
         <Input
-         _placeholder={{ color: '#A0AEC0' }}
+         data-id="030925-99bb74"
+          _placeholder={{ color: '#A0AEC0' }}
           bg="navigationTop.inputBg"
-          data-id="76b7cf59603e"
           fontSize="smm"
           fontWeight="semi_medium"
           onChange={(e) => {
@@ -243,36 +243,36 @@ function SearchBar() {
       </InputGroup>
       {isOpen && (
         <Box
-          data-id="2f0f3c420f1e"
+          data-id="030925-228f54"
           display={isSearchBarOpen ? 'block' : 'none'}
           position="absolute"
           pt={[10, 12]}
           w={['100%', null, '40rem']}
           zIndex={0}>
           <Flex
+            data-id="030925-439ab9"
             bg="white"
             boxShadow="0px 3px 10px rgba(0, 0, 0, .1)"
-            data-id="c40ec27aa9ed"
             direction="row"
             fontSize="smm"
             rounded="10px">
               
             {/* eslint-disable-next-line react/jsx-sort-props */}
             <Box
+              data-id="030925-f0ec95"
               bg="searchBar.categoriesBg"
               borderBottomRightRadius="none"
               borderRadius="10px"
               borderTopRightRadius="none"
-              data-id="625fcc3a70d0"
               pb={2}
               px={[2, 3]}>
               {searchCategories.map((searchCategory) => (
                 <Box
+                  data-id="030925-16d3f8"
                   _hover={{
                     cursor: 'pointer',
                   }}
                   alignItems="center"
-                  data-id="2ac86a6621dc"
                   display="flex"
                   fontSize={['sm', 'md']}
                   fontWeight="normal"
@@ -282,27 +282,27 @@ function SearchBar() {
                   onClick={() => setSelectedSearchCategory(searchCategory)}
                   pos="relative"
                   w={['150px', '200px']}>
-                  <Flex align="center" data-id="b36d7379d190" h="100%">
+                  <Flex data-id="030925-7d0c9e" align="center" h="100%">
                     <Flex
+                      data-id="030925-278113"
                       alignItems="center"
                       bg={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
                           ? 'navigationLeftItem.selectedLabelBg'
                           : '#e7e7e7'
                       }
-                      data-id="d99165ca9f16"
                       h={['22px', '30px']}
                       justifyContent="center"
                       rounded="8px"
                       w={['22px', '30px']}>
                       <Icon
+                        data-id="030925-b8d0ec"
                         as={searchCategory.icon}
                         color={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
                           ? '#ffffff'
                           : '#111111'
-                        }
-                        data-id="8c7de759428a"                       
+                        }                       
                         h="15px"
                         stroke={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
@@ -313,8 +313,8 @@ function SearchBar() {
                     </Flex>
                   </Flex>
                   <Box
+                    data-id="030925-432b85"
                     color="black"
-                    data-id="7c1179ee898e"
                     fontSize={['12px', '14px']}
                     fontWeight="400"
                     ml={[2, 5]}
@@ -324,54 +324,54 @@ function SearchBar() {
                 </Box>
               ))}
             </Box>
-            <Box data-id="954f1f8ff73a" h="auto" w="full">
+            <Box data-id="030925-0a6a51" h="auto" w="full">
               {loading ? (
-                <Flex align="center" data-id="5610944d5e84" h="100px" justify="center" w="full">
-                  <Loader center data-id="cd4b7a92c1ed" size="sm" />
+                <Flex data-id="030925-7f53b2" align="center" h="100px" justify="center" w="full">
+                  <Loader data-id="030925-0d3079" center size="sm" />
                 </Flex>
               ) : (
-                <Flex data-id="72cbceada7fe" direction="column">
+                <Flex data-id="030925-6edfd6" direction="column">
                   {searchResults ? (
                     searchResults.length > 0 ? (
                       <>
                         {(searchResults ?? []).map((result) => (
                           <HStack
+                            data-id="030925-d6aa95"
                             _hover={{
                               background: 'searchBar.results.bgColor.hover',
                             }}
                             align="center"
                             cursor="pointer"
-                            data-id="9492b2b5c781"
                             key={result._id}
                             onClick={() => handleSearchResultClick(result)}
                             p={3}
                             spacing={3}>
-                            <Box data-id="e66521cfa8ae">
-                              <UserAvatar data-id="bfc86b910eff" size="sm" userId={(result.user as IUser)?._id} />
+                            <Box data-id="030925-381535">
+                              <UserAvatar data-id="030925-e1f95b" size="sm" userId={(result.user as IUser)?._id} />
                             </Box>
-                            <Flex data-id="7bcb4e9f101c" direction="column" grow={1}>
+                            <Flex data-id="030925-451661" direction="column" grow={1}>
                               {selectedSearchCategory?.type === 'all' && (
-                                <Text data-id="8a6ae019fac6" fontSize="xs">
+                                <Text data-id="030925-895a55" fontSize="xs">
                                   {searchCategories.find(({ type, _id }) => type === result.type && _id == result.scope._id)?.label}
                                 </Text>
                               )}
-                              <Text data-id="5a545e18dda7" fontSize={["11px", "14px"]} fontWeight="bold" noOfLines={1}>
+                              <Text data-id="030925-4a8291" fontSize={["11px", "14px"]} fontWeight="bold" noOfLines={1}>
                                 {result.title}
                               </Text>
                             </Flex>
-                            <ChevronRight cursor="pointer" data-id="b9c27d5eb4e3" />
+                            <ChevronRight data-id="030925-802a9b" cursor="pointer" />
                           </HStack>
                         ))}
                       </>
                     ) : (
-                      <Flex align="center" data-id="50533d923e29" justify="center" mt={4}>
-                        <Text data-id="44e8f209a4f5" fontSize={['12px', '14px']}>No results found</Text>
+                      <Flex data-id="030925-f1dfa0" align="center" justify="center" mt={4}>
+                        <Text data-id="030925-61c4a3" fontSize={['12px', '14px']}>No results found</Text>
                       </Flex>
                     )
 
                   ) : (
-                    <Flex align="center" data-id="6479715af01d" justify="center" mt={4}>
-                      <Text data-id="561cea50604d" fontSize={["12px", "14px"]}>Enter search phrase in the box above</Text>
+                    <Flex data-id="030925-397d3d" align="center" justify="center" mt={4}>
+                      <Text data-id="030925-4442ea" fontSize={["12px", "14px"]}>Enter search phrase in the box above</Text>
                     </Flex>
                   )}
                 </Flex>
@@ -380,7 +380,7 @@ function SearchBar() {
           </Flex>
         </Box>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

@@ -20,24 +20,24 @@ function ChatMention({ tag }) {
     } catch (e) {}
   }, [getUpdatedDisplayName, tag]);
 
-  if (!userId) return <Text data-id="afecb6030606">{displayTag}</Text>;
+  if (!userId) return <Text data-id="030925-720112">{displayTag}</Text>;
 
   return (
-    (<Tooltip
-      bg="chatMention.tooltip.bg"
-      color="chatMention.tooltip.color"
-      data-id="4267de1f5554"
-      hasArrow
-      label={userName}
-      placement="top">
+    <Tooltip
+        data-id="030925-d5c138"
+        bg="chatMention.tooltip.bg"
+        color="chatMention.tooltip.color"
+        hasArrow
+        label={userName}
+        placement="top">
       <Text
+        data-id="030925-bccbd7"
         color="chatMention.mentionColor"
         cursor="pointer"
-        data-id="7f27e6d2b096"
         display="inline">
         {displayTag}
       </Text>
-    </Tooltip>)
+    </Tooltip>
   );
 }
 

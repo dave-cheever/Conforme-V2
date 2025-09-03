@@ -52,49 +52,49 @@ function Attachments() {
   };
 
   return (
-    (<VStack
-      align={['center', 'flex-start']}
-      data-id="ff502b562032"
-      spacing={4}
-      w="full">
+    <VStack
+        data-id="030925-46b9ca"
+        align={['center', 'flex-start']}
+        spacing={4}
+        w="full">
       {response?.trackerItem?.evidenceItems?.length > 0 && (
-        <Flex data-id="74e341d83883" flexDirection="column" h="full" w="full">
-          <Text data-id="211d4d4ae79a" fontSize={["14px", "sm"]} fontWeight="medium">
+        <Flex data-id="030925-2197d6" flexDirection="column" h="full" w="full">
+          <Text data-id="030925-8b448b" fontSize={["14px", "sm"]} fontWeight="medium">
             Evidence expected
           </Text>
-          <Text data-id="5c39bef6ad19" fontSize={["14px", "sm"]} my={1}>
+          <Text data-id="030925-e92636" fontSize={["14px", "sm"]} my={1}>
             Upload all expected evidence and complete any required question to record this {t('tracker item')} as complete.
           </Text>
           <Stack
+            data-id="030925-c2d49b"
             align={['center', 'flex-start']}
-            data-id="82651328d7f8"
             spacing={4}
             w="full">
             {response?.evidence.map((evidence, i) => (
-              <Evidence data-id="66679a54914b" evidence={evidence} key={i} />
+              <Evidence data-id="030925-1c889f" evidence={evidence} key={i} />
             ))}
           </Stack>
         </Flex>
       )}
       {response.trackerItem?.allowAttachments && (
-        <Stack data-id="b406dc5a324f" justify={['center', 'flex-start']} w="full">
-          <Stack data-id="696c9746c473" maxW="380px">
-            <Text data-id="03291013c1b6" fontSize={["14px", "11px"]} fontWeight="700" mb={2}>
+        <Stack data-id="030925-f457d5" justify={['center', 'flex-start']} w="full">
+          <Stack data-id="030925-36a7d3" maxW="380px">
+            <Text data-id="030925-59f2b0" fontSize={["14px", "11px"]} fontWeight="700" mb={2}>
               Attachments
             </Text>
             {!snapshot && (
               <Can
+                data-id="030925-1c6e5d"
                 action="responses.edit"
                 data={{ response }}
-                data-id="aca89066aa99"
                 // eslint-disable-next-line react/no-unstable-nested-components
                 yes={() => (
                   <DocumentUpload
+                    data-id="030925-24bd5c"
                     callback={async (uploaded) => {
                       await uploadAttachments(uploaded);
                       refetch();
                     }}
-                    data-id="6d1aa22ba61c"
                     documentName="attachment"
                     elementId={response._id} />
                 )} />
@@ -102,19 +102,19 @@ function Attachments() {
           </Stack>
 
           {response.attachments.length > 0 && (
-            <Flex data-id="b41a1355f7a6" fontSize={["14px", "11px"]} fontWeight="bold" my={2}>
+            <Flex data-id="030925-bcfbbe" fontSize={["14px", "11px"]} fontWeight="bold" my={2}>
               Uploaded attachments
             </Flex>
           )}
 
           {response.attachments?.map((attachment, i) => (
-            <Flex data-id="7614def5d85e" flexDir="column" key={i} maxW="380px" mb={2}>
+            <Flex data-id="030925-f12f8b" flexDir="column" key={i} maxW="380px" mb={2}>
               <DocumentUploaded
+                data-id="030925-9e6f75"
                 callback={async () => {
                   await removeAttachment(attachment);
                   refetch();
                 }}
-                data-id="7619b3f80b56"
                 document={attachment}
                 downloadable={isPermitted({
                   user,
@@ -133,7 +133,7 @@ function Attachments() {
           ))}
         </Stack>
       )}
-    </VStack>)
+    </VStack>
   );
 }
 

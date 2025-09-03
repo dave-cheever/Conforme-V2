@@ -184,21 +184,21 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
     !!(audit.status === 'completed' && (questionsCategory.notBlockedAfterCompletion ? !!answer?._id : true)) || !isUserPermittedToModify;
 
   return (
-    (<Stack
-      bgColor="auditAnswer.bg"
-      boxShadow="0px 0px 30px 0px #31323340"
-      data-id="213f708c658e"
-      h={['full', 'auto']}
-      p={4}
-      rounded="10px"
-      spacing={4}>
-      <Text data-id="bb2f2eae3880" fontSize="md" fontWeight="semibold">
+    <Stack
+        data-id="030925-204bc2"
+        bgColor="auditAnswer.bg"
+        boxShadow="0px 0px 30px 0px #31323340"
+        h={['full', 'auto']}
+        p={4}
+        rounded="10px"
+        spacing={4}>
+      <Text data-id="030925-99ddae" fontSize="md" fontWeight="semibold">
         {questionsCategory.name}
       </Text>
       {audit.auditType?.businessUnitScope === 'answer'&& !module?.featureFlags?.enableSafetyWalk && (
         <Dropdown
+          data-id="030925-86ce2b"
           control={control}
-          data-id="9210fc07b4a0"
           disabled={isDisabled}
           label={capitalize(t('business unit'))}
           name="businessUnitId"
@@ -215,8 +215,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           variant="secondaryVariant" />
       )}
       {!module?.featureFlags?.enableSafetyWalk && <Dropdown
+        data-id="030925-52fa00"
         control={control}
-        data-id="7d0ad008b3c8"
         disabled={isDisabled}
         label="Category"
         name="categoryId"
@@ -227,13 +227,13 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         placeholder="Select category"
         stroke="dropdown.icon"
         variant="secondaryVariant" />}
-      <Stack data-id="36e3523a5d2d">
+      <Stack data-id="030925-267c39">
         {questionsCategory.withAnswers ? (
-          <Stack data-id="f8c18bd90db1">
+          <Stack data-id="030925-cfc641">
             {isCustomQuestion && (
               <TextInput
+                data-id="030925-c705c8"
                 control={control}
-                data-id="3e8cab6e01fd"
                 disabled={isDisabled}
                 label="Question"
                 name="question"
@@ -243,8 +243,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
                 }} />
             )}
             <TextInputMultiline
+              data-id="030925-2cf1db"
               control={control}
-              data-id="60d72db6b0dc"
               disabled={isDisabled}
               label="Answer"
               name="answer"
@@ -255,8 +255,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           </Stack>
         ) : (
           <TextInputMultiline
+            data-id="030925-d962a1"
             control={control}
-            data-id="120471970bf6"
             disabled={isDisabled}
             label="What is the audit question?"
             name="question"
@@ -267,13 +267,13 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         )}
       </Stack>
       {questionsCategory.options && (
-        <Stack data-id="1ec13133d344">
-          {module?.featureFlags?.enableSafetyWalk && <Text>Questions Category</Text> }
+        <Stack data-id="030925-af7386">
+          {module?.featureFlags?.enableSafetyWalk && <Text data-id="030925-acf74d">Questions Category</Text> }
 
           {questionsCategory.options.map(({ name, setting }) => (
             <Toggle
+              data-id="030925-96093f"
               control={control}
-              data-id="7893a1f22b9b"
               disabled={isDisabled}
               falseLabel={name}
               key={setting}
@@ -283,13 +283,13 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         </Stack>
       )}
       {module?.featureFlags?.enableSafetyWalk && (question?.positiveValue || question?.negativeValue) &&(
-        <Stack data-id="1ec13133d344">
-          <Text>Walk Choices</Text>
+        <Stack data-id="030925-72a449">
+          <Text data-id="030925-e45b30">Walk Choices</Text>
 
           {question?.positiveValue && (
             <Toggle
+              data-id="030925-3812f3"
               control={control}
-              data-id="7893a1f22b9b"
               disabled={isDisabled}
               falseLabel={`${question?.positiveValue }`}
               key={`${question?.positiveValue }` }
@@ -298,8 +298,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           )}
           {question?.negativeValue && (
             <Toggle
+              data-id="030925-0a7aa7"
               control={control}
-              data-id="7893a1f22b9b"
               disabled={isDisabled}
               falseLabel={`${question?.negativeValue }`}
               key={`${question?.negativeValue }` }
@@ -308,37 +308,37 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           )}
         </Stack>
       )}
-      <Stack data-id="53690979d760">
-        <Text data-id="3ff41bd2e1e6" fontSize="ssm" fontWeight="bold" mb={2}>
+      <Stack data-id="030925-22662d">
+        <Text data-id="030925-6f1a43" fontSize="ssm" fontWeight="bold" mb={2}>
           Attachments
         </Text>
         {!isDisabled && (
           <DocumentUpload
+            data-id="030925-a273c4"
             callback={async (uploaded) => appendAttachment(uploaded)}
-            data-id="dffabd5e9ea6"
             elementId={answer?._id || `temp-${question._id}`}
             setUploadStatus={setUploading} />
         )}
         {values.attachments?.map((attachment, i) => (
-          <Flex data-id="75d3583bf9b5" flexDir="column" key={i} mb={2}>
+          <Flex data-id="030925-f951a0" flexDir="column" key={i} mb={2}>
             <DocumentUploaded
+              data-id="030925-5bdb01"
               callback={async () => removeAttachment(i)}
-              data-id="136e690de3c4"
               document={attachment}
               downloadable
               removable={!isDisabled} />
           </Flex>
         ))}
-        {values.attachments?.length === 0 && isDisabled && <Text data-id="4f95b34c870b" fontSize="sm">No uploaded attachments</Text>}
+        {values.attachments?.length === 0 && isDisabled && <Text data-id="030925-512232" fontSize="sm">No uploaded attachments</Text>}
       </Stack>
-      <Stack data-id="b7f4cf0e5422" spacing={4}>
-        <Text data-id="8020c5997e70" fontSize="ssm" fontWeight="bold">
+      <Stack data-id="030925-ff2fb5" spacing={4}>
+        <Text data-id="030925-3089e9" fontSize="ssm" fontWeight="bold">
           Actions
         </Text>
-        {values.actions?.length === 0 && isDisabled && <Text data-id="77fc233e87bb" fontSize="sm">No actions</Text>}
+        {values.actions?.length === 0 && isDisabled && <Text data-id="030925-a46f23" fontSize="sm">No actions</Text>}
         {selectedAction ? (
           <AuditActionForm
-            data-id="cd25fe98e4bb"
+            data-id="030925-0f8a10"
             handleSave={async (action) => {
               // If action doesn't exist, needs to be created
               if (!action._id) {
@@ -393,11 +393,11 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
               }
             }} />
         ) : (
-          <Stack data-id="03f2a65cd0da">
+          <Stack data-id="030925-b2873a">
             {values.actions?.map((action, index) => (
               <ActionListItem
+                data-id="030925-5e9eeb"
                 action={action}
-                data-id="f97829d8477d"
                 disabled={isDisabled}
                 index={index}
                 key={action._id}
@@ -422,9 +422,9 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
 
             {!isDisabled && (
               <Button
+                data-id="030925-857e91"
                 bgColor="auditAnswer.buttons.addAction.bg"
                 color="auditAnswer.buttons.addAction.color"
-                data-id="393f9d66aeb3"
                 fontSize="ssm"
                 fontWeight="semibold"
                 h="28px"
@@ -437,10 +437,10 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           </Stack>
         )}
       </Stack>
-      {module?.featureFlags?.enableSafetyWalk && <Stack>
+      {module?.featureFlags?.enableSafetyWalk && <Stack data-id="030925-4a0ba1">
       <TextInputMultiline
+            data-id="030925-0aa5e9"
             control={control}
-            data-id="120471970bf6"
             disabled={isDisabled}
             label="Notes"
             name="notes"
@@ -450,12 +450,11 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
 
             }} />
       </Stack>}
-
-      <HStack data-id="a6b4a1f1a420">
+      <HStack data-id="030925-542449">
         <Button
+          data-id="030925-22d4d2"
           bgColor="auditAnswer.buttons.cancel.bg"
           color="auditAnswer.buttons.cancel.color"
-          data-id="d944bd638340"
           fontSize="smm"
           fontWeight="semibold"
           h="40px"
@@ -463,12 +462,12 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           rounded="10px">
           {isDisabled ? 'Close' : 'Cancel'}
         </Button>
-        <Spacer data-id="a9a48024fa85" />
+        <Spacer data-id="030925-b438e4" />
         {!isDisabled && (
           <Button
+            data-id="030925-516f5e"
             bgColor="auditAnswer.buttons.save.bg"
             color="auditAnswer.buttons.save.color"
-            data-id="459f339a752a"
             disabled={!isValid || uploading}
             fontSize="smm"
             fontWeight="semibold"
@@ -481,13 +480,13 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
                 }
                 : saveData
             }
-            rightIcon={<CheckIcon data-id="1e6b4b0a3c37" stroke="auditAnswer.buttons.save.color" />}
+            rightIcon={<CheckIcon data-id="030925-a2486e" stroke="auditAnswer.buttons.save.color" />}
             rounded="10px">
             Save
           </Button>
         )}
       </HStack>
-    </Stack>)
+    </Stack>
   );
 }
 

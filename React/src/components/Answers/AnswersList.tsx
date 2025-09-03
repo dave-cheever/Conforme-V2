@@ -26,20 +26,20 @@ function AnswersList({
 }) {
   return (
     <Box
+      data-id="030925-8d22c4"
       bg="auditsList.bg"
       border="1px solid"
       borderColor="auditsList.headerBorderColor"
       borderRadius="10px"
-      data-id="c9dcc715eafc"
       h="full"
       ml="10px"
       overflow="hidden"
       w="full"
     >
-      <Box bg="auditsList.bg" data-id="9ed6a0796976" h="full" w="full" >
-        <AdminTableHeader data-id="8d072756422b">
+      <Box data-id="030925-d90172" bg="auditsList.bg" h="full" w="full" >
+        <AdminTableHeader data-id="030925-0784fc">
           <AdminTableHeaderElement
-            data-id="94ec98491bcc"
+            data-id="030925-76a75a"
             label="Type"
             onClick={() => {
               setSortType('question.questionsCategory.name');
@@ -50,7 +50,7 @@ function AnswersList({
             w="11%"
           />
           <AdminTableHeaderElement
-            data-id="7a4b568177c5"
+            data-id="030925-b09edb"
             label="Description"
             onClick={() => {
               setSortType('question.question');
@@ -61,7 +61,7 @@ function AnswersList({
             w="13%"
           />
           <AdminTableHeaderElement
-            data-id="6cedd262ce53"
+            data-id="030925-9c6371"
             label="Status"
             onClick={() => {
               setSortType('status');
@@ -72,7 +72,7 @@ function AnswersList({
             w="7%"
           />
           <AdminTableHeaderElement
-            data-id="f0e89569202e"
+            data-id="030925-a64d9e"
             label={capitalize(t('location'))}
             onClick={() => {
               setSortType('audit.location.name');
@@ -83,7 +83,7 @@ function AnswersList({
             w="14%"
           />
           <AdminTableHeaderElement
-            data-id="ba5ec43859af"
+            data-id="030925-839b38"
             label={capitalize(t('business unit'))}
             onClick={() => {
               setSortType('businessUnit.name');
@@ -94,7 +94,7 @@ function AnswersList({
             w="10%"
           />
           <AdminTableHeaderElement
-            data-id="a55eb24ed040"
+            data-id="030925-0fb87b"
             label="# of actions"
             onClick={() => {
               setSortType('actions.length');
@@ -105,7 +105,7 @@ function AnswersList({
             w="10%"
           />
           <AdminTableHeaderElement
-            data-id="bc9b5240b005"
+            data-id="030925-4e0318"
             label="Added by"
             onClick={() => {
               setSortType('addedBy.displayName');
@@ -116,7 +116,7 @@ function AnswersList({
             w="18%"
           />
           <AdminTableHeaderElement
-            data-id="ad5ff6c327a4"
+            data-id="030925-5066b1"
             label="Date added"
             onClick={() => {
               setSortType('metatags.addedAt');
@@ -127,12 +127,12 @@ function AnswersList({
             w="10%"
           />
         </AdminTableHeader>
-        <Flex data-id="542f9fc2b876" flexDir="column" h={['full', 'calc(100vh - 295px)', 'calc(100vh - 293px)']} overflowY="auto" w="full">
+        <Flex data-id="030925-9632d8" flexDir="column" h={['full', 'calc(100vh - 295px)', 'calc(100vh - 293px)']} overflowY="auto" w="full">
           {answers?.length > 0 ? (
             answers?.map((answer, idx) => (
               <AnswersListItem
+                data-id="030925-e41f66"
                 answer={answer}
-                data-id="ecf11473c1b0"
                 editAnswer={editAnswer}
                 index={idx}
                 key={answer._id}
@@ -140,7 +140,7 @@ function AnswersList({
               />
             ))
           ) : (
-            <Flex data-id="dad222c8f90c" fontSize="18px" fontStyle="italic" h="full" margin="auto" padding="10" textAlign="center" w="fit">
+            <Flex data-id="030925-2c4ca8" fontSize="18px" fontStyle="italic" h="full" margin="auto" padding="10" textAlign="center" w="fit">
               No {t('question')}s found
             </Flex>
           )}

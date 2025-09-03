@@ -80,36 +80,37 @@ function DocumentUpload({
   };
 
   return (
-    (<Flex data-id="dd686dcc9e89" flexDirection="column" fontWeight="700" w="full">
+    <Flex data-id="030925-c0611f" flexDirection="column" fontWeight="700" w="full">
       {uploading.length > 0 ? (
         uploading.map((name) => (
-          <Flex data-id="b9d2a540ecf8" key={name} mb={3}>
+          <Flex data-id="030925-d0a0b7" key={name} mb={3}>
             <DocumentUploading
+              data-id="030925-f491f1"
               cancelUpload={() => {
                 uploadControllerRef.current[name].abort();
                 delete uploadControllerRef.current[name];
               }}
-              data-id="74bb8b561fc0"
               documentName={name} />
           </Flex>
         ))
       ) : (
         <Dropzone
+          data-id="030925-5af048"
           accept={acceptedFileTypes}
-          data-id="89fa7a2ff92e"
           disabled={disabled}
           multiple
           onDrop={(acceptedFiles, rejectedFiles) => upload({ acceptedFiles, rejectedFiles })}>
           {({ getRootProps, getInputProps }) => (
             <Box
-              data-id="31f158d9ca12"
+              data-id="030925-8e38f3"
               {...getRootProps()}
               cursor="pointer"
               h="65px"
               mb={3}
               w="full">
-              <input data-id="0ea599b1208f" {...getInputProps()} />
+              <input data-id="030925-c1eae2" {...getInputProps()} />
               <Flex
+                data-id="030925-2a6db6"
                 align="center"
                 bg="#F7FAFC"
                 borderColor="#D9D9E0"
@@ -117,22 +118,21 @@ function DocumentUpload({
                 borderStyle="dashed"
                 borderWidth="1px"
                 color="#818197"
-                data-id="8ad1df2b13dc"
                 fontSize="14px"
                 fontWeight="semi_medium"
                 h="full"
                 justify="space-between"
                 px={5}
                 w="full">
-                <Flex data-id="31c533e4dc6c">
+                <Flex data-id="030925-fb2aa6">
                   {' '}
                   Drag and drop or{' '}
-                  <Text color="#462AC4" data-id="67cf6201cab6" ml={1}>
+                  <Text data-id="030925-316db0" color="#462AC4" ml={1}>
                     {' '}
                     browse
                   </Text>
                 </Flex>
-                <UploadIcon color="#818197" data-id="7354cbce0737" h="21px" w="21px" />
+                <UploadIcon data-id="030925-b3b1d3" color="#818197" h="21px" w="21px" />
               </Flex>
             </Box>
           )}
@@ -140,15 +140,15 @@ function DocumentUpload({
       )}
       {rejected && (
         <Flex
+          data-id="030925-f72d8a"
           color="red.500"
-          data-id="7d2818ab398c"
           fontSize="12px"
           fontWeight="bold"
           mt={2}>
           Document not uploaded. Accepted file types include {listSupportedFileTypes(acceptedFileTypes)}
         </Flex>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

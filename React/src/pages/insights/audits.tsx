@@ -275,17 +275,17 @@ function AuditsInsights() {
   ) as EChartsOption;
 
   return (
-    (<Box data-id="c52094756aa1" pt="3">
+    <Box data-id="030925-a1a288" pt="3">
       {error ? (
-        <Text data-id="175dae4a92a6">{error.message}</Text>
+        <Text data-id="030925-d5e59d">{error.message}</Text>
       ) : loading ? (
-        <Box data-id="d6f174d7650d" h="100vh">
-          <Loader center data-id="e218f7079fbb" />
+        <Box data-id="030925-95fa0e" h="100vh">
+          <Loader data-id="030925-9d0614" center />
         </Box>
       ) : (
         <>
           <Flex
-            data-id="5bad076b5dcf"
+            data-id="030925-f1830b"
             sx={{
               '@media (max-width: 768px)': {
                 overflowX: 'scroll',
@@ -294,8 +294,8 @@ function AuditsInsights() {
             }}>
             {auditsStatsCounts.map((filter) => (
               <InsightsCard
+                data-id="030925-e8bb3c"
                 count={filter.audits}
-                data-id="ddb825078d3e"
                 key={filter.status}
                 onSelect={setSelectedAuditsStatsCount}
                 selected={selectedAuditsStatsCount === filter.status}
@@ -303,20 +303,20 @@ function AuditsInsights() {
             ))}
           </Flex>
           <Text
+            data-id="030925-c436a2"
             color={auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color}
-            data-id="4f60c5e91690"
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}>
             {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
-            <Text as="span" color="insights.secondaryText" data-id="34b551d959dc">
+            <Text data-id="030925-1d2255" as="span" color="insights.secondaryText">
               {pluralize(t('audit'))}
             </Text>
           </Text>
-          <InsightsChart data-id="405e91b68eae" option={echartsOption} />
+          <InsightsChart data-id="030925-deb1aa" option={echartsOption} />
           <InsightsDetailedStats
+            data-id="030925-5443d2"
             businessUnits={businessUnits}
-            data-id="80caaddbff42"
             insightsType="audits"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}
@@ -325,7 +325,7 @@ function AuditsInsights() {
             users={users} />
         </>
       )}
-    </Box>)
+    </Box>
   );
 }
 

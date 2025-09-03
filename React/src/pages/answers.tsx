@@ -291,168 +291,170 @@ function Answers() {
     [JSON.stringify(filteredAnswers)],
   );
 
-  return (<>
-    <AnswerDeleteModal
-      answer={selectedAnswer ?? ({} as IAnswer)}
-      data-id="62498e1d991e"
-      isOpen={isDeleteQuestionModalOpen}
-      onClose={handleDeleteQuestionModalClose}
-      refetchAnswers={refetch} />
-    <Modal
-      data-id="263c374dabd4"
-      isOpen={adminModalState !== 'closed'}
-      onClose={closeModal}
-      size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
-      variant="adminModal">
-      <AnswerModal
-        answer={selectedAnswer}
-        closeModal={closeModal}
-        data-id="86d3e719d971"
-        handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
-        refetch={refetch} />
-    </Modal>
-    <Header
-      breadcrumbs={[capitalize(pluralize(t('question')))]}
-      data-id="892bbf812d90"
-      mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
-      <ChangeViewButton
-        data-id="1d1aeb4b557f"
-        setViewMode={setViewMode}
-        viewMode={viewMode}
-        views={['grid', 'list']} />
-      {device !== 'mobile' && (
-        <CSVLinkComponent
-          data={csvData}
-          data-id="5a492d1b03e3"
-          filename="answers.csv"
-          headers={csvHeaders}
-          target="_blank">
-          <Button
-            _hover={{
-              bg: 'reasponseHeader.buttonLightBgHover',
-              color: 'reasponseHeader.buttonLightColorHover',
-              cursor: 'pointer',
-              '&:hover svg path': { stroke: 'white' },
-            }}
-            bg="white"
-            borderRadius="10px"
-            data-id="21b90ee35575"
-            display="none"
-            ml="15px"
-            rightIcon={<ExportIcon data-id="3930a1d714c2" height="15px" width="15px" />}>
-            <Text data-id="9a22411e1581" fontSize="smm" fontWeight="bold">
-              Export
-            </Text>
-          </Button>
-        </CSVLinkComponent>
-      )}
-      <SortButton
-        data-id="85e7ef276126"
-        ml={[0, '15px']}
-        setSortOrder={setSortOrder}
-        setSortType={setSortType}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
-        sortType={sortType} />
+  return (
+    <>
+      <AnswerDeleteModal
+        data-id="030925-4cc64e"
+        answer={selectedAnswer ?? ({} as IAnswer)}
+        isOpen={isDeleteQuestionModalOpen}
+        onClose={handleDeleteQuestionModalClose}
+        refetchAnswers={refetch} />
+      <Modal
+        data-id="030925-4bf887"
+        isOpen={adminModalState !== 'closed'}
+        onClose={closeModal}
+        size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
+        variant="adminModal">
+        <AnswerModal
+          data-id="030925-f6ff02"
+          answer={selectedAnswer}
+          closeModal={closeModal}
+          handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
+          refetch={refetch} />
+      </Modal>
+      <Header
+        data-id="030925-854b98"
+        breadcrumbs={[capitalize(pluralize(t('question')))]}
+        mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
+        <ChangeViewButton
+          data-id="030925-3eddd7"
+          setViewMode={setViewMode}
+          viewMode={viewMode}
+          views={['grid', 'list']} />
+        {device !== 'mobile' && (
+          <CSVLinkComponent
+            data-id="030925-58e43a"
+            data={csvData}
+            filename="answers.csv"
+            headers={csvHeaders}
+            target="_blank">
+            <Button
+              data-id="030925-2668d5"
+              _hover={{
+                bg: 'reasponseHeader.buttonLightBgHover',
+                color: 'reasponseHeader.buttonLightColorHover',
+                cursor: 'pointer',
+                '&:hover svg path': { stroke: 'white' },
+              }}
+              bg="white"
+              borderRadius="10px"
+              display="none"
+              ml="15px"
+              rightIcon={<ExportIcon data-id="030925-d8ee1b" height="15px" width="15px" />}>
+              <Text data-id="030925-9c065f" fontSize="smm" fontWeight="bold">
+                Export
+              </Text>
+            </Button>
+          </CSVLinkComponent>
+        )}
+        <SortButton
+          data-id="030925-7dcdf5"
+          ml={[0, '15px']}
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          sortType={sortType} />
 
-    </Header>
-    <Flex data-id="a2e9b6d7023d" h={['calc(100vh - 80px)', 'full']} overflow="auto">
-      {/* eslint-disable */}
-      {error ? (
-        <Text data-id="3c62528dcb7a">{error.message}</Text>
-      ) : loading ? (
-        <Loader data-id="e82afaadad08" center={true} />
-      ) : (
-        <>
-          <Tabs
-            data-id="2bfade6d7c16"
-            defaultIndex={selectedPanel}
-            onChange={(index) => setSelectedPanel(index)}
-            variant="unstyled"
-            w="full">
-            <TabList data-id="fbe2e3992cf8" px={[4, 8]} flexWrap={['wrap', 'initial']}>
-              {panels?.map((panel) => (
-                <Tab
-                  data-id="d6b70656e6af"
-                  key={panel._id}
-                  _selected={{
-                    bg: 'answers.tabBg',
-                    color: 'answers.tabColor',
-                  }}
-                  borderRadius="10px"
-                  fontSize="14px"
-                  fontWeight="600"
-                   _hover={{
-                    opacity: 0.8,
-                  }}
-                  mr={[1, 2]}
-                  ml={[1, 0]}
-                  my={[1, 0]}
-                  w={['calc(50% - .5rem)', 'auto', 'auto']}>
-                  {panel.name}
-                </Tab>
-              ))}
-            </TabList>
-            <TabPanels data-id="c44ada68ad3e">
-              {panels?.map((panel) => (
-                <TabPanel
-                  data-id="e1c9a7367a4c"
-                  key={panel._id}
-                  p={[4, viewMode === 'list' ? 6 : 2]}
-                  ml={[0, '10px']}>
-                  {viewMode === 'grid' && (
-                    <Grid
-                      data-id="268d2a8a7c28"
-                      display={['grid', 'grid', 'flex']}
-                      flexWrap="wrap"
-                      gap={[4, 4, 6]}
-                      h="fit-content"
-                      pb={[14, 8]}
-                      pt="3"
-                      px={[0, 4]}
-                      templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-                      w="full">
-                        {sortedAnswers.length > 0 ? (
-                          sortedAnswers.map((answer) => (
-                            <AnswerSquare
-                              data-id="803def365757"
-                              answer={answer}
-                              editAnswer={handleOpenModal}
-                              key={answer._id}
-                            />
-                          ))
-                        ) : (
-                          <Flex
-                            data-id="dad222c8f90c"
-                            fontSize="18px"
-                            fontStyle="italic"
-                            h="full"
-                            w="full">
-                            No {t('question')}s found
-                          </Flex>
-                        )}
-                    </Grid>
-                  )}
-                  {viewMode === 'list' && (
-                    <AnswersList
-                      data-id="d10f98c52554"
-                      answers={sortedAnswers}
-                      editAnswer={handleOpenModal}
-                      refetchAnswers={refetch}
-                      setSortOrder={setSortOrder}
-                      setSortType={setSortType}
-                      sortOrder={sortOrder}
-                      sortType={sortType} />
-                  )}
-                </TabPanel>
-              ))}
-            </TabPanels>
-          </Tabs>
-        </>
-      )}
-      {/* eslint-enable */}
-    </Flex>
-  </>);
+      </Header>
+      <Flex data-id="030925-a1a71d" h={['calc(100vh - 80px)', 'full']} overflow="auto">
+        {/* eslint-disable */}
+        {error ? (
+          <Text data-id="030925-c64257">{error.message}</Text>
+        ) : loading ? (
+          <Loader data-id="030925-44211b" center={true} />
+        ) : (
+          <>
+            <Tabs
+              data-id="030925-532749"
+              defaultIndex={selectedPanel}
+              onChange={(index) => setSelectedPanel(index)}
+              variant="unstyled"
+              w="full">
+              <TabList data-id="030925-3eaab4" px={[4, 8]} flexWrap={['wrap', 'initial']}>
+                {panels?.map((panel) => (
+                  <Tab
+                    data-id="030925-446401"
+                    key={panel._id}
+                    _selected={{
+                      bg: 'answers.tabBg',
+                      color: 'answers.tabColor',
+                    }}
+                    borderRadius="10px"
+                    fontSize="14px"
+                    fontWeight="600"
+                     _hover={{
+                      opacity: 0.8,
+                    }}
+                    mr={[1, 2]}
+                    ml={[1, 0]}
+                    my={[1, 0]}
+                    w={['calc(50% - .5rem)', 'auto', 'auto']}>
+                    {panel.name}
+                  </Tab>
+                ))}
+              </TabList>
+              <TabPanels data-id="030925-6f64a5">
+                {panels?.map((panel) => (
+                  <TabPanel
+                    data-id="030925-92b53a"
+                    key={panel._id}
+                    p={[4, viewMode === 'list' ? 6 : 2]}
+                    ml={[0, '10px']}>
+                    {viewMode === 'grid' && (
+                      <Grid
+                        data-id="030925-246c65"
+                        display={['grid', 'grid', 'flex']}
+                        flexWrap="wrap"
+                        gap={[4, 4, 6]}
+                        h="fit-content"
+                        pb={[14, 8]}
+                        pt="3"
+                        px={[0, 4]}
+                        templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+                        w="full">
+                          {sortedAnswers.length > 0 ? (
+                            sortedAnswers.map((answer) => (
+                              <AnswerSquare
+                                data-id="030925-607285"
+                                answer={answer}
+                                editAnswer={handleOpenModal}
+                                key={answer._id}
+                              />
+                            ))
+                          ) : (
+                            <Flex
+                              data-id="030925-4ce694"
+                              fontSize="18px"
+                              fontStyle="italic"
+                              h="full"
+                              w="full">
+                              No {t('question')}s found
+                            </Flex>
+                          )}
+                      </Grid>
+                    )}
+                    {viewMode === 'list' && (
+                      <AnswersList
+                        data-id="030925-ca510b"
+                        answers={sortedAnswers}
+                        editAnswer={handleOpenModal}
+                        refetchAnswers={refetch}
+                        setSortOrder={setSortOrder}
+                        setSortType={setSortType}
+                        sortOrder={sortOrder}
+                        sortType={sortType} />
+                    )}
+                  </TabPanel>
+                ))}
+              </TabPanels>
+            </Tabs>
+          </>
+        )}
+        {/* eslint-enable */}
+      </Flex>
+    </>
+  );
 }
 
 export default Answers;

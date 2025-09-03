@@ -45,83 +45,85 @@ function DocumentUploaded({
     }
   };
 
-  return (<>
-    <DocumentDeleteModal
-      data-id="51616ded175a"
-      handleClose={handleDeleteModalClose}
-      handleDelete={remove}
-      isOpen={isDeleteModalOpen}
-      message={deleteModalMessage || `Are you sure you wish to delete ${document?.name}?`} />
-    <Flex
-      align="center"
-      border="1px solid #CBD5E0"
-      borderRadius="10px"
-      color="brand.darkGrey"
-      data-id="692ac974b86e"
-      fontWeight="400"
-      justify="space-between"
-      key={document?.id}
-      p={2}
-      role="group"
-      w="full">
+  return (
+    <>
+      <DocumentDeleteModal
+        data-id="030925-ae989e"
+        handleClose={handleDeleteModalClose}
+        handleDelete={remove}
+        isOpen={isDeleteModalOpen}
+        message={deleteModalMessage || `Are you sure you wish to delete ${document?.name}?`} />
       <Flex
+        data-id="030925-17bece"
         align="center"
-        bg="documentUploaded.thumbnailBg"
-        borderColor="documentUploaded.border"
-        borderRadius="3px"
-        borderWidth="1px"
-        data-id="4c6c99e69c2b"
-        flexShrink={0}
-        fontSize="12px"
-        h="45px"
-        justify="center"
-        overflow="hidden"
-        w="45px">
-        <Image
-          aspectRatio="1 / 1"
-          data-id="68397871f312"
-          fallback={
-            <Flex align="center" data-id="962981fdb686" h="full">
-              <BlankPage data-id="b83c5c6a42d6" h="20px" w="45px" />
-            </Flex>
-          }
-          h="auto"
-          maxH="55px"
-          maxW="55px"
-          src={documentDetails?.thumbnail}
-          w="auto" />
-      </Flex>
-      <Flex
-        data-id="e8e644a590bc"
-        direction="column"
-        fontSize="12px"
-        grow={1}
-        mx={2}
-        overflow="hidden"
-        textOverflow="ellipsis">
-        <Text
-          data-id="5a562db5396e"
-          fontWeight="700"
-          noOfLines={1}
+        border="1px solid #CBD5E0"
+        borderRadius="10px"
+        color="brand.darkGrey"
+        fontWeight="400"
+        justify="space-between"
+        key={document?.id}
+        p={2}
+        role="group"
+        w="full">
+        <Flex
+          data-id="030925-bc140f"
+          align="center"
+          bg="documentUploaded.thumbnailBg"
+          borderColor="documentUploaded.border"
+          borderRadius="3px"
+          borderWidth="1px"
+          flexShrink={0}
+          fontSize="12px"
+          h="45px"
+          justify="center"
+          overflow="hidden"
+          w="45px">
+          <Image
+            data-id="030925-072156"
+            aspectRatio="1 / 1"
+            fallback={
+              <Flex data-id="030925-c89b82" align="center" h="full">
+                <BlankPage data-id="030925-e606e3" h="20px" w="45px" />
+              </Flex>
+            }
+            h="auto"
+            maxH="55px"
+            maxW="55px"
+            src={documentDetails?.thumbnail}
+            w="auto" />
+        </Flex>
+        <Flex
+          data-id="030925-9dd481"
+          direction="column"
+          fontSize="12px"
+          grow={1}
+          mx={2}
+          overflow="hidden"
           textOverflow="ellipsis">
-          {document?.name}
-        </Text>
-        <Flex data-id="63dfffcf17f1" opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
+          <Text
+            data-id="030925-397c30"
+            fontWeight="700"
+            noOfLines={1}
+            textOverflow="ellipsis">
+            {document?.name}
+          </Text>
+          <Flex data-id="030925-047e4f" opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
+        </Flex>
+        <HStack data-id="030925-2f288d" mr={[1, 3]} spacing={4}>
+          {downloadable && <DownloadIcon
+            data-id="030925-241f09"
+            cursor='pointer'
+            onClick={() => window.open(documentDetails?.path)}
+            stroke="documentUploaded.downloadIcon" />}
+          {removable && <Trashcan
+            data-id="030925-2fe2a9"
+            cursor='pointer'
+            onClick={openDeleteModal}
+            stroke="documentUploaded.binIcon" />}
+        </HStack>
       </Flex>
-      <HStack data-id="5d23f6ba0144" mr={[1, 3]} spacing={4}>
-        {downloadable && <DownloadIcon
-          cursor='pointer'
-          data-id="e5de5299a4a6"
-          onClick={() => window.open(documentDetails?.path)}
-          stroke="documentUploaded.downloadIcon" />}
-        {removable && <Trashcan
-          cursor='pointer'
-          data-id="f605712a0088"
-          onClick={openDeleteModal}
-          stroke="documentUploaded.binIcon" />}
-      </HStack>
-    </Flex>
-  </>);
+    </>
+  );
 }
 
 export default DocumentUploaded;

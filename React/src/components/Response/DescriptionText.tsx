@@ -7,16 +7,16 @@ function DescriptionText() {
 
   if (!response?.trackerItem?.description) return null;
   return (
-    (<Box
-      color="trackerItemResponse.textColor"
-      data-id="f170f63eff96"
-      fontSize="14px"
-      lineHeight="20px"
-      mt="5"
-      w="full"
-      whiteSpace="break-spaces">
-      <Text data-id="877d4b58403a" noOfLines={1}>{response.trackerItem.description}</Text>
-    </Box>)
+    <Box
+        data-id="030925-a91584"
+        color="trackerItemResponse.textColor"
+        fontSize="14px"
+        lineHeight="20px"
+        mt="5"
+        w="full"
+        whiteSpace="break-spaces">
+      <Text data-id="030925-06d5b4" noOfLines={1}>{response.trackerItem.description}</Text>
+    </Box>
   );
 }
 

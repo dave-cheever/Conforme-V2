@@ -43,22 +43,24 @@ function NavigationLeftItemTablet({
   };
   }, [filtersOpen, subsectionOpen, setFiltersOpen, setSubsectionOpen]);
   
-  return (<Box
-      _hover={{
-        cursor: 'pointer',
-      }}
-      alignItems="center"
-      data-id="0f891525846d"
-      display="flex"
-      fontSize="md"
-      fontWeight="normal"
-      h="42px"
-      justifyContent="center"
-      mt="5px"
-      pos="relative"
-      w="auto">
-      <Flex align="center" data-id="2291e781bcb4" h="100%">
+  return (
+    <Box
+        data-id="030925-97c4ad"
+        _hover={{
+          cursor: 'pointer',
+        }}
+        alignItems="center"
+        display="flex"
+        fontSize="md"
+        fontWeight="normal"
+        h="42px"
+        justifyContent="center"
+        mt="5px"
+        pos="relative"
+        w="auto">
+      <Flex data-id="030925-2de382" align="center" h="100%">
         <Flex
+          data-id="030925-ab5738"
           align="center"
           bg={
             menuItem.subSections
@@ -69,7 +71,6 @@ function NavigationLeftItemTablet({
                 ? 'navigationLeftItemTablet.selectedLabelBg'
                 : 'navigationLeftItemTablet.unselectedLabelBg'
           }
-          data-id="47645b188bad"
           h="30px"
           justifyContent="center"
           ml="0px"
@@ -89,8 +90,8 @@ function NavigationLeftItemTablet({
           rounded="8px"
           w="30px">
           <Icon
+            data-id="030925-a80fe7"
             as={icon}
-            data-id="27c25f1d5d16"
             fill="#ffffff"
             h="15px"
             stroke="#ffffff"
@@ -99,9 +100,9 @@ function NavigationLeftItemTablet({
       </Flex>
       {filtersOpen && menuItem.url === '/' && (
         <Box
+          data-id="030925-0d7dbd"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="dcd4f2603e3a"
           ml="80px"
           pos="absolute"
           py="15px"
@@ -111,14 +112,14 @@ function NavigationLeftItemTablet({
           zIndex="5">
           {Object.keys(responsesStatusesCounts).length !== 0 && (
             <NavigationLeftFilters
-              data-id="c3677a2169ad"
+              data-id="030925-23f551"
               filter={['all', responsesStatusesCounts.compliant + responsesStatusesCounts.nonCompliant]}
               menuOpen={menuOpen}
               setFiltersOpen={setFiltersOpen} />
           )}
           {Object.entries(responsesStatusesCounts).map((filter) => (
             <NavigationLeftFilters
-              data-id="b8473be32eb4"
+              data-id="030925-e1d8ff"
               filter={filter}
               key={filter[0]}
               menuOpen={menuOpen}
@@ -128,9 +129,9 @@ function NavigationLeftItemTablet({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
+          data-id="030925-70bb5b"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="c7dad1258a0f"
           maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
           ml="18rem"
           overflowY="auto"
@@ -143,7 +144,7 @@ function NavigationLeftItemTablet({
           zIndex="11">
           {menuItem.subSections?.map((subSection) => (
             <SubSection
-              data-id="3b7e67504e5a"
+              data-id="030925-8c3650"
               isPopover
               key={subSection.label}
               menuOpen={menuOpen}
@@ -152,7 +153,8 @@ function NavigationLeftItemTablet({
           ))}
         </Box>
       )}
-    </Box>);
+    </Box>
+  );
 }
 
 export default NavigationLeftItemTablet;

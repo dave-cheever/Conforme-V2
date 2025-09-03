@@ -20,34 +20,34 @@ function EmailTemplate({
   };
 
   return (
-    (<Flex
-      data-id="6faeb475653c"
-      flexDirection="column"
-      minW={['80px', '155px', 'full']}
-      onClick={onClick}
-      w="full">
+    <Flex
+        data-id="030925-229306"
+        flexDirection="column"
+        minW={['80px', '155px', 'full']}
+        onClick={onClick}
+        w="full">
       <Flex
+        data-id="030925-94bc44"
         _hover={{ borderColor: 'emailTemplate.hoverBorderColor' }}
         borderColor={active ? 'emailTemplate.activeBorderColor' : 'emailTemplate.borderColor'}
         borderRadius="10px"
-        borderWidth="2px"
-        data-id="958323afb428">
+        borderWidth="2px">
         <Image
+          data-id="030925-9c197d"
           cursor="pointer"
-          data-id="2ed37f0b4b66"
           fit="contain"
           h="180px"
           src={`${process.env.REACT_APP_API_URL}/images/thumbnails/${template._id}.png?preventCache=${updateImage}`}
           w="full" />
       </Flex>
       <Flex
+        data-id="030925-76ac00"
         color="emailTemplate.labelColor"
-        data-id="f11e6ef86716"
         fontSize="14px"
         mt={2}>
         {template?.label}
       </Flex>
-    </Flex>)
+    </Flex>
   );
 }
 

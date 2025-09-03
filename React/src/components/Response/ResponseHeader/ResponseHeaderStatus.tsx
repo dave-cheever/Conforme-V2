@@ -14,25 +14,25 @@ function ResponseHeaderStatus({ heading, status }) {
   }, [status]);
 
   const renderIcon = () => {
-    if (status === 'Yes') return <SuccessCircleIcon data-id="d33d21096bf0" h="18px" w="18px" />;
+    if (status === 'Yes') return <SuccessCircleIcon data-id="030925-855d16" h="18px" w="18px" />;
 
-    if (status === 'No') return <ErrorCircleIcon data-id="d5b1b5516efd" h="18px" w="18px" />;
+    if (status === 'No') return <ErrorCircleIcon data-id="030925-cc96c1" h="18px" w="18px" />;
 
     return null;
   };
 
   return (
     <VStack
+      data-id="030925-5b7170"
       align="left"
       alignItems={['start', 'start']}
-      data-id="37c215c3f2bf"
       direction="column"
       spacing={2}
       w={['max-content', 'max-content']}
     >
       <Flex
+        data-id="030925-a4750f"
         color="responseHeaderStatus.heading"
-        data-id="dcb6a9a637c6"
         fontSize="16px"
         fontStyle="normal"
         fontWeight="600"
@@ -40,9 +40,9 @@ function ResponseHeaderStatus({ heading, status }) {
       >
         {heading}
       </Flex>
-      <Stack align="center" data-id="7b19fb5447df" direction="row" pr="10px" spacing={2}>
+      <Stack data-id="030925-c7e479" align="center" direction="row" pr="10px" spacing={2}>
         {renderIcon()}
-        <Text color={color} data-id="8010c9b2d7c9" fontSize="smm" fontStyle="normal" fontWeight="bold" lineHeight="20px">
+        <Text data-id="030925-a896b5" color={color} fontSize="smm" fontStyle="normal" fontWeight="bold" lineHeight="20px">
           {status}
         </Text>
       </Stack>

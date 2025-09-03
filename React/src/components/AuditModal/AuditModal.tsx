@@ -139,24 +139,24 @@ function AuditModal({ refetch }) {
 };
 
   return (
-    (<ModalContent
-      bg="auditModal.bg"
-      data-id="da7a09e0879e"
-      h="100%"
-      m="0"
-      overflow="hidden"
-      p={[4, 6]}
-      rounded="0">
+    <ModalContent
+        data-id="030925-48a779"
+        bg="auditModal.bg"
+        h="100%"
+        m="0"
+        overflow="hidden"
+        p={[4, 6]}
+        rounded="0">
       <ModalHeader
+        data-id="030925-21d3ce"
         alignItems="center"
-        data-id="755d0bce1212"
         fontSize="xxl"
         fontWeight="bold"
         p="0">
-        <Flex data-id="d60a03058af8" justifyContent="space-between">
-          <Flex alignItems="center" data-id="c0056ca79405" fontSize={['14px', '24px']}>
+        <Flex data-id="030925-1e02ec" justifyContent="space-between">
+          <Flex data-id="030925-4491b1" alignItems="center" fontSize={['14px', '24px']}>
             <Avatar
-              data-id="ecc99630896e"
+              data-id="030925-45a012"
               mr={3}
               name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
               rounded="full"
@@ -164,10 +164,10 @@ function AuditModal({ refetch }) {
               src={user?.imgUrl} />
             New {t('audit')}
           </Flex>
-          <Flex alignItems="center" data-id="000809e5989f">
+          <Flex data-id="030925-ffc57d" alignItems="center">
             <Close
+              data-id="030925-30cd5b"
               cursor="pointer"
-              data-id="2721da5cb238"
               h="15px"
               onClick={closeModal}
               stroke="auditModal.closeIcon"
@@ -175,29 +175,29 @@ function AuditModal({ refetch }) {
           </Flex>
         </Flex>
       </ModalHeader>
-      <ModalBody data-id="d8d95ff45eb8" overflowY="auto" p="1rem 0 0 0">
-        <Stack data-id="d0ad1d52513f" justify="space-between" spacing={2}>
+      <ModalBody data-id="030925-3ebba3" overflowY="auto" p="1rem 0 0 0">
+        <Stack data-id="030925-e069ca" justify="space-between" spacing={2}>
           <Stack
-            data-id="bf5f4914e0ca"
+            data-id="030925-514a7d"
             flexGrow={1}
             justify="space-between"
             overflowY="auto"
             px={2}
             py={0}
             spacing={6}>
-            <Flex data-id="4476d5c853b2" direction="column">
-              <Text data-id="592754eddf43" fontSize="smm" fontWeight="semibold">
+            <Flex data-id="030925-8544f4" direction="column">
+              <Text data-id="030925-7fea7e" fontSize="smm" fontWeight="semibold">
                 Details
               </Text>
               <Grid
+                data-id="030925-45c00d"
                 columnGap={4}
-                data-id="46f258c3934d"
                 rowGap={2}
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
-                  <GridItem data-id="e39f74c8ee89" w="100%">
+                  <GridItem data-id="030925-a96fac" w="100%">
                     <Dropdown
+                      data-id="030925-57e3ea"
                       control={control}
-                      data-id="ea42eecee549"
                       disabled={auditTypes?.length === 1}
                       label="Audit Type"
                       name="auditTypeId"
@@ -213,10 +213,10 @@ function AuditModal({ refetch }) {
                       }} />
                   </GridItem>
                 {module?.featureFlags?.enableSafetyWalk && 
-                  <GridItem data-id="cd00d4a564da" w="100%">
+                  <GridItem data-id="030925-ac557e" w="100%">
                     <Dropdown
+                      data-id="030925-ea7905"
                       control={control}
-                      data-id="c2f11242bcc2"
                       label="Type"
                       name="walkType"
                       options={[
@@ -232,10 +232,10 @@ function AuditModal({ refetch }) {
                       variant="secondaryVariant" />
                   </GridItem>
                 }
-                <GridItem data-id="ed2f960b3d6a" w="100%">
+                <GridItem data-id="030925-ecabf0" w="100%">
                   <Dropdown
+                    data-id="030925-50a644"
                     control={control}
-                    data-id="3fbe58700538"
                     label={capitalize(t('location'))}
                     name="locationId"
                     options={(locations ?? []).map((location) => ({
@@ -251,10 +251,10 @@ function AuditModal({ refetch }) {
                     variant="secondaryVariant" />
                 </GridItem>
                 {audit.auditTypeId && auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' && (
-                  <GridItem data-id="cbcfaffab51b" w="100%">
+                  <GridItem data-id="030925-101588" w="100%">
                     <Dropdown
+                      data-id="030925-53c29f"
                       control={control}
-                      data-id="091697a310b5"
                       label={capitalize(t('business unit'))}
                       name="businessUnitId"
                       options={(businessUnits ?? []).map((businessUnit) => ({
@@ -273,36 +273,36 @@ function AuditModal({ refetch }) {
               </Grid>
             </Flex>
             <SingleParticipantSelector
-              data-id="bbcbb54de2e6"
+              data-id="030925-9bec35"
               isUserAllowedToChange
               label="Audited by"
               onChange={selectAuditor}
               selectedParticipant={selectedAuditor} />
             <MultipleParticipantsSelector
-              data-id="33090068b385"
+              data-id="030925-b7ead4"
               isUserAllowedToChange
               label="Participants"
               onChange={selectParticipants}
               selectedParticipants={selectedParticipants} />
             <Flex
-              data-id="f5cfdee79b9f"
+              data-id="030925-6707c1"
               flexBasis="calc(40px + 1rem)"
               flexShrink={0}
               justify="space-between"
               pt={4}
               w="full">
               {data?.audits?.length > 0 && (
-                <Alert data-id="d0b17882edaa" status="warning">
-                  <Text as="h3" data-id="144e4aa5ed14">
+                <Alert data-id="030925-c8a36b" status="warning">
+                  <Text data-id="030925-939075" as="h3">
                     {data?.audits?.[0].auditType.name} for {data?.audits?.[0].businessUnit.name} for {format(new Date(), 'MMMM Y')} already{' '}
                     <Text
+                      data-id="030925-471e58"
                       _hover={{
                         textDecoration: 'underline',
                         cursor: 'pointer',
                       }}
                       as="span"
                       color="auditModal.existentAuditLink.color"
-                      data-id="0f907946ad48"
                       onClick={() => openInNewTab(`/audits/${data?.audits?.[0]?._id}`)}>
                       exists
                     </Text>
@@ -313,8 +313,9 @@ function AuditModal({ refetch }) {
           </Stack>
         </Stack>
       </ModalBody>
-      <ModalFooter data-id="2671f95864b8" p={1}>
+      <ModalFooter data-id="030925-e6b9fb" p={1}>
         <Button
+          data-id="030925-316fa6"
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
           fontSize="smm"
@@ -324,15 +325,14 @@ function AuditModal({ refetch }) {
           ml={3}
           onClick={handleAddAndResetAudit}
           rounded="10px"
-          variant="outline"
-        >
+          variant="outline">
           Start & Add More
         </Button>
 
         <Button
+          data-id="030925-d949bc"
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
-          data-id="b3179b1d428d"
           disabled={
             module?.featureFlags?.enableSafetyWalk && !audit.walkType ||
             !audit.locationId ||
@@ -351,8 +351,8 @@ function AuditModal({ refetch }) {
             handlePrimaryButtonClick();
           }}
           rightIcon={<Icon
+            data-id="030925-4e11d5"
             as={TickIcon}
-            data-id="3fb66e812544"
             size={24}
             stroke="auditModal.tabs.bottomButton.icon" />}
           rounded="10px"
@@ -360,7 +360,7 @@ function AuditModal({ refetch }) {
           Start {t('audit')}
         </Button>
       </ModalFooter>
-    </ModalContent>)
+    </ModalContent>
   );
 }
 

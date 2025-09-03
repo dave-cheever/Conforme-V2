@@ -27,9 +27,9 @@ function LocationFilter() {
   };
 
   return (
-    <Box data-id="4afb6381cabe" w="full">
+    <Box data-id="030925-64889f" w="full">
       <LocationsSelector
-        data-id="97329fcbd40e"
+        data-id="030925-be5562"
         handleChange={handleChange}
         locations={locations as ILocation[]}
         selected={value}

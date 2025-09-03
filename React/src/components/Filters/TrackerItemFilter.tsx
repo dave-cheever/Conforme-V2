@@ -40,13 +40,13 @@ function TrackerItemFilter() {
   };
 
   return (
-    <Stack data-id="de0ea4fff461" direction="column" overflow="auto">
-      <InputGroup data-id="953c772cd47f">
+    <Stack data-id="030925-c58b9f" direction="column" overflow="auto">
+      <InputGroup data-id="030925-48d671">
         <Input
+          data-id="030925-695c2e"
           borderColor="filterPanel.searchBoxBordercolor"
           borderWidth="1px"
           color="brand.darkGrey"
-          data-id="5e2eef8a01e2"
           fontSize="14px"
           h="40px"
           mb={3}
@@ -57,20 +57,20 @@ function TrackerItemFilter() {
           w="full"
         />
         <Magnifier
+          data-id="030925-2783df"
           bottom="25px"
-          data-id="70db5ea07d5a"
           h="12px"
           left="14px"
           position="absolute"
           w="12x"
         />
       </InputGroup>
-      <CheckboxGroup data-id="8aa949bd9a6b" onChange={handleChange} value={value}>
+      <CheckboxGroup data-id="030925-28ff89" onChange={handleChange} value={value}>
         {selectedTrackerItems?.map(({ name, _id }) => (
-          <FilterCheckBox data-id="0daeae10f75f" key={_id} label={name} value={_id} />
+          <FilterCheckBox data-id="030925-e341cb" key={_id} label={name} value={_id} />
         ))}
         {filteredTrackerItems?.map(({ name, _id }) => (
-          <FilterCheckBox data-id="13ff6a9aaae3" key={_id} label={name} value={_id} />
+          <FilterCheckBox data-id="030925-0fb2b1" key={_id} label={name} value={_id} />
         ))}
       </CheckboxGroup>
     </Stack>

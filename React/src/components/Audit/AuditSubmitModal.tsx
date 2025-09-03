@@ -24,43 +24,43 @@ function AuditSubmitModal({ isOpen, onClose }) {
   if (!audit) return null;
 
   return (
-    (<Modal
-      data-id="8b09c691284b"
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size="sm">
-      <ModalContent data-id="f053f053e41a">
-        <ModalHeader data-id="c912f4f637e6">
-          <Text data-id="0fb43c34ad9a" fontSize="smm" fontWeight="semibold">
+    <Modal
+        data-id="030925-923aa7"
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+        size="sm">
+      <ModalContent data-id="030925-4a994f">
+        <ModalHeader data-id="030925-1fafab">
+          <Text data-id="030925-3e4c0e" fontSize="smm" fontWeight="semibold">
             Submit {t('audit')}
           </Text>
-          <ModalCloseButton data-id="bebcea6fdcb6" />
+          <ModalCloseButton data-id="030925-d6fe2d" />
         </ModalHeader>
-        <ModalBody data-id="df13cc131790" mb="40px">
-          <Stack data-id="767bb179e6d3">
-            <Text data-id="bf16ab4152e0">
+        <ModalBody data-id="030925-90eb28" mb="40px">
+          <Stack data-id="030925-1082c3">
+            <Text data-id="030925-42dd1d">
               Are you sure you want to submit the{' '}
               {audit.walkType === 'virtual' ? (
                 `virtual ${t('audit')}`
               ) : (
-                <Text as="span" data-id="9b684da16c1b">
-                  {t('audit')} in <strong data-id="30411e5769e6">{audit.businessUnit?.name}</strong>
+                <Text data-id="030925-125a01" as="span">
+                  {t('audit')} in <strong data-id="030925-b4f32b">{audit.businessUnit?.name}</strong>
                 </Text>
               )}{' '}
               as completed?
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="87bdc92a54f6">
-          <HStack data-id="fd9f30419818" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="7e2fc839e7e3" onClick={onClose}>
+        <ModalFooter data-id="030925-869d74">
+          <HStack data-id="030925-943bce" justify="center" spacing={4} w="full">
+            <Button data-id="030925-c4738f" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="030925-82bde5"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="698a39e39917"
               onClick={async () => {
                 await submitAudit({
                   variables: {
@@ -79,7 +79,7 @@ function AuditSubmitModal({ isOpen, onClose }) {
           </HStack>
         </ModalFooter>
       </ModalContent>
-    </Modal>)
+    </Modal>
   );
 }
 

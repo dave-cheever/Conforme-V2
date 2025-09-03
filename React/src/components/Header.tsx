@@ -50,11 +50,11 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   const breadCrumbs = useMemo(() => breadcrumbs, [device, breadcrumbs, mobileBreadcrumbs]);
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
-    <Flex align="center" data-id="bed31f747997" h="full" key={`bc-${i}`}>
-      {i > 0 && <ArrowRight color="#818197" data-id="1507ccf9eca0" display="flex" ml={2} mr={1} mt={['4px', '5px']} />}
+    <Flex data-id="030925-f48d06" align="center" h="full" key={`bc-${i}`}>
+      {i > 0 && <ArrowRight data-id="030925-11efe3" color="#818197" display="flex" ml={2} mr={1} mt={['4px', '5px']} />}
       <Text
+        data-id="030925-6f1b5c"
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
-        data-id="4e3ce528c3ed"
         display={i === breadCrumbs.length - 1 ? 'flex' : 'flex'}
         fontSize={["18px", "20px"]}
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
@@ -67,40 +67,48 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   );
 
   return (
-    <Flex align="center" background="#ffffff" data-id="254db3433c08" h={['60px', '70px']} pb="10px" position="relative" zIndex="2">
-      <Flex data-id="29c8a722c6a3" justify="space-between" w="full">
-        <Flex data-id="20c16a3e4d08" display="flex" flexShrink={0} ml="5">
+    <Flex data-id="030925-cfc2b6" align="center" background="#ffffff" h={['60px', '70px']} pb="10px" position="relative" zIndex="2">
+      <Flex data-id="030925-ee73db" justify="space-between" w="full">
+        <Flex data-id="030925-27fe8f" display="flex" flexShrink={0} ml="5">
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
-        <Flex data-id="5fd3aa3efb55" justify="flex-end" mr="15px" w="full">
+        <Flex data-id="030925-1efbd2" justify="flex-end" mr="15px" w="full">
           {children}
         </Flex>
-        {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="b947f2c69a3e" />}
+        {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="030925-90b45e" />}
 
         {isPathAllowed() && (
           <Can
+            data-id="030925-52878f"
             action="audits.add"
-            data-id="a3a476596997"
             yes={() => (
               <>
                 {usedFilters && isAuditPage && usedFilters.length > 0 && (
-                  <Divider borderColor="gray.300" display={['none', 'block']} height="30px" ml={0} mr={5} mt={1} orientation="vertical" />
+                  <Divider
+                    data-id="030925-35a545"
+                    borderColor="gray.300"
+                    display={['none', 'block']}
+                    height="30px"
+                    ml={0}
+                    mr={5}
+                    mt={1}
+                    orientation="vertical" />
                 )}
 
                 <Button
+                  data-id="030925-b4127f"
                   _hover={{ opacity: 0.7 }}
                   aria-label="Add"
                   bg="navigationTop.addButton"
                   bottom={['78px', '0']}
                   boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                   color="white"
-                  data-id="b5bf85567bbe"
                   display={['none', 'flex']}
                   flexShrink={0}
                   fontSize={['12px', '14px']}
                   fontWeight={'500'}
                   h={['42px', '40px']}
-                  leftIcon={<AddIcon data-id="6cff50759b96" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
+                  leftIcon={<AddIcon data-id="030925-7c3f2f" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
                   ml={['0', '4']}
                   mr={['6rem', '0']}
                   onClick={() => {

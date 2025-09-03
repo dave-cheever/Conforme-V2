@@ -269,17 +269,17 @@ function ActionsInsights() {
   ) as EChartsOption;
 
   return (
-    <Box data-id="37f7df3c97ef" pt="3">
+    <Box data-id="030925-6df52a" pt="3">
       {error ? (
-        <Text data-id="5eceb1031611">{error.message}</Text>
+        <Text data-id="030925-107296">{error.message}</Text>
       ) : loading ? (
-        <Box data-id="26be57b99646" h="100vh">
-          <Loader center data-id="2400f8a63d02" />
+        <Box data-id="030925-4a7186" h="100vh">
+          <Loader data-id="030925-2d6565" center />
         </Box>
       ) : (
         <>
           <Flex
-            data-id="62f1c9a8a119"
+            data-id="030925-aa9703"
             sx={{
               '@media (max-width: 768px)': {
                 overflowX: 'scroll',
@@ -289,8 +289,8 @@ function ActionsInsights() {
           >
             {actionsStatsCounts.map((filter) => (
               <InsightsCard
+                data-id="030925-726c60"
                 count={filter.actions}
-                data-id="547de652a33b"
                 key={filter.status}
                 onSelect={setSelectedActionsStatsCount}
                 selected={selectedActionsStatsCount === filter.status}
@@ -300,21 +300,21 @@ function ActionsInsights() {
             ))}
           </Flex>
           <Text
+            data-id="030925-7a2381"
             color={actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.color}
-            data-id="01c46fe8e8ea"
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}
           >
             {actionsInsightsTypes[selectedActionsStatsCount]}{' '}
-            <Text as="span" color="insights.secondaryText" data-id="de2a1ce1df86">
+            <Text data-id="030925-3c6c59" as="span" color="insights.secondaryText">
               actions
             </Text>
           </Text>
-          <InsightsChart data-id="094e35ab9232" option={echartsOption} />
+          <InsightsChart data-id="030925-f7afda" option={echartsOption} />
           <InsightsDetailedStats
+            data-id="030925-8bad3e"
             businessUnits={businessUnits}
-            data-id="9d1291a95098"
             insightsType="actions"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

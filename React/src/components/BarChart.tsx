@@ -13,14 +13,14 @@ function BarChart({ data, label }) {
   const maxValueOnDivider = 10 * multipier;
   const step = maxValueOnDivider / 5;
 
-  const divider: ReactElement[] = [<Text data-id="908451eebb30" key="0">0</Text>];
-  if (maxCount !== -Infinity) for (let i = 1; i <= 5; i += 1) divider.push(<Text data-id="bd1df73c0f59" key={i * step}>{i * step}</Text>);
+  const divider: ReactElement[] = [<Text data-id="030925-7c44aa" key="0">0</Text>];
+  if (maxCount !== -Infinity) for (let i = 1; i <= 5; i += 1) divider.push(<Text data-id="030925-e9a8fd" key={i * step}>{i * step}</Text>);
 
   return (
-    (<Flex data-id="e05fd31468c3" flexDir="column">
+    <Flex data-id="030925-bdcb61" flexDir="column">
       <Text
+        data-id="030925-36ce45"
         color="barChart.headerColor"
-        data-id="698498e1746e"
         fontSize="11px"
         h="25px"
         mt="18px"
@@ -29,12 +29,12 @@ function BarChart({ data, label }) {
       </Text>
       {maxCount !== -Infinity && (
         <>
-          <Flex data-id="b6a30375c4e2" flexDir="column">
+          <Flex data-id="030925-dc4030" flexDir="column">
             {data.map((el) => (
-              <Flex alignItems="center" color="#272727" data-id="0f7e27fa77b5" h="55px" key={el._id} my="auto">
+              <Flex data-id="030925-703857" alignItems="center" color="#272727" h="55px" key={el._id} my="auto">
                 <Box
+                  data-id="030925-172d92"
                   bg="barChart.bg"
-                  data-id="29821c7f7efb"
                   h="18px"
                   // mb="42px"
                   rounded="20px"
@@ -43,8 +43,8 @@ function BarChart({ data, label }) {
             ))}
           </Flex>
           <Flex
+            data-id="030925-929942"
             color="barChart.color"
-            data-id="1a64565f620f"
             fontSize="11px"
             justifyContent="space-between"
             mt="-15px">
@@ -52,7 +52,7 @@ function BarChart({ data, label }) {
           </Flex>
         </>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

@@ -41,8 +41,8 @@ function DeleteButton({
 }) {
   return isPermitted({ user, action: 'audits.delete' }) ? (
     <AuditHeaderButton
+      data-id="030925-1a1bbd"
       bgColor="transparent"
-      data-id="c14d64ff45ff"
       fontColor="#DC0043"
       icon={null}
       name="Delete"
@@ -54,7 +54,7 @@ function DeleteButton({
           }
           : handleDeleteModalOpen
       } />
-  ) : null
+  ) : null;
 }
 
 function RecurringButton({
@@ -67,8 +67,8 @@ function RecurringButton({
 }) {
   return audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
     <AuditHeaderButton
+      data-id="030925-407bb1"
       bgColor="transparent"
-      data-id="374301477b74"
       fontColor="#DC0043"
       icon={null}
       name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
@@ -80,7 +80,7 @@ function RecurringButton({
           }
           : handleRecurringModalOpen
       } />
-  ) : null
+  ) : null;
 }
 
 function SubmitButton({
@@ -95,21 +95,21 @@ function SubmitButton({
 }) {
   if (audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } })) {
     return (
-      (<AuditHeaderButton
-        bgColor="#DC0043"
-        data-id="174da23dafba"
-        disabled={!questions || Object.keys(questions).length === 0}
-        fontColor="white"
-        icon={null}
-        name="Submit"
-        onClick={
-          selectedAction
-            ? () => {
-              setActionChangesModalOnContinue(() => onSubmitAudit);
-              handleActionChangesModalOpen();
-            }
-            : handleSubmitModalOpen
-        } />)
+      <AuditHeaderButton
+          data-id="030925-71d59a"
+          bgColor="#DC0043"
+          disabled={!questions || Object.keys(questions).length === 0}
+          fontColor="white"
+          icon={null}
+          name="Submit"
+          onClick={
+            selectedAction
+              ? () => {
+                setActionChangesModalOnContinue(() => onSubmitAudit);
+                handleActionChangesModalOpen();
+              }
+              : handleSubmitModalOpen
+          } />
     );
   }
   return null;
@@ -123,16 +123,18 @@ function AuditShareButton({
   setShareItemUrl,
   setShareItemName,
 }) {
-  return <ShareButton
-    ariaLabel="audit-share-button"
-    data-id="7f75968e37b5"
-    ml={['auto', '24px']}
-    mr="auto"
-    onClick={() => {
-      setShareItemUrl(`audits/${audit?._id}`);
-      setShareItemName(businessUnit?.name || location?.name || '');
-      handleShareOpen();
-    }} />
+  return (
+    <ShareButton
+      data-id="030925-476e98"
+      ariaLabel="audit-share-button"
+      ml={['auto', '24px']}
+      mr="auto"
+      onClick={() => {
+        setShareItemUrl(`audits/${audit?._id}`);
+        setShareItemName(businessUnit?.name || location?.name || '');
+        handleShareOpen();
+      }} />
+  );
 }
 
 function AuditHeader() {
@@ -186,227 +188,149 @@ function AuditHeader() {
     });
   };
 
-  return (<>
-    <AuditSubmitModal
-      data-id="36bb16b91bfc"
-      isOpen={isSubmitModalOpen}
-      onClose={() => {
-        handleSubmitModalClose();
-      }} />
-    <AuditDeletModal
-      data-id="f9f2000498b0"
-      isOpen={isDeleteModalOpen}
-      onClose={() => {
-        handleDeleteModalClose();
-      }} />
-    <AuditRecurringModal
-      data-id="0c27cd9cd349"
-      isOpen={isRecurringModalOpen}
-      onClose={() => {
-        handleRecurringModalClose();
-      }} />
-    <Flex
-      data-id="70735d6970da"
-      direction="column"
-      mb="15px"
-      pl={6}
-      pt={4}
-      w="full"
-      zIndex={1}>
-      <Stack
-        align={['flex-start', 'center']}
-        data-id="167b013215d1"
-        direction={['column', 'row']}
-        h={['auto', '40px']}
-        mb="15px"
-        spacing={4}
-        w="full">
-        <Heading
-          alignItems={['flex-start', 'center']}
-          color="auditHeader.heading"
-          data-id="533f5a888af7"
-          fontSize={["24px", "xxl"]}
-          fontWeight="bold">
-          <HStack data-id="9b7be6440785" justify="center">
-            <Avatar
-              data-id="3727b4af4ef6"
-              name={auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
-              rounded="full"
-              size="xs"
-              src={auditor?.imgUrl} />
-            <Text data-id="4736df88e6b4">{`${audit?.auditor?.displayName} - ${audit?.reference}`}</Text>
-          </HStack>
-        </Heading>
-        {audit.status === 'completed' && (
-          <Badge
-            colorScheme="green"
-            data-id="22dbb17c7136"
-            fontSize="16px"
-            h="fit-content"
-            variant="outline">
-            Completed
-          </Badge>
-        )}
-        {audit.status === 'missed' && (
-          <Badge
-            colorScheme="red"
-            data-id="5956da468773"
-            fontSize="16px"
-            h="fit-content"
-            variant="outline">
-            Missed
-          </Badge>
-        )}
-      </Stack>
-      <Flex data-id="18708d7aa951" pr="25px">
-        <Stack data-id="3e76045ca82c" direction={['column', 'row']} spacing={[3, 6]}>
-          <Flex data-id="bce4726db370" direction="column" justify="center">
-            <Text data-id="08c671d75912" fontSize={["12px", "11px"]} opacity={0.5}>
-              Item ID
-            </Text>
-            <Text data-id="9be7f9c82ab2" fontSize="smm">{audit?.reference}</Text>
-          </Flex>
-          {audit?.walkType === 'physical' && (
-            <Flex
-              data-id="0478c022581f"
-              direction="column"
-              justify="center"
-              wordBreak="break-all">
-              <Text data-id="3bdcdfdb4200" fontSize={["12px", "11px"]}  opacity={0.5}>
-                {capitalize(t('location'))}
-              </Text>
-              <Tooltip data-id="2b3df963e728" label={location?.name}>
-                <Text data-id="b2ece6ab80fb" fontSize="smm" noOfLines={2}>
-                  {location?.name}
-                </Text>
-              </Tooltip>
-            </Flex>
-          )}
-          {audit?.businessUnit && (
-            <Flex
-              data-id="e8c1f1fcf136"
-              direction="column"
-              justify="center"
-              wordBreak="break-all">
-              <Text data-id="d44d77bc1f07" fontSize={["12px", "11px"]}  opacity={0.5}>
-                {capitalize(t('business unit'))}
-              </Text>
-              <Tooltip data-id="67c9402c7251" label={businessUnit?.name}>
-                <Text data-id="619b97e2c131" fontSize="smm" noOfLines={2}>
-                  {businessUnit?.name}
-                </Text>
-              </Tooltip>
-            </Flex>
-          )}
-          {module?.featureFlags?.enableSafetyWalk && 
-            <Flex data-id="5e783ba7be41" direction="column" justify="center">
-              <Text data-id="b28b0b0978ff" fontSize={["12px", "11px"]}  opacity={0.5}>
-                Type
-              </Text>
-              <Text data-id="40cf3410e579" fontSize="smm" textTransform="capitalize">
-                {audit?.walkType}
-              </Text>
-            </Flex>
-          }
-        </Stack>
-        <Spacer data-id="770633f3daec" />
-        <Stack
-          data-id="06e72dc3e24f"
-          direction="row"
-          display={['none', 'flex']}
-          spacing={[3, 6]}>
-          <AuditShareButton
-            audit={audit}
-            businessUnit={businessUnit}
-            data-id="4203886d17bf"
-            handleShareOpen={handleShareOpen}
-            location={location}
-            setShareItemName={setShareItemName}
-            setShareItemUrl={setShareItemUrl}
-          />
-          {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
-            <>
-              <DeleteButton
-                data-id="a9aa362ecc86"
-                handleActionChangesModalOpen={handleActionChangesModalOpen}
-                handleDeleteModalOpen={handleDeleteModalOpen}
-                onDeleteAudit={onDeleteAudit}
-                selectedAction={selectedAction}
-                setActionChangesModalOnContinue={setActionChangesModalOnContinue}
-                user={user}
-              />
-              {audit?.walkType === 'physical' && <RecurringButton
-                audit={audit}
-                data-id="2fed6fa2ee6a"
-                handleActionChangesModalOpen={handleActionChangesModalOpen}
-                handleRecurringModalOpen={handleRecurringModalOpen}
-                selectedAction={selectedAction}
-                setActionChangesModalOnContinue={setActionChangesModalOnContinue}
-                user={user}
-              />}
-            </>
-          )}
-          <SubmitButton
-            audit={audit}
-            data-id="a2c29e2ce909"
-            handleActionChangesModalOpen={handleActionChangesModalOpen}
-            handleSubmitModalOpen={handleSubmitModalOpen}
-            onSubmitAudit={onSubmitAudit}
-            questions={questions}
-            selectedAction={selectedAction}
-            setActionChangesModalOnContinue={setActionChangesModalOnContinue}
-            user={user}
-          />
-        </Stack>
-      </Flex>
-
+  return (
+    <>
+      <AuditSubmitModal
+        data-id="030925-eddbeb"
+        isOpen={isSubmitModalOpen}
+        onClose={() => {
+          handleSubmitModalClose();
+        }} />
+      <AuditDeletModal
+        data-id="030925-4ab35c"
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          handleDeleteModalClose();
+        }} />
+      <AuditRecurringModal
+        data-id="030925-5ae262"
+        isOpen={isRecurringModalOpen}
+        onClose={() => {
+          handleRecurringModalClose();
+        }} />
       <Flex
-        alignItems="center"
-        data-id="2b937641b1e6"
-        display={['flex', 'none']}
-        h="40px"
-        mr="25px"
-        mt={4}>
-        <Menu data-id="0ba53e2554fe">
-          {({ isOpen }) => (
-            <>
-              <MenuButton
-                as={Button}
-                bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
-                borderRadius="10px"
-                color="reasponseHeader.optionsMenuButtonColor"
-                colorScheme="reasponseHeader.optionsMenuColorScheme"
-                data-id="99e4c11de228"
-                fontFamily="Helvetica"
-                fontSize="smm"
-                fontWeight="bold"
-                isActive={isOpen}
-                lineHeight="18px"
-                rightIcon={<ArrowDownIcon data-id="75014e6a993d" />}
-                textAlign="left"
-                w="full">
-                Options
-              </MenuButton>
-              <MenuList
-                borderColor="reasponseHeader.optionsMenuBorderColor"
-                borderRadius="10px"
-                boxShadow="0px 0px 80px"
-                color="reasponseHeader.optionsMenuBoxShadow"
-                data-id="674f4a0c5269"
-                minW={['calc(100vw - 50px)', '325px']}
-                w="100%"
-                zIndex="10">
-                <AuditShareButton
-                  audit={audit}
-                  businessUnit={businessUnit}
-                  data-id="f83784dadb02"
-                  handleShareOpen={handleShareOpen}
-                  location={location}
-                  setShareItemName={setShareItemName}
-                  setShareItemUrl={setShareItemUrl}
-                />
+        data-id="030925-d93b55"
+        direction="column"
+        mb="15px"
+        pl={6}
+        pt={4}
+        w="full"
+        zIndex={1}>
+        <Stack
+          data-id="030925-b03b60"
+          align={['flex-start', 'center']}
+          direction={['column', 'row']}
+          h={['auto', '40px']}
+          mb="15px"
+          spacing={4}
+          w="full">
+          <Heading
+            data-id="030925-5584c9"
+            alignItems={['flex-start', 'center']}
+            color="auditHeader.heading"
+            fontSize={["24px", "xxl"]}
+            fontWeight="bold">
+            <HStack data-id="030925-1fba5b" justify="center">
+              <Avatar
+                data-id="030925-fc9ca1"
+                name={auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
+                rounded="full"
+                size="xs"
+                src={auditor?.imgUrl} />
+              <Text data-id="030925-dc88ea">{`${audit?.auditor?.displayName} - ${audit?.reference}`}</Text>
+            </HStack>
+          </Heading>
+          {audit.status === 'completed' && (
+            <Badge
+              data-id="030925-017a12"
+              colorScheme="green"
+              fontSize="16px"
+              h="fit-content"
+              variant="outline">
+              Completed
+            </Badge>
+          )}
+          {audit.status === 'missed' && (
+            <Badge
+              data-id="030925-af89b8"
+              colorScheme="red"
+              fontSize="16px"
+              h="fit-content"
+              variant="outline">
+              Missed
+            </Badge>
+          )}
+        </Stack>
+        <Flex data-id="030925-101793" pr="25px">
+          <Stack data-id="030925-6b60b5" direction={['column', 'row']} spacing={[3, 6]}>
+            <Flex data-id="030925-7fc8cb" direction="column" justify="center">
+              <Text data-id="030925-4692fa" fontSize={["12px", "11px"]} opacity={0.5}>
+                Item ID
+              </Text>
+              <Text data-id="030925-704109" fontSize="smm">{audit?.reference}</Text>
+            </Flex>
+            {audit?.walkType === 'physical' && (
+              <Flex
+                data-id="030925-43463d"
+                direction="column"
+                justify="center"
+                wordBreak="break-all">
+                <Text data-id="030925-170e79" fontSize={["12px", "11px"]}  opacity={0.5}>
+                  {capitalize(t('location'))}
+                </Text>
+                <Tooltip data-id="030925-ff8d42" label={location?.name}>
+                  <Text data-id="030925-1d284a" fontSize="smm" noOfLines={2}>
+                    {location?.name}
+                  </Text>
+                </Tooltip>
+              </Flex>
+            )}
+            {audit?.businessUnit && (
+              <Flex
+                data-id="030925-bd4be4"
+                direction="column"
+                justify="center"
+                wordBreak="break-all">
+                <Text data-id="030925-416159" fontSize={["12px", "11px"]}  opacity={0.5}>
+                  {capitalize(t('business unit'))}
+                </Text>
+                <Tooltip data-id="030925-19ec90" label={businessUnit?.name}>
+                  <Text data-id="030925-fb4f21" fontSize="smm" noOfLines={2}>
+                    {businessUnit?.name}
+                  </Text>
+                </Tooltip>
+              </Flex>
+            )}
+            {module?.featureFlags?.enableSafetyWalk && 
+              <Flex data-id="030925-ef96bc" direction="column" justify="center">
+                <Text data-id="030925-775397" fontSize={["12px", "11px"]}  opacity={0.5}>
+                  Type
+                </Text>
+                <Text data-id="030925-e22f1f" fontSize="smm" textTransform="capitalize">
+                  {audit?.walkType}
+                </Text>
+              </Flex>
+            }
+          </Stack>
+          <Spacer data-id="030925-b54c53" />
+          <Stack
+            data-id="030925-c4be76"
+            direction="row"
+            display={['none', 'flex']}
+            spacing={[3, 6]}>
+            <AuditShareButton
+              data-id="030925-616814"
+              audit={audit}
+              businessUnit={businessUnit}
+              handleShareOpen={handleShareOpen}
+              location={location}
+              setShareItemName={setShareItemName}
+              setShareItemUrl={setShareItemUrl}
+            />
+            {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
+              <>
                 <DeleteButton
-                  data-id="a9aa362ecc86"
+                  data-id="030925-04e878"
                   handleActionChangesModalOpen={handleActionChangesModalOpen}
                   handleDeleteModalOpen={handleDeleteModalOpen}
                   onDeleteAudit={onDeleteAudit}
@@ -414,33 +338,113 @@ function AuditHeader() {
                   setActionChangesModalOnContinue={setActionChangesModalOnContinue}
                   user={user}
                 />
-                <RecurringButton
+                {audit?.walkType === 'physical' && <RecurringButton
+                  data-id="030925-f7c9ad"
                   audit={audit}
-                  data-id="de80a7578f97"
                   handleActionChangesModalOpen={handleActionChangesModalOpen}
                   handleRecurringModalOpen={handleRecurringModalOpen}
                   selectedAction={selectedAction}
                   setActionChangesModalOnContinue={setActionChangesModalOnContinue}
                   user={user}
-                />
-                <SubmitButton
-                  audit={audit}
-                  data-id="10cc8844cca4"
-                  handleActionChangesModalOpen={handleActionChangesModalOpen}
-                  handleSubmitModalOpen={handleSubmitModalOpen}
-                  onSubmitAudit={onSubmitAudit}
-                  questions={questions}
-                  selectedAction={selectedAction}
-                  setActionChangesModalOnContinue={setActionChangesModalOnContinue}
-                  user={user}
-                />
-              </MenuList>
-            </>
-          )}
-        </Menu>
+                />}
+              </>
+            )}
+            <SubmitButton
+              data-id="030925-1078f6"
+              audit={audit}
+              handleActionChangesModalOpen={handleActionChangesModalOpen}
+              handleSubmitModalOpen={handleSubmitModalOpen}
+              onSubmitAudit={onSubmitAudit}
+              questions={questions}
+              selectedAction={selectedAction}
+              setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+              user={user}
+            />
+          </Stack>
+        </Flex>
+
+        <Flex
+          data-id="030925-2e573f"
+          alignItems="center"
+          display={['flex', 'none']}
+          h="40px"
+          mr="25px"
+          mt={4}>
+          <Menu data-id="030925-1c3e5c">
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  data-id="030925-2c39f5"
+                  as={Button}
+                  bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
+                  borderRadius="10px"
+                  color="reasponseHeader.optionsMenuButtonColor"
+                  colorScheme="reasponseHeader.optionsMenuColorScheme"
+                  fontFamily="Helvetica"
+                  fontSize="smm"
+                  fontWeight="bold"
+                  isActive={isOpen}
+                  lineHeight="18px"
+                  rightIcon={<ArrowDownIcon data-id="030925-052636" />}
+                  textAlign="left"
+                  w="full">
+                  Options
+                </MenuButton>
+                <MenuList
+                  data-id="030925-eadbdb"
+                  borderColor="reasponseHeader.optionsMenuBorderColor"
+                  borderRadius="10px"
+                  boxShadow="0px 0px 80px"
+                  color="reasponseHeader.optionsMenuBoxShadow"
+                  minW={['calc(100vw - 50px)', '325px']}
+                  w="100%"
+                  zIndex="10">
+                  <AuditShareButton
+                    data-id="030925-6797c5"
+                    audit={audit}
+                    businessUnit={businessUnit}
+                    handleShareOpen={handleShareOpen}
+                    location={location}
+                    setShareItemName={setShareItemName}
+                    setShareItemUrl={setShareItemUrl}
+                  />
+                  <DeleteButton
+                    data-id="030925-ed83e6"
+                    handleActionChangesModalOpen={handleActionChangesModalOpen}
+                    handleDeleteModalOpen={handleDeleteModalOpen}
+                    onDeleteAudit={onDeleteAudit}
+                    selectedAction={selectedAction}
+                    setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                    user={user}
+                  />
+                  <RecurringButton
+                    data-id="030925-fa505e"
+                    audit={audit}
+                    handleActionChangesModalOpen={handleActionChangesModalOpen}
+                    handleRecurringModalOpen={handleRecurringModalOpen}
+                    selectedAction={selectedAction}
+                    setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                    user={user}
+                  />
+                  <SubmitButton
+                    data-id="030925-adea20"
+                    audit={audit}
+                    handleActionChangesModalOpen={handleActionChangesModalOpen}
+                    handleSubmitModalOpen={handleSubmitModalOpen}
+                    onSubmitAudit={onSubmitAudit}
+                    questions={questions}
+                    selectedAction={selectedAction}
+                    setActionChangesModalOnContinue={setActionChangesModalOnContinue}
+                    user={user}
+                  />
+                </MenuList>
+              </>
+            )}
+          </Menu>
+        </Flex>
       </Flex>
-    </Flex>
-  </>);
+    </>
+  );
 }
 
 export default AuditHeader;

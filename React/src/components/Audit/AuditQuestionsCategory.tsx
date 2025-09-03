@@ -16,23 +16,23 @@ function AuditQuestionsCategory({
   if (!categoryQuestions) return null;
 
   return (
-    (<Stack
-      data-id="d8e159e69caf"
-      key={questionsCategory?._id}
-      pr='10px'
-      spacing={4}
-      w="full">
-      <Text data-id="8a519ddb97be" fontWeight="semibold">{questionsCategory.name}</Text>
-      <Stack data-id="d09dcdb06743" spacing={2}>
+    <Stack
+        data-id="030925-37bc44"
+        key={questionsCategory?._id}
+        pr='10px'
+        spacing={4}
+        w="full">
+      <Text data-id="030925-fcafd9" fontWeight="semibold">{questionsCategory.name}</Text>
+      <Stack data-id="030925-2d9ad1" spacing={2}>
         {categoryQuestions.map((question) => (
           <AuditQuestionListItem
-            data-id="c76e77522e85"
+            data-id="030925-03102c"
             handleDelete={handleDelete}
             key={question._id}
             question={question} />
         ))}
       </Stack>
-    </Stack>)
+    </Stack>
   );
 }
 

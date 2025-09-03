@@ -32,17 +32,17 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
 
   if (disabled) {
     return (
-      (<BusinessUnitsSelectorList
-        data-id="4d64ac5ef6f3"
-        disabled={disabled}
-        filteredBusinessUnits={filteredBusinessUnits}
-        handleChange={handleChange}
-        selected={selected} />)
+      <BusinessUnitsSelectorList
+          data-id="030925-674093"
+          disabled={disabled}
+          filteredBusinessUnits={filteredBusinessUnits}
+          handleChange={handleChange}
+          selected={selected} />
     );
   }
 
   return (
-    (<Stack data-id="da7a35110007" w="full">
+    <Stack data-id="030925-f00202" w="full">
       {/* <Stack overflow="auto" pb={3} w="full"> */}
       {/* <Box mt="-12px" w="full"> */}
       {/* <Dropdown
@@ -59,13 +59,13 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
           /> */}
       {/* </Box> */}
       {/* <> */}
-      <Box data-id="03949dd6796a" py="5px">
-        <InputGroup data-id="427bbb0a5ce6">
+      <Box data-id="030925-370025" py="5px">
+        <InputGroup data-id="030925-4acabe">
           <Input
+            data-id="030925-f8e25e"
             borderColor="filterPanel.searchBoxBordercolor"
             borderWidth="1px"
             color="brand.darkGrey"
-            data-id="8687a26fc46d"
             fontSize="14px"
             h="40px"
             onChange={({ target: { value } }) => setSearchText(value)}
@@ -74,8 +74,8 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
             value={searchText}
             w="full" />
           <Magnifier
+            data-id="030925-3a0b22"
             bottom="13px"
-            data-id="76d404b13450"
             h="12px"
             left="14px"
             position="absolute"
@@ -84,8 +84,8 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
       </Box>
       {note && (
         <Text
+          data-id="030925-5d36ca"
           color="businessUnitsSelector.note"
-          data-id="4aac350395f8"
           fontSize="12px"
           fontStyle="italic"
           opacity="0.3">
@@ -93,14 +93,14 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
         </Text>
       )}
       <BusinessUnitsSelectorList
-        data-id="26f4dd7fd184"
+        data-id="030925-f84ef9"
         disabled={disabled}
         filteredBusinessUnits={filteredBusinessUnits}
         handleChange={handleChange}
         selected={selected} />
       {/* </> */}
       {/* </Stack> */}
-    </Stack>)
+    </Stack>
   );
 }
 

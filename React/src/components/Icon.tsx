@@ -16,29 +16,29 @@ import {
 function Icon({ icon, ...props }) {
   switch (icon) {
     case 'safeBehaviour':
-      return <SafeBehaviour data-id="8d055665c39e" {...props} />;
+      return <SafeBehaviour data-id="030925-39187b" {...props} />;
     case 'safeCondition':
-      return <SafeCondition data-id="4b9930438730" {...props} />;
+      return <SafeCondition data-id="030925-6584c6" {...props} />;
     case 'unsafeAct':
-      return <UnsafeAct data-id="b817b407adaf" {...props} />;
+      return <UnsafeAct data-id="030925-e67190" {...props} />;
     case 'unsafeCondition':
-      return <UnsafeCondition data-id="f5fb61588788" {...props} />;
+      return <UnsafeCondition data-id="030925-535dff" {...props} />;
     case 'danger':
-      return <DangerIcon data-id="c2524816c973" {...props} />;
+      return <DangerIcon data-id="030925-85c160" {...props} />;
     case 'thumbUp':
-      return <ThumbUpIcon data-id="1b5556f87d66" {...props} />;
+      return <ThumbUpIcon data-id="030925-3b4736" {...props} />;
     case 'notes':
-      return <NotesIcon data-id="33ec62f4c793" {...props} />;
+      return <NotesIcon data-id="030925-bce6fd" {...props} />;
     case 'grid':
-      return <GridIcon data-id="982d09fa96c9" {...props} />;
+      return <GridIcon data-id="030925-f0282c" {...props} />;
     case 'list':
-      return <ListIcon data-id="90334fa867b8" {...props} />;
+      return <ListIcon data-id="030925-21c1bf" {...props} />;
     case 'group':
-      return <GroupIcon data-id="988fd98a5c5a" {...props} />;
+      return <GroupIcon data-id="030925-da130f" {...props} />;
     default: {
       const ChakraIconComponent = ChakraIcons[icon];
       if (ChakraIconComponent) 
-        return <ChakraIconComponent data-id="chakra-fallback-icon" {...props} />;
+        return <ChakraIconComponent data-id="030925-2fb4c6" {...props} />;
       
       return null;
     }

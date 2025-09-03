@@ -31,26 +31,26 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
 
   if (disabled) {
     return (
-      (<LocationsSelectorList
-        data-id="e50cefb10d8e"
-        disabled={disabled}
-        filteredLocations={filteredLocations}
-        handleChange={handleChange}
-        selected={selected} />)
+      <LocationsSelectorList
+          data-id="030925-5a1708"
+          disabled={disabled}
+          filteredLocations={filteredLocations}
+          handleChange={handleChange}
+          selected={selected} />
     );
   }
 
   return (
-    (<Stack data-id="2798f55781a8" w="full">
-      <Stack data-id="fa526862eff8" overflow="auto" pb={3} w="full">
+    <Stack data-id="030925-0eb71d" w="full">
+      <Stack data-id="030925-70c0f6" overflow="auto" pb={3} w="full">
         <>
-          <Box data-id="a738225c5add" py="5px">
-            <InputGroup data-id="ac32100516cd">
+          <Box data-id="030925-dd6175" py="5px">
+            <InputGroup data-id="030925-2a0931">
               <Input
+                data-id="030925-8c5584"
                 borderColor="filterPanel.searchBoxBordercolor"
                 borderWidth="1px"
                 color="locationsSelector.search.label"
-                data-id="3137cec14067"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
@@ -59,8 +59,8 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
                 value={searchText}
                 w="full" />
               <SearchIcon
+                data-id="030925-6a2478"
                 bottom="13px"
-                data-id="6b3aab528bbe"
                 h="15px"
                 left="14px"
                 position="absolute"
@@ -70,8 +70,8 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
           </Box>
           {note && (
             <Text
+              data-id="030925-0d2d3f"
               color="locationsSelector.note"
-              data-id="a5042f3a8102"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"
@@ -80,14 +80,14 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
             </Text>
           )}
           <LocationsSelectorList
-            data-id="ab1cb99ccff7"
+            data-id="030925-490a3a"
             disabled={disabled}
             filteredLocations={filteredLocations}
             handleChange={handleChange}
             selected={selected} />
         </>
       </Stack>
-    </Stack>)
+    </Stack>
   );
 }
 

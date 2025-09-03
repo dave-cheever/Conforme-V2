@@ -18,18 +18,18 @@ function UserMenu() {
   };
 
   return (
-    (<Menu data-id="e985cdb96443" isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
-      <MenuButton color="white" data-id="74d7a3b3cdc8">
-      <Flex align="center" justify="space-between" w="100%">
+    <Menu data-id="030925-6f3b32" isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+      <MenuButton data-id="030925-9f3312" color="white">
+      <Flex data-id="030925-dc727e" align="center" justify="space-between" w="100%">
   {/* Avatar and text */}
-  <Flex align="center" m={3}>
+  <Flex data-id="030925-a1a5c5" align="center" m={3}>
     <Avatar
+      data-id="030925-59144b"
       bg="userMenu.avatar.bg"
       borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
       borderRadius={"8px"}
       borderWidth="5px"
       color="userMenu.avatar.color"
-      data-id="8c0b24efa538"
       h="40px"
       mr={3}
       name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -37,32 +37,47 @@ function UserMenu() {
       src={user?.imgUrl}
       w="40px"
     />
-     <Box minW="0" textAlign={"start"} >
-      <Text color={"black"} fontSize={["12px", "14px"]} fontWeight="600" isTruncated>
+     <Box data-id="030925-9f3422" minW="0" textAlign={"start"}>
+      <Text
+        data-id="030925-f0951f"
+        color={"black"}
+        fontSize={["12px", "14px"]}
+        fontWeight="600"
+        isTruncated>
         {user?.displayName}
       </Text>
-      <Text color="gray.500" fontSize="13px" isTruncated lineHeight={.8}>
+      <Text
+        data-id="030925-616b31"
+        color="gray.500"
+        fontSize="13px"
+        isTruncated
+        lineHeight={.8}>
         {(user?.role?.charAt(0).toUpperCase() || "") + (user?.role?.slice(1) || "")}
       </Text>
     </Box>
-      <Icon as={ChevronDownIcon} boxSize={5} color="gray.500" m={4} />
+      <Icon
+        data-id="030925-2aeb6c"
+        as={ChevronDownIcon}
+        boxSize={5}
+        color="gray.500"
+        m={4} />
 
   </Flex>
 
 </Flex>
       </MenuButton>
       <MenuList
+        data-id="030925-2f4e49"
         border="0px"
         borderRadius="10px"
         boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-        data-id="d3cc6dae5991"
         minW="175px"
         mr={3}
         p="15px 20px 15px 20px"
         textAlign="right"
       >
         <Text
-          data-id="6d4b2e8e6139"
+          data-id="030925-9eaf6a"
           fontWeight="semibold"
           noOfLines={1}
           textOverflow="ellipsis"
@@ -70,10 +85,10 @@ function UserMenu() {
           {user?.displayName}
         </Text>
         <Text
+          data-id="030925-962ff6"
           borderBottomColor="userMenu.borderColor"
           borderBottomWidth="1px"
           color="userMenu.text"
-          data-id="8897a95d09de"
           fontSize="sm"
           mb="10px"
           noOfLines={1}
@@ -86,10 +101,10 @@ function UserMenu() {
           .filter((userMenu) => !userMenu.permission || isPermitted({ user, action: userMenu.permission }))
           .map(({ label, url }) => (
             <Text
+              data-id="030925-5b7555"
               _hover={{ color: 'userMenu.hoverColor' }}
               color="userMenu.text"
               cursor="pointer"
-              data-id="a1d75f8fe1c6"
               fontSize="smm"
               key={label}
               my="10px"
@@ -99,12 +114,12 @@ function UserMenu() {
           ))}
 
         <Text
+          data-id="030925-800edc"
           _hover={{ color: 'userMenu.hoverColor' }}
           borderTopColor="userMenu.borderColor"
           borderTopWidth="1px"
           color="userMenu.text"
           cursor="pointer"
-          data-id="665372c08e6c"
           fontSize="smm"
           mt="10px"
           my="10px"
@@ -113,7 +128,7 @@ function UserMenu() {
           Logout
         </Text>
       </MenuList>
-    </Menu>)
+    </Menu>
   );
 }
 

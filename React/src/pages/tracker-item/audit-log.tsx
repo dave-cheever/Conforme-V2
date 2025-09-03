@@ -144,22 +144,22 @@ function AuditLog() {
   }, [activeTab]);
 
   return (
-    (<Flex
-      bg="white"
-      border="1px solid"
-      borderColor="#CBD5E0"
-      borderRadius="8px"
-      data-id="1695b75757c3"
-      flexDir="column"
-      h="full"
-      overflow="auto"
-      p="25px 15px"
-      w="full">
-      <Flex data-id="19a227057187" mb="3">
+    <Flex
+        data-id="030925-02e757"
+        bg="white"
+        border="1px solid"
+        borderColor="#CBD5E0"
+        borderRadius="8px"
+        flexDir="column"
+        h="full"
+        overflow="auto"
+        p="25px 15px"
+        w="full">
+      <Flex data-id="030925-1941dd" mb="3">
         {auditTabs?.map(({ index, label }) => (
           <TabItem
+            data-id="030925-ef4437"
             active={index === activeTab}
-            data-id="e8606fb8b7d1"
             index={index}
             key={index}
             label={label}
@@ -167,20 +167,20 @@ function AuditLog() {
         ))}
       </Flex>
       <AuditLogComponent
+        data-id="030925-c11b24"
         auditLogs={auditLogs}
-        data-id="2b623ff1c332"
         isLoadingMore={isLoadingMore}
         loading={loading} />
       {!loading &&
         (totalAuditLogs === countAuditLogs ? (
-          <Text color="auditLog.noLogs" data-id="a3b166660640" mb={4}>
+          <Text data-id="030925-7db9b8" color="auditLog.noLogs" mb={4}>
             No more logs
           </Text>
         ) : (
           <Text
+            data-id="030925-dcd949"
             color="auditLog.loadMore"
             cursor="pointer"
-            data-id="fb8ca990d8ac"
             mb={4}
             onClick={() => {
               setSkip((prev) => prev + 5);
@@ -189,7 +189,7 @@ function AuditLog() {
             Load more audit logs
           </Text>
         ))}
-    </Flex>)
+    </Flex>
   );
 }
 

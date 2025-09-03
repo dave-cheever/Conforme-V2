@@ -14,13 +14,13 @@ function WalkTypeFilter() {
   };
 
   return (
-    (<Box data-id="51f8a7566b07" w="full">
+    <Box data-id="030925-d3ed1d" w="full">
       <StatusSelector
-        data-id="44ff26542869"
+        data-id="030925-5c5410"
         handleChange={handleChange}
         selected={value}
         status={auditStatuses} />
-    </Box>)
+    </Box>
   );
 }
 

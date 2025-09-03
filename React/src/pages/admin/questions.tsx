@@ -309,6 +309,7 @@ function Questions() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
+        data-id="030925-591522"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -316,7 +317,6 @@ function Questions() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
-        data-id="9c031a686e68"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -327,15 +327,15 @@ function Questions() {
         w="full"
       >
         <Flex
+          data-id="030925-fd3ca0"
           cursor="pointer"
-          data-id="8743b484e5d2"
           flexDir="column"
           mr={4}
           onClick={() => openQuestionModal('edit', question)}
           pl={1}
           w="full"
         >
-          <Text data-id="64222f997a92" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          <Text data-id="030925-161467" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {question.question}
           </Text>
         </Flex>
@@ -346,17 +346,17 @@ function Questions() {
   return (
     <>
       <AdminModal
+        data-id="030925-04f5b4"
         collection="questions"
-        data-id="125850428c46"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetQuestion : undefined}
       >
-        <Stack data-id="b6bb827943fc" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+        <Stack data-id="030925-771b39" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <Dropdown
+            data-id="030925-ac223f"
             control={control}
-            data-id="aec2e30b2f10"
             label="Questions Category"
             name="questionsCategoryId"
             options={questionsCategories?.map(({ _id, name }) => ({
@@ -371,8 +371,8 @@ function Questions() {
             variant="secondaryVariant"
           />
           <TextInput
+            data-id="030925-4561d2"
             control={control}
-            data-id="838152df7ef1"
             label="Question"
             name="question"
             placeholder="Question"
@@ -381,37 +381,37 @@ function Questions() {
               notEmpty: true,
             }}
           />
-          <TextInputMultiline control={control} data-id="46a14008f017" label="Description" name="description" placeholder="Description" />
-          <TextInput control={control} data-id="ec54740e17f3" label="Positive value" name="positiveValue" placeholder="Positive value" />
-          <TextInput control={control} data-id="b22cc52a8670" label="Negative value" name="negativeValue" placeholder="Negative value" />
+          <TextInputMultiline data-id="030925-6bec33" control={control} label="Description" name="description" placeholder="Description" />
+          <TextInput data-id="030925-c625ca" control={control} label="Positive value" name="positiveValue" placeholder="Positive value" />
+          <TextInput data-id="030925-7f62ef" control={control} label="Negative value" name="negativeValue" placeholder="Negative value" />
         </Stack>
       </AdminModal>
       <Header
+        data-id="030925-f70b2f"
         breadcrumbs={['Admin', 'Questions']}
-        data-id="fd41c88fa390"
         mobileBreadcrumbs={['Questions']}
         pageLabel={capitalize(t('question'))}
       />
       <Flex
+        data-id="030925-3b0ead"
         bg="auditsList.bg"
         borderRadius="10px"
-        data-id="37f9704ed253"
         h="calc(100vh - 160px)"
         overflow="auto"
        p={[0, '0 25px 30px 30px']}
       >
-       <Flex data-id="20781672a9a01" h="full" px={['25px', 0]} w="full">
+       <Flex data-id="030925-4f7f64" h="full" px={['25px', 0]} w="full">
           <Box
+          data-id="030925-3d6dac"
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
-          data-id="b1c3342b2a30"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
           overflow="hidden"
           w="full"
         >
-          <AdminTableHeader data-id="b2e9e78efe45">
+          <AdminTableHeader data-id="030925-e72417">
             <AdminTableHeaderElement
-              data-id="af2c58e1ef04"
+              data-id="030925-7ef376"
               label="Question"
               onClick={() => {
                 setSortType('question');
@@ -422,13 +422,13 @@ function Questions() {
               w="full"
             />
           </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="85c701753503" h="full" overflow="auto" w="full">
+          <Box data-id="030925-211171" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader center data-id="515105f6eb5d" />
+              <Loader data-id="030925-cf6f47" center />
             ) : questions?.length > 0 ? (
               questions?.map(renderQuestionRow)
             ) : (
-              <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+              <Flex data-id="030925-bc0efd" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No questions found
               </Flex>
             )}

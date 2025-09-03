@@ -9,20 +9,20 @@ function IsVerifiedFilter() {
   const value = useMemo(() => filtersValues.isVerified?.value, [filtersValues]) as string;
 
   return (
-    (<RadioGroup
-      data-id="e058d418b9f6"
-      ml="4"
-      onChange={(newValue) => setFilters({ isVerified: newValue })}
-      value={value}>
+    <RadioGroup
+        data-id="030925-76b0a9"
+        ml="4"
+        onChange={(newValue) => setFilters({ isVerified: newValue })}
+        value={value}>
       <Stack
-        data-id="acfa5cc1089c"
+        data-id="030925-263c5e"
         direction="column"
         h="calc(100vh - 230px)"
         overflow="auto">
-        <Radio data-id="9ffc8228fd99" value="1">Yes</Radio>
-        <Radio data-id="9d7cf3ae2d6a" value="0">No</Radio>
+        <Radio data-id="030925-74b5e6" value="1">Yes</Radio>
+        <Radio data-id="030925-84013c" value="0">No</Radio>
       </Stack>
-    </RadioGroup>)
+    </RadioGroup>
   );
 }
 

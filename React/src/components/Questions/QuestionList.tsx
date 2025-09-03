@@ -24,46 +24,46 @@ function QuestionList({ setIsDragging, trackerItem, disabled, handleChange, hand
   };
 
   return (
-    (<Stack data-id="b6dea74f6a5d" overflowY="auto">
+    <Stack data-id="030925-a0745a" overflowY="auto">
       <DragDropContext
-        data-id="eca688222456"
+        data-id="030925-a7bbc6"
         onDragEnd={moveQuestion}
         onDragStart={() => setIsDragging(true)}>
-        <Droppable data-id="894b813bce11" droppableId="questionsDroppable">
+        <Droppable data-id="030925-436944" droppableId="questionsDroppable">
           {(provided) => (
             <Box
-              data-id="fb363a0f1ff9"
+              data-id="030925-c8cf7a"
               ref={provided.innerRef}
               {...provided.droppableProps}
               width="full">
               {trackerItem.questions?.map((item, index) => (
                 <Draggable
-                  data-id="22caa68a613b"
+                  data-id="030925-7bff04"
                   draggableId={item.name}
                   index={index}
                   key={item.name}>
                   {(provided) => (
-                    <Box data-id="c533d9dd1a4d" m={2}>
+                    <Box data-id="030925-23d892" m={2}>
                       <Flex
-                        data-id="59c1c2c2a3fe"
+                        data-id="030925-99065a"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         align="center"
                         bg="questionList.bg"
                         rounded="10px">
                         <Box
-                          data-id="905dd2a693b9"
+                          data-id="030925-47d1d4"
                           {...provided.dragHandleProps}
                           mr={disabled ? '20px' : '10px'}>
                           {!disabled && <Move
-                            data-id="02dfd3efdd81"
+                            data-id="030925-49396e"
                             ml="15px"
                             mt="-4px"
                             stroke="questionList.icon"
                             w="10px" />}
                         </Box>
                         <QuestionListElement
-                          data-id="f00f3f2921e7"
+                          data-id="030925-681f9f"
                           editQuestion={() => handleEdit(index, item)}
                           question={item}
                           removeQuestion={disabled ? undefined : () => removeQuestion(index)} />
@@ -76,7 +76,7 @@ function QuestionList({ setIsDragging, trackerItem, disabled, handleChange, hand
           )}
         </Droppable>
       </DragDropContext>
-    </Stack>)
+    </Stack>
   );
 }
 

@@ -56,8 +56,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per person`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-786886"
             data={users}
-            data-id="06149c97b990"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -69,8 +69,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per ${t('location')}`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-2a4275"
             data={locations}
-            data-id="e390b87748e9"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreLocations}
@@ -82,8 +82,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-fb7e12"
             data={businessUnits}
-            data-id="5c9a1faf5308"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreBusinessUnits}
@@ -97,8 +97,8 @@ function InsightsDetailedStats({
         label: 'Actions per person',
         component: (
           <InsightsDetailedTable
+            data-id="030925-4b60f8"
             data={users}
-            data-id="e57c67e7c065"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -110,8 +110,8 @@ function InsightsDetailedStats({
         label: `Actions per ${t('location')}`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-447f6a"
             data={locations}
-            data-id="c2181744b93f"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -123,8 +123,8 @@ function InsightsDetailedStats({
         label: `Actions per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-939250"
             data={businessUnits}
-            data-id="2a850ca7a642"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -138,8 +138,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per person`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-f80c72"
             data={users}
-            data-id="7f0bc8e660b3"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -152,8 +152,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per ${t('location')}`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-11b95e"
             data={locations}
-            data-id="17d9bae07ab4"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreBusinessUnits}
@@ -166,8 +166,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
+            data-id="030925-2adbc2"
             data={businessUnits}
-            data-id="bef1ec42b512"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -179,28 +179,28 @@ function InsightsDetailedStats({
   };
 
   return (
-    (<Box
-      bg="auditsInsights.list.bg"
-      borderRadius="20px"
-      data-id="0e5bb6c8cb8c"
-      p={7}
-      pb={0}
-      w="full">
+    <Box
+        data-id="030925-8f3ad4"
+        bg="auditsInsights.list.bg"
+        borderRadius="20px"
+        p={7}
+        pb={0}
+        w="full">
       <Tabs
-        data-id="e7151f92a834"
+        data-id="030925-ffee66"
         defaultIndex={selectedTab}
         onChange={(index) => setSelectedTab(index)}
         variant="unstyled"
         w="full">
-        <TabList data-id="a838dad0670f">
+        <TabList data-id="030925-4355a2">
           {tabs[insightsType].map((tab) => (
             <Tab
+              data-id="030925-2eb27b"
               _selected={{
                 bg: 'insights.tabBg',
                 color: 'insights.tabColor',
               }}
               borderRadius="10px"
-              data-id="0ac1019741a6"
               fontSize="smm"
               fontWeight="bold"
               key={tab.id}
@@ -209,15 +209,15 @@ function InsightsDetailedStats({
             </Tab>
           ))}
         </TabList>
-        <TabPanels data-id="b8da13463f09">
+        <TabPanels data-id="030925-6f5121">
           {tabs[insightsType]?.map((tab) => (
-            <TabPanel data-id="4d9b5021aa84" key={tab.id} px={0}>
+            <TabPanel data-id="030925-dc3740" key={tab.id} px={0}>
               {tab.component}
             </TabPanel>
           ))}
         </TabPanels>
       </Tabs>
-    </Box>)
+    </Box>
   );
 }
 

@@ -283,148 +283,150 @@ function Actions() {
     [JSON.stringify(data?.actions)],
   );
 
-  return (<>
-    <Modal
-      data-id="c33d7968cfa5"
-      isOpen={adminModalState !== 'closed'}
-      onClose={closeModal}
-      size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
-      variant="adminModal">
-      <ModalOverlay data-id="b1549d4e1839" />
-      <ActionModal
-        action={selectedAction}
-        closeModal={closeModal}
-        data-id="74634141a96b"
-        refetch={refetch} />
-    </Modal>
-    <Header
-      breadcrumbs={['Actions']}
-      data-id="9805ccc04797"
-      mobileBreadcrumbs={['Actions']}>
-      <ChangeViewButton
-        data-id="ad24b37f6046"
-        setViewMode={setViewMode}
-        viewMode={viewMode}
-        views={['grid', 'list']} />
-      {device !== 'mobile' && (
-        <CSVLinkComponent
-          data={csvData}
-          data-id="b48e84287463"
-          filename="actions.csv"
-          headers={csvHeaders}
-          target="_blank">
+  return (
+    <>
+      <Modal
+        data-id="030925-879746"
+        isOpen={adminModalState !== 'closed'}
+        onClose={closeModal}
+        size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
+        variant="adminModal">
+        <ModalOverlay data-id="030925-73ee2a" />
+        <ActionModal
+          data-id="030925-231048"
+          action={selectedAction}
+          closeModal={closeModal}
+          refetch={refetch} />
+      </Modal>
+      <Header
+        data-id="030925-cf6be6"
+        breadcrumbs={['Actions']}
+        mobileBreadcrumbs={['Actions']}>
+        <ChangeViewButton
+          data-id="030925-d03e73"
+          setViewMode={setViewMode}
+          viewMode={viewMode}
+          views={['grid', 'list']} />
+        {device !== 'mobile' && (
+          <CSVLinkComponent
+            data-id="030925-425b38"
+            data={csvData}
+            filename="actions.csv"
+            headers={csvHeaders}
+            target="_blank">
+            <Button
+              data-id="030925-39a1cb"
+              _hover={{
+                bg: 'reasponseHeader.buttonLightBgHover',
+                color: 'reasponseHeader.buttonLightColorHover',
+                cursor: 'pointer',
+                '&:hover svg path': { stroke: 'white' },
+              }}
+              bg="white"
+              borderRadius="10px"
+              display="none"
+              ml="15px"
+              rightIcon={<ExportIcon data-id="030925-3f9564" height="15px" width="15px" />}>
+              <Text data-id="030925-f0c6a1" fontSize="smm" fontWeight="bold">
+                Export
+              </Text>
+            </Button>
+          </CSVLinkComponent>
+        )}
+        <SortButton
+          data-id="030925-326a02"
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          sortType={sortType} />
+      </Header>
+      <HStack data-id="030925-b8bfee" px={[4, 8]} spacing={2}>
+        {Object.keys(actionStatuses).map((status, index) => (
           <Button
-            _hover={{
-              bg: 'reasponseHeader.buttonLightBgHover',
-              color: 'reasponseHeader.buttonLightColorHover',
-              cursor: 'pointer',
-              '&:hover svg path': { stroke: 'white' },
+            data-id="030925-9e3494"
+            _active={{
+              bg: 'actions.quickFilter.active.bg',
+              color: 'actions.quickFilter.active.color',
             }}
-            bg="white"
+            _hover={{
+              opacity: 0.8,
+            }}
+            bg="actions.quickFilter.default.bg"
             borderRadius="10px"
-            data-id="d7abc5e71d44"
-            display="none"
-            ml="15px"
-            rightIcon={<ExportIcon data-id="ea0f6b5ff60c" height="15px" width="15px" />}>
-            <Text data-id="e56aeaf3231f" fontSize="smm" fontWeight="bold">
-              Export
-            </Text>
+            color="actions.quickFilter.default.color"
+            fontSize="14px"
+            fontWeight="500"
+            h="32px"
+            isActive={index === activeTab}
+            key={status}
+            onClick={() => {
+              setQuickFilter('status', [status]);
+              setActiveTab(index);
+            }}>
+            {capitalize(status)}
           </Button>
-        </CSVLinkComponent>
-      )}
-      <SortButton
-        data-id="19893118c24d"
-        setSortOrder={setSortOrder}
-        setSortType={setSortType}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
-        sortType={sortType} />
-    </Header>
-    <HStack data-id="4c7c8ee914c9" px={[4, 8]} spacing={2}>
-      {Object.keys(actionStatuses).map((status, index) => (
-        <Button
-          _active={{
-            bg: 'actions.quickFilter.active.bg',
-            color: 'actions.quickFilter.active.color',
-          }}
-          _hover={{
-            opacity: 0.8,
-          }}
-          bg="actions.quickFilter.default.bg"
-          borderRadius="10px"
-          color="actions.quickFilter.default.color"
-          data-id="b0058513c4f6"
-          fontSize="14px"
-          fontWeight="500"
-          h="32px"
-          isActive={index === activeTab}
-          key={status}
-          onClick={() => {
-            setQuickFilter('status', [status]);
-            setActiveTab(index);
-          }}>
-          {capitalize(status)}
-        </Button>
-      ))}
-    </HStack>
-    <Flex
-      data-id="d467252e648c"
-      h={['calc(100vh - 80px)', 'full']}
-      overflow="auto"
-      pb={[4, 0]}>
-      {error ? (
-        <Text data-id="e41bc3ff6368">{error.message}</Text>
-      ) : loading ? (
-        <Loader center data-id="ac708cbffb19" />
-      ) : (
-        <>
-          {viewMode === 'grid' && (
-            <Grid
-              data-id="8bf250808148"
-              display={['grid', 'grid', 'flex']}
-              flexWrap="wrap"
-              gap={[4, 4, 6]}
-              h="fit-content"
-              pb={[14, 8]}
-              pt="3"
-              px={[4, 8]}
-              templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-              w="full">
-              {sortedActions.length > 0 ? (
-                sortedActions?.map((action) => <ActionSquare
-                  action={action}
-                  data-id="12e61a185e1e"
+        ))}
+      </HStack>
+      <Flex
+        data-id="030925-65943c"
+        h={['calc(100vh - 80px)', 'full']}
+        overflow="auto"
+        pb={[4, 0]}>
+        {error ? (
+          <Text data-id="030925-050fe3">{error.message}</Text>
+        ) : loading ? (
+          <Loader data-id="030925-de9f33" center />
+        ) : (
+          <>
+            {viewMode === 'grid' && (
+              <Grid
+                data-id="030925-d80aa3"
+                display={['grid', 'grid', 'flex']}
+                flexWrap="wrap"
+                gap={[4, 4, 6]}
+                h="fit-content"
+                pb={[14, 8]}
+                pt="3"
+                px={[4, 8]}
+                templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+                w="full">
+                {sortedActions.length > 0 ? (
+                  sortedActions?.map((action) => <ActionSquare
+                    data-id="030925-0b29e1"
+                    action={action}
+                    editAction={handleOpenModal}
+                    key={action._id} />)
+                ) : (
+                  <Flex
+                    data-id="030925-3fa1bd"
+                    fontSize="18px"
+                    fontStyle="italic"
+                    h="full"
+                    w="full">
+                    No actions found
+                  </Flex>
+                )}
+              </Grid>
+            )}
+            {viewMode === 'list' && (
+              <Box data-id="030925-08139e" p="6" w="full">
+                <ActionsList
+                  data-id="030925-ca225e"
+                  actions={sortedActions}
                   editAction={handleOpenModal}
-                  key={action._id} />)
-              ) : (
-                <Flex
-                  data-id="dad222c8f90c"
-                  fontSize="18px"
-                  fontStyle="italic"
-                  h="full"
-                  w="full">
-                  No actions found
-                </Flex>
-              )}
-            </Grid>
-          )}
-          {viewMode === 'list' && (
-            <Box p="6" w="full">
-              <ActionsList
-                actions={sortedActions}
-                data-id="0207bec9b9a2"
-                editAction={handleOpenModal}
-                setSortOrder={setSortOrder}
-                setSortType={setSortType}
-                sortOrder={sortOrder}
-                sortType={sortType} />
-            </Box>
-              
-          )}
-        </>
-      )}
-    </Flex>
-  </>);
+                  setSortOrder={setSortOrder}
+                  setSortType={setSortType}
+                  sortOrder={sortOrder}
+                  sortType={sortType} />
+              </Box>
+                
+            )}
+          </>
+        )}
+      </Flex>
+    </>
+  );
 }
 
 export default Actions;

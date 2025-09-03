@@ -31,12 +31,12 @@ function EmailEditor({ setHtml, value, options }) {
   };
 
   return (
-    (<Box data-id="d4cc6c9acdc5">
-      <Box className="sun-editor" data-id="680536f990f7" id="custom_toolbar" />
-      <Stack bgColor="white" data-id="14ac45cbad10" direction="row" p={2} spacing={2}>
+    <Box data-id="030925-52942f">
+      <Box data-id="030925-781d41" className="sun-editor" id="custom_toolbar" />
+      <Stack data-id="030925-019916" bgColor="white" direction="row" p={2} spacing={2}>
         {options.map((option: string) => (
           <Button
-            data-id="bfefe22a9131"
+            data-id="030925-73424f"
             key={option}
             onClick={() => insertTag(`%${option}%`)}
             size="sm">
@@ -45,13 +45,13 @@ function EmailEditor({ setHtml, value, options }) {
         ))}
       </Stack>
       <SunEditor
-        data-id="92597a52b03c"
+        data-id="030925-0f3d67"
         getSunEditorInstance={getSunEditorInstance}
         onChange={setHtml}
         setContents={value}
         setDefaultStyle="font-family: Arial, sans-serif;"
         setOptions={sunEditorOptions} />
-    </Box>)
+    </Box>
   );
 }
 

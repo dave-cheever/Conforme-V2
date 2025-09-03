@@ -54,146 +54,148 @@ function ResponseDetail({ response }) {
 
   if (!response) return null;
 
-  return (<>
-    <Flex data-id="eae3bdb121dc" mt={[0, 5]} onClick={toggle} position="relative">
-      <Flex align="center" cursor="pointer" data-id="ecbcaaee6fb0">
-        <Flex
-          align="center"
-          bg={isOpen ? 'responseLeftTabItem.activeIconBg' : ''}
-          borderRadius="8px"
-          data-id="3ddefce48728"
-          h="30px"
-          justify="center"
-          w="30px">
-          <Icon
-            as={DetailIcon}
-            color="#ffffff"
-            data-id="8f96be6c83ab" />
+  return (
+    <>
+      <Flex data-id="030925-55bce9" mt={[0, 5]} onClick={toggle} position="relative">
+        <Flex data-id="030925-5a412e" align="center" cursor="pointer">
+          <Flex
+            data-id="030925-113495"
+            align="center"
+            bg={isOpen ? 'responseLeftTabItem.activeIconBg' : ''}
+            borderRadius="8px"
+            h="30px"
+            justify="center"
+            w="30px">
+            <Icon
+              data-id="030925-d66e79"
+              as={DetailIcon}
+              color="#ffffff" />
+          </Flex>
+          <ArrowRight
+            data-id="030925-ec3496"
+            color="responseLeftTabItem.textColor"
+            display={['none', 'block']}
+            ml={1}
+            mt={1} />
         </Flex>
-        <ArrowRight
-          color="responseLeftTabItem.textColor"
-          data-id="58206fae1331"
-          display={['none', 'block']}
-          ml={1}
-          mt={1} />
       </Flex>
-    </Flex>
-    <Modal data-id="104e6c3f63b9" isOpen={isOpen} onClose={onClose}>
-      <ModalContent
-        borderRadius="10px"
-        bottom="10px"
-        boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-        data-id="ef6a85b3200e"
-        h="fit-content"
-        left={['10px', '80px']}
-        maxW={['calc(100% - 20px)', '315px']}
-        position="absolute"
-        top={['auto', '200px']}>
-        <ModalBody data-id="9f7953de21fc" p="20px">
-          <Flex data-id="6a6da31581b9" w="full">
-            <Flex data-id="068e467c2c39" flexDirection="column" w="50%">
-              <Box data-id="a3799aae38d9" h="50px" mt={2}>
-                <Box data-id="d2c5b9d9a0f1" fontSize="11px" opacity={0.5}>
-                  Item ID
+      <Modal data-id="030925-909ab2" isOpen={isOpen} onClose={onClose}>
+        <ModalContent
+          data-id="030925-de4ce8"
+          borderRadius="10px"
+          bottom="10px"
+          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          h="fit-content"
+          left={['10px', '80px']}
+          maxW={['calc(100% - 20px)', '315px']}
+          position="absolute"
+          top={['auto', '200px']}>
+          <ModalBody data-id="030925-e3b4f2" p="20px">
+            <Flex data-id="030925-ea6182" w="full">
+              <Flex data-id="030925-71350e" flexDirection="column" w="50%">
+                <Box data-id="030925-3109ac" h="50px" mt={2}>
+                  <Box data-id="030925-8a18f0" fontSize="11px" opacity={0.5}>
+                    Item ID
+                  </Box>
+                  <Flex data-id="030925-05d62d" align="center" fontSize="14px" minH="28px">
+                    <Flex data-id="030925-4e4018" mr={2}>{response?.trackerItem?.reference}</Flex>
+                    <CopyToClipboard
+                      data-id="030925-8d74e5"
+                      onCopy={() =>
+                        toast({
+                          ...toastSuccess,
+                          title: 'Item ID copied',
+                          description: `${response?.trackerItem?.reference} was copied to clipboard`,
+                        })
+                      }
+                      text={response?.trackerItem?.reference}>
+                      <Copy
+                        data-id="030925-739ce9"
+                        _hover={{ opacity: 0.6, cursor: 'pointer' }}
+                        color="responseLeftNavigation.copy"
+                        h="17px"
+                        mt={1}
+                        w="17px" />
+                    </CopyToClipboard>
+                  </Flex>
                 </Box>
-                <Flex align="center" data-id="6a7bc7fe53fd" fontSize="14px" minH="28px">
-                  <Flex data-id="07600cb399b6" mr={2}>{response?.trackerItem?.reference}</Flex>
-                  <CopyToClipboard
-                    data-id="9f1f3e837d46"
-                    onCopy={() =>
-                      toast({
-                        ...toastSuccess,
-                        title: 'Item ID copied',
-                        description: `${response?.trackerItem?.reference} was copied to clipboard`,
-                      })
-                    }
-                    text={response?.trackerItem?.reference}>
-                    <Copy
-                      _hover={{ opacity: 0.6, cursor: 'pointer' }}
-                      color="responseLeftNavigation.copy"
-                      data-id="d8033e46a6af"
-                      h="17px"
-                      mt={1}
-                      w="17px" />
-                  </CopyToClipboard>
-                </Flex>
-              </Box>
-              <ResponseLeftItem
-                data-id="3881297351a7"
-                heading={capitalize(t('business unit'))}
-                value={response?.businessUnit?.name || '-'} />
-              <Box data-id="e68e7c6cec6d" h="50px" mt={1}>
-                <Box data-id="98b6daf1f3db" fontSize="11px" opacity={0.5}>
-                  Responsible
+                <ResponseLeftItem
+                  data-id="030925-a704d1"
+                  heading={capitalize(t('business unit'))}
+                  value={response?.businessUnit?.name || '-'} />
+                <Box data-id="030925-055b67" h="50px" mt={1}>
+                  <Box data-id="030925-e07022" fontSize="11px" opacity={0.5}>
+                    Responsible
+                  </Box>
+                  <Flex data-id="030925-7f494c" align="center" fontSize="14px" minH="28px">
+                    <Avatar
+                        data-id="030925-1fe54d"
+                        bg="responseLeftNavigation.avatar"
+                        color="white"
+                        mr={2}
+                        name={
+                          (
+                            accountable && accountable.firstName && accountable.lastName
+                              ? `${accountable.firstName} ${accountable.lastName}`
+                              : `${accountable?.displayName}`
+                          )?.replace(/\s*\(.*?\)\s*/g, '')
+                        }
+                        size="xs"
+                        src={accountable && accountable.imgUrl}
+                      />
+                    <Flex data-id="030925-dd53a7" mr={2}>
+                      {accountable && accountable.firstName && accountable.lastName
+                        ? `${accountable.firstName} ${accountable.lastName}`
+                        : `${accountable?.displayName || '-'}`}
+                    </Flex>
+                  </Flex>
                 </Box>
-                <Flex align="center" data-id="32f7676d04f7" fontSize="14px" minH="28px">
-                  <Avatar
+
+                <Box data-id="030925-171903" h="50px" mt={1}>
+                  <Box data-id="030925-23d2e8" fontSize="11px" opacity={0.5}>
+                    Accountableee
+                  </Box>
+                  <Flex data-id="030925-eea8e3" align="center" fontSize="14px" minH="28px">
+                    <Avatar
+                      data-id="030925-ca9fdd"
                       bg="responseLeftNavigation.avatar"
                       color="white"
-                      data-id="7dc18869afe3"
                       mr={2}
                       name={
-                        (
-                          accountable && accountable.firstName && accountable.lastName
-                            ? `${accountable.firstName} ${accountable.lastName}`
-                            : `${accountable?.displayName}`
-                        )?.replace(/\s*\(.*?\)\s*/g, '')
+                        responsible && responsible.firstName && responsible.lastName
+                          ? `${responsible.firstName} ${responsible.lastName}`
+                          : `${responsible?.displayName}`
                       }
                       size="xs"
-                      src={accountable && accountable.imgUrl}
-                    />
-                  <Flex data-id="b2b81150b3c1" mr={2}>
-                    {accountable && accountable.firstName && accountable.lastName
-                      ? `${accountable.firstName} ${accountable.lastName}`
-                      : `${accountable?.displayName || '-'}`}
-                  </Flex>
-                </Flex>
-              </Box>
-
-              <Box data-id="e68e7c6cec6d" h="50px" mt={1}>
-                <Box data-id="98b6daf1f3db" fontSize="11px" opacity={0.5}>
-                  Accountableee
-                </Box>
-                <Flex align="center" data-id="32f7676d04f7" fontSize="14px" minH="28px">
-                  <Avatar
-                    bg="responseLeftNavigation.avatar"
-                    color="white"
-                    data-id="7dc18869afe3"
-                    mr={2}
-                    name={
-                      responsible && responsible.firstName && responsible.lastName
+                      src={responsible && responsible.imgUrl} />
+                    <Flex data-id="030925-0ddce3" mr={2}>
+                      {responsible && responsible.firstName && responsible.lastName
                         ? `${responsible.firstName} ${responsible.lastName}`
-                        : `${responsible?.displayName}`
-                    }
-                    size="xs"
-                    src={responsible && responsible.imgUrl} />
-                  <Flex data-id="b2b81150b3c1" mr={2}>
-                    {responsible && responsible.firstName && responsible.lastName
-                      ? `${responsible.firstName} ${responsible.lastName}`
-                      : `${responsible?.displayName || '-'}`}
+                        : `${responsible?.displayName || '-'}`}
+                    </Flex>
                   </Flex>
-                </Flex>
-              </Box>
+                </Box>
+              </Flex>
+              <Flex data-id="030925-de34dd" flexDirection="column" w="50%">
+                <ResponseLeftItem
+                  data-id="030925-5d8766"
+                  heading="Category"
+                  value={response.trackerItem?.category?.name || '-'} />
+                <ResponseLeftItem
+                  data-id="030925-b3ffdc"
+                  heading="Regulatory body"
+                  value={response.trackerItem?.regulatoryBody?.name || '-'} />
+                <ResponseLeftItem
+                  data-id="030925-0566af"
+                  heading="Frequency"
+                  value={response.trackerItem?.frequency || '-'} />
+              </Flex>
             </Flex>
-            <Flex data-id="558b0793c7c8" flexDirection="column" w="50%">
-              <ResponseLeftItem
-                data-id="ef71e0a6ebaf"
-                heading="Category"
-                value={response.trackerItem?.category?.name || '-'} />
-              <ResponseLeftItem
-                data-id="eca91e817376"
-                heading="Regulatory body"
-                value={response.trackerItem?.regulatoryBody?.name || '-'} />
-              <ResponseLeftItem
-                data-id="001bf6f559ff"
-                heading="Frequency"
-                value={response.trackerItem?.frequency || '-'} />
-            </Flex>
-          </Flex>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  </>);
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 }
 
 export default ResponseDetail;

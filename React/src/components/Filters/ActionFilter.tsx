@@ -10,13 +10,14 @@ function ActionFilter() {
   const value = useMemo(() => filtersValues.action?.value, [filtersValues]) as string[];
 
   return (
-    (<CheckboxGroup
-      data-id="3a50dfda45b0"
-      onChange={(newValue) => setFilters({ action: newValue })}
-      value={value}>
-      <Stack data-id="aed902f6725a" direction="column" ml="4">
+    <CheckboxGroup
+        data-id="030925-48e8e1"
+        onChange={(newValue) => setFilters({ action: newValue })}
+        value={value}>
+      <Stack data-id="030925-5113a0" direction="column" ml="4">
         {Object.entries(actions).map(([key, label]) => (
           <Checkbox
+            data-id="030925-227eca"
             css={{
               '.chakra-checkbox__control': {
                 borderRadius: '50%',
@@ -32,14 +33,13 @@ function ActionFilter() {
                 },
               },
             }}
-            data-id="9faa580aa3d6"
             key={key}
             value={key}>
-            <Text data-id="2c6b1db236c8">{label as string}</Text>
+            <Text data-id="030925-b0b7bd">{label as string}</Text>
           </Checkbox>
         ))}
       </Stack>
-    </CheckboxGroup>)
+    </CheckboxGroup>
   );
 }
 

@@ -1,9 +1,11 @@
 import { Text } from '@chakra-ui/react';
 
 function SectionHeader({ label, display = 'flex' }: { label: string; display?: string | string[] }) {
-  return <Text data-id="5852c4bc77bb" display={display} fontSize="smm" fontWeight="bold">
-    {label}
-  </Text>
+  return (
+    <Text data-id="030925-2d7541" display={display} fontSize="smm" fontWeight="bold">
+      {label}
+    </Text>
+  );
 }
 
 export default SectionHeader;

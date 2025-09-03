@@ -41,22 +41,22 @@ function Insights() {
       {
         _id: 'audits',
         name: capitalize(pluralize(t('audit'))),
-        component: <AuditsInsights data-id="4e5838fba437" />,
+        component: <AuditsInsights data-id="030925-805c52" />,
         usedFilters: ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds'],
       },
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
         _id: questionsCategory?._id,
         name: questionsCategory?.name,
         component: <AnswersInsights
+          data-id="030925-3bad84"
           answerType={questionsCategory?.name}
-          data-id="8a2241ed78a0"
           questionsCategoriesId={questionsCategory?._id} />,
         usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
       {
         _id: 'actions',
         name: 'Actions',
-        component: <ActionsInsights data-id="0f46609e0872" />,
+        component: <ActionsInsights data-id="030925-c5682e" />,
         usedFilters: ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'],
       },
     ],
@@ -74,52 +74,52 @@ function Insights() {
   }, [selectedPanel]);
 
   return (
-    (<Flex
-      data-id="a7494e38d3ea"
-      direction="column"
-      h="full"
-      isolation="isolate"
-      overflowY="hidden"
-      zIndex="1">
+    <Flex
+        data-id="030925-48a76d"
+        direction="column"
+        h="full"
+        isolation="isolate"
+        overflowY="hidden"
+        zIndex="1">
       <Header
+        data-id="030925-4a8858"
         breadcrumbs={['Insights']}
-        data-id="98049fce081b"
         mobileBreadcrumbs={['Insights']}>
-        {device === 'mobile' && <FilterButton data-id="c7f77bc3876e" insightsFilter />}
+        {device === 'mobile' && <FilterButton data-id="030925-92ae2b" insightsFilter />}
 
       </Header>
       {device !== 'mobile' && (
         <Flex
-          data-id="85393b4b35a0"
+          data-id="030925-c37c92"
           h="max-content"
           pl={['4', '8', '8']}
           position="relative"
           zIndex="2">
           <QuickFilters
-            data-id="44bf97753b08"
+            data-id="030925-01d830"
             w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
         </Flex>
       )}
       {error ? (
-        <Text data-id="764e3fd4c962">{error.message}</Text>
+        <Text data-id="030925-477408">{error.message}</Text>
       ) : loading ? (
-        <Loader center data-id="6789c961d87a" />
+        <Loader data-id="030925-bcc06b" center />
       ) : (
         <Flex
-          data-id="4b6a263d2d7d"
+          data-id="030925-48e79c"
           direction="column"
           overflowY="scroll"
           pt="3"
           px={[4, 8]}>
           <Tabs
-            data-id="32a08247b0ba"
+            data-id="030925-3eeff7"
             defaultIndex={selectedPanel}
             isLazy
             onChange={(index) => setSelectedPanel(index)}
             variant="unstyled"
             w="full">
             <TabList
-              data-id="92b543195c8e"
+              data-id="030925-3e6f69"
               overflowX="auto"
               sx={{
                 '::-webkit-scrollbar': {
@@ -130,6 +130,7 @@ function Insights() {
             >
               {panels?.map((panel) => (
                 <Tab
+                  data-id="030925-7f53f6"
                   _hover={{
                     opacity: 0.8,
                   }}
@@ -138,7 +139,6 @@ function Insights() {
                     color: 'insights.tabColor',
                   }}
                   borderRadius="10px"
-                  data-id="9e2d9f42096c"
                   fontSize="14px"
                   fontWeight="600"
                   key={panel._id}
@@ -150,9 +150,9 @@ function Insights() {
                 </Tab>
               ))}
             </TabList>
-            <TabPanels data-id="7f4e915b4849">
+            <TabPanels data-id="030925-d26faf">
               {panels?.map((panel) => (
-                <TabPanel data-id="eb61e51d7037" key={panel._id} px={0}>
+                <TabPanel data-id="030925-84fe73" key={panel._id} px={0}>
                   {panel.component}
                 </TabPanel>
               ))}
@@ -160,7 +160,7 @@ function Insights() {
           </Tabs>
         </Flex>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

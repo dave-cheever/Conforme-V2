@@ -97,19 +97,22 @@ function Users() {
     module?.type === 'tracker' ? (
       <>
         <AdminTableHeaderElement
-          data-id="816f54127346"
+          data-id="030925-0d2edb"
           label={
-            <Flex align="center" gap="1">
-              <Text>R</Text>
-              <Tooltip hasArrow label="Responsible on number of responses">
+            <Flex data-id="030925-be8ccb" align="center" gap="1">
+              <Text data-id="030925-15d84c">R</Text>
+              <Tooltip
+                data-id="030925-5ae133"
+                hasArrow
+                label="Responsible on number of responses">
                 <InfoOutlineIcon
+                  data-id="030925-00817c"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -123,19 +126,22 @@ function Users() {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          data-id="ae67569ac89c"
+          data-id="030925-209167"
           label={
-            <Flex align="center" gap="1">
-              <Text>A</Text>
-              <Tooltip hasArrow label="Accountable on number of responses">
+            <Flex data-id="030925-d1f565" align="center" gap="1">
+              <Text data-id="030925-41acd3">A</Text>
+              <Tooltip
+                data-id="030925-a9bf46"
+                hasArrow
+                label="Accountable on number of responses">
                 <InfoOutlineIcon
+                  data-id="030925-2d0b39"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -149,19 +155,22 @@ function Users() {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          data-id="7eefc7a20c98"
+          data-id="030925-ea1fe8"
           label={
-            <Flex align="center" gap="1">
-              <Text>C</Text>
-              <Tooltip hasArrow label="Contributor on number of responses">
+            <Flex data-id="030925-f63e76" align="center" gap="1">
+              <Text data-id="030925-e96f83">C</Text>
+              <Tooltip
+                data-id="030925-c2b597"
+                hasArrow
+                label="Contributor on number of responses">
                 <InfoOutlineIcon
+                  data-id="030925-193ed7"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -175,19 +184,19 @@ function Users() {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          data-id="38060c94261b"
+          data-id="030925-ab5e8b"
           label={
-            <Flex align="center" gap="1">
-              <Text>F</Text>
-              <Tooltip hasArrow label="Follower on number of responses">
+            <Flex data-id="030925-cc252f" align="center" gap="1">
+              <Text data-id="030925-1d9e2a">F</Text>
+              <Tooltip data-id="030925-9c0f1c" hasArrow label="Follower on number of responses">
                 <InfoOutlineIcon
+                  data-id="030925-ea77df"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -204,19 +213,22 @@ function Users() {
     ) : (
       <>
         <AdminTableHeaderElement
-          data-id="e756e05b6f34"
+          data-id="030925-7031e6"
           label={
-            <Flex align="center" gap="1">
-              <Text>T</Text>
-              <Tooltip hasArrow label={`Total number of ${pluralize(t('audit'))}`}>
+            <Flex data-id="030925-8f0851" align="center" gap="1">
+              <Text data-id="030925-4a1413">T</Text>
+              <Tooltip
+                data-id="030925-ce4875"
+                hasArrow
+                label={`Total number of ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
+                  data-id="030925-4d83d9"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -230,19 +242,22 @@ function Users() {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          data-id="3d691d6ab0b1"
+          data-id="030925-a83104"
           label={
-            <Flex align="center" gap="1">
-              <Text>C</Text>
-              <Tooltip hasArrow label={`Number of completed ${pluralize(t('audit'))}`}>
+            <Flex data-id="030925-f622ff" align="center" gap="1">
+              <Text data-id="030925-0f594d">C</Text>
+              <Tooltip
+                data-id="030925-af8dc5"
+                hasArrow
+                label={`Number of completed ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
+                  data-id="030925-996c38"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -256,19 +271,22 @@ function Users() {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          data-id="e7c41813879a"
+          data-id="030925-bcfa9f"
           label={
-            <Flex align="center" gap="1">
-              <Text>U</Text>
-              <Tooltip hasArrow label={`Number of upcoming ${pluralize(t('audit'))}`}>
+            <Flex data-id="030925-416d10" align="center" gap="1">
+              <Text data-id="030925-a34b94">U</Text>
+              <Tooltip
+                data-id="030925-be192e"
+                hasArrow
+                label={`Number of upcoming ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
+                  data-id="030925-422b79"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -282,19 +300,22 @@ function Users() {
           w="calc(25% - 13px)"
         />
         <AdminTableHeaderElement
-          data-id="3eaecbcd7b51"
+          data-id="030925-e17e19"
           label={
-            <Flex align="center" gap="1">
-              <Text>M</Text>
-              <Tooltip hasArrow label={`Number of missed ${pluralize(t('audit'))}`}>
+            <Flex data-id="030925-411a81" align="center" gap="1">
+              <Text data-id="030925-f7a715">M</Text>
+              <Tooltip
+                data-id="030925-2a678d"
+                hasArrow
+                label={`Number of missed ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
+                  data-id="030925-194d9e"
                   boxSize="2.5"
                   color="gray.500"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
-                  }}
-                />
+                  }} />
               </Tooltip>
             </Flex>
           }
@@ -314,28 +335,28 @@ function Users() {
     module?.type === 'tracker' ? (
       <>
         <UserResponseCount
-          data-id="7dc7d7829d3b"
+          data-id="030925-35c07c"
           responseCount={user.responsibleCount}
           // eslint-disable-next-line jsx-a11y/aria-role
           role="responsible"
           userId={user._id}
         />
         <UserResponseCount
-          data-id="4d832f239723"
+          data-id="030925-516b12"
           responseCount={user.accountableCount}
           // eslint-disable-next-line jsx-a11y/aria-role
           role="accountable"
           userId={user._id}
         />
         <UserResponseCount
-          data-id="80cae009aaa6"
+          data-id="030925-cd89b3"
           responseCount={user.contributorCount}
           // eslint-disable-next-line jsx-a11y/aria-role
           role="contributor"
           userId={user._id}
         />
         <UserResponseCount
-          data-id="de3e47004a21"
+          data-id="030925-d071fd"
           responseCount={user.followerCount}
           // eslint-disable-next-line jsx-a11y/aria-role
           role="follower"
@@ -344,10 +365,10 @@ function Users() {
       </>
     ) : (
       <>
-        <UserAuditsCount auditsCount={user.totalAuditsCount} data-id="6bf7d4a1c513" userId={user._id} />
-        <UserAuditsCount auditsCount={user.completedAuditsCount} data-id="b51bc5e0d27c" status="completed" userId={user._id} />
-        <UserAuditsCount auditsCount={user.upcomingAuditsCount} data-id="bd665a6218dc" status="upcoming" userId={user._id} />
-        <UserAuditsCount auditsCount={user.missedAuditsCount} data-id="c8dfa16df76d" status="missed" userId={user._id} />
+        <UserAuditsCount data-id="030925-d4d82a" auditsCount={user.totalAuditsCount} userId={user._id} />
+        <UserAuditsCount data-id="030925-125159" auditsCount={user.completedAuditsCount} status="completed" userId={user._id} />
+        <UserAuditsCount data-id="030925-82e1cd" auditsCount={user.upcomingAuditsCount} status="upcoming" userId={user._id} />
+        <UserAuditsCount data-id="030925-4a2706" auditsCount={user.missedAuditsCount} status="missed" userId={user._id} />
       </>
     );
 
@@ -355,6 +376,7 @@ function Users() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
+        data-id="030925-727fd7"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -362,7 +384,6 @@ function Users() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
-        data-id="246eb1efe836"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -371,10 +392,10 @@ function Users() {
         px="10px"
         w="full"
       >
-        <Flex data-id="c22d9407defe" w={['60%', '16%']}>
+        <Flex data-id="030925-9ff998" w={['60%', '16%']}>
           <Avatar
+            data-id="030925-605c2d"
             borderColor="brand.active"
-            data-id="192faa91d5b5"
             mr={3}
             name={
               (user.firstName && user.lastName
@@ -386,19 +407,19 @@ function Users() {
             size="sm"
             src={user.imgUrl}
           />
-          <Text data-id="de1f5f7f86ed" lineHeight="32px" noOfLines={1} pr={3} textOverflow="ellipsis">
+          <Text data-id="030925-3d4921" lineHeight="32px" noOfLines={1} pr={3} textOverflow="ellipsis">
             {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
           </Text>
         </Flex>
         {device !== 'mobile' && (
           <>
-            <Box data-id="fd0475afcc93" w="16%">
+            <Box data-id="030925-3053a3" w="16%">
               {user.jobTitle ? user.jobTitle : 'Not specified'}
             </Box>
-            <Box data-id="ab4ef3862b03" w="16%">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>
-            <Flex data-id="8f0afdfdd223" flexDir="column" w="16%">
+            <Box data-id="030925-07feb6" w="16%">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>
+            <Flex data-id="030925-dc2dad" flexDir="column" w="16%">
               {getDefaultPages(user._id).length === 1 ? (
-                <Box data-id="db4de0041d43">
+                <Box data-id="030925-86790d">
                   {
                     getDefaultPages(user._id).find(
                       ({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'),
@@ -406,21 +427,21 @@ function Users() {
                   }
                 </Box>
               ) : loadingUsers.includes(user._id) ? (
-                <Flex data-id="fb8ef86f4542" w="130px">
-                  <Loader data-id="94999430ea63" size="sm" />
+                <Flex data-id="030925-ce6764" w="130px">
+                  <Loader data-id="030925-1ff569" size="sm" />
                 </Flex>
               ) : (
                 <Select
-                  data-id="e7aea8b47276"
+                  data-id="030925-1daf01"
                   fontSize="14px"
-                  icon={<ArrowDownIcon data-id="265a8477f9a0" h="10px" ml={1} w="10px" />}
+                  icon={<ArrowDownIcon data-id="030925-02199c" h="10px" ml={1} w="10px" />}
                   onChange={(e) => onHomePageChange(e, user._id)}
                   value={user.defaultPage?.find((value) => value.name == module?.name)?.path}
                   variant="unstyled"
                   w="120px"
                 >
                   {getDefaultPages(user._id).map((page) => (
-                    <option data-id="970f8a391c50" key={page.url} value={page.url}>
+                    <option data-id="030925-a17a4b" key={page.url} value={page.url}>
                       {page.name}
                     </option>
                   ))}
@@ -430,11 +451,11 @@ function Users() {
           </>
         )}
         {device !== 'mobile' && (
-          <Flex data-id="7f9dbf52c072" h="100%" w="20%">
+          <Flex data-id="030925-a4de86" h="100%" w="20%">
             {renderCounts(user)}
           </Flex>
         )}
-        <Flex align="center" data-id="697af222a4a8" ml="20px" w={['40%', 'calc(16% - 20px)']}>
+        <Flex data-id="030925-78d42c" align="center" ml="20px" w={['40%', 'calc(16% - 20px)']}>
           {user?.lastLogin
             ? upperFirst(
                 formatDistanceToNow(new Date(user?.lastLogin), {
@@ -449,24 +470,24 @@ function Users() {
 
   return (
     <>
-      <Header breadcrumbs={['Admin', 'Users']} data-id="c938e2500b46" mobileBreadcrumbs={['Users']} />
+      <Header data-id="030925-ad049d" breadcrumbs={['Admin', 'Users']} mobileBreadcrumbs={['Users']} />
       <Flex
+        data-id="030925-007b42"
         bg="auditsList.bg"
         borderRadius="10px"
-        data-id="3557cac5f756"
         h="calc(100vh - 160px)"
         overflow="auto"
         p={['0', '0 25px 30px 30px']}
       >
-        <Flex data-id="203r513a2a9a01" h="full" px={['25px', 0]} w="full">
+        <Flex data-id="030925-fbb8f9" h="full" px={['25px', 0]} w="full">
           <Box
-          data-id="b039112968ee"
+          data-id="030925-56c397"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
            w={['full', 'full', 'calc(100%)']}
         >
-          <AdminTableHeader data-id="3350252466f2">
+          <AdminTableHeader data-id="030925-cc7df4">
             <AdminTableHeaderElement
-              data-id="bf4bde40a93b"
+              data-id="030925-228679"
               label="Name"
               onClick={() => {
                 setSortType('displayName');
@@ -479,7 +500,7 @@ function Users() {
             {device !== 'mobile' && (
               <>
                 <AdminTableHeaderElement
-                  data-id="44887e874a38"
+                  data-id="030925-fab791"
                   label="Job title"
                   onClick={() => {
                     setSortType('jobTitle');
@@ -490,7 +511,7 @@ function Users() {
                   w="16%"
                 />
                 <AdminTableHeaderElement
-                  data-id="d1f933e1286b"
+                  data-id="030925-d44f6c"
                   label="Role"
                   onClick={() => {
                     setSortType('role');
@@ -501,7 +522,7 @@ function Users() {
                   w="16%"
                 />
                 <AdminTableHeaderElement
-                  data-id="16a52098a7bd"
+                  data-id="030925-e5dbe5"
                   label="Default page"
                   onClick={() => {
                     setSortType('defaultPage');
@@ -514,12 +535,12 @@ function Users() {
               </>
             )}
             {device !== 'mobile' && (
-              <Flex data-id="a9a0c8fec433" w="20%">
+              <Flex data-id="030925-b45308" w="20%">
                 {renderCountHeaders()}
               </Flex>
             )}
             <AdminTableHeaderElement
-              data-id="6804bd5d7bbe"
+              data-id="030925-d76989"
               label="Last login"
               ml="20px"
               onClick={() => {
@@ -531,8 +552,8 @@ function Users() {
               w={['40%', 'calc(16% - 20px)']}
             />
           </AdminTableHeader>
-          <Box bg="auditsList.bg" border="1px solid #cbd5e0" borderBottomRadius="10px" data-id="e22951ab0519" h="full" overflow="auto" w="full">
-            {loading ? <Loader center data-id="2cafeec1cd87" /> : users.map((user, i) => renderUserRow(user, i))}
+          <Box data-id="030925-cdf2f8" bg="auditsList.bg" border="1px solid #cbd5e0" borderBottomRadius="10px" h="full" overflow="auto" w="full">
+            {loading ? <Loader data-id="030925-365fa5" center /> : users.map((user, i) => renderUserRow(user, i))}
           </Box>
           </Box>
         </Flex>

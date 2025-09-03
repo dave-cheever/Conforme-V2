@@ -26,18 +26,18 @@ function Settings() {
   const renderSections = () => {
     switch (activeTab) {
       case 0:
-        return <Defaults data-id="1a3890eb5fd0" />;
+        return <Defaults data-id="030925-5fa7c5" />;
 
       case 1:
         return (
-          (<EmailTemplates
-            data-id="ea27c3287ab0"
-            isOpen={isOpen}
-            onClose={onClose}
-            selectedTemplate={selectedTemplate}
-            setSelectedTemplate={setSelectedTemplate}
-            setUpdateImage={setUpdateImage}
-            updateImage={updateImage} />)
+          <EmailTemplates
+              data-id="030925-28cc76"
+              isOpen={isOpen}
+              onClose={onClose}
+              selectedTemplate={selectedTemplate}
+              setSelectedTemplate={setSelectedTemplate}
+              setUpdateImage={setUpdateImage}
+              updateImage={updateImage} />
         );
 
       default:
@@ -46,33 +46,33 @@ function Settings() {
   };
 
   return (
-    (<Box data-id="331e5f374b17" h="full" w="full">
+    <Box data-id="030925-35e736" h="full" w="full">
       <Header
+        data-id="030925-7396eb"
         breadcrumbs={['Admin', 'Other settings']}
-        data-id="06af38227662"
         mobileBreadcrumbs={['Other settings']} />
       <Flex
-        data-id="5ed9fd8324ef"
+        data-id="030925-53ed11"
         flexDirection="row"
         h={['calc(100% - 160px)', 'calc(100% - 85px)']}
         px="25px"
         w="full">
         <Flex
+          data-id="030925-6928d4"
           bg="white"
           borderRadius="20px"
-          data-id="bd815a1ca832"
           flexDirection="column"
           h={['full', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
           mb={['25px', '0px']}
           p={['25px 30px', '25px 30px']}
           w={activeTab === 1 ? ['full', selectedTemplate ? 'fit-content' : 'full', 'fit-content'] : 'full'}>
           {loading ? (
-            <Loader center data-id="b2cd55f6dbb4" />
+            <Loader data-id="030925-6b438b" center />
           ) : (
             <>
-              <Tabs data-id="e7e9617f8af1" />
+              <Tabs data-id="030925-e90226" />
               <Flex
-                data-id="4ce9e50cb78e"
+                data-id="030925-ded770"
                 h="full"
                 mt="7"
                 overflowY={['visible', 'auto']}
@@ -84,9 +84,9 @@ function Settings() {
         </Flex>
         {activeTab === 1 && selectedTemplate && (
           <Flex
+            data-id="030925-d96d0a"
             bg="white"
             borderRadius={['0px', '20px']}
-            data-id="e14e5b066ac0"
             flexDirection="column"
             h={['100vh', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
             left="0px"
@@ -96,15 +96,15 @@ function Settings() {
             position={['fixed', 'relative']}
             top="0px"
             zIndex={10}>
-            <Flex align="center" data-id="c4afbdbce4e9" justify="space-between" w="full">
-              <Flex data-id="1031a75f850a" fontWeight="700">Template Preview</Flex>
+            <Flex data-id="030925-060b50" align="center" justify="space-between" w="full">
+              <Flex data-id="030925-422f61" fontWeight="700">Template Preview</Flex>
               {device === 'mobile' ? (
-                <CloseIcon data-id="dc71818e2864" onClick={closeTemplatePreview} />
+                <CloseIcon data-id="030925-48cd92" onClick={closeTemplatePreview} />
               ) : (
                 <Button
+                  data-id="030925-a49db9"
                   borderRadius="10px"
                   colorScheme="purpleHeart"
-                  data-id="ecf941e5a6ce"
                   fontSize="11px"
                   fontWeight="700"
                   h="28px"
@@ -115,12 +115,12 @@ function Settings() {
               )}
             </Flex>
             <Flex
+              data-id="030925-d4eedf"
               bg="emailTemplates.bg"
-              data-id="9747b30cb01f"
               h="calc(100vh - 300px)"
               mt={10}>
               <Image
-                data-id="33642c8cc727"
+                data-id="030925-4d1e02"
                 fit="contain"
                 h="full"
                 src={`${process.env.REACT_APP_API_URL}/images/thumbnails/${selectedTemplate._id}.png?preventCache=${updateImage}`}
@@ -129,14 +129,16 @@ function Settings() {
           </Flex>
         )}
       </Flex>
-    </Box>)
+    </Box>
   );
 }
 
 function SettingsWithContext(props) {
-  return <SettingsProvider data-id="d092ac29f472" {...props}>
-    <Settings data-id="0bb73c35c5b7" />
-  </SettingsProvider>
+  return (
+    <SettingsProvider data-id="030925-899021" {...props}>
+      <Settings data-id="030925-3f5a60" />
+    </SettingsProvider>
+  );
 }
 
 export default SettingsWithContext;

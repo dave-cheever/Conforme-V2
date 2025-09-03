@@ -24,12 +24,12 @@ function ActionListItem({
   const [assigneeDetails, setAssigneeDetails] = useState<IUser>();
 
   return (
-    (<HStack data-id="e2741ccd0fdd" spacing={[2, 6]} w="full">
+    <HStack data-id="030925-2ddb02" spacing={[2, 6]} w="full">
       <Flex
+        data-id="030925-0489a3"
         align="center"
         bg="actionListElement.number.bg"
         color="actionListElement.number.color"
-        data-id="3603006c64d1"
         h="30px"
         justify="center"
         rounded="full"
@@ -37,53 +37,53 @@ function ActionListItem({
         {index + 1}
       </Flex>
       <HStack
+        data-id="030925-c0c1d0"
         bg="actionListElement.bg"
-        data-id="c3bced5f2550"
         flexGrow={1}
         px={[3, 5]}
         py={3}
         rounded="10px"
         spacing={[2, 5]}>
         {action?.assigneeId && <UserAvatar
+          data-id="030925-247ee6"
           callback={setAssigneeDetails}
-          data-id="a92753237f9b"
           h="36px"
           userId={action.assigneeId}
           w="36px" />}
-        <Stack data-id="eca7775b280c" flexGrow={1} spacing={0}>
+        <Stack data-id="030925-cd1582" flexGrow={1} spacing={0}>
           <HStack
+            data-id="030925-c8e860"
             color="actionListElement.color"
-            data-id="2643fe0309ed"
             fontSize="ssm"
             spacing={4}>
-            {action?.assigneeId && <Text data-id="28db688dd270">{assigneeDetails?.displayName}</Text>}
-            {action.dueDate && <Text data-id="dcf305408ed1">{format(new Date(action.dueDate), 'd LLLL Y')}</Text>}
+            {action?.assigneeId && <Text data-id="030925-a0b013">{assigneeDetails?.displayName}</Text>}
+            {action.dueDate && <Text data-id="030925-2a79c4">{format(new Date(action.dueDate), 'd LLLL Y')}</Text>}
           </HStack>
           <Text
+            data-id="030925-f06f28"
             color="actionListElement.color"
-            data-id="b9f84b42c4f9"
             fontSize="smm"
             wordBreak="break-all">
             {action.title}
           </Text>
         </Stack>
         {!disabled && (
-          <HStack data-id="eb7aa22f06d1" spacing={2}>
+          <HStack data-id="030925-b8b5d4" spacing={2}>
             <EditIcon
+              data-id="030925-95883e"
               cursor="pointer"
-              data-id="fa8281e0089f"
               onClick={() => setSelectedAction(action)}
               stroke="actionListElement.icon" />
-            <Spacer data-id="59af5253cb29" />
+            <Spacer data-id="030925-71ac2b" />
             <Trashcan
+              data-id="030925-1d0cf0"
               cursor="pointer"
-              data-id="f896e7c7083c"
               onClick={onDelete}
               stroke="actionListElement.icon" />
           </HStack>
         )}
       </HStack>
-    </HStack>)
+    </HStack>
   );
 }
 

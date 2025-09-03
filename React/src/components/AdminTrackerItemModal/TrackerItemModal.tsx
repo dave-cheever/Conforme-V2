@@ -146,8 +146,8 @@ function TrackerItemModal({ refetch, onItemAdded }) {
   return (
     <>
       <ModalContent
+        data-id="030925-a57d78"
         bg="trackerItemModal.bg"
-        data-id="b81317eb7c08"
         h="auto"
         m="0"
         maxH="none"
@@ -157,11 +157,11 @@ function TrackerItemModal({ refetch, onItemAdded }) {
         position="absolute"
         rounded="0"
       >
-        <ModalHeader alignItems="center" data-id="b24c9acd0f16" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
-          <Flex data-id="4d57dcdb0d8a" justifyContent="space-between">
-            <Flex alignItems="center" data-id="19b4d523acfe" fontSize={['16px', '24px']}>
+        <ModalHeader data-id="030925-e0934b" alignItems="center" fontSize="xxl" fontWeight="bold" p="0 0 20px 0">
+          <Flex data-id="030925-52c1cf" justifyContent="space-between">
+            <Flex data-id="030925-7fb352" alignItems="center" fontSize={['16px', '24px']}>
               <Avatar
-                data-id="6b482dd8a926"
+                data-id="030925-42bbea"
                 mr={3}
                 name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 rounded="full"
@@ -170,11 +170,11 @@ function TrackerItemModal({ refetch, onItemAdded }) {
               />
               {trackerItem.hasOwnProperty('_id') ? 'View' : 'Add'} {t('tracker item')}
             </Flex>
-            <Flex alignItems="center" data-id="6c09b2d53fe2">
+            <Flex data-id="030925-92c03a" alignItems="center">
               <Button
+                data-id="030925-990b51"
                 bg="trackerItemModal.saveButton.bg"
                 color="trackerItemModal.saveButton.color"
-                data-id="c6dd499d4ff3"
                 disabled={
                   (Object.keys(errors).length > 0 ||
                     isActionRequiredToComplete ||
@@ -185,24 +185,24 @@ function TrackerItemModal({ refetch, onItemAdded }) {
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
-                leftIcon={<Icon as={Save} data-id="08426d827272" stroke="trackerItemModal.saveButton.icon" />}
+                leftIcon={<Icon data-id="030925-2dfcf2" as={Save} stroke="trackerItemModal.saveButton.icon" />}
                 mr="26px"
                 onClick={handleSecondaryButtonClick}
                 w="93px"
               >
                 Save
               </Button>
-              <Close cursor="pointer" data-id="522aa2686000" h="15px" onClick={closeModal} stroke="trackerItemModal.closeIcon" w="15px" />
+              <Close data-id="030925-33c149" cursor="pointer" h="15px" onClick={closeModal} stroke="trackerItemModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>
-        <ModalBody data-id="24f04096faf1" p="0">
-          <Flex data-id="44f5797bfaa9" flexDir={['column', 'row']} height="100%">
-            {device !== 'mobile' && <NavigationModal data-id="7589f1f350c5" />}
-            {device === 'mobile' && <NavigationMobileModal data-id="2e824668cc4f" />}
+        <ModalBody data-id="030925-aa3b8f" p="0">
+          <Flex data-id="030925-9b9b9f" flexDir={['column', 'row']} height="100%">
+            {device !== 'mobile' && <NavigationModal data-id="030925-353834" />}
+            {device === 'mobile' && <NavigationMobileModal data-id="030925-68b19e" />}
             <Flex
+              data-id="030925-a72950"
               bg="trackerItemModal.tabs.bg"
-              data-id="734f5e855ea9"
               flexDir="column"
               h={['calc(100vh - 180px)', 'calc(100vh - 120px)']}
               justifyContent="space-between"
@@ -210,29 +210,34 @@ function TrackerItemModal({ refetch, onItemAdded }) {
               rounded="20px"
               w={['full', '580px']}
             >
-              <Flex data-id="aa6e77c991a3" mb="20px" minH="calc(100% - 60px)" overflowY="auto">
-                <Component data-id="49d41e48985c" />
+              <Flex data-id="030925-b97fac" mb="20px" minH="calc(100% - 60px)" overflowY="auto">
+                <Component data-id="030925-f35502" />
               </Flex>
-              <Flex data-id="3c0494440235" justifyContent="space-between" w="full">
+              <Flex data-id="030925-b68bf3" justifyContent="space-between" w="full">
                 {selectedSection.name !== 'Details' && (
                   <Button
+                    data-id="030925-18d13c"
                     bg="trackerItemModal.tabs.bottomButton.bg"
                     color="trackerItemModal.tabs.bottomButton.color"
                     fontSize={["12px", "14px"]}
                     fontWeight="700"
                     h="40px"
-                    leftIcon={<Icon as={OpenMenuArrow} stroke="#ffffff" transform="rotate(90deg)" />}
+                    leftIcon={<Icon
+                      data-id="030925-0eeb9e"
+                      as={OpenMenuArrow}
+                      stroke="#ffffff"
+                      transform="rotate(90deg)" />}
                     onClick={handlePreviousButtonClick}
                     rounded="10px"
-                    w={["40px", "fit-content"]}
-                  >
+                    w={["40px", "fit-content"]}>
                     {device !== "mobile" ? "Back ": ""}
                   </Button>
                 )}
 
-                <Flex gap={3}>
+                <Flex data-id="030925-9bd191" gap={3}>
                   {selectedSection.name === 'Summary' && !trackerItem._id && (
                     <Button
+                      data-id="030925-0803c8"
                       bg="gray.300"
                       color="black"
                       disabled={
@@ -246,13 +251,13 @@ function TrackerItemModal({ refetch, onItemAdded }) {
                       h="40px"
                       onClick={handleAddMoreButtonClick}
                       rounded="10px"
-                      w="fit-content"
-                    >
+                      w="fit-content">
                       Add More
                     </Button>
                   )}
 
                   <Button
+                    data-id="030925-c6bcd5"
                     _hover={{ bg: 'trackerItemModal.tabs.bottomButton.hover' }}
                     bg="trackerItemModal.tabs.bottomButton.bg"
                     color="trackerItemModal.tabs.bottomButton.color"
@@ -260,10 +265,13 @@ function TrackerItemModal({ refetch, onItemAdded }) {
                     fontWeight="700"
                     h="40px"
                     onClick={handlePrimaryButtonClick}
-                    rightIcon={<Icon as={OpenMenuArrow} stroke="#ffffff" transform="rotate(270deg)" />}
+                    rightIcon={<Icon
+                      data-id="030925-4232ac"
+                      as={OpenMenuArrow}
+                      stroke="#ffffff"
+                      transform="rotate(270deg)" />}
                     rounded="10px"
-                    w="fit-content"
-                  >
+                    w="fit-content">
                     {isValidating ? 'Validating...' : buttonText}
                   </Button>
                 </Flex>
@@ -273,7 +281,7 @@ function TrackerItemModal({ refetch, onItemAdded }) {
         </ModalBody>
       </ModalContent>
       <AlertDialog
-        data-id="cd740b175ebe"
+        data-id="030925-3d6abd"
         description={savingDialogDetails.description}
         handleNo={() => setSavingDialogDetails(initialDialogDetails)}
         handleYes={savingDialogDetails.action}

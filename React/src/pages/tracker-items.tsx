@@ -256,22 +256,49 @@ function TrackerItems() {
   return (
     <>
       <Header
+        data-id="030925-983341"
         breadcrumbs={[pluralize(t('tracker item'))]}
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
-        pageLabel={capitalize(t('tracker item'))}
-      >
+        pageLabel={capitalize(t('tracker item'))}>
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
-            <Divider borderColor="gray.300" height="30px" mt={1} mx={4} orientation="vertical" />
-            <SortButton setSortOrder={setSortOrder} setSortType={setSortType} sortBy={sortBy} sortOrder={sortOrder} sortType={sortType} />
+            <ChangeViewButton
+              data-id="030925-a97f42"
+              setViewMode={setViewMode}
+              viewMode={viewMode}
+              views={['grid', 'list', 'group']} />
+            <Divider
+              data-id="030925-f852b7"
+              borderColor="gray.300"
+              height="30px"
+              mt={1}
+              mx={4}
+              orientation="vertical" />
+            <SortButton
+              data-id="030925-e6a816"
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              sortType={sortType} />
           </>
         )}
       </Header>
-
-      <Flex direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
+      <Flex
+        data-id="030925-50b50b"
+        direction="column"
+        h={['calc(100vh - 200px)', 'calc(100vh - 150px)']}
+        overflow="auto"
+        pb={4}>
         {error ? (
-          <Flex alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
+          <Flex
+            data-id="030925-8cb19c"
+            alignItems="center"
+            fontSize="18px"
+            fontStyle="italic"
+            h="200px"
+            justifyContent="center"
+            w="full">
             No Tracker Items found, try adjusting the filters.
           </Flex>
         ) : (
@@ -279,34 +306,40 @@ function TrackerItems() {
             {' '}
             {viewMode === 'grid' && (
               <InfiniteScrollComponent
+                data-id="030925-96f85a"
                 hasMore={!loading && responses.length < total}
                 initialLoad={false}
                 loadMore={loadResponses}
                 ref={scrollerRef}
-                useWindow={false}
-              >
+                useWindow={false}>
                 <Grid
+                  data-id="030925-428375"
                   bg="#fff"
                   gap={6}
                   justifyItems="center"
                   pb={[0, 8]}
                   pt={3}
                   px={[4, 8]}
-                  templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}
-                >
+                  templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}>
                   {responses.length ? (
-                    responses.map((r) => <TrackerItemSquare key={r._id} response={r} />)
+                    responses.map((r) => <TrackerItemSquare data-id="030925-f47b6e" key={r._id} response={r} />)
                   ) : !loading ? (
-                    <Flex fontSize="18px" fontStyle="italic" h="full" w="full">
+                    <Flex
+                      data-id="030925-ba46c1"
+                      fontSize="18px"
+                      fontStyle="italic"
+                      h="full"
+                      w="full">
                       No {pluralize(t('tracker item'))} found
                     </Flex>
                   ) : null}
                 </Grid>
-                {loading && <Loader center h="60px" />}
+                {loading && <Loader data-id="030925-f6e22b" center h="60px" />}
               </InfiniteScrollComponent>
             )}
             {viewMode === 'list' && (
               <TrackerItemsList
+                data-id="030925-886671"
                 loading={loading}
                 loadResponses={loadResponses}
                 responses={responses}
@@ -315,17 +348,16 @@ function TrackerItems() {
                 setSortType={setSortType}
                 sortOrder={sortOrder}
                 sortType={sortType}
-                total={total}
-              />
+                total={total} />
             )}
             {viewMode === 'group' && (
               <TrackerItemsGroup
+                data-id="030925-0faf64"
                 loading={loading}
                 loadResponses={loadResponses}
                 responses={responses}
                 scrollerRef={scrollerRef}
-                total={total}
-              />
+                total={total} />
             )}
           </>
         )}

@@ -22,19 +22,19 @@ function UserAuditsCount({ status, auditsCount, userId }: { status?: string; aud
   };
 
   return (
-    (<Flex
-      alignItems="center"
-      bg="userItem.responseCountBg"
-      cursor="pointer"
-      data-id="d735dcb892fa"
-      h="calc(100% - 1px)"
-      justifyContent="center"
-      mr="1px"
-      mt="1px"
-      onClick={handleClick}
-      w="calc(25% - 1px)">
+    <Flex
+        data-id="030925-e822c0"
+        alignItems="center"
+        bg="userItem.responseCountBg"
+        cursor="pointer"
+        h="calc(100% - 1px)"
+        justifyContent="center"
+        mr="1px"
+        mt="1px"
+        onClick={handleClick}
+        w="calc(25% - 1px)">
       {auditsCount || 0}
-    </Flex>)
+    </Flex>
   );
 }
 

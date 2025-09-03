@@ -108,20 +108,20 @@ function Team() {
 
   if (loading) {
     return (
-      <Flex bg="teamPage.bg" data-id="34d7966a0c58" h="full" rounded="20px" w="full">
-        <Loader center data-id="4bd3243c6160" />
+      <Flex data-id="030925-bb602e" bg="teamPage.bg" h="full" rounded="20px" w="full">
+        <Loader data-id="030925-4882a3" center />
       </Flex>
     );
   }
 
   return (
     <Stack
+      data-id="030925-8e2e65"
       alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
       border="1px solid"
       borderColor="#CBD5E0"
       borderRadius="8px"
-      data-id="38e4414c2140"
       fontSize="smm"
       fontWeight="bold"
       h={['fit-content', 'full']}
@@ -131,17 +131,17 @@ function Team() {
       spacing="40px"
       w="full"
     >
-      <Stack data-id="0ca0a7e8d5f7" spacing="6" w="full">
-        <HStack alignItems="flex-start" data-id="9da01514a58d" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
+      <Stack data-id="030925-8bd065" spacing="6" w="full">
+        <HStack data-id="030925-2dfb12" alignItems="flex-start" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
           <SingleParticipantSelector
-            data-id="11f0371f724c"
+            data-id="030925-dc980a"
             isUserAllowedToChange={isPermittedToManageAccountable}
             label="Accountable"
             onChange={(participant) => selectParticipants({ accountableId: participant._id })}
             selectedParticipant={accountable}
           />
           <SingleParticipantSelector
-            data-id="25b77c2a2052"
+            data-id="030925-e252a2"
             isUserAllowedToChange={isPermittedToManageResponsible}
             label="Responsible"
             onChange={(participant) => selectParticipants({ responsibleId: participant._id })}
@@ -149,7 +149,7 @@ function Team() {
           />
         </HStack>
         <MultipleParticipantsSelector
-          data-id="5fc50b465ef6"
+          data-id="030925-e47a44"
           isUserAllowedToChange={isPermittedToManageContributors}
           label="Contributors"
           maxParticipants={maxParticipants}
@@ -171,7 +171,7 @@ function Team() {
           selectedParticipants={contributors}
         />
         <MultipleParticipantsSelector
-          data-id="cc552ceab692"
+          data-id="030925-0bbee1"
           isUserAllowedToChange={isPermittedToManageFollowers}
           label="Followers"
           maxParticipants={maxParticipants}

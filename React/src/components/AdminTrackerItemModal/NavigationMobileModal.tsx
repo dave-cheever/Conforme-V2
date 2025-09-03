@@ -10,20 +10,20 @@ function NavigationMobileModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    (<Flex
-      alignItems="center"
-      data-id="42a7fed2ee50"
-      justifyContent="space-between"
-      mb="30px"
-      mt="8px"
-      onClick={() => setIsOpen(!isOpen)}
-      pos="relative">
-      <Flex alignItems="center" data-id="267732b23ff7">
+    <Flex
+        data-id="030925-c5427f"
+        alignItems="center"
+        justifyContent="space-between"
+        mb="30px"
+        mt="8px"
+        onClick={() => setIsOpen(!isOpen)}
+        pos="relative">
+      <Flex data-id="030925-bdbcb2" alignItems="center">
         <Flex
+          data-id="030925-ec6293"
           alignItems="center"
           bg="navigationMobileModal.section.bg"
           color="navigationMobileModal.section.color"
-          data-id="735015395a16"
           flexShrink={0}
           fontSize="14px"
           fontWeight="bold"
@@ -35,38 +35,38 @@ function NavigationMobileModal() {
           {selectedSectionIndex + 1}
         </Flex>
         <Text
+          data-id="030925-2e3cc5"
           color="navigationMobileModal.section.label"
-          data-id="7d3da0feaf02"
           fontSize="14px"
           fontWeight="bold">
           {trackerItemModalSections[selectedSectionIndex].name}
         </Text>
       </Flex>
-      <Flex alignItems="center" data-id="633dfa7c5050">
+      <Flex data-id="030925-8058a3" alignItems="center">
         {Object.keys(errors).length > 0 && (
           <Flex
+            data-id="030925-2b2fc6"
             alignItems="center"
             bg="navigationMobileModal.errorBg"
-            data-id="1772c531ccad"
             flexShrink={0}
             h="28px"
             justifyContent="center"
             mr="20px"
             rounded="10px"
             w="34px">
-            <ErrorSign data-id="dc2dc6ab5d98" stroke="navigationMobileModal.icon.error" />
+            <ErrorSign data-id="030925-e3f817" stroke="navigationMobileModal.icon.error" />
           </Flex>
         )}
         <ArrowRight
-          data-id="9e71d183947d"
+          data-id="030925-75421c"
           stroke="navigationMobileModal.icon.arrow"
           transform="rotate(90deg)" />
       </Flex>
       {isOpen && (
         <Flex
+          data-id="030925-b18bd1"
           bg="navigationMobileModal.bg"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="e029b07126a7"
           flexDir="column"
           h="260px"
           pos="absolute"
@@ -77,9 +77,9 @@ function NavigationMobileModal() {
           zIndex="5">
           {trackerItemModalSections.map((section, i) => (
             <Flex
+              data-id="030925-ab82a5"
               alignItems="center"
               bg={i === selectedSectionIndex ? 'navigationMobileModal.section.selectedBg' : 'navigationMobileModal.section.unselectedBg'}
-              data-id="0263e4d69a6c"
               key={i}
               onClick={() => {
                 trigger(Object.keys(trackerItemModalSections[selectedSectionIndex].fields || []) as any);
@@ -87,10 +87,10 @@ function NavigationMobileModal() {
               }}
               p="10px">
               <Flex
+                data-id="030925-876995"
                 alignItems="center"
                 bg="navigationMobileModal.section.bg"
                 color="navigationMobileModal.section.color"
-                data-id="cb5168b0d1ec"
                 flexShrink={0}
                 fontSize="11px"
                 fontWeight="bold"
@@ -102,8 +102,8 @@ function NavigationMobileModal() {
                 {i + 1}
               </Flex>
               <Text
+                data-id="030925-67ce3b"
                 color="navigationMobileModal.section.label"
-                data-id="6b7950f790b1"
                 fontSize="ssm"
                 fontWeight="bold">
                 {section.name}
@@ -112,7 +112,7 @@ function NavigationMobileModal() {
           ))}
         </Flex>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 

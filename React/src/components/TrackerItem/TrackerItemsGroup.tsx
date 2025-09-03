@@ -35,7 +35,7 @@ function TrackerGridItems({
 
   const renderGroup = (group: string) => (
     <Flex
-      data-id="38ff559a9b1e"
+      data-id="030925-f0f3df"
       direction="column"
       key={group}
       minW="380px"
@@ -44,11 +44,11 @@ function TrackerGridItems({
       pt={2}
       w="380px">
       <Flex
+        data-id="030925-f58750"
         align="center"
         bg={`trackerGroup.${group}`}
         borderRadius={"md"}
         color="#FFFFFF"
-        data-id="a8547be36b6b"
         fontWeight="700"
         justify="space-between"
         justifyContent={"center"}
@@ -62,11 +62,11 @@ function TrackerGridItems({
         {responseStatusesGroup[group]}
       </Flex>
       <Stack
+        data-id="030925-a0d9d9"
         align="center"
         bg={"#F7FAFC"}
         borderRadius={"md"}
         boxShadow={"sm"}
-        data-id="7eea0b4006b9"
         direction="column"
         p={4}
         spacing={6}
@@ -80,24 +80,24 @@ function TrackerGridItems({
             return a.dueDate && b.dueDate ? a.dueDate.toString().localeCompare(b.dueDate.toString()) : 0;
           })
           ?.map((response: IResponse) => (
-            <TrackerItemSquare data-id="77e2a3bdac5d" isGroupView key={response._id} response={response} />
+            <TrackerItemSquare data-id="030925-4aecde" isGroupView key={response._id} response={response} />
           ))}??
       </Stack>
     </Flex>
   );
 
   return (
-    (<InfiniteScrollComponent
-      data-id="1a81faae9299"
-      hasMore={!loading && responses.length < total}
-      initialLoad={false}
-      loadMore={loadResponses}
-      ref={scrollerRef}
-      useWindow={false}>
-      <Flex bg="#ffffff" data-id="efa7eba0e047" h="full" overflow="auto" pt="3" w="full">
+    <InfiniteScrollComponent
+        data-id="030925-334506"
+        hasMore={!loading && responses.length < total}
+        initialLoad={false}
+        loadMore={loadResponses}
+        ref={scrollerRef}
+        useWindow={false}>
+      <Flex data-id="030925-bfda06" bg="#ffffff" h="full" overflow="auto" pt="3" w="full">
         {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
       </Flex>
-    </InfiniteScrollComponent>)
+    </InfiniteScrollComponent>
   );
 }
 

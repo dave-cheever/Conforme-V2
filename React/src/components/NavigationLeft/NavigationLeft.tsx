@@ -19,26 +19,25 @@ function NavigationLeft() {
   const device = useDevice();
 
   return (
-    (<Box
-      bg="navigationLeft.bg"
-      data-id="47c28dc91b51"
-      display={['none', 'block', 'block']}
-      fontWeight="semibold"
-      h="100vh"
-      w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
+    <Box
+        data-id="030925-19e809"
+        bg="navigationLeft.bg"
+        display={['none', 'block', 'block']}
+        fontWeight="semibold"
+        h="100vh"
+        w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
       <Box
+        data-id="030925-b7dff8"
         alignItems="center"
         cursor="pointer"
-        data-id="d2ece50108d9"
         display="flex"
         h="80px"
         justifyContent="center"
       >
-        <ModuleSwitcher data-id="e97e8f7ff427" />
+        <ModuleSwitcher data-id="030925-f38047" />
       </Box>
-
       <Flex
-        data-id="10cc9b2fcd5f"
+        data-id="030925-163a4e"
         direction="column"
         gap={"25px"}
         h="calc(100% - 80px)"
@@ -50,34 +49,34 @@ function NavigationLeft() {
         pr={"14px"}
         pt={"18px"}
       >
-        <Box data-id="f2d5871013ad">
+        <Box data-id="030925-938875">
           {menuItems.map((menuItem: any, i) => (
             <Can
+              data-id="030925-e975ad"
               action={menuItem.permission}
-              data-id="29d2a3cc89b6"
               key={`menu${i}`}
               // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => {
-                if (device === 'desktop') return <NavigationLeftItem data-id="e93f85db199f" menuItem={menuItem} />;
+                if (device === 'desktop') return <NavigationLeftItem data-id="030925-f70cb6" menuItem={menuItem} />;
 
                 if (device === 'tablet') {
                   return (
-                    (<NavigationLeftItemTablet
-                      data-id="9199347cf0aa"
-                      filtersOpen={filtersOpen}
-                      menuItem={menuItem}
-                      setFiltersOpen={setFiltersOpen}
-                      setSubsectionOpen={setSubsectionOpen}
-                      subsectionOpen={subsectionOpen} />)
+                    <NavigationLeftItemTablet
+                        data-id="030925-f697d3"
+                        filtersOpen={filtersOpen}
+                        menuItem={menuItem}
+                        setFiltersOpen={setFiltersOpen}
+                        setSubsectionOpen={setSubsectionOpen}
+                        subsectionOpen={subsectionOpen} />
                   );
                 }
-                return <Box data-id="6283424152e0" />;
+                return <Box data-id="030925-68cf6a" />;
               }} />
           ))}
         </Box>
 
       </Flex>
-    </Box>)
+    </Box>
   );
 }
 

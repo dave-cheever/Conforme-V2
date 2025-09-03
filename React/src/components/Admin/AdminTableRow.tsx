@@ -21,27 +21,27 @@ function AdminTableRow({
   const { navigateTo } = useNavigate();
   const { setResponseFiltersValue } = useFiltersContext();
   return (
-    (<Flex
-       _hover={{ bg: '#F5F7FA' }}
-      align="center"
-      bg={index % 2 === 0 ? 'white' : 'gray.50'}
-      borderBottom="1px solid"
-      borderColor="adminTableHeader.border"
-      color="adminTableRow.font"
-      cursor="pointer"
-      data-id="6b6c4b02bd5d"
-      flexShrink={0}
-      flexWrap={['wrap', 'nowrap']}
-      fontSize="smm"
-      h="55px"
-      key={element._id}
-      onClick={edit}
-      pl={2}
-      w="full">
+    <Flex
+         data-id="030925-21bac9"
+        _hover={{ bg: '#F5F7FA' }}
+        align="center"
+        bg={index % 2 === 0 ? 'white' : 'gray.50'}
+        borderBottom="1px solid"
+        borderColor="adminTableHeader.border"
+        color="adminTableRow.font"
+        cursor="pointer"
+        flexShrink={0}
+        flexWrap={['wrap', 'nowrap']}
+        fontSize="smm"
+        h="55px"
+        key={element._id}
+        onClick={edit}
+        pl={2}
+        w="full">
       <Flex
+        data-id="030925-fc23b0"
         align="center"
         cursor="pointer"
-        data-id="9fdfe4d5bf9d"
         fontSize="14px"
         
         w={['70%', '50%']}>
@@ -49,17 +49,17 @@ function AdminTableRow({
       </Flex>
       {module?.type === 'tracker' && (
         <Flex
+          data-id="030925-00d921"
           alignItems="center"
-          data-id="6e785fd9bd81"
           justifyContent={['flex-end', 'flex-start']}
           mt={['5px', '0']}
           pr={['21px', '0']}
           w={['20%', '50%']}>
           {element.trackerItemsResponsesCount || '0'}
-          <Tooltip data-id="c9dd84cbb3c8" fontSize="14px" label="Show Items">
+          <Tooltip data-id="030925-e19252" fontSize="14px" label="Show Items">
             <ArrowCount
+              data-id="030925-65ae1c"
               cursor="pointer"
-              data-id="c7cb46f24f79"
               h="10px"
               ml="13px"
               onClick={() => {
@@ -71,7 +71,7 @@ function AdminTableRow({
           </Tooltip>
         </Flex>
       )}
-    </Flex>)
+    </Flex>
   );
 }
 export default AdminTableRow;

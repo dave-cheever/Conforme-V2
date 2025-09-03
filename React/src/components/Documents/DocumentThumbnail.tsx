@@ -21,23 +21,24 @@ function DocumentThumbnail({ document }: { document: IDocument | undefined }) {
   });
   const documentDetails = (data?.filesDetails || [])[0];
 
-  return (<Flex
-      align="center"
-      borderColor="documentUploaded.border"
-      borderRadius="3px"
-      borderWidth={1}
-      data-id="56368189657d"
-      flexShrink={0}
-      fontSize="12px"
-      h="55px"
-      justify="center"
-      overflow="hidden"
-      w="55px">
+  return (
+    <Flex
+        data-id="030925-dadfe8"
+        align="center"
+        borderColor="documentUploaded.border"
+        borderRadius="3px"
+        borderWidth={1}
+        flexShrink={0}
+        fontSize="12px"
+        h="55px"
+        justify="center"
+        overflow="hidden"
+        w="55px">
       <Image
-        data-id="d3a03c92f2fa"
+        data-id="030925-026b49"
         fallback={
-          <Flex align="center" data-id="38362c90f6d3" h="full">
-            <BlankPage data-id="21e809d23383" h="30px" w="55px" />
+          <Flex data-id="030925-ad51e1" align="center" h="full">
+            <BlankPage data-id="030925-1e4262" h="30px" w="55px" />
           </Flex>
         }
         h="auto"
@@ -45,7 +46,8 @@ function DocumentThumbnail({ document }: { document: IDocument | undefined }) {
         maxW="55px"
         src={documentDetails?.thumbnail}
         w="auto" />
-    </Flex>);
+    </Flex>
+  );
 }
 
 export default DocumentThumbnail;

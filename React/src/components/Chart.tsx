@@ -47,31 +47,31 @@ function Chart({ items, label }: { items: IBaseWithName[]; label: string }) {
   };
 
   return (
-    (<Flex
-      alignItems="center"
-      data-id="7a31ea399d08"
-      direction="column"
-      p="0 30px"
-      position="fixed"
-      right="30px">
+    <Flex
+        data-id="030925-c873a7"
+        alignItems="center"
+        direction="column"
+        p="0 30px"
+        position="fixed"
+        right="30px">
       <Box
+        data-id="030925-32b358"
         color="chart.labelFontColor"
-        data-id="6fbc02268790"
         fontWeight="bold"
         mb="24px">
         Responses by {label}
       </Box>
       <Box
+        data-id="030925-5f5ba7"
         alignItems="center"
         bgColor="#DBDBDC"
         borderRadius="100px"
-        data-id="4f136f49b59b"
         height="173px"
         justifyContent="center"
         width="173px">
-        <Doughnut data={data} data-id="e8d41664cb63" height={300} options={options} />
+        <Doughnut data-id="030925-3714a3" data={data} height={300} options={options} />
       </Box>
-    </Flex>)
+    </Flex>
   );
 }
 

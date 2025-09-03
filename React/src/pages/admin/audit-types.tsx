@@ -313,6 +313,7 @@ function AuditTypes() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
+        data-id="030925-ff153e"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -320,7 +321,6 @@ function AuditTypes() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
-        data-id="3fc151e99afd"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -331,15 +331,15 @@ function AuditTypes() {
         w="full"
       >
         <Flex
+          data-id="030925-771319"
           cursor="pointer"
-          data-id="b8b600ae568d"
           flexDir="column"
           mr={4}
           onClick={() => openAuditTypeModal('edit', auditType)}
           pl={1}
           w="full"
         >
-          <Text data-id="a09e2d687387" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          <Text data-id="030925-8258e7" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {auditType.name}
           </Text>
         </Flex>
@@ -350,17 +350,17 @@ function AuditTypes() {
   return (
     <>
       <AdminModal
+        data-id="030925-f22202"
         collection="audit types"
-        data-id="4392ddcb8d3b"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetAuditType : undefined}
       >
-        <Stack data-id="58b2d418f910" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 80px)'}>
+        <Stack data-id="030925-e52760" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 80px)'}>
           <TextInput
+            data-id="030925-affbbf"
             control={control}
-            data-id="4a3fec84e4e7"
             label="Audit type name"
             name="name"
             placeholder="Name"
@@ -370,8 +370,8 @@ function AuditTypes() {
             }}
           />
           <Dropdown
+            data-id="030925-c28ae5"
             control={control}
-            data-id="d631ddb7cefd"
             label="Frequency"
             name="frequency"
             options={frequencyOptions}
@@ -383,8 +383,8 @@ function AuditTypes() {
             variant="secondaryVariant"
           />
           <Datepicker
+            data-id="030925-e3040b"
             control={control}
-            data-id="ecd810896977"
             disablePastDate={disablePastDate}
             label="Starting date"
             name="startingDate"
@@ -396,8 +396,8 @@ function AuditTypes() {
           />
 
           <Dropdown
+            data-id="030925-8c4914"
             control={control}
-            data-id="7488a717820b"
             label="View"
             name="view"
             options={[
@@ -411,8 +411,8 @@ function AuditTypes() {
             variant="secondaryVariant"
           />
           <Dropdown
+            data-id="030925-8ce422"
             control={control}
-            data-id="43949da485b2"
             label={`When should a ${t('business unit')} be assigned to an ${t('audit')} `}
             name="businessUnitScope"
             options={[
@@ -424,8 +424,8 @@ function AuditTypes() {
             variant="secondaryVariant"
           />
           <Dropdown
+            data-id="030925-cef8ed"
             control={control}
-            data-id="cf1cde052c90"
             label={`Should ${pluralize(t('audit'))} be recurring by default?`}
             name="recurring"
             options={[
@@ -438,11 +438,11 @@ function AuditTypes() {
             }}
             variant="secondaryVariant"
           />
-          <Stack data-id="6115386dc6ee">
-            <Flex align="center" data-id="1bcec17820a4" justify="space-between" mb="none" pt={4}>
+          <Stack data-id="030925-410cc5">
+            <Flex data-id="030925-a23928" align="center" justify="space-between" mb="none" pt={4}>
               <Box
+                data-id="030925-a03b19"
                 color="dropdown.labelFont.normal"
-                data-id="4c3555577239"
                 fontSize="14px"
                 fontWeight="bold"
                 left="none"
@@ -452,18 +452,18 @@ function AuditTypes() {
                 Sections
               </Box>
             </Flex>
-            <Stack data-id="492f3d1d1b5d" spacing={4}>
+            <Stack data-id="030925-f2e111" spacing={4}>
               {sections.length > 0 ? (
                 sections.map((section, i) => (
-                  <Stack data-id="b86ee4594a22" key={`section-${i}`}>
-                    <HStack align="flex-end" data-id="8426669afae6" fontSize="smm">
-                      <Text data-id="e070e26b85be">Section {i + 1}</Text>
+                  <Stack data-id="030925-39748c" key={`section-${i}`}>
+                    <HStack data-id="030925-9eb700" align="flex-end" fontSize="smm">
+                      <Text data-id="030925-b1d57e">Section {i + 1}</Text>
                       {i > 0 && (
                         <Text
+                          data-id="030925-629fbc"
                           _hover={{ textDecoration: 'underline' }}
                           color="auditTypesAdmin.linkColor"
                           cursor="pointer"
-                          data-id="2895333bb2a9"
                           fontSize="xs"
                           onClick={() => moveSection(i, i - 1)}
                         >
@@ -472,12 +472,12 @@ function AuditTypes() {
                       )}
                       {i < sections.length - 1 && (
                         <Text
+                          data-id="030925-480ece"
                           _hover={{
                             textDecoration: 'underline',
                           }}
                           color="auditTypesAdmin.linkColor"
                           cursor="pointer"
-                          data-id="3d689bfea0d4"
                           fontSize="xs"
                           onClick={() => moveSection(i, i + 1)}
                         >
@@ -486,12 +486,12 @@ function AuditTypes() {
                       )}
 
                       <Text
+                        data-id="030925-9b8dad"
                         _hover={{
                           textDecoration: 'underline',
                         }}
                         color="auditTypesAdmin.linkColor"
                         cursor="pointer"
-                        data-id="00434285886e"
                         fontSize="xs"
                         onClick={() => removeSection(i)}
                       >
@@ -500,6 +500,7 @@ function AuditTypes() {
                     </HStack>
                     {section.type === 'questionsCategory' && (
                       <Select
+                        data-id="030925-758b69"
                         _active={{ bg: 'dropdown.activeBg' }}
                         _focus={{
                           borderColor: 'dropdown.border.focus.normal',
@@ -511,10 +512,9 @@ function AuditTypes() {
                         borderWidth="1px"
                         color="dropdown.font"
                         css={{ paddingTop: '0' }}
-                        data-id="5e82ddb87871"
                         fontSize="smm"
                         h="42px"
-                        icon={<ChevronRight data-id="5488fb98d036" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
+                        icon={<ChevronRight data-id="030925-65eb6a" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
                         onChange={(e) =>
                           setValue(
                             'sections',
@@ -532,11 +532,11 @@ function AuditTypes() {
                         top="5px"
                         value={section._id}
                       >
-                        <option data-id="efa335fc50f4" value={undefined}>
+                        <option data-id="030925-f18f49" value={undefined}>
                           Please select questions category
                         </option>
                         {availableQuestionsCategories(section._id)?.map(({ _id, name }) => (
-                          <option data-id="2ec3671292d5" key={_id} value={_id}>
+                          <option data-id="030925-c39380" key={_id} value={_id}>
                             {name}
                           </option>
                         ))}
@@ -545,17 +545,17 @@ function AuditTypes() {
                   </Stack>
                 ))
               ) : (
-                <Text data-id="d5397551349b" fontSize="smm">
+                <Text data-id="030925-29e254" fontSize="smm">
                   No sections added
                 </Text>
               )}
             </Stack>
-            <Spacer data-id="42fcc2619e1f" />
-            <Spacer data-id="fde47af89b6c" />
+            <Spacer data-id="030925-cfcad2" />
+            <Spacer data-id="030925-531f59" />
             <Button
+              data-id="030925-e18853"
               bg="adminModal.button.bg"
               color="adminModal.button.color"
-              data-id="be44fea35efa"
               fontSize="smm"
               fontWeight="bold"
               isDisabled={disableAddNewSection}
@@ -569,26 +569,26 @@ function AuditTypes() {
           </Stack>
         </Stack>
       </AdminModal>
-      <Header breadcrumbs={['Admin', 'Audit types']} data-id="a14d6d59aac0" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
+      <Header data-id="030925-6f5ee9" breadcrumbs={['Admin', 'Audit types']} mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
       <Flex
+        data-id="030925-708948"
         bg="auditsList.bg"
         borderRadius="10px"
-        data-id="ansbajf3738"
         h="calc(100vh - 160px)"
         overflow="auto"
         p={[0, '0 25px 30px 30px']}
       >
-        <Flex data-id="20444a2a9a01" h="full" px={['25px', 0]} w="full">
+        <Flex data-id="030925-9efdfe" h="full" px={['25px', 0]} w="full">
           <Box
+            data-id="030925-e2118e"
             border="1px solid"
             borderColor="auditsList.headerBorderColor"
-            data-id="b66f9mh62g65"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             w={['full', 'full', 'calc(100%)']}
           >
-            <AdminTableHeader data-id="e77d6573756f">
+            <AdminTableHeader data-id="030925-ae4ff0">
               <AdminTableHeaderElement
-                data-id="51d440e398eb"
+                data-id="030925-e42f7c"
                 label="Name"
                 onClick={() => {
                   setSortType('name');
@@ -599,13 +599,13 @@ function AuditTypes() {
                 w="full"
               />
             </AdminTableHeader>
-            <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="h6a8g4n8c3" h="full" overflow="auto" w="full">
+            <Box data-id="030925-6355bb" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
               {loading ? (
-                <Loader center data-id="515105f6eb5d" />
+                <Loader data-id="030925-ce726f" center />
               ) : auditTypes?.length > 0 ? (
                 auditTypes?.map(renderAuditTypeRow)
               ) : (
-                <Flex data-id="2f754733ddff" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+                <Flex data-id="030925-b57600" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                   No audit types found
                 </Flex>
               )}

@@ -11,20 +11,22 @@ interface IStatusSelectorList {
 }
 
 function StatusSelectorList({ filteredStatuses, selected, handleChange }: IStatusSelectorList) {
-  return <CheckboxGroup
-    data-id="983702cfe6d8"
-    onChange={(value) => handleChange({ target: { name: 'status', value } })}
-    value={selected}>
-    <Stack data-id="2c0ec6e2b002" direction="column" w="full">
-      {filteredStatuses?.map((value) => (
-        <FilterCheckBox
-          data-id="567d68187943"
-          key={value}
-          label={auditStatuses[value]}
-          value={value} />
-      ))}
-    </Stack>
-  </CheckboxGroup>
+  return (
+    <CheckboxGroup
+      data-id="030925-f9573d"
+      onChange={(value) => handleChange({ target: { name: 'status', value } })}
+      value={selected}>
+      <Stack data-id="030925-56d4a3" direction="column" w="full">
+        {filteredStatuses?.map((value) => (
+          <FilterCheckBox
+            data-id="030925-bee1c8"
+            key={value}
+            label={auditStatuses[value]}
+            value={value} />
+        ))}
+      </Stack>
+    </CheckboxGroup>
+  );
 }
 
 export default StatusSelectorList;

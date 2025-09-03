@@ -14,13 +14,13 @@ function StatusFilter() {
   };
 
   return (
-    (<Box data-id="08df37a5e3aa" w="full">
+    <Box data-id="030925-22a600" w="full">
       <StatusSelector
-        data-id="b743f2be39aa"
+        data-id="030925-c864dd"
         handleChange={handleChange}
         selected={value}
         status={auditStatuses} />
-    </Box>)
+    </Box>
   );
 }
 

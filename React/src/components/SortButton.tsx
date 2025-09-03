@@ -17,102 +17,104 @@ function SortButton({
   setSortOrder: (order: 'asc' | 'desc') => void;
   ml?: number | string | {};
 }) {
-  return <Box data-id="edb62cd329ee" ml={ml ?? '10px'}>
-    <Menu autoSelect={false} data-id="9e6c02425b38">
-      {({ onClose }) => (
-        <>
-          <MenuButton
-            _active={{}}
-            _hover={{}}
-            as={Button}
-            bg="sortButton.menuButtonBg"
-            border={"1px solid #CBD5E0"}
-            data-id="cb617272ae6d"
-            fontSize="14px"
-            fontWeight="700"
-            h="40px"
-            leftIcon={<UpAndDownIcon
-              color="sortButton.rightIcon"
-              data-id="c3c8799dfe9d"
-              h="12px"
-              mt="3px"
-              transform="rotate(90deg)"
-              w="12px" />}
-            ml={['15px', '0']}
-            rounded="10px">
-            <Flex align="center" data-id="387fc30084b0" mr="1">
-              <Text data-id="56ce5132037e" fontSize="14px" fontWeight="semi_medium">
-                Sort by
-              </Text>
-            </Flex>
-          </MenuButton>
-          <MenuList
-            border="none"
-            boxShadow="simple"
-            data-id="1367f945e695"
-            rounded="lg"
-            w="100px"
-            zIndex={2}>
-            {sortBy.map((sortItem) => (
-              <Flex data-id="6afb6d71cd37" key={sortItem.key} px={3} py={2}>
-                <Box data-id="fd79748082b4">
-                  <Text color="sortButton.menuItemFont" data-id="4513c1a0b8b0" fontSize="14px">
-                    {sortItem.label}
-                  </Text>
-                </Box>
-                <Spacer data-id="991f9491dab9" />
-                <HStack data-id="63b1c3cd64af">
-                  <Flex
-                    align="center"
-                    bg={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.menuItemFocus' : undefined}
-                    data-id="1df1f2ba41bc"
-                    h="30px"
-                    justify="center"
-                    onClick={() => {
-                      setSortType(sortItem.key);
-                      setSortOrder('asc');
-                      onClose();
-                    }}
-                    rounded="5px"
-                    w="30px">
-                    <ChevronRight
-                      color={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
-                      cursor="pointer"
-                      data-id="b31646bb6c74"
-                      h="12px"
-                      transform="rotate(-90deg)"
-                      w="12px" />
-                  </Flex>
-                  <Spacer data-id="872433c5a412" />
-                  <Flex
-                    align="center"
-                    bg={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.menuItemFocus' : undefined}
-                    data-id="fa70dd029e8b"
-                    h="30px"
-                    justify="center"
-                    onClick={() => {
-                      setSortType(sortItem.key);
-                      setSortOrder('desc');
-                      onClose();
-                    }}
-                    rounded="5px"
-                    w="30px">
-                    <ChevronRight
-                      color={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
-                      cursor="pointer"
-                      data-id="ccfafd5f0601"
-                      h="12px"
-                      transform="rotate(90deg)"
-                      w="12px" />
-                  </Flex>
-                </HStack>
+  return (
+    <Box data-id="030925-b86422" ml={ml ?? '10px'}>
+      <Menu data-id="030925-8e9126" autoSelect={false}>
+        {({ onClose }) => (
+          <>
+            <MenuButton
+              data-id="030925-fccfab"
+              _active={{}}
+              _hover={{}}
+              as={Button}
+              bg="sortButton.menuButtonBg"
+              border={"1px solid #CBD5E0"}
+              fontSize="14px"
+              fontWeight="700"
+              h="40px"
+              leftIcon={<UpAndDownIcon
+                data-id="030925-44e3e0"
+                color="sortButton.rightIcon"
+                h="12px"
+                mt="3px"
+                transform="rotate(90deg)"
+                w="12px" />}
+              ml={['15px', '0']}
+              rounded="10px">
+              <Flex data-id="030925-850c9c" align="center" mr="1">
+                <Text data-id="030925-52b9e3" fontSize="14px" fontWeight="semi_medium">
+                  Sort by
+                </Text>
               </Flex>
-            ))}
-          </MenuList>
-        </>
-      )}
-    </Menu>
-  </Box>
+            </MenuButton>
+            <MenuList
+              data-id="030925-830657"
+              border="none"
+              boxShadow="simple"
+              rounded="lg"
+              w="100px"
+              zIndex={2}>
+              {sortBy.map((sortItem) => (
+                <Flex data-id="030925-dd08f8" key={sortItem.key} px={3} py={2}>
+                  <Box data-id="030925-1e498e">
+                    <Text data-id="030925-507f78" color="sortButton.menuItemFont" fontSize="14px">
+                      {sortItem.label}
+                    </Text>
+                  </Box>
+                  <Spacer data-id="030925-0e5967" />
+                  <HStack data-id="030925-bf7b37">
+                    <Flex
+                      data-id="030925-bacd79"
+                      align="center"
+                      bg={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.menuItemFocus' : undefined}
+                      h="30px"
+                      justify="center"
+                      onClick={() => {
+                        setSortType(sortItem.key);
+                        setSortOrder('asc');
+                        onClose();
+                      }}
+                      rounded="5px"
+                      w="30px">
+                      <ChevronRight
+                        data-id="030925-7b194a"
+                        color={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
+                        cursor="pointer"
+                        h="12px"
+                        transform="rotate(-90deg)"
+                        w="12px" />
+                    </Flex>
+                    <Spacer data-id="030925-400a99" />
+                    <Flex
+                      data-id="030925-772568"
+                      align="center"
+                      bg={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.menuItemFocus' : undefined}
+                      h="30px"
+                      justify="center"
+                      onClick={() => {
+                        setSortType(sortItem.key);
+                        setSortOrder('desc');
+                        onClose();
+                      }}
+                      rounded="5px"
+                      w="30px">
+                      <ChevronRight
+                        data-id="030925-35a57d"
+                        color={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
+                        cursor="pointer"
+                        h="12px"
+                        transform="rotate(90deg)"
+                        w="12px" />
+                    </Flex>
+                  </HStack>
+                </Flex>
+              ))}
+            </MenuList>
+          </>
+        )}
+      </Menu>
+    </Box>
+  );
 }
 
 export default SortButton;

@@ -8,27 +8,27 @@ function TabItem({ label, setActiveTab, active, index }) {
   };
 
   return (
-    (<Flex
-      _hover={{
-        color: active ? 'settingsTabItem.activeColor' : 'settingsTabItem.hoverColor',
-      }}
-      align="center"
-      bg={active ? 'settingsTabItem.activeBg' : 'settingsTabItem.bg'}
-      borderRadius="10px"
-      color={active ? 'settingsTabItem.activeColor' : 'settingsTabItem.color'}
-      cursor="pointer"
-      data-id="15397fe6a2d6"
-      fontSize='14px'
-      fontWeight="700"
-      h={['fit-content', '30px']}
-      mr={[1, 3]}
-      onClick={onClick}
-      px="10px"
-      py={['4px', '0px']}
-      textOverflow="ellipsis"
-      whiteSpace="nowrap">
+    <Flex
+        data-id="030925-ed34bf"
+        _hover={{
+          color: active ? 'settingsTabItem.activeColor' : 'settingsTabItem.hoverColor',
+        }}
+        align="center"
+        bg={active ? 'settingsTabItem.activeBg' : 'settingsTabItem.bg'}
+        borderRadius="10px"
+        color={active ? 'settingsTabItem.activeColor' : 'settingsTabItem.color'}
+        cursor="pointer"
+        fontSize='14px'
+        fontWeight="700"
+        h={['fit-content', '30px']}
+        mr={[1, 3]}
+        onClick={onClick}
+        px="10px"
+        py={['4px', '0px']}
+        textOverflow="ellipsis"
+        whiteSpace="nowrap">
       {label}
-    </Flex>)
+    </Flex>
   );
 }
 

@@ -245,6 +245,7 @@ function BusinessUnits() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
+        data-id="030925-bc6f6b"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -252,7 +253,6 @@ function BusinessUnits() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
-        data-id="c76b0bf9921a"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -264,28 +264,28 @@ function BusinessUnits() {
         w="full"
       >
         <Flex
+          data-id="030925-00e9b9"
           cursor="pointer"
-          data-id="62602cb9c5b0"
           flexDir="column"
           pl={1}
           w={['70%', '30%']}
         >
-          <Text data-id="265ac9aaf161" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          <Text data-id="030925-3fed0a" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             {businessUnit.name}
           </Text>
         </Flex>
         {device !== 'mobile' && (
-          <Box data-id="d169dd4443da" w={['30%', '30%']}>
+          <Box data-id="030925-790c91" w={['30%', '30%']}>
             {businessUnit?.owner?.displayName}
           </Box>
         )}
         {module?.type === 'tracker' && (
-          <Flex align="center" data-id="038185a293c7" w={['15%', '20%']}>
-            <Text data-id="325510124911">{businessUnit.trackerItemsResponsesCount || 0}</Text>
-            <Tooltip data-id="a70f6f28c413" fontSize="md" label="Show Items">
+          <Flex data-id="030925-cbc508" align="center" w={['15%', '20%']}>
+            <Text data-id="030925-31e2c0">{businessUnit.trackerItemsResponsesCount || 0}</Text>
+            <Tooltip data-id="030925-916a98" fontSize="md" label="Show Items">
               <ArrowCount
+                data-id="030925-be7ab5"
                 cursor="pointer"
-                data-id="315701a99129"
                 h="10px"
                 ml="13px"
                 onClick={() => {
@@ -300,12 +300,12 @@ function BusinessUnits() {
         )}
         {module?.type === 'audits' && (
           <>
-            <Flex align="center" data-id="db85ba830398" w={['40%', '20%']}>
-              <Text data-id="49560825d319">{businessUnit.totalAnswersCount || 0}</Text>
-              <Tooltip data-id="1070df803807" fontSize="md" label="Show Items">
+            <Flex data-id="030925-33b673" align="center" w={['40%', '20%']}>
+              <Text data-id="030925-86e617">{businessUnit.totalAnswersCount || 0}</Text>
+              <Tooltip data-id="030925-af678d" fontSize="md" label="Show Items">
                 <ArrowCount
+                  data-id="030925-66c8df"
                   cursor="pointer"
-                  data-id="08e28509876b"
                   h="10px"
                   ml="13px"
                   onClick={() => {
@@ -317,12 +317,12 @@ function BusinessUnits() {
                 />
               </Tooltip>
             </Flex>
-            <Flex align="center" data-id="55e68fa3ad52" w={['22%', '20%']}>
-              <Text data-id="efecbaf85dda">{businessUnit.totalAuditsCount || 0}</Text>
-              <Tooltip data-id="ed7dabf6e0b7" fontSize="md" label="Show Items">
+            <Flex data-id="030925-f96ee0" align="center" w={['22%', '20%']}>
+              <Text data-id="030925-7011f2">{businessUnit.totalAuditsCount || 0}</Text>
+              <Tooltip data-id="030925-519fff" fontSize="md" label="Show Items">
                 <ArrowCount
+                  data-id="030925-2aee2f"
                   cursor="pointer"
-                  data-id="c44227d82bbf"
                   h="10px"
                   ml="13px"
                   onClick={() => {
@@ -343,17 +343,17 @@ function BusinessUnits() {
   return (
     <>
       <AdminModal
+        data-id="030925-6e4fb0"
         collection={t('business unit')}
-        data-id="f27643991a09"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetBusinessUnit : undefined}
       >
-        <Stack data-id="a4243ef9e5cd" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
+        <Stack data-id="030925-01c48c" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
+            data-id="030925-ca4c42"
             control={control}
-            data-id="2059c276d1a1"
             initialValue={currentBusinessUnitName.toLowerCase()}
             label="Name"
             name="name"
@@ -364,34 +364,34 @@ function BusinessUnits() {
               uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),
             }}
           />
-          <PeoplePicker control={control} data-id="2151fa34ef8e" label="Owner" name="ownerId" placeholder="Name" showAsDropdown={false} />
+          <PeoplePicker data-id="030925-3ede77" control={control} label="Owner" name="ownerId" placeholder="Name" showAsDropdown={false} />
         </Stack>
       </AdminModal>
       <Header
+        data-id="030925-8c202f"
         breadcrumbs={['Admin', pluralize(capitalize(t('business unit')))]}
-        data-id="ac1ee3c30cc8"
         mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
         pageLabel={capitalize(t('business unit'))}
       />
       <Box
+        data-id="030925-de0c53"
         bg="auditsList.bg"
         borderRadius="10px"
-        data-id="33879bce2f4d"
         h="calc(100vh - 160px)"
         p={['0', '0 25px 30px 30px']}
       >
-        <Flex data-id="204333a2a9a01" h="full" px={['25px', 0]}>
+        <Flex data-id="030925-5edf27" h="full" px={['25px', 0]}>
           <Box
+            data-id="030925-2a8267"
             border="1px solid"
             borderColor="auditsList.headerBorderColor"
-            data-id="a281438af26d"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
           >
-          <AdminTableHeader data-id="fc13c9d295b4">
+          <AdminTableHeader data-id="030925-c6c5c9">
             <AdminTableHeaderElement
-              data-id="ba04d2d0810b"
+              data-id="030925-743ac8"
               label={`${capitalize(t('business unit'))} name`}
               onClick={() => {
                 setSortType('name');
@@ -403,7 +403,7 @@ function BusinessUnits() {
             />
             {device !== 'mobile' && (
               <AdminTableHeaderElement
-                data-id="9e47b1978e0d"
+                data-id="030925-13d2e1"
                 label="Owner"
                 onClick={() => {
                   setSortType('owner');
@@ -416,7 +416,7 @@ function BusinessUnits() {
             )}
             {module?.type === 'tracker' ? (
               <AdminTableHeaderElement
-                data-id="6074f7bf737f"
+                data-id="030925-fce388"
                 label="Responses count"
                 onClick={() => {
                   setSortType('trackerItemsResponsesCount');
@@ -430,7 +430,7 @@ function BusinessUnits() {
             ) : (
               <>
                 <AdminTableHeaderElement
-                  data-id="14fe17021f88"
+                  data-id="030925-c8030e"
                   label={`${capitalize(pluralize(t('question')))} count`}
                   onClick={() => {
                     setSortType('totalAnswersCount');
@@ -441,7 +441,7 @@ function BusinessUnits() {
                   w={['40%', '20%']}
                 />
                 <AdminTableHeaderElement
-                  data-id="939037a384ef"
+                  data-id="030925-99ea47"
                   label={`${capitalize(pluralize(t('audit')))} count`}
                   onClick={() => {
                     setSortType('totalAuditsCount');
@@ -454,13 +454,13 @@ function BusinessUnits() {
               </>
             )}
           </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="3ab58dd63565" h="full" overflow="auto" w="full">
+          <Box data-id="030925-b16372" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader center data-id="f338242108dc" />
+              <Loader data-id="030925-36eaff" center />
             ) : businessUnits?.length > 0 ? (
               businessUnits?.map(renderBusinessUnitRow)
             ) : (
-              <Flex data-id="794f2811e3b3" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
+              <Flex data-id="030925-2c18df" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
                 No {pluralize(t('business unit'))} found
               </Flex>
             )}

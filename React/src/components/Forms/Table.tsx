@@ -73,119 +73,119 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
   };
 
   return (
-    (<Controller
-          control={control}
-          data-id="ee5108270cd6"
-          name={name}
-          render={({ field, fieldState }) => {
-            const { onChange, onBlur, value } = field;
-            const { error } = fieldState;
-            return (
-              (<Box data-id="d2af9a4e4770" id={name} mt="none" w="full">
-                {label && (
-                  <Flex
-                    align="center"
-                    data-id="9dd7a8890870"
-                    justify="space-between"
-                    mb="none"
-                    pt={2}>
-                    <Box
-                      color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
-                      data-id="9dbc137205f1"
-                      fontSize="14px"
-                      fontWeight="bold"
-                      left="none"
-                      position="static"
-                      zIndex={1}>
-                      {label}
-                      {help && (
-                        <Box data-id="afee04ada948" fontSize="11px" mt={3} opacity={0.5}>
-                          {help}
-                        </Box>
-                      )}
-                    </Box>
-                  </Flex>
-                )}
-                <Stack data-id="a2f4c4360ef8" mt="10px" w="full">
-                  {value?.map((row, index) => (
+    <Controller
+            data-id="030925-8bec6e"
+            control={control}
+            name={name}
+            render={({ field, fieldState }) => {
+              const { onChange, onBlur, value } = field;
+              const { error } = fieldState;
+              return (
+                <Box data-id="030925-9ff2cf" id={name} mt="none" w="full">
+                  {label && (
                     <Flex
+                      data-id="030925-e5d64d"
                       align="center"
-                      data-id="375747f519b6"
                       justify="space-between"
-                      key={`row-${index}`}>
-                      <Flex data-id="e1bd5fb20ffc" mr={2} w="full">
-                        <Input
-                          _active={{
-                            bg: disabled ? 'form.textInput.disabled.bg' : 'form.textInput.activeBg',
-                          }}
-                          _disabled={{
-                            bg: 'form.textInput.disabled.bg',
-                            color: 'form.textInput.disabled.font',
-                            borderColor: 'form.textInput.disabled.border',
-                            cursor: 'not-allowed',
-                          }}
-                          _focus={{
-                            borderColor: error?.message?.includes(row)
-                              ? 'form.textInput.border.focus.error'
-                              : 'form.textInput.border.focus.normal',
-                          }}
-                          _hover={{ cursor: 'auto' }}
-                          bg="form.textInput.bg"
-                          borderColor={error ? 'form.textInput.border.error' : 'form.textInput.border.normal'}
-                          borderRadius="8px"
-                          borderWidth="1px"
-                          color="form.textInput.font"
-                          data-id="f4ce9ba8d2c4"
-                          disabled={disabled}
-                          fontSize="smm"
-                          h="40px"
-                          name={name}
-                          onBlur={onBlur}
-                          onChange={(e) => {
-                            value[index] = /^-?\d+$/.test(e.target.value) ? parseInt(e.target.value, 10) : e.target.value;
-                            onChange({ target: { name, value } });
-                          }}
-                          value={row}
-                          w="full" />
-                      </Flex>
-                      <Trashcan
-                        cursor="pointer"
-                        data-id="a05125aaf41e"
-                        onClick={() => removeRow(index, value, onChange)}
-                        stroke="form.textInput.font" />
+                      mb="none"
+                      pt={2}>
+                      <Box
+                        data-id="030925-2ea94b"
+                        color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
+                        fontSize="14px"
+                        fontWeight="bold"
+                        left="none"
+                        position="static"
+                        zIndex={1}>
+                        {label}
+                        {help && (
+                          <Box data-id="030925-721ac0" fontSize="11px" mt={3} opacity={0.5}>
+                            {help}
+                          </Box>
+                        )}
+                      </Box>
                     </Flex>
-                  ))}
-                  {(validations.maxLength ? value.length < validations.maxLength : true) && (
-                    <Stack
-                      align="center"
-                      cursor="pointer"
-                      data-id="4b6252fa2414"
-                      direction="row"
-                      onClick={() => addRow(value, onChange)}
-                      pl={2}
-                      spacing={2}>
-                      <PlusIcon data-id="6f9756f6eb7a" stroke="form.textInput.font" />
-                      <Text color="form.textInput.font" data-id="c18c38b13873">Add row</Text>
-                    </Stack>
                   )}
-                </Stack>
-                {error && (
-                  <Box color="form.textInput.error" data-id="9ac80822398c" fontSize={14} ml={1}>
-                    {error.message}
-                  </Box>
-                )}
-                {tooltip && (
-                  <Flex align="center" color="dropdown.tooltip" data-id="2db462f0cd82" mt={3}>
-                    <InfoOutlineIcon data-id="4936d061f02c" />
-                    <Box data-id="477bf2e97774" fontSize="11px" ml={2}>
-                      {tooltip}
+                  <Stack data-id="030925-51e95b" mt="10px" w="full">
+                    {value?.map((row, index) => (
+                      <Flex
+                        data-id="030925-5d03a7"
+                        align="center"
+                        justify="space-between"
+                        key={`row-${index}`}>
+                        <Flex data-id="030925-785a05" mr={2} w="full">
+                          <Input
+                            data-id="030925-01f1f4"
+                            _active={{
+                              bg: disabled ? 'form.textInput.disabled.bg' : 'form.textInput.activeBg',
+                            }}
+                            _disabled={{
+                              bg: 'form.textInput.disabled.bg',
+                              color: 'form.textInput.disabled.font',
+                              borderColor: 'form.textInput.disabled.border',
+                              cursor: 'not-allowed',
+                            }}
+                            _focus={{
+                              borderColor: error?.message?.includes(row)
+                                ? 'form.textInput.border.focus.error'
+                                : 'form.textInput.border.focus.normal',
+                            }}
+                            _hover={{ cursor: 'auto' }}
+                            bg="form.textInput.bg"
+                            borderColor={error ? 'form.textInput.border.error' : 'form.textInput.border.normal'}
+                            borderRadius="8px"
+                            borderWidth="1px"
+                            color="form.textInput.font"
+                            disabled={disabled}
+                            fontSize="smm"
+                            h="40px"
+                            name={name}
+                            onBlur={onBlur}
+                            onChange={(e) => {
+                              value[index] = /^-?\d+$/.test(e.target.value) ? parseInt(e.target.value, 10) : e.target.value;
+                              onChange({ target: { name, value } });
+                            }}
+                            value={row}
+                            w="full" />
+                        </Flex>
+                        <Trashcan
+                          data-id="030925-fb6a7b"
+                          cursor="pointer"
+                          onClick={() => removeRow(index, value, onChange)}
+                          stroke="form.textInput.font" />
+                      </Flex>
+                    ))}
+                    {(validations.maxLength ? value.length < validations.maxLength : true) && (
+                      <Stack
+                        data-id="030925-8d67ca"
+                        align="center"
+                        cursor="pointer"
+                        direction="row"
+                        onClick={() => addRow(value, onChange)}
+                        pl={2}
+                        spacing={2}>
+                        <PlusIcon data-id="030925-dd1d47" stroke="form.textInput.font" />
+                        <Text data-id="030925-77d5ac" color="form.textInput.font">Add row</Text>
+                      </Stack>
+                    )}
+                  </Stack>
+                  {error && (
+                    <Box data-id="030925-cd6271" color="form.textInput.error" fontSize={14} ml={1}>
+                      {error.message}
                     </Box>
-                  </Flex>
-                )}
-              </Box>)
-            );
-          }}
-          rules={{ validate }} />)
+                  )}
+                  {tooltip && (
+                    <Flex data-id="030925-7359a5" align="center" color="dropdown.tooltip" mt={3}>
+                      <InfoOutlineIcon data-id="030925-277fab" />
+                      <Box data-id="030925-b7b492" fontSize="11px" ml={2}>
+                        {tooltip}
+                      </Box>
+                    </Flex>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{ validate }} />
   );
 }
 

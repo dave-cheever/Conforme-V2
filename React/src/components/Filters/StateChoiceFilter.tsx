@@ -70,31 +70,31 @@ function StateChoiceFilter({ name }: { name: string }) {
     switch (name) {
       case 'itemStatus':
         return Object.entries(trackerItemStatuses).map(([key, label]) => (
-          <FilterCheckBox data-id="2bc683059c7e" key={key} label={label} value={key} />
+          <FilterCheckBox data-id="030925-e91b78" key={key} label={label} value={key} />
         ));
       case 'status':
         return Object.entries(usedStatuses).map(([key, label]) => (
-          <FilterCheckBox data-id="a4c959cf540e" key={key} label={label} value={key} />
+          <FilterCheckBox data-id="030925-f6ba70" key={key} label={label} value={key} />
         ));
       case 'priority':
         return Object.entries(actionPriorities).map(([key, label]) => (
-          <FilterCheckBox data-id="4b3a06acde34" key={key} label={label} value={key} />
+          <FilterCheckBox data-id="030925-4345be" key={key} label={label} value={key} />
         ));
       case 'walkType':
         return Object.entries(auditWalkTypes).map(([key, label]) => (
-          <FilterCheckBox data-id="12151aa633de" key={key} label={label} value={key} />
+          <FilterCheckBox data-id="030925-b91bac" key={key} label={label} value={key} />
         ));
       default:
         return (responsesAnswers?.customQuestionsOptions || []).map((option) => (
-          <FilterCheckBox data-id="12151aa633de" key={option.value} label={option.label} value={option.value} />
+          <FilterCheckBox data-id="030925-fde31a" key={option.value} label={option.label} value={option.value} />
         ));
     }
   };
 
   return (
-    <CheckboxGroup data-id="1db01e7e0cf6" onChange={handleChange} value={value}>
-      <Stack data-id="4ae498068ead" direction="column" overflow="auto">
-        {loading ? <Loader size="sm" /> : renderChoices()}
+    <CheckboxGroup data-id="030925-82aabc" onChange={handleChange} value={value}>
+      <Stack data-id="030925-00e048" direction="column" overflow="auto">
+        {loading ? <Loader data-id="030925-52275e" size="sm" /> : renderChoices()}
       </Stack>
     </CheckboxGroup>
   );

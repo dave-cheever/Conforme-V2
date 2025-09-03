@@ -28,21 +28,21 @@ function Loader({
     return thickness;
   };
   return (
-    (<Flex
-      align={center ? 'center' : 'flex-start'}
-      data-id="ac8cfe8b7513"
-      h="full"
-      justify="center"
-      w="full"
-      {...props}>
+    <Flex
+        data-id="030925-a9d2fa"
+        align={center ? 'center' : 'flex-start'}
+        h="full"
+        justify="center"
+        w="full"
+        {...props}>
       <Spinner
+        data-id="030925-ef0905"
         color={loaderColor || 'loader.color'}
-        data-id="de21a64742a8"
         emptyColor="gray.200"
         size={size || 'xl'}
         speed="0.65s"
         thickness={getThickness()} />
-    </Flex>)
+    </Flex>
   );
 }
 

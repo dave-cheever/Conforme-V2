@@ -65,22 +65,26 @@ function ParticipantsSelector({
     didMountRef.current = true;
   }, [isParticipantsModalOpen, isParticipantDeleteModalOpen]);
 
-  return (<>
-    <ParticipantsModal data-id="b2a61eaebcd8" />
-    <ParticipantsDeleteModal data-id="6a85fce88965" />
-    {label && (
-      <Text data-id="67858ddabdd7" fontSize="smm" fontWeight="semibold">
-        {label}
-      </Text>
-    )}
-    {children}
-  </>);
+  return (
+    <>
+      <ParticipantsModal data-id="030925-5934ed" />
+      <ParticipantsDeleteModal data-id="030925-ec033a" />
+      {label && (
+        <Text data-id="030925-a59343" fontSize="smm" fontWeight="semibold">
+          {label}
+        </Text>
+      )}
+      {children}
+    </>
+  );
 }
 
 function ParticipantsSelectorWithContext(props) {
-  return <ParticipantsModalProvider data-id="640d7d9ad4c5">
-    <ParticipantsSelector data-id="12c06ae1de55" {...props} />
-  </ParticipantsModalProvider>
+  return (
+    <ParticipantsModalProvider data-id="030925-78c1c5">
+      <ParticipantsSelector data-id="030925-34b1df" {...props} />
+    </ParticipantsModalProvider>
+  );
 }
 
 export default ParticipantsSelectorWithContext;

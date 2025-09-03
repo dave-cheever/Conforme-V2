@@ -25,115 +25,115 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
   const validate = useValidate(label || name, validations, definedValidations);
 
   return (
-    (<Controller
-      control={control}
-      data-id="f0da3c22bcd6"
-      name={name}
-      render={({ field, fieldState }) => {
-        const { onChange, value } = field;
-        const { error } = fieldState;
-        return (
-          (<Box data-id="b1e6ad610c5e">
-            <Text
-              color="switch.form.labelColor"
-              data-id="c604d0fdcae5"
-              fontSize="ssm"
-              fontWeight="bold"
-              pb="10px"
-              pt="8px">
-              {label}
-              {requiredAnswer === 'yes' && value === 'no' && (
+    <Controller
+        data-id="030925-5654ad"
+        control={control}
+        name={name}
+        render={({ field, fieldState }) => {
+          const { onChange, value } = field;
+          const { error } = fieldState;
+          return (
+            <Box data-id="030925-0c2f16">
+              <Text
+                data-id="030925-3bc518"
+                color="switch.form.labelColor"
+                fontSize="ssm"
+                fontWeight="bold"
+                pb="10px"
+                pt="8px">
+                {label}
+                {requiredAnswer === 'yes' && value === 'no' && (
+                  <Box
+                    data-id="030925-bc27f2"
+                    as="span"
+                    color="switch.form.labelColor"
+                    fontSize="xs"
+                    fontWeight="medium">
+                    {' '}
+                    ( The required answer is Yes )
+                  </Box>
+                )}
+                {requiredAnswer === 'no' && value === 'yes' && (
+                  <Box
+                    data-id="030925-4bc22e"
+                    as="span"
+                    color="switch.form.labelColor"
+                    fontSize="xs"
+                    fontWeight="medium">
+                    {' '}
+                    ( The required answer is No )
+                  </Box>
+                )}
+                {required && (
+                  <Asterisk
+                    data-id="030925-d91785"
+                    fill="questionListElement.iconAsterisk"
+                    h="9px"
+                    mb="8px"
+                    ml="5px"
+                    stroke="questionListElement.iconAsterisk"
+                    w="9px" />
+                )}
+              </Text>
+              <Flex data-id="030925-f44eb8">
+                <SwitchButton
+                  data-id="030925-5f1c8e"
+                  disabled={disabled}
+                  laterality="left"
+                  name={name}
+                  onchange={onChange}
+                  requiredAnswer={requiredAnswer}
+                  value={value} />
+                &nbsp;&nbsp;
+                <SwitchButton
+                  data-id="030925-b93857"
+                  disabled={disabled}
+                  laterality="right"
+                  name={name}
+                  onchange={onChange}
+                  requiredAnswer={requiredAnswer}
+                  value={value} />
+                {notApplicable && (
+                  <>
+                    &nbsp;&nbsp;
+                    <Button
+                      data-id="030925-69569f"
+                      _hover={{
+                        bg: 'switch.activebtn.bg',
+                        color: 'switch.activebtn.color',
+                      }}
+                      bg={value === 'na' ? 'switch.activebtn.bg' : 'switch.btn.bg'}
+                      color={value === 'na' ? 'switch.activebtn.color' : 'switch.btn.color'}
+                      disabled={disabled}
+                      fontSize="smm"
+                      fontWeight="bold"
+                      name={name}
+                      onClick={() => {
+                        if (value === 'na') {
+                          onChange('');
+                          return;
+                        }
+                        onChange('na');
+                      }}
+                      p="10px 20px">
+                      NA
+                    </Button>
+                  </>
+                )}
+              </Flex>
+              {error && (
                 <Box
-                  as="span"
-                  color="switch.form.labelColor"
-                  data-id="7c472a73cb8a"
-                  fontSize="xs"
-                  fontWeight="medium">
-                  {' '}
-                  ( The required answer is Yes )
+                  data-id="030925-fb5339"
+                  color="switch.form.textInput.error"
+                  fontSize={14}
+                  ml={1}>
+                  {error.message}
                 </Box>
               )}
-              {requiredAnswer === 'no' && value === 'yes' && (
-                <Box
-                  as="span"
-                  color="switch.form.labelColor"
-                  data-id="5470f6b4b584"
-                  fontSize="xs"
-                  fontWeight="medium">
-                  {' '}
-                  ( The required answer is No )
-                </Box>
-              )}
-              {required && (
-                <Asterisk
-                  data-id="8c639acd19c9"
-                  fill="questionListElement.iconAsterisk"
-                  h="9px"
-                  mb="8px"
-                  ml="5px"
-                  stroke="questionListElement.iconAsterisk"
-                  w="9px" />
-              )}
-            </Text>
-            <Flex data-id="5d9cb745744b">
-              <SwitchButton
-                data-id="3e6a1e2bf6cb"
-                disabled={disabled}
-                laterality="left"
-                name={name}
-                onchange={onChange}
-                requiredAnswer={requiredAnswer}
-                value={value} />
-              &nbsp;&nbsp;
-              <SwitchButton
-                data-id="00117738024f"
-                disabled={disabled}
-                laterality="right"
-                name={name}
-                onchange={onChange}
-                requiredAnswer={requiredAnswer}
-                value={value} />
-              {notApplicable && (
-                <>
-                  &nbsp;&nbsp;
-                  <Button
-                    _hover={{
-                      bg: 'switch.activebtn.bg',
-                      color: 'switch.activebtn.color',
-                    }}
-                    bg={value === 'na' ? 'switch.activebtn.bg' : 'switch.btn.bg'}
-                    color={value === 'na' ? 'switch.activebtn.color' : 'switch.btn.color'}
-                    data-id="328a1c3707ab"
-                    disabled={disabled}
-                    fontSize="smm"
-                    fontWeight="bold"
-                    name={name}
-                    onClick={() => {
-                      if (value === 'na') {
-                        onChange('');
-                        return;
-                      }
-                      onChange('na');
-                    }}
-                    p="10px 20px">
-                    NA
-                  </Button>
-                </>
-              )}
-            </Flex>
-            {error && (
-              <Box
-                color="switch.form.textInput.error"
-                data-id="681237fa20d8"
-                fontSize={14}
-                ml={1}>
-                {error.message}
-              </Box>
-            )}
-          </Box>)
-        );
-      }}
-      rules={{ validate }} />)
+            </Box>
+          );
+        }}
+        rules={{ validate }} />
   );
 }
 

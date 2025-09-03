@@ -26,38 +26,38 @@ function AuditDeleteModal({ isOpen, onClose }) {
   if (!audit) return null;
 
   return (
-    (<Modal
-      data-id="90f059e01c71"
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size="sm">
-      <ModalContent data-id="8ca68d3e64cd">
-        <ModalHeader data-id="d14590ffbc43">
-          <Text data-id="2056d7b1203a" fontSize="smm" fontWeight="semibold">
+    <Modal
+        data-id="030925-a0d202"
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+        size="sm">
+      <ModalContent data-id="030925-dab9e9">
+        <ModalHeader data-id="030925-45c026">
+          <Text data-id="030925-b69736" fontSize="smm" fontWeight="semibold">
             Delete {t('audit')}
           </Text>
-          <ModalCloseButton data-id="2d00b5f1d2f3" />
+          <ModalCloseButton data-id="030925-b6023c" />
         </ModalHeader>
-        <ModalBody data-id="1ba7e7837c44" mb="40px">
-          <Stack data-id="d70e232b0d01">
-            <Text data-id="40feb1fe79b7">
+        <ModalBody data-id="030925-08f9da" mb="40px">
+          <Stack data-id="030925-894f09">
+            <Text data-id="030925-cc5d25">
               Are you sure you want to delete the{' '}
-              <Text as="span" data-id="fae1882eaa3e">
-                {t('audit')} in <strong data-id="ed2af8a97083">{audit.businessUnit?.name}</strong>?
+              <Text data-id="030925-0aa498" as="span">
+                {t('audit')} in <strong data-id="030925-90b9c4">{audit.businessUnit?.name}</strong>?
               </Text>
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="1f910cb1506d">
-          <HStack data-id="d5ea8167e8ad" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="0fe065b38d51" onClick={onClose}>
+        <ModalFooter data-id="030925-d22938">
+          <HStack data-id="030925-2e6a9b" justify="center" spacing={4} w="full">
+            <Button data-id="030925-914329" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="030925-73ae48"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="433a3415e783"
               onClick={async () => {
                 await deleteAudit({
                   variables: {
@@ -79,7 +79,7 @@ function AuditDeleteModal({ isOpen, onClose }) {
           </HStack>
         </ModalFooter>
       </ModalContent>
-    </Modal>)
+    </Modal>
   );
 }
 

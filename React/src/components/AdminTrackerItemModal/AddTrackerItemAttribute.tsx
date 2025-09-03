@@ -123,47 +123,47 @@ function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttr
   };
 
   return (
-    (<Modal
-      data-id="b795f26d09ab"
-      isCentered
-      isOpen={isOpenModal}
-      onClose={onClose}
-      onEsc={() => onAction('close')}
-      onOverlayClick={() => onAction('close')}
-      size="xs">
-      <ModalOverlay data-id="1e2776b35b3e" />
-      <ModalContent borderRadius={['0', '20px']} data-id="de8591484ed9" position="absolute">
-        <Flex data-id="990d0ca9cff2" flexDirection="column" p="25px">
-          <Flex data-id="a86e0d4d3b81">
-            <Box data-id="dd2180c78e96" fontSize="smm" fontWeight="bold" mb="10px">
+    <Modal
+        data-id="030925-d259c7"
+        isCentered
+        isOpen={isOpenModal}
+        onClose={onClose}
+        onEsc={() => onAction('close')}
+        onOverlayClick={() => onAction('close')}
+        size="xs">
+      <ModalOverlay data-id="030925-f2176d" />
+      <ModalContent data-id="030925-f8ea6e" borderRadius={['0', '20px']} position="absolute">
+        <Flex data-id="030925-4a84d1" flexDirection="column" p="25px">
+          <Flex data-id="030925-ea4edb">
+            <Box data-id="030925-98226b" fontSize="smm" fontWeight="bold" mb="10px">
               {`Add ${attributeType}`}
             </Box>
-            <ModalCloseButton data-id="57335a6e6069" onClick={() => onAction('close')} />
+            <ModalCloseButton data-id="030925-64b30a" onClick={() => onAction('close')} />
           </Flex>
           <TextInput
+            data-id="030925-77aacc"
             control={control}
-            data-id="b84e9c0f1ea1"
             name="name"
             placeholder={`${attributeType} name`}
             validations={{
               notEmpty: true,
             }} />
-          <Flex data-id="12de6374ffac" justifyContent="end" mt="34px">
+          <Flex data-id="030925-7efe3f" justifyContent="end" mt="34px">
             <Button
+              data-id="030925-8a31eb"
               _hover={{
                 backgroundColor: 'addTrackerItemAttribute.button.hover',
               }}
               bg="addTrackerItemAttribute.button.bg"
               borderRadius="10px"
               color="addTrackerItemAttribute.button.color"
-              data-id="695eb7ab1bae"
               onClick={() => onAddAction(attributeType)}>
               Add
             </Button>
           </Flex>
         </Flex>
       </ModalContent>
-    </Modal>)
+    </Modal>
   );
 }
 

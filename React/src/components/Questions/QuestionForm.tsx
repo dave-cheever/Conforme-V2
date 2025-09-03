@@ -19,66 +19,68 @@ function QuestionForm({
   setEditQuestion,
   editQuestionIndex,
 }) {
-  return <Flex
-    bg="questionForm.bg"
-    boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-    data-id="b6307f532a44"
-    flexDirection="column"
-    p="20px 25px"
-    rounded="10px">
-    {(questionType === 'text' ||
-      questionType === 'textMultiline' ||
-      questionType === 'switch' ||
-      questionType === 'url' ||
-      questionType === 'datepicker') && (
-      <QuestionSimpleForm
-        addOrUpdateQuestion={addOrUpdateQuestion}
-        data-id="a529a83753f6"
-        editableValue={value as ITrackerQuestion<string>}
-        editQuestionIndex={editQuestionIndex}
-        questionType={questionType}
-        setEditQuestion={setEditQuestion}
-        setEditQuestionIndex={setEditQuestionIndex}
-        setIsEdit={setIsEdit}
-        setShowQuestionForm={setShowQuestionForm} />
-    )}
-    {questionType === 'multipleChoice' && (
-      <QuestionMultiChoiceForm
-        addOrUpdateQuestion={addOrUpdateQuestion}
-        data-id="7bdc3eddc59c"
-        editableValue={value as ITrackerQuestion<IQuestionChoice[]>}
-        editQuestionIndex={editQuestionIndex}
-        questionType={questionType}
-        setEditQuestion={setEditQuestion}
-        setEditQuestionIndex={setEditQuestionIndex}
-        setIsEdit={setIsEdit}
-        setShowQuestionForm={setShowQuestionForm} />
-    )}
-    {questionType === 'singleChoice' && (
-      <QuestionSingleChoiceForm
-        addOrUpdateQuestion={addOrUpdateQuestion}
-        data-id="c1b4ee0a5b7b"
-        editableValue={value as ITrackerQuestion<string>}
-        editQuestionIndex={editQuestionIndex}
-        questionType={questionType}
-        setEditQuestion={setEditQuestion}
-        setEditQuestionIndex={setEditQuestionIndex}
-        setIsEdit={setIsEdit}
-        setShowQuestionForm={setShowQuestionForm} />
-    )}
-    {questionType === 'email' && (
-      <QuestionEmailForm
-        addOrUpdateQuestion={addOrUpdateQuestion}
-        data-id="0ab976252e87"
-        editableValue={value as ITrackerQuestion<string>}
-        editQuestionIndex={editQuestionIndex}
-        questionType={questionType}
-        setEditQuestion={setEditQuestion}
-        setEditQuestionIndex={setEditQuestionIndex}
-        setIsEdit={setIsEdit}
-        setShowQuestionForm={setShowQuestionForm} />
-    )}
-  </Flex>
+  return (
+    <Flex
+      data-id="030925-5f1447"
+      bg="questionForm.bg"
+      boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+      flexDirection="column"
+      p="20px 25px"
+      rounded="10px">
+      {(questionType === 'text' ||
+        questionType === 'textMultiline' ||
+        questionType === 'switch' ||
+        questionType === 'url' ||
+        questionType === 'datepicker') && (
+        <QuestionSimpleForm
+          data-id="030925-dbc6b4"
+          addOrUpdateQuestion={addOrUpdateQuestion}
+          editableValue={value as ITrackerQuestion<string>}
+          editQuestionIndex={editQuestionIndex}
+          questionType={questionType}
+          setEditQuestion={setEditQuestion}
+          setEditQuestionIndex={setEditQuestionIndex}
+          setIsEdit={setIsEdit}
+          setShowQuestionForm={setShowQuestionForm} />
+      )}
+      {questionType === 'multipleChoice' && (
+        <QuestionMultiChoiceForm
+          data-id="030925-27a2a0"
+          addOrUpdateQuestion={addOrUpdateQuestion}
+          editableValue={value as ITrackerQuestion<IQuestionChoice[]>}
+          editQuestionIndex={editQuestionIndex}
+          questionType={questionType}
+          setEditQuestion={setEditQuestion}
+          setEditQuestionIndex={setEditQuestionIndex}
+          setIsEdit={setIsEdit}
+          setShowQuestionForm={setShowQuestionForm} />
+      )}
+      {questionType === 'singleChoice' && (
+        <QuestionSingleChoiceForm
+          data-id="030925-614749"
+          addOrUpdateQuestion={addOrUpdateQuestion}
+          editableValue={value as ITrackerQuestion<string>}
+          editQuestionIndex={editQuestionIndex}
+          questionType={questionType}
+          setEditQuestion={setEditQuestion}
+          setEditQuestionIndex={setEditQuestionIndex}
+          setIsEdit={setIsEdit}
+          setShowQuestionForm={setShowQuestionForm} />
+      )}
+      {questionType === 'email' && (
+        <QuestionEmailForm
+          data-id="030925-56a02d"
+          addOrUpdateQuestion={addOrUpdateQuestion}
+          editableValue={value as ITrackerQuestion<string>}
+          editQuestionIndex={editQuestionIndex}
+          questionType={questionType}
+          setEditQuestion={setEditQuestion}
+          setEditQuestionIndex={setEditQuestionIndex}
+          setIsEdit={setIsEdit}
+          setShowQuestionForm={setShowQuestionForm} />
+      )}
+    </Flex>
+  );
 }
 
 export default QuestionForm;

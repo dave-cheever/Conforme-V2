@@ -26,50 +26,52 @@ interface IChatConfirmDeleteModal {
 }
 
 function ChatConfirmDeleteModal({ isOpen, messageId, message, onClose, onAction }: IChatConfirmDeleteModal) {
-  return <Modal
-    data-id="d8b4245cc0be"
-    isCentered
-    isOpen={isOpen}
-    onClose={onClose}
-    size="md">
-    <ModalOverlay data-id="77e3a1713738" />
-    <ModalContent data-id="212840a37c79">
-      <ModalHeader data-id="6435addac411">
-        <Text data-id="a76aa21e1e1f" fontSize="smm" fontWeight="bold">
-          Delete message
-        </Text>
-        <ModalCloseButton data-id="9cb0cbaa3d2a" />
-      </ModalHeader>
-      <ModalBody data-id="8d7ac56e4dee" mb="40px">
-        <Stack data-id="072fba718bca">
-          <Text data-id="082dde04f6ac">Are you sure you want to delete the following message?</Text>
-          <Text data-id="58886c3b3bce" fontStyle="italic" fontWeight="bold">
-            {reactStringReplace(message, chatMentionRegExp, (match, i) => (
-              <ChatMention data-id="e532a2c3ea2a" key={i} tag={match} />
-            ))}
+  return (
+    <Modal
+      data-id="030925-cee20b"
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      size="md">
+      <ModalOverlay data-id="030925-ba4828" />
+      <ModalContent data-id="030925-bfcc78">
+        <ModalHeader data-id="030925-e0e16c">
+          <Text data-id="030925-10cc7e" fontSize="smm" fontWeight="bold">
+            Delete message
           </Text>
-        </Stack>
-      </ModalBody>
-      <ModalFooter data-id="7dcbd6b38912">
-        <HStack data-id="b786c4d797dc" justify="center" spacing={4} w="full">
-          <Button _hover={{ opacity: 0.7 }} data-id="b3266b9d0c95" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            _hover={{ opacity: 0.7 }}
-            bg="chatConfirmDeleteModal.deleteButtonBg"
-            color="chatConfirmDeleteModal.deleteButtonColor"
-            data-id="01c4dd63f091"
-            onClick={async () => {
-              onAction(messageId);
-              onClose();
-            }}>
-            Delete
-          </Button>
-        </HStack>
-      </ModalFooter>
-    </ModalContent>
-  </Modal>
+          <ModalCloseButton data-id="030925-451bc9" />
+        </ModalHeader>
+        <ModalBody data-id="030925-f705a2" mb="40px">
+          <Stack data-id="030925-233730">
+            <Text data-id="030925-05e0f1">Are you sure you want to delete the following message?</Text>
+            <Text data-id="030925-cc3304" fontStyle="italic" fontWeight="bold">
+              {reactStringReplace(message, chatMentionRegExp, (match, i) => (
+                <ChatMention data-id="030925-a8edc4" key={i} tag={match} />
+              ))}
+            </Text>
+          </Stack>
+        </ModalBody>
+        <ModalFooter data-id="030925-fe6b13">
+          <HStack data-id="030925-0da5bd" justify="center" spacing={4} w="full">
+            <Button data-id="030925-d34ac6" _hover={{ opacity: 0.7 }} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              data-id="030925-570f09"
+              _hover={{ opacity: 0.7 }}
+              bg="chatConfirmDeleteModal.deleteButtonBg"
+              color="chatConfirmDeleteModal.deleteButtonColor"
+              onClick={async () => {
+                onAction(messageId);
+                onClose();
+              }}>
+              Delete
+            </Button>
+          </HStack>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
 }
 
 export const chatConfirmDeleteModalStyles = {

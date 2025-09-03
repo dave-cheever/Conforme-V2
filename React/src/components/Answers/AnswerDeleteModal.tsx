@@ -61,42 +61,42 @@ function AnswerDeleteModal({
     }
   };
   return (
-    (<Modal
-      data-id="b967abef06a4"
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size="sm">
-      <ModalOverlay data-id="a1213b7b3a94" />
-      <ModalContent data-id="15eb703f2c52">
-        <ModalHeader data-id="ea71b18bc186">
-          <Text data-id="29abd2d7a715" fontSize="smm" fontWeight="semibold">
+    <Modal
+        data-id="030925-f90a96"
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+        size="sm">
+      <ModalOverlay data-id="030925-c13fab" />
+      <ModalContent data-id="030925-8634ac">
+        <ModalHeader data-id="030925-2420c9">
+          <Text data-id="030925-909393" fontSize="smm" fontWeight="semibold">
             Delete {t('question')}
           </Text>
-          <ModalCloseButton data-id="428d6fb294c7" />
+          <ModalCloseButton data-id="030925-5ae6ff" />
         </ModalHeader>
-        <ModalBody data-id="81f881615ef0" mb="40px">
-          <Stack data-id="4d801b072075">
-            <Text data-id="37a4141e009f">Are you sure you want to delete the following element?</Text>
-            <Text data-id="132dd88d2dcf" fontStyle="italic">{answer?.question?.question}</Text>
+        <ModalBody data-id="030925-2498ce" mb="40px">
+          <Stack data-id="030925-5885ca">
+            <Text data-id="030925-4728aa">Are you sure you want to delete the following element?</Text>
+            <Text data-id="030925-082b7c" fontStyle="italic">{answer?.question?.question}</Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="512fe19ea907">
-          <HStack data-id="dc2acd401668" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="5f5f3e2ba7ac" onClick={onClose}>
+        <ModalFooter data-id="030925-ce5c75">
+          <HStack data-id="030925-91a833" justify="center" spacing={4} w="full">
+            <Button data-id="030925-a96e1f" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="030925-8f5b99"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="3514dde6bfed"
               onClick={handleSecondaryButtonClick}>
               Delete
             </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>
-    </Modal>)
+    </Modal>
   );
 }
 
