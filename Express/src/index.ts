@@ -10,7 +10,7 @@ import setCRONJobs from './utils/cron';
 
 const ENV_VERSION = '1';
 if (ENV_VERSION !== process.env.VERSION)
-  logger.error(`Please update environment variables. Latest version: ${ENV_VERSION}. Your version: ${process.env.VERSION}`);
+  logger.error(`Please update environment variables. Latest version - ${ENV_VERSION}. Your version: ${process.env.VERSION}`);
 
 const port = process.env.PORT || 3000;
 const clusterWorkerSize = process.env.APPSETTING_NODE_ENV === 'dev' ? 1 : cpus().length; // Check number of cpus available

@@ -17,6 +17,7 @@ export interface IUser extends IBase {
   organizationsIds?: string[];
   userCreated?: Date;
   lastLogin?: Date;
+  userId?: string;
 
   // Additional fields
   responsibleCount?: number;
