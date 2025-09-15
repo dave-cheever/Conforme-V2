@@ -1,0 +1,34 @@
+pr:
+  branches:
+    include:
+      - main
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+
+
+- job: 'Build_API_App'
+  steps:
+  - task: NodeTool@0
+    displayName: 'Set Node Version'
+    inputs:
+      versionSource: 'spec'
+      versionSpec: '22.x'
+      checkLatest: true
+
+  - task: Npm@1
+    displayName: 'Install dependencies'
+    inputs:
+      command: 'install'
+      workingDir: 'Express'
+
+  - task: Npm@1
+    displayName: 'Build the app'
+    inputs:
+      command: 'custom'
+      workingDir: 'Express'
+      customCommand: 'run build'

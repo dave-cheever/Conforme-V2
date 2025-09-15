@@ -30,6 +30,17 @@ module.exports = (env) => ({
       },
     ],
   },
+  externals: {
+    // MongoDB optional dependencies
+    'kerberos': 'commonjs kerberos',
+    '@mongodb-js/zstd': 'commonjs @mongodb-js/zstd',
+    '@aws-sdk/credential-providers': 'commonjs @aws-sdk/credential-providers',
+    'snappy': 'commonjs snappy',
+    'aws4': 'commonjs aws4',
+    'mongodb-client-encryption': 'commonjs mongodb-client-encryption',
+    // Apollo Server optional dependencies
+    'encoding': 'commonjs encoding',
+  },
   optimization: {
     minimize: false,
   },
