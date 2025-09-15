@@ -1,10 +1,9 @@
-trigger:
+pr:
   branches:
     include:
       - main
-  paths:
-   include:
-     - React
+
+trigger: none
 
 pool:
   vmImage: ubuntu-latest

@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
 
-test('dummy test that passes always', () => {
+test('dummy test that always passes', () => {
   expect(true).toBe(true);
 });
