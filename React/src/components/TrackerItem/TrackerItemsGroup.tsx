@@ -44,11 +44,11 @@ function TrackerGridItems({
       pt={2}
       w="380px">
       <Flex
-        data-id="030925-f58750"
         align="center"
         bg={`trackerGroup.${group}`}
         borderRadius={"md"}
         color="#FFFFFF"
+        data-id="030925-f58750"
         fontWeight="700"
         justify="space-between"
         justifyContent={"center"}
@@ -62,11 +62,11 @@ function TrackerGridItems({
         {responseStatusesGroup[group]}
       </Flex>
       <Stack
-        data-id="030925-a0d9d9"
         align="center"
         bg={"#F7FAFC"}
         borderRadius={"md"}
         boxShadow={"sm"}
+        data-id="030925-a0d9d9"
         direction="column"
         p={4}
         spacing={6}
@@ -94,7 +94,7 @@ function TrackerGridItems({
         loadMore={loadResponses}
         ref={scrollerRef}
         useWindow={false}>
-      <Flex data-id="030925-bfda06" bg="#ffffff" h="full" overflow="auto" pt="3" w="full">
+      <Flex bg="#ffffff" data-id="030925-bfda06" h="full" overflow="auto" pt="3" w="full">
         {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
       </Flex>
     </InfiniteScrollComponent>

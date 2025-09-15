@@ -43,10 +43,10 @@ function TrackerItemFilter() {
     <Stack data-id="030925-c58b9f" direction="column" overflow="auto">
       <InputGroup data-id="030925-48d671">
         <Input
-          data-id="030925-695c2e"
           borderColor="filterPanel.searchBoxBordercolor"
           borderWidth="1px"
           color="brand.darkGrey"
+          data-id="030925-695c2e"
           fontSize="14px"
           h="40px"
           mb={3}
@@ -57,8 +57,8 @@ function TrackerItemFilter() {
           w="full"
         />
         <Magnifier
-          data-id="030925-2783df"
           bottom="25px"
+          data-id="030925-2783df"
           h="12px"
           left="14px"
           position="absolute"

@@ -54,11 +54,11 @@ function DocumentUploaded({
         isOpen={isDeleteModalOpen}
         message={deleteModalMessage || `Are you sure you wish to delete ${document?.name}?`} />
       <Flex
-        data-id="030925-17bece"
         align="center"
         border="1px solid #CBD5E0"
         borderRadius="10px"
         color="brand.darkGrey"
+        data-id="030925-17bece"
         fontWeight="400"
         justify="space-between"
         key={document?.id}
@@ -66,12 +66,12 @@ function DocumentUploaded({
         role="group"
         w="full">
         <Flex
-          data-id="030925-bc140f"
           align="center"
           bg="documentUploaded.thumbnailBg"
           borderColor="documentUploaded.border"
           borderRadius="3px"
           borderWidth="1px"
+          data-id="030925-bc140f"
           flexShrink={0}
           fontSize="12px"
           h="45px"
@@ -79,10 +79,10 @@ function DocumentUploaded({
           overflow="hidden"
           w="45px">
           <Image
-            data-id="030925-072156"
             aspectRatio="1 / 1"
+            data-id="030925-072156"
             fallback={
-              <Flex data-id="030925-c89b82" align="center" h="full">
+              <Flex align="center" data-id="030925-c89b82" h="full">
                 <BlankPage data-id="030925-e606e3" h="20px" w="45px" />
               </Flex>
             }
@@ -111,13 +111,13 @@ function DocumentUploaded({
         </Flex>
         <HStack data-id="030925-2f288d" mr={[1, 3]} spacing={4}>
           {downloadable && <DownloadIcon
-            data-id="030925-241f09"
             cursor='pointer'
+            data-id="030925-241f09"
             onClick={() => window.open(documentDetails?.path)}
             stroke="documentUploaded.downloadIcon" />}
           {removable && <Trashcan
-            data-id="030925-2fe2a9"
             cursor='pointer'
+            data-id="030925-2fe2a9"
             onClick={openDeleteModal}
             stroke="documentUploaded.binIcon" />}
         </HStack>

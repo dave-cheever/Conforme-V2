@@ -17,8 +17,8 @@ function QuickFilters({ w }: { w: string | number | {} }) {
   return (
     <Stack data-id="030925-71ae8a" w={w}>
       <Flex
-        data-id="030925-ddd72f"
         align="baseline"
+        data-id="030925-ddd72f"
         direction="row"
         overflowX={activeFilters.includes(true) ? 'hidden' : 'auto'}
         overflowY="clip"

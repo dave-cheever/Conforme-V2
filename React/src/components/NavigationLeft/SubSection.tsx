@@ -25,7 +25,6 @@ function SubSection({
 
   return (
     <Flex
-        data-id="030925-9a0646"
         alignItems="center"
         bg={
           isPopover
@@ -43,6 +42,7 @@ function SubSection({
             : 'subSection.unselectedFontColor'
         }
         cursor="pointer"
+        data-id="030925-9a0646"
         fontSize="14px"
         fontWeight="400"
         key={label}
@@ -63,7 +63,6 @@ function SubSection({
       >
       {!showIcon && (
       <Box
-        data-id="030925-8211c5"
         bg={
            isPopover
         ? isPathActive(url, { exact: true }) ? 'white' : 'black'
@@ -71,14 +70,15 @@ function SubSection({
         ? 'subSection.selectedIndicator'
             :'subSection.unselectedIndicator'
         }
+        data-id="030925-8211c5"
         h="8px"
         rounded="50%"
         w="8px" />
       )}
       {showIcon && (
         <Icon
-          data-id="030925-a1f222"
           as={icon as any}
+          data-id="030925-a1f222"
           h="16px"
           stroke={
             isPopover && isPathActive(url, { exact: true })

@@ -26,17 +26,17 @@ function AnswersList({
 }) {
   return (
     <Box
-      data-id="030925-8d22c4"
       bg="auditsList.bg"
       border="1px solid"
       borderColor="auditsList.headerBorderColor"
       borderRadius="10px"
+      data-id="030925-8d22c4"
       h="full"
       ml="10px"
       overflow="hidden"
       w="full"
     >
-      <Box data-id="030925-d90172" bg="auditsList.bg" h="full" w="full" >
+      <Box bg="auditsList.bg" data-id="030925-d90172" h="full" w="full" >
         <AdminTableHeader data-id="030925-0784fc">
           <AdminTableHeaderElement
             data-id="030925-76a75a"
@@ -131,8 +131,8 @@ function AnswersList({
           {answers?.length > 0 ? (
             answers?.map((answer, idx) => (
               <AnswersListItem
-                data-id="030925-e41f66"
                 answer={answer}
+                data-id="030925-e41f66"
                 editAnswer={editAnswer}
                 index={idx}
                 key={answer._id}

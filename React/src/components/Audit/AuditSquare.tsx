@@ -13,13 +13,13 @@ function AuditSquare({ audit }: { audit: IAudit }) {
 
   return (
     <Box
-      data-id="030925-b18f36"
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.04)' }}
       bg="white"
       border="1px solid #CBD5E0"
       borderRadius="10px"
       boxShadow="sm"
       cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
+      data-id="030925-b18f36"
       flexShrink={0}
       h={'200px'}
       onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
@@ -27,8 +27,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
       w={['full', 'full', '350px']}
     >
       <Flex
-        data-id="030925-5bb1d7"
         align="center"
+        data-id="030925-5bb1d7"
         h="40px"
         justify="space-between"
         minW={0}
@@ -38,13 +38,13 @@ function AuditSquare({ audit }: { audit: IAudit }) {
         w="full"
       >
         <Skeleton data-id="030925-3ee13b" isLoaded={!!audit} minW={0} rounded="full">
-          <Flex data-id="030925-3ea4f3" align="center" minW={0}>
+          <Flex align="center" data-id="030925-3ea4f3" minW={0}>
             <Tooltip data-id="030925-f4b913" label={audit?.auditor?.displayName}>
               <Avatar
-                data-id="030925-56b73f"
                 borderRadius="8px"
                 boxSize="36px"
                 cursor="pointer"
+                data-id="030925-56b73f"
                 flexShrink={0}
                 name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 size="sm"
@@ -53,15 +53,15 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Tooltip>
 
             <Flex
-              data-id="030925-e4c642"
               align="flex-start"
+              data-id="030925-e4c642"
               direction="column"
               maxW="100%"
               minW={0}
               ml={3}>
               <Text
-                data-id="030925-427803"
                 color="auditSquare.nameFontColor"
+                data-id="030925-427803"
                 fontSize="16px"
                 fontWeight="600"
                 isTruncated
@@ -73,8 +73,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
               </Text>
 
               <Text
-                data-id="030925-358348"
                 color="auditSquare.fontColor"
+                data-id="030925-358348"
                 fontSize={['12px', '11px']}
                 isTruncated
                 noOfLines={1}
@@ -89,20 +89,20 @@ function AuditSquare({ audit }: { audit: IAudit }) {
 
         <Tooltip data-id="030925-10dc4f" label="Observations">
           <Flex
-            data-id="030925-4717ab"
             align="center"
+            data-id="030925-4717ab"
             flexShrink={0} // Prevent it from being squeezed
             fontSize="11px"
             fontWeight="700"
           >
             <ObservationEye data-id="030925-821e75" fill="auditSquare.eyeIconColor" h="16px" w="16px" />
-            <Text data-id="030925-a19daa" as="span" color="auditSquare.nameFontColor" ml="2">
+            <Text as="span" color="auditSquare.nameFontColor" data-id="030925-a19daa" ml="2">
               {audit?.answersCount}
             </Text>
           </Flex>
         </Tooltip>
       </Flex>
-      <Divider data-id="030925-35b97f" color="#CBD5E0" w="full" />
+      <Divider color="#CBD5E0" data-id="030925-35b97f" w="full" />
       <Box data-id="030925-c3b30b" p="16px">
         <Box
           data-id="030925-db6320"
@@ -112,12 +112,12 @@ function AuditSquare({ audit }: { audit: IAudit }) {
           gridTemplateColumns="1fr 1fr">
           {/* Row 1: Site | Due date */}
           <Box data-id="030925-fd1646">
-            <Text data-id="030925-44d2d2" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-44d2d2" fontSize="14px" fontWeight="600">
               Site
             </Text>
             <Text
-              data-id="030925-40830d"
               color="#282F36"
+              data-id="030925-40830d"
               fontSize="14px"
               fontWeight="400"
               isTruncated
@@ -130,12 +130,12 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Text>
           </Box>
           <Box data-id="030925-bdcb1d">
-            <Text data-id="030925-5601cb" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-5601cb" fontSize="14px" fontWeight="600">
               Due date
             </Text>
             <Text
-              data-id="030925-135da4"
               color="#282F36"
+              data-id="030925-135da4"
               fontSize="14px"
               fontWeight="400"
               isTruncated
@@ -149,12 +149,12 @@ function AuditSquare({ audit }: { audit: IAudit }) {
           </Box>
           {/* Row 2: Type | Status */}
           <Box data-id="030925-9ff544">
-            <Text data-id="030925-5518aa" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-5518aa" fontSize="14px" fontWeight="600">
               Type
             </Text>
             <Text
-              data-id="030925-518f9a"
               color="#282F36"
+              data-id="030925-518f9a"
               fontSize="14px"
               fontWeight="400"
               isTruncated
@@ -167,10 +167,10 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Text>
           </Box>
           <Box data-id="030925-132eee">
-            <Text data-id="030925-acbc77" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-acbc77" fontSize="14px" fontWeight="600">
               Status
             </Text>
-            <Flex data-id="030925-3c5574" align="center" gap={2}>
+            <Flex align="center" data-id="030925-3c5574" gap={2}>
               {audit?.status === 'missed' && <WarningIcon
                 data-id="030925-d02545"
                 fill="transparent"
@@ -184,8 +184,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
                 stroke="#62C240"
                 w="16px" />}
               <Text
-                data-id="030925-b205fe"
                 color={`auditSquare.${audit?.status}`}
+                data-id="030925-b205fe"
                 fontSize="14px"
                 fontWeight="700">
                 {auditStatuses[audit?.status]}

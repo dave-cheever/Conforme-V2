@@ -161,8 +161,8 @@ function ActionModal({
   return (
     <>
       <ModalContent
-        data-id="030925-9d9d9b"
         bg="actionModal.bg"
+        data-id="030925-9d9d9b"
         h="100%"
         m="0"
         overflow="hidden"
@@ -170,16 +170,16 @@ function ActionModal({
         rounded="0"
       >
         <ModalHeader
-          data-id="030925-472f16"
           alignItems="center"
+          data-id="030925-472f16"
           fontSize="xxl"
           fontWeight="bold"
           p="0"
         >
           <Flex data-id="030925-70541d" justifyContent="space-between">
             <Flex
-              data-id="030925-d2493f"
               alignItems="center"
+              data-id="030925-d2493f"
               fontSize={["14px", "24px"]}
             >
               <Tooltip
@@ -199,10 +199,10 @@ function ActionModal({
                 {action?.title}
               </Text>
             </Flex>
-            <Flex data-id="030925-cc7355" alignItems="center">
+            <Flex alignItems="center" data-id="030925-cc7355">
               <ShareButton
-                data-id="030925-94f96a"
                 ariaLabel="action-share-button"
+                data-id="030925-94f96a"
                 onClick={() => {
                   setShareItemUrl(`actions?id=${action?._id}`);
                   setShareItemName(action?.title);
@@ -210,8 +210,8 @@ function ActionModal({
                 }}
               />
               <Close
-                data-id="030925-fda3eb"
                 cursor="pointer"
+                data-id="030925-fda3eb"
                 h="15px"
                 onClick={closeModal}
                 stroke="actionModal.closeIcon"
@@ -235,9 +235,9 @@ function ActionModal({
                 {capitalize(t("question"))}
               </Text>
               <HStack
-                data-id="030925-477e51"
                 bg="actionModal.question.bg"
                 boxShadow="simple"
+                data-id="030925-477e51"
                 flexGrow={1}
                 justify="space-between"
                 px={6}
@@ -247,12 +247,12 @@ function ActionModal({
               >
                 <Stack data-id="030925-37d30a" spacing={1}>
                   <Stack
-                    data-id="030925-550f56"
                     _hover={{
                       textDecoration: "underline",
                       cursor: "pointer",
                     }}
                     align="center"
+                    data-id="030925-550f56"
                     direction="row"
                     onClick={() =>
                       openInNewTab(
@@ -262,8 +262,8 @@ function ActionModal({
                     spacing={2}
                   >
                     <Text
-                      data-id="030925-89dd73"
                       color="actionModal.question.color"
+                      data-id="030925-89dd73"
                       fontSize="smm"
                       noOfLines={1}
                       whiteSpace="break-spaces"
@@ -278,8 +278,8 @@ function ActionModal({
                     />
                   </Stack>
                   <Text
-                    data-id="030925-d02820"
                     color="actionModal.auditType"
+                    data-id="030925-d02820"
                     fontSize="ssm"
                   >
                     {action?.answer?.audit?.auditType?.name}
@@ -304,11 +304,11 @@ function ActionModal({
                       />
                     ) : (
                       <Flex
-                        data-id="030925-0e4995"
                         align="center"
                         border="1px solid"
                         borderColor="documentUploaded.border"
                         cursor="default"
+                        data-id="030925-0e4995"
                         h="55px"
                         justify="center"
                         rounded="3px"
@@ -325,15 +325,15 @@ function ActionModal({
                 Action details
               </Text>
               <Grid
-                data-id="030925-449292"
                 columnGap={4}
+                data-id="030925-449292"
                 rowGap={2}
                 templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]}
               >
                 <GridItem data-id="030925-f28608">
                   <TextInput
-                    data-id="030925-0641f5"
                     control={control}
+                    data-id="030925-0641f5"
                     disabled={!isUserPermittedToModify}
                     label="Title"
                     name="title"
@@ -345,8 +345,8 @@ function ActionModal({
                 </GridItem>
                 <GridItem data-id="030925-740eb6">
                   <PeoplePicker
-                    data-id="030925-59f943"
                     control={control}
+                    data-id="030925-59f943"
                     disabled={!isUserPermittedToModify}
                     label="Assigned to"
                     name="assigneeId"
@@ -354,8 +354,8 @@ function ActionModal({
                 </GridItem>
                 <GridItem data-id="030925-e91fa4">
                   <Datepicker
-                    data-id="030925-d27de3"
                     control={control}
+                    data-id="030925-d27de3"
                     disabled={!isUserPermittedToModify}
                     label="Due date"
                     name="dueDate"
@@ -363,8 +363,8 @@ function ActionModal({
                 </GridItem>
                 <GridItem data-id="030925-34359a">
                   <Dropdown
-                    data-id="030925-f19515"
                     control={control}
+                    data-id="030925-f19515"
                     disabled={!isUserPermittedToModify}
                     label="Priority"
                     name="priority"
@@ -375,8 +375,8 @@ function ActionModal({
                 </GridItem>
                 <GridItem data-id="030925-acfd4b">
                   <Dropdown
-                    data-id="030925-b28cc3"
                     control={control}
+                    data-id="030925-b28cc3"
                     disabled={!isUserPermittedToModify}
                     label="Status"
                     name="status"
@@ -390,21 +390,21 @@ function ActionModal({
                 </GridItem>
               </Grid>
               <TextInputMultiline
-                data-id="030925-8d7e51"
                 control={control}
+                data-id="030925-8d7e51"
                 disabled={!isUserPermittedToModify}
                 label="Description"
                 name="description"
               />
               <Grid
-                data-id="030925-d163d6"
                 columnGap={4}
+                data-id="030925-d163d6"
                 templateColumns="repeat(2, 1fr)"
               >
                 <GridItem data-id="030925-9d6be0">
                   <Text
-                    data-id="030925-bbda83"
                     color="auditActionForm.labelFont.normal"
+                    data-id="030925-bbda83"
                     fontSize="11px"
                     fontWeight="bold"
                   >
@@ -420,16 +420,16 @@ function ActionModal({
                 {action?.creator && (
                   <GridItem data-id="030925-30274d">
                     <Text
-                      data-id="030925-4abf2c"
                       color="auditActionForm.labelFont.normal"
+                      data-id="030925-4abf2c"
                       fontSize="11px"
                       fontWeight="bold"
                     >
                       Created by
                     </Text>
                     <Flex
-                      data-id="030925-b3e3ca"
                       align="center"
+                      data-id="030925-b3e3ca"
                       direction="row"
                       mt={1}
                     >
@@ -468,8 +468,8 @@ function ActionModal({
                       Add photos or files
                     </Text>
                     <DocumentUpload
-                      data-id="030925-4d81bf"
                       callback={async (uploaded) => appendAttachment(uploaded)}
+                      data-id="030925-4d81bf"
                       elementId={action ? action._id : `temp-${uuidv4()}`}
                     />
                   </>
@@ -477,8 +477,8 @@ function ActionModal({
                 {values.attachments?.map((attachment, i) => (
                   <Flex data-id="030925-5ff692" flexDir="column" key={i} mb={2}>
                     <DocumentUploaded
-                      data-id="030925-93eee6"
                       callback={async () => removeAttachment(i)}
+                      data-id="030925-93eee6"
                       document={attachment}
                       downloadable
                       removable
@@ -505,9 +505,9 @@ function ActionModal({
           >
             {isPermitted({ user, action: "actions.delete" }) ? (
               <Button
-                data-id="030925-b9740f"
                 bg="actionModal.buttons.secondary.bg"
                 color="actionModal.buttons.secondary.color"
+                data-id="030925-b9740f"
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
@@ -525,9 +525,9 @@ function ActionModal({
             )}
             {isUserPermittedToModify && (
               <Button
-                data-id="030925-a7a464"
                 bg="actionModal.buttons.primary.bg"
                 color="actionModal.buttons.primary.color"
+                data-id="030925-a7a464"
                 disabled={!isValid}
                 fontSize="smm"
                 fontWeight="700"
@@ -536,8 +536,8 @@ function ActionModal({
                 onClick={handlePrimaryButtonClick}
                 rightIcon={
                   <Icon
-                    data-id="030925-5c63dc"
                     as={TickIcon}
+                    data-id="030925-5c63dc"
                     size={24}
                     stroke="actionModal.buttons.primary.icon"
                   />
@@ -558,36 +558,36 @@ function ActionModal({
         onClose={() => setIsConfirmDeleteOpen(false)}>
         <ModalOverlay data-id="030925-d80c38" />
         <ModalContent
-          data-id="030925-76b118"
           bg="white"
           borderRadius="12px"
           boxShadow="lg"
+          data-id="030925-76b118"
           p={6}
           textAlign="center">
           <Box
-            data-id="030925-8f36e6"
             color="gray.800"
+            data-id="030925-8f36e6"
             fontSize="xl"
             fontWeight="bold"
             mb={4}>
             Confirm Delete
           </Box>
-          <Box data-id="030925-c84eef" color="gray.600" mb={6}>
+          <Box color="gray.600" data-id="030925-c84eef" mb={6}>
             Are you sure you want to delete this item? This action cannot be
             undone.
           </Box>
           <Flex data-id="030925-19c8e4" justify="center">
             <Button
-              data-id="030925-dce223"
               colorScheme="gray"
+              data-id="030925-dce223"
               mr={3}
               onClick={() => setIsConfirmDeleteOpen(false)}
               variant="outline">
               Cancel
             </Button>
             <Button
-              data-id="030925-de0b07"
               colorScheme="red"
+              data-id="030925-de0b07"
               onClick={handleSecondaryButtonClick}>
               Delete
             </Button>

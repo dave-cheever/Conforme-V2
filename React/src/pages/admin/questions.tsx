@@ -309,7 +309,6 @@ function Questions() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
-        data-id="030925-591522"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -317,6 +316,7 @@ function Questions() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
+        data-id="030925-591522"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -327,8 +327,8 @@ function Questions() {
         w="full"
       >
         <Flex
-          data-id="030925-fd3ca0"
           cursor="pointer"
+          data-id="030925-fd3ca0"
           flexDir="column"
           mr={4}
           onClick={() => openQuestionModal('edit', question)}
@@ -346,8 +346,8 @@ function Questions() {
   return (
     <>
       <AdminModal
-        data-id="030925-04f5b4"
         collection="questions"
+        data-id="030925-04f5b4"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
@@ -355,8 +355,8 @@ function Questions() {
       >
         <Stack data-id="030925-771b39" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <Dropdown
-            data-id="030925-ac223f"
             control={control}
+            data-id="030925-ac223f"
             label="Questions Category"
             name="questionsCategoryId"
             options={questionsCategories?.map(({ _id, name }) => ({
@@ -371,8 +371,8 @@ function Questions() {
             variant="secondaryVariant"
           />
           <TextInput
-            data-id="030925-4561d2"
             control={control}
+            data-id="030925-4561d2"
             label="Question"
             name="question"
             placeholder="Question"
@@ -381,30 +381,30 @@ function Questions() {
               notEmpty: true,
             }}
           />
-          <TextInputMultiline data-id="030925-6bec33" control={control} label="Description" name="description" placeholder="Description" />
-          <TextInput data-id="030925-c625ca" control={control} label="Positive value" name="positiveValue" placeholder="Positive value" />
-          <TextInput data-id="030925-7f62ef" control={control} label="Negative value" name="negativeValue" placeholder="Negative value" />
+          <TextInputMultiline control={control} data-id="030925-6bec33" label="Description" name="description" placeholder="Description" />
+          <TextInput control={control} data-id="030925-c625ca" label="Positive value" name="positiveValue" placeholder="Positive value" />
+          <TextInput control={control} data-id="030925-7f62ef" label="Negative value" name="negativeValue" placeholder="Negative value" />
         </Stack>
       </AdminModal>
       <Header
-        data-id="030925-f70b2f"
         breadcrumbs={['Admin', 'Questions']}
+        data-id="030925-f70b2f"
         mobileBreadcrumbs={['Questions']}
         pageLabel={capitalize(t('question'))}
       />
       <Flex
-        data-id="030925-3b0ead"
         bg="auditsList.bg"
         borderRadius="10px"
+        data-id="030925-3b0ead"
         h="calc(100vh - 160px)"
         overflow="auto"
        p={[0, '0 25px 30px 30px']}
       >
        <Flex data-id="030925-4f7f64" h="full" px={['25px', 0]} w="full">
           <Box
-          data-id="030925-3d6dac"
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
+          data-id="030925-3d6dac"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
           overflow="hidden"
           w="full"
@@ -422,9 +422,9 @@ function Questions() {
               w="full"
             />
           </AdminTableHeader>
-          <Box data-id="030925-211171" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="030925-211171" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader data-id="030925-cf6f47" center />
+              <Loader center data-id="030925-cf6f47" />
             ) : questions?.length > 0 ? (
               questions?.map(renderQuestionRow)
             ) : (

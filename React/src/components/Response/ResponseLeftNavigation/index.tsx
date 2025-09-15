@@ -57,9 +57,9 @@ function ResponseLeftNavigation() {
 
   return (
     <Flex
-        data-id="030925-853722"
         bg="responseLeftNavigation.bg"
         color="responseLeftNavigation.color"
+        data-id="030925-853722"
         direction="column"
         display={['none', 'none', 'flex']}
         fontWeight="400"
@@ -69,17 +69,17 @@ function ResponseLeftNavigation() {
         w="280px">
       <Flex data-id="030925-515acb" flexDirection="column">
         <Box
-          data-id="030925-f55ec5"
           alignItems="center"
           cursor="pointer"
+          data-id="030925-f55ec5"
           display="flex"
           h="80px"
           minW="200px"
           onClick={() => navigateTo('/')}>
-          <Icon data-id="030925-b066f7" as={Conforme} h="35px" w="50px" />
+          <Icon as={Conforme} data-id="030925-b066f7" h="35px" w="50px" />
           <Text
-            data-id="030925-e9ae85"
             color="navigationLeft.organizationNameFontColor"
+            data-id="030925-e9ae85"
             fontSize="16px"
             fontWeight="bold"
             w="full">
@@ -87,10 +87,10 @@ function ResponseLeftNavigation() {
           </Text>
         </Box>
         <Flex
-          data-id="030925-48661d"
           align="center"
           color="responseLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="030925-48661d"
           fontSize="14px"
           h="30px"
           mb="30px"
@@ -118,10 +118,10 @@ function ResponseLeftNavigation() {
             },
           }}>
           <Box data-id="030925-e3760c" h="50px">
-            <Box data-id="030925-522ff9" color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+            <Box color="responseLeftNavigation.color" data-id="030925-522ff9" fontSize="16px" opacity="64%">
               Item ID
             </Box>
-            <Flex data-id="030925-a8945a" align="center" fontSize="16px" minH="28px">
+            <Flex align="center" data-id="030925-a8945a" fontSize="16px" minH="28px">
               <Flex data-id="030925-93baeb" mr={2}>{response?.trackerItem.reference}</Flex>
               <CopyToClipboard
                 data-id="030925-8f4568"
@@ -134,9 +134,9 @@ function ResponseLeftNavigation() {
                 }
                 text={response?.trackerItem.reference}>
                 <Copy
-                  data-id="030925-078158"
                   _hover={{ opacity: 0.6, cursor: 'pointer' }}
                   color="responseLeftNavigation.copy"
+                  data-id="030925-078158"
                   h="17px"
                   mt={1}
                   w="17px" />
@@ -148,14 +148,14 @@ function ResponseLeftNavigation() {
             heading={capitalize(t('business unit'))}
             value={response?.businessUnit?.name || '-'} />
           <Box data-id="030925-aff763" h="50px" mt={2}>
-            <Box data-id="030925-b1bb0d"  color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+            <Box color="responseLeftNavigation.color"  data-id="030925-b1bb0d" fontSize="16px" opacity="64%">
               Accountable
             </Box>
-             <Flex data-id="030925-089ec0" align="center" fontSize="16px" minH="28px">
+             <Flex align="center" data-id="030925-089ec0" fontSize="16px" minH="28px">
               <Avatar
-                data-id="030925-3a6507"
                 bg="responseLeftNavigation.avatar"
                 color="white"
+                data-id="030925-3a6507"
                 mr={2}
                 name={
                   accountable && accountable.firstName && accountable.lastName
@@ -172,14 +172,14 @@ function ResponseLeftNavigation() {
             </Flex>
           </Box>
           <Box data-id="030925-e603da" h="50px" mt={2}>
-             <Box data-id="030925-547810"  color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+             <Box color="responseLeftNavigation.color"  data-id="030925-547810" fontSize="16px" opacity="64%">
               Responsible
             </Box>
-              <Flex data-id="030925-37fad2" align="center" fontSize="16px" minH="28px">
+              <Flex align="center" data-id="030925-37fad2" fontSize="16px" minH="28px">
               <Avatar
-                data-id="030925-29ca60"
                 bg="responseLeftNavigation.avatar"
                 color="white"
+                data-id="030925-29ca60"
                 mr={2}
                 name={
                   responsible && responsible.firstName && responsible.lastName

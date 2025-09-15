@@ -27,11 +27,11 @@ function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }
 
   return (
     <Stack
-        data-id="030925-f1fd10"
         align="center"
         bg={bgColor || 'questionListElement.bg'}
         borderColor="questionListElement.border"
         borderWidth="2px"
+        data-id="030925-f1fd10"
         direction="row"
         minH="65px"
         px={4}
@@ -39,21 +39,21 @@ function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }
         spacing={2}
         w="calc(100% - 1rem)">
       <Flex data-id="030925-d0a336" flexDir="column" w="calc(100% - 40px)">
-        <Text data-id="030925-c3582e" color="questionListElement.label" fontSize="11px">
+        <Text color="questionListElement.label" data-id="030925-c3582e" fontSize="11px">
           {questionHeader(question.type)}
         </Text>
-        <Flex data-id="030925-9ad9ce" alignItems="center" flexGrow={1} w="full">
+        <Flex alignItems="center" data-id="030925-9ad9ce" flexGrow={1} w="full">
           <Tooltip
-            data-id="030925-dc8a00"
             bg="questionListElement.tooltipBg"
             color="questionListElement.tooltipColor"
+            data-id="030925-dc8a00"
             hasArrow
             isDisabled={!isTextOverflown}
             label={question.name}
             placement="top">
             <Text
-              data-id="030925-db1e89"
               color="questionListElement.name"
+              data-id="030925-db1e89"
               fontSize="smm"
               fontWeight="bold"
               noOfLines={4}
@@ -74,14 +74,14 @@ function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }
         </Flex>
       </Flex>
       {editQuestion && <EditIcon
-        data-id="030925-0ed72d"
         cursor="pointer"
+        data-id="030925-0ed72d"
         onClick={editQuestion}
         stroke="questionListElement.icon"
         w="20px" />}
       {removeQuestion && <Trashcan
-        data-id="030925-eaa474"
         cursor="pointer"
+        data-id="030925-eaa474"
         onClick={removeQuestion}
         stroke="questionListElement.icon"
         w="20px" />}

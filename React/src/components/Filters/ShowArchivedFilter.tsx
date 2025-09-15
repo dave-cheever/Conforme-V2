@@ -11,8 +11,8 @@ function ShowArchivedFilter() {
   return (
     <HStack data-id="030925-f43bfa" ml='2px' mt={2} spacing={2}>
       <Text
-        data-id="030925-12dafd"
         color="archivedFilterStyles.checkboxLabelColor"
+        data-id="030925-12dafd"
         fontSize="14px">Show archived</Text>
       <Switch
         data-id="030925-eae62c"

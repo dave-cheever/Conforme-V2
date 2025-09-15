@@ -22,7 +22,6 @@ function ResponseHeaderButton({
   return (
     <>
       <Button
-        data-id="030925-da9a7f"
         _hover={
           disabled
             ? {}
@@ -36,6 +35,7 @@ function ResponseHeaderButton({
         border="1px solid #CBD5E0"
         borderRadius="10px"
         color={`reasponseHeader.button${primary ? 'Dark' : 'Light'}Color`}
+        data-id="030925-da9a7f"
         disabled={disabled}
         display={isListView ? 'flex' : 'initial'}
         flexDir={isListView ? 'row' : 'initial'}

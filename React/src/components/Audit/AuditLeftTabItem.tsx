@@ -17,35 +17,35 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
 
   return (
     <Flex
-      data-id="030925-2ed340"
       align="center"
       bg={isDesktop && active ? 'auditLeftTabItem.activeIconBg' : ""}
       borderRadius={'4px'}
       cursor="pointer"
+      data-id="030925-2ed340"
       mb={[0, 3]}
       mx={[3, 0]}
       onClick={redirectPage}
       padding={isDesktop ? '3px' : '2px 0'}>
       <Flex
-        data-id="030925-7be446"
         align="center"
         bg={active ? 'auditLeftTabItem.activeIconBg' : ''}
         borderRadius="8px"
+        data-id="030925-7be446"
         h="30px"
         justify="center"
         pl={2}
         w="30px">
         <Icon
-          data-id="030925-1f3395"
           as={icon}
+          data-id="030925-1f3395"
           h="19px"
           stroke="#ffffff"
           w="19px" />
       </Flex>
       {(isDesktop || (isMobile && active)) && (
         <Flex
-          data-id="030925-952be4"
           color="#ffffff"
+          data-id="030925-952be4"
           flexGrow={1}
           fontSize={['11px', '14px']}
           ml={3}>

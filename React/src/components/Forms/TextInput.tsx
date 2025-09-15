@@ -63,8 +63,8 @@ function TextInput({
   const validate = useValidate(label || name, validations, definedValidations, initialValue);
   return (
     <Controller
-        data-id="030925-21a7f8"
         control={control}
+        data-id="030925-21a7f8"
         name={name}
         render={({ field, fieldState }) => {
           const { value } = field;
@@ -73,9 +73,9 @@ function TextInput({
           function URLButton() {
             return (
               <Button
-                data-id="030925-3f5f61"
                 bg="textInput.openLinkButtonBg"
                 color="textInput.openLinkButtonColor"
+                data-id="030925-3f5f61"
                 disabled={!value || error !== undefined}
                 fontSize="smm"
                 h="1.75rem"
@@ -91,15 +91,15 @@ function TextInput({
             <Box data-id="030925-7c8152" id={name} mt="none" w="full">
               {label && (
                 <Flex
-                  data-id="030925-cc853b"
                   align="center"
+                  data-id="030925-cc853b"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
-                    data-id="030925-cafe8b"
                     color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
+                    data-id="030925-cafe8b"
                     fontSize="11px"
                     fontWeight="bold"
                     left="none"
@@ -131,7 +131,6 @@ function TextInput({
               {!readMode && (
                 <InputGroup data-id="030925-f59617">
                   <Input
-                    data-id="030925-21c48d"
                     _active={{
                       bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
                     }}
@@ -153,6 +152,7 @@ function TextInput({
                     borderWidth="1px"
                     color="textInput.font"
                     cursor="pointer"
+                    data-id="030925-21c48d"
                     fontSize="smm"
                     h="40px"
                     isDisabled={disabled}
@@ -169,8 +169,8 @@ function TextInput({
               {readMode && (
                 <Stack data-id="030925-3a5685" spacing={2}>
                   <Flex
-                    data-id="030925-796c31"
                     align="center"
+                    data-id="030925-796c31"
                     fontSize="smm"
                     minH="40px"
                     wordBreak="break-all">
@@ -180,7 +180,7 @@ function TextInput({
                 </Stack>
               )}
               {error && (
-                <Box data-id="030925-54bf75" color="textInput.error" fontSize={14} ml={1}>
+                <Box color="textInput.error" data-id="030925-54bf75" fontSize={14} ml={1}>
                   {error.message}
                 </Box>
               )}

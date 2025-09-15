@@ -85,18 +85,18 @@ function DocumentUpload({
         uploading.map((name) => (
           <Flex data-id="030925-d0a0b7" key={name} mb={3}>
             <DocumentUploading
-              data-id="030925-f491f1"
               cancelUpload={() => {
                 uploadControllerRef.current[name].abort();
                 delete uploadControllerRef.current[name];
               }}
+              data-id="030925-f491f1"
               documentName={name} />
           </Flex>
         ))
       ) : (
         <Dropzone
-          data-id="030925-5af048"
           accept={acceptedFileTypes}
+          data-id="030925-5af048"
           disabled={disabled}
           multiple
           onDrop={(acceptedFiles, rejectedFiles) => upload({ acceptedFiles, rejectedFiles })}>
@@ -110,7 +110,6 @@ function DocumentUpload({
               w="full">
               <input data-id="030925-c1eae2" {...getInputProps()} />
               <Flex
-                data-id="030925-2a6db6"
                 align="center"
                 bg="#F7FAFC"
                 borderColor="#D9D9E0"
@@ -118,6 +117,7 @@ function DocumentUpload({
                 borderStyle="dashed"
                 borderWidth="1px"
                 color="#818197"
+                data-id="030925-2a6db6"
                 fontSize="14px"
                 fontWeight="semi_medium"
                 h="full"
@@ -127,12 +127,12 @@ function DocumentUpload({
                 <Flex data-id="030925-fb2aa6">
                   {' '}
                   Drag and drop or{' '}
-                  <Text data-id="030925-316db0" color="#462AC4" ml={1}>
+                  <Text color="#462AC4" data-id="030925-316db0" ml={1}>
                     {' '}
                     browse
                   </Text>
                 </Flex>
-                <UploadIcon data-id="030925-b3b1d3" color="#818197" h="21px" w="21px" />
+                <UploadIcon color="#818197" data-id="030925-b3b1d3" h="21px" w="21px" />
               </Flex>
             </Box>
           )}
@@ -140,8 +140,8 @@ function DocumentUpload({
       )}
       {rejected && (
         <Flex
-          data-id="030925-f72d8a"
           color="red.500"
+          data-id="030925-f72d8a"
           fontSize="12px"
           fontWeight="bold"
           mt={2}>

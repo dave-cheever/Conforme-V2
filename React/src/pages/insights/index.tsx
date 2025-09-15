@@ -48,8 +48,8 @@ function Insights() {
         _id: questionsCategory?._id,
         name: questionsCategory?.name,
         component: <AnswersInsights
-          data-id="030925-3bad84"
           answerType={questionsCategory?.name}
+          data-id="030925-3bad84"
           questionsCategoriesId={questionsCategory?._id} />,
         usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
@@ -82,8 +82,8 @@ function Insights() {
         overflowY="hidden"
         zIndex="1">
       <Header
-        data-id="030925-4a8858"
         breadcrumbs={['Insights']}
+        data-id="030925-4a8858"
         mobileBreadcrumbs={['Insights']}>
         {device === 'mobile' && <FilterButton data-id="030925-92ae2b" insightsFilter />}
 
@@ -103,7 +103,7 @@ function Insights() {
       {error ? (
         <Text data-id="030925-477408">{error.message}</Text>
       ) : loading ? (
-        <Loader data-id="030925-bcc06b" center />
+        <Loader center data-id="030925-bcc06b" />
       ) : (
         <Flex
           data-id="030925-48e79c"
@@ -130,7 +130,6 @@ function Insights() {
             >
               {panels?.map((panel) => (
                 <Tab
-                  data-id="030925-7f53f6"
                   _hover={{
                     opacity: 0.8,
                   }}
@@ -139,6 +138,7 @@ function Insights() {
                     color: 'insights.tabColor',
                   }}
                   borderRadius="10px"
+                  data-id="030925-7f53f6"
                   fontSize="14px"
                   fontWeight="600"
                   key={panel._id}

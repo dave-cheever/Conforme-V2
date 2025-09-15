@@ -77,9 +77,9 @@ function AuditHistory() {
 
   return (
     <Stack
-        data-id="030925-848152"
         bg="auditHistory.bg"
         border="1px solid #CBD5E0"
+        data-id="030925-848152"
         h="full"
         maxH={['none', 'calc(100vh - 220px)']}
         overflowY="auto"
@@ -105,15 +105,15 @@ function AuditHistory() {
           {Object.entries(days).length > 0 ? (
             Object.entries(days).map(([day, audits]) => (
               <Stack
-                data-id="030925-781afb"
                 align="flex-start"
+                data-id="030925-781afb"
                 direction={['column', 'row']}
                 key={day}
                 spacing={4}>
                 <Box
-                  data-id="030925-19da4b"
                   bg="auditHistory.date.bg"
                   color="auditHistory.date.color"
+                  data-id="030925-19da4b"
                   flexShrink={0}
                   fontSize="smm"
                   fontWeight="bold"
@@ -125,12 +125,12 @@ function AuditHistory() {
                 <Stack data-id="030925-439937" spacing={4} w="full">
                   {audits.map((audit) => (
                     <HStack
-                      data-id="030925-c80024"
                       _hover={{
                         bg: 'auditHistory.listItem.bg.hover',
                       }}
                       bg="auditHistory.listItem.bg.default"
                       border="1px solid #CBD5E0"
+                      data-id="030925-c80024"
                       key={audit._id}
                       onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}
                       p={4}
@@ -139,21 +139,21 @@ function AuditHistory() {
                       spacing={4}
                       w="full">
                       <Avatar
-                        data-id="030925-830058"
                         alignSelf="flex-start"
+                        data-id="030925-830058"
                         name={audit?.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                         size="sm"
                         src={audit?.auditor?.imgUrl} />
                       <Stack data-id="030925-6ca794" flexGrow={1} spacing={2}>
                         <Flex data-id="030925-08d827" direction="column">
                           <Text
-                            data-id="030925-7e1fed"
                             color="auditHistory.listItem.auditor"
+                            data-id="030925-7e1fed"
                             fontSize="ssm">
                             {audit.auditor?.displayName}
                             {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
                           </Text>
-                          <Text data-id="030925-c6e12d" color="auditHistory.listItem.title" fontSize="smm">
+                          <Text color="auditHistory.listItem.title" data-id="030925-c6e12d" fontSize="smm">
                             Completed {a(t('audit') as string)}
                           </Text>
                         </Flex>
@@ -178,16 +178,16 @@ function AuditHistory() {
                       </Stack>
                       {device !== 'mobile' && (
                         <Flex
-                          data-id="030925-00cbf0"
                           _groupHover={{
                             display: 'flex',
                           }}
                           align="center"
+                          data-id="030925-00cbf0"
                           display="none">
                           <Button
-                            data-id="030925-f2cf51"
                             bg="auditHistory.listItem.button.bg"
                             color="auditHistory.listItem.button.color"
+                            data-id="030925-f2cf51"
                             fontSize="ssm"
                             fontWeight="bold"
                             h="28px"

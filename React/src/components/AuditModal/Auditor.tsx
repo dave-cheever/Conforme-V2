@@ -5,19 +5,19 @@ import { IAuditor } from '../../interfaces/IAuditor';
 function Auditor({ name, designation, imgSrc }: IAuditor) {
   return (
     <Box
-      data-id="030925-0511d3"
       _hover={{
         cursor: 'pointer',
         borderRadius: '8px',
         boxShadow: '0px 10px 30px 0px #0000002E',
       }}
       alignItems="center"
+      data-id="030925-0511d3"
       display="flex"
       justifyContent="start"
       p="10px 10px">
       <Avatar
-        data-id="030925-c4679c"
         bg="auditModal.participants.avatar.bg"
+        data-id="030925-c4679c"
         h="36px"
         lineHeight="0px"
         mr="15px"
@@ -26,15 +26,15 @@ function Auditor({ name, designation, imgSrc }: IAuditor) {
         w="36px" />
       <Box data-id="030925-0eb3ec">
         <Text
-          data-id="030925-a1d476"
           color="auditModal.participants.avatar.text.name"
+          data-id="030925-a1d476"
           fontSize="md"
           fontWeight="400">
           {name}
         </Text>
         <Text
-          data-id="030925-48e2a4"
           color="auditModal.participants.avatar.text.designation"
+          data-id="030925-48e2a4"
           fontSize="sm"
           fontWeight="400">
           {designation}

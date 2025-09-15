@@ -78,12 +78,12 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
       key={`quick-filter-item-${name}`}
       mt={2}>
       <Flex
-        data-id="030925-bf0bd6"
         align="center"
         bg={isOpen ? 'quickFiltersItem.openBg' : 'quickFiltersItem.closeBg'}
         borderBottomRadius={isOpen ? '0px' : '10px'}
         borderTopRadius="10px"
         cursor="pointer"
+        data-id="030925-bf0bd6"
         direction="row"
         justify="center"
         mr={4}
@@ -95,8 +95,8 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
         p={3}
         w="215px">
         <Text
-          data-id="030925-e90ff2"
           color="#1E1836"
+          data-id="030925-e90ff2"
           fontSize="14px"
           fontWeight="500"
           lineHeight="20px"
@@ -106,10 +106,10 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
         <Flex data-id="030925-561377">
           {filtersLength > 0 && (
             <Box
-              data-id="030925-5e701b"
               bg="quickFiltersItem.countBg"
               borderRadius="10px"
               color="quickFiltersItem.countColor"
+              data-id="030925-5e701b"
               fontSize="12px"
               fontWeight="400"
               mr="3"
@@ -123,11 +123,11 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
       </Flex>
       {isOpen && (
         <Flex
-          data-id="030925-b4ffff"
           align="center"
           alignItems="top"
           bg="quickFiltersItem.openBg"
           borderBottomRadius="10px"
+          data-id="030925-b4ffff"
           maxH="200px"
           overflowY="auto"
           p={3}

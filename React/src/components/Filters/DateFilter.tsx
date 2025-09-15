@@ -101,7 +101,6 @@ function DateFilter({ filterName }: { filterName: string }) {
         {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(
           ([key, label]) => (
             <Checkbox
-              data-id="030925-d2eb08"
               colorScheme="purpleHeart"
               css={{
                 '.chakra-checkbox__control': {
@@ -121,14 +120,15 @@ function DateFilter({ filterName }: { filterName: string }) {
                   },
                 },
               }}
+              data-id="030925-d2eb08"
               icon={<MinusIcon data-id="030925-2b25bf" />}
               isChecked={selectedKey === key}
               key={key}
               onChange={(e) => onChange(e, key)}
             >
               <Text
-                data-id="030925-35dec0"
                 color="filterPanel.checkboxLabelColor"
+                data-id="030925-35dec0"
                 fontSize="14px"
               >
                 {label}

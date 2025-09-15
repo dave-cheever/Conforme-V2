@@ -23,11 +23,11 @@ function DocumentThumbnail({ document }: { document: IDocument | undefined }) {
 
   return (
     <Flex
-        data-id="030925-dadfe8"
         align="center"
         borderColor="documentUploaded.border"
         borderRadius="3px"
         borderWidth={1}
+        data-id="030925-dadfe8"
         flexShrink={0}
         fontSize="12px"
         h="55px"
@@ -37,7 +37,7 @@ function DocumentThumbnail({ document }: { document: IDocument | undefined }) {
       <Image
         data-id="030925-026b49"
         fallback={
-          <Flex data-id="030925-ad51e1" align="center" h="full">
+          <Flex align="center" data-id="030925-ad51e1" h="full">
             <BlankPage data-id="030925-1e4262" h="30px" w="55px" />
           </Flex>
         }

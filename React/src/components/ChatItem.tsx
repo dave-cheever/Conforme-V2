@@ -51,10 +51,10 @@ function ChatItem({ onAction, comment }: IChatItem) {
   return (
     <>
       <ChatConfirmDeleteModal data-id="030925-4d5ea5" isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
-      <Flex data-id="030925-8ddd04" align={isChatOwner ? 'flex-end' : 'flex-start'} flexDirection="column" mb={3} w="full">
+      <Flex align={isChatOwner ? 'flex-end' : 'flex-start'} data-id="030925-8ddd04" flexDirection="column" mb={3} w="full">
         <Flex
-          data-id="030925-e615c1"
           alignItems="end"
+          data-id="030925-e615c1"
           flexDirection="row"
           justify={isChatOwner ? 'flex-end' : 'flex-start'}
           w="full">
@@ -74,16 +74,16 @@ function ChatItem({ onAction, comment }: IChatItem) {
               />
             ))}
           <Flex
-            data-id="030925-6b9c7f"
             alignItems={isChatOwner ? 'end' : 'baseline'}
+            data-id="030925-6b9c7f"
             direction="column">
             {!isChatOwner &&
               (loading ? (
                 <Skeleton data-id="030925-8b029f" height="14px" mb={1} width="80px" />
               ) : (
                 <Text
-                  data-id="030925-ef0532"
                   color="#718096"
+                  data-id="030925-ef0532"
                   fontSize="10px"
                   fontWeight="500"
                   mb={1}>
@@ -91,11 +91,11 @@ function ChatItem({ onAction, comment }: IChatItem) {
                 </Text>
               ))}
             <Box
-              data-id="030925-0a2791"
               bg={isChatOwner ? '#462AC4' : '#EDF2F7'}
               borderRadius={isChatOwner ? '8px 8px 2px 8px' : '8px 8px 8px 4px'}
               boxShadow={isChatOwner ? '0 2px 8px #462AC420' : 'none'}
               color={isChatOwner ? '#FFFFFF' : '#2D3748'}
+              data-id="030925-0a2791"
               maxW="75%"
               minW="120px"
               onMouseEnter={() => setShowDeleteBtn(true)}
@@ -110,17 +110,17 @@ function ChatItem({ onAction, comment }: IChatItem) {
                 ))}
               </Text>
               <Flex
-                data-id="030925-82f6a8"
                 align="center"
+                data-id="030925-82f6a8"
                 justify={isChatOwner ? 'flex-end' : 'flex-start'}>
                 <Can
-                  data-id="030925-c4bcec"
                   action="comments.delete"
                   data={{ comment }}
+                  data-id="030925-c4bcec"
                   yes={() => (
                     <Button
-                      data-id="030925-0d786d"
                       colorScheme="red"
+                      data-id="030925-0d786d"
                       display={showDeleteBtn ? 'block' : 'none'}
                       mb={2}
                       ml={2}

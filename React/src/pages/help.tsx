@@ -21,8 +21,8 @@ const GET_HELP = gql`
 const MarkdownComponents: Components = {
   h1: ({ node, ...props }) => (
     <Text
-      data-id="030925-87dcff"
       as="h1"
+      data-id="030925-87dcff"
       fontSize="2xl"
       fontWeight="bold"
       mb={4}
@@ -30,8 +30,8 @@ const MarkdownComponents: Components = {
   ),
   h2: ({ node, ...props }) => (
     <Text
-      data-id="030925-9d2fe8"
       as="h2"
+      data-id="030925-9d2fe8"
       fontSize="xl"
       fontWeight="semibold"
       mb={3}
@@ -39,33 +39,33 @@ const MarkdownComponents: Components = {
   ),
   h3: ({ node, ...props }) => (
     <Text
-      data-id="030925-70cf73"
       as="h3"
+      data-id="030925-70cf73"
       fontSize="lg"
       fontWeight="semibold"
       mb={3}
       {...props} />
   ),
   p: ({ node, ...props }) => (
-    <Text data-id="030925-95ddf5" as="p" lineHeight="1.6" mb={3} {...props} />
+    <Text as="p" data-id="030925-95ddf5" lineHeight="1.6" mb={3} {...props} />
   ),
   ul: ({ node, ...props }) => (
     <Box
-      data-id="030925-407f94"
       as="ul"
+      data-id="030925-407f94"
       mb={3}
       pl={5}
       style={{ listStyleType: 'disc' }}
       {...props} />
   ),
   li: ({ node, ...props }) => (
-    <Box data-id="030925-350b9f" as="li" mb={1} {...props} />
+    <Box as="li" data-id="030925-350b9f" mb={1} {...props} />
   ),
   a: (props) => (
     <Box
-      data-id="030925-237b8a"
       as="a"
       color="blue.500"
+      data-id="030925-237b8a"
       textDecoration="underline"
       {...props} />
   ),
@@ -88,14 +88,14 @@ function Help() {
       w="full"
     >
       <Header
-        data-id="030925-2271e2"
         breadcrumbs={['Home', 'Help']}
+        data-id="030925-2271e2"
         mobileBreadcrumbs={['Help']}
       />
       <Flex
-        data-id="030925-0d22e9"
         bg="white"
         borderRadius="20px"
+        data-id="030925-0d22e9"
         flexDirection="column"
         h="auto"
         maxWidth="full"
@@ -105,14 +105,14 @@ function Help() {
         p="25px 30px"
       >
         {loading ? (
-          <Flex data-id="030925-d37f97" align="center" h="100vh" justify="center">
+          <Flex align="center" data-id="030925-d37f97" h="100vh" justify="center">
             Loading...
           </Flex>
         ) : (
           <div data-id="030925-dc69cd">
             {matchedHelp ? (
               <Box data-id="030925-346b69" fontSize="14px" mb="30px">
-                <ReactMarkdown data-id="030925-b96da4" components={MarkdownComponents}>
+                <ReactMarkdown components={MarkdownComponents} data-id="030925-b96da4">
                     {t(`${matchedHelp.content}`)}
                 </ReactMarkdown>
               </Box>

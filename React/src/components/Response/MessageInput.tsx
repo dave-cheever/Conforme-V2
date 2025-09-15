@@ -44,27 +44,27 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
 
   return (
     <Controller
-        data-id="030925-2bc856"
         control={control}
+        data-id="030925-2bc856"
         name={name}
         render={({ field }) => {
           const { onChange, onBlur, value } = field;
 
           return (
             <Flex
-                data-id="030925-bd234b"
                 align="center"
                 borderRadius="10px"
+                data-id="030925-bd234b"
                 mb="25px"
                 mx="auto"
                 position="relative"
                 w="90%">
               <MentionsInput
-                data-id="030925-1df6f0"
                 allowSpaceInQuery
                 allowSuggestionsAboveCursor
                 autoComplete="off"
                 className="mentions"
+                data-id="030925-1df6f0"
                 disabled={disabled}
                 inputRef={mentionRef}
                 onBlur={onBlur}
@@ -73,14 +73,14 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
                 placeholder={placeholder}
                 value={value}>
                 <Mention
-                  data-id="030925-7f1281"
                   appendSpaceOnAdd
                   className="mentions__mention"
                   data={chatParticipants}
+                  data-id="030925-7f1281"
                   renderSuggestion={(highlightedDisplay) => (
                     <Flex
-                      data-id="030925-014460"
                       color="mentionListItem.color"
+                      data-id="030925-014460"
                       fontSize="14px"
                       pl="13px"
                       py="10px"
@@ -96,8 +96,8 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
               </MentionsInput>
               <Flex data-id="030925-945f45" position="absolute" right="10px">
                 <SendMessageIcon
-                  data-id="030925-1973e2"
                   cursor={disabled ? 'not-allowed' : 'pointer'}
+                  data-id="030925-1973e2"
                   onClick={onAction} />
               </Flex>
             </Flex>

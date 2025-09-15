@@ -280,7 +280,7 @@ function AuditsInsights() {
         <Text data-id="030925-d5e59d">{error.message}</Text>
       ) : loading ? (
         <Box data-id="030925-95fa0e" h="100vh">
-          <Loader data-id="030925-9d0614" center />
+          <Loader center data-id="030925-9d0614" />
         </Box>
       ) : (
         <>
@@ -294,8 +294,8 @@ function AuditsInsights() {
             }}>
             {auditsStatsCounts.map((filter) => (
               <InsightsCard
-                data-id="030925-e8bb3c"
                 count={filter.audits}
+                data-id="030925-e8bb3c"
                 key={filter.status}
                 onSelect={setSelectedAuditsStatsCount}
                 selected={selectedAuditsStatsCount === filter.status}
@@ -303,20 +303,20 @@ function AuditsInsights() {
             ))}
           </Flex>
           <Text
-            data-id="030925-c436a2"
             color={auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color}
+            data-id="030925-c436a2"
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}>
             {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
-            <Text data-id="030925-1d2255" as="span" color="insights.secondaryText">
+            <Text as="span" color="insights.secondaryText" data-id="030925-1d2255">
               {pluralize(t('audit'))}
             </Text>
           </Text>
           <InsightsChart data-id="030925-deb1aa" option={echartsOption} />
           <InsightsDetailedStats
-            data-id="030925-5443d2"
             businessUnits={businessUnits}
+            data-id="030925-5443d2"
             insightsType="audits"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

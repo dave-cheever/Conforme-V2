@@ -108,14 +108,14 @@ function QuestionSimpleForm({
 
   return (
     <>
-      <Flex data-id="030925-85b3aa" alignItems="center" mb="20px">
+      <Flex alignItems="center" data-id="030925-85b3aa" mb="20px">
         <Text data-id="030925-411407" fontSize="smm" fontWeight="bold">
           {questionHeader(questionType)}
         </Text>
       </Flex>
       <TextInput
-        data-id="030925-8f6fd5"
         control={control}
+        data-id="030925-8f6fd5"
         label={`${capitalize(t('question'))} title`}
         name="name"
         placeholder="e.g. where is the tv?"
@@ -124,14 +124,14 @@ function QuestionSimpleForm({
         }}
         variant="secondaryVariant" />
       <Textarea
-        data-id="030925-7253a2"
         control={control}
+        data-id="030925-7253a2"
         label="Description"
         name="description"
         variant="secondaryVariant" />
       <Checkbox
-        data-id="030925-c87389"
         control={control}
+        data-id="030925-c87389"
         disabled={notApplicable}
         label="Answer is required"
         name="required"
@@ -150,8 +150,8 @@ function QuestionSimpleForm({
             })}
           </HStack>
           <Checkbox
-            data-id="030925-cd92da"
             control={control}
+            data-id="030925-cd92da"
             label="NA answer permitted"
             name="notApplicable"
             variant="secondaryVariant" />
@@ -159,9 +159,9 @@ function QuestionSimpleForm({
       )}
       <Flex data-id="030925-7e18ef" justifyContent="space-between" mt="15px">
         <Button
-          data-id="030925-87fc4e"
           bg="questionsSimple.form.button.secondary.bg"
           color="questionsSimple.form.button.secondary.font"
+          data-id="030925-87fc4e"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -175,9 +175,9 @@ function QuestionSimpleForm({
           Cancel
         </Button>
         <Button
-          data-id="030925-a96fdf"
           bg="questionsSimple.form.button.primary.bg"
           color="questionsSimple.form.button.primary.font"
+          data-id="030925-a96fdf"
           disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
@@ -189,8 +189,8 @@ function QuestionSimpleForm({
           }}
           p="17px"
           rightIcon={<Icon
-            data-id="030925-34a9a0"
             as={OpenMenuArrow}
+            data-id="030925-34a9a0"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

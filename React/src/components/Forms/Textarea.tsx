@@ -36,8 +36,8 @@ function Textarea({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="030925-a90ffc"
         control={control}
+        data-id="030925-a90ffc"
         name={name}
         render={({ field, fieldState }) => {
           const { value } = field;
@@ -46,15 +46,15 @@ function Textarea({
             <Box data-id="030925-52932c" id={name} mt="none" w="full">
               {label && (
                 <Flex
-                  data-id="030925-20970c"
                   align="center"
+                  data-id="030925-20970c"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
-                    data-id="030925-4564db"
                     color={error ? 'textMultilineInput.labelFont.error' : 'textMultilineInput.labelFont.normal'}
+                    data-id="030925-4564db"
                     fontSize={11}
                     fontWeight="bold"
                     left="none"
@@ -82,7 +82,6 @@ function Textarea({
               {!readMode && (
                 <>
                   <ChakraTextarea
-                    data-id="030925-6f0184"
                     _active={{
                       bg: disabled ? 'textMultilineInput.disabled.bg' : 'textMultilineInput.activeBg',
                     }}
@@ -106,6 +105,7 @@ function Textarea({
                     borderWidth="1px"
                     color="textMultilineInput.font"
                     cursor="pointer"
+                    data-id="030925-6f0184"
                     fontSize="smm"
                     isDisabled={disabled}
                     maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
@@ -115,8 +115,8 @@ function Textarea({
                     {...field} />
                   {error && (
                     <Box
-                      data-id="030925-ae890f"
                       color="textMultilineInput.error"
+                      data-id="030925-ae890f"
                       fontSize={14}
                       ml={1}>
                       {error.message}

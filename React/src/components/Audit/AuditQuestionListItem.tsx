@@ -11,10 +11,10 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
   const numberOfActions = (question?.answer?.actions || []).length;
   return (
     <HStack
-        data-id="030925-62acfc"
         bgColor="auditItem.listItem.bg"
         border="1px solid #CBD5E0"
         cursor="pointer"
+        data-id="030925-62acfc"
         h="90px"
         key={question._id}
         onClick={() => setSelectedQuestion(question)}
@@ -28,8 +28,8 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
               fill="transparent"
               stroke="auditItem.listItem.action.icon" />
             <Text
-              data-id="030925-0ccc89"
               color="auditItem.listItem.action.color"
+              data-id="030925-0ccc89"
               fontSize="ssm">
               {capitalize(question.answer?.businessUnit?.name)}
             </Text>
@@ -41,8 +41,8 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
         <HStack data-id="030925-705d9b" spacing={6}>
           {question.questionsCategory?.useStatus && (
             <Text
-              data-id="030925-331859"
               color="auditItem.listItem.action.color"
+              data-id="030925-331859"
               fontSize="ssm">
               {capitalize(question.answer?.status)}
             </Text>
@@ -53,8 +53,8 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
               fill="transparent"
               stroke="auditItem.listItem.action.icon" />
             <Text
-              data-id="030925-7894f5"
               color="auditItem.listItem.action.color"
+              data-id="030925-7894f5"
               fontSize="ssm">
               {numberOfActions} {pluralize('Action', numberOfActions)}
             </Text>
@@ -70,11 +70,11 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
         )}
         {(question.answer?.attachments || []).length - 1 > 1 && (
           <Flex
-            data-id="030925-5c4641"
             align="center"
             border="1px solid"
             borderColor="documentUploaded.border"
             cursor="default"
+            data-id="030925-5c4641"
             h="55px"
             justify="center"
             rounded="3px"

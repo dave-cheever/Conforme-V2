@@ -24,17 +24,17 @@ function ActionsList({
 }) {
   return (
     <Box
-      data-id="030925-636888"
       bg="auditsList.bg"
       border="1px solid"
       borderColor="auditsList.headerBorderColor"
       borderRadius="10px"
+      data-id="030925-636888"
       h="full"
       ml="10px"
       overflow="hidden"
       w="full"
     >
-      <Box data-id="030925-7e7535" bg="auditsList.bg" h="fit-content" minH="full" pb={7} w="full">
+      <Box bg="auditsList.bg" data-id="030925-7e7535" h="fit-content" minH="full" pb={7} w="full">
         <AdminTableHeader data-id="030925-68d0c8">
           <AdminTableHeaderElement
             data-id="030925-7421c5"
@@ -138,7 +138,7 @@ function ActionsList({
         </AdminTableHeader>
         <Flex data-id="030925-2a4751" flexDir="column" h="calc(100vh - 310px)" overflowY="auto" w="full">
           {actions?.map((action, idx) => (
-            <ActionsListItem data-id="030925-e45091" action={action} editAction={editAction} index={idx} key={action._id} />
+            <ActionsListItem action={action} data-id="030925-e45091" editAction={editAction} index={idx} key={action._id} />
           ))}
         </Flex>
       </Box>

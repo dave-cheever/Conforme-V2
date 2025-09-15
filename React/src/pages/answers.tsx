@@ -294,8 +294,8 @@ function Answers() {
   return (
     <>
       <AnswerDeleteModal
-        data-id="030925-4cc64e"
         answer={selectedAnswer ?? ({} as IAnswer)}
+        data-id="030925-4cc64e"
         isOpen={isDeleteQuestionModalOpen}
         onClose={handleDeleteQuestionModalClose}
         refetchAnswers={refetch} />
@@ -306,15 +306,15 @@ function Answers() {
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
         variant="adminModal">
         <AnswerModal
-          data-id="030925-f6ff02"
           answer={selectedAnswer}
           closeModal={closeModal}
+          data-id="030925-f6ff02"
           handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
           refetch={refetch} />
       </Modal>
       <Header
-        data-id="030925-854b98"
         breadcrumbs={[capitalize(pluralize(t('question')))]}
+        data-id="030925-854b98"
         mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         <ChangeViewButton
           data-id="030925-3eddd7"
@@ -323,13 +323,12 @@ function Answers() {
           views={['grid', 'list']} />
         {device !== 'mobile' && (
           <CSVLinkComponent
-            data-id="030925-58e43a"
             data={csvData}
+            data-id="030925-58e43a"
             filename="answers.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
-              data-id="030925-2668d5"
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
                 color: 'reasponseHeader.buttonLightColorHover',
@@ -338,6 +337,7 @@ function Answers() {
               }}
               bg="white"
               borderRadius="10px"
+              data-id="030925-2668d5"
               display="none"
               ml="15px"
               rightIcon={<ExportIcon data-id="030925-d8ee1b" height="15px" width="15px" />}>

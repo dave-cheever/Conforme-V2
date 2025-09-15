@@ -45,11 +45,11 @@ function NavigationLeftItemTablet({
   
   return (
     <Box
-        data-id="030925-97c4ad"
         _hover={{
           cursor: 'pointer',
         }}
         alignItems="center"
+        data-id="030925-97c4ad"
         display="flex"
         fontSize="md"
         fontWeight="normal"
@@ -58,9 +58,8 @@ function NavigationLeftItemTablet({
         mt="5px"
         pos="relative"
         w="auto">
-      <Flex data-id="030925-2de382" align="center" h="100%">
+      <Flex align="center" data-id="030925-2de382" h="100%">
         <Flex
-          data-id="030925-ab5738"
           align="center"
           bg={
             menuItem.subSections
@@ -71,6 +70,7 @@ function NavigationLeftItemTablet({
                 ? 'navigationLeftItemTablet.selectedLabelBg'
                 : 'navigationLeftItemTablet.unselectedLabelBg'
           }
+          data-id="030925-ab5738"
           h="30px"
           justifyContent="center"
           ml="0px"
@@ -90,8 +90,8 @@ function NavigationLeftItemTablet({
           rounded="8px"
           w="30px">
           <Icon
-            data-id="030925-a80fe7"
             as={icon}
+            data-id="030925-a80fe7"
             fill="#ffffff"
             h="15px"
             stroke="#ffffff"
@@ -100,9 +100,9 @@ function NavigationLeftItemTablet({
       </Flex>
       {filtersOpen && menuItem.url === '/' && (
         <Box
-          data-id="030925-0d7dbd"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="030925-0d7dbd"
           ml="80px"
           pos="absolute"
           py="15px"
@@ -129,9 +129,9 @@ function NavigationLeftItemTablet({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
-          data-id="030925-70bb5b"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="030925-70bb5b"
           maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
           ml="18rem"
           overflowY="auto"

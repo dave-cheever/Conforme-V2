@@ -17,7 +17,6 @@ function CollectionFilter() {
       <Stack data-id="030925-5250b1" direction="column" ml="4">
         {Object.entries(collections).map(([key, label]) => (
           <Checkbox
-            data-id="030925-6073c9"
             css={{
               '.chakra-checkbox__control': {
                 borderRadius: '50%',
@@ -33,6 +32,7 @@ function CollectionFilter() {
                 },
               },
             }}
+            data-id="030925-6073c9"
             key={key}
             value={key}>
             <Text data-id="030925-b6a167">{label as string}</Text>

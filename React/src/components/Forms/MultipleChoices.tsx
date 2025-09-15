@@ -23,15 +23,15 @@ function MultipleChoices({
     <Box data-id="030925-222ba9" id={name} w="full">
       {label && (
         <Flex
-          data-id="030925-68197f"
           align="center"
+          data-id="030925-68197f"
           justify="space-between"
           mb="none"
           pb={2}
           pt={2}>
           <Box
-            data-id="030925-9853d5"
             color="multipleChoices.labelFont.normal"
+            data-id="030925-9853d5"
             fontSize="ssm"
             fontWeight="bold"
             left="none"
@@ -58,8 +58,8 @@ function MultipleChoices({
       )}
       {defaultvalue?.map(({ label }: { label: string; isCorrect: boolean }, index) => (
         <Controller
-          data-id="030925-b8ac0c"
           control={control}
+          data-id="030925-b8ac0c"
           key={index}
           name={`${name}.${index}.isCorrect`}
           render={({ field }) => {
@@ -67,7 +67,6 @@ function MultipleChoices({
             return (
               <Stack data-id="030925-50e257" direction="column">
                 <Checkbox
-                  data-id="030925-91d61b"
                   borderColor="multipleChoices.icon.border"
                   colorScheme="form.checkbox.icon"
                   css={{
@@ -81,13 +80,14 @@ function MultipleChoices({
                       opacity: `${readMode ? 1 : disabled ? 0.4 : 1} !important`,
                     },
                   }}
+                  data-id="030925-91d61b"
                   isChecked={value}
                   isDisabled={disabled}
                   onChange={() => onChange(!value)}
                   py={1}>
                   <Text
-                    data-id="030925-9ed06f"
                     color={readMode ? 'multipleChoices.optionFont.readMode' : 'multipleChoices.optionFont.normal'}
+                    data-id="030925-9ed06f"
                     fontSize="smm">
                     {label}{' '}
                   </Text>

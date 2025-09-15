@@ -3,9 +3,9 @@ import { Flex } from '@chakra-ui/react';
 function InsightCount({ count, onClick }) {
   return (
     <Flex
-      data-id="030925-61da36"
       alignItems="center"
       cursor="pointer"
+      data-id="030925-61da36"
       h="calc(100% - 1px)"
       justifyContent="center"
       ml=".75rem"

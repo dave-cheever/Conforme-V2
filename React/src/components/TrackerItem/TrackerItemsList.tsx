@@ -35,12 +35,12 @@ function TrackerListItems({
 }) {
 
   return (
-    <Box data-id="030925-a76a68" bg="#ffffff" h="full" overflow="none" p={[3, 6]} w="full">
+    <Box bg="#ffffff" data-id="030925-a76a68" h="full" overflow="none" p={[3, 6]} w="full">
       <Box
-        data-id="030925-629d91"
         bg="trackerList.bg"
         border="1px solid #CBD5E0"
         borderRadius="10px"
+        data-id="030925-629d91"
         h="fit-content"
         mb={7}
         minH="full"
@@ -152,7 +152,7 @@ function TrackerListItems({
             {responses?.map((response, index) => (
               <TrackerListItem data-id="030925-268e6f" index={index} key={response._id} response={response} />
             ))}
-            {loading && <Loader data-id="030925-7c042c" center h="60px" key="infinite-loader" />}
+            {loading && <Loader center data-id="030925-7c042c" h="60px" key="infinite-loader" />}
           </InfiniteScrollComponent>
         </Flex>
       </Box>

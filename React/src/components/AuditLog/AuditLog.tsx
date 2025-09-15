@@ -14,7 +14,7 @@ function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
   if (loading) {
     return (
       <Flex data-id="030925-74701e" h="calc(100vh - 150px)" w="full">
-        <Loader data-id="030925-8d6472" center />
+        <Loader center data-id="030925-8d6472" />
       </Flex>
     );
   }
@@ -22,18 +22,18 @@ function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
   return (
     <>
       <Flex
-        data-id="030925-271f5c"
         bg="auditLog.bg"
+        data-id="030925-271f5c"
         flexDirection="column"
         position="relative"
         pt={["0px", "20px"]}
         rounded="md"
         w="100%">
         {auditLogs.map((auditLog, index) => (
-          <AuditLogDay data-id="030925-682622" auditLog={auditLog} key={index} />
+          <AuditLogDay auditLog={auditLog} data-id="030925-682622" key={index} />
         ))}
       </Flex>
-      {isLoadingMore && <Loader data-id="030925-a22616" center size="md" />}
+      {isLoadingMore && <Loader center data-id="030925-a22616" size="md" />}
     </>
   );
 }

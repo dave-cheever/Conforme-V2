@@ -19,9 +19,9 @@ function ResponseLeftNavigationTablet() {
 
   return (
     <Flex
-        data-id="030925-fe18a0"
         bg="responseLeftNavigation.bg"
         color="responseLeftNavigation.color"
+        data-id="030925-fe18a0"
         direction="column"
         display={['none', 'flex', 'none']}
         flexShrink={0}
@@ -33,26 +33,26 @@ function ResponseLeftNavigationTablet() {
         w="80px">
       <Flex data-id="030925-d389f7" flexDirection="column">
         <Box
-          data-id="030925-2a1f39"
           alignItems="center"
           cursor="pointer"
+          data-id="030925-2a1f39"
           display="flex"
           h="80px"
           justifyContent="center"
           onClick={() => navigateTo('/')}>
           <Text
-            data-id="030925-605a83"
             color="navigationLeft.organizationNameFontColor"
+            data-id="030925-605a83"
             fontSize="16px"
             fontWeight="bold">
             {getInitials(module?.name)}
           </Text>
         </Box>
         <Flex
-          data-id="030925-7c20ce"
           align="center"
           color="responseLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="030925-7c20ce"
           fontSize="14px"
           h="30px"
           mb="20px"
@@ -74,7 +74,7 @@ function ResponseLeftNavigationTablet() {
         <ResponseDetail data-id="030925-0dd9d6" response={response} />
       </Flex>
       <Flex data-id="030925-bc2f00" display={['none', 'flex']}>
-        <Icon data-id="030925-61b20b" as={ConformeSmall} h="30px" mb="20px" w="27px" />
+        <Icon as={ConformeSmall} data-id="030925-61b20b" h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

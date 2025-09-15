@@ -19,17 +19,17 @@ function UserMenu() {
 
   return (
     <Menu data-id="030925-6f3b32" isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
-      <MenuButton data-id="030925-9f3312" color="white">
-      <Flex data-id="030925-dc727e" align="center" justify="space-between" w="100%">
+      <MenuButton color="white" data-id="030925-9f3312">
+      <Flex align="center" data-id="030925-dc727e" justify="space-between" w="100%">
   {/* Avatar and text */}
-  <Flex data-id="030925-a1a5c5" align="center" m={3}>
+  <Flex align="center" data-id="030925-a1a5c5" m={3}>
     <Avatar
-      data-id="030925-59144b"
       bg="userMenu.avatar.bg"
       borderColor={isOpen ? 'userMenu.avatar.borderColorOpened' : 'userMenu.avatar.borderColor'}
       borderRadius={"8px"}
       borderWidth="5px"
       color="userMenu.avatar.color"
+      data-id="030925-59144b"
       h="40px"
       mr={3}
       name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -39,16 +39,16 @@ function UserMenu() {
     />
      <Box data-id="030925-9f3422" minW="0" textAlign={"start"}>
       <Text
-        data-id="030925-f0951f"
         color={"black"}
+        data-id="030925-f0951f"
         fontSize={["12px", "14px"]}
         fontWeight="600"
         isTruncated>
         {user?.displayName}
       </Text>
       <Text
-        data-id="030925-616b31"
         color="gray.500"
+        data-id="030925-616b31"
         fontSize="13px"
         isTruncated
         lineHeight={.8}>
@@ -56,10 +56,10 @@ function UserMenu() {
       </Text>
     </Box>
       <Icon
-        data-id="030925-2aeb6c"
         as={ChevronDownIcon}
         boxSize={5}
         color="gray.500"
+        data-id="030925-2aeb6c"
         m={4} />
 
   </Flex>
@@ -67,10 +67,10 @@ function UserMenu() {
 </Flex>
       </MenuButton>
       <MenuList
-        data-id="030925-2f4e49"
         border="0px"
         borderRadius="10px"
         boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+        data-id="030925-2f4e49"
         minW="175px"
         mr={3}
         p="15px 20px 15px 20px"
@@ -85,10 +85,10 @@ function UserMenu() {
           {user?.displayName}
         </Text>
         <Text
-          data-id="030925-962ff6"
           borderBottomColor="userMenu.borderColor"
           borderBottomWidth="1px"
           color="userMenu.text"
+          data-id="030925-962ff6"
           fontSize="sm"
           mb="10px"
           noOfLines={1}
@@ -101,10 +101,10 @@ function UserMenu() {
           .filter((userMenu) => !userMenu.permission || isPermitted({ user, action: userMenu.permission }))
           .map(({ label, url }) => (
             <Text
-              data-id="030925-5b7555"
               _hover={{ color: 'userMenu.hoverColor' }}
               color="userMenu.text"
               cursor="pointer"
+              data-id="030925-5b7555"
               fontSize="smm"
               key={label}
               my="10px"
@@ -114,12 +114,12 @@ function UserMenu() {
           ))}
 
         <Text
-          data-id="030925-800edc"
           _hover={{ color: 'userMenu.hoverColor' }}
           borderTopColor="userMenu.borderColor"
           borderTopWidth="1px"
           color="userMenu.text"
           cursor="pointer"
+          data-id="030925-800edc"
           fontSize="smm"
           mt="10px"
           my="10px"

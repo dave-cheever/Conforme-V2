@@ -23,14 +23,14 @@ export default function transformer(file, api) {
   return j(file.source)
     .find(j.JSXIdentifier)
     .forEach((path) => {
-      if (path.parentPath.node.attributes) {
+      if (path.parentPath.node.attributes && !path.parentPath.node.attributes.map(attr => attr.name?.name).includes('data-id')) {
         // Remove existing data-id if it exists
-        const filteredAttributes = path.parentPath.node.attributes.filter((attr) => attr.name?.name !== 'data-id');
+        // const filteredAttributes = path.parentPath.node.attributes.filter((attr) => attr.name?.name !== 'data-id');
 
         // Add new data-id with date format
         path.parentPath.node.attributes = [
           j.jsxAttribute(j.jsxIdentifier('data-id'), j.stringLiteral(generateDateBasedId())),
-          ...filteredAttributes,
+          ...path.parentPath.node.attributes,
         ];
       }
     })

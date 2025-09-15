@@ -42,15 +42,15 @@ function ActionForm({ handleSave }) {
         }}
         setSelectedAction={setSelectedAction}
       />
-      <Stack data-id="030925-98586f" bg="auditActionForm.bg" p={4} rounded="10px">
+      <Stack bg="auditActionForm.bg" data-id="030925-98586f" p={4} rounded="10px">
         <Text data-id="030925-83a6de" fontSize="smm" fontWeight="semibold">
           Action details
         </Text>
-        <Grid data-id="030925-2da311" columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
+        <Grid columnGap={4} data-id="030925-2da311" rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
           <GridItem data-id="030925-b46203">
             <TextInput
-              data-id="030925-ba671d"
               control={control}
+              data-id="030925-ba671d"
               label="Title"
               name="title"
               required
@@ -60,15 +60,15 @@ function ActionForm({ handleSave }) {
             />
           </GridItem>
           <GridItem data-id="030925-1d9c97">
-            <PeoplePicker data-id="030925-3e794d" control={control} label="Assign to" name="assigneeId" />
+            <PeoplePicker control={control} data-id="030925-3e794d" label="Assign to" name="assigneeId" />
           </GridItem>
           <GridItem data-id="030925-6c6339">
-            <Datepicker data-id="030925-0047ad" control={control} label="Due date" name="dueDate" />
+            <Datepicker control={control} data-id="030925-0047ad" label="Due date" name="dueDate" />
           </GridItem>
           <GridItem data-id="030925-987cb1">
             <Dropdown
-              data-id="030925-c8848d"
               control={control}
+              data-id="030925-c8848d"
               label="Priority"
               name="priority"
               options={priorities}
@@ -78,8 +78,8 @@ function ActionForm({ handleSave }) {
           </GridItem>
           <GridItem data-id="030925-bbb3da">
             <Dropdown
-              data-id="030925-59fe7c"
               control={control}
+              data-id="030925-59fe7c"
               label="Status"
               name="status"
               options={[
@@ -91,12 +91,12 @@ function ActionForm({ handleSave }) {
             />
           </GridItem>
         </Grid>
-        <TextInputMultiline data-id="030925-1c1ce5" control={control} label="Description" name="description" />
+        <TextInputMultiline control={control} data-id="030925-1c1ce5" label="Description" name="description" />
         <Spacer data-id="030925-8f8650" />
         {selectedAction?.metatags?.addedAt && selectedAction?.assignor && (
-          <Grid data-id="030925-6dc40c" columnGap={4} templateColumns="repeat(2, 1fr)">
+          <Grid columnGap={4} data-id="030925-6dc40c" templateColumns="repeat(2, 1fr)">
             <GridItem data-id="030925-bb758a">
-              <Text data-id="030925-b6b41d" color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold" mb={1}>
+              <Text color="auditActionForm.labelFont.normal" data-id="030925-b6b41d" fontSize="11px" fontWeight="bold" mb={1}>
                 Date added
               </Text>
               <Text data-id="030925-8dc9c3" fontSize="13px">
@@ -104,11 +104,11 @@ function ActionForm({ handleSave }) {
               </Text>
             </GridItem>
             <GridItem data-id="030925-913992">
-              <Text data-id="030925-7d7e49" color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold" mb={1}>
+              <Text color="auditActionForm.labelFont.normal" data-id="030925-7d7e49" fontSize="11px" fontWeight="bold" mb={1}>
                 Assigned by
               </Text>
               {selectedAction?.assignor && (
-                <Flex data-id="030925-38b65b" align="center" direction="row">
+                <Flex align="center" data-id="030925-38b65b" direction="row">
                   <Avatar
                     data-id="030925-3026c7"
                     name={selectedAction?.assignor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -135,9 +135,9 @@ function ActionForm({ handleSave }) {
         )}
         <HStack data-id="030925-d69784" justify="flex-end" pb={3} pt={4} w="full">
           <Button
-            data-id="030925-6998b3"
             bgColor="auditActionForm.buttons.cancel.bg"
             color="auditActionForm.buttons.cancel.color"
+            data-id="030925-6998b3"
             fontSize="ssm"
             fontWeight="semibold"
             h="28px"
@@ -147,9 +147,9 @@ function ActionForm({ handleSave }) {
             Cancel
           </Button>
           <Button
-            data-id="030925-b926f4"
             bgColor="auditActionForm.buttons.save.bg"
             color="auditActionForm.buttons.save.color"
+            data-id="030925-b926f4"
             disabled={!isValid || !values.title || values.title.trim() === ''}
             fontSize="ssm"
             fontWeight="semibold"

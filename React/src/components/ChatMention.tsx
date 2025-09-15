@@ -24,16 +24,16 @@ function ChatMention({ tag }) {
 
   return (
     <Tooltip
-        data-id="030925-d5c138"
         bg="chatMention.tooltip.bg"
         color="chatMention.tooltip.color"
+        data-id="030925-d5c138"
         hasArrow
         label={userName}
         placement="top">
       <Text
-        data-id="030925-bccbd7"
         color="chatMention.mentionColor"
         cursor="pointer"
+        data-id="030925-bccbd7"
         display="inline">
         {displayTag}
       </Text>

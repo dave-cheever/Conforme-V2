@@ -43,10 +43,10 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
           <Box data-id="030925-fde257" py="5px">
             <InputGroup data-id="030925-c96948">
               <Input
-                data-id="030925-2813bf"
                 borderColor="auditFilterPanel.searchBoxBordercolor"
                 borderWidth="1px"
                 color="statusSelector.search.label"
+                data-id="030925-2813bf"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
@@ -55,8 +55,8 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
                 value={searchText}
                 w="full" />
               <SearchIcon
-                data-id="030925-fdad76"
                 bottom="13px"
+                data-id="030925-fdad76"
                 h="15px"
                 left="14px"
                 position="absolute"
@@ -66,8 +66,8 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
           </Box>
           {note && (
             <Text
-              data-id="030925-f6037a"
               color="statusSelector.note"
+              data-id="030925-f6037a"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"

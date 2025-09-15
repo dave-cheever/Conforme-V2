@@ -49,13 +49,13 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
 
   return (
     <Flex
-      data-id="030925-70873c"
       _hover={{ bg: '#F5F7FA' }}
       align="center"
       bg={rowBg}
       borderBottom="1px solid"
       borderColor="historyPage.border"
       cursor="pointer"
+      data-id="030925-70873c"
       fontWeight={active ? '700' : '400'}
       minH="60px"
       onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
@@ -64,28 +64,28 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
       w="full"
     >
       {/* Item name */}
-      <Flex data-id="030925-33163d" align="center" minW={0} w="30%">
+      <Flex align="center" data-id="030925-33163d" minW={0} w="30%">
         <Text
-          data-id="030925-d3e56a"
           color="historyPage.font"
+          data-id="030925-d3e56a"
           fontSize={['12px', '14px']}
           isTruncated>
           {response.trackerItem.name}
         </Text>
       </Flex>
       {/* Renewed date */}
-      <Flex data-id="030925-dcbbcf" align="center" w="20%">
+      <Flex align="center" data-id="030925-dcbbcf" w="20%">
         <Text
-          data-id="030925-c49036"
           color="historyPage.font"
+          data-id="030925-c49036"
           fontSize={['12px', '14px']}>
           {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
         </Text>
       </Flex>
       {/* Responsible */}
-      <Flex data-id="030925-783df4" align="center" minW={0} w="25%">
+      <Flex align="center" data-id="030925-783df4" minW={0} w="25%">
         {responsibleUser ? (
-          <Flex data-id="030925-658a1f" align="center" minW={0} w="full">
+          <Flex align="center" data-id="030925-658a1f" minW={0} w="full">
             <Avatar
               data-id="030925-e56f29"
               name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -93,8 +93,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
               src={responsibleUser.imgUrl} />
             <Tooltip data-id="030925-aeb2fd" label={responsibleUser.displayName}>
               <Text
-                data-id="030925-8e5a61"
                 color="historyPage.font"
+                data-id="030925-8e5a61"
                 fontSize={['11px', '13px']}
                 isTruncated
                 maxW="calc(100% - 32px)"
@@ -106,8 +106,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
           </Flex>
         ) : (
           <Text
-            data-id="030925-2e76b1"
             color="historyPage.font"
+            data-id="030925-2e76b1"
             fontSize={['11px', '13px']}
             fontStyle="italic">
             Unassigned
@@ -115,14 +115,14 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
         )}
       </Flex>
       {/* Last updated by */}
-      <Flex data-id="030925-307119" align="center" minW={0} w="25%">
+      <Flex align="center" data-id="030925-307119" minW={0} w="25%">
         <Skeleton
           data-id="030925-2762ce"
           isLoaded={!lastUpdatedUserLoading}
           rounded="full"
           w="full">
           {lastUpdatedUser ? (
-            <Flex data-id="030925-47717f" align="center" minW={0} w="full">
+            <Flex align="center" data-id="030925-47717f" minW={0} w="full">
               <Avatar
                 data-id="030925-b3c337"
                 name={lastUpdatedUser.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -130,8 +130,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
                 src={lastUpdatedUser.imgUrl} />
               <Tooltip data-id="030925-2d366a" label={lastUpdatedUser.displayName}>
                 <Text
-                  data-id="030925-8efecb"
                   color="historyPage.font"
+                  data-id="030925-8efecb"
                   fontSize={['11px', '13px']}
                   isTruncated
                   maxW="calc(100% - 32px)"
@@ -143,8 +143,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
             </Flex>
           ) : (
             <Text
-              data-id="030925-22b074"
               color="historyPage.font"
+              data-id="030925-22b074"
               fontSize={['11px', '13px']}
               fontStyle="italic">
               Unassigned
@@ -161,20 +161,20 @@ function Team() {
 
   if (snapshotsLoading) {
     return (
-      <Flex data-id="030925-e2191c" bg="historyPage.bg" h="full" rounded="20px" w="full">
-        <Loader data-id="030925-2d7a65" center />
+      <Flex bg="historyPage.bg" data-id="030925-e2191c" h="full" rounded="20px" w="full">
+        <Loader center data-id="030925-2d7a65" />
       </Flex>
     );
   }
 
   return (
-    <Box data-id="030925-c036df" bg="historyPage.bg" w="full">
+    <Box bg="historyPage.bg" data-id="030925-c036df" w="full">
       <Box
-        data-id="030925-50b669"
         bg="white"
         border="1px solid"
         borderColor="historyPage.border"
         borderRadius="8px"
+        data-id="030925-50b669"
         overflow="hidden">
         <AdminTableHeader data-id="030925-14d700">
           <AdminTableHeaderElement data-id="030925-c3b66f" label="Item name" w="30%" />

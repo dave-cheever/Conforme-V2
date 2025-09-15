@@ -28,8 +28,8 @@ function MultipleParticipantsSelector({
   return (
     <Stack data-id="030925-38f0be" spacing={2}>
       <ParticipantsSelector
-        data-id="030925-9875b1"
         canDelete
+        data-id="030925-9875b1"
         defaultSelectedParticipantsIds={selectedParticipants.map(({ userId, _id }) => userId || _id)}
         isUserAllowedToChange={isUserAllowedToChange}
         label={label}
@@ -42,7 +42,7 @@ function MultipleParticipantsSelector({
           onChange(participants);
         }}
       >
-        <Flex data-id="030925-6e693f" align="center" alignItems="self-end" gap="3" mt="0!important" wrap="wrap">
+        <Flex align="center" alignItems="self-end" data-id="030925-6e693f" gap="3" mt="0!important" wrap="wrap">
           {selectedParticipants.map((participant) => (
             <ParticipantAvatar data-id="030925-ddaaf5" key={participant._id} mr={6} mt={6} user={participant} />
           ))}

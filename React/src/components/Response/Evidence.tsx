@@ -94,10 +94,10 @@ function EvidenceExpected({ evidence }) {
 
   return (
     <Flex data-id="030925-ab494d" direction="column" maxW="342px" w="full">
-      <Flex data-id="030925-ce46bf" align="center" mb={2} mt={3}>
+      <Flex align="center" data-id="030925-ce46bf" mb={2} mt={3}>
         <Box
-          data-id="030925-6e214a"
           color="evidence.fontColor"
+          data-id="030925-6e214a"
            fontSize={["14px", "11px"]}
           fontWeight="700"
           lineHeight="16px"
@@ -116,11 +116,11 @@ function EvidenceExpected({ evidence }) {
       {evidence.uploaded?.id ? (
         <Flex data-id="030925-212bc2" maxW="380px">
           <DocumentUploaded
-            data-id="030925-680e3d"
             callback={async () => {
               await removeEvidence();
               refetch();
             }}
+            data-id="030925-680e3d"
             deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name
               }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
             document={evidence.uploaded}
@@ -143,8 +143,8 @@ function EvidenceExpected({ evidence }) {
         <DocumentUploading data-id="030925-e17359" documentName={evidence.name} />
       ) : (
         <Can
-          data-id="030925-252399"
           action="responses.edit"
+          data-id="030925-252399"
           data={{ response }}
           // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
@@ -198,8 +198,8 @@ function EvidenceExpected({ evidence }) {
       )}
       {status === 'rejected' && (
         <Flex
-          data-id="030925-b2ca1f"
           color="red.500"
+          data-id="030925-b2ca1f"
           fontSize="12px"
           fontWeight="bold"
           mt={2}>

@@ -33,14 +33,14 @@ function AdditionalDetailsForm() {
         label={`Please define the expected evidence and action for this ${t('tracker item')}.`} />
       <Stack data-id="030925-294937" overflow="auto" pb={3} spacing={2} w="full">
         <Box
-          data-id="030925-8bfed5"
           bg="additionalDetails.evidence.bg"
           borderRadius="4px"
+          data-id="030925-8bfed5"
           w="full">
           {trackerItem.evidenceItems?.map((item, index) => (
             <Stack
-              data-id="030925-aa5134"
               align="center"
+              data-id="030925-aa5134"
               direction="row"
               key={`item-${index}`}
               mb={2}
@@ -48,17 +48,16 @@ function AdditionalDetailsForm() {
               spacing={4}>
               <Box data-id="030925-c26ec7" flexGrow={1}>
                 <Box
-                  data-id="030925-e6dedf"
                   color="additionalDetails.evidence.label"
+                  data-id="030925-e6dedf"
                   fontSize={11}
                   fontWeight="bold"
                   mb="5px"
                   zIndex={2}>
                   Evidence {index + 1}
                 </Box>
-                <Flex data-id="030925-25c620" alignItems="center">
+                <Flex alignItems="center" data-id="030925-25c620">
                   <Input
-                    data-id="030925-29aba5"
                     _focus={{
                       color: 'additionalDetails.evidence.input.font.focus',
                     }}
@@ -66,6 +65,7 @@ function AdditionalDetailsForm() {
                     borderColor="additionalDetails.evidence.input.border"
                     borderWidth="1px"
                     color="additionalDetails.evidence.input.font.normal"
+                    data-id="030925-29aba5"
                     fontSize="smm"
                     h="42px"
                     mb={0}
@@ -74,9 +74,9 @@ function AdditionalDetailsForm() {
                     placeholder="Type in the evidence title"
                     value={item} />
                   <CloseIcon
-                    data-id="030925-7195b9"
                     color="additionalDetails.evidence.remove"
                     cursor="pointer"
+                    data-id="030925-7195b9"
                     ml="25px"
                     onClick={() => removeEvidenceItem(index)} />
                 </Flex>
@@ -85,9 +85,9 @@ function AdditionalDetailsForm() {
           ))}
           {(trackerItem.evidenceItems || []).length < 5 && (
             <Button
-              data-id="030925-a9c26d"
               bgColor="additionalDetails.evidence.add.bg"
               color="additionalDetails.evidence.add.font"
+              data-id="030925-a9c26d"
               fontSize="11px"
               fontWeight="400"
               h="28px"
@@ -99,9 +99,8 @@ function AdditionalDetailsForm() {
               {trackerItem.evidenceItems?.length === 0 ? 'Require evidence' : 'Add another'}
             </Button>
           )}
-          <Flex data-id="030925-591636" align="center" mt={3}>
+          <Flex align="center" data-id="030925-591636" mt={3}>
             <Switch
-              data-id="030925-9087fd"
               colorScheme="toogle.color"
               css={{
                 '.chakra-switch__thumb': {
@@ -110,11 +109,12 @@ function AdditionalDetailsForm() {
                   },
                 },
               }}
+              data-id="030925-9087fd"
               isChecked={!!trackerItem.allowAttachments}
               onChange={() => setValue('allowAttachments', !trackerItem.allowAttachments)} />
             <Flex
-              data-id="030925-929497"
               color={trackerItem.allowAttachments ? 'toogle.enableColor' : 'toogle.disableColor'}
+              data-id="030925-929497"
               fontSize="14px"
               fontWeight="400"
               ml={3}>

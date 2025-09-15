@@ -166,8 +166,8 @@ function QuestionSingleChoiceForm({
           {questionHeader(questionType)}
         </Text>
         <TextInput
-          data-id="030925-a4a71a"
           control={control}
+          data-id="030925-a4a71a"
           label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
@@ -175,13 +175,13 @@ function QuestionSingleChoiceForm({
             notEmpty: true,
           }} />
         <TextInput
-          data-id="030925-46808b"
           control={control}
+          data-id="030925-46808b"
           label="Description"
           name="description" />
         <Text
-          data-id="030925-a5b474"
           color="questionSingleChoiceForm.text.color"
+          data-id="030925-a5b474"
           fontSize="ssm"
           my="20px">
           Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
@@ -235,16 +235,16 @@ function QuestionSingleChoiceForm({
                                 </CustomRadioButton>
                               </Flex>
                               <Trashcan
-                                data-id="030925-06447e"
                                 cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
+                                data-id="030925-06447e"
                                 mr={index + 1 === fields.length ? '12px' : '28px'}
                                 onClick={() => removeChoice(index)}
                                 stroke="questionSingleChoiceForm.icon.iconBin"
                                 w="20px" />
                               {index + 1 === fields.length && (
                                 <PlusIcon
-                                  data-id="030925-0e4f9a"
                                   cursor="pointer"
+                                  data-id="030925-0e4f9a"
                                   onClick={() => {
                                     append({
                                       label: '',
@@ -268,17 +268,17 @@ function QuestionSingleChoiceForm({
       </Flex>
       {optionIsDuplicate && (
         <Text
-          data-id="030925-207bce"
           color="questionSingleChoiceForm.text.error"
+          data-id="030925-207bce"
           fontSize="sm">
           Options cannot be duplicated
         </Text>
       )}
       <Flex data-id="030925-ddde25" justifyContent="space-between" mt="51px">
         <Button
-          data-id="030925-07ac7a"
           bg="questionSingleChoiceForm.button.secondary.bg"
           color="questionSingleChoiceForm.button.secondary.font"
+          data-id="030925-07ac7a"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -292,9 +292,9 @@ function QuestionSingleChoiceForm({
           Cancel
         </Button>
         <Button
-          data-id="030925-cd27f7"
           bg="questionSingleChoiceForm.button.primary.bg"
           color="questionSingleChoiceForm.button.primary.font"
+          data-id="030925-cd27f7"
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName || optionIsDuplicate}
           fontSize="sm"
           fontWeight="medium"
@@ -310,8 +310,8 @@ function QuestionSingleChoiceForm({
           }}
           p="17px"
           rightIcon={<Icon
-            data-id="030925-0c2c4f"
             as={OpenMenuArrow}
+            data-id="030925-0c2c4f"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

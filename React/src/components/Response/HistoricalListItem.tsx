@@ -42,25 +42,25 @@ function HistoricalListItem({ response }: { response: IResponse }) {
 
   return (
     <Box
-        data-id="030925-9902bf"
         bg="historicalListItem.bg"
         borderBottomColor="historicalListItem.borderColor"
         borderBottomWidth="1px"
         cursor="pointer"
+        data-id="030925-9902bf"
         onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
         p="15px 25px"
         py={[1, 0]}
         w="full">
       <Flex
-        data-id="030925-bbe426"
         align="center"
+        data-id="030925-bbe426"
         h={['full', '73px']}
         position="relative"
         w="full">
         <Flex
-          data-id="030925-32e0cc"
           align="flex-start"
           color="historicalListItem.fontColor"
+          data-id="030925-32e0cc"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           lineHeight="18px"
@@ -71,8 +71,8 @@ function HistoricalListItem({ response }: { response: IResponse }) {
           {response.trackerItem.name}
         </Flex>
         <Flex
-          data-id="030925-548546"
           color="historicalListItem.fontColor"
+          data-id="030925-548546"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           opacity="1"
@@ -82,15 +82,15 @@ function HistoricalListItem({ response }: { response: IResponse }) {
         <Box data-id="030925-598182" pr="20px" w="25%">
           <Skeleton data-id="030925-99c59d" isLoaded={!responsibleLoading} rounded="full">
             {responsibleUser ? (
-              <Flex data-id="030925-60ad20" align="center" direction="row">
+              <Flex align="center" data-id="030925-60ad20" direction="row">
                 <Avatar
                   data-id="030925-28a591"
                   name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                   size="xs"
                   src={responsibleUser?.imgUrl} />
                 <Text
-                  data-id="030925-4a5203"
                   color="historicalListItem.fontColor"
+                  data-id="030925-4a5203"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"
@@ -113,11 +113,11 @@ function HistoricalListItem({ response }: { response: IResponse }) {
         <Box data-id="030925-3e5ad7" pr="20px" w="25%">
           <Skeleton data-id="030925-9c2a0b" isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
-              <Flex data-id="030925-40361d" align="center" direction="row">
+              <Flex align="center" data-id="030925-40361d" direction="row">
                 <Avatar data-id="030925-f8d171" name={lastUpdatedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={lastUpdatedBy?.imgUrl} />
                 <Text
-                  data-id="030925-1555c2"
                   color="historicalListItem.fontColor"
+                  data-id="030925-1555c2"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"

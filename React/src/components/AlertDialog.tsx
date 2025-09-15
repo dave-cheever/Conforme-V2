@@ -40,7 +40,7 @@ function AlertDialog({ isOpen, title, description, state, showButtons, handleYes
         <AlertDialogCloseButton data-id="030925-6f6b5e" />
         <AlertDialogBody data-id="030925-5acfc0">{description}</AlertDialogBody>
         <AlertDialogFooter data-id="030925-4daa41" justifyContent="space-between">
-          <Text data-id="030925-558e2a" color="alertDialog.state" fontSize="md">
+          <Text color="alertDialog.state" data-id="030925-558e2a" fontSize="md">
             {state}
           </Text>
           {showButtons && (
@@ -53,12 +53,12 @@ function AlertDialog({ isOpen, title, description, state, showButtons, handleYes
                 No
               </Button>
               <Button
-                data-id="030925-e25fd1"
                 _hover={{
                   bg: 'alertDialog.buttons.action.hover',
                 }}
                 bg="alertDialog.buttons.action.bg"
                 color="alertDialog.buttons.action.color"
+                data-id="030925-e25fd1"
                 isLoading={!!state}
                 ml={3}
                 onClick={handleYes}>

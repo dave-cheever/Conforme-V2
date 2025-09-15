@@ -75,9 +75,9 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
   };
 
   return (name === 'showArchived' ? (<ShowArchivedFilter data-id="030925-7cac50" />) : (<Flex
-    data-id="030925-0681ed"
     bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
     borderRadius="10px"
+    data-id="030925-0681ed"
     flexDir="column"
     justify="center"
     key={name}
@@ -85,15 +85,15 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
     p="3"
     w="full">
     <Flex
-      data-id="030925-785d0a"
       align="center"
       cursor="pointer"
+      data-id="030925-785d0a"
       justify="space-between"
       mb={isOpen ? '4' : '0'}
       w="full">
       <Text
-        data-id="030925-5dac3d"
         color="filtersPanelItem.fontColor"
+        data-id="030925-5dac3d"
         fontSize="14px"
         onClick={onToggle}
         w="full">
@@ -102,10 +102,10 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
       <Flex data-id="030925-36ae14">
         {filtersLength > 0 && (
           <Box
-            data-id="030925-2267c6"
             bg="filtersPanelItem.countBg"
             borderRadius="10px"
             color="filtersPanelItem.countColor"
+            data-id="030925-2267c6"
             fontSize="12px"
             fontWeight="400"
             mr="3"

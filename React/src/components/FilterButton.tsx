@@ -8,13 +8,13 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
 
   return (
     <Flex
-      data-id="030925-ad71d8"
       align="center"
       bg="white"
       border="1px solid #CBD5E0"
       borderRadius="10px"
       color="brand.primaryFont"
       cursor="pointer"
+      data-id="030925-ad71d8"
       flexShrink={0}
       fontSize="sm"
       h="40px"
@@ -24,11 +24,11 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       onClick={() => setShowFiltersPanel(!showFiltersPanel)}
       px={4}
     >
-      <Flex data-id="030925-571424" align="center" gap="2">
+      <Flex align="center" data-id="030925-571424" gap="2">
         <Filter data-id="030925-0c0248" h="18px" mt={"7px"} />
         <Flex
-          data-id="030925-c1ccf7"
           color="black"
+          data-id="030925-c1ccf7"
           fontSize="14px"
           fontWeight="semi_medium"
         >
@@ -37,11 +37,11 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       </Flex>
       {numberOfSelectedFilters > 0 && (
         <Flex
-          data-id="030925-4d5dd2"
           align="center"
           bg="header.selectedFilterColor"
           borderRadius="md"
           color="white"
+          data-id="030925-4d5dd2"
           fontSize="12px"
           fontWeight="400"
           h="20px"

@@ -48,8 +48,8 @@ function Settings() {
   return (
     <Box data-id="030925-35e736" h="full" w="full">
       <Header
-        data-id="030925-7396eb"
         breadcrumbs={['Admin', 'Other settings']}
+        data-id="030925-7396eb"
         mobileBreadcrumbs={['Other settings']} />
       <Flex
         data-id="030925-53ed11"
@@ -58,16 +58,16 @@ function Settings() {
         px="25px"
         w="full">
         <Flex
-          data-id="030925-6928d4"
           bg="white"
           borderRadius="20px"
+          data-id="030925-6928d4"
           flexDirection="column"
           h={['full', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
           mb={['25px', '0px']}
           p={['25px 30px', '25px 30px']}
           w={activeTab === 1 ? ['full', selectedTemplate ? 'fit-content' : 'full', 'fit-content'] : 'full'}>
           {loading ? (
-            <Loader data-id="030925-6b438b" center />
+            <Loader center data-id="030925-6b438b" />
           ) : (
             <>
               <Tabs data-id="030925-e90226" />
@@ -84,9 +84,9 @@ function Settings() {
         </Flex>
         {activeTab === 1 && selectedTemplate && (
           <Flex
-            data-id="030925-d96d0a"
             bg="white"
             borderRadius={['0px', '20px']}
+            data-id="030925-d96d0a"
             flexDirection="column"
             h={['100vh', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
             left="0px"
@@ -96,15 +96,15 @@ function Settings() {
             position={['fixed', 'relative']}
             top="0px"
             zIndex={10}>
-            <Flex data-id="030925-060b50" align="center" justify="space-between" w="full">
+            <Flex align="center" data-id="030925-060b50" justify="space-between" w="full">
               <Flex data-id="030925-422f61" fontWeight="700">Template Preview</Flex>
               {device === 'mobile' ? (
                 <CloseIcon data-id="030925-48cd92" onClick={closeTemplatePreview} />
               ) : (
                 <Button
-                  data-id="030925-a49db9"
                   borderRadius="10px"
                   colorScheme="purpleHeart"
+                  data-id="030925-a49db9"
                   fontSize="11px"
                   fontWeight="700"
                   h="28px"
@@ -115,8 +115,8 @@ function Settings() {
               )}
             </Flex>
             <Flex
-              data-id="030925-d4eedf"
               bg="emailTemplates.bg"
+              data-id="030925-d4eedf"
               h="calc(100vh - 300px)"
               mt={10}>
               <Image

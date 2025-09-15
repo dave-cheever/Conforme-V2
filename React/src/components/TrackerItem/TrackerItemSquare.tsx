@@ -34,33 +34,33 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
 
   return (
     <Box
-      data-id="030925-192395"
       _hover={{ boxShadow: "0px 4px 12px rgba(16, 24, 40, 0.08)" }}
       bg="white"
       border="1px solid #CBD5E0"
       borderRadius="12px"
       boxShadow="0px 1px 2px rgba(16, 24, 40, 0.05)"
       cursor="pointer"
+      data-id="030925-192395"
       maxW="350px"
       onClick={() => navigateTo(`/tracker-item/${response._id}`)}
       transition="box-shadow 0.2s ease"
       w="full">
       {/* Top section - Title + Avatar */}
-      <Flex data-id="030925-29fe25" align="center" gap="12px" pt="16px" px="16px">
+      <Flex align="center" data-id="030925-29fe25" gap="12px" pt="16px" px="16px">
         <Skeleton data-id="030925-b305ec" isLoaded={!responsibleLoading} rounded="full">
           <Tooltip data-id="030925-9b3017" label={responsible?.displayName}>
             <Avatar
-              data-id="030925-035336"
               borderRadius="8px"
               boxSize="36px"
+              data-id="030925-035336"
               name={responsible?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
               src={responsible?.imgUrl} />
           </Tooltip>
         </Skeleton>
             <Box data-id="030925-11176a" flex="1" minW={0}>
                 <Text
-                  data-id="030925-690dd8"
                   color="#1A202C"
+                  data-id="030925-690dd8"
                   fontSize="16px"
                   fontWeight="600"
                   isTruncated
@@ -73,8 +73,8 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
                 </Text>
 
                 <Text
-                  data-id="030925-1673c2"
                   color="#718096"
+                  data-id="030925-1673c2"
                   fontSize="14px"
                   fontWeight="500"
                   isTruncated
@@ -92,16 +92,16 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
       <Flex data-id="030925-665074" gap="24px" pb="16px" px="16px">
         <Flex data-id="030925-d8635c" direction="column" flex="1" gap="12px">
           <Box data-id="030925-ec4437">
-            <Text data-id="030925-5d7e21" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-5d7e21" fontSize="14px" fontWeight="600">
               Compliant
             </Text>
-            <Flex data-id="030925-99f5e9" align="center" mt="4px">
+            <Flex align="center" data-id="030925-99f5e9" mt="4px">
               {response.calculatedStatus === 'nonCompliant' ? (
                 <>
                   <CircledCross data-id="030925-96ee05" mr={2} stroke="trackerList.crossIcon" />
                   <Text
-                    data-id="030925-271e09"
                     color="trackerList.crossIcon"
+                    data-id="030925-271e09"
                     fontSize="14px"
                     fontWeight="700">No</Text>
                 </>
@@ -109,8 +109,8 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
                 <>
                   <CircledTickBold data-id="030925-01ee71" mr={2} stroke="trackerList.tickIcon" />
                   <Text
-                    data-id="030925-a45c62"
                     color="trackerList.tickIcon"
+                    data-id="030925-a45c62"
                     fontSize="14px"
                     fontWeight="700">Yes</Text>
                 </>
@@ -118,12 +118,12 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
             </Flex>
           </Box>
           <Box data-id="030925-e61a60">
-            <Text data-id="030925-296e86" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-296e86" fontSize="14px" fontWeight="600">
               Business unit
             </Text>
             <Text
-              data-id="030925-34be90"
               color="#4A5568"
+              data-id="030925-34be90"
               fontSize="14px"
               fontWeight="500"
               noOfLines={1}>
@@ -134,16 +134,16 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
 
         <Flex data-id="030925-e4258f" direction="column" flex="1" gap="12px">
           <Box data-id="030925-f766ab">
-            <Text data-id="030925-d6bfde" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-d6bfde" fontSize="14px" fontWeight="600">
               Evidence
             </Text>
-            <Flex data-id="030925-9b8bfd" align="center" mt="4px">
+            <Flex align="center" data-id="030925-9b8bfd" mt="4px">
               {isEvidenceUploaded(response) ? (
                 <>
                   <CircledTickBold data-id="030925-6c6598" mr={1} stroke="trackerList.tickIcon" />
                   <Text
-                    data-id="030925-4d1aed"
                     color="trackerList.tickIcon"
+                    data-id="030925-4d1aed"
                     fontSize="14px"
                     fontWeight="700">Uploaded</Text>
                 </>
@@ -151,8 +151,8 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
                 <>
                   <CircledCross data-id="030925-c3411d" mr={1} stroke="trackerList.crossIcon" />
                   <Text
-                    data-id="030925-1120d9"
                     color="trackerList.crossIcon"
+                    data-id="030925-1120d9"
                     fontSize="14px"
                     fontWeight="700">Missing</Text>
                 </>
@@ -160,10 +160,10 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
             </Flex>
           </Box>
           <Box data-id="030925-258585">
-            <Text data-id="030925-5c981f" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="030925-5c981f" fontSize="14px" fontWeight="600">
               Due date
             </Text>
-            <Text data-id="030925-b38836" color="#535862" fontSize="14px" fontWeight="500">
+            <Text color="#535862" data-id="030925-b38836" fontSize="14px" fontWeight="500">
               {response.dueDate ? format(new Date(response.dueDate), 'dd/MM/yyyy') : "No Due Date"}
             </Text>
           </Box>
@@ -171,19 +171,19 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
       </Flex>
       {/* Bottom section - Contributors */}
       <Flex
-        data-id="030925-8dde36"
         align="center"
         bg="#EDF2F7"
         borderBottomRadius="12px"
+        data-id="030925-8dde36"
         minH="36px"
         overflowX="auto"
         px="12px"
         py="8px">
         {response.contributors?.map((c, index) => (
           <Avatar
-            data-id="030925-a1c312"
             border="2px solid white"
             boxSize="20px"
+            data-id="030925-a1c312"
             key={index}
             ml={index === 0 ? '0' : '-6px'}
             name={c?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}

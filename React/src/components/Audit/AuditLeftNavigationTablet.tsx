@@ -13,9 +13,9 @@ function AuditLeftNavigationTablet() {
 
   return (
     <Flex
-        data-id="030925-5e20fb"
         bg="auditLeftNavigation.bg"
         color="auditLeftNavigation.color"
+        data-id="030925-5e20fb"
         direction="column"
         display={['none', 'flex', 'none']}
         flexShrink={0}
@@ -27,26 +27,26 @@ function AuditLeftNavigationTablet() {
         w="80px">
       <Flex data-id="030925-94a27d" flexDirection="column">
         <Box
-          data-id="030925-efd3d0"
           alignItems="center"
           cursor="pointer"
+          data-id="030925-efd3d0"
           display="flex"
           h="80px"
           justifyContent="center"
           onClick={() => navigateTo('/')}>
           <Text
-            data-id="030925-6dbfe0"
             color="auditLeftNavigation.organizationNameFontColor"
+            data-id="030925-6dbfe0"
             fontSize="16px"
             fontWeight="bold">
             {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
         <Flex
-          data-id="030925-7195cf"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="030925-7195cf"
           fontSize="14px"
           h="30px"
           mb="20px"
@@ -67,7 +67,7 @@ function AuditLeftNavigationTablet() {
         </Flex>
       </Flex>
       <Flex data-id="030925-89b19e" display={['none', 'flex']}>
-        <Icon data-id="030925-ca7fc7" as={ConformeSmall} h="30px" mb="20px" w="27px" />
+        <Icon as={ConformeSmall} data-id="030925-ca7fc7" h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

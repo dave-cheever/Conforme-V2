@@ -18,7 +18,6 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
 
   return (
     <Flex
-      data-id="030925-e5ba94"
       _hover={{ bg: '#F5F7FA' }}
       align="center"
       bg={rowBg}
@@ -26,6 +25,7 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
       borderBottomWidth="1px"
       color="auditsList.fontColor"
       cursor="pointer"
+      data-id="030925-e5ba94"
       flexShrink={0}
       fontSize="14px"
       fontWeight="500"
@@ -47,9 +47,9 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
           </Flex>
           <Flex data-id="030925-bf1cd2" w="full">
             <Avatar
-              data-id="030925-ccd51c"
               bg="userMenu.avatar.bg"
               color="userMenu.avatar.color"
+              data-id="030925-ccd51c"
               h="24px"
               mr="10px"
               name={location?.owner?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -63,12 +63,12 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
         </>
       )}
       <Spacer data-id="030925-ebb405" display={['block', 'none']} />
-      <Flex data-id="030925-bb3ef1" alignItems="center" w={['97px', 'full']}>
+      <Flex alignItems="center" data-id="030925-bb3ef1" w={['97px', 'full']}>
         {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}
         <Tooltip data-id="030925-3e73ec" fontSize="md" label="Show Items">
           <ArrowCount
-            data-id="030925-f67d8b"
             cursor="pointer"
+            data-id="030925-f67d8b"
             h="10px"
             ml="13px"
             onClick={() => {

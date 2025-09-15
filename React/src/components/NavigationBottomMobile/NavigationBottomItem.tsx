@@ -28,8 +28,8 @@ function NavigationBottomItem({
 
   return (
     <Flex
-        data-id="030925-63b763"
         alignItems="center"
+        data-id="030925-63b763"
         onClick={() => {
           if (menuItem.url === '/') {
             setFiltersOpen(!filtersOpen);
@@ -42,7 +42,6 @@ function NavigationBottomItem({
         }}
         pos="relative">
       <Flex
-        data-id="030925-aed1be"
         alignItems="center"
         bg={
           menuItem.subSections
@@ -53,13 +52,14 @@ function NavigationBottomItem({
               ? 'navigationLeftItemTablet.selectedLabelBg'
               : 'navigationLeftItemTablet.unselectedLabelBg'
         }
+        data-id="030925-aed1be"
         h="30px"
         justifyContent="center"
         rounded="8px"
         w="30px">
         <Icon
-          data-id="030925-9d77a5"
           as={icon}
+          data-id="030925-9d77a5"
           fill="#ffffff"
           h="15px"
           stroke="#ffffff"
@@ -67,12 +67,12 @@ function NavigationBottomItem({
       </Flex>
       {((menuItem.subSections && isPathActive(url)) || (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
         <>
-          <Text data-id="030925-ed416a" color="#ffffff" fontSize="16px" ml="15px">
+          <Text color="#ffffff" data-id="030925-ed416a" fontSize="16px" ml="15px">
             {label}
           </Text>
           {menuItem.subSections && <ArrowRight
-            data-id="030925-a75ad5"
             boxSize="10px"
+            data-id="030925-a75ad5"
             ml="15px"
             stroke="#fffff"
             transform="rotate(270deg)" />}
@@ -80,10 +80,10 @@ function NavigationBottomItem({
       )}
       {filtersOpen && menuItem.url === '/' && (
         <Box
-          data-id="030925-14baae"
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="030925-14baae"
           pos="absolute"
           py="15px"
           right="0"
@@ -107,10 +107,10 @@ function NavigationBottomItem({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
-          data-id="030925-63ec81"
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="030925-63ec81"
           left={menuItem.subSections ? (isPathActive(url) ? '' : '-200px') : isPathActive(url, { exact: true }) ? '' : '-200px'}
           pos="absolute"
           py="15px"

@@ -59,7 +59,7 @@ function RenewalModal() {
         <ModalCloseButton data-id="030925-32ffef" />
         <ModalBody data-id="030925-b45d56" minH="100px">
           {loading ? (
-            <Loader data-id="030925-506ac6" center />
+            <Loader center data-id="030925-506ac6" />
           ) : !renewedResponse ? (
             <Text data-id="030925-f639c6">
               You are about to start new review of <b data-id="030925-027c17">{response?.trackerItem?.name}</b> {t('tracker item')} for{' '}
@@ -76,23 +76,23 @@ function RenewalModal() {
 
         {!loading && (
           <ModalFooter
-            data-id="030925-592864"
             bg="renewResponseModal.footer.bg"
+            data-id="030925-592864"
             roundedBottom="0.375rem">
             {!renewedResponse ? (
               <>
                 <Button
-                  data-id="030925-afefe2"
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
+                  data-id="030925-afefe2"
                   mr={3}
                   onClick={handleRenewalClose}>
                   Cancel
                 </Button>
                 <Button
-                  data-id="030925-e1e9cf"
                   bg="renewResponseModal.buttons.primary.bg"
                   color="renewResponseModal.buttons.primary.color"
+                  data-id="030925-e1e9cf"
                   onClick={renew}>
                   Start review
                 </Button>
@@ -100,16 +100,16 @@ function RenewalModal() {
             ) : (
               <>
                 <Button
-                  data-id="030925-0a878a"
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
+                  data-id="030925-0a878a"
                   mr={3}
                   onClick={() => navigateTo('/')}>
                   Return to homepage
                 </Button>
                 <Button
-                  data-id="030925-1e3762"
                   colorScheme="purpleHeart"
+                  data-id="030925-1e3762"
                   onClick={handleViewRenewed}>
                   View renewed response
                 </Button>

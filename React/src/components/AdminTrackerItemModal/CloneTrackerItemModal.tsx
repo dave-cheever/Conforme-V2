@@ -14,9 +14,9 @@ function CloneTrackerItemModal({ refetch }) {
 
   return (
     <ModalContent
-        data-id="030925-4b083b"
         bg="cloneTrackerItemModal.bg"
         borderRadius="20px"
+        data-id="030925-4b083b"
         m="auto"
         maxH="auto"
         p="20px  25px"
@@ -28,8 +28,8 @@ function CloneTrackerItemModal({ refetch }) {
         h="100%"
         justifyContent="left">
         <Box
-          data-id="030925-57ab07"
           color="cloneTrackerItemModal.heading"
+          data-id="030925-57ab07"
           fontSize="smm"
           fontWeight="bold"
           mb="15px"
@@ -38,8 +38,8 @@ function CloneTrackerItemModal({ refetch }) {
           <ModalCloseButton data-id="030925-f3f126" mt="5px" onClick={closeModal} />
         </Box>
         <Box
-          data-id="030925-986295"
           color="cloneTrackerItemModal.subHeading"
+          data-id="030925-986295"
           fontSize="smm"
           textAlign="left"
           whiteSpace="pre">
@@ -59,7 +59,6 @@ function CloneTrackerItemModal({ refetch }) {
         </Box>
         <Flex data-id="030925-8cc7ce" mt="34px">
           <Button
-            data-id="030925-a0e1e4"
             _hover={{
               bg: 'cloneTrackerItemModal.buttonCancelHoverBg',
               opacity: 0.7,
@@ -67,6 +66,7 @@ function CloneTrackerItemModal({ refetch }) {
             bg="cloneTrackerItemModal.buttonCancelBg"
             borderRadius="10px"
             color="cloneTrackerItemModal.buttonCancelColor"
+            data-id="030925-a0e1e4"
             fontSize="smm"
             mr="22px"
             onClick={closeModal}
@@ -75,7 +75,6 @@ function CloneTrackerItemModal({ refetch }) {
           </Button>
           <Spacer data-id="030925-8b173c" />
           <Button
-            data-id="030925-a35ae0"
             _hover={{
               bg: 'cloneTrackerItemModal.buttonCloneHoverBg',
               opacity: 0.7,
@@ -83,6 +82,7 @@ function CloneTrackerItemModal({ refetch }) {
             bg="cloneTrackerItemModal.buttonCloneBg"
             borderRadius="10px"
             color="cloneTrackerItemModal.buttonCloneColor"
+            data-id="030925-a35ae0"
             fontSize="smm"
             onClick={() => cloneTrackerItem(trackerItem)}
             p="10px 20px">

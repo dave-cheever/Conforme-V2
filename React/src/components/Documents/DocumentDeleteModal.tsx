@@ -21,9 +21,9 @@ function DocumentDeleteModal({
         <ModalFooter data-id="030925-895294">
           <Flex data-id="030925-bb6211" justify="center" w="full">
             <Button
-              data-id="030925-a6246e"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="030925-a6246e"
               mr={3}
               onClick={() => {
                 handleDelete();
@@ -32,9 +32,9 @@ function DocumentDeleteModal({
               Delete
             </Button>
             <Button
-              data-id="030925-b7658d"
               _hover={{ opacity: 0.7 }}
               colorScheme="red"
+              data-id="030925-b7658d"
               onClick={() => handleClose()}>
               Cancel
             </Button>

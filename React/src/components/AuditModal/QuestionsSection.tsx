@@ -49,11 +49,11 @@ function QuestionsSection() {
     <Box data-id="030925-e4ee66">
       <ButtonGroup data-id="030925-c4cd97" pr={2} spacing={2.5}>
         <Button
-          data-id="030925-681b2c"
           _after={selectedGroup === 'category' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
           color={selectedGroup === 'category' ? 'white' : 'auditModal.menu.active.text'}
           colorScheme={selectedGroup === 'category' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
+          data-id="030925-681b2c"
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('category')}
@@ -61,11 +61,11 @@ function QuestionsSection() {
           By Category
         </Button>
         <Button
-          data-id="030925-c1b7e9"
           _after={selectedGroup === 'kloe' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
           color={selectedGroup === 'kloe' ? 'white' : 'auditModal.menu.active.text'}
           colorScheme={selectedGroup === 'kloe' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
+          data-id="030925-c1b7e9"
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('kloe')}

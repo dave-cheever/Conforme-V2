@@ -58,8 +58,8 @@ function QuestionsForm() {
         w="full">
       <SectionHeader data-id="030925-ce1c31" label={`Add ${t('question')}`} />
       <Text
-        data-id="030925-517a0e"
         color="adminTrackerItemModal.section.questions.description"
+        data-id="030925-517a0e"
         fontSize="11px"
         opacity="0.7">
         If you need to add any additional {pluralize(t('question'))} regarding this {t('tracker item')}, you can use this section to create
@@ -67,7 +67,6 @@ function QuestionsForm() {
       </Text>
       {!showQuestionForm && (
         <Button
-          data-id="030925-0a415c"
           _active={{
             bg: 'questionsModal.button.active',
           }}
@@ -76,6 +75,7 @@ function QuestionsForm() {
           }}
           bg="questionsModal.button.bg"
           color="questionsModal.button.color"
+          data-id="030925-0a415c"
           fontSize="11px"
           fontWeight="400"
           h="28px"
@@ -91,8 +91,8 @@ function QuestionsForm() {
       )}
       {isQuestionListOpen && (
         <Box
-          data-id="030925-01278c"
           bg="questionsModal.questionsList.bg"
+          data-id="030925-01278c"
           p="20px 25px"
           rounded="20px"
           textAlign="center"
@@ -113,7 +113,6 @@ function QuestionsForm() {
             })}
           </VStack>
           <Button
-            data-id="030925-6a9b8d"
             _active={{
               bg: 'questionsModal.button.active',
             }}
@@ -122,6 +121,7 @@ function QuestionsForm() {
             }}
             bg="questionsModal.button.bg"
             color="questionsModal.button.color"
+            data-id="030925-6a9b8d"
             disabled={selectedRadio === ''}
             fontSize="smm"
             fontWeight="700"
@@ -133,8 +133,8 @@ function QuestionsForm() {
               setSelectedRadio('');
             }}
             rightIcon={<Icon
-              data-id="030925-3b32f5"
               as={OpenMenuArrow}
+              data-id="030925-3b32f5"
               stroke="questionsModal.button.icon"
               transform="rotate(270deg)" />}
             w="154px">
@@ -144,8 +144,8 @@ function QuestionsForm() {
       )}
       {showQuestionForm && (
         <QuestionForm
-          data-id="030925-48cfd0"
           addOrUpdateQuestion={addOrUpdateQuestion}
+          data-id="030925-48cfd0"
           editQuestionIndex={editQuestionIndex}
           questionType={selectedQuestionType}
           setEditQuestion={setEditQuestion}

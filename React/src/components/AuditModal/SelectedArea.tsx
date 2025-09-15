@@ -11,15 +11,15 @@ function SelectedBusinessUnit() {
   return (
     <Menu data-id="030925-f5e386">
       <MenuButton
-        data-id="030925-da9511"
         _active={{ bg: 'auditModal.menu.bg' }}
         _hover={{ bg: 'auditModal.menu.bg' }}
         as={Button}
         bg="auditModal.menu.bg"
+        data-id="030925-da9511"
         rightIcon={<OpenMenuArrow data-id="030925-082010" ml="10px" />}>
         <Text
-          data-id="030925-6d6da2"
           color="auditModal.menu.text"
+          data-id="030925-6d6da2"
           fontSize="md"
           fontWeight="400">
           {modalContext.selectedBusinessUnit}

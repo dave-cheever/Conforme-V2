@@ -256,8 +256,8 @@ function TrackerItems() {
   return (
     <>
       <Header
-        data-id="030925-983341"
         breadcrumbs={[pluralize(t('tracker item'))]}
+        data-id="030925-983341"
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}>
         {device !== 'mobile' && (
@@ -268,8 +268,8 @@ function TrackerItems() {
               viewMode={viewMode}
               views={['grid', 'list', 'group']} />
             <Divider
-              data-id="030925-f852b7"
               borderColor="gray.300"
+              data-id="030925-f852b7"
               height="30px"
               mt={1}
               mx={4}
@@ -292,8 +292,8 @@ function TrackerItems() {
         pb={4}>
         {error ? (
           <Flex
-            data-id="030925-8cb19c"
             alignItems="center"
+            data-id="030925-8cb19c"
             fontSize="18px"
             fontStyle="italic"
             h="200px"
@@ -313,8 +313,8 @@ function TrackerItems() {
                 ref={scrollerRef}
                 useWindow={false}>
                 <Grid
-                  data-id="030925-428375"
                   bg="#fff"
+                  data-id="030925-428375"
                   gap={6}
                   justifyItems="center"
                   pb={[0, 8]}
@@ -334,7 +334,7 @@ function TrackerItems() {
                     </Flex>
                   ) : null}
                 </Grid>
-                {loading && <Loader data-id="030925-f6e22b" center h="60px" />}
+                {loading && <Loader center data-id="030925-f6e22b" h="60px" />}
               </InfiniteScrollComponent>
             )}
             {viewMode === 'list' && (

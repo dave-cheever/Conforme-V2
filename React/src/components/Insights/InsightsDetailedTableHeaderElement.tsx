@@ -23,10 +23,10 @@ function InsightsDetailedTableHeaderElement({
 }) {
   return (
     <Flex
-      data-id="030925-a33116"
       alignItems="center"
       bg={color}
       cursor="pointer"
+      data-id="030925-a33116"
       justifyContent={color !== 'white' ? 'center' : undefined}
       ml={ml || '0'}
       onClick={onClick}
@@ -41,18 +41,18 @@ function InsightsDetailedTableHeaderElement({
         hasArrow
         isDisabled={tooltip === ''}
         label={tooltip}>
-        <Text data-id="030925-a15e9f" color={color !== 'white' ? 'white' : '#787486'}>{label}</Text>
+        <Text color={color !== 'white' ? 'white' : '#787486'} data-id="030925-a15e9f">{label}</Text>
       </Tooltip>
       {sortOrder && (
         sortOrder === 'desc' ? (
           <ArrowDownIcon
-            data-id="030925-f88dfa"
             color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
+            data-id="030925-f88dfa"
             ml="5px" />
         ) : (
           <ArrowUpIcon
-            data-id="030925-9980ec"
             color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
+            data-id="030925-9980ec"
             ml="5px" />
         )
       )}

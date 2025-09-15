@@ -68,8 +68,8 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
 
   return (
     <Flex
-        data-id="030925-0d5c61"
         borderRadius="10px"
+        data-id="030925-0d5c61"
         flexDir="column"
         justify="center"
         key={`quick-filter-item-${filterName}`}
@@ -77,19 +77,19 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
         mt={2}
         my={2}>
       <Flex
-        data-id="030925-c00f79"
         align="center"
         bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
         borderRadius="10px"
         cursor="pointer"
+        data-id="030925-c00f79"
         justify="space-between"
         mb="0.5"
         p="3"
         w="full">
         <CalendarIcon data-id="030925-fb14b4" h="16px" mr="10px" stroke="#1E1836" w="16px" />
         <Text
-          data-id="030925-6447e7"
           color="#1E1836"
+          data-id="030925-6447e7"
           fontSize="14px"
           fontWeight="500"
           lineHeight="20px"
@@ -102,18 +102,17 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
         </Text>
       </Flex>
       {isOpen && (
-        <Flex data-id="030925-ffc61e" borderRadius="10px">
+        <Flex borderRadius="10px" data-id="030925-ffc61e">
           <Box data-id="030925-ba4cc0" display="flex" position="absolute">
             <Stack
-              data-id="030925-974d2c"
               bg="#f0f2f5"
               borderRadius={`10px ${filterValue === 'exactDate' || filterValue === 'dateRange' ? '0 0' : '10px 10px'} 10px`}
+              data-id="030925-974d2c"
               direction="column"
               p="20px"
               w={filterValue === 'exactDate' || filterValue === 'dateRange' ? 'max-content' : '215px'}>
               {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(([key, label]) => (
                 <Checkbox
-                  data-id="030925-2a194e"
                   colorScheme="purpleHeart"
                   css={{
                     '.chakra-checkbox__control': {
@@ -133,24 +132,25 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
                       },
                     },
                   }}
+                  data-id="030925-2a194e"
                   icon={<MinusIcon data-id="030925-4c1f33" />}
                   isChecked={value?.includes(key)}
                   key={key}
                   onChange={(e) => onChange(e, key)}>
                   <Text
-                    data-id="030925-67bc72"
                     color="filterPanel.checkboxLabelColor"
+                    data-id="030925-67bc72"
                     fontSize="14px">
                     {label}
                   </Text>
                 </Checkbox>
               ))}
             </Stack>
-            <Flex data-id="030925-476dfe" className="quick-datePickerfilter" dir="column">
+            <Flex className="quick-datePickerfilter" data-id="030925-476dfe" dir="column">
               {filterValue === 'exactDate' && (
                 <CustomDatePicker
-                  data-id="030925-8a3feb"
                   clickOutsideHandler={onToggle}
+                  data-id="030925-8a3feb"
                   inline
                   onChange={(date) => {
                     setSelectedDate(date);
@@ -160,8 +160,8 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
               )}
               {filterValue === 'dateRange' && (
                 <CustomDatePicker
-                  data-id="030925-787505"
                   clickOutsideHandler={onToggle}
+                  data-id="030925-787505"
                   endDate={endDate ? new Date(endDate) : null}
                   inline
                   onChange={(dates) => {

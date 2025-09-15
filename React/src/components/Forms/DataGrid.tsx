@@ -46,8 +46,8 @@ function DataGrid({ name, label, disabled, validations = {}, control, tooltip, h
 
   return (
     <Controller
-            data-id="030925-5a1472"
             control={control}
+            data-id="030925-5a1472"
             name={name}
             render={({ field, fieldState }) => {
               const { onChange, onBlur, value } = field;
@@ -64,20 +64,20 @@ function DataGrid({ name, label, disabled, validations = {}, control, tooltip, h
 
               const renderRow = (row, index) => (
                 <Grid data-id="030925-958959" key={index} templateColumns="repeat(10, 1fr)">
-                  <GridItem data-id="030925-826e16" colSpan={3}>
-                    <Flex data-id="030925-92fc8c" align="center" h="full" w="full">
+                  <GridItem colSpan={3} data-id="030925-826e16">
+                    <Flex align="center" data-id="030925-92fc8c" h="full" w="full">
                       {row[0]}
                     </Flex>
                   </GridItem>
-                  <GridItem data-id="030925-e0236f" colSpan={7}>
+                  <GridItem colSpan={7} data-id="030925-e0236f">
                     <Flex data-id="030925-ba0344" mt="10px">
                       <Input
-                        data-id="030925-37a03b"
                         bg="form.textInput.bg"
                         borderColor={error ? 'form.textInput.border.error' : 'form.textInput.border.normal'}
                         borderRadius="8px"
                         borderWidth="1px"
                         color="form.textInput.font"
+                        data-id="030925-37a03b"
                         disabled={disabled}
                         onBlur={onBlur}
                         onChange={(e) => onCellChange(e, row)}
@@ -92,14 +92,14 @@ function DataGrid({ name, label, disabled, validations = {}, control, tooltip, h
                 <Box data-id="030925-f18a41" id={name} w="full">
                   {label && (
                     <Flex
-                      data-id="030925-70ebfb"
                       align="center"
+                      data-id="030925-70ebfb"
                       justify="space-between"
                       mb="none"
                       pt={2}>
                       <Box
-                        data-id="030925-0290a6"
                         color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
+                        data-id="030925-0290a6"
                         fontSize="14px"
                         fontWeight="bold"
                         left="none"
@@ -117,8 +117,8 @@ function DataGrid({ name, label, disabled, validations = {}, control, tooltip, h
                   {rows?.map((row, index) => renderRow(row, index))}
                   {error && (
                     <Box
-                      data-id="030925-38549b"
                       color="datepicker.error"
+                      data-id="030925-38549b"
                       fontSize="smm"
                       ml={1}
                       mt={1}>
@@ -126,7 +126,7 @@ function DataGrid({ name, label, disabled, validations = {}, control, tooltip, h
                     </Box>
                   )}
                   {tooltip && (
-                    <Flex data-id="030925-3918e6" align="center" color="dropdown.tooltip" mt={3}>
+                    <Flex align="center" color="dropdown.tooltip" data-id="030925-3918e6" mt={3}>
                       <InfoOutlineIcon data-id="030925-375fbc" />
                       <Box data-id="030925-dc5fbf" fontSize="11px" ml={2}>
                         {tooltip}

@@ -293,14 +293,14 @@ function Actions() {
         variant="adminModal">
         <ModalOverlay data-id="030925-73ee2a" />
         <ActionModal
-          data-id="030925-231048"
           action={selectedAction}
           closeModal={closeModal}
+          data-id="030925-231048"
           refetch={refetch} />
       </Modal>
       <Header
-        data-id="030925-cf6be6"
         breadcrumbs={['Actions']}
+        data-id="030925-cf6be6"
         mobileBreadcrumbs={['Actions']}>
         <ChangeViewButton
           data-id="030925-d03e73"
@@ -309,13 +309,12 @@ function Actions() {
           views={['grid', 'list']} />
         {device !== 'mobile' && (
           <CSVLinkComponent
-            data-id="030925-425b38"
             data={csvData}
+            data-id="030925-425b38"
             filename="actions.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
-              data-id="030925-39a1cb"
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
                 color: 'reasponseHeader.buttonLightColorHover',
@@ -324,6 +323,7 @@ function Actions() {
               }}
               bg="white"
               borderRadius="10px"
+              data-id="030925-39a1cb"
               display="none"
               ml="15px"
               rightIcon={<ExportIcon data-id="030925-3f9564" height="15px" width="15px" />}>
@@ -344,7 +344,6 @@ function Actions() {
       <HStack data-id="030925-b8bfee" px={[4, 8]} spacing={2}>
         {Object.keys(actionStatuses).map((status, index) => (
           <Button
-            data-id="030925-9e3494"
             _active={{
               bg: 'actions.quickFilter.active.bg',
               color: 'actions.quickFilter.active.color',
@@ -355,6 +354,7 @@ function Actions() {
             bg="actions.quickFilter.default.bg"
             borderRadius="10px"
             color="actions.quickFilter.default.color"
+            data-id="030925-9e3494"
             fontSize="14px"
             fontWeight="500"
             h="32px"
@@ -376,7 +376,7 @@ function Actions() {
         {error ? (
           <Text data-id="030925-050fe3">{error.message}</Text>
         ) : loading ? (
-          <Loader data-id="030925-de9f33" center />
+          <Loader center data-id="030925-de9f33" />
         ) : (
           <>
             {viewMode === 'grid' && (
@@ -393,8 +393,8 @@ function Actions() {
                 w="full">
                 {sortedActions.length > 0 ? (
                   sortedActions?.map((action) => <ActionSquare
-                    data-id="030925-0b29e1"
                     action={action}
+                    data-id="030925-0b29e1"
                     editAction={handleOpenModal}
                     key={action._id} />)
                 ) : (
@@ -412,8 +412,8 @@ function Actions() {
             {viewMode === 'list' && (
               <Box data-id="030925-08139e" p="6" w="full">
                 <ActionsList
-                  data-id="030925-ca225e"
                   actions={sortedActions}
+                  data-id="030925-ca225e"
                   editAction={handleOpenModal}
                   setSortOrder={setSortOrder}
                   setSortType={setSortType}

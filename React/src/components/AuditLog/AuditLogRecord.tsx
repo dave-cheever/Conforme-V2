@@ -55,8 +55,8 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
     return (
       <Flex data-id="030925-0aa246" direction="column" key={i} mt="2">
         <Text
-          data-id="030925-aa079b"
           color="gray.600"
+          data-id="030925-aa079b"
           fontSize="xs"
           fontWeight="medium"
           mb="1">
@@ -64,18 +64,18 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
         </Text>
         <Flex data-id="030925-4f1cbb">
           <Box
-            data-id="030925-285d18"
             bg={oldValue ? 'red.50' : 'gray.100'}
             borderRadius="md"
+            data-id="030925-285d18"
             flex="1"
             fontSize="sm"
             p="2">
             {getFieldNameByValues(oldValue)}
           </Box>
           <Box
-            data-id="030925-2d275f"
             bg={newValue ? 'green.50' : 'gray.100'}
             borderRadius="md"
+            data-id="030925-2d275f"
             flex="1"
             fontSize="sm"
             ml="2"
@@ -89,12 +89,12 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
 
   return (
     <Flex
-      data-id="030925-6b4ce3"
       align="flex-start"
       bg="#F7FAFC"
       border="1px solid #CBD5E0"
       borderRadius="lg"
       boxShadow="sm"
+      data-id="030925-6b4ce3"
       direction="row"
       mb="4"
       p="4">
@@ -105,19 +105,19 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
         size="sm"
         src={auditAddedUser?.imgUrl} />
       <Box data-id="030925-e0bf2b" flex="1" ml="3">
-        <Flex data-id="030925-edd1e2" align="center" justify="space-between">
-          <Text data-id="030925-d2e7b9" color="#4A5568" fontSize="16px" fontWeight="600">
+        <Flex align="center" data-id="030925-edd1e2" justify="space-between">
+          <Text color="#4A5568" data-id="030925-d2e7b9" fontSize="16px" fontWeight="600">
             {auditAddedUser ? auditAddedUser.displayName : 'Unknown User'}
           </Text>
-          <Text data-id="030925-81120f" color="#718096" fontSize="14px" fontWeight="500">
+          <Text color="#718096" data-id="030925-81120f" fontSize="14px" fontWeight="500">
             {format(new Date(audit?.metatags?.addedAt!), 'dd/MM/yyyy HH:mm')}
           </Text>
         </Flex>
 
-        <Text data-id="030925-2543ed" color="#718096" fontSize="14px" mt="1">
+        <Text color="#718096" data-id="030925-2543ed" fontSize="14px" mt="1">
           {getFieldNameByAction(audit.action)} {getSingularCollectionName(audit.coll)}{' '}
           {audit.coll === 'comments' && (audit.action === 'add' || audit.action === 'delete') && (
-            <Box data-id="030925-eb4b50" as="span" display="inline" ml="2">
+            <Box as="span" data-id="030925-eb4b50" display="inline" ml="2">
               {reactStringReplace(
                 audit.values.text?.[audit.action === 'delete' ? 'old' : 'new']?.value,
                 chatMentionRegExp,
@@ -129,10 +129,10 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
             <>
               {' for '}
               <Text
-                data-id="030925-be55dc"
                 as="span"
                 color="purple.600"
                 cursor="pointer"
+                data-id="030925-be55dc"
                 fontWeight="medium"
                 onClick={goToItem}>
                 {audit.element.name}

@@ -38,7 +38,7 @@ function Audit() {
   }, [JSON.stringify(queryStringParams), JSON.stringify(questions)]);
 
   return (
-    <Stack data-id="030925-3b1706" border="1px solid #CBD5E0"  h={['fit-content', 'full']} p="10px" rounded="10px" w="full">
+    <Stack border="1px solid #CBD5E0" data-id="030925-3b1706"  h={['fit-content', 'full']} p="10px" rounded="10px" w="full">
       <AuditNewQuestionModal
         data-id="030925-8155f0"
         isOpen={isNewQuestionModalOpen}
@@ -51,8 +51,8 @@ function Audit() {
           handleDeleteQuestionModalClose();
         }} />
       <HStack
-        data-id="030925-096bdc"
         align="center"
+        data-id="030925-096bdc"
         justify={['space-between', 'initial']}
         spacing={4}
         w="full">
@@ -64,10 +64,10 @@ function Audit() {
           isPermitted({ user, action: 'audits.edit', data: { audit } }) &&
           customQuestionsCategories.length && (
             <Button
-              data-id="030925-560e04"
               bg="auditItem.addButton.bg"
               borderRadius="10px"
               color="auditItem.addButton.color"
+              data-id="030925-560e04"
               fontSize="ssm"
               h="28px"
               onClick={() => handleNewQuestionModalOpen()}>
@@ -93,8 +93,8 @@ function Audit() {
           </Stack>
         ) : (
           <Box
-            data-id="030925-db6214"
             bg="white"
+            data-id="030925-db6214"
             fontSize="18px"
             fontStyle="italic"
             h="auto"

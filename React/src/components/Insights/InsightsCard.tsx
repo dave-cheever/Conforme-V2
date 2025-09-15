@@ -19,15 +19,15 @@ function InsightsCard({
 }) {
   return (
     <Flex
-      data-id="030925-a1d65c"
       align="center"
       cursor="pointer"
+      data-id="030925-a1d65c"
       direction="column"
       mr="20px"
       onClick={() => onSelect(status)}>
       <Box
-        data-id="030925-0bb6cb"
         bg={`insightsCard.types.${status}`}
+        data-id="030925-0bb6cb"
         h="250px"
         overflow="hidden"
         position="relative"
@@ -49,16 +49,16 @@ function InsightsCard({
           py="25px"
           textAlign="left"
           zIndex="3">
-          <Text data-id="030925-be20fb" color="insightsCard.color" fontSize="14px">
+          <Text color="insightsCard.color" data-id="030925-be20fb" fontSize="14px">
             {type === 'audits' ? auditsInsightsTypes[status] : actionsInsightsTypes[status]}
           </Text>
-          <Heading data-id="030925-147fb8" color="insightsCard.color" fontSize="100px">
+          <Heading color="insightsCard.color" data-id="030925-147fb8" fontSize="100px">
             {count}
           </Heading>
           <Spacer data-id="030925-0fce66" />
           {selected && <Box
-            data-id="030925-a9fb46"
             bg="insightsCard.color"
+            data-id="030925-a9fb46"
             h="7px"
             mt="22px"
             rounded="100px"
@@ -74,8 +74,8 @@ function InsightsCard({
           width="39px"
           zIndex="2">
           <path
-            data-id="030925-f1cae5"
-            d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z" />
+            d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z"
+            data-id="030925-f1cae5" />
         </Icon>
       )}
     </Flex>

@@ -28,8 +28,8 @@ function AuditsUsersInsights({
 }) {
   return (
     <Box
-      data-id="030925-079d4c"
       bg="white"
+      data-id="030925-079d4c"
       my={['15px', '25px']}
       overflowX="auto"
       p="15px 25px"
@@ -42,8 +42,8 @@ function AuditsUsersInsights({
       <Flex data-id="030925-82f4f7" ml="140px">
         {users.map((user, index) => (
           <Flex
-            data-id="030925-ee249f"
             align="center"
+            data-id="030925-ee249f"
             flexDir="column"
             justify="center"
             key={user.userId}
@@ -53,8 +53,8 @@ function AuditsUsersInsights({
             w="80px">
             <UserAvatar data-id="030925-90e051" userId={user.userId} />
             <Text
-              data-id="030925-3869a0"
               color="auditsUsersInsights.colors.displayName"
+              data-id="030925-3869a0"
               fontSize="ssm"
               mt="10px"
               overflowX="hidden"
@@ -72,10 +72,10 @@ function AuditsUsersInsights({
         <Flex data-id="030925-eda138" flexDir="column">
           {auditsStatsCounts.map((count) => (
             <Flex
-              data-id="030925-50f3d6"
               align="center"
               bg={count.color}
               cursor="pointer"
+              data-id="030925-50f3d6"
               justify="end"
               key={count.status}
               mb="5px"
@@ -87,20 +87,20 @@ function AuditsUsersInsights({
               p="8px"
               rounded="10px"
               userSelect="none">
-              <Text data-id="030925-e055d8" color="white" fontSize="smm">
+              <Text color="white" data-id="030925-e055d8" fontSize="smm">
                 {auditsInsightsTypes[count.status]}
               </Text>
               {sortOrder !== null && sortOrder === 'desc' ? (
                 <ArrowDownIcon
-                  data-id="030925-f18e25"
                   color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
+                  data-id="030925-f18e25"
                   h="12px"
                   ml="10px"
                   w="12px" />
               ) : (
                 <ArrowUpIcon
-                  data-id="030925-538f4a"
                   color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
+                  data-id="030925-538f4a"
                   h="12px"
                   ml="10px"
                   w="12px" />
@@ -111,8 +111,8 @@ function AuditsUsersInsights({
         {users.map((user) => (
           <Flex data-id="030925-810d9a" flexDir="column" key={user.userId} ml="10px">
             <Box
-              data-id="030925-d235b6"
               bg="auditsUsersInsights.colors.statCell"
+              data-id="030925-d235b6"
               mb="5px"
               p="8px"
               rounded="10px"
@@ -127,8 +127,8 @@ function AuditsUsersInsights({
               </Text>
             </Box>
             <Box
-              data-id="030925-c76b5a"
               bg="auditsUsersInsights.colors.statCell"
+              data-id="030925-c76b5a"
               mb="5px"
               p="8px"
               rounded="10px"

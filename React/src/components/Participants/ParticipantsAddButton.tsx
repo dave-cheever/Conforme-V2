@@ -8,11 +8,11 @@ function ParticipantsAddButton(props) {
 
   return (
     <Button
-      data-id="030925-ea17fb"
       bg="#FFFFFF"
       border="1px solid #CBD5E0"
       borderRadius="8px"
       color="#2D3748"
+      data-id="030925-ea17fb"
       fontSize="14px"
       fontWeight="500"
       height="44px"
@@ -21,7 +21,7 @@ function ParticipantsAddButton(props) {
       px="16px"
       {...props}
     >
-      <Text data-id="030925-33cf1c" as="span" mr="1">Add </Text> {props.label ? <Text data-id="030925-ef16b6" as="span">{props.label}</Text> : 'Participant'}
+      <Text as="span" data-id="030925-33cf1c" mr="1">Add </Text> {props.label ? <Text as="span" data-id="030925-ef16b6">{props.label}</Text> : 'Participant'}
     </Button>
   );
 }

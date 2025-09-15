@@ -33,8 +33,8 @@ function NumberInput({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="030925-aa2abe"
         control={control}
+        data-id="030925-aa2abe"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
@@ -43,14 +43,14 @@ function NumberInput({
             <Box data-id="030925-a855e0" id={name} mt="none" w="full">
               {label && (
                 <Flex
-                  data-id="030925-3de144"
                   align="center"
+                  data-id="030925-3de144"
                   justify="space-between"
                   mb="none"
                   pt={2}>
                   <Box
-                    data-id="030925-e851a0"
                     color={error ? 'numberInput.labelFont.error' : 'numberInput.labelFont.normal'}
+                    data-id="030925-e851a0"
                     fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                     fontWeight="bold"
                     left="none"
@@ -66,7 +66,6 @@ function NumberInput({
                 </Flex>
               )}
               <Input
-                data-id="030925-622ed6"
                 _active={{
                   bg: disabled ? 'numberInput.disabled.bg' : 'numberInput.activeBg',
                 }}
@@ -87,6 +86,7 @@ function NumberInput({
                 borderWidth="1px"
                 color="numberInput.font"
                 cursor="pointer"
+                data-id="030925-622ed6"
                 defaultValue={value}
                 h="42px"
                 isDisabled={disabled}
@@ -99,12 +99,12 @@ function NumberInput({
                 pt="none"
                 type="number" />
               {error && (
-                <Box data-id="030925-5b01a0" color="numberInput.error" fontSize={14} ml={1}>
+                <Box color="numberInput.error" data-id="030925-5b01a0" fontSize={14} ml={1}>
                   {error.message}
                 </Box>
               )}
               {tooltip && (
-                <Flex data-id="030925-aea1f1" align="center" color="dropdown.tooltip" mt={3}>
+                <Flex align="center" color="dropdown.tooltip" data-id="030925-aea1f1" mt={3}>
                   <InfoOutlineIcon data-id="030925-706f25" />
                   <Box data-id="030925-7e9230" fontSize="11px" ml={2}>
                     {tooltip}

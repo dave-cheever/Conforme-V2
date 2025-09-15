@@ -218,17 +218,17 @@ function Categories() {
   return (
     <>
       <AdminModal
-        data-id="030925-dc63db"
         collection="category"
+        data-id="030925-dc63db"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetCategory : undefined}
       >
-        <Flex data-id="030925-b3803b" align="flex-start" direction="column" w="full">
+        <Flex align="flex-start" data-id="030925-b3803b" direction="column" w="full">
           <TextInput
-            data-id="030925-fd6cf1"
             control={control}
+            data-id="030925-fd6cf1"
             initialValue={currentCategoryName.toLowerCase()}
             label="Name"
             name="name"
@@ -242,13 +242,13 @@ function Categories() {
         </Flex>
       </AdminModal>
       <Header
-        data-id="030925-6556a9"
-        breadcrumbs={['Admin', 'Categories']} mobileBreadcrumbs={['Categories']} pageLabel="Category" />
+        breadcrumbs={['Admin', 'Categories']}
+        data-id="030925-6556a9" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
       <Box data-id="030925-a06385" h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex data-id="030925-5e625c" h="full" px={['25px', 0]}>
           <Box     
-            data-id="030925-1af730"
             border="1px solid #CBD5E0"
+            data-id="030925-1af730"
             overflow="hidden"
             w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
             h="fit-content"
@@ -283,16 +283,16 @@ function Categories() {
               )}
             </AdminTableHeader>
             <Stack
-              data-id="030925-f39ffd"
               bg="white"
               borderBottomRadius="20px"
+              data-id="030925-f39ffd"
               h={loading ? 'full' : 'fit-content'}
               minH="full"
               pb="3"
               spacing="1px"
             >
               {loading ? (
-                <Loader data-id="030925-69d4a5" center />
+                <Loader center data-id="030925-69d4a5" />
               ) : categories?.length > 0 ? (
                 categories?.map((category, index) => (
                   <AdminTableRow
@@ -312,15 +312,15 @@ function Categories() {
             </Stack>
           </Box>
           {device === 'desktop' && module?.type === 'tracker' && (
-            <Flex data-id="030925-35fd47" alignItems="center" flexDirection="column" w={['100%', '220px']}>
+            <Flex alignItems="center" data-id="030925-35fd47" flexDirection="column" w={['100%', '220px']}>
               <Box data-id="030925-372234" w="100%">
                 {categories && (
                   <BarChart
-                    data-id="030925-1711b5"
                     data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
                       _id,
                       count: trackerItemsResponsesCount,
                     }))}
+                    data-id="030925-1711b5"
                     label="Categories"
                   />
                 )}

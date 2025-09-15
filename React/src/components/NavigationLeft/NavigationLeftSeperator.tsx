@@ -6,8 +6,8 @@ import { INavItem } from '../../interfaces/INavItem';
 function NavigationLeftSeperator({ label }: INavItem) {
   return (
     <Box
-      data-id="030925-c45322"
       alignContent="center"
+      data-id="030925-c45322"
       display="flex"
       flexDirection="row">
       <Bar
@@ -20,8 +20,8 @@ function NavigationLeftSeperator({ label }: INavItem) {
         top="10px"
         width="46px" />
       <Text
-        data-id="030925-60de76"
         color="navigationLeft.menuList.unselectedMenuItem"
+        data-id="030925-60de76"
         fontSize="11px"
         lineHeight="13px"
         mt="11px">

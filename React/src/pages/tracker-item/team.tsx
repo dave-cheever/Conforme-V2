@@ -108,20 +108,20 @@ function Team() {
 
   if (loading) {
     return (
-      <Flex data-id="030925-bb602e" bg="teamPage.bg" h="full" rounded="20px" w="full">
-        <Loader data-id="030925-4882a3" center />
+      <Flex bg="teamPage.bg" data-id="030925-bb602e" h="full" rounded="20px" w="full">
+        <Loader center data-id="030925-4882a3" />
       </Flex>
     );
   }
 
   return (
     <Stack
-      data-id="030925-8e2e65"
       alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
       border="1px solid"
       borderColor="#CBD5E0"
       borderRadius="8px"
+      data-id="030925-8e2e65"
       fontSize="smm"
       fontWeight="bold"
       h={['fit-content', 'full']}
@@ -132,7 +132,7 @@ function Team() {
       w="full"
     >
       <Stack data-id="030925-8bd065" spacing="6" w="full">
-        <HStack data-id="030925-2dfb12" alignItems="flex-start" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
+        <HStack alignItems="flex-start" data-id="030925-2dfb12" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
           <SingleParticipantSelector
             data-id="030925-dc980a"
             isUserAllowedToChange={isPermittedToManageAccountable}

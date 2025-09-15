@@ -53,14 +53,14 @@ function ChatConfirmDeleteModal({ isOpen, messageId, message, onClose, onAction 
         </ModalBody>
         <ModalFooter data-id="030925-fe6b13">
           <HStack data-id="030925-0da5bd" justify="center" spacing={4} w="full">
-            <Button data-id="030925-d34ac6" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="030925-d34ac6" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              data-id="030925-570f09"
               _hover={{ opacity: 0.7 }}
               bg="chatConfirmDeleteModal.deleteButtonBg"
               color="chatConfirmDeleteModal.deleteButtonColor"
+              data-id="030925-570f09"
               onClick={async () => {
                 onAction(messageId);
                 onClose();

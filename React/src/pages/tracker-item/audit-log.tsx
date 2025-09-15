@@ -145,11 +145,11 @@ function AuditLog() {
 
   return (
     <Flex
-        data-id="030925-02e757"
         bg="white"
         border="1px solid"
         borderColor="#CBD5E0"
         borderRadius="8px"
+        data-id="030925-02e757"
         flexDir="column"
         h="full"
         overflow="auto"
@@ -158,8 +158,8 @@ function AuditLog() {
       <Flex data-id="030925-1941dd" mb="3">
         {auditTabs?.map(({ index, label }) => (
           <TabItem
-            data-id="030925-ef4437"
             active={index === activeTab}
+            data-id="030925-ef4437"
             index={index}
             key={index}
             label={label}
@@ -167,20 +167,20 @@ function AuditLog() {
         ))}
       </Flex>
       <AuditLogComponent
-        data-id="030925-c11b24"
         auditLogs={auditLogs}
+        data-id="030925-c11b24"
         isLoadingMore={isLoadingMore}
         loading={loading} />
       {!loading &&
         (totalAuditLogs === countAuditLogs ? (
-          <Text data-id="030925-7db9b8" color="auditLog.noLogs" mb={4}>
+          <Text color="auditLog.noLogs" data-id="030925-7db9b8" mb={4}>
             No more logs
           </Text>
         ) : (
           <Text
-            data-id="030925-dcd949"
             color="auditLog.loadMore"
             cursor="pointer"
+            data-id="030925-dcd949"
             mb={4}
             onClick={() => {
               setSkip((prev) => prev + 5);

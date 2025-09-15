@@ -47,8 +47,8 @@ function GeneralForm() {
     <>
       {isModalOpen && (
         <AddTrackerItemAttribute
-          data-id="030925-fe7ff3"
           attributeType={attributeType}
+          data-id="030925-fe7ff3"
           isOpenModal={isModalOpen}
           newAttributeValue={newAttributeValue}
           onAction={onAction}
@@ -59,8 +59,8 @@ function GeneralForm() {
           <SectionHeader data-id="030925-d5424c" label="General details" />
           <Stack data-id="030925-03bcc3" pb={3} spacing={2} w="full">
             <TextInput
-              data-id="030925-d31cc2"
               control={control}
+              data-id="030925-d31cc2"
               label="Item name"
               name="name"
               placeholder={`${capitalize(t('tracker item'))} name`}
@@ -69,8 +69,8 @@ function GeneralForm() {
               }}
               variant="secondaryVariant" />
             <Textarea
-              data-id="030925-deb603"
               control={control}
+              data-id="030925-deb603"
               label="Description"
               name="description"
               placeholder={`Describe the ${t('tracker item')}`}
@@ -81,9 +81,9 @@ function GeneralForm() {
           <Stack data-id="030925-36edc3" pb={3} spacing={2} w="full">
             <Flex data-id="030925-cac76a" w="calc(100% + 35px)">
               <Dropdown
-                data-id="030925-f34d8c"
                 attributeType="Category"
                 control={control}
+                data-id="030925-f34d8c"
                 Icon={PlusIcon}
                 label="Category"
                 name="categoryId"
@@ -98,9 +98,9 @@ function GeneralForm() {
             </Flex>
             <Flex data-id="030925-b8a812" w="calc(100% + 35px)">
               <Dropdown
-                data-id="030925-8fa08e"
                 attributeType="Regulatory body"
                 control={control}
+                data-id="030925-8fa08e"
                 Icon={PlusIcon}
                 label="Regulatory body"
                 name="regulatoryBodyId"
@@ -114,15 +114,15 @@ function GeneralForm() {
                 variant="secondaryVariant" />
             </Flex>
             <Datepicker
-              data-id="030925-a5e651"
               control={control}
+              data-id="030925-a5e651"
               label="Expires on (optional)"
               name="dueDate"
               placeholder={`Define when the ${t('tracker item')} is due`}
               variant="secondaryVariant" />
             <Dropdown
-              data-id="030925-8a5cb7"
               control={control}
+              data-id="030925-8a5cb7"
               label="Frequency"
               name="frequency"
               options={frequencyOptions}
@@ -133,64 +133,63 @@ function GeneralForm() {
               variant="secondaryVariant" />
             <Stack data-id="030925-8782b6" direction="column" pt={2} spacing={2}>
               <Box
-                data-id="030925-74ca41"
                 color="dropdown.labelFont.normal"
+                data-id="030925-74ca41"
                 fontSize="ssm"
                 fontWeight="bold">
                 Due date calculation schema
               </Box>
-              <Box data-id="030925-13d1fc" color="dropdown.labelFont.normal" fontSize="ssm">
+              <Box color="dropdown.labelFont.normal" data-id="030925-13d1fc" fontSize="ssm">
                 Select schema that will be used to calculate next due date after response completion.
               </Box>
-              <Box data-id="030925-acf14d" color="dropdown.labelFont.normal" fontSize="ssm">
+              <Box color="dropdown.labelFont.normal" data-id="030925-acf14d" fontSize="ssm">
                 Due date will be calculated base on:
               </Box>
               <Stack data-id="030925-5b990e" direction="row" position="relative" spacing={4}>
                 <Flex
-                  data-id="030925-5f221f"
                   color={
                     trackerItem.dueDateCalculation !== 'fromDueDate'
                       ? 'trackerItemModal.toggle.label.active'
                       : 'trackerItemModal.toggle.label.default'
                   }
+                  data-id="030925-5f221f"
                   fontSize="smm">
                   completion date
                 </Flex>
                 <Switch
-                  data-id="030925-be5675"
                   colorScheme="trackerItemModal.toggle.color"
+                  data-id="030925-be5675"
                   isChecked={trackerItem.dueDateCalculation === 'fromDueDate'}
                   onChange={() =>
                     setValue('dueDateCalculation', trackerItem.dueDateCalculation === 'fromDueDate' ? 'fromCompletionDate' : 'fromDueDate')
                   } />
                 <Flex
-                  data-id="030925-94ec40"
                   color={
                     trackerItem.dueDateCalculation === 'fromDueDate'
                       ? 'trackerItemModal.toggle.label.active'
                       : 'trackerItemModal.toggle.label.default'
                   }
+                  data-id="030925-94ec40"
                   fontSize="smm">
                   due date
                 </Flex>
               </Stack>
               {trackerItem.dueDateCalculation === 'fromDueDate' ? (
-                <Box data-id="030925-cdb1f1" color="dropdown.labelFont.normal" fontSize="ssm">
+                <Box color="dropdown.labelFont.normal" data-id="030925-cdb1f1" fontSize="ssm">
                   Example: <br data-id="030925-c67ec6" />
                   Licence was due 31.01.2022 and was completed 10.01.2022. <br data-id="030925-922c1d" />
                   Next due date will be 31.01.2022 + frequency.
                 </Box>
               ) : (
-                <Box data-id="030925-41b6fa" color="dropdown.labelFont.normal" fontSize="ssm">
+                <Box color="dropdown.labelFont.normal" data-id="030925-41b6fa" fontSize="ssm">
                   Example: <br data-id="030925-084eb8" />
                   Review was due 31.01.2022 and was completed 10.01.2022. <br data-id="030925-ea660b" />
                   Next due date will be 10.01.2022 + frequency.
                 </Box>
               )}
             </Stack>
-            <Flex data-id="030925-6e0470" align="center" position="relative" pt={4}>
+            <Flex align="center" data-id="030925-6e0470" position="relative" pt={4}>
               <Switch
-                data-id="030925-85e39a"
                 colorScheme="toogle.color"
                 css={{
                   '.chakra-switch__thumb': {
@@ -199,11 +198,12 @@ function GeneralForm() {
                     },
                   },
                 }}
+                data-id="030925-85e39a"
                 isChecked={!!trackerItem.dueDateEditable}
                 onChange={() => setValue('dueDateEditable', !trackerItem.dueDateEditable)} />
               <Flex
-                data-id="030925-c66534"
                 color={trackerItem.dueDateEditable ? 'toogle.enableColor' : 'toogle.disableColor'}
+                data-id="030925-c66534"
                 fontSize="14px"
                 fontWeight="400"
                 ml={3}>

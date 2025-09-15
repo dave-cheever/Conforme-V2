@@ -99,16 +99,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-0d2edb"
           label={
-            <Flex data-id="030925-be8ccb" align="center" gap="1">
+            <Flex align="center" data-id="030925-be8ccb" gap="1">
               <Text data-id="030925-15d84c">R</Text>
               <Tooltip
                 data-id="030925-5ae133"
                 hasArrow
                 label="Responsible on number of responses">
                 <InfoOutlineIcon
-                  data-id="030925-00817c"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-00817c"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -128,16 +128,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-209167"
           label={
-            <Flex data-id="030925-d1f565" align="center" gap="1">
+            <Flex align="center" data-id="030925-d1f565" gap="1">
               <Text data-id="030925-41acd3">A</Text>
               <Tooltip
                 data-id="030925-a9bf46"
                 hasArrow
                 label="Accountable on number of responses">
                 <InfoOutlineIcon
-                  data-id="030925-2d0b39"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-2d0b39"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -157,16 +157,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-ea1fe8"
           label={
-            <Flex data-id="030925-f63e76" align="center" gap="1">
+            <Flex align="center" data-id="030925-f63e76" gap="1">
               <Text data-id="030925-e96f83">C</Text>
               <Tooltip
                 data-id="030925-c2b597"
                 hasArrow
                 label="Contributor on number of responses">
                 <InfoOutlineIcon
-                  data-id="030925-193ed7"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-193ed7"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -186,13 +186,13 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-ab5e8b"
           label={
-            <Flex data-id="030925-cc252f" align="center" gap="1">
+            <Flex align="center" data-id="030925-cc252f" gap="1">
               <Text data-id="030925-1d9e2a">F</Text>
               <Tooltip data-id="030925-9c0f1c" hasArrow label="Follower on number of responses">
                 <InfoOutlineIcon
-                  data-id="030925-ea77df"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-ea77df"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -215,16 +215,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-7031e6"
           label={
-            <Flex data-id="030925-8f0851" align="center" gap="1">
+            <Flex align="center" data-id="030925-8f0851" gap="1">
               <Text data-id="030925-4a1413">T</Text>
               <Tooltip
                 data-id="030925-ce4875"
                 hasArrow
                 label={`Total number of ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
-                  data-id="030925-4d83d9"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-4d83d9"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -244,16 +244,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-a83104"
           label={
-            <Flex data-id="030925-f622ff" align="center" gap="1">
+            <Flex align="center" data-id="030925-f622ff" gap="1">
               <Text data-id="030925-0f594d">C</Text>
               <Tooltip
                 data-id="030925-af8dc5"
                 hasArrow
                 label={`Number of completed ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
-                  data-id="030925-996c38"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-996c38"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -273,16 +273,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-bcfa9f"
           label={
-            <Flex data-id="030925-416d10" align="center" gap="1">
+            <Flex align="center" data-id="030925-416d10" gap="1">
               <Text data-id="030925-a34b94">U</Text>
               <Tooltip
                 data-id="030925-be192e"
                 hasArrow
                 label={`Number of upcoming ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
-                  data-id="030925-422b79"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-422b79"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -302,16 +302,16 @@ function Users() {
         <AdminTableHeaderElement
           data-id="030925-e17e19"
           label={
-            <Flex data-id="030925-411a81" align="center" gap="1">
+            <Flex align="center" data-id="030925-411a81" gap="1">
               <Text data-id="030925-f7a715">M</Text>
               <Tooltip
                 data-id="030925-2a678d"
                 hasArrow
                 label={`Number of missed ${pluralize(t('audit'))}`}>
                 <InfoOutlineIcon
-                  data-id="030925-194d9e"
                   boxSize="2.5"
                   color="gray.500"
+                  data-id="030925-194d9e"
                   marginTop={-2}
                   onClick={() => {
                     navigateTo('/help');
@@ -365,10 +365,10 @@ function Users() {
       </>
     ) : (
       <>
-        <UserAuditsCount data-id="030925-d4d82a" auditsCount={user.totalAuditsCount} userId={user._id} />
-        <UserAuditsCount data-id="030925-125159" auditsCount={user.completedAuditsCount} status="completed" userId={user._id} />
-        <UserAuditsCount data-id="030925-82e1cd" auditsCount={user.upcomingAuditsCount} status="upcoming" userId={user._id} />
-        <UserAuditsCount data-id="030925-4a2706" auditsCount={user.missedAuditsCount} status="missed" userId={user._id} />
+        <UserAuditsCount auditsCount={user.totalAuditsCount} data-id="030925-d4d82a" userId={user._id} />
+        <UserAuditsCount auditsCount={user.completedAuditsCount} data-id="030925-125159" status="completed" userId={user._id} />
+        <UserAuditsCount auditsCount={user.upcomingAuditsCount} data-id="030925-82e1cd" status="upcoming" userId={user._id} />
+        <UserAuditsCount auditsCount={user.missedAuditsCount} data-id="030925-4a2706" status="missed" userId={user._id} />
       </>
     );
 
@@ -376,7 +376,6 @@ function Users() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
-        data-id="030925-727fd7"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -384,6 +383,7 @@ function Users() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
+        data-id="030925-727fd7"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -394,8 +394,8 @@ function Users() {
       >
         <Flex data-id="030925-9ff998" w={['60%', '16%']}>
           <Avatar
-            data-id="030925-605c2d"
             borderColor="brand.active"
+            data-id="030925-605c2d"
             mr={3}
             name={
               (user.firstName && user.lastName
@@ -455,7 +455,7 @@ function Users() {
             {renderCounts(user)}
           </Flex>
         )}
-        <Flex data-id="030925-78d42c" align="center" ml="20px" w={['40%', 'calc(16% - 20px)']}>
+        <Flex align="center" data-id="030925-78d42c" ml="20px" w={['40%', 'calc(16% - 20px)']}>
           {user?.lastLogin
             ? upperFirst(
                 formatDistanceToNow(new Date(user?.lastLogin), {
@@ -470,11 +470,11 @@ function Users() {
 
   return (
     <>
-      <Header data-id="030925-ad049d" breadcrumbs={['Admin', 'Users']} mobileBreadcrumbs={['Users']} />
+      <Header breadcrumbs={['Admin', 'Users']} data-id="030925-ad049d" mobileBreadcrumbs={['Users']} />
       <Flex
-        data-id="030925-007b42"
         bg="auditsList.bg"
         borderRadius="10px"
+        data-id="030925-007b42"
         h="calc(100vh - 160px)"
         overflow="auto"
         p={['0', '0 25px 30px 30px']}
@@ -552,8 +552,8 @@ function Users() {
               w={['40%', 'calc(16% - 20px)']}
             />
           </AdminTableHeader>
-          <Box data-id="030925-cdf2f8" bg="auditsList.bg" border="1px solid #cbd5e0" borderBottomRadius="10px" h="full" overflow="auto" w="full">
-            {loading ? <Loader data-id="030925-365fa5" center /> : users.map((user, i) => renderUserRow(user, i))}
+          <Box bg="auditsList.bg" border="1px solid #cbd5e0" borderBottomRadius="10px" data-id="030925-cdf2f8" h="full" overflow="auto" w="full">
+            {loading ? <Loader center data-id="030925-365fa5" /> : users.map((user, i) => renderUserRow(user, i))}
           </Box>
           </Box>
         </Flex>

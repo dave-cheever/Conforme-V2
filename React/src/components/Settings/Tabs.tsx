@@ -16,10 +16,10 @@ function Tabs() {
     return (
       <Menu data-id="030925-1d2fd7">
         <MenuButton
-          data-id="030925-d0663a"
           as={Button}
           bg="settingsTabItem.tabItemBg"
           borderRadius="10px"
+          data-id="030925-d0663a"
           fontSize="14px"
           h="40px"
           maxW="24vw"
@@ -28,9 +28,9 @@ function Tabs() {
           Email templates
         </MenuButton>
         <MenuList
-          data-id="030925-ef7e9f"
           borderWidth="0px"
-          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
+          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="030925-ef7e9f">
           {settingsTabs.map(({ label, index }) => (
             <MenuItem data-id="030925-cbe1f7" key={index} onClick={() => setActiveTab(index)}>
               {label}
@@ -45,8 +45,8 @@ function Tabs() {
     <Flex data-id="030925-2bea7a" w="full">
       {settingsTabs.map(({ label, index }) => (
         <TabItem
-          data-id="030925-4b37f7"
           active={index === activeTab}
+          data-id="030925-4b37f7"
           index={index}
           key={index}
           label={label}

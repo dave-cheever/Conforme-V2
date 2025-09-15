@@ -16,11 +16,11 @@ function AreaToInspect() {
   return (
     <Box data-id="030925-2f8194">
       <Box
-        data-id="030925-8eb5f3"
         bg="auditModal.participants.customSearch.bg"
         border="2px solid"
         borderColor="auditModal.participants.customSearch.border"
         borderRadius="8px"
+        data-id="030925-8eb5f3"
         h="55px"
         mb="20px"
         overflow="hidden"
@@ -36,8 +36,8 @@ function AreaToInspect() {
         </Text>
         <InputGroup data-id="030925-c02fe8">
           <Input
-            data-id="030925-6c9251"
             cursor="pointer"
+            data-id="030925-6c9251"
             h="55px"
             mb="20px"
             onBlur={onBlur}
@@ -54,12 +54,12 @@ function AreaToInspect() {
           </InputRightElement>
         </InputGroup>
       </Box>
-      <Collapse data-id="030925-f5e411" animateOpacity={false} in={focused}>
+      <Collapse animateOpacity={false} data-id="030925-f5e411" in={focused}>
         <Box
-          data-id="030925-5e7a5e"
           bg="white"
           borderRadius="8px"
           boxShadow="0px 10px 30px 0px #0000002E"
+          data-id="030925-5e7a5e"
           maxH="120px"
           mt="-15px"
           overflow="auto"
@@ -69,34 +69,34 @@ function AreaToInspect() {
           zIndex="9999">
           <Box data-id="030925-71b4e6">
             <Box
-              data-id="030925-245c12"
               _hover={{
                 cursor: 'pointer',
                 borderRadius: '8px',
                 boxShadow: '0px 10px 30px 0px #0000002E',
               }}
               alignItems="center"
+              data-id="030925-245c12"
               display="flex"
               justifyContent="start"
               onClick={() => modalContext.setSelectedBusinessUnit('Surgery')}
               p="10px 10px">
-              <Text data-id="030925-f4c408" color="grey" fontSize="md" fontWeight="400">
+              <Text color="grey" data-id="030925-f4c408" fontSize="md" fontWeight="400">
                 Surgery
               </Text>
             </Box>
             <Box
-              data-id="030925-d6fb12"
               _hover={{
                 cursor: 'pointer',
                 borderRadius: '8px',
                 boxShadow: '0px 10px 30px 0px #0000002E',
               }}
               alignItems="center"
+              data-id="030925-d6fb12"
               display="flex"
               justifyContent="start"
               onClick={() => modalContext.setSelectedBusinessUnit('Clinical')}
               p="10px 10px">
-              <Text data-id="030925-16cdf8" color="grey" fontSize="md" fontWeight="400">
+              <Text color="grey" data-id="030925-16cdf8" fontSize="md" fontWeight="400">
                 Clinical
               </Text>
             </Box>

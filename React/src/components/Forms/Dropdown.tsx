@@ -49,8 +49,8 @@ function Dropdown({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="030925-c2bddd"
         control={control}
+        data-id="030925-c2bddd"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
@@ -59,14 +59,14 @@ function Dropdown({
             <Box data-id="030925-91742b" id={name} mt="none" w="full">
               {label && (
                 <Flex
-                  data-id="030925-601f36"
                   align="center"
+                  data-id="030925-601f36"
                   justify="space-between"
                   mb="none"
                   pt={2}>
                   <Box
-                    data-id="030925-77b9f1"
                     color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
+                    data-id="030925-77b9f1"
                     fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                     fontWeight="bold"
                     left="none"
@@ -91,9 +91,8 @@ function Dropdown({
                   </Box>
                 </Flex>
               )}
-              <Flex data-id="030925-2dd6ab" alignItems={Icon ? 'center' : ''}>
+              <Flex alignItems={Icon ? 'center' : ''} data-id="030925-2dd6ab">
                 <Select
-                  data-id="030925-7cd703"
                   _active={{
                     bg: disabled ? 'dropdown.disabled.bg' : 'dropdown.activeBg',
                   }}
@@ -114,6 +113,7 @@ function Dropdown({
                   color="dropdown.font"
                   css={{ paddingTop: '0' }}
                   cursor="pointer"
+                  data-id="030925-7cd703"
                   fontSize="smm"
                   h="42px"
                   icon={<ChevronRight
@@ -139,8 +139,8 @@ function Dropdown({
                   ))}
                 </Select>
                 {Icon && onAction && !value &&  <Icon
-                  data-id="030925-083323"
                   cursor="pointer"
+                  data-id="030925-083323"
                   ml="20px"
                   mt="10px"
                   onClick={() => onAction(attributeType)}
@@ -148,8 +148,8 @@ function Dropdown({
               </Flex>
               {error && (
                 <Box
-                  data-id="030925-44ae74"
                   color="dropdown.error"
+                  data-id="030925-44ae74"
                   fontSize="smm"
                   ml={1}
                   mt={1}>
@@ -157,7 +157,7 @@ function Dropdown({
                 </Box>
               )}
               {tooltip && (
-                <Flex data-id="030925-b4c0ce" align="center" color="dropdown.tooltip" mt={3}>
+                <Flex align="center" color="dropdown.tooltip" data-id="030925-b4c0ce" mt={3}>
                   <InfoOutlineIcon data-id="030925-1b6946" />
                   <Box data-id="030925-d96367" fontSize="11px" ml={2}>
                     {tooltip}

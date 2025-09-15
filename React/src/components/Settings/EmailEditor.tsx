@@ -32,8 +32,8 @@ function EmailEditor({ setHtml, value, options }) {
 
   return (
     <Box data-id="030925-52942f">
-      <Box data-id="030925-781d41" className="sun-editor" id="custom_toolbar" />
-      <Stack data-id="030925-019916" bgColor="white" direction="row" p={2} spacing={2}>
+      <Box className="sun-editor" data-id="030925-781d41" id="custom_toolbar" />
+      <Stack bgColor="white" data-id="030925-019916" direction="row" p={2} spacing={2}>
         {options.map((option: string) => (
           <Button
             data-id="030925-73424f"

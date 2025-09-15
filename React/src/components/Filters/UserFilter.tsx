@@ -323,7 +323,6 @@ function UserFilter() {
   return (
     <Box data-id="030925-7c8e1d" w="full">
       <Select
-        data-id="030925-666b26"
         _active={{ bg: 'dropdown.activeBg' }}
         _disabled={{
           bg: 'dropdown.disabled.bg',
@@ -339,6 +338,7 @@ function UserFilter() {
         borderRadius="8px"
         borderWidth="1px"
         cursor="pointer"
+        data-id="030925-666b26"
         fontSize="smm"
         h="42px"
         icon={<ArrowDownIcon data-id="030925-44da3b" />}
@@ -356,10 +356,10 @@ function UserFilter() {
       </Select>
       <InputGroup data-id="030925-d18978">
         <Input
-          data-id="030925-ca2bbc"
           borderColor="filterPanel.searchBoxBordercolor"
           borderWidth="1px"
           color="brand.darkGrey"
+          data-id="030925-ca2bbc"
           fontSize="14px"
           h="40px"
           mt={2}
@@ -377,8 +377,8 @@ function UserFilter() {
           .map((selectedRoleUser, i) => (
             <Flex data-id="030925-97341e" key={i} py="5px">
               <Text
-                data-id="030925-9f712c"
                 color="usersSelector.roles.selectedRole.label"
+                data-id="030925-9f712c"
                 fontSize="smm"
                 fontWeight="semi_medium"
                 textTransform="capitalize"
@@ -387,8 +387,8 @@ function UserFilter() {
               </Text>
               <Spacer data-id="030925-f4cdb4" />
               <CrossIcon
-                data-id="030925-ac154d"
                 cursor="pointer"
+                data-id="030925-ac154d"
                 h="15px"
                 onClick={() =>
                   module?.type === 'tracker' ? handleClearFilter(selectedRoleUser) : handleClearAuditFilter(selectedRoleUser)
@@ -400,8 +400,8 @@ function UserFilter() {
           ))}
       </Box>
       <UsersSelector
-        data-id="030925-3aea1b"
         allowUnassigned={getPath() === 'actions'}
+        data-id="030925-3aea1b"
         handleChange={module?.type === 'tracker' ? handleUserChange : handleAuditUserChange}
         searchText={searchText}
         selected={selectedUsers}

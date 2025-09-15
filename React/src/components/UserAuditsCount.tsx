@@ -23,10 +23,10 @@ function UserAuditsCount({ status, auditsCount, userId }: { status?: string; aud
 
   return (
     <Flex
-        data-id="030925-e822c0"
         alignItems="center"
         bg="userItem.responseCountBg"
         cursor="pointer"
+        data-id="030925-e822c0"
         h="calc(100% - 1px)"
         justifyContent="center"
         mr="1px"

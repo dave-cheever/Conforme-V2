@@ -26,10 +26,10 @@ function ActionListItem({
   return (
     <HStack data-id="030925-2ddb02" spacing={[2, 6]} w="full">
       <Flex
-        data-id="030925-0489a3"
         align="center"
         bg="actionListElement.number.bg"
         color="actionListElement.number.color"
+        data-id="030925-0489a3"
         h="30px"
         justify="center"
         rounded="full"
@@ -37,31 +37,31 @@ function ActionListItem({
         {index + 1}
       </Flex>
       <HStack
-        data-id="030925-c0c1d0"
         bg="actionListElement.bg"
+        data-id="030925-c0c1d0"
         flexGrow={1}
         px={[3, 5]}
         py={3}
         rounded="10px"
         spacing={[2, 5]}>
         {action?.assigneeId && <UserAvatar
-          data-id="030925-247ee6"
           callback={setAssigneeDetails}
+          data-id="030925-247ee6"
           h="36px"
           userId={action.assigneeId}
           w="36px" />}
         <Stack data-id="030925-cd1582" flexGrow={1} spacing={0}>
           <HStack
-            data-id="030925-c8e860"
             color="actionListElement.color"
+            data-id="030925-c8e860"
             fontSize="ssm"
             spacing={4}>
             {action?.assigneeId && <Text data-id="030925-a0b013">{assigneeDetails?.displayName}</Text>}
             {action.dueDate && <Text data-id="030925-2a79c4">{format(new Date(action.dueDate), 'd LLLL Y')}</Text>}
           </HStack>
           <Text
-            data-id="030925-f06f28"
             color="actionListElement.color"
+            data-id="030925-f06f28"
             fontSize="smm"
             wordBreak="break-all">
             {action.title}
@@ -70,14 +70,14 @@ function ActionListItem({
         {!disabled && (
           <HStack data-id="030925-b8b5d4" spacing={2}>
             <EditIcon
-              data-id="030925-95883e"
               cursor="pointer"
+              data-id="030925-95883e"
               onClick={() => setSelectedAction(action)}
               stroke="actionListElement.icon" />
             <Spacer data-id="030925-71ac2b" />
             <Trashcan
-              data-id="030925-1d0cf0"
               cursor="pointer"
+              data-id="030925-1d0cf0"
               onClick={onDelete}
               stroke="actionListElement.icon" />
           </HStack>

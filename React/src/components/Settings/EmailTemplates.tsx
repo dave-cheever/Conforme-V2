@@ -87,7 +87,7 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
   if (loading) {
     return (
       <Flex data-id="030925-a8563a" h="full" w={['full', 'full', '550px']}>
-        <Loader data-id="030925-09c2d9" center />
+        <Loader center data-id="030925-09c2d9" />
       </Flex>
     );
   }
@@ -103,8 +103,8 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
         {emailTemplates?.settings?.length > 0 ? (
           emailTemplates?.settings?.map((template) => (
             <EmailTemplate
-              data-id="030925-84cec7"
               active={selectedTemplate?._id === template?._id}
+              data-id="030925-84cec7"
               key={template?._id}
               setSelectedTemplate={setSelectedTemplate}
               template={template}
@@ -117,8 +117,8 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
       <Modal data-id="030925-11350f" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay data-id="030925-500cf9" />
         <ModalContent
-          data-id="030925-1577ec"
           borderRadius="0px"
+          data-id="030925-1577ec"
           h="100vh"
           margin="0px"
           maxW="700px"
@@ -128,7 +128,7 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
           w="full">
           <ModalHeader data-id="030925-905750" fontSize="20px">Edit "{selectedTemplate?.label}” template</ModalHeader>
           <ModalCloseButton data-id="030925-0ac1c0" />
-          <ModalBody data-id="030925-9355e7" bg="emailTemplates.bg" p="0px">
+          <ModalBody bg="emailTemplates.bg" data-id="030925-9355e7" p="0px">
             <EmailEditor
               data-id="030925-92a44b"
               options={selectedTemplate?.options}
@@ -138,9 +138,9 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
 
           <ModalFooter data-id="030925-fe5d82" mr="auto">
             <Button
-              data-id="030925-8ee2eb"
               borderRadius="10px"
               colorScheme="purpleHeart"
+              data-id="030925-8ee2eb"
               fontSize="14px"
               h="35px"
               isDisabled={html === selectedTemplate?.value}

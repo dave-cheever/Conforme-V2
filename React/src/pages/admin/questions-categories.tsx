@@ -307,7 +307,6 @@ function QuestionsCategories() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
-        data-id="030925-1b2164"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -315,6 +314,7 @@ function QuestionsCategories() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
+        data-id="030925-1b2164"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -325,8 +325,8 @@ function QuestionsCategories() {
         w="full"
       >
         <Flex
-          data-id="030925-7b4bbc"
           cursor="pointer"
+          data-id="030925-7b4bbc"
           flexDir="column"
           mr={4}
           onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
@@ -344,8 +344,8 @@ function QuestionsCategories() {
   return (
     <>
       <AdminModal
-        data-id="030925-2d80f5"
         collection="questions categories"
+        data-id="030925-2d80f5"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
@@ -353,8 +353,8 @@ function QuestionsCategories() {
       >
         <Stack data-id="030925-a8ae4e" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
-            data-id="030925-981e65"
             control={control}
+            data-id="030925-981e65"
             label="Name"
             name="name"
             placeholder="Name"
@@ -364,24 +364,24 @@ function QuestionsCategories() {
             }}
           />
           <Toggle
-            data-id="030925-7a0ba5"
             control={control}
+            data-id="030925-7a0ba5"
             label="Allow answers"
             name="withAnswers"
             placeholder="Allow answers"
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="030925-8237e4"
             control={control}
+            data-id="030925-8237e4"
             label="Allow custom questions"
             name="allowCustomQuestions"
             placeholder="Allow custom questions"
             variant="secondaryVariant"
           />
           <NumberInput
-            data-id="030925-58dc2f"
             control={control}
+            data-id="030925-58dc2f"
             label="Max number of questions"
             name="maxQuestionsNumber"
             placeholder="Max number of questions"
@@ -390,8 +390,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="030925-081333"
             control={control}
+            data-id="030925-081333"
             label="Editable after submission"
             name="notBlockedAfterCompletion"
             placeholder="Editable after submission"
@@ -399,8 +399,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="030925-59036d"
             control={control}
+            data-id="030925-59036d"
             label="Use status"
             name="useStatus"
             placeholder="Use status"
@@ -408,8 +408,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="030925-a54930"
             control={control}
+            data-id="030925-a54930"
             label="Show in insights"
             name="showInInsights"
             placeholder="Show in insights"
@@ -417,8 +417,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="030925-a7050f"
             control={control}
+            data-id="030925-a7050f"
             label="Count in audit card"
             name="countInAuditCard"
             placeholder="Count in audit card"
@@ -426,24 +426,24 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Controller
-            data-id="030925-3ccf0c"
             control={control}
+            data-id="030925-3ccf0c"
             name="icon"
             render={({ field }) => (
               <>
                 <FormLabel
-                  data-id="030925-4a34a7"
                   alignItems="center"
                   columnGap={1}
+                  data-id="030925-4a34a7"
                   display={'flex'}
                   fontSize="12px"
                   fontWeight="regular"
                   mb={1}
                   >
                     Icon <Text
-                  data-id="030925-fb38d9"
                   as="span"
                   color="#e93c44"
+                  data-id="030925-fb38d9"
                   fontSize="22px"
                   fontWeight="bold"
                   mt={"12px"}>*</Text>
@@ -476,9 +476,9 @@ function QuestionsCategories() {
                   ))}
                 </Select>
                 {field.value && ChakraIcons[field.value] && (
-                  <Flex data-id="030925-154564" align="center" gap={2} mt={1}>
+                  <Flex align="center" data-id="030925-154564" gap={2} mt={1}>
                     <Text data-id="030925-4b6dcc" fontSize="sm">Preview:</Text>
-                    <Icon data-id="030925-d708cd" as={ChakraIcons[field.value] || ''} boxSize={4} />
+                    <Icon as={ChakraIcons[field.value] || ''} boxSize={4} data-id="030925-d708cd" />
                   </Flex>
                 )}
               </>
@@ -501,24 +501,24 @@ function QuestionsCategories() {
         </Stack>
       </AdminModal>
       <Header
-        data-id="030925-75447b"
         breadcrumbs={['Admin', 'Questions categories']}
+        data-id="030925-75447b"
         mobileBreadcrumbs={['Questions categories']}
         pageLabel={`${capitalize(t('question'))} set`}
       />
       <Flex
-        data-id="030925-a31380"
         bg="auditsList.bg"
         borderRadius="10px"
+        data-id="030925-a31380"
         h="calc(100vh - 160px)"
         overflow="auto"
         p={[0, '0 25px 30px 30px']}
       >
          <Flex data-id="030925-519fa9" h="full" px={['25px', 0]} w="full">
           <Box
-          data-id="030925-5a3b20"
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
+          data-id="030925-5a3b20"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
@@ -536,9 +536,9 @@ function QuestionsCategories() {
               w="full"
             />
           </AdminTableHeader>
-          <Box data-id="030925-9f66b2" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="030925-9f66b2" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader data-id="030925-4202f3" center />
+              <Loader center data-id="030925-4202f3" />
             ) : questionsCategories?.length > 0 ? (
               questionsCategories?.map(renderQuestionsCategoryRow)
             ) : (

@@ -18,16 +18,16 @@ function DetailsForm() {
   return (
     <Stack data-id="030925-3efe14" px={[0, 0, 3]} spacing={4} w="full">
       <Text
-        data-id="030925-62069f"
         color="adminTrackerItemModal.section.details.description"
+        data-id="030925-62069f"
         fontSize="14px"
         opacity="0.7">
         Please make sure that all {t('tracker item')} details are completed/accurate.
       </Text>
       <Stack data-id="030925-86a56a" overflow="auto" pb={3} spacing={2} w="full">
         <Dropdown
-          data-id="030925-081f2c"
           control={control}
+          data-id="030925-081f2c"
           label="Category"
           name="categoryId"
           options={categoriesOptions}
@@ -36,8 +36,8 @@ function DetailsForm() {
             notEmpty: true,
           }} />
         <Dropdown
-          data-id="030925-548ce4"
           control={control}
+          data-id="030925-548ce4"
           label="Regulatory body"
           name="regulatoryBodyId"
           options={regulatoryBodiesOptions}
@@ -46,14 +46,14 @@ function DetailsForm() {
             notEmpty: true,
           }} />
         <Datepicker
-          data-id="030925-d5b190"
           control={control}
+          data-id="030925-d5b190"
           label="Expires on (optional)"
           name="dueDate"
           placeholder={`Define when the ${t('tracker item')} is due`} />
         <Dropdown
-          data-id="030925-ed102e"
           control={control}
+          data-id="030925-ed102e"
           label="Frequency"
           name="frequency"
           options={frequencyOptions}

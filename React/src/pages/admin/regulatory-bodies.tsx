@@ -230,17 +230,17 @@ function RegulatoryBodies() {
   return (
     <>
       <AdminModal
-        data-id="030925-4a27c3"
         collection="regulatory body"
+        data-id="030925-4a27c3"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndReset : undefined}
       >
-        <Flex data-id="030925-53cad4" align="flex-start" direction="column" w="full">
+        <Flex align="flex-start" data-id="030925-53cad4" direction="column" w="full">
           <TextInput
-            data-id="030925-01cc1f"
             control={control}
+            data-id="030925-01cc1f"
             initialValue={currentRegulatoryBodyName.toLowerCase()}
             label="Name"
             name="name"
@@ -253,8 +253,8 @@ function RegulatoryBodies() {
         </Flex>
       </AdminModal>
       <Header
-        data-id="030925-2e690e"
         breadcrumbs={['Admin', 'Regulatory bodies']}
+        data-id="030925-2e690e"
         mobileBreadcrumbs={['Regulatory bodies']}
         pageLabel="Regulatory body" />
       <Box
@@ -264,8 +264,8 @@ function RegulatoryBodies() {
         p={['0', '0 25px 30px 30px']}>
         <Flex data-id="030925-a5fb9d" h="full" px={['25px', 0]}>
           <Box
-             data-id="030925-6cc6b4"
-            border="1px solid #CBD5E0"
+             border="1px solid #CBD5E0"
+            data-id="030925-6cc6b4"
             h="max-content"
             minH={['calc(100% - 160px)', 'calc(100% - 35px)']}
             mr={[0, 0, '50px']}
@@ -295,15 +295,15 @@ function RegulatoryBodies() {
                 w={['50%', '50%']} />
             </AdminTableHeader>
             <Stack
-              data-id="030925-c6ca94"
               bg="white"
               borderBottomRadius="20px"
+              data-id="030925-c6ca94"
               h={loading ? 'full' : 'fit-content'}
               minH="full"
               pb="5"
               spacing="1px">
               {loading ? (
-                <Loader data-id="030925-a2ec2e" center />
+                <Loader center data-id="030925-a2ec2e" />
               ) : regulatoryBodies?.length > 0 ? (
                 regulatoryBodies?.map((regulatoryBody, index) => (
                   <AdminTableRow
@@ -330,18 +330,18 @@ function RegulatoryBodies() {
           </Box>
           {device === 'desktop' && (
             <Flex
-              data-id="030925-2eacb4"
               alignItems="center"
+              data-id="030925-2eacb4"
               flexDirection="column"
               w={['100%', '220px']}>
               <Flex data-id="030925-4316a9" flexDir="column" h="full" w="100%">
                 {regulatoryBodies && (
                   <BarChart
-                    data-id="030925-3bce3f"
                     data={regulatoryBodies.map(({ _id, trackerItemsResponsesCount }) => ({
                       _id,
                       count: trackerItemsResponsesCount,
                     }))}
+                    data-id="030925-3bce3f"
                     label="Regulatory bodies" />
                 )}
               </Flex>

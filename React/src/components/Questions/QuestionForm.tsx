@@ -21,9 +21,9 @@ function QuestionForm({
 }) {
   return (
     <Flex
-      data-id="030925-5f1447"
       bg="questionForm.bg"
       boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+      data-id="030925-5f1447"
       flexDirection="column"
       p="20px 25px"
       rounded="10px">
@@ -33,8 +33,8 @@ function QuestionForm({
         questionType === 'url' ||
         questionType === 'datepicker') && (
         <QuestionSimpleForm
-          data-id="030925-dbc6b4"
           addOrUpdateQuestion={addOrUpdateQuestion}
+          data-id="030925-dbc6b4"
           editableValue={value as ITrackerQuestion<string>}
           editQuestionIndex={editQuestionIndex}
           questionType={questionType}
@@ -45,8 +45,8 @@ function QuestionForm({
       )}
       {questionType === 'multipleChoice' && (
         <QuestionMultiChoiceForm
-          data-id="030925-27a2a0"
           addOrUpdateQuestion={addOrUpdateQuestion}
+          data-id="030925-27a2a0"
           editableValue={value as ITrackerQuestion<IQuestionChoice[]>}
           editQuestionIndex={editQuestionIndex}
           questionType={questionType}
@@ -57,8 +57,8 @@ function QuestionForm({
       )}
       {questionType === 'singleChoice' && (
         <QuestionSingleChoiceForm
-          data-id="030925-614749"
           addOrUpdateQuestion={addOrUpdateQuestion}
+          data-id="030925-614749"
           editableValue={value as ITrackerQuestion<string>}
           editQuestionIndex={editQuestionIndex}
           questionType={questionType}
@@ -69,8 +69,8 @@ function QuestionForm({
       )}
       {questionType === 'email' && (
         <QuestionEmailForm
-          data-id="030925-56a02d"
           addOrUpdateQuestion={addOrUpdateQuestion}
+          data-id="030925-56a02d"
           editableValue={value as ITrackerQuestion<string>}
           editQuestionIndex={editQuestionIndex}
           questionType={questionType}

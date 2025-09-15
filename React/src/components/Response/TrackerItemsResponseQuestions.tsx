@@ -17,10 +17,10 @@ const defaultValues = {
 function SectionNumber({ value }: any) {
   return (
     <Box
-      data-id="030925-7dd599"
       bg="TrackerItemsResponseQuestions.sectionNumber.bg"
       borderRadius="8px"
       color="TrackerItemsResponseQuestions.sectionNumber.color"
+      data-id="030925-7dd599"
       fontSize="smm"
       fontWeight="bold"
       h="35px"
@@ -45,8 +45,8 @@ function TrackerItemsResponseQuestions() {
         <Stack data-id="030925-5a8f0c" direction="column" flex="1" spacing="24px">
           <Box data-id="030925-2e1cae" w="45%">
             <TextInput
-              data-id="030925-001611"
               control={control}
+              data-id="030925-001611"
               label="Is a copy of the most recent TV licence provided to the reception?"
               name="name"
               placeholder="Add Your answer here"
@@ -57,8 +57,8 @@ function TrackerItemsResponseQuestions() {
 
           <Box data-id="030925-117447" w="30%">
             <Datepicker
-              data-id="030925-a6e6fb"
               control={control}
+              data-id="030925-a6e6fb"
               label="Date Completed"
               name="dueDate"
               placeholder="dd / mm / yyyy" />
@@ -74,9 +74,9 @@ function TrackerItemsResponseQuestions() {
             </Text>
             <Flex data-id="030925-e5a522" mt="10px">
               <Button
-                data-id="030925-121b80"
                 bg="TrackerItemsResponseQuestions.button.bg"
                 color="TrackerItemsResponseQuestions.button.color"
+                data-id="030925-121b80"
                 fontSize="smm"
                 fontWeight="bold"
                 p="20px">
@@ -84,9 +84,9 @@ function TrackerItemsResponseQuestions() {
               </Button>
               &nbsp;&nbsp;
               <Button
-                data-id="030925-a921b5"
                 bg="TrackerItemsResponseQuestions.button.bg"
                 color="TrackerItemsResponseQuestions.button.color"
+                data-id="030925-a921b5"
                 fontSize="smm"
                 fontWeight="bold"
                 p="20px">
@@ -96,8 +96,8 @@ function TrackerItemsResponseQuestions() {
           </Box>
           <Box data-id="030925-41b17b" w="30%">
             <Datepicker
-              data-id="030925-d2bcdf"
               control={control}
+              data-id="030925-d2bcdf"
               label="Date Completed"
               name="dueDate"
               placeholder="dd / mm / yyyy" />
@@ -110,12 +110,12 @@ function TrackerItemsResponseQuestions() {
           <Text data-id="030925-9b24e6" fontSize="smm" fontWeight="bold">
             Multi selection question
           </Text>
-          <CheckboxGroup data-id="030925-867e10" colorScheme="green">
+          <CheckboxGroup colorScheme="green" data-id="030925-867e10">
             {[1, 2, 3].map((num) => (
               <Checkbox
-                data-id="030925-cb3a6b"
                 borderColor="TrackerItemsResponseQuestions.checkbox.borderColor"
                 color="TrackerItemsResponseQuestions.checkbox.color"
+                data-id="030925-cb3a6b"
                 size="lg">
                 {`Answer ${num}`}
               </Checkbox>

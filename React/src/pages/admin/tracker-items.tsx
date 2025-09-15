@@ -264,8 +264,8 @@ function TrackerItemsAdmin() {
   return (
     <>
       <Modal
-        data-id="030925-69a2e3"
         blockScrollOnMount={false}
+        data-id="030925-69a2e3"
         isOpen={adminModalState !== 'closed'}
         key={trackerItem._id}
         onClose={() => {}}
@@ -283,13 +283,13 @@ function TrackerItemsAdmin() {
         )}
       </Modal>
       <Header
-        data-id="030925-4a0829"
         breadcrumbs={['Admin', pluralize(t('tracker item'))]}
+        data-id="030925-4a0829"
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}
       />
       <Box data-id="030925-b78de3" h={['full', 'calc(100vh - 200px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box data-id="030925-aebe84" border="1px solid #CBD5E0" h="100%" overflow="hidden" w="100%">
+        <Box border="1px solid #CBD5E0" data-id="030925-aebe84" h="100%" overflow="hidden" w="100%">
           <AdminTableHeader data-id="030925-b45816">
             <AdminTableHeaderElement
               data-id="030925-f7c107"
@@ -326,7 +326,7 @@ function TrackerItemsAdmin() {
                   sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
                   w="calc(100% / 4)"
                 />
-                <Box data-id="030925-6a85ab" color="gray.500" textAlign="right" w="calc(100% / 4)">
+                <Box color="gray.500" data-id="030925-6a85ab" textAlign="right" w="calc(100% / 4)">
                   Actions
                 </Box>
               </>
@@ -339,9 +339,9 @@ function TrackerItemsAdmin() {
             </Alert>
           )}
           <Stack
-            data-id="030925-f63010"
             bg="white"
             borderBottomRadius="20px"
+            data-id="030925-f63010"
             gap="0px"
             h={error ? 'calc(100% - 100px)' : 'calc(100% - 60px)'}
             overflow="auto"
@@ -354,13 +354,13 @@ function TrackerItemsAdmin() {
               useWindow={false}>
               {sortedTrackerItems.map((trackerItem, index) => (
                 <Flex
-                  data-id="030925-8573a1"
                   _hover={{ bg: '#F5F7FA' }}
                   align="center"
                   bg={index % 2 === 0 ? 'white' : 'gray.50'}
                   borderBottom="1px solid"
                   borderColor="gray.200"
                   cursor="pointer"
+                  data-id="030925-8573a1"
                   fontSize="14px"
                   h="60px"
                   key={trackerItem._id}
@@ -373,16 +373,16 @@ function TrackerItemsAdmin() {
                     <Text data-id="030925-333112" noOfLines={1}>
                       {trackerItem.name || `Unnamed ${t('tracker item')}`}
                     </Text>
-                    <Flex data-id="030925-0e7938" align="center" mt="1">
-                      <Text data-id="030925-cfcd26" color="gray.500" fontSize="11px">
+                    <Flex align="center" data-id="030925-0e7938" mt="1">
+                      <Text color="gray.500" data-id="030925-cfcd26" fontSize="11px">
                         {trackerItem.category?.name}
                       </Text>
                       {!isMobile && !trackerItem.published && (
                         <Box
-                          data-id="030925-d8c68f"
                           bg="gray.600"
                           borderRadius="md"
                           color="white"
+                          data-id="030925-d8c68f"
                           fontSize="11px"
                           ml={2}
                           px={2}
@@ -396,18 +396,18 @@ function TrackerItemsAdmin() {
                   <Text data-id="030925-e77c25" w="calc(100% / 4)">{trackerItem.regulatoryBody?.name || '-'}</Text>
                   <Flex data-id="030925-898a0a" gap={4} justify="flex-end" w="calc(100% / 4)">
                     <Copy
-                      data-id="030925-5da26e"
                       _hover={{ stroke: '#FFFFFF' }}
                       cursor="pointer"
+                      data-id="030925-5da26e"
                       onClick={(e) => {
                         e.stopPropagation();
                         openModal('clone', trackerItem);
                       }}
                       stroke="#282F36" />
                     <Trashcan
-                      data-id="030925-a086de"
                       _hover={{ stroke: '#FFFFFF' }}
                       cursor="pointer"
+                      data-id="030925-a086de"
                       onClick={(e) => {
                         e.stopPropagation();
                         openModal('delete', trackerItem);
@@ -416,10 +416,10 @@ function TrackerItemsAdmin() {
                   </Flex>
                 </Flex>
               ))}
-              {loading && <Loader data-id="030925-c10dea" center h="60px" key="infinite-loader" />}
+              {loading && <Loader center data-id="030925-c10dea" h="60px" key="infinite-loader" />}
             </InfiniteScrollComponent>
             {allLoaded && trackerItems.length === 0 && !loading && (
-              <Text data-id="030925-fcb69b" color="gray.500" py={8} textAlign="center">
+              <Text color="gray.500" data-id="030925-fcb69b" py={8} textAlign="center">
                 No tracker items found.
               </Text>
             )}

@@ -11,25 +11,25 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
 
   return (
     <Box
-      data-id="030925-170070"
       _hover={{ bg: '#F5F7FA' }}
       bg={rowBg}
       borderBottomColor="auditsList.headerBorderColor"
       borderBottomWidth="1px"
       color="auditsList.fontColor"
       cursor="pointer"
+      data-id="030925-170070"
       fontSize="14px"
       onClick={() => editAction(action)}
       px="10px"
       py={[1, 0]}
       w="full"
     >
-      <Flex data-id="030925-ddcefd" align="center" h={['full', '60px']} position="relative" w="full">
+      <Flex align="center" data-id="030925-ddcefd" h={['full', '60px']} position="relative" w="full">
         <Flex data-id="030925-877145" flexDir="column" w="13%">
           <Flex
-            data-id="030925-283153"
             align="flex-start"
             color="auditsList.fontColor"
+            data-id="030925-283153"
             fontSize="14px"
             fontWeight="500"
             h="50%"
@@ -44,9 +44,9 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
         </Flex>
         <Flex data-id="030925-72f6a0" flexDir="column" w="7%">
           <Flex
-            data-id="030925-1369c7"
             align="flex-start"
             color="auditsList.fontColor"
+            data-id="030925-1369c7"
             fontSize="14px"
             fontWeight="500"
             h="50%"
@@ -60,7 +60,7 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
           </Flex>
         </Flex>
         <Flex data-id="030925-f1b873" w="10%">
-          <Flex data-id="030925-c924de" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
+          <Flex color="auditsList.fontColor" data-id="030925-c924de" fontSize="14px" fontWeight="500" opacity="1">
             {action?.dueDate ? (
               format(new Date(action?.dueDate), 'd MMM yyyy')
             ) : (
@@ -71,7 +71,7 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
           </Flex>
         </Flex>
         <Flex data-id="030925-f008b8" w="10%">
-          <Flex data-id="030925-35691d" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
+          <Flex color="auditsList.fontColor" data-id="030925-35691d" fontSize="14px" fontWeight="500" opacity="1">
             {action?.completedDate ? (
               format(new Date(action?.completedDate), 'd MMM yyyy')
             ) : (
@@ -82,8 +82,8 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
           </Flex>
         </Flex>
         <Flex data-id="030925-136961" w="7%">
-          <Flex data-id="030925-e3775d" align="center">
-            <Flex data-id="030925-d10eb2" color={`auditsList.${isOverdue ? 'missed' : action.status}`} fontSize="14px" fontWeight="500">
+          <Flex align="center" data-id="030925-e3775d">
+            <Flex color={`auditsList.${isOverdue ? 'missed' : action.status}`} data-id="030925-d10eb2" fontSize="14px" fontWeight="500">
               {isOverdue ? 'Overdue' : capitalize(action.status)}
             </Flex>
           </Flex>
@@ -116,10 +116,10 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
         </Box>
         <Box data-id="030925-2b8f94" w="14%">
           <Flex data-id="030925-85c37f">
-            <LocationIcon data-id="030925-954e9c" boxSize="12px" mt="2px" />
+            <LocationIcon boxSize="12px" data-id="030925-954e9c" mt="2px" />
             <Text
-              data-id="030925-228543"
               color="auditsList.fontColor"
+              data-id="030925-228543"
               fontSize="14px"
               fontWeight="500"
               lineHeight="17px"
@@ -136,10 +136,10 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
         </Box>
         <Box data-id="030925-2c82d3" w="10%">
           <Flex data-id="030925-aef6af">
-            <LocationIcon data-id="030925-2ef95e" boxSize="12px" mt="2px" />
+            <LocationIcon boxSize="12px" data-id="030925-2ef95e" mt="2px" />
             <Text
-              data-id="030925-4a53d7"
               color="auditsList.fontColor"
+              data-id="030925-4a53d7"
               fontSize="14px"
               fontWeight="500"
               lineHeight="17px"

@@ -172,22 +172,22 @@ function AnswerModal({
 
   return (
     <ModalContent
-        data-id="030925-f6e4fa"
         bg="actionModal.bg"
+        data-id="030925-f6e4fa"
         h="100%"
         m="0"
         overflow="hidden"
         p={[4, 6]}
         rounded="0">
       <ModalHeader
-        data-id="030925-8f2678"
         alignItems="center"
+        data-id="030925-8f2678"
         fontSize="xxl"
         fontWeight="bold"
         justifyContent="space-between"
         p="0">
         <Flex data-id="030925-b9a64d" justifyContent="space-between">
-          <Flex data-id="030925-20c922" alignItems="center" fontSize={['14px', '24px']}>
+          <Flex alignItems="center" data-id="030925-20c922" fontSize={['14px', '24px']}>
             <Avatar
               data-id="030925-65ab0c"
               mr={3}
@@ -197,18 +197,18 @@ function AnswerModal({
               src={answer?.addedBy?.imgUrl} />
             <Text data-id="030925-8ea608" noOfLines={1}>{question?.question}</Text>
           </Flex>
-          <Flex data-id="030925-3dd620" alignItems="center">
+          <Flex alignItems="center" data-id="030925-3dd620">
             <ShareButton
-              data-id="030925-95351f"
               ariaLabel={`${capitalize(t('question'))}-share-button`}
+              data-id="030925-95351f"
               onClick={() => {
                 setShareItemUrl(`answers?id=${answer?._id}`);
                 setShareItemName(question?.question);
                 handleShareOpen();
               }} />
             <Close
-              data-id="030925-bb8cbd"
               cursor="pointer"
+              data-id="030925-bb8cbd"
               h="15px"
               onClick={closeModal}
               stroke="answerModal.closeIcon"
@@ -231,9 +231,9 @@ function AnswerModal({
                 Related {t('audit')}
               </Text>
               <HStack
-                data-id="030925-c473f8"
                 bg="answerModal.question.bg"
                 boxShadow="simple"
+                data-id="030925-c473f8"
                 flexGrow={1}
                 justify="space-between"
                 px={6}
@@ -242,30 +242,30 @@ function AnswerModal({
                 spacing={2}>
                 <Stack data-id="030925-f6f666" overflow="hidden" spacing={1}>
                   <Stack
-                    data-id="030925-e6d286"
                     _hover={{
                       textDecoration: 'underline',
                       cursor: 'pointer',
                     }}
                     align="center"
+                    data-id="030925-e6d286"
                     direction="row"
                     onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
                     spacing={2}>
                     <Text
-                      data-id="030925-032526"
                       color="answerModal.question.color"
+                      data-id="030925-032526"
                       fontSize="smm"
                       noOfLines={1}>
                       {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
                     </Text>
                     <OpenExternalIcon data-id="030925-d3ec6d" fill="transparent" stroke="black" />
                   </Stack>
-                  <Text data-id="030925-f27815" color="answerModal.auditType" fontSize="ssm">
+                  <Text color="answerModal.auditType" data-id="030925-f27815" fontSize="ssm">
                     {answer?.audit?.auditType?.name}
                   </Text>
                   <Text
-                    data-id="030925-cf432f"
                     color={`answerModal.status.${answer?.audit?.status}`}
+                    data-id="030925-cf432f"
                     fontSize="smm"
                     fontWeight="semibold">
                     {`${capitalize(answer?.audit?.status)}`}
@@ -284,10 +284,10 @@ function AnswerModal({
                         key={answer!.attachments![2].id} />
                     ) : (
                       <Flex
-                        data-id="030925-036306"
                         align="center"
                         border="1px solid black"
                         cursor="default"
+                        data-id="030925-036306"
                         h="55px"
                         justify="center"
                         rounded="3px"
@@ -303,14 +303,14 @@ function AnswerModal({
                 {capitalize(t('question'))} details
               </Text>
               <Grid
-                data-id="030925-cc745a"
                 columnGap={4}
+                data-id="030925-cc745a"
                 rowGap={4}
                 templateColumns="repeat(2, 1fr)">
                 <GridItem data-id="030925-331bf1">
                   <Text
-                    data-id="030925-860889"
                     color="auditActionForm.labelFont.normal"
+                    data-id="030925-860889"
                     fontSize="11px"
                     fontWeight="bold">
                     Type
@@ -320,8 +320,8 @@ function AnswerModal({
                 {answer?.question?.category && (
                   <GridItem data-id="030925-a83ba4">
                     <Text
-                      data-id="030925-e76eb0"
                       color="auditActionForm.labelFont.normal"
+                      data-id="030925-e76eb0"
                       fontSize="11px"
                       fontWeight="bold">
                       Category
@@ -331,8 +331,8 @@ function AnswerModal({
                 )}
                 <GridItem data-id="030925-99be53">
                   <Text
-                    data-id="030925-c4b237"
                     color="auditActionForm.labelFont.normal"
+                    data-id="030925-c4b237"
                     fontSize="11px"
                     fontWeight="bold">
                     Date added
@@ -342,13 +342,13 @@ function AnswerModal({
                 {answer?.creator && (
                   <GridItem data-id="030925-3b7ed7">
                     <Text
-                      data-id="030925-521cbb"
                       color="auditActionForm.labelFont.normal"
+                      data-id="030925-521cbb"
                       fontSize="11px"
                       fontWeight="bold">
                       Created by
                     </Text>
-                    <Flex data-id="030925-1362bc" align="center" direction="row" mt={1}>
+                    <Flex align="center" data-id="030925-1362bc" direction="row" mt={1}>
                       <Avatar
                         data-id="030925-c97f89"
                         name={answer?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -371,8 +371,8 @@ function AnswerModal({
                 )}
                 <GridItem data-id="030925-ffa017">
                   <Text
-                    data-id="030925-c586b6"
                     color="auditActionForm.labelFont.normal"
+                    data-id="030925-c586b6"
                     fontSize="11px"
                     fontWeight="bold">
                     Unique ID
@@ -381,8 +381,8 @@ function AnswerModal({
                 </GridItem>
               </Grid>
               <Grid
-                data-id="030925-4e4969"
                 columnGap={4}
+                data-id="030925-4e4969"
                 rowGap={2}
                 templateColumns="repeat(1, 1fr)">
                 {questionsCategory?.withAnswers ? (
@@ -390,8 +390,8 @@ function AnswerModal({
                     <GridItem data-id="030925-6cc4a7">
                       {isCustomQuestion ? (
                         <TextInput
-                          data-id="030925-eda74e"
                           control={control}
+                          data-id="030925-eda74e"
                           disabled={!isFormEnabled}
                           label="Question"
                           name="question"
@@ -405,8 +405,8 @@ function AnswerModal({
                     </GridItem>
                     <GridItem data-id="030925-2e491c">
                       <TextInputMultiline
-                        data-id="030925-2c22f9"
                         control={control}
+                        data-id="030925-2c22f9"
                         disabled={!isFormEnabled}
                         label="Answer"
                         name="answer"
@@ -418,8 +418,8 @@ function AnswerModal({
                   </>
                 ) : (
                   <TextInputMultiline
-                    data-id="030925-01257d"
                     control={control}
+                    data-id="030925-01257d"
                     disabled={!isFormEnabled}
                     label="Description"
                     name="question"
@@ -431,8 +431,8 @@ function AnswerModal({
                 {questionsCategory?.useStatus && (
                   <GridItem data-id="030925-45b340">
                     <Dropdown
-                      data-id="030925-7a4192"
                       control={control}
+                      data-id="030925-7a4192"
                       disabled={!canChangeStatus}
                       label="Status"
                       name="status"
@@ -449,8 +449,8 @@ function AnswerModal({
                     <Stack data-id="030925-4c7f30">
                       {questionsCategory.options.map(({ name, setting }) => (
                         <Toggle
-                          data-id="030925-7c455a"
                           control={control}
+                          data-id="030925-7c455a"
                           disabled={!isFormEnabled}
                           falseLabel={name}
                           key={name}
@@ -468,16 +468,16 @@ function AnswerModal({
                       Add photos or files
                     </Text>
                     <DocumentUpload
-                      data-id="030925-0745ee"
                       callback={async (uploaded) => appendAttachment(uploaded)}
+                      data-id="030925-0745ee"
                       elementId={answer?._id || `temp-${question?._id}`} />
                   </>
                 )}
                 {values.attachments?.map((attachment, i) => (
                   <Flex data-id="030925-7bd2d9" flexDir="column" key={i} mb={2}>
                     <DocumentUploaded
-                      data-id="030925-0dcbd1"
                       callback={async () => removeAttachment(i)}
+                      data-id="030925-0dcbd1"
                       document={attachment}
                       downloadable
                       removable={!!isFormEnabled} />
@@ -493,8 +493,8 @@ function AnswerModal({
                   </Text>
                   {answer?.actions?.map((action, index) => (
                     <ActionListItem
-                      data-id="030925-9b5d6c"
                       action={action}
+                      data-id="030925-9b5d6c"
                       disabled
                       index={index}
                       key={action._id} />
@@ -513,8 +513,8 @@ function AnswerModal({
           justify="space-between"
           w="full">
           <Can
-            data-id="030925-089efb"
             action="answers.delete"
+            data-id="030925-089efb"
             data={{ answer, audit: answer?.audit }}
             // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
@@ -535,9 +535,9 @@ function AnswerModal({
           <Spacer data-id="030925-86e7e4" />
           {(isFormEnabled || canChangeStatus) && (
             <Button
-              data-id="030925-8e5e50"
               bg="answerModal.buttons.primary.bg"
               color="answerModal.buttons.primary.color"
+              data-id="030925-8e5e50"
               disabled={!isValid}
               fontSize="smm"
               fontWeight="700"
@@ -545,8 +545,8 @@ function AnswerModal({
               ml={3}
               onClick={handlePrimaryButtonClick}
               rightIcon={<Icon
-                data-id="030925-60db16"
                 as={TickIcon}
+                data-id="030925-60db16"
                 size={24}
                 stroke="answerModal.buttons.primary.icon" />}
               rounded="10px"

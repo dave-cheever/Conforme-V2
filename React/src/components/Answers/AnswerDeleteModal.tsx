@@ -83,13 +83,13 @@ function AnswerDeleteModal({
         </ModalBody>
         <ModalFooter data-id="030925-ce5c75">
           <HStack data-id="030925-91a833" justify="center" spacing={4} w="full">
-            <Button data-id="030925-a96e1f" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="030925-a96e1f" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              data-id="030925-8f5b99"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="030925-8f5b99"
               onClick={handleSecondaryButtonClick}>
               Delete
             </Button>

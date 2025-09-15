@@ -14,10 +14,10 @@ function BusinessUnitsCarousel({
   if (selectedBusinessUnits?.length > 10) {
     return (
       <Flex
-          data-id="030925-43a919"
           bg="businessUnitsCarousel.manyBg"
           borderRadius="10px"
           boxShadow="md"
+          data-id="030925-43a919"
           flexDirection="column"
           h="fit-content"
           mr="3"
@@ -38,19 +38,19 @@ function BusinessUnitsCarousel({
       {selectedBusinessUnits?.map((businessUnit, i) => (
         <Skeleton data-id="030925-74062f" isLoaded={!!businessUnit} key={`bu-${i}`}>
           <Flex
-            data-id="030925-c330eb"
             bg="businessUnitsCarousel.elementBg"
             borderRadius="md"
+            data-id="030925-c330eb"
             h="50px"
             key={businessUnit?._id}
             w={['full', 'full', '160px']}>
             <Image
-              data-id="030925-eaa205"
               borderLeftRadius="md"
+              data-id="030925-eaa205"
               objectFit="cover"
               src={businessUnit?.imgUrl}
               w="50px" />
-            <Flex data-id="030925-d581e7" align="center" p="2" w="calc(100% - 50px)">
+            <Flex align="center" data-id="030925-d581e7" p="2" w="calc(100% - 50px)">
               <Text
                 data-id="030925-e015b1"
                 fontSize="sm"

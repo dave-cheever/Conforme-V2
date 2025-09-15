@@ -117,8 +117,8 @@ function ReasponseHeader() {
         w="full"
         zIndex={1}>
       <Stack
-        data-id="030925-ee7d85"
         alignItems={['flex-start', 'center']}
+        data-id="030925-ee7d85"
         direction={['column', 'row']}
         mb="15px"
         minH="40px"
@@ -126,9 +126,9 @@ function ReasponseHeader() {
         spacing={2}
         w="full">
         <Heading
-          data-id="030925-25030e"
           alignItems={['flex-start', 'center']}
           color="reasponseHeader.heading"
+          data-id="030925-25030e"
           fontSize="xxl"
           fontWeight="bold"
           noOfLines={1}>
@@ -137,10 +137,10 @@ function ReasponseHeader() {
         <HStack data-id="030925-aefe10">
           {response.status === 'draft' && (
             <Badge
-              data-id="030925-e937c4"
               bg="reasponseHeader.badge.draft.bg"
               borderRadius="6px"
               color="reasponseHeader.badge.draft.color"
+              data-id="030925-e937c4"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
@@ -152,10 +152,10 @@ function ReasponseHeader() {
           )}
           {response.calculatedStatus === 'comingUp' && (
             <Badge
-              data-id="030925-dc93c2"
               bg="reasponseHeader.badge.comingUp.bg"
               borderRadius="6px"
               color="reasponseHeader.badge.comingUp.color"
+              data-id="030925-dc93c2"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
@@ -167,10 +167,10 @@ function ReasponseHeader() {
           )}
           {response.calculatedStatus === 'nonCompliant' && (
             <Badge
-              data-id="030925-291184"
               bg="reasponseHeader.badge.nonCompliant.bg"
               borderRadius="6px"
               color="reasponseHeader.badge.nonCompliant.color"
+              data-id="030925-291184"
               fontSize="11px"
               fontWeight="bold"
               lineHeight="16px"
@@ -189,8 +189,8 @@ function ReasponseHeader() {
         pr={6}
         spacing={4}>
         <HStack
-          data-id="030925-b0aa82"
           alignItems="center"
+          data-id="030925-b0aa82"
           pl={['10px', '0px']}
           pr={['35px', '0px']}
           spacing={4}
@@ -220,16 +220,16 @@ function ReasponseHeader() {
         </HStack>
         {snapshot && (
           <Stack
-            data-id="030925-d77f8f"
             align="center"
             color="reasponseHeader.snapshot.color"
+            data-id="030925-d77f8f"
             direction={['column', 'row']}
             spacing={1}>
             <WarningTwoIcon data-id="030925-b22539" />
             <Text data-id="030925-aaf87e">You are seeing historical data.</Text>
             <Text
-              data-id="030925-ec31b9"
               as={Link}
+              data-id="030925-ec31b9"
               onClick={() => {
                 setActiveTab(0);
                 navigateTo(`/tracker-item/${response._id}`);
@@ -240,9 +240,9 @@ function ReasponseHeader() {
         )}
         <Spacer data-id="030925-2f6cd6" display={['flex']} />
         <Flex
-          data-id="030925-4b53bc"
           color="white"
           columnGap={'8px'}
+          data-id="030925-4b53bc"
           display={['none', 'flex', 'flex']}
           h="40px"
           justify="flex-end"
@@ -261,10 +261,10 @@ function ReasponseHeader() {
                 data-id="030925-195eec"
                 icon={
                   <SaveIcon
-                    data-id="030925-b2e8f6"
                     _groupHover={{
                       stroke: 'reasponseHeader.buttonLightColorHover',
                     }}
+                    data-id="030925-b2e8f6"
                     fontSize="15px"
                     stroke="reasponseHeader.buttonLightColor" />
                 }
@@ -275,7 +275,6 @@ function ReasponseHeader() {
                 disabled={!areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response) || !isUserPermittedToSubmitDocument}
                 icon={
                   <SubmitIcon
-                    data-id="030925-6e2b48"
                     _groupHover={
                       !areRequiredQuestionsAnswered(response) || !isEvidenceUploaded(response)
                         ? {}
@@ -283,6 +282,7 @@ function ReasponseHeader() {
                           stroke: 'reasponseHeader.buttonLightColorHover',
                         }
                     }
+                    data-id="030925-6e2b48"
                     fontSize="15px"
                     stroke="reasponseHeader.buttonLightColor" />
                 }
@@ -294,10 +294,10 @@ function ReasponseHeader() {
             data-id="030925-7a6451"
             icon={
               <ShareIcon
-                data-id="030925-051cfa"
                 _groupHover={{
                   stroke: 'reasponseHeader.buttonLightColorHover',
                 }}
+                data-id="030925-051cfa"
                 fontSize="15px"
                 stroke="reasponseHeader.buttonLightColor" />
             }
@@ -310,8 +310,8 @@ function ReasponseHeader() {
         </Flex>
       </Stack>
       <Flex
-        data-id="030925-8a5a29"
         alignItems="center"
+        data-id="030925-8a5a29"
         display={['flex', 'none']}
         h="40px"
         mr="25px">
@@ -319,12 +319,12 @@ function ReasponseHeader() {
           {({ isOpen }) => (
             <>
               <MenuButton
-                data-id="030925-95d676"
                 as={Button}
                 bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
                 borderRadius="10px"
                 color="reasponseHeader.optionsMenuButtonColor"
                 colorScheme="reasponseHeader.optionsMenuColorScheme"
+                data-id="030925-95d676"
                 fontFamily="Helvetica"
                 fontSize="smm"
                 fontWeight="bold"
@@ -337,11 +337,11 @@ function ReasponseHeader() {
               </MenuButton>
 
               <MenuList
-                data-id="030925-8201fd"
                 borderColor="reasponseHeader.optionsMenuBorderColor"
                 borderRadius="10px"
                 boxShadow="0px 0px 80px"
                 color="reasponseHeader.optionsMenuBoxShadow"
+                data-id="030925-8201fd"
                 display={'flex'}
                 flexDir={'column'}
                 minW={['calc(100vw - 50px)', '325px']}
@@ -359,9 +359,9 @@ function ReasponseHeader() {
                 <ResponseHeaderButton data-id="030925-3b9981" isListView name="Share" onClick={handleShareOpen}  />
 
                 <MenuDivider
-                  data-id="030925-e968ef"
                   border="1px"
                   borderColor="reasponseHeader.optionsMenuDivider"
+                  data-id="030925-e968ef"
                   ml="20px"
                   mr="20px" />
               </MenuList>

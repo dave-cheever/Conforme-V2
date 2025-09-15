@@ -14,14 +14,13 @@ function CustomDatePicker({ clickOutsideHandler, ...props }) {
       data-id="030925-6c14a0"
       renderCustomHeader={({ date, changeYear, changeMonth }) => (
         <Flex
-          data-id="030925-c85d5f"
           borderRadius="10px"
           color="#1E1836"
+          data-id="030925-c85d5f"
           justify="space-around"
           minW="260px"
           p="8px 8px 8px 16px">
           <Select
-            data-id="030925-587448"
             _focus={{
               outline: 'none',
             }}
@@ -29,6 +28,7 @@ function CustomDatePicker({ clickOutsideHandler, ...props }) {
             border="none"
             borderRadius="8px"
             cursor="pointer"
+            data-id="030925-587448"
             fontSize="14px"
             fontWeight="400"
             icon={<ChevronDownIcon data-id="030925-467a3d" stroke="#787486" />}
@@ -43,7 +43,6 @@ function CustomDatePicker({ clickOutsideHandler, ...props }) {
             ))}
           </Select>
           <Select
-            data-id="030925-1d9942"
             _focus={{
               outline: 'none',
             }}
@@ -51,6 +50,7 @@ function CustomDatePicker({ clickOutsideHandler, ...props }) {
             border="none"
             borderRadius="8px"
             cursor="pointer"
+            data-id="030925-1d9942"
             fontSize="14px"
             fontWeight="400"
             icon={<ChevronDownIcon data-id="030925-59c709" stroke="#F4F3F5" />}

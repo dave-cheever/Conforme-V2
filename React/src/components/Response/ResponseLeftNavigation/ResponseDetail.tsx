@@ -57,23 +57,23 @@ function ResponseDetail({ response }) {
   return (
     <>
       <Flex data-id="030925-55bce9" mt={[0, 5]} onClick={toggle} position="relative">
-        <Flex data-id="030925-5a412e" align="center" cursor="pointer">
+        <Flex align="center" cursor="pointer" data-id="030925-5a412e">
           <Flex
-            data-id="030925-113495"
             align="center"
             bg={isOpen ? 'responseLeftTabItem.activeIconBg' : ''}
             borderRadius="8px"
+            data-id="030925-113495"
             h="30px"
             justify="center"
             w="30px">
             <Icon
-              data-id="030925-d66e79"
               as={DetailIcon}
-              color="#ffffff" />
+              color="#ffffff"
+              data-id="030925-d66e79" />
           </Flex>
           <ArrowRight
-            data-id="030925-ec3496"
             color="responseLeftTabItem.textColor"
+            data-id="030925-ec3496"
             display={['none', 'block']}
             ml={1}
             mt={1} />
@@ -81,10 +81,10 @@ function ResponseDetail({ response }) {
       </Flex>
       <Modal data-id="030925-909ab2" isOpen={isOpen} onClose={onClose}>
         <ModalContent
-          data-id="030925-de4ce8"
           borderRadius="10px"
           bottom="10px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="030925-de4ce8"
           h="fit-content"
           left={['10px', '80px']}
           maxW={['calc(100% - 20px)', '315px']}
@@ -97,7 +97,7 @@ function ResponseDetail({ response }) {
                   <Box data-id="030925-8a18f0" fontSize="11px" opacity={0.5}>
                     Item ID
                   </Box>
-                  <Flex data-id="030925-05d62d" align="center" fontSize="14px" minH="28px">
+                  <Flex align="center" data-id="030925-05d62d" fontSize="14px" minH="28px">
                     <Flex data-id="030925-4e4018" mr={2}>{response?.trackerItem?.reference}</Flex>
                     <CopyToClipboard
                       data-id="030925-8d74e5"
@@ -110,9 +110,9 @@ function ResponseDetail({ response }) {
                       }
                       text={response?.trackerItem?.reference}>
                       <Copy
-                        data-id="030925-739ce9"
                         _hover={{ opacity: 0.6, cursor: 'pointer' }}
                         color="responseLeftNavigation.copy"
+                        data-id="030925-739ce9"
                         h="17px"
                         mt={1}
                         w="17px" />
@@ -127,11 +127,11 @@ function ResponseDetail({ response }) {
                   <Box data-id="030925-e07022" fontSize="11px" opacity={0.5}>
                     Responsible
                   </Box>
-                  <Flex data-id="030925-7f494c" align="center" fontSize="14px" minH="28px">
+                  <Flex align="center" data-id="030925-7f494c" fontSize="14px" minH="28px">
                     <Avatar
-                        data-id="030925-1fe54d"
                         bg="responseLeftNavigation.avatar"
                         color="white"
+                        data-id="030925-1fe54d"
                         mr={2}
                         name={
                           (
@@ -155,11 +155,11 @@ function ResponseDetail({ response }) {
                   <Box data-id="030925-23d2e8" fontSize="11px" opacity={0.5}>
                     Accountableee
                   </Box>
-                  <Flex data-id="030925-eea8e3" align="center" fontSize="14px" minH="28px">
+                  <Flex align="center" data-id="030925-eea8e3" fontSize="14px" minH="28px">
                     <Avatar
-                      data-id="030925-ca9fdd"
                       bg="responseLeftNavigation.avatar"
                       color="white"
+                      data-id="030925-ca9fdd"
                       mr={2}
                       name={
                         responsible && responsible.firstName && responsible.lastName

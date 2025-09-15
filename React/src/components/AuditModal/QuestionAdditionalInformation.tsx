@@ -13,23 +13,23 @@ function QuestionAdditionalInformation() {
         Provide additional information or actions
       </Text>
       <br data-id="030925-343729" />
-      <Flex data-id="030925-54bd9d" alignItems="center">
+      <Flex alignItems="center" data-id="030925-54bd9d">
         <QuestionAdditionalButton
-          data-id="030925-ff689b"
           activeInformation={activeInformation}
+          data-id="030925-ff689b"
           icon={Icons.HealthKitIcon}
           label="Actions"
           requiredIcon={Icons.RequiredIcon}
           setActiveInformation={setActiveInformation} />
         <QuestionAdditionalButton
-          data-id="030925-4446ec"
           activeInformation={activeInformation}
+          data-id="030925-4446ec"
           icon={Icons.AttachmentIcon}
           label="Attachments"
           setActiveInformation={setActiveInformation} />
         <QuestionAdditionalButton
-          data-id="030925-388785"
           activeInformation={activeInformation}
+          data-id="030925-388785"
           icon={Icons.DetailIcon}
           label="More detail"
           setActiveInformation={setActiveInformation} />

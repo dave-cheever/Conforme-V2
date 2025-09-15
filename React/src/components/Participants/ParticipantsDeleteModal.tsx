@@ -25,15 +25,15 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
           <ModalCloseButton data-id="030925-0df02e" />
         </ModalHeader>
         <ModalBody data-id="030925-d1f1e0">
-          <Text data-id="030925-50c594" color="participantsDeleteModal.modal.body">
+          <Text color="participantsDeleteModal.modal.body" data-id="030925-50c594">
             This action cannot be undone
           </Text>
         </ModalBody>
         <ModalFooter data-id="030925-ae724a" justifyContent="space-between">
           <Button
-            data-id="030925-dff732"
             bg="participantsDeleteModal.modal.button.remove.bg"
             color="participantsDeleteModal.modal.button.remove.color"
+            data-id="030925-dff732"
             h="38px"
             onClick={handleRemove}
             w="95px"
@@ -41,10 +41,10 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
             Remove
           </Button>
           <Button
-            data-id="030925-b4e9f1"
             _hover={{ opacity: '0.9' }}
             bg="participantsDeleteModal.modal.button.keep.bg"
             color="participantsDeleteModal.modal.button.keep.color"
+            data-id="030925-b4e9f1"
             h="38px"
             onClick={closeParticipantDeleteModal}
             w="75px"

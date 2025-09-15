@@ -241,28 +241,28 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
         <Text data-id="030925-1908f9">{error.message}</Text>
       ) : loading ? (
         <Box data-id="030925-7381b1" h="100vh">
-          <Loader data-id="030925-8a8895" center />
+          <Loader center data-id="030925-8a8895" />
         </Box>
       ) : (
         <>
-          <Grid data-id="030925-7119ec" alignItems="center" templateColumns="1fr .25fr">
+          <Grid alignItems="center" data-id="030925-7119ec" templateColumns="1fr .25fr">
             <GridItem data-id="030925-27371a" w="100%">
               <InsightsChart data-id="030925-77c7d7" option={echartsOption} />
             </GridItem>
             <GridItem data-id="030925-9852c3" w="100%">
               <Flex data-id="030925-e83d57" direction="column" textAlign="left">
-                <Text data-id="030925-998733" as="span" color="insights.secondaryText" fontWeight="bold">
+                <Text as="span" color="insights.secondaryText" data-id="030925-998733" fontWeight="bold">
                   Total {answerType.toLowerCase()}
                 </Text>
-                <Heading data-id="030925-76ddae" color="#1E1836" fontSize="100px">
+                <Heading color="#1E1836" data-id="030925-76ddae" fontSize="100px">
                   {data?.answersInsights?.totalAnswers}
                 </Heading>
               </Flex>
             </GridItem>
           </Grid>
           <InsightsDetailedStats
-            data-id="030925-af1dcf"
             businessUnits={businessUnits}
+            data-id="030925-af1dcf"
             insightsType="answers"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

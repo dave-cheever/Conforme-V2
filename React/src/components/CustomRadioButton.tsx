@@ -9,11 +9,11 @@ function CustomRadioButton({ children, ...props }) {
 
   return (
     <Flex
-        data-id="030925-4d810a"
         alignItems="center"
         as="label"
         color="customRadioButton.textColor"
-        cursor={props.isDisabled ? "no-drop" : "pointer"}>
+        cursor={props.isDisabled ? "no-drop" : "pointer"}
+        data-id="030925-4d810a">
       <input data-id="030925-04f2b8" {...input} />
       <Flex
         data-id="030925-c272c6"

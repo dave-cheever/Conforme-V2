@@ -21,8 +21,8 @@ const GET_HELP = gql`
 const MarkdownComponents: Components = {
   h1: ({ node, ...props }) => (
     <Text
-      data-id="030925-6bc740"
       as="h1"
+      data-id="030925-6bc740"
       fontSize="2xl"
       fontWeight="bold"
       mb={4}
@@ -30,8 +30,8 @@ const MarkdownComponents: Components = {
   ),
   h2: ({ node, ...props }) => (
     <Text
-      data-id="030925-5c2371"
       as="h2"
+      data-id="030925-5c2371"
       fontSize="xl"
       fontWeight="semibold"
       mb={3}
@@ -39,33 +39,33 @@ const MarkdownComponents: Components = {
   ),
   h3: ({ node, ...props }) => (
     <Text
-      data-id="030925-b21dd4"
       as="h3"
+      data-id="030925-b21dd4"
       fontSize="lg"
       fontWeight="semibold"
       mb={3}
       {...props} />
   ),
   p: ({ node, ...props }) => (
-    <Text data-id="030925-21281d" as="p" lineHeight="1.6" mb={3} {...props} />
+    <Text as="p" data-id="030925-21281d" lineHeight="1.6" mb={3} {...props} />
   ),
   ul: ({ node, ...props }) => (
     <Box
-      data-id="030925-0f7ef0"
       as="ul"
+      data-id="030925-0f7ef0"
       mb={3}
       pl={5}
       style={{ listStyleType: 'disc' }}
       {...props} />
   ),
   li: ({ node, ...props }) => (
-    <Box data-id="030925-cc90bd" as="li" mb={1} {...props} />
+    <Box as="li" data-id="030925-cc90bd" mb={1} {...props} />
   ),
   a: (props) => (
     <Box
-      data-id="030925-2f2c5f"
       as="a"
       color="blue.500"
+      data-id="030925-2f2c5f"
       textDecoration="underline"
       {...props} />
   ),
@@ -88,14 +88,14 @@ function PrivacyPolicy() {
       w="full"
     >
       <Header
-        data-id="030925-2bb562"
         breadcrumbs={['Home', 'Privacy Policy']}
+        data-id="030925-2bb562"
         mobileBreadcrumbs={['Privacy Policy']}
       />
       <Flex
-        data-id="030925-2b03f6"
         bg="white"
         borderRadius="20px"
+        data-id="030925-2b03f6"
         flexDirection="column"
         h="auto"
         maxWidth="full"
@@ -105,14 +105,14 @@ function PrivacyPolicy() {
         p="25px 30px"
       >
         {loading ? (
-          <Flex data-id="030925-d23b39" align="center" h="100vh" justify="center">
+          <Flex align="center" data-id="030925-d23b39" h="100vh" justify="center">
             Loading...
           </Flex>
         ) : (
           <div data-id="030925-fa3d80">
             {matchedHelp ? (
               <Box data-id="030925-6437a2" fontSize="14px" mb="30px">
-                <ReactMarkdown data-id="030925-76c369" components={MarkdownComponents}>
+                <ReactMarkdown components={MarkdownComponents} data-id="030925-76c369">
                     {t(`${matchedHelp.privacy}`)}
                 </ReactMarkdown>
               </Box>

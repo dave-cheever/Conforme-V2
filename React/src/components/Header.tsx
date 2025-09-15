@@ -50,11 +50,11 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   const breadCrumbs = useMemo(() => breadcrumbs, [device, breadcrumbs, mobileBreadcrumbs]);
 
   const renderBreadcrumb = (breadcrumb: string, i: number) => (
-    <Flex data-id="030925-f48d06" align="center" h="full" key={`bc-${i}`}>
-      {i > 0 && <ArrowRight data-id="030925-11efe3" color="#818197" display="flex" ml={2} mr={1} mt={['4px', '5px']} />}
+    <Flex align="center" data-id="030925-f48d06" h="full" key={`bc-${i}`}>
+      {i > 0 && <ArrowRight color="#818197" data-id="030925-11efe3" display="flex" ml={2} mr={1} mt={['4px', '5px']} />}
       <Text
-        data-id="030925-6f1b5c"
         color={i === breadCrumbs.length - 1 ? 'header.breadcrumbPrimary' : 'header.breadcrumbSecondary'}
+        data-id="030925-6f1b5c"
         display={i === breadCrumbs.length - 1 ? 'flex' : 'flex'}
         fontSize={["18px", "20px"]}
         fontWeight={i === breadCrumbs.length - 1 ? '700' : '400'}
@@ -67,7 +67,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   );
 
   return (
-    <Flex data-id="030925-cfc2b6" align="center" background="#ffffff" h={['60px', '70px']} pb="10px" position="relative" zIndex="2">
+    <Flex align="center" background="#ffffff" data-id="030925-cfc2b6" h={['60px', '70px']} pb="10px" position="relative" zIndex="2">
       <Flex data-id="030925-ee73db" justify="space-between" w="full">
         <Flex data-id="030925-27fe8f" display="flex" flexShrink={0} ml="5">
           {breadCrumbs.map(renderBreadcrumb)}
@@ -79,14 +79,14 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
 
         {isPathAllowed() && (
           <Can
-            data-id="030925-52878f"
             action="audits.add"
+            data-id="030925-52878f"
             yes={() => (
               <>
                 {usedFilters && isAuditPage && usedFilters.length > 0 && (
                   <Divider
-                    data-id="030925-35a545"
                     borderColor="gray.300"
+                    data-id="030925-35a545"
                     display={['none', 'block']}
                     height="30px"
                     ml={0}
@@ -96,13 +96,13 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                 )}
 
                 <Button
-                  data-id="030925-b4127f"
                   _hover={{ opacity: 0.7 }}
                   aria-label="Add"
                   bg="navigationTop.addButton"
                   bottom={['78px', '0']}
                   boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                   color="white"
+                  data-id="030925-b4127f"
                   display={['none', 'flex']}
                   flexShrink={0}
                   fontSize={['12px', '14px']}

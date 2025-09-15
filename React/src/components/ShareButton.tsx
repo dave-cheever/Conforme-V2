@@ -17,7 +17,6 @@ function ShareButton({
 }) {
   return (
     <Button
-      data-id="030925-f07434"
       _hover={
         disabled
           ? {}
@@ -33,6 +32,7 @@ function ShareButton({
       border="1px solid #CBD5E0"
       borderRadius="10px"
       color="#818197"
+      data-id="030925-f07434"
       disabled={disabled}
       display="flex"
       fontSize="14px"

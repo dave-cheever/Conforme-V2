@@ -47,10 +47,10 @@ function UserResponseCount({ userId, role, responseCount }) {
 
   return (
     <Flex
-        data-id="030925-a2f021"
         alignItems="center"
         bg="userItem.responseCountBg"
         cursor="pointer"
+        data-id="030925-a2f021"
         h="calc(100% - 1px)"
         justifyContent="center"
         mr="1px"

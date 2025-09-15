@@ -18,11 +18,11 @@ function AuditorSearchBar() {
   return (
     <Box data-id="030925-f9254c">
       <Box
-        data-id="030925-876777"
         bg="auditModal.participants.customSearch.bg"
         border="2px solid"
         borderColor="auditModal.participants.customSearch.border"
         borderRadius="8px"
+        data-id="030925-876777"
         h="55px"
         mb="20px"
         overflow="hidden"
@@ -54,12 +54,12 @@ function AuditorSearchBar() {
           </InputRightElement>
         </InputGroup>
       </Box>
-      <Collapse data-id="030925-1065d5" animateOpacity={false} in={focused}>
+      <Collapse animateOpacity={false} data-id="030925-1065d5" in={focused}>
         <Box
-          data-id="030925-131a55"
           bg="white"
           borderRadius="8px"
           boxShadow="0px 10px 30px 0px #0000002E"
+          data-id="030925-131a55"
           maxH="220px"
           mt="-15px"
           overflow="auto"
@@ -84,8 +84,8 @@ function AuditorSearchBar() {
             ))
           ) : (
             <Box
-              data-id="030925-389fb0"
               alignItems="center"
+              data-id="030925-389fb0"
               display="flex"
               justifyContent="center"
               p="10px 10px">

@@ -3,12 +3,12 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 function ResponseLeftItem({ heading, value }: { heading: string; value: string }) {
   return (
     <Flex
-      data-id="030925-5b054f"
       align="flex-start"
+      data-id="030925-5b054f"
       flexDir="column"
       h="50px"
       mt={2}>
-     <Box data-id="030925-262b87"  color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+     <Box color="responseLeftNavigation.color"  data-id="030925-262b87" fontSize="16px" opacity="64%">
         {heading}
       </Box>
       <Text
