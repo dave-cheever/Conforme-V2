@@ -405,7 +405,6 @@ const audits = async (_, { auditQueryInput }, { authorize, organization }, info:
               participants,
             };
           } catch (e) {
-            console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
             return audit;
           }
         }),

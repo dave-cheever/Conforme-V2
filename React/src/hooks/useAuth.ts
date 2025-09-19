@@ -2,12 +2,11 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
-import authClient  from '../utils/auth-client';
+import authClient from '../utils/auth-client';
 
 const useAuth = () => {
-
-  const { 
-    data: session, 
+  const {
+    data: session,
     isPending, // Indicates if the session data is still being fetched
   } = authClient.useSession();
   const { setUser } = useAppContext();
@@ -15,7 +14,7 @@ const useAuth = () => {
 
   useEffect(() => {
     if (isPending) return;
-    if (session) setUser(session.user as any)
+    if (session) setUser(session.user as any);
     else {
       setUser(null);
       authClient.signOut();

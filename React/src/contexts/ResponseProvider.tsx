@@ -214,7 +214,11 @@ function ResponseProvider({ children }) {
 
   const participants: IUser[] = useMemo(() => participantsData?.participants || [], [participantsData]);
 
-  const getUpdatedDisplayName = (userId: string) => participants?.filter((participant) => participant._id === userId)[0]?.displayName;
+  const getUpdatedDisplayName = (userId: string) => {
+    if (!userId || !participants) return 'Unknown User';
+    const participant = participants.find((participant) => participant._id === userId);
+    return participant?.displayName || 'Unknown User';
+  };
 
   const getParticipantDetailById = (userId: string) => participants?.filter((participant) => participant._id === userId)[0];
 

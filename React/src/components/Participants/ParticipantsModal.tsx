@@ -22,6 +22,7 @@ import pluralize from 'pluralize';
 
 import { useParticipantsModalContext } from '../../contexts/ParticipantsModalProvider';
 import useDevice from '../../hooks/useDevice';
+import { preventFocusRestore } from '../../utils/focusUtils';
 import Loader from '../Loader';
 import ParticipantListItem from './ParticipantListItem';
 
@@ -45,6 +46,8 @@ function ParticipantsModal() {
   const handleClose = () => {
     closeParticipantsModal();
     setSearchQuery('');
+    // Prevent focus from returning to search bar after modal closes
+    preventFocusRestore();
   };
 
   // debounce query to make less request on server.
@@ -66,6 +69,7 @@ function ParticipantsModal() {
       isCentered={device !== 'mobile'}
       isOpen={isParticipantsModalOpen}
       onClose={handleClose}
+      returnFocusOnClose={false}
       scrollBehavior="inside"
       variant="teamModal"
     >

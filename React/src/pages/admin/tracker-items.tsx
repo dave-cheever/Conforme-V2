@@ -269,6 +269,7 @@ function TrackerItemsAdmin() {
         isOpen={adminModalState !== 'closed'}
         key={trackerItem._id}
         onClose={() => {}}
+        returnFocusOnClose={false}
         scrollBehavior="inside"
         size={device === 'desktop' || device === 'tablet' || adminModalState === 'delete' ? '2xl' : 'full'}
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
@@ -351,7 +352,8 @@ function TrackerItemsAdmin() {
               hasMore={!loading && trackerItems.length < total}
               loadMore={loadMore}
               pageStart={1}
-              useWindow={false}>
+              useWindow={false}
+            >
               {sortedTrackerItems.map((trackerItem, index) => (
                 <Flex
                   _hover={{ bg: '#F5F7FA' }}
@@ -378,22 +380,18 @@ function TrackerItemsAdmin() {
                         {trackerItem.category?.name}
                       </Text>
                       {!isMobile && !trackerItem.published && (
-                        <Box
-                          bg="gray.600"
-                          borderRadius="md"
-                          color="white"
-                          data-id="030925-d8c68f"
-                          fontSize="11px"
-                          ml={2}
-                          px={2}
-                          py={1}>
+                        <Box bg="gray.600" borderRadius="md" color="white" data-id="030925-d8c68f" fontSize="11px" ml={2} px={2} py={1}>
                           Draft
                         </Box>
                       )}
                     </Flex>
                   </Flex>
-                  <Text data-id="030925-e05408" w="calc(100% / 4)">{trackerItem.frequency}</Text>
-                  <Text data-id="030925-e77c25" w="calc(100% / 4)">{trackerItem.regulatoryBody?.name || '-'}</Text>
+                  <Text data-id="030925-e05408" w="calc(100% / 4)">
+                    {trackerItem.frequency}
+                  </Text>
+                  <Text data-id="030925-e77c25" w="calc(100% / 4)">
+                    {trackerItem.regulatoryBody?.name || '-'}
+                  </Text>
                   <Flex data-id="030925-898a0a" gap={4} justify="flex-end" w="calc(100% / 4)">
                     <Copy
                       _hover={{ stroke: '#FFFFFF' }}
@@ -403,7 +401,8 @@ function TrackerItemsAdmin() {
                         e.stopPropagation();
                         openModal('clone', trackerItem);
                       }}
-                      stroke="#282F36" />
+                      stroke="#282F36"
+                    />
                     <Trashcan
                       _hover={{ stroke: '#FFFFFF' }}
                       cursor="pointer"
@@ -412,7 +411,8 @@ function TrackerItemsAdmin() {
                         e.stopPropagation();
                         openModal('delete', trackerItem);
                       }}
-                      stroke="#282F36" />
+                      stroke="#282F36"
+                    />
                   </Flex>
                 </Flex>
               ))}

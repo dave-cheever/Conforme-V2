@@ -41,19 +41,16 @@ function ChatProvider({ children, component }: { children: React.ReactNode; comp
     let participants: string[] = [];
 
     if (component === 'audit' && audit) {
-      if (audit.auditorId && audit.auditorId !== '') 
-        participants.push(audit.auditorId);
-      
+      if (audit.auditorId && audit.auditorId !== '') participants.push(audit.auditorId);
+
       participants = participants.concat(audit.participantsIds?.filter((id) => id && id !== '') || []);
     }
 
     if (component === 'response' && response) {
-      if (response.accountableId && response.accountableId !== '') 
-        participants.push(response.accountableId);
-      
-      if (response.responsibleId && response.responsibleId !== '') 
-        participants.push(response.responsibleId);
-      
+      if (response.accountableId && response.accountableId !== '') participants.push(response.accountableId);
+
+      if (response.responsibleId && response.responsibleId !== '') participants.push(response.responsibleId);
+
       participants = participants.concat(response.followersIds?.filter((id) => id && id !== '') || []);
       participants = participants.concat(response.contributorsIds?.filter((id) => id && id !== '') || []);
     }
@@ -80,7 +77,14 @@ function ChatProvider({ children, component }: { children: React.ReactNode; comp
     response?.contributorsIds?.join(','),
   ]);
 
-  const chatParticipants: IUser[] = useMemo(() => participantsData?.participants || [], [participantsData]);
+  const chatParticipants: IUser[] = useMemo(() => {
+    const participants = participantsData?.participants || [];
+    // Filter out participants with invalid displayName to prevent toLowerCase errors
+    return participants.filter(
+      (participant) =>
+        participant && participant.displayName && typeof participant.displayName === 'string' && participant.displayName.trim() !== '',
+    );
+  }, [participantsData]);
 
   const value = useMemo(
     () => ({ isOpenMessage, handleOpenMessage, handleCloseMessage, participantsLoading, chatParticipants }),

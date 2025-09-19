@@ -15,26 +15,27 @@ function ChatMention({ tag }) {
     try {
       const userId = tag.split('@[')[1]?.split('](')[1];
       setUserId(userId);
-      const userName = getUpdatedDisplayName(userId);
-      setUserName(userName);
-    } catch (e) {}
+      if (userId) {
+        const userName = getUpdatedDisplayName(userId);
+        setUserName(userName || 'Unknown User');
+      }
+    } catch (e) {
+      console.error('Error processing mention tag:', e);
+    }
   }, [getUpdatedDisplayName, tag]);
 
   if (!userId) return <Text data-id="030925-720112">{displayTag}</Text>;
 
   return (
     <Tooltip
-        bg="chatMention.tooltip.bg"
-        color="chatMention.tooltip.color"
-        data-id="030925-d5c138"
-        hasArrow
-        label={userName}
-        placement="top">
-      <Text
-        color="chatMention.mentionColor"
-        cursor="pointer"
-        data-id="030925-bccbd7"
-        display="inline">
+      bg="chatMention.tooltip.bg"
+      color="chatMention.tooltip.color"
+      data-id="030925-d5c138"
+      hasArrow
+      label={userName}
+      placement="top"
+    >
+      <Text color="chatMention.mentionColor" cursor="pointer" data-id="030925-bccbd7" display="inline">
         {displayTag}
       </Text>
     </Tooltip>

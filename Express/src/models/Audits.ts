@@ -288,7 +288,6 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
           }),
         };
       } catch (e) {
-        console.log(`Error occured for audit with ID ${audit._id}: ${e}`);
         return audit;
       }
     }),
