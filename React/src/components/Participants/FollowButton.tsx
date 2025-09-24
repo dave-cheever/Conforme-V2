@@ -99,8 +99,8 @@ function FollowButton({ isMobile = false }) {
     if (isFollower) {
       return (
         <UnFollowIcon
+            data-id="000571"
             _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-            data-id="030925-e7154e"
             fill="transparent"
             fontSize="15px"
             stroke="reasponseHeader.buttonLightColor" />
@@ -109,8 +109,8 @@ function FollowButton({ isMobile = false }) {
 
     return (
       <FollowIcon
+          data-id="000572"
           _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
-          data-id="030925-0597f1"
           fill="transparent"
           fontSize="15px"
           stroke="reasponseHeader.buttonLightColor" />
@@ -120,12 +120,12 @@ function FollowButton({ isMobile = false }) {
   if (isMobile) {
     return (
       <Can
-          data-id="030925-f18216"
+          data-id="000573"
           action="responses.manageFollower"
           // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
             <ResponseHeaderMenuItem
-              data-id="030925-0fe3c8"
+              data-id="000574"
               icon={Icon}
               name={isFollower ? 'Unfollow' : 'Follow'}
               onClick={isFollower ? handleUnFollow : handleFollow} />
@@ -135,12 +135,12 @@ function FollowButton({ isMobile = false }) {
 
   return (
     <Can
-        data-id="030925-39053e"
+        data-id="000575"
         action="responses.manageFollower"
         // eslint-disable-next-line react/no-unstable-nested-components
         yes={() => (
           <ResponseHeaderButton
-            data-id="030925-d75d3c"
+            data-id="000576"
             icon={Icon}
             loading={loading || unFollowLoading}
             name={isFollower ? 'Unfollow' : 'Follow'}

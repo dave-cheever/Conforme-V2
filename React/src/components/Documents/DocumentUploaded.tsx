@@ -48,17 +48,17 @@ function DocumentUploaded({
   return (
     <>
       <DocumentDeleteModal
-        data-id="030925-ae989e"
+        data-id="000492"
         handleClose={handleDeleteModalClose}
         handleDelete={remove}
         isOpen={isDeleteModalOpen}
         message={deleteModalMessage || `Are you sure you wish to delete ${document?.name}?`} />
       <Flex
+        data-id="000493"
         align="center"
         border="1px solid #CBD5E0"
         borderRadius="10px"
         color="brand.darkGrey"
-        data-id="030925-17bece"
         fontWeight="400"
         justify="space-between"
         key={document?.id}
@@ -66,12 +66,12 @@ function DocumentUploaded({
         role="group"
         w="full">
         <Flex
+          data-id="000494"
           align="center"
           bg="documentUploaded.thumbnailBg"
           borderColor="documentUploaded.border"
           borderRadius="3px"
           borderWidth="1px"
-          data-id="030925-bc140f"
           flexShrink={0}
           fontSize="12px"
           h="45px"
@@ -79,11 +79,11 @@ function DocumentUploaded({
           overflow="hidden"
           w="45px">
           <Image
+            data-id="000495"
             aspectRatio="1 / 1"
-            data-id="030925-072156"
             fallback={
-              <Flex align="center" data-id="030925-c89b82" h="full">
-                <BlankPage data-id="030925-e606e3" h="20px" w="45px" />
+              <Flex data-id="000496" align="center" h="full">
+                <BlankPage data-id="000497" h="20px" w="45px" />
               </Flex>
             }
             h="auto"
@@ -93,7 +93,7 @@ function DocumentUploaded({
             w="auto" />
         </Flex>
         <Flex
-          data-id="030925-9dd481"
+          data-id="000498"
           direction="column"
           fontSize="12px"
           grow={1}
@@ -101,23 +101,23 @@ function DocumentUploaded({
           overflow="hidden"
           textOverflow="ellipsis">
           <Text
-            data-id="030925-397c30"
+            data-id="000499"
             fontWeight="700"
             noOfLines={1}
             textOverflow="ellipsis">
             {document?.name}
           </Text>
-          <Flex data-id="030925-047e4f" opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
+          <Flex data-id="000500" opacity="0.6">Uploaded {document && format(new Date(document.addedAt), 'Pp')}</Flex>
         </Flex>
-        <HStack data-id="030925-2f288d" mr={[1, 3]} spacing={4}>
+        <HStack data-id="000501" mr={[1, 3]} spacing={4}>
           {downloadable && <DownloadIcon
+            data-id="000502"
             cursor='pointer'
-            data-id="030925-241f09"
             onClick={() => window.open(documentDetails?.path)}
             stroke="documentUploaded.downloadIcon" />}
           {removable && <Trashcan
+            data-id="000503"
             cursor='pointer'
-            data-id="030925-2fe2a9"
             onClick={openDeleteModal}
             stroke="documentUploaded.binIcon" />}
         </HStack>

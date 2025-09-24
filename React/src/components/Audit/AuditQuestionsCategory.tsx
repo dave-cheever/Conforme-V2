@@ -17,16 +17,16 @@ function AuditQuestionsCategory({
 
   return (
     <Stack
-        data-id="030925-37bc44"
+        data-id="000239"
         key={questionsCategory?._id}
         pr='10px'
         spacing={4}
         w="full">
-      <Text data-id="030925-fcafd9" fontWeight="semibold">{questionsCategory.name}</Text>
-      <Stack data-id="030925-2d9ad1" spacing={2}>
+      <Text data-id="000240" fontWeight="semibold">{questionsCategory.name}</Text>
+      <Stack data-id="000241" spacing={2}>
         {categoryQuestions.map((question) => (
           <AuditQuestionListItem
-            data-id="030925-03102c"
+            data-id="000242"
             handleDelete={handleDelete}
             key={question._id}
             question={question} />

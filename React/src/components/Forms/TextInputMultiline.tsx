@@ -41,25 +41,25 @@ function TextInputMultiline({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
+        data-id="000382"
         control={control}
-        data-id="030925-e0db5c"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
           const { error } = fieldState;
           return (
-            <Box data-id="030925-b227e4" id={name} mt="none" w="full">
+            <Box data-id="000383" id={name} mt="none" w="full">
               {label && (
                 <Flex
+                  data-id="000384"
                   align="center"
-                  data-id="030925-8961c3"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
+                    data-id="000385"
                     color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
-                    data-id="030925-532bce"
                     fontSize="11px"
                     fontWeight="bold"
                     left="none"
@@ -68,7 +68,7 @@ function TextInputMultiline({
                     {label}
                     {required && (
                       <Asterisk
-                        data-id="030925-8e840e"
+                        data-id="000386"
                         fill="questionListElement.iconAsterisk"
                         h="9px"
                         mb="8px"
@@ -77,14 +77,15 @@ function TextInputMultiline({
                         w="9px" />
                     )}{' '}
                     {tooltip && (
-                      <Tooltip data-id="030925-8b3e1c" hasArrow label={tooltip} placement="top">
-                        <Icon data-id="030925-5d38a2" h="14px" mb={1} name="info" />
+                      <Tooltip data-id="000387" hasArrow label={tooltip} placement="top">
+                        <Icon data-id="000388" h="14px" mb={1} name="info" />
                       </Tooltip>
                     )}
                   </Box>
                 </Flex>
               )}
               <Textarea
+                data-id="000389"
                 _active={{
                   bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
                 }}
@@ -105,7 +106,6 @@ function TextInputMultiline({
                 borderWidth="1px"
                 color="textInput.font"
                 cursor="pointer"
-                data-id="030925-13a1b3"
                 fontSize="smm"
                 h="100px"
                 isDisabled={disabled}
@@ -116,7 +116,7 @@ function TextInputMultiline({
                 placeholder={placeholder}
                 value={value || ''} />
               {error && (
-                <Box color="textInput.error" data-id="030925-8c12f1" fontSize={14} ml={1}>
+                <Box data-id="000390" color="textInput.error" fontSize={14} ml={1}>
                   {error.message}
                 </Box>
               )}

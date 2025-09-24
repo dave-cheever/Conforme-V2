@@ -41,46 +41,46 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
   return (
     <>
       <Modal
+        data-id="000301"
         blockScrollOnMount={false}
-        data-id="030925-b3aa19"
         isOpen={isOpenModal}
         onClose={onClose}
         onEsc={onAction}
         onOverlayClick={onAction}
         variant={collection ? 'adminModal' : 'conformeModal'}
       >
-        <ModalOverlay data-id="030925-4ff34f" />
+        <ModalOverlay data-id="000302" />
         {modalType !== 'delete' && (
-          <ModalContent bg="adminModal.content.bg" data-id="030925-7a2f88" h="full" my="0" position="absolute" rounded="0">
-            <ModalHeader data-id="030925-719c4d" pl="18px">
-              <Flex alignItems="center" data-id="030925-47a2c4" justifyContent="space-between" pt="10px">
-                <Flex data-id="030925-7ebcfd">
+          <ModalContent data-id="000303" bg="adminModal.content.bg" h="full" my="0" position="absolute" rounded="0">
+            <ModalHeader data-id="000304" pl="18px">
+              <Flex data-id="000305" alignItems="center" justifyContent="space-between" pt="10px">
+                <Flex data-id="000306">
                   <Avatar
-                    data-id="030925-1470cf"
+                    data-id="000307"
                     mx={3}
                     name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                     rounded="full"
                     size="sm"
                     src={user?.imgUrl}
                   />
-                  <Box data-id="030925-c1faec" fontSize="xxl" fontWeight="bold">
+                  <Box data-id="000308" fontSize="xxl" fontWeight="bold">
                     {modalType === 'edit' ? `Edit ${pluralize(collection, 1)}` : `Add ${pluralize(collection, 1)}`}
                   </Box>
                 </Flex>
-                <Close cursor="pointer" data-id="030925-c4342f" h="15px" onClick={onAction} stroke="adminModal.closeIcon" w="15px" />
+                <Close data-id="000309" cursor="pointer" h="15px" onClick={onAction} stroke="adminModal.closeIcon" w="15px" />
               </Flex>
             </ModalHeader>
-            <ModalBody bg="adminModal.body.bg" data-id="030925-54ce6d" overflowY="auto">
-              <Flex bgColor="#F0F2F5" borderRadius={['0', '20px']} data-id="030925-1efcbd" direction="column" minH="98%" p={25}>
+            <ModalBody data-id="000310" bg="adminModal.body.bg" overflowY="auto">
+              <Flex data-id="000311" bgColor="#F0F2F5" borderRadius={['0', '20px']} direction="column" minH="98%" p={25}>
                 {children}
-                <Spacer data-id="030925-10383d" />
-                <Flex data-id="030925-35c3a9" flexWrap="wrap" gap={3} justify="space-between" mt={5}>
+                <Spacer data-id="000312" />
+                <Flex data-id="000313" flexWrap="wrap" gap={3} justify="space-between" mt={5}>
                   {modalType === 'edit' && (
                     <Button
+                      data-id="000314"
                       _hover={{ bg: 'adminModal.button.remove.bg' }}
                       bg="adminModal.button.remove.bg"
                       color="adminModal.button.remove.color"
-                      data-id="030925-dd7421"
                       fontSize="smm"
                       fontWeight="bold"
                       onClick={() => setIsConfirmDeleteOpen(true)}
@@ -89,25 +89,25 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
                     </Button>
                   )}
 
-                  <Flex data-id="030925-177b3c" gap={3}>
+                  <Flex data-id="000315" gap={3}>
                     {/* Add More Button — only in add mode and if onAddMore exists */}
                     {modalType === 'add' && onAddMore && (
-                      <Button bg="gray.300" color="black" data-id="030925-33b1f9" fontSize="smm" fontWeight="bold" onClick={onAddMore}>
+                      <Button data-id="000316" bg="gray.300" color="black" fontSize="smm" fontWeight="bold" onClick={onAddMore}>
                         Add More
                       </Button>
                     )}
 
                     <Button
+                      data-id="000317"
                       _hover={{ bg: 'adminModal.button.hover' }}
                       bg="adminModal.button.bg"
                       color="adminModal.button.color"
-                      data-id="030925-9a4314"
                       fontSize="smm"
                       fontWeight="bold"
                       onClick={() => onAction(modalType)}
                     >
                       {modalType === 'edit' ? 'Update' : 'Add'}
-                      <ChevronRight data-id="030925-a7ce07" ml="5px" />
+                      <ChevronRight data-id="000318" ml="5px" />
                     </Button>
                   </Flex>
                 </Flex>
@@ -117,35 +117,35 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
         )}
         {modalType === 'delete' && (
           <ModalContent
+            data-id="000319"
             bg="adminModal.delete.bg"
             borderRadius={['0', '20px']}
-            data-id="030925-8d1265"
             h={['100vh', 'calc(100vh - 30px)']}
             position="absolute"
             right={['0', '15px']}
             top={['-60px', '-45px']}
           >
-            <Flex alignItems="center" data-id="030925-dd7747" flexDirection="column" h="100%" justifyContent="center">
-              <Box color="adminModal.button.color" data-id="030925-7786e0" fontSize="fontSize.xxl" fontWeight="fontWeights.bold" mb="45px">
+            <Flex data-id="000320" alignItems="center" flexDirection="column" h="100%" justifyContent="center">
+              <Box data-id="000321" color="adminModal.button.color" fontSize="fontSize.xxl" fontWeight="fontWeights.bold" mb="45px">
                 Delete
               </Box>
-              <Box color="adminModal.text.color" data-id="030925-16cf54" textAlign="center" whiteSpace="pre">
+              <Box data-id="000322" color="adminModal.text.color" textAlign="center" whiteSpace="pre">
                 {`All the information will be lost and you will need \n to re-create it from scratch.`}
               </Box>
-              <Box data-id="030925-869b13" mt="34px">
+              <Box data-id="000323" mt="34px">
                 <Button
+                  data-id="000324"
                   _hover={{ backgroundColor: 'adminModal.button.keep.hover' }}
                   bg="adminModal.button.keep.bg"
                   borderRadius="4px"
                   color="adminModal.button.color"
-                  data-id="030925-8b750e"
                   mr="22px"
                   onClick={onAction}
                   p="10px 40px"
                 >
                   Keep
                 </Button>
-                <Button borderRadius="4px" data-id="030925-8d0b38" onClick={() => onAction(modalType)} p="10px 40px">
+                <Button data-id="000325" borderRadius="4px" onClick={() => onAction(modalType)} p="10px 40px">
                   Delete
                 </Button>
               </Box>
@@ -153,20 +153,20 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
           </ModalContent>
         )}
       </Modal>
-      <Modal data-id="030925-fbed58" isCentered isOpen={isConfirmDeleteOpen} onClose={() => setIsConfirmDeleteOpen(false)}>
-        <ModalOverlay data-id="030925-615de7" />
-        <ModalContent bg="white" borderRadius="12px" boxShadow="lg" data-id="030925-92d46c" p={6} textAlign="center">
-          <Box color="gray.800" data-id="030925-f7d2e2" fontSize="xl" fontWeight="bold" mb={4}>
+      <Modal data-id="000326" isCentered isOpen={isConfirmDeleteOpen} onClose={() => setIsConfirmDeleteOpen(false)}>
+        <ModalOverlay data-id="000327" />
+        <ModalContent data-id="000328" bg="white" borderRadius="12px" boxShadow="lg" p={6} textAlign="center">
+          <Box data-id="000329" color="gray.800" fontSize="xl" fontWeight="bold" mb={4}>
             Confirm Delete
           </Box>
-          <Box color="gray.600" data-id="030925-3c84cf" mb={6}>
+          <Box data-id="000330" color="gray.600" mb={6}>
             Are you sure you want to delete this item? This action cannot be undone.
           </Box>
-          <Flex data-id="030925-bb5d4a" justify="center">
-            <Button colorScheme="gray" data-id="030925-6147c4" mr={3} onClick={() => setIsConfirmDeleteOpen(false)} variant="outline">
+          <Flex data-id="000331" justify="center">
+            <Button data-id="000332" colorScheme="gray" mr={3} onClick={() => setIsConfirmDeleteOpen(false)} variant="outline">
               Cancel
             </Button>
-            <Button colorScheme="red" data-id="030925-4a5d04" onClick={confirmDelete}>
+            <Button data-id="000333" colorScheme="red" onClick={confirmDelete}>
               Delete
             </Button>
           </Flex>

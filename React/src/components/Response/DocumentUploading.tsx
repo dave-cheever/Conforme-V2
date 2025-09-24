@@ -6,13 +6,13 @@ import Loader from '../Loader';
 function DocumentUploading({ documentName, cancelUpload }: { documentName: string; cancelUpload?: () => void }) {
   return (
     <Flex
+      data-id="000244"
       align="center"
       borderColor="evidence.uploadBorderColor"
       borderRadius="10px"
       borderStyle="dashed"
       borderWidth="1px"
       color="brand.darkGrey"
-      data-id="030925-123404"
       fontWeight="400"
       h="65px"
       justify="space-between"
@@ -20,10 +20,10 @@ function DocumentUploading({ documentName, cancelUpload }: { documentName: strin
       maxWidth={['none', 'none', 400]}
       role="group"
       w="full">
-      <Flex align="center" data-id="030925-34ce18" w='80%'>
+      <Flex data-id="000245" align="center" w='80%'>
         <Box
+          data-id="000246"
           bg="evidence.uploadBg"
-          data-id="030925-372264"
           flexShrink={0}
           fontSize="12px"
           h="55px"
@@ -31,32 +31,32 @@ function DocumentUploading({ documentName, cancelUpload }: { documentName: strin
           mr={2}
           rounded="md"
           w="55px">
-          <Flex align="center" data-id="030925-7e929c" h="full" justify="center">
-            <Loader center data-id="030925-31a316" size="lg" />
+          <Flex data-id="000247" align="center" h="full" justify="center">
+            <Loader data-id="000248" center size="lg" />
           </Flex>
         </Box>
         <Flex
-          data-id="030925-d80920"
+          data-id="000249"
           direction="column"
           fontSize="12px"
           mr={2}
           width={[150, 250, 250]}>
           <Text
-            data-id="030925-9f9e14"
+            data-id="000250"
             fontWeight="700"
             noOfLines={1}
             textOverflow="ellipsis">
             {documentName}
           </Text>
-          <Flex data-id="030925-02d495" opacity="0.6">Uploading ...</Flex>
+          <Flex data-id="000251" opacity="0.6">Uploading ...</Flex>
         </Flex>
-        <Spacer data-id="030925-e8a562" />
+        <Spacer data-id="000252" />
       </Flex>
-      <Flex align="center" data-id="030925-5a8eee" mr={3}>
-        <Tooltip data-id="030925-9d9af2" label="Cancel upload">
+      <Flex data-id="000253" align="center" mr={3}>
+        <Tooltip data-id="000254" label="Cancel upload">
           <Close
+            data-id="000255"
             cursor="pointer"
-            data-id="030925-f9c206"
             h="15px"
             onClick={cancelUpload}
             stroke="#282F36"

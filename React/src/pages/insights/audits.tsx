@@ -275,17 +275,17 @@ function AuditsInsights() {
   ) as EChartsOption;
 
   return (
-    <Box data-id="030925-a1a288" pt="3">
+    <Box data-id="000720" pt="3">
       {error ? (
-        <Text data-id="030925-d5e59d">{error.message}</Text>
+        <Text data-id="000721">{error.message}</Text>
       ) : loading ? (
-        <Box data-id="030925-95fa0e" h="100vh">
-          <Loader center data-id="030925-9d0614" />
+        <Box data-id="000722" h="100vh">
+          <Loader data-id="000723" center />
         </Box>
       ) : (
         <>
           <Flex
-            data-id="030925-f1830b"
+            data-id="000724"
             sx={{
               '@media (max-width: 768px)': {
                 overflowX: 'scroll',
@@ -294,8 +294,8 @@ function AuditsInsights() {
             }}>
             {auditsStatsCounts.map((filter) => (
               <InsightsCard
+                data-id="000725"
                 count={filter.audits}
-                data-id="030925-e8bb3c"
                 key={filter.status}
                 onSelect={setSelectedAuditsStatsCount}
                 selected={selectedAuditsStatsCount === filter.status}
@@ -303,20 +303,20 @@ function AuditsInsights() {
             ))}
           </Flex>
           <Text
+            data-id="000726"
             color={auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color}
-            data-id="030925-c436a2"
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}>
             {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
-            <Text as="span" color="insights.secondaryText" data-id="030925-1d2255">
+            <Text data-id="000727" as="span" color="insights.secondaryText">
               {pluralize(t('audit'))}
             </Text>
           </Text>
-          <InsightsChart data-id="030925-deb1aa" option={echartsOption} />
+          <InsightsChart data-id="000728" option={echartsOption} />
           <InsightsDetailedStats
+            data-id="000729"
             businessUnits={businessUnits}
-            data-id="030925-5443d2"
             insightsType="audits"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

@@ -8,11 +8,11 @@ function ResponseStatusBox({ status }) {
   const { responseStatuses } = useResponseUtils();
   return (
     <Box
+        data-id="000319"
         alignSelf="flex-start"
         bg={`brand.${status}`}
         borderRadius="7px"
         color="white"
-        data-id="030925-7290b3"
         fontSize="sm"
         fontWeight="medium"
         m="0.75rem 0 -0.25rem 0"

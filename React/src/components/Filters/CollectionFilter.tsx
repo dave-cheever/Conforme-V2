@@ -11,12 +11,13 @@ function CollectionFilter() {
 
   return (
     <CheckboxGroup
-        data-id="030925-f12d5f"
+        data-id="000106"
         onChange={(newValue) => setFilters({ collections: newValue })}
         value={value}>
-      <Stack data-id="030925-5250b1" direction="column" ml="4">
+      <Stack data-id="000107" direction="column" ml="4">
         {Object.entries(collections).map(([key, label]) => (
           <Checkbox
+            data-id="000108"
             css={{
               '.chakra-checkbox__control': {
                 borderRadius: '50%',
@@ -32,10 +33,9 @@ function CollectionFilter() {
                 },
               },
             }}
-            data-id="030925-6073c9"
             key={key}
             value={key}>
-            <Text data-id="030925-b6a167">{label as string}</Text>
+            <Text data-id="000109">{label as string}</Text>
           </Checkbox>
         ))}
       </Stack>

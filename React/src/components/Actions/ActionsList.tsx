@@ -24,20 +24,20 @@ function ActionsList({
 }) {
   return (
     <Box
+      data-id="000404"
       bg="auditsList.bg"
       border="1px solid"
       borderColor="auditsList.headerBorderColor"
       borderRadius="10px"
-      data-id="030925-636888"
       h="full"
       ml="10px"
       overflow="hidden"
       w="full"
     >
-      <Box bg="auditsList.bg" data-id="030925-7e7535" h="fit-content" minH="full" pb={7} w="full">
-        <AdminTableHeader data-id="030925-68d0c8">
+      <Box data-id="000405" bg="auditsList.bg" h="fit-content" minH="full" pb={7} w="full">
+        <AdminTableHeader data-id="000406">
           <AdminTableHeaderElement
-            data-id="030925-7421c5"
+            data-id="000407"
             label="Title"
             onClick={() => {
               setSortType('title');
@@ -48,7 +48,7 @@ function ActionsList({
             w="13%"
           />
           <AdminTableHeaderElement
-            data-id="030925-c85d5d"
+            data-id="000408"
             label="Priority"
             onClick={() => {
               setSortType('priority');
@@ -59,7 +59,7 @@ function ActionsList({
             w="7%"
           />
           <AdminTableHeaderElement
-            data-id="030925-4cc7d6"
+            data-id="000409"
             label="Due date"
             onClick={() => {
               setSortType('dueDate');
@@ -70,7 +70,7 @@ function ActionsList({
             w="10%"
           />
           <AdminTableHeaderElement
-            data-id="030925-4661c4"
+            data-id="000410"
             label="Completed date"
             onClick={() => {
               setSortType('completedDate');
@@ -81,7 +81,7 @@ function ActionsList({
             w="10%"
           />
           <AdminTableHeaderElement
-            data-id="030925-b3b42b"
+            data-id="000411"
             label="Status"
             onClick={() => {
               setSortType('status');
@@ -92,7 +92,7 @@ function ActionsList({
             w="7%"
           />
           <AdminTableHeaderElement
-            data-id="030925-e75c8d"
+            data-id="000412"
             label="Assignee"
             onClick={() => {
               setSortType('assignee.displayName');
@@ -103,7 +103,7 @@ function ActionsList({
             w="18%"
           />
           <AdminTableHeaderElement
-            data-id="030925-e48059"
+            data-id="000413"
             label="Created by"
             onClick={() => {
               setSortType('creator.displayName');
@@ -114,7 +114,7 @@ function ActionsList({
             w="10%"
           />
           <AdminTableHeaderElement
-            data-id="030925-8d1d04"
+            data-id="000414"
             label={capitalize(t('location'))}
             onClick={() => {
               setSortType('answer.audit.location.name');
@@ -125,7 +125,7 @@ function ActionsList({
             w="14%"
           />
           <AdminTableHeaderElement
-            data-id="030925-ff7fb6"
+            data-id="000415"
             label={capitalize(t('business unit'))}
             onClick={() => {
               setSortType('answer.businessUnit.name');
@@ -136,9 +136,9 @@ function ActionsList({
             w="10%"
           />
         </AdminTableHeader>
-        <Flex data-id="030925-2a4751" flexDir="column" h="calc(100vh - 310px)" overflowY="auto" w="full">
+        <Flex data-id="000416" flexDir="column" h="calc(100vh - 310px)" overflowY="auto" w="full">
           {actions?.map((action, idx) => (
-            <ActionsListItem action={action} data-id="030925-e45091" editAction={editAction} index={idx} key={action._id} />
+            <ActionsListItem data-id="000417" action={action} editAction={editAction} index={idx} key={action._id} />
           ))}
         </Flex>
       </Box>

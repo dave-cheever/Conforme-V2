@@ -45,19 +45,19 @@ function Datepicker({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
+      data-id="000233"
       control={control}
-      data-id="030925-72abda"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
         const { error } = fieldState;
         return (
-          <Box data-id="030925-8c6b36" id={name} w="full">
+          <Box data-id="000234" id={name} w="full">
             {label && (
-              <Flex align="center" data-id="030925-3ed78b" justify="space-between" mb="none" pt={2}>
+              <Flex data-id="000235" align="center" justify="space-between" mb="none" pt={2}>
                 <Box
+                  data-id="000236"
                   color={error ? 'datepicker.labelFont.error' : styles ? styles?.textInput?.font : 'datepicker.labelFont.normal'}
-                  data-id="030925-4978d8"
                   fontSize="ssm"
                   fontWeight="bold"
                   left="none"
@@ -67,7 +67,7 @@ function Datepicker({
                   {label}
                   {required && (
                     <Asterisk
-                      data-id="030925-207472"
+                      data-id="000237"
                       fill="questionListElement.iconAsterisk"
                       h="9px"
                       mb="8px"
@@ -77,14 +77,15 @@ function Datepicker({
                     />
                   )}{' '}
                   {tooltip && (
-                    <Tooltip data-id="030925-53e6b1" hasArrow label={tooltip} placement="top">
-                      <Icon data-id="030925-c94995" h="14px" mb={1} name="info" />
+                    <Tooltip data-id="000238" hasArrow label={tooltip} placement="top">
+                      <Icon data-id="000239" h="14px" mb={1} name="info" />
                     </Tooltip>
                   )}
                 </Box>
               </Flex>
             )}
             <Flex
+              data-id="000240"
               _active={{
                 bg: disabled ? 'datepicker.disabled.bg' : 'datepicker.activeBg',
               }}
@@ -106,7 +107,6 @@ function Datepicker({
               borderWidth="1px"
               color={readMode ? 'datepicker.readMode.font' : 'datepicker.font'}
               cursor={readMode ? 'default' : disabled ? 'not-allowed' : 'pointer'}
-              data-id="030925-afe03c"
               h="42px"
               justify="space-between"
               mb="-5px"
@@ -118,13 +118,13 @@ function Datepicker({
               pt="none"
             >
               {disabled || readMode ? (
-                <Text data-id="030925-111185" fontSize="smm" pl={readMode ? 0 : 4} w="full">
+                <Text data-id="000241" fontSize="smm" pl={readMode ? 0 : 4} w="full">
                   {value ? format(new Date(value), 'd MMM yyyy') : ''}
                 </Text>
               ) : (
                 <ReactDatepicker
+                  data-id="000242"
                   calendarStartDay={1}
-                  data-id="030925-93dca1"
                   dateFormat="d MMM yyyy"
                   dateFormatCalendar="MMMM"
                   disabledKeyboardNavigation
@@ -146,10 +146,10 @@ function Datepicker({
                   showYearDropdown
                 />
               )}
-              {!readMode && <CalendarIcon data-id="030925-00803a" h="16px" ml="5px" mr="10px" mt="-2px" stroke="datepicker.font" w="14px" />}
+              {!readMode && <CalendarIcon data-id="000243" h="16px" ml="5px" mr="10px" mt="-2px" stroke="datepicker.font" w="14px" />}
             </Flex>
             {error && (
-              <Box color="datepicker.error" data-id="030925-9e7a17" fontSize="smm" ml={1} mt={1}>
+              <Box data-id="000244" color="datepicker.error" fontSize="smm" ml={1} mt={1}>
                 {error.message}
               </Box>
             )}

@@ -24,31 +24,31 @@ function AuditRecurringModal({ isOpen, onClose }) {
   if (!audit) return null;
 
   return (
-    <Modal data-id="030925-e3522e" isCentered isOpen={isOpen} onClose={onClose} size="sm">
-      <ModalContent data-id="030925-530170">
-        <ModalHeader data-id="030925-8527c8">
-          <Text data-id="030925-d34bfd" fontSize="smm" fontWeight="semibold">
+    <Modal data-id="000523" isCentered isOpen={isOpen} onClose={onClose} size="sm">
+      <ModalContent data-id="000524">
+        <ModalHeader data-id="000525">
+          <Text data-id="000526" fontSize="smm" fontWeight="semibold">
             Update {t('audit')} recurring setting
           </Text>
-          <ModalCloseButton data-id="030925-a1f958" />
+          <ModalCloseButton data-id="000527" />
         </ModalHeader>
-        <ModalBody data-id="030925-8cc5d9" mb="40px">
-          <Stack data-id="030925-b48e48">
-            <Text data-id="030925-c3e5c0">
+        <ModalBody data-id="000528" mb="40px">
+          <Stack data-id="000529">
+            <Text data-id="000530">
               By changing the {t('audit')} to {audit.recurring ? 'non' : ''}recurring, system will {audit.recurring ? 'not' : ''} create a
               new audit automatically for the next period. Are you sure?
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="030925-3a8ad9">
-          <HStack data-id="030925-16c77d" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="030925-4bd32a" onClick={onClose}>
+        <ModalFooter data-id="000531">
+          <HStack data-id="000532" justify="center" spacing={4} w="full">
+            <Button data-id="000533" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="000534"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="030925-d40367"
               isLoading={updateAuditLoading}
               loadingText="Updating..."
               onClick={async () => {

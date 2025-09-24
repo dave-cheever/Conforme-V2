@@ -56,51 +56,51 @@ function ResponseDetail({ response }) {
 
   return (
     <>
-      <Flex data-id="030925-55bce9" mt={[0, 5]} onClick={toggle} position="relative">
-        <Flex align="center" cursor="pointer" data-id="030925-5a412e">
+      <Flex data-id="000913" mt={[0, 5]} onClick={toggle} position="relative">
+        <Flex data-id="000914" align="center" cursor="pointer">
           <Flex
+            data-id="000915"
             align="center"
             bg={isOpen ? 'responseLeftTabItem.activeIconBg' : ''}
             borderRadius="8px"
-            data-id="030925-113495"
             h="30px"
             justify="center"
             w="30px">
             <Icon
+              data-id="000916"
               as={DetailIcon}
-              color="#ffffff"
-              data-id="030925-d66e79" />
+              color="#ffffff" />
           </Flex>
           <ArrowRight
+            data-id="000917"
             color="responseLeftTabItem.textColor"
-            data-id="030925-ec3496"
             display={['none', 'block']}
             ml={1}
             mt={1} />
         </Flex>
       </Flex>
-      <Modal data-id="030925-909ab2" isOpen={isOpen} onClose={onClose}>
+      <Modal data-id="000918" isOpen={isOpen} onClose={onClose}>
         <ModalContent
+          data-id="000919"
           borderRadius="10px"
           bottom="10px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="030925-de4ce8"
           h="fit-content"
           left={['10px', '80px']}
           maxW={['calc(100% - 20px)', '315px']}
           position="absolute"
           top={['auto', '200px']}>
-          <ModalBody data-id="030925-e3b4f2" p="20px">
-            <Flex data-id="030925-ea6182" w="full">
-              <Flex data-id="030925-71350e" flexDirection="column" w="50%">
-                <Box data-id="030925-3109ac" h="50px" mt={2}>
-                  <Box data-id="030925-8a18f0" fontSize="11px" opacity={0.5}>
+          <ModalBody data-id="000920" p="20px">
+            <Flex data-id="000921" w="full">
+              <Flex data-id="000922" flexDirection="column" w="50%">
+                <Box data-id="000923" h="50px" mt={2}>
+                  <Box data-id="000924" fontSize="11px" opacity={0.5}>
                     Item ID
                   </Box>
-                  <Flex align="center" data-id="030925-05d62d" fontSize="14px" minH="28px">
-                    <Flex data-id="030925-4e4018" mr={2}>{response?.trackerItem?.reference}</Flex>
+                  <Flex data-id="000925" align="center" fontSize="14px" minH="28px">
+                    <Flex data-id="000926" mr={2}>{response?.trackerItem?.reference}</Flex>
                     <CopyToClipboard
-                      data-id="030925-8d74e5"
+                      data-id="000927"
                       onCopy={() =>
                         toast({
                           ...toastSuccess,
@@ -110,9 +110,9 @@ function ResponseDetail({ response }) {
                       }
                       text={response?.trackerItem?.reference}>
                       <Copy
+                        data-id="000928"
                         _hover={{ opacity: 0.6, cursor: 'pointer' }}
                         color="responseLeftNavigation.copy"
-                        data-id="030925-739ce9"
                         h="17px"
                         mt={1}
                         w="17px" />
@@ -120,18 +120,18 @@ function ResponseDetail({ response }) {
                   </Flex>
                 </Box>
                 <ResponseLeftItem
-                  data-id="030925-a704d1"
+                  data-id="000929"
                   heading={capitalize(t('business unit'))}
                   value={response?.businessUnit?.name || '-'} />
-                <Box data-id="030925-055b67" h="50px" mt={1}>
-                  <Box data-id="030925-e07022" fontSize="11px" opacity={0.5}>
+                <Box data-id="000930" h="50px" mt={1}>
+                  <Box data-id="000931" fontSize="11px" opacity={0.5}>
                     Responsible
                   </Box>
-                  <Flex align="center" data-id="030925-7f494c" fontSize="14px" minH="28px">
+                  <Flex data-id="000932" align="center" fontSize="14px" minH="28px">
                     <Avatar
+                        data-id="000933"
                         bg="responseLeftNavigation.avatar"
                         color="white"
-                        data-id="030925-1fe54d"
                         mr={2}
                         name={
                           (
@@ -143,7 +143,7 @@ function ResponseDetail({ response }) {
                         size="xs"
                         src={accountable && accountable.imgUrl}
                       />
-                    <Flex data-id="030925-dd53a7" mr={2}>
+                    <Flex data-id="000934" mr={2}>
                       {accountable && accountable.firstName && accountable.lastName
                         ? `${accountable.firstName} ${accountable.lastName}`
                         : `${accountable?.displayName || '-'}`}
@@ -151,15 +151,15 @@ function ResponseDetail({ response }) {
                   </Flex>
                 </Box>
 
-                <Box data-id="030925-171903" h="50px" mt={1}>
-                  <Box data-id="030925-23d2e8" fontSize="11px" opacity={0.5}>
+                <Box data-id="000935" h="50px" mt={1}>
+                  <Box data-id="000936" fontSize="11px" opacity={0.5}>
                     Accountableee
                   </Box>
-                  <Flex align="center" data-id="030925-eea8e3" fontSize="14px" minH="28px">
+                  <Flex data-id="000937" align="center" fontSize="14px" minH="28px">
                     <Avatar
+                      data-id="000938"
                       bg="responseLeftNavigation.avatar"
                       color="white"
-                      data-id="030925-ca9fdd"
                       mr={2}
                       name={
                         responsible && responsible.firstName && responsible.lastName
@@ -168,7 +168,7 @@ function ResponseDetail({ response }) {
                       }
                       size="xs"
                       src={responsible && responsible.imgUrl} />
-                    <Flex data-id="030925-0ddce3" mr={2}>
+                    <Flex data-id="000939" mr={2}>
                       {responsible && responsible.firstName && responsible.lastName
                         ? `${responsible.firstName} ${responsible.lastName}`
                         : `${responsible?.displayName || '-'}`}
@@ -176,17 +176,17 @@ function ResponseDetail({ response }) {
                   </Flex>
                 </Box>
               </Flex>
-              <Flex data-id="030925-de34dd" flexDirection="column" w="50%">
+              <Flex data-id="000940" flexDirection="column" w="50%">
                 <ResponseLeftItem
-                  data-id="030925-5d8766"
+                  data-id="000941"
                   heading="Category"
                   value={response.trackerItem?.category?.name || '-'} />
                 <ResponseLeftItem
-                  data-id="030925-b3ffdc"
+                  data-id="000942"
                   heading="Regulatory body"
                   value={response.trackerItem?.regulatoryBody?.name || '-'} />
                 <ResponseLeftItem
-                  data-id="030925-0566af"
+                  data-id="000943"
                   heading="Frequency"
                   value={response.trackerItem?.frequency || '-'} />
               </Flex>

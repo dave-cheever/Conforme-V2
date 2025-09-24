@@ -460,7 +460,7 @@ function AuditProvider({ children }) {
     ],
   );
 
-  return <AuditContext.Provider value={value}>{children}</AuditContext.Provider>;
+  return <AuditContext.Provider data-id="000007" value={value}>{children}</AuditContext.Provider>;
 }
 
 export default AuditProvider;

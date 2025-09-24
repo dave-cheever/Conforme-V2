@@ -21,8 +21,8 @@ const GET_HELP = gql`
 const MarkdownComponents: Components = {
   h1: ({ node, ...props }) => (
     <Text
+      data-id="000258"
       as="h1"
-      data-id="030925-0f0737"
       fontSize="2xl"
       fontWeight="bold"
       mb={4}
@@ -30,8 +30,8 @@ const MarkdownComponents: Components = {
   ),
   h2: ({ node, ...props }) => (
     <Text
+      data-id="000259"
       as="h2"
-      data-id="030925-074f93"
       fontSize="xl"
       fontWeight="semibold"
       mb={3}
@@ -39,33 +39,33 @@ const MarkdownComponents: Components = {
   ),
   h3: ({ node, ...props }) => (
     <Text
+      data-id="000260"
       as="h3"
-      data-id="030925-817998"
       fontSize="lg"
       fontWeight="semibold"
       mb={3}
       {...props} />
   ),
   p: ({ node, ...props }) => (
-    <Text as="p" data-id="030925-233e3b" lineHeight="1.6" mb={3} {...props} />
+    <Text data-id="000261" as="p" lineHeight="1.6" mb={3} {...props} />
   ),
   ul: ({ node, ...props }) => (
     <Box
+      data-id="000262"
       as="ul"
-      data-id="030925-b80642"
       mb={3}
       pl={5}
       style={{ listStyleType: 'disc' }}
       {...props} />
   ),
   li: ({ node, ...props }) => (
-    <Box as="li" data-id="030925-e742b4" mb={1} {...props} />
+    <Box data-id="000263" as="li" mb={1} {...props} />
   ),
   a: (props) => (
     <Box
+      data-id="000264"
       as="a"
       color="blue.500"
-      data-id="030925-cce55a"
       textDecoration="underline"
       {...props} />
   ),
@@ -81,21 +81,21 @@ function Terms() {
 
   return (
     <Flex
-      data-id="030925-59d61c"
+      data-id="000265"
       flexDirection="column"
       h="full"
       overflow="auto"
       w="full"
     >
       <Header
+        data-id="000266"
         breadcrumbs={['Home', 'Terms and Conditions']}
-        data-id="030925-e084b6"
         mobileBreadcrumbs={['Terms and Conditions']}
       />
       <Flex
+        data-id="000267"
         bg="white"
         borderRadius="20px"
-        data-id="030925-a0d9c2"
         flexDirection="column"
         h="auto"
         maxWidth="full"
@@ -105,19 +105,19 @@ function Terms() {
         p="25px 30px"
       >
         {loading ? (
-          <Flex align="center" data-id="030925-cbfe69" h="100vh" justify="center">
+          <Flex data-id="000268" align="center" h="100vh" justify="center">
             Loading...
           </Flex>
         ) : (
-          <div data-id="030925-604893">
+          <div data-id="000269">
             {matchedHelp ? (
-              <Box data-id="030925-cfabd4" fontSize="14px" mb="30px">
-                <ReactMarkdown components={MarkdownComponents} data-id="030925-bc950f">
+              <Box data-id="000270" fontSize="14px" mb="30px">
+                <ReactMarkdown data-id="000271" components={MarkdownComponents}>
                     {t(`${matchedHelp.terms}`)}
                 </ReactMarkdown>
               </Box>
             ) : (
-              <Text data-id="030925-df2a82" fontSize="14px" mb="30px">
+              <Text data-id="000272" fontSize="14px" mb="30px">
                 No Content Found
               </Text>
             )}

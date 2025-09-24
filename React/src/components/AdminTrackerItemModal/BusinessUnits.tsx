@@ -40,21 +40,21 @@ function BusinessUnitsForm() {
   };
 
   return (
-    <Box data-id="030925-cb0302" w="full">
-      <Flex data-id="030925-2cbcfa" direction="column">
-        <SectionHeader data-id="030925-fe1551" label={`Select ${t('business unit')}(s)`} />
+    <Box data-id="000463" w="full">
+      <Flex data-id="000464" direction="column">
+        <SectionHeader data-id="000465" label={`Select ${t('business unit')}(s)`} />
 
         <Flex
-          data-id="030925-49906b"
+          data-id="000466"
           flexDir={['column', 'row']}
           justifyContent="space-between"
           mb="30px"
           w={['full', 'calc(100% - 80px)']}>
-          <Flex data-id="030925-eb1088" flexDir="column" pt="3" w="full">
-            <Flex align="center" data-id="030925-eb021c" justify="space-between">
+          <Flex data-id="000467" flexDir="column" pt="3" w="full">
+            <Flex data-id="000468" align="center" justify="space-between">
               <Text
+                data-id="000469"
                 color="locationsFormModal.filterTextColor"
-                data-id="030925-bf33ef"
                 fontFamily="Helvetica"
                 fontSize="ssm"
                 fontWeight="bold"
@@ -66,16 +66,16 @@ function BusinessUnitsForm() {
               </Text>
             </Flex>
             <InputGroup
+              data-id="000470"
               border="1px solid"
               borderColor="#CBD5E0"
-              data-id="030925-4089c5"
               h="42px"
               rounded="10px">
-              <InputLeftElement data-id="030925-fe187c" pointerEvents="none">
-                <SearchIcon color="businessUnitsModal.searchIcon" data-id="030925-b48bc0" />
+              <InputLeftElement data-id="000471" pointerEvents="none">
+                <SearchIcon data-id="000472" color="businessUnitsModal.searchIcon" />
               </InputLeftElement>
               <Input
-                data-id="030925-3ce182"
+                data-id="000473"
                 fontSize="14px"
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search"
@@ -84,8 +84,9 @@ function BusinessUnitsForm() {
           </Flex>
         </Flex>
 
-        <Flex data-id="030925-28cc32" mb="30px">
+        <Flex data-id="000474" mb="30px">
           <Checkbox
+            data-id="000475"
             borderColor="businessUnitsModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"
             css={{
@@ -112,8 +113,7 @@ function BusinessUnitsForm() {
                 color: checkedBUIds.length === businessUnits.length ? '#282F36' : '#818197',
               },
             }}
-            data-id="030925-5ae8a7"
-            icon={checkedBUIds.length === businessUnits.length ? <CheckIcon data-id="030925-392b58" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="030925-93cf15" />}
+            icon={checkedBUIds.length === businessUnits.length ? <CheckIcon data-id="000476" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="000477" />}
             isChecked={checkedBUIds.length > 0}
             key="all"
             onChange={() => handleAllCheckBoxSelectedBU()}
@@ -123,13 +123,14 @@ function BusinessUnitsForm() {
         </Flex>
 
         <CheckboxGroup
+          data-id="000478"
           colorScheme="green"
-          data-id="030925-4c0f72"
           onChange={(e: any) => handleChange(e)}
           value={trackerItem.businessUnitsIds || []}>
-          <VStack alignItems="flex-start" data-id="030925-2dbe81">
+          <VStack data-id="000479" alignItems="flex-start">
             {filteredBU.map((businessUnit) => (
               <Checkbox
+                data-id="000480"
                 borderColor="businessUnitsModal.checkbox.unchecked.border"
                 css={{
                   '.chakra-checkbox__control': {
@@ -151,8 +152,7 @@ function BusinessUnitsForm() {
                     color: trackerItem?.businessUnitsIds?.includes(businessUnit._id) ? '#282F36' : '#818197',
                   },
                 }}
-                data-id="030925-ed7506"
-                icon={<CheckIcon data-id="030925-f80ed4" stroke="white" strokeWidth="1.5" />}
+                icon={<CheckIcon data-id="000481" stroke="white" strokeWidth="1.5" />}
                 key={businessUnit._id}
                 value={businessUnit._id}>
                 {businessUnit.name}

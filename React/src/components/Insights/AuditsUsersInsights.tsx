@@ -28,22 +28,22 @@ function AuditsUsersInsights({
 }) {
   return (
     <Box
+      data-id="000445"
       bg="white"
-      data-id="030925-079d4c"
       my={['15px', '25px']}
       overflowX="auto"
       p="15px 25px"
       rounded="20px">
-      <Box data-id="030925-67f0ce" mb="30px">
-        <Text data-id="030925-341e77" fontSize="smm" fontWeight="bold">
+      <Box data-id="000446" mb="30px">
+        <Text data-id="000447" fontSize="smm" fontWeight="bold">
           {capitalize(pluralize(t('audit')))} per person
         </Text>
       </Box>
-      <Flex data-id="030925-82f4f7" ml="140px">
+      <Flex data-id="000448" ml="140px">
         {users.map((user, index) => (
           <Flex
+            data-id="000449"
             align="center"
-            data-id="030925-ee249f"
             flexDir="column"
             justify="center"
             key={user.userId}
@@ -51,10 +51,10 @@ function AuditsUsersInsights({
             ml={index === 0 ? '10px' : '20px'}
             mr="10px"
             w="80px">
-            <UserAvatar data-id="030925-90e051" userId={user.userId} />
+            <UserAvatar data-id="000450" userId={user.userId} />
             <Text
+              data-id="000451"
               color="auditsUsersInsights.colors.displayName"
-              data-id="030925-3869a0"
               fontSize="ssm"
               mt="10px"
               overflowX="hidden"
@@ -68,14 +68,14 @@ function AuditsUsersInsights({
           </Flex>
         ))}
       </Flex>
-      <Flex data-id="030925-22ef94">
-        <Flex data-id="030925-eda138" flexDir="column">
+      <Flex data-id="000452">
+        <Flex data-id="000453" flexDir="column">
           {auditsStatsCounts.map((count) => (
             <Flex
+              data-id="000454"
               align="center"
               bg={count.color}
               cursor="pointer"
-              data-id="030925-50f3d6"
               justify="end"
               key={count.status}
               mb="5px"
@@ -87,20 +87,20 @@ function AuditsUsersInsights({
               p="8px"
               rounded="10px"
               userSelect="none">
-              <Text color="white" data-id="030925-e055d8" fontSize="smm">
+              <Text data-id="000455" color="white" fontSize="smm">
                 {auditsInsightsTypes[count.status]}
               </Text>
               {sortOrder !== null && sortOrder === 'desc' ? (
                 <ArrowDownIcon
+                  data-id="000456"
                   color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
-                  data-id="030925-f18e25"
                   h="12px"
                   ml="10px"
                   w="12px" />
               ) : (
                 <ArrowUpIcon
+                  data-id="000457"
                   color={new RegExp(count.status).test(sortType) ? 'auditsUsersInsights.colors.white' : 'auditsUsersInsights.colors.hidden'}
-                  data-id="030925-538f4a"
                   h="12px"
                   ml="10px"
                   w="12px" />
@@ -109,36 +109,36 @@ function AuditsUsersInsights({
           ))}
         </Flex>
         {users.map((user) => (
-          <Flex data-id="030925-810d9a" flexDir="column" key={user.userId} ml="10px">
+          <Flex data-id="000458" flexDir="column" key={user.userId} ml="10px">
             <Box
+              data-id="000459"
               bg="auditsUsersInsights.colors.statCell"
-              data-id="030925-d235b6"
               mb="5px"
               p="8px"
               rounded="10px"
               w="100px">
-              <Text data-id="030925-78442c" fontSize="smm" textAlign="center">
+              <Text data-id="000460" fontSize="smm" textAlign="center">
                 {user.totalAuditsCount ?? 0}
               </Text>
             </Box>
-            <Box data-id="030925-b0085b" mb="5px" p="8px" rounded="10px" w="100px">
-              <Text data-id="030925-781fc3" fontSize="smm" textAlign="center">
+            <Box data-id="000461" mb="5px" p="8px" rounded="10px" w="100px">
+              <Text data-id="000462" fontSize="smm" textAlign="center">
                 {user.completedAuditsCount ?? 0}
               </Text>
             </Box>
             <Box
+              data-id="000463"
               bg="auditsUsersInsights.colors.statCell"
-              data-id="030925-c76b5a"
               mb="5px"
               p="8px"
               rounded="10px"
               w="100px">
-              <Text data-id="030925-99499c" fontSize="smm" textAlign="center">
+              <Text data-id="000464" fontSize="smm" textAlign="center">
                 {user.upcomingAuditsCount ?? 0}
               </Text>
             </Box>
-            <Box data-id="030925-f746ef" mb="5px" p="8px" rounded="10px" w="100px">
-              <Text data-id="030925-dc4fac" fontSize="smm" textAlign="center">
+            <Box data-id="000465" mb="5px" p="8px" rounded="10px" w="100px">
+              <Text data-id="000466" fontSize="smm" textAlign="center">
                 {user.missedAuditsCount ?? 0}
               </Text>
             </Box>

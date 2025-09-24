@@ -41,46 +41,46 @@ function Details() {
   if (!response) return null;
   return (
     <VStack
+        data-id="000209"
         align="flex-start"
-        data-id="030925-693466"
         h="full"
         minH={['30vh', 'none']}
         overflow="visible"
         pb="25px"
         spacing={8}
         w="full">
-      <VStack align="flex-start" data-id="030925-5bbe30">
+      <VStack data-id="000210" align="flex-start">
         {response?.trackerItem?.description && (
           <Text
+            data-id="000211"
             color="responseRenewalDetails.labelColor"
-            data-id="030925-ada61f"
             fontSize="14px">
             Description
           </Text>
         )}
-        <DescriptionText data-id="030925-7baf7c" />
+        <DescriptionText data-id="000212" />
       </VStack>
       <Grid
-        data-id="030925-336971"
+        data-id="000213"
         gap={[3, 6]}
         mt={4}
         templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}
         w="full">
         <Flex
+          data-id="000214"
           align="center"
           cursor="pointer"
-          data-id="030925-af6954"
           flexDir={['column', 'row']}
           h="full"
           justify="space-between"
           w="full">
           <Flex
+            data-id="000215"
             align={['center', 'flex-start']}
             bg="responseRenewalDetails.bg"
             border={activeTab === 0 ? '1px solid #ccc' : 'null'}
             borderRadius="10px"
             boxShadow={activeTab === 0 ? 'simple' : 'null'}
-            data-id="030925-cb392e"
             flexDir="column"
             mb={[1, 0]}
             mr={[0, 5]}
@@ -88,31 +88,31 @@ function Details() {
             p="10px 20px"
             w="full">
             <Text
+              data-id="000216"
               color="responseRenewalDetails.labelColor"
-              data-id="030925-a2d49f"
               fontSize="11px">
               Last reviewed
             </Text>
             <Text
+              data-id="000217"
               color="responseRenewalDetails.textColor"
-              data-id="030925-5e7ed4"
               fontSize="14px">
               {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'Never reviewed before'}
             </Text>
           </Flex>
           <ArrowDownIcon
+            data-id="000218"
             color="responseRenewalDetails.labelColor"
-            data-id="030925-281024"
             transform={['', 'rotate(270deg)']} />
         </Flex>
         <Flex
+          data-id="000219"
           align="center"
           bg="responseRenewalDetails.bg"
           border={activeTab === 1 ? '1px solid #ccc' : 'null'}
           borderRadius="10px"
           boxShadow={activeTab === 1 ? 'simple' : 'null'}
           cursor="pointer"
-          data-id="030925-76b812"
           h="full"
           justify="space-between"
           onClick={() => {
@@ -123,34 +123,34 @@ function Details() {
           position="relative"
           w="full">
           <Flex
+            data-id="000220"
             align={['center', 'flex-start']}
-            data-id="030925-8ac598"
             flexDir="column"
             w="full">
             <Text
+              data-id="000221"
               color="responseRenewalDetails.labelColor"
-              data-id="030925-0d479c"
               fontSize="11px">
               Perform new review by
             </Text>
-            <Flex data-id="030925-5b43f4">
+            <Flex data-id="000222">
               <Text
+                data-id="000223"
                 color="responseRenewalDetails.textColor"
-                data-id="030925-732f82"
                 fontSize="14px">
                 {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
               </Text>
               {!snapshot && (
                 <Can
+                  data-id="000224"
                   action="responses.edit"
-                  data-id="030925-08204f"
                   data={{ response }}
                   // eslint-disable-next-line react/no-unstable-nested-components
                   yes={() => (
-                    <Flex data-id="030925-0edcb4" align="center">
+                    <Flex data-id="000225" align="center">
                       <DatePicker
-                        data-id="030925-84815b"
-                        customInput={<EditButton data-id="030925-b04a0d" />}
+                        data-id="000226"
+                        customInput={<EditButton data-id="000227" />}
                         dateFormatCalendar="MMMM"
                         disabledKeyboardNavigation
                         dropdownMode="select"
@@ -159,7 +159,7 @@ function Details() {
                         selected={response?.dueDate ? new Date(response?.dueDate) : new Date()}
                         showYearDropdown>
                         <Button
-                          data-id="030925-898634"
+                          data-id="000228"
                           colorScheme="purpleHeart"
                           onClick={() => updateResponseDate(null)}
                           size="sm"
@@ -174,7 +174,7 @@ function Details() {
           </Flex>
         </Flex>
       </Grid>
-      <ResponseQuestions data-id="030925-b1d445" disabled={activeTab === 0} />
+      <ResponseQuestions data-id="000229" disabled={activeTab === 0} />
     </VStack>
   );
 }

@@ -8,52 +8,51 @@ function ParticipantsSection() {
   return (
     <>
       <Text
+        data-id="000412"
         color="auditModal.participants.text"
-        data-id="030925-200e22"
         fontSize="md"
         fontWeight="400"
         mb="10px">
         Audited By
       </Text>
-      <AuditorSearchBar data-id="030925-eea742" />
-      <SelectedAuditors data-id="030925-bcff83" />
-
-      <SimpleGrid columns={2} data-id="030925-e26967" mb="20px" spacing={2}>
-        <Box data-id="030925-e28918">
+      <AuditorSearchBar data-id="000413" />
+      <SelectedAuditors data-id="000414" />
+      <SimpleGrid data-id="000415" columns={2} mb="20px" spacing={2}>
+        <Box data-id="000416">
           <Text
+            data-id="000417"
             color="auditModal.participants.inspect.text"
-            data-id="030925-f4b6f7"
             fontSize="md"
             fontWeight="400"
             mb="10px">
             You are about to inspect
           </Text>
           <Box
+            data-id="000418"
             alignItems="center"
-            data-id="030925-cc10c6"
             display="flex"
             justifyContent="start"
             w="250px">
             <Image
+              data-id="000419"
               alt="img"
               borderRadius="7px"
-              data-id="030925-a9c6cf"
               fallbackSrc="https://via.placeholder.com/150"
               h="56px"
               mr="20px"
               objectFit="cover"
               w="56px" />
-            <Box data-id="030925-47b800">
+            <Box data-id="000420">
               <Text
+                data-id="000421"
                 color="auditModal.participants.inspect.businessUnit.text.name"
-                data-id="030925-8b5ba5"
                 fontSize="md"
                 fontWeight="500">
                 The Meriden Hospital
               </Text>
               <Text
+                data-id="000422"
                 color="auditModal.participants.inspect.businessUnit.text.location"
-                data-id="030925-0acd7b"
                 fontSize="sm"
                 fontWeight="400">
                 Central and South West
@@ -61,29 +60,29 @@ function ParticipantsSection() {
             </Box>
           </Box>
         </Box>
-        <Box data-id="030925-d55827">
+        <Box data-id="000423">
           <Text
+            data-id="000424"
             color="auditModal.participants.inspect.text"
-            data-id="030925-4d5740"
             fontSize="md"
             fontWeight="400"
             mb="10px">
             Area to inspect
           </Text>
-          <AreaToInspect data-id="030925-97b78b" />
+          <AreaToInspect data-id="000425" />
         </Box>
-        <Box data-id="030925-76fffa">
+        <Box data-id="000426">
           <Text
+            data-id="000427"
             color="auditModal.participants.auditType.text"
-            data-id="030925-4a7a27"
             fontSize="md"
             fontWeight="400"
             mb="10px">
             Audit Type
           </Text>
           <Text
+            data-id="000428"
             color="auditModal.participants.auditType.text"
-            data-id="030925-87b53e"
             fontSize="md"
             fontWeight="700">
             Clinical

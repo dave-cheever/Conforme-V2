@@ -13,8 +13,8 @@ interface IProps {
 function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
   if (loading) {
     return (
-      <Flex data-id="030925-74701e" h="calc(100vh - 150px)" w="full">
-        <Loader center data-id="030925-8d6472" />
+      <Flex data-id="000340" h="calc(100vh - 150px)" w="full">
+        <Loader data-id="000341" center />
       </Flex>
     );
   }
@@ -22,18 +22,18 @@ function AuditLog({ auditLogs, loading, isLoadingMore }: IProps) {
   return (
     <>
       <Flex
+        data-id="000342"
         bg="auditLog.bg"
-        data-id="030925-271f5c"
         flexDirection="column"
         position="relative"
         pt={["0px", "20px"]}
         rounded="md"
         w="100%">
         {auditLogs.map((auditLog, index) => (
-          <AuditLogDay auditLog={auditLog} data-id="030925-682622" key={index} />
+          <AuditLogDay data-id="000343" auditLog={auditLog} key={index} />
         ))}
       </Flex>
-      {isLoadingMore && <Loader center data-id="030925-a22616" size="md" />}
+      {isLoadingMore && <Loader data-id="000344" center size="md" />}
     </>
   );
 }

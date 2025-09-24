@@ -53,11 +53,11 @@ function NavigationTop() {
 
   return (
     <Flex
+        data-id="000449"
         align="center"
         bg={['navigationTop.bgMobile']}
         borderBottom="1px solid"
         borderColor="navigationTop.navBorder"
-        data-id="030925-e971c4"
         h={['72px', '80px']}
         justify="space-between"
         position={['fixed', 'relative']}
@@ -65,10 +65,10 @@ function NavigationTop() {
         zIndex={10}>
       {isOpen && (
         <Box
+          data-id="000450"
           bg="white"
           bottom={['140px', 'auto']}
           boxShadow="0px 0px 15px rgba(49, 50, 51, 0.25)"
-          data-id="030925-3f85c2"
           left={['auto', '30rem']}
           position={['fixed', 'absolute']}
           py={4}
@@ -83,21 +83,21 @@ function NavigationTop() {
               if (item.permission) {
                 return (
                   <Can
+                      data-id="000451"
                       action={item.permission}
-                      data-id="030925-9caa14"
                       key={item.url}
                       // eslint-disable-next-line react/no-unstable-nested-components
-                      yes={() => <SubSection data-id="030925-121f82" isPopover key={item.label} onClick={onClose} showIcon subsection={item}/>} />
+                      yes={() => <SubSection data-id="000452" isPopover key={item.label} onClick={onClose} showIcon subsection={item}/>} />
                 );
               }
-              return <SubSection data-id="030925-62d849" isPopover key={item.label} onClick={onClose} showIcon subsection={item} />;
+              return <SubSection data-id="000453" isPopover key={item.label} onClick={onClose} showIcon subsection={item} />;
             })
-            : trackerAddItems.map((item) => <SubSection data-id="030925-bcf436" isPopover key={item.label} onClick={onClose} showIcon subsection={item} />)}
+            : trackerAddItems.map((item) => <SubSection data-id="000454" isPopover key={item.label} onClick={onClose} showIcon subsection={item} />)}
         </Box>
       )}
       <Stack
+        data-id="000455"
         align="center"
-        data-id="030925-529476"
         direction="row"
         display="flex"
         fontSize="md"
@@ -108,26 +108,26 @@ function NavigationTop() {
         spacing={0}
         w="full">
         <Flex
+          data-id="000456"
           alignItems="center"
           cursor="pointer"
-          data-id="030925-8680b5"
           display={device !== 'mobile' || isSearchBarOpen ? 'none' : 'flex'}
           h="80px">
-         <ModuleSwitcher data-id="030925-0c01d6" />
+         <ModuleSwitcher data-id="000457" />
         </Flex>
         <Flex
-          data-id="030925-e98aca"
+          data-id="000458"
           display={device !== 'mobile' || (device === 'mobile' && isSearchBarOpen) ? 'block' : 'none'}>
-          <SearchBar data-id="030925-dd9b93" />
+          <SearchBar data-id="000459" />
         </Flex>
         {!isTrackerItemPage && module?.type === 'tracker' && (
           <Can
-            data-id="030925-f94227"
+            data-id="000460"
             action="adminPanel"
             // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <IconButton
-                data-id="030925-609c80"
+                data-id="000461"
                 _hover={{ opacity: 0.7 }}
                 aria-label="Add"
                 bg="white"
@@ -143,14 +143,14 @@ function NavigationTop() {
                 icon={
                   isOpen ? (
                     <CrossIcon
-                      data-id="030925-d26c82"
+                      data-id="000462"
                       h="20px"
                       ml="1"
                       stroke="black"
                       w="20px"
                     />
                   ) : (
-                    <AddIcon data-id="030925-e2f1a7" h="21px" stroke="black" w="21px" />
+                    <AddIcon data-id="000463" h="21px" stroke="black" w="21px" />
                   )
                 }
                 ml={3}
@@ -164,12 +164,12 @@ function NavigationTop() {
         )}
         {module?.type === 'audits' && !(device === 'mobile' && isAuditPage) && (
           <Can
-            data-id="030925-d19ad5"
+            data-id="000464"
             action="audits.add"
             // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <IconButton
-                data-id="030925-89bd16"
+                data-id="000465"
                 _hover={{ opacity: 0.7 }}
                  aria-label="Add"
                 bg="white"
@@ -183,13 +183,13 @@ function NavigationTop() {
                 icon={
                   isOpen ? (
                     <CrossIcon
-                      data-id="030925-a19ac3"
+                      data-id="000466"
                       h="20px"
                       ml="1"
                      stroke="black"
                       w="20px" />
                   ) : (
-                    <AddIcon data-id="030925-d227dd" h="21px" stroke="black" w="21px" />
+                    <AddIcon data-id="000467" h="21px" stroke="black" w="21px" />
                   )
                 }
                 ml={['0', '4']}
@@ -204,17 +204,17 @@ function NavigationTop() {
         )}
       </Stack>
       <Flex
+        data-id="000468"
         align="center"
-        data-id="030925-3e5907"
         display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}>
         <IconButton
+          data-id="000469"
           aria-label="Search responses"
           bg="navigationTop.searchIconBackground"
           borderRadius="20px"
-          data-id="030925-3e0211"
           display={['block', 'none']}
           icon={<SearchIcon
-            data-id="030925-16a6ca"
+            data-id="000470"
             fill="navigationTop.searchBarIcon"
             h="22px"
             opacity="1"
@@ -229,7 +229,7 @@ function NavigationTop() {
           w="22px"
         />
         <Badge variant="solid" bg="navigationTop.notificationColorScheme" border="2px solid" borderColor="navigationTop.notificationBadgeBorder" borderRadius="5px" cursor="pointer">3</Badge> */}
-        <UserMenu data-id="030925-e754e5" />
+        <UserMenu data-id="000471" />
       </Flex>
       {/* <Stack
         spacing={4}
@@ -249,8 +249,8 @@ function NavigationTop() {
 
 function NavigationTopWithContext(props) {
   return (
-    <NavigationTopProvider data-id="030925-81b8e6" {...props}>
-      <NavigationTop data-id="030925-8e4717" />
+    <NavigationTopProvider data-id="000472" {...props}>
+      <NavigationTop data-id="000473" />
     </NavigationTopProvider>
   );
 }

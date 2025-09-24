@@ -33,6 +33,9 @@ jobs:
       git config --global user.name "Azure Pipeline"
     displayName: 'Configure Git'
 
+  - script: npx jscodeshift -t React/insert-id.ts React/src/
+    displayName: 'Run automation ID insertion script'
+
   - script: |
       if [ -n "$(git status --porcelain)" ]; then
         echo "File changes detected, checking if they are meaningful..."

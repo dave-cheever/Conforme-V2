@@ -25,7 +25,7 @@ function NavigationTopProvider({ children }) {
     [isSearchBarOpen, searchText],
   );
 
-  return <NavigationTopContext.Provider value={value}>{children}</NavigationTopContext.Provider>;
+  return <NavigationTopContext.Provider data-id="000012" value={value}>{children}</NavigationTopContext.Provider>;
 }
 
 export default NavigationTopProvider;

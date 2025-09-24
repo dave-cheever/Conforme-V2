@@ -62,34 +62,34 @@ function AnswerDeleteModal({
   };
   return (
     <Modal
-        data-id="030925-f90a96"
+        data-id="000718"
         isCentered
         isOpen={isOpen}
         onClose={onClose}
         size="sm">
-      <ModalOverlay data-id="030925-c13fab" />
-      <ModalContent data-id="030925-8634ac">
-        <ModalHeader data-id="030925-2420c9">
-          <Text data-id="030925-909393" fontSize="smm" fontWeight="semibold">
+      <ModalOverlay data-id="000719" />
+      <ModalContent data-id="000720">
+        <ModalHeader data-id="000721">
+          <Text data-id="000722" fontSize="smm" fontWeight="semibold">
             Delete {t('question')}
           </Text>
-          <ModalCloseButton data-id="030925-5ae6ff" />
+          <ModalCloseButton data-id="000723" />
         </ModalHeader>
-        <ModalBody data-id="030925-2498ce" mb="40px">
-          <Stack data-id="030925-5885ca">
-            <Text data-id="030925-4728aa">Are you sure you want to delete the following element?</Text>
-            <Text data-id="030925-082b7c" fontStyle="italic">{answer?.question?.question}</Text>
+        <ModalBody data-id="000724" mb="40px">
+          <Stack data-id="000725">
+            <Text data-id="000726">Are you sure you want to delete the following element?</Text>
+            <Text data-id="000727" fontStyle="italic">{answer?.question?.question}</Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="030925-ce5c75">
-          <HStack data-id="030925-91a833" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="030925-a96e1f" onClick={onClose}>
+        <ModalFooter data-id="000728">
+          <HStack data-id="000729" justify="center" spacing={4} w="full">
+            <Button data-id="000730" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="000731"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="030925-8f5b99"
               onClick={handleSecondaryButtonClick}>
               Delete
             </Button>

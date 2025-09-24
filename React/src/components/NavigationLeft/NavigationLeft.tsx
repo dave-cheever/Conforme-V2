@@ -20,24 +20,24 @@ function NavigationLeft() {
 
   return (
     <Box
+        data-id="000544"
         bg="navigationLeft.bg"
-        data-id="030925-19e809"
         display={['none', 'block', 'block']}
         fontWeight="semibold"
         h="100vh"
         w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
       <Box
+        data-id="000545"
         alignItems="center"
         cursor="pointer"
-        data-id="030925-b7dff8"
         display="flex"
         h="80px"
         justifyContent="center"
       >
-        <ModuleSwitcher data-id="030925-f38047" />
+        <ModuleSwitcher data-id="000546" />
       </Box>
       <Flex
-        data-id="030925-163a4e"
+        data-id="000547"
         direction="column"
         gap={"25px"}
         h="calc(100% - 80px)"
@@ -49,20 +49,20 @@ function NavigationLeft() {
         pr={"14px"}
         pt={"18px"}
       >
-        <Box data-id="030925-938875">
+        <Box data-id="000548">
           {menuItems.map((menuItem: any, i) => (
             <Can
+              data-id="000549"
               action={menuItem.permission}
-              data-id="030925-e975ad"
               key={`menu${i}`}
               // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => {
-                if (device === 'desktop') return <NavigationLeftItem data-id="030925-f70cb6" menuItem={menuItem} />;
+                if (device === 'desktop') return <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
 
                 if (device === 'tablet') {
                   return (
                     <NavigationLeftItemTablet
-                        data-id="030925-f697d3"
+                        data-id="000551"
                         filtersOpen={filtersOpen}
                         menuItem={menuItem}
                         setFiltersOpen={setFiltersOpen}
@@ -70,7 +70,7 @@ function NavigationLeft() {
                         subsectionOpen={subsectionOpen} />
                   );
                 }
-                return <Box data-id="030925-68cf6a" />;
+                return <Box data-id="000552" />;
               }} />
           ))}
         </Box>

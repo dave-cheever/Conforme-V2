@@ -124,39 +124,39 @@ function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttr
 
   return (
     <Modal
-        data-id="030925-d259c7"
+        data-id="000394"
         isCentered
         isOpen={isOpenModal}
         onClose={onClose}
         onEsc={() => onAction('close')}
         onOverlayClick={() => onAction('close')}
         size="xs">
-      <ModalOverlay data-id="030925-f2176d" />
-      <ModalContent borderRadius={['0', '20px']} data-id="030925-f8ea6e" position="absolute">
-        <Flex data-id="030925-4a84d1" flexDirection="column" p="25px">
-          <Flex data-id="030925-ea4edb">
-            <Box data-id="030925-98226b" fontSize="smm" fontWeight="bold" mb="10px">
+      <ModalOverlay data-id="000395" />
+      <ModalContent data-id="000396" borderRadius={['0', '20px']} position="absolute">
+        <Flex data-id="000397" flexDirection="column" p="25px">
+          <Flex data-id="000398">
+            <Box data-id="000399" fontSize="smm" fontWeight="bold" mb="10px">
               {`Add ${attributeType}`}
             </Box>
-            <ModalCloseButton data-id="030925-64b30a" onClick={() => onAction('close')} />
+            <ModalCloseButton data-id="000400" onClick={() => onAction('close')} />
           </Flex>
           <TextInput
+            data-id="000401"
             control={control}
-            data-id="030925-77aacc"
             name="name"
             placeholder={`${attributeType} name`}
             validations={{
               notEmpty: true,
             }} />
-          <Flex data-id="030925-7efe3f" justifyContent="end" mt="34px">
+          <Flex data-id="000402" justifyContent="end" mt="34px">
             <Button
+              data-id="000403"
               _hover={{
                 backgroundColor: 'addTrackerItemAttribute.button.hover',
               }}
               bg="addTrackerItemAttribute.button.bg"
               borderRadius="10px"
               color="addTrackerItemAttribute.button.color"
-              data-id="030925-8a31eb"
               onClick={() => onAddAction(attributeType)}>
               Add
             </Button>

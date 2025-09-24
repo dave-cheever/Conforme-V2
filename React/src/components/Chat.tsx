@@ -171,18 +171,18 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
 
   return (
     <>
-      <Modal data-id="030925-766870" isCentered isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay data-id="030925-9a2b8d" />
-        <ModalContent data-id="030925-ef0c9c">
-          <ModalHeader data-id="030925-56b88d">List of all participants</ModalHeader>
-          <ModalCloseButton data-id="030925-2be2f6" />
-          <ModalBody data-id="030925-ff7234" pr={2}>
-            <Flex data-id="030925-b3a857" flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
+      <Modal data-id="000184" isCentered isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay data-id="000185" />
+        <ModalContent data-id="000186">
+          <ModalHeader data-id="000187">List of all participants</ModalHeader>
+          <ModalCloseButton data-id="000188" />
+          <ModalBody data-id="000189" pr={2}>
+            <Flex data-id="000190" flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
               {chatParticipants?.map((user) => (
-                <Flex align="center" data-id="030925-658378" justify="space-between" key={user._id} px="1" py="2">
-                  <Flex align="center" data-id="030925-937496">
+                <Flex data-id="000191" align="center" justify="space-between" key={user._id} px="1" py="2">
+                  <Flex data-id="000192" align="center">
                     <Avatar
-                      data-id="030925-73e894"
+                      data-id="000193"
                       h="32px"
                       mr={chatParticipants.length > 1 ? '10px' : ''}
                       name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -191,11 +191,11 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                       src={user?.imgUrl}
                       w="32px"
                     />
-                    <Text data-id="030925-df40af" fontSize="14px">
+                    <Text data-id="000194" fontSize="14px">
                       {user.displayName}
                     </Text>
                   </Flex>
-                  <Text data-id="030925-7869c3" fontSize="14px" fontWeight="700">
+                  <Text data-id="000195" fontSize="14px" fontWeight="700">
                     {getRole(user._id)}
                   </Text>
                 </Flex>
@@ -205,11 +205,11 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         </ModalContent>
       </Modal>
       <Stack
+        data-id="000196"
         bg={['chat.bg', 'chat.bg', 'transparent']}
         border="1px solid #CBD5E0"
         borderRadius="6px"
         boxShadow={['lg', 'lg', 'none']}
-        data-id="030925-8871a5"
         h="auto"
         maxW={['calc(100vw - 36px)', '300px']}
         minW={['calc(100vw - 36px)', '300px']}
@@ -218,26 +218,26 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         right="25px"
         spacing={2}
       >
-        <Flex alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" data-id="030925-1e3fc6" px={4} py={3}>
+        <Flex data-id="000197" alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" px={4} py={3}>
         <Text
+          data-id="000198"
           color="#282F36"
-          data-id="030925-3093e8"
           flex={1}
           fontSize="14px"
           fontWeight="bold"
           noOfLines={1}>
          {response?.trackerItem?.name &&  `"${response?.trackerItem?.name}"`} Chat
           </Text>
-          <HStack data-id="030925-4fa714" mr={2} spacing={-2}>
+          <HStack data-id="000199" mr={2} spacing={-2}>
             {participantsLoading ? (
-              <SkeletonCircle data-id="030925-5c0751" size="8" />
+              <SkeletonCircle data-id="000200" size="8" />
             ) : (
               chatParticipants
                 .slice(0, 3)
                 .map((user, i) => (
                   <Avatar
+                    data-id="000201"
                     border="2px solid white"
-                    data-id="030925-a2b16d"
                     key={i}
                     name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                     size="xs"
@@ -248,11 +248,11 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           </HStack>
           {!participantsLoading && chatParticipants.length > 3 && (
             <Flex
+              data-id="000202"
               align="center"
               bg="#F5F6FA"
               border="2px solid white"
               color="#6B7280"
-              data-id="030925-9fc8d9"
               fontSize="sm"
               fontWeight="600"
               h="28px"
@@ -266,8 +266,8 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           )}
         </Flex>
         <Flex
+          data-id="000203"
           align="space-between"
-          data-id="030925-67891f"
           flexDirection="column"
           grow={1}
           overflow="hidden"
@@ -275,7 +275,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           w="calc(100% + 10px)"
         >
           <Flex
-            data-id="030925-ea0068"
+            data-id="000204"
             flexDirection="column"
             h={['calc(100vh - 460px)', 'calc(100vh - 406px )', `${component === 'audit' ? 'calc(100vh - 340px)' : 'calc(100vh - 358px)'}`]}
             overflow="auto"
@@ -292,7 +292,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
             }}
             w="calc(100% + 10px)"
           >
-            {loading && <Loader center data-id="030925-6d24c3" size="md" />}
+            {loading && <Loader data-id="000205" center size="md" />}
               {comments.map((comment, idx) => {
                 let currentTime = '';
                 let prevTime = '';
@@ -308,13 +308,13 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                 const showTime = currentTime !== prevTime;
 
                 return (
-                  <React.Fragment key={comment._id}>
+                  <React.Fragment data-id="000206" key={comment._id}>
                     {showTime && (
-                      <Flex align="center" data-id="030925-047144" justify="center" my={4}>
+                      <Flex data-id="000207" align="center" justify="center" my={4}>
                         <Text
+                          data-id="000208"
                           bg="white"
                           color="rgb(0,0,0,0.5)"
-                          data-id="030925-654f3d"
                           fontSize="sm"
                           fontWeight="500"
                           px={3}
@@ -323,17 +323,17 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                         </Text>
                       </Flex>
                     )}
-                    <ChatSent comment={comment} data-id="030925-6a45a5" onAction={deleteComment} />
+                    <ChatSent data-id="000209" comment={comment} onAction={deleteComment} />
                   </React.Fragment>
                 );
               })}
           </Flex>
           <Can
+            data-id="000210"
             action={component === 'audit' ? 'auditComments.add' : 'comments.add'}
-            data-id="030925-7057dc"
             yes={() => (
               <MessageInput
-                data-id="030925-6eab4b"
+                data-id="000211"
                 control={control}
                 name="text"
                 onAction={addComment}
@@ -346,7 +346,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
             // eslint-disable-next-line react/no-unstable-nested-components
             data={{ ...(component === 'audit' ? { audit } : { response }) }}
             // eslint-disable-next-line react/no-unstable-nested-components
-            no={() => <Box data-id="030925-e74d82" h="20px" />}
+            no={() => <Box data-id="000212" h="20px" />}
           />
         </Flex>
       </Stack>

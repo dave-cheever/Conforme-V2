@@ -39,19 +39,19 @@ function LocationsForm() {
   };
 
   return (
-    <Box data-id="030925-52d811" w="full">
-      <Flex data-id="030925-6701a1" direction="column">
-        <SectionHeader data-id="030925-b6e9e5" label="Select location" />
+    <Box data-id="000550" w="full">
+      <Flex data-id="000551" direction="column">
+        <SectionHeader data-id="000552" label="Select location" />
         <Flex
-          data-id="030925-ec91c5"
+          data-id="000553"
           flexDir={['column', 'row']}
           justifyContent="space-between"
           mb="30px"
           w={['full', 'calc(100% - 80px)']}>
-          <Flex data-id="030925-9febe8" flexDir="column" pt="3" w="full">
+          <Flex data-id="000554" flexDir="column" pt="3" w="full">
             <Text
+              data-id="000555"
               color="locationsFormModal.filterTextColor"
-              data-id="030925-f64880"
               fontFamily="Helvetica"
               fontSize="ssm"
               fontWeight="bold"
@@ -60,17 +60,17 @@ function LocationsForm() {
               Search location by name
             </Text>
             <InputGroup
+              data-id="000556"
               border="1px solid"
               borderColor="locationsFormModal.inputBorderColor"
-              data-id="030925-8fe443"
               h="42px"
               rounded="10px">
-              <InputLeftElement data-id="030925-f16401" pointerEvents="none">
-                <SearchIcon color="locationsFormModal.searchIcon" data-id="030925-843e47" />
+              <InputLeftElement data-id="000557" pointerEvents="none">
+                <SearchIcon data-id="000558" color="locationsFormModal.searchIcon" />
               </InputLeftElement>
               <Input
+                data-id="000559"
                 color="locationsFormModal.searchBarText"
-                data-id="030925-ed6373"
                 fontSize="smm"
                 lineHeight="18px"
                 onChange={(e) => setSearchText(e.target.value)}
@@ -79,8 +79,9 @@ function LocationsForm() {
             </InputGroup>
           </Flex>
         </Flex>
-        <Flex data-id="030925-8e0e4d" mb="30px">
+        <Flex data-id="000560" mb="30px">
           <Checkbox
+            data-id="000561"
             borderColor="locationsFormModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"
             css={{
@@ -107,8 +108,7 @@ function LocationsForm() {
                 color: checkedLocationIds.length === locations.length ? '#282F36' : '#818197',
               },
             }}
-            data-id="030925-5ee267"
-            icon={checkedLocationIds.length === locations.length ? <CheckIcon data-id="030925-e5473c" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="030925-3aebb6" />}
+            icon={checkedLocationIds.length === locations.length ? <CheckIcon data-id="000562" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="000563" />}
             isChecked={checkedLocationIds.length > 0}
             key="all"
             onChange={() => handleAllCheckBoxSelectedLocations()}
@@ -117,13 +117,14 @@ function LocationsForm() {
           </Checkbox>
         </Flex>
         <CheckboxGroup
+          data-id="000564"
           colorScheme="green"
-          data-id="030925-658dd6"
           onChange={(e: any) => handleCheckBoxGroupChange(e)}
           value={checkedLocationIds || []}>
-          <VStack alignItems="flex-start" data-id="030925-871f95">
+          <VStack data-id="000565" alignItems="flex-start">
             {filteredLocations.map((location, index) => (
               <Checkbox
+                data-id="000566"
                 borderColor="locationsFormModal.checkbox.unchecked.border"
                 colorScheme="purpleHeart"
                 css={{
@@ -146,8 +147,7 @@ function LocationsForm() {
                     color: checkedLocationIds?.includes(location._id!) ? '#282F36' : '#818197',
                   },
                 }}
-                data-id="030925-050ca3"
-                icon={<CheckIcon data-id="030925-fc3e4b" stroke="white" strokeWidth="1.5" />}
+                icon={<CheckIcon data-id="000567" stroke="white" strokeWidth="1.5" />}
                 key={index}
                 value={location._id}>
                 {location.name}

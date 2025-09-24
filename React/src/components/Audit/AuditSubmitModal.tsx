@@ -25,42 +25,42 @@ function AuditSubmitModal({ isOpen, onClose }) {
 
   return (
     <Modal
-        data-id="030925-923aa7"
+        data-id="000243"
         isCentered
         isOpen={isOpen}
         onClose={onClose}
         size="sm">
-      <ModalContent data-id="030925-4a994f">
-        <ModalHeader data-id="030925-1fafab">
-          <Text data-id="030925-3e4c0e" fontSize="smm" fontWeight="semibold">
+      <ModalContent data-id="000244">
+        <ModalHeader data-id="000245">
+          <Text data-id="000246" fontSize="smm" fontWeight="semibold">
             Submit {t('audit')}
           </Text>
-          <ModalCloseButton data-id="030925-d6fe2d" />
+          <ModalCloseButton data-id="000247" />
         </ModalHeader>
-        <ModalBody data-id="030925-90eb28" mb="40px">
-          <Stack data-id="030925-1082c3">
-            <Text data-id="030925-42dd1d">
+        <ModalBody data-id="000248" mb="40px">
+          <Stack data-id="000249">
+            <Text data-id="000250">
               Are you sure you want to submit the{' '}
               {audit.walkType === 'virtual' ? (
                 `virtual ${t('audit')}`
               ) : (
-                <Text as="span" data-id="030925-125a01">
-                  {t('audit')} in <strong data-id="030925-b4f32b">{audit.businessUnit?.name}</strong>
+                <Text data-id="000251" as="span">
+                  {t('audit')} in <strong data-id="000252">{audit.businessUnit?.name}</strong>
                 </Text>
               )}{' '}
               as completed?
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="030925-869d74">
-          <HStack data-id="030925-943bce" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="030925-c4738f" onClick={onClose}>
+        <ModalFooter data-id="000253">
+          <HStack data-id="000254" justify="center" spacing={4} w="full">
+            <Button data-id="000255" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="000256"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="030925-82bde5"
               onClick={async () => {
                 await submitAudit({
                   variables: {

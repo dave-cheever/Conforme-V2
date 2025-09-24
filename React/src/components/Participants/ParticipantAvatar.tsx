@@ -22,20 +22,20 @@ function ParticipantAvatar({
   if (!user) {
     return (
       <Flex
+        data-id="000590"
         align="center"
-        data-id="030925-cd3459"
         flexDirection="row"
         textAlign="center"
         w="180px"
         {...props}>
         <Avatar
+          data-id="000591"
           cursor="pointer"
-          data-id="030925-c9d764"
           h="38px"
           name="Add User"
           onClick={() => isUserAllowedToChange && openParticipantsModal()}
           w="38px" />
-        <Text data-id="030925-b744d8" fontSize="11px" fontWeight="semi_medium" ml="10px">
+        <Text data-id="000592" fontSize="11px" fontWeight="semi_medium" ml="10px">
           Add User
         </Text>
       </Flex>
@@ -46,29 +46,29 @@ function ParticipantAvatar({
 
   return (
     <Flex
+      data-id="000593"
       align="center"
       border="1px solid #CBD5E0"
       borderRadius="8px"
-      data-id="030925-9178b6"
       justify="space-between"
       padding="10px"
       w="260px"
       {...props}>
       {/* Left side: Avatar + Name */}
-      <Flex align="center" columnGap="10px" data-id="030925-076308">
+      <Flex data-id="000594" align="center" columnGap="10px">
         <Avatar
+          data-id="000595"
           borderRadius="4px"
-          data-id="030925-f3a1bf"
           h="38px"
           name={displayName?.replace(/\s*\(.*?\)\s*/g, '')}
           src={imgUrl}
           w="38px" />
 
-        <Flex align="start" columnGap="10px" data-id="030925-6d214e" direction="column">
-          <Text color="#2D3748" data-id="030925-8e135d" fontSize="14px" fontWeight="600">
+        <Flex data-id="000596" align="start" columnGap="10px" direction="column">
+          <Text data-id="000597" color="#2D3748" fontSize="14px" fontWeight="600">
              {displayName}
          </Text>
-          <Text color="#718096" data-id="030925-41e9c9" fontSize="12px" fontWeight="500">
+          <Text data-id="000598" color="#718096" fontSize="12px" fontWeight="500">
             {user?.jobTitle}
           </Text>
         </Flex>
@@ -77,13 +77,13 @@ function ParticipantAvatar({
       {/* Right side: Icon */}
       {isUserAllowedToChange && (
         <IconButton
+          data-id="000599"
           aria-label={canDelete ? 'Delete Participant' : 'Replace Participant'}
-          data-id="030925-46d283"
           icon={
             canDelete ? (
-              <CloseIcon boxSize="3" data-id="030925-520102" />
+              <CloseIcon data-id="000600" boxSize="3" />
             ) : (
-              <SwapIcon data-id="030925-ae65de" height="18px" width="18px" />
+              <SwapIcon data-id="000601" height="18px" width="18px" />
             )
           }
           onClick={() => {

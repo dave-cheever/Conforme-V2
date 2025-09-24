@@ -286,35 +286,36 @@ function Actions() {
   return (
     <>
       <Modal
-        data-id="030925-879746"
+        data-id="000246"
         isOpen={adminModalState !== 'closed'}
         onClose={closeModal}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
         variant="adminModal">
-        <ModalOverlay data-id="030925-73ee2a" />
+        <ModalOverlay data-id="000247" />
         <ActionModal
+          data-id="000248"
           action={selectedAction}
           closeModal={closeModal}
-          data-id="030925-231048"
           refetch={refetch} />
       </Modal>
       <Header
+        data-id="000249"
         breadcrumbs={['Actions']}
-        data-id="030925-cf6be6"
         mobileBreadcrumbs={['Actions']}>
         <ChangeViewButton
-          data-id="030925-d03e73"
+          data-id="000250"
           setViewMode={setViewMode}
           viewMode={viewMode}
           views={['grid', 'list']} />
         {device !== 'mobile' && (
           <CSVLinkComponent
+            data-id="000251"
             data={csvData}
-            data-id="030925-425b38"
             filename="actions.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
+              data-id="000252"
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
                 color: 'reasponseHeader.buttonLightColorHover',
@@ -323,27 +324,27 @@ function Actions() {
               }}
               bg="white"
               borderRadius="10px"
-              data-id="030925-39a1cb"
               display="none"
               ml="15px"
-              rightIcon={<ExportIcon data-id="030925-3f9564" height="15px" width="15px" />}>
-              <Text data-id="030925-f0c6a1" fontSize="smm" fontWeight="bold">
+              rightIcon={<ExportIcon data-id="000253" height="15px" width="15px" />}>
+              <Text data-id="000254" fontSize="smm" fontWeight="bold">
                 Export
               </Text>
             </Button>
           </CSVLinkComponent>
         )}
         <SortButton
-          data-id="030925-326a02"
+          data-id="000255"
           setSortOrder={setSortOrder}
           setSortType={setSortType}
           sortBy={sortBy}
           sortOrder={sortOrder}
           sortType={sortType} />
       </Header>
-      <HStack data-id="030925-b8bfee" px={[4, 8]} spacing={2}>
+      <HStack data-id="000256" px={[4, 8]} spacing={2}>
         {Object.keys(actionStatuses).map((status, index) => (
           <Button
+            data-id="000257"
             _active={{
               bg: 'actions.quickFilter.active.bg',
               color: 'actions.quickFilter.active.color',
@@ -354,7 +355,6 @@ function Actions() {
             bg="actions.quickFilter.default.bg"
             borderRadius="10px"
             color="actions.quickFilter.default.color"
-            data-id="030925-9e3494"
             fontSize="14px"
             fontWeight="500"
             h="32px"
@@ -369,19 +369,19 @@ function Actions() {
         ))}
       </HStack>
       <Flex
-        data-id="030925-65943c"
+        data-id="000258"
         h={['calc(100vh - 80px)', 'full']}
         overflow="auto"
         pb={[4, 0]}>
         {error ? (
-          <Text data-id="030925-050fe3">{error.message}</Text>
+          <Text data-id="000259">{error.message}</Text>
         ) : loading ? (
-          <Loader center data-id="030925-de9f33" />
+          <Loader data-id="000260" center />
         ) : (
           <>
             {viewMode === 'grid' && (
               <Grid
-                data-id="030925-d80aa3"
+                data-id="000261"
                 display={['grid', 'grid', 'flex']}
                 flexWrap="wrap"
                 gap={[4, 4, 6]}
@@ -393,13 +393,13 @@ function Actions() {
                 w="full">
                 {sortedActions.length > 0 ? (
                   sortedActions?.map((action) => <ActionSquare
+                    data-id="000262"
                     action={action}
-                    data-id="030925-0b29e1"
                     editAction={handleOpenModal}
                     key={action._id} />)
                 ) : (
                   <Flex
-                    data-id="030925-3fa1bd"
+                    data-id="000263"
                     fontSize="18px"
                     fontStyle="italic"
                     h="full"
@@ -410,10 +410,10 @@ function Actions() {
               </Grid>
             )}
             {viewMode === 'list' && (
-              <Box data-id="030925-08139e" p="6" w="full">
+              <Box data-id="000264" p="6" w="full">
                 <ActionsList
+                  data-id="000265"
                   actions={sortedActions}
-                  data-id="030925-ca225e"
                   editAction={handleOpenModal}
                   setSortOrder={setSortOrder}
                   setSortType={setSortType}

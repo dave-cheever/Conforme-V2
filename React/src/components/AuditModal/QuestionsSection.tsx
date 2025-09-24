@@ -46,14 +46,14 @@ function QuestionsSection() {
     setQuestionGroups(() => (selectedGroup === 'category' ? groupQuestionsByCategory : groupQuestionsByKLOE));
   }, [selectedGroup]);
   return (
-    <Box data-id="030925-e4ee66">
-      <ButtonGroup data-id="030925-c4cd97" pr={2} spacing={2.5}>
+    <Box data-id="000439">
+      <ButtonGroup data-id="000440" pr={2} spacing={2.5}>
         <Button
+          data-id="000441"
           _after={selectedGroup === 'category' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
           color={selectedGroup === 'category' ? 'white' : 'auditModal.menu.active.text'}
           colorScheme={selectedGroup === 'category' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
-          data-id="030925-681b2c"
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('category')}
@@ -61,11 +61,11 @@ function QuestionsSection() {
           By Category
         </Button>
         <Button
+          data-id="000442"
           _after={selectedGroup === 'kloe' ? arrowPointerActiveStyle : arrowPointerStyle}
           borderRadius="10px"
           color={selectedGroup === 'kloe' ? 'white' : 'auditModal.menu.active.text'}
           colorScheme={selectedGroup === 'kloe' ? 'auditModal.questionGroup.activeButton' : 'auditModal.questionGroup.nonActiveButton'}
-          data-id="030925-c1b7e9"
           fontSize="14px"
           h="36px"
           onClick={() => setSelectedGroup('kloe')}
@@ -74,7 +74,7 @@ function QuestionsSection() {
         </Button>
       </ButtonGroup>
       <VStack
-        data-id="030925-f1dd55"
+        data-id="000443"
         maxH="calc(100% - 40px)"
         mt={4}
         overflow="auto"
@@ -83,15 +83,15 @@ function QuestionsSection() {
         w="full">
         {questionGroups.map((item) => (
           <QuestionGroup
-            data-id="030925-28eb76"
+            data-id="000444"
             isExpanded={item.id === expandedItem}
             key={item.id}
             questionGroupItem={item}
             setExpandedItem={setExpandedItem} />
         ))}
       </VStack>
-      <br data-id="030925-c2697e" />
-      <QuestionAdditionalInformation data-id="030925-6bfc9e" />
+      <br data-id="000445" />
+      <QuestionAdditionalInformation data-id="000446" />
     </Box>
   );
 }

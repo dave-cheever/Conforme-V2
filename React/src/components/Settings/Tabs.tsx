@@ -14,25 +14,25 @@ function Tabs() {
 
   if (activeTab === 1 && device === 'tablet') {
     return (
-      <Menu data-id="030925-1d2fd7">
+      <Menu data-id="000501">
         <MenuButton
+          data-id="000502"
           as={Button}
           bg="settingsTabItem.tabItemBg"
           borderRadius="10px"
-          data-id="030925-d0663a"
           fontSize="14px"
           h="40px"
           maxW="24vw"
-          rightIcon={<ArrowDownIcon data-id="030925-75aa5a" />}
+          rightIcon={<ArrowDownIcon data-id="000503" />}
           w="full">
           Email templates
         </MenuButton>
         <MenuList
+          data-id="000504"
           borderWidth="0px"
-          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="030925-ef7e9f">
+          boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
           {settingsTabs.map(({ label, index }) => (
-            <MenuItem data-id="030925-cbe1f7" key={index} onClick={() => setActiveTab(index)}>
+            <MenuItem data-id="000505" key={index} onClick={() => setActiveTab(index)}>
               {label}
             </MenuItem>
           ))}
@@ -42,11 +42,11 @@ function Tabs() {
   }
 
   return (
-    <Flex data-id="030925-2bea7a" w="full">
+    <Flex data-id="000506" w="full">
       {settingsTabs.map(({ label, index }) => (
         <TabItem
+          data-id="000507"
           active={index === activeTab}
-          data-id="030925-4b37f7"
           index={index}
           key={index}
           label={label}

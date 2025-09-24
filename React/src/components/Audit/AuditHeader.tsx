@@ -41,8 +41,8 @@ function DeleteButton({
 }) {
   return isPermitted({ user, action: 'audits.delete' }) ? (
     <AuditHeaderButton
+      data-id="000122"
       bgColor="transparent"
-      data-id="030925-1a1bbd"
       fontColor="#DC0043"
       icon={null}
       name="Delete"
@@ -67,8 +67,8 @@ function RecurringButton({
 }) {
   return audit?.walkType === 'physical' && isPermitted({ user, action: 'audits.changeRecurring' }) ? (
     <AuditHeaderButton
+      data-id="000123"
       bgColor="transparent"
-      data-id="030925-407bb1"
       fontColor="#DC0043"
       icon={null}
       name={`Change to ${audit.recurring ? 'non' : ''}recurring`}
@@ -96,8 +96,8 @@ function SubmitButton({
   if (audit.status === 'upcoming' && isPermitted({ user, action: 'audits.edit', data: { audit } })) {
     return (
       <AuditHeaderButton
+          data-id="000124"
           bgColor="#DC0043"
-          data-id="030925-71d59a"
           disabled={!questions || Object.keys(questions).length === 0}
           fontColor="white"
           icon={null}
@@ -125,8 +125,8 @@ function AuditShareButton({
 }) {
   return (
     <ShareButton
+      data-id="000125"
       ariaLabel="audit-share-button"
-      data-id="030925-476e98"
       ml={['auto', '24px']}
       mr="auto"
       onClick={() => {
@@ -191,25 +191,25 @@ function AuditHeader() {
   return (
     <>
       <AuditSubmitModal
-        data-id="030925-eddbeb"
+        data-id="000126"
         isOpen={isSubmitModalOpen}
         onClose={() => {
           handleSubmitModalClose();
         }} />
       <AuditDeletModal
-        data-id="030925-4ab35c"
+        data-id="000127"
         isOpen={isDeleteModalOpen}
         onClose={() => {
           handleDeleteModalClose();
         }} />
       <AuditRecurringModal
-        data-id="030925-5ae262"
+        data-id="000128"
         isOpen={isRecurringModalOpen}
         onClose={() => {
           handleRecurringModalClose();
         }} />
       <Flex
-        data-id="030925-d93b55"
+        data-id="000129"
         direction="column"
         mb="15px"
         pl={6}
@@ -217,33 +217,33 @@ function AuditHeader() {
         w="full"
         zIndex={1}>
         <Stack
+          data-id="000130"
           align={['flex-start', 'center']}
-          data-id="030925-b03b60"
           direction={['column', 'row']}
           h={['auto', '40px']}
           mb="15px"
           spacing={4}
           w="full">
           <Heading
+            data-id="000131"
             alignItems={['flex-start', 'center']}
             color="auditHeader.heading"
-            data-id="030925-5584c9"
             fontSize={["24px", "xxl"]}
             fontWeight="bold">
-            <HStack data-id="030925-1fba5b" justify="center">
+            <HStack data-id="000132" justify="center">
               <Avatar
-                data-id="030925-fc9ca1"
+                data-id="000133"
                 name={auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 rounded="full"
                 size="xs"
                 src={auditor?.imgUrl} />
-              <Text data-id="030925-dc88ea">{`${audit?.auditor?.displayName} - ${audit?.reference}`}</Text>
+              <Text data-id="000134">{`${audit?.auditor?.displayName} - ${audit?.reference}`}</Text>
             </HStack>
           </Heading>
           {audit.status === 'completed' && (
             <Badge
+              data-id="000135"
               colorScheme="green"
-              data-id="030925-017a12"
               fontSize="16px"
               h="fit-content"
               variant="outline">
@@ -252,8 +252,8 @@ function AuditHeader() {
           )}
           {audit.status === 'missed' && (
             <Badge
+              data-id="000136"
               colorScheme="red"
-              data-id="030925-af89b8"
               fontSize="16px"
               h="fit-content"
               variant="outline">
@@ -261,25 +261,25 @@ function AuditHeader() {
             </Badge>
           )}
         </Stack>
-        <Flex data-id="030925-101793" pr="25px">
-          <Stack data-id="030925-6b60b5" direction={['column', 'row']} spacing={[3, 6]}>
-            <Flex data-id="030925-7fc8cb" direction="column" justify="center">
-              <Text data-id="030925-4692fa" fontSize={["12px", "11px"]} opacity={0.5}>
+        <Flex data-id="000137" pr="25px">
+          <Stack data-id="000138" direction={['column', 'row']} spacing={[3, 6]}>
+            <Flex data-id="000139" direction="column" justify="center">
+              <Text data-id="000140" fontSize={["12px", "11px"]} opacity={0.5}>
                 Item ID
               </Text>
-              <Text data-id="030925-704109" fontSize="smm">{audit?.reference}</Text>
+              <Text data-id="000141" fontSize="smm">{audit?.reference}</Text>
             </Flex>
             {audit?.walkType === 'physical' && (
               <Flex
-                data-id="030925-43463d"
+                data-id="000142"
                 direction="column"
                 justify="center"
                 wordBreak="break-all">
-                <Text data-id="030925-170e79" fontSize={["12px", "11px"]}  opacity={0.5}>
+                <Text data-id="000143" fontSize={["12px", "11px"]}  opacity={0.5}>
                   {capitalize(t('location'))}
                 </Text>
-                <Tooltip data-id="030925-ff8d42" label={location?.name}>
-                  <Text data-id="030925-1d284a" fontSize="smm" noOfLines={2}>
+                <Tooltip data-id="000144" label={location?.name}>
+                  <Text data-id="000145" fontSize="smm" noOfLines={2}>
                     {location?.name}
                   </Text>
                 </Tooltip>
@@ -287,41 +287,41 @@ function AuditHeader() {
             )}
             {audit?.businessUnit && (
               <Flex
-                data-id="030925-bd4be4"
+                data-id="000146"
                 direction="column"
                 justify="center"
                 wordBreak="break-all">
-                <Text data-id="030925-416159" fontSize={["12px", "11px"]}  opacity={0.5}>
+                <Text data-id="000147" fontSize={["12px", "11px"]}  opacity={0.5}>
                   {capitalize(t('business unit'))}
                 </Text>
-                <Tooltip data-id="030925-19ec90" label={businessUnit?.name}>
-                  <Text data-id="030925-fb4f21" fontSize="smm" noOfLines={2}>
+                <Tooltip data-id="000148" label={businessUnit?.name}>
+                  <Text data-id="000149" fontSize="smm" noOfLines={2}>
                     {businessUnit?.name}
                   </Text>
                 </Tooltip>
               </Flex>
             )}
             {module?.featureFlags?.enableSafetyWalk && 
-              <Flex data-id="030925-ef96bc" direction="column" justify="center">
-                <Text data-id="030925-775397" fontSize={["12px", "11px"]}  opacity={0.5}>
+              <Flex data-id="000150" direction="column" justify="center">
+                <Text data-id="000151" fontSize={["12px", "11px"]}  opacity={0.5}>
                   Type
                 </Text>
-                <Text data-id="030925-e22f1f" fontSize="smm" textTransform="capitalize">
+                <Text data-id="000152" fontSize="smm" textTransform="capitalize">
                   {audit?.walkType}
                 </Text>
               </Flex>
             }
           </Stack>
-          <Spacer data-id="030925-b54c53" />
+          <Spacer data-id="000153" />
           <Stack
-            data-id="030925-c4be76"
+            data-id="000154"
             direction="row"
             display={['none', 'flex']}
             spacing={[3, 6]}>
             <AuditShareButton
+              data-id="000155"
               audit={audit}
               businessUnit={businessUnit}
-              data-id="030925-616814"
               handleShareOpen={handleShareOpen}
               location={location}
               setShareItemName={setShareItemName}
@@ -330,7 +330,7 @@ function AuditHeader() {
             {isPermitted({ user, action: 'audits.delete', data: { audit } }) && (
               <>
                 <DeleteButton
-                  data-id="030925-04e878"
+                  data-id="000156"
                   handleActionChangesModalOpen={handleActionChangesModalOpen}
                   handleDeleteModalOpen={handleDeleteModalOpen}
                   onDeleteAudit={onDeleteAudit}
@@ -339,8 +339,8 @@ function AuditHeader() {
                   user={user}
                 />
                 {audit?.walkType === 'physical' && <RecurringButton
+                  data-id="000157"
                   audit={audit}
-                  data-id="030925-f7c9ad"
                   handleActionChangesModalOpen={handleActionChangesModalOpen}
                   handleRecurringModalOpen={handleRecurringModalOpen}
                   selectedAction={selectedAction}
@@ -350,8 +350,8 @@ function AuditHeader() {
               </>
             )}
             <SubmitButton
+              data-id="000158"
               audit={audit}
-              data-id="030925-1078f6"
               handleActionChangesModalOpen={handleActionChangesModalOpen}
               handleSubmitModalOpen={handleSubmitModalOpen}
               onSubmitAudit={onSubmitAudit}
@@ -364,52 +364,52 @@ function AuditHeader() {
         </Flex>
 
         <Flex
+          data-id="000159"
           alignItems="center"
-          data-id="030925-2e573f"
           display={['flex', 'none']}
           h="40px"
           mr="25px"
           mt={4}>
-          <Menu data-id="030925-1c3e5c">
+          <Menu data-id="000160">
             {({ isOpen }) => (
               <>
                 <MenuButton
+                  data-id="000161"
                   as={Button}
                   bg={isOpen ? 'reasponseHeader.optionsMenuBgOpen' : 'reasponseHeader.optionsMenuBg'}
                   borderRadius="10px"
                   color="reasponseHeader.optionsMenuButtonColor"
                   colorScheme="reasponseHeader.optionsMenuColorScheme"
-                  data-id="030925-2c39f5"
                   fontFamily="Helvetica"
                   fontSize="smm"
                   fontWeight="bold"
                   isActive={isOpen}
                   lineHeight="18px"
-                  rightIcon={<ArrowDownIcon data-id="030925-052636" />}
+                  rightIcon={<ArrowDownIcon data-id="000162" />}
                   textAlign="left"
                   w="full">
                   Options
                 </MenuButton>
                 <MenuList
+                  data-id="000163"
                   borderColor="reasponseHeader.optionsMenuBorderColor"
                   borderRadius="10px"
                   boxShadow="0px 0px 80px"
                   color="reasponseHeader.optionsMenuBoxShadow"
-                  data-id="030925-eadbdb"
                   minW={['calc(100vw - 50px)', '325px']}
                   w="100%"
                   zIndex="10">
                   <AuditShareButton
+                    data-id="000164"
                     audit={audit}
                     businessUnit={businessUnit}
-                    data-id="030925-6797c5"
                     handleShareOpen={handleShareOpen}
                     location={location}
                     setShareItemName={setShareItemName}
                     setShareItemUrl={setShareItemUrl}
                   />
                   <DeleteButton
-                    data-id="030925-ed83e6"
+                    data-id="000165"
                     handleActionChangesModalOpen={handleActionChangesModalOpen}
                     handleDeleteModalOpen={handleDeleteModalOpen}
                     onDeleteAudit={onDeleteAudit}
@@ -418,8 +418,8 @@ function AuditHeader() {
                     user={user}
                   />
                   <RecurringButton
+                    data-id="000166"
                     audit={audit}
-                    data-id="030925-fa505e"
                     handleActionChangesModalOpen={handleActionChangesModalOpen}
                     handleRecurringModalOpen={handleRecurringModalOpen}
                     selectedAction={selectedAction}
@@ -427,8 +427,8 @@ function AuditHeader() {
                     user={user}
                   />
                   <SubmitButton
+                    data-id="000167"
                     audit={audit}
-                    data-id="030925-adea20"
                     handleActionChangesModalOpen={handleActionChangesModalOpen}
                     handleSubmitModalOpen={handleSubmitModalOpen}
                     onSubmitAudit={onSubmitAudit}

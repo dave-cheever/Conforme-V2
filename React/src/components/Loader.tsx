@@ -29,15 +29,15 @@ function Loader({
   };
   return (
     <Flex
+        data-id="000325"
         align={center ? 'center' : 'flex-start'}
-        data-id="030925-a9d2fa"
         h="full"
         justify="center"
         w="full"
         {...props}>
       <Spinner
+        data-id="000326"
         color={loaderColor || 'loader.color'}
-        data-id="030925-ef0905"
         emptyColor="gray.200"
         size={size || 'xl'}
         speed="0.65s"

@@ -37,28 +37,28 @@ function Toggle({
 
   return (
     <Controller
+        data-id="000433"
         control={control}
-        data-id="030925-28b724"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
           const { error } = fieldState;
           return (
             <Box
-                data-id="030925-dbf53e"
+                data-id="000434"
                 id={name}
                 mt={variant !== 'secondaryVariant' ? 2 : 'none'}
                 w="full">
               {label && (
                 <Flex
+                  data-id="000435"
                   align="center"
-                  data-id="030925-737700"
                   justify="space-between"
                   mb={variant !== 'secondaryVariant' ? '-32px' : 'none'}
                   pt={2}>
                   <Box
+                    data-id="000436"
                     color={error ? 'switch.label.error' : 'switch.label.normal'}
-                    data-id="030925-1f4cf8"
                     fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                     fontWeight="bold"
                     left={variant !== 'secondaryVariant' ? '19px' : 'none'}
@@ -66,15 +66,16 @@ function Toggle({
                     zIndex={1}>
                     {label}{' '}
                     {variant === 'secondaryVariant' && help && (
-                      <Box data-id="030925-2e9303" fontSize="11px" mt={3} opacity={0.5}>
+                      <Box data-id="000437" fontSize="11px" mt={3} opacity={0.5}>
                         {help}
                       </Box>
                     )}
                   </Box>
                 </Flex>
               )}
-              <Flex align="center" data-id="030925-31189f" mt={3}>
+              <Flex data-id="000438" align="center" mt={3}>
                 <SwitchInput
+                  data-id="000439"
                   colorScheme="toogle.color"
                   css={{
                     '.chakra-switch__thumb': {
@@ -83,15 +84,14 @@ function Toggle({
                       },
                     },
                   }}
-                  data-id="030925-911565"
                   isChecked={!!value}
                   isDisabled={disabled}
                   name={name}
                   onBlur={onBlur}
                   onChange={onChange} />
                 <Flex
+                  data-id="000440"
                   color={value ? 'toogle.enableColor' : 'toogle.disableColor'}
-                  data-id="030925-f2bc38"
                   fontSize="14px"
                   fontWeight="400"
                   ml={3}>
@@ -100,8 +100,8 @@ function Toggle({
               </Flex>
               {error && (
                 <Box
+                  data-id="000441"
                   color="toogle.label.error"
-                  data-id="030925-6c1906"
                   fontSize="smm"
                   ml={1}
                   mt={1}>
@@ -109,9 +109,9 @@ function Toggle({
                 </Box>
               )}
               {tooltip && (
-                <Flex align="center" color="toogle.tooltipColor" data-id="030925-ab8582" mt={3}>
-                  <InfoOutlineIcon data-id="030925-b49b97" />
-                  <Box data-id="030925-f51050" fontSize="11px" ml={2}>
+                <Flex data-id="000442" align="center" color="toogle.tooltipColor" mt={3}>
+                  <InfoOutlineIcon data-id="000443" />
+                  <Box data-id="000444" fontSize="11px" ml={2}>
                     {tooltip}
                   </Box>
                 </Flex>

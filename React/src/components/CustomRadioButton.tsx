@@ -9,16 +9,16 @@ function CustomRadioButton({ children, ...props }) {
 
   return (
     <Flex
+      data-id="000263"
       alignItems="center"
       as="label"
       color="customRadioButton.textColor"
       cursor={props.isDisabled ? 'no-drop' : 'pointer'}
-      data-id="030925-4d810a"
       textAlign="left"
     >
-      <input data-id="030925-04f2b8" {...input} />
+      <input data-id="000264" {...input} />
       <Flex
-        data-id="030925-c272c6"
+        data-id="000265"
         {...checkbox}
         _checked={{
           bg: props.isDisabled ? 'customRadioButton.disabledBg' : 'customRadioButton.checkedBg',
@@ -38,7 +38,7 @@ function CustomRadioButton({ children, ...props }) {
         mr="10px"
         w={props.isSingleChoice ? '22px' : '20px'}
       >
-        {input.checked && <CheckIcon data-id="030925-a39b9c" h="12px" w="12px" />}
+        {input.checked && <CheckIcon data-id="000266" h="12px" w="12px" />}
       </Flex>
       {children}
     </Flex>

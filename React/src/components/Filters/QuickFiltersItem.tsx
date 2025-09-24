@@ -37,26 +37,26 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
     switch (name) {
       case 'businessUnitsIds':
       case 'areasIds':
-        return <BusinessUnitFilter data-id="030925-a88a70" />;
+        return <BusinessUnitFilter data-id="000155" />;
 
       case 'categoriesIds':
-        return <CategoryFilter data-id="030925-2616ef" />;
+        return <CategoryFilter data-id="000156" />;
 
       case 'trackerItemsIds':
-        return <TrackerItemFilter data-id="030925-d82fc7" />;
+        return <TrackerItemFilter data-id="000157" />;
 
       case 'locationsIds':
       case 'sitesIds':
-        return <LocationFilter data-id="030925-26d01f" />;
+        return <LocationFilter data-id="000158" />;
 
       case 'regulatoryBodiesIds':
-        return <RegulatoryBodyFilter data-id="030925-fc92c3" />;
+        return <RegulatoryBodyFilter data-id="000159" />;
 
       case 'usersIds':
-        return <UserFilter data-id="030925-67c04e" />;
+        return <UserFilter data-id="000160" />;
 
       default:
-        return <StateChoiceFilter data-id="030925-eec6f5" name={name} />;
+        return <StateChoiceFilter data-id="000161" name={name} />;
     }
   };
 
@@ -68,22 +68,22 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
 
   return name.toLocaleLowerCase().includes('date') ? (
     <QuickDateFilter
-      data-id="030925-e4e137"
+      data-id="000162"
       filterName={name}
       toggleActiveFilters={toggleActiveFilters} />
   ) : (
     <Flex
-      data-id="030925-63b1e4"
+      data-id="000163"
       direction="column"
       key={`quick-filter-item-${name}`}
       mt={2}>
       <Flex
+        data-id="000164"
         align="center"
         bg={isOpen ? 'quickFiltersItem.openBg' : 'quickFiltersItem.closeBg'}
         borderBottomRadius={isOpen ? '0px' : '10px'}
         borderTopRadius="10px"
         cursor="pointer"
-        data-id="030925-bf0bd6"
         direction="row"
         justify="center"
         mr={4}
@@ -95,21 +95,21 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
         p={3}
         w="215px">
         <Text
+          data-id="000165"
           color="#1E1836"
-          data-id="030925-e90ff2"
           fontSize="14px"
           fontWeight="500"
           lineHeight="20px"
           w="full">
           {filter?.name}
         </Text>
-        <Flex data-id="030925-561377">
+        <Flex data-id="000166">
           {filtersLength > 0 && (
             <Box
+              data-id="000167"
               bg="quickFiltersItem.countBg"
               borderRadius="10px"
               color="quickFiltersItem.countColor"
-              data-id="030925-5e701b"
               fontSize="12px"
               fontWeight="400"
               mr="3"
@@ -117,17 +117,17 @@ function QuickFiltersItem({ name, filter, toggleActiveFilters }: { name: string;
               {filtersLength}
             </Box>
           )}
-          {filtersLength > 0 && <ResetIcon data-id="030925-bcc973" mr={3} onClick={resetFilter} />}
-          {isOpen ? <ArrowUpIcon data-id="030925-5b918a" onClick={onToggle} /> : <ArrowDownIcon data-id="030925-42c576" onClick={onToggle} />}
+          {filtersLength > 0 && <ResetIcon data-id="000168" mr={3} onClick={resetFilter} />}
+          {isOpen ? <ArrowUpIcon data-id="000169" onClick={onToggle} /> : <ArrowDownIcon data-id="000170" onClick={onToggle} />}
         </Flex>
       </Flex>
       {isOpen && (
         <Flex
+          data-id="000171"
           align="center"
           alignItems="top"
           bg="quickFiltersItem.openBg"
           borderBottomRadius="10px"
-          data-id="030925-b4ffff"
           maxH="200px"
           overflowY="auto"
           p={3}

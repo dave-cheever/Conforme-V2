@@ -16,40 +16,40 @@ function SelectedAuditor({ name, designation, imgSrc }: IAuditor) {
 
   return (
     <Tag
+        data-id="000471"
         bg="white"
         borderRadius="10px"
         boxShadow="0px 10px 30px 0px #42424214"
-        data-id="030925-d518d2"
         h="62px"
         p="0px 20px"
         size="lg"
         w="280px">
       <Box
+        data-id="000472"
         alignItems="center"
-        data-id="030925-fce7a1"
         display="flex"
         justifyContent="start"
         w="250px">
         <Avatar
+          data-id="000473"
           bg="auditModal.participants.avatar.bg"
-          data-id="030925-7afd5f"
           h="36px"
           lineHeight="0px"
           mr="15px"
           name={name?.replace(/\s*\(.*?\)\s*/g, '')} 
           src={imgSrc}
           w="36px" />
-        <TagLabel data-id="030925-b5f00b">
+        <TagLabel data-id="000474">
           <Text
+            data-id="000475"
             color="auditModal.participants.avatar.text.name"
-            data-id="030925-b44685"
             fontSize="md"
             fontWeight="400">
             {name}
           </Text>
           <Text
+            data-id="000476"
             color="auditModal.participants.avatar.text.designation"
-            data-id="030925-f7486f"
             fontSize="sm"
             fontWeight="400">
             {designation}
@@ -57,7 +57,7 @@ function SelectedAuditor({ name, designation, imgSrc }: IAuditor) {
         </TagLabel>
       </Box>
       <TagCloseButton
-        data-id="030925-e8df37"
+        data-id="000477"
         onClick={() => modalContext.updateSelectedAuditors(auditor, 'remove')}
         w="20px" />
     </Tag>

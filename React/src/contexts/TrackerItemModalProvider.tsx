@@ -176,7 +176,7 @@ function TrackerItemModalProvider({ children }) {
   ) as ITrackerItemModalContext;
 
   return (
-    <TrackerItemModalContext.Provider value={value}>
+    <TrackerItemModalContext.Provider data-id="000017" value={value}>
       {children}
     </TrackerItemModalContext.Provider>
   );

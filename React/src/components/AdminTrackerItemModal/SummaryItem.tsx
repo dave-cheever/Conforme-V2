@@ -4,16 +4,16 @@ import { Flex, Text } from '@chakra-ui/react';
 
 function SummaryItem({ children, label }) {
   return (
-    <Flex data-id="030925-23a0e4" flexDir="column">
+    <Flex data-id="000653" flexDir="column">
       <Text
+        data-id="000654"
         color="summaryItemModal.label"
-        data-id="030925-85c866"
         fontSize="11px"
         fontWeight="bold"
         mb="5px">
         {label}
       </Text>
-      <Text color="summaryItemModal.value" data-id="030925-eb3fc1" fontSize="smm">
+      <Text data-id="000655" color="summaryItemModal.value" fontSize="smm">
         {children}
       </Text>
     </Flex>

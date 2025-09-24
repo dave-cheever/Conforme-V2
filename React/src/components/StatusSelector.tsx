@@ -29,7 +29,7 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
   if (disabled)
     {return (
       <StatusSelectorList
-        data-id="030925-262440"
+        data-id="000493"
         disabled={disabled}
         filteredStatuses={filteredStatuses}
         handleChange={handleChange}
@@ -37,16 +37,16 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
     );}
 
   return (
-    <Stack data-id="030925-c2b3c3" w="full">
-      <Stack data-id="030925-c966b1" overflow="auto" pb={3} w="full">
+    <Stack data-id="000494" w="full">
+      <Stack data-id="000495" overflow="auto" pb={3} w="full">
         <>
-          <Box data-id="030925-fde257" py="5px">
-            <InputGroup data-id="030925-c96948">
+          <Box data-id="000496" py="5px">
+            <InputGroup data-id="000497">
               <Input
+                data-id="000498"
                 borderColor="auditFilterPanel.searchBoxBordercolor"
                 borderWidth="1px"
                 color="statusSelector.search.label"
-                data-id="030925-2813bf"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
@@ -55,8 +55,8 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
                 value={searchText}
                 w="full" />
               <SearchIcon
+                data-id="000499"
                 bottom="13px"
-                data-id="030925-fdad76"
                 h="15px"
                 left="14px"
                 position="absolute"
@@ -66,8 +66,8 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
           </Box>
           {note && (
             <Text
+              data-id="000500"
               color="statusSelector.note"
-              data-id="030925-f6037a"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"
@@ -76,7 +76,7 @@ function StatusSelector({ status, selected, note, disabled, handleChange }: ISit
             </Text>
           )}
           <StatusSelectorList
-            data-id="030925-ffe4dd"
+            data-id="000501"
             disabled={disabled}
             filteredStatuses={filteredStatuses}
             handleChange={handleChange}

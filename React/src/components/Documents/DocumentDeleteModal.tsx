@@ -12,18 +12,18 @@ function DocumentDeleteModal({
   handleDelete: () => void;
 }) {
   return (
-    <Modal data-id="030925-a37405" isOpen={isOpen} onClose={handleClose}>
-      <ModalOverlay data-id="030925-83b4d2" />
-      <ModalContent data-id="030925-694688">
-        <ModalHeader data-id="030925-5bd970">Delete file</ModalHeader>
-        <ModalCloseButton data-id="030925-cef9f2" />
-        <ModalBody data-id="030925-1805bd" textAlign="center">{message}</ModalBody>
-        <ModalFooter data-id="030925-895294">
-          <Flex data-id="030925-bb6211" justify="center" w="full">
+    <Modal data-id="000478" isOpen={isOpen} onClose={handleClose}>
+      <ModalOverlay data-id="000479" />
+      <ModalContent data-id="000480">
+        <ModalHeader data-id="000481">Delete file</ModalHeader>
+        <ModalCloseButton data-id="000482" />
+        <ModalBody data-id="000483" textAlign="center">{message}</ModalBody>
+        <ModalFooter data-id="000484">
+          <Flex data-id="000485" justify="center" w="full">
             <Button
+              data-id="000486"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="030925-a6246e"
               mr={3}
               onClick={() => {
                 handleDelete();
@@ -32,9 +32,9 @@ function DocumentDeleteModal({
               Delete
             </Button>
             <Button
+              data-id="000487"
               _hover={{ opacity: 0.7 }}
               colorScheme="red"
-              data-id="030925-b7658d"
               onClick={() => handleClose()}>
               Cancel
             </Button>

@@ -200,7 +200,7 @@ function ParticipantsModalProvider({ children }) {
     ],
   );
 
-  return <ParticipantsModalContext.Provider value={value}>{children}</ParticipantsModalContext.Provider>;
+  return <ParticipantsModalContext.Provider data-id="000011" value={value}>{children}</ParticipantsModalContext.Provider>;
 }
 
 export default ParticipantsModalProvider;

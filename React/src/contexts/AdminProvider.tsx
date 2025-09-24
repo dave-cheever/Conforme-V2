@@ -22,7 +22,7 @@ function AdminProvider({ children }: any) {
     [adminModalState],
   );
 
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
+  return <AdminContext.Provider data-id="000517" value={value}>{children}</AdminContext.Provider>;
 }
 
 export default AdminProvider;

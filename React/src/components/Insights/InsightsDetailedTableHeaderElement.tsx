@@ -23,10 +23,10 @@ function InsightsDetailedTableHeaderElement({
 }) {
   return (
     <Flex
+      data-id="000522"
       alignItems="center"
       bg={color}
       cursor="pointer"
-      data-id="030925-a33116"
       justifyContent={color !== 'white' ? 'center' : undefined}
       ml={ml || '0'}
       onClick={onClick}
@@ -37,22 +37,22 @@ function InsightsDetailedTableHeaderElement({
       py={1}
       rounded="md">
       <Tooltip
-        data-id="030925-8d64f6"
+        data-id="000523"
         hasArrow
         isDisabled={tooltip === ''}
         label={tooltip}>
-        <Text color={color !== 'white' ? 'white' : '#787486'} data-id="030925-a15e9f">{label}</Text>
+        <Text data-id="000524" color={color !== 'white' ? 'white' : '#787486'}>{label}</Text>
       </Tooltip>
       {sortOrder && (
         sortOrder === 'desc' ? (
           <ArrowDownIcon
+            data-id="000525"
             color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
-            data-id="030925-f88dfa"
             ml="5px" />
         ) : (
           <ArrowUpIcon
+            data-id="000526"
             color={showSortingIcon ? (color !== 'white' ? 'white' : '#787486') : color}
-            data-id="030925-9980ec"
             ml="5px" />
         )
       )}

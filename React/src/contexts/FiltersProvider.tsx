@@ -215,7 +215,7 @@ function FiltersProvider({ children }) {
     ],
   );
 
-  return <FiltersContext.Provider value={value}>{children}</FiltersContext.Provider>;
+  return <FiltersContext.Provider data-id="000013" value={value}>{children}</FiltersContext.Provider>;
 }
 
 export default FiltersProvider;

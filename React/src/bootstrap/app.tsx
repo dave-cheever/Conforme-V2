@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
+import { runtimeEnv } from '../utils/runtime-env';
 import AdminProvider from '../contexts/AdminProvider';
 import AppProvider, { useAppContext } from '../contexts/AppProvider';
 import ConfigProvider from '../contexts/ConfigProvider';
@@ -22,7 +22,7 @@ function App() {
   const { navigate } = useNavigate();
   const location = useLocation();
   // Set cookie with client URL for auth flow
-  const clientUrl = process.env.REACT_APP_CLIENT_URL || '';
+  const clientUrl = runtimeEnv.clientUrl() || '';
   const clientDomain = new URL(clientUrl).hostname;
   const domainParts = clientDomain.split('.');
   const topLevelDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
@@ -40,23 +40,23 @@ function App() {
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (
-      <ChakraProvider data-id="8bb923075c38" theme={getTheme(organizationConfig?.theme)}>
-        <Flex alignItems="center" data-id="33d5cdd6386a" h="100vh" justifyContent="center" w="100vw">
-          <Spinner color="brand.primary" data-id="db2f2811922f" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
+      <ChakraProvider data-id="000018" theme={getTheme(organizationConfig?.theme)}>
+        <Flex data-id="000019" alignItems="center" h="100vh" justifyContent="center" w="100vw">
+          <Spinner data-id="000020" color="brand.primary" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
         </Flex>
       </ChakraProvider>
     );
   }
 
   return (
-    <ChakraProvider data-id="ba8f0b72a649" theme={getTheme(organizationConfig?.theme)}>
-      <CSSReset data-id="98971139de59" />
+    <ChakraProvider data-id="000021" theme={getTheme(organizationConfig?.theme)}>
+      <CSSReset data-id="000022" />
       {/* {user && <IdleMonitor data-id="70d9b5aff63a" />} */}
-      <AdminProvider data-id="3936a5fd8325">
-        <FiltersProvider data-id="c63426c7a6be">
-          <Routes data-id="f7c0226baff0">
+      <AdminProvider data-id="000023">
+        <FiltersProvider data-id="000024">
+          <Routes data-id="000025">
             {routes.map((props) => (
-              <Route data-id="bb5c7c440edc" {...props} key={props.path} />
+              <Route data-id="000026" {...props} key={props.path} />
             ))}
           </Routes>
         </FiltersProvider>
@@ -67,9 +67,9 @@ function App() {
 
 function AppWithContext() {
   return (
-    <AppProvider data-id="1485cd05cde6">
-      <ConfigProvider data-id="f93a4ac1fd0d">
-        <App data-id="59ebca745f27" />
+    <AppProvider data-id="000027">
+      <ConfigProvider data-id="000028">
+        <App data-id="000029" />
       </ConfigProvider>
     </AppProvider>
   );

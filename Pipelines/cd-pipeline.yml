@@ -1,0 +1,261 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr: none
+
+name: $(Date:yyyyMMdd).$(Rev:r)
+appendCommitMessageToRunName: false
+
+variables:
+  - group: Conforme SIT
+  - name: Node_Version
+    value: '22.x'
+  - name: React_WorkingDir
+    value: 'React'
+  - name: Express_WorkingDir
+    value: 'Express'
+  - name: Functions_WorkingDir
+    value: 'Azure Functions'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: 'Build_Artifacts'
+  displayName: 'Build'
+  jobs:
+  
+  - job: Set_Run_Name
+    displayName: 'Set pipeline run name to release number'
+    steps:
+    - script: |
+        echo "##vso[build.updatebuildnumber]Release - $(Build.BuildNumber)"
+      displayName: 'Update run name'
+
+  - job: Build_React
+    displayName: 'Build React App'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Use Node $(Node_Version)'
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '$(Node_Version)'
+        checkLatest: true
+    - task: Npm@1
+      displayName: 'Install React dependencies'
+      inputs:
+        command: 'install'
+        workingDir: '$(React_WorkingDir)'
+    - task: Npm@1
+      displayName: 'Build React'
+      inputs:
+        command: 'custom'
+        workingDir: '$(React_WorkingDir)'
+        customCommand: 'run build'
+    - task: ArchiveFiles@2
+      displayName: 'Archive React build'
+      inputs:
+        rootFolderOrFile: '$(React_WorkingDir)/build'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/react-app/react-app.zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish React artifact'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/react-app'
+        ArtifactName: 'react-app'
+        publishLocation: 'Container'
+
+  - job: Build_Express
+    displayName: 'Build Express App'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Use Node $(Node_Version)'
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '$(Node_Version)'
+        checkLatest: true
+    - task: Npm@1
+      displayName: 'Install Express dependencies'
+      inputs:
+        command: 'install'
+        workingDir: '$(Express_WorkingDir)'
+    - task: Npm@1
+      displayName: 'Build Express'
+      inputs:
+        command: 'custom'
+        workingDir: '$(Express_WorkingDir)'
+        customCommand: 'run build'
+    - task: CopyFiles@2
+      displayName: 'Stage Express output'
+      inputs:
+        SourceFolder: '$(Express_WorkingDir)'
+        Contents: |
+          package.json
+          package-lock.json
+          dist/**
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/express/stage'
+    - task: ArchiveFiles@2
+      displayName: 'Archive Express build'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/express/stage'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/express/express-app.zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Express artifact'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/express'
+        ArtifactName: 'express-app'
+        publishLocation: 'Container'
+
+  - job: Build_Functions
+    displayName: 'Build Function App'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Use Node $(Node_Version)'
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '$(Node_Version)'
+        checkLatest: true
+    - task: Npm@1
+      displayName: 'Install Functions dependencies'
+      inputs:
+        command: 'install'
+        workingDir: '$(Functions_WorkingDir)'
+    - task: Npm@1
+      displayName: 'Build Functions'
+      inputs:
+        command: 'custom'
+        workingDir: '$(Functions_WorkingDir)'
+        customCommand: 'run build'
+    - task: CopyFiles@2
+      displayName: 'Stage Function output'
+      inputs:
+        SourceFolder: '$(Functions_WorkingDir)'
+        Contents: |
+          host.json
+          package.json
+          package-lock.json
+          dist/**
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/functions/stage'
+    - task: ArchiveFiles@2
+      displayName: 'Archive Function app'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/functions/stage'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/functions/function-app.zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Functions artifact'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/functions'
+        ArtifactName: 'function-app'
+        publishLocation: 'Container'
+  
+- stage: Deploy_SIT
+  displayName: 'SIT'
+  dependsOn: Build_Artifacts 
+  condition: succeeded()
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - SIT'
+        variableGroup: 'Conforme SIT'
+        variableFunctionGroup: 'Conforme Functions SIT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'conforme-sit'
+        expressAppName: 'conforme-api-sit'
+        functionAppName: 'conforme-functions-sit'
+        resourceGroupName: 'rg-conforme-web-sit'
+        runtimeStack: 'NODE|22-lts'
+
+- stage: Deploy_SAT
+  displayName: 'SAT'
+  dependsOn: Deploy_SIT
+  condition: succeeded()
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - SAT'
+        variableGroup: 'Conforme SAT'
+        variableFunctionGroup: 'Conforme Functions SAT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'conforme-sat'
+        expressAppName: 'conforme-api-sat'
+        functionAppName: 'conforme-functions-sat'
+        resourceGroupName: 'rg-conforme-web-sat'
+        runtimeStack: 'NODE|22-lts'
+
+- stage: Deploy_UAT_Doc_Control
+  displayName: 'UAT Doc Control'
+  dependsOn: Deploy_SAT
+  condition: succeeded()
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - Document Control UAT'
+        variableGroup: 'Conforme - Document Control UAT'
+        variableFunctionGroup: 'Conforme - Document Control Functions UAT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'bre-qms-sat'
+        expressAppName: 'bre-qms-api-sat'
+        functionAppName: 'functions-bre-qms-sat'
+        resourceGroupName: 'rg-bre-qms-sat'
+        runtimeStack: 'NODE|22-lts'
+
+- stage: Deploy_UAT_Safety_Walk
+  displayName: 'UAT Safety Walk'
+  dependsOn: Deploy_SAT
+  condition: succeeded()
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - Safety Walk UAT'
+        variableGroup: 'Conforme - Safety Walk UAT'
+        variableFunctionGroup: 'Conforme - Safety Walk Functions UAT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'bre-safetywalk-sat'
+        expressAppName: 'bre-safetywalk-api-sat'
+        functionAppName: 'functions-bre-safetywalk-sat'
+        resourceGroupName: 'rg-bre-safetywalk-sat'
+        runtimeStack: 'NODE|22-lts'
+   
+- stage: Deploy_PROD_Doc_Control
+  displayName: 'PROD Doc Control'
+  dependsOn: Deploy_UAT_Doc_Control
+  condition: succeeded()
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - Document Control UAT'
+        variableGroup: 'Conforme - Document Control UAT'
+        variableFunctionGroup: 'Conforme - Document Control Functions UAT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'bre-qms-sat'
+        expressAppName: 'bre-qms-api-sat'
+        functionAppName: 'functions-bre-qms-sat'
+        resourceGroupName: 'rg-bre-qms-sat'
+        runtimeStack: 'NODE|22-lts'
+
+- stage: Deploy_PROD_Safety_Walk
+  displayName: 'PROD Safety Walk'
+  dependsOn: Deploy_UAT_Safety_Walk
+  condition: succeeded()
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - Safety Walk UAT'
+        variableGroup: 'Conforme - Safety Walk UAT'
+        variableFunctionGroup: 'Conforme - Safety Walk Functions UAT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'bre-safetywalk-sat'
+        expressAppName: 'bre-safetywalk-api-sat'
+        functionAppName: 'functions-bre-safetywalk-sat'
+        resourceGroupName: 'rg-bre-safetywalk-sat'
+        runtimeStack: 'NODE|22-lts'

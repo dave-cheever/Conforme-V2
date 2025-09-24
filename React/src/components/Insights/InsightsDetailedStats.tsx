@@ -56,8 +56,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per person`,
         component: (
           <InsightsDetailedTable
+            data-id="000506"
             data={users}
-            data-id="030925-786886"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -69,8 +69,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per ${t('location')}`,
         component: (
           <InsightsDetailedTable
+            data-id="000507"
             data={locations}
-            data-id="030925-2a4275"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreLocations}
@@ -82,8 +82,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
+            data-id="000508"
             data={businessUnits}
-            data-id="030925-fb7e12"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreBusinessUnits}
@@ -97,8 +97,8 @@ function InsightsDetailedStats({
         label: 'Actions per person',
         component: (
           <InsightsDetailedTable
+            data-id="000509"
             data={users}
-            data-id="030925-4b60f8"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -110,8 +110,8 @@ function InsightsDetailedStats({
         label: `Actions per ${t('location')}`,
         component: (
           <InsightsDetailedTable
+            data-id="000510"
             data={locations}
-            data-id="030925-447f6a"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -123,8 +123,8 @@ function InsightsDetailedStats({
         label: `Actions per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
+            data-id="000511"
             data={businessUnits}
-            data-id="030925-939250"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -138,8 +138,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per person`,
         component: (
           <InsightsDetailedTable
+            data-id="000512"
             data={users}
-            data-id="030925-f80c72"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -152,8 +152,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per ${t('location')}`,
         component: (
           <InsightsDetailedTable
+            data-id="000513"
             data={locations}
-            data-id="030925-11b95e"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreBusinessUnits}
@@ -166,8 +166,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
+            data-id="000514"
             data={businessUnits}
-            data-id="030925-2adbc2"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -180,27 +180,27 @@ function InsightsDetailedStats({
 
   return (
     <Box
+        data-id="000515"
         bg="auditsInsights.list.bg"
         borderRadius="20px"
-        data-id="030925-8f3ad4"
         p={7}
         pb={0}
         w="full">
       <Tabs
-        data-id="030925-ffee66"
+        data-id="000516"
         defaultIndex={selectedTab}
         onChange={(index) => setSelectedTab(index)}
         variant="unstyled"
         w="full">
-        <TabList data-id="030925-4355a2">
+        <TabList data-id="000517">
           {tabs[insightsType].map((tab) => (
             <Tab
+              data-id="000518"
               _selected={{
                 bg: 'insights.tabBg',
                 color: 'insights.tabColor',
               }}
               borderRadius="10px"
-              data-id="030925-2eb27b"
               fontSize="smm"
               fontWeight="bold"
               key={tab.id}
@@ -209,9 +209,9 @@ function InsightsDetailedStats({
             </Tab>
           ))}
         </TabList>
-        <TabPanels data-id="030925-6f5121">
+        <TabPanels data-id="000519">
           {tabs[insightsType]?.map((tab) => (
-            <TabPanel data-id="030925-dc3740" key={tab.id} px={0}>
+            <TabPanel data-id="000520" key={tab.id} px={0}>
               {tab.component}
             </TabPanel>
           ))}

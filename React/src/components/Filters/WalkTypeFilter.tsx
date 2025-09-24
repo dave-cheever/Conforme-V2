@@ -14,9 +14,9 @@ function WalkTypeFilter() {
   };
 
   return (
-    <Box data-id="030925-d3ed1d" w="full">
+    <Box data-id="000205" w="full">
       <StatusSelector
-        data-id="030925-5c5410"
+        data-id="000206"
         handleChange={handleChange}
         selected={value}
         status={auditStatuses} />

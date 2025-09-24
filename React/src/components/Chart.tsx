@@ -48,28 +48,28 @@ function Chart({ items, label }: { items: IBaseWithName[]; label: string }) {
 
   return (
     <Flex
+        data-id="000217"
         alignItems="center"
-        data-id="030925-c873a7"
         direction="column"
         p="0 30px"
         position="fixed"
         right="30px">
       <Box
+        data-id="000218"
         color="chart.labelFontColor"
-        data-id="030925-32b358"
         fontWeight="bold"
         mb="24px">
         Responses by {label}
       </Box>
       <Box
+        data-id="000219"
         alignItems="center"
         bgColor="#DBDBDC"
         borderRadius="100px"
-        data-id="030925-5f5ba7"
         height="173px"
         justifyContent="center"
         width="173px">
-        <Doughnut data={data} data-id="030925-3714a3" height={300} options={options} />
+        <Doughnut data-id="000220" data={data} height={300} options={options} />
       </Box>
     </Flex>
   );

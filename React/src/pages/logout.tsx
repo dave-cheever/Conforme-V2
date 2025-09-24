@@ -7,6 +7,7 @@ import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import authClient from '../utils/auth-client';
+import { runtimeEnv } from '../utils/runtime-env';
 
 function Logout() {
   const toast = useToast();
@@ -67,29 +68,29 @@ function Logout() {
 
     authClient.signIn.social({
       provider: "microsoft",
-      callbackURL: process.env.REACT_APP_CLIENT_URL,
+      callbackURL: runtimeEnv.clientUrl(),
     }, loginOptions)
 
   }
 
   return (
     <Flex
+        data-id="000226"
         bg="logoutPage.bg"
-        data-id="030925-00227a"
         flexDir={['column', 'column', 'row']}
         h="100vh"
         w="full">
       <Flex
+        data-id="000227"
         align="center"
-        data-id="030925-24b281"
         h="full"
         justify={['center', 'center', 'flex-end']}
         order={[2, 2, 1]}
         w={['full', 'full', '30%']}>
-        <VStack align="center" data-id="030925-7fb179" spacing={5} textAlign="center">
+        <VStack data-id="000228" align="center" spacing={5} textAlign="center">
           <Flex
+            data-id="000229"
             color="logoutPage.organizationNameColor"
-            data-id="030925-f0002b"
             fontSize="24px"
             fontWeight="bold"
             lineHeight="41px"
@@ -100,38 +101,38 @@ function Logout() {
             {organizationConfig?.name}
           </Flex>
           <Flex
+            data-id="000230"
             bg="white"
             borderColor="logoutPage.avatarBorderColor"
             borderWidth="10px"
-            data-id="030925-ee7d62"
             rounded="full">
             <Avatar
+              data-id="000231"
               borderColor="white"
               borderWidth="4px"
-              data-id="030925-44307b"
               h="75px"
               name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
               src={user?.imgUrl}
               w="75px" />
           </Flex>
-          <Flex align="center" data-id="030925-619af1" flexDir="column">
-            <Flex data-id="030925-160900" fontSize="16px" fontWeight="700">
+          <Flex data-id="000232" align="center" flexDir="column">
+            <Flex data-id="000233" fontSize="16px" fontWeight="700">
               You have logged out.
             </Flex>
             <Flex
+              data-id="000234"
               color="logoutPage.descriptionColor"
-              data-id="030925-6fd404"
               fontSize="11px"
               mt="2">
               It's a good idea to close all browser windows.
             </Flex>
           </Flex>
           <Button
+            data-id="000235"
             _hover={{ opacity: 0.8 }}
             bg="loginPage.button.bg"
             borderRadius="10px"
             color="loginPage.button.color"
-            data-id="030925-0c7d6b"
             fontSize="14px"
             h="40px"
             lineHeight="18px"
@@ -140,16 +141,16 @@ function Logout() {
             Log back in
           </Button>
           <Flex
+            data-id="000236"
             align="center"
             color="logoutPage.descriptionColor"
-            data-id="030925-144069"
             flexDir="column"
             fontSize="11px">
-            <Flex data-id="030925-274f4d">Not {user?.firstName || user?.displayName}?</Flex>
+            <Flex data-id="000237">Not {user?.firstName || user?.displayName}?</Flex>
             <Flex
+              data-id="000238"
               _hover={{ bg: 'logoutPage.hoverColor' }}
               cursor="pointer"
-              data-id="030925-fa78cd"
               onClick={redirectToLogin}>
               Login as someone else
             </Flex>
@@ -157,15 +158,15 @@ function Logout() {
         </VStack>
       </Flex>
       <Flex
+        data-id="000239"
         align="center"
-        data-id="030925-013c82"
         h="full"
         justify={['center', 'center', 'flex-end']}
         order={[1, 1, 2]}
         w={['full', 'full', '70%']}>
-        <Box data-id="030925-e1ff80" h={['30vh', '40vh', '95vh']} overflow="hidden">
+        <Box data-id="000240" h={['30vh', '40vh', '95vh']} overflow="hidden">
           <Image
-            data-id="030925-76c2ee"
+            data-id="000241"
             h="full"
             maxW="max-content"
             src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />

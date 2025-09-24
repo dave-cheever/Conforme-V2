@@ -33,24 +33,24 @@ function NumberInput({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
+        data-id="000320"
         control={control}
-        data-id="030925-aa2abe"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
           const { error } = fieldState;
           return (
-            <Box data-id="030925-a855e0" id={name} mt="none" w="full">
+            <Box data-id="000321" id={name} mt="none" w="full">
               {label && (
                 <Flex
+                  data-id="000322"
                   align="center"
-                  data-id="030925-3de144"
                   justify="space-between"
                   mb="none"
                   pt={2}>
                   <Box
+                    data-id="000323"
                     color={error ? 'numberInput.labelFont.error' : 'numberInput.labelFont.normal'}
-                    data-id="030925-e851a0"
                     fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                     fontWeight="bold"
                     left="none"
@@ -58,7 +58,7 @@ function NumberInput({
                     zIndex={1}>
                     {label}
                     {help && (
-                      <Box data-id="030925-7748ce" fontSize="11px" mt={3} opacity={0.5}>
+                      <Box data-id="000324" fontSize="11px" mt={3} opacity={0.5}>
                         {help}
                       </Box>
                     )}
@@ -66,6 +66,7 @@ function NumberInput({
                 </Flex>
               )}
               <Input
+                data-id="000325"
                 _active={{
                   bg: disabled ? 'numberInput.disabled.bg' : 'numberInput.activeBg',
                 }}
@@ -86,7 +87,6 @@ function NumberInput({
                 borderWidth="1px"
                 color="numberInput.font"
                 cursor="pointer"
-                data-id="030925-622ed6"
                 defaultValue={value}
                 h="42px"
                 isDisabled={disabled}
@@ -99,14 +99,14 @@ function NumberInput({
                 pt="none"
                 type="number" />
               {error && (
-                <Box color="numberInput.error" data-id="030925-5b01a0" fontSize={14} ml={1}>
+                <Box data-id="000326" color="numberInput.error" fontSize={14} ml={1}>
                   {error.message}
                 </Box>
               )}
               {tooltip && (
-                <Flex align="center" color="dropdown.tooltip" data-id="030925-aea1f1" mt={3}>
-                  <InfoOutlineIcon data-id="030925-706f25" />
-                  <Box data-id="030925-7e9230" fontSize="11px" ml={2}>
+                <Flex data-id="000327" align="center" color="dropdown.tooltip" mt={3}>
+                  <InfoOutlineIcon data-id="000328" />
+                  <Box data-id="000329" fontSize="11px" ml={2}>
                     {tooltip}
                   </Box>
                 </Flex>

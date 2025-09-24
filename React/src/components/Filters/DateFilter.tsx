@@ -96,11 +96,12 @@ function DateFilter({ filterName }: { filterName: string }) {
   };
 
   return (
-    <Box data-id="030925-204d7c" w="full">
-      <Stack data-id="030925-8bb161" direction="column" mb={5}>
+    <Box data-id="000110" w="full">
+      <Stack data-id="000111" direction="column" mb={5}>
         {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(
           ([key, label]) => (
             <Checkbox
+              data-id="000112"
               colorScheme="purpleHeart"
               css={{
                 '.chakra-checkbox__control': {
@@ -120,15 +121,14 @@ function DateFilter({ filterName }: { filterName: string }) {
                   },
                 },
               }}
-              data-id="030925-d2eb08"
-              icon={<MinusIcon data-id="030925-2b25bf" />}
+              icon={<MinusIcon data-id="000113" />}
               isChecked={selectedKey === key}
               key={key}
               onChange={(e) => onChange(e, key)}
             >
               <Text
+                data-id="000114"
                 color="filterPanel.checkboxLabelColor"
-                data-id="030925-35dec0"
                 fontSize="14px"
               >
                 {label}
@@ -139,7 +139,7 @@ function DateFilter({ filterName }: { filterName: string }) {
       </Stack>
       {filterValue === 'exactDate' && (
         <DatePicker
-          data-id="030925-064cc1"
+          data-id="000115"
           inline
           onChange={handleExactDateChange}
           selected={startDate ? new Date(startDate) : new Date()}
@@ -147,7 +147,7 @@ function DateFilter({ filterName }: { filterName: string }) {
       )}
       {filterValue === 'dateRange' && (
         <DatePicker
-          data-id="030925-8ee11e"
+          data-id="000116"
           endDate={endDate ? new Date(endDate) : null}
           inline
           onChange={handleRangeChange}

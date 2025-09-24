@@ -9,12 +9,12 @@ function NavigationModal() {
     useTrackerItemModalContext();
 
   return (
-    <Flex data-id="030925-d97084" flexDir="column" w="185px">
+    <Flex data-id="000568" flexDir="column" w="185px">
       {trackerItemModalSections.map((el, i) => (
         <Flex
+          data-id="000569"
           alignItems="center"
           cursor="pointer"
-          data-id="030925-64e4ae"
           key={el.name}
           mb="15px"
           onClick={() => {
@@ -22,10 +22,10 @@ function NavigationModal() {
             selectSection(i);
           }}>
           <Flex
+            data-id="000570"
             alignItems="center"
             bg={generateTabColors(i, errors, trackerItem, visitedTab, selectedSectionIndex).bg}
             color={generateTabColors(i, errors, trackerItem, visitedTab, selectedSectionIndex).color}
-            data-id="030925-87c33f"
             flexShrink={0}
             fontSize="11px"
             fontWeight="bold"
@@ -35,14 +35,14 @@ function NavigationModal() {
             rounded="10px"
             w="37px">
             {generateTabColors(i, errors, trackerItem, visitedTab, selectedSectionIndex).bg === 'navigationModal.section.error.bg' ? (
-              <ErrorSign data-id="030925-87b922" h="14px" stroke="white" w="16px" />
+              <ErrorSign data-id="000571" h="14px" stroke="white" w="16px" />
             ) : (
               i + 1
             )}
           </Flex>
           <Text
+            data-id="000572"
             color="navigationModal.section.label"
-            data-id="030925-7ccc63"
             fontSize="smm"
             fontWeight={i === selectedSectionIndex ? 'bold' : 'semi_medium'}>
             {el.name}

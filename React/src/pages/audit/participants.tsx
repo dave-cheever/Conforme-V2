@@ -48,16 +48,16 @@ function AuditParticipants() {
   };
 
   return (
-    <Stack border="1px solid #CBD5E0" data-id="030925-7f8442" h={['fit-content', 'full']} p="10px" rounded="10px" spacing={4} w="full">
-      <Flex data-id="030925-ddb2c3" justifyContent={['space-between', 'initial']}>
-        <Text data-id="030925-946fa5" fontSize={['20px', 'xxl']} fontWeight="semibold">
+    <Stack data-id="000674" border="1px solid #CBD5E0" h={['fit-content', 'full']} p="10px" rounded="10px" spacing={4} w="full">
+      <Flex data-id="000675" justifyContent={['space-between', 'initial']}>
+        <Text data-id="000676" fontSize={['20px', 'xxl']} fontWeight="semibold">
           Participants
         </Text>
       </Flex>
       <Stack
+        data-id="000677"
         bg="auditParticipants.bg"
         borderRadius="20px"
-        data-id="030925-c2a742"
         h="full"
         overflow="auto"
         px={[2, 6]}
@@ -67,7 +67,7 @@ function AuditParticipants() {
         w="full"
       >
         <SingleParticipantSelector
-          data-id="030925-a2c1eb"
+          data-id="000678"
           isUserAllowedToChange={isPermitted({ user, action: 'audits.changeAuditor', data: { audit } })}
           label="Audited by"
           onChange={(participant) => selectAuditor(participant.userId)}
@@ -75,7 +75,7 @@ function AuditParticipants() {
         />
         {((audit.participants || []).length > 0 || (audit.status === 'upcoming' && isUserPermittedToModify)) && (
           <MultipleParticipantsSelector
-            data-id="030925-40eccb"
+            data-id="000679"
             isUserAllowedToChange={isPermitted({ user, action: 'audits.edit', data: { audit } })}
             label="Participants"
             maxParticipants={20}
@@ -95,8 +95,8 @@ function AuditParticipants() {
 
 function AuditsParticipantsWithContext() {
   return (
-    <ParticipantsModalProvider data-id="030925-db0817">
-      <AuditParticipants data-id="030925-778bd4" />
+    <ParticipantsModalProvider data-id="000680">
+      <AuditParticipants data-id="000681" />
     </ParticipantsModalProvider>
   );
 }

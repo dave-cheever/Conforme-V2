@@ -77,9 +77,9 @@ function AuditHistory() {
 
   return (
     <Stack
+        data-id="000550"
         bg="auditHistory.bg"
         border="1px solid #CBD5E0"
-        data-id="030925-848152"
         h="full"
         maxH={['none', 'calc(100vh - 220px)']}
         overflowY="auto"
@@ -99,21 +99,21 @@ function AuditHistory() {
         w="full"
       >
       {loading ? (
-        <Loader data-id="030925-c7a891" />
+        <Loader data-id="000551" />
       ) : (
-        <Stack data-id="030925-97d26b" spacing={4}>
+        <Stack data-id="000552" spacing={4}>
           {Object.entries(days).length > 0 ? (
             Object.entries(days).map(([day, audits]) => (
               <Stack
+                data-id="000553"
                 align="flex-start"
-                data-id="030925-781afb"
                 direction={['column', 'row']}
                 key={day}
                 spacing={4}>
                 <Box
+                  data-id="000554"
                   bg="auditHistory.date.bg"
                   color="auditHistory.date.color"
-                  data-id="030925-19da4b"
                   flexShrink={0}
                   fontSize="smm"
                   fontWeight="bold"
@@ -122,15 +122,15 @@ function AuditHistory() {
                   rounded="10px">
                   {day}
                 </Box>
-                <Stack data-id="030925-439937" spacing={4} w="full">
+                <Stack data-id="000555" spacing={4} w="full">
                   {audits.map((audit) => (
                     <HStack
+                      data-id="000556"
                       _hover={{
                         bg: 'auditHistory.listItem.bg.hover',
                       }}
                       bg="auditHistory.listItem.bg.default"
                       border="1px solid #CBD5E0"
-                      data-id="030925-c80024"
                       key={audit._id}
                       onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}
                       p={4}
@@ -139,55 +139,55 @@ function AuditHistory() {
                       spacing={4}
                       w="full">
                       <Avatar
+                        data-id="000557"
                         alignSelf="flex-start"
-                        data-id="030925-830058"
                         name={audit?.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                         size="sm"
                         src={audit?.auditor?.imgUrl} />
-                      <Stack data-id="030925-6ca794" flexGrow={1} spacing={2}>
-                        <Flex data-id="030925-08d827" direction="column">
+                      <Stack data-id="000558" flexGrow={1} spacing={2}>
+                        <Flex data-id="000559" direction="column">
                           <Text
+                            data-id="000560"
                             color="auditHistory.listItem.auditor"
-                            data-id="030925-7e1fed"
                             fontSize="ssm">
                             {audit.auditor?.displayName}
                             {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
                           </Text>
-                          <Text color="auditHistory.listItem.title" data-id="030925-c6e12d" fontSize="smm">
+                          <Text data-id="000561" color="auditHistory.listItem.title" fontSize="smm">
                             Completed {a(t('audit') as string)}
                           </Text>
                         </Flex>
-                        <HStack data-id="030925-46c2f6" fontSize="smm" spacing={6}>
+                        <HStack data-id="000562" fontSize="smm" spacing={6}>
                           {questionsCategories.map((questionsCategory, index) => (
                             <HStack
-                              data-id="030925-f9a8c3"
+                              data-id="000563"
                               key={questionsCategory?._id || index}
                               opacity={audit.questionsCategoriesCount[questionsCategory?._id] ? 1 : 0.25}
                               spacing={2}>
                               <Icon
-                                data-id="030925-891095"
+                                data-id="000564"
                                 fill="auditHistory.listItem.icon.fill"
                                 h="13px"
                                 icon={questionsCategory?.icon}
                                 stroke="auditHistory.listItem.icon.stroke"
                                 w="13px" />
-                              <Text data-id="030925-217092">{audit.questionsCategoriesCount[questionsCategory?._id] || 0}</Text>
+                              <Text data-id="000565">{audit.questionsCategoriesCount[questionsCategory?._id] || 0}</Text>
                             </HStack>
                           ))}
                         </HStack>
                       </Stack>
                       {device !== 'mobile' && (
                         <Flex
+                          data-id="000566"
                           _groupHover={{
                             display: 'flex',
                           }}
                           align="center"
-                          data-id="030925-00cbf0"
                           display="none">
                           <Button
+                            data-id="000567"
                             bg="auditHistory.listItem.button.bg"
                             color="auditHistory.listItem.button.color"
-                            data-id="030925-f2cf51"
                             fontSize="ssm"
                             fontWeight="bold"
                             h="28px"
@@ -204,7 +204,7 @@ function AuditHistory() {
             ))
           ) : (
             <Flex
-              data-id="030925-b107fa"
+              data-id="000568"
               fontSize="18px"
               fontStyle="italic"
               h="full"

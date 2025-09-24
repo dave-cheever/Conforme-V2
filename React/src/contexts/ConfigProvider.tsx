@@ -30,7 +30,7 @@ function ConfigProvider({ children }) {
     [menuItems],
   );
 
-  return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>;
+  return <ConfigContext.Provider data-id="000009" value={value}>{children}</ConfigContext.Provider>;
 }
 
 export default ConfigProvider;

@@ -140,23 +140,23 @@ function AuditModal({ refetch }) {
 
   return (
     <ModalContent
+        data-id="000345"
         bg="auditModal.bg"
-        data-id="030925-48a779"
         h="100%"
         m="0"
         overflow="hidden"
         p={[4, 6]}
         rounded="0">
       <ModalHeader
+        data-id="000346"
         alignItems="center"
-        data-id="030925-21d3ce"
         fontSize="xxl"
         fontWeight="bold"
         p="0">
-        <Flex data-id="030925-1e02ec" justifyContent="space-between">
-          <Flex alignItems="center" data-id="030925-4491b1" fontSize={['14px', '24px']}>
+        <Flex data-id="000347" justifyContent="space-between">
+          <Flex data-id="000348" alignItems="center" fontSize={['14px', '24px']}>
             <Avatar
-              data-id="030925-45a012"
+              data-id="000349"
               mr={3}
               name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
               rounded="full"
@@ -164,10 +164,10 @@ function AuditModal({ refetch }) {
               src={user?.imgUrl} />
             New {t('audit')}
           </Flex>
-          <Flex alignItems="center" data-id="030925-ffc57d">
+          <Flex data-id="000350" alignItems="center">
             <Close
+              data-id="000351"
               cursor="pointer"
-              data-id="030925-30cd5b"
               h="15px"
               onClick={closeModal}
               stroke="auditModal.closeIcon"
@@ -175,29 +175,29 @@ function AuditModal({ refetch }) {
           </Flex>
         </Flex>
       </ModalHeader>
-      <ModalBody data-id="030925-3ebba3" overflowY="auto" p="1rem 0 0 0">
-        <Stack data-id="030925-e069ca" justify="space-between" spacing={2}>
+      <ModalBody data-id="000352" overflowY="auto" p="1rem 0 0 0">
+        <Stack data-id="000353" justify="space-between" spacing={2}>
           <Stack
-            data-id="030925-514a7d"
+            data-id="000354"
             flexGrow={1}
             justify="space-between"
             overflowY="auto"
             px={2}
             py={0}
             spacing={6}>
-            <Flex data-id="030925-8544f4" direction="column">
-              <Text data-id="030925-7fea7e" fontSize="smm" fontWeight="semibold">
+            <Flex data-id="000355" direction="column">
+              <Text data-id="000356" fontSize="smm" fontWeight="semibold">
                 Details
               </Text>
               <Grid
+                data-id="000357"
                 columnGap={4}
-                data-id="030925-45c00d"
                 rowGap={2}
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
-                  <GridItem data-id="030925-a96fac" w="100%">
+                  <GridItem data-id="000358" w="100%">
                     <Dropdown
+                      data-id="000359"
                       control={control}
-                      data-id="030925-57e3ea"
                       disabled={auditTypes?.length === 1}
                       label="Audit Type"
                       name="auditTypeId"
@@ -213,10 +213,10 @@ function AuditModal({ refetch }) {
                       }} />
                   </GridItem>
                 {module?.featureFlags?.enableSafetyWalk && 
-                  <GridItem data-id="030925-ac557e" w="100%">
+                  <GridItem data-id="000360" w="100%">
                     <Dropdown
+                      data-id="000361"
                       control={control}
-                      data-id="030925-ea7905"
                       label="Type"
                       name="walkType"
                       options={[
@@ -232,10 +232,10 @@ function AuditModal({ refetch }) {
                       variant="secondaryVariant" />
                   </GridItem>
                 }
-                <GridItem data-id="030925-ecabf0" w="100%">
+                <GridItem data-id="000362" w="100%">
                   <Dropdown
+                    data-id="000363"
                     control={control}
-                    data-id="030925-50a644"
                     label={capitalize(t('location'))}
                     name="locationId"
                     options={(locations ?? []).map((location) => ({
@@ -251,10 +251,10 @@ function AuditModal({ refetch }) {
                     variant="secondaryVariant" />
                 </GridItem>
                 {audit.auditTypeId && auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' && (
-                  <GridItem data-id="030925-101588" w="100%">
+                  <GridItem data-id="000364" w="100%">
                     <Dropdown
+                      data-id="000365"
                       control={control}
-                      data-id="030925-53c29f"
                       label={capitalize(t('business unit'))}
                       name="businessUnitId"
                       options={(businessUnits ?? []).map((businessUnit) => ({
@@ -273,36 +273,36 @@ function AuditModal({ refetch }) {
               </Grid>
             </Flex>
             <SingleParticipantSelector
-              data-id="030925-9bec35"
+              data-id="000366"
               isUserAllowedToChange
               label="Audited by"
               onChange={selectAuditor}
               selectedParticipant={selectedAuditor} />
             <MultipleParticipantsSelector
-              data-id="030925-b7ead4"
+              data-id="000367"
               isUserAllowedToChange
               label="Participants"
               onChange={selectParticipants}
               selectedParticipants={selectedParticipants} />
             <Flex
-              data-id="030925-6707c1"
+              data-id="000368"
               flexBasis="calc(40px + 1rem)"
               flexShrink={0}
               justify="space-between"
               pt={4}
               w="full">
               {data?.audits?.length > 0 && (
-                <Alert data-id="030925-c8a36b" status="warning">
-                  <Text as="h3" data-id="030925-939075">
+                <Alert data-id="000369" status="warning">
+                  <Text data-id="000370" as="h3">
                     {data?.audits?.[0].auditType.name} for {data?.audits?.[0].businessUnit.name} for {format(new Date(), 'MMMM Y')} already{' '}
                     <Text
+                      data-id="000371"
                       _hover={{
                         textDecoration: 'underline',
                         cursor: 'pointer',
                       }}
                       as="span"
                       color="auditModal.existentAuditLink.color"
-                      data-id="030925-471e58"
                       onClick={() => openInNewTab(`/audits/${data?.audits?.[0]?._id}`)}>
                       exists
                     </Text>
@@ -313,11 +313,11 @@ function AuditModal({ refetch }) {
           </Stack>
         </Stack>
       </ModalBody>
-      <ModalFooter data-id="030925-e6b9fb" p={1}>
+      <ModalFooter data-id="000372" p={1}>
         <Button
+          data-id="000373"
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
-          data-id="030925-316fa6"
           fontSize="smm"
           fontWeight="500"
           h="40px"
@@ -330,9 +330,9 @@ function AuditModal({ refetch }) {
         </Button>
 
         <Button
+          data-id="000374"
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
-          data-id="030925-d949bc"
           disabled={
             module?.featureFlags?.enableSafetyWalk && !audit.walkType ||
             !audit.locationId ||
@@ -351,8 +351,8 @@ function AuditModal({ refetch }) {
             handlePrimaryButtonClick();
           }}
           rightIcon={<Icon
+            data-id="000375"
             as={TickIcon}
-            data-id="030925-4e11d5"
             size={24}
             stroke="auditModal.tabs.bottomButton.icon" />}
           rounded="10px"

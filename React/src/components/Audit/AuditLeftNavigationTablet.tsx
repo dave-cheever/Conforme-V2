@@ -13,9 +13,9 @@ function AuditLeftNavigationTablet() {
 
   return (
     <Flex
+        data-id="000193"
         bg="auditLeftNavigation.bg"
         color="auditLeftNavigation.color"
-        data-id="030925-5e20fb"
         direction="column"
         display={['none', 'flex', 'none']}
         flexShrink={0}
@@ -25,39 +25,39 @@ function AuditLeftNavigationTablet() {
         overflow="auto"
         px={6}
         w="80px">
-      <Flex data-id="030925-94a27d" flexDirection="column">
+      <Flex data-id="000194" flexDirection="column">
         <Box
+          data-id="000195"
           alignItems="center"
           cursor="pointer"
-          data-id="030925-efd3d0"
           display="flex"
           h="80px"
           justifyContent="center"
           onClick={() => navigateTo('/')}>
           <Text
+            data-id="000196"
             color="auditLeftNavigation.organizationNameFontColor"
-            data-id="030925-6dbfe0"
             fontSize="16px"
             fontWeight="bold">
             {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
         <Flex
+          data-id="000197"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
-          data-id="030925-7195cf"
           fontSize="14px"
           h="30px"
           mb="20px"
           onClick={() => navigateTo('/audits')}
           w="full">
-          <ChevronRight data-id="030925-062f01" ml={2} transform="Rotate(180deg)" />
+          <ChevronRight data-id="000198" ml={2} transform="Rotate(180deg)" />
         </Flex>
-        <Flex data-id="030925-d0e825" flexDirection="column" mb={2}>
+        <Flex data-id="000199" flexDirection="column" mb={2}>
           {auditNavigationTabs.map(({ label, icon, url }) => (
             <AuditLeftTabItem
-              data-id="030925-397d05"
+              data-id="000200"
               icon={icon}
               isDesktop={false}
               key={url}
@@ -66,8 +66,8 @@ function AuditLeftNavigationTablet() {
           ))}
         </Flex>
       </Flex>
-      <Flex data-id="030925-89b19e" display={['none', 'flex']}>
-        <Icon as={ConformeSmall} data-id="030925-ca7fc7" h="30px" mb="20px" w="27px" />
+      <Flex data-id="000201" display={['none', 'flex']}>
+        <Icon data-id="000202" as={ConformeSmall} h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

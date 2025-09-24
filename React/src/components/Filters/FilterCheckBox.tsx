@@ -5,6 +5,7 @@ import { TickIcon } from '../../icons';
 function FilterCheckBox({ value, label }) {
   return (
     <Checkbox
+      data-id="000143"
       colorScheme="purpleHeart"
       css={{
         '.chakra-checkbox__control': {
@@ -25,12 +26,11 @@ function FilterCheckBox({ value, label }) {
           },
         },
       }}
-      data-id="030925-602919"
-      icon={<TickIcon data-id="030925-862993" stroke="white" />}
+      icon={<TickIcon data-id="000144" stroke="white" />}
       value={value}>
       <Text
+        data-id="000145"
         color="filterPanel.checkboxLabelColor"
-        data-id="030925-ae152b"
         fontSize="14px">
         {label}
       </Text>

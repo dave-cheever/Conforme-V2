@@ -15,10 +15,10 @@ function QuickFilters({ w }: { w: string | number | {} }) {
   };
 
   return (
-    <Stack data-id="030925-71ae8a" w={w}>
+    <Stack data-id="000146" w={w}>
       <Flex
+        data-id="000147"
         align="baseline"
-        data-id="030925-ddd72f"
         direction="row"
         overflowX={activeFilters.includes(true) ? 'hidden' : 'auto'}
         overflowY="clip"
@@ -27,7 +27,7 @@ function QuickFilters({ w }: { w: string | number | {} }) {
           if (usedFilters.includes(name) && !value?.hideFromPanel) {
             return (
               <QuickFiltersItem
-                  data-id="030925-a79e74"
+                  data-id="000148"
                   filter={value}
                   key={`quick-filter-${name}`}
                   name={name}

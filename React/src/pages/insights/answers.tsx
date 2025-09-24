@@ -236,33 +236,33 @@ function AnswersInsights({ answerType, questionsCategoriesId }) {
   ) as EChartsOption;
 
   return (
-    <Box data-id="030925-b88e74" pt="3">
+    <Box data-id="000692" pt="3">
       {error ? (
-        <Text data-id="030925-1908f9">{error.message}</Text>
+        <Text data-id="000693">{error.message}</Text>
       ) : loading ? (
-        <Box data-id="030925-7381b1" h="100vh">
-          <Loader center data-id="030925-8a8895" />
+        <Box data-id="000694" h="100vh">
+          <Loader data-id="000695" center />
         </Box>
       ) : (
         <>
-          <Grid alignItems="center" data-id="030925-7119ec" templateColumns="1fr .25fr">
-            <GridItem data-id="030925-27371a" w="100%">
-              <InsightsChart data-id="030925-77c7d7" option={echartsOption} />
+          <Grid data-id="000696" alignItems="center" templateColumns="1fr .25fr">
+            <GridItem data-id="000697" w="100%">
+              <InsightsChart data-id="000698" option={echartsOption} />
             </GridItem>
-            <GridItem data-id="030925-9852c3" w="100%">
-              <Flex data-id="030925-e83d57" direction="column" textAlign="left">
-                <Text as="span" color="insights.secondaryText" data-id="030925-998733" fontWeight="bold">
+            <GridItem data-id="000699" w="100%">
+              <Flex data-id="000700" direction="column" textAlign="left">
+                <Text data-id="000701" as="span" color="insights.secondaryText" fontWeight="bold">
                   Total {answerType.toLowerCase()}
                 </Text>
-                <Heading color="#1E1836" data-id="030925-76ddae" fontSize="100px">
+                <Heading data-id="000702" color="#1E1836" fontSize="100px">
                   {data?.answersInsights?.totalAnswers}
                 </Heading>
               </Flex>
             </GridItem>
           </Grid>
           <InsightsDetailedStats
+            data-id="000703"
             businessUnits={businessUnits}
-            data-id="030925-af1dcf"
             insightsType="answers"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

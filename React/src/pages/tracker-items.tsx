@@ -256,26 +256,26 @@ function TrackerItems() {
   return (
     <>
       <Header
+        data-id="000288"
         breadcrumbs={[pluralize(t('tracker item'))]}
-        data-id="030925-983341"
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}>
         {device !== 'mobile' && (
           <>
             <ChangeViewButton
-              data-id="030925-a97f42"
+              data-id="000289"
               setViewMode={setViewMode}
               viewMode={viewMode}
               views={['grid', 'list', 'group']} />
             <Divider
+              data-id="000290"
               borderColor="gray.300"
-              data-id="030925-f852b7"
               height="30px"
               mt={1}
               mx={4}
               orientation="vertical" />
             <SortButton
-              data-id="030925-e6a816"
+              data-id="000291"
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortBy={sortBy}
@@ -285,15 +285,15 @@ function TrackerItems() {
         )}
       </Header>
       <Flex
-        data-id="030925-50b50b"
+        data-id="000292"
         direction="column"
         h={['calc(100vh - 200px)', 'calc(100vh - 150px)']}
         overflow="auto"
         pb={4}>
         {error ? (
           <Flex
+            data-id="000293"
             alignItems="center"
-            data-id="030925-8cb19c"
             fontSize="18px"
             fontStyle="italic"
             h="200px"
@@ -306,15 +306,15 @@ function TrackerItems() {
             {' '}
             {viewMode === 'grid' && (
               <InfiniteScrollComponent
-                data-id="030925-96f85a"
+                data-id="000294"
                 hasMore={!loading && responses.length < total}
                 initialLoad={false}
                 loadMore={loadResponses}
                 ref={scrollerRef}
                 useWindow={false}>
                 <Grid
+                  data-id="000295"
                   bg="#fff"
-                  data-id="030925-428375"
                   gap={6}
                   justifyItems="center"
                   pb={[0, 8]}
@@ -322,10 +322,10 @@ function TrackerItems() {
                   px={[4, 8]}
                   templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}>
                   {responses.length ? (
-                    responses.map((r) => <TrackerItemSquare data-id="030925-f47b6e" key={r._id} response={r} />)
+                    responses.map((r) => <TrackerItemSquare data-id="000296" key={r._id} response={r} />)
                   ) : !loading ? (
                     <Flex
-                      data-id="030925-ba46c1"
+                      data-id="000297"
                       fontSize="18px"
                       fontStyle="italic"
                       h="full"
@@ -334,12 +334,12 @@ function TrackerItems() {
                     </Flex>
                   ) : null}
                 </Grid>
-                {loading && <Loader center data-id="030925-f6e22b" h="60px" />}
+                {loading && <Loader data-id="000298" center h="60px" />}
               </InfiniteScrollComponent>
             )}
             {viewMode === 'list' && (
               <TrackerItemsList
-                data-id="030925-886671"
+                data-id="000299"
                 loading={loading}
                 loadResponses={loadResponses}
                 responses={responses}
@@ -352,7 +352,7 @@ function TrackerItems() {
             )}
             {viewMode === 'group' && (
               <TrackerItemsGroup
-                data-id="030925-0faf64"
+                data-id="000300"
                 loading={loading}
                 loadResponses={loadResponses}
                 responses={responses}

@@ -91,7 +91,7 @@ function ChatProvider({ children, component }: { children: React.ReactNode; comp
     [isOpenMessage, participantsData, participantsLoading],
   ) as IChatContext;
 
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+  return <ChatContext.Provider data-id="000008" value={value}>{children}</ChatContext.Provider>;
 }
 
 export default ChatProvider;

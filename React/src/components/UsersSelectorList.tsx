@@ -14,14 +14,14 @@ interface IUsersSelectorList {
 function UsersSelectorList({ filteredUsers, selected, selectedRole, handleChange }: IUsersSelectorList) {
   return (
     <CheckboxGroup
-      data-id="030925-7274f6"
+      data-id="000514"
       onChange={(value) => handleChange({ target: { userRole: selectedRole, value } })}
       value={selected ?? []}>
-      <Stack data-id="030925-933fbe" direction="column" w="full">
+      <Stack data-id="000515" direction="column" w="full">
          {filteredUsers
           ?.filter(user => user.displayName && user.displayName.trim() !== '')
           .map(({ displayName, _id, userId }) => (
-            <FilterCheckBox data-id="030925-26be37" key={_id} label={displayName} value={userId} />
+            <FilterCheckBox data-id="000516" key={_id} label={displayName} value={userId} />
           ))}
         </Stack>
     </CheckboxGroup>

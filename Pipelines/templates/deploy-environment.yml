@@ -1,0 +1,135 @@
+parameters:
+  - name: adoEnvironment
+    type: string
+  - name: variableGroup
+    type: string
+  - name: variableFunctionGroup
+    type: string
+  - name: azureSubscription
+    type: string
+  - name: reactAppName
+    type: string
+  - name: expressAppName
+    type: string
+  - name: functionAppName
+    type: string
+  - name: resourceGroupName
+    type: string
+  - name: runtimeStack
+    type: string
+    default: 'NODE|22-lts'
+
+jobs:
+- deployment: Deploy
+  displayName: '${{ parameters.adoEnvironment }} Deployment'
+  variables:
+    - group: ${{ parameters.variableGroup }}
+    - group: ${{ parameters.variableFunctionGroup }}
+  environment: '${{ parameters.adoEnvironment }}'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: react-app
+          patterns: '**/*.zip'
+          displayName: 'Download React artifact'
+
+        - task: Bash@3
+          displayName: 'Prepare runtime-config.js for ${{ parameters.adoEnvironment }}'
+          inputs:
+            targetType: 'inline'
+            script: |
+              set -euo pipefail
+              REACT_ARTIFACT_DIR="$(Pipeline.Workspace)/react-app"
+              REACT_ZIP="$REACT_ARTIFACT_DIR/react-app.zip"
+              EXTRACT_DIR="$REACT_ARTIFACT_DIR/extracted"
+              mkdir -p "$EXTRACT_DIR"
+              unzip -q "$REACT_ZIP" -d "$EXTRACT_DIR"
+
+              RC_FILE="$EXTRACT_DIR/runtime-config.js"
+              if [ ! -f "$RC_FILE" ]; then
+                echo "runtime-config.js not found; creating a template." >&2
+                echo "window.__ENV = Object.assign({}, window.__ENV, {});" > "$RC_FILE"
+              fi
+
+              # Extract the object literal block for window.__ENV
+              OBJECT_BLOCK=$(awk '/window.__ENV[[:space:]]*=/{flag=1} flag; /\}\);[[:space:]]*$/{print; exit}' "$RC_FILE")
+
+              # Parse keys (prefer those currently set to undefined)
+              KEYS=$(printf "%s\n" "$OBJECT_BLOCK" | sed -n 's/^[[:space:]]*\([A-Za-z0-9_][A-Za-z0-9_]*\)[[:space:]]*:[[:space:]]*undefined.*/\1/p')
+              if [ -z "$KEYS" ]; then
+                KEYS=$(printf "%s\n" "$OBJECT_BLOCK" | sed -n 's/^[[:space:]]*\([A-Za-z0-9_][A-Za-z0-9_]*\)[[:space:]]*:.*$/\1/p')
+              fi
+
+              escape_js() {
+                local s="$1"
+                s=${s//$'\r'/}
+                s=${s//\\/\\\\}
+                s=${s//\"/\\\"}
+                printf '%s' "$s"
+              }
+
+              BODY_FILE="$EXTRACT_DIR/.rc_body.tmp"
+              : > "$BODY_FILE"
+              for k in $KEYS; do
+                # Pull from Azure DevOps Variable Group (exposed as env var)
+                val="${!k:-}"
+                if [ -n "$val" ]; then
+                  esc=$(escape_js "$val")
+                  echo "  $k: \"$esc\"," >> "$BODY_FILE"
+                else
+                  echo "  $k: undefined," >> "$BODY_FILE"
+                fi
+              done
+
+              {
+                echo "// Generated at deploy time"
+                echo "window.__ENV = Object.assign({}, window.__ENV, {"
+                cat "$BODY_FILE"
+                echo "});"
+              } > "$RC_FILE"
+              rm -f "$BODY_FILE"
+
+              # Repackage into a new zip for deployment
+              (cd "$EXTRACT_DIR" && zip -qr ../react-app.deploy.zip .)
+
+        - download: current
+          artifact: express-app
+          patterns: '**/*.zip'
+          displayName: 'Download Express artifact'
+
+        - download: current
+          artifact: function-app
+          patterns: '**/*.zip'
+          displayName: 'Download Function artifact'
+
+        - task: AzureWebApp@1
+          displayName: 'Deploy React to ${{ parameters.adoEnvironment }} App Service'
+          inputs:
+            azureSubscription: '${{ parameters.azureSubscription }}'
+            appType: 'webAppLinux'
+            appName: '${{ parameters.reactAppName }}'
+            resourceGroupName: '${{ parameters.resourceGroupName }}'
+            package: '$(Pipeline.Workspace)/react-app/react-app.deploy.zip'
+
+        - task: AzureWebApp@1
+          displayName: 'Deploy Express to ${{ parameters.adoEnvironment }} App Service'
+          inputs:
+            azureSubscription: '${{ parameters.azureSubscription }}'
+            appType: 'webAppLinux'
+            appName: '${{ parameters.expressAppName }}'
+            AppSettings: '-ALLOWED_DOMAINS "$(ALLOWED_DOMAINS)" -API_URL "$(API_URL)" -AZURE_AD_CLIENT_ID "$(AZURE_AD_CLIENT_ID)" -DB_CONNECTION_STRING "$(DB_CONNECTION_STRING)" -GRAPH_URL "$(GRAPH_URL)" -NODE_ENV "$(NODE_ENV)" -PORT "$(PORT)" -SESS_LIFETIME_IN_MINUTES "$(SESS_LIFETIME_IN_MINUTES)" -SESS_NAME "$(SESS_NAME)" -SESS_SECRET "$(SESS_SECRET)" -VERSION "$(VERSION)" -FUNCTION_URL "$(FUNCTION_URL)" -CLIENT_URL "$(CLIENT_URL)" -AZURE_AD_CLIENT_ID "$(AZURE_AD_CLIENT_ID)" -AZURE_AD_CLIENT_SECRET "$(AZURE_AD_CLIENT_SECRET)" -AZURE_AD_TENANT_ID "$(AZURE_AD_TENANT_ID)"'
+            resourceGroupName: '${{ parameters.resourceGroupName }}'
+            package: '$(Pipeline.Workspace)/express-app/express-app.zip'
+            runtimeStack: '${{ parameters.runtimeStack }}'
+            
+        - task: AzureFunctionApp@2
+          displayName: 'Deploy to ${{ parameters.adoEnvironment }} Function App'
+          inputs:
+            azureSubscription: '${{ parameters.azureSubscription }}'
+            appName: '${{ parameters.functionAppName }}'
+            AppSettings: '-ENV "$(ENV)" -DEBUG "$(DEBUG)" -MS_GRAPH_URL "$(MS_GRAPH_URL)" -MONGO_CONNECTION_STRING "$(MONGO_CONNECTION_STRING)" -EMAIL_SENDER "$(EMAIL_SENDER)" -CONFORME_ORGANIZATION_ID "$(CONFORME_ORGANIZATION_ID)" -SCHEDULED_NOTIFICATIONS_START_HOUR "$(SCHEDULED_NOTIFICATIONS_START_HOUR)" -SCHEDULED_NOTIFICATIONS_END_HOUR "$(SCHEDULED_NOTIFICATIONS_END_HOUR)" -SCHEDULED_NOTIFICATIONS_FREQUENCY "$(SCHEDULED_NOTIFICATIONS_FREQUENCY)" -EMAIL_HANDLER "$(EMAIL_HANDLER)" -SEND_GRID_API_KEY "$(SEND_GRID_API_KEY)"'
+            resourceGroupName: '${{ parameters.resourceGroupName }}'
+            package: '$(Pipeline.Workspace)/function-app/function-app.zip'
+

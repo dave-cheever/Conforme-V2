@@ -105,7 +105,7 @@ function AuditModalProvider({ children }) {
     [control, errors, audit, data?.auditTypes, data, selectedAuditor, selectedParticipants],
   ) as IAuditModalContext;
 
-  return <AuditModalContext.Provider value={value}>{children}</AuditModalContext.Provider>;
+  return <AuditModalContext.Provider data-id="000010" value={value}>{children}</AuditModalContext.Provider>;
 }
 
 export default AuditModalProvider;

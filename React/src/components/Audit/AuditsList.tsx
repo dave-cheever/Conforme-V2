@@ -23,21 +23,21 @@ function AuditsList({
 }) {
   const { module } = useAppContext();
   return (
-    <Box bg="#ffffff" data-id="030925-d7352d" h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
+    <Box data-id="000306" bg="#ffffff" h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
       <Box
+        data-id="000307"
         bg="auditsList.bg"
         border="1px solid #CBD5E0"
         borderRadius="10px"
-        data-id="030925-87f2e3"
         h="fit-content"
         minH="full"
         overflow="hidden"
         pb={7}
         w="full"
       >
-        <AdminTableHeader data-id="030925-2ab60e">
+        <AdminTableHeader data-id="000308">
           <AdminTableHeaderElement
-            data-id="030925-9b2eae"
+            data-id="000309"
             label="Due date"
             onClick={() => {
               setSortType('dueDate');
@@ -48,7 +48,7 @@ function AuditsList({
             w="10%"
           />
           <AdminTableHeaderElement
-            data-id="030925-fa5762"
+            data-id="000310"
             label={capitalize(t('location'))}
             onClick={() => {
               setSortType('location.name');
@@ -59,7 +59,7 @@ function AuditsList({
             w="20%"
           />
           <AdminTableHeaderElement
-            data-id="030925-23bd13"
+            data-id="000311"
             label="Status"
             onClick={() => {
               setSortType('status');
@@ -71,7 +71,7 @@ function AuditsList({
           />
           {module?.featureFlags?.enableSafetyWalk && (
             <AdminTableHeaderElement
-              data-id="030925-ea602c"
+              data-id="000312"
               label="Walk type"
               onClick={() => {
                 setSortType('walkType');
@@ -83,7 +83,7 @@ function AuditsList({
             />
           )}
           <AdminTableHeaderElement
-            data-id="030925-2fe121"
+            data-id="000313"
             label="Auditor"
             onClick={() => {
               setSortType('auditor.displayName');
@@ -94,7 +94,7 @@ function AuditsList({
             w="20%"
           />
           <AdminTableHeaderElement
-            data-id="030925-a6b60d"
+            data-id="000314"
             label="Reference"
             onClick={() => {
               setSortType('reference');
@@ -105,7 +105,7 @@ function AuditsList({
             w="15%"
           />
           <AdminTableHeaderElement
-            data-id="030925-ccddb4"
+            data-id="000315"
             label="Date submitted"
             onClick={() => {
               setSortType('completedDate');
@@ -116,8 +116,8 @@ function AuditsList({
             w="15%"
           />
         </AdminTableHeader>
-        <Flex data-id="030925-7c5ad8" flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">
-          {audits?.map((audit, index) => <AuditListItem audit={audit} data-id="030925-50548b" index={index} key={audit._id} />)}
+        <Flex data-id="000316" flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">
+          {audits?.map((audit, index) => <AuditListItem data-id="000317" audit={audit} index={index} key={audit._id} />)}
         </Flex>
       </Box>
     </Box>

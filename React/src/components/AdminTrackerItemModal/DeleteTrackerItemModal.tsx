@@ -22,19 +22,19 @@ function DeleteTrackerItemModal({ refetch, onItemDeleted }) {
 
   return (
     <ModalContent
+      data-id="000482"
       bg="deleteTrackerItemModal.bg"
       borderRadius="20px"
-      data-id="030925-18e415"
       m="auto"
       maxH="auto"
       p="20px  25px"
       position="relative"
       w="330px"
     >
-      <Flex data-id="030925-36250e" flexDirection="column" h="100%" justifyContent="left">
+      <Flex data-id="000483" flexDirection="column" h="100%" justifyContent="left">
         <Flex
+          data-id="000484"
           color="deleteTrackerItemModal.heading"
-          data-id="030925-8ae574"
           fontSize="xxl"
           fontWeight="bold"
           justifyContent="space-between"
@@ -42,20 +42,20 @@ function DeleteTrackerItemModal({ refetch, onItemDeleted }) {
           w="full"
         >
           Delete item?
-          <CrossIcon cursor="pointer" data-id="030925-dae85d" onClick={closeModal} stroke="deleteTrackerItemModal.crossIcon" w="20px" />
+          <CrossIcon data-id="000485" cursor="pointer" onClick={closeModal} stroke="deleteTrackerItemModal.crossIcon" w="20px" />
         </Flex>
-        <Box color="deleteTrackerItemModal.subHeading" data-id="030925-aabc03" whiteSpace="pre">
+        <Box data-id="000486" color="deleteTrackerItemModal.subHeading" whiteSpace="pre">
           The action cannot be undone.
         </Box>
-        <Flex data-id="030925-c21fb3" justifyContent="space-between" mt="40px">
+        <Flex data-id="000487" justifyContent="space-between" mt="40px">
           <Button
+            data-id="000488"
             _hover={{
               backgroundColor: 'deleteTrackerItemModal.buttonKeepHoverBg',
             }}
             bg="deleteTrackerItemModal.buttonKeepBg"
             borderRadius="4px"
             color="deleteTrackerItemModal.buttonKeepColor"
-            data-id="030925-b82983"
             mr="22px"
             onClick={closeModal}
             p="10px 20px"
@@ -63,6 +63,7 @@ function DeleteTrackerItemModal({ refetch, onItemDeleted }) {
             Keep
           </Button>
           <Button
+            data-id="000489"
             _hover={{
               bg: 'deleteTrackerItemModal.buttonRemoveHoverBg',
               opacity: 0.7,
@@ -70,7 +71,6 @@ function DeleteTrackerItemModal({ refetch, onItemDeleted }) {
             bg="deleteTrackerItemModal.buttonRemoveBg"
             borderRadius="4px"
             color="deleteTrackerItemModal.buttonRemoveColor"
-            data-id="030925-92820c"
             fontSize="smm"
             onClick={handleDelete}
             p="10px 20px"

@@ -3,6 +3,7 @@ import React from 'react';
 import { Flex, Image } from '@chakra-ui/react';
 
 import { ISetting } from '../../interfaces/ISetting';
+import { runtimeEnv } from '../../utils/runtime-env';
 
 function EmailTemplate({
   active,
@@ -21,28 +22,28 @@ function EmailTemplate({
 
   return (
     <Flex
-        data-id="030925-229306"
+        data-id="000471"
         flexDirection="column"
         minW={['80px', '155px', 'full']}
         onClick={onClick}
         w="full">
       <Flex
+        data-id="000472"
         _hover={{ borderColor: 'emailTemplate.hoverBorderColor' }}
         borderColor={active ? 'emailTemplate.activeBorderColor' : 'emailTemplate.borderColor'}
         borderRadius="10px"
-        borderWidth="2px"
-        data-id="030925-94bc44">
+        borderWidth="2px">
         <Image
+          data-id="000473"
           cursor="pointer"
-          data-id="030925-9c197d"
           fit="contain"
           h="180px"
-          src={`${process.env.REACT_APP_API_URL}/images/thumbnails/${template._id}.png?preventCache=${updateImage}`}
+          src={`${runtimeEnv.apiUrl()}/images/thumbnails/${template._id}.png?preventCache=${updateImage}`}
           w="full" />
       </Flex>
       <Flex
+        data-id="000474"
         color="emailTemplate.labelColor"
-        data-id="030925-76ac00"
         fontSize="14px"
         mt={2}>
         {template?.label}

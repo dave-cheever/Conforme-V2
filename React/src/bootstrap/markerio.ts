@@ -1,12 +1,13 @@
 import { MarkerSdk } from '@marker.io/browser';
+import { runtimeEnv } from '../utils/runtime-env';
 
 let widget: MarkerSdk | null = null;
 
 const loadWidget = async () => {
-  if (process.env.REACT_APP_MARKER_IO_PROJECT_ID) {
+  if (runtimeEnv.markerIoProjectId()) {
     const markerSDK = await import('@marker.io/browser');
     widget = await markerSDK.default.loadWidget({
-      project: process.env.REACT_APP_MARKER_IO_PROJECT_ID || '',
+      project: runtimeEnv.markerIoProjectId(),
     });
   }
 };

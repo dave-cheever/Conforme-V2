@@ -108,20 +108,20 @@ function Team() {
 
   if (loading) {
     return (
-      <Flex bg="teamPage.bg" data-id="030925-bb602e" h="full" rounded="20px" w="full">
-        <Loader center data-id="030925-4882a3" />
+      <Flex data-id="000806" bg="teamPage.bg" h="full" rounded="20px" w="full">
+        <Loader data-id="000807" center />
       </Flex>
     );
   }
 
   return (
     <Stack
+      data-id="000808"
       alignItems={['center', 'flex-start']}
       bg="teamPage.bg"
       border="1px solid"
       borderColor="#CBD5E0"
       borderRadius="8px"
-      data-id="030925-8e2e65"
       fontSize="smm"
       fontWeight="bold"
       h={['fit-content', 'full']}
@@ -131,17 +131,17 @@ function Team() {
       spacing="40px"
       w="full"
     >
-      <Stack data-id="030925-8bd065" spacing="6" w="full">
-        <HStack alignItems="flex-start" data-id="030925-2dfb12" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
+      <Stack data-id="000809" spacing="6" w="full">
+        <HStack data-id="000810" alignItems="flex-start" flexDirection={['column', 'row']} justify="flex-start" spacing={[2, 12]}>
           <SingleParticipantSelector
-            data-id="030925-dc980a"
+            data-id="000811"
             isUserAllowedToChange={isPermittedToManageAccountable}
             label="Accountable"
             onChange={(participant) => selectParticipants({ accountableId: participant._id })}
             selectedParticipant={accountable}
           />
           <SingleParticipantSelector
-            data-id="030925-e252a2"
+            data-id="000812"
             isUserAllowedToChange={isPermittedToManageResponsible}
             label="Responsible"
             onChange={(participant) => selectParticipants({ responsibleId: participant._id })}
@@ -149,7 +149,7 @@ function Team() {
           />
         </HStack>
         <MultipleParticipantsSelector
-          data-id="030925-e47a44"
+          data-id="000813"
           isUserAllowedToChange={isPermittedToManageContributors}
           label="Contributors"
           maxParticipants={maxParticipants}
@@ -171,7 +171,7 @@ function Team() {
           selectedParticipants={contributors}
         />
         <MultipleParticipantsSelector
-          data-id="030925-0bbee1"
+          data-id="000814"
           isUserAllowedToChange={isPermittedToManageFollowers}
           label="Followers"
           maxParticipants={maxParticipants}

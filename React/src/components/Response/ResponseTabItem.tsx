@@ -9,20 +9,20 @@ function ResponseTabItem({ setActiveTab, index, active, label, icon }) {
 
   return (
     <Flex
+        data-id="000320"
         _hover={{ bg: 'responseTabItem.activeBg' }}
         align="center"
         bg={active ? 'responseTabItem.activeBg' : 'responseTabItem.bg'}
         borderRadius="10px"
         color={active ? 'responseTabItem.activeColor' : 'responseTabItem.color'}
         cursor="pointer"
-        data-id="030925-107c1f"
         flexDirection="column"
         h="62px"
         onClick={onClick}
         p="8px 13px 6px 13px">
-      <Icon as={icon} boxSize="15px" data-id="030925-d536e5" />
+      <Icon data-id="000321" as={icon} boxSize="15px" />
       <Text
-        data-id="030925-19e87e"
+        data-id="000322"
         fontSize={['11px', '14px']}
         fontWeight="700"
         mt={3}>

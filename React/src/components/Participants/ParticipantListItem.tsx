@@ -15,36 +15,36 @@ function ParticipantListItem({
 }) {
   return (
     <Flex
+      data-id="000602"
       align="center"
       cursor="pointer"
-      data-id="030925-3ce00e"
       key={user.userId}
       onClick={() => onSelectParticipant(user)}
       w="full">
       <Flex
+        data-id="000603"
         align="center"
         basis="20px"
         bg={`participantListItem.checkbox.${isSelected ? 'selected' : 'nonSelected'}`}
         borderColor="participantListItem.checkbox.border"
         borderRadius="full"
         borderWidth="1px"
-        data-id="030925-59e620"
         h="20px"
         justify="center"
         pt="1"
         shrink={0}>
-        <TickIcon data-id="030925-e850e3" h="10px" stroke="white" w="10px" />
+        <TickIcon data-id="000604" h="10px" stroke="white" w="10px" />
       </Flex>
-      <Flex data-id="030925-38926b" direction="column" ml="2">
+      <Flex data-id="000605" direction="column" ml="2">
         <Text
+          data-id="000606"
           color="participantListItem.font"
-          data-id="030925-e59c6a"
           fontSize="smm"
           fontWeight="semibold"
           wordBreak="break-word">
           {user.displayName}{user.jobTitle && ` - ${user.jobTitle}`}
         </Text>
-        <Box data-id="030925-e8b302" fontSize="sm" top="-4px" wordBreak="break-word">
+        <Box data-id="000607" fontSize="sm" top="-4px" wordBreak="break-word">
           {formatEmail(user.email)}
         </Box>
       </Flex>

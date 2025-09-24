@@ -4,15 +4,15 @@ const PlusIcon = createIcon({
   displayName: 'PlusIcon',
   viewBox: '0 0 15 14',
   path: (
-    <g data-id="a088e8312b82">
+    <g data-id="000968">
       <path
+        data-id="000969"
         d="M7.3158 0.518188V13.4818"
-        data-id="879e689c7c03"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
+        data-id="000970"
         d="M0.833984 7H13.7976"
-        data-id="ee4aa4f5d1bc"
         strokeLinecap="round"
         strokeLinejoin="round" />
     </g>

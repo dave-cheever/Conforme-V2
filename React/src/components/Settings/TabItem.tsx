@@ -9,6 +9,7 @@ function TabItem({ label, setActiveTab, active, index }) {
 
   return (
     <Flex
+        data-id="000500"
         _hover={{
           color: active ? 'settingsTabItem.activeColor' : 'settingsTabItem.hoverColor',
         }}
@@ -17,7 +18,6 @@ function TabItem({ label, setActiveTab, active, index }) {
         borderRadius="10px"
         color={active ? 'settingsTabItem.activeColor' : 'settingsTabItem.color'}
         cursor="pointer"
-        data-id="030925-ed34bf"
         fontSize='14px'
         fontWeight="700"
         h={['fit-content', '30px']}

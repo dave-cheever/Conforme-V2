@@ -63,8 +63,8 @@ function TextInput({
   const validate = useValidate(label || name, validations, definedValidations, initialValue);
   return (
     <Controller
+        data-id="000391"
         control={control}
-        data-id="030925-21a7f8"
         name={name}
         render={({ field, fieldState }) => {
           const { value } = field;
@@ -73,33 +73,32 @@ function TextInput({
           function URLButton() {
             return (
               <Button
+                data-id="000392"
                 bg="textInput.openLinkButtonBg"
                 color="textInput.openLinkButtonColor"
-                data-id="030925-3f5f61"
                 disabled={!value || error !== undefined}
                 fontSize="smm"
                 h="1.75rem"
                 onClick={() => {
                   if (!error) window.open(value.startsWith('http') ? value : `http://${value}`);
                 }}
-                w="80px">
-                Open link
-              </Button>
+                w="80px">Open link
+                              </Button>
             );
           }
           return (
-            <Box data-id="030925-7c8152" id={name} mt="none" w="full">
+            <Box data-id="000393" id={name} mt="none" w="full">
               {label && (
                 <Flex
+                  data-id="000394"
                   align="center"
-                  data-id="030925-cc853b"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
+                    data-id="000395"
                     color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
-                    data-id="030925-cafe8b"
                     fontSize="11px"
                     fontWeight="bold"
                     left="none"
@@ -107,7 +106,7 @@ function TextInput({
                     {label}
                     {required && !readMode && (
                       <Asterisk
-                        data-id="030925-b3d8ab"
+                        data-id="000396"
                         fill="questionListElement.iconAsterisk"
                         h="9px"
                         mb="8px"
@@ -116,21 +115,22 @@ function TextInput({
                         w="9px" />
                     )}{' '}
                     {tooltip && (
-                      <Tooltip data-id="030925-59ddd7" hasArrow label={tooltip} placement="top">
-                        <Icon data-id="030925-1ef423" h="14px" mb={1} name="info" />
+                      <Tooltip data-id="000397" hasArrow label={tooltip} placement="top">
+                        <Icon data-id="000398" h="14px" mb={1} name="info" />
                       </Tooltip>
                     )}
                   </Box>
                 </Flex>
               )}
               {isUrl && placeholder && (
-                <Box data-id="030925-e213e5" fontSize="ssm" mb={2}>
+                <Box data-id="000399" fontSize="ssm" mb={2}>
                   {placeholder}
                 </Box>
               )}
               {!readMode && (
-                <InputGroup data-id="030925-f59617">
+                <InputGroup data-id="000400">
                   <Input
+                    data-id="000401"
                     _active={{
                       bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
                     }}
@@ -152,7 +152,6 @@ function TextInput({
                     borderWidth="1px"
                     color="textInput.font"
                     cursor="pointer"
-                    data-id="030925-21c48d"
                     fontSize="smm"
                     h="40px"
                     isDisabled={disabled}
@@ -160,27 +159,27 @@ function TextInput({
                     placeholder={!isUrl ? placeholder : ''}
                     {...field} />
                   {isUrl && (
-                    <InputRightElement data-id="030925-1945da" width="5.6rem">
-                      <URLButton data-id="030925-5c3392" />
+                    <InputRightElement data-id="000402" width="5.6rem">
+                      <URLButton data-id="000403" />
                     </InputRightElement>
                   )}
                 </InputGroup>
               )}
               {readMode && (
-                <Stack data-id="030925-3a5685" spacing={2}>
+                <Stack data-id="000404" spacing={2}>
                   <Flex
+                    data-id="000405"
                     align="center"
-                    data-id="030925-796c31"
                     fontSize="smm"
                     minH="40px"
                     wordBreak="break-all">
                     {value || (isUrl && 'No link provided')}
                   </Flex>
-                  {isUrl && <URLButton data-id="030925-323ab3" />}
+                  {isUrl && <URLButton data-id="000406" />}
                 </Stack>
               )}
               {error && (
-                <Box color="textInput.error" data-id="030925-54bf75" fontSize={14} ml={1}>
+                <Box data-id="000407" color="textInput.error" fontSize={14} ml={1}>
                   {error.message}
                 </Box>
               )}

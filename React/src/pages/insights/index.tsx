@@ -41,22 +41,22 @@ function Insights() {
       {
         _id: 'audits',
         name: capitalize(pluralize(t('audit'))),
-        component: <AuditsInsights data-id="030925-805c52" />,
+        component: <AuditsInsights data-id="000704" />,
         usedFilters: ['walkType', 'status', 'locationsIds', 'businessUnitsIds', 'usersIds'],
       },
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
         _id: questionsCategory?._id,
         name: questionsCategory?.name,
         component: <AnswersInsights
+          data-id="000705"
           answerType={questionsCategory?.name}
-          data-id="030925-3bad84"
           questionsCategoriesId={questionsCategory?._id} />,
         usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
       {
         _id: 'actions',
         name: 'Actions',
-        component: <ActionsInsights data-id="030925-c5682e" />,
+        component: <ActionsInsights data-id="000706" />,
         usedFilters: ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'],
       },
     ],
@@ -75,51 +75,51 @@ function Insights() {
 
   return (
     <Flex
-        data-id="030925-48a76d"
+        data-id="000707"
         direction="column"
         h="full"
         isolation="isolate"
         overflowY="hidden"
         zIndex="1">
       <Header
+        data-id="000708"
         breadcrumbs={['Insights']}
-        data-id="030925-4a8858"
         mobileBreadcrumbs={['Insights']}>
-        {device === 'mobile' && <FilterButton data-id="030925-92ae2b" insightsFilter />}
+        {device === 'mobile' && <FilterButton data-id="000709" insightsFilter />}
 
       </Header>
       {device !== 'mobile' && (
         <Flex
-          data-id="030925-c37c92"
+          data-id="000710"
           h="max-content"
           pl={['4', '8', '8']}
           position="relative"
           zIndex="2">
           <QuickFilters
-            data-id="030925-01d830"
+            data-id="000711"
             w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
         </Flex>
       )}
       {error ? (
-        <Text data-id="030925-477408">{error.message}</Text>
+        <Text data-id="000712">{error.message}</Text>
       ) : loading ? (
-        <Loader center data-id="030925-bcc06b" />
+        <Loader data-id="000713" center />
       ) : (
         <Flex
-          data-id="030925-48e79c"
+          data-id="000714"
           direction="column"
           overflowY="scroll"
           pt="3"
           px={[4, 8]}>
           <Tabs
-            data-id="030925-3eeff7"
+            data-id="000715"
             defaultIndex={selectedPanel}
             isLazy
             onChange={(index) => setSelectedPanel(index)}
             variant="unstyled"
             w="full">
             <TabList
-              data-id="030925-3e6f69"
+              data-id="000716"
               overflowX="auto"
               sx={{
                 '::-webkit-scrollbar': {
@@ -130,6 +130,7 @@ function Insights() {
             >
               {panels?.map((panel) => (
                 <Tab
+                  data-id="000717"
                   _hover={{
                     opacity: 0.8,
                   }}
@@ -138,7 +139,6 @@ function Insights() {
                     color: 'insights.tabColor',
                   }}
                   borderRadius="10px"
-                  data-id="030925-7f53f6"
                   fontSize="14px"
                   fontWeight="600"
                   key={panel._id}
@@ -150,9 +150,9 @@ function Insights() {
                 </Tab>
               ))}
             </TabList>
-            <TabPanels data-id="030925-d26faf">
+            <TabPanels data-id="000718">
               {panels?.map((panel) => (
-                <TabPanel data-id="030925-84fe73" key={panel._id} px={0}>
+                <TabPanel data-id="000719" key={panel._id} px={0}>
                   {panel.component}
                 </TabPanel>
               ))}

@@ -6,12 +6,13 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import axios from 'axios';
 
 import App from './bootstrap/app';
-import loadWidget from './bootstrap/markerio';
 import reportWebVitals from './reportWebVitals';
+import { runtimeEnv } from './utils/runtime-env';
+import loadWidget from './bootstrap/markerio';
 
 axios.defaults.withCredentials = true;
 const client = new ApolloClient({
-  uri: `${process.env.REACT_APP_API_URL}/graphql`,
+  uri: `${runtimeEnv.apiUrl()}/graphql`,
   cache: new InMemoryCache(),
   credentials: 'include',
 });
@@ -19,10 +20,10 @@ const client = new ApolloClient({
 const container: Element = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(
-  <React.StrictMode>
-    <ApolloProvider client={client} data-id="8377c6dc8ec1">
-      <BrowserRouter data-id="d92d8185dfdb">
-        <App data-id="6100e14c5fd2" />
+  <React.StrictMode data-id="000106">
+    <ApolloProvider data-id="000107" client={client}>
+      <BrowserRouter data-id="000108">
+        <App data-id="000109" />
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,

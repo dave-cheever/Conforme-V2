@@ -150,9 +150,9 @@ function QuestionMultiChoiceForm({
   };
 
   return (
-    <Flex data-id="030925-2182a0" flexDir="column" h="full">
+    <Flex data-id="000314" flexDir="column" h="full">
       <Flex
-        data-id="030925-0d1086"
+        data-id="000315"
         flexDir="column"
         h="full"
         overflowX="hidden"
@@ -167,12 +167,12 @@ function QuestionMultiChoiceForm({
             backgroundColor: 'questionMultiChoiceForm.scrollBar.color',
           },
         }}>
-        <Text data-id="030925-ec194d" fontSize="smm" fontWeight="bold" mb="20px">
+        <Text data-id="000316" fontSize="smm" fontWeight="bold" mb="20px">
           {questionHeader(questionType)}
         </Text>
         <TextInput
+          data-id="000317"
           control={control}
-          data-id="030925-111cff"
           label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
@@ -180,59 +180,59 @@ function QuestionMultiChoiceForm({
             notEmpty: true,
           }} />
         <TextInput
+          data-id="000318"
           control={control}
-          data-id="030925-dc4a09"
           label="Description"
           name="description" />
         <Text
+          data-id="000319"
           color="questionMultiChoiceForm.text.color"
-          data-id="030925-51a397"
           fontSize="ssm"
           my="20px">
           Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
         </Text>
-        <Box data-id="030925-c26c9e" pr="10px" w="calc(100% + 10px)">
+        <Box data-id="000320" pr="10px" w="calc(100% + 10px)">
           <DragDropContext
-            data-id="030925-9326c1"
+            data-id="000321"
             onDragEnd={moveOptions}
             onDragStart={() => setIsDragging(true)}>
-            <Droppable data-id="030925-451bfd" droppableId="multiChoiceQuestionDroppable">
+            <Droppable data-id="000322" droppableId="multiChoiceQuestionDroppable">
               {(provided) => (
                 <Box
-                  data-id="030925-a08830"
+                  data-id="000323"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   width="full">
                   {fields.map((object, index) => (
                     <Draggable
-                      data-id="030925-c02a01"
+                      data-id="000324"
                       draggableId={object.id}
                       index={index}
                       key={object.id}>
                       {(provided) => (
-                        <Box data-id="030925-4df37b">
+                        <Box data-id="000325">
                           <Flex
-                            data-id="030925-de5f11"
+                            data-id="000326"
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             align="center">
-                            <Box data-id="030925-412d22" {...provided.dragHandleProps}>
+                            <Box data-id="000327" {...provided.dragHandleProps}>
                               <Move
-                                data-id="030925-e57630"
+                                data-id="000328"
                                 ml="2px"
                                 mr="14px"
                                 mt="-4px"
                                 stroke="questionMultiChoiceForm.icon.moveIcon"
                                 w="10px" />
                             </Box>
-                            <Flex data-id="030925-27ce39" w="full">
+                            <Flex data-id="000329" w="full">
                               <Checkbox
+                                data-id="000330"
                                 control={control}
-                                data-id="030925-f7a061"
                                 name={`value.${index}.isCorrect`}
                                 variant="secondaryVariant" />
                               <Input
-                                data-id="030925-1f0df1"
+                                data-id="000331"
                                 name={object.id}
                                 onChange={(e) => {
                                   handleInputChange(e, index);
@@ -244,16 +244,16 @@ function QuestionMultiChoiceForm({
                                 value={inputValue[index]} />
                             </Flex>
                             <Trashcan
+                              data-id="000332"
                               cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
-                              data-id="030925-6bdd2b"
                               mr={index + 1 === fields.length ? '12px' : '28px'}
                               onClick={() => removeChoice(index)}
                               stroke="questionMultiChoiceForm.icon.iconBin"
                               w="20px" />
                             {index + 1 === fields.length && (
                               <PlusIcon
+                                data-id="000333"
                                 cursor="pointer"
-                                data-id="030925-b929c7"
                                 onClick={() => {
                                   append({
                                     label: '',
@@ -274,11 +274,11 @@ function QuestionMultiChoiceForm({
           </DragDropContext>
         </Box>
       </Flex>
-      <Flex data-id="030925-d18c4d" justifyContent="space-between" mt="51px">
+      <Flex data-id="000334" justifyContent="space-between" mt="51px">
         <Button
+          data-id="000335"
           bg="questionMultiChoiceForm.button.secondary.bg"
           color="questionMultiChoiceForm.button.secondary.font"
-          data-id="030925-90a184"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -292,9 +292,9 @@ function QuestionMultiChoiceForm({
           Cancel
         </Button>
         <Button
+          data-id="000336"
           bg="questionMultiChoiceForm.button.primary.bg"
           color="questionMultiChoiceForm.button.primary.font"
-          data-id="030925-e3587d"
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
@@ -311,8 +311,8 @@ function QuestionMultiChoiceForm({
           }}
           p="17px"
           rightIcon={<Icon
+            data-id="000337"
             as={OpenMenuArrow}
-            data-id="030925-27a084"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

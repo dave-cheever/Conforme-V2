@@ -49,24 +49,24 @@ function Dropdown({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
+        data-id="000245"
         control={control}
-        data-id="030925-c2bddd"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
           const { error } = fieldState;
           return (
-            <Box data-id="030925-91742b" id={name} mt="none" w="full">
+            <Box data-id="000246" id={name} mt="none" w="full">
               {label && (
                 <Flex
+                  data-id="000247"
                   align="center"
-                  data-id="030925-601f36"
                   justify="space-between"
                   mb="none"
                   pt={2}>
                   <Box
+                    data-id="000248"
                     color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
-                    data-id="030925-77b9f1"
                     fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
                     fontWeight="bold"
                     left="none"
@@ -75,7 +75,7 @@ function Dropdown({
                     {label}
                     {required && (
                       <Asterisk
-                        data-id="030925-ed63f3"
+                        data-id="000249"
                         fill="questionListElement.iconAsterisk"
                         h="9px"
                         mb="8px"
@@ -84,15 +84,16 @@ function Dropdown({
                         w="9px" />
                     )}{' '}
                     {help && (
-                      <Box data-id="030925-c5641c" fontSize="11px" mt={3} opacity={0.5}>
+                      <Box data-id="000250" fontSize="11px" mt={3} opacity={0.5}>
                         {help}
                       </Box>
                     )}
                   </Box>
                 </Flex>
               )}
-              <Flex alignItems={Icon ? 'center' : ''} data-id="030925-2dd6ab">
+              <Flex data-id="000251" alignItems={Icon ? 'center' : ''}>
                 <Select
+                  data-id="000252"
                   _active={{
                     bg: disabled ? 'dropdown.disabled.bg' : 'dropdown.activeBg',
                   }}
@@ -113,11 +114,10 @@ function Dropdown({
                   color="dropdown.font"
                   css={{ paddingTop: '0' }}
                   cursor="pointer"
-                  data-id="030925-7cd703"
                   fontSize="smm"
                   h="42px"
                   icon={<ChevronRight
-                    data-id="030925-d800e1"
+                    data-id="000253"
                     stroke="dropdown.chevronDownIcon"
                     transform="rotate(90deg)"
                     w={6}
@@ -131,7 +131,7 @@ function Dropdown({
                   value={options.length === 1 ? options[0].value : value || ''}>
                   {options.map((option) => (
                     <option
-                      data-id="030925-ad0e88"
+                      data-id="000254"
                       key={`${name}-${option.value}`}
                       value={option.value}>
                       {option.label}
@@ -139,8 +139,8 @@ function Dropdown({
                   ))}
                 </Select>
                 {Icon && onAction && !value &&  <Icon
+                  data-id="000255"
                   cursor="pointer"
-                  data-id="030925-083323"
                   ml="20px"
                   mt="10px"
                   onClick={() => onAction(attributeType)}
@@ -148,8 +148,8 @@ function Dropdown({
               </Flex>
               {error && (
                 <Box
+                  data-id="000256"
                   color="dropdown.error"
-                  data-id="030925-44ae74"
                   fontSize="smm"
                   ml={1}
                   mt={1}>
@@ -157,9 +157,9 @@ function Dropdown({
                 </Box>
               )}
               {tooltip && (
-                <Flex align="center" color="dropdown.tooltip" data-id="030925-b4c0ce" mt={3}>
-                  <InfoOutlineIcon data-id="030925-1b6946" />
-                  <Box data-id="030925-d96367" fontSize="11px" ml={2}>
+                <Flex data-id="000257" align="center" color="dropdown.tooltip" mt={3}>
+                  <InfoOutlineIcon data-id="000258" />
+                  <Box data-id="000259" fontSize="11px" ml={2}>
                     {tooltip}
                   </Box>
                 </Flex>

@@ -19,15 +19,15 @@ function InsightsCard({
 }) {
   return (
     <Flex
+      data-id="000486"
       align="center"
       cursor="pointer"
-      data-id="030925-a1d65c"
       direction="column"
       mr="20px"
       onClick={() => onSelect(status)}>
       <Box
+        data-id="000487"
         bg={`insightsCard.types.${status}`}
-        data-id="030925-0bb6cb"
         h="250px"
         overflow="hidden"
         position="relative"
@@ -35,30 +35,30 @@ function InsightsCard({
         w="246px"
         zIndex="1">
         <InsightsCardDots
-          data-id="030925-6f51b0"
+          data-id="000488"
           h="175px"
           position="absolute"
           w="175px"
           zIndex="2"
           {...insightsCardsDotsPosition[status]} />
         <Flex
-          data-id="030925-0c7fd8"
+          data-id="000489"
           direction="column"
           position="relative"
           px="30px"
           py="25px"
           textAlign="left"
           zIndex="3">
-          <Text color="insightsCard.color" data-id="030925-be20fb" fontSize="14px">
+          <Text data-id="000490" color="insightsCard.color" fontSize="14px">
             {type === 'audits' ? auditsInsightsTypes[status] : actionsInsightsTypes[status]}
           </Text>
-          <Heading color="insightsCard.color" data-id="030925-147fb8" fontSize="100px">
+          <Heading data-id="000491" color="insightsCard.color" fontSize="100px">
             {count}
           </Heading>
-          <Spacer data-id="030925-0fce66" />
+          <Spacer data-id="000492" />
           {selected && <Box
+            data-id="000493"
             bg="insightsCard.color"
-            data-id="030925-a9fb46"
             h="7px"
             mt="22px"
             rounded="100px"
@@ -67,15 +67,15 @@ function InsightsCard({
       </Box>
       {selected && (
         <Icon
-          data-id="030925-45d180"
+          data-id="000494"
           fill={`insightsCard.types.${status}`}
           height="15px"
           viewBox="0 0 39 15"
           width="39px"
           zIndex="2">
           <path
-            d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z"
-            data-id="030925-f1cae5" />
+            data-id="000495"
+            d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z" />
         </Icon>
       )}
     </Flex>

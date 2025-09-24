@@ -31,7 +31,7 @@ function ShareProvider({ children }) {
     [isShareOpen, shareItemUrl, shareItemName],
   );
 
-  return <ShareContext.Provider value={value}>{children}</ShareContext.Provider>;
+  return <ShareContext.Provider data-id="000015" value={value}>{children}</ShareContext.Provider>;
 }
 
 export default ShareProvider;

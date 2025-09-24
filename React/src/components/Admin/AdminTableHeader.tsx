@@ -3,25 +3,25 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 function AdminTableHeader({ children, title }: { children: React.ReactNode; title?: string }) {
   return (
     <Box
+      data-id="000334"
       bg="adminTableHeader.bg"
-      data-id="030925-1bcc88"
       top={0}
       width="100%"
       zIndex={1}>
       {title && (
-        <Box bg="white" borderTopRadius="20px" data-id="030925-15c38d" p="15px 25px">
-          <Text data-id="030925-132fc9" fontSize="smm" fontWeight="bold">
+        <Box data-id="000335" bg="white" borderTopRadius="20px" p="15px 25px">
+          <Text data-id="000336" fontSize="smm" fontWeight="bold">
             {title}
           </Text>
         </Box>
       )}
       <Flex
+        data-id="000337"
         bg="#EDF2F7"
         borderBottom="1px solid"
         borderColor="adminTableHeader.border"
         borderTopRadius={title ? undefined : '10px'}
         color="adminTableHeader.font"
-        data-id="030925-d76b82"
         fontSize="14px"
         fontWeight="semibold"
         p="10px 10px">

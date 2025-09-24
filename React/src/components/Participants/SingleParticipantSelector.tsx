@@ -16,16 +16,16 @@ function SingleParticipantSelector({
   onChange: (participants: IUser) => void;
 }) {
   return (
-    <Stack data-id="030925-ef7ca8" spacing={2}>
+    <Stack data-id="000654" spacing={2}>
       <ParticipantsSelector
-        data-id="030925-f35b01"
+        data-id="000655"
         defaultSelectedParticipantsIds={[selectedParticipant && (selectedParticipant.userId || selectedParticipant._id)]}
         isUserAllowedToChange={isUserAllowedToChange}
         label={label}
         maxParticipants={1}
         onChange={(participants) => participants[0] && onChange(participants[0])}
       >
-        <ParticipantAvatar data-id="030925-d525b7" user={selectedParticipant && selectedParticipant} />
+        <ParticipantAvatar data-id="000656" user={selectedParticipant && selectedParticipant} />
       </ParticipantsSelector>
     </Stack>
   );

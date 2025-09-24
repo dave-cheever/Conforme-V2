@@ -13,13 +13,13 @@ interface IStatusSelectorList {
 function StatusSelectorList({ filteredStatuses, selected, handleChange }: IStatusSelectorList) {
   return (
     <CheckboxGroup
-      data-id="030925-f9573d"
+      data-id="000502"
       onChange={(value) => handleChange({ target: { name: 'status', value } })}
       value={selected}>
-      <Stack data-id="030925-56d4a3" direction="column" w="full">
+      <Stack data-id="000503" direction="column" w="full">
         {filteredStatuses?.map((value) => (
           <FilterCheckBox
-            data-id="030925-bee1c8"
+            data-id="000504"
             key={value}
             label={auditStatuses[value]}
             value={value} />

@@ -26,13 +26,13 @@ function RegulatoryBodyFilter() {
 
   return (
     <CheckboxGroup
-      data-id="030925-20f10b"
+      data-id="000149"
       onChange={handleChange}
       value={value}
     >
-      <Stack data-id="030925-008679" direction="column">
+      <Stack data-id="000150" direction="column">
         {regulatoryBodies?.map(({ name, _id }) => (
-          <FilterCheckBox data-id="030925-b28eba" key={_id} label={name} value={_id} />
+          <FilterCheckBox data-id="000151" key={_id} label={name} value={_id} />
         ))}
       </Stack>
     </CheckboxGroup>

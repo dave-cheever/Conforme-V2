@@ -30,9 +30,9 @@ function FiltersPanel() {
 
   return (
     <Flex
+        data-id="000121"
         bg="filterPanel.bg"
         boxShadow="md"
-        data-id="030925-9283d8"
         direction="column"
         h="100vh"
         position={['relative', 'absolute']}
@@ -42,53 +42,53 @@ function FiltersPanel() {
         w={['full', '320px']}
         zIndex="10">
       <Flex
+        data-id="000122"
         align="center"
         basis={['55px', '65px']}
-        data-id="030925-e9bd01"
         justify="space-between"
         px="4"
         shrink={0}>
         <Box
+          data-id="000123"
           color="brand.darkGrey"
-          data-id="030925-42c277"
           fontSize="16px"
           fontWeight="700">
           Filter items by
         </Box>
         <CrossIcon
+          data-id="000124"
           cursor="pointer"
-          data-id="030925-f17462"
           onClick={() => setShowFiltersPanel(false)}
           stroke="filterPanel.closeIconColor" />
       </Flex>
       <Flex
-        data-id="030925-0c2dca"
+        data-id="000125"
         direction="column"
         grow={1}
         overflowY="auto"
         px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
           if (usedFilters.includes(name) && !value?.hideFromPanel && isPermitted({ user, action: value?.permission }))
-            return <FiltersPanelItem data-id="030925-8124f7" filter={value} key={name} name={name} />;
+            return <FiltersPanelItem data-id="000126" filter={value} key={name} name={name} />;
           return null;
         })}
       </Flex>
       <Flex
+        data-id="000127"
         align="center"
         basis={['60px', '70px']}
         bg="filterPanel.bg"
         borderBottomStartRadius={['0px', '20px']}
         bottom={0}
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
-        data-id="030925-b06c48"
         justify="center"
         position={['sticky', 'relative']}
         shrink={0}
         w="full">
         <Button
+          data-id="000128"
           _hover={{ opacity: 0.9 }}
           color="filterPanel.resetButtonColor"
-          data-id="030925-30de36"
           fontSize="14px"
           h="35px"
           onClick={cleanFilters}
@@ -96,10 +96,10 @@ function FiltersPanel() {
           Reset all
         </Button>
         <Button
+          data-id="000129"
           _hover={{ opacity: 0.9 }}
           bg="filterPanel.doneButtonBg"
           color="filterPanel.doneButtonColor"
-          data-id="030925-d43139"
           fontSize="14px"
           h="35px"
           ml="10px"

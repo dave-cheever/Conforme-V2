@@ -45,11 +45,11 @@ function NavigationLeftItemTablet({
   
   return (
     <Box
+        data-id="000577"
         _hover={{
           cursor: 'pointer',
         }}
         alignItems="center"
-        data-id="030925-97c4ad"
         display="flex"
         fontSize="md"
         fontWeight="normal"
@@ -58,8 +58,9 @@ function NavigationLeftItemTablet({
         mt="5px"
         pos="relative"
         w="auto">
-      <Flex align="center" data-id="030925-2de382" h="100%">
+      <Flex data-id="000578" align="center" h="100%">
         <Flex
+          data-id="000579"
           align="center"
           bg={
             menuItem.subSections
@@ -70,7 +71,6 @@ function NavigationLeftItemTablet({
                 ? 'navigationLeftItemTablet.selectedLabelBg'
                 : 'navigationLeftItemTablet.unselectedLabelBg'
           }
-          data-id="030925-ab5738"
           h="30px"
           justifyContent="center"
           ml="0px"
@@ -90,8 +90,8 @@ function NavigationLeftItemTablet({
           rounded="8px"
           w="30px">
           <Icon
+            data-id="000580"
             as={icon}
-            data-id="030925-a80fe7"
             fill="#ffffff"
             h="15px"
             stroke="#ffffff"
@@ -100,9 +100,9 @@ function NavigationLeftItemTablet({
       </Flex>
       {filtersOpen && menuItem.url === '/' && (
         <Box
+          data-id="000581"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="030925-0d7dbd"
           ml="80px"
           pos="absolute"
           py="15px"
@@ -112,14 +112,14 @@ function NavigationLeftItemTablet({
           zIndex="5">
           {Object.keys(responsesStatusesCounts).length !== 0 && (
             <NavigationLeftFilters
-              data-id="030925-23f551"
+              data-id="000582"
               filter={['all', responsesStatusesCounts.compliant + responsesStatusesCounts.nonCompliant]}
               menuOpen={menuOpen}
               setFiltersOpen={setFiltersOpen} />
           )}
           {Object.entries(responsesStatusesCounts).map((filter) => (
             <NavigationLeftFilters
-              data-id="030925-e1d8ff"
+              data-id="000583"
               filter={filter}
               key={filter[0]}
               menuOpen={menuOpen}
@@ -129,9 +129,9 @@ function NavigationLeftItemTablet({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
+          data-id="000584"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
-          data-id="030925-70bb5b"
           maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
           ml="18rem"
           overflowY="auto"
@@ -144,7 +144,7 @@ function NavigationLeftItemTablet({
           zIndex="11">
           {menuItem.subSections?.map((subSection) => (
             <SubSection
-              data-id="030925-8c3650"
+              data-id="000585"
               isPopover
               key={subSection.label}
               menuOpen={menuOpen}

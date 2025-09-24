@@ -28,37 +28,37 @@ function AlertDialog({ isOpen, title, description, state, showButtons, handleYes
   const cancelRef: any = React.useRef();
   return (
     <AlertDialogChakra
-        data-id="030925-f09f65"
+        data-id="000146"
         isCentered
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         motionPreset="slideInBottom"
         onClose={onClose}>
-      <AlertDialogOverlay data-id="030925-4678b0" />
-      <AlertDialogContent data-id="030925-6f2ab0">
-        <AlertDialogHeader data-id="030925-784591">{title}</AlertDialogHeader>
-        <AlertDialogCloseButton data-id="030925-6f6b5e" />
-        <AlertDialogBody data-id="030925-5acfc0">{description}</AlertDialogBody>
-        <AlertDialogFooter data-id="030925-4daa41" justifyContent="space-between">
-          <Text color="alertDialog.state" data-id="030925-558e2a" fontSize="md">
+      <AlertDialogOverlay data-id="000147" />
+      <AlertDialogContent data-id="000148">
+        <AlertDialogHeader data-id="000149">{title}</AlertDialogHeader>
+        <AlertDialogCloseButton data-id="000150" />
+        <AlertDialogBody data-id="000151">{description}</AlertDialogBody>
+        <AlertDialogFooter data-id="000152" justifyContent="space-between">
+          <Text data-id="000153" color="alertDialog.state" fontSize="md">
             {state}
           </Text>
           {showButtons && (
-            <HStack data-id="030925-c85daf">
+            <HStack data-id="000154">
               <Button
-                data-id="030925-25962e"
+                data-id="000155"
                 disabled={!!state}
                 onClick={handleNo}
                 ref={cancelRef}>
                 No
               </Button>
               <Button
+                data-id="000156"
                 _hover={{
                   bg: 'alertDialog.buttons.action.hover',
                 }}
                 bg="alertDialog.buttons.action.bg"
                 color="alertDialog.buttons.action.color"
-                data-id="030925-e25fd1"
                 isLoading={!!state}
                 ml={3}
                 onClick={handleYes}>

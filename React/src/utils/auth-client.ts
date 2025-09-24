@@ -1,7 +1,8 @@
 import { createAuthClient } from "better-auth/react" // make sure to import from better-auth/react
- 
+import { runtimeEnv } from './runtime-env';
+
 const authClient =  createAuthClient({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: runtimeEnv.apiUrl(),
 })
 
 export default authClient ;

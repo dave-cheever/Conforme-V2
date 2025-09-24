@@ -24,18 +24,18 @@ function ChatMention({ tag }) {
     }
   }, [getUpdatedDisplayName, tag]);
 
-  if (!userId) return <Text data-id="030925-720112">{displayTag}</Text>;
+  if (!userId) return <Text data-id="000236">{displayTag}</Text>;
 
   return (
     <Tooltip
+      data-id="000237"
       bg="chatMention.tooltip.bg"
       color="chatMention.tooltip.color"
-      data-id="030925-d5c138"
       hasArrow
       label={userName}
       placement="top"
     >
-      <Text color="chatMention.mentionColor" cursor="pointer" data-id="030925-bccbd7" display="inline">
+      <Text data-id="000238" color="chatMention.mentionColor" cursor="pointer" display="inline">
         {displayTag}
       </Text>
     </Tooltip>

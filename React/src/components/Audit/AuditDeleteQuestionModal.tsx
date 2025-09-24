@@ -10,33 +10,33 @@ function AuditDeleteQuestionModal({ isOpen, onClose }) {
 
   return (
     <Modal
-        data-id="030925-202cf5"
+        data-id="000180"
         isCentered
         isOpen={isOpen}
         onClose={onClose}
         size="sm">
-      <ModalContent data-id="030925-4001a7">
-        <ModalHeader data-id="030925-3f7ba3">
-          <Text data-id="030925-386c41" fontSize="smm" fontWeight="semibold">
+      <ModalContent data-id="000181">
+        <ModalHeader data-id="000182">
+          <Text data-id="000183" fontSize="smm" fontWeight="semibold">
             Delete {t('question')}
           </Text>
-          <ModalCloseButton data-id="030925-d48bbf" />
+          <ModalCloseButton data-id="000184" />
         </ModalHeader>
-        <ModalBody data-id="030925-50e738" mb="40px">
-          <Stack data-id="030925-f82cf0">
-            <Text data-id="030925-a70f77">Are you sure you want to delete the following element?</Text>
-            <Text data-id="030925-2b038b" fontStyle="italic">{selectedQuestion?.question}</Text>
+        <ModalBody data-id="000185" mb="40px">
+          <Stack data-id="000186">
+            <Text data-id="000187">Are you sure you want to delete the following element?</Text>
+            <Text data-id="000188" fontStyle="italic">{selectedQuestion?.question}</Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="030925-622a4e">
-          <HStack data-id="030925-e5f9cf" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="030925-5533c0" onClick={onClose}>
+        <ModalFooter data-id="000189">
+          <HStack data-id="000190" justify="center" spacing={4} w="full">
+            <Button data-id="000191" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="000192"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="030925-aea24d"
               onClick={async () => {
                 await deleteQuestion({
                   variables: {

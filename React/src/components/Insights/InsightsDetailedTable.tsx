@@ -126,10 +126,10 @@ function InsightsDetailedTable({
   };
 
   return (
-    <Box data-id="030925-0fdb8f">
-      <InsightsDetailedTableHeader data-id="030925-c7d14e">
+    <Box data-id="000498">
+      <InsightsDetailedTableHeader data-id="000499">
         <InsightsDetailedTableHeaderElement
-          data-id="030925-aa25d0"
+          data-id="000500"
           label="Name"
           onClick={() => {
             setSortType(insightsModel === 'users' ? 'displayName' : 'name');
@@ -140,8 +140,8 @@ function InsightsDetailedTable({
           sortOrder={sortType === (insightsModel === 'users' ? 'displayName' : 'name') ? sortOrder : undefined} />
         {(tableFieldsPerType[insightsType] ?? []).map((item) => (
           <InsightsDetailedTableHeaderElement
+            data-id="000501"
             color={item.color}
-            data-id="030925-cc6da7"
             key={item.label}
             label={item.label}
             ml="0.75rem"
@@ -154,8 +154,8 @@ function InsightsDetailedTable({
         ))}
       </InsightsDetailedTableHeader>
       <Flex
+        data-id="000502"
         align="center"
-        data-id="030925-1f48b9"
         flexDir="column"
         mb={5}
         minH="350px"
@@ -163,7 +163,7 @@ function InsightsDetailedTable({
         w="full">
         {sortedData?.map((item, index) => (
           <InsightListItem
-            data-id="030925-a15c7c"
+            data-id="000503"
             insightsModel={insightsModel}
             insightsType={insightsType}
             item={item}
@@ -172,11 +172,11 @@ function InsightsDetailedTable({
         ))}
       </Flex>
       {totals > sortedData.length && (
-        <Flex data-id="030925-d1e2df" justify="end" rounded="md">
+        <Flex data-id="000504" justify="end" rounded="md">
           <Button
+            data-id="000505"
             bg="insightsDetailedTable.loadMore"
             color="white"
-            data-id="030925-08c8fb"
             onClick={loadMore}
             size="sm">
             Load more

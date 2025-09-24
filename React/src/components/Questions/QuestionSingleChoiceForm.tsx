@@ -145,9 +145,9 @@ function QuestionSingleChoiceForm({
   };
 
   return (
-    <Flex data-id="030925-e0c973" flexDir="column" h="full">
+    <Flex data-id="000280" flexDir="column" h="full">
       <Flex
-        data-id="030925-314ab9"
+        data-id="000281"
         flexDir="column"
         h="full"
         overflowX="hidden"
@@ -162,12 +162,12 @@ function QuestionSingleChoiceForm({
             backgroundColor: 'questionSingleChoiceForm.scrollBar.color',
           },
         }}>
-        <Text data-id="030925-200e3f" fontSize="smm" fontWeight="bold" mb="20px">
+        <Text data-id="000282" fontSize="smm" fontWeight="bold" mb="20px">
           {questionHeader(questionType)}
         </Text>
         <TextInput
+          data-id="000283"
           control={control}
-          data-id="030925-a4a71a"
           label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
@@ -175,53 +175,53 @@ function QuestionSingleChoiceForm({
             notEmpty: true,
           }} />
         <TextInput
+          data-id="000284"
           control={control}
-          data-id="030925-46808b"
           label="Description"
           name="description" />
         <Text
+          data-id="000285"
           color="questionSingleChoiceForm.text.color"
-          data-id="030925-a5b474"
           fontSize="ssm"
           my="20px">
           Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
         </Text>
-        <Box data-id="030925-2f133e" pr="10px" w="calc(100% + 10px)">
+        <Box data-id="000286" pr="10px" w="calc(100% + 10px)">
           <DragDropContext
-            data-id="030925-303adb"
+            data-id="000287"
             onDragEnd={moveOptions}
             onDragStart={() => setIsDragging(true)}>
-            <Droppable data-id="030925-c8eb81" droppableId="multiChoiceQuestionDroppable">
+            <Droppable data-id="000288" droppableId="multiChoiceQuestionDroppable">
               {(provided) => (
                 <Box
-                  data-id="030925-5482ef"
+                  data-id="000289"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   width="full">
                   {fields.map(({ id, label, value }, index) => {
                     const radio = getRadioProps({ ...(value ? { value } : { value: JSON.stringify(index) }) });
                     return (
-                      <Draggable data-id="030925-d21dcf" draggableId={id} index={index} key={id}>
+                      <Draggable data-id="000290" draggableId={id} index={index} key={id}>
                         {(provided) => (
-                          <Box data-id="030925-0295d2">
+                          <Box data-id="000291">
                             <Flex
-                              data-id="030925-ec39eb"
+                              data-id="000292"
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               align="center">
-                              <Box data-id="030925-967db1" {...provided.dragHandleProps}>
+                              <Box data-id="000293" {...provided.dragHandleProps}>
                                 <Move
-                                  data-id="030925-0a782a"
+                                  data-id="000294"
                                   ml="2px"
                                   mr="14px"
                                   mt="-4px"
                                   stroke="questionSingleChoiceForm.icon.moveIcon"
                                   w="10px" />
                               </Box>
-                              <Flex data-id="030925-2ba2e9" w="full">
-                                <CustomRadioButton data-id="030925-08e23c" {...radio} fontSize="smm" isSingleChoice>
+                              <Flex data-id="000295" w="full">
+                                <CustomRadioButton data-id="000296" {...radio} fontSize="smm" isSingleChoice>
                                   <Input
-                                    data-id="030925-a9f498"
+                                    data-id="000297"
                                     name={id}
                                     onBlur={() => reset({ ...getValues() })}
                                     onChange={(e) => {
@@ -235,16 +235,16 @@ function QuestionSingleChoiceForm({
                                 </CustomRadioButton>
                               </Flex>
                               <Trashcan
+                                data-id="000298"
                                 cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
-                                data-id="030925-06447e"
                                 mr={index + 1 === fields.length ? '12px' : '28px'}
                                 onClick={() => removeChoice(index)}
                                 stroke="questionSingleChoiceForm.icon.iconBin"
                                 w="20px" />
                               {index + 1 === fields.length && (
                                 <PlusIcon
+                                  data-id="000299"
                                   cursor="pointer"
-                                  data-id="030925-0e4f9a"
                                   onClick={() => {
                                     append({
                                       label: '',
@@ -268,17 +268,17 @@ function QuestionSingleChoiceForm({
       </Flex>
       {optionIsDuplicate && (
         <Text
+          data-id="000300"
           color="questionSingleChoiceForm.text.error"
-          data-id="030925-207bce"
           fontSize="sm">
           Options cannot be duplicated
         </Text>
       )}
-      <Flex data-id="030925-ddde25" justifyContent="space-between" mt="51px">
+      <Flex data-id="000301" justifyContent="space-between" mt="51px">
         <Button
+          data-id="000302"
           bg="questionSingleChoiceForm.button.secondary.bg"
           color="questionSingleChoiceForm.button.secondary.font"
-          data-id="030925-07ac7a"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -292,9 +292,9 @@ function QuestionSingleChoiceForm({
           Cancel
         </Button>
         <Button
+          data-id="000303"
           bg="questionSingleChoiceForm.button.primary.bg"
           color="questionSingleChoiceForm.button.primary.font"
-          data-id="030925-cd27f7"
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName || optionIsDuplicate}
           fontSize="sm"
           fontWeight="medium"
@@ -310,8 +310,8 @@ function QuestionSingleChoiceForm({
           }}
           p="17px"
           rightIcon={<Icon
+            data-id="000304"
             as={OpenMenuArrow}
-            data-id="030925-0c2c4f"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

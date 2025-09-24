@@ -28,18 +28,18 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
   }, [selectedRadio]);
 
   return (
-    <Box data-id="030925-143814" id={name} w="full">
+    <Box data-id="000330" id={name} w="full">
       {label && (
         <Flex
+          data-id="000331"
           align="center"
-          data-id="030925-b0289f"
           justify="space-between"
           mb="none"
           pb={2}
           pt={2}>
           <Box
+            data-id="000332"
             color="singleChoices.labelFont.normal"
-            data-id="030925-ea2106"
             fontSize="ssm"
             fontWeight="bold"
             left="none"
@@ -48,7 +48,7 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
             {label}
             {required && (
               <Asterisk
-                data-id="030925-62aa9d"
+                data-id="000333"
                 fill="questionListElement.iconAsterisk"
                 h="9px"
                 mb="8px"
@@ -57,20 +57,20 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
                 w="9px" />
             )}{' '}
             {tooltip && (
-              <Tooltip data-id="030925-39d466" hasArrow label={tooltip} placement="top">
-                <Icon data-id="030925-ea4f9a" h="14px" mb={1} name="info" />
+              <Tooltip data-id="000334" hasArrow label={tooltip} placement="top">
+                <Icon data-id="000335" h="14px" mb={1} name="info" />
               </Tooltip>
             )}
           </Box>
         </Flex>
       )}
-      <VStack data-id="030925-6a9448" {...group} align="stretch">
+      <VStack data-id="000336" {...group} align="stretch">
         {options &&
           options.map(({ label, value }) => {
             const radio = getRadioProps({ value });
             return (
               <CustomRadioButton
-                  data-id="030925-fb4b8c"
+                  data-id="000337"
                   key={value}
                   {...radio}
                   fontSize="smm"

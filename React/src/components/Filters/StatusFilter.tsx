@@ -14,9 +14,9 @@ function StatusFilter() {
   };
 
   return (
-    <Box data-id="030925-22a600" w="full">
+    <Box data-id="000172" w="full">
       <StatusSelector
-        data-id="030925-c864dd"
+        data-id="000173"
         handleChange={handleChange}
         selected={value}
         status={auditStatuses} />

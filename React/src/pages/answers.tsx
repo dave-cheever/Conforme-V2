@@ -294,41 +294,42 @@ function Answers() {
   return (
     <>
       <AnswerDeleteModal
+        data-id="000266"
         answer={selectedAnswer ?? ({} as IAnswer)}
-        data-id="030925-4cc64e"
         isOpen={isDeleteQuestionModalOpen}
         onClose={handleDeleteQuestionModalClose}
         refetchAnswers={refetch} />
       <Modal
-        data-id="030925-4bf887"
+        data-id="000267"
         isOpen={adminModalState !== 'closed'}
         onClose={closeModal}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
         variant="adminModal">
         <AnswerModal
+          data-id="000268"
           answer={selectedAnswer}
           closeModal={closeModal}
-          data-id="030925-f6ff02"
           handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
           refetch={refetch} />
       </Modal>
       <Header
+        data-id="000269"
         breadcrumbs={[capitalize(pluralize(t('question')))]}
-        data-id="030925-854b98"
         mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
         <ChangeViewButton
-          data-id="030925-3eddd7"
+          data-id="000270"
           setViewMode={setViewMode}
           viewMode={viewMode}
           views={['grid', 'list']} />
         {device !== 'mobile' && (
           <CSVLinkComponent
+            data-id="000271"
             data={csvData}
-            data-id="030925-58e43a"
             filename="answers.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
+              data-id="000272"
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
                 color: 'reasponseHeader.buttonLightColorHover',
@@ -337,18 +338,17 @@ function Answers() {
               }}
               bg="white"
               borderRadius="10px"
-              data-id="030925-2668d5"
               display="none"
               ml="15px"
-              rightIcon={<ExportIcon data-id="030925-d8ee1b" height="15px" width="15px" />}>
-              <Text data-id="030925-9c065f" fontSize="smm" fontWeight="bold">
+              rightIcon={<ExportIcon data-id="000273" height="15px" width="15px" />}>
+              <Text data-id="000274" fontSize="smm" fontWeight="bold">
                 Export
               </Text>
             </Button>
           </CSVLinkComponent>
         )}
         <SortButton
-          data-id="030925-7dcdf5"
+          data-id="000275"
           ml={[0, '15px']}
           setSortOrder={setSortOrder}
           setSortType={setSortType}
@@ -357,24 +357,24 @@ function Answers() {
           sortType={sortType} />
 
       </Header>
-      <Flex data-id="030925-a1a71d" h={['calc(100vh - 80px)', 'full']} overflow="auto">
+      <Flex data-id="000276" h={['calc(100vh - 80px)', 'full']} overflow="auto">
         {/* eslint-disable */}
         {error ? (
-          <Text data-id="030925-c64257">{error.message}</Text>
+          <Text data-id="000277">{error.message}</Text>
         ) : loading ? (
-          <Loader data-id="030925-44211b" center={true} />
+          <Loader data-id="000278" center={true} />
         ) : (
           <>
             <Tabs
-              data-id="030925-532749"
+              data-id="000279"
               defaultIndex={selectedPanel}
               onChange={(index) => setSelectedPanel(index)}
               variant="unstyled"
               w="full">
-              <TabList data-id="030925-3eaab4" px={[4, 8]} flexWrap={['wrap', 'initial']}>
+              <TabList data-id="000280" px={[4, 8]} flexWrap={['wrap', 'initial']}>
                 {panels?.map((panel) => (
                   <Tab
-                    data-id="030925-446401"
+                    data-id="000281"
                     key={panel._id}
                     _selected={{
                       bg: 'answers.tabBg',
@@ -394,16 +394,16 @@ function Answers() {
                   </Tab>
                 ))}
               </TabList>
-              <TabPanels data-id="030925-6f64a5">
+              <TabPanels data-id="000282">
                 {panels?.map((panel) => (
                   <TabPanel
-                    data-id="030925-92b53a"
+                    data-id="000283"
                     key={panel._id}
                     p={[4, viewMode === 'list' ? 6 : 2]}
                     ml={[0, '10px']}>
                     {viewMode === 'grid' && (
                       <Grid
-                        data-id="030925-246c65"
+                        data-id="000284"
                         display={['grid', 'grid', 'flex']}
                         flexWrap="wrap"
                         gap={[4, 4, 6]}
@@ -416,7 +416,7 @@ function Answers() {
                           {sortedAnswers.length > 0 ? (
                             sortedAnswers.map((answer) => (
                               <AnswerSquare
-                                data-id="030925-607285"
+                                data-id="000285"
                                 answer={answer}
                                 editAnswer={handleOpenModal}
                                 key={answer._id}
@@ -424,7 +424,7 @@ function Answers() {
                             ))
                           ) : (
                             <Flex
-                              data-id="030925-4ce694"
+                              data-id="000286"
                               fontSize="18px"
                               fontStyle="italic"
                               h="full"
@@ -436,7 +436,7 @@ function Answers() {
                     )}
                     {viewMode === 'list' && (
                       <AnswersList
-                        data-id="030925-ca510b"
+                        data-id="000287"
                         answers={sortedAnswers}
                         editAnswer={handleOpenModal}
                         refetchAnswers={refetch}

@@ -42,25 +42,25 @@ function HistoricalListItem({ response }: { response: IResponse }) {
 
   return (
     <Box
+        data-id="000303"
         bg="historicalListItem.bg"
         borderBottomColor="historicalListItem.borderColor"
         borderBottomWidth="1px"
         cursor="pointer"
-        data-id="030925-9902bf"
         onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
         p="15px 25px"
         py={[1, 0]}
         w="full">
       <Flex
+        data-id="000304"
         align="center"
-        data-id="030925-bbe426"
         h={['full', '73px']}
         position="relative"
         w="full">
         <Flex
+          data-id="000305"
           align="flex-start"
           color="historicalListItem.fontColor"
-          data-id="030925-32e0cc"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           lineHeight="18px"
@@ -71,26 +71,26 @@ function HistoricalListItem({ response }: { response: IResponse }) {
           {response.trackerItem.name}
         </Flex>
         <Flex
+          data-id="000306"
           color="historicalListItem.fontColor"
-          data-id="030925-548546"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           opacity="1"
           w="20%">
           {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
         </Flex>
-        <Box data-id="030925-598182" pr="20px" w="25%">
-          <Skeleton data-id="030925-99c59d" isLoaded={!responsibleLoading} rounded="full">
+        <Box data-id="000307" pr="20px" w="25%">
+          <Skeleton data-id="000308" isLoaded={!responsibleLoading} rounded="full">
             {responsibleUser ? (
-              <Flex align="center" data-id="030925-60ad20" direction="row">
+              <Flex data-id="000309" align="center" direction="row">
                 <Avatar
-                  data-id="030925-28a591"
+                  data-id="000310"
                   name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                   size="xs"
                   src={responsibleUser?.imgUrl} />
                 <Text
+                  data-id="000311"
                   color="historicalListItem.fontColor"
-                  data-id="030925-4a5203"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"
@@ -104,20 +104,20 @@ function HistoricalListItem({ response }: { response: IResponse }) {
                 </Text>
               </Flex>
             ) : (
-              <Flex data-id="030925-c0df34" fontSize="13px" fontStyle="italic">
+              <Flex data-id="000312" fontSize="13px" fontStyle="italic">
                 Unassigned
               </Flex>
             )}
           </Skeleton>
         </Box>
-        <Box data-id="030925-3e5ad7" pr="20px" w="25%">
-          <Skeleton data-id="030925-9c2a0b" isLoaded={!responsibleLoading} rounded="full">
+        <Box data-id="000313" pr="20px" w="25%">
+          <Skeleton data-id="000314" isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
-              <Flex align="center" data-id="030925-40361d" direction="row">
-                <Avatar data-id="030925-f8d171" name={lastUpdatedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={lastUpdatedBy?.imgUrl} />
+              <Flex data-id="000315" align="center" direction="row">
+                <Avatar data-id="000316" name={lastUpdatedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={lastUpdatedBy?.imgUrl} />
                 <Text
+                  data-id="000317"
                   color="historicalListItem.fontColor"
-                  data-id="030925-1555c2"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"
@@ -132,7 +132,7 @@ function HistoricalListItem({ response }: { response: IResponse }) {
               </Flex>
             ) : (
                 <Flex
-                  data-id="030925-bcdd85"
+                  data-id="000318"
                   fontSize="13px"
                   fontStyle="italic"
                   fontWeight={active ? '700' : '400'}>

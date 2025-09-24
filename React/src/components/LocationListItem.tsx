@@ -18,6 +18,7 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
 
   return (
     <Flex
+      data-id="000327"
       _hover={{ bg: '#F5F7FA' }}
       align="center"
       bg={rowBg}
@@ -25,7 +26,6 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
       borderBottomWidth="1px"
       color="auditsList.fontColor"
       cursor="pointer"
-      data-id="030925-e5ba94"
       flexShrink={0}
       fontSize="14px"
       fontWeight="500"
@@ -35,21 +35,21 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
       overflow="hidden"
       pl={3}
     >
-      <Flex data-id="030925-83d81f"  w={['max-content', 'full']}>
+      <Flex data-id="000328"  w={['max-content', 'full']}>
         {location.name}
       </Flex>
       {device !== 'mobile' && device !== 'tablet' && (
         <>
-          <Flex data-id="030925-08693a" w="full">
-            <Text data-id="030925-71a486" mr="25px" noOfLines={1}>
+          <Flex data-id="000329" w="full">
+            <Text data-id="000330" mr="25px" noOfLines={1}>
               {location.notes || '-'}
             </Text>
           </Flex>
-          <Flex data-id="030925-bf1cd2" w="full">
+          <Flex data-id="000331" w="full">
             <Avatar
+              data-id="000332"
               bg="userMenu.avatar.bg"
               color="userMenu.avatar.color"
-              data-id="030925-ccd51c"
               h="24px"
               mr="10px"
               name={location?.owner?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -62,13 +62,13 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
           </Flex>
         </>
       )}
-      <Spacer data-id="030925-ebb405" display={['block', 'none']} />
-      <Flex alignItems="center" data-id="030925-bb3ef1" w={['97px', 'full']}>
+      <Spacer data-id="000333" display={['block', 'none']} />
+      <Flex data-id="000334" alignItems="center" w={['97px', 'full']}>
         {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}
-        <Tooltip data-id="030925-3e73ec" fontSize="md" label="Show Items">
+        <Tooltip data-id="000335" fontSize="md" label="Show Items">
           <ArrowCount
+            data-id="000336"
             cursor="pointer"
-            data-id="030925-f67d8b"
             h="10px"
             ml="13px"
             onClick={() => {

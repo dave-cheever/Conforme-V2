@@ -10,17 +10,17 @@ function IsVerifiedFilter() {
 
   return (
     <RadioGroup
-        data-id="030925-76b0a9"
+        data-id="000117"
         ml="4"
         onChange={(newValue) => setFilters({ isVerified: newValue })}
         value={value}>
       <Stack
-        data-id="030925-263c5e"
+        data-id="000118"
         direction="column"
         h="calc(100vh - 230px)"
         overflow="auto">
-        <Radio data-id="030925-74b5e6" value="1">Yes</Radio>
-        <Radio data-id="030925-84013c" value="0">No</Radio>
+        <Radio data-id="000119" value="1">Yes</Radio>
+        <Radio data-id="000120" value="0">No</Radio>
       </Stack>
     </RadioGroup>
   );

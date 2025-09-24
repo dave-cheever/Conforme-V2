@@ -11,16 +11,17 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 function CustomDatePicker({ clickOutsideHandler, ...props }) {
   return (
     <DatePicker
-      data-id="030925-6c14a0"
+      data-id="000079"
       renderCustomHeader={({ date, changeYear, changeMonth }) => (
         <Flex
+          data-id="000080"
           borderRadius="10px"
           color="#1E1836"
-          data-id="030925-c85d5f"
           justify="space-around"
           minW="260px"
           p="8px 8px 8px 16px">
           <Select
+            data-id="000081"
             _focus={{
               outline: 'none',
             }}
@@ -28,21 +29,21 @@ function CustomDatePicker({ clickOutsideHandler, ...props }) {
             border="none"
             borderRadius="8px"
             cursor="pointer"
-            data-id="030925-587448"
             fontSize="14px"
             fontWeight="400"
-            icon={<ChevronDownIcon data-id="030925-467a3d" stroke="#787486" />}
+            icon={<ChevronDownIcon data-id="000082" stroke="#787486" />}
             justifyContent="center"
             onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
             textAlign="center"
             value={months[getMonth(date)]}>
             {months.map((option) => (
-              <option data-id="030925-9130bb" key={option} value={option}>
+              <option data-id="000083" key={option} value={option}>
                 {option}
               </option>
             ))}
           </Select>
           <Select
+            data-id="000084"
             _focus={{
               outline: 'none',
             }}
@@ -50,16 +51,15 @@ function CustomDatePicker({ clickOutsideHandler, ...props }) {
             border="none"
             borderRadius="8px"
             cursor="pointer"
-            data-id="030925-1d9942"
             fontSize="14px"
             fontWeight="400"
-            icon={<ChevronDownIcon data-id="030925-59c709" stroke="#F4F3F5" />}
+            icon={<ChevronDownIcon data-id="000085" stroke="#F4F3F5" />}
             justifyContent="center"
             onChange={({ target: { value } }) => changeYear(value)}
             textAlign="center"
             value={getYear(date)}>
             {years.map((option) => (
-              <option data-id="030925-991027" key={option} value={option}>
+              <option data-id="000086" key={option} value={option}>
                 {option}
               </option>
             ))}

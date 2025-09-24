@@ -19,26 +19,27 @@ function QuestionGroup({
 }: QuestionGroupProps) {
   return (
     <Box
+      data-id="000448"
       cursor="pointer"
-      data-id="030925-46195a"
       maxH="400px"
       onClick={() => setExpandedItem(() => (isExpanded ? '' : id))}
       w="full">
       <Collapse
-        data-id="030925-a8396d"
+        data-id="000449"
         endingHeight="270px"
         in={isExpanded}
         startingHeight="90px">
         <Box
+          data-id="000450"
           bg="white"
           borderRadius="10px"
           boxShadow="-1px 1px 9px 1px rgba(0 0 0  0.5)"
-          data-id="030925-e055b0"
           h="full"
           p="20px"
           w="full">
-          <Flex data-id="030925-06433d" justify="space-between">
+          <Flex data-id="000451" justify="space-between">
             <Flex
+              data-id="000452"
               align="center"
               bg={
                 questionAnswered === 0
@@ -49,7 +50,6 @@ function QuestionGroup({
               }
               border={questionAnswered === 0 ? '1px solid #CBCCCD' : ''}
               borderRadius="50%"
-              data-id="030925-7e943d"
               h="5"
               justify="center"
               mr={5}
@@ -57,38 +57,38 @@ function QuestionGroup({
               {questionAnswered === 0 ? (
                 ''
               ) : questionAnswered < totalQuestion ? (
-                <MinusIcon color="white" data-id="030925-f989dc" h="2.5" w="2.5" />
+                <MinusIcon data-id="000453" color="white" h="2.5" w="2.5" />
               ) : (
-                <CheckIcon color="white" data-id="030925-192097" h="2.5" w="2.5" />
+                <CheckIcon data-id="000454" color="white" h="2.5" w="2.5" />
               )}
             </Flex>
             <Text
+              data-id="000455"
               color="navigationTop.bg"
-              data-id="030925-29b6c6"
               flexGrow={1}
               lineHeight="20px">
               {name}
             </Text>
             <Text
+              data-id="000456"
               color="auditModal.menu.text"
-              data-id="030925-e3de26"
               lineHeight="20px"
               w={32}>
               {questionAnswered} / {totalQuestion} Completed
             </Text>
           </Flex>
           <Text
+            data-id="000457"
             color="auditModal.menu.text"
-            data-id="030925-995313"
             fontSize="sm"
             fontWeight={400}
             mt={3}
             pl={10}>
             {description}
           </Text>
-          <br data-id="030925-671603" />
-          <Box data-id="030925-040297" pl={10}>
-            <QuestionAdditionalInformation data-id="030925-6bcca0" />
+          <br data-id="000458" />
+          <Box data-id="000459" pl={10}>
+            <QuestionAdditionalInformation data-id="000460" />
           </Box>
         </Box>
       </Collapse>

@@ -17,6 +17,7 @@ function ShareButton({
 }) {
   return (
     <Button
+      data-id="000491"
       _hover={
         disabled
           ? {}
@@ -32,7 +33,6 @@ function ShareButton({
       border="1px solid #CBD5E0"
       borderRadius="10px"
       color="#818197"
-      data-id="030925-f07434"
       disabled={disabled}
       display="flex"
       fontSize="14px"
@@ -40,12 +40,11 @@ function ShareButton({
       ml={ml}
       mr={mr}
       onClick={onClick}
-      rightIcon={<ShareIcon data-id="030925-18cf15" fontSize="15px" />}
+      rightIcon={<ShareIcon data-id="000492" fontSize="15px" />}
       role="group"
       stroke="#818197"
-      w={['calc(100% - 1rem - 15px)', 'auto']}>
-      Share
-    </Button>
+      w={['calc(100% - 1rem - 15px)', 'auto']}>Share
+          </Button>
   );
 }
 

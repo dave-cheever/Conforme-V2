@@ -38,25 +38,25 @@ function Audit() {
   }, [JSON.stringify(queryStringParams), JSON.stringify(questions)]);
 
   return (
-    <Stack border="1px solid #CBD5E0" data-id="030925-3b1706"  h={['fit-content', 'full']} p="10px" rounded="10px" w="full">
+    <Stack data-id="000663" border="1px solid #CBD5E0"  h={['fit-content', 'full']} p="10px" rounded="10px" w="full">
       <AuditNewQuestionModal
-        data-id="030925-8155f0"
+        data-id="000664"
         isOpen={isNewQuestionModalOpen}
         onClose={handleNewQuestionModalClose} />
       <AuditDeleteQuestionModal
-        data-id="030925-e7e5bd"
+        data-id="000665"
         isOpen={isDeleteQuestionModalOpen}
         onClose={() => {
           setSelectedQuestion(undefined);
           handleDeleteQuestionModalClose();
         }} />
       <HStack
+        data-id="000666"
         align="center"
-        data-id="030925-096bdc"
         justify={['space-between', 'initial']}
         spacing={4}
         w="full">
-        <Text data-id="030925-895a33" fontSize={["20px", "xxl"]} fontWeight="semibold">
+        <Text data-id="000667" fontSize={["20px", "xxl"]} fontWeight="semibold">
           {capitalize(pluralize(t('question')))}
         </Text>
         {!(selectedQuestion && !isDeleteQuestionModalOpen) &&
@@ -64,10 +64,10 @@ function Audit() {
           isPermitted({ user, action: 'audits.edit', data: { audit } }) &&
           customQuestionsCategories.length && (
             <Button
+              data-id="000668"
               bg="auditItem.addButton.bg"
               borderRadius="10px"
               color="auditItem.addButton.color"
-              data-id="030925-560e04"
               fontSize="ssm"
               h="28px"
               onClick={() => handleNewQuestionModalOpen()}>
@@ -78,14 +78,14 @@ function Audit() {
       {!(selectedQuestion && !isDeleteQuestionModalOpen && Object.entries(questions).length > 0) ? (
         selectedQuestion || Object.entries(questions).length > 0 ? (
           <Stack
-            data-id="030925-4b2f6b"
+            data-id="000669"
             overflow="auto"
             pb="25px"
             spacing={4}
             w="calc(100% + 10px)">
             {questionsCategories.map((category) => (
               <AuditQuestionsCategory
-                data-id="030925-2d5019"
+                data-id="000670"
                 handleDelete={handleDeleteQuestionModalOpen}
                 key={category._id}
                 questionsCategory={category} />
@@ -93,8 +93,8 @@ function Audit() {
           </Stack>
         ) : (
           <Box
+            data-id="000671"
             bg="white"
-            data-id="030925-db6214"
             fontSize="18px"
             fontStyle="italic"
             h="auto"
@@ -102,13 +102,13 @@ function Audit() {
             py={6}
             rounded="20px"
             w="full">
-            <Text data-id="030925-8a0698">No {pluralize(t('question'))} found</Text>
+            <Text data-id="000672">No {pluralize(t('question'))} found</Text>
           </Box>
         )
       ) : ''}
       {selectedQuestion && !isDeleteQuestionModalOpen && (
         <AuditAnswer
-          data-id="030925-cfaa43"
+          data-id="000673"
           handleClose={() => {
             refetch();
             setSelectedQuestion(undefined);

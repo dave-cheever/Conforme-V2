@@ -141,36 +141,36 @@ useEffect(() => {
 
   return (
     <>
-      <Header breadcrumbs={['Admin', 'Audit log']} data-id="030925-2f1592" />
+      <Header data-id="000305" breadcrumbs={['Admin', 'Audit log']} />
       <Box
-        data-id="030925-6c5596"
+        data-id="000306"
         h="calc(100vh - 150px)"
         overflow="auto"
         p={["10px", "30px"]}
         pt="0px">
         <Flex
+          data-id="000307"
           bg="white"
           borderRadius="20px"
-          data-id="030925-e5834d"
           flexDir="column"
           h="fit-content"
           pt="3"
           px="6">
           <AuditLogComponent
+            data-id="000308"
             auditLogs={auditLogs}
-            data-id="030925-06e323"
             isLoadingMore={isLoadingMore}
             loading={loading} />
           {!loading &&
             (totalAuditLogs === countAuditLogs ? (
-              <Text color="auditLog.noLogs" data-id="030925-220fb0" mb={4}>
+              <Text data-id="000309" color="auditLog.noLogs" mb={4}>
                 No more logs
               </Text>
             ) : (
               <Text
+                data-id="000310"
                 color="auditLog.loadMore"
                 cursor="pointer"
-                data-id="030925-8bdfe3"
                 mb={4}
                 onClick={() => {
                   setSkip((prev) => prev + 5);

@@ -14,19 +14,19 @@ function AreaToInspect() {
   const onBlur = () => setFocused(false);
 
   return (
-    <Box data-id="030925-2f8194">
+    <Box data-id="000376">
       <Box
+        data-id="000377"
         bg="auditModal.participants.customSearch.bg"
         border="2px solid"
         borderColor="auditModal.participants.customSearch.border"
         borderRadius="8px"
-        data-id="030925-8eb5f3"
         h="55px"
         mb="20px"
         overflow="hidden"
         position="relative">
         <Text
-          data-id="030925-635b76"
+          data-id="000378"
           fontSize="sm"
           fontWeight="700"
           padding="2px 15px"
@@ -34,10 +34,10 @@ function AreaToInspect() {
           zIndex="999">
           Select {capitalize(t('business unit'))}
         </Text>
-        <InputGroup data-id="030925-c02fe8">
+        <InputGroup data-id="000379">
           <Input
+            data-id="000380"
             cursor="pointer"
-            data-id="030925-6c9251"
             h="55px"
             mb="20px"
             onBlur={onBlur}
@@ -46,20 +46,20 @@ function AreaToInspect() {
             readOnly
             value={modalContext.selectedBusinessUnit}
             variant="auditModalSearchInput" />
-          <InputRightElement data-id="030925-855bcf">
+          <InputRightElement data-id="000381">
             <OpenMenuArrow
-              data-id="030925-17bd33"
+              data-id="000382"
               transform="translate(0px, 8px)"
               transformOrigin="center" />
           </InputRightElement>
         </InputGroup>
       </Box>
-      <Collapse animateOpacity={false} data-id="030925-f5e411" in={focused}>
+      <Collapse data-id="000383" animateOpacity={false} in={focused}>
         <Box
+          data-id="000384"
           bg="white"
           borderRadius="8px"
           boxShadow="0px 10px 30px 0px #0000002E"
-          data-id="030925-5e7a5e"
           maxH="120px"
           mt="-15px"
           overflow="auto"
@@ -67,36 +67,36 @@ function AreaToInspect() {
           position="absolute"
           w="275px"
           zIndex="9999">
-          <Box data-id="030925-71b4e6">
+          <Box data-id="000385">
             <Box
+              data-id="000386"
               _hover={{
                 cursor: 'pointer',
                 borderRadius: '8px',
                 boxShadow: '0px 10px 30px 0px #0000002E',
               }}
               alignItems="center"
-              data-id="030925-245c12"
               display="flex"
               justifyContent="start"
               onClick={() => modalContext.setSelectedBusinessUnit('Surgery')}
               p="10px 10px">
-              <Text color="grey" data-id="030925-f4c408" fontSize="md" fontWeight="400">
+              <Text data-id="000387" color="grey" fontSize="md" fontWeight="400">
                 Surgery
               </Text>
             </Box>
             <Box
+              data-id="000388"
               _hover={{
                 cursor: 'pointer',
                 borderRadius: '8px',
                 boxShadow: '0px 10px 30px 0px #0000002E',
               }}
               alignItems="center"
-              data-id="030925-d6fb12"
               display="flex"
               justifyContent="start"
               onClick={() => modalContext.setSelectedBusinessUnit('Clinical')}
               p="10px 10px">
-              <Text color="grey" data-id="030925-16cdf8" fontSize="md" fontWeight="400">
+              <Text data-id="000389" color="grey" fontSize="md" fontWeight="400">
                 Clinical
               </Text>
             </Box>

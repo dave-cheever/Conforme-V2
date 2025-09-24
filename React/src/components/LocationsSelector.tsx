@@ -32,7 +32,7 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
   if (disabled) {
     return (
       <LocationsSelectorList
-          data-id="030925-5a1708"
+          data-id="000337"
           disabled={disabled}
           filteredLocations={filteredLocations}
           handleChange={handleChange}
@@ -41,16 +41,16 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
   }
 
   return (
-    <Stack data-id="030925-0eb71d" w="full">
-      <Stack data-id="030925-70c0f6" overflow="auto" pb={3} w="full">
+    <Stack data-id="000338" w="full">
+      <Stack data-id="000339" overflow="auto" pb={3} w="full">
         <>
-          <Box data-id="030925-dd6175" py="5px">
-            <InputGroup data-id="030925-2a0931">
+          <Box data-id="000340" py="5px">
+            <InputGroup data-id="000341">
               <Input
+                data-id="000342"
                 borderColor="filterPanel.searchBoxBordercolor"
                 borderWidth="1px"
                 color="locationsSelector.search.label"
-                data-id="030925-8c5584"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
@@ -59,8 +59,8 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
                 value={searchText}
                 w="full" />
               <SearchIcon
+                data-id="000343"
                 bottom="13px"
-                data-id="030925-6a2478"
                 h="15px"
                 left="14px"
                 position="absolute"
@@ -70,8 +70,8 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
           </Box>
           {note && (
             <Text
+              data-id="000344"
               color="locationsSelector.note"
-              data-id="030925-0d2d3f"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"
@@ -80,7 +80,7 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
             </Text>
           )}
           <LocationsSelectorList
-            data-id="030925-490a3a"
+            data-id="000345"
             disabled={disabled}
             filteredLocations={filteredLocations}
             handleChange={handleChange}

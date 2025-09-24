@@ -9,18 +9,18 @@ function EvidenceHistoryList() {
   const { user } = useAppContext();
   const { response, snapshot } = useResponseContext();
   return (
-    <Flex data-id="030925-91135b" direction="column" maxW="342px">
+    <Flex data-id="000257" direction="column" maxW="342px">
       {response?.evidence.length > 0 && (
-        <Flex data-id="030925-2636b1" fontSize="11px" fontWeight="bold" my={3}>
+        <Flex data-id="000258" fontSize="11px" fontWeight="bold" my={3}>
           Evidence history
         </Flex>
       )}
       {response.evidence
         .filter(({ uploaded }) => uploaded?.id)
         .map((evidence, i) => (
-          <Flex data-id="030925-8fcb06" flexDir="column" key={i} mb={3}>
+          <Flex data-id="000259" flexDir="column" key={i} mb={3}>
             <DocumentUploaded
-              data-id="030925-77b553"
+              data-id="000260"
               document={evidence.uploaded}
               downloadable={isPermitted({
                 user,

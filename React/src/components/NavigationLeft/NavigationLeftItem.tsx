@@ -23,6 +23,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
   return (
     <>
       <Box
+        data-id="000559"
         _hover={{
           cursor: 'pointer',
         }}
@@ -37,7 +38,6 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                   : 'navigationLeftItem.unselectedLabelBg'
             }
         borderRadius={"6px"}
-        data-id="030925-6146a1"
         display="flex"
         fontSize="md"
         fontWeight="normal"
@@ -51,8 +51,9 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         pos="relative"
         w="250px"
         >
-        <Flex align="center" data-id="030925-7658e1" h="100%" >
+        <Flex data-id="000560" align="center" h="100%" >
           <Flex
+            data-id="000561"
             alignItems="center"
             bg={
               menuItem.subSections
@@ -63,26 +64,26 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                   ? 'navigationLeftItem.selectedLabelBg'
                   : 'navigationLeftItem.unselectedLabelBg'
             }
-            data-id="030925-ca30a4"
             h="30px"
             justifyContent="center"
             ml="25px"
             rounded="8px"
             w="30px">
             <Icon
+              data-id="000562"
               as={icon}
-              data-id="030925-3d40c6"
               fill="#ffffff"
               h="21px"
               stroke="#ffffff"
               w="21px" />
           </Flex>
           {showFiltersPanel && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
-            <ArrowRight boxSize="10px" data-id="030925-ec02fd" ml={1} />
+            <ArrowRight data-id="000563" boxSize="10px" ml={1} />
           )}
         </Flex>
         {!showFiltersPanel && (
           <Box
+            data-id="000564"
             color={
               menuItem.subSections
                 ? isPathActive(url)
@@ -92,26 +93,25 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                   ? 'navigationLeftItem.selectedMenuItem'
                   : 'navigationLeftItem.unselectedMenuItem'
             }
-            data-id="030925-d5ada2"
             fontWeight="400"
             ml="5">
             {!showFiltersPanel && capitalize(label) }
           </Box>
         )}
       </Box>
-      <Box data-id="030925-9aaf4e">
+      <Box data-id="000565">
         {isPathActive(url) &&
           !showFiltersPanel &&
           menuItem.subSections?.map((subSection) => {
             if (subSection.permission) {
               return (
                 <Can
+                    data-id="000566"
                     action={subSection.permission}
-                    data-id="030925-35094a"
                     key={subSection.url}
                     // eslint-disable-next-line react/no-unstable-nested-components
                     yes={() => <SubSection
-                      data-id="030925-2ca683"
+                      data-id="000567"
                       key={subSection.label}
                       menuOpen={menuOpen}
                       setMenuOpen={setMenuOpen}
@@ -120,7 +120,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
             }
             return (
               <SubSection
-                data-id="030925-7cb5a3"
+                data-id="000568"
                 key={subSection.label}
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
@@ -131,13 +131,13 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
           <>
             {Object.keys(responsesStatusesCounts).length !== 0 && (
               <NavigationLeftFilters
-                data-id="030925-fd811a"
+                data-id="000569"
                 filter={['all', responsesStatusesCounts.compliant + responsesStatusesCounts.nonCompliant]}
                 menuOpen={menuOpen} />
             )}
             {Object.entries(responsesStatusesCounts).map((filter) => (
               <NavigationLeftFilters
-                data-id="030925-e6b0e3"
+                data-id="000570"
                 filter={filter}
                 key={filter[0]}
                 menuOpen={menuOpen} />

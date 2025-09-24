@@ -11,12 +11,13 @@ function ActionFilter() {
 
   return (
     <CheckboxGroup
-        data-id="030925-48e8e1"
+        data-id="000657"
         onChange={(newValue) => setFilters({ action: newValue })}
         value={value}>
-      <Stack data-id="030925-5113a0" direction="column" ml="4">
+      <Stack data-id="000658" direction="column" ml="4">
         {Object.entries(actions).map(([key, label]) => (
           <Checkbox
+            data-id="000659"
             css={{
               '.chakra-checkbox__control': {
                 borderRadius: '50%',
@@ -32,10 +33,9 @@ function ActionFilter() {
                 },
               },
             }}
-            data-id="030925-227eca"
             key={key}
             value={key}>
-            <Text data-id="030925-b0b7bd">{label as string}</Text>
+            <Text data-id="000660">{label as string}</Text>
           </Checkbox>
         ))}
       </Stack>

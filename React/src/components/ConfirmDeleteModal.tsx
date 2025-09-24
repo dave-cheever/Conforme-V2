@@ -28,39 +28,39 @@ interface IChatConfirmDeleteModal {
 function ChatConfirmDeleteModal({ isOpen, messageId, message, onClose, onAction }: IChatConfirmDeleteModal) {
   return (
     <Modal
-      data-id="030925-cee20b"
+      data-id="000239"
       isCentered
       isOpen={isOpen}
       onClose={onClose}
       size="md">
-      <ModalOverlay data-id="030925-ba4828" />
-      <ModalContent data-id="030925-bfcc78">
-        <ModalHeader data-id="030925-e0e16c">
-          <Text data-id="030925-10cc7e" fontSize="smm" fontWeight="bold">
+      <ModalOverlay data-id="000240" />
+      <ModalContent data-id="000241">
+        <ModalHeader data-id="000242">
+          <Text data-id="000243" fontSize="smm" fontWeight="bold">
             Delete message
           </Text>
-          <ModalCloseButton data-id="030925-451bc9" />
+          <ModalCloseButton data-id="000244" />
         </ModalHeader>
-        <ModalBody data-id="030925-f705a2" mb="40px">
-          <Stack data-id="030925-233730">
-            <Text data-id="030925-05e0f1">Are you sure you want to delete the following message?</Text>
-            <Text data-id="030925-cc3304" fontStyle="italic" fontWeight="bold">
+        <ModalBody data-id="000245" mb="40px">
+          <Stack data-id="000246">
+            <Text data-id="000247">Are you sure you want to delete the following message?</Text>
+            <Text data-id="000248" fontStyle="italic" fontWeight="bold">
               {reactStringReplace(message, chatMentionRegExp, (match, i) => (
-                <ChatMention data-id="030925-a8edc4" key={i} tag={match} />
+                <ChatMention data-id="000249" key={i} tag={match} />
               ))}
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="030925-fe6b13">
-          <HStack data-id="030925-0da5bd" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="030925-d34ac6" onClick={onClose}>
+        <ModalFooter data-id="000250">
+          <HStack data-id="000251" justify="center" spacing={4} w="full">
+            <Button data-id="000252" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="000253"
               _hover={{ opacity: 0.7 }}
               bg="chatConfirmDeleteModal.deleteButtonBg"
               color="chatConfirmDeleteModal.deleteButtonColor"
-              data-id="030925-570f09"
               onClick={async () => {
                 onAction(messageId);
                 onClose();

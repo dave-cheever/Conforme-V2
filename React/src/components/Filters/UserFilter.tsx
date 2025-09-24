@@ -321,8 +321,9 @@ function UserFilter() {
   };
 
   return (
-    <Box data-id="030925-7c8e1d" w="full">
+    <Box data-id="000192" w="full">
       <Select
+        data-id="000193"
         _active={{ bg: 'dropdown.activeBg' }}
         _disabled={{
           bg: 'dropdown.disabled.bg',
@@ -338,10 +339,9 @@ function UserFilter() {
         borderRadius="8px"
         borderWidth="1px"
         cursor="pointer"
-        data-id="030925-666b26"
         fontSize="smm"
         h="42px"
-        icon={<ArrowDownIcon data-id="030925-44da3b" />}
+        icon={<ArrowDownIcon data-id="000194" />}
         iconColor="usersSelector.roles.selector.iconDown"
         iconSize="15px"
         onChange={(value) => {
@@ -349,17 +349,17 @@ function UserFilter() {
         }}
       >
         {(module?.type === 'tracker' ? userRoles : baseAuditUserRoles).map((role, i) => (
-          <option data-id="030925-fa2b1a" key={i} value={role.value}>
+          <option data-id="000195" key={i} value={role.value}>
             {role.label}
           </option>
         ))}
       </Select>
-      <InputGroup data-id="030925-d18978">
+      <InputGroup data-id="000196">
         <Input
+          data-id="000197"
           borderColor="filterPanel.searchBoxBordercolor"
           borderWidth="1px"
           color="brand.darkGrey"
-          data-id="030925-ca2bbc"
           fontSize="14px"
           h="40px"
           mt={2}
@@ -369,26 +369,26 @@ function UserFilter() {
           value={searchText}
           w="full"
         />
-        <Magnifier data-id="030925-01c6be" h="12px" ml="14px" mt="22px" position="absolute" w="12x" />
+        <Magnifier data-id="000198" h="12px" ml="14px" mt="22px" position="absolute" w="12x" />
       </InputGroup>
-      <Box data-id="030925-3360c5" mt={2} w="full">
+      <Box data-id="000199" mt={2} w="full">
         {selectedRoleUsers
           ?.filter((selectedRoleUser) => selectedRoleUser.count !== 0)
           .map((selectedRoleUser, i) => (
-            <Flex data-id="030925-97341e" key={i} py="5px">
+            <Flex data-id="000200" key={i} py="5px">
               <Text
+                data-id="000201"
                 color="usersSelector.roles.selectedRole.label"
-                data-id="030925-9f712c"
                 fontSize="smm"
                 fontWeight="semi_medium"
                 textTransform="capitalize"
               >
                 {`${selectedRoleUser.count} ${selectedRoleUser.name === 'addedBy' ? 'users selected' : selectedRoleUser.name}`}
               </Text>
-              <Spacer data-id="030925-f4cdb4" />
+              <Spacer data-id="000202" />
               <CrossIcon
+                data-id="000203"
                 cursor="pointer"
-                data-id="030925-ac154d"
                 h="15px"
                 onClick={() =>
                   module?.type === 'tracker' ? handleClearFilter(selectedRoleUser) : handleClearAuditFilter(selectedRoleUser)
@@ -400,8 +400,8 @@ function UserFilter() {
           ))}
       </Box>
       <UsersSelector
+        data-id="000204"
         allowUnassigned={getPath() === 'actions'}
-        data-id="030925-3aea1b"
         handleChange={module?.type === 'tracker' ? handleUserChange : handleAuditUserChange}
         searchText={searchText}
         selected={selectedUsers}

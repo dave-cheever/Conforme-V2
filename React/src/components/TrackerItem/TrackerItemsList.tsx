@@ -35,21 +35,21 @@ function TrackerListItems({
 }) {
 
   return (
-    <Box bg="#ffffff" data-id="030925-a76a68" h="full" overflow="none" p={[3, 6]} w="full">
+    <Box data-id="000441" bg="#ffffff" h="full" overflow="none" p={[3, 6]} w="full">
       <Box
+        data-id="000442"
         bg="trackerList.bg"
         border="1px solid #CBD5E0"
         borderRadius="10px"
-        data-id="030925-629d91"
         h="fit-content"
         mb={7}
         minH="full"
         overflow="hidden"
         pb={7}
         w="full">
-        <AdminTableHeader data-id="030925-4be9f1">
+        <AdminTableHeader data-id="000443">
           <AdminTableHeaderElement
-            data-id="030925-c99169"
+            data-id="000444"
             label="Item name"
             onClick={() => {
               setSortType('trackerItem.name');
@@ -59,7 +59,7 @@ function TrackerListItems({
             sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
             w="13%" />
           <AdminTableHeaderElement
-            data-id="030925-14d673"
+            data-id="000445"
             label="Due for renewal"
             onClick={() => {
               setSortType('dueDate');
@@ -69,7 +69,7 @@ function TrackerListItems({
             sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
             w="11%" />
           <AdminTableHeaderElement
-            data-id="030925-137ddb"
+            data-id="000446"
             label={capitalize(t('compliant'))}
             onClick={() => {
               setSortType('calculatedStatus');
@@ -79,18 +79,18 @@ function TrackerListItems({
             sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
             w="8%" />
             <AdminTableHeaderElement
-            data-id="030925-24f6ce"
+            data-id="000447"
             hideSortIcon
             label={capitalize(t('evidence'))}
 
             w="12%" />
              <AdminTableHeaderElement
-            data-id="030925-eefb1b"
+            data-id="000448"
             hideSortIcon
             label={capitalize(t('category'))}
             w="12%" />
           <AdminTableHeaderElement
-            data-id="030925-95e336"
+            data-id="000449"
             label="Regulatory body"
             onClick={() => {
               setSortType('trackerItem.regulatoryBody.name');
@@ -100,7 +100,7 @@ function TrackerListItems({
             sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
             w="12%"/>
           <AdminTableHeaderElement
-            data-id="030925-3169f5"
+            data-id="000450"
             label="Responsible"
             onClick={() => {
               setSortType('responsible.displayName');
@@ -110,7 +110,7 @@ function TrackerListItems({
             sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
             w="13%" />
           <AdminTableHeaderElement
-            data-id="030925-9952d3"
+            data-id="000451"
             label={capitalize(t('business unit'))}
             onClick={() => {
               setSortType('businessUnit.name');
@@ -130,29 +130,29 @@ function TrackerListItems({
               w="10%" />
           )} */}
           <AdminTableHeaderElement
-            data-id="030925-976382"
+            data-id="000452"
             hideSortIcon
             label={capitalize(t('location'))}
             w="8%" />
         </AdminTableHeader>
 
         <Flex
-          data-id="030925-6d8c53"
+          data-id="000453"
           flexDir="column"
           h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
           overflowY="auto"
           w="full">
           <InfiniteScrollComponent
-            data-id="030925-a77bab"
+            data-id="000454"
             hasMore={!loading && responses.length < total}
             initialLoad={false}
             loadMore={loadResponses}
             ref={scrollerRef}
             useWindow={false}>
             {responses?.map((response, index) => (
-              <TrackerListItem data-id="030925-268e6f" index={index} key={response._id} response={response} />
+              <TrackerListItem data-id="000455" index={index} key={response._id} response={response} />
             ))}
-            {loading && <Loader center data-id="030925-7c042c" h="60px" key="infinite-loader" />}
+            {loading && <Loader data-id="000456" center h="60px" key="infinite-loader" />}
           </InfiniteScrollComponent>
         </Flex>
       </Box>

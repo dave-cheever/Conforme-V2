@@ -50,20 +50,20 @@ function ChatItem({ onAction, comment }: IChatItem) {
 
   return (
     <>
-      <ChatConfirmDeleteModal data-id="030925-4d5ea5" isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
-      <Flex align={isChatOwner ? 'flex-end' : 'flex-start'} data-id="030925-8ddd04" flexDirection="column" mb={3} w="full">
+      <ChatConfirmDeleteModal data-id="000221" isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
+      <Flex data-id="000222" align={isChatOwner ? 'flex-end' : 'flex-start'} flexDirection="column" mb={3} w="full">
         <Flex
+          data-id="000223"
           alignItems="end"
-          data-id="030925-e615c1"
           flexDirection="row"
           justify={isChatOwner ? 'flex-end' : 'flex-start'}
           w="full">
           {!isChatOwner &&
             (loading ? (
-              <SkeletonCircle data-id="030925-4ab6fa" mr={2} size="8" />
+              <SkeletonCircle data-id="000224" mr={2} size="8" />
             ) : (
               <Avatar
-                data-id="030925-19432d"
+                data-id="000225"
                 loading="lazy"
                 mr={2}
                 name={chatAuthor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -74,16 +74,16 @@ function ChatItem({ onAction, comment }: IChatItem) {
               />
             ))}
           <Flex
+            data-id="000226"
             alignItems={isChatOwner ? 'end' : 'baseline'}
-            data-id="030925-6b9c7f"
             direction="column">
             {!isChatOwner &&
               (loading ? (
-                <Skeleton data-id="030925-8b029f" height="14px" mb={1} width="80px" />
+                <Skeleton data-id="000227" height="14px" mb={1} width="80px" />
               ) : (
                 <Text
+                  data-id="000228"
                   color="#718096"
-                  data-id="030925-ef0532"
                   fontSize="10px"
                   fontWeight="500"
                   mb={1}>
@@ -91,11 +91,11 @@ function ChatItem({ onAction, comment }: IChatItem) {
                 </Text>
               ))}
             <Box
+              data-id="000229"
               bg={isChatOwner ? '#462AC4' : '#EDF2F7'}
               borderRadius={isChatOwner ? '8px 8px 2px 8px' : '8px 8px 8px 4px'}
               boxShadow={isChatOwner ? '0 2px 8px #462AC420' : 'none'}
               color={isChatOwner ? '#FFFFFF' : '#2D3748'}
-              data-id="030925-0a2791"
               maxW="75%"
               minW="120px"
               onMouseEnter={() => setShowDeleteBtn(true)}
@@ -104,28 +104,28 @@ function ChatItem({ onAction, comment }: IChatItem) {
               px={5}
               py={3}
             >
-              <Text data-id="030925-4d23ef" fontSize="sm" mb={1}>
+              <Text data-id="000230" fontSize="sm" mb={1}>
                 {reactStringReplace(text, chatMentionRegExp, (match, i) => (
-                  <ChatMention data-id="030925-944b45" key={i} tag={match} />
+                  <ChatMention data-id="000231" key={i} tag={match} />
                 ))}
               </Text>
               <Flex
+                data-id="000232"
                 align="center"
-                data-id="030925-82f6a8"
                 justify={isChatOwner ? 'flex-end' : 'flex-start'}>
                 <Can
+                  data-id="000233"
                   action="comments.delete"
                   data={{ comment }}
-                  data-id="030925-c4bcec"
                   yes={() => (
                     <Button
+                      data-id="000234"
                       colorScheme="red"
-                      data-id="030925-0d786d"
                       display={showDeleteBtn ? 'block' : 'none'}
                       mb={2}
                       ml={2}
                       onClick={() => onOpen()}
-                      rightIcon={<DeleteIcon data-id="030925-f07c11" />}
+                      rightIcon={<DeleteIcon data-id="000235" />}
                       size="xs"
                     >
                       Delete

@@ -34,7 +34,7 @@ function UserAvatar({
     return userDetails;
   }, [JSON.stringify(data)]);
 
-  return <Avatar data-id="030925-c68cad" {...props} name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} src={user?.imgUrl} />;
+  return <Avatar data-id="000506" {...props} name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} src={user?.imgUrl} />;
 }
 
 export default UserAvatar;

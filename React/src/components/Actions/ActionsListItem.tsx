@@ -11,25 +11,25 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
 
   return (
     <Box
+      data-id="000361"
       _hover={{ bg: '#F5F7FA' }}
       bg={rowBg}
       borderBottomColor="auditsList.headerBorderColor"
       borderBottomWidth="1px"
       color="auditsList.fontColor"
       cursor="pointer"
-      data-id="030925-170070"
       fontSize="14px"
       onClick={() => editAction(action)}
       px="10px"
       py={[1, 0]}
       w="full"
     >
-      <Flex align="center" data-id="030925-ddcefd" h={['full', '60px']} position="relative" w="full">
-        <Flex data-id="030925-877145" flexDir="column" w="13%">
+      <Flex data-id="000362" align="center" h={['full', '60px']} position="relative" w="full">
+        <Flex data-id="000363" flexDir="column" w="13%">
           <Flex
+            data-id="000364"
             align="flex-start"
             color="auditsList.fontColor"
-            data-id="030925-283153"
             fontSize="14px"
             fontWeight="500"
             h="50%"
@@ -42,11 +42,11 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
             {action.title}
           </Flex>
         </Flex>
-        <Flex data-id="030925-72f6a0" flexDir="column" w="7%">
+        <Flex data-id="000365" flexDir="column" w="7%">
           <Flex
+            data-id="000366"
             align="flex-start"
             color="auditsList.fontColor"
-            data-id="030925-1369c7"
             fontSize="14px"
             fontWeight="500"
             h="50%"
@@ -59,67 +59,67 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
             {capitalize(action.priority)}
           </Flex>
         </Flex>
-        <Flex data-id="030925-f1b873" w="10%">
-          <Flex color="auditsList.fontColor" data-id="030925-c924de" fontSize="14px" fontWeight="500" opacity="1">
+        <Flex data-id="000367" w="10%">
+          <Flex data-id="000368" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
             {action?.dueDate ? (
               format(new Date(action?.dueDate), 'd MMM yyyy')
             ) : (
-              <Flex data-id="030925-6293ff" fontStyle="italic">
+              <Flex data-id="000369" fontStyle="italic">
                 No date
               </Flex>
             )}
           </Flex>
         </Flex>
-        <Flex data-id="030925-f008b8" w="10%">
-          <Flex color="auditsList.fontColor" data-id="030925-35691d" fontSize="14px" fontWeight="500" opacity="1">
+        <Flex data-id="000370" w="10%">
+          <Flex data-id="000371" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
             {action?.completedDate ? (
               format(new Date(action?.completedDate), 'd MMM yyyy')
             ) : (
-              <Flex data-id="030925-08df03" fontStyle="italic">
+              <Flex data-id="000372" fontStyle="italic">
                 No date
               </Flex>
             )}
           </Flex>
         </Flex>
-        <Flex data-id="030925-136961" w="7%">
-          <Flex align="center" data-id="030925-e3775d">
-            <Flex color={`auditsList.${isOverdue ? 'missed' : action.status}`} data-id="030925-d10eb2" fontSize="14px" fontWeight="500">
+        <Flex data-id="000373" w="7%">
+          <Flex data-id="000374" align="center">
+            <Flex data-id="000375" color={`auditsList.${isOverdue ? 'missed' : action.status}`} fontSize="14px" fontWeight="500">
               {isOverdue ? 'Overdue' : capitalize(action.status)}
             </Flex>
           </Flex>
         </Flex>
-        <Box data-id="030925-6d96e8" w="18%">
-          <Skeleton data-id="030925-bad793" isLoaded={!!action} rounded="full">
+        <Box data-id="000376" w="18%">
+          <Skeleton data-id="000377" isLoaded={!!action} rounded="full">
             {action.assignee ? (
-              <Tooltip data-id="030925-2ad029" label={action.assignee?.displayName}>
-                <Avatar data-id="030925-325f0a"  name={action?.assignee?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={action.assignee?.imgUrl} />
+              <Tooltip data-id="000378" label={action.assignee?.displayName}>
+                <Avatar data-id="000379"  name={action?.assignee?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={action.assignee?.imgUrl} />
               </Tooltip>
             ) : (
-              <Flex data-id="030925-7d7e2a" fontSize="14px" fontStyle="italic" fontWeight="500">
+              <Flex data-id="000380" fontSize="14px" fontStyle="italic" fontWeight="500">
                 Unassigned
               </Flex>
             )}
           </Skeleton>
         </Box>
-        <Box data-id="030925-1c049c" w="10%">
-          <Skeleton data-id="030925-f4175c" isLoaded={!!action} rounded="full">
+        <Box data-id="000381" w="10%">
+          <Skeleton data-id="000382" isLoaded={!!action} rounded="full">
             {action.creator ? (
-              <Tooltip data-id="030925-e23b81" label={action.creator?.displayName}>
-                <Avatar data-id="030925-445435"  name={action?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={action.creator?.imgUrl} />
+              <Tooltip data-id="000383" label={action.creator?.displayName}>
+                <Avatar data-id="000384"  name={action?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={action.creator?.imgUrl} />
               </Tooltip>
             ) : (
-              <Flex data-id="030925-7778be" fontSize="14px" fontStyle="italic" fontWeight="500">
+              <Flex data-id="000385" fontSize="14px" fontStyle="italic" fontWeight="500">
                 -
               </Flex>
             )}
           </Skeleton>
         </Box>
-        <Box data-id="030925-2b8f94" w="14%">
-          <Flex data-id="030925-85c37f">
-            <LocationIcon boxSize="12px" data-id="030925-954e9c" mt="2px" />
+        <Box data-id="000386" w="14%">
+          <Flex data-id="000387">
+            <LocationIcon data-id="000388" boxSize="12px" mt="2px" />
             <Text
+              data-id="000389"
               color="auditsList.fontColor"
-              data-id="030925-228543"
               fontSize="14px"
               fontWeight="500"
               lineHeight="17px"
@@ -134,12 +134,12 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
             </Text>
           </Flex>
         </Box>
-        <Box data-id="030925-2c82d3" w="10%">
-          <Flex data-id="030925-aef6af">
-            <LocationIcon boxSize="12px" data-id="030925-2ef95e" mt="2px" />
+        <Box data-id="000390" w="10%">
+          <Flex data-id="000391">
+            <LocationIcon data-id="000392" boxSize="12px" mt="2px" />
             <Text
+              data-id="000393"
               color="auditsList.fontColor"
-              data-id="030925-4a53d7"
               fontSize="14px"
               fontWeight="500"
               lineHeight="17px"

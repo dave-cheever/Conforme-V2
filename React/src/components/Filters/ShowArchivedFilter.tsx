@@ -9,13 +9,13 @@ function ShowArchivedFilter() {
   const value = useMemo(() => (filtersValues.showArchived?.value), [filtersValues])
 
   return (
-    <HStack data-id="030925-f43bfa" ml='2px' mt={2} spacing={2}>
+    <HStack data-id="000152" ml='2px' mt={2} spacing={2}>
       <Text
+        data-id="000153"
         color="archivedFilterStyles.checkboxLabelColor"
-        data-id="030925-12dafd"
         fontSize="14px">Show archived</Text>
       <Switch
-        data-id="030925-eae62c"
+        data-id="000154"
         id='archived-item'
         isChecked={value}
         onChange={(e) => setFilters({ showArchived: e.target.checked })} />

@@ -13,10 +13,26 @@ export default defineConfig(({ mode }) => {
     // comment this out if that isn't relevant for your project
     build: {
       outDir: 'build',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router-dom'],
+            chakra: ['@chakra-ui/react', '@emotion/react', '@emotion/styled', 'framer-motion'],
+            apollo: ['@apollo/client', 'graphql'],
+          },
+        },
+      },
+      chunkSizeWarningLimit: 2000,
     },
     plugins: [
       react(),
-      // eslintPlugin(),
+      eslintPlugin({
+        // Ensure ESLint resolves config and tsconfig from the React folder
+        cwd: __dirname,
+        cache: false,
+        failOnError: false,
+        failOnWarning: false,
+      }),
       svgrPlugin({
         svgrOptions: {
           icon: true,

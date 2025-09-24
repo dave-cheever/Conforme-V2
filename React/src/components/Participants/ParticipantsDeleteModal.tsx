@@ -13,27 +13,27 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
 
   return (
     <Modal
-      data-id="030925-5a5fe9"
+      data-id="000612"
       isCentered
       isOpen={isParticipantDeleteModalOpen}
       onClose={closeParticipantDeleteModal}
       variant="teamModal"
     >
-      <ModalContent data-id="030925-4989bb">
-        <ModalHeader data-id="030925-3d023c">
-          <Text data-id="030925-426ae9">Remove {label.toLowerCase()}?</Text>
-          <ModalCloseButton data-id="030925-0df02e" />
+      <ModalContent data-id="000613">
+        <ModalHeader data-id="000614">
+          <Text data-id="000615">Remove {label.toLowerCase()}?</Text>
+          <ModalCloseButton data-id="000616" />
         </ModalHeader>
-        <ModalBody data-id="030925-d1f1e0">
-          <Text color="participantsDeleteModal.modal.body" data-id="030925-50c594">
+        <ModalBody data-id="000617">
+          <Text data-id="000618" color="participantsDeleteModal.modal.body">
             This action cannot be undone
           </Text>
         </ModalBody>
-        <ModalFooter data-id="030925-ae724a" justifyContent="space-between">
+        <ModalFooter data-id="000619" justifyContent="space-between">
           <Button
+            data-id="000620"
             bg="participantsDeleteModal.modal.button.remove.bg"
             color="participantsDeleteModal.modal.button.remove.color"
-            data-id="030925-dff732"
             h="38px"
             onClick={handleRemove}
             w="95px"
@@ -41,10 +41,10 @@ function ParticipantsDeleteModal({ onRemove }: { onRemove?: (participantId: stri
             Remove
           </Button>
           <Button
+            data-id="000621"
             _hover={{ opacity: '0.9' }}
             bg="participantsDeleteModal.modal.button.keep.bg"
             color="participantsDeleteModal.modal.button.keep.color"
-            data-id="030925-b4e9f1"
             h="38px"
             onClick={closeParticipantDeleteModal}
             w="75px"

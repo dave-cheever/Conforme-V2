@@ -2,14 +2,14 @@ import { createIcon } from '@chakra-ui/icons';
 
 const UploadedTick = createIcon({
   path: (
-    <g data-id="dbfe58b82813">
+    <g data-id="000299">
       <path
+        data-id="000300"
         d="M5.625 0H1.25C.918 0 .6.126.366.351.132.577 0 .881 0 1.2v9.6c0 .318.132.623.366.848.235.226.552.352.884.352h7.5c.332 0 .65-.126.884-.351.234-.225.366-.53.366-.849V4.2L5.625 0z"
-        data-id="70920b976a9b"
         fill="currentColor" />
       <path
+        data-id="000301"
         d="M7.5 5L4.062 9 2.5 7.182"
-        data-id="7f946292def1"
         fill="none"
         stroke="#fff"
         strokeLinecap="round"

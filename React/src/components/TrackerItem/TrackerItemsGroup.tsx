@@ -35,7 +35,7 @@ function TrackerGridItems({
 
   const renderGroup = (group: string) => (
     <Flex
-      data-id="030925-f0f3df"
+      data-id="000332"
       direction="column"
       key={group}
       minW="380px"
@@ -44,11 +44,11 @@ function TrackerGridItems({
       pt={2}
       w="380px">
       <Flex
+        data-id="000333"
         align="center"
         bg={`trackerGroup.${group}`}
         borderRadius={"md"}
         color="#FFFFFF"
-        data-id="030925-f58750"
         fontWeight="700"
         justify="space-between"
         justifyContent={"center"}
@@ -62,11 +62,11 @@ function TrackerGridItems({
         {responseStatusesGroup[group]}
       </Flex>
       <Stack
+        data-id="000334"
         align="center"
         bg={"#F7FAFC"}
         borderRadius={"md"}
         boxShadow={"sm"}
-        data-id="030925-a0d9d9"
         direction="column"
         p={4}
         spacing={6}
@@ -80,7 +80,7 @@ function TrackerGridItems({
             return a.dueDate && b.dueDate ? a.dueDate.toString().localeCompare(b.dueDate.toString()) : 0;
           })
           ?.map((response: IResponse) => (
-            <TrackerItemSquare data-id="030925-4aecde" isGroupView key={response._id} response={response} />
+            <TrackerItemSquare data-id="000335" isGroupView key={response._id} response={response} />
           ))}??
       </Stack>
     </Flex>
@@ -88,13 +88,13 @@ function TrackerGridItems({
 
   return (
     <InfiniteScrollComponent
-        data-id="030925-334506"
+        data-id="000336"
         hasMore={!loading && responses.length < total}
         initialLoad={false}
         loadMore={loadResponses}
         ref={scrollerRef}
         useWindow={false}>
-      <Flex bg="#ffffff" data-id="030925-bfda06" h="full" overflow="auto" pt="3" w="full">
+      <Flex data-id="000337" bg="#ffffff" h="full" overflow="auto" pt="3" w="full">
         {Object.keys(responseStatusesGroup).map((status) => renderGroup(status))}
       </Flex>
     </InfiniteScrollComponent>

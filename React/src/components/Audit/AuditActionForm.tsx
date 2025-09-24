@@ -34,7 +34,7 @@ function ActionForm({ handleSave }) {
   return (
     <>
       <AuditActionChangesModal
-        data-id="030925-423199"
+        data-id="000044"
         isAcionFormValid={isValid}
         onSave={() => {
           handleSave(values);
@@ -42,15 +42,15 @@ function ActionForm({ handleSave }) {
         }}
         setSelectedAction={setSelectedAction}
       />
-      <Stack bg="auditActionForm.bg" data-id="030925-98586f" p={4} rounded="10px">
-        <Text data-id="030925-83a6de" fontSize="smm" fontWeight="semibold">
+      <Stack data-id="000045" bg="auditActionForm.bg" p={4} rounded="10px">
+        <Text data-id="000046" fontSize="smm" fontWeight="semibold">
           Action details
         </Text>
-        <Grid columnGap={4} data-id="030925-2da311" rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
-          <GridItem data-id="030925-b46203">
+        <Grid data-id="000047" columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
+          <GridItem data-id="000048">
             <TextInput
+              data-id="000049"
               control={control}
-              data-id="030925-ba671d"
               label="Title"
               name="title"
               required
@@ -59,16 +59,16 @@ function ActionForm({ handleSave }) {
               }}
             />
           </GridItem>
-          <GridItem data-id="030925-1d9c97">
-            <PeoplePicker control={control} data-id="030925-3e794d" label="Assign to" name="assigneeId" />
+          <GridItem data-id="000050">
+            <PeoplePicker data-id="000051" control={control} label="Assign to" name="assigneeId" />
           </GridItem>
-          <GridItem data-id="030925-6c6339">
-            <Datepicker control={control} data-id="030925-0047ad" label="Due date" name="dueDate" />
+          <GridItem data-id="000052">
+            <Datepicker data-id="000053" control={control} label="Due date" name="dueDate" />
           </GridItem>
-          <GridItem data-id="030925-987cb1">
+          <GridItem data-id="000054">
             <Dropdown
+              data-id="000055"
               control={control}
-              data-id="030925-c8848d"
               label="Priority"
               name="priority"
               options={priorities}
@@ -76,10 +76,10 @@ function ActionForm({ handleSave }) {
               variant="secondaryVariant"
             />
           </GridItem>
-          <GridItem data-id="030925-bbb3da">
+          <GridItem data-id="000056">
             <Dropdown
+              data-id="000057"
               control={control}
-              data-id="030925-59fe7c"
               label="Status"
               name="status"
               options={[
@@ -91,32 +91,32 @@ function ActionForm({ handleSave }) {
             />
           </GridItem>
         </Grid>
-        <TextInputMultiline control={control} data-id="030925-1c1ce5" label="Description" name="description" />
-        <Spacer data-id="030925-8f8650" />
+        <TextInputMultiline data-id="000058" control={control} label="Description" name="description" />
+        <Spacer data-id="000059" />
         {selectedAction?.metatags?.addedAt && selectedAction?.assignor && (
-          <Grid columnGap={4} data-id="030925-6dc40c" templateColumns="repeat(2, 1fr)">
-            <GridItem data-id="030925-bb758a">
-              <Text color="auditActionForm.labelFont.normal" data-id="030925-b6b41d" fontSize="11px" fontWeight="bold" mb={1}>
+          <Grid data-id="000060" columnGap={4} templateColumns="repeat(2, 1fr)">
+            <GridItem data-id="000061">
+              <Text data-id="000062" color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold" mb={1}>
                 Date added
               </Text>
-              <Text data-id="030925-8dc9c3" fontSize="13px">
+              <Text data-id="000063" fontSize="13px">
                 {format(new Date(selectedAction?.metatags?.addedAt!), 'd MMM yyyy')}
               </Text>
             </GridItem>
-            <GridItem data-id="030925-913992">
-              <Text color="auditActionForm.labelFont.normal" data-id="030925-7d7e49" fontSize="11px" fontWeight="bold" mb={1}>
+            <GridItem data-id="000064">
+              <Text data-id="000065" color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold" mb={1}>
                 Assigned by
               </Text>
               {selectedAction?.assignor && (
-                <Flex align="center" data-id="030925-38b65b" direction="row">
+                <Flex data-id="000066" align="center" direction="row">
                   <Avatar
-                    data-id="030925-3026c7"
+                    data-id="000067"
                     name={selectedAction?.assignor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                     size="xs"
                     src={selectedAction?.assignor?.imgUrl}
                   />
                   <Text
-                    data-id="030925-a3c4ef"
+                    data-id="000068"
                     fontSize="13px"
                     lineHeight="17px"
                     opacity="1"
@@ -133,11 +133,11 @@ function ActionForm({ handleSave }) {
             </GridItem>
           </Grid>
         )}
-        <HStack data-id="030925-d69784" justify="flex-end" pb={3} pt={4} w="full">
+        <HStack data-id="000069" justify="flex-end" pb={3} pt={4} w="full">
           <Button
+            data-id="000070"
             bgColor="auditActionForm.buttons.cancel.bg"
             color="auditActionForm.buttons.cancel.color"
-            data-id="030925-6998b3"
             fontSize="ssm"
             fontWeight="semibold"
             h="28px"
@@ -147,9 +147,9 @@ function ActionForm({ handleSave }) {
             Cancel
           </Button>
           <Button
+            data-id="000071"
             bgColor="auditActionForm.buttons.save.bg"
             color="auditActionForm.buttons.save.color"
-            data-id="030925-b926f4"
             disabled={!isValid || !values.title || values.title.trim() === ''}
             fontSize="ssm"
             fontWeight="semibold"

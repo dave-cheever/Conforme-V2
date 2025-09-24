@@ -26,17 +26,17 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
 
   return (
     <Controller
+        data-id="000338"
         control={control}
-        data-id="030925-5654ad"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, value } = field;
           const { error } = fieldState;
           return (
-            <Box data-id="030925-0c2f16">
+            <Box data-id="000339">
               <Text
+                data-id="000340"
                 color="switch.form.labelColor"
-                data-id="030925-3bc518"
                 fontSize="ssm"
                 fontWeight="bold"
                 pb="10px"
@@ -44,9 +44,9 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
                 {label}
                 {requiredAnswer === 'yes' && value === 'no' && (
                   <Box
+                    data-id="000341"
                     as="span"
                     color="switch.form.labelColor"
-                    data-id="030925-bc27f2"
                     fontSize="xs"
                     fontWeight="medium">
                     {' '}
@@ -55,9 +55,9 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
                 )}
                 {requiredAnswer === 'no' && value === 'yes' && (
                   <Box
+                    data-id="000342"
                     as="span"
                     color="switch.form.labelColor"
-                    data-id="030925-4bc22e"
                     fontSize="xs"
                     fontWeight="medium">
                     {' '}
@@ -66,7 +66,7 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
                 )}
                 {required && (
                   <Asterisk
-                    data-id="030925-d91785"
+                    data-id="000343"
                     fill="questionListElement.iconAsterisk"
                     h="9px"
                     mb="8px"
@@ -75,9 +75,9 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
                     w="9px" />
                 )}
               </Text>
-              <Flex data-id="030925-f44eb8">
+              <Flex data-id="000344">
                 <SwitchButton
-                  data-id="030925-5f1c8e"
+                  data-id="000345"
                   disabled={disabled}
                   laterality="left"
                   name={name}
@@ -86,7 +86,7 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
                   value={value} />
                 &nbsp;&nbsp;
                 <SwitchButton
-                  data-id="030925-b93857"
+                  data-id="000346"
                   disabled={disabled}
                   laterality="right"
                   name={name}
@@ -97,13 +97,13 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
                   <>
                     &nbsp;&nbsp;
                     <Button
+                      data-id="000347"
                       _hover={{
                         bg: 'switch.activebtn.bg',
                         color: 'switch.activebtn.color',
                       }}
                       bg={value === 'na' ? 'switch.activebtn.bg' : 'switch.btn.bg'}
                       color={value === 'na' ? 'switch.activebtn.color' : 'switch.btn.color'}
-                      data-id="030925-69569f"
                       disabled={disabled}
                       fontSize="smm"
                       fontWeight="bold"
@@ -123,8 +123,8 @@ function Switch({ control, name, label, required, requiredAnswer, notApplicable,
               </Flex>
               {error && (
                 <Box
+                  data-id="000348"
                   color="switch.form.textInput.error"
-                  data-id="030925-fb5339"
                   fontSize={14}
                   ml={1}>
                   {error.message}

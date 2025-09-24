@@ -20,18 +20,18 @@ function MultipleChoices({
   defaultvalue,
 }: IMultipleChoices) {
   return (
-    <Box data-id="030925-222ba9" id={name} w="full">
+    <Box data-id="000308" id={name} w="full">
       {label && (
         <Flex
+          data-id="000309"
           align="center"
-          data-id="030925-68197f"
           justify="space-between"
           mb="none"
           pb={2}
           pt={2}>
           <Box
+            data-id="000310"
             color="multipleChoices.labelFont.normal"
-            data-id="030925-9853d5"
             fontSize="ssm"
             fontWeight="bold"
             left="none"
@@ -40,7 +40,7 @@ function MultipleChoices({
             {label}
             {required && !readMode && (
               <Asterisk
-                data-id="030925-07049f"
+                data-id="000311"
                 fill="questionListElement.iconAsterisk"
                 h="9px"
                 mb="8px"
@@ -49,8 +49,8 @@ function MultipleChoices({
                 w="9px" />
             )}{' '}
             {tooltip && (
-              <Tooltip data-id="030925-53be8d" hasArrow label={tooltip} placement="top">
-                <Icon data-id="030925-674856" h="14px" mb={1} name="info" />
+              <Tooltip data-id="000312" hasArrow label={tooltip} placement="top">
+                <Icon data-id="000313" h="14px" mb={1} name="info" />
               </Tooltip>
             )}
           </Box>
@@ -58,15 +58,16 @@ function MultipleChoices({
       )}
       {defaultvalue?.map(({ label }: { label: string; isCorrect: boolean }, index) => (
         <Controller
+          data-id="000314"
           control={control}
-          data-id="030925-b8ac0c"
           key={index}
           name={`${name}.${index}.isCorrect`}
           render={({ field }) => {
             const { onChange, value } = field;
             return (
-              <Stack data-id="030925-50e257" direction="column">
+              <Stack data-id="000315" direction="column">
                 <Checkbox
+                  data-id="000316"
                   borderColor="multipleChoices.icon.border"
                   colorScheme="form.checkbox.icon"
                   css={{
@@ -80,20 +81,19 @@ function MultipleChoices({
                       opacity: `${readMode ? 1 : disabled ? 0.4 : 1} !important`,
                     },
                   }}
-                  data-id="030925-91d61b"
                   isChecked={value}
                   isDisabled={disabled}
                   onChange={() => onChange(!value)}
                   py={1}>
                   <Text
+                    data-id="000317"
                     color={readMode ? 'multipleChoices.optionFont.readMode' : 'multipleChoices.optionFont.normal'}
-                    data-id="030925-9ed06f"
                     fontSize="smm">
                     {label}{' '}
                   </Text>
                   {tooltip && (
-                    <Tooltip data-id="030925-fcd5f0" hasArrow label={tooltip} placement="top">
-                      <Icon data-id="030925-00d4c1" h="14px" mb={1} name="info" />
+                    <Tooltip data-id="000318" hasArrow label={tooltip} placement="top">
+                      <Icon data-id="000319" h="14px" mb={1} name="info" />
                     </Tooltip>
                   )}
                 </Checkbox>

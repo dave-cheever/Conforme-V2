@@ -60,7 +60,7 @@ const openRoutes: Array<IRoute> = [
     key: 'not-allowed',
     component: () => (
       <Navigate
-        data-id="7b09f5e18669"
+        data-id="000030"
         key="not-allowed"
         replace
         state={{ redirectUrl: `${window.location.pathname}${window.location.search}` }}
@@ -305,26 +305,26 @@ const protectedRoutes: Array<IRoute> = [
 
 const useRoutes = () => {
   const { user, module } = useAppContext();
-  if (!user) return openRoutes.map((route) => ({ ...route, element: <route.component /> }));
+  if (!user) return openRoutes.map((route) => ({ ...route, element: <route.component data-id="000031" /> }));
   return [
     ...protectedRoutes.map((route) => ({
       ...route,
       path: `/:modulePath${route.path}`,
       element: <Can
+        data-id="000032"
         action={route.permission}
-        data-id="0bd23c229298"
         no={() => <Navigate
-          data-id="50994d77ea25"
+          data-id="000033"
           key="not-found"
           to={module ? `/${module.path}/dashboard` : '/'} />}
-        yes={() => <route.layout component={route.component} key={route.key} />}
+        yes={() => <route.layout data-id="000034" component={route.component} key={route.key} />}
       />,
     })),
     {
       path: '*',
       key: 'not-found',
       element: <Navigate
-        data-id="1ce68823769f"
+        data-id="000035"
         key="not-found"
         to={module ? `/${module.path}/dashboard` : '/'}
       />,

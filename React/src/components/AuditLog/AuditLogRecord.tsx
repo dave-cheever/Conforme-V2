@@ -53,29 +53,29 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
     if (!oldValue && !newValue) return null;
 
     return (
-      <Flex data-id="030925-0aa246" direction="column" key={i} mt="2">
+      <Flex data-id="000318" direction="column" key={i} mt="2">
         <Text
+          data-id="000319"
           color="gray.600"
-          data-id="030925-aa079b"
           fontSize="xs"
           fontWeight="medium"
           mb="1">
           {getLabelByField(element)}
         </Text>
-        <Flex data-id="030925-4f1cbb">
+        <Flex data-id="000320">
           <Box
+            data-id="000321"
             bg={oldValue ? 'red.50' : 'gray.100'}
             borderRadius="md"
-            data-id="030925-285d18"
             flex="1"
             fontSize="sm"
             p="2">
             {getFieldNameByValues(oldValue)}
           </Box>
           <Box
+            data-id="000322"
             bg={newValue ? 'green.50' : 'gray.100'}
             borderRadius="md"
-            data-id="030925-2d275f"
             flex="1"
             fontSize="sm"
             ml="2"
@@ -89,39 +89,39 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
 
   return (
     <Flex
+      data-id="000323"
       align="flex-start"
       bg="#F7FAFC"
       border="1px solid #CBD5E0"
       borderRadius="lg"
       boxShadow="sm"
-      data-id="030925-6b4ce3"
       direction="row"
       mb="4"
       p="4">
       <Avatar
-        data-id="030925-cc6521"
+        data-id="000324"
         mt="1"
         name={auditAddedUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
         size="sm"
         src={auditAddedUser?.imgUrl} />
-      <Box data-id="030925-e0bf2b" flex="1" ml="3">
-        <Flex align="center" data-id="030925-edd1e2" justify="space-between">
-          <Text color="#4A5568" data-id="030925-d2e7b9" fontSize="16px" fontWeight="600">
+      <Box data-id="000325" flex="1" ml="3">
+        <Flex data-id="000326" align="center" justify="space-between">
+          <Text data-id="000327" color="#4A5568" fontSize="16px" fontWeight="600">
             {auditAddedUser ? auditAddedUser.displayName : 'Unknown User'}
           </Text>
-          <Text color="#718096" data-id="030925-81120f" fontSize="14px" fontWeight="500">
+          <Text data-id="000328" color="#718096" fontSize="14px" fontWeight="500">
             {format(new Date(audit?.metatags?.addedAt!), 'dd/MM/yyyy HH:mm')}
           </Text>
         </Flex>
 
-        <Text color="#718096" data-id="030925-2543ed" fontSize="14px" mt="1">
+        <Text data-id="000329" color="#718096" fontSize="14px" mt="1">
           {getFieldNameByAction(audit.action)} {getSingularCollectionName(audit.coll)}{' '}
           {audit.coll === 'comments' && (audit.action === 'add' || audit.action === 'delete') && (
-            <Box as="span" data-id="030925-eb4b50" display="inline" ml="2">
+            <Box data-id="000330" as="span" display="inline" ml="2">
               {reactStringReplace(
                 audit.values.text?.[audit.action === 'delete' ? 'old' : 'new']?.value,
                 chatMentionRegExp,
-                (match, i) => <ChatMention data-id="030925-cd443e" key={i} tag={match} />,
+                (match, i) => <ChatMention data-id="000331" key={i} tag={match} />,
               )}
             </Box>
           )}
@@ -129,10 +129,10 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
             <>
               {' for '}
               <Text
+                data-id="000332"
                 as="span"
                 color="purple.600"
                 cursor="pointer"
-                data-id="030925-be55dc"
                 fontWeight="medium"
                 onClick={goToItem}>
                 {audit.element.name}
@@ -142,7 +142,7 @@ function AuditLogRecord({ audit }: { audit: IAuditLogRecord }) {
         </Text>
 
         {audit.action === 'update' && (
-          <Box data-id="030925-7e4045" mt="3">
+          <Box data-id="000333" mt="3">
             {Object.keys(audit.values).map((element, i) =>
               displayUpdateDetails(
                 element,

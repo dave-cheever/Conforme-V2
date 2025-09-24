@@ -98,20 +98,20 @@ function InsightListItem({
         return (
           <>
             <InsightCount
+              data-id="000467"
               count={item.totalActionsCount}
-              data-id="030925-dd03ba"
               onClick={() => handleClickForActions()} />
             <InsightCount
+              data-id="000468"
               count={item.completedActionsCount}
-              data-id="030925-4e888b"
               onClick={() => handleClickForActions('closed')} />
             <InsightCount
+              data-id="000469"
               count={item.inProgressActionsCount}
-              data-id="030925-424f4d"
               onClick={() => handleClickForActions('open')} />
             <InsightCount
+              data-id="000470"
               count={item.overdueActionsCount}
-              data-id="030925-17e440"
               onClick={() => handleClickForActions('overdue')} />
           </>
         );
@@ -119,20 +119,20 @@ function InsightListItem({
         return (
           <>
             <InsightCount
+              data-id="000471"
               count={item.totalAnswersCount}
-              data-id="030925-962b4f"
               onClick={() => handleClickForAnswers()} />
             <InsightCount
+              data-id="000472"
               count={item.openAnswersCount}
-              data-id="030925-9ba46b"
               onClick={() => handleClickForAnswers('open')} />
             <InsightCount
+              data-id="000473"
               count={item.resolvedAnswersCount}
-              data-id="030925-01f170"
               onClick={() => handleClickForAnswers('resolved')} />
             <InsightCount
+              data-id="000474"
               count={item.closedAnswersCount}
-              data-id="030925-2660c1"
               onClick={() => handleClickForAnswers('closed')} />
           </>
         );
@@ -141,20 +141,20 @@ function InsightListItem({
         return (
           <>
             <InsightCount
+              data-id="000475"
               count={item.totalAuditsCount}
-              data-id="030925-73c3ac"
               onClick={() => handleClickForAudits()} />
             <InsightCount
+              data-id="000476"
               count={item.completedAuditsCount}
-              data-id="030925-2624f1"
               onClick={() => handleClickForAudits('completed')} />
             <InsightCount
+              data-id="000477"
               count={item.upcomingAuditsCount}
-              data-id="030925-aebe2e"
               onClick={() => handleClickForAudits('upcoming')} />
             <InsightCount
+              data-id="000478"
               count={item.missedAuditsCount}
-              data-id="030925-1647e9"
               onClick={() => handleClickForAudits('missed')} />
           </>
         );
@@ -163,18 +163,18 @@ function InsightListItem({
 
   return (
     <Flex
+        data-id="000479"
         align="center"
         bg={light ? 'white' : '#F3F3F5'}
         cursor="pointer"
-        data-id="030925-cc8f3b"
         minH="70px"
         p="15px 25px"
         py={1.25}
         w="full">
-      <Grid data-id="030925-40fb2b" templateColumns="1fr repeat(4, 135px)" w="full">
+      <Grid data-id="000480" templateColumns="1fr repeat(4, 135px)" w="full">
         <Flex
+          data-id="000481"
           color="auditsInsights.list.fontColor"
-          data-id="030925-f6cd53"
           fontSize="14px"
           fontWeight="400"
           lineHeight="18px"
@@ -193,12 +193,12 @@ function InsightListItem({
           }}
           textOverflow="ellipsis">
           {insightsModel === 'users' ? (
-            <Flex align="center" data-id="030925-4fcf28">
-              <UserAvatar data-id="030925-599a60" size="sm" userId={item?._id} />
-              <Text data-id="030925-fc0e2f" ml={2}>{(item as IUser)?.displayName}</Text>
+            <Flex data-id="000482" align="center">
+              <UserAvatar data-id="000483" size="sm" userId={item?._id} />
+              <Text data-id="000484" ml={2}>{(item as IUser)?.displayName}</Text>
             </Flex>
           ) : (
-            <Text data-id="030925-8197cb">{(item as IBusinessUnit | ILocation)?.name}</Text>
+            <Text data-id="000485">{(item as IBusinessUnit | ILocation)?.name}</Text>
           )}
         </Flex>
         {counts}

@@ -67,10 +67,10 @@ function ParticipantsSelector({
 
   return (
     <>
-      <ParticipantsModal data-id="030925-5934ed" />
-      <ParticipantsDeleteModal data-id="030925-ec033a" />
+      <ParticipantsModal data-id="000643" />
+      <ParticipantsDeleteModal data-id="000644" />
       {label && (
-        <Text data-id="030925-a59343" fontSize="smm" fontWeight="semibold">
+        <Text data-id="000645" fontSize="smm" fontWeight="semibold">
           {label}
         </Text>
       )}
@@ -81,8 +81,8 @@ function ParticipantsSelector({
 
 function ParticipantsSelectorWithContext(props) {
   return (
-    <ParticipantsModalProvider data-id="030925-78c1c5">
-      <ParticipantsSelector data-id="030925-34b1df" {...props} />
+    <ParticipantsModalProvider data-id="000646">
+      <ParticipantsSelector data-id="000647" {...props} />
     </ParticipantsModalProvider>
   );
 }

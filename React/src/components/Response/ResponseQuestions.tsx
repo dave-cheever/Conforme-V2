@@ -67,15 +67,15 @@ function ResponseQuestions({ disabled = false }) {
         data-id="714a60514a03"
         message="You have unsaved changes, you will lose all of your changes. Are you sure you want to navigate away?"
         when={isQuestionFormDirty} /> */}
-      <Stack data-id="030925-d0a6f5" minH={['80vh', 0]} mt={2} spacing={4} w="full">
-        <Grid data-id="030925-b04e89" gap={4} templateColumns="1fr" w={['full', '80%']}>
+      <Stack data-id="000434" minH={['80vh', 0]} mt={2} spacing={4} w="full">
+        <Grid data-id="000435" gap={4} templateColumns="1fr" w={['full', '80%']}>
           {questions.length === 0 && (
             <Text
+              data-id="000436"
               color="responseQuestions.NoQuestion.color"
-              data-id="030925-7f079c"
               fontSize="smm">
               <MessageSquareIcon
-                data-id="030925-0eeff4"
+                data-id="000437"
                 h="16px"
                 stroke="responseQuestions.NoQuestion.icon"
                 w="16px" />
@@ -83,12 +83,12 @@ function ResponseQuestions({ disabled = false }) {
             </Text>
           )}
           {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable, options }, i) => (
-            <Flex data-id="030925-5dd4d1" key={name}>
+            <Flex data-id="000438" key={name}>
               <Box
+                data-id="000439"
                 bg="responseQuestions.sectionNumber.bg"
                 borderRadius="8px"
                 color="responseQuestions.sectionNumber.color"
-                data-id="030925-612519"
                 fontSize="smm"
                 fontWeight="bold"
                 h="30px"
@@ -101,8 +101,8 @@ function ResponseQuestions({ disabled = false }) {
                 {i + 1}
               </Box>
               <Field
+                data-id="000440"
                 control={control}
-                data-id="030925-932605"
                 defaultvalue={value}
                 disabled={!isUserPermitted || disabled}
                 label={name}

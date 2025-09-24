@@ -65,17 +65,17 @@ function Defaults() {
   };
 
   return (
-    <Stack data-id="030925-1ba53c" h="full" pb={3} spacing={7} w="full">
+    <Stack data-id="000462" h="full" pb={3} spacing={7} w="full">
       {defaultSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value, options }) => (
         <Flex
+          data-id="000463"
           align={['flex-start', 'center']}
-          data-id="030925-a98d1b"
           flexDirection={['column', 'row']}
           key={name}>
-          <Flex data-id="030925-3a3c69" maxW="280px">
+          <Flex data-id="000464" maxW="280px">
             <Field
+              data-id="000465"
               control={control}
-              data-id="030925-35f0af"
               help={help}
               label={label}
               name={name}
@@ -90,20 +90,20 @@ function Defaults() {
               variant={variant} />
           </Flex>
           {wasFieldChanged(inputType, name, value) && !Object.keys(errors).includes(name) && (
-            <HStack data-id="030925-fad694" ml={3} mt={7} spacing={3}>
+            <HStack data-id="000466" ml={3} mt={7} spacing={3}>
               <IconButton
+                data-id="000467"
                 aria-label="Confirm Icon"
                 colorScheme="purpleHeart"
-                data-id="030925-2d325c"
-                icon={<CheckIcon data-id="030925-7db9b7" />}
+                icon={<CheckIcon data-id="000468" />}
                 onClick={() => updateSettings({ _id, name })}
                 size="sm"
                 variant="outline" />
               <IconButton
+                data-id="000469"
                 aria-label="Cross Icon"
                 colorScheme="red"
-                data-id="030925-eaf784"
-                icon={<CloseIcon data-id="030925-c55cb7" />}
+                icon={<CloseIcon data-id="000470" />}
                 onClick={() => resetValue({ name, value })}
                 size="sm" />
             </HStack>

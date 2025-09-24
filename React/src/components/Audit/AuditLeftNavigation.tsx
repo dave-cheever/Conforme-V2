@@ -13,9 +13,9 @@ function AuditLeftNavigation() {
 
   return (
     <Flex
+        data-id="000172"
         bg="auditLeftNavigation.bg"
         color="auditLeftNavigation.color"
-        data-id="030925-614e29"
         direction="column"
         display={['none', 'none', 'flex']}
         fontWeight="400"
@@ -23,17 +23,17 @@ function AuditLeftNavigation() {
         overflow="auto"
         px={6}
         w="280px">
-      <Flex data-id="030925-8564f8" flexDirection="column">
+      <Flex data-id="000173" flexDirection="column">
         <Box
+          data-id="000174"
           alignItems="center"
           cursor="pointer"
-          data-id="030925-4eaaef"
           display="flex"
           h="80px"
           onClick={() => navigateTo('/')}>
           <Text
+            data-id="000175"
             color="navigationLeft.organizationNameFontColor"
-            data-id="030925-c3f6ec"
             fontSize="16px"
             fontWeight="bold"
             w="full">
@@ -41,20 +41,20 @@ function AuditLeftNavigation() {
           </Text>
         </Box>
         <Flex
+          data-id="000176"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
-          data-id="030925-64bc33"
           fontSize="14px"
           h="30px"
           mb="30px"
           onClick={() => navigateTo('/')}>
-          <ChevronRight data-id="030925-b6d456" mr={2} transform="Rotate(180deg)" />
+          <ChevronRight data-id="000177" mr={2} transform="Rotate(180deg)" />
           Back
         </Flex>
-        <Flex data-id="030925-09a543" flexDirection="column" mb={2}>
+        <Flex data-id="000178" flexDirection="column" mb={2}>
           {auditNavigationTabs.map(({ label, icon, url }) => (
-            <AuditLeftTabItem data-id="030925-ecdcc2" icon={icon} key={url} label={label} url={url} />
+            <AuditLeftTabItem data-id="000179" icon={icon} key={url} label={label} url={url} />
           ))}
         </Flex>
       </Flex>

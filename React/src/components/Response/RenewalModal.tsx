@@ -50,49 +50,49 @@ function RenewalModal() {
 
   return (
     <Modal
-        data-id="030925-f3cad4"
+        data-id="000277"
         isOpen={isRenewalOpen}
         onClose={handleRenewalClose}>
-      <ModalOverlay data-id="030925-ec2cee" />
-      <ModalContent data-id="030925-c6cba0">
-        <ModalHeader data-id="030925-53c935">{loading ? 'Renewing...' : !renewedResponse ? 'Please confirm' : 'Response renewed'}</ModalHeader>
-        <ModalCloseButton data-id="030925-32ffef" />
-        <ModalBody data-id="030925-b45d56" minH="100px">
+      <ModalOverlay data-id="000278" />
+      <ModalContent data-id="000279">
+        <ModalHeader data-id="000280">{loading ? 'Renewing...' : !renewedResponse ? 'Please confirm' : 'Response renewed'}</ModalHeader>
+        <ModalCloseButton data-id="000281" />
+        <ModalBody data-id="000282" minH="100px">
           {loading ? (
-            <Loader center data-id="030925-506ac6" />
+            <Loader data-id="000283" center />
           ) : !renewedResponse ? (
-            <Text data-id="030925-f639c6">
-              You are about to start new review of <b data-id="030925-027c17">{response?.trackerItem?.name}</b> {t('tracker item')} for{' '}
-              <b data-id="030925-5293fc">{response?.businessUnit?.name}</b>
+            <Text data-id="000284">
+              You are about to start new review of <b data-id="000285">{response?.trackerItem?.name}</b> {t('tracker item')} for{' '}
+              <b data-id="000286">{response?.businessUnit?.name}</b>
               .&nbsp; That will move existing data to history and allow you to fill the response with new data.&nbsp;
             </Text>
           ) : (
-            <Text data-id="030925-29a013">
-              <b data-id="030925-337b0a">{response?.trackerItem?.name}</b> for <b data-id="030925-624d01">{response?.businessUnit?.name}</b> was renewed.&nbsp; Complete it before{' '}
-              <b data-id="030925-bcd597">{moment(renewedResponse?.dueDate).format('D MMM YYYY')}</b>.
+            <Text data-id="000287">
+              <b data-id="000288">{response?.trackerItem?.name}</b> for <b data-id="000289">{response?.businessUnit?.name}</b> was renewed.&nbsp; Complete it before{' '}
+              <b data-id="000290">{moment(renewedResponse?.dueDate).format('D MMM YYYY')}</b>.
             </Text>
           )}
         </ModalBody>
 
         {!loading && (
           <ModalFooter
+            data-id="000291"
             bg="renewResponseModal.footer.bg"
-            data-id="030925-592864"
             roundedBottom="0.375rem">
             {!renewedResponse ? (
               <>
                 <Button
+                  data-id="000292"
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
-                  data-id="030925-afefe2"
                   mr={3}
                   onClick={handleRenewalClose}>
                   Cancel
                 </Button>
                 <Button
+                  data-id="000293"
                   bg="renewResponseModal.buttons.primary.bg"
                   color="renewResponseModal.buttons.primary.color"
-                  data-id="030925-e1e9cf"
                   onClick={renew}>
                   Start review
                 </Button>
@@ -100,16 +100,16 @@ function RenewalModal() {
             ) : (
               <>
                 <Button
+                  data-id="000294"
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
-                  data-id="030925-0a878a"
                   mr={3}
                   onClick={() => navigateTo('/')}>
                   Return to homepage
                 </Button>
                 <Button
+                  data-id="000295"
                   colorScheme="purpleHeart"
-                  data-id="030925-1e3762"
                   onClick={handleViewRenewed}>
                   View renewed response
                 </Button>

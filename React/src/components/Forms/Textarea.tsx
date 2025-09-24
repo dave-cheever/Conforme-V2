@@ -36,25 +36,25 @@ function Textarea({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
+        data-id="000423"
         control={control}
-        data-id="030925-a90ffc"
         name={name}
         render={({ field, fieldState }) => {
           const { value } = field;
           const { error } = fieldState;
           return (
-            <Box data-id="030925-52932c" id={name} mt="none" w="full">
+            <Box data-id="000424" id={name} mt="none" w="full">
               {label && (
                 <Flex
+                  data-id="000425"
                   align="center"
-                  data-id="030925-20970c"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
+                    data-id="000426"
                     color={error ? 'textMultilineInput.labelFont.error' : 'textMultilineInput.labelFont.normal'}
-                    data-id="030925-4564db"
                     fontSize={11}
                     fontWeight="bold"
                     left="none"
@@ -63,7 +63,7 @@ function Textarea({
                     {label}
                     {required && (
                       <Asterisk
-                        data-id="030925-b2a210"
+                        data-id="000427"
                         fill="questionListElement.iconAsterisk"
                         h="9px"
                         mb="8px"
@@ -72,8 +72,8 @@ function Textarea({
                         w="9px" />
                     )}{' '}
                     {tooltip && (
-                      <Tooltip data-id="030925-4360a6" hasArrow label={tooltip} placement="top">
-                        <Icon data-id="030925-c24220" h="14px" mb={1} name="info" />
+                      <Tooltip data-id="000428" hasArrow label={tooltip} placement="top">
+                        <Icon data-id="000429" h="14px" mb={1} name="info" />
                       </Tooltip>
                     )}
                   </Box>
@@ -82,6 +82,7 @@ function Textarea({
               {!readMode && (
                 <>
                   <ChakraTextarea
+                    data-id="000430"
                     _active={{
                       bg: disabled ? 'textMultilineInput.disabled.bg' : 'textMultilineInput.activeBg',
                     }}
@@ -105,7 +106,6 @@ function Textarea({
                     borderWidth="1px"
                     color="textMultilineInput.font"
                     cursor="pointer"
-                    data-id="030925-6f0184"
                     fontSize="smm"
                     isDisabled={disabled}
                     maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
@@ -115,8 +115,8 @@ function Textarea({
                     {...field} />
                   {error && (
                     <Box
+                      data-id="000431"
                       color="textMultilineInput.error"
-                      data-id="030925-ae890f"
                       fontSize={14}
                       ml={1}>
                       {error.message}
@@ -125,7 +125,7 @@ function Textarea({
                 </>
               )}
               {readMode && (
-                <Flex data-id="030925-122282" fontSize="smm" minH="40px">
+                <Flex data-id="000432" fontSize="smm" minH="40px">
                   {value}
                 </Flex>
               )}

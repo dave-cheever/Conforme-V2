@@ -19,9 +19,9 @@ function ResponseLeftNavigationTablet() {
 
   return (
     <Flex
+        data-id="000872"
         bg="responseLeftNavigation.bg"
         color="responseLeftNavigation.color"
-        data-id="030925-fe18a0"
         direction="column"
         display={['none', 'flex', 'none']}
         flexShrink={0}
@@ -31,39 +31,39 @@ function ResponseLeftNavigationTablet() {
         overflow="auto"
         px={6}
         w="80px">
-      <Flex data-id="030925-d389f7" flexDirection="column">
+      <Flex data-id="000873" flexDirection="column">
         <Box
+          data-id="000874"
           alignItems="center"
           cursor="pointer"
-          data-id="030925-2a1f39"
           display="flex"
           h="80px"
           justifyContent="center"
           onClick={() => navigateTo('/')}>
           <Text
+            data-id="000875"
             color="navigationLeft.organizationNameFontColor"
-            data-id="030925-605a83"
             fontSize="16px"
             fontWeight="bold">
             {getInitials(module?.name)}
           </Text>
         </Box>
         <Flex
+          data-id="000876"
           align="center"
           color="responseLeftNavigation.goBackColor"
           cursor="pointer"
-          data-id="030925-7c20ce"
           fontSize="14px"
           h="30px"
           mb="20px"
           onClick={() => navigateTo('/tracker-items')}
           w="full">
-          <ChevronRight data-id="030925-58b3ce" ml={2} transform="Rotate(180deg)" />
+          <ChevronRight data-id="000877" ml={2} transform="Rotate(180deg)" />
         </Flex>
-        <Flex data-id="030925-1bcd52" flexDirection="column" mb={2}>
+        <Flex data-id="000878" flexDirection="column" mb={2}>
           {navigationTabs.map(({ label, icon, url }) => (
             <ResponseLeftTabItem
-              data-id="030925-06a4ce"
+              data-id="000879"
               icon={icon}
               isDesktop={false}
               key={url}
@@ -71,10 +71,10 @@ function ResponseLeftNavigationTablet() {
               url={url} />
           ))}
         </Flex>
-        <ResponseDetail data-id="030925-0dd9d6" response={response} />
+        <ResponseDetail data-id="000880" response={response} />
       </Flex>
-      <Flex data-id="030925-bc2f00" display={['none', 'flex']}>
-        <Icon as={ConformeSmall} data-id="030925-61b20b" h="30px" mb="20px" w="27px" />
+      <Flex data-id="000881" display={['none', 'flex']}>
+        <Icon data-id="000882" as={ConformeSmall} h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

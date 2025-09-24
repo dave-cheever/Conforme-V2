@@ -13,14 +13,14 @@ function BarChart({ data, label }) {
   const maxValueOnDivider = 10 * multipier;
   const step = maxValueOnDivider / 5;
 
-  const divider: ReactElement[] = [<Text data-id="030925-7c44aa" key="0">0</Text>];
-  if (maxCount !== -Infinity) for (let i = 1; i <= 5; i += 1) divider.push(<Text data-id="030925-e9a8fd" key={i * step}>{i * step}</Text>);
+  const divider: ReactElement[] = [<Text data-id="000138" key="0">0</Text>];
+  if (maxCount !== -Infinity) for (let i = 1; i <= 5; i += 1) divider.push(<Text data-id="000139" key={i * step}>{i * step}</Text>);
 
   return (
-    <Flex data-id="030925-bdcb61" flexDir="column">
+    <Flex data-id="000140" flexDir="column">
       <Text
+        data-id="000141"
         color="barChart.headerColor"
-        data-id="030925-36ce45"
         fontSize="11px"
         h="25px"
         mt="18px"
@@ -29,12 +29,12 @@ function BarChart({ data, label }) {
       </Text>
       {maxCount !== -Infinity && (
         <>
-          <Flex data-id="030925-dc4030" flexDir="column">
+          <Flex data-id="000142" flexDir="column">
             {data.map((el) => (
-              <Flex alignItems="center" color="#272727" data-id="030925-703857" h="55px" key={el._id} my="auto">
+              <Flex data-id="000143" alignItems="center" color="#272727" h="55px" key={el._id} my="auto">
                 <Box
+                  data-id="000144"
                   bg="barChart.bg"
-                  data-id="030925-172d92"
                   w={`${(newArr[el._id] / maxValueOnDivider) * 100}%`}
                   h="18px"
                   // mb="42px"
@@ -43,8 +43,8 @@ function BarChart({ data, label }) {
             ))}
           </Flex>
           <Flex
+            data-id="000145"
             color="barChart.color"
-            data-id="030925-929942"
             fontSize="11px"
             justifyContent="space-between"
             mt="-15px">

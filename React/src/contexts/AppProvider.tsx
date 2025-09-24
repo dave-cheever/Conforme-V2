@@ -39,7 +39,7 @@ function AppProvider({ children }) {
     [roles, settings, organizationConfig, module, user],
   );
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <AppContext.Provider data-id="000006" value={value}>{children}</AppContext.Provider>;
 }
 
 export default AppProvider;

@@ -15,14 +15,14 @@ function ResponseHeaderMenuItem({
 }) {
   return (
     <MenuItem
+      data-id="000859"
       color="responseHeaderMenuItem.optionsMenuColor"
-      data-id="030925-81d4b3"
       isDisabled={disabled}
       onClick={onClick}
       w="100%">
-      <Box data-id="030925-e8a580" p="2">{name}</Box>
-      <Spacer data-id="030925-98ddc7" />
-      {icon && <Box data-id="030925-9ea376" p="2">{icon}</Box>}
+      <Box data-id="000860" p="2">{name}</Box>
+      <Spacer data-id="000861" />
+      {icon && <Box data-id="000862" p="2">{icon}</Box>}
     </MenuItem>
   );
 }

@@ -164,7 +164,7 @@ function SettingsProvider({ children }) {
     [control, errors, data, activeTab, formValues, reset],
   ) as unknown as ISettingsContext;
 
-  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
+  return <SettingsContext.Provider data-id="000016" value={value}>{children}</SettingsContext.Provider>;
 }
 
 export default SettingsProvider;

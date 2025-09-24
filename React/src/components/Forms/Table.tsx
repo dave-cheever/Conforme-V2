@@ -74,24 +74,24 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
 
   return (
     <Controller
+            data-id="000350"
             control={control}
-            data-id="030925-8bec6e"
             name={name}
             render={({ field, fieldState }) => {
               const { onChange, onBlur, value } = field;
               const { error } = fieldState;
               return (
-                <Box data-id="030925-9ff2cf" id={name} mt="none" w="full">
+                <Box data-id="000351" id={name} mt="none" w="full">
                   {label && (
                     <Flex
+                      data-id="000352"
                       align="center"
-                      data-id="030925-e5d64d"
                       justify="space-between"
                       mb="none"
                       pt={2}>
                       <Box
+                        data-id="000353"
                         color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
-                        data-id="030925-2ea94b"
                         fontSize="14px"
                         fontWeight="bold"
                         left="none"
@@ -99,22 +99,23 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                         zIndex={1}>
                         {label}
                         {help && (
-                          <Box data-id="030925-721ac0" fontSize="11px" mt={3} opacity={0.5}>
+                          <Box data-id="000354" fontSize="11px" mt={3} opacity={0.5}>
                             {help}
                           </Box>
                         )}
                       </Box>
                     </Flex>
                   )}
-                  <Stack data-id="030925-51e95b" mt="10px" w="full">
+                  <Stack data-id="000355" mt="10px" w="full">
                     {value?.map((row, index) => (
                       <Flex
+                        data-id="000356"
                         align="center"
-                        data-id="030925-5d03a7"
                         justify="space-between"
                         key={`row-${index}`}>
-                        <Flex data-id="030925-785a05" mr={2} w="full">
+                        <Flex data-id="000357" mr={2} w="full">
                           <Input
+                            data-id="000358"
                             _active={{
                               bg: disabled ? 'form.textInput.disabled.bg' : 'form.textInput.activeBg',
                             }}
@@ -135,7 +136,6 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                             borderRadius="8px"
                             borderWidth="1px"
                             color="form.textInput.font"
-                            data-id="030925-01f1f4"
                             disabled={disabled}
                             fontSize="smm"
                             h="40px"
@@ -149,35 +149,35 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                             w="full" />
                         </Flex>
                         <Trashcan
+                          data-id="000359"
                           cursor="pointer"
-                          data-id="030925-fb6a7b"
                           onClick={() => removeRow(index, value, onChange)}
                           stroke="form.textInput.font" />
                       </Flex>
                     ))}
                     {(validations.maxLength ? value.length < validations.maxLength : true) && (
                       <Stack
+                        data-id="000360"
                         align="center"
                         cursor="pointer"
-                        data-id="030925-8d67ca"
                         direction="row"
                         onClick={() => addRow(value, onChange)}
                         pl={2}
                         spacing={2}>
-                        <PlusIcon data-id="030925-dd1d47" stroke="form.textInput.font" />
-                        <Text color="form.textInput.font" data-id="030925-77d5ac">Add row</Text>
+                        <PlusIcon data-id="000361" stroke="form.textInput.font" />
+                        <Text data-id="000362" color="form.textInput.font">Add row</Text>
                       </Stack>
                     )}
                   </Stack>
                   {error && (
-                    <Box color="form.textInput.error" data-id="030925-cd6271" fontSize={14} ml={1}>
+                    <Box data-id="000363" color="form.textInput.error" fontSize={14} ml={1}>
                       {error.message}
                     </Box>
                   )}
                   {tooltip && (
-                    <Flex align="center" color="dropdown.tooltip" data-id="030925-7359a5" mt={3}>
-                      <InfoOutlineIcon data-id="030925-277fab" />
-                      <Box data-id="030925-b7b492" fontSize="11px" ml={2}>
+                    <Flex data-id="000364" align="center" color="dropdown.tooltip" mt={3}>
+                      <InfoOutlineIcon data-id="000365" />
+                      <Box data-id="000366" fontSize="11px" ml={2}>
                         {tooltip}
                       </Box>
                     </Flex>

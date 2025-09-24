@@ -108,14 +108,14 @@ function QuestionSimpleForm({
 
   return (
     <>
-      <Flex alignItems="center" data-id="030925-85b3aa" mb="20px">
-        <Text data-id="030925-411407" fontSize="smm" fontWeight="bold">
+      <Flex data-id="000254" alignItems="center" mb="20px">
+        <Text data-id="000255" fontSize="smm" fontWeight="bold">
           {questionHeader(questionType)}
         </Text>
       </Flex>
       <TextInput
+        data-id="000256"
         control={control}
-        data-id="030925-8f6fd5"
         label={`${capitalize(t('question'))} title`}
         name="name"
         placeholder="e.g. where is the tv?"
@@ -124,44 +124,44 @@ function QuestionSimpleForm({
         }}
         variant="secondaryVariant" />
       <Textarea
+        data-id="000257"
         control={control}
-        data-id="030925-7253a2"
         label="Description"
         name="description"
         variant="secondaryVariant" />
       <Checkbox
+        data-id="000258"
         control={control}
-        data-id="030925-c87389"
         disabled={notApplicable}
         label="Answer is required"
         name="required"
         variant="secondaryVariant" />
       {questionType === 'switch' && (
         <>
-          <HStack data-id="030925-894fc4" {...group} alignItems="flex-start" spacing="20px">
-            <Text data-id="030925-94ba32">Compliant answer is:</Text>
+          <HStack data-id="000259" {...group} alignItems="flex-start" spacing="20px">
+            <Text data-id="000260">Compliant answer is:</Text>
             {SwitchOptions.map(({ value, label }) => {
               const radio = getRadioProps({ value });
               return (
-                <CustomRadioButton data-id="030925-b7c5fb" key={value} {...radio} fontSize="smm">
+                <CustomRadioButton data-id="000261" key={value} {...radio} fontSize="smm">
                   {label}
                 </CustomRadioButton>
               );
             })}
           </HStack>
           <Checkbox
+            data-id="000262"
             control={control}
-            data-id="030925-cd92da"
             label="NA answer permitted"
             name="notApplicable"
             variant="secondaryVariant" />
         </>
       )}
-      <Flex data-id="030925-7e18ef" justifyContent="space-between" mt="15px">
+      <Flex data-id="000263" justifyContent="space-between" mt="15px">
         <Button
+          data-id="000264"
           bg="questionsSimple.form.button.secondary.bg"
           color="questionsSimple.form.button.secondary.font"
-          data-id="030925-87fc4e"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -175,9 +175,9 @@ function QuestionSimpleForm({
           Cancel
         </Button>
         <Button
+          data-id="000265"
           bg="questionsSimple.form.button.primary.bg"
           color="questionsSimple.form.button.primary.font"
-          data-id="030925-a96fdf"
           disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
@@ -189,8 +189,8 @@ function QuestionSimpleForm({
           }}
           p="17px"
           rightIcon={<Icon
+            data-id="000266"
             as={OpenMenuArrow}
-            data-id="030925-34a9a0"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

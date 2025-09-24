@@ -20,10 +20,10 @@ function BusinessUnitFilter() {
   };
 
   return (
-    <Box data-id="030925-30c03f" w="full">
+    <Box data-id="000661" w="full">
       <BusinessUnitsSelector
+        data-id="000662"
         businessUnits={businessUnits as IBusinessUnit[]}
-        data-id="030925-1ec988"
         handleChange={handleChange}
         selected={value}
       />

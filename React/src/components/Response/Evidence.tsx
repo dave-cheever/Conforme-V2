@@ -4,6 +4,7 @@ import Dropzone, { FileRejection } from 'react-dropzone';
 import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { runtimeEnv } from '../../utils/runtime-env';
 import { t } from 'i18next';
 
 import { toastFailed } from '../../bootstrap/config';
@@ -66,7 +67,7 @@ function EvidenceExpected({ evidence }) {
         documentsData.append('documentName', evidence.name);
         documentsData.append('documentType', 'evidence');
         documentsData.append('document', acceptedFile);
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/files/document`, documentsData);
+        const res = await axios.post(`${runtimeEnv.apiUrl()}/files/document`, documentsData);
         await saveEvidence({
           variables: {
             responseDocumentsAddInput: {
@@ -93,18 +94,18 @@ function EvidenceExpected({ evidence }) {
   if (!response) return null;
 
   return (
-    <Flex data-id="030925-ab494d" direction="column" maxW="342px" w="full">
-      <Flex align="center" data-id="030925-ce46bf" mb={2} mt={3}>
+    <Flex data-id="000261" direction="column" maxW="342px" w="full">
+      <Flex data-id="000262" align="center" mb={2} mt={3}>
         <Box
+          data-id="000263"
           color="evidence.fontColor"
-          data-id="030925-6e214a"
            fontSize={["14px", "11px"]}
           fontWeight="700"
           lineHeight="16px"
           width="300px">
           {evidence.name}
           <Asterisk
-            data-id="030925-70ee32"
+            data-id="000264"
             fill="questionListElement.iconAsterisk"
             h="9px"
             mb="5px"
@@ -114,13 +115,13 @@ function EvidenceExpected({ evidence }) {
         </Box>
       </Flex>
       {evidence.uploaded?.id ? (
-        <Flex data-id="030925-212bc2" maxW="380px">
+        <Flex data-id="000265" maxW="380px">
           <DocumentUploaded
+            data-id="000266"
             callback={async () => {
               await removeEvidence();
               refetch();
             }}
-            data-id="030925-680e3d"
             deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name
               }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
             document={evidence.uploaded}
@@ -140,16 +141,16 @@ function EvidenceExpected({ evidence }) {
             } />
         </Flex>
       ) : status === 'uploading' ? (
-        <DocumentUploading data-id="030925-e17359" documentName={evidence.name} />
+        <DocumentUploading data-id="000267" documentName={evidence.name} />
       ) : (
         <Can
+          data-id="000268"
           action="responses.edit"
-          data-id="030925-252399"
           data={{ response }}
           // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
             <Dropzone
-              data-id="030925-59d276"
+              data-id="000269"
               accept={acceptedFileTypes}
               multiple={false}
               onDrop={(acceptedFiles, rejectedFiles) =>
@@ -160,15 +161,15 @@ function EvidenceExpected({ evidence }) {
               }>
               {({ getRootProps, getInputProps }) => (
                 <Box
-                  data-id="030925-b47b24"
+                  data-id="000270"
                   {...getRootProps()}
                   cursor="pointer"
                   h="65px"
                   maxW="380px"
                   w="full">
-                  <input data-id="030925-7ac3b4" {...getInputProps()} />
+                  <input data-id="000271" {...getInputProps()} />
                   <Flex
-                    data-id="030925-a5357a"
+                    data-id="000272"
                     align="center"
                     bg="#F7FAFC"
                     borderColor="evidence.uploadBorderColor"
@@ -181,15 +182,15 @@ function EvidenceExpected({ evidence }) {
                     justify="space-between"
                     px={5}
                     w="full">
-                    <Flex data-id="030925-bf72a9">
+                    <Flex data-id="000273">
                       {' '}
                       Drag and drop or{' '}
-                      <Text data-id="030925-cdc4c7" color="evidence.browseFontColor" ml={1}>
+                      <Text data-id="000274" color="evidence.browseFontColor" ml={1}>
                         {' '}
                         browse
                       </Text>
                     </Flex>
-                    <UploadIcon data-id="030925-54bf7b" h="21px" w="21px" />
+                    <UploadIcon data-id="000275" h="21px" w="21px" />
                   </Flex>
                 </Box>
               )}
@@ -198,8 +199,8 @@ function EvidenceExpected({ evidence }) {
       )}
       {status === 'rejected' && (
         <Flex
+          data-id="000276"
           color="red.500"
-          data-id="030925-b2ca1f"
           fontSize="12px"
           fontWeight="bold"
           mt={2}>

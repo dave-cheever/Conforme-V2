@@ -82,13 +82,13 @@ function TrackerItemResponse() {
 
   return (
     <>
-      <RenewalModal data-id="030925-a7c8aa" />
+      <RenewalModal data-id="000766" />
       {/* <Confetti height={confettiHeight} recycle={false} run={run} width={confettiWidth} /> */}
       <VStack
+        data-id="000767"
         border="1px solid"
         borderColor="trackerItemResponse.borderColor"
         borderRadius="8px"
-        data-id="030925-bf1ff2"
         h={['fit-content', 'full']}
         overflowY="scroll"
         p={[4, 6]}
@@ -96,19 +96,19 @@ function TrackerItemResponse() {
         w="full"
       >
         <Tabs
+          data-id="000768"
           colorScheme="purple"
-          data-id="030925-f1ecff"
           index={tabIndex}
           onChange={setActiveTab}
           variant="unstyled"
           w="full">
-          <TabList data-id="030925-5dbb11" mb={4} overflow="auto">
+          <TabList data-id="000769" mb={4} overflow="auto">
             <Tab
+              data-id="000770"
               _focus={{ boxShadow: 'none' }}
               _selected={{ bg: '#462AC4', color: 'white' }}
               alignItems="center"
               borderRadius="10px"
-              data-id="030925-5b40d3"
               display="flex"
               fontSize={["12px", "14px"]}
               fontWeight="500"
@@ -116,14 +116,14 @@ function TrackerItemResponse() {
               mr={3}
               px={3}
               py={2}>
-              <EnvelopeIcon data-id="030925-f77fa1" /> Details
+              <EnvelopeIcon data-id="000771" /> Details
             </Tab>
             <Tab
+              data-id="000772"
               _focus={{ boxShadow: 'none' }}
               _selected={{ bg: '#462AC4', color: 'white' }}
               alignItems="center"
               borderRadius="10px"
-              data-id="030925-a269fe"
               display="flex"
               fontSize={["12px", "14px"]}
               fontWeight="500"
@@ -131,52 +131,52 @@ function TrackerItemResponse() {
               mr={3}
               px={3}
               py={2}>
-              <AttachmentClipIcon data-id="030925-20d106" /> Attachments
+              <AttachmentClipIcon data-id="000773" /> Attachments
             </Tab>
             <Tab
+              data-id="000774"
               _focus={{ boxShadow: 'none' }}
               _selected={{ bg: '#462AC4', color: 'white' }}
               alignItems="center"
               borderRadius="10px"
-              data-id="030925-bcda5f"
               display="flex"
               fontSize={["12px", "14px"]}
               fontWeight="500"
               gap={2}
               px={3}
               py={2}>
-              <QuestionIconNew data-id="030925-205250" /> Questions
+              <QuestionIconNew data-id="000775" /> Questions
             </Tab>
           </TabList>
-          <TabPanels data-id="030925-2836fd">
+          <TabPanels data-id="000776">
             {/* Details Tab */}
-            <TabPanel data-id="030925-c5384a" px={0}>
+            <TabPanel data-id="000777" px={0}>
               {response?.trackerItem?.description && (
-                <VStack align="flex-start" data-id="030925-8a58bf" w="full">
-                  <Text color="responseRenewalDetails.labelColor" data-id="030925-8b67bc" fontSize="14px">
+                <VStack data-id="000778" align="flex-start" w="full">
+                  <Text data-id="000779" color="responseRenewalDetails.labelColor" fontSize="14px">
                     Description
                   </Text>
-                  <DescriptionText data-id="030925-76acef" />
+                  <DescriptionText data-id="000780" />
                 </VStack>
               )}
-              <Stack align="center" data-id="030925-5975e6" direction={['column', 'row']} mt={6} spacing={4} w="full">
-                <Flex cursor={neverReviewed ? 'default' : 'pointer'} data-id="030925-884747" justify="space-between" w={['full', '30%']}>
+              <Stack data-id="000781" align="center" direction={['column', 'row']} mt={6} spacing={4} w="full">
+                <Flex data-id="000782" cursor={neverReviewed ? 'default' : 'pointer'} justify="space-between" w={['full', '30%']}>
                   <Flex
+                    data-id="000783"
                     align={['center', 'flex-start']}
                     bg="responseRenewalDetails.bg"
                     border={activeTab === 0 ? '1px solid #ccc' : 'null'}
                     borderRadius="10px"
                     boxShadow={activeTab === 0 ? 'simple' : 'null'}
-                    data-id="030925-71ec08"
                     flexDir="column"
                     onClick={() => !neverReviewed && setActiveTab(0)}
                     p="10px 20px"
                     w="full"
                   >
-                    <Text color="responseRenewalDetails.labelColor" data-id="030925-b6b697" fontSize="11px">
+                    <Text data-id="000784" color="responseRenewalDetails.labelColor" fontSize="11px">
                       {snapshot ? 'Review date' : 'Last reviewed'}
                     </Text>
-                    <Text color="responseRenewalDetails.textColor" data-id="030925-a83a5e" fontSize="14px">
+                    <Text data-id="000785" color="responseRenewalDetails.textColor" fontSize="14px">
                       {response.lastCompletionDate
                         ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy')
                         : 'Never reviewed before'}
@@ -184,17 +184,17 @@ function TrackerItemResponse() {
                   </Flex>
                 </Flex>
                 {!snapshot && (
-                  <ArrowDownIcon color="responseRenewalDetails.labelColor" data-id="030925-fbfcbe" transform={['', 'rotate(270deg)']} />
+                  <ArrowDownIcon data-id="000786" color="responseRenewalDetails.labelColor" transform={['', 'rotate(270deg)']} />
                 )}
                 {!snapshot && (
                   <Flex
+                    data-id="000787"
                     align="center"
                     bg="responseRenewalDetails.bg"
                     border={activeTab === 1 ? '1px solid #ccc' : 'null'}
                     borderRadius="10px"
                     boxShadow={activeTab === 1 ? 'simple' : 'null'}
                     cursor="pointer"
-                    data-id="030925-87c715"
                     onClick={() => {
                       if (!inProgress) handleRenewalOpen();
                       else setActiveTab(1);
@@ -203,25 +203,25 @@ function TrackerItemResponse() {
                     position="relative"
                     w={['full', '30%']}
                   >
-                    <Flex align="center" data-id="030925-fbf81f" flexDir={['column', 'row']} justifyContent="space-between" w="full">
-                      <VStack align={['center', 'flex-start']} data-id="030925-acc47e" spacing={0} w="full">
-                        <Text color="responseRenewalDetails.labelColor" data-id="030925-504c4a" fontSize="11px">
+                    <Flex data-id="000788" align="center" flexDir={['column', 'row']} justifyContent="space-between" w="full">
+                      <VStack data-id="000789" align={['center', 'flex-start']} spacing={0} w="full">
+                        <Text data-id="000790" color="responseRenewalDetails.labelColor" fontSize="11px">
                           Perform new review by
                         </Text>
-                        <Text color="responseRenewalDetails.textColor" data-id="030925-04d17f" fontSize="14px">
+                        <Text data-id="000791" color="responseRenewalDetails.textColor" fontSize="14px">
                           {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
                         </Text>
                       </VStack>
                       {!snapshot && response?.trackerItem?.dueDateEditable && (
                         <Can
+                          data-id="000792"
                           action="responses.edit"
                           data={{ response }}
-                          data-id="030925-c8c127"
                           yes={() => (
-                            <Flex data-id="030925-4b2637" onClick={(e) => e.stopPropagation()}>
+                            <Flex data-id="000793" onClick={(e) => e.stopPropagation()}>
                               <DatePicker
-                                customInput={<EditButton data-id="030925-94e7bd" />}
-                                data-id="030925-5524f4"
+                                data-id="000794"
+                                customInput={<EditButton data-id="000795" />}
                                 dateFormatCalendar="MMMM"
                                 disabledKeyboardNavigation
                                 dropdownMode="select"
@@ -231,8 +231,8 @@ function TrackerItemResponse() {
                                 showYearDropdown
                               >
                                 <Button
+                                  data-id="000796"
                                   colorScheme="purpleHeart"
-                                  data-id="030925-d1a4ca"
                                   onClick={() => updateResponseDate(null)}
                                   size="sm"
                                   w="full"
@@ -250,9 +250,9 @@ function TrackerItemResponse() {
               </Stack>
             </TabPanel>
             {/* Attachments Tab */}
-            <TabPanel data-id="030925-460c72" px={0}>
+            <TabPanel data-id="000797" px={0}>
               <Box
-                data-id="030925-afcd79"
+                data-id="000798"
                 overflow={['visible', 'auto']}
                 position="relative"
                 sx={{
@@ -267,14 +267,14 @@ function TrackerItemResponse() {
                 w="full"
               >
                 {(response?.trackerItem?.allowAttachments || response?.trackerItem?.evidenceItems?.length > 0) && (
-                  <Attachments data-id="030925-f8992e" />
+                  <Attachments data-id="000799" />
                 )}
               </Box>
             </TabPanel>
             {/* Questions Tab */}
-            <TabPanel data-id="030925-774044" px={0}>
+            <TabPanel data-id="000800" px={0}>
               <Box
-                data-id="030925-5cffcf"
+                data-id="000801"
                 overflow={['visible', 'auto']}
                 position="relative"
                 sx={{
@@ -288,18 +288,18 @@ function TrackerItemResponse() {
                 }}
                 w="full"
               >
-                <ResponseQuestions data-id="030925-dc6bba" disabled={activeTab === 0} key={activeTab} />
+                <ResponseQuestions data-id="000802" disabled={activeTab === 0} key={activeTab} />
                 {(response.questions.filter(({ required }) => required).length > 0 || response.evidence.length > 0) && (
-                  <Flex data-id="030925-c5c9cf" mt="3" w="full">
+                  <Flex data-id="000803" mt="3" w="full">
                     <Asterisk
-                      data-id="030925-03250d"
+                      data-id="000804"
                       fill="questionListElement.iconAsterisk"
                       h="9px"
                       stroke="questionListElement.iconAsterisk"
                       w="9px"
                     />
                     &nbsp;
-                    <Text data-id="030925-d4c56b" fontSize="sm" fontWeight="semi_medium">
+                    <Text data-id="000805" fontSize="sm" fontWeight="semi_medium">
                       Required
                     </Text>
                   </Flex>

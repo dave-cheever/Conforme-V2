@@ -3,8 +3,8 @@ import { createIcon } from '@chakra-ui/icons';
 const OpenMenuArrow = createIcon({
   path: (
     <path
+        data-id="000967"
         d="M1 1L8 8L15 1"
-        data-id="bc9ba95757d7"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"

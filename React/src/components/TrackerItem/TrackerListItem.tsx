@@ -1,4 +1,5 @@
 import { Avatar, Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { runtimeEnv } from '../../utils/runtime-env';
 import { format } from 'date-fns';
 
 import useNavigate from '../../hooks/useNavigate';
@@ -12,27 +13,27 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
 
   return (
     <Box
+        data-id="000398"
         _hover={{ bg: '#F5F7FA' }}
         bg={index % 2 === 0 ? 'white' : 'gray.50'}
         borderBottomColor="trackerList.headerBorderColor"
         borderBottomWidth="1px"
         cursor="pointer"
-        data-id="030925-69fe28"
         onClick={() => navigateTo(`/tracker-item/${response._id}`)}
         px="10px"
         py={[1, 0]}
         w="full">
       <Flex
+        data-id="000399"
         align="center"
-        data-id="030925-6b8f05"
         h={['full', '55px']}
         position="relative"
         w="full">
-        <Flex data-id="030925-0f3a63" flexDir="column" w={"13%"}>
+        <Flex data-id="000400" flexDir="column" w={"13%"}>
           <Flex
+            data-id="000401"
             align="flex-start"
             color="trackerList.fontColor"
-            data-id="030925-058ed2"
             fontSize="14px"
             fontWeight="500"
             h="50%"
@@ -43,34 +44,34 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
             {response.trackerItem?.name}
           </Flex>
         </Flex>
-        <Flex data-id="030925-7effcc" w={"11%"}>
+        <Flex data-id="000402" w={"11%"}>
           <Flex
+            data-id="000403"
             color="trackerList.fontColor"
-            data-id="030925-3bfe0e"
             fontSize="14px"
             fontWeight="500"
             opacity="1">
-            {response?.dueDate ? format(new Date(response?.dueDate), 'dd/MM/yyyy') : <Flex data-id="030925-2756df" fontSize="14px" fontWeight="500">No Due Date</Flex>}
+            {response?.dueDate ? format(new Date(response?.dueDate), 'dd/MM/yyyy') : <Flex data-id="000404" fontSize="14px" fontWeight="500">No Due Date</Flex>}
           </Flex>
         </Flex>
-        <Flex data-id="030925-844456" w={"8%"}>
+        <Flex data-id="000405" w={"8%"}>
           {response && response.calculatedStatus === 'nonCompliant' ? (
-            <Flex align="center" data-id="030925-3ac0f2">
-              <ErrorCircleIcon data-id="030925-45cf4f" mr={1}  />
+            <Flex data-id="000406" align="center">
+              <ErrorCircleIcon data-id="000407" mr={1}  />
               <Flex
+                data-id="000408"
                 color="trackerList.crossIcon"
-                data-id="030925-05e236"
                 fontSize="14px"
                 fontWeight="700">
                 No
               </Flex>
             </Flex>
           ) : (
-            <Flex align="flex-end" data-id="030925-2a6dfc">
-              <SuccessCircleIcon data-id="030925-e9db4a" mr={1}  />
+            <Flex data-id="000409" align="flex-end">
+              <SuccessCircleIcon data-id="000410" mr={1}  />
               <Flex
+                data-id="000411"
                 color="trackerList.tickIcon"
-                data-id="030925-b119e9"
                 fontSize="14px"
                 fontWeight="700">
                 Yes
@@ -78,16 +79,16 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
             </Flex>
           )}
         </Flex>
-        <Flex data-id="030925-23c0e7" w={'12%'}>
-          <Stack align="center" data-id="030925-64b6e0" direction="row" pr="10px" spacing={2}>
+        <Flex data-id="000412" w={'12%'}>
+          <Stack data-id="000413" align="center" direction="row" pr="10px" spacing={2}>
             {isEvidenceUploaded(response) ? (
-              <SuccessCircleIcon data-id="030925-31e21d" h="18px" w="18px" />
+              <SuccessCircleIcon data-id="000414" h="18px" w="18px" />
             ) : (
-              <ErrorCircleIcon data-id="030925-d8dfff" h="18px" w="18px" />
+              <ErrorCircleIcon data-id="000415" h="18px" w="18px" />
             )}
             <Text
+              data-id="000416"
               color={isEvidenceUploaded(response) ? '#41B916' : '#E93C44'}
-              data-id="030925-99cd3d"
               fontSize="smm"
               fontStyle="normal"
               fontWeight="bold"
@@ -97,49 +98,49 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
             </Text>
           </Stack>
         </Flex>
-        <Box data-id="030925-76a7de" w={"12%"}>
+        <Box data-id="000417" w={"12%"}>
           <Box
+            data-id="000418"
             color="trackerList.fontColor"
-            data-id="030925-89fe4d"
             fontSize="14px"
             fontWeight="500"
             opacity="1">
             {response.trackerItem?.category?.name ? (
               response.trackerItem?.category?.name
             ) : (
-              <Flex data-id="030925-efb8fb" fontSize="14px" fontWeight="500">-</Flex>
+              <Flex data-id="000419" fontSize="14px" fontWeight="500">-</Flex>
             )}
           </Box>
         </Box>
-        <Box data-id="030925-78ce49" w={"12%"}>
+        <Box data-id="000420" w={"12%"}>
           <Box
+            data-id="000421"
             color="trackerList.fontColor"
-            data-id="030925-8073a5"
             fontSize="14px"
             fontWeight="500"
             opacity="1">
             {response.trackerItem?.regulatoryBody?.name ? (
               response.trackerItem?.regulatoryBody?.name
             ) : (
-              <Flex data-id="030925-3e751d" fontSize="14px" fontWeight="500">Unassigned</Flex>
+              <Flex data-id="000422" fontSize="14px" fontWeight="500">Unassigned</Flex>
             )}
           </Box>
         </Box>
         <Box
-          data-id="030925-d1d3c7"
+          data-id="000423"
           pr={4}
           w={"13%"}
         >
           {response.responsible ? (
-            <Flex align="center" data-id="030925-26ae80" direction="row">
+            <Flex data-id="000424" align="center" direction="row">
               <Avatar
-                data-id="030925-9c1e36"
+                data-id="000425"
                 name={response.responsible.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                 size="xs"
-                src={`${process.env.REACT_APP_API_URL}/files/photo/${response.responsible._id}`} />
+                src={`${runtimeEnv.apiUrl()}/files/photo/${response.responsible._id}`} />
               <Text
+                data-id="000426"
                 color="trackerList.fontColor"
-                data-id="030925-02965c"
                 fontSize="14px"
                fontWeight="500"
                 lineHeight="17px"
@@ -153,20 +154,20 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
               </Text>
             </Flex>
           ) : (
-            <Flex data-id="030925-71eb2d" fontSize="14px" fontWeight="500">
+            <Flex data-id="000427" fontSize="14px" fontWeight="500">
               Unassigned
             </Flex>
           )}
         </Box>
         <Box
-          data-id="030925-83eaa7"
+          data-id="000428"
           w={"12%"}
         >
-          <Flex data-id="030925-21b89a">
+          <Flex data-id="000429">
             {/* <LocationIcon boxSize="12px" data-id="282c7de29976" mt="2px" /> */}
             <Text
+              data-id="000430"
               color="trackerList.fontColor"
-              data-id="030925-724853"
               fontSize="14px"
               fontWeight="500"
               isTruncated
@@ -183,13 +184,13 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
           </Flex>
         </Box>
         <Box
-          data-id="030925-8e1b54"
+          data-id="000431"
           w={"8%"}
         >
-          <Flex data-id="030925-fa1e61">
+          <Flex data-id="000432">
             <Text
+              data-id="000433"
               color="trackerList.fontColor"
-              data-id="030925-0b1427"
               fontSize="14px"
               fontWeight="500"
               isTruncated

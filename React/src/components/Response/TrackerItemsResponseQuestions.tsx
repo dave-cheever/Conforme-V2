@@ -17,10 +17,10 @@ const defaultValues = {
 function SectionNumber({ value }: any) {
   return (
     <Box
+      data-id="000373"
       bg="TrackerItemsResponseQuestions.sectionNumber.bg"
       borderRadius="8px"
       color="TrackerItemsResponseQuestions.sectionNumber.color"
-      data-id="030925-7dd599"
       fontSize="smm"
       fontWeight="bold"
       h="35px"
@@ -39,14 +39,14 @@ function TrackerItemsResponseQuestions() {
     defaultValues,
   });
   return (
-    <Stack data-id="030925-ee87d6" spacing="24px">
-      <Flex data-id="030925-3dc815">
-        <SectionNumber data-id="030925-cea769" value={1} />
-        <Stack data-id="030925-5a8f0c" direction="column" flex="1" spacing="24px">
-          <Box data-id="030925-2e1cae" w="45%">
+    <Stack data-id="000374" spacing="24px">
+      <Flex data-id="000375">
+        <SectionNumber data-id="000376" value={1} />
+        <Stack data-id="000377" direction="column" flex="1" spacing="24px">
+          <Box data-id="000378" w="45%">
             <TextInput
+              data-id="000379"
               control={control}
-              data-id="030925-001611"
               label="Is a copy of the most recent TV licence provided to the reception?"
               name="name"
               placeholder="Add Your answer here"
@@ -55,28 +55,28 @@ function TrackerItemsResponseQuestions() {
               }} />
           </Box>
 
-          <Box data-id="030925-117447" w="30%">
+          <Box data-id="000380" w="30%">
             <Datepicker
+              data-id="000381"
               control={control}
-              data-id="030925-a6e6fb"
               label="Date Completed"
               name="dueDate"
               placeholder="dd / mm / yyyy" />
           </Box>
         </Stack>
       </Flex>
-      <Flex data-id="030925-b629e7">
-        <SectionNumber data-id="030925-4b06b7" value={2} />
-        <Stack data-id="030925-ab4546" direction="column" flex="1" spacing="24px">
-          <Box data-id="030925-33a60c">
-            <Text data-id="030925-3e5aef" fontSize="smm" fontWeight="bold">
+      <Flex data-id="000382">
+        <SectionNumber data-id="000383" value={2} />
+        <Stack data-id="000384" direction="column" flex="1" spacing="24px">
+          <Box data-id="000385">
+            <Text data-id="000386" fontSize="smm" fontWeight="bold">
               This is a yes / no question like
             </Text>
-            <Flex data-id="030925-e5a522" mt="10px">
+            <Flex data-id="000387" mt="10px">
               <Button
+                data-id="000388"
                 bg="TrackerItemsResponseQuestions.button.bg"
                 color="TrackerItemsResponseQuestions.button.color"
-                data-id="030925-121b80"
                 fontSize="smm"
                 fontWeight="bold"
                 p="20px">
@@ -84,9 +84,9 @@ function TrackerItemsResponseQuestions() {
               </Button>
               &nbsp;&nbsp;
               <Button
+                data-id="000389"
                 bg="TrackerItemsResponseQuestions.button.bg"
                 color="TrackerItemsResponseQuestions.button.color"
-                data-id="030925-a921b5"
                 fontSize="smm"
                 fontWeight="bold"
                 p="20px">
@@ -94,28 +94,28 @@ function TrackerItemsResponseQuestions() {
               </Button>
             </Flex>
           </Box>
-          <Box data-id="030925-41b17b" w="30%">
+          <Box data-id="000390" w="30%">
             <Datepicker
+              data-id="000391"
               control={control}
-              data-id="030925-d2bcdf"
               label="Date Completed"
               name="dueDate"
               placeholder="dd / mm / yyyy" />
           </Box>
         </Stack>
       </Flex>
-      <Flex data-id="030925-fb7d5f">
-        <SectionNumber data-id="030925-ada9a0" value={3} />
-        <Stack data-id="030925-7ca023" direction="column" flex="1" spacing="24px">
-          <Text data-id="030925-9b24e6" fontSize="smm" fontWeight="bold">
+      <Flex data-id="000392">
+        <SectionNumber data-id="000393" value={3} />
+        <Stack data-id="000394" direction="column" flex="1" spacing="24px">
+          <Text data-id="000395" fontSize="smm" fontWeight="bold">
             Multi selection question
           </Text>
-          <CheckboxGroup colorScheme="green" data-id="030925-867e10">
+          <CheckboxGroup data-id="000396" colorScheme="green">
             {[1, 2, 3].map((num) => (
               <Checkbox
+                data-id="000397"
                 borderColor="TrackerItemsResponseQuestions.checkbox.borderColor"
                 color="TrackerItemsResponseQuestions.checkbox.color"
-                data-id="030925-cb3a6b"
                 size="lg">
                 {`Answer ${num}`}
               </Checkbox>

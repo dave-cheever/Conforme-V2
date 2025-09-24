@@ -27,37 +27,37 @@ function AuditDeleteModal({ isOpen, onClose }) {
 
   return (
     <Modal
-        data-id="030925-a0d202"
+        data-id="000106"
         isCentered
         isOpen={isOpen}
         onClose={onClose}
         size="sm">
-      <ModalContent data-id="030925-dab9e9">
-        <ModalHeader data-id="030925-45c026">
-          <Text data-id="030925-b69736" fontSize="smm" fontWeight="semibold">
+      <ModalContent data-id="000107">
+        <ModalHeader data-id="000108">
+          <Text data-id="000109" fontSize="smm" fontWeight="semibold">
             Delete {t('audit')}
           </Text>
-          <ModalCloseButton data-id="030925-b6023c" />
+          <ModalCloseButton data-id="000110" />
         </ModalHeader>
-        <ModalBody data-id="030925-08f9da" mb="40px">
-          <Stack data-id="030925-894f09">
-            <Text data-id="030925-cc5d25">
+        <ModalBody data-id="000111" mb="40px">
+          <Stack data-id="000112">
+            <Text data-id="000113">
               Are you sure you want to delete the{' '}
-              <Text as="span" data-id="030925-0aa498">
-                {t('audit')} in <strong data-id="030925-90b9c4">{audit.businessUnit?.name}</strong>?
+              <Text data-id="000114" as="span">
+                {t('audit')} in <strong data-id="000115">{audit.businessUnit?.name}</strong>?
               </Text>
             </Text>
           </Stack>
         </ModalBody>
-        <ModalFooter data-id="030925-d22938">
-          <HStack data-id="030925-2e6a9b" justify="center" spacing={4} w="full">
-            <Button _hover={{ opacity: 0.7 }} data-id="030925-914329" onClick={onClose}>
+        <ModalFooter data-id="000116">
+          <HStack data-id="000117" justify="center" spacing={4} w="full">
+            <Button data-id="000118" _hover={{ opacity: 0.7 }} onClick={onClose}>
               Cancel
             </Button>
             <Button
+              data-id="000119"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
-              data-id="030925-73ae48"
               onClick={async () => {
                 await deleteAudit({
                   variables: {
