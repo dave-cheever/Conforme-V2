@@ -39,12 +39,10 @@ jobs:
         steps:
         # Optional manual validation gate (toggle per environment via enableManualValidation)
         - ${{ if eq(parameters.enableManualValidation, true) }}:
-          - task: ManualValidation@0
+          - task: ManualValidation@1
             displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
             inputs:
               instructions: '${{ parameters.manualValidationInstructions }}'
-              onTimeout: 'reject'
-              timeoutInMinutes: '43200'
               notifyUsers: ''
         - download: current
           artifact: react-app
