@@ -18,6 +18,13 @@ parameters:
   - name: runtimeStack
     type: string
     default: 'NODE|22-lts'
+  - name: enableManualValidation
+    type: boolean
+    default: true
+  - name: manualValidationInstructions
+    type: string
+    default: 'Deploy to ${{ parameters.adoEnvironment }}?'
+
 
 jobs:
 - deployment: Deploy
@@ -30,6 +37,15 @@ jobs:
     runOnce:
       deploy:
         steps:
+        # Optional manual validation gate (toggle per environment via enableManualValidation)
+        ${{ if eq(parameters.enableManualValidation, true) }}:
+        - task: ManualValidation@0
+          displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
+          inputs:
+            instructions: '${{ parameters.manualValidationInstructions }}'
+            onTimeout: 'reject'
+            timeoutInMinutes: '43200'
+            notifyUsers: ''
         - download: current
           artifact: react-app
           patterns: '**/*.zip'

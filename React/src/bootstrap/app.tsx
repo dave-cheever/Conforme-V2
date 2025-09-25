@@ -51,7 +51,6 @@ function App() {
   return (
     <ChakraProvider data-id="000021" theme={getTheme(organizationConfig?.theme)}>
       <CSSReset data-id="000022" />
-      {/* {user && <IdleMonitor data-id="70d9b5aff63a" />} */}
       <AdminProvider data-id="000023">
         <FiltersProvider data-id="000024">
           <Routes data-id="000025">

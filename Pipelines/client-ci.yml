@@ -78,6 +78,7 @@ jobs:
     displayName: 'Commit automation changes if any'
 
 - job: 'Execute_unit_tests'
+  displayName: 'Execute unit tests'
   dependsOn: 'Insert_automation_IDs'
   steps:
   - task: NodeTool@0
@@ -100,11 +101,13 @@ jobs:
       workingDir: 'React'
       customCommand: 'run test'
 
-- job: 'Run_SonarQube'
+- job: 'SonarQube_Analysis'
   displayName: 'Run SonarQube analysis'
+  dependsOn: 'Insert_automation_IDs'
   steps:
   - checkout: self
     fetchDepth: 0
+
   - task: SonarCloudPrepare@3
     inputs:
       SonarQube: 'sonarqube-conforme'
@@ -115,9 +118,6 @@ jobs:
       cliProjectName: 'Conforme V2'
       cliSources: '.'
 
-- job: 'Build_React_App'
-  dependsOn: 'Insert_automation_IDs'
-  steps:
   - task: NodeTool@0
     displayName: 'Set Node Version'
     inputs:
@@ -137,9 +137,11 @@ jobs:
       command: 'custom'
       workingDir: 'React'
       customCommand: 'run build'
+
   - task: SonarCloudAnalyze@3
     inputs:
       jdkversion: 'JAVA_HOME_17_X64'
+
   - task: SonarCloudPublish@3
     inputs:
       pollingTimeoutSec: '300'
