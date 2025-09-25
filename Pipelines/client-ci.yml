@@ -100,7 +100,20 @@ jobs:
       workingDir: 'React'
       customCommand: 'run test'
 
-# - job: 'Run SonarQube analysis'
+- job: 'Run_SonarQube'
+  displayName: 'Run SonarQube analysis'
+  steps:
+  - checkout: self
+    fetchDepth: 0
+  - task: SonarCloudPrepare@3
+    inputs:
+      SonarQube: 'sonarqube-conforme'
+      organization: 'cielo-costa'
+      scannerMode: 'cli'
+      configMode: 'manual'
+      cliProjectKey: 'cielocosta-projects_Conforme-V2'
+      cliProjectName: 'Conforme V2'
+      cliSources: '.'
 
 - job: 'Build_React_App'
   dependsOn: 'Insert_automation_IDs'
@@ -124,3 +137,9 @@ jobs:
       command: 'custom'
       workingDir: 'React'
       customCommand: 'run build'
+  - task: SonarCloudAnalyze@3
+    inputs:
+      jdkversion: 'JAVA_HOME_17_X64'
+  - task: SonarCloudPublish@3
+    inputs:
+      pollingTimeoutSec: '300'
