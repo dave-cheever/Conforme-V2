@@ -27,8 +27,21 @@ parameters:
 
 
 jobs:
+- ${{ if eq(parameters.enableManualValidation, true) }}:
+  - job: ManualValidation
+    displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
+    pool: server
+    steps:
+    - task: ManualValidation@1
+      displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
+      inputs:
+        instructions: '${{ parameters.manualValidationInstructions }}'
+        notifyUsers: ''
+
 - deployment: Deploy
   displayName: '${{ parameters.adoEnvironment }} Deployment'
+  ${{ if eq(parameters.enableManualValidation, true) }}:
+    dependsOn: ManualValidation
   variables:
     - group: ${{ parameters.variableGroup }}
     - group: ${{ parameters.variableFunctionGroup }}
@@ -37,13 +50,6 @@ jobs:
     runOnce:
       deploy:
         steps:
-        # Optional manual validation gate (toggle per environment via enableManualValidation)
-        - ${{ if eq(parameters.enableManualValidation, true) }}:
-          - task: ManualValidation@1
-            displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
-            inputs:
-              instructions: '${{ parameters.manualValidationInstructions }}'
-              notifyUsers: ''
         - download: current
           artifact: react-app
           patterns: '**/*.zip'
