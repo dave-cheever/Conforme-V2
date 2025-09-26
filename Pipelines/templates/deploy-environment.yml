@@ -27,16 +27,16 @@ parameters:
 
 
 jobs:
-- ${{ if eq(parameters.enableManualValidation, true) }}:
-  - job: ManualValidation
-    displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
-    pool: server
-    steps:
-    - task: ManualValidation@1
-      displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
-      inputs:
-        instructions: '${{ parameters.manualValidationInstructions }}'
-        notifyUsers: ''
+# - ${{ if eq(parameters.enableManualValidation, true) }}:
+#   - job: ManualValidation
+#     displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
+#     pool: server
+#     steps:
+#     - task: ManualValidation@1
+#       displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
+#       inputs:
+#         instructions: '${{ parameters.manualValidationInstructions }}'
+#         notifyUsers: ''
 
 - deployment: Deploy
   displayName: '${{ parameters.adoEnvironment }} Deployment'
