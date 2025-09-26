@@ -18,30 +18,10 @@ parameters:
   - name: runtimeStack
     type: string
     default: 'NODE|22-lts'
-  - name: enableManualValidation
-    type: boolean
-    default: true
-  - name: manualValidationInstructions
-    type: string
-    default: 'Deploy to this environment?'
-
 
 jobs:
-# - ${{ if eq(parameters.enableManualValidation, true) }}:
-#   - job: ManualValidation
-#     displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
-#     pool: server
-#     steps:
-#     - task: ManualValidation@1
-#       displayName: 'Manual validation gate for ${{ parameters.adoEnvironment }}'
-#       inputs:
-#         instructions: '${{ parameters.manualValidationInstructions }}'
-#         notifyUsers: ''
-
 - deployment: Deploy
   displayName: '${{ parameters.adoEnvironment }} Deployment'
-  ${{ if eq(parameters.enableManualValidation, true) }}:
-    dependsOn: ManualValidation
   variables:
     - group: ${{ parameters.variableGroup }}
     - group: ${{ parameters.variableFunctionGroup }}

@@ -166,7 +166,6 @@ stages:
     - template: templates/deploy-environment.yml
       parameters:
         adoEnvironment: 'Conforme - SIT'
-        enableManualValidation: false
         variableGroup: 'Conforme SIT'
         variableFunctionGroup: 'Conforme Functions SIT'
         azureSubscription: '$(APP_SERVICE_CONNECTION)'
