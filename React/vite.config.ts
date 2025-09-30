@@ -2,7 +2,8 @@ import { defineConfig, loadEnv } from 'vite';
 import svgrPlugin from 'vite-plugin-svgr';
 import envCompatible from 'vite-plugin-env-compatible';
 import react from '@vitejs/plugin-react';
-import eslintPlugin from "vite-plugin-eslint";
+import eslintPlugin from 'vite-plugin-eslint';
+/// <reference types="vitest" />
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -45,6 +46,18 @@ export default defineConfig(({ mode }) => {
     ],
     server: {
       port: env.PORT ? Number(env.PORT) : 3000,
+    },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './src/setupTests.ts',
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'json', 'html', 'lcov'],
+        reportsDirectory: './coverage',
+        include: ['src/**/*.{ts,tsx}'],
+        exclude: ['src/**/*.test.{ts,tsx}', 'src/**/*.spec.{ts,tsx}', 'src/setupTests.ts', 'src/**/__tests__/**', 'src/**/_tests__/**'],
+      },
     },
   };
 });

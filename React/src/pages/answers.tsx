@@ -27,6 +27,49 @@ import { TViewMode } from '../interfaces/TViewMode';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
+// Types for testing
+export interface Category {
+  _id: string;
+  name: string;
+}
+
+export interface AuditType {
+  _id: string;
+  questionsCategories: Category[] | null | undefined;
+}
+
+// Extracted functions for testing
+export const flatMapCategories = (auditTypes: AuditType[] | null | undefined): Category[] => {
+  return (auditTypes ?? []).flatMap((auditType) => auditType.questionsCategories ?? []);
+};
+
+export const dedupeCategories = (categories: Category[]): Map<string, Category> => {
+  const uniqueCategoriesMap = new Map<string, Category>();
+  for (const category of categories) {
+    if (!uniqueCategoriesMap.has(category._id)) {
+      uniqueCategoriesMap.set(category._id, category);
+    }
+  }
+  return uniqueCategoriesMap;
+};
+
+export const buildPanels = (auditTypes: AuditType[] | null | undefined) => {
+  const allCategories = flatMapCategories(auditTypes);
+  const uniqueCategoriesMap = dedupeCategories(allCategories);
+  return [{ _id: 'all', name: 'All' }, ...Array.from(uniqueCategoriesMap.values())];
+};
+
+export const categoryIdsForPanel = (
+  panels: Category[],
+  selectedPanelIndex: number,
+  parsedFilters?: { questionsCategoriesIds?: string[] },
+) => {
+  if (panels[selectedPanelIndex]._id === 'all') {
+    return parsedFilters?.questionsCategoriesIds ?? [];
+  }
+  return [panels[selectedPanelIndex]._id];
+};
+
 const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
     answers(answerQuery: $answerQuery) {
@@ -143,18 +186,7 @@ function Answers() {
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
   const panels = useMemo(() => {
-    const allCategories = (data?.auditTypes ?? []).flatMap(
-      (auditType) => auditType.questionsCategories ?? [],
-    );
-
-    const uniqueCategoriesMap = new Map();
-    for (const category of allCategories) {
-      if (!uniqueCategoriesMap.has(category._id)) 
-        uniqueCategoriesMap.set(category._id, category);
-      
-    }
-
-    return [{ _id: 'all', name: 'All' }, ...Array.from(uniqueCategoriesMap.values())];
+    return buildPanels(data?.auditTypes);
   }, [data?.auditTypes]);
 
   const [selectedPanel, setSelectedPanel] = useState(0);
@@ -247,7 +279,7 @@ function Answers() {
         answerQuery: {
           ...parsedFilters,
           questionsCategoriesIds:
-            panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : parsedFilters?.questionsCategoriesIds ?? [],
+            panels[selectedPanel]._id === 'all' ? (parsedFilters?.questionsCategoriesIds ?? []) : [panels[selectedPanel]._id],
         },
       });
     }
@@ -298,36 +330,27 @@ function Answers() {
         answer={selectedAnswer ?? ({} as IAnswer)}
         isOpen={isDeleteQuestionModalOpen}
         onClose={handleDeleteQuestionModalClose}
-        refetchAnswers={refetch} />
+        refetchAnswers={refetch}
+      />
       <Modal
         data-id="000267"
         isOpen={adminModalState !== 'closed'}
         onClose={closeModal}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
-        variant="adminModal">
+        variant="adminModal"
+      >
         <AnswerModal
           data-id="000268"
           answer={selectedAnswer}
           closeModal={closeModal}
           handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
-          refetch={refetch} />
+          refetch={refetch}
+        />
       </Modal>
-      <Header
-        data-id="000269"
-        breadcrumbs={[capitalize(pluralize(t('question')))]}
-        mobileBreadcrumbs={[capitalize(pluralize(t('question')))]}>
-        <ChangeViewButton
-          data-id="000270"
-          setViewMode={setViewMode}
-          viewMode={viewMode}
-          views={['grid', 'list']} />
+      <Header data-id="000269" breadcrumbs={[capitalize(pluralize(t('answer')))]} mobileBreadcrumbs={[capitalize(pluralize(t('answer')))]}>
+        <ChangeViewButton data-id="000270" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
         {device !== 'mobile' && (
-          <CSVLinkComponent
-            data-id="000271"
-            data={csvData}
-            filename="answers.csv"
-            headers={csvHeaders}
-            target="_blank">
+          <CSVLinkComponent data-id="000271" data={csvData} filename="answers.csv" headers={csvHeaders} target="_blank">
             <Button
               data-id="000272"
               _hover={{
@@ -340,7 +363,8 @@ function Answers() {
               borderRadius="10px"
               display="none"
               ml="15px"
-              rightIcon={<ExportIcon data-id="000273" height="15px" width="15px" />}>
+              rightIcon={<ExportIcon data-id="000273" height="15px" width="15px" />}
+            >
               <Text data-id="000274" fontSize="smm" fontWeight="bold">
                 Export
               </Text>
@@ -354,8 +378,8 @@ function Answers() {
           setSortType={setSortType}
           sortBy={sortBy}
           sortOrder={sortOrder}
-          sortType={sortType} />
-
+          sortType={sortType}
+        />
       </Header>
       <Flex data-id="000276" h={['calc(100vh - 80px)', 'full']} overflow="auto">
         {/* eslint-disable */}
@@ -365,12 +389,7 @@ function Answers() {
           <Loader data-id="000278" center={true} />
         ) : (
           <>
-            <Tabs
-              data-id="000279"
-              defaultIndex={selectedPanel}
-              onChange={(index) => setSelectedPanel(index)}
-              variant="unstyled"
-              w="full">
+            <Tabs data-id="000279" defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full">
               <TabList data-id="000280" px={[4, 8]} flexWrap={['wrap', 'initial']}>
                 {panels?.map((panel) => (
                   <Tab
@@ -383,24 +402,21 @@ function Answers() {
                     borderRadius="10px"
                     fontSize="14px"
                     fontWeight="600"
-                     _hover={{
+                    _hover={{
                       opacity: 0.8,
                     }}
                     mr={[1, 2]}
                     ml={[1, 0]}
                     my={[1, 0]}
-                    w={['calc(50% - .5rem)', 'auto', 'auto']}>
+                    w={['calc(50% - .5rem)', 'auto', 'auto']}
+                  >
                     {panel.name}
                   </Tab>
                 ))}
               </TabList>
               <TabPanels data-id="000282">
                 {panels?.map((panel) => (
-                  <TabPanel
-                    data-id="000283"
-                    key={panel._id}
-                    p={[4, viewMode === 'list' ? 6 : 2]}
-                    ml={[0, '10px']}>
+                  <TabPanel data-id="000283" key={panel._id} p={[4, viewMode === 'list' ? 6 : 2]} ml={[0, '10px']}>
                     {viewMode === 'grid' && (
                       <Grid
                         data-id="000284"
@@ -412,26 +428,17 @@ function Answers() {
                         pt="3"
                         px={[0, 4]}
                         templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-                        w="full">
-                          {sortedAnswers.length > 0 ? (
-                            sortedAnswers.map((answer) => (
-                              <AnswerSquare
-                                data-id="000285"
-                                answer={answer}
-                                editAnswer={handleOpenModal}
-                                key={answer._id}
-                              />
-                            ))
-                          ) : (
-                            <Flex
-                              data-id="000286"
-                              fontSize="18px"
-                              fontStyle="italic"
-                              h="full"
-                              w="full">
-                              No {t('question')}s found
-                            </Flex>
-                          )}
+                        w="full"
+                      >
+                        {sortedAnswers.length > 0 ? (
+                          sortedAnswers.map((answer) => (
+                            <AnswerSquare data-id="000285" answer={answer} editAnswer={handleOpenModal} key={answer._id} />
+                          ))
+                        ) : (
+                          <Flex data-id="000286" fontSize="18px" fontStyle="italic" h="full" w="full">
+                            No {t('question')}s found
+                          </Flex>
+                        )}
                       </Grid>
                     )}
                     {viewMode === 'list' && (
@@ -443,7 +450,8 @@ function Answers() {
                         setSortOrder={setSortOrder}
                         setSortType={setSortType}
                         sortOrder={sortOrder}
-                        sortType={sortType} />
+                        sortType={sortType}
+                      />
                     )}
                   </TabPanel>
                 ))}

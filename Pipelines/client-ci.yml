@@ -9,139 +9,174 @@ pool:
   vmImage: ubuntu-latest
 
 jobs:
+  - job: Insert_automation_IDs
+    steps:
+      - checkout: self
+        persistCredentials: true
 
+      - task: NodeTool@0
+        displayName: Set Node Version
+        inputs:
+          versionSource: spec
+          versionSpec: 22.x
+          checkLatest: true
 
-- job: 'Insert_automation_IDs'
-  
-  steps:
-  - checkout: self
-    persistCredentials: true
-  - task: NodeTool@0
-    displayName: 'Set Node Version'
-    inputs:
-      versionSource: 'spec'
-      versionSpec: '22.x'
-      checkLatest: true
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-      command: 'install'
-      workingDir: 'React'
+      - task: Npm@1
+        displayName: Install dependencies
+        inputs:
+          command: install
+          workingDir: React
 
-  - script: |
-      git config --global user.email "pipeline@azure.com"
-      git config --global user.name "Azure Pipeline"
-    displayName: 'Configure Git'
+      - script: |
+          git config --global user.email "pipeline@azure.com"
+          git config --global user.name "Azure Pipeline"
+        displayName: Configure Git
 
-  - script: npx jscodeshift -t React/insert-id.ts React/src/
-    displayName: 'Run automation ID insertion script'
+      - script: npx jscodeshift -t React/insert-id.ts React/src/
+        displayName: Run automation ID insertion script
 
-  - script: |
-      if [ -n "$(git status --porcelain)" ]; then
-        echo "File changes detected, checking if they are meaningful..."
-        
-        # Check if there are any non-whitespace changes
-        git add .
-        if git diff --cached --ignore-all-space --ignore-blank-lines --quiet; then
-          echo "Only whitespace changes detected, skipping commit"
-          git reset HEAD .
-          echo "##vso[task.setvariable variable=CodeChanged]false"
-        else
-          echo "Meaningful changes detected, creating commit..."
-          
-          # Get the PR source branch
-          TARGET_BRANCH="$(System.PullRequest.SourceBranch)"
-          echo "Target branch: $TARGET_BRANCH"
-          
-          # Extract branch name without refs/heads/ prefix
-          BRANCH_NAME="${TARGET_BRANCH#refs/heads/}"
-          echo "Branch name: $BRANCH_NAME"
-          
-          # Fetch latest changes and checkout the source branch
-          git fetch origin
-          git checkout $BRANCH_NAME
-          git pull origin $BRANCH_NAME
-          
-          # Re-add our changes on the actual branch (since we switched branches)
-          git add .
-          git commit -m "Auto-insert automation IDs [skip ci]"
-          
-          # Push the changes
-          git push origin $BRANCH_NAME
-          
-          echo "##vso[task.setvariable variable=CodeChanged]true"
-        fi
-      else
-        echo "No changes detected"
-        echo "##vso[task.setvariable variable=CodeChanged]false"
-      fi
-    displayName: 'Commit automation changes if any'
+      - script: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "File changes detected, checking if they are meaningful..."
 
-- job: 'Execute_unit_tests'
-  displayName: 'Execute unit tests'
-  dependsOn: 'Insert_automation_IDs'
-  steps:
-  - task: NodeTool@0
-    displayName: 'Set Node Version'
-    inputs:
-      versionSource: 'spec'
-      versionSpec: '22.x'
-      checkLatest: true
+            git add .
+            if git diff --cached --ignore-all-space --ignore-blank-lines --quiet; then
+              echo "Only whitespace changes detected, skipping commit"
+              git reset HEAD .
+              echo "##vso[task.setvariable variable=CodeChanged]false"
+            else
+              echo "Meaningful changes detected, creating commit..."
 
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-      command: 'install'
-      workingDir: 'React'
+              TARGET_BRANCH="$(System.PullRequest.SourceBranch)"
+              echo "Target branch: $TARGET_BRANCH"
 
-  - task: Npm@1
-    displayName: 'Execute unit tests'
-    inputs:
-      command: 'custom'
-      workingDir: 'React'
-      customCommand: 'run test'
+              BRANCH_NAME="${TARGET_BRANCH#refs/heads/}"
+              echo "Branch name: $BRANCH_NAME"
 
-- job: 'SonarQube_Analysis'
-  displayName: 'Run SonarQube analysis'
-  dependsOn: 'Insert_automation_IDs'
-  steps:
-  - checkout: self
-    fetchDepth: 0
+              git fetch origin
+              git checkout "$BRANCH_NAME"
+              git pull origin "$BRANCH_NAME"
 
-  - task: SonarCloudPrepare@3
-    inputs:
-      SonarQube: 'sonarqube-conforme'
-      organization: 'cielo-costa'
-      scannerMode: 'cli'
-      configMode: 'manual'
-      cliProjectKey: 'cielocosta-projects_Conforme-V2'
-      cliProjectName: 'Conforme V2'
-      cliSources: '.'
+              git add .
+              git commit -m "Auto-insert automation IDs [skip ci]"
+              git push origin "$BRANCH_NAME"
 
-  - task: NodeTool@0
-    displayName: 'Set Node Version'
-    inputs:
-      versionSource: 'spec'
-      versionSpec: '22.x'
-      checkLatest: true
+              echo "##vso[task.setvariable variable=CodeChanged]true"
+            fi
+          else
+            echo "No changes detected"
+            echo "##vso[task.setvariable variable=CodeChanged]false"
+          fi
+        displayName: Commit automation changes if any
 
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-      command: 'install'
-      workingDir: 'React'
+  - job: Execute_unit_tests
+    displayName: Execute unit tests
+    dependsOn: Insert_automation_IDs
+    steps:
+      - checkout: self
 
-  - task: Npm@1
-    displayName: 'Build the app'
-    inputs:
-      command: 'custom'
-      workingDir: 'React'
-      customCommand: 'run build'
+      - task: NodeTool@0
+        displayName: Set Node Version
+        inputs:
+          versionSource: spec
+          versionSpec: 22.x
+          checkLatest: true
 
-  - task: SonarCloudAnalyze@3
-    inputs:
-      jdkversion: 'JAVA_HOME_17_X64'
+      - task: Npm@1
+        displayName: Install dependencies
+        inputs:
+          command: install
+          workingDir: React
 
-  - task: SonarCloudPublish@3
-    inputs:
-      pollingTimeoutSec: '300'
+      - task: Npm@1
+        displayName: Execute unit tests (with coverage)
+        inputs:
+          command: custom
+          workingDir: React
+          customCommand: run test:ci
+
+      - task: PublishBuildArtifacts@1
+        displayName: Publish coverage artifact
+        inputs:
+          PathtoPublish: React/coverage
+          ArtifactName: coverage
+        condition: succeededOrFailed()
+
+  - job: SonarQube_Analysis
+    displayName: Run SonarCloud analysis
+    dependsOn: Execute_unit_tests
+    steps:
+      - checkout: self
+        fetchDepth: 0
+
+      - task: SonarCloudPrepare@3
+        displayName: Prepare SonarCloud
+        inputs:
+          SonarCloud: sonarqube-conforme # service connection name (SonarCloud, not SonarQube)
+          organization: cielo-costa
+          scannerMode: cli
+          configMode: manual
+          cliProjectKey: cielocosta-projects_Conforme-V2
+          cliProjectName: Conforme V2
+          extraProperties: |
+            sonar.sources=React/src
+            sonar.tests=React/src
+            sonar.test.inclusions=React/src/**/*.{test,spec}.{ts,tsx},React/src/**/_tests_/**/*.{ts,tsx}
+            sonar.exclusions=React/src/**/__mocks__/**,React/src/**/*.stories.{ts,tsx}
+            sonar.javascript.lcov.reportPaths=React/coverage/lcov.info
+            sonar.typescript.lcov.reportPaths=React/coverage/lcov.info
+            sonar.coverage.reportPaths=React/coverage/lcov.info
+            # sonar.newCode.referenceBranch=main
+
+      - task: NodeTool@0
+        displayName: Set Node Version
+        inputs:
+          versionSource: spec
+          versionSpec: 22.x
+          checkLatest: true
+
+      - task: Npm@1
+        displayName: Install dependencies
+        inputs:
+          command: install
+          workingDir: React
+
+      - task: Npm@1
+        displayName: Build the app
+        inputs:
+          command: custom
+          workingDir: React
+          customCommand: run build
+
+      - task: Npm@1
+        displayName: Generate coverage for SonarQube
+        inputs:
+          command: custom
+          workingDir: React
+          customCommand: run test:ci
+
+      - script: |
+          echo "=== Coverage File Verification ==="
+          echo "Current directory: $(pwd)"
+          ls -la React/coverage/ || echo "Coverage directory not found"
+          if [ -f "React/coverage/lcov.info" ]; then
+            echo "✅ Coverage file found!"
+            echo "File size: $(wc -c < React/coverage/lcov.info) bytes"
+            head -20 React/coverage/lcov.info || true
+            grep -A 5 -B 2 "sanitizeDisplayName" React/coverage/lcov.info || echo "sanitizeDisplayName not found in coverage"
+          else
+            echo "❌ Coverage file not found!"
+            ls -la React/ || echo "React directory not found"
+            exit 1
+          fi
+        displayName: Verify coverage file exists and show content
+
+      - task: SonarCloudAnalyze@3
+        displayName: Run SonarCloud analysis (scan)
+        inputs:
+          jdkversion: JAVA_HOME_17_X64
+
+      - task: SonarCloudPublish@3
+        displayName: Publish SonarCloud quality gate result
+        inputs:
+          pollingTimeoutSec: 300
