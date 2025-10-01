@@ -6,8 +6,21 @@ import { Organizations, Users } from 'app-models';
 import { GraphService } from 'app-services';
 import { genMetatags, getProtocol } from 'app-utils';
 
+// Helper function to handle mixed _id types (String or ObjectId)
+const createIdQuery = (id: string | Types.ObjectId) => {
+  const idString = id.toString();
+  // Try to convert to ObjectId, if it fails, treat as string
+  try {
+    const objectId = new Types.ObjectId(idString);
+    return { $or: [{ _id: objectId }, { _id: idString }] };
+  } catch {
+    // If it's not a valid ObjectId format, just search as string
+    return { _id: idString };
+  }
+};
+
 const userSchema = new Schema<IUser, IUserModel>({
-  _id: Types.ObjectId,
+  _id: String,
   firstName: String,
   lastName: String,
   displayName: String,
@@ -58,7 +71,7 @@ userSchema.statics.customFind = async function ({ organization }): Promise<IUser
 };
 
 userSchema.statics.customFindById = async function (userId: string): Promise<IUser | null> {
-  const user = await this.findById(userId).lean();
+  const user = await this.findOne(createIdQuery(userId)).lean();
   return user;
 };
 
@@ -98,6 +111,20 @@ userSchema.statics.customFindWithDetails = async function ({
         processedSelector[key] = { $regex: new RegExp(`^${value}$`, 'i') };
       }
     });
+  }
+
+  // Handle _id queries with mixed types (string vs ObjectId)
+  if (processedSelector._id && typeof processedSelector._id === 'object' && processedSelector._id.$in) {
+    // For $in queries on _id, we need to handle mixed types
+    const idValues = processedSelector._id.$in;
+
+    // Simplify: just use the original $in query and let MongoDB handle it
+    // The _id field should work with both string and ObjectId values
+    processedSelector._id = { $in: idValues };
+  } else if (processedSelector._id && typeof processedSelector._id === 'string') {
+    // For single _id queries, use createIdQuery helper
+    processedSelector = { ...processedSelector, ...createIdQuery(processedSelector._id) };
+    delete processedSelector._id;
   }
 
   let usersRequested = this.find({
@@ -151,7 +178,7 @@ userSchema.statics.customFindWithDetails = async function ({
           },
         };
         const { _id, ...userWithoutId } = updatedUser;
-        await Users.updateOne({ _id: user._id }, userWithoutId);
+        await Users.updateOne(createIdQuery(user._id), userWithoutId);
         return updatedUser;
       } else {
         // User not found in Entra ID, do NOT overwrite fields
@@ -240,7 +267,7 @@ userSchema.statics.customAssertUser = async function ({
       else if (roles.reader) role = 'reader';
 
       const newUser = {
-        _id: new Types.ObjectId(),
+        _id: userId, // Use the userId as _id
         userId,
         firstName: userDetails?.givenName || '',
         lastName: userDetails?.surname || '',

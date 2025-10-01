@@ -2,12 +2,12 @@ import { IScope } from 'app-interfaces';
 import { Types } from 'mongoose';
 
 export interface DefaultPage {
-  name?: string,
-  path?: string,
+  name?: string;
+  path?: string;
 }
 
 export interface IUser {
-  _id: Types.ObjectId;
+  _id: string;
   firstName?: string;
   lastName?: string;
   displayName: string;
@@ -17,7 +17,7 @@ export interface IUser {
   managerId?: string;
   userId: string;
   imgUrl?: string;
-  defaultPage?:DefaultPage[];
+  defaultPage?: DefaultPage[];
   organizationsIds?: string[];
   userCreated?: Date;
   lastLogin?: Date;
