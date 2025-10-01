@@ -19,9 +19,9 @@ function ResponseLeftNavigationTablet() {
 
   return (
     <Flex
-        data-id="000872"
         bg="responseLeftNavigation.bg"
         color="responseLeftNavigation.color"
+        data-id="000872"
         direction="column"
         display={['none', 'flex', 'none']}
         flexShrink={0}
@@ -33,26 +33,26 @@ function ResponseLeftNavigationTablet() {
         w="80px">
       <Flex data-id="000873" flexDirection="column">
         <Box
-          data-id="000874"
           alignItems="center"
           cursor="pointer"
+          data-id="000874"
           display="flex"
           h="80px"
           justifyContent="center"
           onClick={() => navigateTo('/')}>
           <Text
-            data-id="000875"
             color="navigationLeft.organizationNameFontColor"
+            data-id="000875"
             fontSize="16px"
             fontWeight="bold">
             {getInitials(module?.name)}
           </Text>
         </Box>
         <Flex
-          data-id="000876"
           align="center"
           color="responseLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="000876"
           fontSize="14px"
           h="30px"
           mb="20px"
@@ -74,7 +74,7 @@ function ResponseLeftNavigationTablet() {
         <ResponseDetail data-id="000880" response={response} />
       </Flex>
       <Flex data-id="000881" display={['none', 'flex']}>
-        <Icon data-id="000882" as={ConformeSmall} h="30px" mb="20px" w="27px" />
+        <Icon as={ConformeSmall} data-id="000882" h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

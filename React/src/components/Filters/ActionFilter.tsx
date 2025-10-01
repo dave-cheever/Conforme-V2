@@ -17,7 +17,6 @@ function ActionFilter() {
       <Stack data-id="000658" direction="column" ml="4">
         {Object.entries(actions).map(([key, label]) => (
           <Checkbox
-            data-id="000659"
             css={{
               '.chakra-checkbox__control': {
                 borderRadius: '50%',
@@ -33,6 +32,7 @@ function ActionFilter() {
                 },
               },
             }}
+            data-id="000659"
             key={key}
             value={key}>
             <Text data-id="000660">{label as string}</Text>

@@ -11,12 +11,12 @@ function AuditLeftNavigationMobile() {
 
   return (
     <Flex
-        data-id="000207"
         align="center"
         bg="#110b30"
         bottom="0px"
         boxShadow="0px 0px 80px rgba(49, 50, 51, 0.15)"
         color="auditLeftNavigation.color"
+        data-id="000207"
         direction="column"
         display={['block', 'none', 'none']}
         fontWeight="400"
@@ -26,20 +26,20 @@ function AuditLeftNavigationMobile() {
         position="fixed"
         w="full"
         zIndex={12}>
-      <Flex data-id="000208" align="center" flexDirection="row" h="full">
+      <Flex align="center" data-id="000208" flexDirection="row" h="full">
         <Flex
-          data-id="000209"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="000209"
           fontSize="14px"
           h="30px"
           mr={3}
           onClick={() => navigateTo('/audits')}>
           <Flex
-            data-id="000210"
             align="center"
             borderRadius="8px"
+            data-id="000210"
             h="30px"
             justify="center"
             w="30px">

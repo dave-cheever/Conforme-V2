@@ -24,7 +24,7 @@ function AuditLayout({ component: Component }: { component: any }) {
   if (loading && !audit) {
     return (
       <Flex data-id="000188" h="100vh">
-        <Loader data-id="000189" center />
+        <Loader center data-id="000189" />
       </Flex>
     );
   }
@@ -52,13 +52,13 @@ function AuditLayout({ component: Component }: { component: any }) {
           <AuditHeader data-id="000197" />
           {isTabletAndMobile && (
             <IconButton
-              data-id="000198"
               _hover={{ opacity: 0.7 }}
               alignItems="center"
               aria-label="Message"
               bg="responseLayout.iconBg"
               bottom={['75px', '22px']}
               color="white"
+              data-id="000198"
               flexShrink={0}
               h="52px"
               icon={
@@ -83,9 +83,9 @@ function AuditLayout({ component: Component }: { component: any }) {
               w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="000203" />
             </Flex>
-            {device === 'desktop' && <Chat data-id="000204" component="audit" />}
+            {device === 'desktop' && <Chat component="audit" data-id="000204" />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet data-id="000205" component="audit" />}
+          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component="audit" data-id="000205" />}
         </Flex>
         <AuditLeftNavigationMobile data-id="000206" />
       </Flex>
@@ -97,7 +97,7 @@ function AuditWithContext(props) {
   return (
     <AuditProvider data-id="000207" {...props}>
       <ShareProvider data-id="000208">
-        <ChatProvider data-id="000209" component="audit">
+        <ChatProvider component="audit" data-id="000209">
           <AuditLayout data-id="000210" {...props} />
         </ChatProvider>
       </ShareProvider>

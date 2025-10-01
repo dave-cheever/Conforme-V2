@@ -18,8 +18,8 @@ function Checkbox({ control, name, label, tooltip = '', validations = {}, disabl
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="000549"
         control={control}
+        data-id="000549"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, value } = field;
@@ -27,7 +27,6 @@ function Checkbox({ control, name, label, tooltip = '', validations = {}, disabl
           return (
             <Box data-id="000550" id={name} mt="none">
               <ChakraCheckbox
-                data-id="000551"
                 borderColor="form.checkbox.icon.border"
                 colorScheme="form.checkbox.icon"
                 css={{
@@ -38,6 +37,7 @@ function Checkbox({ control, name, label, tooltip = '', validations = {}, disabl
                     height: '21px',
                   },
                 }}
+                data-id="000551"
                 isChecked={value}
                 isDisabled={disabled}
                 onChange={() => onChange(!value)}
@@ -51,8 +51,8 @@ function Checkbox({ control, name, label, tooltip = '', validations = {}, disabl
               </ChakraCheckbox>
               {error && (
                 <Box
-                  data-id="000554"
                   color="form.checkbox.error"
+                  data-id="000554"
                   fontSize={14}
                   ml={1}
                   mt={1}>

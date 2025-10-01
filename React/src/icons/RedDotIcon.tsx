@@ -5,9 +5,9 @@ const RedDotIcon = createIcon({
   path: (
     <g data-id="001034">
       <circle
-        data-id="001035"
         cx="5.5"
         cy="5.5"
+        data-id="001035"
         fill="#A2171E"
         r="4.5"
         stroke="white"

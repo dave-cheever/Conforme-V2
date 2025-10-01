@@ -59,7 +59,7 @@ function RenewalModal() {
         <ModalCloseButton data-id="000281" />
         <ModalBody data-id="000282" minH="100px">
           {loading ? (
-            <Loader data-id="000283" center />
+            <Loader center data-id="000283" />
           ) : !renewedResponse ? (
             <Text data-id="000284">
               You are about to start new review of <b data-id="000285">{response?.trackerItem?.name}</b> {t('tracker item')} for{' '}
@@ -76,23 +76,23 @@ function RenewalModal() {
 
         {!loading && (
           <ModalFooter
-            data-id="000291"
             bg="renewResponseModal.footer.bg"
+            data-id="000291"
             roundedBottom="0.375rem">
             {!renewedResponse ? (
               <>
                 <Button
-                  data-id="000292"
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
+                  data-id="000292"
                   mr={3}
                   onClick={handleRenewalClose}>
                   Cancel
                 </Button>
                 <Button
-                  data-id="000293"
                   bg="renewResponseModal.buttons.primary.bg"
                   color="renewResponseModal.buttons.primary.color"
+                  data-id="000293"
                   onClick={renew}>
                   Start review
                 </Button>
@@ -100,16 +100,16 @@ function RenewalModal() {
             ) : (
               <>
                 <Button
-                  data-id="000294"
                   bg="renewResponseModal.buttons.secondary.bg"
                   color="renewResponseModal.buttons.secondary.color"
+                  data-id="000294"
                   mr={3}
                   onClick={() => navigateTo('/')}>
                   Return to homepage
                 </Button>
                 <Button
-                  data-id="000295"
                   colorScheme="purpleHeart"
+                  data-id="000295"
                   onClick={handleViewRenewed}>
                   View renewed response
                 </Button>

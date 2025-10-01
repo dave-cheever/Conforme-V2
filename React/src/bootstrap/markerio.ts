@@ -1,4 +1,5 @@
 import { MarkerSdk } from '@marker.io/browser';
+
 import { runtimeEnv } from '../utils/runtime-env';
 
 let widget: MarkerSdk | null = null;

@@ -37,8 +37,8 @@ function TextMultilineConfirmInput({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="000408"
         control={control}
+        data-id="000408"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
@@ -49,15 +49,15 @@ function TextMultilineConfirmInput({
             <Box data-id="000409" id={name} w="full">
               {label && (
                 <Flex
-                  data-id="000410"
                   align="center"
+                  data-id="000410"
                   justify="space-between"
                   mb="none"
                   pb={2}
                   pt={2}>
                   <Box
-                    data-id="000411"
                     color={error ? 'textMultilineConfirmInput.labelFont.error' : 'textMultilineConfirmInput.labelFont.normal'}
+                    data-id="000411"
                     fontSize="ssm"
                     fontWeight="bold"
                     left="none"
@@ -84,7 +84,6 @@ function TextMultilineConfirmInput({
               )}
               <Flex data-id="000415">
                 <Textarea
-                  data-id="000416"
                   _active={{
                     bg: disabled ? 'textMultilineConfirmInput.disabled.bg' : 'textMultilineConfirmInput.activeBg',
                   }}
@@ -107,6 +106,7 @@ function TextMultilineConfirmInput({
                   borderWidth={showButtons ? '1px 0 1px 1px' : '1px'}
                   color="textMultilineConfirmInput.font"
                   cursor="pointer"
+                  data-id="000416"
                   defaultValue={tempValue}
                   h="40px"
                   isDisabled={disabled}
@@ -116,13 +116,13 @@ function TextMultilineConfirmInput({
                   onChange={(event) => setTempValue(event.target.value)}
                   ref={inputRef} />
                 {showButtons && (
-                  <Flex data-id="000417" cursor="pointer" direction="column">
+                  <Flex cursor="pointer" data-id="000417" direction="column">
                     <Flex
-                      data-id="000418"
                       align="center"
                       bgColor="textMultilineConfirmInput.approve.bg"
                       borderRadius="0 8px 0 0"
                       color="textMultilineConfirmInput.approve.font"
+                      data-id="000418"
                       grow={1}
                       justify="center"
                       onClick={() =>
@@ -134,11 +134,11 @@ function TextMultilineConfirmInput({
                       <CheckIcon data-id="000419" stroke="textMultilineConfirmInput.approve.font" />
                     </Flex>
                     <Flex
-                      data-id="000420"
                       align="center"
                       bgColor="textMultilineConfirmInput.reject.bg"
                       borderRadius="0 0 8px 0"
                       color="textMultilineConfirmInput.reject.font"
+                      data-id="000420"
                       grow={1}
                       justify="center"
                       onClick={() => {
@@ -154,8 +154,8 @@ function TextMultilineConfirmInput({
               </Flex>
               {error && (
                 <Box
-                  data-id="000422"
                   color="textMultilineConfirmInput.error"
+                  data-id="000422"
                   fontSize={14}
                   ml={1}>
                   {error.message}

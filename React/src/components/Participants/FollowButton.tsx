@@ -99,8 +99,8 @@ function FollowButton({ isMobile = false }) {
     if (isFollower) {
       return (
         <UnFollowIcon
-            data-id="000571"
             _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+            data-id="000571"
             fill="transparent"
             fontSize="15px"
             stroke="reasponseHeader.buttonLightColor" />
@@ -109,8 +109,8 @@ function FollowButton({ isMobile = false }) {
 
     return (
       <FollowIcon
-          data-id="000572"
           _groupHover={{ stroke: 'reasponseHeader.buttonLightColorHover' }}
+          data-id="000572"
           fill="transparent"
           fontSize="15px"
           stroke="reasponseHeader.buttonLightColor" />

@@ -13,9 +13,9 @@ function AuditLeftNavigationTablet() {
 
   return (
     <Flex
-        data-id="000193"
         bg="auditLeftNavigation.bg"
         color="auditLeftNavigation.color"
+        data-id="000193"
         direction="column"
         display={['none', 'flex', 'none']}
         flexShrink={0}
@@ -27,26 +27,26 @@ function AuditLeftNavigationTablet() {
         w="80px">
       <Flex data-id="000194" flexDirection="column">
         <Box
-          data-id="000195"
           alignItems="center"
           cursor="pointer"
+          data-id="000195"
           display="flex"
           h="80px"
           justifyContent="center"
           onClick={() => navigateTo('/')}>
           <Text
-            data-id="000196"
             color="auditLeftNavigation.organizationNameFontColor"
+            data-id="000196"
             fontSize="16px"
             fontWeight="bold">
             {organizationConfig?.name.charAt(0)}
           </Text>
         </Box>
         <Flex
-          data-id="000197"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="000197"
           fontSize="14px"
           h="30px"
           mb="20px"
@@ -67,7 +67,7 @@ function AuditLeftNavigationTablet() {
         </Flex>
       </Flex>
       <Flex data-id="000201" display={['none', 'flex']}>
-        <Icon data-id="000202" as={ConformeSmall} h="30px" mb="20px" w="27px" />
+        <Icon as={ConformeSmall} data-id="000202" h="30px" mb="20px" w="27px" />
       </Flex>
     </Flex>
   );

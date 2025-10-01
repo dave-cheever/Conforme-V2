@@ -45,11 +45,11 @@ function NavigationLeftItemTablet({
   
   return (
     <Box
-        data-id="000577"
         _hover={{
           cursor: 'pointer',
         }}
         alignItems="center"
+        data-id="000577"
         display="flex"
         fontSize="md"
         fontWeight="normal"
@@ -58,9 +58,8 @@ function NavigationLeftItemTablet({
         mt="5px"
         pos="relative"
         w="auto">
-      <Flex data-id="000578" align="center" h="100%">
+      <Flex align="center" data-id="000578" h="100%">
         <Flex
-          data-id="000579"
           align="center"
           bg={
             menuItem.subSections
@@ -71,6 +70,7 @@ function NavigationLeftItemTablet({
                 ? 'navigationLeftItemTablet.selectedLabelBg'
                 : 'navigationLeftItemTablet.unselectedLabelBg'
           }
+          data-id="000579"
           h="30px"
           justifyContent="center"
           ml="0px"
@@ -90,8 +90,8 @@ function NavigationLeftItemTablet({
           rounded="8px"
           w="30px">
           <Icon
-            data-id="000580"
             as={icon}
+            data-id="000580"
             fill="#ffffff"
             h="15px"
             stroke="#ffffff"
@@ -100,9 +100,9 @@ function NavigationLeftItemTablet({
       </Flex>
       {filtersOpen && menuItem.url === '/' && (
         <Box
-          data-id="000581"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="000581"
           ml="80px"
           pos="absolute"
           py="15px"
@@ -129,9 +129,9 @@ function NavigationLeftItemTablet({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
-          data-id="000584"
           bg="white"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="000584"
           maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
           ml="18rem"
           overflowY="auto"

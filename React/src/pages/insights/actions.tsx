@@ -274,7 +274,7 @@ function ActionsInsights() {
         <Text data-id="000683">{error.message}</Text>
       ) : loading ? (
         <Box data-id="000684" h="100vh">
-          <Loader data-id="000685" center />
+          <Loader center data-id="000685" />
         </Box>
       ) : (
         <>
@@ -289,8 +289,8 @@ function ActionsInsights() {
           >
             {actionsStatsCounts.map((filter) => (
               <InsightsCard
-                data-id="000687"
                 count={filter.actions}
+                data-id="000687"
                 key={filter.status}
                 onSelect={setSelectedActionsStatsCount}
                 selected={selectedActionsStatsCount === filter.status}
@@ -300,21 +300,21 @@ function ActionsInsights() {
             ))}
           </Flex>
           <Text
-            data-id="000688"
             color={actionsStatsCounts.find((filter) => filter.status === selectedActionsStatsCount)?.color}
+            data-id="000688"
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}
           >
             {actionsInsightsTypes[selectedActionsStatsCount]}{' '}
-            <Text data-id="000689" as="span" color="insights.secondaryText">
+            <Text as="span" color="insights.secondaryText" data-id="000689">
               actions
             </Text>
           </Text>
           <InsightsChart data-id="000690" option={echartsOption} />
           <InsightsDetailedStats
-            data-id="000691"
             businessUnits={businessUnits}
+            data-id="000691"
             insightsType="actions"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

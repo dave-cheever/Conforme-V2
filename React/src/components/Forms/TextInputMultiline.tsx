@@ -41,8 +41,8 @@ function TextInputMultiline({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="000382"
         control={control}
+        data-id="000382"
         name={name}
         render={({ field, fieldState }) => {
           const { onChange, onBlur, value } = field;
@@ -51,15 +51,15 @@ function TextInputMultiline({
             <Box data-id="000383" id={name} mt="none" w="full">
               {label && (
                 <Flex
-                  data-id="000384"
                   align="center"
+                  data-id="000384"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
-                    data-id="000385"
                     color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
+                    data-id="000385"
                     fontSize="11px"
                     fontWeight="bold"
                     left="none"
@@ -85,7 +85,6 @@ function TextInputMultiline({
                 </Flex>
               )}
               <Textarea
-                data-id="000389"
                 _active={{
                   bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
                 }}
@@ -106,6 +105,7 @@ function TextInputMultiline({
                 borderWidth="1px"
                 color="textInput.font"
                 cursor="pointer"
+                data-id="000389"
                 fontSize="smm"
                 h="100px"
                 isDisabled={disabled}
@@ -116,7 +116,7 @@ function TextInputMultiline({
                 placeholder={placeholder}
                 value={value || ''} />
               {error && (
-                <Box data-id="000390" color="textInput.error" fontSize={14} ml={1}>
+                <Box color="textInput.error" data-id="000390" fontSize={14} ml={1}>
                   {error.message}
                 </Box>
               )}

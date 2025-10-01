@@ -15,20 +15,20 @@ function ParticipantListItem({
 }) {
   return (
     <Flex
-      data-id="000602"
       align="center"
       cursor="pointer"
+      data-id="000602"
       key={user.userId}
       onClick={() => onSelectParticipant(user)}
       w="full">
       <Flex
-        data-id="000603"
         align="center"
         basis="20px"
         bg={`participantListItem.checkbox.${isSelected ? 'selected' : 'nonSelected'}`}
         borderColor="participantListItem.checkbox.border"
         borderRadius="full"
         borderWidth="1px"
+        data-id="000603"
         h="20px"
         justify="center"
         pt="1"
@@ -37,8 +37,8 @@ function ParticipantListItem({
       </Flex>
       <Flex data-id="000605" direction="column" ml="2">
         <Text
-          data-id="000606"
           color="participantListItem.font"
+          data-id="000606"
           fontSize="smm"
           fontWeight="semibold"
           wordBreak="break-word">

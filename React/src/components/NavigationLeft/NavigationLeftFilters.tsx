@@ -37,16 +37,16 @@ function NavigationLeftFilters({
 
   return (
     <Flex
-    data-id="000537"
     borderRadius="6px"
+    data-id="000537"
     direction="column"
     key={filter[0]}
   >
       {filter[0] === 'comingUp' && (
         <Flex data-id="000538" py={2}>
           <Flex
-            data-id="000539"
             bg="navigationLeftFilters.seperator"
+            data-id="000539"
             h="1px"
             ml="25px"
             opacity="0.3"
@@ -56,7 +56,6 @@ function NavigationLeftFilters({
         </Flex>
       )}
       <Flex
-        data-id="000540"
         align="center"
         bg={
           (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
@@ -75,6 +74,7 @@ function NavigationLeftFilters({
             : 'navigationLeftFilters.unselectedFontColor'
         }
         cursor="pointer"
+        data-id="000540"
         fontSize="14px"
         fontWeight="400"
         justify="space-between"
@@ -90,10 +90,10 @@ function NavigationLeftFilters({
         right={[0, '37px']}
         w="100%"
       >
-        <Flex data-id="000541" align="center">
+        <Flex align="center" data-id="000541">
           <Box
-            data-id="000542"
             bg={`navigationLeftFilters.${filter[0]}`}
+            data-id="000542"
             h="8px"
             mr={8}
             rounded="full"
@@ -102,7 +102,6 @@ function NavigationLeftFilters({
           {responseStatuses[filter[0]]}
         </Flex>
         <Flex
-          data-id="000543"
           align="center"
           bg={
             (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
@@ -122,6 +121,7 @@ function NavigationLeftFilters({
               ? '#110B30'
               : '#CBD5E0'
           }
+          data-id="000543"
           fontSize="11px"
           fontWeight="600"
           h="20px"

@@ -218,17 +218,17 @@ function Categories() {
   return (
     <>
       <AdminModal
-        data-id="000338"
         collection="category"
+        data-id="000338"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetCategory : undefined}
       >
-        <Flex data-id="000339" align="flex-start" direction="column" w="full">
+        <Flex align="flex-start" data-id="000339" direction="column" w="full">
           <TextInput
-            data-id="000340"
             control={control}
+            data-id="000340"
             initialValue={currentCategoryName.toLowerCase()}
             label="Name"
             name="name"
@@ -242,13 +242,13 @@ function Categories() {
         </Flex>
       </AdminModal>
       <Header
-        data-id="000341"
-        breadcrumbs={['Admin', 'Categories']} mobileBreadcrumbs={['Categories']} pageLabel="Category" />
+        breadcrumbs={['Admin', 'Categories']}
+        data-id="000341" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
       <Box data-id="000342" h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
         <Flex data-id="000343" h="full" px={['25px', 0]}>
           <Box     
-            data-id="000344"
             border="1px solid #CBD5E0"
+            data-id="000344"
             overflow="hidden"
             w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
             h="fit-content"
@@ -283,16 +283,16 @@ function Categories() {
               )}
             </AdminTableHeader>
             <Stack
-              data-id="000348"
               bg="white"
               borderBottomRadius="20px"
+              data-id="000348"
               h={loading ? 'full' : 'fit-content'}
               minH="full"
               pb="3"
               spacing="1px"
             >
               {loading ? (
-                <Loader data-id="000349" center />
+                <Loader center data-id="000349" />
               ) : categories?.length > 0 ? (
                 categories?.map((category, index) => (
                   <AdminTableRow
@@ -312,15 +312,15 @@ function Categories() {
             </Stack>
           </Box>
           {device === 'desktop' && module?.type === 'tracker' && (
-            <Flex data-id="000352" alignItems="center" flexDirection="column" w={['100%', '220px']}>
+            <Flex alignItems="center" data-id="000352" flexDirection="column" w={['100%', '220px']}>
               <Box data-id="000353" w="100%">
                 {categories && (
                   <BarChart
-                    data-id="000354"
                     data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
                       _id,
                       count: trackerItemsResponsesCount,
                     }))}
+                    data-id="000354"
                     label="Categories"
                   />
                 )}

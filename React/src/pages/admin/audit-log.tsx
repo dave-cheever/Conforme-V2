@@ -141,7 +141,7 @@ useEffect(() => {
 
   return (
     <>
-      <Header data-id="000305" breadcrumbs={['Admin', 'Audit log']} />
+      <Header breadcrumbs={['Admin', 'Audit log']} data-id="000305" />
       <Box
         data-id="000306"
         h="calc(100vh - 150px)"
@@ -149,28 +149,28 @@ useEffect(() => {
         p={["10px", "30px"]}
         pt="0px">
         <Flex
-          data-id="000307"
           bg="white"
           borderRadius="20px"
+          data-id="000307"
           flexDir="column"
           h="fit-content"
           pt="3"
           px="6">
           <AuditLogComponent
-            data-id="000308"
             auditLogs={auditLogs}
+            data-id="000308"
             isLoadingMore={isLoadingMore}
             loading={loading} />
           {!loading &&
             (totalAuditLogs === countAuditLogs ? (
-              <Text data-id="000309" color="auditLog.noLogs" mb={4}>
+              <Text color="auditLog.noLogs" data-id="000309" mb={4}>
                 No more logs
               </Text>
             ) : (
               <Text
-                data-id="000310"
                 color="auditLog.loadMore"
                 cursor="pointer"
+                data-id="000310"
                 mb={4}
                 onClick={() => {
                   setSkip((prev) => prev + 5);

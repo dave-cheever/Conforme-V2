@@ -245,7 +245,6 @@ function BusinessUnits() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
-        data-id="000393"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -253,6 +252,7 @@ function BusinessUnits() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
+        data-id="000393"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -264,8 +264,8 @@ function BusinessUnits() {
         w="full"
       >
         <Flex
-          data-id="000394"
           cursor="pointer"
+          data-id="000394"
           flexDir="column"
           pl={1}
           w={['70%', '30%']}
@@ -280,12 +280,12 @@ function BusinessUnits() {
           </Box>
         )}
         {module?.type === 'tracker' && (
-          <Flex data-id="000397" align="center" w={['15%', '20%']}>
+          <Flex align="center" data-id="000397" w={['15%', '20%']}>
             <Text data-id="000398">{businessUnit.trackerItemsResponsesCount || 0}</Text>
             <Tooltip data-id="000399" fontSize="md" label="Show Items">
               <ArrowCount
-                data-id="000400"
                 cursor="pointer"
+                data-id="000400"
                 h="10px"
                 ml="13px"
                 onClick={() => {
@@ -300,12 +300,12 @@ function BusinessUnits() {
         )}
         {module?.type === 'audits' && (
           <>
-            <Flex data-id="000401" align="center" w={['40%', '20%']}>
+            <Flex align="center" data-id="000401" w={['40%', '20%']}>
               <Text data-id="000402">{businessUnit.totalAnswersCount || 0}</Text>
               <Tooltip data-id="000403" fontSize="md" label="Show Items">
                 <ArrowCount
-                  data-id="000404"
                   cursor="pointer"
+                  data-id="000404"
                   h="10px"
                   ml="13px"
                   onClick={() => {
@@ -317,12 +317,12 @@ function BusinessUnits() {
                 />
               </Tooltip>
             </Flex>
-            <Flex data-id="000405" align="center" w={['22%', '20%']}>
+            <Flex align="center" data-id="000405" w={['22%', '20%']}>
               <Text data-id="000406">{businessUnit.totalAuditsCount || 0}</Text>
               <Tooltip data-id="000407" fontSize="md" label="Show Items">
                 <ArrowCount
-                  data-id="000408"
                   cursor="pointer"
+                  data-id="000408"
                   h="10px"
                   ml="13px"
                   onClick={() => {
@@ -343,8 +343,8 @@ function BusinessUnits() {
   return (
     <>
       <AdminModal
-        data-id="000409"
         collection={t('business unit')}
+        data-id="000409"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
@@ -352,8 +352,8 @@ function BusinessUnits() {
       >
         <Stack data-id="000410" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
-            data-id="000411"
             control={control}
+            data-id="000411"
             initialValue={currentBusinessUnitName.toLowerCase()}
             label="Name"
             name="name"
@@ -364,27 +364,27 @@ function BusinessUnits() {
               uniqueValue: businessUnits.map(({ name }) => name.toLowerCase()),
             }}
           />
-          <PeoplePicker data-id="000412" control={control} label="Owner" name="ownerId" placeholder="Name" showAsDropdown={false} />
+          <PeoplePicker control={control} data-id="000412" label="Owner" name="ownerId" placeholder="Name" showAsDropdown={false} />
         </Stack>
       </AdminModal>
       <Header
-        data-id="000413"
         breadcrumbs={['Admin', pluralize(capitalize(t('business unit')))]}
+        data-id="000413"
         mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
         pageLabel={capitalize(t('business unit'))}
       />
       <Box
-        data-id="000414"
         bg="auditsList.bg"
         borderRadius="10px"
+        data-id="000414"
         h="calc(100vh - 160px)"
         p={['0', '0 25px 30px 30px']}
       >
         <Flex data-id="000415" h="full" px={['25px', 0]}>
           <Box
-            data-id="000416"
             border="1px solid"
             borderColor="auditsList.headerBorderColor"
+            data-id="000416"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
@@ -454,9 +454,9 @@ function BusinessUnits() {
               </>
             )}
           </AdminTableHeader>
-          <Box data-id="000423" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000423" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader data-id="000424" center />
+              <Loader center data-id="000424" />
             ) : businessUnits?.length > 0 ? (
               businessUnits?.map(renderBusinessUnitRow)
             ) : (

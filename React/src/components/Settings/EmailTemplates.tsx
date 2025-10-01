@@ -87,7 +87,7 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
   if (loading) {
     return (
       <Flex data-id="000475" h="full" w={['full', 'full', '550px']}>
-        <Loader data-id="000476" center />
+        <Loader center data-id="000476" />
       </Flex>
     );
   }
@@ -103,8 +103,8 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
         {emailTemplates?.settings?.length > 0 ? (
           emailTemplates?.settings?.map((template) => (
             <EmailTemplate
-              data-id="000479"
               active={selectedTemplate?._id === template?._id}
+              data-id="000479"
               key={template?._id}
               setSelectedTemplate={setSelectedTemplate}
               template={template}
@@ -117,8 +117,8 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
       <Modal data-id="000481" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay data-id="000482" />
         <ModalContent
-          data-id="000483"
           borderRadius="0px"
+          data-id="000483"
           h="100vh"
           margin="0px"
           maxW="700px"
@@ -128,7 +128,7 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
           w="full">
           <ModalHeader data-id="000484" fontSize="20px">Edit "{selectedTemplate?.label}” template</ModalHeader>
           <ModalCloseButton data-id="000485" />
-          <ModalBody data-id="000486" bg="emailTemplates.bg" p="0px">
+          <ModalBody bg="emailTemplates.bg" data-id="000486" p="0px">
             <EmailEditor
               data-id="000487"
               options={selectedTemplate?.options}
@@ -138,9 +138,9 @@ function EmailTemplates({ selectedTemplate, setSelectedTemplate, isOpen, onClose
 
           <ModalFooter data-id="000488" mr="auto">
             <Button
-              data-id="000489"
               borderRadius="10px"
               colorScheme="purpleHeart"
+              data-id="000489"
               fontSize="14px"
               h="35px"
               isDisabled={html === selectedTemplate?.value}

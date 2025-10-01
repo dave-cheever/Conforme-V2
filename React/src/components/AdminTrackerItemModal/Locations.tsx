@@ -50,8 +50,8 @@ function LocationsForm() {
           w={['full', 'calc(100% - 80px)']}>
           <Flex data-id="000554" flexDir="column" pt="3" w="full">
             <Text
-              data-id="000555"
               color="locationsFormModal.filterTextColor"
+              data-id="000555"
               fontFamily="Helvetica"
               fontSize="ssm"
               fontWeight="bold"
@@ -60,17 +60,17 @@ function LocationsForm() {
               Search location by name
             </Text>
             <InputGroup
-              data-id="000556"
               border="1px solid"
               borderColor="locationsFormModal.inputBorderColor"
+              data-id="000556"
               h="42px"
               rounded="10px">
               <InputLeftElement data-id="000557" pointerEvents="none">
-                <SearchIcon data-id="000558" color="locationsFormModal.searchIcon" />
+                <SearchIcon color="locationsFormModal.searchIcon" data-id="000558" />
               </InputLeftElement>
               <Input
-                data-id="000559"
                 color="locationsFormModal.searchBarText"
+                data-id="000559"
                 fontSize="smm"
                 lineHeight="18px"
                 onChange={(e) => setSearchText(e.target.value)}
@@ -81,7 +81,6 @@ function LocationsForm() {
         </Flex>
         <Flex data-id="000560" mb="30px">
           <Checkbox
-            data-id="000561"
             borderColor="locationsFormModal.checkbox.unchecked.border"
             colorScheme="purpleHeart"
             css={{
@@ -108,6 +107,7 @@ function LocationsForm() {
                 color: checkedLocationIds.length === locations.length ? '#282F36' : '#818197',
               },
             }}
+            data-id="000561"
             icon={checkedLocationIds.length === locations.length ? <CheckIcon data-id="000562" stroke="white" strokeWidth="1.5" /> : <MinusIcon data-id="000563" />}
             isChecked={checkedLocationIds.length > 0}
             key="all"
@@ -117,14 +117,13 @@ function LocationsForm() {
           </Checkbox>
         </Flex>
         <CheckboxGroup
-          data-id="000564"
           colorScheme="green"
+          data-id="000564"
           onChange={(e: any) => handleCheckBoxGroupChange(e)}
           value={checkedLocationIds || []}>
-          <VStack data-id="000565" alignItems="flex-start">
+          <VStack alignItems="flex-start" data-id="000565">
             {filteredLocations.map((location, index) => (
               <Checkbox
-                data-id="000566"
                 borderColor="locationsFormModal.checkbox.unchecked.border"
                 colorScheme="purpleHeart"
                 css={{
@@ -147,6 +146,7 @@ function LocationsForm() {
                     color: checkedLocationIds?.includes(location._id!) ? '#282F36' : '#818197',
                   },
                 }}
+                data-id="000566"
                 icon={<CheckIcon data-id="000567" stroke="white" strokeWidth="1.5" />}
                 key={index}
                 value={location._id}>

@@ -4,7 +4,6 @@ import Dropzone, { FileRejection } from 'react-dropzone';
 import { gql, useMutation } from '@apollo/client';
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import { runtimeEnv } from '../../utils/runtime-env';
 import { t } from 'i18next';
 
 import { toastFailed } from '../../bootstrap/config';
@@ -12,6 +11,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useResponseContext } from '../../contexts/ResponseProvider';
 import { Asterisk, UploadIcon } from '../../icons';
 import { listSupportedFileTypes } from '../../utils/helpers';
+import { runtimeEnv } from '../../utils/runtime-env';
 import Can, { isPermitted } from '../can';
 import DocumentUploaded from '../Documents/DocumentUploaded';
 import DocumentUploading from './DocumentUploading';
@@ -95,10 +95,10 @@ function EvidenceExpected({ evidence }) {
 
   return (
     <Flex data-id="000261" direction="column" maxW="342px" w="full">
-      <Flex data-id="000262" align="center" mb={2} mt={3}>
+      <Flex align="center" data-id="000262" mb={2} mt={3}>
         <Box
-          data-id="000263"
           color="evidence.fontColor"
+          data-id="000263"
            fontSize={["14px", "11px"]}
           fontWeight="700"
           lineHeight="16px"
@@ -117,11 +117,11 @@ function EvidenceExpected({ evidence }) {
       {evidence.uploaded?.id ? (
         <Flex data-id="000265" maxW="380px">
           <DocumentUploaded
-            data-id="000266"
             callback={async () => {
               await removeEvidence();
               refetch();
             }}
+            data-id="000266"
             deleteModalMessage={`Are you sure you wish to delete ${evidence.uploaded.name
               }? It will reset the status for the last iteration to ${t('non-compliant')}.`}
             document={evidence.uploaded}
@@ -144,8 +144,8 @@ function EvidenceExpected({ evidence }) {
         <DocumentUploading data-id="000267" documentName={evidence.name} />
       ) : (
         <Can
-          data-id="000268"
           action="responses.edit"
+          data-id="000268"
           data={{ response }}
           // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (
@@ -199,8 +199,8 @@ function EvidenceExpected({ evidence }) {
       )}
       {status === 'rejected' && (
         <Flex
-          data-id="000276"
           color="red.500"
+          data-id="000276"
           fontSize="12px"
           fontWeight="bold"
           mt={2}>

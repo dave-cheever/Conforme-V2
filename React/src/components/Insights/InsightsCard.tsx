@@ -19,15 +19,15 @@ function InsightsCard({
 }) {
   return (
     <Flex
-      data-id="000486"
       align="center"
       cursor="pointer"
+      data-id="000486"
       direction="column"
       mr="20px"
       onClick={() => onSelect(status)}>
       <Box
-        data-id="000487"
         bg={`insightsCard.types.${status}`}
+        data-id="000487"
         h="250px"
         overflow="hidden"
         position="relative"
@@ -49,16 +49,16 @@ function InsightsCard({
           py="25px"
           textAlign="left"
           zIndex="3">
-          <Text data-id="000490" color="insightsCard.color" fontSize="14px">
+          <Text color="insightsCard.color" data-id="000490" fontSize="14px">
             {type === 'audits' ? auditsInsightsTypes[status] : actionsInsightsTypes[status]}
           </Text>
-          <Heading data-id="000491" color="insightsCard.color" fontSize="100px">
+          <Heading color="insightsCard.color" data-id="000491" fontSize="100px">
             {count}
           </Heading>
           <Spacer data-id="000492" />
           {selected && <Box
-            data-id="000493"
             bg="insightsCard.color"
+            data-id="000493"
             h="7px"
             mt="22px"
             rounded="100px"
@@ -74,8 +74,8 @@ function InsightsCard({
           width="39px"
           zIndex="2">
           <path
-            data-id="000495"
-            d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z" />
+            d="M19.5 15L0.880456 -3.50736e-06L38.1195 -2.51817e-07L19.5 15Z"
+            data-id="000495" />
         </Icon>
       )}
     </Flex>

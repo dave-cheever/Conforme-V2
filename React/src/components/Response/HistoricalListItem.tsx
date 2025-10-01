@@ -42,25 +42,25 @@ function HistoricalListItem({ response }: { response: IResponse }) {
 
   return (
     <Box
-        data-id="000303"
         bg="historicalListItem.bg"
         borderBottomColor="historicalListItem.borderColor"
         borderBottomWidth="1px"
         cursor="pointer"
+        data-id="000303"
         onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
         p="15px 25px"
         py={[1, 0]}
         w="full">
       <Flex
-        data-id="000304"
         align="center"
+        data-id="000304"
         h={['full', '73px']}
         position="relative"
         w="full">
         <Flex
-          data-id="000305"
           align="flex-start"
           color="historicalListItem.fontColor"
+          data-id="000305"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           lineHeight="18px"
@@ -71,8 +71,8 @@ function HistoricalListItem({ response }: { response: IResponse }) {
           {response.trackerItem.name}
         </Flex>
         <Flex
-          data-id="000306"
           color="historicalListItem.fontColor"
+          data-id="000306"
           fontSize="14px"
           fontWeight={active ? '700' : '400'}
           opacity="1"
@@ -82,15 +82,15 @@ function HistoricalListItem({ response }: { response: IResponse }) {
         <Box data-id="000307" pr="20px" w="25%">
           <Skeleton data-id="000308" isLoaded={!responsibleLoading} rounded="full">
             {responsibleUser ? (
-              <Flex data-id="000309" align="center" direction="row">
+              <Flex align="center" data-id="000309" direction="row">
                 <Avatar
                   data-id="000310"
                   name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                   size="xs"
                   src={responsibleUser?.imgUrl} />
                 <Text
-                  data-id="000311"
                   color="historicalListItem.fontColor"
+                  data-id="000311"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"
@@ -113,11 +113,11 @@ function HistoricalListItem({ response }: { response: IResponse }) {
         <Box data-id="000313" pr="20px" w="25%">
           <Skeleton data-id="000314" isLoaded={!responsibleLoading} rounded="full">
             {lastUpdatedBy ? (
-              <Flex data-id="000315" align="center" direction="row">
+              <Flex align="center" data-id="000315" direction="row">
                 <Avatar data-id="000316" name={lastUpdatedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={lastUpdatedBy?.imgUrl} />
                 <Text
-                  data-id="000317"
                   color="historicalListItem.fontColor"
+                  data-id="000317"
                   fontSize="13px"
                   fontWeight={active ? '700' : '400'}
                   lineHeight="17px"

@@ -4,14 +4,14 @@ const AddIcon = createIcon({
   path: (
     <>
       <path
-        data-id="000048"
         d="M9.1042 0.629102V21.3710"
+        data-id="000048"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
-        data-id="000049"
         d="M0.33334 9H22.0751"
+        data-id="000049"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />

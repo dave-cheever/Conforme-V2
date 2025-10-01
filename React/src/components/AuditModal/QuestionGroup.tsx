@@ -19,8 +19,8 @@ function QuestionGroup({
 }: QuestionGroupProps) {
   return (
     <Box
-      data-id="000448"
       cursor="pointer"
+      data-id="000448"
       maxH="400px"
       onClick={() => setExpandedItem(() => (isExpanded ? '' : id))}
       w="full">
@@ -30,16 +30,15 @@ function QuestionGroup({
         in={isExpanded}
         startingHeight="90px">
         <Box
-          data-id="000450"
           bg="white"
           borderRadius="10px"
           boxShadow="-1px 1px 9px 1px rgba(0 0 0  0.5)"
+          data-id="000450"
           h="full"
           p="20px"
           w="full">
           <Flex data-id="000451" justify="space-between">
             <Flex
-              data-id="000452"
               align="center"
               bg={
                 questionAnswered === 0
@@ -50,6 +49,7 @@ function QuestionGroup({
               }
               border={questionAnswered === 0 ? '1px solid #CBCCCD' : ''}
               borderRadius="50%"
+              data-id="000452"
               h="5"
               justify="center"
               mr={5}
@@ -57,29 +57,29 @@ function QuestionGroup({
               {questionAnswered === 0 ? (
                 ''
               ) : questionAnswered < totalQuestion ? (
-                <MinusIcon data-id="000453" color="white" h="2.5" w="2.5" />
+                <MinusIcon color="white" data-id="000453" h="2.5" w="2.5" />
               ) : (
-                <CheckIcon data-id="000454" color="white" h="2.5" w="2.5" />
+                <CheckIcon color="white" data-id="000454" h="2.5" w="2.5" />
               )}
             </Flex>
             <Text
-              data-id="000455"
               color="navigationTop.bg"
+              data-id="000455"
               flexGrow={1}
               lineHeight="20px">
               {name}
             </Text>
             <Text
-              data-id="000456"
               color="auditModal.menu.text"
+              data-id="000456"
               lineHeight="20px"
               w={32}>
               {questionAnswered} / {totalQuestion} Completed
             </Text>
           </Flex>
           <Text
-            data-id="000457"
             color="auditModal.menu.text"
+            data-id="000457"
             fontSize="sm"
             fontWeight={400}
             mt={3}

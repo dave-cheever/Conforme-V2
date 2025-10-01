@@ -264,8 +264,8 @@ function TrackerItemsAdmin() {
   return (
     <>
       <Modal
-        data-id="000518"
         blockScrollOnMount={false}
+        data-id="000518"
         isOpen={adminModalState !== 'closed'}
         key={trackerItem._id}
         onClose={() => {}}
@@ -284,13 +284,13 @@ function TrackerItemsAdmin() {
         )}
       </Modal>
       <Header
-        data-id="000523"
         breadcrumbs={['Admin', pluralize(t('tracker item'))]}
+        data-id="000523"
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}
       />
       <Box data-id="000524" h={['full', 'calc(100vh - 200px)']} overflow="auto" p="0 25px 30px 30px">
-        <Box data-id="000525" border="1px solid #CBD5E0" h="100%" overflow="hidden" w="100%">
+        <Box border="1px solid #CBD5E0" data-id="000525" h="100%" overflow="hidden" w="100%">
           <AdminTableHeader data-id="000526">
             <AdminTableHeaderElement
               data-id="000527"
@@ -327,7 +327,7 @@ function TrackerItemsAdmin() {
                   sortOrder={sortType === 'regulatoryBody' ? sortOrder : undefined}
                   w="calc(100% / 4)"
                 />
-                <Box data-id="000530" color="gray.500" textAlign="right" w="calc(100% / 4)">
+                <Box color="gray.500" data-id="000530" textAlign="right" w="calc(100% / 4)">
                   Actions
                 </Box>
               </>
@@ -340,9 +340,9 @@ function TrackerItemsAdmin() {
             </Alert>
           )}
           <Stack
-            data-id="000533"
             bg="white"
             borderBottomRadius="20px"
+            data-id="000533"
             gap="0px"
             h={error ? 'calc(100% - 100px)' : 'calc(100% - 60px)'}
             overflow="auto"
@@ -356,13 +356,13 @@ function TrackerItemsAdmin() {
             >
               {sortedTrackerItems.map((trackerItem, index) => (
                 <Flex
-                  data-id="000535"
                   _hover={{ bg: '#F5F7FA' }}
                   align="center"
                   bg={index % 2 === 0 ? 'white' : 'gray.50'}
                   borderBottom="1px solid"
                   borderColor="gray.200"
                   cursor="pointer"
+                  data-id="000535"
                   fontSize="14px"
                   h="60px"
                   key={trackerItem._id}
@@ -375,12 +375,12 @@ function TrackerItemsAdmin() {
                     <Text data-id="000537" noOfLines={1}>
                       {trackerItem.name || `Unnamed ${t('tracker item')}`}
                     </Text>
-                    <Flex data-id="000538" align="center" mt="1">
-                      <Text data-id="000539" color="gray.500" fontSize="11px">
+                    <Flex align="center" data-id="000538" mt="1">
+                      <Text color="gray.500" data-id="000539" fontSize="11px">
                         {trackerItem.category?.name}
                       </Text>
                       {!isMobile && !trackerItem.published && (
-                        <Box data-id="000540" bg="gray.600" borderRadius="md" color="white" fontSize="11px" ml={2} px={2} py={1}>
+                        <Box bg="gray.600" borderRadius="md" color="white" data-id="000540" fontSize="11px" ml={2} px={2} py={1}>
                           Draft
                         </Box>
                       )}
@@ -394,9 +394,9 @@ function TrackerItemsAdmin() {
                   </Text>
                   <Flex data-id="000543" gap={4} justify="flex-end" w="calc(100% / 4)">
                     <Copy
-                      data-id="000544"
                       _hover={{ stroke: '#FFFFFF' }}
                       cursor="pointer"
+                      data-id="000544"
                       onClick={(e) => {
                         e.stopPropagation();
                         openModal('clone', trackerItem);
@@ -404,9 +404,9 @@ function TrackerItemsAdmin() {
                       stroke="#282F36"
                     />
                     <Trashcan
-                      data-id="000545"
                       _hover={{ stroke: '#FFFFFF' }}
                       cursor="pointer"
+                      data-id="000545"
                       onClick={(e) => {
                         e.stopPropagation();
                         openModal('delete', trackerItem);
@@ -416,10 +416,10 @@ function TrackerItemsAdmin() {
                   </Flex>
                 </Flex>
               ))}
-              {loading && <Loader data-id="000546" center h="60px" key="infinite-loader" />}
+              {loading && <Loader center data-id="000546" h="60px" key="infinite-loader" />}
             </InfiniteScrollComponent>
             {allLoaded && trackerItems.length === 0 && !loading && (
-              <Text data-id="000547" color="gray.500" py={8} textAlign="center">
+              <Text color="gray.500" data-id="000547" py={8} textAlign="center">
                 No tracker items found.
               </Text>
             )}

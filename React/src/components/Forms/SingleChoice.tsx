@@ -31,15 +31,15 @@ function SingleChoices({ name, label, required, tooltip = '', defaultvalue, opti
     <Box data-id="000330" id={name} w="full">
       {label && (
         <Flex
-          data-id="000331"
           align="center"
+          data-id="000331"
           justify="space-between"
           mb="none"
           pb={2}
           pt={2}>
           <Box
-            data-id="000332"
             color="singleChoices.labelFont.normal"
+            data-id="000332"
             fontSize="ssm"
             fontWeight="bold"
             left="none"

@@ -11,19 +11,19 @@ function NavigationMobileModal() {
 
   return (
     <Flex
-        data-id="000682"
         alignItems="center"
+        data-id="000682"
         justifyContent="space-between"
         mb="30px"
         mt="8px"
         onClick={() => setIsOpen(!isOpen)}
         pos="relative">
-      <Flex data-id="000683" alignItems="center">
+      <Flex alignItems="center" data-id="000683">
         <Flex
-          data-id="000684"
           alignItems="center"
           bg="navigationMobileModal.section.bg"
           color="navigationMobileModal.section.color"
+          data-id="000684"
           flexShrink={0}
           fontSize="14px"
           fontWeight="bold"
@@ -35,19 +35,19 @@ function NavigationMobileModal() {
           {selectedSectionIndex + 1}
         </Flex>
         <Text
-          data-id="000685"
           color="navigationMobileModal.section.label"
+          data-id="000685"
           fontSize="14px"
           fontWeight="bold">
           {trackerItemModalSections[selectedSectionIndex].name}
         </Text>
       </Flex>
-      <Flex data-id="000686" alignItems="center">
+      <Flex alignItems="center" data-id="000686">
         {Object.keys(errors).length > 0 && (
           <Flex
-            data-id="000687"
             alignItems="center"
             bg="navigationMobileModal.errorBg"
+            data-id="000687"
             flexShrink={0}
             h="28px"
             justifyContent="center"
@@ -64,9 +64,9 @@ function NavigationMobileModal() {
       </Flex>
       {isOpen && (
         <Flex
-          data-id="000690"
           bg="navigationMobileModal.bg"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="000690"
           flexDir="column"
           h="260px"
           pos="absolute"
@@ -77,9 +77,9 @@ function NavigationMobileModal() {
           zIndex="5">
           {trackerItemModalSections.map((section, i) => (
             <Flex
-              data-id="000691"
               alignItems="center"
               bg={i === selectedSectionIndex ? 'navigationMobileModal.section.selectedBg' : 'navigationMobileModal.section.unselectedBg'}
+              data-id="000691"
               key={i}
               onClick={() => {
                 trigger(Object.keys(trackerItemModalSections[selectedSectionIndex].fields || []) as any);
@@ -87,10 +87,10 @@ function NavigationMobileModal() {
               }}
               p="10px">
               <Flex
-                data-id="000692"
                 alignItems="center"
                 bg="navigationMobileModal.section.bg"
                 color="navigationMobileModal.section.color"
+                data-id="000692"
                 flexShrink={0}
                 fontSize="11px"
                 fontWeight="bold"
@@ -102,8 +102,8 @@ function NavigationMobileModal() {
                 {i + 1}
               </Flex>
               <Text
-                data-id="000693"
                 color="navigationMobileModal.section.label"
+                data-id="000693"
                 fontSize="ssm"
                 fontWeight="bold">
                 {section.name}

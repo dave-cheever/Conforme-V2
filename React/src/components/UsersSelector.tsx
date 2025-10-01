@@ -55,8 +55,8 @@ function UsersSelector({
         <>
           {note && (
             <Text
-              data-id="000511"
               color="usersSelector.note"
+              data-id="000511"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3">

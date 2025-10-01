@@ -43,7 +43,7 @@ function AuditDeleteModal({ isOpen, onClose }) {
           <Stack data-id="000112">
             <Text data-id="000113">
               Are you sure you want to delete the{' '}
-              <Text data-id="000114" as="span">
+              <Text as="span" data-id="000114">
                 {t('audit')} in <strong data-id="000115">{audit.businessUnit?.name}</strong>?
               </Text>
             </Text>
@@ -51,13 +51,13 @@ function AuditDeleteModal({ isOpen, onClose }) {
         </ModalBody>
         <ModalFooter data-id="000116">
           <HStack data-id="000117" justify="center" spacing={4} w="full">
-            <Button data-id="000118" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="000118" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              data-id="000119"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="000119"
               onClick={async () => {
                 await deleteAudit({
                   variables: {

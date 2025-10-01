@@ -22,14 +22,14 @@ function AdminTableRow({
   const { setResponseFiltersValue } = useFiltersContext();
   return (
     <Flex
-         data-id="000343"
-        _hover={{ bg: '#F5F7FA' }}
+         _hover={{ bg: '#F5F7FA' }}
         align="center"
         bg={index % 2 === 0 ? 'white' : 'gray.50'}
         borderBottom="1px solid"
         borderColor="adminTableHeader.border"
         color="adminTableRow.font"
         cursor="pointer"
+        data-id="000343"
         flexShrink={0}
         flexWrap={['wrap', 'nowrap']}
         fontSize="smm"
@@ -39,9 +39,9 @@ function AdminTableRow({
         pl={2}
         w="full">
       <Flex
-        data-id="000344"
         align="center"
         cursor="pointer"
+        data-id="000344"
         fontSize="14px"
         
         w={['70%', '50%']}>
@@ -49,8 +49,8 @@ function AdminTableRow({
       </Flex>
       {module?.type === 'tracker' && (
         <Flex
-          data-id="000345"
           alignItems="center"
+          data-id="000345"
           justifyContent={['flex-end', 'flex-start']}
           mt={['5px', '0']}
           pr={['21px', '0']}
@@ -58,8 +58,8 @@ function AdminTableRow({
           {element.trackerItemsResponsesCount || '0'}
           <Tooltip data-id="000346" fontSize="14px" label="Show Items">
             <ArrowCount
-              data-id="000347"
               cursor="pointer"
+              data-id="000347"
               h="10px"
               ml="13px"
               onClick={() => {

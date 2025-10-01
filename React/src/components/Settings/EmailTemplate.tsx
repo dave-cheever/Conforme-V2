@@ -28,22 +28,22 @@ function EmailTemplate({
         onClick={onClick}
         w="full">
       <Flex
-        data-id="000472"
         _hover={{ borderColor: 'emailTemplate.hoverBorderColor' }}
         borderColor={active ? 'emailTemplate.activeBorderColor' : 'emailTemplate.borderColor'}
         borderRadius="10px"
-        borderWidth="2px">
+        borderWidth="2px"
+        data-id="000472">
         <Image
-          data-id="000473"
           cursor="pointer"
+          data-id="000473"
           fit="contain"
           h="180px"
           src={`${runtimeEnv.apiUrl()}/images/thumbnails/${template._id}.png?preventCache=${updateImage}`}
           w="full" />
       </Flex>
       <Flex
-        data-id="000474"
         color="emailTemplate.labelColor"
+        data-id="000474"
         fontSize="14px"
         mt={2}>
         {template?.label}

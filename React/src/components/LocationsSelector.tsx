@@ -47,10 +47,10 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
           <Box data-id="000340" py="5px">
             <InputGroup data-id="000341">
               <Input
-                data-id="000342"
                 borderColor="filterPanel.searchBoxBordercolor"
                 borderWidth="1px"
                 color="locationsSelector.search.label"
+                data-id="000342"
                 fontSize="smm"
                 h="40px"
                 onChange={({ target: { value } }) => setSearchText(value)}
@@ -59,8 +59,8 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
                 value={searchText}
                 w="full" />
               <SearchIcon
-                data-id="000343"
                 bottom="13px"
+                data-id="000343"
                 h="15px"
                 left="14px"
                 position="absolute"
@@ -70,8 +70,8 @@ function LocationsSelector({ locations, selected, note, disabled, handleChange }
           </Box>
           {note && (
             <Text
-              data-id="000344"
               color="locationsSelector.note"
+              data-id="000344"
               fontSize="12px"
               fontStyle="italic"
               opacity="0.3"

@@ -3,8 +3,8 @@ import { Box, MenuItem, Spacer } from '@chakra-ui/react';
 function AuditHeaderMenuItem({ title, icon, onClick, disabled = false }) {
   return (
     <MenuItem
-      data-id="000168"
       color="auditHeadeMenuItem.optionsMenuColor"
+      data-id="000168"
       isDisabled={disabled}
       onClick={onClick}
       w="100%">

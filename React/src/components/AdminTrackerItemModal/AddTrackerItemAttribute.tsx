@@ -132,7 +132,7 @@ function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttr
         onOverlayClick={() => onAction('close')}
         size="xs">
       <ModalOverlay data-id="000395" />
-      <ModalContent data-id="000396" borderRadius={['0', '20px']} position="absolute">
+      <ModalContent borderRadius={['0', '20px']} data-id="000396" position="absolute">
         <Flex data-id="000397" flexDirection="column" p="25px">
           <Flex data-id="000398">
             <Box data-id="000399" fontSize="smm" fontWeight="bold" mb="10px">
@@ -141,8 +141,8 @@ function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttr
             <ModalCloseButton data-id="000400" onClick={() => onAction('close')} />
           </Flex>
           <TextInput
-            data-id="000401"
             control={control}
+            data-id="000401"
             name="name"
             placeholder={`${attributeType} name`}
             validations={{
@@ -150,13 +150,13 @@ function AddTrackerItemAttribute({ isOpenModal, onAction, attributeType, newAttr
             }} />
           <Flex data-id="000402" justifyContent="end" mt="34px">
             <Button
-              data-id="000403"
               _hover={{
                 backgroundColor: 'addTrackerItemAttribute.button.hover',
               }}
               bg="addTrackerItemAttribute.button.bg"
               borderRadius="10px"
               color="addTrackerItemAttribute.button.color"
+              data-id="000403"
               onClick={() => onAddAction(attributeType)}>
               Add
             </Button>

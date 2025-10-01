@@ -12,7 +12,6 @@ function AuditHeaderButton({
   return (
     <>
       <Button
-        data-id="000120"
         _hover={
           disabled ? {
             color: 'auditHeader.buttonLightColorHover',
@@ -28,6 +27,7 @@ function AuditHeaderButton({
         border="1px solid #CBD5E0"
         borderRadius="10px"
         color={disabled ? 'auditHeader.buttonLightColorHover' : fontColor}
+        data-id="000120"
         disabled={disabled}
         display={['flex', icon ? 'none' : 'flex', 'flex']}
         fontSize="14px"
@@ -42,7 +42,6 @@ function AuditHeaderButton({
         {name}
       </Button>
       <IconButton
-        data-id="000121"
         _hover={{
           bg: 'auditHeader.buttonLightBgHover',
           color: 'auditHeader.buttonLightColorHover',
@@ -51,6 +50,7 @@ function AuditHeaderButton({
         aria-label="Search database"
         bg="auditHeader.buttonLightBg"
         borderRadius="10px"
+        data-id="000121"
         display={['none', icon ? 'flex' : 'none', 'none']}
         icon={icon}
         ml="15px"

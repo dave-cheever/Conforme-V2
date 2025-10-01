@@ -3,10 +3,10 @@ import { describe, expect, test } from 'vitest';
 
 import type { AuditType, Category } from '../../pages/answers';
 import {
-  buildPanels as testUniqueCategoriesLogic,
-  categoryIdsForPanel as testPanelSelectionLogic,
-  dedupeCategories as testMapDeduplicationLogic,
   flatMapCategories as testFlatMapLogic,
+  dedupeCategories as testMapDeduplicationLogic,
+  categoryIdsForPanel as testPanelSelectionLogic,
+  buildPanels as testUniqueCategoriesLogic,
 } from '../../pages/answers';
 
 // Test the unique categories logic directly without rendering the full component

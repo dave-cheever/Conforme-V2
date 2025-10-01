@@ -8,13 +8,13 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
 
   return (
     <Flex
-      data-id="000267"
       align="center"
       bg="white"
       border="1px solid #CBD5E0"
       borderRadius="10px"
       color="brand.primaryFont"
       cursor="pointer"
+      data-id="000267"
       flexShrink={0}
       fontSize="sm"
       h="40px"
@@ -24,11 +24,11 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       onClick={() => setShowFiltersPanel(!showFiltersPanel)}
       px={4}
     >
-      <Flex data-id="000268" align="center" gap="2">
+      <Flex align="center" data-id="000268" gap="2">
         <Filter data-id="000269" h="18px" mt={"7px"} />
         <Flex
-          data-id="000270"
           color="black"
+          data-id="000270"
           fontSize="14px"
           fontWeight="semi_medium"
         >
@@ -37,11 +37,11 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       </Flex>
       {numberOfSelectedFilters > 0 && (
         <Flex
-          data-id="000271"
           align="center"
           bg="header.selectedFilterColor"
           borderRadius="md"
           color="white"
+          data-id="000271"
           fontSize="12px"
           fontWeight="400"
           h="20px"

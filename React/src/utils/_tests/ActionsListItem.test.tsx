@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import { expect, test, describe, vi } from 'vitest';
 import { ChakraProvider } from '@chakra-ui/react';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, test, vi } from 'vitest';
+
 import ActionsListItem from '../../components/Actions/ActionsListItem';
 
 // Mock the theme
@@ -16,7 +17,9 @@ const mockTheme = {
 };
 
 // Mock ChakraProvider wrapper
-const TestWrapper = ({ children }: { readonly children: React.ReactNode }) => <ChakraProvider data-id="001125" theme={mockTheme}>{children}</ChakraProvider>;
+function TestWrapper({ children }: { readonly children: React.ReactNode }) {
+  return <ChakraProvider data-id="001125" theme={mockTheme}>{children}</ChakraProvider>
+}
 
 // Mock the editAction function
 const mockEditAction = vi.fn();
@@ -63,17 +66,15 @@ const mockAction = {
 };
 
 // Helper function to render component with wrapper
-const renderWithWrapper = (action: typeof mockAction, index = 0) => {
-  return render(
+const renderWithWrapper = (action: typeof mockAction, index = 0) => render(
     <TestWrapper data-id="001126">
       <ActionsListItem
-        data-id="001127"
         action={action}
-        index={index}
-        editAction={mockEditAction} />
+        data-id="001127"
+        editAction={mockEditAction}
+        index={index} />
     </TestWrapper>,
   );
-};
 
 // Helper function to verify component renders correctly
 const expectComponentToRender = () => {

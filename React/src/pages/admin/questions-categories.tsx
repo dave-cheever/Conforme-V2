@@ -307,7 +307,6 @@ function QuestionsCategories() {
     const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
     return (
       <Flex
-        data-id="000447"
         _hover={{ bg: '#F5F7FA' }}
         alignItems="center"
         bg={rowBg}
@@ -315,6 +314,7 @@ function QuestionsCategories() {
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
+        data-id="000447"
         flexShrink={0}
         fontSize="14px"
         fontWeight="500"
@@ -325,8 +325,8 @@ function QuestionsCategories() {
         w="full"
       >
         <Flex
-          data-id="000448"
           cursor="pointer"
+          data-id="000448"
           flexDir="column"
           mr={4}
           onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
@@ -344,8 +344,8 @@ function QuestionsCategories() {
   return (
     <>
       <AdminModal
-        data-id="000450"
         collection="questions categories"
+        data-id="000450"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
@@ -353,8 +353,8 @@ function QuestionsCategories() {
       >
         <Stack data-id="000451" spacing={2} w={device === 'mobile' ? 'full' : 'calc(100% - 150px)'}>
           <TextInput
-            data-id="000452"
             control={control}
+            data-id="000452"
             label="Name"
             name="name"
             placeholder="Name"
@@ -364,24 +364,24 @@ function QuestionsCategories() {
             }}
           />
           <Toggle
-            data-id="000453"
             control={control}
+            data-id="000453"
             label="Allow answers"
             name="withAnswers"
             placeholder="Allow answers"
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="000454"
             control={control}
+            data-id="000454"
             label="Allow custom questions"
             name="allowCustomQuestions"
             placeholder="Allow custom questions"
             variant="secondaryVariant"
           />
           <NumberInput
-            data-id="000455"
             control={control}
+            data-id="000455"
             label="Max number of questions"
             name="maxQuestionsNumber"
             placeholder="Max number of questions"
@@ -390,8 +390,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="000456"
             control={control}
+            data-id="000456"
             label="Editable after submission"
             name="notBlockedAfterCompletion"
             placeholder="Editable after submission"
@@ -399,8 +399,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="000457"
             control={control}
+            data-id="000457"
             label="Use status"
             name="useStatus"
             placeholder="Use status"
@@ -408,8 +408,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="000458"
             control={control}
+            data-id="000458"
             label="Show in insights"
             name="showInInsights"
             placeholder="Show in insights"
@@ -417,8 +417,8 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Toggle
-            data-id="000459"
             control={control}
+            data-id="000459"
             label="Count in audit card"
             name="countInAuditCard"
             placeholder="Count in audit card"
@@ -426,24 +426,24 @@ function QuestionsCategories() {
             variant="secondaryVariant"
           />
           <Controller
-            data-id="000460"
             control={control}
+            data-id="000460"
             name="icon"
             render={({ field }) => (
               <>
                 <FormLabel
-                  data-id="000461"
                   alignItems="center"
                   columnGap={1}
+                  data-id="000461"
                   display={'flex'}
                   fontSize="12px"
                   fontWeight="regular"
                   mb={1}
                   >
                     Icon <Text
-                  data-id="000462"
                   as="span"
                   color="#e93c44"
+                  data-id="000462"
                   fontSize="22px"
                   fontWeight="bold"
                   mt={"12px"}>*</Text>
@@ -476,9 +476,9 @@ function QuestionsCategories() {
                   ))}
                 </Select>
                 {field.value && ChakraIcons[field.value] && (
-                  <Flex data-id="000466" align="center" gap={2} mt={1}>
+                  <Flex align="center" data-id="000466" gap={2} mt={1}>
                     <Text data-id="000467" fontSize="sm">Preview:</Text>
-                    <Icon data-id="000468" as={ChakraIcons[field.value] || ''} boxSize={4} />
+                    <Icon as={ChakraIcons[field.value] || ''} boxSize={4} data-id="000468" />
                   </Flex>
                 )}
               </>
@@ -501,24 +501,24 @@ function QuestionsCategories() {
         </Stack>
       </AdminModal>
       <Header
-        data-id="000473"
         breadcrumbs={['Admin', 'Questions categories']}
+        data-id="000473"
         mobileBreadcrumbs={['Questions categories']}
         pageLabel={`${capitalize(t('question'))} set`}
       />
       <Flex
-        data-id="000474"
         bg="auditsList.bg"
         borderRadius="10px"
+        data-id="000474"
         h="calc(100vh - 160px)"
         overflow="auto"
         p={[0, '0 25px 30px 30px']}
       >
          <Flex data-id="000475" h="full" px={['25px', 0]} w="full">
           <Box
-          data-id="000476"
           border="1px solid"
           borderColor="auditsList.headerBorderColor"
+          data-id="000476"
           h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
@@ -536,9 +536,9 @@ function QuestionsCategories() {
               w="full"
             />
           </AdminTableHeader>
-          <Box data-id="000479" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto" w="full">
+          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000479" h="full" overflow="auto" w="full">
             {loading ? (
-              <Loader data-id="000480" center />
+              <Loader center data-id="000480" />
             ) : questionsCategories?.length > 0 ? (
               questionsCategories?.map(renderQuestionsCategoryRow)
             ) : (

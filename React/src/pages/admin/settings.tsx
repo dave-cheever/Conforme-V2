@@ -49,8 +49,8 @@ function Settings() {
   return (
     <Box data-id="000571" h="full" w="full">
       <Header
-        data-id="000572"
         breadcrumbs={['Admin', 'Other settings']}
+        data-id="000572"
         mobileBreadcrumbs={['Other settings']} />
       <Flex
         data-id="000573"
@@ -59,16 +59,16 @@ function Settings() {
         px="25px"
         w="full">
         <Flex
-          data-id="000574"
           bg="white"
           borderRadius="20px"
+          data-id="000574"
           flexDirection="column"
           h={['full', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
           mb={['25px', '0px']}
           p={['25px 30px', '25px 30px']}
           w={activeTab === 1 ? ['full', selectedTemplate ? 'fit-content' : 'full', 'fit-content'] : 'full'}>
           {loading ? (
-            <Loader data-id="000575" center />
+            <Loader center data-id="000575" />
           ) : (
             <>
               <Tabs data-id="000576" />
@@ -85,9 +85,9 @@ function Settings() {
         </Flex>
         {activeTab === 1 && selectedTemplate && (
           <Flex
-            data-id="000578"
             bg="white"
             borderRadius={['0px', '20px']}
+            data-id="000578"
             flexDirection="column"
             h={['100vh', 'calc( 100vh - 190px)', 'calc( 100vh - 170px)']}
             left="0px"
@@ -97,15 +97,15 @@ function Settings() {
             position={['fixed', 'relative']}
             top="0px"
             zIndex={10}>
-            <Flex data-id="000579" align="center" justify="space-between" w="full">
+            <Flex align="center" data-id="000579" justify="space-between" w="full">
               <Flex data-id="000580" fontWeight="700">Template Preview</Flex>
               {device === 'mobile' ? (
                 <CloseIcon data-id="000581" onClick={closeTemplatePreview} />
               ) : (
                 <Button
-                  data-id="000582"
                   borderRadius="10px"
                   colorScheme="purpleHeart"
+                  data-id="000582"
                   fontSize="11px"
                   fontWeight="700"
                   h="28px"
@@ -116,8 +116,8 @@ function Settings() {
               )}
             </Flex>
             <Flex
-              data-id="000583"
               bg="emailTemplates.bg"
+              data-id="000583"
               h="calc(100vh - 300px)"
               mt={10}>
               <Image

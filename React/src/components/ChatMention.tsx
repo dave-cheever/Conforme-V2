@@ -1,44 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Text, Tooltip } from '@chakra-ui/react';
-
-import { useResponseContext } from '../contexts/ResponseProvider';
+import { Text } from '@chakra-ui/react';
 
 function ChatMention({ tag }) {
-  const { getUpdatedDisplayName } = useResponseContext();
-  const [displayTag, setDisplayTag] = useState<string>();
-  const [userId, setUserId] = useState<string>();
-  const [userName, setUserName] = useState<string>();
-
-  useEffect(() => {
-    setDisplayTag(tag.split('@[')[1]?.split('](')[0]);
-    try {
-      const userId = tag.split('@[')[1]?.split('](')[1];
-      setUserId(userId);
-      if (userId) {
-        const userName = getUpdatedDisplayName(userId);
-        setUserName(userName || 'Unknown User');
-      }
-    } catch (e) {
-      console.error('Error processing mention tag:', e);
-    }
-  }, [getUpdatedDisplayName, tag]);
-
-  if (!userId) return <Text data-id="000236">{displayTag}</Text>;
+  // Simply extract the display name from the mention format and show it with @
+  const displayName = tag.split('@[')[1]?.split('](')[0];
 
   return (
-    <Tooltip
-      data-id="000237"
-      bg="chatMention.tooltip.bg"
-      color="chatMention.tooltip.color"
-      hasArrow
-      label={userName}
-      placement="top"
-    >
-      <Text data-id="000238" color="chatMention.mentionColor" cursor="pointer" display="inline">
-        {displayTag}
-      </Text>
-    </Tooltip>
+    <Text color="chatMention.mentionColor" cursor="pointer" data-id="000238" display="inline">
+      @{displayName}
+    </Text>
   );
 }
 

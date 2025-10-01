@@ -13,13 +13,13 @@ function AuditSquare({ audit }: { audit: IAudit }) {
 
   return (
     <Box
-      data-id="000257"
       _hover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.04)' }}
       bg="white"
       border="1px solid #CBD5E0"
       borderRadius="10px"
       boxShadow="sm"
       cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
+      data-id="000257"
       flexShrink={0}
       h={'200px'}
       onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
@@ -27,8 +27,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
       w={['full', 'full', '350px']}
     >
       <Flex
-        data-id="000258"
         align="center"
+        data-id="000258"
         h="40px"
         justify="space-between"
         minW={0}
@@ -38,13 +38,13 @@ function AuditSquare({ audit }: { audit: IAudit }) {
         w="full"
       >
         <Skeleton data-id="000259" isLoaded={!!audit} minW={0} rounded="full">
-          <Flex data-id="000260" align="center" minW={0}>
+          <Flex align="center" data-id="000260" minW={0}>
             <Tooltip data-id="000261" label={audit?.auditor?.displayName}>
               <Avatar
-                data-id="000262"
                 borderRadius="8px"
                 boxSize="36px"
                 cursor="pointer"
+                data-id="000262"
                 flexShrink={0}
                 name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                 size="sm"
@@ -53,15 +53,15 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Tooltip>
 
             <Flex
-              data-id="000263"
               align="flex-start"
+              data-id="000263"
               direction="column"
               maxW="100%"
               minW={0}
               ml={3}>
               <Text
-                data-id="000264"
                 color="auditSquare.nameFontColor"
+                data-id="000264"
                 fontSize="16px"
                 fontWeight="600"
                 isTruncated
@@ -73,8 +73,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
               </Text>
 
               <Text
-                data-id="000265"
                 color="auditSquare.fontColor"
+                data-id="000265"
                 fontSize={['12px', '11px']}
                 isTruncated
                 noOfLines={1}
@@ -89,20 +89,20 @@ function AuditSquare({ audit }: { audit: IAudit }) {
 
         <Tooltip data-id="000266" label="Observations">
           <Flex
-            data-id="000267"
             align="center"
+            data-id="000267"
             flexShrink={0} // Prevent it from being squeezed
             fontSize="11px"
             fontWeight="700"
           >
             <ObservationEye data-id="000268" fill="auditSquare.eyeIconColor" h="16px" w="16px" />
-            <Text data-id="000269" as="span" color="auditSquare.nameFontColor" ml="2">
+            <Text as="span" color="auditSquare.nameFontColor" data-id="000269" ml="2">
               {audit?.answersCount}
             </Text>
           </Flex>
         </Tooltip>
       </Flex>
-      <Divider data-id="000270" color="#CBD5E0" w="full" />
+      <Divider color="#CBD5E0" data-id="000270" w="full" />
       <Box data-id="000271" p="16px">
         <Box
           data-id="000272"
@@ -112,12 +112,12 @@ function AuditSquare({ audit }: { audit: IAudit }) {
           gridTemplateColumns="1fr 1fr">
           {/* Row 1: Site | Due date */}
           <Box data-id="000273">
-            <Text data-id="000274" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="000274" fontSize="14px" fontWeight="600">
               Site
             </Text>
             <Text
-              data-id="000275"
               color="#282F36"
+              data-id="000275"
               fontSize="14px"
               fontWeight="400"
               isTruncated
@@ -130,12 +130,12 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Text>
           </Box>
           <Box data-id="000276">
-            <Text data-id="000277" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="000277" fontSize="14px" fontWeight="600">
               Due date
             </Text>
             <Text
-              data-id="000278"
               color="#282F36"
+              data-id="000278"
               fontSize="14px"
               fontWeight="400"
               isTruncated
@@ -149,12 +149,12 @@ function AuditSquare({ audit }: { audit: IAudit }) {
           </Box>
           {/* Row 2: Type | Status */}
           <Box data-id="000280">
-            <Text data-id="000281" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="000281" fontSize="14px" fontWeight="600">
               Type
             </Text>
             <Text
-              data-id="000282"
               color="#282F36"
+              data-id="000282"
               fontSize="14px"
               fontWeight="400"
               isTruncated
@@ -167,10 +167,10 @@ function AuditSquare({ audit }: { audit: IAudit }) {
             </Text>
           </Box>
           <Box data-id="000283">
-            <Text data-id="000284" color="#4A5568" fontSize="14px" fontWeight="600">
+            <Text color="#4A5568" data-id="000284" fontSize="14px" fontWeight="600">
               Status
             </Text>
-            <Flex data-id="000285" align="center" gap={2}>
+            <Flex align="center" data-id="000285" gap={2}>
               {audit?.status === 'missed' && <WarningIcon
                 data-id="000286"
                 fill="transparent"
@@ -184,8 +184,8 @@ function AuditSquare({ audit }: { audit: IAudit }) {
                 stroke="#62C240"
                 w="16px" />}
               <Text
-                data-id="000288"
                 color={`auditSquare.${audit?.status}`}
+                data-id="000288"
                 fontSize="14px"
                 fontWeight="700">
                 {auditStatuses[audit?.status]}

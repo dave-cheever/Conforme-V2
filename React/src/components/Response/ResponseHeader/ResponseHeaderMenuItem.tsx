@@ -15,8 +15,8 @@ function ResponseHeaderMenuItem({
 }) {
   return (
     <MenuItem
-      data-id="000859"
       color="responseHeaderMenuItem.optionsMenuColor"
+      data-id="000859"
       isDisabled={disabled}
       onClick={onClick}
       w="100%">

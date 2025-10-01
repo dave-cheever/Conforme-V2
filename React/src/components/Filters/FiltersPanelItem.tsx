@@ -75,9 +75,9 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
   };
 
   return (name === 'showArchived' ? (<ShowArchivedFilter data-id="000097" />) : (<Flex
-    data-id="000098"
     bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
     borderRadius="10px"
+    data-id="000098"
     flexDir="column"
     justify="center"
     key={name}
@@ -85,15 +85,15 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
     p="3"
     w="full">
     <Flex
-      data-id="000099"
       align="center"
       cursor="pointer"
+      data-id="000099"
       justify="space-between"
       mb={isOpen ? '4' : '0'}
       w="full">
       <Text
-        data-id="000100"
         color="filtersPanelItem.fontColor"
+        data-id="000100"
         fontSize="14px"
         onClick={onToggle}
         w="full">
@@ -102,10 +102,10 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
       <Flex data-id="000101">
         {filtersLength > 0 && (
           <Box
-            data-id="000102"
             bg="filtersPanelItem.countBg"
             borderRadius="10px"
             color="filtersPanelItem.countColor"
+            data-id="000102"
             fontSize="12px"
             fontWeight="400"
             mr="3"

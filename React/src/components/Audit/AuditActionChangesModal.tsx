@@ -47,13 +47,13 @@ function AuditActionChangesModal({ onSave, setSelectedAction, isAcionFormValid }
             justify="center"
             spacing={4}
             w="full">
-            <Button data-id="000041" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="000041" onClick={onClose}>
               Back to {t('question')}
             </Button>
             <Button
-              data-id="000042"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="000042"
               onClick={() => {
                 onSave();
                 onClose();
@@ -61,9 +61,9 @@ function AuditActionChangesModal({ onSave, setSelectedAction, isAcionFormValid }
               Save action
             </Button>
             <Button
-              data-id="000043"
               _hover={{ opacity: 0.7 }}
               colorScheme="red"
+              data-id="000043"
               onClick={
                 onContinue
                   ? () => {

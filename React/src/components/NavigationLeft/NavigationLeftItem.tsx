@@ -23,7 +23,6 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
   return (
     <>
       <Box
-        data-id="000559"
         _hover={{
           cursor: 'pointer',
         }}
@@ -38,6 +37,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                   : 'navigationLeftItem.unselectedLabelBg'
             }
         borderRadius={"6px"}
+        data-id="000559"
         display="flex"
         fontSize="md"
         fontWeight="normal"
@@ -51,9 +51,8 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         pos="relative"
         w="250px"
         >
-        <Flex data-id="000560" align="center" h="100%" >
+        <Flex align="center" data-id="000560" h="100%" >
           <Flex
-            data-id="000561"
             alignItems="center"
             bg={
               menuItem.subSections
@@ -64,26 +63,26 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                   ? 'navigationLeftItem.selectedLabelBg'
                   : 'navigationLeftItem.unselectedLabelBg'
             }
+            data-id="000561"
             h="30px"
             justifyContent="center"
             ml="25px"
             rounded="8px"
             w="30px">
             <Icon
-              data-id="000562"
               as={icon}
+              data-id="000562"
               fill="#ffffff"
               h="21px"
               stroke="#ffffff"
               w="21px" />
           </Flex>
           {showFiltersPanel && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
-            <ArrowRight data-id="000563" boxSize="10px" ml={1} />
+            <ArrowRight boxSize="10px" data-id="000563" ml={1} />
           )}
         </Flex>
         {!showFiltersPanel && (
           <Box
-            data-id="000564"
             color={
               menuItem.subSections
                 ? isPathActive(url)
@@ -93,6 +92,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                   ? 'navigationLeftItem.selectedMenuItem'
                   : 'navigationLeftItem.unselectedMenuItem'
             }
+            data-id="000564"
             fontWeight="400"
             ml="5">
             {!showFiltersPanel && capitalize(label) }
@@ -106,8 +106,8 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
             if (subSection.permission) {
               return (
                 <Can
-                    data-id="000566"
                     action={subSection.permission}
+                    data-id="000566"
                     key={subSection.url}
                     // eslint-disable-next-line react/no-unstable-nested-components
                     yes={() => <SubSection

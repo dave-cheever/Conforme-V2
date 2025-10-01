@@ -51,14 +51,14 @@ function Notification() {
         w="full">
       {notificationSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value, options }) => (
         <Flex
-          data-id="000492"
           align={['flex-start', 'center']}
+          data-id="000492"
           flexDirection={['column', 'row']}
           key={name}>
           <Flex data-id="000493" maxW="280px">
             <Field
-              data-id="000494"
               control={control}
+              data-id="000494"
               help={help}
               label={label}
               name={name}
@@ -72,17 +72,17 @@ function Notification() {
           {wasFieldChanged(name, value) && (
             <HStack data-id="000495" ml={3} mt={7} spacing={3}>
               <IconButton
-                data-id="000496"
                 aria-label="Confirm Icon"
                 colorScheme="purpleHeart"
+                data-id="000496"
                 icon={<CheckIcon data-id="000497" />}
                 onClick={() => updateSettings({ _id, name })}
                 size="sm"
                 variant="outline" />
               <IconButton
-                data-id="000498"
                 aria-label="Cross Icon"
                 colorScheme="red"
+                data-id="000498"
                 icon={<CloseIcon data-id="000499" />}
                 onClick={() => resetValue({ name, value })}
                 size="sm" />

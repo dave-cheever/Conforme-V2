@@ -3,11 +3,11 @@ import Dropzone, { FileRejection } from 'react-dropzone';
 
 import { Box, Flex, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import { runtimeEnv } from '../../utils/runtime-env';
 
 import { toastFailed } from '../../bootstrap/config';
 import UploadIcon from '../../icons/UploadIcon';
 import { listSupportedFileTypes } from '../../utils/helpers';
+import { runtimeEnv } from '../../utils/runtime-env';
 import DocumentUploading from '../Response/DocumentUploading';
 
 const defaultFileTypes = {
@@ -86,18 +86,18 @@ function DocumentUpload({
         uploading.map((name) => (
           <Flex data-id="000505" key={name} mb={3}>
             <DocumentUploading
-              data-id="000506"
               cancelUpload={() => {
                 uploadControllerRef.current[name].abort();
                 delete uploadControllerRef.current[name];
               }}
+              data-id="000506"
               documentName={name} />
           </Flex>
         ))
       ) : (
         <Dropzone
-          data-id="000507"
           accept={acceptedFileTypes}
+          data-id="000507"
           disabled={disabled}
           multiple
           onDrop={(acceptedFiles, rejectedFiles) => upload({ acceptedFiles, rejectedFiles })}>
@@ -111,7 +111,6 @@ function DocumentUpload({
               w="full">
               <input data-id="000509" {...getInputProps()} />
               <Flex
-                data-id="000510"
                 align="center"
                 bg="#F7FAFC"
                 borderColor="#D9D9E0"
@@ -119,6 +118,7 @@ function DocumentUpload({
                 borderStyle="dashed"
                 borderWidth="1px"
                 color="#818197"
+                data-id="000510"
                 fontSize="14px"
                 fontWeight="semi_medium"
                 h="full"
@@ -128,12 +128,12 @@ function DocumentUpload({
                 <Flex data-id="000511">
                   {' '}
                   Drag and drop or{' '}
-                  <Text data-id="000512" color="#462AC4" ml={1}>
+                  <Text color="#462AC4" data-id="000512" ml={1}>
                     {' '}
                     browse
                   </Text>
                 </Flex>
-                <UploadIcon data-id="000513" color="#818197" h="21px" w="21px" />
+                <UploadIcon color="#818197" data-id="000513" h="21px" w="21px" />
               </Flex>
             </Box>
           )}
@@ -141,8 +141,8 @@ function DocumentUpload({
       )}
       {rejected && (
         <Flex
-          data-id="000514"
           color="red.500"
+          data-id="000514"
           fontSize="12px"
           fontWeight="bold"
           mt={2}>

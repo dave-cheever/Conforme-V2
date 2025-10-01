@@ -42,15 +42,15 @@ function ActionForm({ handleSave }) {
         }}
         setSelectedAction={setSelectedAction}
       />
-      <Stack data-id="000045" bg="auditActionForm.bg" p={4} rounded="10px">
+      <Stack bg="auditActionForm.bg" data-id="000045" p={4} rounded="10px">
         <Text data-id="000046" fontSize="smm" fontWeight="semibold">
           Action details
         </Text>
-        <Grid data-id="000047" columnGap={4} rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
+        <Grid columnGap={4} data-id="000047" rowGap={2} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
           <GridItem data-id="000048">
             <TextInput
-              data-id="000049"
               control={control}
+              data-id="000049"
               label="Title"
               name="title"
               required
@@ -60,15 +60,15 @@ function ActionForm({ handleSave }) {
             />
           </GridItem>
           <GridItem data-id="000050">
-            <PeoplePicker data-id="000051" control={control} label="Assign to" name="assigneeId" />
+            <PeoplePicker control={control} data-id="000051" label="Assign to" name="assigneeId" />
           </GridItem>
           <GridItem data-id="000052">
-            <Datepicker data-id="000053" control={control} label="Due date" name="dueDate" />
+            <Datepicker control={control} data-id="000053" label="Due date" name="dueDate" />
           </GridItem>
           <GridItem data-id="000054">
             <Dropdown
-              data-id="000055"
               control={control}
+              data-id="000055"
               label="Priority"
               name="priority"
               options={priorities}
@@ -78,8 +78,8 @@ function ActionForm({ handleSave }) {
           </GridItem>
           <GridItem data-id="000056">
             <Dropdown
-              data-id="000057"
               control={control}
+              data-id="000057"
               label="Status"
               name="status"
               options={[
@@ -91,12 +91,12 @@ function ActionForm({ handleSave }) {
             />
           </GridItem>
         </Grid>
-        <TextInputMultiline data-id="000058" control={control} label="Description" name="description" />
+        <TextInputMultiline control={control} data-id="000058" label="Description" name="description" />
         <Spacer data-id="000059" />
         {selectedAction?.metatags?.addedAt && selectedAction?.assignor && (
-          <Grid data-id="000060" columnGap={4} templateColumns="repeat(2, 1fr)">
+          <Grid columnGap={4} data-id="000060" templateColumns="repeat(2, 1fr)">
             <GridItem data-id="000061">
-              <Text data-id="000062" color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold" mb={1}>
+              <Text color="auditActionForm.labelFont.normal" data-id="000062" fontSize="11px" fontWeight="bold" mb={1}>
                 Date added
               </Text>
               <Text data-id="000063" fontSize="13px">
@@ -104,11 +104,11 @@ function ActionForm({ handleSave }) {
               </Text>
             </GridItem>
             <GridItem data-id="000064">
-              <Text data-id="000065" color="auditActionForm.labelFont.normal" fontSize="11px" fontWeight="bold" mb={1}>
+              <Text color="auditActionForm.labelFont.normal" data-id="000065" fontSize="11px" fontWeight="bold" mb={1}>
                 Assigned by
               </Text>
               {selectedAction?.assignor && (
-                <Flex data-id="000066" align="center" direction="row">
+                <Flex align="center" data-id="000066" direction="row">
                   <Avatar
                     data-id="000067"
                     name={selectedAction?.assignor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -135,9 +135,9 @@ function ActionForm({ handleSave }) {
         )}
         <HStack data-id="000069" justify="flex-end" pb={3} pt={4} w="full">
           <Button
-            data-id="000070"
             bgColor="auditActionForm.buttons.cancel.bg"
             color="auditActionForm.buttons.cancel.color"
+            data-id="000070"
             fontSize="ssm"
             fontWeight="semibold"
             h="28px"
@@ -147,9 +147,9 @@ function ActionForm({ handleSave }) {
             Cancel
           </Button>
           <Button
-            data-id="000071"
             bgColor="auditActionForm.buttons.save.bg"
             color="auditActionForm.buttons.save.color"
+            data-id="000071"
             disabled={!isValid || !values.title || values.title.trim() === ''}
             fontSize="ssm"
             fontWeight="semibold"

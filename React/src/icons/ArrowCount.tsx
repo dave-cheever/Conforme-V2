@@ -6,14 +6,14 @@ const ArrowCount = createIcon({
   path: (
     <g data-id="000050">
       <path
-        data-id="000051"
         d="M0.916668 8.7727L8.90185 0.916992"
+        data-id="000051"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
-        data-id="000052"
         d="M8.90185 5.40638V0.916992H4.33889"
+        data-id="000052"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />

@@ -42,13 +42,13 @@ function AuditNewQuestionModal({ isOpen, onClose }) {
               const isDisabled = !questionsLeft;
               return (
                 <Stack
-                    data-id="000296"
                     _hover={{
                       bg: isDisabled ? 'auditNewQuestionModal.tile.bg.default' : 'auditNewQuestionModal.tile.bg.hover',
                     }}
                     align="center"
                     bgColor="auditNewQuestionModal.tile.bg.default"
                     cursor={isDisabled ? 'default' : 'pointer'}
+                    data-id="000296"
                     flexShrink={0}
                     h="170px"
                     justify="center"
@@ -78,7 +78,7 @@ function AuditNewQuestionModal({ isOpen, onClose }) {
                     icon={category.icon}
                     stroke="auditNewQuestionModal.tile.icon.stroke"
                     w="36px" />
-                  <Stack data-id="000298" align="center" spacing={0}>
+                  <Stack align="center" data-id="000298" spacing={0}>
                     <Text data-id="000299" fontSize="smm">{category.name}</Text>
                     {category.maxQuestionsNumber && <Text data-id="000300" fontSize="smm">{questionsLeft ? `${questionsLeft} left` : 'Limit reached'}</Text>}
                   </Stack>

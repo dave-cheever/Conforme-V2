@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
 
-import { runtimeEnv } from '../utils/runtime-env';
 import AdminProvider from '../contexts/AdminProvider';
 import AppProvider, { useAppContext } from '../contexts/AppProvider';
 import ConfigProvider from '../contexts/ConfigProvider';
@@ -11,6 +11,7 @@ import useAuth from '../hooks/useAuth';
 import useInit from '../hooks/useInit';
 import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
+import { runtimeEnv } from '../utils/runtime-env';
 import './styles.css';
 import getTheme from './theme';
 
@@ -41,8 +42,8 @@ function App() {
   if (user === undefined || loadingSettings || loadingUser) {
     return (
       <ChakraProvider data-id="000018" theme={getTheme(organizationConfig?.theme)}>
-        <Flex data-id="000019" alignItems="center" h="100vh" justifyContent="center" w="100vw">
-          <Spinner data-id="000020" color="brand.primary" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
+        <Flex alignItems="center" data-id="000019" h="100vh" justifyContent="center" w="100vw">
+          <Spinner color="brand.primary" data-id="000020" emptyColor="gray.200" size="xl" speed="0.65s" thickness="4px" />
         </Flex>
       </ChakraProvider>
     );

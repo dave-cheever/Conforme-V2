@@ -44,7 +44,7 @@ function AuditSubmitModal({ isOpen, onClose }) {
               {audit.walkType === 'virtual' ? (
                 `virtual ${t('audit')}`
               ) : (
-                <Text data-id="000251" as="span">
+                <Text as="span" data-id="000251">
                   {t('audit')} in <strong data-id="000252">{audit.businessUnit?.name}</strong>
                 </Text>
               )}{' '}
@@ -54,13 +54,13 @@ function AuditSubmitModal({ isOpen, onClose }) {
         </ModalBody>
         <ModalFooter data-id="000253">
           <HStack data-id="000254" justify="center" spacing={4} w="full">
-            <Button data-id="000255" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="000255" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              data-id="000256"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="000256"
               onClick={async () => {
                 await submitAudit({
                   variables: {

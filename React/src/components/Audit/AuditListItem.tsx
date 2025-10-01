@@ -13,20 +13,20 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
   const { module } = useAppContext();
   return (
     <Box
-      data-id="000216"
       _hover={{ bg: '#F5F7FA' }}
       bg={index % 2 === 0 ? 'white' : 'gray.50'}
       borderBottomColor="auditsList.headerBorderColor"
       borderBottomWidth="1px"
       cursor={!audit?.metatags?.removedBy ? 'pointer' : 'default'}
+      data-id="000216"
       onClick={() => !audit?.metatags?.removedBy && navigateTo(`/audits/${audit._id}`)}
       p="15px 25px"
       py={[1, 0]}
       w="full"
     >
-      <Flex data-id="000217" align="center" h={['full', '55px']} position="relative" w="full">
+      <Flex align="center" data-id="000217" h={['full', '55px']} position="relative" w="full">
         <Flex data-id="000218" w="10%">
-          <Flex data-id="000219" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1" pr={2}>
+          <Flex color="auditsList.fontColor" data-id="000219" fontSize="14px" fontWeight="500" opacity="1" pr={2}>
             {audit?.dueDate ? (
               format(new Date(audit?.dueDate), 'dd-MMM-yyyy')
             ) : (
@@ -39,8 +39,8 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         <Stack data-id="000221" direction="row" pr={2} spacing={1} w="20%">
           {/* <LocationIcon boxSize="12px" data-id="50bf3b8c0b11" mt="2px" /> */}
           <Text
-            data-id="000222"
             color="auditsList.fontColor"
+            data-id="000222"
             fontSize="14px"
             fontWeight="500"
             lineHeight="17px"
@@ -54,8 +54,8 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
           </Text>
         </Stack>
         <Flex data-id="000223" w="10%">
-          <Flex data-id="000224" align="center">
-            <Flex data-id="000225" color={`auditsList.${audit?.status}`} fontSize="14px" fontWeight="500" pr={2}>
+          <Flex align="center" data-id="000224">
+            <Flex color={`auditsList.${audit?.status}`} data-id="000225" fontSize="14px" fontWeight="500" pr={2}>
               {auditStatuses[audit?.status]}
             </Flex>
           </Flex>
@@ -64,9 +64,9 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         {module?.featureFlags?.enableSafetyWalk && (
           <Flex data-id="000226" flexDir="column" w="10%">
             <Flex
-              data-id="000227"
               align="flex-start"
               color="auditsList.fontColor"
+              data-id="000227"
               fontSize="14px"
               fontWeight="500"
               h="50%"
@@ -86,11 +86,11 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         <Box data-id="000228" pr={2} w="20%">
           <Skeleton data-id="000229" isLoaded={!!audit} rounded="full">
             {audit.auditor ? (
-              <Flex data-id="000230" align="center" direction="row">
+              <Flex align="center" data-id="000230" direction="row">
                 <Avatar data-id="000231" name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={audit.auditor?.imgUrl} />
                 <Text
-                  data-id="000232"
                   color="auditsList.fontColor"
+                  data-id="000232"
                   fontSize="14px"
                   fontWeight="500"
                   lineHeight="17px"
@@ -113,9 +113,9 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         </Box>
         <Flex data-id="000234" flexDir="column" w="15%">
           <Flex
-            data-id="000235"
             align="flex-start"
             color="auditsList.fontColor"
+            data-id="000235"
             fontSize="14px"
             fontWeight="500"
             h="50%"
@@ -132,7 +132,7 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
           </Flex>
         </Flex>
         <Flex data-id="000236" w="15%">
-          <Flex data-id="000237" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
+          <Flex color="auditsList.fontColor" data-id="000237" fontSize="14px" fontWeight="500" opacity="1">
             {audit?.status === 'completed' && audit?.completedDate ? (
               format(new Date(audit?.completedDate), 'dd-MMM-yyyy')
             ) : (

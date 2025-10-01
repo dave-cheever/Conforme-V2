@@ -22,15 +22,15 @@ function ParticipantAvatar({
   if (!user) {
     return (
       <Flex
-        data-id="000590"
         align="center"
+        data-id="000590"
         flexDirection="row"
         textAlign="center"
         w="180px"
         {...props}>
         <Avatar
-          data-id="000591"
           cursor="pointer"
+          data-id="000591"
           h="38px"
           name="Add User"
           onClick={() => isUserAllowedToChange && openParticipantsModal()}
@@ -46,29 +46,29 @@ function ParticipantAvatar({
 
   return (
     <Flex
-      data-id="000593"
       align="center"
       border="1px solid #CBD5E0"
       borderRadius="8px"
+      data-id="000593"
       justify="space-between"
       padding="10px"
       w="260px"
       {...props}>
       {/* Left side: Avatar + Name */}
-      <Flex data-id="000594" align="center" columnGap="10px">
+      <Flex align="center" columnGap="10px" data-id="000594">
         <Avatar
-          data-id="000595"
           borderRadius="4px"
+          data-id="000595"
           h="38px"
           name={displayName?.replace(/\s*\(.*?\)\s*/g, '')}
           src={imgUrl}
           w="38px" />
 
-        <Flex data-id="000596" align="start" columnGap="10px" direction="column">
-          <Text data-id="000597" color="#2D3748" fontSize="14px" fontWeight="600">
+        <Flex align="start" columnGap="10px" data-id="000596" direction="column">
+          <Text color="#2D3748" data-id="000597" fontSize="14px" fontWeight="600">
              {displayName}
          </Text>
-          <Text data-id="000598" color="#718096" fontSize="12px" fontWeight="500">
+          <Text color="#718096" data-id="000598" fontSize="12px" fontWeight="500">
             {user?.jobTitle}
           </Text>
         </Flex>
@@ -77,11 +77,11 @@ function ParticipantAvatar({
       {/* Right side: Icon */}
       {isUserAllowedToChange && (
         <IconButton
-          data-id="000599"
           aria-label={canDelete ? 'Delete Participant' : 'Replace Participant'}
+          data-id="000599"
           icon={
             canDelete ? (
-              <CloseIcon data-id="000600" boxSize="3" />
+              <CloseIcon boxSize="3" data-id="000600" />
             ) : (
               <SwapIcon data-id="000601" height="18px" width="18px" />
             )

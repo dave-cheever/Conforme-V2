@@ -140,21 +140,21 @@ function AuditModal({ refetch }) {
 
   return (
     <ModalContent
-        data-id="000345"
         bg="auditModal.bg"
+        data-id="000345"
         h="100%"
         m="0"
         overflow="hidden"
         p={[4, 6]}
         rounded="0">
       <ModalHeader
-        data-id="000346"
         alignItems="center"
+        data-id="000346"
         fontSize="xxl"
         fontWeight="bold"
         p="0">
         <Flex data-id="000347" justifyContent="space-between">
-          <Flex data-id="000348" alignItems="center" fontSize={['14px', '24px']}>
+          <Flex alignItems="center" data-id="000348" fontSize={['14px', '24px']}>
             <Avatar
               data-id="000349"
               mr={3}
@@ -164,10 +164,10 @@ function AuditModal({ refetch }) {
               src={user?.imgUrl} />
             New {t('audit')}
           </Flex>
-          <Flex data-id="000350" alignItems="center">
+          <Flex alignItems="center" data-id="000350">
             <Close
-              data-id="000351"
               cursor="pointer"
+              data-id="000351"
               h="15px"
               onClick={closeModal}
               stroke="auditModal.closeIcon"
@@ -190,14 +190,14 @@ function AuditModal({ refetch }) {
                 Details
               </Text>
               <Grid
-                data-id="000357"
                 columnGap={4}
+                data-id="000357"
                 rowGap={2}
                 templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)']}>
                   <GridItem data-id="000358" w="100%">
                     <Dropdown
-                      data-id="000359"
                       control={control}
+                      data-id="000359"
                       disabled={auditTypes?.length === 1}
                       label="Audit Type"
                       name="auditTypeId"
@@ -215,8 +215,8 @@ function AuditModal({ refetch }) {
                 {module?.featureFlags?.enableSafetyWalk && 
                   <GridItem data-id="000360" w="100%">
                     <Dropdown
-                      data-id="000361"
                       control={control}
+                      data-id="000361"
                       label="Type"
                       name="walkType"
                       options={[
@@ -234,8 +234,8 @@ function AuditModal({ refetch }) {
                 }
                 <GridItem data-id="000362" w="100%">
                   <Dropdown
-                    data-id="000363"
                     control={control}
+                    data-id="000363"
                     label={capitalize(t('location'))}
                     name="locationId"
                     options={(locations ?? []).map((location) => ({
@@ -253,8 +253,8 @@ function AuditModal({ refetch }) {
                 {audit.auditTypeId && auditTypes.find(({ _id }) => _id === audit.auditTypeId)?.businessUnitScope === 'audit' && (
                   <GridItem data-id="000364" w="100%">
                     <Dropdown
-                      data-id="000365"
                       control={control}
+                      data-id="000365"
                       label={capitalize(t('business unit'))}
                       name="businessUnitId"
                       options={(businessUnits ?? []).map((businessUnit) => ({
@@ -293,16 +293,16 @@ function AuditModal({ refetch }) {
               w="full">
               {data?.audits?.length > 0 && (
                 <Alert data-id="000369" status="warning">
-                  <Text data-id="000370" as="h3">
+                  <Text as="h3" data-id="000370">
                     {data?.audits?.[0].auditType.name} for {data?.audits?.[0].businessUnit.name} for {format(new Date(), 'MMMM Y')} already{' '}
                     <Text
-                      data-id="000371"
                       _hover={{
                         textDecoration: 'underline',
                         cursor: 'pointer',
                       }}
                       as="span"
                       color="auditModal.existentAuditLink.color"
+                      data-id="000371"
                       onClick={() => openInNewTab(`/audits/${data?.audits?.[0]?._id}`)}>
                       exists
                     </Text>
@@ -315,9 +315,9 @@ function AuditModal({ refetch }) {
       </ModalBody>
       <ModalFooter data-id="000372" p={1}>
         <Button
-          data-id="000373"
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
+          data-id="000373"
           fontSize="smm"
           fontWeight="500"
           h="40px"
@@ -330,9 +330,9 @@ function AuditModal({ refetch }) {
         </Button>
 
         <Button
-          data-id="000374"
           bg="auditModal.tabs.bottomButton.bg"
           color="auditModal.tabs.bottomButton.color"
+          data-id="000374"
           disabled={
             module?.featureFlags?.enableSafetyWalk && !audit.walkType ||
             !audit.locationId ||
@@ -351,8 +351,8 @@ function AuditModal({ refetch }) {
             handlePrimaryButtonClick();
           }}
           rightIcon={<Icon
-            data-id="000375"
             as={TickIcon}
+            data-id="000375"
             size={24}
             stroke="auditModal.tabs.bottomButton.icon" />}
           rounded="10px"

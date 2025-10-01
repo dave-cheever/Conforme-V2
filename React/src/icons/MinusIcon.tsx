@@ -7,8 +7,8 @@ function MinusIcon(props) {
   return (
     <Icon data-id="000946" viewBox="0 0 9 1" {...rest}>
       <path
-        data-id="000947"
         d="M0.5 0.5, L8.5 0.5"
+        data-id="000947"
         fill="transparent"
         stroke="currentColor" />
     </Icon>

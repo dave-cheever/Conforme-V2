@@ -53,8 +53,8 @@ function Attachments() {
 
   return (
     <VStack
-        data-id="000230"
         align={['center', 'flex-start']}
+        data-id="000230"
         spacing={4}
         w="full">
       {response?.trackerItem?.evidenceItems?.length > 0 && (
@@ -66,8 +66,8 @@ function Attachments() {
             Upload all expected evidence and complete any required question to record this {t('tracker item')} as complete.
           </Text>
           <Stack
-            data-id="000234"
             align={['center', 'flex-start']}
+            data-id="000234"
             spacing={4}
             w="full">
             {response?.evidence.map((evidence, i) => (
@@ -84,8 +84,8 @@ function Attachments() {
             </Text>
             {!snapshot && (
               <Can
-                data-id="000239"
                 action="responses.edit"
+                data-id="000239"
                 data={{ response }}
                 // eslint-disable-next-line react/no-unstable-nested-components
                 yes={() => (
@@ -110,11 +110,11 @@ function Attachments() {
           {response.attachments?.map((attachment, i) => (
             <Flex data-id="000242" flexDir="column" key={i} maxW="380px" mb={2}>
               <DocumentUploaded
-                data-id="000243"
                 callback={async () => {
                   await removeAttachment(attachment);
                   refetch();
                 }}
+                data-id="000243"
                 document={attachment}
                 downloadable={isPermitted({
                   user,

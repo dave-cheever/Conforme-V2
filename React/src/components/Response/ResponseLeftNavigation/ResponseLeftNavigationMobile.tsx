@@ -16,12 +16,12 @@ function ResponseLeftNavigationMobile() {
 
   return (
     <Flex
-        data-id="000863"
         align="center"
         bg="#110b30"
         bottom="0px"
         boxShadow="0px 0px 80px rgba(49, 50, 51, 0.15)"
         color="responseLeftNavigation.color"
+        data-id="000863"
         direction="column"
         display={['block', 'none', 'none']}
         fontWeight="400"
@@ -31,12 +31,12 @@ function ResponseLeftNavigationMobile() {
         position="fixed"
         w="full"
         zIndex={12}>
-      <Flex data-id="000864" align="center" flexDirection="row" h="full">
+      <Flex align="center" data-id="000864" flexDirection="row" h="full">
         <Flex
-          data-id="000865"
           align="center"
           color="responseLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="000865"
           fontSize="14px"
           h="30px"
           mr={3}

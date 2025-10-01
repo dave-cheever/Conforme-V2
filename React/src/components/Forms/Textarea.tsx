@@ -36,8 +36,8 @@ function Textarea({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-        data-id="000423"
         control={control}
+        data-id="000423"
         name={name}
         render={({ field, fieldState }) => {
           const { value } = field;
@@ -46,15 +46,15 @@ function Textarea({
             <Box data-id="000424" id={name} mt="none" w="full">
               {label && (
                 <Flex
-                  data-id="000425"
                   align="center"
+                  data-id="000425"
                   justify="space-between"
                   mb="none"
                   pb={1}
                   pt={2}>
                   <Box
-                    data-id="000426"
                     color={error ? 'textMultilineInput.labelFont.error' : 'textMultilineInput.labelFont.normal'}
+                    data-id="000426"
                     fontSize={11}
                     fontWeight="bold"
                     left="none"
@@ -82,7 +82,6 @@ function Textarea({
               {!readMode && (
                 <>
                   <ChakraTextarea
-                    data-id="000430"
                     _active={{
                       bg: disabled ? 'textMultilineInput.disabled.bg' : 'textMultilineInput.activeBg',
                     }}
@@ -106,6 +105,7 @@ function Textarea({
                     borderWidth="1px"
                     color="textMultilineInput.font"
                     cursor="pointer"
+                    data-id="000430"
                     fontSize="smm"
                     isDisabled={disabled}
                     maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
@@ -115,8 +115,8 @@ function Textarea({
                     {...field} />
                   {error && (
                     <Box
-                      data-id="000431"
                       color="textMultilineInput.error"
+                      data-id="000431"
                       fontSize={14}
                       ml={1}>
                       {error.message}

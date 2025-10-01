@@ -21,8 +21,8 @@ const GET_HELP = gql`
 const MarkdownComponents: Components = {
   h1: ({ node, ...props }) => (
     <Text
-      data-id="000242"
       as="h1"
+      data-id="000242"
       fontSize="2xl"
       fontWeight="bold"
       mb={4}
@@ -30,8 +30,8 @@ const MarkdownComponents: Components = {
   ),
   h2: ({ node, ...props }) => (
     <Text
-      data-id="000243"
       as="h2"
+      data-id="000243"
       fontSize="xl"
       fontWeight="semibold"
       mb={3}
@@ -39,33 +39,33 @@ const MarkdownComponents: Components = {
   ),
   h3: ({ node, ...props }) => (
     <Text
-      data-id="000244"
       as="h3"
+      data-id="000244"
       fontSize="lg"
       fontWeight="semibold"
       mb={3}
       {...props} />
   ),
   p: ({ node, ...props }) => (
-    <Text data-id="000245" as="p" lineHeight="1.6" mb={3} {...props} />
+    <Text as="p" data-id="000245" lineHeight="1.6" mb={3} {...props} />
   ),
   ul: ({ node, ...props }) => (
     <Box
-      data-id="000246"
       as="ul"
+      data-id="000246"
       mb={3}
       pl={5}
       style={{ listStyleType: 'disc' }}
       {...props} />
   ),
   li: ({ node, ...props }) => (
-    <Box data-id="000247" as="li" mb={1} {...props} />
+    <Box as="li" data-id="000247" mb={1} {...props} />
   ),
   a: (props) => (
     <Box
-      data-id="000248"
       as="a"
       color="blue.500"
+      data-id="000248"
       textDecoration="underline"
       {...props} />
   ),
@@ -88,14 +88,14 @@ function PrivacyPolicy() {
       w="full"
     >
       <Header
-        data-id="000250"
         breadcrumbs={['Home', 'Privacy Policy']}
+        data-id="000250"
         mobileBreadcrumbs={['Privacy Policy']}
       />
       <Flex
-        data-id="000251"
         bg="white"
         borderRadius="20px"
+        data-id="000251"
         flexDirection="column"
         h="auto"
         maxWidth="full"
@@ -105,14 +105,14 @@ function PrivacyPolicy() {
         p="25px 30px"
       >
         {loading ? (
-          <Flex data-id="000252" align="center" h="100vh" justify="center">
+          <Flex align="center" data-id="000252" h="100vh" justify="center">
             Loading...
           </Flex>
         ) : (
           <div data-id="000253">
             {matchedHelp ? (
               <Box data-id="000254" fontSize="14px" mb="30px">
-                <ReactMarkdown data-id="000255" components={MarkdownComponents}>
+                <ReactMarkdown components={MarkdownComponents} data-id="000255">
                     {t(`${matchedHelp.privacy}`)}
                 </ReactMarkdown>
               </Box>

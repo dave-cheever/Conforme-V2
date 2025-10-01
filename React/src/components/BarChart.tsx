@@ -19,8 +19,8 @@ function BarChart({ data, label }) {
   return (
     <Flex data-id="000140" flexDir="column">
       <Text
-        data-id="000141"
         color="barChart.headerColor"
+        data-id="000141"
         fontSize="11px"
         h="25px"
         mt="18px"
@@ -31,10 +31,10 @@ function BarChart({ data, label }) {
         <>
           <Flex data-id="000142" flexDir="column">
             {data.map((el) => (
-              <Flex data-id="000143" alignItems="center" color="#272727" h="55px" key={el._id} my="auto">
+              <Flex alignItems="center" color="#272727" data-id="000143" h="55px" key={el._id} my="auto">
                 <Box
-                  data-id="000144"
                   bg="barChart.bg"
+                  data-id="000144"
                   w={`${(newArr[el._id] / maxValueOnDivider) * 100}%`}
                   h="18px"
                   // mb="42px"
@@ -43,8 +43,8 @@ function BarChart({ data, label }) {
             ))}
           </Flex>
           <Flex
-            data-id="000145"
             color="barChart.color"
+            data-id="000145"
             fontSize="11px"
             justifyContent="space-between"
             mt="-15px">

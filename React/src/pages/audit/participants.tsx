@@ -48,16 +48,16 @@ function AuditParticipants() {
   };
 
   return (
-    <Stack data-id="000674" border="1px solid #CBD5E0" h={['fit-content', 'full']} p="10px" rounded="10px" spacing={4} w="full">
+    <Stack border="1px solid #CBD5E0" data-id="000674" h={['fit-content', 'full']} p="10px" rounded="10px" spacing={4} w="full">
       <Flex data-id="000675" justifyContent={['space-between', 'initial']}>
         <Text data-id="000676" fontSize={['20px', 'xxl']} fontWeight="semibold">
           Participants
         </Text>
       </Flex>
       <Stack
-        data-id="000677"
         bg="auditParticipants.bg"
         borderRadius="20px"
+        data-id="000677"
         h="full"
         overflow="auto"
         px={[2, 6]}

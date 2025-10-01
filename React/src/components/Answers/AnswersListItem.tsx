@@ -24,28 +24,28 @@ function AnswersListItem({
 
   return (
     <>
-      <AnswerDeleteModal data-id="000072" answer={answer} isOpen={isOpen} onClose={onClose} refetchAnswers={refetchAnswers} />
+      <AnswerDeleteModal answer={answer} data-id="000072" isOpen={isOpen} onClose={onClose} refetchAnswers={refetchAnswers} />
       <Box
-        data-id="000073"
         _hover={{ bg: '#F5F7FA' }}
         bg={rowBg}
         borderBottomColor="auditsList.headerBorderColor"
         borderBottomWidth="1px"
         color="auditsList.fontColor"
         cursor="pointer"
+        data-id="000073"
         fontSize="14px"
         onClick={() => editAnswer(answer)}
         p="15px 25px"
         py={[1, 0]}
         w="full"
       >
-        <Flex data-id="000074" align="center" h={['full', '60px']} position="relative" w="full">
+        <Flex align="center" data-id="000074" h={['full', '60px']} position="relative" w="full">
           <Tooltip data-id="000075" label={answer?.question?.questionsCategory?.name}>
             <Flex data-id="000076" flexDir="column" w="11%">
               <Flex
-                data-id="000077"
                 align="flex-start"
                 color="auditsList.fontColor"
+                data-id="000077"
                 fontSize="14px"
                 fontWeight="500"
                 h="50%"
@@ -63,9 +63,9 @@ function AnswersListItem({
           <Tooltip data-id="000078" label={answer?.question?.question}>
             <Flex data-id="000079" flexDir="column" w="15%">
               <Flex
-                data-id="000080"
                 align="flex-start"
                 color="auditsList.fontColor"
+                data-id="000080"
                 fontSize="14px"
                 fontWeight="500"
                 h="50%"
@@ -83,9 +83,9 @@ function AnswersListItem({
 
           <Flex data-id="000081" flexDir="column" w="7%">
             <Flex
-              data-id="000082"
               align="flex-start"
               color={`auditsList.${answer?.status}`}
+              data-id="000082"
               fontSize="14px"
               h="50%"
               lineHeight="18px"
@@ -101,9 +101,9 @@ function AnswersListItem({
           <Tooltip data-id="000083" label={answer?.audit?.location?.name}>
             <Flex data-id="000084" flexDir="column" w="14%">
               <Flex
-                data-id="000085"
                 align="flex-start"
                 color="auditsList.fontColor"
+                data-id="000085"
                 fontSize="14px"
                 h="50%"
                 lineHeight="18px"
@@ -127,9 +127,9 @@ function AnswersListItem({
           >
             <Flex data-id="000087" flexDir="column" w="12%">
               <Flex
-                data-id="000088"
                 align="flex-start"
                 color="auditsList.fontColor"
+                data-id="000088"
                 fontSize="14px"
                 fontWeight="500"
                 h="50%"
@@ -148,9 +148,9 @@ function AnswersListItem({
           </Tooltip>
           <Flex data-id="000089" flexDir="column" w="9%">
             <Flex
-              data-id="000090"
               align="flex-start"
               color="auditsList.fontColor"
+              data-id="000090"
               fontSize="14px"
               fontWeight="500"
               h="50%"
@@ -168,11 +168,11 @@ function AnswersListItem({
             <Box data-id="000092" w="22%">
               <Skeleton data-id="000093" isLoaded={!!answer} pr={1} rounded="full">
                 {answer.addedBy ? (
-                  <Flex data-id="000094" align="center" direction="row">
+                  <Flex align="center" data-id="000094" direction="row">
                     <Avatar data-id="000095" name={answer?.addedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={answer.addedBy?.imgUrl} />
                     <Text
-                      data-id="000096"
                       color="auditsList.fontColor"
+                      data-id="000096"
                       fontSize="14px"
                       fontWeight="500"
                       lineHeight="17px"
@@ -196,7 +196,7 @@ function AnswersListItem({
           </Tooltip>
           <Tooltip data-id="000098" label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
             <Flex data-id="000099" w="10%">
-              <Flex data-id="000100" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1" pr={1}>
+              <Flex color="auditsList.fontColor" data-id="000100" fontSize="14px" fontWeight="500" opacity="1" pr={1}>
                 {answer?.metatags?.addedAt ? (
                   format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
                 ) : (
@@ -209,8 +209,8 @@ function AnswersListItem({
           </Tooltip>
           <Flex data-id="000102" justify="flex-end" pr={1} w="6%">
             <Can
-              data-id="000103"
               action="answers.delete"
+              data-id="000103"
               data={{ answer, audit }}
               // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => (

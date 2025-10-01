@@ -35,14 +35,14 @@ function QuestionEmailForm({
   const questionAlreadyExist = (trackerItem.questions || []).findIndex(({ name }) => name === questionName) > -1;
   return (
     <>
-      <Flex data-id="000508" alignItems="center" mb="20px">
+      <Flex alignItems="center" data-id="000508" mb="20px">
         <Text data-id="000509" fontSize="smm" fontWeight="bold">
           {questionHeader(questionType)}
         </Text>
       </Flex>
       <TextInput
-        data-id="000510"
         control={control}
+        data-id="000510"
         label="Question instructions (optional)"
         name="name"
         placeholder="e.g. must be a company email"
@@ -52,16 +52,16 @@ function QuestionEmailForm({
         }}
         variant="secondaryVariant" />
       <Checkbox
-        data-id="000511"
         control={control}
+        data-id="000511"
         label="Answer is required"
         name="required"
         variant="secondaryVariant" />
       <Flex data-id="000512" justifyContent="space-between" mt="15px">
         <Button
-          data-id="000513"
           bg="questionEmailForm.button.secondary.bg"
           color="questionEmailForm.button.secondary.font"
+          data-id="000513"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -76,9 +76,9 @@ function QuestionEmailForm({
           Cancel
         </Button>
         <Button
-          data-id="000514"
           bg="questionEmailForm.button.primary.bg"
           color="questionEmailForm.button.primary.font"
+          data-id="000514"
           disabled={questionAlreadyExist || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
@@ -90,8 +90,8 @@ function QuestionEmailForm({
           }}
           p="17px"
           rightIcon={<Icon
-            data-id="000515"
             as={OpenMenuArrow}
+            data-id="000515"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

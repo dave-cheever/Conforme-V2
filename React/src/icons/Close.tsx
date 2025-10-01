@@ -5,14 +5,14 @@ const Close = createIcon({
   path: (
     <g data-id="000061">
       <path
-        data-id="000062"
         d="M14.75 1.25L1.25 14.75"
+        data-id="000062"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
-        data-id="000063"
         d="M1.25 1.25L14.75 14.75"
+        data-id="000063"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />

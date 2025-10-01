@@ -23,16 +23,16 @@ function ResponseHeaderStatus({ heading, status }) {
 
   return (
     <VStack
-      data-id="000817"
       align="left"
       alignItems={['start', 'start']}
+      data-id="000817"
       direction="column"
       spacing={2}
       w={['max-content', 'max-content']}
     >
       <Flex
-        data-id="000818"
         color="responseHeaderStatus.heading"
+        data-id="000818"
         fontSize="16px"
         fontStyle="normal"
         fontWeight="600"
@@ -40,9 +40,9 @@ function ResponseHeaderStatus({ heading, status }) {
       >
         {heading}
       </Flex>
-      <Stack data-id="000819" align="center" direction="row" pr="10px" spacing={2}>
+      <Stack align="center" data-id="000819" direction="row" pr="10px" spacing={2}>
         {renderIcon()}
-        <Text data-id="000820" color={color} fontSize="smm" fontStyle="normal" fontWeight="bold" lineHeight="20px">
+        <Text color={color} data-id="000820" fontSize="smm" fontStyle="normal" fontWeight="bold" lineHeight="20px">
           {status}
         </Text>
       </Stack>

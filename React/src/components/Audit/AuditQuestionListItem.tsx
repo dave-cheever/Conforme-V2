@@ -11,10 +11,10 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
   const numberOfActions = (question?.answer?.actions || []).length;
   return (
     <HStack
-        data-id="000535"
         bgColor="auditItem.listItem.bg"
         border="1px solid #CBD5E0"
         cursor="pointer"
+        data-id="000535"
         h="90px"
         key={question._id}
         onClick={() => setSelectedQuestion(question)}
@@ -28,8 +28,8 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
               fill="transparent"
               stroke="auditItem.listItem.action.icon" />
             <Text
-              data-id="000539"
               color="auditItem.listItem.action.color"
+              data-id="000539"
               fontSize="ssm">
               {capitalize(question.answer?.businessUnit?.name)}
             </Text>
@@ -41,8 +41,8 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
         <HStack data-id="000541" spacing={6}>
           {question.questionsCategory?.useStatus && (
             <Text
-              data-id="000542"
               color="auditItem.listItem.action.color"
+              data-id="000542"
               fontSize="ssm">
               {capitalize(question.answer?.status)}
             </Text>
@@ -53,8 +53,8 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
               fill="transparent"
               stroke="auditItem.listItem.action.icon" />
             <Text
-              data-id="000545"
               color="auditItem.listItem.action.color"
+              data-id="000545"
               fontSize="ssm">
               {numberOfActions} {pluralize('Action', numberOfActions)}
             </Text>
@@ -70,11 +70,11 @@ function AuditQuestionListItem({ question }: { question: TQuestionWithAnswer; ha
         )}
         {(question.answer?.attachments || []).length - 1 > 1 && (
           <Flex
-            data-id="000548"
             align="center"
             border="1px solid"
             borderColor="documentUploaded.border"
             cursor="default"
+            data-id="000548"
             h="55px"
             justify="center"
             rounded="3px"

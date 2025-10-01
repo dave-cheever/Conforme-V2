@@ -280,7 +280,7 @@ function AuditsInsights() {
         <Text data-id="000721">{error.message}</Text>
       ) : loading ? (
         <Box data-id="000722" h="100vh">
-          <Loader data-id="000723" center />
+          <Loader center data-id="000723" />
         </Box>
       ) : (
         <>
@@ -294,8 +294,8 @@ function AuditsInsights() {
             }}>
             {auditsStatsCounts.map((filter) => (
               <InsightsCard
-                data-id="000725"
                 count={filter.audits}
+                data-id="000725"
                 key={filter.status}
                 onSelect={setSelectedAuditsStatsCount}
                 selected={selectedAuditsStatsCount === filter.status}
@@ -303,20 +303,20 @@ function AuditsInsights() {
             ))}
           </Flex>
           <Text
-            data-id="000726"
             color={auditsStatsCounts.find((filter) => filter.status === selectedAuditsStatsCount)?.color}
+            data-id="000726"
             fontSize="xxl"
             fontWeight="bold"
             my={['15px', '25px']}>
             {auditsInsightsTypes[selectedAuditsStatsCount]}{' '}
-            <Text data-id="000727" as="span" color="insights.secondaryText">
+            <Text as="span" color="insights.secondaryText" data-id="000727">
               {pluralize(t('audit'))}
             </Text>
           </Text>
           <InsightsChart data-id="000728" option={echartsOption} />
           <InsightsDetailedStats
-            data-id="000729"
             businessUnits={businessUnits}
+            data-id="000729"
             insightsType="audits"
             loadMoreBusinessUnits={getBusinessUnitsData}
             loadMoreLocations={getLocationsData}

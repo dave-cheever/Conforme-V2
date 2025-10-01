@@ -57,9 +57,9 @@ function ResponseLeftNavigation() {
 
   return (
     <Flex
-        data-id="000883"
         bg="responseLeftNavigation.bg"
         color="responseLeftNavigation.color"
+        data-id="000883"
         direction="column"
         display={['none', 'none', 'flex']}
         fontWeight="400"
@@ -69,17 +69,17 @@ function ResponseLeftNavigation() {
         w="280px">
       <Flex data-id="000884" flexDirection="column">
         <Box
-          data-id="000885"
           alignItems="center"
           cursor="pointer"
+          data-id="000885"
           display="flex"
           h="80px"
           minW="200px"
           onClick={() => navigateTo('/')}>
-          <Icon data-id="000886" as={Conforme} h="35px" w="50px" />
+          <Icon as={Conforme} data-id="000886" h="35px" w="50px" />
           <Text
-            data-id="000887"
             color="navigationLeft.organizationNameFontColor"
+            data-id="000887"
             fontSize="16px"
             fontWeight="bold"
             w="full">
@@ -87,10 +87,10 @@ function ResponseLeftNavigation() {
           </Text>
         </Box>
         <Flex
-          data-id="000888"
           align="center"
           color="responseLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="000888"
           fontSize="14px"
           h="30px"
           mb="30px"
@@ -118,10 +118,10 @@ function ResponseLeftNavigation() {
             },
           }}>
           <Box data-id="000893" h="50px">
-            <Box data-id="000894" color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+            <Box color="responseLeftNavigation.color" data-id="000894" fontSize="16px" opacity="64%">
               Item ID
             </Box>
-            <Flex data-id="000895" align="center" fontSize="16px" minH="28px">
+            <Flex align="center" data-id="000895" fontSize="16px" minH="28px">
               <Flex data-id="000896" mr={2}>{response?.trackerItem.reference}</Flex>
               <CopyToClipboard
                 data-id="000897"
@@ -134,9 +134,9 @@ function ResponseLeftNavigation() {
                 }
                 text={response?.trackerItem.reference}>
                 <Copy
-                  data-id="000898"
                   _hover={{ opacity: 0.6, cursor: 'pointer' }}
                   color="responseLeftNavigation.copy"
+                  data-id="000898"
                   h="17px"
                   mt={1}
                   w="17px" />
@@ -148,14 +148,14 @@ function ResponseLeftNavigation() {
             heading={capitalize(t('business unit'))}
             value={response?.businessUnit?.name || '-'} />
           <Box data-id="000900" h="50px" mt={2}>
-            <Box data-id="000901"  color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+            <Box color="responseLeftNavigation.color"  data-id="000901" fontSize="16px" opacity="64%">
               Accountable
             </Box>
-             <Flex data-id="000902" align="center" fontSize="16px" minH="28px">
+             <Flex align="center" data-id="000902" fontSize="16px" minH="28px">
               <Avatar
-                data-id="000903"
                 bg="responseLeftNavigation.avatar"
                 color="white"
+                data-id="000903"
                 mr={2}
                 name={
                   accountable && accountable.firstName && accountable.lastName
@@ -172,14 +172,14 @@ function ResponseLeftNavigation() {
             </Flex>
           </Box>
           <Box data-id="000905" h="50px" mt={2}>
-             <Box data-id="000906"  color="responseLeftNavigation.color" fontSize="16px" opacity="64%">
+             <Box color="responseLeftNavigation.color"  data-id="000906" fontSize="16px" opacity="64%">
               Responsible
             </Box>
-              <Flex data-id="000907" align="center" fontSize="16px" minH="28px">
+              <Flex align="center" data-id="000907" fontSize="16px" minH="28px">
               <Avatar
-                data-id="000908"
                 bg="responseLeftNavigation.avatar"
                 color="white"
+                data-id="000908"
                 mr={2}
                 name={
                   responsible && responsible.firstName && responsible.lastName

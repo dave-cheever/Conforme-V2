@@ -89,37 +89,37 @@ function ShareModal() {
         rounded="20px"
         shadow="0px 0px 80px rgba(49, 50, 51, 0.25)">
         <ModalHeader
-          data-id="000391"
           color="shareModal.header"
+          data-id="000391"
           fontSize="smm"
           fontWeight="bold">
           Share item
         </ModalHeader>
-        <ModalCloseButton data-id="000392" color="#282F36" size="md" />
+        <ModalCloseButton color="#282F36" data-id="000392" size="md" />
         <ModalBody data-id="000393" pt="0">
           <Tabs data-id="000394" variant="unstyled">
             <TabList data-id="000395">
               <Tab
-                data-id="000396"
                 _selected={{
                   rounded: '10px',
                   color: 'shareModal.tab.selectedColor',
                   bg: 'shareModal.tab.selectedBg',
                 }}
                 color="shareModal.tab.unselectedColor"
+                data-id="000396"
                 fontSize="smm"
                 fontWeight="bold"
                 h="30px">
                 Copy link
               </Tab>
               <Tab
-                data-id="000397"
                 _selected={{
                   rounded: '10px',
                   color: 'shareModal.tab.selectedColor',
                   bg: 'shareModal.tab.selectedBg',
                 }}
                 color="shareModal.tab.unselectedColor"
+                data-id="000397"
                 fontSize="smm"
                 fontWeight="bold"
                 h="30px">
@@ -142,13 +142,13 @@ function ShareModal() {
                       })
                     }
                     text={URL}>
-                    <Flex data-id="000403" cursor="pointer" direction="column">
-                      <InputGroup data-id="000404" cursor="pointer" my="2">
+                    <Flex cursor="pointer" data-id="000403" direction="column">
+                      <InputGroup cursor="pointer" data-id="000404" my="2">
                         <Input
-                          data-id="000405"
                           _disabled={{ cursor: 'pointer' }}
                           borderColor="shareModal.border"
                           borderWidth="1px"
+                          data-id="000405"
                           disabled
                           fontSize="smm"
                           h="40px"
@@ -161,12 +161,12 @@ function ShareModal() {
                     </Flex>
                   </CopyToClipboard>
                   <Button
-                    data-id="000408"
                     _hover={{ opacity: '0.8' }}
                     alignSelf="flex-end"
                     bg="shareModal.button.copy"
                     border="10px"
                     color="shareModal.button.copyColor"
+                    data-id="000408"
                     h="38px"
                     mb="14px"
                     mt="35px"
@@ -180,11 +180,11 @@ function ShareModal() {
               <TabPanel data-id="000409" mt={3} p={0}>
                 <Flex data-id="000410" flexDir="column">
                   {mails.map((m, index) => (
-                    <InputGroup data-id="000411" cursor="pointer" key={index} my="1">
+                    <InputGroup cursor="pointer" data-id="000411" key={index} my="1">
                       <Input
-                        data-id="000412"
                         borderColor="shareModal.border"
                         borderWidth="1px"
+                        data-id="000412"
                         fontSize="smm"
                         h="40px"
                         onChange={(e) => updateMail(e.target.value, index)}
@@ -199,11 +199,11 @@ function ShareModal() {
                       </InputRightElement>
                     </InputGroup>
                   ))}
-                  <InputGroup data-id="000415" cursor="pointer" my="1">
+                  <InputGroup cursor="pointer" data-id="000415" my="1">
                     <Input
-                      data-id="000416"
                       borderColor="shareModal.border"
                       borderWidth="1px"
+                      data-id="000416"
                       fontSize="smm"
                       h="40px"
                       onChange={(e) => setMail(e.target.value)}
@@ -220,15 +220,15 @@ function ShareModal() {
                   </InputGroup>
 
                   <Link
-                    data-id="000419"
                     _hover={{}}
                     alignSelf="flex-end"
+                    data-id="000419"
                     href={email}
                     isExternal>
                     <Button
-                      data-id="000420"
                       border="10px"
                       colorScheme="purpleHeart"
+                      data-id="000420"
                       disabled={isSendDisabled}
                       h="38px"
                       mb="14px"

@@ -4,22 +4,22 @@ function ExportIcon(props: IconProps) {
   return (
     <Icon data-id="000118" viewBox="0 0 24 24" {...props}>
       <path
-        data-id="000119"
         d="M12 2V13.7333"
+        data-id="000119"
         fill="none"
         stroke="#282F36"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
-        data-id="000120"
         d="M7.60001 9.33334L12 13.7333L16.4 9.33334"
+        data-id="000120"
         fill="none"
         stroke="#282F36"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
-        data-id="000121"
         d="M23 16.7333V18.2C23 18.978 22.691 19.7241 22.1408 20.2742C21.5907 20.8243 20.8446 21.1333 20.0667 21.1333H3.93333C3.15536 21.1333 2.40926 20.8243 1.85915 20.2742C1.30905 19.7241 1 18.978 1 18.2V16.7333"
+        data-id="000121"
         fill="none"
         stroke="#282F36"
         strokeLinecap="round"

@@ -62,10 +62,10 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
       <Box data-id="000165" py="5px">
         <InputGroup data-id="000166">
           <Input
-            data-id="000167"
             borderColor="filterPanel.searchBoxBordercolor"
             borderWidth="1px"
             color="brand.darkGrey"
+            data-id="000167"
             fontSize="14px"
             h="40px"
             onChange={({ target: { value } }) => setSearchText(value)}
@@ -74,8 +74,8 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
             value={searchText}
             w="full" />
           <Magnifier
-            data-id="000168"
             bottom="13px"
+            data-id="000168"
             h="12px"
             left="14px"
             position="absolute"
@@ -84,8 +84,8 @@ function BusinessUnitsSelector({ businessUnits, selected, note, disabled, handle
       </Box>
       {note && (
         <Text
-          data-id="000169"
           color="businessUnitsSelector.note"
+          data-id="000169"
           fontSize="12px"
           fontStyle="italic"
           opacity="0.3">

@@ -30,13 +30,13 @@ function AuditDeleteQuestionModal({ isOpen, onClose }) {
         </ModalBody>
         <ModalFooter data-id="000189">
           <HStack data-id="000190" justify="center" spacing={4} w="full">
-            <Button data-id="000191" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="000191" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              data-id="000192"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="000192"
               onClick={async () => {
                 await deleteQuestion({
                   variables: {

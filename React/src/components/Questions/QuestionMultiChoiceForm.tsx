@@ -171,8 +171,8 @@ function QuestionMultiChoiceForm({
           {questionHeader(questionType)}
         </Text>
         <TextInput
-          data-id="000317"
           control={control}
+          data-id="000317"
           label={`${capitalize(t('question'))} title`}
           name="name"
           placeholder="e.g. where is the tv?"
@@ -180,13 +180,13 @@ function QuestionMultiChoiceForm({
             notEmpty: true,
           }} />
         <TextInput
-          data-id="000318"
           control={control}
+          data-id="000318"
           label="Description"
           name="description" />
         <Text
-          data-id="000319"
           color="questionMultiChoiceForm.text.color"
+          data-id="000319"
           fontSize="ssm"
           my="20px">
           Add as many options as you need and mark the correct answers. Mark the correct answers by clicking on the checkbox.
@@ -227,8 +227,8 @@ function QuestionMultiChoiceForm({
                             </Box>
                             <Flex data-id="000329" w="full">
                               <Checkbox
-                                data-id="000330"
                                 control={control}
+                                data-id="000330"
                                 name={`value.${index}.isCorrect`}
                                 variant="secondaryVariant" />
                               <Input
@@ -244,16 +244,16 @@ function QuestionMultiChoiceForm({
                                 value={inputValue[index]} />
                             </Flex>
                             <Trashcan
-                              data-id="000332"
                               cursor={fields.length === 1 ? 'no-drop' : 'pointer'}
+                              data-id="000332"
                               mr={index + 1 === fields.length ? '12px' : '28px'}
                               onClick={() => removeChoice(index)}
                               stroke="questionMultiChoiceForm.icon.iconBin"
                               w="20px" />
                             {index + 1 === fields.length && (
                               <PlusIcon
-                                data-id="000333"
                                 cursor="pointer"
+                                data-id="000333"
                                 onClick={() => {
                                   append({
                                     label: '',
@@ -276,9 +276,9 @@ function QuestionMultiChoiceForm({
       </Flex>
       <Flex data-id="000334" justifyContent="space-between" mt="51px">
         <Button
-          data-id="000335"
           bg="questionMultiChoiceForm.button.secondary.bg"
           color="questionMultiChoiceForm.button.secondary.font"
+          data-id="000335"
           fontSize="sm"
           fontWeight="700"
           h="27px"
@@ -292,9 +292,9 @@ function QuestionMultiChoiceForm({
           Cancel
         </Button>
         <Button
-          data-id="000336"
           bg="questionMultiChoiceForm.button.primary.bg"
           color="questionMultiChoiceForm.button.primary.font"
+          data-id="000336"
           disabled={questionAlreadyExist || choicesIsEmpty || Object.keys(errors).length > 0 || !questionName}
           fontSize="sm"
           fontWeight="medium"
@@ -311,8 +311,8 @@ function QuestionMultiChoiceForm({
           }}
           p="17px"
           rightIcon={<Icon
-            data-id="000337"
             as={OpenMenuArrow}
+            data-id="000337"
             stroke="trackerItemModal.tabs.bottomButton.icon"
             transform="rotate(270deg)" />}
           title={questionAlreadyExist ? 'This question already exist' : ''}>

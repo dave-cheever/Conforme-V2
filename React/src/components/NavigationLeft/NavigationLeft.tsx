@@ -20,16 +20,16 @@ function NavigationLeft() {
 
   return (
     <Box
-        data-id="000544"
         bg="navigationLeft.bg"
+        data-id="000544"
         display={['none', 'block', 'block']}
         fontWeight="semibold"
         h="100vh"
         w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
       <Box
-        data-id="000545"
         alignItems="center"
         cursor="pointer"
+        data-id="000545"
         display="flex"
         h="80px"
         justifyContent="center"
@@ -52,8 +52,8 @@ function NavigationLeft() {
         <Box data-id="000548">
           {menuItems.map((menuItem: any, i) => (
             <Can
-              data-id="000549"
               action={menuItem.permission}
+              data-id="000549"
               key={`menu${i}`}
               // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => {

@@ -323,7 +323,6 @@ function UserFilter() {
   return (
     <Box data-id="000192" w="full">
       <Select
-        data-id="000193"
         _active={{ bg: 'dropdown.activeBg' }}
         _disabled={{
           bg: 'dropdown.disabled.bg',
@@ -339,6 +338,7 @@ function UserFilter() {
         borderRadius="8px"
         borderWidth="1px"
         cursor="pointer"
+        data-id="000193"
         fontSize="smm"
         h="42px"
         icon={<ArrowDownIcon data-id="000194" />}
@@ -356,10 +356,10 @@ function UserFilter() {
       </Select>
       <InputGroup data-id="000196">
         <Input
-          data-id="000197"
           borderColor="filterPanel.searchBoxBordercolor"
           borderWidth="1px"
           color="brand.darkGrey"
+          data-id="000197"
           fontSize="14px"
           h="40px"
           mt={2}
@@ -377,8 +377,8 @@ function UserFilter() {
           .map((selectedRoleUser, i) => (
             <Flex data-id="000200" key={i} py="5px">
               <Text
-                data-id="000201"
                 color="usersSelector.roles.selectedRole.label"
+                data-id="000201"
                 fontSize="smm"
                 fontWeight="semi_medium"
                 textTransform="capitalize"
@@ -387,8 +387,8 @@ function UserFilter() {
               </Text>
               <Spacer data-id="000202" />
               <CrossIcon
-                data-id="000203"
                 cursor="pointer"
+                data-id="000203"
                 h="15px"
                 onClick={() =>
                   module?.type === 'tracker' ? handleClearFilter(selectedRoleUser) : handleClearAuditFilter(selectedRoleUser)
@@ -400,8 +400,8 @@ function UserFilter() {
           ))}
       </Box>
       <UsersSelector
-        data-id="000204"
         allowUnassigned={getPath() === 'actions'}
+        data-id="000204"
         handleChange={module?.type === 'tracker' ? handleUserChange : handleAuditUserChange}
         searchText={searchText}
         selected={selectedUsers}

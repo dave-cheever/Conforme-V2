@@ -41,19 +41,19 @@ function Details() {
   if (!response) return null;
   return (
     <VStack
-        data-id="000209"
         align="flex-start"
+        data-id="000209"
         h="full"
         minH={['30vh', 'none']}
         overflow="visible"
         pb="25px"
         spacing={8}
         w="full">
-      <VStack data-id="000210" align="flex-start">
+      <VStack align="flex-start" data-id="000210">
         {response?.trackerItem?.description && (
           <Text
-            data-id="000211"
             color="responseRenewalDetails.labelColor"
+            data-id="000211"
             fontSize="14px">
             Description
           </Text>
@@ -67,20 +67,20 @@ function Details() {
         templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}
         w="full">
         <Flex
-          data-id="000214"
           align="center"
           cursor="pointer"
+          data-id="000214"
           flexDir={['column', 'row']}
           h="full"
           justify="space-between"
           w="full">
           <Flex
-            data-id="000215"
             align={['center', 'flex-start']}
             bg="responseRenewalDetails.bg"
             border={activeTab === 0 ? '1px solid #ccc' : 'null'}
             borderRadius="10px"
             boxShadow={activeTab === 0 ? 'simple' : 'null'}
+            data-id="000215"
             flexDir="column"
             mb={[1, 0]}
             mr={[0, 5]}
@@ -88,31 +88,31 @@ function Details() {
             p="10px 20px"
             w="full">
             <Text
-              data-id="000216"
               color="responseRenewalDetails.labelColor"
+              data-id="000216"
               fontSize="11px">
               Last reviewed
             </Text>
             <Text
-              data-id="000217"
               color="responseRenewalDetails.textColor"
+              data-id="000217"
               fontSize="14px">
               {response.lastCompletionDate ? format(new Date(response.lastCompletionDate), 'dd MMMM yyyy') : 'Never reviewed before'}
             </Text>
           </Flex>
           <ArrowDownIcon
-            data-id="000218"
             color="responseRenewalDetails.labelColor"
+            data-id="000218"
             transform={['', 'rotate(270deg)']} />
         </Flex>
         <Flex
-          data-id="000219"
           align="center"
           bg="responseRenewalDetails.bg"
           border={activeTab === 1 ? '1px solid #ccc' : 'null'}
           borderRadius="10px"
           boxShadow={activeTab === 1 ? 'simple' : 'null'}
           cursor="pointer"
+          data-id="000219"
           h="full"
           justify="space-between"
           onClick={() => {
@@ -123,27 +123,27 @@ function Details() {
           position="relative"
           w="full">
           <Flex
-            data-id="000220"
             align={['center', 'flex-start']}
+            data-id="000220"
             flexDir="column"
             w="full">
             <Text
-              data-id="000221"
               color="responseRenewalDetails.labelColor"
+              data-id="000221"
               fontSize="11px">
               Perform new review by
             </Text>
             <Flex data-id="000222">
               <Text
-                data-id="000223"
                 color="responseRenewalDetails.textColor"
+                data-id="000223"
                 fontSize="14px">
                 {response.dueDate ? format(new Date(response.dueDate), 'dd MMMM yyyy') : 'No due date'}
               </Text>
               {!snapshot && (
                 <Can
-                  data-id="000224"
                   action="responses.edit"
+                  data-id="000224"
                   data={{ response }}
                   // eslint-disable-next-line react/no-unstable-nested-components
                   yes={() => (

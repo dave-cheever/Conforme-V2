@@ -6,14 +6,14 @@ function SummaryItem({ children, label }) {
   return (
     <Flex data-id="000653" flexDir="column">
       <Text
-        data-id="000654"
         color="summaryItemModal.label"
+        data-id="000654"
         fontSize="11px"
         fontWeight="bold"
         mb="5px">
         {label}
       </Text>
-      <Text data-id="000655" color="summaryItemModal.value" fontSize="smm">
+      <Text color="summaryItemModal.value" data-id="000655" fontSize="smm">
         {children}
       </Text>
     </Flex>

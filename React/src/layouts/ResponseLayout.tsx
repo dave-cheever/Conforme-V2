@@ -24,7 +24,7 @@ function ResponseLayout({ component: Component }: { component: any }) {
   if (loading && !response) {
     return (
       <Flex data-id="000221" h="100vh">
-        <Loader data-id="000222" center />
+        <Loader center data-id="000222" />
       </Flex>
     );
   }
@@ -52,13 +52,13 @@ function ResponseLayout({ component: Component }: { component: any }) {
           <ReasponseHeader data-id="000230" />
           {isTabletAndMobile && (
             <IconButton
-              data-id="000231"
               _hover={{ opacity: 0.7 }}
               alignItems="center"
               aria-label="Message"
               bg="responseLayout.iconBg"
               bottom={['75px', '22px']}
               color="white"
+              data-id="000231"
               flexShrink={0}
               h="52px"
               icon={
@@ -82,9 +82,9 @@ function ResponseLayout({ component: Component }: { component: any }) {
               w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="000236" />
             </Flex>
-            {device === 'desktop' && <Chat data-id="000237" component="response" />}
+            {device === 'desktop' && <Chat component="response" data-id="000237" />}
           </Flex>
-          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet data-id="000238" component="response" />}
+          {isOpenMessage && isTabletAndMobile && <ChatMobileAndTablet component="response" data-id="000238" />}
         </Flex>
         <ResponseLeftNavigationMobile data-id="000239" />
       </Flex>
@@ -102,7 +102,7 @@ function ResponseLayoutWithContext(props) {
   return (
     <ResponseProvider data-id="000240" {...props}>
       <ShareProvider data-id="000241">
-        <ChatProvider data-id="000242" component="response">
+        <ChatProvider component="response" data-id="000242">
           <ResponseLayout data-id="000243" {...props} />
         </ChatProvider>
       </ShareProvider>

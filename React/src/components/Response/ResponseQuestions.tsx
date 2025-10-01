@@ -71,8 +71,8 @@ function ResponseQuestions({ disabled = false }) {
         <Grid data-id="000435" gap={4} templateColumns="1fr" w={['full', '80%']}>
           {questions.length === 0 && (
             <Text
-              data-id="000436"
               color="responseQuestions.NoQuestion.color"
+              data-id="000436"
               fontSize="smm">
               <MessageSquareIcon
                 data-id="000437"
@@ -85,10 +85,10 @@ function ResponseQuestions({ disabled = false }) {
           {questions.map(({ type, name, description, required, value, requiredAnswer, notApplicable, options }, i) => (
             <Flex data-id="000438" key={name}>
               <Box
-                data-id="000439"
                 bg="responseQuestions.sectionNumber.bg"
                 borderRadius="8px"
                 color="responseQuestions.sectionNumber.color"
+                data-id="000439"
                 fontSize="smm"
                 fontWeight="bold"
                 h="30px"
@@ -101,8 +101,8 @@ function ResponseQuestions({ disabled = false }) {
                 {i + 1}
               </Box>
               <Field
-                data-id="000440"
                 control={control}
+                data-id="000440"
                 defaultvalue={value}
                 disabled={!isUserPermitted || disabled}
                 label={name}

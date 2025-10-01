@@ -42,13 +42,13 @@ function AuditRecurringModal({ isOpen, onClose }) {
         </ModalBody>
         <ModalFooter data-id="000531">
           <HStack data-id="000532" justify="center" spacing={4} w="full">
-            <Button data-id="000533" _hover={{ opacity: 0.7 }} onClick={onClose}>
+            <Button _hover={{ opacity: 0.7 }} data-id="000533" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              data-id="000534"
               _hover={{ opacity: 0.7 }}
               colorScheme="purpleHeart"
+              data-id="000534"
               isLoading={updateAuditLoading}
               loadingText="Updating..."
               onClick={async () => {

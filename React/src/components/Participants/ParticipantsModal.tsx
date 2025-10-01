@@ -84,10 +84,10 @@ function ParticipantsModal() {
               <SearchIcon data-id="000630" fill="participantsModal.modal.searchIcon" />
             </InputLeftElement>
             <Input
-              data-id="000631"
               autoFocus
               borderColor="participantsModal.modal.inputBorder"
               borderWidth="1px"
+              data-id="000631"
               fontSize="smm"
               h="40px"
               mb={0}
@@ -105,8 +105,8 @@ function ParticipantsModal() {
             {maxParticipants === undefined ||
               (maxParticipants > 1 && (
                 <Text
-                  data-id="000633"
                   color="participantsModal.radioButtonFont"
+                  data-id="000633"
                   fontSize="smm"
                   fontWeight="semi_medium"
                   ml="2"
@@ -119,7 +119,7 @@ function ParticipantsModal() {
 
           <Flex data-id="000634" direction="column" maxH={['full', '258px']} mt="20px">
             {usersList.length > 0 && (
-              <VStack data-id="000635" align="start" alignItems="flex-start" h="full" overflow="auto" spacing={2}>
+              <VStack align="start" alignItems="flex-start" data-id="000635" h="full" overflow="auto" spacing={2}>
                 {[
                   ...usersList.filter(({ _id }) => isParticipantSelected(_id)).sort((a, b) => a.displayName.localeCompare(b.displayName)),
                   ...usersList.filter(({ _id }) => !isParticipantSelected(_id)).sort((a, b) => a.displayName.localeCompare(b.displayName)),
@@ -136,8 +136,8 @@ function ParticipantsModal() {
             )}
             {loading ? (
               <HStack
-                data-id="000637"
                 align="center"
+                data-id="000637"
                 fontSize="smm"
                 fontStyle="italic"
                 h="40px"
@@ -145,13 +145,13 @@ function ParticipantsModal() {
                 spacing={2}
                 w="full"
               >
-                <Loader data-id="000638" center size="sm" w="20px" />
+                <Loader center data-id="000638" size="sm" w="20px" />
                 <Text data-id="000639">Searching...</Text>
               </HStack>
             ) : (
               usersList.length === selectedParticipants.length &&
               searchQuery && (
-                <Flex data-id="000640" align="center" fontSize="smm" fontStyle="italic" h="40px">
+                <Flex align="center" data-id="000640" fontSize="smm" fontStyle="italic" h="40px">
                   No {selectedParticipants.length > 0 ? 'more ' : ''} results found
                 </Flex>
               )
@@ -160,10 +160,10 @@ function ParticipantsModal() {
         </ModalBody>
         <ModalFooter data-id="000641" pt="0px">
           <Button
-            data-id="000642"
             _hover={{ bg: 'participantsModal.button.bg' }}
             bg="participantsModal.button.bg"
             color="participantsModal.button.color"
+            data-id="000642"
             fontSize="smm"
             fontWeight="bold"
             h="38px"

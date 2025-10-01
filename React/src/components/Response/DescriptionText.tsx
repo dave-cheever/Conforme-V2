@@ -8,8 +8,8 @@ function DescriptionText() {
   if (!response?.trackerItem?.description) return null;
   return (
     <Box
-        data-id="000207"
         color="trackerItemResponse.textColor"
+        data-id="000207"
         fontSize="14px"
         lineHeight="20px"
         mt="5"

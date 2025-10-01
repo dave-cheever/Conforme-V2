@@ -27,11 +27,11 @@ function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }
 
   return (
     <Stack
-        data-id="000267"
         align="center"
         bg={bgColor || 'questionListElement.bg'}
         borderColor="questionListElement.border"
         borderWidth="2px"
+        data-id="000267"
         direction="row"
         minH="65px"
         px={4}
@@ -39,21 +39,21 @@ function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }
         spacing={2}
         w="calc(100% - 1rem)">
       <Flex data-id="000268" flexDir="column" w="calc(100% - 40px)">
-        <Text data-id="000269" color="questionListElement.label" fontSize="11px">
+        <Text color="questionListElement.label" data-id="000269" fontSize="11px">
           {questionHeader(question.type)}
         </Text>
-        <Flex data-id="000270" alignItems="center" flexGrow={1} w="full">
+        <Flex alignItems="center" data-id="000270" flexGrow={1} w="full">
           <Tooltip
-            data-id="000271"
             bg="questionListElement.tooltipBg"
             color="questionListElement.tooltipColor"
+            data-id="000271"
             hasArrow
             isDisabled={!isTextOverflown}
             label={question.name}
             placement="top">
             <Text
-              data-id="000272"
               color="questionListElement.name"
+              data-id="000272"
               fontSize="smm"
               fontWeight="bold"
               noOfLines={4}
@@ -74,14 +74,14 @@ function QuestionListElement({ question, bgColor, removeQuestion, editQuestion }
         </Flex>
       </Flex>
       {editQuestion && <EditIcon
-        data-id="000274"
         cursor="pointer"
+        data-id="000274"
         onClick={editQuestion}
         stroke="questionListElement.icon"
         w="20px" />}
       {removeQuestion && <Trashcan
-        data-id="000275"
         cursor="pointer"
+        data-id="000275"
         onClick={removeQuestion}
         stroke="questionListElement.icon"
         w="20px" />}

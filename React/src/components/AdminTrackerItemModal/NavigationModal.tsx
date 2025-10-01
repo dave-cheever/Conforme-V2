@@ -12,9 +12,9 @@ function NavigationModal() {
     <Flex data-id="000568" flexDir="column" w="185px">
       {trackerItemModalSections.map((el, i) => (
         <Flex
-          data-id="000569"
           alignItems="center"
           cursor="pointer"
+          data-id="000569"
           key={el.name}
           mb="15px"
           onClick={() => {
@@ -22,10 +22,10 @@ function NavigationModal() {
             selectSection(i);
           }}>
           <Flex
-            data-id="000570"
             alignItems="center"
             bg={generateTabColors(i, errors, trackerItem, visitedTab, selectedSectionIndex).bg}
             color={generateTabColors(i, errors, trackerItem, visitedTab, selectedSectionIndex).color}
+            data-id="000570"
             flexShrink={0}
             fontSize="11px"
             fontWeight="bold"
@@ -41,8 +41,8 @@ function NavigationModal() {
             )}
           </Flex>
           <Text
-            data-id="000572"
             color="navigationModal.section.label"
+            data-id="000572"
             fontSize="smm"
             fontWeight={i === selectedSectionIndex ? 'bold' : 'semi_medium'}>
             {el.name}

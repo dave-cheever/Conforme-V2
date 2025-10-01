@@ -23,12 +23,12 @@ function AuditsList({
 }) {
   const { module } = useAppContext();
   return (
-    <Box data-id="000306" bg="#ffffff" h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
+    <Box bg="#ffffff" data-id="000306" h="full" ml="10px" overflow="none" p={[3, 6]} w="full">
       <Box
-        data-id="000307"
         bg="auditsList.bg"
         border="1px solid #CBD5E0"
         borderRadius="10px"
+        data-id="000307"
         h="fit-content"
         minH="full"
         overflow="hidden"
@@ -117,7 +117,7 @@ function AuditsList({
           />
         </AdminTableHeader>
         <Flex data-id="000316" flexDir="column" h={['full', 'calc(100vh - 290px)', 'calc(100vh - 276px)']} overflowY="auto" w="full">
-          {audits?.map((audit, index) => <AuditListItem data-id="000317" audit={audit} index={index} key={audit._id} />)}
+          {audits?.map((audit, index) => <AuditListItem audit={audit} data-id="000317" index={index} key={audit._id} />)}
         </Flex>
       </Box>
     </Box>

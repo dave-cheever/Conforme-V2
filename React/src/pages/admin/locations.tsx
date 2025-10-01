@@ -236,17 +236,17 @@ function Locations() {
   return (
     <>
       <AdminModal
-        data-id="000426"
         collection={t('location')}
+        data-id="000426"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
         onAction={handleAction}
         onAddMore={adminModalState === 'add' ? handleAddAndResetLocation : undefined}
       >
-        <Flex data-id="000427" align="flex-start" direction="column" w={['full', '70%']}>
+        <Flex align="flex-start" data-id="000427" direction="column" w={['full', '70%']}>
           <TextInput
-            data-id="000428"
             control={control}
+            data-id="000428"
             initialValue={currentLocationName.toLowerCase()}
             label={`${capitalize(t('location'))} name`}
             name="name"
@@ -257,10 +257,10 @@ function Locations() {
               uniqueValue: locations.map(({ name }) => name.toLowerCase()),
             }}
           />
-          <TextInputMultiline data-id="000429" control={control} label="Notes" name="notes" placeholder="Add your notes here" />
+          <TextInputMultiline control={control} data-id="000429" label="Notes" name="notes" placeholder="Add your notes here" />
           <PeoplePicker
-            data-id="000430"
             control={control}
+            data-id="000430"
             label="Owner"
             name="ownerId"
             placeholder="Name"
@@ -272,19 +272,19 @@ function Locations() {
           />
         </Flex>
       </AdminModal>
-      <Header data-id="000431" breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} pageLabel={capitalize(t('location'))} />
+      <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="000431" pageLabel={capitalize(t('location'))} />
       <Box
-        data-id="000432"
         bg="auditsList.bg"
         borderRadius="10px"
+        data-id="000432"
         h="calc(100vh - 160px)"
         p={['0', '0 25px 30px 30px']}
       >
         <Flex data-id="000433" h="full" px={['25px', 0]}>
           <Box
-            data-id="000434"
             border="1px solid"
             borderColor="auditsList.headerBorderColor"
+            data-id="000434"
             h={['calc(100% - 160px)', 'calc(100% - 35px)']}
             overflow="hidden"
             w={['full', 'full', 'calc(100%)']}
@@ -357,11 +357,11 @@ function Locations() {
             </AdminTableHeader>
 
             {loading ? (
-              <Box data-id="000442" bg="white" borderBottomRadius="10px" h="full" w="full">
-                <Loader data-id="000443" center />
+              <Box bg="white" borderBottomRadius="10px" data-id="000442" h="full" w="full">
+                <Loader center data-id="000443" />
               </Box>
             ) : (
-              <Box data-id="000444" bg="auditsList.bg" borderBottomRadius="10px" h="full" overflow="auto">
+              <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000444" h="full" overflow="auto">
                 {locations?.length > 0 ? (
                   locations?.map((location, i) => (
                     <LocationListItem data-id="000445" index={i} key={i} location={location} openLocationModal={openLocationModal} />

@@ -13,8 +13,8 @@ import { IField } from '../../interfaces/IField';
 import { IUser } from '../../interfaces/IUser';
 import { TDefinedValidations } from '../../interfaces/TValidations';
 import { formatEmail } from '../../utils/helpers';
-import Loader from '../Loader';
 import { runtimeEnv } from '../../utils/runtime-env';
+import Loader from '../Loader';
 
 interface IPeoplePicker extends IField {
   placeholder?: string;
@@ -60,13 +60,13 @@ function UserData({
 }) {
   return (
     <Flex
-      data-id="000276"
       _hover={{
         cursor: 'pointer',
         bg: 'peoplePicker.hover.bg',
       }}
       align="center"
       color="peoplePicker.font"
+      data-id="000276"
       fontWeight="400"
       h="auto"
       justify="space-between"
@@ -83,7 +83,7 @@ function UserData({
       w="full"
       wordBreak="break-word"
     >
-      <Flex data-id="000277" align="center">
+      <Flex align="center" data-id="000277">
         {user.imgUrl && (
           <Avatar
             data-id="000278"
@@ -93,7 +93,7 @@ function UserData({
           />
         )}
         <Flex data-id="000279" direction="column" ml={3}>
-          <Text data-id="000280" color="black" fontSize="smm" fontWeight="semibold">
+          <Text color="black" data-id="000280" fontSize="smm" fontWeight="semibold">
             {user?.displayName} {user.jobTitle ? ` - ${user.jobTitle}` : ''}
           </Text>
           <Box
@@ -145,8 +145,8 @@ function PeoplePicker({
 
   return (
     <Controller
-      data-id="000282"
       control={control}
+      data-id="000282"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, value } = field;
@@ -168,8 +168,8 @@ function PeoplePicker({
 
         return (
           <Box
-            data-id="000283"
             bg={pickerActive ? '#ffffff' : 'none'}
+            data-id="000283"
             h={pickerActive ? '100vh' : 'auto'}
             id={name}
             inset={0}
@@ -181,10 +181,10 @@ function PeoplePicker({
             zIndex={pickerActive ? '999' : 'auto'}
           >
             {label && (
-              <Flex data-id="000284" align="center" justify="space-between" mb="none" pb={1} pt={2}>
+              <Flex align="center" data-id="000284" justify="space-between" mb="none" pb={1} pt={2}>
                 <Box
-                  data-id="000285"
                   color={error ? 'peoplePicker.labelFont.error' : 'peoplePicker.labelFont.normal'}
+                  data-id="000285"
                   fontSize={11}
                   fontWeight="bold"
                   left="none"
@@ -213,7 +213,6 @@ function PeoplePicker({
             )}
             <InputGroup data-id="000289">
               <Input
-                data-id="000290"
                 _active={{
                   bg: disabled ? 'peoplePicker.disabled.bg' : 'peoplePicker.activeBg',
                 }}
@@ -226,6 +225,7 @@ function PeoplePicker({
                 borderRadius="8px"
                 borderWidth="1px"
                 color="peoplePicker.font"
+                data-id="000290"
                 disabled={disabled}
                 fontSize="smm"
                 h="40px"
@@ -251,7 +251,7 @@ function PeoplePicker({
               )}
 
               {!disabled && showAsDropdown && (
-                <InputRightElement data-id="000293" cursor="pointer" w={value ? 14 : 8}>
+                <InputRightElement cursor="pointer" data-id="000293" w={value ? 14 : 8}>
                   {value && (
                     <Trashcan
                       data-id="000294"
@@ -276,9 +276,9 @@ function PeoplePicker({
             </InputGroup>
             {showResults && (
               <Flex
-                data-id="000296"
                 bg="peoplePicker.bg"
                 boxShadow="lg"
+                data-id="000296"
                 direction="column"
                 maxH="48vh"
                 overflowY="auto"
@@ -289,8 +289,8 @@ function PeoplePicker({
               >
                 {loading ? (
                   <Flex
-                    data-id="000297"
                     align="center"
+                    data-id="000297"
                     fontStyle="italic"
                     h="50px"
                     justifyContent={showAsDropdown ? 'center' : ''}
@@ -331,24 +331,24 @@ function PeoplePicker({
                   )
                 ) : !showAsDropdown ? (
                   searchText && (
-                    <Flex data-id="000302" align="center" fontStyle="italic" h="35px" pl={5}>
+                    <Flex align="center" data-id="000302" fontStyle="italic" h="35px" pl={5}>
                       No results found
                     </Flex>
                   )
                 ) : (
-                  <Flex data-id="000303" align="center" fontStyle="italic" h="35px" pl={5}>
+                  <Flex align="center" data-id="000303" fontStyle="italic" h="35px" pl={5}>
                     No results found
                   </Flex>
                 )}
               </Flex>
             )}
             {error && (
-              <Box data-id="000304" color="peoplePicker.error" fontSize="smm" mt={1} pl={3}>
+              <Box color="peoplePicker.error" data-id="000304" fontSize="smm" mt={1} pl={3}>
                 {error.message}
               </Box>
             )}
             {tooltip && (
-              <Flex data-id="000305" align="center" color="peoplePicker.tooltip" mt={3}>
+              <Flex align="center" color="peoplePicker.tooltip" data-id="000305" mt={3}>
                 <InfoOutlineIcon data-id="000306" />
                 <Box data-id="000307" fontSize="11px" ml={2}>
                   {tooltip}

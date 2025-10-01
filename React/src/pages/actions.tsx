@@ -293,14 +293,14 @@ function Actions() {
         variant="adminModal">
         <ModalOverlay data-id="000247" />
         <ActionModal
-          data-id="000248"
           action={selectedAction}
           closeModal={closeModal}
+          data-id="000248"
           refetch={refetch} />
       </Modal>
       <Header
-        data-id="000249"
         breadcrumbs={['Actions']}
+        data-id="000249"
         mobileBreadcrumbs={['Actions']}>
         <ChangeViewButton
           data-id="000250"
@@ -309,13 +309,12 @@ function Actions() {
           views={['grid', 'list']} />
         {device !== 'mobile' && (
           <CSVLinkComponent
-            data-id="000251"
             data={csvData}
+            data-id="000251"
             filename="actions.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
-              data-id="000252"
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
                 color: 'reasponseHeader.buttonLightColorHover',
@@ -324,6 +323,7 @@ function Actions() {
               }}
               bg="white"
               borderRadius="10px"
+              data-id="000252"
               display="none"
               ml="15px"
               rightIcon={<ExportIcon data-id="000253" height="15px" width="15px" />}>
@@ -344,7 +344,6 @@ function Actions() {
       <HStack data-id="000256" px={[4, 8]} spacing={2}>
         {Object.keys(actionStatuses).map((status, index) => (
           <Button
-            data-id="000257"
             _active={{
               bg: 'actions.quickFilter.active.bg',
               color: 'actions.quickFilter.active.color',
@@ -355,6 +354,7 @@ function Actions() {
             bg="actions.quickFilter.default.bg"
             borderRadius="10px"
             color="actions.quickFilter.default.color"
+            data-id="000257"
             fontSize="14px"
             fontWeight="500"
             h="32px"
@@ -376,7 +376,7 @@ function Actions() {
         {error ? (
           <Text data-id="000259">{error.message}</Text>
         ) : loading ? (
-          <Loader data-id="000260" center />
+          <Loader center data-id="000260" />
         ) : (
           <>
             {viewMode === 'grid' && (
@@ -393,8 +393,8 @@ function Actions() {
                 w="full">
                 {sortedActions.length > 0 ? (
                   sortedActions?.map((action) => <ActionSquare
-                    data-id="000262"
                     action={action}
+                    data-id="000262"
                     editAction={handleOpenModal}
                     key={action._id} />)
                 ) : (
@@ -412,8 +412,8 @@ function Actions() {
             {viewMode === 'list' && (
               <Box data-id="000264" p="6" w="full">
                 <ActionsList
-                  data-id="000265"
                   actions={sortedActions}
+                  data-id="000265"
                   editAction={handleOpenModal}
                   setSortOrder={setSortOrder}
                   setSortType={setSortType}

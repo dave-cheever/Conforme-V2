@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
@@ -94,7 +94,6 @@ const GET_RESPONSES = gql`
 function TrackerItems() {
   const { module, user } = useAppContext();
   const device = useDevice();
-  const scrollerRef = useRef<any>(null);
 
   const {
     filtersValues,
@@ -150,9 +149,8 @@ function TrackerItems() {
       'regulatoryBodiesIds',
       'dueDate',
     ];
-    if (module?.customQuestionsInDashboard?.length) 
-      filters.unshift(...module.customQuestionsInDashboard);
-    
+    if (module?.customQuestionsInDashboard?.length) filters.unshift(...module.customQuestionsInDashboard);
+
     setUsedFilters(filters);
     return () => {
       setShowFiltersPanel(false);
@@ -210,7 +208,7 @@ function TrackerItems() {
     setParsedFilters(parsed);
   }, [filtersValues]);
 
-    // Load function
+  // Load function
   const loadResponses = async (page: number) => {
     const cleanedFilters = removeEmptyArraysAndObjects(parsedFilters);
     const res = await getTrackerResponses({
@@ -225,10 +223,8 @@ function TrackerItems() {
       },
     });
 
-    if (res.data?.responses?.responses?.length) 
-      setResponses((r) => uniqBy([...r, ...res.data.responses.responses], '_id'));
-    if (res.data?.responses?.total != null) 
-      setTotal(res.data.responses.total);
+    if (res.data?.responses?.responses?.length) setResponses((r) => uniqBy([...r, ...res.data.responses.responses], '_id'));
+    if (res.data?.responses?.total != null) setTotal(res.data.responses.total);
   };
 
   useEffect(() => {
@@ -239,7 +235,7 @@ function TrackerItems() {
     }
 
     setResponses([]);
-    if (scrollerRef.current) scrollerRef.current.pageLoaded = 0;
+    // Reset infinite scroll state by reloading from page 1
     loadResponses(1);
   }, [localStorageChecked, sortOrder, sortType, JSON.stringify(parsedFilters), hasStoredFilters]);
 
@@ -256,49 +252,29 @@ function TrackerItems() {
   return (
     <>
       <Header
-        data-id="000288"
         breadcrumbs={[pluralize(t('tracker item'))]}
+        data-id="000288"
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
-        pageLabel={capitalize(t('tracker item'))}>
+        pageLabel={capitalize(t('tracker item'))}
+      >
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton
-              data-id="000289"
-              setViewMode={setViewMode}
-              viewMode={viewMode}
-              views={['grid', 'list', 'group']} />
-            <Divider
-              data-id="000290"
-              borderColor="gray.300"
-              height="30px"
-              mt={1}
-              mx={4}
-              orientation="vertical" />
+            <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
+            <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
             <SortButton
               data-id="000291"
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortBy={sortBy}
               sortOrder={sortOrder}
-              sortType={sortType} />
+              sortType={sortType}
+            />
           </>
         )}
       </Header>
-      <Flex
-        data-id="000292"
-        direction="column"
-        h={['calc(100vh - 200px)', 'calc(100vh - 150px)']}
-        overflow="auto"
-        pb={4}>
+      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
         {error ? (
-          <Flex
-            data-id="000293"
-            alignItems="center"
-            fontSize="18px"
-            fontStyle="italic"
-            h="200px"
-            justifyContent="center"
-            w="full">
+          <Flex alignItems="center" data-id="000293" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
             No Tracker Items found, try adjusting the filters.
           </Flex>
         ) : (
@@ -310,31 +286,33 @@ function TrackerItems() {
                 hasMore={!loading && responses.length < total}
                 initialLoad={false}
                 loadMore={loadResponses}
-                ref={scrollerRef}
-                useWindow={false}>
+                useWindow={false}
+              >
                 <Grid
-                  data-id="000295"
                   bg="#fff"
+                  data-id="000295"
                   gap={6}
                   justifyItems="center"
                   pb={[0, 8]}
                   pt={3}
                   px={[4, 8]}
-                  templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}>
-                  {responses.length ? (
-                    responses.map((r) => <TrackerItemSquare data-id="000296" key={r._id} response={r} />)
-                  ) : !loading ? (
-                    <Flex
-                      data-id="000297"
-                      fontSize="18px"
-                      fontStyle="italic"
-                      h="full"
-                      w="full">
-                      No {pluralize(t('tracker item'))} found
-                    </Flex>
-                  ) : null}
+                  templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}
+                >
+                  {(() => {
+                    if (responses.length) 
+                      return responses.map((r) => <TrackerItemSquare data-id="000296" key={r._id} response={r} />);
+                    
+                    if (!loading) {
+                      return (
+                        <Flex data-id="000297" fontSize="18px" fontStyle="italic" h="full" w="full">
+                          No {pluralize(t('tracker item'))} found
+                        </Flex>
+                      );
+                    }
+                    return null;
+                  })()}
                 </Grid>
-                {loading && <Loader data-id="000298" center h="60px" />}
+                {loading && <Loader center data-id="000298" h="60px" />}
               </InfiniteScrollComponent>
             )}
             {viewMode === 'list' && (
@@ -343,21 +321,15 @@ function TrackerItems() {
                 loading={loading}
                 loadResponses={loadResponses}
                 responses={responses}
-                scrollerRef={scrollerRef}
                 setSortOrder={setSortOrder}
                 setSortType={setSortType}
                 sortOrder={sortOrder}
                 sortType={sortType}
-                total={total} />
+                total={total}
+              />
             )}
             {viewMode === 'group' && (
-              <TrackerItemsGroup
-                data-id="000300"
-                loading={loading}
-                loadResponses={loadResponses}
-                responses={responses}
-                scrollerRef={scrollerRef}
-                total={total} />
+              <TrackerItemsGroup data-id="000300" loading={loading} loadResponses={loadResponses} responses={responses} total={total} />
             )}
           </>
         )}

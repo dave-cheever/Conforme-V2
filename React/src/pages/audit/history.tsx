@@ -77,9 +77,9 @@ function AuditHistory() {
 
   return (
     <Stack
-        data-id="000550"
         bg="auditHistory.bg"
         border="1px solid #CBD5E0"
+        data-id="000550"
         h="full"
         maxH={['none', 'calc(100vh - 220px)']}
         overflowY="auto"
@@ -105,15 +105,15 @@ function AuditHistory() {
           {Object.entries(days).length > 0 ? (
             Object.entries(days).map(([day, audits]) => (
               <Stack
-                data-id="000553"
                 align="flex-start"
+                data-id="000553"
                 direction={['column', 'row']}
                 key={day}
                 spacing={4}>
                 <Box
-                  data-id="000554"
                   bg="auditHistory.date.bg"
                   color="auditHistory.date.color"
+                  data-id="000554"
                   flexShrink={0}
                   fontSize="smm"
                   fontWeight="bold"
@@ -125,12 +125,12 @@ function AuditHistory() {
                 <Stack data-id="000555" spacing={4} w="full">
                   {audits.map((audit) => (
                     <HStack
-                      data-id="000556"
                       _hover={{
                         bg: 'auditHistory.listItem.bg.hover',
                       }}
                       bg="auditHistory.listItem.bg.default"
                       border="1px solid #CBD5E0"
+                      data-id="000556"
                       key={audit._id}
                       onClick={device === 'mobile' ? () => navigateTo(`/audits/${audit._id}`) : () => { }}
                       p={4}
@@ -139,21 +139,21 @@ function AuditHistory() {
                       spacing={4}
                       w="full">
                       <Avatar
-                        data-id="000557"
                         alignSelf="flex-start"
+                        data-id="000557"
                         name={audit?.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                         size="sm"
                         src={audit?.auditor?.imgUrl} />
                       <Stack data-id="000558" flexGrow={1} spacing={2}>
                         <Flex data-id="000559" direction="column">
                           <Text
-                            data-id="000560"
                             color="auditHistory.listItem.auditor"
+                            data-id="000560"
                             fontSize="ssm">
                             {audit.auditor?.displayName}
                             {audit.metatags?.addedAt && ` - ${format(new Date(audit.metatags.addedAt), 'H:mm')}`}
                           </Text>
-                          <Text data-id="000561" color="auditHistory.listItem.title" fontSize="smm">
+                          <Text color="auditHistory.listItem.title" data-id="000561" fontSize="smm">
                             Completed {a(t('audit') as string)}
                           </Text>
                         </Flex>
@@ -178,16 +178,16 @@ function AuditHistory() {
                       </Stack>
                       {device !== 'mobile' && (
                         <Flex
-                          data-id="000566"
                           _groupHover={{
                             display: 'flex',
                           }}
                           align="center"
+                          data-id="000566"
                           display="none">
                           <Button
-                            data-id="000567"
                             bg="auditHistory.listItem.button.bg"
                             color="auditHistory.listItem.button.color"
+                            data-id="000567"
                             fontSize="ssm"
                             fontWeight="bold"
                             h="28px"

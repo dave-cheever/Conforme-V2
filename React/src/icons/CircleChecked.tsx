@@ -4,10 +4,10 @@ const CircleChecked = createIcon({
   viewBox: '0 0 21 21',
   path: (
     <g data-id="000043">
-      <circle data-id="000044" cx="10.5" cy="10.5" fill="currentColor" r="10" />
+      <circle cx="10.5" cy="10.5" data-id="000044" fill="currentColor" r="10" />
       <path
-        data-id="000045"
         d="M14 8L8.5 13.6L6 11.0545"
+        data-id="000045"
         fill="currentColor"
         stroke="white"
         strokeLinecap="round"

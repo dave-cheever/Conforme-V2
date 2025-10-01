@@ -9,9 +9,9 @@ interface IProgressBar {
 function ProgressBar({ value }: IProgressBar) {
   return (
     <Progress
-      data-id="000357"
       borderRadius="20px"
       colorScheme="#FFFFFF"
+      data-id="000357"
       height={1}
       mr="2"
       value={value}

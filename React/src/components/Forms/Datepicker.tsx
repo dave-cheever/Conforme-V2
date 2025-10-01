@@ -45,8 +45,8 @@ function Datepicker({
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
-      data-id="000233"
       control={control}
+      data-id="000233"
       name={name}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value } = field;
@@ -54,10 +54,10 @@ function Datepicker({
         return (
           <Box data-id="000234" id={name} w="full">
             {label && (
-              <Flex data-id="000235" align="center" justify="space-between" mb="none" pt={2}>
+              <Flex align="center" data-id="000235" justify="space-between" mb="none" pt={2}>
                 <Box
-                  data-id="000236"
                   color={error ? 'datepicker.labelFont.error' : styles ? styles?.textInput?.font : 'datepicker.labelFont.normal'}
+                  data-id="000236"
                   fontSize="ssm"
                   fontWeight="bold"
                   left="none"
@@ -85,7 +85,6 @@ function Datepicker({
               </Flex>
             )}
             <Flex
-              data-id="000240"
               _active={{
                 bg: disabled ? 'datepicker.disabled.bg' : 'datepicker.activeBg',
               }}
@@ -107,6 +106,7 @@ function Datepicker({
               borderWidth="1px"
               color={readMode ? 'datepicker.readMode.font' : 'datepicker.font'}
               cursor={readMode ? 'default' : disabled ? 'not-allowed' : 'pointer'}
+              data-id="000240"
               h="42px"
               justify="space-between"
               mb="-5px"
@@ -123,8 +123,8 @@ function Datepicker({
                 </Text>
               ) : (
                 <ReactDatepicker
-                  data-id="000242"
                   calendarStartDay={1}
+                  data-id="000242"
                   dateFormat="d MMM yyyy"
                   dateFormatCalendar="MMMM"
                   disabledKeyboardNavigation
@@ -149,7 +149,7 @@ function Datepicker({
               {!readMode && <CalendarIcon data-id="000243" h="16px" ml="5px" mr="10px" mt="-2px" stroke="datepicker.font" w="14px" />}
             </Flex>
             {error && (
-              <Box data-id="000244" color="datepicker.error" fontSize="smm" ml={1} mt={1}>
+              <Box color="datepicker.error" data-id="000244" fontSize="smm" ml={1} mt={1}>
                 {error.message}
               </Box>
             )}

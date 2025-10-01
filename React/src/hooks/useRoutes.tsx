@@ -311,13 +311,13 @@ const useRoutes = () => {
       ...route,
       path: `/:modulePath${route.path}`,
       element: <Can
-        data-id="000032"
         action={route.permission}
+        data-id="000032"
         no={() => <Navigate
           data-id="000033"
           key="not-found"
           to={module ? `/${module.path}/dashboard` : '/'} />}
-        yes={() => <route.layout data-id="000034" component={route.component} key={route.key} />}
+        yes={() => <route.layout component={route.component} data-id="000034" key={route.key} />}
       />,
     })),
     {

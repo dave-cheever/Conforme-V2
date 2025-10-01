@@ -10,14 +10,14 @@ function BriefcaseIcon() {
         <Briefcase data-id="000159" fill="brand.paleGrey" h="14px" w="16px" />
       </PopoverTrigger>
       <PopoverContent
-        data-id="000160"
         bg="brand.secondary"
         color="brand.lightGrey"
+        data-id="000160"
         fontSize="14px"
         mb="5px"
         ml="40px"
         w="180px">
-        <PopoverArrow data-id="000161" bg="brand.secondary" />
+        <PopoverArrow bg="brand.secondary" data-id="000161" />
         <PopoverBody data-id="000162">Corporate {t('business unit')}</PopoverBody>
       </PopoverContent>
     </Popover>

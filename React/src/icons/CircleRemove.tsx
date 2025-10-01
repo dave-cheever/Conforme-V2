@@ -5,9 +5,9 @@ const CircleChecked = createIcon({
   path: (
     <g data-id="000053">
       <circle
-        data-id="000054"
         cx="7.5"
         cy="7.5"
+        data-id="000054"
         fill="currentColor"
         r="7"
         stroke="currentColor" />

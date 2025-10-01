@@ -4,16 +4,16 @@ const CircledTickBold = createIcon({
   path: (
     <g data-id="000056">
       <path
-        data-id="000057"
         d="M11 5.543v.46a5 5 0 11-2.965-4.57"
+        data-id="000057"
         fill="none"
         stroke="#41B916"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5" />
       <path
-        data-id="000058"
         d="M11 2.003L6 7.008l-1.5-1.5"
+        data-id="000058"
         fill="none"
         stroke="#41B916"
         strokeLinecap="round"

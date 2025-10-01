@@ -49,8 +49,8 @@ function ChangeViewButton({
 
   return (
     <Stack
-      data-id="000213"
       align="center"
+      data-id="000213"
       direction="row"
       ml={['15px', '0']}
       spacing={2}>
@@ -63,14 +63,14 @@ function ChangeViewButton({
             label={`Switch to ${mode} view`}
             placement="top">
             <IconButton
-              data-id="000215"
               _hover={{ bg: 'gray.100' }}
               aria-label={mode}
               bg={viewMode === mode ? '#F3F0FE' : 'trackerItems.header.menuButtonBg'}
               border={viewMode === mode ?"1px solid #462AC4 ":"1px solid #CBD5E0 "}
               borderRadius={"md"}
               color={viewMode === mode ? '#462AC4' : 'gray.500'}
-              icon={<Icon data-id="000216" boxSize="18px" stroke="currentColor" />}
+              data-id="000215"
+              icon={<Icon boxSize="18px" data-id="000216" stroke="currentColor" />}
               onClick={() => changeViewMode(mode)}
               rounded="md"
               size="md"

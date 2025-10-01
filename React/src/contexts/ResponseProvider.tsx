@@ -164,7 +164,11 @@ function ResponseProvider({ children }) {
   const { data, loading, refetch } = useQuery(GET_RESPONSE, {
     variables: { responsesQuery: { _id: id } },
   });
-  const { data: snapshotsData, loading: snapshotsLoading } = useQuery(GET_RESPONSE_SNAPSHOTS, {
+  const {
+    data: snapshotsData,
+    loading: snapshotsLoading,
+    error: snapshotsError,
+  } = useQuery(GET_RESPONSE_SNAPSHOTS, {
     variables: {
       HistoricalResponsesQuery: {
         actions: ['snapshot'],
@@ -172,6 +176,7 @@ function ResponseProvider({ children }) {
       },
     },
     fetchPolicy: 'network-only',
+    errorPolicy: 'ignore', // Ignore errors for snapshots query to prevent blocking the main content
   });
   const [updateQuestions] = useMutation(UPDATE_QUESTIONS);
   const [updateResponse] = useMutation(UPDATE_RESPONSE);
@@ -203,7 +208,8 @@ function ResponseProvider({ children }) {
     if (responseSnapshot) response = responseSnapshot;
   }
 
-  if (!loading && !snapshotsLoading && data && !response) {
+  // Only check for response not found if the main query is complete and snapshots query is either complete or failed
+  if (!loading && (!snapshotsLoading || snapshotsError) && data && !response) {
     toast({
       ...toastFailed,
       title: 'Response not found',
@@ -293,10 +299,15 @@ function ResponseProvider({ children }) {
       snapshot,
       snapshots,
       snapshotsLoading,
+      snapshotsError,
     ],
   );
 
-  return <ResponseContext.Provider data-id="000014" value={value}>{children}</ResponseContext.Provider>;
+  return (
+    <ResponseContext.Provider data-id="000014" value={value}>
+      {children}
+    </ResponseContext.Provider>
+  );
 }
 
 export default ResponseProvider;

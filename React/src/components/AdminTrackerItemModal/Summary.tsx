@@ -55,16 +55,16 @@ function Summary() {
       {selectedBusinessUnits.length !== 0 && <SectionHeader data-id="000667" label={`${capitalize(t('business unit'))}(s)`} />}
       {selectedBusinessUnits?.map((businessUnit) => (
         <Flex
-          data-id="000668"
           bg="summaryModal.tileBg"
+          data-id="000668"
           flexDir="column"
           key={businessUnit?.name}
           p="10px 15px"
           rounded="10px"
           w="calc(100% - 1rem)">
           <Text
-            data-id="000669"
             color="summaryModal.label"
+            data-id="000669"
             fontSize="smm"
             fontWeight="bold"
             mb="3px">
@@ -80,17 +80,17 @@ function Summary() {
         w="calc(100% - 1rem)">
         {(trackerItem.evidenceItems || []).map((item, index) => (
           <Stack
-            data-id="000672"
             bg="summaryModal.tileBg"
+            data-id="000672"
             key={`evidence-item-${index}`}
             p="10px 15px"
             rounded="10px">
-            <Text data-id="000673" color="summaryModal.label" fontSize="ssm">
+            <Text color="summaryModal.label" data-id="000673" fontSize="ssm">
               Evidence {index + 1}
             </Text>
             <Text
-              data-id="000674"
               color="summaryModal.value"
+              data-id="000674"
               fontSize="smm"
               fontWeight="bold">
               {item}
@@ -101,7 +101,7 @@ function Summary() {
       {trackerItem.evidenceItems &&
         trackerItem.evidenceItems?.length > 0 &&
         trackerItem.evidenceItems?.some((evidence) => evidence === '') && (
-          <Text data-id="000675" color="summaryModal.error">Evidence title cannot be empty in order to have a valid {t('tracker item')}</Text>
+          <Text color="summaryModal.error" data-id="000675">Evidence title cannot be empty in order to have a valid {t('tracker item')}</Text>
         )}
       <SummaryItem data-id="000676" label="Allow attachments">{trackerItem.allowAttachments ? 'Yes' : 'No'}</SummaryItem>
       {trackerItem.questions?.length !== 0 && (
@@ -110,8 +110,8 @@ function Summary() {
           <Stack data-id="000679" mt="15px" spacing={2} w="full">
             {trackerItem.questions?.map((item) => (
               <QuestionListElement
-                data-id="000680"
                 bgColor="summaryModal.tileBg"
+                data-id="000680"
                 key={item.name}
                 question={item} />
             ))}
@@ -119,7 +119,7 @@ function Summary() {
         </Box>
       )}
       {trackerItem.evidenceItems?.length === 0 && trackerItem.questions?.filter(({ required }) => required)?.length === 0 && (
-        <Text data-id="000681" color="summaryModal.error">
+        <Text color="summaryModal.error" data-id="000681">
           You must add at least one evidence item OR one mandatory {t('question')} in order to have a valid {t('tracker item')}.
         </Text>
       )}

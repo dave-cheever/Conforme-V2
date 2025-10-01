@@ -57,23 +57,23 @@ function ResponseDetail({ response }) {
   return (
     <>
       <Flex data-id="000913" mt={[0, 5]} onClick={toggle} position="relative">
-        <Flex data-id="000914" align="center" cursor="pointer">
+        <Flex align="center" cursor="pointer" data-id="000914">
           <Flex
-            data-id="000915"
             align="center"
             bg={isOpen ? 'responseLeftTabItem.activeIconBg' : ''}
             borderRadius="8px"
+            data-id="000915"
             h="30px"
             justify="center"
             w="30px">
             <Icon
-              data-id="000916"
               as={DetailIcon}
-              color="#ffffff" />
+              color="#ffffff"
+              data-id="000916" />
           </Flex>
           <ArrowRight
-            data-id="000917"
             color="responseLeftTabItem.textColor"
+            data-id="000917"
             display={['none', 'block']}
             ml={1}
             mt={1} />
@@ -81,10 +81,10 @@ function ResponseDetail({ response }) {
       </Flex>
       <Modal data-id="000918" isOpen={isOpen} onClose={onClose}>
         <ModalContent
-          data-id="000919"
           borderRadius="10px"
           bottom="10px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="000919"
           h="fit-content"
           left={['10px', '80px']}
           maxW={['calc(100% - 20px)', '315px']}
@@ -97,7 +97,7 @@ function ResponseDetail({ response }) {
                   <Box data-id="000924" fontSize="11px" opacity={0.5}>
                     Item ID
                   </Box>
-                  <Flex data-id="000925" align="center" fontSize="14px" minH="28px">
+                  <Flex align="center" data-id="000925" fontSize="14px" minH="28px">
                     <Flex data-id="000926" mr={2}>{response?.trackerItem?.reference}</Flex>
                     <CopyToClipboard
                       data-id="000927"
@@ -110,9 +110,9 @@ function ResponseDetail({ response }) {
                       }
                       text={response?.trackerItem?.reference}>
                       <Copy
-                        data-id="000928"
                         _hover={{ opacity: 0.6, cursor: 'pointer' }}
                         color="responseLeftNavigation.copy"
+                        data-id="000928"
                         h="17px"
                         mt={1}
                         w="17px" />
@@ -127,11 +127,11 @@ function ResponseDetail({ response }) {
                   <Box data-id="000931" fontSize="11px" opacity={0.5}>
                     Responsible
                   </Box>
-                  <Flex data-id="000932" align="center" fontSize="14px" minH="28px">
+                  <Flex align="center" data-id="000932" fontSize="14px" minH="28px">
                     <Avatar
-                        data-id="000933"
                         bg="responseLeftNavigation.avatar"
                         color="white"
+                        data-id="000933"
                         mr={2}
                         name={
                           (
@@ -155,11 +155,11 @@ function ResponseDetail({ response }) {
                   <Box data-id="000936" fontSize="11px" opacity={0.5}>
                     Accountableee
                   </Box>
-                  <Flex data-id="000937" align="center" fontSize="14px" minH="28px">
+                  <Flex align="center" data-id="000937" fontSize="14px" minH="28px">
                     <Avatar
-                      data-id="000938"
                       bg="responseLeftNavigation.avatar"
                       color="white"
+                      data-id="000938"
                       mr={2}
                       name={
                         responsible && responsible.firstName && responsible.lastName

@@ -181,7 +181,7 @@ function SearchBar() {
   };
 
   return (
-    <Flex data-id="000359" border={"1px solid #CBD5E0"} borderRadius={"md"} direction="column"  position="relative" ref={ref} w={["auto", "449px"]}>
+    <Flex border={"1px solid #CBD5E0"} borderRadius={"md"} data-id="000359" direction="column"  position="relative" ref={ref} w={["auto", "449px"]}>
       <InputGroup
         data-id="000360"
         display="block"
@@ -190,8 +190,8 @@ function SearchBar() {
         w={['calc(100vw - 30px)', isSearchBarOpen ? '550px' : '260px']}
         zIndex={1}>
         <InputLeftElement
-          data-id="000361"
           color="navigationTop.inputIconColor"
+          data-id="000361"
           pointerEvents="none">
           <SearchIcon
             data-id="000362"
@@ -204,13 +204,13 @@ function SearchBar() {
           display={isSearchBarOpen ? 'block' : 'none'}
           h="full">
           <CrossIcon
-            data-id="000364"
             _active={{}}
             _hover={{
               color: 'navigationTop.notificationIconHover',
               opacity: 0.7,
               cursor: 'pointer',
             }}
+            data-id="000364"
             h="13.5px"
             ml="15px"
             mt="10px"
@@ -223,9 +223,9 @@ function SearchBar() {
             w="13.5px" />
         </InputRightElement>
         <Input
-         data-id="000365"
-          _placeholder={{ color: '#A0AEC0' }}
+         _placeholder={{ color: '#A0AEC0' }}
           bg="navigationTop.inputBg"
+          data-id="000365"
           fontSize="smm"
           fontWeight="semi_medium"
           onChange={(e) => {
@@ -250,29 +250,29 @@ function SearchBar() {
           w={['100%', null, '40rem']}
           zIndex={0}>
           <Flex
-            data-id="000367"
             bg="white"
             boxShadow="0px 3px 10px rgba(0, 0, 0, .1)"
+            data-id="000367"
             direction="row"
             fontSize="smm"
             rounded="10px">
               
             {/* eslint-disable-next-line react/jsx-sort-props */}
             <Box
-              data-id="000368"
               bg="searchBar.categoriesBg"
               borderBottomRightRadius="none"
               borderRadius="10px"
               borderTopRightRadius="none"
+              data-id="000368"
               pb={2}
               px={[2, 3]}>
               {searchCategories.map((searchCategory) => (
                 <Box
-                  data-id="000369"
                   _hover={{
                     cursor: 'pointer',
                   }}
                   alignItems="center"
+                  data-id="000369"
                   display="flex"
                   fontSize={['sm', 'md']}
                   fontWeight="normal"
@@ -282,27 +282,27 @@ function SearchBar() {
                   onClick={() => setSelectedSearchCategory(searchCategory)}
                   pos="relative"
                   w={['150px', '200px']}>
-                  <Flex data-id="000370" align="center" h="100%">
+                  <Flex align="center" data-id="000370" h="100%">
                     <Flex
-                      data-id="000371"
                       alignItems="center"
                       bg={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
                           ? 'navigationLeftItem.selectedLabelBg'
                           : '#e7e7e7'
                       }
+                      data-id="000371"
                       h={['22px', '30px']}
                       justifyContent="center"
                       rounded="8px"
                       w={['22px', '30px']}>
                       <Icon
-                        data-id="000372"
                         as={searchCategory.icon}
                         color={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
                           ? '#ffffff'
                           : '#111111'
-                        }                       
+                        }
+                        data-id="000372"                       
                         h="15px"
                         stroke={
                         `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
@@ -313,8 +313,8 @@ function SearchBar() {
                     </Flex>
                   </Flex>
                   <Box
-                    data-id="000373"
                     color="black"
+                    data-id="000373"
                     fontSize={['12px', '14px']}
                     fontWeight="400"
                     ml={[2, 5]}
@@ -326,8 +326,8 @@ function SearchBar() {
             </Box>
             <Box data-id="000374" h="auto" w="full">
               {loading ? (
-                <Flex data-id="000375" align="center" h="100px" justify="center" w="full">
-                  <Loader data-id="000376" center size="sm" />
+                <Flex align="center" data-id="000375" h="100px" justify="center" w="full">
+                  <Loader center data-id="000376" size="sm" />
                 </Flex>
               ) : (
                 <Flex data-id="000377" direction="column">
@@ -336,12 +336,12 @@ function SearchBar() {
                       <>
                         {(searchResults ?? []).map((result) => (
                           <HStack
-                            data-id="000378"
                             _hover={{
                               background: 'searchBar.results.bgColor.hover',
                             }}
                             align="center"
                             cursor="pointer"
+                            data-id="000378"
                             key={result._id}
                             onClick={() => handleSearchResultClick(result)}
                             p={3}
@@ -359,18 +359,18 @@ function SearchBar() {
                                 {result.title}
                               </Text>
                             </Flex>
-                            <ChevronRight data-id="000384" cursor="pointer" />
+                            <ChevronRight cursor="pointer" data-id="000384" />
                           </HStack>
                         ))}
                       </>
                     ) : (
-                      <Flex data-id="000385" align="center" justify="center" mt={4}>
+                      <Flex align="center" data-id="000385" justify="center" mt={4}>
                         <Text data-id="000386" fontSize={['12px', '14px']}>No results found</Text>
                       </Flex>
                     )
 
                   ) : (
-                    <Flex data-id="000387" align="center" justify="center" mt={4}>
+                    <Flex align="center" data-id="000387" justify="center" mt={4}>
                       <Text data-id="000388" fontSize={["12px", "14px"]}>Enter search phrase in the box above</Text>
                     </Flex>
                   )}

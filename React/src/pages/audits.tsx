@@ -223,8 +223,8 @@ function Audits() {
         <AuditModal data-id="000188" refetch={refetch} />
       </Modal>
       <Header
-        data-id="000189"
         breadcrumbs={[pluralize(t('audit'))]}
+        data-id="000189"
         mobileBreadcrumbs={[pluralize(t('audit'))]}>
         <ChangeViewButton
           data-id="000190"
@@ -233,16 +233,16 @@ function Audits() {
           views={['grid', 'list', 'group']} />
         {device !== 'mobile' && (
           <CSVLinkComponent
-            data-id="000191"
             data={csvData}
+            data-id="000191"
             filename="audits.csv"
             headers={csvHeaders}
             target="_blank">
             <Button
-              data-id="000192"
               _hover={{ bg: 'reasponseHeader.buttonLightBgHover', color: 'reasponseHeader.buttonLightColorHover', cursor: 'pointer', '&:hover svg path': { stroke: 'white' } }}
               bg="white"
               borderRadius="10px"
+              data-id="000192"
               display="none"
               ml="15px"
               rightIcon={<ExportIcon data-id="000193" height="15px" width="15px" />}>
@@ -263,7 +263,7 @@ function Audits() {
         h={['calc(100vh - 80px)', 'full']}
         overflow="auto"
         pb={[4, 0]}>
-        {loading ? <Loader data-id="000197" center /> : (
+        {loading ? <Loader center data-id="000197" /> : (
           viewMode === 'grid' ? (
             <Grid
               data-id="000198"
@@ -276,10 +276,10 @@ function Audits() {
               px={[4, 8]}
               templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
               w="full">
-              {sortedAudits.length > 0 ? sortedAudits.map((audit) => <AuditSquare data-id="000199" audit={audit} key={audit._id} />) : (
+              {sortedAudits.length > 0 ? sortedAudits.map((audit) => <AuditSquare audit={audit} data-id="000199" key={audit._id} />) : (
                 <Flex
-                  data-id="000200"
                   alignItems="center"
+                  data-id="000200"
                   fontSize="18px"
                   fontStyle="italic"
                   h="200px"
@@ -290,16 +290,16 @@ function Audits() {
           ) : viewMode === 'list' ? (
             sortedAudits.length > 0 ? (
               <AuditsList
-                data-id="000201"
                 audits={sortedAudits}
+                data-id="000201"
                 setSortOrder={setSortOrder}
                 setSortType={setSortType}
                 sortOrder={sortOrder}
                 sortType={sortType} />
             ) : (
               <Flex
-                data-id="000202"
                 alignItems="center"
+                data-id="000202"
                 fontSize="18px"
                 fontStyle="italic"
                 h="200px"
@@ -307,9 +307,9 @@ function Audits() {
                 w="full">No audits found. Try adjusting the filters.</Flex>
             )
           ) : (
-            sortedAudits.length > 0 ? <AuditsGroup data-id="000203" audits={sortedAudits} /> : <Flex
-              data-id="000204"
+            sortedAudits.length > 0 ? <AuditsGroup audits={sortedAudits} data-id="000203" /> : <Flex
               alignItems="center"
+              data-id="000204"
               fontSize="18px"
               fontStyle="italic"
               h="200px"

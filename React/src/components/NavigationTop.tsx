@@ -53,11 +53,11 @@ function NavigationTop() {
 
   return (
     <Flex
-        data-id="000449"
         align="center"
         bg={['navigationTop.bgMobile']}
         borderBottom="1px solid"
         borderColor="navigationTop.navBorder"
+        data-id="000449"
         h={['72px', '80px']}
         justify="space-between"
         position={['fixed', 'relative']}
@@ -65,10 +65,10 @@ function NavigationTop() {
         zIndex={10}>
       {isOpen && (
         <Box
-          data-id="000450"
           bg="white"
           bottom={['140px', 'auto']}
           boxShadow="0px 0px 15px rgba(49, 50, 51, 0.25)"
+          data-id="000450"
           left={['auto', '30rem']}
           position={['fixed', 'absolute']}
           py={4}
@@ -83,8 +83,8 @@ function NavigationTop() {
               if (item.permission) {
                 return (
                   <Can
-                      data-id="000451"
                       action={item.permission}
+                      data-id="000451"
                       key={item.url}
                       // eslint-disable-next-line react/no-unstable-nested-components
                       yes={() => <SubSection data-id="000452" isPopover key={item.label} onClick={onClose} showIcon subsection={item}/>} />
@@ -96,8 +96,8 @@ function NavigationTop() {
         </Box>
       )}
       <Stack
-        data-id="000455"
         align="center"
+        data-id="000455"
         direction="row"
         display="flex"
         fontSize="md"
@@ -108,9 +108,9 @@ function NavigationTop() {
         spacing={0}
         w="full">
         <Flex
-          data-id="000456"
           alignItems="center"
           cursor="pointer"
+          data-id="000456"
           display={device !== 'mobile' || isSearchBarOpen ? 'none' : 'flex'}
           h="80px">
          <ModuleSwitcher data-id="000457" />
@@ -204,14 +204,14 @@ function NavigationTop() {
         )}
       </Stack>
       <Flex
-        data-id="000468"
         align="center"
+        data-id="000468"
         display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}>
         <IconButton
-          data-id="000469"
           aria-label="Search responses"
           bg="navigationTop.searchIconBackground"
           borderRadius="20px"
+          data-id="000469"
           display={['block', 'none']}
           icon={<SearchIcon
             data-id="000470"

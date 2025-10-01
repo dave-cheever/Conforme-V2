@@ -179,8 +179,8 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           <ModalBody data-id="000189" pr={2}>
             <Flex data-id="000190" flexDirection="column" maxH="80vh" overflowY="auto" pr={4}>
               {chatParticipants?.map((user) => (
-                <Flex data-id="000191" align="center" justify="space-between" key={user._id} px="1" py="2">
-                  <Flex data-id="000192" align="center">
+                <Flex align="center" data-id="000191" justify="space-between" key={user._id} px="1" py="2">
+                  <Flex align="center" data-id="000192">
                     <Avatar
                       data-id="000193"
                       h="32px"
@@ -205,11 +205,11 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         </ModalContent>
       </Modal>
       <Stack
-        data-id="000196"
         bg={['chat.bg', 'chat.bg', 'transparent']}
         border="1px solid #CBD5E0"
         borderRadius="6px"
         boxShadow={['lg', 'lg', 'none']}
+        data-id="000196"
         h="auto"
         maxW={['calc(100vw - 36px)', '300px']}
         minW={['calc(100vw - 36px)', '300px']}
@@ -218,10 +218,10 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
         right="25px"
         spacing={2}
       >
-        <Flex data-id="000197" alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" px={4} py={3}>
+        <Flex alignItems="center" bg="white" borderBottom="1px solid #CBD5E0" data-id="000197" px={4} py={3}>
         <Text
-          data-id="000198"
           color="#282F36"
+          data-id="000198"
           flex={1}
           fontSize="14px"
           fontWeight="bold"
@@ -236,8 +236,8 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                 .slice(0, 3)
                 .map((user, i) => (
                   <Avatar
-                    data-id="000201"
                     border="2px solid white"
+                    data-id="000201"
                     key={i}
                     name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                     size="xs"
@@ -248,11 +248,11 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           </HStack>
           {!participantsLoading && chatParticipants.length > 3 && (
             <Flex
-              data-id="000202"
               align="center"
               bg="#F5F6FA"
               border="2px solid white"
               color="#6B7280"
+              data-id="000202"
               fontSize="sm"
               fontWeight="600"
               h="28px"
@@ -266,8 +266,8 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
           )}
         </Flex>
         <Flex
-          data-id="000203"
           align="space-between"
+          data-id="000203"
           flexDirection="column"
           grow={1}
           overflow="hidden"
@@ -292,7 +292,7 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
             }}
             w="calc(100% + 10px)"
           >
-            {loading && <Loader data-id="000205" center size="md" />}
+            {loading && <Loader center data-id="000205" size="md" />}
               {comments.map((comment, idx) => {
                 let currentTime = '';
                 let prevTime = '';
@@ -310,11 +310,11 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                 return (
                   <React.Fragment data-id="000206" key={comment._id}>
                     {showTime && (
-                      <Flex data-id="000207" align="center" justify="center" my={4}>
+                      <Flex align="center" data-id="000207" justify="center" my={4}>
                         <Text
-                          data-id="000208"
                           bg="white"
                           color="rgb(0,0,0,0.5)"
+                          data-id="000208"
                           fontSize="sm"
                           fontWeight="500"
                           px={3}
@@ -323,14 +323,14 @@ function Chat({ component }: { component: 'audit' | 'response' }) {
                         </Text>
                       </Flex>
                     )}
-                    <ChatSent data-id="000209" comment={comment} onAction={deleteComment} />
+                    <ChatSent comment={comment} data-id="000209" onAction={deleteComment} />
                   </React.Fragment>
                 );
               })}
           </Flex>
           <Can
-            data-id="000210"
             action={component === 'audit' ? 'auditComments.add' : 'comments.add'}
+            data-id="000210"
             yes={() => (
               <MessageInput
                 data-id="000211"

@@ -72,20 +72,20 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
 
   return (
     <Controller
-      data-id="000323"
       control={control}
+      data-id="000323"
       name={name}
       render={({ field }) => {
         const { onChange, onBlur, value } = field;
 
         return (
-          <Flex data-id="000324" align="center" borderRadius="10px" mb="25px" mx="auto" position="relative" w="90%">
+          <Flex align="center" borderRadius="10px" data-id="000324" mb="25px" mx="auto" position="relative" w="90%">
             <MentionsInput
-              data-id="000325"
               allowSpaceInQuery
               allowSuggestionsAboveCursor
               autoComplete="off"
               className="mentions"
+              data-id="000325"
               disabled={disabled}
               inputRef={mentionRef}
               onBlur={onBlur}
@@ -94,34 +94,33 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
               placeholder={placeholder}
               value={value}
             >
-              {mentionData && mentionData.length > 0 && (
-                <Mention
-                  data-id="000326"
-                  appendSpaceOnAdd
-                  className="mentions__mention"
-                  data={mentionData}
-                  renderSuggestion={(highlightedDisplay) => {
-                    // Additional safety check for the suggestion
-                    if (!highlightedDisplay || !highlightedDisplay.display) {
-                      console.warn('Invalid highlightedDisplay:', highlightedDisplay);
-                      return null;
-                    }
-                    return (
-                      <Flex data-id="000327" color="mentionListItem.color" fontSize="14px" pl="13px" py="10px" w="full">
-                        <Avatar data-id="000328" name={highlightedDisplay.display.replace(/\s*\(.*?\)\s*/g, '')} size="xs" />
-                        <Text data-id="000329" ml={3} noOfLines={1} textOverflow="ellipsis">
-                          {highlightedDisplay.display}
-                        </Text>
-                      </Flex>
-                    );
-                  }}
-                  spellCheck={false}
-                  trigger="@"
-                />
-              )}
+              <Mention
+                appendSpaceOnAdd
+                className="mentions__mention"
+                data={mentionData || []}
+                data-id="000326"
+                displayTransform={(id, display) => `@${display}`}
+                renderSuggestion={(highlightedDisplay) => {
+                  // Additional safety check for the suggestion
+                  if (!highlightedDisplay || !highlightedDisplay.display) {
+                    console.warn('Invalid highlightedDisplay:', highlightedDisplay);
+                    return null;
+                  }
+                  return (
+                    <Flex color="mentionListItem.color" data-id="000327" fontSize="14px" pl="13px" py="10px" w="full">
+                      <Avatar data-id="000328" name={highlightedDisplay.display.replace(/\s*\(.*?\)\s*/g, '')} size="xs" />
+                      <Text data-id="000329" ml={3} noOfLines={1} textOverflow="ellipsis">
+                        {highlightedDisplay.display}
+                      </Text>
+                    </Flex>
+                  );
+                }}
+                spellCheck={false}
+                trigger="@"
+              />
             </MentionsInput>
             <Flex data-id="000330" position="absolute" right="10px">
-              <SendMessageIcon data-id="000331" cursor={disabled ? 'not-allowed' : 'pointer'} onClick={onAction} />
+              <SendMessageIcon cursor={disabled ? 'not-allowed' : 'pointer'} data-id="000331" onClick={onAction} />
             </Flex>
           </Flex>
         );

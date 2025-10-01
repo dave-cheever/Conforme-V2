@@ -39,16 +39,14 @@ export interface AuditType {
 }
 
 // Extracted functions for testing
-export const flatMapCategories = (auditTypes: AuditType[] | null | undefined): Category[] => {
-  return (auditTypes ?? []).flatMap((auditType) => auditType.questionsCategories ?? []);
-};
+export const flatMapCategories = (auditTypes: AuditType[] | null | undefined): Category[] => (auditTypes ?? []).flatMap((auditType) => auditType.questionsCategories ?? []);
 
 export const dedupeCategories = (categories: Category[]): Map<string, Category> => {
   const uniqueCategoriesMap = new Map<string, Category>();
   for (const category of categories) {
-    if (!uniqueCategoriesMap.has(category._id)) {
+    if (!uniqueCategoriesMap.has(category._id)) 
       uniqueCategoriesMap.set(category._id, category);
-    }
+    
   }
   return uniqueCategoriesMap;
 };
@@ -64,9 +62,9 @@ export const categoryIdsForPanel = (
   selectedPanelIndex: number,
   parsedFilters?: { questionsCategoriesIds?: string[] },
 ) => {
-  if (panels[selectedPanelIndex]._id === 'all') {
+  if (panels[selectedPanelIndex]._id === 'all') 
     return parsedFilters?.questionsCategoriesIds ?? [];
-  }
+  
   return [panels[selectedPanelIndex]._id];
 };
 
@@ -185,9 +183,7 @@ function Answers() {
   const { adminModalState, setAdminModalState } = useAdminContext();
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
-  const panels = useMemo(() => {
-    return buildPanels(data?.auditTypes);
-  }, [data?.auditTypes]);
+  const panels = useMemo(() => buildPanels(data?.auditTypes), [data?.auditTypes]);
 
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
@@ -326,8 +322,8 @@ function Answers() {
   return (
     <>
       <AnswerDeleteModal
-        data-id="000266"
         answer={selectedAnswer ?? ({} as IAnswer)}
+        data-id="000266"
         isOpen={isDeleteQuestionModalOpen}
         onClose={handleDeleteQuestionModalClose}
         refetchAnswers={refetch}
@@ -340,19 +336,18 @@ function Answers() {
         variant="adminModal"
       >
         <AnswerModal
-          data-id="000268"
           answer={selectedAnswer}
           closeModal={closeModal}
+          data-id="000268"
           handleDeleteQuestionModalOpen={handleDeleteQuestionModalOpen}
           refetch={refetch}
         />
       </Modal>
-      <Header data-id="000269" breadcrumbs={[capitalize(pluralize(t('answer')))]} mobileBreadcrumbs={[capitalize(pluralize(t('answer')))]}>
+      <Header breadcrumbs={[capitalize(pluralize(t('answer')))]} data-id="000269" mobileBreadcrumbs={[capitalize(pluralize(t('answer')))]}>
         <ChangeViewButton data-id="000270" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
         {device !== 'mobile' && (
-          <CSVLinkComponent data-id="000271" data={csvData} filename="answers.csv" headers={csvHeaders} target="_blank">
+          <CSVLinkComponent data={csvData} data-id="000271" filename="answers.csv" headers={csvHeaders} target="_blank">
             <Button
-              data-id="000272"
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
                 color: 'reasponseHeader.buttonLightColorHover',
@@ -361,6 +356,7 @@ function Answers() {
               }}
               bg="white"
               borderRadius="10px"
+              data-id="000272"
               display="none"
               ml="15px"
               rightIcon={<ExportIcon data-id="000273" height="15px" width="15px" />}

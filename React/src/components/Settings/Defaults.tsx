@@ -68,14 +68,14 @@ function Defaults() {
     <Stack data-id="000462" h="full" pb={3} spacing={7} w="full">
       {defaultSettings?.map(({ _id, name, label, placeholder, variant, description, inputType, help, value, options }) => (
         <Flex
-          data-id="000463"
           align={['flex-start', 'center']}
+          data-id="000463"
           flexDirection={['column', 'row']}
           key={name}>
           <Flex data-id="000464" maxW="280px">
             <Field
-              data-id="000465"
               control={control}
+              data-id="000465"
               help={help}
               label={label}
               name={name}
@@ -92,17 +92,17 @@ function Defaults() {
           {wasFieldChanged(inputType, name, value) && !Object.keys(errors).includes(name) && (
             <HStack data-id="000466" ml={3} mt={7} spacing={3}>
               <IconButton
-                data-id="000467"
                 aria-label="Confirm Icon"
                 colorScheme="purpleHeart"
+                data-id="000467"
                 icon={<CheckIcon data-id="000468" />}
                 onClick={() => updateSettings({ _id, name })}
                 size="sm"
                 variant="outline" />
               <IconButton
-                data-id="000469"
                 aria-label="Cross Icon"
                 colorScheme="red"
+                data-id="000469"
                 icon={<CloseIcon data-id="000470" />}
                 onClick={() => resetValue({ name, value })}
                 size="sm" />

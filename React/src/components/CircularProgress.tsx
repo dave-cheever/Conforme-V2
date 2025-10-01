@@ -6,17 +6,17 @@ import { ICircularProgress } from '../interfaces/ICircularProgress';
 function CircularProgress({ value }: ICircularProgress) {
   return (
     <Box data-id="000254">
-      <EllipsisIcon data-id="000255" boxSize={2} transform="translate(-22px, 60px)" />
-      <EllipsisIcon data-id="000256" boxSize={2} transform="translate(55px, -21px)" />
-      <EllipsisIcon data-id="000257" boxSize={2} transform="translate(57px, 135px)" />
-      <EllipsisIcon data-id="000258" boxSize={2} transform="translate(136px, 55px)" />
+      <EllipsisIcon boxSize={2} data-id="000255" transform="translate(-22px, 60px)" />
+      <EllipsisIcon boxSize={2} data-id="000256" transform="translate(55px, -21px)" />
+      <EllipsisIcon boxSize={2} data-id="000257" transform="translate(57px, 135px)" />
+      <EllipsisIcon boxSize={2} data-id="000258" transform="translate(136px, 55px)" />
       <Progress
-        data-id="000259"
         bg="white"
         borderRadius="full"
         boxShadow="0px 10px 30px 0px #42424214"
         capIsRound
         color="circularProgress.progress"
+        data-id="000259"
         max={100}
         min={0}
         size="120px"
@@ -25,13 +25,13 @@ function CircularProgress({ value }: ICircularProgress) {
         value={value}>
         <CircularProgressLabel data-id="000260">
           <Text
-            data-id="000261"
             color="circularProgress.text"
+            data-id="000261"
             fontSize="2xl"
             fontWeight="900">{`${value.toString()}%`}</Text>
           <Text
-            data-id="000262"
             color="circularProgress.text"
+            data-id="000262"
             fontSize="md"
             fontWeight="700">
             {value === 100 ? 'Completed' : 'In Progress'}

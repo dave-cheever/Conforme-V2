@@ -55,23 +55,23 @@ function Login() {
 
   return (
     <Flex
-        data-id="000207"
         bg="loginPage.bg"
+        data-id="000207"
         flexDir={['column', 'column', 'row']}
         h="100vh"
         w="full">
       {user ? (
         <Flex
-          data-id="000208"
           align="center"
+          data-id="000208"
           h="full"
           justify={['center', 'center', 'flex-end']}
           order={[2, 2, 1]}
           w={['full', 'full', '45%']}>
-          <VStack data-id="000209" align="center" spacing={5} textAlign="center">
+          <VStack align="center" data-id="000209" spacing={5} textAlign="center">
             <Flex
-              data-id="000210"
               color="loginPage.organizationNameColor"
+              data-id="000210"
               fontSize="40px"
               fontWeight="bold"
               mb={3}
@@ -82,26 +82,26 @@ function Login() {
               {organizationConfig?.name}
             </Flex>
             <Flex
-              data-id="000211"
               bg="white"
               borderColor="loginPage.avatarBorderColor"
               borderWidth="10px"
+              data-id="000211"
               rounded="full">
               <Avatar
-                data-id="000212"
                 borderColor="white"
                 borderWidth="4px"
+                data-id="000212"
                 h="75px"
                 name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
                 src={user?.imgUrl}
                 w="75px" />
             </Flex>
             <Button
-              data-id="000213"
               _hover={{ bg: 'loginPage.hoverColor' }}
               bg="loginPage.button.bg"
               borderRadius="10px"
               color="loginPage.button.color"
+              data-id="000213"
               fontSize="14px"
               h="40px"
               lineHeight="18px"
@@ -110,16 +110,16 @@ function Login() {
               Login as {user?.firstName || user?.displayName}
             </Button>
             <Flex
-              data-id="000214"
               align="center"
               color="loginPage.descriptionColor"
+              data-id="000214"
               flexDir="column"
               fontSize="11px">
               <Flex data-id="000215">Not {user?.firstName || user?.displayName}?</Flex>
               <Flex
-                data-id="000216"
                 _hover={{ color: 'loginPage.hoverColor' }}
                 cursor="pointer"
+                data-id="000216"
                 onClick={removeUser}>
                 Login as someone else
               </Flex>
@@ -128,8 +128,8 @@ function Login() {
         </Flex>
       ) : (
         <Flex
-          data-id="000217"
           align="center"
+          data-id="000217"
           h="full"
           justify={['center', 'center', 'flex-end']}
           order={[2, 2, 1]}
@@ -139,8 +139,8 @@ function Login() {
             flexDir="column"
             textAlign="center">
             <Text
-              data-id="000219"
               color="loginPage.organizationNameColor"
+              data-id="000219"
               fontSize="40px"
               fontWeight="bold"
               lineHeight="41px"
@@ -154,8 +154,8 @@ function Login() {
             </Text>
             <Flex data-id="000220" justify="center">
               <SignInButton
-                data-id="000221"
                 cursor="pointer"
+                data-id="000221"
                 h="41px"
                 onClick={login}
                 w="215px" />
@@ -164,8 +164,8 @@ function Login() {
         </Flex>
       )}
       <Flex
-        data-id="000222"
         align="center"
+        data-id="000222"
         h="full"
         justify={['center', 'center', 'flex-end']}
         order={[1, 1, 2]}

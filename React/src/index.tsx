@@ -6,9 +6,9 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import axios from 'axios';
 
 import App from './bootstrap/app';
+import loadWidget from './bootstrap/markerio';
 import reportWebVitals from './reportWebVitals';
 import { runtimeEnv } from './utils/runtime-env';
-import loadWidget from './bootstrap/markerio';
 
 axios.defaults.withCredentials = true;
 const client = new ApolloClient({
@@ -21,7 +21,7 @@ const container: Element = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(
   <React.StrictMode data-id="000106">
-    <ApolloProvider data-id="000107" client={client}>
+    <ApolloProvider client={client} data-id="000107">
       <BrowserRouter data-id="000108">
         <App data-id="000109" />
       </BrowserRouter>

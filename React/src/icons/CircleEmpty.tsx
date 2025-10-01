@@ -5,9 +5,9 @@ const CircleEmpty = createIcon({
   path: (
     <g data-id="000047">
       <circle
-        data-id="000048"
         cx="10.5"
         cy="10.5"
+        data-id="000048"
         fill="white"
         r="10"
         stroke="currentColor"

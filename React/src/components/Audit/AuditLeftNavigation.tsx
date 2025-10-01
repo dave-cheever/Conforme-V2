@@ -13,9 +13,9 @@ function AuditLeftNavigation() {
 
   return (
     <Flex
-        data-id="000172"
         bg="auditLeftNavigation.bg"
         color="auditLeftNavigation.color"
+        data-id="000172"
         direction="column"
         display={['none', 'none', 'flex']}
         fontWeight="400"
@@ -25,15 +25,15 @@ function AuditLeftNavigation() {
         w="280px">
       <Flex data-id="000173" flexDirection="column">
         <Box
-          data-id="000174"
           alignItems="center"
           cursor="pointer"
+          data-id="000174"
           display="flex"
           h="80px"
           onClick={() => navigateTo('/')}>
           <Text
-            data-id="000175"
             color="navigationLeft.organizationNameFontColor"
+            data-id="000175"
             fontSize="16px"
             fontWeight="bold"
             w="full">
@@ -41,10 +41,10 @@ function AuditLeftNavigation() {
           </Text>
         </Box>
         <Flex
-          data-id="000176"
           align="center"
           color="auditLeftNavigation.goBackColor"
           cursor="pointer"
+          data-id="000176"
           fontSize="14px"
           h="30px"
           mb="30px"

@@ -20,10 +20,10 @@ function NavigationBottomMobile() {
   });
   return (
     <Flex
-        data-id="000553"
         bg="navigationBottomMobile.bg"
         bottom="0px"
         boxShadow="simple"
+        data-id="000553"
         h="60px"
         justify="space-between"
         p="15px 25px"
@@ -33,8 +33,8 @@ function NavigationBottomMobile() {
         zIndex={10}>
       {menuItems.map((menuItem: any, i) => (
         <Can
-          data-id="000554"
           action={menuItem.permission}
+          data-id="000554"
           key={`menu${i}`}
           // eslint-disable-next-line react/no-unstable-nested-components
           yes={() => (

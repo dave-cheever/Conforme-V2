@@ -26,17 +26,17 @@ function AnswersList({
 }) {
   return (
     <Box
-      data-id="000017"
       bg="auditsList.bg"
       border="1px solid"
       borderColor="auditsList.headerBorderColor"
       borderRadius="10px"
+      data-id="000017"
       h="full"
       ml="10px"
       overflow="hidden"
       w="full"
     >
-      <Box data-id="000018" bg="auditsList.bg" h="full" w="full" >
+      <Box bg="auditsList.bg" data-id="000018" h="full" w="full" >
         <AdminTableHeader data-id="000019">
           <AdminTableHeaderElement
             data-id="000020"
@@ -131,8 +131,8 @@ function AnswersList({
           {answers?.length > 0 ? (
             answers?.map((answer, idx) => (
               <AnswersListItem
-                data-id="000029"
                 answer={answer}
+                data-id="000029"
                 editAnswer={editAnswer}
                 index={idx}
                 key={answer._id}

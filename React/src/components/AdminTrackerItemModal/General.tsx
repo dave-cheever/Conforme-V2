@@ -47,8 +47,8 @@ function GeneralForm() {
     <>
       {isModalOpen && (
         <AddTrackerItemAttribute
-          data-id="000518"
           attributeType={attributeType}
+          data-id="000518"
           isOpenModal={isModalOpen}
           newAttributeValue={newAttributeValue}
           onAction={onAction}
@@ -59,8 +59,8 @@ function GeneralForm() {
           <SectionHeader data-id="000521" label="General details" />
           <Stack data-id="000522" pb={3} spacing={2} w="full">
             <TextInput
-              data-id="000523"
               control={control}
+              data-id="000523"
               label="Item name"
               name="name"
               placeholder={`${capitalize(t('tracker item'))} name`}
@@ -69,8 +69,8 @@ function GeneralForm() {
               }}
               variant="secondaryVariant" />
             <Textarea
-              data-id="000524"
               control={control}
+              data-id="000524"
               label="Description"
               name="description"
               placeholder={`Describe the ${t('tracker item')}`}
@@ -81,9 +81,9 @@ function GeneralForm() {
           <Stack data-id="000526" pb={3} spacing={2} w="full">
             <Flex data-id="000527" w="calc(100% + 35px)">
               <Dropdown
-                data-id="000528"
                 attributeType="Category"
                 control={control}
+                data-id="000528"
                 Icon={PlusIcon}
                 label="Category"
                 name="categoryId"
@@ -98,9 +98,9 @@ function GeneralForm() {
             </Flex>
             <Flex data-id="000529" w="calc(100% + 35px)">
               <Dropdown
-                data-id="000530"
                 attributeType="Regulatory body"
                 control={control}
+                data-id="000530"
                 Icon={PlusIcon}
                 label="Regulatory body"
                 name="regulatoryBodyId"
@@ -114,15 +114,15 @@ function GeneralForm() {
                 variant="secondaryVariant" />
             </Flex>
             <Datepicker
-              data-id="000531"
               control={control}
+              data-id="000531"
               label="Expires on (optional)"
               name="dueDate"
               placeholder={`Define when the ${t('tracker item')} is due`}
               variant="secondaryVariant" />
             <Dropdown
-              data-id="000532"
               control={control}
+              data-id="000532"
               label="Frequency"
               name="frequency"
               options={frequencyOptions}
@@ -133,64 +133,63 @@ function GeneralForm() {
               variant="secondaryVariant" />
             <Stack data-id="000533" direction="column" pt={2} spacing={2}>
               <Box
-                data-id="000534"
                 color="dropdown.labelFont.normal"
+                data-id="000534"
                 fontSize="ssm"
                 fontWeight="bold">
                 Due date calculation schema
               </Box>
-              <Box data-id="000535" color="dropdown.labelFont.normal" fontSize="ssm">
+              <Box color="dropdown.labelFont.normal" data-id="000535" fontSize="ssm">
                 Select schema that will be used to calculate next due date after response completion.
               </Box>
-              <Box data-id="000536" color="dropdown.labelFont.normal" fontSize="ssm">
+              <Box color="dropdown.labelFont.normal" data-id="000536" fontSize="ssm">
                 Due date will be calculated base on:
               </Box>
               <Stack data-id="000537" direction="row" position="relative" spacing={4}>
                 <Flex
-                  data-id="000538"
                   color={
                     trackerItem.dueDateCalculation !== 'fromDueDate'
                       ? 'trackerItemModal.toggle.label.active'
                       : 'trackerItemModal.toggle.label.default'
                   }
+                  data-id="000538"
                   fontSize="smm">
                   completion date
                 </Flex>
                 <Switch
-                  data-id="000539"
                   colorScheme="trackerItemModal.toggle.color"
+                  data-id="000539"
                   isChecked={trackerItem.dueDateCalculation === 'fromDueDate'}
                   onChange={() =>
                     setValue('dueDateCalculation', trackerItem.dueDateCalculation === 'fromDueDate' ? 'fromCompletionDate' : 'fromDueDate')
                   } />
                 <Flex
-                  data-id="000540"
                   color={
                     trackerItem.dueDateCalculation === 'fromDueDate'
                       ? 'trackerItemModal.toggle.label.active'
                       : 'trackerItemModal.toggle.label.default'
                   }
+                  data-id="000540"
                   fontSize="smm">
                   due date
                 </Flex>
               </Stack>
               {trackerItem.dueDateCalculation === 'fromDueDate' ? (
-                <Box data-id="000541" color="dropdown.labelFont.normal" fontSize="ssm">
+                <Box color="dropdown.labelFont.normal" data-id="000541" fontSize="ssm">
                   Example: <br data-id="000542" />
                   Licence was due 31.01.2022 and was completed 10.01.2022. <br data-id="000543" />
                   Next due date will be 31.01.2022 + frequency.
                 </Box>
               ) : (
-                <Box data-id="000544" color="dropdown.labelFont.normal" fontSize="ssm">
+                <Box color="dropdown.labelFont.normal" data-id="000544" fontSize="ssm">
                   Example: <br data-id="000545" />
                   Review was due 31.01.2022 and was completed 10.01.2022. <br data-id="000546" />
                   Next due date will be 10.01.2022 + frequency.
                 </Box>
               )}
             </Stack>
-            <Flex data-id="000547" align="center" position="relative" pt={4}>
+            <Flex align="center" data-id="000547" position="relative" pt={4}>
               <Switch
-                data-id="000548"
                 colorScheme="toogle.color"
                 css={{
                   '.chakra-switch__thumb': {
@@ -199,11 +198,12 @@ function GeneralForm() {
                     },
                   },
                 }}
+                data-id="000548"
                 isChecked={!!trackerItem.dueDateEditable}
                 onChange={() => setValue('dueDateEditable', !trackerItem.dueDateEditable)} />
               <Flex
-                data-id="000549"
                 color={trackerItem.dueDateEditable ? 'toogle.enableColor' : 'toogle.disableColor'}
+                data-id="000549"
                 fontSize="14px"
                 fontWeight="400"
                 ml={3}>

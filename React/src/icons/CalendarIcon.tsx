@@ -6,27 +6,27 @@ const CalendarIcon = createIcon({
   path: (
     <g data-id="000036">
       <path
-        data-id="000037"
         d="M13.8 2.60001H2.6C1.71634 2.60001 1 3.31635 1 4.20001V15.4C1 16.2837 1.71634 17 2.6 17H13.8C14.6837 17 15.4 16.2837 15.4 15.4V4.20001C15.4 3.31635 14.6837 2.60001 13.8 2.60001Z"
+        data-id="000037"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5" />
       <path
-        data-id="000038"
         d="M11.4004 1V4.2"
+        data-id="000038"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5" />
       <path
-        data-id="000039"
         d="M5 1V4.2"
+        data-id="000039"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5" />
       <path
-        data-id="000040"
         d="M1 7.39999H15.4"
+        data-id="000040"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5" />

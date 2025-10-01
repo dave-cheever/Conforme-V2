@@ -185,9 +185,9 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
 
   return (
     <Stack
-        data-id="000555"
         bgColor="auditAnswer.bg"
         boxShadow="0px 0px 30px 0px #31323340"
+        data-id="000555"
         h={['full', 'auto']}
         p={4}
         rounded="10px"
@@ -197,8 +197,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Text>
       {audit.auditType?.businessUnitScope === 'answer'&& !module?.featureFlags?.enableSafetyWalk && (
         <Dropdown
-          data-id="000557"
           control={control}
+          data-id="000557"
           disabled={isDisabled}
           label={capitalize(t('business unit'))}
           name="businessUnitId"
@@ -215,8 +215,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           variant="secondaryVariant" />
       )}
       {!module?.featureFlags?.enableSafetyWalk && <Dropdown
-        data-id="000558"
         control={control}
+        data-id="000558"
         disabled={isDisabled}
         label="Category"
         name="categoryId"
@@ -232,8 +232,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           <Stack data-id="000560">
             {isCustomQuestion && (
               <TextInput
-                data-id="000561"
                 control={control}
+                data-id="000561"
                 disabled={isDisabled}
                 label="Question"
                 name="question"
@@ -243,8 +243,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
                 }} />
             )}
             <TextInputMultiline
-              data-id="000562"
               control={control}
+              data-id="000562"
               disabled={isDisabled}
               label="Answer"
               name="answer"
@@ -255,8 +255,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           </Stack>
         ) : (
           <TextInputMultiline
-            data-id="000563"
             control={control}
+            data-id="000563"
             disabled={isDisabled}
             label="What is the audit question?"
             name="question"
@@ -272,8 +272,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
 
           {questionsCategory.options.map(({ name, setting }) => (
             <Toggle
-              data-id="000566"
               control={control}
+              data-id="000566"
               disabled={isDisabled}
               falseLabel={name}
               key={setting}
@@ -288,8 +288,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
 
           {question?.positiveValue && (
             <Toggle
-              data-id="000569"
               control={control}
+              data-id="000569"
               disabled={isDisabled}
               falseLabel={`${question?.positiveValue }`}
               key={`${question?.positiveValue }` }
@@ -298,8 +298,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           )}
           {question?.negativeValue && (
             <Toggle
-              data-id="000570"
               control={control}
+              data-id="000570"
               disabled={isDisabled}
               falseLabel={`${question?.negativeValue }`}
               key={`${question?.negativeValue }` }
@@ -314,16 +314,16 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         </Text>
         {!isDisabled && (
           <DocumentUpload
-            data-id="000573"
             callback={async (uploaded) => appendAttachment(uploaded)}
+            data-id="000573"
             elementId={answer?._id || `temp-${question._id}`}
             setUploadStatus={setUploading} />
         )}
         {values.attachments?.map((attachment, i) => (
           <Flex data-id="000574" flexDir="column" key={i} mb={2}>
             <DocumentUploaded
-              data-id="000575"
               callback={async () => removeAttachment(i)}
+              data-id="000575"
               document={attachment}
               downloadable
               removable={!isDisabled} />
@@ -396,8 +396,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
           <Stack data-id="000581">
             {values.actions?.map((action, index) => (
               <ActionListItem
-                data-id="000582"
                 action={action}
+                data-id="000582"
                 disabled={isDisabled}
                 index={index}
                 key={action._id}
@@ -422,9 +422,9 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
 
             {!isDisabled && (
               <Button
-                data-id="000583"
                 bgColor="auditAnswer.buttons.addAction.bg"
                 color="auditAnswer.buttons.addAction.color"
+                data-id="000583"
                 fontSize="ssm"
                 fontWeight="semibold"
                 h="28px"
@@ -439,8 +439,8 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Stack>
       {module?.featureFlags?.enableSafetyWalk && <Stack data-id="000584">
       <TextInputMultiline
-            data-id="000585"
             control={control}
+            data-id="000585"
             disabled={isDisabled}
             label="Notes"
             name="notes"
@@ -452,9 +452,9 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
       </Stack>}
       <HStack data-id="000586">
         <Button
-          data-id="000587"
           bgColor="auditAnswer.buttons.cancel.bg"
           color="auditAnswer.buttons.cancel.color"
+          data-id="000587"
           fontSize="smm"
           fontWeight="semibold"
           h="40px"
@@ -465,9 +465,9 @@ function AuditAnswer({ question, handleClose }: { question: TDeepPartial<TQuesti
         <Spacer data-id="000588" />
         {!isDisabled && (
           <Button
-            data-id="000589"
             bgColor="auditAnswer.buttons.save.bg"
             color="auditAnswer.buttons.save.color"
+            data-id="000589"
             disabled={!isValid || uploading}
             fontSize="smm"
             fontWeight="semibold"

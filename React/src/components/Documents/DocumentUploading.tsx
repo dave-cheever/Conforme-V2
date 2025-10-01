@@ -7,23 +7,23 @@ import Loader from '../Loader';
 function DocumentUploading({ documentName }: { documentName: string }) {
   return (
     <Flex
-      data-id="000515"
       align="center"
       borderColor="evidence.uploadBorderColor"
       borderRadius="10px"
       borderStyle="dashed"
       borderWidth="1px"
       color="brand.darkGrey"
+      data-id="000515"
       fontWeight="400"
       h="65px"
       justify="space-between"
       key={documentName}
       role="group"
       w="full">
-      <Flex data-id="000516" align="center">
+      <Flex align="center" data-id="000516">
         <Box
-          data-id="000517"
           bg="evidence.uploadBg"
+          data-id="000517"
           flexShrink={0}
           fontSize="12px"
           h="55px"
@@ -31,8 +31,8 @@ function DocumentUploading({ documentName }: { documentName: string }) {
           mr={2}
           rounded="md"
           w="55px">
-          <Flex data-id="000518" align="center" h="full" justify="center">
-            <Loader data-id="000519" center size="lg" />
+          <Flex align="center" data-id="000518" h="full" justify="center">
+            <Loader center data-id="000519" size="lg" />
           </Flex>
         </Box>
         <Flex data-id="000520" direction="column" fontSize="12px" mr={2}>

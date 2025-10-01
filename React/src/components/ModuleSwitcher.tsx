@@ -36,11 +36,11 @@ function ModuleSwitcher() {
       {hasMultipleModules ? (
         <Menu data-id="000422">
           <MenuButton
-            data-id="000423"
             _active={{ bg: 'transparent' }}
             _hover={{ bg: !isMobile && 'navigationLeftItem.selectedLabelBg' }}
             as={Button}
             bg={isMobile ? '#FFFFFF' : '#110b30'}
+            data-id="000423"
             h="60px"
             minW={isMobile ? '150px' : '200px'}
             px="2"
@@ -48,26 +48,26 @@ function ModuleSwitcher() {
             variant="ghost"
             w="auto">
             <Flex
-              data-id="000424"
               align="flex-start"
+              data-id="000424"
               gap="2"
               justify={isMobile ? 'flex-start' : 'space-between'}
               w="100%">
               {!isTabletWidth && !showFiltersPanel && (
                 <Box
-                  data-id="000425"
                   alignItems="center"
                   alignSelf="center"
+                  data-id="000425"
                   display="flex">
-                  <Icon data-id="000426" as={Conforme} h="30px" w="30px" />
+                  <Icon as={Conforme} data-id="000426" h="30px" w="30px" />
                 </Box>
               )}
 
               {!isTabletWidth && !showFiltersPanel && !isMobile && (
                 <Box
-                  data-id="000427"
                   alignSelf="center"
                   bg="white"
+                  data-id="000427"
                   h="28px"
                   ml="3"
                   mr="1"
@@ -76,16 +76,16 @@ function ModuleSwitcher() {
               )}
 
               <Flex
-                data-id="000428"
                 align="center"
+                data-id="000428"
                 flex="1"
                 marginLeft={showFiltersPanel || isTabletWidth ? '20' : '2'}
                 maxW={isMobile ? '120px' : '145px'}
                 minW={isMobile ? '50px' : '120px'}>
                 <Text
-                  data-id="000429"
                   as="div"
                   color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
+                  data-id="000429"
                   fontSize={isMobile ? '18px' : '22px'}
                   fontWeight="600"
                   justifyContent={isMobile ? 'center' : 'left'}
@@ -103,7 +103,7 @@ function ModuleSwitcher() {
                   wordBreak="break-word">
                   {showFiltersPanel || isTabletWidth ? (
                     <Flex data-id="000430" pl={'18px'}>
-                      <Icon data-id="000431" as={Conforme} h="30px" w="30px" />
+                      <Icon as={Conforme} data-id="000431" h="30px" w="30px" />
                     </Flex>
                   ) : isMobile ? (
                     <Flex data-id="000432" pt="6px">{getInitials(module?.name)}</Flex>
@@ -113,13 +113,13 @@ function ModuleSwitcher() {
                 </Text>
               </Flex>
               <Box
-                data-id="000433"
                 alignItems="center"
                 alignSelf="center"
+                data-id="000433"
                 display="flex">
                 <ChevronDownIcon
-                  data-id="000434"
                   color="moduleSwitcher.button.text.active"
+                  data-id="000434"
                   h="24px"
                   w="24px" />
               </Box>
@@ -129,13 +129,13 @@ function ModuleSwitcher() {
           <MenuList data-id="000435" zIndex={100}>
             {modulesInNavigation.map((m) => (
               <MenuItem
-                data-id="000436"
                 _hover={{ bg: 'moduleSwitcher.button.active', color: 'moduleSwitcher.button.text.active', opacity: 0.8 }}
                 bg={m.path === module?.path ? 'moduleSwitcher.button.active' : 'transparent'}
                 color={m.path === module?.path ? 'moduleSwitcher.button.text.active' : 'inherit'}
+                data-id="000436"
                 key={m.path}
                 onClick={() => chooseModule(m)}>
-                <Flex data-id="000437" align="center" gap="2">
+                <Flex align="center" data-id="000437" gap="2">
                   <Text
                     data-id="000438"
                     fontSize={isMobile ? '12px' : '14px'}
@@ -151,9 +151,9 @@ function ModuleSwitcher() {
       ) : (
         // Single module display - no dropdown
         (<Flex
-          data-id="000440"
           align="flex-start"
           alignItems="center"
+          data-id="000440"
           gap="2"
           h="60px"
           justify={isMobile ? 'flex-start' : 'space-between'}
@@ -161,18 +161,18 @@ function ModuleSwitcher() {
           w="100%">
           {!isTabletWidth && !showFiltersPanel && (
             <Box
-              data-id="000441"
               alignItems="center"
               alignSelf="center"
+              data-id="000441"
               display="flex">
-              <Icon data-id="000442" as={Conforme} h="30px" w="30px" />
+              <Icon as={Conforme} data-id="000442" h="30px" w="30px" />
             </Box>
           )}
           {!isTabletWidth && !showFiltersPanel && !isMobile && (
             <Box
-              data-id="000443"
               alignSelf="center"
               bg="white"
+              data-id="000443"
               h="28px"
               ml="3"
               mr="1"
@@ -180,17 +180,17 @@ function ModuleSwitcher() {
               w="1px" />
           )}
           <Flex
-            data-id="000444"
             align="center"
+            data-id="000444"
             flex="1"
             marginLeft={showFiltersPanel || isTabletWidth ? '20' : '2'}
             maxW={isMobile ? '120px' : '145px'}
             minW={isMobile ? '50px' : '120px'}
           >
             <Text
-              data-id="000445"
               as="div"
               color={isMobile ? 'navigationLeftItem.selectedLabelBg' : 'white'}
+              data-id="000445"
               fontSize={isMobile ? '18px' : '22px'}
               fontWeight="600"
               justifyContent={isMobile ? 'center' : 'left'}
@@ -212,7 +212,7 @@ function ModuleSwitcher() {
             >
               {showFiltersPanel || isTabletWidth ? (
                 <Flex data-id="000446">
-                  <Icon data-id="000447" as={Conforme} h="30px" w="30px" />
+                  <Icon as={Conforme} data-id="000447" h="30px" w="30px" />
                 </Flex>
               ) : isMobile ? (
                 <Flex data-id="000448" pt="6px">{getInitials(module?.name)}</Flex>

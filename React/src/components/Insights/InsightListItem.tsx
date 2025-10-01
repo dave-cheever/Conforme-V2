@@ -98,20 +98,20 @@ function InsightListItem({
         return (
           <>
             <InsightCount
-              data-id="000467"
               count={item.totalActionsCount}
+              data-id="000467"
               onClick={() => handleClickForActions()} />
             <InsightCount
-              data-id="000468"
               count={item.completedActionsCount}
+              data-id="000468"
               onClick={() => handleClickForActions('closed')} />
             <InsightCount
-              data-id="000469"
               count={item.inProgressActionsCount}
+              data-id="000469"
               onClick={() => handleClickForActions('open')} />
             <InsightCount
-              data-id="000470"
               count={item.overdueActionsCount}
+              data-id="000470"
               onClick={() => handleClickForActions('overdue')} />
           </>
         );
@@ -119,20 +119,20 @@ function InsightListItem({
         return (
           <>
             <InsightCount
-              data-id="000471"
               count={item.totalAnswersCount}
+              data-id="000471"
               onClick={() => handleClickForAnswers()} />
             <InsightCount
-              data-id="000472"
               count={item.openAnswersCount}
+              data-id="000472"
               onClick={() => handleClickForAnswers('open')} />
             <InsightCount
-              data-id="000473"
               count={item.resolvedAnswersCount}
+              data-id="000473"
               onClick={() => handleClickForAnswers('resolved')} />
             <InsightCount
-              data-id="000474"
               count={item.closedAnswersCount}
+              data-id="000474"
               onClick={() => handleClickForAnswers('closed')} />
           </>
         );
@@ -141,20 +141,20 @@ function InsightListItem({
         return (
           <>
             <InsightCount
-              data-id="000475"
               count={item.totalAuditsCount}
+              data-id="000475"
               onClick={() => handleClickForAudits()} />
             <InsightCount
-              data-id="000476"
               count={item.completedAuditsCount}
+              data-id="000476"
               onClick={() => handleClickForAudits('completed')} />
             <InsightCount
-              data-id="000477"
               count={item.upcomingAuditsCount}
+              data-id="000477"
               onClick={() => handleClickForAudits('upcoming')} />
             <InsightCount
-              data-id="000478"
               count={item.missedAuditsCount}
+              data-id="000478"
               onClick={() => handleClickForAudits('missed')} />
           </>
         );
@@ -163,18 +163,18 @@ function InsightListItem({
 
   return (
     <Flex
-        data-id="000479"
         align="center"
         bg={light ? 'white' : '#F3F3F5'}
         cursor="pointer"
+        data-id="000479"
         minH="70px"
         p="15px 25px"
         py={1.25}
         w="full">
       <Grid data-id="000480" templateColumns="1fr repeat(4, 135px)" w="full">
         <Flex
-          data-id="000481"
           color="auditsInsights.list.fontColor"
+          data-id="000481"
           fontSize="14px"
           fontWeight="400"
           lineHeight="18px"
@@ -193,7 +193,7 @@ function InsightListItem({
           }}
           textOverflow="ellipsis">
           {insightsModel === 'users' ? (
-            <Flex data-id="000482" align="center">
+            <Flex align="center" data-id="000482">
               <UserAvatar data-id="000483" size="sm" userId={item?._id} />
               <Text data-id="000484" ml={2}>{(item as IUser)?.displayName}</Text>
             </Flex>

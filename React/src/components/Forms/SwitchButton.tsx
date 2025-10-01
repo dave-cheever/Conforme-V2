@@ -3,7 +3,6 @@ import { Button } from "@chakra-ui/react";
 function SwitchButton({ laterality, value, onchange, name, requiredAnswer, disabled }) {
   return (
     <Button
-      data-id="000349"
       _hover={disabled ? {} : { bg: 'switch.activebtn.bg', color: 'switch.activebtn.color' }}
       bg={
         laterality === 'left' && value === 'yes'
@@ -19,6 +18,7 @@ function SwitchButton({ laterality, value, onchange, name, requiredAnswer, disab
             ? 'switch.activebtn.color'
             : 'switch.btn.color'
       }
+      data-id="000349"
       disabled={requiredAnswer === 'na' || disabled}
       fontSize="smm"
       fontWeight="bold"

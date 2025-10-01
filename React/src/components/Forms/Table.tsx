@@ -74,8 +74,8 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
 
   return (
     <Controller
-            data-id="000350"
             control={control}
+            data-id="000350"
             name={name}
             render={({ field, fieldState }) => {
               const { onChange, onBlur, value } = field;
@@ -84,14 +84,14 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                 <Box data-id="000351" id={name} mt="none" w="full">
                   {label && (
                     <Flex
-                      data-id="000352"
                       align="center"
+                      data-id="000352"
                       justify="space-between"
                       mb="none"
                       pt={2}>
                       <Box
-                        data-id="000353"
                         color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
+                        data-id="000353"
                         fontSize="14px"
                         fontWeight="bold"
                         left="none"
@@ -109,13 +109,12 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                   <Stack data-id="000355" mt="10px" w="full">
                     {value?.map((row, index) => (
                       <Flex
-                        data-id="000356"
                         align="center"
+                        data-id="000356"
                         justify="space-between"
                         key={`row-${index}`}>
                         <Flex data-id="000357" mr={2} w="full">
                           <Input
-                            data-id="000358"
                             _active={{
                               bg: disabled ? 'form.textInput.disabled.bg' : 'form.textInput.activeBg',
                             }}
@@ -136,6 +135,7 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                             borderRadius="8px"
                             borderWidth="1px"
                             color="form.textInput.font"
+                            data-id="000358"
                             disabled={disabled}
                             fontSize="smm"
                             h="40px"
@@ -149,33 +149,33 @@ function Table({ control, name, label, help, tooltip = '', validations = {}, dis
                             w="full" />
                         </Flex>
                         <Trashcan
-                          data-id="000359"
                           cursor="pointer"
+                          data-id="000359"
                           onClick={() => removeRow(index, value, onChange)}
                           stroke="form.textInput.font" />
                       </Flex>
                     ))}
                     {(validations.maxLength ? value.length < validations.maxLength : true) && (
                       <Stack
-                        data-id="000360"
                         align="center"
                         cursor="pointer"
+                        data-id="000360"
                         direction="row"
                         onClick={() => addRow(value, onChange)}
                         pl={2}
                         spacing={2}>
                         <PlusIcon data-id="000361" stroke="form.textInput.font" />
-                        <Text data-id="000362" color="form.textInput.font">Add row</Text>
+                        <Text color="form.textInput.font" data-id="000362">Add row</Text>
                       </Stack>
                     )}
                   </Stack>
                   {error && (
-                    <Box data-id="000363" color="form.textInput.error" fontSize={14} ml={1}>
+                    <Box color="form.textInput.error" data-id="000363" fontSize={14} ml={1}>
                       {error.message}
                     </Box>
                   )}
                   {tooltip && (
-                    <Flex data-id="000364" align="center" color="dropdown.tooltip" mt={3}>
+                    <Flex align="center" color="dropdown.tooltip" data-id="000364" mt={3}>
                       <InfoOutlineIcon data-id="000365" />
                       <Box data-id="000366" fontSize="11px" ml={2}>
                         {tooltip}

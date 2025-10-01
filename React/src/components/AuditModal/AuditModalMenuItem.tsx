@@ -11,24 +11,24 @@ function AuditModalMenuItem({ label, icon }: IAuditModalMenuItemProps) {
 
   return (
     <Box
-        data-id="000395"
         alignItems="center"
         cursor="pointer"
+        data-id="000395"
         display="flex"
         justifyContent="start"
         mb="20px"
         onClick={() => modalContext.setActivePage(label)}>
       <Box
-        data-id="000396"
         bg={active ? 'auditModal.menu.active.indicator' : 'auditModal.menu.inActive.indicator'}
         borderRadius="0px 4px 4px 0px"
+        data-id="000396"
         display="inline"
         h="38px"
         mr="20px"
         w="10px" />
       <Icon
-        data-id="000397"
         boxSize={6}
+        data-id="000397"
         mr="20px"
         stroke={active ? 'auditModal.menu.active.icon' : 'auditModal.menu.inActive.icon'}
         transform="translate(0px, -2px)"
@@ -36,8 +36,8 @@ function AuditModalMenuItem({ label, icon }: IAuditModalMenuItemProps) {
         {icon}
       </Icon>
       <Text
-        data-id="000398"
         color={active ? 'auditModal.menu.active.text' : 'auditModal.menu.inActive.text'}
+        data-id="000398"
         fontSize="md"
         fontWeight="400">
         {label}

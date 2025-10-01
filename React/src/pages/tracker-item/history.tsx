@@ -49,13 +49,13 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
 
   return (
     <Flex
-      data-id="000736"
       _hover={{ bg: '#F5F7FA' }}
       align="center"
       bg={rowBg}
       borderBottom="1px solid"
       borderColor="historyPage.border"
       cursor="pointer"
+      data-id="000736"
       fontWeight={active ? '700' : '400'}
       minH="60px"
       onClick={() => navigateTo(`/tracker-item/${response._id}?snapshot=${getTime(new Date(response.lastCompletionDate!))}`)}
@@ -64,28 +64,28 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
       w="full"
     >
       {/* Item name */}
-      <Flex data-id="000737" align="center" minW={0} w="30%">
+      <Flex align="center" data-id="000737" minW={0} w="30%">
         <Text
-          data-id="000738"
           color="historyPage.font"
+          data-id="000738"
           fontSize={['12px', '14px']}
           isTruncated>
           {response.trackerItem.name}
         </Text>
       </Flex>
       {/* Renewed date */}
-      <Flex data-id="000739" align="center" w="20%">
+      <Flex align="center" data-id="000739" w="20%">
         <Text
-          data-id="000740"
           color="historyPage.font"
+          data-id="000740"
           fontSize={['12px', '14px']}>
           {format(new Date(response.lastCompletionDate!), 'd MMM yyyy')}
         </Text>
       </Flex>
       {/* Responsible */}
-      <Flex data-id="000741" align="center" minW={0} w="25%">
+      <Flex align="center" data-id="000741" minW={0} w="25%">
         {responsibleUser ? (
-          <Flex data-id="000742" align="center" minW={0} w="full">
+          <Flex align="center" data-id="000742" minW={0} w="full">
             <Avatar
               data-id="000743"
               name={responsibleUser?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -93,8 +93,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
               src={responsibleUser.imgUrl} />
             <Tooltip data-id="000744" label={responsibleUser.displayName}>
               <Text
-                data-id="000745"
                 color="historyPage.font"
+                data-id="000745"
                 fontSize={['11px', '13px']}
                 isTruncated
                 maxW="calc(100% - 32px)"
@@ -106,8 +106,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
           </Flex>
         ) : (
           <Text
-            data-id="000746"
             color="historyPage.font"
+            data-id="000746"
             fontSize={['11px', '13px']}
             fontStyle="italic">
             Unassigned
@@ -115,14 +115,14 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
         )}
       </Flex>
       {/* Last updated by */}
-      <Flex data-id="000747" align="center" minW={0} w="25%">
+      <Flex align="center" data-id="000747" minW={0} w="25%">
         <Skeleton
           data-id="000748"
           isLoaded={!lastUpdatedUserLoading}
           rounded="full"
           w="full">
           {lastUpdatedUser ? (
-            <Flex data-id="000749" align="center" minW={0} w="full">
+            <Flex align="center" data-id="000749" minW={0} w="full">
               <Avatar
                 data-id="000750"
                 name={lastUpdatedUser.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
@@ -130,8 +130,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
                 src={lastUpdatedUser.imgUrl} />
               <Tooltip data-id="000751" label={lastUpdatedUser.displayName}>
                 <Text
-                  data-id="000752"
                   color="historyPage.font"
+                  data-id="000752"
                   fontSize={['11px', '13px']}
                   isTruncated
                   maxW="calc(100% - 32px)"
@@ -143,8 +143,8 @@ function HistoricalTableRow({ response, index }: { response: IResponse; index: n
             </Flex>
           ) : (
             <Text
-              data-id="000753"
               color="historyPage.font"
+              data-id="000753"
               fontSize={['11px', '13px']}
               fontStyle="italic">
               Unassigned
@@ -161,20 +161,20 @@ function Team() {
 
   if (snapshotsLoading) {
     return (
-      <Flex data-id="000754" bg="historyPage.bg" h="full" rounded="20px" w="full">
-        <Loader data-id="000755" center />
+      <Flex bg="historyPage.bg" data-id="000754" h="full" rounded="20px" w="full">
+        <Loader center data-id="000755" />
       </Flex>
     );
   }
 
   return (
-    <Box data-id="000756" bg="historyPage.bg" w="full">
+    <Box bg="historyPage.bg" data-id="000756" w="full">
       <Box
-        data-id="000757"
         bg="white"
         border="1px solid"
         borderColor="historyPage.border"
         borderRadius="8px"
+        data-id="000757"
         overflow="hidden">
         <AdminTableHeader data-id="000758">
           <AdminTableHeaderElement data-id="000759" label="Item name" w="30%" />

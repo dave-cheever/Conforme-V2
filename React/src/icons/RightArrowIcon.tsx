@@ -4,16 +4,16 @@ const RightArrowIcon = createIcon({
   path: (
     <>
       <path
-        data-id="001032"
         d="M1 6H11"
+        data-id="001032"
         fill="none"
         stroke="#9A9EA1"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5" />
       <path
-        data-id="001033"
         d="M6 1L11 6L6 11"
+        data-id="001033"
         fill="none"
         stroke="#9A9EA1"
         strokeLinecap="round"

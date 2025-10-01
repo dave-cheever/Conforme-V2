@@ -6,14 +6,14 @@ const CrossIcon = createIcon({
   path: (
     <g data-id="000076">
       <path
-        data-id="000077"
         d="M12.4168 1.58325L1.5835 12.4166"
+        data-id="000077"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />
       <path
-        data-id="000078"
         d="M1.5835 1.58325L12.4168 12.4166"
+        data-id="000078"
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round" />

@@ -18,7 +18,6 @@ function TrackerListItems({
   total,
   sortOrder,
   sortType,
-  scrollerRef,
   loadResponses,
   setSortOrder,
   setSortType,
@@ -28,25 +27,24 @@ function TrackerListItems({
   total: number;
   sortOrder: 'asc' | 'desc';
   sortType: string;
-  scrollerRef: any; // Using 'any' as there is no exported interface to use
   loadResponses: (page: number) => Promise<void>;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
 }) {
-
   return (
-    <Box data-id="000441" bg="#ffffff" h="full" overflow="none" p={[3, 6]} w="full">
+    <Box bg="#ffffff" data-id="000441" h="full" overflow="none" p={[3, 6]} w="full">
       <Box
-        data-id="000442"
         bg="trackerList.bg"
         border="1px solid #CBD5E0"
         borderRadius="10px"
+        data-id="000442"
         h="fit-content"
         mb={7}
         minH="full"
         overflow="hidden"
         pb={7}
-        w="full">
+        w="full"
+      >
         <AdminTableHeader data-id="000443">
           <AdminTableHeaderElement
             data-id="000444"
@@ -57,7 +55,8 @@ function TrackerListItems({
             }}
             showSortingIcon={sortType === 'trackerItem.name'}
             sortOrder={sortType === 'trackerItem.name' ? sortOrder : undefined}
-            w="13%" />
+            w="13%"
+          />
           <AdminTableHeaderElement
             data-id="000445"
             label="Due for renewal"
@@ -67,7 +66,8 @@ function TrackerListItems({
             }}
             showSortingIcon={sortType === 'dueDate'}
             sortOrder={sortType === 'dueDate' ? sortOrder : undefined}
-            w="11%" />
+            w="11%"
+          />
           <AdminTableHeaderElement
             data-id="000446"
             label={capitalize(t('compliant'))}
@@ -77,18 +77,10 @@ function TrackerListItems({
             }}
             showSortingIcon={sortType === 'calculatedStatus'}
             sortOrder={sortType === 'calculatedStatus' ? sortOrder : undefined}
-            w="8%" />
-            <AdminTableHeaderElement
-            data-id="000447"
-            hideSortIcon
-            label={capitalize(t('evidence'))}
-
-            w="12%" />
-             <AdminTableHeaderElement
-            data-id="000448"
-            hideSortIcon
-            label={capitalize(t('category'))}
-            w="12%" />
+            w="8%"
+          />
+          <AdminTableHeaderElement data-id="000447" hideSortIcon label={capitalize(t('evidence'))} w="12%" />
+          <AdminTableHeaderElement data-id="000448" hideSortIcon label={capitalize(t('category'))} w="12%" />
           <AdminTableHeaderElement
             data-id="000449"
             label="Regulatory body"
@@ -98,7 +90,8 @@ function TrackerListItems({
             }}
             showSortingIcon={sortType === 'trackerItem.regulatoryBody.name'}
             sortOrder={sortType === 'trackerItem.regulatoryBody.name' ? sortOrder : undefined}
-            w="12%"/>
+            w="12%"
+          />
           <AdminTableHeaderElement
             data-id="000450"
             label="Responsible"
@@ -108,7 +101,8 @@ function TrackerListItems({
             }}
             showSortingIcon={sortType === 'responsible.displayName'}
             sortOrder={sortType === 'responsible.displayName' ? sortOrder : undefined}
-            w="13%" />
+            w="13%"
+          />
           <AdminTableHeaderElement
             data-id="000451"
             label={capitalize(t('business unit'))}
@@ -118,7 +112,8 @@ function TrackerListItems({
             }}
             showSortingIcon={sortType === 'businessUnit.name'}
             sortOrder={sortType === 'businessUnit.name' ? sortOrder : undefined}
-            w="12%" />
+            w="12%"
+          />
           {/* {(module?.customQuestionsInDashboard || []).length > 0 && (
             <AdminTableHeaderElement
               label={module!.customQuestionsInDashboard[0]}
@@ -129,30 +124,21 @@ function TrackerListItems({
               label={module!.customQuestionsInDashboard[1]}
               w="10%" />
           )} */}
-          <AdminTableHeaderElement
-            data-id="000452"
-            hideSortIcon
-            label={capitalize(t('location'))}
-            w="8%" />
+          <AdminTableHeaderElement data-id="000452" hideSortIcon label={capitalize(t('location'))} w="8%" />
         </AdminTableHeader>
 
-        <Flex
-          data-id="000453"
-          flexDir="column"
-          h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']}
-          overflowY="auto"
-          w="full">
+        <Flex data-id="000453" flexDir="column" h={['full', 'calc(100vh - 280px)', 'calc(100vh - 270px)']} overflowY="auto" w="full">
           <InfiniteScrollComponent
             data-id="000454"
             hasMore={!loading && responses.length < total}
             initialLoad={false}
             loadMore={loadResponses}
-            ref={scrollerRef}
-            useWindow={false}>
+            useWindow={false}
+          >
             {responses?.map((response, index) => (
               <TrackerListItem data-id="000455" index={index} key={response._id} response={response} />
             ))}
-            {loading && <Loader data-id="000456" center h="60px" key="infinite-loader" />}
+            {loading && <Loader center data-id="000456" h="60px" key="infinite-loader" />}
           </InfiniteScrollComponent>
         </Flex>
       </Box>

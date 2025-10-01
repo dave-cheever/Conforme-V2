@@ -28,8 +28,8 @@ function NavigationBottomItem({
 
   return (
     <Flex
-        data-id="000527"
         alignItems="center"
+        data-id="000527"
         onClick={() => {
           if (menuItem.url === '/') {
             setFiltersOpen(!filtersOpen);
@@ -42,7 +42,6 @@ function NavigationBottomItem({
         }}
         pos="relative">
       <Flex
-        data-id="000528"
         alignItems="center"
         bg={
           menuItem.subSections
@@ -53,13 +52,14 @@ function NavigationBottomItem({
               ? 'navigationLeftItemTablet.selectedLabelBg'
               : 'navigationLeftItemTablet.unselectedLabelBg'
         }
+        data-id="000528"
         h="30px"
         justifyContent="center"
         rounded="8px"
         w="30px">
         <Icon
-          data-id="000529"
           as={icon}
+          data-id="000529"
           fill="#ffffff"
           h="15px"
           stroke="#ffffff"
@@ -67,12 +67,12 @@ function NavigationBottomItem({
       </Flex>
       {((menuItem.subSections && isPathActive(url)) || (!menuItem.subSections && isPathActive(url, { exact: true }))) && (
         <>
-          <Text data-id="000530" color="#ffffff" fontSize="16px" ml="15px">
+          <Text color="#ffffff" data-id="000530" fontSize="16px" ml="15px">
             {label}
           </Text>
           {menuItem.subSections && <ArrowRight
-            data-id="000531"
             boxSize="10px"
+            data-id="000531"
             ml="15px"
             stroke="#fffff"
             transform="rotate(270deg)" />}
@@ -80,10 +80,10 @@ function NavigationBottomItem({
       )}
       {filtersOpen && menuItem.url === '/' && (
         <Box
-          data-id="000532"
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="000532"
           pos="absolute"
           py="15px"
           right="0"
@@ -107,10 +107,10 @@ function NavigationBottomItem({
       )}
       {subsectionOpen && menuItem.url === '/admin' && (
         <Box
-          data-id="000535"
           bg="white"
           bottom="45px"
           boxShadow="0px 0px 80px rgba(49, 50, 51, 0.25)"
+          data-id="000535"
           left={menuItem.subSections ? (isPathActive(url) ? '' : '-200px') : isPathActive(url, { exact: true }) ? '' : '-200px'}
           pos="absolute"
           py="15px"

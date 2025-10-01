@@ -56,8 +56,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per person`,
         component: (
           <InsightsDetailedTable
-            data-id="000506"
             data={users}
+            data-id="000506"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -69,8 +69,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per ${t('location')}`,
         component: (
           <InsightsDetailedTable
-            data-id="000507"
             data={locations}
+            data-id="000507"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreLocations}
@@ -82,8 +82,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(t('audit')))} per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
-            data-id="000508"
             data={businessUnits}
+            data-id="000508"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreBusinessUnits}
@@ -97,8 +97,8 @@ function InsightsDetailedStats({
         label: 'Actions per person',
         component: (
           <InsightsDetailedTable
-            data-id="000509"
             data={users}
+            data-id="000509"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -110,8 +110,8 @@ function InsightsDetailedStats({
         label: `Actions per ${t('location')}`,
         component: (
           <InsightsDetailedTable
-            data-id="000510"
             data={locations}
+            data-id="000510"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -123,8 +123,8 @@ function InsightsDetailedStats({
         label: `Actions per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
-            data-id="000511"
             data={businessUnits}
+            data-id="000511"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -138,8 +138,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per person`,
         component: (
           <InsightsDetailedTable
-            data-id="000512"
             data={users}
+            data-id="000512"
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
@@ -152,8 +152,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per ${t('location')}`,
         component: (
           <InsightsDetailedTable
-            data-id="000513"
             data={locations}
+            data-id="000513"
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreBusinessUnits}
@@ -166,8 +166,8 @@ function InsightsDetailedStats({
         label: `${capitalize(pluralize(questionsCategoryName))} per ${t('business unit')}`,
         component: (
           <InsightsDetailedTable
-            data-id="000514"
             data={businessUnits}
+            data-id="000514"
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
@@ -180,9 +180,9 @@ function InsightsDetailedStats({
 
   return (
     <Box
-        data-id="000515"
         bg="auditsInsights.list.bg"
         borderRadius="20px"
+        data-id="000515"
         p={7}
         pb={0}
         w="full">
@@ -195,12 +195,12 @@ function InsightsDetailedStats({
         <TabList data-id="000517">
           {tabs[insightsType].map((tab) => (
             <Tab
-              data-id="000518"
               _selected={{
                 bg: 'insights.tabBg',
                 color: 'insights.tabColor',
               }}
               borderRadius="10px"
+              data-id="000518"
               fontSize="smm"
               fontWeight="bold"
               key={tab.id}
