@@ -88,7 +88,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: '$(Express_WorkingDir)'
-        customCommand: 'run build'
+        customCommand: 'run build -- --env NODE_ENV=production'
     - task: CopyFiles@2
       displayName: 'Stage Express output'
       inputs:
@@ -96,7 +96,7 @@ stages:
         Contents: |
           package.json
           package-lock.json
-          dist/**
+          build/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)/express/stage'
     - task: ArchiveFiles@2
       displayName: 'Archive Express build'
